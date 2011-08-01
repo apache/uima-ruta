@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.apache.uima.tm.cev.cevArtifactViewers">
+      <artifactViewer
+            factory="org.apache.uima.tm.cev.html.artifactViewer.HtmlArtifactViewerFactory"
+            id="org.apache.uima.tm.cev.artifactViewer.html"
+            priority="50">
+      </artifactViewer>
+   </extension>
+
+</plugin>

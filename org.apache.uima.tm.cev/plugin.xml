@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension-point id="cevEditors" name="CEV Annotation Editors" schema="schema/cevEditors.exsd"/>
+   <extension-point id="cevViews" name="CEV Annotation Views" schema="schema/cevViews.exsd"/>
+   <extension-point id="cevSearchStrategies" name="Descriptor Search Strategies" schema="schema/cevSearchStrategies.exsd"/>
+   <extension-point id="cevArtifactViewers" name="Viewers of the artifact" schema="schema/cevArtifactViewers.exsd"/>
+
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            name="CEV"
+            extensions="xmi"
+            icon="icons/cevViewer.png"
+            contributorClass="org.apache.uima.tm.cev.editor.CEVViewerContributor"
+            class="org.apache.uima.tm.cev.editor.CEVViewer"
+            id="de.uniwue.tm.cev.editor.CEVViewer">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="de.uniwue.tm.cev.views"
+            name="CEV">
+      </category>
+      <view
+            category="de.uniwue.tm.cev.views"
+            class="org.apache.uima.tm.cev.views.selection.CEVSelectionView"
+            icon="icons/views.png"
+            id="de.uniwue.tm.cev.views.selection"
+            name="Selection">
+      </view>
+      <view
+            category="de.uniwue.tm.cev.views"
+            class="org.apache.uima.tm.cev.views.annotationBrowser.CEVAnnotationBrowserView"
+            icon="icons/views.png"
+            id="de.uniwue.tm.cev.views.annotationBrowser"
+            name="Annotation Browser">
+      </view>
+      <view
+            category="de.uniwue.tm.cev.views"
+            class="org.apache.uima.tm.cev.views.editor.CEVAnnotationEditorView"
+            icon="icons/edit.png"
+            id="de.uniwue.tm.cev.views.editor"
+            name="Annotation Editor">
+      </view>
+      <view
+            category="de.uniwue.tm.cev.views"
+            class="org.apache.uima.tm.cev.views.palette.CEVAnnotationMarkerPaletteView"
+            icon="icons/edit.png"
+            id="de.uniwue.tm.cev.views.palette"
+            name="Marker Palette">
+      </view>
+      <view
+            category="de.uniwue.tm.cev.views"
+            class="org.apache.uima.tm.cev.views.fsBrowser.CEVFSBrowserView"
+            icon="icons/views.png"
+            id="de.uniwue.tm.cev.views.fsBrowser"
+            name="FS only Browser">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.apache.uima.tm.cev.preferences.CEVPreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.apache.uima.tm.cev.preferences.CEVViewerTreeViewPreferencePage"
+            id="de.uniwue.tm.cev.preferences.CEVViewerTreeViewPreferencePage"
+            name="CEV">
+      </page>
+      <page
+            category="de.uniwue.tm.cev.preferences.CEVViewerTreeViewPreferencePage"
+            class="org.apache.uima.tm.cev.preferences.CEVViewerAnnotationFilterPreferencePage"
+            id="de.uniwue.tm.cev.preferences.CEVViewerAnnotationFilterPreferencePage"
+            name="Annotation Filter">
+      </page>
+   </extension>
+   <extension
+         point="de.uniwue.tm.cev.cevEditors">
+      <editor
+            factory="de.uniwue.tm.cev.views.editor.CEVAnnotationEditorFactory"
+            id="de.uniwue.tm.textmarker.cev.extension.editor"
+            priority="0"
+            viewId="de.uniwue.tm.cev.views.editor">
+      </editor>
+      <editor
+            factory="de.uniwue.tm.cev.views.palette.CEVAnnotationMarkerPaletteFactory"
+            id="de.uniwue.tm.textmarker.cev.extension.palette"
+            priority="0"
+            viewId="de.uniwue.tm.cev.views.palette">
+      </editor>
+   </extension>
+   <extension
+         point="de.uniwue.tm.cev.cevViews">
+      <view
+            factory="de.uniwue.tm.cev.views.annotationBrowser.CEVAnnotationBrowserViewFactory"
+            id="de.uniwue.tm.textmarker.cev.extension.annotationBrowser"
+            priority="0"
+            viewId="de.uniwue.tm.cev.views.annotationBrowser">
+      </view>
+      <view
+            factory="de.uniwue.tm.cev.views.selection.CEVSelectionViewFactory"
+            id="de.uniwue.tm.textmarker.cev.extension.selection"
+            priority="0"
+            viewId="de.uniwue.tm.cev.views.selection">
+      </view>
+      <view
+            factory="de.uniwue.tm.cev.views.fsBrowser.CEVFSBrowserViewFactory"
+            id="de.uniwue.tm.textmarker.cev.extension.fsBrowser"
+            priority="0"
+            viewId="de.uniwue.tm.cev.views.fsBrowser">
+      </view>
+   </extension>
+   <extension
+         point="de.uniwue.tm.cev.cevSearchStrategies">
+      <strategy
+            factory="de.uniwue.tm.cev.searchStrategy.SingleInFolderStrategyFactory"
+            id="de.uniwue.tm.cev.searchStrategy.SingleInFolder"
+            priority="10">
+      </strategy>
+      <strategy
+            factory="de.uniwue.tm.cev.searchStrategy.SelectInFolderStrategyFactory"
+            id="de.uniwue.tm.cev.searchStrategy.SelectInFolder"
+            priority="50">
+      </strategy>
+      <strategy
+            factory="de.uniwue.tm.cev.searchStrategy.AllXmlInProjectStrategyFactory"
+            id="de.uniwue.tm.cev.searchStrategy.AllXmlInProject"
+            priority="5000">
+      </strategy>
+   </extension>
+   <extension
+         point="de.uniwue.tm.cev.cevArtifactViewers">
+      <artifactViewer
+            factory="de.uniwue.tm.cev.artifactViewer.TextArtifactViewerFactory"
+            id="de.uniwue.tm.cev.artifactViewer.text"
+            priority="5">
+      </artifactViewer>
+   </extension>
+
+</plugin>
