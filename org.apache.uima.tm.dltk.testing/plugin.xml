@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+<extension-point id="tmTestEngine" name="tmTestEngine" schema="schema/tmTestEngine.exsd"/>
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="org.apache.uima.tm.dltk.internal.testing.TextMarkerTestingLaunchConfigurationDelegate"
+            id="org.apache.uima.tm.dltk.testing.launchConfig"
+            modes="run, debug"
+            name="TextMarker Testing"
+            public="true"
+            sourceLocatorId="tmSourceLocator"
+            sourcePathComputerId="tmSourcePathComputer">
+      </launchConfigurationType>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="org.apache.uima.tm.dltk.testing.launchConfig"
+            icon="icons/full/obj16/textmarker.png"
+            id="org.de.uniwue.dltk.textmarker.testing.launchConfigImage">
+      </launchConfigurationTypeImage>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="org.apache.uima.tm.dltk.internal.testing.TextMarkerTestingTabGroup"
+            id="org.apache.uima.tm.dltk.testing.launchConfigTabGroup"
+            type="org.apache.uima.tm.dltk.testing.launchConfig">
+         <launchMode
+               description="Run mode"
+               mode="run">
+         </launchMode>
+         <launchMode
+               mode="debug"
+               perspective="org.eclipse.debug.ui.DebugPerspective">
+         </launchMode>
+      </launchConfigurationTabGroup>
+   </extension>
+   <!--
+   <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            class="org.apache.uima.tm.dltk.internal.testing.TextMarkerTestingLaunchShortcut"
+            description="%TextMarkerLaunchShortcut.description"
+            icon="icons/full/obj16/textmarker.png"
+            id="org.apache.uima.tm.dltk.testing.launchShortcut"
+            label="%TextMarkerLaunchShortcut.name"
+            modes="run,debug">
+         <configurationType
+               id="org.eclipse.dltk.testing.test.launchConfigurationType">
+         </configurationType>
+         <contextualLaunch>
+           <enablement>
+					<with variable="selection">
+						<count value="1" />
+						<iterate>
+							<or>
+								<test
+									args="org.apache.uima.tm.dltk.core.nature"
+									property="org.eclipse.dltk.launching.hasProjectNature" />
+							</or>
+						</iterate>
+					</with>
+				</enablement>
+				<contextLabel label="TextMarker Testing Run"
+					mode="run">
+				</contextLabel>
+				<contextLabel label="TextMarker Testing Debug"
+					mode="debug">
+				</contextLabel>
+         </contextualLaunch>
+      </shortcut>
+   </extension>
+   -->
+      <extension
+         point="org.apache.uima.tm.dltk.testing.tmTestEngine">
+      <testEngine
+            class="org.apache.uima.tm.dltk.testing.internal.test.TextMarkerTestTestingEngine"
+            id="org.apache.uima.tm.dltk.testing.test.testingEngine"
+            priority="0">
+      </testEngine>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.testing.memberResolver">
+      <resolver
+            class="org.apache.uima.tm.dltk.testing.internal.test.TextMarkertestMemberResolver"
+            id="org.apache.uima.tm.dltk.testing.test.testingEngine"
+            priority="0">
+      </resolver>
+   </extension>
+</plugin>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<templates>
+	<template id="org.apache.uima.tm.textmarker.editor.template.RECA"
+		context="tmUniversalTemplateContextType" name="RECA"
+		description="Rule element with condition and action" icon="icons/obj16/tm_obj.png"
+		autoinsert="true">${cursor}Type{C() -&gt; A()};</template>
+	<template id="org.apache.uima.tm.textmarker.editor.template.CALL"
+		context="tmUniversalTemplateContextType" name="CALL" description="Simple CALL rule"
+		icon="icons/obj16/tm_obj.png" autoinsert="true">Document{->CALL(${cursor})};
+	</template>
+    <template id="org.apache.uima.tm.textmarker.editor.template.EXEC"
+        context="tmUniversalTemplateContextType" name="EXEC" description="Simple EXEC rule"
+        icon="icons/obj16/tm_obj.png" autoinsert="true">Document{->EXEC(${cursor})};</template>
+	<template id="org.apache.uima.tm.textmarker.editor.template.BLOCK"
+		context="tmUniversalTemplateContextType" name="BLOCK" description="Simple BLOCK"
+		icon="icons/obj16/tm_obj.png" autoinsert="true">BLOCK(${cursor}Name)
+		Document{} {&#13;&#13;};</template>
+	<template id="org.apache.uima.tm.textmarker.editor.template.MF"
+		context="tmUniversalTemplateContextType" name="MF" description="Common MARKFAST rule"
+		icon="icons/obj16/tm_obj.png" autoinsert="true">Document{-&gt;MARKFAST(${cursor}Type, List)};</template>
+
+</templates>

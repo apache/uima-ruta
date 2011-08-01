@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+  <extension point="org.eclipse.dltk.launching.interpreterInstallTypes">
+    <interpreterInstallType
+      class="org.apache.uima.tm.dltk.internal.launching.GenericTextMarkerInstallType"
+      id="de.uniwue.dltk.internal.debug.ui.launcher.GenericTextMarkerInstallType">
+    </interpreterInstallType>
+  </extension>
+
+  <extension point="org.eclipse.debug.core.launchDelegates">
+    <launchDelegate
+      delegate="org.apache.uima.tm.dltk.internal.launching.JavaLocalApplicationLaunchConfigurationDelegate"
+      id="com.Instantiations.profiler.localJavaApplicationDelegate"
+      modes="debug"
+      name="Debugging with TextMarker debug support"
+      type="org.eclipse.jdt.launching.localJavaApplication">
+    </launchDelegate>
+  </extension>
+
+  <extension point="org.eclipse.dltk.console.scriptInterpreter">
+    <scriptInterpreter
+      class="org.apache.uima.tm.dltk.console.TextMarkerInterpreter"
+      natureID="org.apache.uima.tm.dltk.core.nature" />
+  </extension>
+
+  <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+    <launchConfigurationTypeImage
+      icon="$nl$/icons/textmarker.png"
+      configTypeID="org.apache.uima.tm.dltk.launching.TextMarkerLaunchConfigurationType"
+      id="org.apache.uima.tm.dltk.launching.TextMarkerLaunchConfigurationTypeImage">
+    </launchConfigurationTypeImage>
+  </extension>
+
+  <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+    <launchConfigurationType
+      delegate="org.apache.uima.tm.dltk.launching.TextMarkerLaunchConfigurationDelegate"
+      id="org.apache.uima.tm.dltk.launching.TextMarkerLaunchConfigurationType"
+      modes="run,debug"
+      name="TextMarker"
+      public="true"
+      sourceLocatorId="tmSourceLocator"
+      sourcePathComputerId="tmSourcePathComputer">
+    </launchConfigurationType>
+  </extension>
+
+  <extension point="org.eclipse.debug.core.sourcePathComputers">
+    <sourcePathComputer
+      class="org.apache.uima.tm.dltk.internal.launching.TextMarkerSourcePathComputer"
+      id="tmSourcePathComputer" />
+  </extension>
+
+  <extension point="org.eclipse.debug.core.sourceLocators">
+    <sourceLocator
+      class="org.apache.uima.tm.dltk.internal.launching.TextMarkerSourceLookupDirector"
+      id="tmSourceLocator"
+      name="org.apache.uima.tm.dltk.launching.tmSourceLocator" />
+  </extension>
+
+  <extension point="org.eclipse.dltk.launching.debuggingEngine">
+    <engineContribution natureId="org.apache.uima.tm.dltk.core.nature">
+      <selector class="org.apache.uima.tm.dltk.launching.TextMarkerDebuggingEngineSelector" />
+    </engineContribution>
+  </extension>
+  <extension
+        point="org.eclipse.dltk.launching.interpreterInstalls">
+     <interpreterInstall
+           home="${eclipse_home}"
+           id="org.apache.uima.tm.dltk.launching.embeddedTextMarker"
+           interpreterInstallType="de.uniwue.dltk.internal.debug.ui.launcher.GenericTextMarkerInstallType"
+           name="TextMarker Interpreter">
+     </interpreterInstall>
+  </extension>
+
+</plugin>

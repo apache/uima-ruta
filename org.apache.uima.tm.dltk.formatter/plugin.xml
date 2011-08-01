@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.apache.uima.tm.dltk.formatter.internal.TextMarkerFormatterPreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.ui.formatterFactory">
+      <engineContribution
+            natureId="org.apache.uima.tm.dltk.core.nature">
+         <formatterFactory
+               class="org.apache.uima.tm.dltk.formatter.TextMarkerFormatterFactory"
+               description="Default TextMarker formatter providing whitespace control and line wrapping"
+               id="org.apache.uima.tm.dltk.formatter.formatterFactory"
+               name="Default TextMarker Formatter"
+               priority="10">
+         </formatterFactory>
+      </engineContribution>
+   </extension>
+
+</plugin>

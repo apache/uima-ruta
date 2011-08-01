@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+  <extension point="org.eclipse.dltk.launching.debuggingEngine">
+    <engineContribution natureId="org.apache.uima.tm.dltk.core.nature">
+      <engine
+        class="org.apache.uima.tm.dltk.debugger.TextMarkerDebuggerRunnerFactory"
+        description="%DebuggingEngine.description"
+        id="org.apache.uima.tm.dltk.debugger"
+        name="%DebuggingEngine.name"
+        priority="0"
+        propertyPageId="org.apache.uima.tm.dltk.propertyPage.debug.engines.debugger"
+        preferencePageId="org.apache.uima.tm.dltk.preferences.debug.engines.debugger">
+      </engine>
+    </engineContribution>
+  </extension>
+
+  <extension point="org.eclipse.ui.preferencePages">
+    <page
+      category="org.apache.uima.tm.dltk.preferences.debug.engines"
+      class="org.apache.uima.tm.dltk.debugger.preferences.TextMarkerDebuggerPreferencePage"
+      id="org.apache.uima.tm.dltk.preferences.debug.engines.debugger"
+      name="%PreferencePage.name">
+    </page>
+  </extension>
+
+  <extension point="org.eclipse.ui.propertyPages">
+    <page
+      class="org.apache.uima.tm.dltk.debugger.preferences.TextMarkerDebuggerPreferencePage"
+      category="org.apache.uima.tm.dltk.propertyPage.debug.engines"
+      id="org.apache.uima.tm.dltk.propertyPage.debug.engines.debugger"
+      name="%PropertyPage.name">
+      <enabledWhen>
+        <adapt type="org.eclipse.core.resources.IProject">
+          <test
+            property="org.eclipse.core.resources.projectNature"
+            value="org.apache.uima.tm.dltk.core.nature" />
+        </adapt>
+      </enabledWhen>
+    </page>
+  </extension>
+
+</plugin>

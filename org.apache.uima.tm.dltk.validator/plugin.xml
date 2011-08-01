@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.dltk.validators.core.validator">
+      <validatorType
+            class="org.apache.uima.tm.dltk.validator.CheckValidator"
+            id="org.apache.uima.tm.dltk.validator.checkvalidator"
+            nature="org.apache.uima.tm.dltk.core.nature">
+      </validatorType>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.buildParticipant">
+      <buildParticipant
+            class="org.apache.uima.tm.dltk.validator.CheckValidator"
+            id="org.apache.uima.tm.dltk.validator.Checker"
+            name="TextMarker Validator"
+            nature="org.apache.uima.tm.dltk.core.nature">
+      </buildParticipant>
+   </extension>
+
+</plugin>
