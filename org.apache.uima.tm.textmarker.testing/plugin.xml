@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension-point id="evaluators" name="CAS Evaluator" schema="schema/evaluators.exsd"/>
+
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="org.apache.uima.tm.dltk.ui"
+            class="org.apache.uima.tm.textmarker.testing.ui.views.fp.FalsePositiveView"
+            icon="icons/bug.png"
+            id="org.apache.uima.tm.textmarker.testing.falsePositive"
+            name="False Positive">
+      </view>
+      <view
+            category="org.apache.uima.tm.dltk.ui"
+            class="org.apache.uima.tm.textmarker.testing.ui.views.fn.FalseNegativeView"
+            icon="icons/bug.png"
+            id="org.apache.uima.tm.textmarker.testing.falseNegative"
+            name="False Negative">
+      </view>
+      <view
+            category="org.apache.uima.tm.dltk.ui"
+            class="org.apache.uima.tm.textmarker.testing.ui.views.TestPageBookView"
+            icon="icons/bug_edit.png"
+            id="org.apache.uima.tm.textmarker.ui.testing.TestingView"
+            name="Annotation Test"
+            restorable="true">
+      </view>
+      <view
+            category="org.apache.uima.tm.dltk.ui"
+            class="org.apache.uima.tm.textmarker.testing.ui.views.tp.TruePositiveView"
+            icon="icons/bug.png"
+            id="org.apache.uima.tm.textmarker.testing.truePositive"
+            name="True Positive">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="toolbar:org.apache.uima.tm.textmarker.ui.testing.TestingView?after=additions">
+         <command
+               commandId="org.apache.uima.tm.textmarker.ui.testing.rerun"
+               icon="icons/13555.actionengine_play.gif"
+               label="Rerun Tests"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.apache.uima.tm.textmarker.ui.testing.PreviousTestCase"
+               icon="icons/back.gif"
+               label="Previous Test Case"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.apache.uima.tm.textmarker.ui.testing.nextTestCase"
+               icon="icons/forward.gif"
+               label="Next Test Case"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.apache.uima.tm.textmarker.testing.LoadFolderCommand"
+               icon="icons/add.gif"
+               label="Load all test files from selected folder"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.apache.uima.tm.textmarker.ui.testing.excludeTypes"
+               icon="icons/exclamation.png"
+               label="Select excluded types"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.apache.uima.tm.textmarker.testing.selectEvaluator"
+               icon="icons/evaluator.gif"
+               label="Select Evaluator"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.apache.uima.tm.textmarker.testing.ExportTabel"
+               icon="icons/otherIcons/10892.resource_persp.gif"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar">
+         <toolbar
+               id="org.apache.uima.tm.textmarker.ui.testing.annotationTestToolbar">
+         </toolbar>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.apache.uima.tm.textmarker.testing.ui.handlers.RemoveTestsHandler"
+            id="org.apache.uima.tm.textmarker.ui.testing.removeTests"
+            name="Remove Resource">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.tm.textmarker.testing.ui.handlers.RerunActionHandler"
+            id="org.apache.uima.tm.textmarker.ui.testing.rerun"
+            name="Rerun Command">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.tm.textmarker.testing.ui.handlers.NextTestCaseHandler"
+            id="org.apache.uima.tm.textmarker.ui.testing.nextTestCase"
+            name="NextTestCase">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.tm.textmarker.testing.ui.handlers.PreviousTestCaseHandler"
+            id="org.apache.uima.tm.textmarker.ui.testing.PreviousTestCase"
+            name="PreviousTestCase">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.tm.textmarker.testing.ui.handlers.LoadFilesFromFolderHandler"
+            id="org.apache.uima.tm.textmarker.testing.LoadFolderCommand"
+            name="LoadFolderCommand">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.tm.textmarker.testing.ui.handlers.SelectedExcludedTypesHandler"
+            id="org.apache.uima.tm.textmarker.ui.testing.excludeTypes"
+            name="Select excluded types">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.tm.textmarker.testing.ui.handlers.SelectEvaluatorHandler"
+            id="org.apache.uima.tm.textmarker.testing.selectEvaluator"
+            name="Select Evaluator">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.tm.textmarker.testing.ui.handlers.ExportTabelHandler"
+            id="org.apache.uima.tm.textmarker.testing.ExportTabel"
+            name="Export Table">
+      </command>
+   </extension>
+   <extension
+         point="org.apache.uima.tm.cev.cevViews">
+      <view
+            factory="org.apache.uima.tm.textmarker.testing.ui.views.fp.FalsePositiveViewFactory"
+            id="org.apache.uima.tm.textmarker.ui.testing.falsePositive.cev"
+            priority="0"
+            viewId="org.apache.uima.tm.textmarker.ui.testing.falsePositive">
+      </view>
+      <view
+            factory="org.apache.uima.tm.textmarker.testing.ui.views.fn.FalseNegativeViewFactory"
+            id="org.apache.uima.tm.textmarker.ui.testing.falseNegative"
+            priority="0"
+            viewId="org.apache.uima.tm.textmarker.ui.testing.falseNegative.cev">
+      </view>
+      <view
+            factory="org.apache.uima.tm.textmarker.testing.ui.views.tp.TruePositiveViewFactory"
+            id="org.apache.uima.tm.textmarker.ui.testing.truePositive.cev"
+            priority="0"
+            viewId="org.apache.uima.tm.textmarker.ui.testing.truePositive">
+      </view>
+   </extension>
+   <extension
+         point="org.apache.uima.tm.cev.cevSearchStrategies">
+      <strategy
+            factory="org.apache.uima.tm.textmarker.testing.searchStrategy.TestingSearchStrategyFactory"
+            id="org.apache.uima.tm.textmarker.ui.testing.cev.searchStrategy"
+            priority="5">
+      </strategy>
+   </extension>
+   <extension
+         point="org.apache.uima.tm.textmarker.testing.evaluators">
+      <evaluator
+            factory="org.apache.uima.tm.textmarker.testing.evaluator.PartialMatchCasEvaluatorFacotry"
+            id="org.apache.uima.tm.textmarker.testing.partialmatchevaluator"
+            name="Partial Match">
+      </evaluator>
+      <evaluator
+            factory="org.apache.uima.tm.textmarker.testing.evaluator.ExactCasEvaluatorFactory"
+            id="org.apache.uima.tm.textmarker.testing.exactCasEvaluator"
+            name="Exact Match">
+      </evaluator>
+      <evaluator
+            factory="org.apache.uima.tm.textmarker.testing.evaluator.CoreMatchCasEvaluatorFactory"
+            id="org.apache.uima.tm.textmarker.testing.corematchevaluator"
+            name="Core Term Match">
+      </evaluator>
+      <evaluator
+            factory="org.apache.uima.tm.textmarker.testing.evaluator.WordAccuracyCasEvaluatorFactory"
+            id="org.apache.uima.tm.textmarker.testing.wordAccurecyCasEvaluator"
+            name="Word Accuracy">
+      </evaluator>
+      <evaluator
+            factory="org.apache.uima.tm.textmarker.testing.evaluator.TemplateCasEvaluatorFactory"
+            id="org.apache.uima.tm.textmarker.testing.templateCasEvaluator"
+            name="Template only">
+      </evaluator>
+      <evaluator
+            factory="org.apache.uima.tm.textmarker.testing.evaluator.WordTemplateCasEvaluatorFactory"
+            id="org.apache.uima.tm.textmarker.testing.wordTemplateCasEvaluator"
+            name="Template on word level">
+      </evaluator>
+      <evaluator
+            factory="org.apache.uima.tm.textmarker.testing.evaluator.FeatureCasEvaluatorFactory"
+            id="org.apache.uima.tm.textmarker.testing.featureCasEvaluator"
+            name="Features: Annotations and Strings">
+      </evaluator>
+      <evaluator
+            factory="org.apache.uima.tm.textmarker.testing.evaluator.StringFeatureCasEvaluatorFactory"
+            id="org.apache.uima.tm.textmarker.testing.stringFeature"
+            name="Annotations with String features">
+      </evaluator>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.apache.uima.tm.textmarker.testing.preferences.TestingPreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.apache.uima.tm.dltk.preferences"
+            class="org.apache.uima.tm.textmarker.testing.preferences.TestingPreferencePage"
+            id="org.apache.uima.tm.textmarker.testing.preferences"
+            name="Testing">
+      </page>
+   </extension>
+
+</plugin>
