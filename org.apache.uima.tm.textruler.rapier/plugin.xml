@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.apache.uima.tm.textruler.learners">
+      <learner
+            class="org.apache.uima.tm.textruler.rapier.RapierFactory"
+            id="org.apache.uima.tm.textruler.rapier"
+            name="RAPIER">
+      </learner>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.apache.uima.tm.textruler"
+            class="org.apache.uima.tm.textruler.rapier.RapierPreferencePage"
+            id="org.apache.uima.tm.textruler.rapier"
+            name="Rapier">
+      </page>
+   </extension>
+
+</plugin>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.apache.uima.tm.textruler.learners">
+      <learner
+            class="org.apache.uima.tm.textruler.whisk.token.WhiskFactory"
+            id="org.apache.uima.tm.textruler.whisk.token"
+            name="WHISK (token)">
+      </learner>
+      <learner
+            class="org.apache.uima.tm.textruler.whisk.generic.WhiskFactory"
+            id="org.apache.uima.tm.textruler.whisk.generic"
+            name="WHISK (generic)">
+      </learner>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.apache.uima.tm.textruler"
+            class="org.apache.uima.tm.textruler.whisk.generic.WhiskGenericPreferencePage"
+            id="org.apache.uima.tm.textruler.whisk.generic"
+            name="Whisk (generic)">
+      </page>
+      <page
+            category="org.apache.uima.tm.textruler"
+            class="org.apache.uima.tm.textruler.whisk.token.WhiskTokenPreferencePage"
+            id="org.apache.uima.tm.textruler.whisk.token"
+            name="Whisk (token)">
+      </page>
+   </extension>
+
+</plugin>

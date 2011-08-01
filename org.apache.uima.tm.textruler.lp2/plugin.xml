@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.apache.uima.tm.textruler.learners">
+      <learner
+            class="org.apache.uima.tm.textruler.lp2.OptimizedLP2Factory"
+            id="org.apache.uima.tm.textruler.lp2opt"
+            name="LP2 (optimized)">
+      </learner>
+      <learner
+            class="org.apache.uima.tm.textruler.lp2.NaiveLP2Factory"
+            id="org.apache.uima.tm.textruler.lp2naive"
+            name="LP2 (naive)">
+      </learner>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.apache.uima.tm.textruler"
+            class="org.apache.uima.tm.textruler.lp2.NaiveLP2PreferencePage"
+            id="org.apache.uima.tm.textruler.lp2naive"
+            name="LP2 (naive)">
+      </page>
+      <page
+            category="org.apache.uima.tm.textruler"
+            class="org.apache.uima.tm.textruler.lp2.OptimizedLP2PreferencePage"
+            id="org.apache.uima.tm.textruler.lp2opt"
+            name="LP2 (optimized)">
+      </page>
+   </extension>
+
+</plugin>

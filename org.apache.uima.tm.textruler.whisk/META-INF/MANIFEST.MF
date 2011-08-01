@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: TextRuler Whisk Plugin
+Bundle-SymbolicName: org.apache.uima.tm.textruler.whisk;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.apache.uima.tm.textruler.whisk.WhiskPlugin
+Bundle-Vendor: University of Würzburg
+Require-Bundle: org.eclipse.core.runtime,
+ org.apache.uima.tm.textruler,
+ org.apache.uima.runtime;bundle-version="2.3.0",
+ org.eclipse.ui
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy

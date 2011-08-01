@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.apache.uima.tm.textruler.learners">
+      <learner
+            class="org.apache.uima.tm.textruler.wien.WienFactory"
+            id="org.apache.uima.tm.textruler.wien"
+            name="WIEN">
+      </learner>
+   </extension>
+
+</plugin>
