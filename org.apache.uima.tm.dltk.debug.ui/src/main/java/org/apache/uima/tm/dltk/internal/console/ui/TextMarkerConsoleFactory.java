@@ -8,8 +8,8 @@ import org.eclipse.dltk.console.ui.ScriptConsole;
 import org.eclipse.dltk.console.ui.ScriptConsoleFactoryBase;
 import org.eclipse.jface.preference.IPreferenceStore;
 
-import org.apache.uima.tm.dltk.console.TextMarkerConsoleConstants;
-import org.apache.uima.tm.dltk.console.TextMarkerInterpreter;
+import org.apache.uima.tm.dltk.textmarker.console.TextMarkerConsoleConstants;
+import org.apache.uima.tm.dltk.textmarker.console.TextMarkerInterpreter;
 import org.apache.uima.tm.dltk.internal.debug.ui.TextMarkerDebugUIPlugin;
 
 public class TextMarkerConsoleFactory extends ScriptConsoleFactoryBase implements

@@ -3,7 +3,7 @@ package org.apache.uima.tm.dltk.internal.ui.preferences;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 
-import org.apache.uima.tm.dltk.console.TextMarkerConsoleConstants;
+import org.apache.uima.tm.dltk.textmarker.console.TextMarkerConsoleConstants;
 import org.apache.uima.tm.dltk.internal.debug.ui.TextMarkerDebugUIPlugin;
 
 public class TextMarkerConsolePreferenceInitializer extends AbstractPreferenceInitializer {

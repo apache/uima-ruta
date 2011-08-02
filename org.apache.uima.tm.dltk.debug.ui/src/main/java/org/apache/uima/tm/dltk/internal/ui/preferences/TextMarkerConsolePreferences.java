@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import org.apache.uima.tm.dltk.console.TextMarkerConsoleConstants;
+import org.apache.uima.tm.dltk.textmarker.console.TextMarkerConsoleConstants;
 import org.apache.uima.tm.dltk.internal.debug.ui.TextMarkerDebugUIPlugin;
 
 public class TextMarkerConsolePreferences extends PreferencePage implements

@@ -4,7 +4,7 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.dltk.internal.debug.ui.launcher.AbstractScriptLaunchShortcut;
 
 import org.apache.uima.tm.dltk.core.TextMarkerNature;
-import org.apache.uima.tm.dltk.launching.TextMarkerLaunchConfigurationConstants;
+import org.apache.uima.tm.dltk.textmarker.launching.TextMarkerLaunchConfigurationConstants;
 
 public class TextMarkerLaunchShortcut extends AbstractScriptLaunchShortcut {
   @Override

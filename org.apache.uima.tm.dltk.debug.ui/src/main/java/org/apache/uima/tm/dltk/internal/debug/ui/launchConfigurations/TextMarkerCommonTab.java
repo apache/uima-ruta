@@ -74,7 +74,7 @@ import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.views.navigator.ResourceSorter;
 
-import org.apache.uima.tm.dltk.launching.TextMarkerLaunchingPlugin;
+import org.apache.uima.tm.dltk.textmarker.launching.TextMarkerLaunchingPlugin;
 
 /**
  * Launch configuration tab used to specify the location a launch configuration is stored in,
