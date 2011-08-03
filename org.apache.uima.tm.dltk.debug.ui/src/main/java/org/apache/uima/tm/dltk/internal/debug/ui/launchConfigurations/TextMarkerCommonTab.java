@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.uima.tm.dltk.textmarker.launching.TextMarkerLaunchingPlugin;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -73,8 +74,6 @@ import org.eclipse.ui.ide.IDEEncoding;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.views.navigator.ResourceSorter;
-
-import org.apache.uima.tm.dltk.textmarker.launching.TextMarkerLaunchingPlugin;
 
 /**
  * Launch configuration tab used to specify the location a launch configuration is stored in,
@@ -171,8 +170,8 @@ public class TextMarkerCommonTab extends AbstractLaunchConfigurationTab {
   public void createControl(Composite parent) {
     Composite comp = new Composite(parent, SWT.NONE);
     setControl(comp);
-    PlatformUI.getWorkbench().getHelpSystem().setHelp(getControl(),
-            IDebugHelpContextIds.LAUNCH_CONFIGURATION_DIALOG_COMMON_TAB);
+    PlatformUI.getWorkbench().getHelpSystem()
+            .setHelp(getControl(), IDebugHelpContextIds.LAUNCH_CONFIGURATION_DIALOG_COMMON_TAB);
     comp.setLayout(new GridLayout(2, true));
     comp.setFont(parent.getFont());
 
@@ -248,8 +247,8 @@ public class TextMarkerCommonTab extends AbstractLaunchConfigurationTab {
   /**
    * Creates the component set for the capture output composite
    * 
-   * @param data.parent
-   *          the parent to add this component to
+   * @param data
+   *          .parent the parent to add this component to
    */
 
   private void test() {
@@ -780,7 +779,8 @@ public class TextMarkerCommonTab extends AbstractLaunchConfigurationTab {
   private boolean validateEncoding() {
     if (fAltEncodingButton.getSelection()) {
       if (fEncodingCombo.getSelectionIndex() == -1) {
-        setErrorMessage(LaunchConfigurationsMessages.CommonTab_No_Encoding_Selected);
+        // TODO constant was removed in Eclipse 3.7, find a substitute
+        // setErrorMessage(LaunchConfigurationsMessages.CommonTab_No_Encoding_Selected);
         return false;
       }
     }
@@ -878,8 +878,8 @@ public class TextMarkerCommonTab extends AbstractLaunchConfigurationTab {
     if (fUseDltkRadio.getSelection()) {
       configuration.setAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT, (String) null);
 
-      configuration.setAttribute(ScriptLaunchConfigurationConstants.ATTR_DLTK_CONSOLE_ID, Long
-              .toString(System.currentTimeMillis()));
+      configuration.setAttribute(ScriptLaunchConfigurationConstants.ATTR_DLTK_CONSOLE_ID,
+              Long.toString(System.currentTimeMillis()));
       IFileHandle proxyFile;
       try {
         IExecutionEnvironment exeEnv = (IExecutionEnvironment) EnvironmentManager
