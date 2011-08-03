@@ -7,31 +7,21 @@ import org.htmlparser.visitors.NodeVisitor;
 
 public class HTMLVisitor extends NodeVisitor {
 
-  // Map mit HTML-ID und den Positionen der zugehoerigen HTML-Tags im Code
-  // int[0] Startpos des Einleitenden Tags
-  // int[1] Endpos des Einleitenden Tags
-  // int[3] Startpos des Schliessenden Tags
-  // int[4] Endpos des Schliessenden Tags
+  // Map with HTML-ID and positions of the HTML-Tags
+  // int[0] startpos of the opening tag
+  // int[1] endpos of the opening tag
+  // int[3] startpos of the end tag
+  // int[4] endpos of the end tag
   private LinkedHashMap<String, int[]> idPosMap;
 
-  // Zaehler fuer die IDs
   private int idCount;
 
-  // Prefix fuer die IDs
   private String idName = "CAS_VIEWER_ID";
 
-  // Stack fuer die Tags beim Parsen
   private LinkedList<String> tagStack;
 
-  // Stack fuer die IDs beim Parsen
   private LinkedList<String> idStack;
 
-  /**
-   * Konstruktor
-   * 
-   * @param html
-   *          HTML-Code
-   */
   public HTMLVisitor(String html) {
     idPosMap = new LinkedHashMap<String, int[]>();
     idCount = 0;
@@ -40,29 +30,14 @@ public class HTMLVisitor extends NodeVisitor {
       idName += "_";
   }
 
-  /**
-   * Gibt die Map mit den Id-Positionen zurueck
-   * 
-   * @return Map
-   */
   public LinkedHashMap<String, int[]> getIDPosMap() {
     return idPosMap;
   }
 
-  /**
-   * Gibt den ID-Prefix zurueck
-   * 
-   * @return ID-Prefix
-   */
   public String getIDName() {
     return idName;
   }
 
-  /**
-   * Gibt den ID-Zaehler zurueck
-   * 
-   * @return Zaehler
-   */
   public int getIdCount() {
     return idCount;
   }
@@ -74,7 +49,6 @@ public class HTMLVisitor extends NodeVisitor {
    */
   @Override
   public void beginParsing() {
-    // Initialisiert die Stacks
     tagStack = new LinkedList<String>();
     idStack = new LinkedList<String>();
   }
@@ -86,10 +60,8 @@ public class HTMLVisitor extends NodeVisitor {
    */
   @Override
   public void visitTag(org.htmlparser.Tag tag) {
-    // Pruefen ob das Tag schon eine ID hat
     String id = tag.getAttribute("ID");
 
-    // Wenn nicht ID setzen
     String tagName = tag.getTagName();
     // TODO: added isIdTag
     if (id == null && isIdTag(tagName)) {
@@ -98,10 +70,8 @@ public class HTMLVisitor extends NodeVisitor {
     }
 
     if (id != null) {
-      // Startpos setzen
       idPosMap.put(id, new int[] { tag.getStartPosition(), tag.getEndPosition(), 0, 0 });
 
-      // auf Stack setzen
       tagStack.addFirst(tag.getTagName());
       idStack.addFirst(id);
     }

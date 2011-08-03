@@ -7,27 +7,14 @@ import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-
-/**
- * PreferencePage zum Einstellen der Baumordnung in den Views - nach Typ geordnet - nach Position
- * hierarchisch geordnet
- * 
- * @author Marco Nehmeier
- */
 public class CEVViewerTreeViewPreferencePage extends FieldEditorPreferencePage implements
         IWorkbenchPreferencePage {
 
-  /**
-   * Konstruktor
-   */
   public CEVViewerTreeViewPreferencePage() {
     super(GRID);
     setPreferenceStore(CEVPlugin.getDefault().getPreferenceStore());
   }
 
-  /**
-   * Erzeugt die Editor-Felder
-   */
   @Override
   public void createFieldEditors() {
     RadioGroupFieldEditor editor = new RadioGroupFieldEditor(

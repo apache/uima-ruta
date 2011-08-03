@@ -55,27 +55,15 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.xml.sax.SAXException;
 
-
-/**
- * CEVViewer
- * 
- * Eclipse-Plugin zum Anzeigen, Analysieren und Editieren von CAS-Annotationen in HTML-Seiten
- * 
- * @author Marco Nehmeier, Peter Klügl
- */
 public class CEVViewer extends MultiPageEditorPart implements IResourceChangeListener,
         ICEVAnnotationListener, MouseListener, SelectionListener {
 
-  // die TabFolder der jeweiligen CAS-Views
   private CTabFolder[] folderArray;
 
-  // CAS-Dokument
   private CEVDocument casDocument;
 
-  // aktiver View
   private CEVData activeCASData;
 
-  // dirty
   private boolean dirty;
 
   private Map<Class<?>, ICEVView> views;
@@ -96,9 +84,6 @@ public class CEVViewer extends MultiPageEditorPart implements IResourceChangeLis
 
   private List<Type> initialVisibleTypes;
 
-  /**
-   * Erzeugt den CEVViewer
-   */
   public CEVViewer() {
     super();
     ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
@@ -111,9 +96,6 @@ public class CEVViewer extends MultiPageEditorPart implements IResourceChangeLis
     artifactViewerFactories = CEVPlugin.getArtifactViewerFactories();
   }
 
-  /**
-   * Erzeugt die einzelnen Seiten im MultiPageEditor
-   */
   @Override
   protected void createPages() {
     if (casDocument == null) {
@@ -176,7 +158,6 @@ public class CEVViewer extends MultiPageEditorPart implements IResourceChangeLis
   @Override
   public void doSave(IProgressMonitor monitor) {
     CAS newCas = casDocument.getMainCas();
-    // TODO enable ArtifactModifier stuff again
     List<ArtifactModifier> modifiers = new ArrayList<ArtifactModifier>();
     for (Integer eachIndex : casViews.keySet()) {
       for (ICEVArtifactViewer each : casViews.get(eachIndex)) {
@@ -205,7 +186,6 @@ public class CEVViewer extends MultiPageEditorPart implements IResourceChangeLis
       }
     }
     try {
-      // Serialisieren und wegspeichern
       IFile iFile = ((FileEditorInput) getEditorInput()).getFile();
       File file = iFile.getLocation().toFile();
       XmlCasSerializer.serialize(newCas, new FileOutputStream(file));
@@ -213,7 +193,6 @@ public class CEVViewer extends MultiPageEditorPart implements IResourceChangeLis
     } catch (Exception e) {
       CEVPlugin.error(e);
     }
-    // nicht mehr dirty
     setDirty(false);
 
   }
@@ -249,15 +228,6 @@ public class CEVViewer extends MultiPageEditorPart implements IResourceChangeLis
       }
     }
 
-    // Job job = new Job("Initialize CAS") {
-    // protected IStatus run(IProgressMonitor monitor) {
-    // monitor.done();
-    // return Status.OK_STATUS;
-    // }
-    //
-    // };
-    // CEVPlugin.schedule(job, getSite());
-
     initialVisibleTypes = new ArrayList<Type>();
     if (casDocument != null) {
       Map<String, StyleMapEntry> styleMap = casDocument.getStyleMap();
@@ -276,14 +246,6 @@ public class CEVViewer extends MultiPageEditorPart implements IResourceChangeLis
     getSite().getPage().closeEditor(CEVViewer.this, false);
   }
 
-  /**
-   * CAS-File einlesen
-   * 
-   * @param inputFile
-   *          Input-File
-   * @throws PartInitException
-   *           Exception
-   */
   private void createCAS(FileEditorInput inputFile) throws PartInitException {
     this.inputFile = inputFile;
     try {
@@ -331,20 +293,11 @@ public class CEVViewer extends MultiPageEditorPart implements IResourceChangeLis
     return dirty;
   }
 
-  /**
-   * Dirty setzen
-   * 
-   * @param dirty
-   *          Dirty
-   */
   public void setDirty(boolean dirty) {
     this.dirty = dirty;
     firePropertyChange(PROP_DIRTY);
   }
 
-  /**
-   * Aktuallisiert den Browser oder das TextWidget wenn die Seiten gewechselt werden
-   */
   /*
    * (non-Javadoc)
    * 
@@ -368,12 +321,6 @@ public class CEVViewer extends MultiPageEditorPart implements IResourceChangeLis
       each.viewChanged(newPageIndex);
     }
 
-    // for (Entry<String, StyleMapEntry> each : casDocument.getStyleMap().entrySet()) {
-    // Type type = casDocument.getMainCas().getTypeSystem().getType(each.getKey());
-    // if (type != null) {
-    // annotationStateChanged(type);
-    // }
-    // }
   }
 
   /*
@@ -392,7 +339,7 @@ public class CEVViewer extends MultiPageEditorPart implements IResourceChangeLis
         final CEVViewer t = this;
         Display display = Display.getCurrent();
         if (display == null) {
-          // [FIXME]
+          // [FIXME] get correct display or replace code
 
           display = getEditorSite().getWorkbenchWindow().getShell().getDisplay();
           // display = activeText.getDisplay();
@@ -579,7 +526,6 @@ public class CEVViewer extends MultiPageEditorPart implements IResourceChangeLis
    * .apache.uima.cas.Type)
    */
   public void colorChanged(Type type) {
-    // Farbe hat sich geaendert
     annotationStateChanged(type);
   }
 
@@ -603,12 +549,6 @@ public class CEVViewer extends MultiPageEditorPart implements IResourceChangeLis
     setDirty(true);
   }
 
-  /**
-   * Zu einer Annotation springen
-   * 
-   * @param annot
-   *          Annotation
-   */
   public void moveToAnnotation(AnnotationFS annot) {
     int activePage = getActivePage();
     int selectionIndex = folderArray[activePage].getSelectionIndex();
@@ -617,12 +557,6 @@ public class CEVViewer extends MultiPageEditorPart implements IResourceChangeLis
 
   }
 
-  /**
-   * Selektion auf der SelektionPage anzeigen
-   * 
-   * @param pos
-   *          Offset
-   */
   public void showSelection(int pos) {
     for (ICEVView each : views.values()) {
       each.newSelection(pos);

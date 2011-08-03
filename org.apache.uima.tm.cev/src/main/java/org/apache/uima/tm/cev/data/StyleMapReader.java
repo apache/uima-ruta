@@ -22,18 +22,10 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
-
-/**
- * Utilityklasse zum lesen von Stylemaps
- * 
- * @author Marco Nehmeier
- */
 public class StyleMapReader {
 
-  // Colormap
   public static final Map<String, String> COLOR_NAME_MAP;
 
-  // Map mit Farben initialisieren
   static {
     COLOR_NAME_MAP = new HashMap<String, String>();
     COLOR_NAME_MAP.put("#000000", "black");
@@ -93,13 +85,6 @@ public class StyleMapReader {
     COLOR_NAME_MAP.put("mediumpurple", "#9370db");
   }
 
-  /**
-   * Stylemap einlesen und die Farbinformationen als Map zurueckgeben
-   * 
-   * @param styleFileString
-   *          Filename zur Stylemap
-   * @return Map mit Farbinformationen
-   */
   public static Map<String, StyleMapEntry> parseStyleMapDOM(String styleFileString) {
     File styleMapFile = new File(styleFileString);
     Map<String, StyleMapEntry> result = new HashMap<String, StyleMapEntry>();
@@ -133,7 +118,6 @@ public class StyleMapReader {
       return null;
     }
 
-    // Document analysieren
     final Node root = parse.getDocumentElement();
     final NodeList nodeList = root.getChildNodes();
 
@@ -169,17 +153,6 @@ public class StyleMapReader {
     return result;
   }
 
-  /**
-   * String aus Stylemap nach Fraben parsen und ein StyleMapEntry zurueckgeben
-   * 
-   * @param type
-   *          Typ
-   * @param label
-   *          Label
-   * @param styleColor
-   *          String
-   * @return
-   */
   protected static StyleMapEntry getStyleMapEntry(String type, String label, String styleColor) {
     StyleMapEntry result = new StyleMapEntry();
     result.setAnnotationTypeName(type);

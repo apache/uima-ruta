@@ -6,32 +6,16 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-/**
- * Abstrakter Node
- * 
- * @author Marco Nehmeier
- */
 public abstract class CEVAbstractTreeNode implements ICEVTreeNode {
 
-  // Elternknoten
   private ICEVTreeNode parent;
 
-  // Kinderknoten
   private ArrayList<ICEVTreeNode> children;
 
-  /**
-   * Konstruktor
-   */
   public CEVAbstractTreeNode() {
     this(null);
   }
 
-  /**
-   * Konstruktor
-   * 
-   * @param parent
-   *          Elternknoten
-   */
   public CEVAbstractTreeNode(ICEVTreeNode parent) {
     this.parent = parent;
     children = new ArrayList<ICEVTreeNode>();
@@ -40,7 +24,8 @@ public abstract class CEVAbstractTreeNode implements ICEVTreeNode {
   /*
    * (non-Javadoc)
    * 
-   * @see org.apache.uima.tm.cev.data.tree.ICEVTreeNode#addChild(org.apache.uima.tm.cev.data.tree.ICEVTreeNode)
+   * @see org.apache.uima.tm.cev.data.tree.ICEVTreeNode#addChild(org.apache.uima.tm.cev.data.tree.
+   * ICEVTreeNode)
    */
   public void addChild(ICEVTreeNode child) {
     children.add(child);
@@ -90,7 +75,6 @@ public abstract class CEVAbstractTreeNode implements ICEVTreeNode {
   public void getNodes(LinkedList<ICEVTreeNode> list) {
     Iterator<ICEVTreeNode> iter = getChildrenIterator();
 
-    // ueber die Knoten iterieren
     while (iter.hasNext()) {
       ICEVTreeNode node = iter.next();
 
@@ -107,8 +91,5 @@ public abstract class CEVAbstractTreeNode implements ICEVTreeNode {
    */
   public void sort(Comparator<ICEVTreeNode> cp) {
     Collections.sort(children, cp);
-
-    // for (ICEVTreeNode node : children)
-    // node.sort(cp);
   }
 }

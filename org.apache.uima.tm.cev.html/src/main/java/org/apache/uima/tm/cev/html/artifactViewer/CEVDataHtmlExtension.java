@@ -4,9 +4,9 @@ import java.util.LinkedList;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.tm.cev.CEVPlugin;
+import org.apache.uima.tm.cev.data.CEVAnnotationRanges.HtmlIdInfo;
 import org.apache.uima.tm.cev.data.CEVData;
 import org.apache.uima.tm.cev.data.ICEVDataExtension;
-import org.apache.uima.tm.cev.data.CEVAnnotationRanges.HtmlIdInfo;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.ProgressEvent;
@@ -14,17 +14,6 @@ import org.eclipse.swt.browser.ProgressListener;
 import org.htmlparser.Parser;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.Translate;
-import org.mozilla.interfaces.nsIDOMDocument;
-import org.mozilla.interfaces.nsIDOMElement;
-import org.mozilla.interfaces.nsIDOMEventListener;
-import org.mozilla.interfaces.nsIDOMEventTarget;
-import org.mozilla.interfaces.nsIDOMHTMLDocument;
-import org.mozilla.interfaces.nsIDOMHTMLElement;
-import org.mozilla.interfaces.nsIDOMNode;
-import org.mozilla.interfaces.nsIDOMNodeList;
-import org.mozilla.interfaces.nsIDOMText;
-import org.mozilla.interfaces.nsIWebBrowser;
-
 
 public class CEVDataHtmlExtension implements ICEVDataExtension, ProgressListener {
 
@@ -54,20 +43,16 @@ public class CEVDataHtmlExtension implements ICEVDataExtension, ProgressListener
    */
   public void completed(ProgressEvent event) {
 
-    // Nach dem ersten Laden den ProgressListener wieder entfernen
     browser.removeProgressListener(this);
 
-    // DOM holen
     nsIWebBrowser webBrowser = (nsIWebBrowser) (browser).getWebBrowser();
     nsIDOMDocument domDocument = webBrowser.getContentDOMWindow().getDocument();
 
     nsIDOMHTMLDocument htmlDomDoc = (nsIDOMHTMLDocument) domDocument
             .queryInterface(nsIDOMHTMLDocument.NS_IDOMHTMLDOCUMENT_IID);
 
-    // Body
     nsIDOMHTMLElement body = htmlDomDoc.getBody();
 
-    // Dom des Dokuments fuer die Annotationen vorbereiten
     try {
       if (body != null && casData.containsHtmlId(body.getId())) {
         int[] pos = casData.getHtmlElementPos(body.getId());
@@ -84,14 +69,6 @@ public class CEVDataHtmlExtension implements ICEVDataExtension, ProgressListener
     }
   }
 
-  /**
-   * Browser setzen
-   * 
-   * @param browser
-   *          Browser
-   * @param listener
-   *          Listener
-   */
   public void setBrowser(Browser browser, nsIDOMEventListener listener) {
     this.browser = browser;
     browserListener = listener;
@@ -99,30 +76,19 @@ public class CEVDataHtmlExtension implements ICEVDataExtension, ProgressListener
 
   @Override
   public void initialize() {
-    // HTML-Code aktualisieren
     initializeHTML();
 
-    // Bereiche aktualisierne
-    // TODO
-    // annotationRanges = new CEVAnnotationRanges(this);
-
-    // Browser aktualisieren
     if (browser != null && casData.getHTMLSource() != null) {
       browser.setText(casData.getHTMLSource());
       browser.addProgressListener(this);
     }
   }
 
-  /**
-   * HTML analysieren
-   */
   private void initializeHTML() {
 
     try {
       if (casData.getCAS().getDocumentText() != null) {
 
-        // Parsen
-        // Parser parser = new Parser(cas.getDocumentText());
         Parser parser = new Parser();
         parser.setInputHTML(casData.getCAS().getDocumentText());
 
@@ -131,7 +97,6 @@ public class CEVDataHtmlExtension implements ICEVDataExtension, ProgressListener
         NodeList nl = parser.parse(null);
         nl.visitAllNodesWith(visitor);
 
-        // Ergebnisse setzen
         casData.htmlText = nl.toHtml();
         casData.htmlElementPos = visitor.getIDPosMap();
         casData.idName = visitor.getIDName();
@@ -142,23 +107,10 @@ public class CEVDataHtmlExtension implements ICEVDataExtension, ProgressListener
     }
   }
 
-  /**
-   * DOM-Tree bearbeiten
-   * 
-   * @param listener
-   *          nsIDOMEventListener
-   * @param node
-   *          Wurzelknoten
-   * @param start
-   *          Startpos
-   * @param end
-   *          Endpos
-   */
   public void prepareDOM(nsIDOMEventListener listener, nsIDOMNode node, int start, int end) {
     int leftPos = start;
     int rightPos = end;
 
-    // Wenn Textnode
     if (node.getNodeType() == nsIDOMNode.TEXT_NODE) {
 
       leftPos = getLeftPosition(node, start);
@@ -166,12 +118,10 @@ public class CEVDataHtmlExtension implements ICEVDataExtension, ProgressListener
 
       createSpan(listener, node, leftPos, rightPos);
 
-      // ElementNode
     } else if (node.getNodeType() == nsIDOMNode.ELEMENT_NODE) {
       nsIDOMHTMLElement element = (nsIDOMHTMLElement) node
               .queryInterface(nsIDOMHTMLElement.NS_IDOMHTMLELEMENT_IID);
 
-      // Linke und Rechte Pos bestimmen
       if (casData.htmlElementPos.containsKey(element.getId())) {
         int[] pos = casData.htmlElementPos.get(element.getId());
         leftPos = pos[1];
@@ -180,7 +130,6 @@ public class CEVDataHtmlExtension implements ICEVDataExtension, ProgressListener
 
       nsIDOMNodeList children = element.getChildNodes();
 
-      // Rekursiver Aufruf
       for (int i = 0; i < children.getLength(); i++) {
         nsIDOMNode item = children.item(i);
         prepareDOM(listener, item, leftPos, rightPos);
@@ -191,7 +140,6 @@ public class CEVDataHtmlExtension implements ICEVDataExtension, ProgressListener
   private int getLeftPosition(nsIDOMNode node, int start) {
     int leftPos = start;
 
-    // Linke Pos bestimmen
     boolean foundBefore = false;
     nsIDOMNode before = node;
     while ((before = before.getPreviousSibling()) != null && !foundBefore) {
@@ -229,7 +177,6 @@ public class CEVDataHtmlExtension implements ICEVDataExtension, ProgressListener
   private int getRightPosition(nsIDOMNode node, int end) {
     int rightPos = end;
 
-    // Rechte Pos bestimmen
     nsIDOMNode next = node;
     boolean foundNext = false;
     while ((next = next.getNextSibling()) != null && !foundNext) {
@@ -278,40 +225,25 @@ public class CEVDataHtmlExtension implements ICEVDataExtension, ProgressListener
     return rightPos;
   }
 
-  /**
-   * Span erzeugen um HTML-Text erzeugen
-   * 
-   * @param listener
-   *          nsIDOMEventListener
-   * @param node
-   *          Node
-   * @param start
-   *          Start
-   * @param end
-   *          End
-   */
   private void createSpan(nsIDOMEventListener listener, nsIDOMNode node, int start, int end) {
-    // Ids fuer den Text
 
     LinkedList<HtmlIdInfo> newIDs = casData.annotationRanges.createHtmlIDs(start, end);
 
     if (newIDs.isEmpty())
       return;
 
-    // Span erzeugen
     nsIDOMElement container = node.getOwnerDocument().createElementNS(
             "http://www.w3.org/1999/xhtml", "SPAN");
     node.getParentNode().replaceChild(container, node);
 
     int last = start;
 
-    // Unterbereiche erzeugen
     while (!newIDs.isEmpty()) {
       HtmlIdInfo idInfo = newIDs.removeFirst();
 
       if (last < idInfo.getStart()) {
-        String decode = Translate.decode(casData.getCAS().getDocumentText().substring(last,
-                idInfo.getStart()));
+        String decode = Translate.decode(casData.getCAS().getDocumentText()
+                .substring(last, idInfo.getStart()));
         nsIDOMText text = node.getOwnerDocument().createTextNode(decode);
         container.appendChild(text);
         last = idInfo.getStart();
@@ -324,15 +256,13 @@ public class CEVDataHtmlExtension implements ICEVDataExtension, ProgressListener
       casData.htmlElementPos.put(idInfo.getId(), new int[] { 0, idInfo.getStart(), idInfo.getEnd(),
           0 });
 
-      // ClickEvent
       nsIDOMEventTarget target = (nsIDOMEventTarget) span
               .queryInterface(nsIDOMEventTarget.NS_IDOMEVENTTARGET_IID);
 
       target.addEventListener("click", listener, false);
 
-      // Textsetzen
-      String decode = Translate.decode(casData.getCAS().getDocumentText().substring(
-              idInfo.getStart(), idInfo.getEnd()));
+      String decode = Translate.decode(casData.getCAS().getDocumentText()
+              .substring(idInfo.getStart(), idInfo.getEnd()));
       nsIDOMText text = node.getOwnerDocument().createTextNode(decode);
       span.appendChild(text);
       container.appendChild(span);

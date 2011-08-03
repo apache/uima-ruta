@@ -14,43 +14,19 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.eclipse.swt.custom.StyleRange;
 
-/**
- * Annotationsbereiche im Dokument
- * 
- * @author Marco Nehmeier
- * 
- */
 public class CEVAnnotationRanges {
 
-  /**
-   * Bereichsinfo
-   */
   private class RangeInfo {
-    // Start
     private int start;
 
-    // Ende
     private int end;
 
-    // View
     private CEVData casData;
 
-    // Annotation
     private LinkedList<AnnotationFS> annotations;
 
-    // verwendete HTML-IDS
     private LinkedList<String> htmlIDs;
 
-    /**
-     * Konstruktor
-     * 
-     * @param start
-     *          Start
-     * @param end
-     *          Ende
-     * @param casData
-     *          View
-     */
     public RangeInfo(int start, int end, CEVData casData) {
       this.start = start;
       this.end = end;
@@ -62,49 +38,22 @@ public class CEVAnnotationRanges {
       annotations = new LinkedList<AnnotationFS>();
     }
 
-    /**
-     * Start
-     * 
-     * @return Start
-     */
     public int getStart() {
       return start;
     }
 
-    /**
-     * Ende
-     * 
-     * @return Ende
-     */
     public int getEnd() {
       return end;
     }
 
-    /**
-     * Fuegt eine ID ein
-     * 
-     * @param id
-     *          ID
-     */
     public void addHtmlID(String id) {
       htmlIDs.add(id);
     }
 
-    /**
-     * Gibt die IDs zurueck
-     * 
-     * @return Liste mit IDs
-     */
     public LinkedList<String> getHtmlID() {
       return htmlIDs;
     }
 
-    /**
-     * Fuegt eine Annotation ein
-     * 
-     * @param annot
-     *          Annotation
-     */
     public void addAnnotation(AnnotationFS annot) {
       annotations.addFirst(annot);
     }
@@ -113,20 +62,10 @@ public class CEVAnnotationRanges {
       annotations.remove(annot);
     }
 
-    /**
-     * Gibt die Annotationen zurueck
-     * 
-     * @return Annotationen
-     */
     public AnnotationFS[] getAnnotations() {
       return annotations.toArray(new AnnotationFS[annotations.size()]);
     }
 
-    /**
-     * Gibt akive Annotationen zurueck
-     * 
-     * @return Annotationen
-     */
     public AnnotationFS getActiveAnnotation() {
       for (AnnotationFS a : annotations)
         if (casData.isChecked(a))
@@ -136,28 +75,17 @@ public class CEVAnnotationRanges {
     }
   }
 
-  /**
-   * Container fuer StyleRanges
-   */
   public class StyleRangeContainer {
-    // Start
     private int start;
 
-    // Ende
     private int end;
 
-    // Indices
     private LinkedList<Integer> indices;
 
-    // Ranges
     private LinkedList<StyleRange> ranges;
 
-    // Map fuer Typ auf Stylerange
     private HashMap<Type, StyleRange> typeStyleRangeMap;
 
-    /**
-     * Konstruktor
-     */
     protected StyleRangeContainer() {
       start = Integer.MAX_VALUE;
       end = Integer.MIN_VALUE;
@@ -168,16 +96,6 @@ public class CEVAnnotationRanges {
       typeStyleRangeMap = new HashMap<Type, StyleRange>();
     }
 
-    /**
-     * Fuegt fuer eine Annotation einen Bereich ein
-     * 
-     * @param start
-     *          Start
-     * @param end
-     *          Ende
-     * @param annot
-     *          Annotation
-     */
     protected void addRange(int start, int end, AnnotationFS annot) {
       StyleRange styleRange = null;
 
@@ -196,31 +114,14 @@ public class CEVAnnotationRanges {
       ranges.add(styleRange);
     }
 
-    /**
-     * Start setzen
-     * 
-     * @param start
-     *          Start
-     */
     protected void setStart(int start) {
       this.start = start;
     }
 
-    /**
-     * Ende setzen
-     * 
-     * @param end
-     *          Ende
-     */
     protected void setEnd(int end) {
       this.end = end;
     }
 
-    /**
-     * Gibt die Indices zurueck
-     * 
-     * @return Indieces
-     */
     public int[] getIndices() {
       int[] i = new int[indices.size()];
       int c = 0;
@@ -233,11 +134,6 @@ public class CEVAnnotationRanges {
       return i;
     }
 
-    /**
-     * Gibt die Ranges zurueck
-     * 
-     * @return Ranges
-     */
     public StyleRange[] getRanges() {
       StyleRange[] r = new StyleRange[ranges.size()];
       int c = 0;
@@ -250,118 +146,59 @@ public class CEVAnnotationRanges {
       return r;
     }
 
-    /**
-     * Gibt Start zurueck
-     * 
-     * @return Start
-     */
     public int getStart() {
       return start;
     }
 
-    /**
-     * Gibt Ende zurueck
-     * 
-     * @return Ende
-     */
     public int getEnd() {
       return end;
     }
 
-    /**
-     * Laenge (Ende - Start)
-     * 
-     * @return Laenge
-     */
     public int getLength() {
       return end - start;
     }
   }
 
-  /**
-   * HTML ID Info
-   */
   public class HtmlIdInfo {
-    // Start
     private int start;
 
-    // Ende
     private int end;
 
-    // HTML ID
     private String id;
 
-    /**
-     * Konstuktor
-     * 
-     * @param start
-     *          Start
-     * @param end
-     *          Ende
-     * @param id
-     *          HTML ID
-     */
     public HtmlIdInfo(int start, int end, String id) {
       this.start = start;
       this.end = end;
       this.id = id;
     }
 
-    /**
-     * Start
-     * 
-     * @return Start
-     */
     public int getStart() {
       return start;
     }
 
-    /**
-     * End
-     * 
-     * @return End
-     */
     public int getEnd() {
       return end;
     }
 
-    /**
-     * HTML ID
-     * 
-     * @return HTML ID
-     */
     public String getId() {
       return id;
     }
   }
 
-  // View
   private CEVData casData;
 
-  // RangeInfos
   private ArrayList<RangeInfo> ranges;
 
-  // Map Annotation => RangeInfo
   private HashMap<AnnotationFS, LinkedList<RangeInfo>> annotationRangeMap;
 
-  /**
-   * Konstuktor
-   * 
-   * @param casData
-   *          View
-   */
   public CEVAnnotationRanges(CEVData casData) {
     this.casData = casData;
     ranges = new ArrayList<RangeInfo>();
     annotationRangeMap = new HashMap<AnnotationFS, LinkedList<RangeInfo>>();
 
-    // Ranges Erzeugen
     createAnnotationRanges();
   }
 
-  /**
-   * Ranges erzeugen
-   */
   private void createAnnotationRanges() {
     // TODO refactor this method: it's too slow
 
@@ -372,7 +209,6 @@ public class CEVAnnotationRanges {
 
     int i = 0;
 
-    // Annotionen und Positionen ermitteln
     while (iter.hasNext()) {
       AnnotationFS annot = iter.next();
       annotations.add(annot);
@@ -386,20 +222,17 @@ public class CEVAnnotationRanges {
     int s = 0;
     int e = 1;
 
-    // Annotationen abarbeiten
     while (e < pos.length) {
       if (pos[s] == pos[e]) {
         e++;
         continue;
       }
 
-      // neuer RangeInfo
       RangeInfo ri = new RangeInfo(pos[s], pos[e], casData);
       int count = 0;
 
       ListIterator<AnnotationFS> listIter = annotations.listIterator();
 
-      // Ende suchen
       while (listIter.hasNext()) {
         AnnotationFS annot = listIter.next();
 
@@ -420,7 +253,6 @@ public class CEVAnnotationRanges {
       s = e;
       e += 1;
 
-      // RangeInfo hinzufuegen
       if (count > 0)
         ranges.add(ri);
     }
@@ -495,11 +327,6 @@ public class CEVAnnotationRanges {
     }
   }
 
-  /**
-   * Gibt alle StyleRanges zurueck
-   * 
-   * @return StyleRangeContainer
-   */
   public StyleRangeContainer getAllStyleRanges() {
     StyleRangeContainer sc = new StyleRangeContainer();
 
@@ -508,7 +335,6 @@ public class CEVAnnotationRanges {
 
     boolean ok = false;
 
-    // Ranges interieren
     for (RangeInfo r : ranges) {
       AnnotationFS annot = r.getActiveAnnotation();
 
@@ -534,13 +360,6 @@ public class CEVAnnotationRanges {
     return sc;
   }
 
-  /**
-   * Gibt alle StyleRanges fuer eine Annotation zurueck
-   * 
-   * @param annot
-   *          Annotation
-   * @return StyleRangeContainer
-   */
   public StyleRangeContainer getStyleRangesForAAnnotation(AnnotationFS annot) {
     StyleRangeContainer sc = new StyleRangeContainer();
     int start = Integer.MAX_VALUE;
@@ -548,7 +367,6 @@ public class CEVAnnotationRanges {
 
     boolean ok = false;
 
-    // ueber die Annotation iterieren
     if (annotationRangeMap.containsKey(annot))
       for (RangeInfo r : annotationRangeMap.get(annot)) {
         AnnotationFS a = r.getActiveAnnotation();
@@ -575,11 +393,6 @@ public class CEVAnnotationRanges {
     return sc;
   }
 
-  /**
-   * Alle HTMLIds fuer aktive Typen
-   * 
-   * @return
-   */
   public Map<String, Type> getAllHtmlIdsAndActiveTypes() {
     TreeMap<String, Type> map = new TreeMap<String, Type>();
 
@@ -598,12 +411,6 @@ public class CEVAnnotationRanges {
     return map;
   }
 
-  /**
-   * Alle HTMLIds und und Typen fuer eine Annotation
-   * 
-   * @param annot
-   * @return
-   */
   public Map<String, Type> getHtmlIdsAndActiveTypesForAAnnotation(AnnotationFS annot) {
     TreeMap<String, Type> map = new TreeMap<String, Type>();
 
@@ -623,15 +430,6 @@ public class CEVAnnotationRanges {
     return map;
   }
 
-  /**
-   * Erzeugt HTML IDd
-   * 
-   * @param start
-   *          Start
-   * @param end
-   *          End
-   * @return Liste mit allen Ids
-   */
   public LinkedList<HtmlIdInfo> createHtmlIDs(int start, int end) {
     LinkedList<HtmlIdInfo> list = new LinkedList<HtmlIdInfo>();
 

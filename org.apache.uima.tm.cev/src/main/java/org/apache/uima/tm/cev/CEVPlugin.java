@@ -28,15 +28,8 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.progress.IWorkbenchSiteProgressService;
 import org.osgi.framework.BundleContext;
 
-
-/**
- * Aktivatorklasse fuer den Plug-in life cycle
- * 
- * @author Marco Nehmeier
- */
 public class CEVPlugin extends AbstractUIPlugin {
 
-  // Plug-in ID
   public static final String PLUGIN_ID = "org.apache.uima.tm.cev";
 
   private static final String ATT_PRIORITY = "priority";
@@ -48,9 +41,6 @@ public class CEVPlugin extends AbstractUIPlugin {
   // Shared instance
   private static CEVPlugin plugin;
 
-  /**
-   * Konstruktor
-   */
   public CEVPlugin() {
   }
 
@@ -76,30 +66,18 @@ public class CEVPlugin extends AbstractUIPlugin {
     super.stop(context);
   }
 
-  /**
-   * Gibt die Shared instance zurueck
-   * 
-   * @return Shared instance
-   */
   public static CEVPlugin getDefault() {
     return plugin;
   }
 
-  /**
-   * Gibt einen Image Descriptor fuer ein Image im Plug-in bezeuglichen Pfad zurueck
-   * 
-   * @param path
-   *          Pfad
-   * @return Image Descriptor
-   */
   public static ImageDescriptor getImageDescriptor(String path) {
     return imageDescriptorFromPlugin(PLUGIN_ID, path);
   }
 
   public static Map<Class<?>, ICEVEditorFactory> getEditorAdapters() {
     Map<Class<?>, ICEVEditorFactory> result = new HashMap<Class<?>, ICEVEditorFactory>();
-    IExtension[] editorExtensions = Platform.getExtensionRegistry().getExtensionPoint(
-            CEVPlugin.PLUGIN_ID, "cevEditors").getExtensions();
+    IExtension[] editorExtensions = Platform.getExtensionRegistry()
+            .getExtensionPoint(CEVPlugin.PLUGIN_ID, "cevEditors").getExtensions();
     for (IExtension extension : editorExtensions) {
       IConfigurationElement[] configurationElements = extension.getConfigurationElements();
       for (IConfigurationElement configurationElement : configurationElements) {
@@ -120,8 +98,8 @@ public class CEVPlugin extends AbstractUIPlugin {
 
   public static Map<Class<?>, ICEVViewFactory> getViewAdapters() {
     Map<Class<?>, ICEVViewFactory> result = new HashMap<Class<?>, ICEVViewFactory>();
-    IExtension[] viewExtensions = Platform.getExtensionRegistry().getExtensionPoint(
-            CEVPlugin.PLUGIN_ID, "cevViews").getExtensions();
+    IExtension[] viewExtensions = Platform.getExtensionRegistry()
+            .getExtensionPoint(CEVPlugin.PLUGIN_ID, "cevViews").getExtensions();
     for (IExtension extension : viewExtensions) {
       IConfigurationElement[] configurationElements = extension.getConfigurationElements();
       for (IConfigurationElement configurationElement : configurationElements) {
@@ -142,8 +120,8 @@ public class CEVPlugin extends AbstractUIPlugin {
 
   public static List<ICEVArtifactViewerFactory> getArtifactViewerFactories() {
     List<ICEVArtifactViewerFactory> result = new ArrayList<ICEVArtifactViewerFactory>();
-    IExtension[] viewerExtensions = Platform.getExtensionRegistry().getExtensionPoint(
-            CEVPlugin.PLUGIN_ID, "cevArtifactViewers").getExtensions();
+    IExtension[] viewerExtensions = Platform.getExtensionRegistry()
+            .getExtensionPoint(CEVPlugin.PLUGIN_ID, "cevArtifactViewers").getExtensions();
     for (IExtension extension : viewerExtensions) {
       IConfigurationElement[] configurationElements = extension.getConfigurationElements();
       for (IConfigurationElement configurationElement : configurationElements) {
@@ -174,8 +152,8 @@ public class CEVPlugin extends AbstractUIPlugin {
 
   public static List<ICEVSearchStrategy> getSearchStrategies() {
     List<ICEVSearchStrategy> result = new ArrayList<ICEVSearchStrategy>();
-    IExtension[] searchExtensions = Platform.getExtensionRegistry().getExtensionPoint(
-            CEVPlugin.PLUGIN_ID, "cevSearchStrategies").getExtensions();
+    IExtension[] searchExtensions = Platform.getExtensionRegistry()
+            .getExtensionPoint(CEVPlugin.PLUGIN_ID, "cevSearchStrategies").getExtensions();
     for (IExtension extension : searchExtensions) {
       IConfigurationElement[] configurationElements = extension.getConfigurationElements();
       for (IConfigurationElement configurationElement : configurationElements) {

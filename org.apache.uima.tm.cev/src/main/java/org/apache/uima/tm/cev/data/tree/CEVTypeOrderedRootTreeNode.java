@@ -9,9 +9,6 @@ import org.apache.uima.cas.text.AnnotationFS;
 
 public class CEVTypeOrderedRootTreeNode extends CEVAbstractTreeNode implements ICEVRootTreeNode {
 
-  /**
-   * Konstruktor
-   */
   public CEVTypeOrderedRootTreeNode() {
     super();
   }
@@ -38,11 +35,11 @@ public class CEVTypeOrderedRootTreeNode extends CEVAbstractTreeNode implements I
    * (non-Javadoc)
    * 
    * @see
-   * org.apache.uima.tm.cev.data.tree.ICEVRootTreeNode#insertAnnotation(org.apache.uima.cas.text.AnnotationFS
-   * )
+   * org.apache.uima.tm.cev.data.tree.ICEVRootTreeNode#insertAnnotation(org.apache.uima.cas.text
+   * .AnnotationFS )
    */
   public void insertFS(FeatureStructure fs) {
-    // TODO hotfix...
+    // TODO hotfix for explanation types...
     if (fs.getType().getShortName().equals("DebugBlockApply")
             || fs.getType().getShortName().equals("DebugMatchedRuleMatch")
             || fs.getType().getShortName().equals("DebugFailedRuleMatch")
@@ -54,9 +51,6 @@ public class CEVTypeOrderedRootTreeNode extends CEVAbstractTreeNode implements I
 
     Iterator<ICEVTreeNode> iter = getChildrenIterator();
 
-    // pruefen ob Typ schon im Baum existiert, wenn ja Annotation da
-    // einhaengen und
-    // Methode verlassen
     while (iter.hasNext()) {
       CEVTypeTreeNode typeNode = (CEVTypeTreeNode) iter.next();
 
@@ -67,11 +61,9 @@ public class CEVTypeOrderedRootTreeNode extends CEVAbstractTreeNode implements I
       }
     }
 
-    // Type-Node erzeugen
     CEVTypeTreeNode typeNode = new CEVTypeTreeNode(this, fs.getType());
     addChild(typeNode);
 
-    // Annotation-Node erzeugen
     CEVFSTreeNode node = createFSNode(typeNode, fs);
     typeNode.addChild(node);
   }
@@ -104,11 +96,9 @@ public class CEVTypeOrderedRootTreeNode extends CEVAbstractTreeNode implements I
 
     LinkedList<ICEVTreeNode> list = new LinkedList<ICEVTreeNode>();
 
-    // Typ suchen
     while (iter.hasNext()) {
       CEVTypeTreeNode typeNode = (CEVTypeTreeNode) iter.next();
 
-      // wenn Typ gefunden, Liste fuellen
       if (typeNode.getType().equals(type)) {
         Iterator<ICEVTreeNode> children = typeNode.getChildrenIterator();
 
@@ -126,22 +116,20 @@ public class CEVTypeOrderedRootTreeNode extends CEVAbstractTreeNode implements I
    * (non-Javadoc)
    * 
    * @see
-   * org.apache.uima.tm.cev.data.tree.ICEVRootTreeNode#getNodes(org.apache.uima.cas.text.AnnotationFS)
+   * org.apache.uima.tm.cev.data.tree.ICEVRootTreeNode#getNodes(org.apache.uima.cas.text.AnnotationFS
+   * )
    */
   public LinkedList<ICEVTreeNode> getNodes(AnnotationFS annot) {
     Iterator<ICEVTreeNode> iter = getChildrenIterator();
 
     LinkedList<ICEVTreeNode> list = new LinkedList<ICEVTreeNode>();
 
-    // ueber alle Knoten
     while (iter.hasNext()) {
       CEVTypeTreeNode typeNode = (CEVTypeTreeNode) iter.next();
 
-      // Annotation gefunden
       if (typeNode.getType().equals(annot.getType())) {
         Iterator<ICEVTreeNode> children = typeNode.getChildrenIterator();
 
-        // ueber die Kinder
         while (children.hasNext()) {
           CEVAnnotationTreeNode node = (CEVAnnotationTreeNode) children.next();
 

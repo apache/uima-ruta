@@ -30,21 +30,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 
-
-/**
- * CEVAnnotationMarkerPalettePage
- * 
- * @author Martin Toepfer
- */
 public class CEVAnnotationMarkerPalettePage extends Page implements
         ICEVAnnotationMarkerPalettePage, ICEVEditor {
 
-  /**
-   * Wrapperklasse fuer Typ-Buttons.
-   * 
-   * @author Felix
-   * 
-   */
   private class AnnotationTypeButtonPanel {
     private Composite composite;
 
@@ -60,37 +48,19 @@ public class CEVAnnotationMarkerPalettePage extends Page implements
 
     private static final int MAX_TITLE_LENGTH = 40;
 
-    /**
-     * Konstruktor.
-     * 
-     * @param parent
-     * @param type
-     */
     private AnnotationTypeButtonPanel(Composite parent, Type type) {
       this(parent, type, MAX_TITLE_LENGTH);
     }
 
-    /**
-     * Konstruktor.
-     * 
-     * @param parent
-     * @param type
-     */
     private AnnotationTypeButtonPanel(Composite parent, Type type, int maxTitleLenght) {
-      // type merken
       this.type = type;
-      // composite zusammensetzen
       composite = new Composite(parent, SWT.NULL | SWT.LEFT);
       composite.setLayout(new RowLayout(SWT.HORIZONTAL));
-      // toggleButton, text links ausrichten:
       button = new Button(composite, SWT.TOGGLE | SWT.LEFT);
-      // Text des Buttons setzen:
       button.setText(type.getShortName());
       final int width = BUTTON_WIDTH_OFFSET + maxTitleLenght * LETTER_WIDTH_FACTOR;
-      // initiale breite setzen:
       button.setLayoutData(new RowData(width, SWT.DEFAULT));
       button.setAlignment(SWT.LEFT);
-      // Farbe setzen
       updateColor();
 
       composite.layout(true);
@@ -99,9 +69,6 @@ public class CEVAnnotationMarkerPalettePage extends Page implements
     private void updateColor() {
       Color bgCol = new Color(composite.getDisplay(), getCurrentCEVData().getBackgroundColor(
               this.type).getRGB());
-      // TODO Vordergrundfarbe ungenutzt
-      // Color fgCol = new Color(composite.getDisplay(), casData
-      // .getForegroundColor(type).getRGB());
       RGB[] rgbs = { bgCol.getRGB() };
       ImageData imd = new ImageData(ICON_SIZE, ICON_SIZE, 8, new PaletteData(rgbs));
       Image image = new Image(composite.getDisplay(), imd);
@@ -116,9 +83,6 @@ public class CEVAnnotationMarkerPalettePage extends Page implements
       return this.type;
     }
 
-    /**
-     * Referenzen loesen und zum geloeschtwerden vorbereiten.
-     */
     public void dispose() {
       button.dispose();
       composite.dispose();
@@ -127,12 +91,6 @@ public class CEVAnnotationMarkerPalettePage extends Page implements
 
   }
 
-  /**
-   * Vergleichsklasse fuer Typen.
-   * 
-   * @author Felix
-   * 
-   */
   private class TypeComparator implements Comparator<Type> {
     public int compare(Type type0, Type type1) {
       return type0.getShortName().compareToIgnoreCase(type1.getShortName());
@@ -140,12 +98,6 @@ public class CEVAnnotationMarkerPalettePage extends Page implements
 
   }
 
-  /**
-   * Wrapperklasse fuer Typ-Buttons.
-   * 
-   * @author Felix
-   * 
-   */
   private class AnnotationTypeCheckButtonPanel {
     private Composite composite;
 
@@ -161,37 +113,19 @@ public class CEVAnnotationMarkerPalettePage extends Page implements
 
     private static final int MAX_TITLE_LENGTH = 40;
 
-    /**
-     * Konstruktor.
-     * 
-     * @param parent
-     * @param type
-     */
     private AnnotationTypeCheckButtonPanel(Composite parent, Type type) {
       this(parent, type, MAX_TITLE_LENGTH);
     }
 
-    /**
-     * Konstruktor.
-     * 
-     * @param parent
-     * @param type
-     */
     private AnnotationTypeCheckButtonPanel(Composite parent, Type type, int maxTitleLenght) {
-      // type merken
       this.type = type;
-      // composite zusammensetzen
       composite = new Composite(parent, SWT.NULL | SWT.LEFT);
       composite.setLayout(new RowLayout(SWT.HORIZONTAL));
-      // toggleButton, text links ausrichten:
       button = new Button(composite, SWT.TOGGLE | SWT.LEFT);
-      // Text des Buttons setzen:
       button.setText(type.getShortName());
       final int width = BUTTON_WIDTH_OFFSET + maxTitleLenght * LETTER_WIDTH_FACTOR;
-      // initiale breite setzen:
       button.setLayoutData(new RowData(width, SWT.DEFAULT));
       button.setAlignment(SWT.LEFT);
-      // Farbe setzen
       updateColor();
 
       composite.layout(true);
@@ -203,9 +137,6 @@ public class CEVAnnotationMarkerPalettePage extends Page implements
         backgroundColor = new Color(composite.getDisplay(), 128, 128, 128);
       }
       Color bgCol = new Color(composite.getDisplay(), backgroundColor.getRGB());
-      // TODO Vordergrundfarbe ungenutzt
-      // Color fgCol = new Color(composite.getDisplay(), casData
-      // .getForegroundColor(type).getRGB());
       RGB[] rgbs = { bgCol.getRGB() };
       ImageData imd = new ImageData(ICON_SIZE, ICON_SIZE, 8, new PaletteData(rgbs));
       Image image = new Image(composite.getDisplay(), imd);
@@ -220,9 +151,6 @@ public class CEVAnnotationMarkerPalettePage extends Page implements
       return this.type;
     }
 
-    /**
-     * Referenzen loesen und zum geloeschtwerden vorbereiten.
-     */
     public void dispose() {
       button.dispose();
       composite.dispose();
@@ -231,48 +159,27 @@ public class CEVAnnotationMarkerPalettePage extends Page implements
 
   }
 
-  // Scrolled Composite
   private ScrolledComposite sc;
 
-  // die ganze Komponente
   private Composite pane;
 
-  // zugrundeliegende Daten
   private CEVDocument casDocument;
 
-  // Typen-Liste
   private List<Type> types;
 
-  // ToggleButton-Liste
   private List<AnnotationTypeCheckButtonPanel> toggleButtons = new ArrayList<AnnotationTypeCheckButtonPanel>();
 
   private int current;
 
-  /**
-   * Konstruktor
-   * 
-   * @param casView
-   *          CASViewer
-   * @param casData
-   *          CASData
-   */
   public CEVAnnotationMarkerPalettePage(CEVViewer casView, CEVDocument casDocument, int index) {
     super();
     current = index;
-    // cas setzen
     this.casDocument = casDocument;
-    // Als Listener fuer Changes an Annotationstypen anmelden
     this.getCurrentCEVData().addAnnotationListener(this);
-    // Typen-Liste initialisieren:
     types = new ArrayList<Type>();
     updateTypes();
   }
 
-  /**
-   * Filters the selected / toggled Buttons.
-   * 
-   * @return selected / toggled Buttons.
-   */
   public List<AnnotationTypeCheckButtonPanel> getToggledButtons() {
     if (toggleButtons == null) {
       return new ArrayList<AnnotationTypeCheckButtonPanel>();
@@ -286,40 +193,25 @@ public class CEVAnnotationMarkerPalettePage extends Page implements
     return toggledButtons;
   }
 
-  /**
-   * Erstellt die Button-Liste aus der types-Liste neu.<br>
-   * In der Regel sollte vor Benutzung <i>updateTypes</i> aufgerufen werden.
-   */
   private void updateControl(int maxTitleLength) {
-    // toggleButton Liste leeren, vorsicht - richtig aushaengen
     for (AnnotationTypeCheckButtonPanel it : toggleButtons) {
       it.dispose();
     }
     toggleButtons.clear();
-    // button-liste neu erstellen
     for (Iterator<Type> iterator = types.iterator(); iterator.hasNext();) {
       toggleButtons.add(new AnnotationTypeCheckButtonPanel(pane, iterator.next(), maxTitleLength));
     }
     pane.layout(true);
     sc.setContent(pane);
     sc.setMinSize(pane.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-    // sc.layout(true);
   }
 
-  /**
-   * Erstellt die Typenliste neu.<br>
-   * Danach sollte in der Regel <i>updateControl</i> aufgerufen werden.
-   */
   private int updateTypes() {
     if (this.getCurrentCEVData() == null) {
       return 0;
     }
-    // Iterator ueber types holen
     Iterator typeIterator = this.getCurrentCEVData().getCAS().getTypeSystem().getTypeIterator();
-    // maximale Titellaenge
     int maxTitleLength = 0;
-    // Liste leeren und mit aktuellen, relevanten types neu befuellen, sowie
-    // laengsten titel finden:
     types.clear();
 
     while (typeIterator.hasNext()) {
@@ -328,14 +220,12 @@ public class CEVAnnotationMarkerPalettePage extends Page implements
               || type.getName().startsWith("de.uniwue.tm.type")
               || type.getName().startsWith("uima.cas") || type.getName().startsWith("uima.tcas"))) {
         types.add(type);
-        // maxTitelSuche:
         int typeShortName = type.getShortName().length();
         if (typeShortName > maxTitleLength) {
           maxTitleLength = typeShortName;
         }
       }
     }
-    // Liste sortieren
     Collections.sort(types, new TypeComparator());
     return maxTitleLength;
   }
@@ -361,18 +251,15 @@ public class CEVAnnotationMarkerPalettePage extends Page implements
     sc = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.BORDER);
     pane = new Composite(sc, SWT.NULL);
     pane.setLayout(new RowLayout(SWT.VERTICAL));
-    // Properties for the ScrolledComposite
 
     sc.setExpandHorizontal(true);
     sc.setExpandVertical(true);
     sc.setContent(pane);
     sc.setMinSize(pane.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-    // sorgt fuer aktuelle types-Liste und Buttons:
     casDataChanged();
   }
 
   private void annotateAllForSelection(int start, int end) {
-    // fuer alle aktivierten Typen Annotationen setzen:
     List<AnnotationTypeCheckButtonPanel> toggledButtons = getToggledButtons();
     for (AnnotationTypeCheckButtonPanel buttonP : toggledButtons) {
       boolean update = toggledButtons.indexOf(buttonP) == toggledButtons.size() - 1;
@@ -387,18 +274,8 @@ public class CEVAnnotationMarkerPalettePage extends Page implements
     getCurrentCEVData().addAnnotation(type, start, end, update);
   }
 
-  /**
-   * CAS hat sich geaendert.<br>
-   * Daten und GUI updaten.
-   * 
-   * @param casData
-   *          CAS
-   */
   public void casDataChanged() {
-    // casData updaten
-    // types updaten und max.Titellaenge ermitteln
     final int maxTitleLength = updateTypes();
-    // Button-Liste updaten
     updateControl(maxTitleLength);
   }
 
@@ -440,7 +317,6 @@ public class CEVAnnotationMarkerPalettePage extends Page implements
    * .apache.uima.cas.Type)
    */
   public void annotationStateChanged(Type type) {
-    // this.casDataChanged(casData);
   }
 
   protected CEVData getCurrentCEVData() {
@@ -474,7 +350,6 @@ public class CEVAnnotationMarkerPalettePage extends Page implements
    * .uima.cas.text.AnnotationFS)
    */
   public void annotationsAdded(List<AnnotationFS> annots) {
-    // Annotationen uninteressant
   }
 
   /*
@@ -484,7 +359,6 @@ public class CEVAnnotationMarkerPalettePage extends Page implements
    * .uima.cas.text.AnnotationFS)
    */
   public void annotationsRemoved(List<AnnotationFS> annots) {
-    // Annotationen uninteressant
   }
 
   /*
@@ -494,7 +368,6 @@ public class CEVAnnotationMarkerPalettePage extends Page implements
    * .apache.uima.cas.text.AnnotationFS)
    */
   public void annotationStateChanged(AnnotationFS annot) {
-    // Annotationen uninteressant
   }
 
   public void textSelected(int start, int end) {

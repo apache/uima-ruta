@@ -5,18 +5,9 @@ import java.util.LinkedList;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 
-/**
- * Wurzelknoten fuer einen Annotationssortierten Baum
- * 
- * @author Marco Nehmeier
- * 
- */
 public class CEVAnnotationOrderedRootTreeNode extends CEVAnnotationOrderedTreeNode implements
         ICEVRootTreeNode {
 
-  /**
-   * Konstruktor
-   */
   public CEVAnnotationOrderedRootTreeNode() {
     super(null, null);
   }
@@ -81,7 +72,8 @@ public class CEVAnnotationOrderedRootTreeNode extends CEVAnnotationOrderedTreeNo
    * (non-Javadoc)
    * 
    * @see
-   * org.apache.uima.tm.cev.data.tree.ICEVRootTreeNode#getNodes(org.apache.uima.cas.text.AnnotationFS)
+   * org.apache.uima.tm.cev.data.tree.ICEVRootTreeNode#getNodes(org.apache.uima.cas.text.AnnotationFS
+   * )
    */
   public LinkedList<ICEVTreeNode> getNodes(AnnotationFS annot) {
     LinkedList<ICEVTreeNode> list = new LinkedList<ICEVTreeNode>();

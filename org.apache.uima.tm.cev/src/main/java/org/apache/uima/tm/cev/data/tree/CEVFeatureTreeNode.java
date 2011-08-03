@@ -8,36 +8,16 @@ import java.util.LinkedList;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 
-/**
- * Node fuer ein Feature
- * 
- * @author Marco Nehmeier
- * 
- */
 public class CEVFeatureTreeNode implements ICEVTreeNode {
 
-  // Elternknoten
   private ICEVTreeNode parent;
 
-  // Feature
   private Feature f;
 
-  // Wert
   private String value;
 
-  // Liste mit Kinderknoten
   private ArrayList<ICEVTreeNode> children;
 
-  /**
-   * Konstruktor
-   * 
-   * @param parent
-   *          Elternknoten
-   * @param f
-   *          Feature
-   * @param value
-   *          Wert
-   */
   public CEVFeatureTreeNode(ICEVTreeNode parent, Feature f, String value) {
     this.parent = parent;
     this.f = f;
@@ -48,7 +28,8 @@ public class CEVFeatureTreeNode implements ICEVTreeNode {
   /*
    * (non-Javadoc)
    * 
-   * @see org.apache.uima.tm.cev.data.tree.ICEVTreeNode#addChild(org.apache.uima.tm.cev.data .tree.ICEVTreeNode)
+   * @see org.apache.uima.tm.cev.data.tree.ICEVTreeNode#addChild(org.apache.uima.tm.cev.data
+   * .tree.ICEVTreeNode)
    */
   public void addChild(ICEVTreeNode child) {
     this.children.add(child);

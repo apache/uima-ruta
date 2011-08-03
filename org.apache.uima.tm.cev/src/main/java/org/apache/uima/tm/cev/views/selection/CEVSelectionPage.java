@@ -14,25 +14,11 @@ import org.apache.uima.tm.cev.views.CEVAnnotationTreeViewPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 
-
-/**
- * Page fuer einen SelectionView im CASViewer
- * 
- * @author Marco Nehmeier
- */
 public class CEVSelectionPage extends CEVAnnotationTreeViewPage implements ICEVSelectionPage,
         ICEVAnnotationSelectionListener {
 
   private int offset;
 
-  /**
-   * Konstruktor
-   * 
-   * @param casView
-   *          CASViewer
-   * @param casData
-   *          CASDatat
-   */
   public CEVSelectionPage(CEVViewer casView, CEVDocument casDocument, int index) {
     super(casView, casDocument, index);
   }
@@ -45,7 +31,6 @@ public class CEVSelectionPage extends CEVAnnotationTreeViewPage implements ICEVS
   public void newSelection(int offset) {
     this.offset = offset;
 
-    // Selektionen im Tree aktualisieren
     ICEVRootTreeNode annotationOrderedTree = getCasData().getAnnotationOrderedTree(offset,
             manualTypeFilter);
     getTreeViewer().setInput(annotationOrderedTree);
@@ -68,7 +53,6 @@ public class CEVSelectionPage extends CEVAnnotationTreeViewPage implements ICEVS
           }
         }
 
-    // getTreeViewer().expandAll();
   }
 
   /*
@@ -80,7 +64,6 @@ public class CEVSelectionPage extends CEVAnnotationTreeViewPage implements ICEVS
   @Override
   public void annotationsAdded(List<AnnotationFS> annots) {
     newSelection(offset);
-    // getTreeViewer().getTree().removeAll();
   }
 
   /*
@@ -92,7 +75,6 @@ public class CEVSelectionPage extends CEVAnnotationTreeViewPage implements ICEVS
   @Override
   public void annotationsRemoved(List<AnnotationFS> annots) {
     newSelection(offset);
-    // getTreeViewer().getTree().removeAll();
   }
 
   public void handleEvent(Event event) {

@@ -10,17 +10,10 @@ public class CEVFSTreeNode extends CEVAbstractTreeNode {
 
   protected FeatureStructure fs;
 
-  /**
-   * Konstruktor
-   * 
-   * @param fs
-   *          Annotation
-   */
   public CEVFSTreeNode(FeatureStructure thisFS) {
     super();
     this.fs = thisFS;
 
-    // Features auslesen und als Kinder setzen
     for (Feature f : thisFS.getType().getFeatures()) {
       if (f.getRange().isPrimitive()) {
         addChild(new CEVFeatureTreeNode(this, f, thisFS.getFeatureValueAsString(f)));
@@ -29,14 +22,6 @@ public class CEVFSTreeNode extends CEVAbstractTreeNode {
 
   }
 
-  /**
-   * Konstruktor
-   * 
-   * @param parent
-   *          Elternknoten
-   * @param fs
-   *          Annotation
-   */
   public CEVFSTreeNode(ICEVTreeNode parent, FeatureStructure annotation) {
     super(parent);
     this.fs = annotation;
@@ -99,9 +84,7 @@ public class CEVFSTreeNode extends CEVAbstractTreeNode {
     } else if (f.getRange().isPrimitive()) {
       if ("uima.cas.AnnotationBase:sofa".equals(f.getName())) {
       } else {
-        parent
-                .addChild(new CEVFeatureTreeNode(this, f, featureStructure
-                        .getFeatureValueAsString(f)));
+        parent.addChild(new CEVFeatureTreeNode(this, f, featureStructure.getFeatureValueAsString(f)));
       }
     } else if (f.getRange() instanceof Type) {
       FeatureStructure featureValue = featureStructure.getFeatureValue(f);

@@ -5,12 +5,6 @@ import org.apache.uima.tm.cev.data.tree.ICEVTreeNode;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-
-/**
- * ContentProvider fuer den TreeView
- * 
- * @author Marco Nehmeier
- */
 public class CEVAnnotationTreeViewContentProvider implements ITreeContentProvider {
 
   /*

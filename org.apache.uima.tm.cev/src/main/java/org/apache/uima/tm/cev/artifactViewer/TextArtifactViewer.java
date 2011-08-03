@@ -8,8 +8,8 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.tm.cev.data.CEVData;
 import org.apache.uima.tm.cev.data.CEVAnnotationRanges.StyleRangeContainer;
+import org.apache.uima.tm.cev.data.CEVData;
 import org.apache.uima.tm.cev.editor.CEVViewer;
 import org.apache.uima.tm.cev.extension.ICEVArtifactViewer;
 import org.eclipse.swt.SWT;
@@ -23,8 +23,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.TreeItem;
-
 
 public class TextArtifactViewer extends StyledText implements ICEVArtifactViewer {
 
@@ -34,18 +32,10 @@ public class TextArtifactViewer extends StyledText implements ICEVArtifactViewer
 
     private Label label = null;
 
-    // private Browser browser = null;
-
     private StyledText text;
 
     private StyledText tipText;
 
-    /**
-     * Konstruktor
-     * 
-     * @param tree
-     *          zugrundeliegender Tree
-     */
     private ToolTipListener(StyledText text) {
       this.text = text;
     }
@@ -59,24 +49,15 @@ public class TextArtifactViewer extends StyledText implements ICEVArtifactViewer
       switch (event.type) {
         case SWT.Dispose:
         case SWT.KeyDown:
-          // beim Verlassen Tip wieder freigeben
         case SWT.MouseMove: {
           if (tip == null)
             break;
           tip.dispose();
           tip = null;
           label = null;
-          // if (browser != null)
-          // browser.dispose();
-          // browser = null;
           break;
         }
-          // ToolTip anzeigen
         case SWT.MouseHover: {
-          // TreeItem bestimmen
-          TreeItem item = null;
-          // text.getItem(new Point(event.x, event.y));
-
           Point point = new Point(event.x, event.y);
           int offsetAtLocation = -1;
           try {
@@ -148,11 +129,6 @@ public class TextArtifactViewer extends StyledText implements ICEVArtifactViewer
             layout.marginWidth = 2;
             tip.setLayout(layout);
 
-            // label = new Label(tip, SWT.NONE);
-            // label.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_INFO_FOREGROUND));
-            // label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
-            // label.setText(infoText.toString());
-
             tipText = new StyledText(tip, SWT.NONE);
             tipText.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_INFO_FOREGROUND));
             tipText.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
@@ -160,53 +136,12 @@ public class TextArtifactViewer extends StyledText implements ICEVArtifactViewer
 
             tipText.setStyleRanges(styles.toArray(new StyleRange[0]));
             tipText.layout(true);
-            // try {
-            // browser = new Browser(tip, SWT.NONE);
-            // browser.setText(infoText.toString());
-            // // browser.setLayoutData(new GridData(200, 150));
-            //
-            // } catch (SWTError e) {
-            // System.out.println("Could not instantiate Browser: " + e.getMessage());
-            // }
-            // browser.setText(infoText.toString());
 
             Point size = tip.computeSize(SWT.DEFAULT, SWT.DEFAULT);
             Point pt = text.toDisplay(new Point(point.x + 20, point.y + 10));
             tip.setBounds(pt.x, pt.y, size.x, size.y);
             tip.setVisible(true);
           }
-          // if (item != null && item.getData() instanceof CEVAnnotationTreeNode) {
-          // // Alten Tip freigeben
-          // if (tip != null && !tip.isDisposed())
-          // tip.dispose();
-          //
-          // // Tip erzeugen
-          // tip = new Shell(Display.getCurrent().getActiveShell(), SWT.ON_TOP | SWT.NO_FOCUS
-          // | SWT.TOOL);
-          //
-          // // Farben setzen
-          // tip.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
-          // FillLayout layout = new FillLayout();
-          // layout.marginWidth = 2;
-          // tip.setLayout(layout);
-          //
-          // // Lable
-          // label = new Label(tip, SWT.NONE);
-          // label.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_INFO_FOREGROUND));
-          // label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
-          //
-          // AnnotationFS annot = ((CEVAnnotationTreeNode) item.getData()).getAnnotation();
-          //
-          // // Text setzten
-          // label.setText("Test");
-          //
-          // // Zeichnen
-          // Point size = tip.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-          // Rectangle rect = item.getBounds(0);
-          // Point pt = text.toDisplay(rect.x, rect.y);
-          // tip.setBounds(pt.x, pt.y, size.x, size.y);
-          // tip.setVisible(true);
-          // }
         }
       }
     }

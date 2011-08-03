@@ -9,19 +9,6 @@ import org.apache.uima.tm.cev.editor.CEVViewer;
 import org.apache.uima.tm.cev.extension.ICEVArtifactViewer;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.graphics.Point;
-import org.mozilla.interfaces.nsIBoxObject;
-import org.mozilla.interfaces.nsIDOMCSSStyleDeclaration;
-import org.mozilla.interfaces.nsIDOMDocument;
-import org.mozilla.interfaces.nsIDOMElementCSSInlineStyle;
-import org.mozilla.interfaces.nsIDOMEvent;
-import org.mozilla.interfaces.nsIDOMEventListener;
-import org.mozilla.interfaces.nsIDOMHTMLElement;
-import org.mozilla.interfaces.nsIDOMNSDocument;
-import org.mozilla.interfaces.nsIDOMNode;
-import org.mozilla.interfaces.nsISelection;
-import org.mozilla.interfaces.nsISupports;
-import org.mozilla.interfaces.nsIWebBrowser;
-
 
 public class HtmlArtifactViewer implements ICEVArtifactViewer, nsIDOMEventListener {
 
@@ -50,15 +37,11 @@ public class HtmlArtifactViewer implements ICEVArtifactViewer, nsIDOMEventListen
   public void showBrowserAnnotations(Map<String, Type> annots) {
     nsIWebBrowser webBrowser = (nsIWebBrowser) browser.getWebBrowser();
     nsIDOMDocument dom = webBrowser.getContentDOMWindow().getDocument();
-    // ueber die HTML-IDs
     for (String id : annots.keySet()) {
-      // DOM-Node holen
       nsIDOMNode node = dom.getElementById(id);
-      // Pruefen ob Node existiert...
       if (node == null) {
         continue;
       }
-      // Farbe setzen
       nsIDOMCSSStyleDeclaration style = ((nsIDOMElementCSSInlineStyle) node
               .queryInterface(nsIDOMElementCSSInlineStyle.NS_IDOMELEMENTCSSINLINESTYLE_IID))
               .getStyle();
@@ -79,7 +62,6 @@ public class HtmlArtifactViewer implements ICEVArtifactViewer, nsIDOMEventListen
 
     nsIDOMNode start = sel.getRangeAt(0).getStartContainer();
 
-    // Selektierte Annotation suchen
     while (!(start.getNodeType() == nsIDOMNode.ELEMENT_NODE && casData
             .containsHtmlId(((nsIDOMHTMLElement) start
                     .queryInterface(nsIDOMHTMLElement.NS_IDOMHTMLELEMENT_IID)).getId()))
@@ -88,14 +70,12 @@ public class HtmlArtifactViewer implements ICEVArtifactViewer, nsIDOMEventListen
 
     nsIDOMNode end = sel.getRangeAt(0).getEndContainer();
 
-    // Selektierte Annotation suchen
     while (!(end.getNodeType() == nsIDOMNode.ELEMENT_NODE && casData
             .containsHtmlId(((nsIDOMHTMLElement) end
                     .queryInterface(nsIDOMHTMLElement.NS_IDOMHTMLELEMENT_IID)).getId()))
             && end.getParentNode() != null)
       end = end.getParentNode();
 
-    // Selektion anzeigen
     if (start.getNodeType() == nsIDOMNode.ELEMENT_NODE
             && end.getNodeType() == nsIDOMNode.ELEMENT_NODE) {
       int s = casData.getHtmlElementPos(((nsIDOMHTMLElement) start
@@ -126,8 +106,6 @@ public class HtmlArtifactViewer implements ICEVArtifactViewer, nsIDOMEventListen
     int y = Integer.MAX_VALUE;
     boolean scroll = false;
 
-    // Ueber alle DOM-Nodes der Annotation und die X und Y Koordinaten
-    // bestimmen
     for (String id : casData.getHtmlIdsAndActiveTypesForAAnnotation(annot).keySet()) {
       nsIBoxObject box = nsDocument.getBoxObjectFor(domDocument.getElementById(id));
 
@@ -141,7 +119,6 @@ public class HtmlArtifactViewer implements ICEVArtifactViewer, nsIDOMEventListen
       }
     }
 
-    // Scrollen
     if (scroll) {
       webBrowser.getContentDOMWindow().scrollTo(x, y);
     }
@@ -155,7 +132,6 @@ public class HtmlArtifactViewer implements ICEVArtifactViewer, nsIDOMEventListen
    * .nsIDOMEvent)
    */
   public void handleEvent(nsIDOMEvent event) {
-    // Selektion im Browser
     if (event.getType().equals("click")) {
 
       nsISelection sel = ((nsIWebBrowser) (browser).getWebBrowser()).getContentDOMWindow()
@@ -163,14 +139,12 @@ public class HtmlArtifactViewer implements ICEVArtifactViewer, nsIDOMEventListen
 
       nsIDOMNode node = sel.getFocusNode();
 
-      // Selektierte Annotation suchen
       while (!(node.getNodeType() == nsIDOMNode.ELEMENT_NODE && casData
               .containsHtmlId(((nsIDOMHTMLElement) node
                       .queryInterface(nsIDOMHTMLElement.NS_IDOMHTMLELEMENT_IID)).getId()))
               && node.getParentNode() != null)
         node = node.getParentNode();
 
-      // Selektion anzeigen
       if (node.getNodeType() == nsIDOMNode.ELEMENT_NODE) {
         nsIDOMHTMLElement element = (nsIDOMHTMLElement) node
                 .queryInterface(nsIDOMHTMLElement.NS_IDOMHTMLELEMENT_IID);

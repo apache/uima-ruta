@@ -16,7 +16,6 @@ import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
-
 public class HtmlArtifactViewerFactory extends AbstractArtifactViewerFactory {
 
   private final static Pattern tagPattern = Pattern.compile("</?(\\w+)([^>]*)>");
@@ -30,21 +29,14 @@ public class HtmlArtifactViewerFactory extends AbstractArtifactViewerFactory {
     HtmlArtifactViewer artifactViewer = new HtmlArtifactViewer(browser, viewer);
     try {
       browser.addMouseListener(viewer);
-      // if (casData.getHTMLSource() != null) {
       CEVDataHtmlExtension extension = new CEVDataHtmlExtension(casData);
       extension.setBrowser(browser, artifactViewer);
       extension.initialize();
       if (casData.getHTMLSource() != null) {
         browser.setText(casData.getHTMLSource());
       }
-      // ProgressListener => Callback wenn Browser fertig geladen
       browser.addProgressListener(extension);
 
-      // casData.setBrowser(browser, artifactViewer);
-      // browser.setText(casData.getHTMLSource());
-      // // ProgressListener => Callback wenn Browser fertig geladen
-      // browser.addProgressListener(casData);
-      // }
     } catch (SWTError e) {
       CEVPlugin.error(e);
     }
@@ -58,7 +50,6 @@ public class HtmlArtifactViewerFactory extends AbstractArtifactViewerFactory {
     if (text == null) {
       return false;
     }
-    // TODO:
     if (text.split("<html|<HTML|<table|<TABLE").length <= 1) {
       return false;
     }

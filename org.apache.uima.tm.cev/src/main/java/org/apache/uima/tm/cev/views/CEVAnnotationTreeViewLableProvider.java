@@ -15,54 +15,29 @@ import org.eclipse.swt.graphics.Image;
 import org.htmlparser.util.ParserUtils;
 import org.htmlparser.util.Translate;
 
-
-/**
- * LableProvider fuer den TreeView
- * 
- * @author Marco Nehmeier
- */
 public class CEVAnnotationTreeViewLableProvider extends LabelProvider implements ILabelProvider {
 
-  // zugrundeliegende CASData
   private CEVData casData;
 
-  // Textrep
   private boolean text_repr;
 
-  /**
-   * Konstruktor
-   * 
-   * @param casData
-   *          CASData
-   */
   public CEVAnnotationTreeViewLableProvider(CEVData casData) {
     this.casData = casData;
     setTextRepr();
   }
 
-  /**
-   * setzen der Textrep anhand der Preferences
-   */
   public void setTextRepr() {
     IPreferenceStore store = CEVPlugin.getDefault().getPreferenceStore();
     String repr = store.getString(CEVPreferenceConstants.P_ANNOTATION_REPR);
 
-    // Text
     if (repr.equals(CEVPreferenceConstants.P_ANNOTATION_REPR_TEXT))
       text_repr = true;
-    // mit HTML-Tags
     else if (repr.equals(CEVPreferenceConstants.P_ANNOTATION_REPR_HTML))
       text_repr = false;
     else
       text_repr = true;
   }
 
-  /**
-   * aktuelle CAS setzen
-   * 
-   * @param casData
-   *          CAS
-   */
   public void setCASData(CEVData casData) {
     this.casData = casData;
   }
@@ -101,8 +76,8 @@ public class CEVAnnotationTreeViewLableProvider extends LabelProvider implements
       String name = ((ICEVTreeNode) element).getName();
 
       if (name != null && text_repr) {
-        name = ParserUtils.trimSpacesBeginEnd(ParserUtils
-                .trimAllTags(Translate.decode(name), false), "");
+        name = ParserUtils.trimSpacesBeginEnd(
+                ParserUtils.trimAllTags(Translate.decode(name), false), "");
         name = name.replaceAll("[\\n]", "").replaceAll("[\\r]", "");
       }
       if (element instanceof CEVTypeTreeNode) {
@@ -120,7 +95,6 @@ public class CEVAnnotationTreeViewLableProvider extends LabelProvider implements
       } else if (element instanceof CEVTypeTreeNode) {
         text += " [" + ((CEVTypeTreeNode) element).getChildren().length + "]";
       } else {
-        // System.out.println(text);
       }
     }
 

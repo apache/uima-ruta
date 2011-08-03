@@ -10,23 +10,10 @@ import org.eclipse.ui.part.MessagePage;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.PageBookView;
 
-/**
- * Abstrakter PageBookView fuer den AnnotationBrowser und den SelectionView.
- * 
- * @author Marco Nehmeier
- */
 public abstract class CEVPageBookView extends PageBookView {
 
-  /**
-   * Text wenn kein View vom Editor zur Verfuegung gestellt wird.
-   */
   private static final String VIEW_IS_NOT_AVAILABLE = "View is not available.";
 
-  // private PageRec last = null;
-
-  /**
-   * Defaultkonstruktor.
-   */
   public CEVPageBookView() {
     super();
   }
@@ -38,7 +25,6 @@ public abstract class CEVPageBookView extends PageBookView {
    */
   @Override
   protected IPage createDefaultPage(PageBook book) {
-    // MessagePage wenn der View nicht zur Verfuegung steht
     MessagePage page = new MessagePage();
     initPage(page);
     page.createControl(book);
@@ -46,15 +32,6 @@ public abstract class CEVPageBookView extends PageBookView {
     return page;
   }
 
-  /**
-   * Erzeugt die jeweilige Page
-   * 
-   * @param part
-   *          zugrundeliegender WorkbenchPart
-   * @param clazz
-   *          Klasse der Page
-   * @return PageRec
-   */
   protected PageRec doCreatePage(IWorkbenchPart part, final Class<?> clazz) {
     Object obj = ViewsPlugin.getAdapter(part, clazz, false);
     if (obj instanceof ICEVViewPage) {
@@ -70,12 +47,6 @@ public abstract class CEVPageBookView extends PageBookView {
       return null;
     }
   }
-
-  //
-  // public void dispose() {
-  // last.dispose();
-  // super.dispose();
-  // }
 
   /*
    * (non-Javadoc)

@@ -1,10 +1,5 @@
 package org.apache.uima.tm.cev.data.tree;
 
-/**
- * Comparator fuer TreeNodes. Vergleicht den Namen fuer eine alphabetische Sortierung
- * 
- * @author Marco Nehmeier
- */
 public class CEVTreeComparator implements java.util.Comparator<ICEVTreeNode> {
 
   /*

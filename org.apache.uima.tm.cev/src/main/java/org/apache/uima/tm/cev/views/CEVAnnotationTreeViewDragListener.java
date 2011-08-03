@@ -7,7 +7,6 @@ import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
 
-
 public class CEVAnnotationTreeViewDragListener extends DragSourceAdapter {
   private StructuredViewer viewer;
 

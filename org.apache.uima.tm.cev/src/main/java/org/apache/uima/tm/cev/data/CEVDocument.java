@@ -26,12 +26,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.xml.sax.SAXException;
 
-
-/**
- * Klasse fuer ein CAS-File/XMI-File Es enthaehlt mehrere CAS-Views
- * 
- * @author Marco Nehmeier
- */
 public class CEVDocument {
 
   private ArrayList<CEVData> casData;
@@ -42,39 +36,22 @@ public class CEVDocument {
 
   private Map<String, StyleMapEntry> style;
 
-  /**
-   * Konstruktor Oeffnet das Cas-File...
-   * 
-   * @param descriptorFile
-   *          Descriptor
-   * @param casFile
-   *          CAS-File
-   * @throws IllegalArgumentException
-   * @throws IOException
-   * @throws InvalidXMLException
-   * @throws SAXException
-   * @throws ResourceInitializationException
-   */
   public CEVDocument(IFile descriptorFile, IFile casFile) throws IllegalArgumentException,
           IOException, InvalidXMLException, SAXException, ResourceInitializationException {
 
     casData = new ArrayList<CEVData>();
 
-    // Descriptor parsen
     descriptor = UIMAFramework.getXMLParser().parse(
             new XMLInputSource(descriptorFile.getLocation().toFile()));
 
     mainCAS = null;
 
-    // CAS erzeugen
     if (descriptor instanceof AnalysisEngineDescription) {
-      // not tested any more: use Type System!
       mainCAS = CasCreationUtils.createCas((AnalysisEngineDescription) descriptor);
     } else if (descriptor instanceof TypeSystemDescription) {
       TypeSystemDescription tsDesc = (TypeSystemDescription) descriptor;
       ResourceManager resMgr = UIMAFramework.newDefaultResourceManager();
       IProject project = descriptorFile.getProject();
-      // TODO hotfix for import by name
       IFolder folder = project.getFolder("descriptor");
       resMgr.setDataPath(folder.getLocation().toPortableString());
       tsDesc.resolveImports(resMgr);
@@ -83,7 +60,6 @@ public class CEVDocument {
       throw new IllegalArgumentException("Invalid Type System Descriptor");
     }
 
-    // CAS-File einlesen und deserialisieren
     FileInputStream inputStream = null;
     try {
       inputStream = new FileInputStream(casFile.getLocation().toFile());
@@ -93,7 +69,6 @@ public class CEVDocument {
         inputStream.close();
     }
 
-    // Stylemap einlesen (wenn vorhanden)
     try {
       String desc = descriptorFile.getFullPath().removeFileExtension().lastSegment();
       if (desc.toLowerCase().endsWith("typesystem")) {
@@ -115,48 +90,22 @@ public class CEVDocument {
 
     Iterator viewIter = mainCAS.getViewIterator();
 
-    // LinkedList<CAS> views = new LinkedList<CAS>();
-
-    // einzenlnen Views auslesen
     while (viewIter.hasNext())
       casData.add(new CEVData((CAS) viewIter.next(), getStyleMap()));
   }
 
-  /**
-   * Anzahl der Views
-   * 
-   * @return Anzahl
-   */
   public int count() {
     return casData.size();
   }
 
-  /**
-   * View mit entsprechenden index
-   * 
-   * @param index
-   *          Index
-   * @return View
-   * @throws IndexOutOfBoundsException
-   */
   public CEVData getCASData(int index) throws IndexOutOfBoundsException {
     return casData.get(index);
   }
 
-  /**
-   * alle Views
-   * 
-   * @return Views
-   */
   public CEVData[] getCASData() {
     return casData.toArray(new CEVData[casData.size()]);
   }
 
-  /**
-   * Hauptview
-   * 
-   * @return View
-   */
   public CAS getMainCas() {
     return mainCAS;
   }
@@ -168,7 +117,6 @@ public class CEVDocument {
   }
 
   public CAS createCas() throws ResourceInitializationException, InvalidXMLException {
-    // CAS erzeugen
     if (descriptor instanceof AnalysisEngineDescription) {
       return CasCreationUtils.createCas((AnalysisEngineDescription) descriptor);
     } else if (descriptor instanceof TypeSystemDescription) {

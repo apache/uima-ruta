@@ -24,12 +24,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.part.Page;
 
-
 public class CEVFSBrowserPage extends Page implements ICEVFSBrowserPage, ICEVView {
 
   private Image icon;
-
-  private CEVViewer casView;
 
   private CEVDocument casDocument;
 
@@ -41,7 +38,6 @@ public class CEVFSBrowserPage extends Page implements ICEVFSBrowserPage, ICEVVie
 
   public CEVFSBrowserPage(CEVViewer casView, CEVDocument casDocument, int index) {
     super();
-    this.casView = casView;
     this.casDocument = casDocument;
 
     this.casData = casDocument.getCASData(index);

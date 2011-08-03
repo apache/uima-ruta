@@ -5,15 +5,6 @@ import java.util.Collection;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-/**
- * Implementierung eines StructuredContentProviders fuer den Auswahldialog fuer das Typsystem beim
- * Oeffnen eines XMI-Files
- * 
- * @author Marco Nehmeier
- * 
- * @param <T>
- *          Collection
- */
 public class CEVCollectionContentProvider<T extends Collection<?>> implements
         IStructuredContentProvider {
 

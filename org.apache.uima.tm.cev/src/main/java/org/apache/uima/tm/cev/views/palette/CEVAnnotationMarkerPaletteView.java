@@ -10,22 +10,10 @@ import org.eclipse.ui.part.MessagePage;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.PageBookView;
 
-
-/**
- * CEVAnnotationMarkerPaletteView des CASViewer
- * 
- * @author Marco Nehmeier
- */
 public class CEVAnnotationMarkerPaletteView extends PageBookView {
 
-  /**
-   * Text wenn kein View vom Editor zur Verfuegung gestellt wird.
-   */
   private static final String VIEW_IS_NOT_AVAILABLE = "View is not available.";
 
-  /**
-   * Defaultkonstruktor.
-   */
   public CEVAnnotationMarkerPaletteView() {
     super();
   }
@@ -37,7 +25,6 @@ public class CEVAnnotationMarkerPaletteView extends PageBookView {
    */
   @Override
   protected IPage createDefaultPage(PageBook book) {
-    // MessagePage wenn der View nicht zur Verfuegung steht
     MessagePage page = new MessagePage();
     initPage(page);
     page.createControl(book);
@@ -52,14 +39,11 @@ public class CEVAnnotationMarkerPaletteView extends PageBookView {
    */
   @Override
   protected PageRec doCreatePage(IWorkbenchPart part) {
-    // vom Plugin holen
     Object obj = ViewsPlugin.getAdapter(part, ICEVAnnotationMarkerPalettePage.class, false);
 
-    // Wenn ICASViewPage
     if (obj instanceof ICEVViewPage) {
       ICEVViewPage page = (ICEVViewPage) obj;
 
-      // Control erzeugen
       page.createControl(getPageBook());
       return new PageRec(part, page);
     }

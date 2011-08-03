@@ -22,37 +22,17 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 
-
-/**
- * Page fuer den AnnotationBrowserView
- * 
- * @author Marco Nehmeier
- */
 public class CEVAnnotationBrowserPage extends CEVAnnotationTreeViewPage implements
         ICEVAnnotationBrowserPage {
 
-  // Enum fuer den Zustand des Baums
   private enum State {
-    // Nach Anfangs und Endposition dern Annotation
-    AnnotationOrdered,
-    // Nach Annotations-Typen
-    TypeOrdered
+    AnnotationOrdered, TypeOrdered
   }
 
-  // Zustand des Baums
   private State state;
 
-  // Icon der Action
   private Image icon;
 
-  /**
-   * Konstruktor
-   * 
-   * @param casView
-   *          CASViewer
-   * @param casData
-   *          CASData
-   */
   public CEVAnnotationBrowserPage(CEVViewer casView, CEVDocument casDocument, int index) {
     super(casView, casDocument, index);
   }
@@ -67,7 +47,6 @@ public class CEVAnnotationBrowserPage extends CEVAnnotationTreeViewPage implemen
   public void createControl(Composite parent) {
     super.createControl(parent);
 
-    // Annotationen im Baum anzeigen .... TypeOrdered und Zustand setzen
     getTreeViewer().setInput(getCasData().getTypeOrderedTree(""));
 
     getTreeViewer().getControl().addKeyListener(new KeyAdapter() {
@@ -91,9 +70,6 @@ public class CEVAnnotationBrowserPage extends CEVAnnotationTreeViewPage implemen
     }
   }
 
-  /**
-   * Baumordnung festlegen
-   */
   private void setTreeOrder() {
     IPreferenceStore store = CEVPlugin.getDefault().getPreferenceStore();
     String treeOrder = store.getString(CEVPreferenceConstants.P_ANNOTATION_BROWSER_TREE_ORDER);
@@ -106,64 +82,6 @@ public class CEVAnnotationBrowserPage extends CEVAnnotationTreeViewPage implemen
       state = State.TypeOrdered;
   }
 
-  /**
-   * Aus Performance-gruenden abgeschaltet
-   */
-  // /*
-  // * (non-Javadoc)
-  // *
-  // * @see org.eclipse.ui.part.Page#setActionBars(org.eclipse.ui.IActionBars)
-  // */
-  // public void setActionBars(IActionBars actionBars) {
-  // // Action zum Baumveraendern erzeugen
-  // Action treeChangeAction = new Action() {
-  // public void run() {
-  // // Baum umsortieren
-  // if (state == State.TypeOrdered) {
-  // // getTreeViewer().setInput(getCasData().getAnnotationOrderedTree());
-  // state = State.AnnotationOrdered;
-  // } else if (state == State.AnnotationOrdered) {
-  // // getTreeViewer().setInput(getCasData().getTypeOrderedTree());
-  // state = State.TypeOrdered;
-  // }
-  //
-  // // updateSelektion();
-  // reloadTree();
-  // }
-  // };
-  //
-  // // ToolTip
-  // treeChangeAction.setToolTipText("Change TreeView-Order");
-  //
-  // // Icon laden
-  // InputStream in = getClass().getResourceAsStream(
-  // "/icons/hierarchicalLayout.gif");
-  // if (in != null) {
-  // try {
-  // icon = new Image(Display.getCurrent(), in);
-  // } catch (SWTException e) {
-  // if (e.code != SWT.ERROR_INVALID_IMAGE) {
-  // throw e;
-  // // fall through otherwise
-  // }
-  // } finally {
-  // try {
-  // in.close();
-  // } catch (IOException e) {
-  // }
-  // }
-  // }
-  //
-  // // Icon setzen
-  // treeChangeAction.setImageDescriptor(
-  // ImageDescriptor.createFromImage(icon));
-  //
-  // // Action in die ToolBar setzen
-  // actionBars.getToolBarManager().add(treeChangeAction);
-  // }
-  /**
-   * Selektion aktuallisieren
-   */
   private void updateSelection() {
     // Selektionen aktuallisieren
     Object input = getTreeViewer().getInput();
@@ -198,9 +116,6 @@ public class CEVAnnotationBrowserPage extends CEVAnnotationTreeViewPage implemen
     reloadTree();
   }
 
-  /**
-   * Baum neu laden
-   */
   private void reloadTree() {
     if (state == State.TypeOrdered) {
       getTreeViewer().setInput(getCasData().getTypeOrderedTree(manualTypeFilter));
@@ -217,7 +132,6 @@ public class CEVAnnotationBrowserPage extends CEVAnnotationTreeViewPage implemen
    */
   @Override
   public void dispose() {
-    // Icon freigeben
     if (icon != null)
       icon.dispose();
 

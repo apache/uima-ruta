@@ -48,7 +48,6 @@ import org.eclipse.ui.part.Page;
 import org.htmlparser.util.ParserUtils;
 import org.htmlparser.util.Translate;
 
-
 public class CEVAnnotationEditorPage extends Page implements ICEVAnnotationEditorPage,
         MouseListener, SelectionListener, IPropertyChangeListener, ICEVEditor, Listener {
 
@@ -109,28 +108,15 @@ public class CEVAnnotationEditorPage extends Page implements ICEVAnnotationEdito
 
   private List<String> selected;
 
-  /**
-   * Konstruktor
-   * 
-   * @param casView
-   *          CASViewer
-   * @param casData
-   *          CASData
-   */
   public CEVAnnotationEditorPage(CEVViewer casView, CEVDocument casDocument, int index) {
     super();
     current = index;
-    // Textrep. setzen
     setTextRepr();
 
-    // cas setzen
     this.casDocument = casDocument;
     selections = new ArrayList<Selection>();
   }
 
-  /**
-   * Textdarstellung aus den Preferences auslesen
-   */
   private void setTextRepr() {
     IPreferenceStore store = CEVPlugin.getDefault().getPreferenceStore();
     String repr = store.getString(CEVPreferenceConstants.P_ANNOTATION_REPR);
@@ -166,18 +152,6 @@ public class CEVAnnotationEditorPage extends Page implements ICEVAnnotationEdito
     FormData formData;
     pane.setLayout(formLayout);
 
-    /*
-     * Label label = new Label(pane, SWT.CENTER); label.setText("Type:"); formData = new FormData();
-     * formData.left = new FormAttachment(0, 5); formData.bottom = new FormAttachment(100, -5);
-     * label.setLayoutData(formData);
-     */
-
-    /*
-     * combo = new Combo(pane, SWT.READ_ONLY | SWT.DROP_DOWN); formData = new FormData();
-     * formData.left = new FormAttachment(label, 5); formData.bottom = new FormAttachment(100, -5);
-     * formData.width = 300; combo.setLayoutData(formData);
-     */
-
     createButton = new Button(pane, SWT.PUSH);
     createButton.addSelectionListener(this);
     createButton.setText("Create Annotations");
@@ -185,14 +159,6 @@ public class CEVAnnotationEditorPage extends Page implements ICEVAnnotationEdito
     formData.left = new FormAttachment(null, 5);
     formData.bottom = new FormAttachment(100, -5);
     createButton.setLayoutData(formData);
-
-    /*
-     * composite = new Composite(parent, SWT.NONE); GridLayout gridLayout = new GridLayout();
-     * gridLayout.numColumns = 2; composite.setLayout(gridLayout); formData = new FormData();
-     * formData.top = new FormAttachment(0, 0); formData.left = new FormAttachment(0, 0);
-     * formData.right = new FormAttachment(100, 0); composite.setLayoutData(formData); GridData
-     * gridData;
-     */
 
     SashForm sashForm2 = new SashForm(pane, SWT.HORIZONTAL);
     formData = new FormData();
@@ -218,23 +184,6 @@ public class CEVAnnotationEditorPage extends Page implements ICEVAnnotationEdito
     textView = new StyledText(sashForm, SWT.READ_ONLY | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
     textView.addMouseListener(this);
 
-    // Label placeHolder = new Label(sashForm2, SWT.FILL);
-    // placeHolder.setText("under construction");
-
-    // sc = new ScrolledComposite(sashForm2, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-    // compi = new Composite(sc, SWT.NONE);
-    // compi.setLayout(new GridLayout());
-    // // GridData gridData = new GridData();
-    //
-    // compi.addMouseListener(this);
-    // sc.setExpandHorizontal(true);
-    // sc.setExpandVertical(true);
-    // sc.setMinSize(compi.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-    // sc.setContent(compi);
-
-    // final int maxTitleLength = updateTypes();
-    // updateControl(maxTitleLength);
-
     selected = new ArrayList<String>();
     types = new ArrayList<String>(Arrays.asList(getCurrentCEVData().getTypeNames()));
     Collections.sort(types);
@@ -254,10 +203,6 @@ public class CEVAnnotationEditorPage extends Page implements ICEVAnnotationEdito
     ((GridData) typeTable.getLayoutData()).minimumHeight = 100;
     typeFilterText.addListener(SWT.CHECK, this);
     displayFilteredTypes("");
-    //
-    // Point computeSize = typeComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-    // typeComposite.setSize(computeSize);
-    // System.out.println(computeSize);
 
     sashForm.setWeights(new int[] { 1, 1 });
     sashForm2.setWeights(new int[] { 2, 1 });
@@ -309,12 +254,6 @@ public class CEVAnnotationEditorPage extends Page implements ICEVAnnotationEdito
     return t;
   }
 
-  /**
-   * CAS hat sich geaendert
-   * 
-   * @param casData
-   *          CAS
-   */
   public void casDataChanged() {
     table.removeAll();
     selections.clear();
@@ -327,14 +266,6 @@ public class CEVAnnotationEditorPage extends Page implements ICEVAnnotationEdito
     }
   }
 
-  /**
-   * Selektion anzeigen
-   * 
-   * @param start
-   *          Startpos
-   * @param end
-   *          Endpos
-   */
   public void textSelected(int start, int end) {
 
     String text = getCurrentCEVData().getDocumentText().substring(start, end);
@@ -354,31 +285,22 @@ public class CEVAnnotationEditorPage extends Page implements ICEVAnnotationEdito
       text = getCurrentCEVData().getDocumentText().substring(start, end);
     }
 
-    // Selektion vermerken
     selections.add(new Selection(start, end));
     TableItem item = new TableItem(table, SWT.NONE);
-    // Selektierten Text in Tabelle aufnehmen
 
-    // und wenn noetig HTML-Tags filtern
     if (text_repr)
       text = ParserUtils.trimSpacesBeginEnd(ParserUtils.trimAllTags(Translate.decode(text), false),
               "");
     item.setText(text);
-    // table.getColumn(0).pack();
   }
 
-  /**
-   * Selektion anzeigen
-   */
   private void paintSelection() {
     int index = table.getSelectionIndex();
 
-    // Wenn in der Tabelle was ausgewaehlt
     if (index >= 0) {
       Selection sel = selections.get(index);
       if (sel.getStart() >= 0 && sel.getStart() <= sel.getEnd()
               && sel.getEnd() < textView.getCharCount()) {
-        // Stylerange anzeigen
         textView.setStyleRanges(new int[] { sel.getStart(), sel.getEnd() - sel.getStart() },
                 new StyleRange[] { new StyleRange(sel.getStart(), sel.getEnd() - sel.getStart(),
                         Display.getCurrent().getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT), Display
@@ -392,16 +314,10 @@ public class CEVAnnotationEditorPage extends Page implements ICEVAnnotationEdito
     }
   }
 
-  /**
-   * alle Selektionen loeschen
-   */
   private void clearAll() {
     casDataChanged();
   }
 
-  /**
-   * aktive Selektion entfernen
-   */
   private void deleteSelected() {
     int index = table.getSelectionIndex();
 
@@ -467,12 +383,10 @@ public class CEVAnnotationEditorPage extends Page implements ICEVAnnotationEdito
    * @see org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events .MouseEvent)
    */
   public void mouseDown(MouseEvent event) {
-    // rechte Maustaste in Tabelle => Kontextmenu
     if (event.getSource() == table && event.button == 3) {
       Display display = Display.getCurrent();
       Menu menu = new Menu(display.getActiveShell(), SWT.POP_UP);
 
-      // aktive Selektion loeschen
       MenuItem itemFgDeleteSelected = new MenuItem(menu, SWT.PUSH);
 
       itemFgDeleteSelected.setText("Delete Selection");
@@ -482,7 +396,6 @@ public class CEVAnnotationEditorPage extends Page implements ICEVAnnotationEdito
         }
       });
 
-      // alle Selektionen loeschen
       MenuItem itemFgClearAll = new MenuItem(menu, SWT.PUSH);
 
       itemFgClearAll.setText("Clear All");
@@ -500,13 +413,10 @@ public class CEVAnnotationEditorPage extends Page implements ICEVAnnotationEdito
       }
       menu.dispose();
 
-      // Selektion in der Detailansicht veraendern
     } else if (event.getSource() == textView && event.button == 1 && table.getSelectionIndex() >= 0) {
       Selection sel = selections.get(table.getSelectionIndex());
 
       try {
-        // Anhand der Mausposition feststellen ob Anfang oder Ender der
-        // Selektion veraendert wird
         int pos = textView.getOffsetAtLocation(new Point(event.x, event.y));
         if (pos == sel.getStart())
           dragState = Drag.start;
@@ -526,7 +436,6 @@ public class CEVAnnotationEditorPage extends Page implements ICEVAnnotationEdito
    * @seeorg.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events. MouseEvent)
    */
   public void mouseUp(MouseEvent event) {
-    // Veraendern der Selektionen
     if (event.getSource() == textView) {
       if (event.button == 1 && dragState != Drag.none) {
         Selection sel = selections.get(table.getSelectionIndex());
@@ -534,35 +443,29 @@ public class CEVAnnotationEditorPage extends Page implements ICEVAnnotationEdito
         try {
           int pos = textView.getOffsetAtLocation(new Point(event.x, event.y));
 
-          // Start der Selektion wurde veraendert
           if (dragState == Drag.start && pos >= 0 && pos < sel.getEnd()) {
             sel.setStart(pos);
 
             String text = getCurrentCEVData().getDocumentText().substring(sel.getStart(),
                     sel.getEnd());
 
-            // HTML-Tags filtern
             if (text_repr)
-              text = ParserUtils.trimSpacesBeginEnd(ParserUtils.trimAllTags(Translate.decode(text),
-                      false), "");
+              text = ParserUtils.trimSpacesBeginEnd(
+                      ParserUtils.trimAllTags(Translate.decode(text), false), "");
 
             table.getItem(table.getSelectionIndex()).setText(text);
-            // table.getColumn(0).pack();
 
-            // Ender der Selektion wurde veraendert
           } else if (dragState == Drag.end && pos > sel.getStart() && pos < textView.getCharCount()) {
             sel.setEnd(pos);
 
             String text = getCurrentCEVData().getDocumentText().substring(sel.getStart(),
                     sel.getEnd());
 
-            // HTML-Tags filtern
             if (text_repr)
-              text = ParserUtils.trimSpacesBeginEnd(ParserUtils.trimAllTags(Translate.decode(text),
-                      false), "");
+              text = ParserUtils.trimSpacesBeginEnd(
+                      ParserUtils.trimAllTags(Translate.decode(text), false), "");
 
             table.getItem(table.getSelectionIndex()).setText(text);
-            // table.getColumn(0).pack();
           }
         } catch (IllegalArgumentException e) {
         }
@@ -588,14 +491,11 @@ public class CEVAnnotationEditorPage extends Page implements ICEVAnnotationEdito
    * .events.SelectionEvent)
    */
   public void widgetSelected(SelectionEvent e) {
-    // Auswahl in der Tabelle
     if (e.getSource() == table) {
       dragState = Drag.none;
 
-      // aktive Selektion anzeigen
       paintSelection();
 
-      // Annotationen erzeugen
     } else if (e.getSource() == createButton) {
       for (String each : selected) {
         Type t = getCurrentCEVData().getCAS().getTypeSystem().getType(each);
@@ -605,23 +505,6 @@ public class CEVAnnotationEditorPage extends Page implements ICEVAnnotationEdito
         }
 
       }
-      // Iterator<AnnotationTypeCheckButtonPanel> buttonIter = toggleButtons.listIterator();
-      // while (buttonIter.hasNext()) {
-      // AnnotationTypeCheckButtonPanel buttonPanel = buttonIter.next();
-      // if (buttonPanel.getButton().getSelection() == true) {
-      // }
-      // }
-      /*
-       * Iterator<Type> iter = types.iterator();
-       * 
-       * while (iter.hasNext()) { Type t = iter.next(); for (Selection s : selections)
-       * casData.addAnnotation(t, s.getStart(), s.getEnd(), !iter.hasNext()); }
-       */
-      /*
-       * Type t = casData.getTypeByIndex(combo.getSelectionIndex());
-       * 
-       * for (Selection s : selections) casData.addAnnotation(t, s.getStart(), s.getEnd());
-       */
       clearAll();
     }
 
@@ -638,69 +521,6 @@ public class CEVAnnotationEditorPage extends Page implements ICEVAnnotationEdito
       setTextRepr();
     }
   }
-
-  // private int updateTypes() {
-  // // int maxTitleLength = 0;
-  // // int size = casData.getTypeNames().length;
-  // // for (int i =0; i < size; i++) {
-  // // String typeName = casData.getTypeByIndex(i).getName();
-  // // if (!(type.getName().startsWith(
-  // // "de.uniwue.tm.textmarker.kernel.type")
-  // // || type.getName().startsWith("de.uniwue.tm.type")
-  // // || type.getName().startsWith("uima.cas") || type.getName()
-  // // .startsWith("uima.tcas"))) {
-  // // types.add(casData.getTypeByIndex(i));
-  // // if (maxTitleLength < typeName.length()) {
-  // // maxTitleLength = typeName.length();
-  // // }
-  // // }
-  // //
-  //
-  // if (this.getCurrentCEVData() == null) {
-  // return 0;
-  // }
-  // // Iterator ueber types holen
-  // Iterator typeIterator = this.getCurrentCEVData().getCAS().getTypeSystem().getTypeIterator();
-  // // maximale Titellaenge
-  // int maxTitleLength = 0;
-  // // Liste leeren und mit aktuellen, relevanten types neu befuellen, sowie
-  // // laengsten titel finden:
-  // types.clear();
-  //
-  // while (typeIterator.hasNext()) {
-  // Type type = (Type) typeIterator.next();
-  // if (!(type.getName().startsWith("de.uniwue.tm.textmarker.kernel.type")
-  // || type.getName().startsWith("de.uniwue.tm.type")
-  // || type.getName().startsWith("uima.cas") || type.getName().startsWith("uima.tcas"))) {
-  // types.add(type);
-  // // maxTitelSuche:
-  // int typeShortName = type.getShortName().length();
-  // if (typeShortName > maxTitleLength) {
-  // maxTitleLength = typeShortName;
-  // }
-  // }
-  //
-  // }
-  // // Liste sortieren
-  // Collections.sort(types, new TypeComparator());
-  // return maxTitleLength;
-  // }
-
-  // private void updateControl(int maxTitleLength) {
-  // // toggleButton Liste leeren, vorsicht - richtig aushaengen
-  // for (AnnotationTypeCheckButtonPanel it : toggleButtons) {
-  // it.dispose();
-  // }
-  // toggleButtons.clear();
-  // // button-liste neu erstellen
-  // for (Iterator<Type> iterator = types.iterator(); iterator.hasNext();) {
-  // toggleButtons.add(new AnnotationTypeCheckButtonPanel(compi, iterator.next(), maxTitleLength));
-  // }
-  // compi.layout(true);
-  // sc.setContent(compi);
-  // sc.setMinSize(compi.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-  //
-  // }
 
   protected CEVData getCurrentCEVData() {
     return casDocument.getCASData(current);

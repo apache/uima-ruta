@@ -53,21 +53,10 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 
-
-/**
- * TreeViewPage mit ToolTip-Unterstuetzung
- * 
- * @author Marco Nehmeier
- */
 public abstract class CEVAnnotationTreeViewPage extends Page implements ICEVViewPage,
         ICEVAnnotationListener, MouseListener, IDoubleClickListener, IPropertyChangeListener,
         ICEVView, Listener {
 
-  /**
-   * ToolTip-Listener
-   * 
-   * @author Marco Nehmeier
-   */
   private class ToolTipListener implements Listener {
 
     private static final String TOOLTIP_TEXT_END = "\nEnd: ";
@@ -80,12 +69,6 @@ public abstract class CEVAnnotationTreeViewPage extends Page implements ICEVView
 
     private Tree tree;
 
-    /**
-     * Konstruktor
-     * 
-     * @param tree
-     *          zugrundeliegender Tree
-     */
     private ToolTipListener(Tree tree) {
       this.tree = tree;
     }
@@ -99,7 +82,6 @@ public abstract class CEVAnnotationTreeViewPage extends Page implements ICEVView
       switch (event.type) {
         case SWT.Dispose:
         case SWT.KeyDown:
-          // beim Verlassen Tip wieder freigeben
         case SWT.MouseMove: {
           if (tip == null)
             break;
@@ -108,39 +90,29 @@ public abstract class CEVAnnotationTreeViewPage extends Page implements ICEVView
           label = null;
           break;
         }
-          // ToolTip anzeigen
         case SWT.MouseHover: {
-          // TreeItem bestimmen
           TreeItem item = tree.getItem(new Point(event.x, event.y));
 
           if (item != null && item.getData() instanceof CEVAnnotationTreeNode) {
-            // Alten Tip freigeben
             if (tip != null && !tip.isDisposed())
               tip.dispose();
 
-            // Tip erzeugen
             tip = new Shell(Display.getCurrent().getActiveShell(), SWT.ON_TOP | SWT.NO_FOCUS
                     | SWT.TOOL);
 
-            // Farben setzen
             tip.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
             FillLayout layout = new FillLayout();
             layout.marginWidth = 2;
             tip.setLayout(layout);
 
-            // Lable
             label = new Label(tip, SWT.NONE);
             label.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_INFO_FOREGROUND));
             label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
 
             AnnotationFS annot = ((CEVAnnotationTreeNode) item.getData()).getAnnotation();
 
-            // Text setzten
-            label
-                    .setText(TOOLTIP_TEXT_BEGIN + annot.getBegin() + TOOLTIP_TEXT_END
-                            + annot.getEnd());
+            label.setText(TOOLTIP_TEXT_BEGIN + annot.getBegin() + TOOLTIP_TEXT_END + annot.getEnd());
 
-            // Zeichnen
             Point size = tip.computeSize(SWT.DEFAULT, SWT.DEFAULT);
             Rectangle rect = item.getBounds(0);
             Point pt = tree.toDisplay(rect.x, rect.y);
@@ -168,14 +140,6 @@ public abstract class CEVAnnotationTreeViewPage extends Page implements ICEVView
 
   private Composite overlay;
 
-  /**
-   * Konstruktor
-   * 
-   * @param casView
-   *          CASViewer
-   * @param casData
-   *          CASData
-   */
   public CEVAnnotationTreeViewPage(CEVViewer casView, CEVDocument casDocument, int index) {
     super();
     this.casView = casView;
@@ -208,7 +172,6 @@ public abstract class CEVAnnotationTreeViewPage extends Page implements ICEVView
     layout.verticalSpacing = 0;
     layout.marginWidth = 0;
     layout.marginHeight = 0;
-    // FillLayout layout = new FillLayout(SWT.VERTICAL);
     overlay.setLayout(layout);
 
     filterTextField = new Text(overlay, SWT.SINGLE | SWT.BORDER);
@@ -228,12 +191,10 @@ public abstract class CEVAnnotationTreeViewPage extends Page implements ICEVView
     treeView.setContentProvider(new CEVAnnotationTreeViewContentProvider());
     lableProvider = new CEVAnnotationTreeViewLableProvider(casData);
     treeView.setLabelProvider(lableProvider);
-    // Listender registrieren
     treeView.addCheckStateListener(casData);
     treeView.addDoubleClickListener(this);
     treeView.getTree().addMouseListener(this);
 
-    // ToolTip Listener
     ToolTipListener tl = new ToolTipListener(treeView.getTree());
 
     treeView.getTree().addListener(SWT.Dispose, tl);
@@ -269,20 +230,10 @@ public abstract class CEVAnnotationTreeViewPage extends Page implements ICEVView
     return overlay;
   }
 
-  /**
-   * Gibt den TreeView zurueck
-   * 
-   * @return TreeView
-   */
   public CheckboxTreeViewer getTreeViewer() {
     return treeView;
   }
 
-  /**
-   * Gibt die CASData zurueck
-   * 
-   * @return CASData
-   */
   public CEVData getCasData() {
     return casData;
   }
@@ -297,12 +248,6 @@ public abstract class CEVAnnotationTreeViewPage extends Page implements ICEVView
     overlay.setFocus();
   }
 
-  /**
-   * CAS-View hat sich geaendert
-   * 
-   * @param index
-   *          Index des Views
-   */
   public void viewChanged(int newIndex) {
     treeView.removeCheckStateListener(casData);
     casData.removeAnnotationListener(this);
@@ -324,7 +269,6 @@ public abstract class CEVAnnotationTreeViewPage extends Page implements ICEVView
     if (treeView.getInput() == null)
       return;
 
-    // Selektionen verwalten
     Object input = treeView.getInput();
 
     if (input instanceof ICEVRootTreeNode)
@@ -347,7 +291,6 @@ public abstract class CEVAnnotationTreeViewPage extends Page implements ICEVView
     if (treeView.getInput() == null)
       return;
 
-    // Selektionen verwalten
     Object input = treeView.getInput();
 
     if (input instanceof ICEVRootTreeNode)
@@ -376,7 +319,6 @@ public abstract class CEVAnnotationTreeViewPage extends Page implements ICEVView
    * .jface.viewers.DoubleClickEvent)
    */
   public void doubleClick(DoubleClickEvent event) {
-    // An Position im Dokument springen
     if (event.getSelection() != null && event.getSelection() instanceof ITreeSelection) {
       Object treeNode = ((ITreeSelection) event.getSelection()).getFirstElement();
       if (treeNode instanceof CEVAnnotationTreeNode) {
@@ -410,7 +352,6 @@ public abstract class CEVAnnotationTreeViewPage extends Page implements ICEVView
       TreeItem[] items = treeView.getTree().getSelection();
       HashSet<AnnotationFS> annots = new HashSet<AnnotationFS>();
 
-      // Annot selektieren
       for (TreeItem it : items) {
         if (it.getData() instanceof CEVAnnotationTreeNode) {
           CEVAnnotationTreeNode annot = (CEVAnnotationTreeNode) it.getData();
@@ -427,7 +368,6 @@ public abstract class CEVAnnotationTreeViewPage extends Page implements ICEVView
         }
       }
 
-      // Loeschen
       casData.removeAnnotations(annots.toArray(new AnnotationFS[annots.size()]));
     }
   }
@@ -438,13 +378,11 @@ public abstract class CEVAnnotationTreeViewPage extends Page implements ICEVView
    * @see org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events .MouseEvent)
    */
   public void mouseDown(final MouseEvent mouseEvent) {
-    // Kontext-Menue anzeigen
     if (mouseEvent.button == 3) {
       Display display = Display.getCurrent();
       Menu menu = new Menu(display.getActiveShell(), SWT.POP_UP);
       MenuItem itemFgC = new MenuItem(menu, SWT.PUSH);
 
-      // Schriftfarbe
       itemFgC.setText("Change Font Color");
       itemFgC.addListener(SWT.Selection, new Listener() {
         public void handleEvent(Event e) {
@@ -463,7 +401,6 @@ public abstract class CEVAnnotationTreeViewPage extends Page implements ICEVView
         }
       });
 
-      // Hintergrundfarbe
       MenuItem itemBgC = new MenuItem(menu, SWT.PUSH);
       itemBgC.setText("Change Background Color");
       itemBgC.addListener(SWT.Selection, new Listener() {
@@ -484,7 +421,6 @@ public abstract class CEVAnnotationTreeViewPage extends Page implements ICEVView
         }
       });
 
-      // Nur wenn Typ oder Annotation ausgewaehlt Menupunkte anzeigen
       TreeItem item = treeView.getTree().getItem(new Point(mouseEvent.x, mouseEvent.y));
       if (item != null && item.getData() instanceof CEVFeatureTreeNode) {
         itemBgC.setEnabled(false);
@@ -493,7 +429,6 @@ public abstract class CEVAnnotationTreeViewPage extends Page implements ICEVView
 
       new MenuItem(menu, SWT.SEPARATOR);
 
-      // Annot loeschen
       MenuItem itemDelA = new MenuItem(menu, SWT.PUSH);
       itemDelA.setText("Delete selected Items");
       itemDelA.addListener(SWT.Selection, new Listener() {
@@ -502,8 +437,6 @@ public abstract class CEVAnnotationTreeViewPage extends Page implements ICEVView
         }
       });
 
-      // Pruefen ob ueberhaupt etwas (Typ und/oder Annot) zum Loeschen
-      // selektiert => anzeigen des Menupunktes
       itemDelA.setEnabled(false);
       TreeItem[] items = treeView.getTree().getSelection();
       for (TreeItem ti : items)
