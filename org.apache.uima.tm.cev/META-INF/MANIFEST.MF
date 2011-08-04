@@ -16,6 +16,8 @@ Require-Bundle: org.eclipse.ui,
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
  lib/htmlparser.jar
+Bundle-Vendor: University of Würzburg
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.apache.uima.tm.cev;
   uses:="org.eclipse.jface.resource,
    org.eclipse.core.runtime.jobs,
@@ -129,5 +131,3 @@ Export-Package: org.apache.uima.tm.cev;
    org.apache.uima.tm.cev.extension,
    org.eclipse.ui.part,
    org.eclipse.swt.widgets"
-Bundle-Vendor: University of Würzburg
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6

@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.cev.searchStrategy;
 
@@ -34,7 +34,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.dialogs.ListDialog;
-
 
 public class AllXmlInProjectStrategy implements ICEVSearchStrategy {
 
@@ -89,11 +88,15 @@ public class AllXmlInProjectStrategy implements ICEVSearchStrategy {
     for (IResource each : folder.members()) {
       if (each instanceof IContainer) {
         result.addAll(collectTypeSystems((IContainer) each));
-      } else if (each instanceof IFile
-              && each.getFileExtension().equals("xml")
-              && !each.getFullPath().removeFileExtension().lastSegment().toLowerCase().endsWith(
-                      "stylemap")) {
-        result.add((IFile) each);
+      } else {
+        String fileExtension = each.getFileExtension();
+        if (each instanceof IFile
+                && fileExtension != null
+                && fileExtension.equals("xml")
+                && !each.getFullPath().removeFileExtension().lastSegment().toLowerCase()
+                        .endsWith("stylemap")) {
+          result.add((IFile) each);
+        }
       }
     }
     return result;

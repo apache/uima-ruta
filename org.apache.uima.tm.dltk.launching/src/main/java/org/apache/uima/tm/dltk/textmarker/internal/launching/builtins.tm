@@ -1,1 +1,0 @@
-PACKAGE org.apache.uima.tm;

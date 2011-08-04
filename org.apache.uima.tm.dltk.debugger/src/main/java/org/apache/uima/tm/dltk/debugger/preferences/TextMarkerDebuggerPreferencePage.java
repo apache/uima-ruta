@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.debugger.preferences;
 
@@ -31,13 +31,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 
-
 public class TextMarkerDebuggerPreferencePage extends
         AbstractConfigurationBlockPropertyAndPreferencePage {
 
-  private static String PREFERENCE_PAGE_ID = "org.apache.uima.tm.dltk.textmarker.preferences.debug.engines.debugger";
+  private static String PREFERENCE_PAGE_ID = "org.apache.uima.tm.dltk.preferences.debug.engines.debugger";
 
-  private static String PROPERTY_PAGE_ID = "org.apache.uima.tm.dltk.textmarker.propertyPage.debug.engines.debugger";
+  private static String PROPERTY_PAGE_ID = "org.apache.uima.tm.dltk.propertyPage.debug.engines.debugger";
 
   /*
    * @seeorg.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#

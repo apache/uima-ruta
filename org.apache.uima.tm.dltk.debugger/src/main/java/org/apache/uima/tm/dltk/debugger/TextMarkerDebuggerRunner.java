@@ -21,9 +21,9 @@ package org.apache.uima.tm.dltk.debugger;
 
 import org.apache.uima.tm.dltk.internal.debug.TextMarkerDebugConstants;
 import org.apache.uima.tm.dltk.internal.debug.TextMarkerDebugPlugin;
-import org.apache.uima.tm.dltk.textmarker.internal.launching.TextMarkerInterpreterRunner;
-import org.apache.uima.tm.dltk.textmarker.launching.IConfigurableRunner;
-import org.apache.uima.tm.dltk.textmarker.launching.ITextMarkerInterpreterRunnerConfig;
+import org.apache.uima.tm.dltk.internal.launching.TextMarkerInterpreterRunner;
+import org.apache.uima.tm.dltk.launching.IConfigurableRunner;
+import org.apache.uima.tm.dltk.launching.ITextMarkerInterpreterRunnerConfig;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;

@@ -42,8 +42,8 @@ under the License.
          point="org.eclipse.dltk.validators.core.validator">
       <validatorType
             class="org.apache.uima.tm.dltk.internal.core.packages.TextMarkerPackageCheckerType"
-            id="org.apache.uima.dltk.textmarker.packageChecker"
-            nature="org.apache.uima.dltk.textmarker.core.nature">
+            id="org.apache.uima.tm.dltk.packageChecker"
+            nature="org.apache.uima.tm.dltk.core.nature">
       </validatorType>
    </extension>
    
@@ -51,13 +51,13 @@ under the License.
          point="org.eclipse.dltk.core.language">
       <language
             class="org.apache.uima.tm.dltk.core.TextMarkerLanguageToolkit"
-            nature="org.apache.uima.dltk.textmarker.core.nature"/>
+            nature="org.apache.uima.tm.dltk.core.nature"/>
    </extension>
    <extension
          point="org.eclipse.dltk.core.sourceElementParsers">
       <parser
             class="org.apache.uima.tm.dltk.internal.core.parser.TextMarkerSourceElementParser"
-            nature="org.apache.uima.dltk.textmarker.core.nature"
+            nature="org.apache.uima.tm.dltk.core.nature"
             priority="0">
       </parser>
    </extension>
@@ -65,7 +65,7 @@ under the License.
          point="org.eclipse.dltk.core.selectionEngine">
       <selectionEngine
             class="org.apache.uima.tm.dltk.internal.core.codeassist.TextMarkerSelectionEngine"
-            nature="org.apache.uima.dltk.textmarker.core.nature"
+            nature="org.apache.uima.tm.dltk.core.nature"
             priority="0">
       </selectionEngine>
    </extension>
@@ -73,15 +73,15 @@ under the License.
          point="org.eclipse.dltk.core.completionEngine">
       <completionEngine
             class="org.apache.uima.tm.dltk.internal.core.codeassist.TextMarkerCompletionEngine"
-            nature="org.apache.uima.dltk.textmarker.core.nature"
+            nature="org.apache.uima.tm.dltk.core.nature"
             priority="0">
       </completionEngine>
    </extension>
    <extension
          point="org.eclipse.dltk.core.search">
       <seachFactory
-            class="org.apache.uima.dltk.textmarker.internal.core.TextMarkerSearchFactory"
-            nature="org.apache.uima.dltk.textmarker.core.nature"
+            class="org.apache.uima.tm.dltk.internal.core.TextMarkerSearchFactory"
+            nature="org.apache.uima.tm.dltk.core.nature"
             priority="0">
       </seachFactory>
    </extension>
@@ -89,7 +89,7 @@ under the License.
          point="org.eclipse.dltk.core.callHierarchy">
       <callHerarchiesFactory
             class="org.apache.uima.tm.dltk.internal.core.TextMarkerCallHierarchyFactory"
-            nature="org.apache.uima.dltk.textmarker.core.nature"
+            nature="org.apache.uima.tm.dltk.core.nature"
             priority="0">
       </callHerarchiesFactory>
    </extension>
@@ -98,23 +98,23 @@ under the License.
      <content-type
            base-type="org.eclipse.core.runtime.text"
            file-extensions="tm"
-           id="org.apache.uima.dltk.tmContentType"
+           id="org.apache.uima.tm.dltk.tmContentType"
            name="%tmContentType"
            priority="high">
         <describer
               class="org.apache.uima.tm.dltk.core.TextMarkerContentDescriber"
-              plugin="org.apache.uima.dltk.textmarker.core">
+              plugin="org.apache.uima.tm.dltk.core">
         </describer>       
      </content-type>
   </extension>
    <extension
          point="org.eclipse.dltk.core.sourceParsers">
       <parserContribution
-            natureId="org.apache.uima.dltk.textmarker.core.nature">
+            natureId="org.apache.uima.tm.dltk.core.nature">
          <parser
                class="org.apache.uima.tm.dltk.internal.core.parser.TextMarkerSourceParserFactory"
                description="%sourceParser.description"
-               id="org.apache.uima.dltk.textmarker.sourceParser"
+               id="org.apache.uima.tm.dltk.sourceParser"
                name="%sourceParser.name"
                priority="0" />
       </parserContribution>
@@ -122,69 +122,69 @@ under the License.
    <extension
          point="org.apache.uima.tm.dltk.core.tmkeywords">
       <keywords
-            class="org.apache.uima.dltk.textmarker.core.TextMarkerKeywords">
+            class="org.apache.uima.tm.dltk.core.TextMarkerKeywords">
       </keywords>
    </extension>
  <extension
          name="tm commands"
          point="org.apache.uima.tm.dltk.core.tmCommandProcessor">
       <processor
-            class="org.apache.uima.dltk.textmarker.internal.core.parser.processors.tm.TextMarkerNamespaceProcessor"
+            class="org.apache.uima.tm.dltk.internal.core.parser.processors.tm.TextMarkerNamespaceProcessor"
             id="namespace"></processor>
       <processor
-            class="org.apache.uima.dltk.textmarker.internal.core.parser.processors.tm.TextMarkerProcProcessor"
+            class="org.apache.uima.tm.dltk.internal.core.parser.processors.tm.TextMarkerProcProcessor"
             id="proc">
       </processor>
       <processor
-            class="org.apache.uima.dltk.textmarker.internal.core.parser.processors.tm.TextMarkerVariableProcessor"
+            class="org.apache.uima.tm.dltk.internal.core.parser.processors.tm.TextMarkerVariableProcessor"
             id="set">
       </processor>
       <processor
-            class="org.apache.uima.dltk.textmarker.internal.core.parser.processors.tm.TextMarkerUpvarProcessor"
+            class="org.apache.uima.tm.dltk.internal.core.parser.processors.tm.TextMarkerUpvarProcessor"
             id="upvar">
       </processor>
       <processor
-            class="org.apache.uima.dltk.textmarker.internal.core.parser.processors.tm.TextMarkerGlobalVariableProcessor"
+            class="org.apache.uima.tm.dltk.internal.core.parser.processors.tm.TextMarkerGlobalVariableProcessor"
             id="global">
       </processor>
       <processor
-            class="org.apache.uima.dltk.textmarker.internal.core.parser.processors.tm.TextMarkerPackageProcessor"
+            class="org.apache.uima.tm.dltk.internal.core.parser.processors.tm.TextMarkerPackageProcessor"
             id="package">
       </processor>
       <processor
-            class="org.apache.uima.dltk.textmarker.internal.core.parser.processors.tm.TextMarkerCatchProcessor"
+            class="org.apache.uima.tm.dltk.internal.core.parser.processors.tm.TextMarkerCatchProcessor"
             id="catch">
       </processor>
       <processor
-            class="org.apache.uima.dltk.textmarker.internal.core.parser.processors.tm.TextMarkerIfProcessor"
+            class="org.apache.uima.tm.dltk.internal.core.parser.processors.tm.TextMarkerIfProcessor"
             id="if">
       </processor>
       <processor
-            class="org.apache.uima.dltk.textmarker.internal.core.parser.processors.tm.TextMarkerNamespaceVariableProcessor"
+            class="org.apache.uima.tm.dltk.internal.core.parser.processors.tm.TextMarkerNamespaceVariableProcessor"
             id="variable">
       </processor>
       <processor
-            class="org.apache.uima.dltk.textmarker.internal.core.parser.processors.tm.TextMarkerSwitchCommandProcessor"
+            class="org.apache.uima.tm.dltk.internal.core.parser.processors.tm.TextMarkerSwitchCommandProcessor"
             id="switch">
       </processor>
       <processor
-            class="org.apache.uima.dltk.textmarker.internal.core.parser.processors.tm.TextMarkerForCommandProcessor"
+            class="org.apache.uima.tm.dltk.internal.core.parser.processors.tm.TextMarkerForCommandProcessor"
             id="for">
       </processor>
       <processor
-            class="org.apache.uima.dltk.textmarker.internal.core.parser.processors.tm.TextMarkerForeachCommandProcessor"
+            class="org.apache.uima.tm.dltk.internal.core.parser.processors.tm.TextMarkerForeachCommandProcessor"
             id="foreach">
       </processor>
       <processor
-            class="org.apache.uima.dltk.textmarker.internal.core.parser.processors.tm.TextMarkerWhileCommandProcessor"
+            class="org.apache.uima.tm.dltk.internal.core.parser.processors.tm.TextMarkerWhileCommandProcessor"
             id="while">
       </processor>
    </extension>
  <extension
          point="org.eclipse.dltk.core.mixin">
       <mixin
-            class="org.apache.uima.dltk.textmarker.internal.core.mixin.TextMarkerMixinParser"
-            nature="org.apache.uima.dltk.textmarker.core.nature"
+            class="org.apache.uima.tm.dltk.internal.core.mixin.TextMarkerMixinParser"
+            nature="org.apache.uima.tm.dltk.core.nature"
             priority="0">
       </mixin>
    </extension>
@@ -197,8 +197,8 @@ under the License.
  <extension
        point="org.eclipse.dltk.core.interpreterContainerExtension">
     <interpreterContainerExtension
-          class="org.apache.uima.dltk.textmarker.internal.core.packages.TextMarkerPackagesInterpreterContainerExtension"
-          nature="org.apache.uima.dltk.textmarker.core.nature"
+          class="org.apache.uima.tm.dltk.internal.core.packages.TextMarkerPackagesInterpreterContainerExtension"
+          nature="org.apache.uima.tm.dltk.core.nature"
           priority="0">
     </interpreterContainerExtension>
  </extension>
@@ -206,32 +206,32 @@ under the License.
          point="org.eclipse.dltk.core.buildpathContainerInitializer">
       <buildpathContainerInitializer
             class="org.apache.uima.tm.dltk.internal.core.packages.TextMarkerPackagesBuildpathContainerInitializer"
-            id="org.apache.uima.dltk.textmarker.core.PACKAGES">
+            id="org.apache.uima.tm.dltk.core.PACKAGES">
       </buildpathContainerInitializer>
    </extension>
    <extension
-         id="org.apache.uima.dltk.textmarker.core.builder"
+         id="org.apache.uima.tm.dltk.core.builder"
          point="org.eclipse.dltk.core.builder">
       <builder
             class="org.apache.uima.tm.dltk.internal.core.builder.TextMarkerBuilder"
-            nature="org.apache.uima.dltk.textmarker.core.nature">
+            nature="org.apache.uima.tm.dltk.core.nature">
       </builder>
    </extension>
 <extension
     point="org.eclipse.dltk.core.buildParticipant">
       <buildParticipant
             class="org.eclipse.dltk.core.builder.ParserBuildParticipantFactory"
-            id="org.apache.uima.dltk.textmarker.buildParticipant.parser"
+            id="org.apache.uima.tm.dltk.buildParticipant.parser"
             name="%parserBuildParticipant.name"
-            nature="org.apache.uima.dltk.textmarker.core.nature">
+            nature="org.apache.uima.tm.dltk.core.nature">
       </buildParticipant>
     <buildParticipant
       class="org.apache.uima.tm.dltk.internal.core.parser.TextMarkerTodoParserType"
-      id="org.apache.uima.dltk.textmarker.todo"
+      id="org.apache.uima.tm.dltk.todo"
       name="%taskTagsBuildParticipant.name"
-      nature="org.apache.uima.dltk.textmarker.core.nature">
+      nature="org.apache.uima.tm.dltk.core.nature">
       <requires
-            id="org.apache.uima.dltk.textmarker.buildParticipant.parser">
+            id="org.apache.uima.tm.dltk.buildParticipant.parser">
       </requires>
     </buildParticipant>
   </extension>

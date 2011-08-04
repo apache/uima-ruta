@@ -23,10 +23,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.uima.tm.textmarker.engine,
  org.apache.uima.runtime;bundle-version="2.3.0"
 Bundle-ActivationPolicy: lazy
-Export-Package: org.apache.uima.tm.dltk.textmarker.console,
+Export-Package: org.apache.uima.tm.dltk.console,
  org.apache.uima.tm.dltk.internal.launching,
- org.apache.uima.tm.dltk.textmarker.launching,
- org.apache.uima.tm.dltk.textmarker.internal.launching 
+ org.apache.uima.tm.dltk.launching
 Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: University of Würzburg

@@ -19,8 +19,8 @@
 
 package org.apache.uima.tm.dltk.internal.testing;
 
+import org.apache.uima.tm.dltk.launching.TextMarkerLaunchConfigurationDelegate;
 import org.apache.uima.tm.dltk.testing.ITextMarkerTestingEngine;
-import org.apache.uima.tm.dltk.textmarker.launching.TextMarkerLaunchConfigurationDelegate;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;

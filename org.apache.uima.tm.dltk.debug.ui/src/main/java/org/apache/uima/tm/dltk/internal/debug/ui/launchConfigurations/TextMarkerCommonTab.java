@@ -27,7 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.uima.tm.dltk.textmarker.launching.TextMarkerLaunchingPlugin;
+import org.apache.uima.tm.dltk.launching.TextMarkerLaunchingPlugin;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
