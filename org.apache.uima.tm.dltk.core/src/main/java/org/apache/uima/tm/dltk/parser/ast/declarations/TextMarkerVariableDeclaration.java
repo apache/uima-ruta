@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.parser.ast.declarations;
 
@@ -24,11 +24,6 @@ import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
 
-
-/**
- * @author Martin Toepfer
- * 
- */
 public class TextMarkerVariableDeclaration extends TextMarkerAbstractDeclaration {
 
   private int type;
@@ -36,14 +31,6 @@ public class TextMarkerVariableDeclaration extends TextMarkerAbstractDeclaration
   private boolean hasInitExpression;
 
   private Expression initExpression;
-
-  //
-  // @Deprecated
-  // public TextMarkerVariableDeclaration(String name, int nameStart, int nameEnd, int declStart,
-  // int declEnd, SimpleReference ref) {
-  // super(name, nameStart, nameEnd, declStart, declEnd, ref);
-  // hasInitExpression = false;
-  // }
 
   public TextMarkerVariableDeclaration(String name, int nameStart, int nameEnd, int declStart,
           int declEnd, SimpleReference ref, int type) {

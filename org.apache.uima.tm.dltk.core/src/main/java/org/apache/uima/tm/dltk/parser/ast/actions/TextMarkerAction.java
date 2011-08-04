@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.parser.ast.actions;
 
@@ -26,10 +26,6 @@ import java.util.List;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
 
-/**
- * @author Martin Toepfer
- * 
- */
 public class TextMarkerAction extends Expression {
   protected List<Expression> exprs;
 

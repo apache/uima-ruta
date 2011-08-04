@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.parser.ast;
 
@@ -25,11 +25,6 @@ import org.antlr.runtime.Token;
 import org.apache.uima.tm.dltk.internal.core.parser.TextMarkerParseUtils;
 import org.eclipse.dltk.ast.ASTNode;
 
-
-/**
- * @author Martin Toepfer
- * 
- */
 public abstract class AbstractFactory {
 
   /**

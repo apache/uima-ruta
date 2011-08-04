@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.formatter.internal;
 
@@ -62,12 +62,10 @@ import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.formatter.FormatterDocument;
 import org.eclipse.dltk.ui.formatter.IFormatterIndentGenerator;
 
-
 /**
  * Formats a document.<br>
  * Use the append methods within the visit methods to preserve the comments.
  * 
- * @author Martin Toepfer
  * 
  */
 public class TextMarkerFormattedPrinter extends ASTVisitor {

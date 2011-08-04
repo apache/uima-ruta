@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.parser.ast;
 
@@ -25,8 +25,6 @@ import org.eclipse.dltk.ast.statements.Statement;
 
 /**
  * Simple statement with just one expression argument.
- * 
- * @author Martin Toepfer
  * 
  */
 public abstract class TextMarkerSimpleStatement extends Statement {

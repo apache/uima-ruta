@@ -15,9 +15,10 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.formatter.internal;
+
 ///**
 // * 
 // */
@@ -27,7 +28,6 @@ package org.apache.uima.tm.dltk.formatter.internal;
 //import org.eclipse.dltk.formatter.IFormatterContext;
 //
 ///**
-// * @author Martin Toepfer
 // *
 // */
 //public class TextMarkerFormatterContext extends FormatterContext implements

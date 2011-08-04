@@ -15,18 +15,13 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.parser.ast;
 
 import org.apache.uima.tm.dltk.internal.core.parsers.TextMarkerParser;
 import org.eclipse.dltk.ast.expressions.ExpressionConstants;
 
-
-/**
- * @author Martin Toepfer
- * 
- */
 public interface TMActionConstants {
   public static final int A_CALL = ExpressionConstants.USER_EXPRESSION_START
           + TextMarkerParser.CALL;

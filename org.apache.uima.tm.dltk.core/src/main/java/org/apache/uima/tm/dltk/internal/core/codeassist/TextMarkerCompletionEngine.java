@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.internal.core.codeassist;
 
@@ -70,7 +70,6 @@ import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.core.SourceField;
 import org.eclipse.dltk.internal.core.SourceMethod;
-
 
 public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
 
@@ -144,16 +143,16 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
           doCompletionOnDeclaration(cu, startPart);
         } else if (node instanceof TextMarkerVariableReference) {
           int type = ((TextMarkerVariableReference) node).getType();
-          doCompletionOnVarRef(cu, parsed, startPart, type, ((TextMarkerVariableReference) node)
-                  .getName());
+          doCompletionOnVarRef(cu, parsed, startPart, type,
+                  ((TextMarkerVariableReference) node).getName());
           // TODO: only if first rule element
           doCompletionOnDeclaration(cu, startPart);
         } else if (node instanceof ComponentDeclaration) {
-          doCompletionOnComponentDeclaration(cu, parsed, startPart, ((ComponentDeclaration) node)
-                  .getType(), startPart);
+          doCompletionOnComponentDeclaration(cu, parsed, startPart,
+                  ((ComponentDeclaration) node).getType(), startPart);
         } else if (node instanceof ComponentReference) {
-          doCompletionOnComponentReference(cu, parsed, startPart, ((ComponentReference) node)
-                  .getType(), startPart);
+          doCompletionOnComponentReference(cu, parsed, startPart,
+                  ((ComponentReference) node).getType(), startPart);
         } else if (node instanceof TextMarkerAction) {
           doCompletionOnAction(cu, parsed, startPart, TMTypeConstants.TM_TYPE_A, startPart);
         } else if (node instanceof TextMarkerCondition) {
@@ -421,14 +420,6 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
     }
   }
 
-  /**
-   * @param cu
-   * @param startPart
-   * @param type
-   * 
-   * @author Martin Toepfer
-   * @param complString
-   */
   private void doCompletionOnVarRef(ISourceModule cu, TextMarkerModuleDeclaration parsed,
           String startPart, int type, String complString) {
     Collection<String> types = new HashSet<String>();
@@ -501,7 +492,7 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
     return replaceAll;
   }
 
-  @SuppressWarnings( { "unchecked" })
+  @SuppressWarnings({ "unchecked" })
   private void doCompletionOnEmptyStatement(ISourceModule cu, int position, int i) {
     int kind = CompletionProposal.LOCAL_VARIABLE_REF;
     // doCompletionOnKeyword(position, i, "");

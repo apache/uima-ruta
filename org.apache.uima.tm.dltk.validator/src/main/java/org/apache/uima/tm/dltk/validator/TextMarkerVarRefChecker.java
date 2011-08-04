@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.validator;
 
@@ -69,13 +69,8 @@ import org.eclipse.dltk.core.builder.IBuildParticipant;
 import org.eclipse.dltk.core.builder.IBuildParticipantExtension;
 import org.eclipse.dltk.core.builder.ISourceLineTracker;
 
-
 public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildParticipantExtension {
 
-  /**
-   * @author Martin Toepfer
-   * 
-   */
   private class VarRefVisitor extends ASTVisitor {
     private final Stack<Map<String, Integer>> knownLocalVariables;
 

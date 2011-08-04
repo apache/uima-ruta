@@ -46,10 +46,6 @@ import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
 
-/**
- * @author Martin Toepfer
- * 
- */
 public class TextMarkerCheckerUtils {
 
   public static Set<String> importScript(String path, int type, IScriptProject project)

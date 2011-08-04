@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.textmarker.resource.trie;
 
@@ -29,10 +29,9 @@ import java.util.Set;
 /**
  * Class EditDistanceResultMap.
  * 
- * @author Daniel Wieth 1570292.
  * 
- *         Contains the result of an edit distance query in the class MultiTreeWordList. The keys
- *         are the strings in the trie, the values are the types of the query.
+ * Contains the result of an edit distance query in the class MultiTreeWordList. The keys are the
+ * strings in the trie, the values are the types of the query.
  * 
  */
 public class EditDistanceResultMap extends HashMap<String, Set<String>> {

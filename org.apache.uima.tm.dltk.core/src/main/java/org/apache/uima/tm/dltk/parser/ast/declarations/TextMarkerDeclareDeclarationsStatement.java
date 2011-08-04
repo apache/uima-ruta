@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.parser.ast.declarations;
 
@@ -25,11 +25,6 @@ import org.apache.uima.tm.dltk.parser.ast.TMStatementConstants;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 
-
-/**
- * @author Martin Toepfer
- * 
- */
 public class TextMarkerDeclareDeclarationsStatement extends TextMarkerDeclarationsStatement {
   private ASTNode parent;
 

@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.parser.ast;
 
@@ -25,7 +25,6 @@ import org.eclipse.dltk.ast.expressions.Expression;
 /**
  * Wrapper for top level expressions like number, boolean, string, type..
  * 
- * @author Martin Toepfer
  * 
  */
 public class TextMarkerExpression extends Expression {

@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.textmarker.resource.trie;
 
@@ -31,9 +31,8 @@ import java.util.Set;
 /**
  * Class MultipleTextNode.
  * 
- * @author Daniel Wieth, 1570292.
  * 
- *         Represents a node of the data structure MultiTreeWordList.
+ * Represents a node of the data structure MultiTreeWordList.
  */
 public class MultiTextNode {
 

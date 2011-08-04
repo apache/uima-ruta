@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.parser.ast;
 
@@ -25,11 +25,6 @@ import java.util.Map;
 import org.apache.uima.tm.textmarker.parser.TextMarkerLexer;
 import org.eclipse.dltk.ast.expressions.ExpressionConstants;
 
-
-/**
- * @author Martin Toepfer
- * 
- */
 public final class TMExpressionConstants implements ExpressionConstants {
   public static final int E_EXP = USER_EXPRESSION_START + TextMarkerLexer.EXP;
 

@@ -15,14 +15,10 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.parser.ast;
 
-/**
- * @author Martin Toepfer
- * 
- */
 public interface TMStatementConstants {
   public static final int S_USERSTART = 1;
 

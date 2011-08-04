@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.parser.ast.actions;
 
@@ -23,11 +23,6 @@ import java.util.List;
 
 import org.apache.uima.tm.dltk.parser.ast.TMActionConstants;
 
-
-/**
- * @author Martin Toepfer
- * 
- */
 public class TextMarkerLogAction extends TextMarkerAction {
   int[] logLevelBounds;
 

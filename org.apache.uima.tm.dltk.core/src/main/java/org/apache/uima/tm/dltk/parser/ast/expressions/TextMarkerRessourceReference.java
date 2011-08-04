@@ -15,18 +15,13 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.parser.ast.expressions;
 
 import org.apache.uima.tm.dltk.parser.ast.TMExpressionConstants;
 import org.eclipse.dltk.ast.expressions.StringLiteral;
 
-
-/**
- * @author Martin Toepfer
- * 
- */
 public class TextMarkerRessourceReference extends StringLiteral {
 
   public TextMarkerRessourceReference(int start, int end, String value) {

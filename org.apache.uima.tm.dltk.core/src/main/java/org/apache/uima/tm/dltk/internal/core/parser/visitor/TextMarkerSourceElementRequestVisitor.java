@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.internal.core.parser.visitor;
 
@@ -44,7 +44,6 @@ import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.compiler.SourceElementRequestVisitor;
-
 
 public class TextMarkerSourceElementRequestVisitor extends SourceElementRequestVisitor {
 
@@ -204,15 +203,10 @@ public class TextMarkerSourceElementRequestVisitor extends SourceElementRequestV
 
   private void processPackage(Statement statement) {
     TextMarkerPackageDeclaration pack = (TextMarkerPackageDeclaration) statement;
-    this.fRequestor.acceptPackage(pack.getNameStart(), pack.getNameEnd(), (pack.getName())
-            .toCharArray());
+    this.fRequestor.acceptPackage(pack.getNameStart(), pack.getNameEnd(),
+            (pack.getName()).toCharArray());
   }
 
-  /**
-   * @param variableIDRef
-   * @param fullDeclaration
-   * @author Martin Toepfer
-   */
   private void processFieldDeclaration(SimpleReference variableIDRef, Statement fullDeclaration) {
     int modifier = Modifiers.AccDefault;
     if (fullDeclaration instanceof TextMarkerVariableDeclaration) {

@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.textmarker.resource.trie;
 
@@ -33,8 +33,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
@@ -43,11 +43,9 @@ import org.apache.uima.tm.textmarker.kernel.TextMarkerStream;
 import org.apache.uima.tm.textmarker.kernel.type.TextMarkerBasic;
 import org.apache.uima.tm.textmarker.resource.TextMarkerWordList;
 
-
 /**
  * Class MultiTreeWordList.
  * 
- * @author Daniel Wieth, 1570292
  * 
  */
 public class MultiTreeWordList implements TextMarkerWordList {
@@ -610,7 +608,7 @@ public class MultiTreeWordList implements TextMarkerWordList {
 
             tryToCreateAnnotation(stream, results, basicsToAdd, candidate.toString(), interResults,
                     ignoreCase, ignoreLength, edit, distance, ignoreToken, typeMap);
-            //			
+            //
             lastCandidate = candidate.toString();
             candidate.append(next.getCoveredText());
             basicsToAdd.add(next);
@@ -784,9 +782,9 @@ public class MultiTreeWordList implements TextMarkerWordList {
     if (!lastActionInsert) {
       // Delete.
       if (distance - edm.getDeleteCosts(node.getValue()) >= 0 && result.length() > 0) {
-        resultMap.putAll(editDistanceClever(node, query, result, distance
-                - edm.getDeleteCosts(node.getValue()), index + 1, ignoreCase, fragment, edm, false,
-                true));
+        resultMap.putAll(editDistanceClever(node, query, result,
+                distance - edm.getDeleteCosts(node.getValue()), index + 1, ignoreCase, fragment,
+                edm, false, true));
       }
     }
 
@@ -917,8 +915,8 @@ public class MultiTreeWordList implements TextMarkerWordList {
 
     // Delete.
     if (distance - edm.getDeleteCosts(node.getValue()) >= 0 && result.length() > 0) {
-      deletion = editDistanceBool(node, query, result, distance
-              - edm.getDeleteCosts(node.getValue()), index + 1, ignoreCase, fragment, edm);
+      deletion = editDistanceBool(node, query, result,
+              distance - edm.getDeleteCosts(node.getValue()), index + 1, ignoreCase, fragment, edm);
 
       if (deletion) {
         return true;
@@ -961,8 +959,9 @@ public class MultiTreeWordList implements TextMarkerWordList {
 
       if (distance - edm.getInsertCosts(tempNode.getValue()) >= 0) {
         // Insert - use the same index twice.
-        insertion = editDistanceBool(tempNode, query, result + tempNode.getValue(), distance
-                - edm.getInsertCosts(tempNode.getValue()), index, ignoreCase, fragment, edm);
+        insertion = editDistanceBool(tempNode, query, result + tempNode.getValue(),
+                distance - edm.getInsertCosts(tempNode.getValue()), index, ignoreCase, fragment,
+                edm);
 
         if (insertion) {
           return true;

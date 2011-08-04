@@ -73,10 +73,6 @@ import org.eclipse.dltk.core.builder.ISourceLineTracker;
 
 public class TextMarkerTypeChecker implements IBuildParticipant, IBuildParticipantExtension {
 
-  /**
-   * @author Martin Toepfer
-   * 
-   */
   private class TypeCheckerVisitor extends ASTVisitor {
     private final Stack<String> blocks;
 
@@ -99,8 +95,6 @@ public class TextMarkerTypeChecker implements IBuildParticipant, IBuildParticipa
     private String packageName;
 
     private TypeSystemDescription description;
-
-    // private TypeSystem ts;
 
     private Set<String> otherTypes;
 

@@ -15,17 +15,13 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.parser.ast;
 
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author Martin Toepfer
- * 
- */
 public final class TMTypeConstants {
   public static final int TM_TYPE_BITMASK = ~((2 << 17) - 1);
 

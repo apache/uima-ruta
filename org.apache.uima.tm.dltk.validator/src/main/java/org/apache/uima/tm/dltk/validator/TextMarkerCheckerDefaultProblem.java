@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.validator;
 
@@ -24,11 +24,6 @@ import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.compiler.problem.DefaultProblem;
 import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 
-
-/**
- * @author Martin Toepfer
- * 
- */
 public class TextMarkerCheckerDefaultProblem extends DefaultProblem {
   public static final int WARNING = ProblemSeverities.Warning;
 

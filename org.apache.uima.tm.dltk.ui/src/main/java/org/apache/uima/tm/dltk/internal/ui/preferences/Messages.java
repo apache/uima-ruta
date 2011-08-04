@@ -15,16 +15,12 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.internal.ui.preferences;
 
 import org.eclipse.osgi.util.NLS;
 
-/**
- * @author Martin
- * 
- */
 public class Messages extends NLS {
   private static final String BUNDLE_NAME = "org.apache.uima.tm.dltk.ui.formatter.messages";
 

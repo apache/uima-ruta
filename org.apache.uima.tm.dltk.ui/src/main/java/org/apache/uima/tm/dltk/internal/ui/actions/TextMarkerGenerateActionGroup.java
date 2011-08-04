@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.internal.ui.actions;
 
@@ -28,11 +28,6 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.ui.texteditor.TextOperationAction;
 
-
-/**
- * @author Martin Toepfer
- * 
- */
 public class TextMarkerGenerateActionGroup extends GenerateActionGroup {
   public TextMarkerGenerateActionGroup(TextMarkerEditor editor, String groupName) {
     super(editor, groupName);

@@ -65,10 +65,7 @@ import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
 
 public class TextMarkerSelectionEngine extends ScriptSelectionEngine {
-  /**
-   * @author Martin Toepfer
-   * 
-   */
+
   private class ModelElementFinder extends ASTVisitor {
     private int offset;
 

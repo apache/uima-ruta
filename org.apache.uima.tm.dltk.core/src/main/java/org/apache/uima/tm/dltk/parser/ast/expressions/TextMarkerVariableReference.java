@@ -15,18 +15,13 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.parser.ast.expressions;
 
 import org.apache.uima.tm.dltk.parser.ast.TMTypeConstants;
 import org.eclipse.dltk.ast.references.VariableReference;
 
-
-/**
- * @author Martin Toepfer
- * 
- */
 public class TextMarkerVariableReference extends VariableReference {
   private int typeId;
 

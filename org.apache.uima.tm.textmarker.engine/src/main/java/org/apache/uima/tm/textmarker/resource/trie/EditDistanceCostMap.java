@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.textmarker.resource.trie;
 
@@ -32,10 +32,7 @@ import java.util.Map;
 /**
  * Class EditDistanceMap.
  * 
- * @author Daniel Wieth, 1570292.
- * 
- *         Contains HashMaps with key-value-pairs representing the costs for edit distance
- *         operations.
+ * Contains HashMaps with key-value-pairs representing the costs for edit distance operations.
  */
 public class EditDistanceCostMap {
 

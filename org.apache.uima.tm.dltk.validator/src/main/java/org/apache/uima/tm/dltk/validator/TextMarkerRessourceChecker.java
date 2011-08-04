@@ -50,10 +50,6 @@ import org.eclipse.dltk.core.builder.ISourceLineTracker;
 
 public class TextMarkerRessourceChecker implements IBuildParticipant, IBuildParticipantExtension {
 
-  /**
-   * @author Martin Toepfer
-   * 
-   */
   private class TypeCheckerVisitor extends ASTVisitor {
     private IProblemReporter rep;
 

@@ -51,10 +51,6 @@ import org.eclipse.dltk.core.builder.ISourceLineTracker;
 public class TextMarkerEngineAndCallChecker implements IBuildParticipant,
         IBuildParticipantExtension {
 
-  /**
-   * @author Martin Toepfer
-   * 
-   */
   private class EngineAndCallCheckerVisitor extends ASTVisitor {
     private IProblemReporter rep;
 

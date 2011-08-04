@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.parser.ast.declarations;
 
@@ -23,10 +23,6 @@ import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.FieldDeclaration;
 import org.eclipse.dltk.ast.references.SimpleReference;
 
-/**
- * @author Martin Toepfer
- * 
- */
 public abstract class TextMarkerAbstractDeclaration extends FieldDeclaration {
   private SimpleReference ref;
 
