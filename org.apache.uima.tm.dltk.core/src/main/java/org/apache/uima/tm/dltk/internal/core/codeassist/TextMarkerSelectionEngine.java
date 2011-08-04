@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.internal.core.codeassist;
 
@@ -63,7 +63,6 @@ import org.eclipse.dltk.core.IOpenable;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
-
 
 public class TextMarkerSelectionEngine extends ScriptSelectionEngine {
   /**
@@ -242,7 +241,7 @@ public class TextMarkerSelectionEngine extends ScriptSelectionEngine {
 
     /**
      * @param xmlFilePath
-     *          absolute full path. i.e.: "de.uniwue.myengine" ".xml" will be added.
+     *          absolute full path. i.e.: "org.apache.uima.myengine" ".xml" will be added.
      * @return file.exists
      */
     public IFile getEngine(String xmlFilePath, IScriptProject project) {
@@ -281,8 +280,8 @@ public class TextMarkerSelectionEngine extends ScriptSelectionEngine {
 
     private void importTypesystem(String sRefName) {
       typesystems.add(sRefName);
-      IFolder folder = sourceModule.getScriptProject().getProject().getFolder(
-              TextMarkerProjectUtils.getDefaultDescriptorLocation());
+      IFolder folder = sourceModule.getScriptProject().getProject()
+              .getFolder(TextMarkerProjectUtils.getDefaultDescriptorLocation());
       if (folder != null) {
         int lastDot = sRefName.lastIndexOf('.');
         String fileNameShort = sRefName.substring(lastDot + 1);

@@ -1,4 +1,4 @@
-PACKAGE de.uniwue.casetrain;
+PACKAGE org.apache.uima;
 
 DECLARE childRow, Doc2, Doc3, Doc4, Doc5;
 INT id;

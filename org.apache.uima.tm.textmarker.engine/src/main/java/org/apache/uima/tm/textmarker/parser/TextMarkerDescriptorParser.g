@@ -56,26 +56,26 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Statement;
 
-import de.uniwue.dltk.textmarker.core.extensions.TextMarkerExternalFactory;
-import de.uniwue.dltk.textmarker.internal.core.builder.DescriptorManager;
-import de.uniwue.dltk.textmarker.parser.ast.ActionFactory;
-import de.uniwue.dltk.textmarker.parser.ast.ComponentDeclaration;
-import de.uniwue.dltk.textmarker.parser.ast.ComponentReference;
-import de.uniwue.dltk.textmarker.parser.ast.ComposedRuleElement;
-import de.uniwue.dltk.textmarker.parser.ast.ConditionFactory;
-import de.uniwue.dltk.textmarker.parser.ast.ExpressionFactory;
-import de.uniwue.dltk.textmarker.parser.ast.ScriptFactory;
-import de.uniwue.dltk.textmarker.parser.ast.StatementFactory;
-import de.uniwue.dltk.textmarker.parser.ast.TMTypeConstants;
-import de.uniwue.dltk.textmarker.parser.ast.TextMarkerBlock;
-import de.uniwue.dltk.textmarker.parser.ast.TextMarkerExpression;
-import de.uniwue.dltk.textmarker.parser.ast.TextMarkerRule;
-import de.uniwue.dltk.textmarker.parser.ast.TextMarkerRuleElement;
-import de.uniwue.dltk.textmarker.parser.ast.TextMarkerScriptBlock;
-import de.uniwue.dltk.textmarker.parser.ast.actions.TextMarkerAction;
-import de.uniwue.dltk.textmarker.parser.ast.conditions.TextMarkerCondition;
-import de.uniwue.dltk.textmarker.parser.ast.declarations.TextMarkerFeatureDeclaration;
-import de.uniwue.dltk.textmarker.parser.ast.declarations.TextMarkerPackageDeclaration;
+import org.apache.uima.tm.dltk.core.extensions.TextMarkerExternalFactory;
+import org.apache.uima.tm.dltk.internal.core.builder.DescriptorManager;
+import org.apache.uima.tm.dltk.parser.ast.ActionFactory;
+import org.apache.uima.tm.dltk.parser.ast.ComponentDeclaration;
+import org.apache.uima.tm.dltk.parser.ast.ComponentReference;
+import org.apache.uima.tm.dltk.parser.ast.ComposedRuleElement;
+import org.apache.uima.tm.dltk.parser.ast.ConditionFactory;
+import org.apache.uima.tm.dltk.parser.ast.ExpressionFactory;
+import org.apache.uima.tm.dltk.parser.ast.ScriptFactory;
+import org.apache.uima.tm.dltk.parser.ast.StatementFactory;
+import org.apache.uima.tm.dltk.parser.ast.TMTypeConstants;
+import org.apache.uima.tm.dltk.parser.ast.TextMarkerBlock;
+import org.apache.uima.tm.dltk.parser.ast.TextMarkerExpression;
+import org.apache.uima.tm.dltk.parser.ast.TextMarkerRule;
+import org.apache.uima.tm.dltk.parser.ast.TextMarkerRuleElement;
+import org.apache.uima.tm.dltk.parser.ast.TextMarkerScriptBlock;
+import org.apache.uima.tm.dltk.parser.ast.actions.TextMarkerAction;
+import org.apache.uima.tm.dltk.parser.ast.conditions.TextMarkerCondition;
+import org.apache.uima.tm.dltk.parser.ast.declarations.TextMarkerFeatureDeclaration;
+import org.apache.uima.tm.dltk.parser.ast.declarations.TextMarkerPackageDeclaration;
 }
 
 @parser::members {

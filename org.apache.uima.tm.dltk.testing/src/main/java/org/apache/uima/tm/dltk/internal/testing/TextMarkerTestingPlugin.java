@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.internal.testing;
 
@@ -31,22 +31,12 @@ public class TextMarkerTestingPlugin extends AbstractUIPlugin {
   public TextMarkerTestingPlugin() {
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see de.uniwue.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-   */
   @Override
   public void start(BundleContext context) throws Exception {
     super.start(context);
     plugin = this;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see de.uniwue.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-   */
   @Override
   public void stop(BundleContext context) throws Exception {
     plugin = null;

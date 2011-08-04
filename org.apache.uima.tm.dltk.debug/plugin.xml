@@ -30,7 +30,7 @@ under the License.
          point="org.eclipse.dltk.debug.scriptDebugModel">
       <debugModel
             debugModelId="org.eclipse.dltk.debug.textmarkerModel"
-            natureId="de.uniwue.dltk.textmarker.core.nature"
+            natureId="org.apache.uima.tm.dltk.core.TextMarkerNature"
             typeFactory="org.apache.uima.tm.dltk.internal.debug.TextMarkerTypeFactory">
       </debugModel>
    </extension>

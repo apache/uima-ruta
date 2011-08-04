@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.validator;
 
@@ -47,7 +47,6 @@ import org.eclipse.dltk.core.builder.IBuildContext;
 import org.eclipse.dltk.core.builder.IBuildParticipant;
 import org.eclipse.dltk.core.builder.IBuildParticipantExtension;
 import org.eclipse.dltk.core.builder.ISourceLineTracker;
-
 
 public class TextMarkerRessourceChecker implements IBuildParticipant, IBuildParticipantExtension {
 
@@ -159,7 +158,7 @@ public class TextMarkerRessourceChecker implements IBuildParticipant, IBuildPart
 
   /**
    * @param xmlFilePath
-   *          absolute full path. i.e.: "de.uniwue.mytypes" ".xml" will be added.
+   *          absolute full path. i.e.: "org.apache.uima.tm.mytypes" ".xml" will be added.
    * @return
    * @throws InvalidXMLException
    * @throws IOException

@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.internal.testing;
 
@@ -57,7 +57,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 
-
 public class TextMarkerTestingLaunchShortcut implements ILaunchShortcut {
 
   private static final String EMPTY_STRING = ""; //$NON-NLS-1$
@@ -68,11 +67,6 @@ public class TextMarkerTestingLaunchShortcut implements ILaunchShortcut {
   public TextMarkerTestingLaunchShortcut() {
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see de.uniwue.debug.ui.ILaunchShortcut#launch(de.uniwue.ui.IEditorPart, java.lang.String)
-   */
   public void launch(IEditorPart editor, String mode) {
     IModelElement element = DLTKUIPlugin.getEditorInputModelElement(editor.getEditorInput());
     if (element != null) {
@@ -82,12 +76,6 @@ public class TextMarkerTestingLaunchShortcut implements ILaunchShortcut {
     }
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see de.uniwue.debug.ui.ILaunchShortcut#launch(de.uniwue.jface.viewers.ISelection,
-   * java.lang.String)
-   */
   public void launch(ISelection selection, String mode) {
     if (selection instanceof IStructuredSelection) {
       launch(((IStructuredSelection) selection).toArray(), mode);

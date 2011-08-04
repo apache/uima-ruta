@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.textruler.tools;
 
@@ -39,20 +39,12 @@ public class BatchRuleScorer {
   private static AnalysisEngine ae = null;
 
   public static void main(String[] args) {
-    // preprocessorTMFile =
-    // "/Users/tobi/Documents/runtime-EclipseApplication/MLSandBox/script/de.uniwue.ml/ML.tm";
     engineFile = "/Users/tobi/Documents/UniLaptop/Diplomarbeit/TestDataSets/withPosTags/Subset100/10fold/desc/lp2ergebnisrandomgiantEngine.xml";
-    // foldRootDirectory =
-    // "/Users/tobi/Documents/UniLaptop/Diplomarbeit/TestDataSets/withPosTags/Subset100/10fold/";//
-    // mit / am Ende !!
     foldRootDirectory = "/Users/tobi/Documents/UniLaptop/Diplomarbeit/TestDataSets/withPosTags/9010_middle/";// mit
-    // /
-    // am
-    // Ende
-    // !!
     foldCount = 1;
-    String slotNames[] = { "de.uniwue.ml.types.etime", "de.uniwue.ml.types.stime",
-        "de.uniwue.ml.types.location", "de.uniwue.ml.types.speaker" };
+    String slotNames[] = { "org.apache.uima.tm.ml.types.etime",
+        "org.apache.uima.tm.ml.types.stime", "org.apache.uima.tm.ml.types.location",
+        "org.apache.uima.tm.ml.types.speaker" };
     String algIDs[] = { "optimizedLP2"// ,
     // "rapier",
     // "whisk"
@@ -68,14 +60,7 @@ public class BatchRuleScorer {
         }
       }
     }
-    // F1Scorer scorer = new F1Scorer(
-    // "/Users/tobi/Documents/runtime-EclipseApplication/MLSandBox/descriptor/de.uniwue.ml/lp2validateEngine.xml",
-    // "/Users/tobi/Documents/UniLaptop/Diplomarbeit/TestDataSets/withPosTags/Subset100/10fold/2/testing/withtags",
-    // "/Users/tobi/Documents/runtime-EclipseApplication/MLSandBox/output"
-    // );
-    // Score score = scorer.scoreSlot("de.uniwue.ml.types.stime");
-    // if (score != null)
-    // score.logInfo();
+
   }
 
   public static void scoreRules(int foldNumber, String slotName, String algorithmID) {

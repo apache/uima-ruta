@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.core;
 
@@ -70,7 +70,7 @@ public class TextMarkerLanguageToolkit extends AbstractLanguageToolkit {
   }
 
   public String getLanguageContentType() {
-    return "de.uniwue.dltk.tmContentType";
+    return "org.apache.uima.tm.dltk.tmContentType";
   }
 
   public static TextMarkerLanguageToolkit getDefault() {

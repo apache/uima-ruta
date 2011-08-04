@@ -19,7 +19,7 @@ under the License.
 -->
 
 <feature
-      id="de.uniwue.tm.cev.feature"
+      id="org.apache.uima.tm.cev.feature"
       label="CEV Feature"
       version="1.0.0.qualifier"
       provider-name="University of Würzburg">
@@ -213,7 +213,7 @@ Library.
    </requires>
 
    <plugin
-         id="de.uniwue.tm.cev"
+         id="org.apache.uima.tm.cev"
          download-size="0"
          install-size="0"
          version="0.0.0"

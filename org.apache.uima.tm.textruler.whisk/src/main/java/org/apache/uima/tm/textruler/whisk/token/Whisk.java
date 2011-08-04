@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.textruler.whisk.token;
 
@@ -56,7 +56,7 @@ public class Whisk extends TextRulerBasicLearner {
 
   public final static float STANDARD_ERROR_THRESHOLD = 0.1f;
 
-  public final static String STANDARD_POSTAG_ROOTTYPE = "de.uniwue.ml.ML.postag";
+  public final static String STANDARD_POSTAG_ROOTTYPE = "org.apache.uima.ml.ML.postag";
 
   TextRulerRuleList ruleList;
 
@@ -214,8 +214,8 @@ public class Whisk extends TextRulerBasicLearner {
       bestL = rule.getLaplacian();
     }
 
-    List<WhiskRuleItem> slotTerms = getTermsWithinBounds(allTerms, example.getAnnotations()[0]
-            .getBegin(), example.getAnnotations()[0].getEnd());
+    List<WhiskRuleItem> slotTerms = getTermsWithinBounds(allTerms,
+            example.getAnnotations()[0].getBegin(), example.getAnnotations()[0].getEnd());
     WhiskRuleItem firstSlotTerm = slotTerms.get(0);
     WhiskRuleItem lastSlotTerm = slotTerms.get(slotTerms.size() - 1);
 
@@ -292,9 +292,7 @@ public class Whisk extends TextRulerBasicLearner {
                 WhiskRule proposedRule4 = proposedRule2.copy();
                 WhiskRuleItem t4 = proposedRule4.searchItemWithTermNumber(term
                         .getTermNumberInExample());
-                t4
-                        .addOtherConstraint(new MLWhiskOtherConstraint(tokenAnnotation,
-                                posTagAnnotation));
+                t4.addOtherConstraint(new MLWhiskOtherConstraint(tokenAnnotation, posTagAnnotation));
                 proposedRule4.setNeedsCompile(true);
                 if (!rulesToTest.contains(proposedRule4))
                   rulesToTest.add(proposedRule4);
@@ -502,8 +500,8 @@ public class Whisk extends TextRulerBasicLearner {
                 && !left.isStarWildCard()) { // no direct neighbor and
           // no wildcard yet,
           // so insert a wildcard between us!
-          targetPattern.add(indexInPattern, WhiskRuleItem.newWildCardItem(left
-                  .getTermNumberInExample() + 1));
+          targetPattern.add(indexInPattern,
+                  WhiskRuleItem.newWildCardItem(left.getTermNumberInExample() + 1));
           indexInPattern++;
         }
       }

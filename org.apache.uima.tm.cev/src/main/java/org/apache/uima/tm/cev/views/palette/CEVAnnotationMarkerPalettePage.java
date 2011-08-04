@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.cev.views.palette;
 
@@ -235,8 +235,9 @@ public class CEVAnnotationMarkerPalettePage extends Page implements
 
     while (typeIterator.hasNext()) {
       Type type = (Type) typeIterator.next();
-      if (!(type.getName().startsWith("de.uniwue.tm.textmarker.kernel.type")
-              || type.getName().startsWith("de.uniwue.tm.type")
+      // TODO find a generic way to filter these types:
+      if (!(type.getName().startsWith("org.apache.uima.tm.textmarker.kernel.type")
+              || type.getName().startsWith("org.apache.uima.tm.type")
               || type.getName().startsWith("uima.cas") || type.getName().startsWith("uima.tcas"))) {
         types.add(type);
         int typeShortName = type.getShortName().length();

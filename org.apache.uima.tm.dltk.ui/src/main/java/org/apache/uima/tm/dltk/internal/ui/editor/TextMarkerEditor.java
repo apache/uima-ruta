@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.internal.ui.editor;
 
@@ -80,7 +80,6 @@ import org.eclipse.ui.texteditor.ITextEditorActionConstants;
 import org.eclipse.ui.texteditor.IUpdate;
 import org.eclipse.ui.texteditor.SourceViewerDecorationSupport;
 import org.eclipse.ui.texteditor.TextOperationAction;
-
 
 public class TextMarkerEditor extends ScriptEditor {
 
@@ -436,7 +435,7 @@ public class TextMarkerEditor extends ScriptEditor {
 
   @Override
   protected void initializeKeyBindingScopes() {
-    setKeyBindingScopes(new String[] { "de.uniwue.dltk.ui.textMarkerEditorScope" }); //$NON-NLS-1$
+    setKeyBindingScopes(new String[] { "org.apache.uima.tm.dltk.ui.textMarkerEditorScope" }); //$NON-NLS-1$
   }
 
   @Override
@@ -498,8 +497,7 @@ public class TextMarkerEditor extends ScriptEditor {
       IRegion visibleRegion = sourceViewer.getVisibleRegion();
       // http://dev.eclipse.org/bugs/show_bug.cgi?id=34195
       visible = (targetOffset >= visibleRegion.getOffset() && targetOffset <= visibleRegion
-              .getOffset()
-              + visibleRegion.getLength());
+              .getOffset() + visibleRegion.getLength());
     }
 
     if (!visible) {

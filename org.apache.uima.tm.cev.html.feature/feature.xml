@@ -19,7 +19,7 @@ under the License.
 -->
 
 <feature
-      id="de.uniwue.tm.cev.html.feature"
+      id="org.apache.uima.tm.cev.html.feature"
       label="CEV HTML Feature"
       version="1.0.0.qualifier"
       provider-name="University of Würzburg">
@@ -203,14 +203,14 @@ Library.
    <requires>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="de.uniwue.tm.cev"/>
+      <import plugin="org.apache.uima.tm.cev"/>
       <import plugin="org.apache.uima.runtime" version="2.3.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.mozilla.xpcom"/>
    </requires>
 
    <plugin
-         id="de.uniwue.tm.cev.html"
+         id="org.apache.uima.tm.cev.html"
          download-size="0"
          install-size="0"
          version="0.0.0"

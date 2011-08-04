@@ -1,9 +1,9 @@
-PACKAGE de.uniwue.casetrain;
+PACKAGE org.apache.uima;
 
-SCRIPT de.uniwue.casetrain.DashTree;
-SCRIPT de.uniwue.casetrain.DashTreeError;
-SCRIPT de.uniwue.casetrain.BuildTree;
-TYPESYSTEM de.uniwue.casetrain.TerminologyTypeSystem;
+SCRIPT org.apache.uima.DashTree;
+SCRIPT org.apache.uima.DashTreeError;
+SCRIPT org.apache.uima.BuildTree;
+TYPESYSTEM org.apache.uima.TerminologyTypeSystem;
 
 Document(CALL,DashTree);
  

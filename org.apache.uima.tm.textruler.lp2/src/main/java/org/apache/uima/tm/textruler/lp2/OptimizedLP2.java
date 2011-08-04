@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.textruler.lp2;
 
@@ -38,13 +38,12 @@ import org.apache.uima.tm.textruler.core.TextRulerRule;
 import org.apache.uima.tm.textruler.core.TextRulerRuleList;
 import org.apache.uima.tm.textruler.core.TextRulerStatisticsCollector;
 import org.apache.uima.tm.textruler.core.TextRulerTarget;
-import org.apache.uima.tm.textruler.core.TextRulerToolkit;
 import org.apache.uima.tm.textruler.core.TextRulerTarget.MLTargetType;
+import org.apache.uima.tm.textruler.core.TextRulerToolkit;
 import org.apache.uima.tm.textruler.extension.TextRulerLearnerDelegate;
 import org.apache.uima.tm.textruler.lp2.LP2RuleItem.MLLP2ContextConstraint;
 import org.apache.uima.tm.textruler.lp2.LP2RuleItem.MLLP2OtherConstraint;
 import org.apache.uima.util.FileUtils;
-
 
 public class OptimizedLP2 extends BasicLP2 {
 
@@ -95,10 +94,12 @@ public class OptimizedLP2 extends BasicLP2 {
     rulesToTest.addAll(startRules);
     rulesToTest.addAll(ctxStartRules);
 
-    sendStatusUpdateToDelegate("Round " + roundNumber + " - Testing " + rulesToTest.size()
-            + " start rules... " + " - uncovered examples: "
-            + (examples.size() - coveredExamples.size() + " / " + examples.size()) + " cs: "
-            + cachedTestedStartRuleStatistics.size(), TextRulerLearnerState.ML_RUNNING, false);
+    sendStatusUpdateToDelegate(
+            "Round " + roundNumber + " - Testing " + rulesToTest.size() + " start rules... "
+                    + " - uncovered examples: "
+                    + (examples.size() - coveredExamples.size() + " / " + examples.size())
+                    + " cs: " + cachedTestedStartRuleStatistics.size(),
+            TextRulerLearnerState.ML_RUNNING, false);
     testStartRulesIfNotCached(rulesToTest);
     if (shouldAbort())
       return;
@@ -315,8 +316,8 @@ public class OptimizedLP2 extends BasicLP2 {
         // and calculate intersection of coverings:
         TextRulerStatisticsCollector newCovering;
         if (currentCovering != null)
-          newCovering = getCoveringIntersection(currentCovering, candidateRule
-                  .getCoveringStatistics());
+          newCovering = getCoveringIntersection(currentCovering,
+                  candidateRule.getCoveringStatistics());
         else
           newCovering = candidateRule.getCoveringStatistics();
 
@@ -357,9 +358,8 @@ public class OptimizedLP2 extends BasicLP2 {
     boolean isBestRule = !(tooFewPositives || tooManyErrors);
 
     if (TextRulerToolkit.DEBUG && SAVE_DEBUG_INFO_IN_TEMPFOLDER)
-      TextRulerToolkit.appendStringToFile(tempDirectory() + "bestcandidates.tm", newRule
-              .getRuleString()
-              + "\n");
+      TextRulerToolkit.appendStringToFile(tempDirectory() + "bestcandidates.tm",
+              newRule.getRuleString() + "\n");
 
     if (isBestRule) {
       currentBestRules.add(newRule);
@@ -392,9 +392,8 @@ public class OptimizedLP2 extends BasicLP2 {
         // + " ; "+newCTXRule.getCoveringStatistics());
 
         if (TextRulerToolkit.DEBUG && SAVE_DEBUG_INFO_IN_TEMPFOLDER)
-          TextRulerToolkit.appendStringToFile(tempDirectory() + "ctxcandidates.tm", newCTXRule
-                  .getRuleString()
-                  + "\n");
+          TextRulerToolkit.appendStringToFile(tempDirectory() + "ctxcandidates.tm",
+                  newCTXRule.getRuleString() + "\n");
 
         if (isGoodCTXRule) {
           currentContextualRules.add(newCTXRule);
@@ -477,8 +476,8 @@ public class OptimizedLP2 extends BasicLP2 {
     boolean isLeftBoundary = (target.type == MLTargetType.SINGLE_LEFT_BOUNDARY || target.type == MLTargetType.SINGLE_LEFT_CORRECTION);
     int thePosition = isLeftBoundary ? exampleAnnotation.getBegin() : exampleAnnotation.getEnd();
     List<AnnotationFS> leftContext = TextRulerToolkit.getAnnotationsBeforePosition(docCas,
-            thePosition, windowSize, TextRulerToolkit.getFilterSetWithSlotNames(slotNames,
-                    filterSet), tokensRootType);
+            thePosition, windowSize,
+            TextRulerToolkit.getFilterSetWithSlotNames(slotNames, filterSet), tokensRootType);
 
     List<AnnotationFS> rightContext;
     if (target.type == MLTargetType.SINGLE_LEFT_CORRECTION
@@ -520,7 +519,7 @@ public class OptimizedLP2 extends BasicLP2 {
       }
 
       // // POS-Tags created by our test hmm tagger.
-      // Type posTagsRootType = ts.getType("de.uniwue.ml.ML.postag");
+      // Type posTagsRootType = ts.getType("org.apache.uima.tm.ml.ML.postag");
       // if (posTagsRootType != null)
       // {
       // List<AnnotationFS> posTagAnnotations =
@@ -538,7 +537,7 @@ public class OptimizedLP2 extends BasicLP2 {
       // }
       // TextRulerToolkit.logIfDebug("");
       // }
-      //					
+      //
       // TextRulerAnnotation posTagAnnotation = new
       // TextRulerAnnotation(posTagAnnotations.get(0),
       // example.getDocument());

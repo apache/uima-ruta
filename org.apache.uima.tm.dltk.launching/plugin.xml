@@ -23,7 +23,7 @@ under the License.
   <extension point="org.eclipse.dltk.launching.interpreterInstallTypes">
     <interpreterInstallType
       class="org.apache.uima.tm.dltk.internal.launching.GenericTextMarkerInstallType"
-      id="de.uniwue.dltk.internal.debug.ui.launcher.GenericTextMarkerInstallType">
+      id="org.apache.uima.tm.dltk.internal.debug.ui.launcher.GenericTextMarkerInstallType">
     </interpreterInstallType>
   </extension>
 
@@ -86,7 +86,7 @@ under the License.
      <interpreterInstall
            home="${eclipse_home}"
            id="org.apache.uima.tm.dltk.launching.embeddedTextMarker"
-           interpreterInstallType="de.uniwue.dltk.internal.debug.ui.launcher.GenericTextMarkerInstallType"
+           interpreterInstallType="org.apache.uima.tm.dltk.internal.debug.ui.launcher.GenericTextMarkerInstallType"
            name="TextMarker Interpreter">
      </interpreterInstall>
   </extension>

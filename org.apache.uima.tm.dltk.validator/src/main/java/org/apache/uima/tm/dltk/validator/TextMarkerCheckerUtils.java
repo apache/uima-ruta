@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.validator;
 
@@ -45,7 +45,6 @@ import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
-
 
 /**
  * @author Martin Toepfer
@@ -117,8 +116,7 @@ public class TextMarkerCheckerUtils {
         }
         if (elementType == IModelElement.METHOD) {
           String nSpace = namespaceStack.empty() ? modelElement.getElementName() : namespaceStack
-                  .peek()
-                  + "." + modelElement.getElementName();
+                  .peek() + "." + modelElement.getElementName();
           namespaceStack.push(nSpace);
           imports.addAll(collectElements((IMethod) modelElement, type, namespaceStack));
           namespaceStack.pop();
@@ -169,7 +167,7 @@ public class TextMarkerCheckerUtils {
 
   /**
    * @param xmlFilePath
-   *          absolute full path. i.e.: "de.uniwue.myengine" ".xml" will be added.
+   *          absolute full path. i.e.: "org.apache.uima.tm.myengine" ".xml" will be added.
    * @return file.exists
    */
   public static boolean checkEngineImport(String xmlFilePath, IScriptProject project) {
@@ -206,7 +204,7 @@ public class TextMarkerCheckerUtils {
 
   /**
    * @param resourceFilePath
-   *          absolute full path. i.e.: "de.uniwue.TestList.txt"
+   *          absolute full path. i.e.: "org.apache.uima.tm.TestList.txt"
    * @return file.exists
    */
   public static boolean checkRessourceExistence(String resourceFilePath, IScriptProject project) {
@@ -245,7 +243,7 @@ public class TextMarkerCheckerUtils {
 
   /**
    * @param xmlFilePath
-   *          absolute full path. i.e.: "de.uniwue.myengine" ".xml" will be added.
+   *          absolute full path. i.e.: "org.apache.uima.tm.myengine" ".xml" will be added.
    * @return file.exists
    */
   public static IFile getEngine(String xmlFilePath, IScriptProject project) {

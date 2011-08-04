@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.internal.ui.actions;
 
@@ -29,7 +29,7 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
 public class OpenTextMarkerSearchPageAction implements IWorkbenchWindowActionDelegate {
 
-  private static final String TM_SEARCH_PAGE_ID = "de.uniwue.dltk.ui.TextMarkerSearchPage";
+  private static final String TM_SEARCH_PAGE_ID = "org.apache.uima.tm.dltk.ui.TextMarkerSearchPage";
 
   private IWorkbenchWindow window;
 

@@ -38,7 +38,7 @@ under the License.
       <launchConfigurationTypeImage
             configTypeID="org.apache.uima.tm.dltk.testing.launchConfig"
             icon="icons/full/obj16/textmarker.png"
-            id="org.de.uniwue.dltk.textmarker.testing.launchConfigImage">
+            id="org.apache.uima.tm.dltk.textmarker.testing.launchConfigImage">
       </launchConfigurationTypeImage>
    </extension>
    <extension

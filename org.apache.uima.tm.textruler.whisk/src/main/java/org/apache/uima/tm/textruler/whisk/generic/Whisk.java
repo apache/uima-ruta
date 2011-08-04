@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.textruler.whisk.generic;
 
@@ -60,7 +60,7 @@ public class Whisk extends TextRulerBasicLearner {
 
   public final static float STANDARD_ERROR_THRESHOLD = 0.1f;
 
-  public final static String STANDARD_POSTAG_ROOTTYPE = "de.uniwue.ml.ML.postag";
+  public final static String STANDARD_POSTAG_ROOTTYPE = "org.apache.uima.tm.ml.ML.postag";
 
   TextRulerRuleList ruleList;
 
@@ -78,9 +78,8 @@ public class Whisk extends TextRulerBasicLearner {
 
   private Map<String, TextRulerStatisticsCollector> cachedTestedRuleStatistics = new HashMap<String, TextRulerStatisticsCollector>();
 
-  public Whisk(String inputDir, String prePropTmFile, String tmpDir,
-      String[] slotNames, Set<String> filterSet,
-      TextRulerLearnerDelegate delegate) {
+  public Whisk(String inputDir, String prePropTmFile, String tmpDir, String[] slotNames,
+          Set<String> filterSet, TextRulerLearnerDelegate delegate) {
     super(inputDir, prePropTmFile, tmpDir, slotNames, filterSet, delegate);
   }
 
@@ -120,14 +119,12 @@ public class Whisk extends TextRulerBasicLearner {
     ruleList = new TextRulerRuleList();
     coveredExamples = new HashSet<TextRulerExample>();
 
-    sendStatusUpdateToDelegate("Creating examples...",
-        TextRulerLearnerState.ML_RUNNING, false);
+    sendStatusUpdateToDelegate("Creating examples...", TextRulerLearnerState.ML_RUNNING, false);
     for (int i = 0; i < slotNames.length; i++) {
       TextRulerTarget target = new TextRulerTarget(slotNames[i], this);
       exampleDocuments.createExamplesForTarget(target);
 
-      TextRulerExampleDocument[] docs = exampleDocuments
-          .getSortedDocumentsInCacheOptimizedOrder();
+      TextRulerExampleDocument[] docs = exampleDocuments.getSortedDocumentsInCacheOptimizedOrder();
 
       allExamplesCount = exampleDocuments.getAllPositiveExamples().size();
 
@@ -145,13 +142,12 @@ public class Whisk extends TextRulerBasicLearner {
             // break;
             // else
             if (newRule != null
-                && (newRule.getCoveringStatistics().getCoveredNegativesCount() == 00 || newRule
-                    .getLaplacian() <= errorThreshold)) {
+                    && (newRule.getCoveringStatistics().getCoveredNegativesCount() == 00 || newRule
+                            .getLaplacian() <= errorThreshold)) {
               ruleList.addRule(newRule);
-              coveredExamples.addAll(newRule.getCoveringStatistics()
-                  .getCoveredPositiveExamples());
-              sendStatusUpdateToDelegate("New Rule added...",
-                  TextRulerLearnerState.ML_RUNNING, true);
+              coveredExamples.addAll(newRule.getCoveringStatistics().getCoveredPositiveExamples());
+              sendStatusUpdateToDelegate("New Rule added...", TextRulerLearnerState.ML_RUNNING,
+                      true);
             }
           }
         }
@@ -163,32 +159,30 @@ public class Whisk extends TextRulerBasicLearner {
     cachedTestedRuleStatistics.clear();
   }
 
-  protected WhiskRule growRule(TextRulerExampleDocument doc,
-      TextRulerExample example) {
-    sendStatusUpdateToDelegate("Creating new rule from seed...",
-        TextRulerLearnerState.ML_RUNNING, false);
+  protected WhiskRule growRule(TextRulerExampleDocument doc, TextRulerExample example) {
+    sendStatusUpdateToDelegate("Creating new rule from seed...", TextRulerLearnerState.ML_RUNNING,
+            false);
     WhiskRule theRule = new WhiskRule(this, example.getTarget(), example);
     int numberOfSlotsInTag = example.getAnnotations().length;
     for (int i = 0; i < numberOfSlotsInTag; i++)
       theRule.getPatterns().add(new TextRulerSlotPattern());
 
-    sendStatusUpdateToDelegate("Creating new rule: anchoring...",
-        TextRulerLearnerState.ML_RUNNING, false);
+    sendStatusUpdateToDelegate("Creating new rule: anchoring...", TextRulerLearnerState.ML_RUNNING,
+            false);
     for (int i = 0; i < numberOfSlotsInTag; i++) {
       theRule = anchor(theRule, doc, example, i);
       if (shouldAbort())
         return null;
     }
 
-    sendStatusUpdateToDelegate("Creating new rule: extending...",
-        TextRulerLearnerState.ML_RUNNING, false);
+    sendStatusUpdateToDelegate("Creating new rule: extending...", TextRulerLearnerState.ML_RUNNING,
+            false);
     if (theRule != null) {
       double oldLaplacian = theRule.getLaplacian();
       int subRoundNumber = 0;
       // repeat while we still make errors...
       while (theRule.getCoveringStatistics().getCoveredNegativesCount() > 0) {
-        WhiskRule extendedRule = extendRule(theRule, doc, example,
-            subRoundNumber);
+        WhiskRule extendedRule = extendRule(theRule, doc, example, subRoundNumber);
         if (extendedRule == null) {
           // this way we get the previous rule
           // as the best rule...
@@ -198,7 +192,7 @@ public class Whisk extends TextRulerBasicLearner {
         TextRulerToolkit.log("----------------------------");
         TextRulerToolkit.log("BEST EXTENSION IS: " + theRule.getRuleString());
         TextRulerToolkit.log("Laplacian: " + theRule.getLaplacian() + "    ; "
-            + theRule.getCoveringStatistics());
+                + theRule.getCoveringStatistics());
         subRoundNumber++;
 
         double newLaplacian = theRule.getLaplacian();
@@ -214,7 +208,7 @@ public class Whisk extends TextRulerBasicLearner {
   }
 
   protected WhiskRule extendRule(WhiskRule rule, TextRulerExampleDocument doc,
-      TextRulerExample example, int subRoundNumber) {
+          TextRulerExample example, int subRoundNumber) {
     WhiskRule bestRule = null;
     double bestL = 1.0;
     int bestRuleConstraintPoints = -1;
@@ -223,11 +217,9 @@ public class Whisk extends TextRulerBasicLearner {
       bestL = rule.getLaplacian();
     }
 
-    List<List<WhiskRuleItem>> slotTerms = getTermsWithinBounds(example
-        .getAnnotations()[0].getBegin(), example.getAnnotations()[0].getEnd(),
-        example);
-    List<List<WhiskRuleItem>> windowTerms = getTermsWithinWindow(slotTerms,
-        example, 0);
+    List<List<WhiskRuleItem>> slotTerms = getTermsWithinBounds(
+            example.getAnnotations()[0].getBegin(), example.getAnnotations()[0].getEnd(), example);
+    List<List<WhiskRuleItem>> windowTerms = getTermsWithinWindow(slotTerms, example, 0);
 
     List<TextRulerRule> rulesToTest = new ArrayList<TextRulerRule>();
     for (List<WhiskRuleItem> eachList : windowTerms) {
@@ -265,29 +257,25 @@ public class Whisk extends TextRulerBasicLearner {
         // for testpurposes
         // in order to test WHISK with PosTag Terms...
         if (posTagRootTypeName != null && posTagRootTypeName.length() > 0) {
-          TextRulerAnnotation tokenAnnotation = term.getWordConstraint()
-              .getTokenAnnotation();
+          TextRulerAnnotation tokenAnnotation = term.getWordConstraint().getTokenAnnotation();
           CAS cas = example.getDocumentCAS();
           TypeSystem ts = cas.getTypeSystem();
           Type posTagsRootType = ts.getType(posTagRootTypeName);
           if (ts != null) {
             // POS-Tags created by our test hmm tagger.
-            List<AnnotationFS> posTagAnnotations = TextRulerToolkit
-                .getAnnotationsWithinBounds(cas, tokenAnnotation.getBegin(),
-                    tokenAnnotation.getEnd(), null, posTagsRootType);
+            List<AnnotationFS> posTagAnnotations = TextRulerToolkit.getAnnotationsWithinBounds(cas,
+                    tokenAnnotation.getBegin(), tokenAnnotation.getEnd(), null, posTagsRootType);
             if (posTagAnnotations.size() > 0) {
               AnnotationFS posTag = posTagAnnotations.get(0);
               if (posTag.getBegin() == tokenAnnotation.getBegin()
-                  && posTag.getEnd() == tokenAnnotation.getEnd()) {
-                TextRulerAnnotation posTagAnnotation = new TextRulerAnnotation(
-                    posTag, doc);
+                      && posTag.getEnd() == tokenAnnotation.getEnd()) {
+                TextRulerAnnotation posTagAnnotation = new TextRulerAnnotation(posTag, doc);
 
                 // 1. most specific term with all constraints we
                 // have:
                 WhiskRule proposedRule3 = proposedRule.copy();
                 WhiskRuleItem t3 = term;
-                t3.addOtherConstraint(new MLWhiskOtherConstraint(
-                    tokenAnnotation, posTagAnnotation));
+                t3.addOtherConstraint(new MLWhiskOtherConstraint(tokenAnnotation, posTagAnnotation));
                 proposedRule3.setNeedsCompile(true);
                 if (!rulesToTest.contains(proposedRule3))
                   rulesToTest.add(proposedRule3);
@@ -296,8 +284,8 @@ public class Whisk extends TextRulerBasicLearner {
                 if (proposedRule2 != null) {
                   WhiskRule proposedRule4 = proposedRule2.copy();
                   WhiskRuleItem t4 = term;
-                  t4.addOtherConstraint(new MLWhiskOtherConstraint(
-                      tokenAnnotation, posTagAnnotation));
+                  t4.addOtherConstraint(new MLWhiskOtherConstraint(tokenAnnotation,
+                          posTagAnnotation));
                   proposedRule4.setNeedsCompile(true);
                   if (!rulesToTest.contains(proposedRule4))
                     rulesToTest.add(proposedRule4);
@@ -307,8 +295,7 @@ public class Whisk extends TextRulerBasicLearner {
                 // tag constraint:
                 WhiskRule proposedRule5 = proposedRule.copy();
                 WhiskRuleItem t5 = term;
-                t5.addOtherConstraint(new MLWhiskOtherConstraint(
-                    tokenAnnotation, posTagAnnotation));
+                t5.addOtherConstraint(new MLWhiskOtherConstraint(tokenAnnotation, posTagAnnotation));
                 t5.setWordConstraint(null);
                 proposedRule5.setNeedsCompile(true);
                 if (!rulesToTest.contains(proposedRule5))
@@ -322,20 +309,20 @@ public class Whisk extends TextRulerBasicLearner {
     if (rulesToTest.size() == 0)
       return bestRule;
 
-    sendStatusUpdateToDelegate("Round "
-        + roundNumber
-        + "."
-        + subRoundNumber
-        + " - Testing "
-        + rulesToTest.size()
-        + " rules... "
-        + " - uncovered examples: "
-        + (allExamplesCount - coveredExamples.size() + " / " + allExamplesCount
-            + " ; cs=" + cachedTestedRuleStatistics.size()),
-        TextRulerLearnerState.ML_RUNNING, false);
+    sendStatusUpdateToDelegate(
+            "Round "
+                    + roundNumber
+                    + "."
+                    + subRoundNumber
+                    + " - Testing "
+                    + rulesToTest.size()
+                    + " rules... "
+                    + " - uncovered examples: "
+                    + (allExamplesCount - coveredExamples.size() + " / " + allExamplesCount
+                            + " ; cs=" + cachedTestedRuleStatistics.size()),
+            TextRulerLearnerState.ML_RUNNING, false);
 
-    TextRulerToolkit.log("Testing " + rulesToTest.size()
-        + " rules on training set...");
+    TextRulerToolkit.log("Testing " + rulesToTest.size() + " rules on training set...");
     for (TextRulerRule r : rulesToTest)
       TextRulerToolkit.log(r.getRuleString());
     testRulesIfNotCached(rulesToTest);
@@ -361,16 +348,15 @@ public class Whisk extends TextRulerBasicLearner {
     return bestRule;
   }
 
-  private List<List<WhiskRuleItem>> getTermsWithinWindow(
-      List<List<WhiskRuleItem>> slotTerms, TextRulerExample example, int steps) {
+  private List<List<WhiskRuleItem>> getTermsWithinWindow(List<List<WhiskRuleItem>> slotTerms,
+          TextRulerExample example, int steps) {
     if (steps == windowSize)
       return slotTerms;
     List<List<WhiskRuleItem>> result = new ArrayList<List<WhiskRuleItem>>();
 
     for (List<WhiskRuleItem> list : slotTerms) {
       List<WhiskRuleItem> termsBefore = getTermsBefore(list.get(0), example);
-      List<WhiskRuleItem> termsAfter = getTermsAfter(list.get(list.size() - 1),
-          example);
+      List<WhiskRuleItem> termsAfter = getTermsAfter(list.get(list.size() - 1), example);
       if (!termsBefore.isEmpty()) {
         for (WhiskRuleItem before : termsBefore) {
           for (WhiskRuleItem after : termsAfter) {
@@ -394,8 +380,7 @@ public class Whisk extends TextRulerBasicLearner {
     return result;
   }
 
-  protected WhiskRule createNewRuleByAddingTerm(WhiskRule baseRule,
-      WhiskRuleItem term) {
+  protected WhiskRule createNewRuleByAddingTerm(WhiskRule baseRule, WhiskRuleItem term) {
     if (term == null)
       return null;
     if (term.isStarWildCard() || term.getWordConstraint() == null)
@@ -403,21 +388,17 @@ public class Whisk extends TextRulerBasicLearner {
     WhiskRule newRule = baseRule.copy();
     // int foundSlotNumber = -1; // debug info
     // String foundSlotPattern = "";
-    int termBeginNumber = term.getWordConstraint().getTokenAnnotation()
-        .getBegin();
+    int termBeginNumber = term.getWordConstraint().getTokenAnnotation().getBegin();
     int termEndNumber = term.getWordConstraint().getTokenAnnotation().getEnd();
     TextRulerRulePattern targetPattern = null;
     TextRulerRulePattern previousSlotPostFillerPattern = null;
     for (int i = 0; i < newRule.getPatterns().size(); i++) {
       TextRulerSlotPattern slotPattern = newRule.getPatterns().get(i);
-      WhiskRuleItem it = (WhiskRuleItem) slotPattern.preFillerPattern
-          .lastItem(); // look at the
+      WhiskRuleItem it = (WhiskRuleItem) slotPattern.preFillerPattern.lastItem(); // look at the
       // prefiller
       // pattern
-      if (it != null
-          && it.getWordConstraint() != null
-          && termEndNumber <= it.getWordConstraint().getTokenAnnotation()
-              .getBegin())
+      if (it != null && it.getWordConstraint() != null
+              && termEndNumber <= it.getWordConstraint().getTokenAnnotation().getBegin())
         targetPattern = slotPattern.preFillerPattern;
       if (targetPattern == null && slotPattern.fillerPattern.size() > 0) // now
       // look
@@ -428,8 +409,7 @@ public class Whisk extends TextRulerBasicLearner {
       {
         it = (WhiskRuleItem) slotPattern.fillerPattern.firstItem();
         if (it.getWordConstraint() != null
-            && termEndNumber <= it.getWordConstraint().getTokenAnnotation()
-                .getBegin()) // it's
+                && termEndNumber <= it.getWordConstraint().getTokenAnnotation().getBegin()) // it's
           // still
           // for
           // the prefiller
@@ -442,8 +422,7 @@ public class Whisk extends TextRulerBasicLearner {
         else {
           it = (WhiskRuleItem) slotPattern.fillerPattern.lastItem();
           if (it.getWordConstraint() != null
-              && termEndNumber <= it.getWordConstraint().getTokenAnnotation()
-                  .getBegin()) {
+                  && termEndNumber <= it.getWordConstraint().getTokenAnnotation().getBegin()) {
             targetPattern = slotPattern.fillerPattern;
           }
         }
@@ -457,8 +436,7 @@ public class Whisk extends TextRulerBasicLearner {
       {
         it = (WhiskRuleItem) slotPattern.postFillerPattern.firstItem();
         if (it.getWordConstraint() != null
-            && termEndNumber <= it.getWordConstraint().getTokenAnnotation()
-                .getBegin()) // it's
+                && termEndNumber <= it.getWordConstraint().getTokenAnnotation().getBegin()) // it's
           // still
           // for
           // the filler
@@ -471,8 +449,7 @@ public class Whisk extends TextRulerBasicLearner {
         else {
           it = (WhiskRuleItem) slotPattern.postFillerPattern.lastItem();
           if (it.getWordConstraint() != null
-              && termEndNumber <= it.getWordConstraint().getTokenAnnotation()
-                  .getBegin())
+                  && termEndNumber <= it.getWordConstraint().getTokenAnnotation().getBegin())
             targetPattern = slotPattern.postFillerPattern;
         }
       }
@@ -506,8 +483,7 @@ public class Whisk extends TextRulerBasicLearner {
     }
 
     if (targetPattern == null) {
-      TextRulerToolkit
-          .log("ERROR, NO TARGET PATTERN FOR NEW RULE TERM FOUND !");
+      TextRulerToolkit.log("ERROR, NO TARGET PATTERN FOR NEW RULE TERM FOUND !");
     } else {
       // TextRulerToolkit.log("Ok, found for Rule: "+newRule.getRuleString());
       // TextRulerToolkit.log("Term: "+term.getTermNumberInExample()+" ; "+term);
@@ -522,25 +498,21 @@ public class Whisk extends TextRulerBasicLearner {
         WhiskRuleItem wildCard = null;
         for (TextRulerRuleItem i : newRule.getPatterns().get(0).preFillerPattern) {
           if (((WhiskRuleItem) i).isStarWildCard()) {
-            WhiskRuleItem left = newRule.searchNeighborOfItem(
-                ((WhiskRuleItem) i), true);
-            WhiskRuleItem right = newRule.searchNeighborOfItem(
-                ((WhiskRuleItem) i), false);
+            WhiskRuleItem left = newRule.searchNeighborOfItem(((WhiskRuleItem) i), true);
+            WhiskRuleItem right = newRule.searchNeighborOfItem(((WhiskRuleItem) i), false);
             if (left.getWordConstraint().getTokenAnnotation().getEnd() <= termBeginNumber
-                && right.getWordConstraint().getTokenAnnotation().getBegin() >= termEndNumber)
+                    && right.getWordConstraint().getTokenAnnotation().getBegin() >= termEndNumber)
               wildCard = (WhiskRuleItem) i;
           }
         }
         if (wildCard == null) {
           for (TextRulerRuleItem i : newRule.getPatterns().get(0).fillerPattern) {
             if (((WhiskRuleItem) i).isStarWildCard()) {
-              WhiskRuleItem left = newRule.searchNeighborOfItem(
-                  ((WhiskRuleItem) i), true);
-              WhiskRuleItem right = newRule.searchNeighborOfItem(
-                  ((WhiskRuleItem) i), false);
+              WhiskRuleItem left = newRule.searchNeighborOfItem(((WhiskRuleItem) i), true);
+              WhiskRuleItem right = newRule.searchNeighborOfItem(((WhiskRuleItem) i), false);
               if (left != null
-                  && left.getWordConstraint().getTokenAnnotation().getEnd() <= termBeginNumber
-                  && right.getWordConstraint().getTokenAnnotation().getBegin() >= termEndNumber)
+                      && left.getWordConstraint().getTokenAnnotation().getEnd() <= termBeginNumber
+                      && right.getWordConstraint().getTokenAnnotation().getBegin() >= termEndNumber)
                 wildCard = (WhiskRuleItem) i;
             }
           }
@@ -548,12 +520,10 @@ public class Whisk extends TextRulerBasicLearner {
         if (wildCard == null) {
           for (TextRulerRuleItem i : newRule.getPatterns().get(0).postFillerPattern) {
             if (((WhiskRuleItem) i).isStarWildCard()) {
-              WhiskRuleItem left = newRule.searchNeighborOfItem(
-                  ((WhiskRuleItem) i), true);
-              WhiskRuleItem right = newRule.searchNeighborOfItem(
-                  ((WhiskRuleItem) i), false);
+              WhiskRuleItem left = newRule.searchNeighborOfItem(((WhiskRuleItem) i), true);
+              WhiskRuleItem right = newRule.searchNeighborOfItem(((WhiskRuleItem) i), false);
               if (left.getWordConstraint().getTokenAnnotation().getEnd() <= termBeginNumber
-                  && right.getWordConstraint().getTokenAnnotation().getBegin() >= termEndNumber)
+                      && right.getWordConstraint().getTokenAnnotation().getBegin() >= termEndNumber)
                 wildCard = (WhiskRuleItem) i;
             }
           }
@@ -561,7 +531,7 @@ public class Whisk extends TextRulerBasicLearner {
         if (wildCard != null) {
           if (!wildCard.isStarWildCard()) {
             TextRulerToolkit
-                .log("ERROR, FOUND A TERM WITH THE SAME NUMBER THAT IS NOT A WILDCARD! HOW IS THAT???");
+                    .log("ERROR, FOUND A TERM WITH THE SAME NUMBER THAT IS NOT A WILDCARD! HOW IS THAT???");
             return null;
           }
           if (!targetPattern.contains(wildCard)) {
@@ -575,8 +545,7 @@ public class Whisk extends TextRulerBasicLearner {
           for (int i = 0; i < targetPattern.size(); i++) {
             WhiskRuleItem it = (WhiskRuleItem) targetPattern.get(i);
             if (it.getWordConstraint() != null
-                && termEndNumber <= it.getWordConstraint().getTokenAnnotation()
-                    .getBegin()) {
+                    && termEndNumber <= it.getWordConstraint().getTokenAnnotation().getBegin()) {
               indexInPattern = i;
               break;
             }
@@ -608,11 +577,10 @@ public class Whisk extends TextRulerBasicLearner {
         if (!left.isStarWildCard()) { // no direct neighbor and
           // no wildcard yet,
           // so insert a wildcard between us!
-          boolean isValid = isNextValidNeighbor(left, newTerm, newRule
-              .getSeedExample());
+          boolean isValid = isNextValidNeighbor(left, newTerm, newRule.getSeedExample());
           if (!isValid) {
-            targetPattern.add(indexInPattern, WhiskRuleItem
-                .newWildCardItem(getElementIndex(newRule, left) + 1));
+            targetPattern.add(indexInPattern,
+                    WhiskRuleItem.newWildCardItem(getElementIndex(newRule, left) + 1));
             indexInPattern++;
           }
         }
@@ -628,11 +596,9 @@ public class Whisk extends TextRulerBasicLearner {
           // no direct neighbor and
           // no wildcard yet,
           // so insert a wildcard between us!
-          boolean isValid = isNextValidNeighbor(newTerm, right, newRule
-              .getSeedExample());
+          boolean isValid = isNextValidNeighbor(newTerm, right, newRule.getSeedExample());
           if (!isValid) {
-            WhiskRuleItem wc = WhiskRuleItem.newWildCardItem(getElementIndex(
-                newRule, newTerm) + 1);
+            WhiskRuleItem wc = WhiskRuleItem.newWildCardItem(getElementIndex(newRule, newTerm) + 1);
             if (indexInPattern + 1 < targetPattern.size())
               targetPattern.add(indexInPattern + 1, wc);
             else
@@ -655,11 +621,11 @@ public class Whisk extends TextRulerBasicLearner {
   }
 
   protected WhiskRule anchor(WhiskRule rule, TextRulerExampleDocument doc,
-      TextRulerExample example, int slotIndex) {
+          TextRulerExample example, int slotIndex) {
     List<WhiskRule> result = new ArrayList<WhiskRule>();
     TextRulerAnnotation slotAnnotation = example.getAnnotations()[slotIndex];
-    List<List<WhiskRuleItem>> window = getTermsWithinBounds(slotAnnotation
-        .getBegin(), slotAnnotation.getEnd(), example);
+    List<List<WhiskRuleItem>> window = getTermsWithinBounds(slotAnnotation.getBegin(),
+            slotAnnotation.getEnd(), example);
 
     for (List<WhiskRuleItem> inside : window) {
 
@@ -673,12 +639,11 @@ public class Whisk extends TextRulerBasicLearner {
         if (i == 0 || (i == inside.size() - 1))
           slotPattern.fillerPattern.add(inside.get(i).copy());
         else if (inside.size() > 2 && i < 2)
-          slotPattern.fillerPattern.add(WhiskRuleItem
-              .newWildCardItem(getElementIndex(base1, inside.get(i))));
+          slotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem(getElementIndex(base1,
+                  inside.get(i))));
 
       List<WhiskRuleItem> beforeList = getTermsBefore(inside.get(0), example);
-      List<WhiskRuleItem> afterList = getTermsAfter(inside
-          .get(inside.size() - 1), example);
+      List<WhiskRuleItem> afterList = getTermsAfter(inside.get(inside.size() - 1), example);
       Collection<WhiskRule> tempRules = new HashSet<WhiskRule>();
 
       if (!beforeList.isEmpty()) {
@@ -686,11 +651,10 @@ public class Whisk extends TextRulerBasicLearner {
           for (WhiskRuleItem eachBefore : beforeList) {
             for (WhiskRuleItem eachAfter : afterList) {
               WhiskRule copy = rule.copy();
-              TextRulerSlotPattern textRulerSlotPattern = copy.getPatterns()
-                  .get(slotIndex);
+              TextRulerSlotPattern textRulerSlotPattern = copy.getPatterns().get(slotIndex);
               textRulerSlotPattern.preFillerPattern.add(eachBefore);
-              textRulerSlotPattern.fillerPattern.add(WhiskRuleItem
-                  .newWildCardItem(getElementIndex(copy, inside.get(0))));
+              textRulerSlotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem(getElementIndex(
+                      copy, inside.get(0))));
               textRulerSlotPattern.postFillerPattern.add(eachAfter);
               tempRules.add(copy);
             }
@@ -698,10 +662,9 @@ public class Whisk extends TextRulerBasicLearner {
         } else {
           for (WhiskRuleItem eachBefore : beforeList) {
             WhiskRule copy = rule.copy();
-            TextRulerSlotPattern textRulerSlotPattern = copy.getPatterns().get(
-                slotIndex);
-            textRulerSlotPattern.fillerPattern.add(WhiskRuleItem
-                .newWildCardItem(getElementIndex(copy, inside.get(0))));
+            TextRulerSlotPattern textRulerSlotPattern = copy.getPatterns().get(slotIndex);
+            textRulerSlotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem(getElementIndex(
+                    copy, inside.get(0))));
             textRulerSlotPattern.preFillerPattern.add(eachBefore);
             tempRules.add(copy);
           }
@@ -709,10 +672,9 @@ public class Whisk extends TextRulerBasicLearner {
       } else {
         for (WhiskRuleItem eachAfter : afterList) {
           WhiskRule copy = rule.copy();
-          TextRulerSlotPattern textRulerSlotPattern = copy.getPatterns().get(
-              slotIndex);
-          textRulerSlotPattern.fillerPattern.add(WhiskRuleItem
-              .newWildCardItem(getElementIndex(copy, inside.get(0))));
+          TextRulerSlotPattern textRulerSlotPattern = copy.getPatterns().get(slotIndex);
+          textRulerSlotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem(getElementIndex(
+                  copy, inside.get(0))));
           textRulerSlotPattern.postFillerPattern.add(eachAfter);
           tempRules.add(copy);
         }
@@ -725,7 +687,7 @@ public class Whisk extends TextRulerBasicLearner {
           best = each;
         } else {
           if (each.getCoveringStatistics().getCoveredPositivesCount() > best
-              .getCoveringStatistics().getCoveredPositivesCount()) {
+                  .getCoveringStatistics().getCoveredPositivesCount()) {
             best = each;
           }
         }
@@ -740,12 +702,12 @@ public class Whisk extends TextRulerBasicLearner {
       testRulesIfNotCached(testRules);
       if (shouldAbort())
         return null;
-      TextRulerToolkit.log("\tbase1: " + base1.getCoveringStatistics()
-          + " --> laplacian = " + base1.getLaplacian());
-      TextRulerToolkit.log("\tbase2: " + base2.getCoveringStatistics()
-          + " --> laplacian = " + base2.getLaplacian());
-      if (base2.getCoveringStatistics().getCoveredPositivesCount() > base1
-          .getCoveringStatistics().getCoveredPositivesCount())
+      TextRulerToolkit.log("\tbase1: " + base1.getCoveringStatistics() + " --> laplacian = "
+              + base1.getLaplacian());
+      TextRulerToolkit.log("\tbase2: " + base2.getCoveringStatistics() + " --> laplacian = "
+              + base2.getLaplacian());
+      if (base2.getCoveringStatistics().getCoveredPositivesCount() > base1.getCoveringStatistics()
+              .getCoveredPositivesCount())
         result.add(base2);
       else
         result.add(base1);
@@ -755,8 +717,8 @@ public class Whisk extends TextRulerBasicLearner {
       if (best == null) {
         best = each;
       } else {
-        if (each.getCoveringStatistics().getCoveredPositivesCount() > best
-            .getCoveringStatistics().getCoveredPositivesCount()) {
+        if (each.getCoveringStatistics().getCoveredPositivesCount() > best.getCoveringStatistics()
+                .getCoveredPositivesCount()) {
           best = each;
         }
       }
@@ -765,15 +727,14 @@ public class Whisk extends TextRulerBasicLearner {
     return (WhiskRule) best;
   }
 
-  private List<WhiskRuleItem> getTermsAfter(WhiskRuleItem whiskRuleItem,
-      TextRulerExample example) {
+  private List<WhiskRuleItem> getTermsAfter(WhiskRuleItem whiskRuleItem, TextRulerExample example) {
     List<WhiskRuleItem> result = new ArrayList<WhiskRuleItem>();
     int end = whiskRuleItem.getWordConstraint().getTokenAnnotation().getEnd();
     CAS cas = example.getDocumentCAS();
+    // TODO: access type with string constant
     Type frameType = cas.getTypeSystem().getType(
-        "de.uniwue.tm.textmarker.kernel.type.TextMarkerFrame");
-    AnnotationFS pointer = cas.createAnnotation(frameType, end,
-        Integer.MAX_VALUE);
+            "org.apache.uima.tm.textmarker.kernel.type.TextMarkerFrame");
+    AnnotationFS pointer = cas.createAnnotation(frameType, end, Integer.MAX_VALUE);
     FSIterator iterator = cas.getAnnotationIndex().iterator(pointer);
     int nextBegin = -1;
     while (iterator.isValid()) {
@@ -785,8 +746,8 @@ public class Whisk extends TextRulerBasicLearner {
             nextBegin = a.getBegin();
           }
           if (a.getBegin() <= nextBegin && a.getBegin() >= end) {
-            WhiskRuleItem term = new WhiskRuleItem(new TextRulerAnnotation(a,
-                example.getDocument()));
+            WhiskRuleItem term = new WhiskRuleItem(
+                    new TextRulerAnnotation(a, example.getDocument()));
             result.add(term);
           }
         }
@@ -796,14 +757,14 @@ public class Whisk extends TextRulerBasicLearner {
     return result;
   }
 
-  private List<WhiskRuleItem> getTermsBefore(WhiskRuleItem whiskRuleItem,
-      TextRulerExample example) {
+  private List<WhiskRuleItem> getTermsBefore(WhiskRuleItem whiskRuleItem, TextRulerExample example) {
     List<WhiskRuleItem> result = new ArrayList<WhiskRuleItem>();
-    int begin = whiskRuleItem.getWordConstraint().getTokenAnnotation()
-        .getBegin();
+    int begin = whiskRuleItem.getWordConstraint().getTokenAnnotation().getBegin();
     CAS cas = example.getDocumentCAS();
+
+    // TODO: access type with string constant
     Type frameType = cas.getTypeSystem().getType(
-        "de.uniwue.tm.textmarker.kernel.type.TextMarkerFrame");
+            "org.apache.uima.tm.textmarker.kernel.type.TextMarkerFrame");
     AnnotationFS pointer = cas.createAnnotation(frameType, begin, begin);
     FSIterator iterator = cas.getAnnotationIndex().iterator(pointer);
     int nextEnd = -1;
@@ -824,8 +785,8 @@ public class Whisk extends TextRulerBasicLearner {
             nextEnd = a.getEnd();
           }
           if (a.getEnd() >= nextEnd && a.getEnd() <= begin) {
-            WhiskRuleItem term = new WhiskRuleItem(new TextRulerAnnotation(a,
-                example.getDocument()));
+            WhiskRuleItem term = new WhiskRuleItem(
+                    new TextRulerAnnotation(a, example.getDocument()));
             result.add(term);
           }
         }
@@ -858,12 +819,13 @@ public class Whisk extends TextRulerBasicLearner {
 
   }
 
-  public List<List<WhiskRuleItem>> getTermsWithinBounds(int startPos,
-      int endPos, TextRulerExample example) {
+  public List<List<WhiskRuleItem>> getTermsWithinBounds(int startPos, int endPos,
+          TextRulerExample example) {
     List<List<WhiskRuleItem>> result = new ArrayList<List<WhiskRuleItem>>();
     CAS cas = example.getDocumentCAS();
+    // TODO: access type with string constant
     Type frameType = cas.getTypeSystem().getType(
-        "de.uniwue.tm.textmarker.kernel.type.TextMarkerFrame");
+            "org.apache.uima.tm.textmarker.kernel.type.TextMarkerFrame");
     AnnotationFS pointer = cas.createAnnotation(frameType, startPos, endPos);
     FSIterator iterator = cas.getAnnotationIndex().iterator(pointer);
     List<AnnotationFS> startAs = new ArrayList<AnnotationFS>();
@@ -889,8 +851,8 @@ public class Whisk extends TextRulerBasicLearner {
 
     for (AnnotationFS annotation : startAs) {
       List<WhiskRuleItem> startList = new ArrayList<WhiskRuleItem>();
-      WhiskRuleItem term = new WhiskRuleItem(new TextRulerAnnotation(
-          annotation, example.getDocument()));
+      WhiskRuleItem term = new WhiskRuleItem(new TextRulerAnnotation(annotation,
+              example.getDocument()));
       startList.add(term);
       result.add(startList);
     }
@@ -899,8 +861,8 @@ public class Whisk extends TextRulerBasicLearner {
     return result;
   }
 
-  private List<List<WhiskRuleItem>> addFollowing(
-      List<List<WhiskRuleItem>> lists, int till, TextRulerExample example) {
+  private List<List<WhiskRuleItem>> addFollowing(List<List<WhiskRuleItem>> lists, int till,
+          TextRulerExample example) {
     List<List<WhiskRuleItem>> result = new ArrayList<List<WhiskRuleItem>>();
     for (List<WhiskRuleItem> list : lists) {
       WhiskRuleItem last = list.get(list.size() - 1);
@@ -975,10 +937,11 @@ public class Whisk extends TextRulerBasicLearner {
   }
 
   private boolean isNextValidNeighbor(WhiskRuleItem left, WhiskRuleItem right,
-      TextRulerExample example) {
+          TextRulerExample example) {
     CAS cas = example.getDocumentCAS();
+    // TODO: access type with string constant
     Type frameType = cas.getTypeSystem().getType(
-        "de.uniwue.tm.textmarker.kernel.type.TextMarkerFrame");
+            "org.apache.uima.tm.textmarker.kernel.type.TextMarkerFrame");
     int begin = left.getWordConstraint().getTokenAnnotation().getEnd();
     int end = right.getWordConstraint().getTokenAnnotation().getBegin();
     AnnotationFS pointer = cas.createAnnotation(frameType, begin, end);

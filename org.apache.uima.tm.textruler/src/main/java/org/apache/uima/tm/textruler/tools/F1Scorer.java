@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.textruler.tools;
 
@@ -209,11 +209,11 @@ public class F1Scorer implements CasCacheLoader {
             // "/testinput/f1test2/original",
             // // "/testinput/f1test/fromSystem"
             // "/Users/tobi/Documents/runtime-EclipseApplication/MLSandBox/output"
-            "/Users/tobi/Documents/runtime-EclipseApplication/MLSandBox/descriptor/de.uniwue.ml/lp2validateEngine.xml",
+            "/Users/tobi/Documents/runtime-EclipseApplication/MLSandBox/descriptor/org.apache.uima.tm.ml/lp2validateEngine.xml",
             "/Users/tobi/Documents/UniLaptop/Diplomarbeit/TestDataSets/withPosTags/Subset100/5fold/2/testing/withtags",
             "/Users/tobi/Documents/runtime-EclipseApplication/MLSandBox/output");
-    Score score = scorer.scoreSlot("de.uniwue.ml.types.stime");
-    // Score score = scorer.scoreSlot("de.uniwue.ml.types.location");
+    Score score = scorer.scoreSlot("org.apache.uima.tm.ml.types.stime");
+    // Score score = scorer.scoreSlot("org.apache.uima.tm.ml.types.location");
     if (score != null)
       score.logInfo();
   }

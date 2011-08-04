@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.textruler.extension;
 
@@ -27,7 +27,6 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.tm.textruler.core.GlobalCASSource;
 import org.apache.uima.tm.textruler.core.TextRulerToolkit;
 import org.eclipse.core.runtime.Path;
-
 
 /**
  * This "algorithm" gets executed right before the real algorithms get started. It preprocesses the
@@ -53,7 +52,7 @@ public class TextRulerPreprocessor {
 
     try {
       outputFolder.mkdir();
-      // FileUtils.saveString2File("PACKAGE de.uniwue.ml;\n\n", new
+      // FileUtils.saveString2File("PACKAGE org.apache.uima.tm.ml;\n\n", new
       // File(tmpDir+"preprocess.tm"));
       // ae.setConfigParameterValue(TextMarkerEngine.SCRIPT_LOCATION,
       // tmpDir+"preprocess.tm");

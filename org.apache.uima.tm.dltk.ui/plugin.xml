@@ -64,7 +64,7 @@ under the License.
          point="org.eclipse.ui.contexts">
       <context
             description="%TextMarkerEditContext.description"
-            id="de.uniwue.dltk.ui.textMarkerEditorScope"
+            id="org.apache.uima.tm.dltk.ui.textMarkerEditorScope"
             name="%TextMarkerEditContext.name"
             parentId="org.eclipse.dltk.ui.scriptEditorScope">
       </context>
@@ -195,7 +195,7 @@ under the License.
             id="org.apache.uima.tm.dltk.ui.editor.TextMarkerEditor"
             name="%TextMarkerEditor.name">
          <contentTypeBinding
-               contentTypeId="de.uniwue.dltk.tmContentType">
+               contentTypeId="org.apache.uima.tm.dltk.tmContentType">
          </contentTypeBinding>
       </editor>
    </extension>
@@ -391,18 +391,18 @@ under the License.
          point="org.eclipse.ui.bindings">
         <key
               commandId="org.apache.uima.tm.dltk.ui.navigate.open.type"
-              contextId="de.uniwue.dltk.ui.textMarkerEditorScope"
+              contextId="org.apache.uima.tm.dltk.ui.textMarkerEditorScope"
               schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
               sequence="M1+M2+T"/>
         <key
               commandId="org.eclipse.dltk.ui.edit.text.script.format"
-              contextId="de.uniwue.dltk.ui.textMarkerEditorScope"
+              contextId="org.apache.uima.tm.dltk.ui.textMarkerEditorScope"
               schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
               sequence="M1+M2+F">
         </key>
         <key
               commandId="org.eclipse.dltk.ui.edit.text.script.format"
-              contextId="de.uniwue.dltk.ui.textMarkerEditorScope"
+              contextId="org.apache.uima.tm.dltk.ui.textMarkerEditorScope"
               platform="gtk"
               schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
               sequence="ESC CTRL+F">
@@ -446,7 +446,7 @@ under the License.
             <visibleWhen>
               <with variable="activeContexts">
                  <iterate operator="or">
-                    <equals value="de.uniwue.dltk.ui.textMarkerEditorScope" />
+                    <equals value="org.apache.uima.tm.dltk.ui.textMarkerEditorScope" />
                  </iterate>
               </with>
            </visibleWhen>
@@ -514,7 +514,7 @@ under the License.
       </provider>
       <provider
             class="org.apache.uima.tm.dltk.internal.ui.documentation.TextMarkerPagesDocumentationProvider"
-            id="de.uniwue.dltk.textmarke.ui.TextMarkerPagesDocumentationProvider"
+            id="org.apache.uima.tm.dltk.textmarke.ui.TextMarkerPagesDocumentationProvider"
             nature="org.apache.uima.tm.dltk.core.nature">
       </provider>
       <provider

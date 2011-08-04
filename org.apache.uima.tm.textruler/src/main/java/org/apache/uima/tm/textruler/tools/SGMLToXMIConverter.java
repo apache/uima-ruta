@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.textruler.tools;
 
@@ -48,7 +48,7 @@ public class SGMLToXMIConverter {
         String name = textBuf.substring(indexTagBegin + 1, indexTagEnd);
 
         int lengthTag = indexTagEnd - indexTagBegin + 1;
-        Type theType = ts.getType("de.uniwue.ml.types." + name);
+        Type theType = ts.getType("org.apache.uima.tm.ml.types." + name);
         if (theType != null) {
           TextRulerToolkit.log("\tType known, creating Annotation: " + name);
           int indexTagCloseBegin = textBuf.indexOf("<", indexTagEnd);
@@ -101,7 +101,7 @@ public class SGMLToXMIConverter {
   public static void main(String[] args) {
     String inputFolder = "/testinput/SA/all/txt";
     String outputFolder = "/testinput/SA/all/xmi/";
-    String tmScriptFileForEngine = "/Users/tobi/Documents/runtime-EclipseApplication/MLSandBox/script/de.uniwue.ml/types.tm";
+    String tmScriptFileForEngine = "/Users/tobi/Documents/runtime-EclipseApplication/MLSandBox/script/org.apache.uima.tm.ml/types.tm";
 
     convertFilesInFolder(inputFolder, outputFolder, tmScriptFileForEngine);
   }

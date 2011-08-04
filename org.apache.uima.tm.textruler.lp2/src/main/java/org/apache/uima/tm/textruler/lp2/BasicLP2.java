@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.textruler.lp2;
 
@@ -40,8 +40,8 @@ import org.apache.uima.tm.textruler.core.TextRulerRuleList;
 import org.apache.uima.tm.textruler.core.TextRulerShiftExample;
 import org.apache.uima.tm.textruler.core.TextRulerStatisticsCollector;
 import org.apache.uima.tm.textruler.core.TextRulerTarget;
-import org.apache.uima.tm.textruler.core.TextRulerToolkit;
 import org.apache.uima.tm.textruler.core.TextRulerTarget.MLTargetType;
+import org.apache.uima.tm.textruler.core.TextRulerToolkit;
 import org.apache.uima.tm.textruler.extension.TextRulerLearnerDelegate;
 import org.apache.uima.util.FileUtils;
 
@@ -156,7 +156,7 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
         // r.getCoveringStatistics().getCoveredPositiveExamples())
         // {
         // TextRulerToolkit.log("\t\te="+ex.getAnnotation().getBegin());
-        //							
+        //
         // }
         // }
         // }
@@ -281,7 +281,7 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
       // "NUM{REGEXP(\"12\")} ALL{->MARKONCE(stimeSTART)};");
       // System.out.println(resultString);
 
-      resultString = "PACKAGE de.uniwue.ml;\n\nDocument{->FILTERTYPE(SPACE, BREAK, NBSP, MARKUP)};\n";
+      resultString = "PACKAGE org.apache.uima.tm.ml;\n\nDocument{->FILTERTYPE(SPACE, BREAK, NBSP, MARKUP)};\n";
       // resultString += "NUM{REGEXP(\"12\")} ALL{->MARKONCE(stimeSTART)};";
       FileUtils.saveString2File(resultString, file);
     } catch (IOException e) {
@@ -476,8 +476,8 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
         // exactly the same distance, use the one where the wrong tag
         // would be IN the slot filler!
         List<TextRulerExample> correctTags = doc.getPositiveExamples();
-        List<TextRulerExample> wrongTags = new ArrayList<TextRulerExample>(c
-                .getCoveredNegativeExamples());
+        List<TextRulerExample> wrongTags = new ArrayList<TextRulerExample>(
+                c.getCoveredNegativeExamples());
         List<TextRulerShiftExample> newExamples = new ArrayList<TextRulerShiftExample>();
         for (TextRulerExample wrongTag : wrongTags) {
           // test, if there's a corresponding positive example
@@ -530,8 +530,8 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
 
           if (theCorrectTag != null) {
             TextRulerToolkit.log("FOUND BAD EXAMPLE FOR SHIFTING !!");
-            TextRulerShiftExample shiftExample = new TextRulerShiftExample(doc, wrongTag
-                    .getAnnotation(), theCorrectTag.getAnnotation(), true, target);
+            TextRulerShiftExample shiftExample = new TextRulerShiftExample(doc,
+                    wrongTag.getAnnotation(), theCorrectTag.getAnnotation(), true, target);
             newExamples.add(shiftExample);
           }
         }

@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.textruler.tools;
 
@@ -91,24 +91,14 @@ public class BatchRuleEvaluator {
    */
   public static void main(String[] args) {
 
-    // preprocessorTMFile =
-    // "/Users/tobi/Documents/runtime-EclipseApplication/MLSandBox/script/de.uniwue.ml/ML.tm";
-    tempDir = "/testinput/temp/"; // mit / am Ende !!
+    tempDir = "/testinput/temp/";
     engineFile = "/Users/tobi/Documents/UniLaptop/Diplomarbeit/TestDataSets/withPosTags/Subset100/10fold/desc/lp2ergebnisrandomgiantEngine.xml";
-    // foldRootDirectory =
-    // "/Users/tobi/Documents/UniLaptop/Diplomarbeit/TestDataSets/withPosTags/Subset100/10fold/";//
-    // mit / am Ende !!
     foldRootDirectory = "/Users/tobi/Documents/UniLaptop/Diplomarbeit/TestDataSets/withPosTags/9010_middle/";// mit
-    // /
-    // am
-    // Ende
-    // !!
     foldCount = 1;
-    String slotNames[] = { "de.uniwue.ml.types.etime", "de.uniwue.ml.types.stime",
-        "de.uniwue.ml.types.location", "de.uniwue.ml.types.speaker" };
+    String slotNames[] = { "org.apache.uima.tm.ml.types.etime",
+        "org.apache.uima.tm.ml.types.stime", "org.apache.uima.tm.ml.types.location",
+        "org.apache.uima.tm.ml.types.speaker" };
     String algIDs[] = { "optimizedLP2"// ,
-    // "rapier",
-    // "whisk"
     };
 
     // TODO back to 0 !
@@ -123,7 +113,7 @@ public class BatchRuleEvaluator {
   }
 
   public static void runRules(int foldNumber, String slotName, String algorithmID) {
-    getAnalysisEngine(); // ae erzeugen falls noch nicht geschehen...
+    getAnalysisEngine();
 
     TextRulerToolkit.log("Testing Fold Number " + foldNumber + "\t  Slot: " + slotName
             + "\t  Algorithm: " + algorithmID);
@@ -176,9 +166,10 @@ public class BatchRuleEvaluator {
         e.printStackTrace();
         return;
       }
-      TextRulerToolkit.writeCAStoXMIFile(sharedCAS, TextRulerToolkit
-              .addTrailingSlashToPath(outputFolder)
-              + "fromRules_" + inputFile.getName());
+      TextRulerToolkit.writeCAStoXMIFile(
+              sharedCAS,
+              TextRulerToolkit.addTrailingSlashToPath(outputFolder) + "fromRules_"
+                      + inputFile.getName());
     }
   }
 

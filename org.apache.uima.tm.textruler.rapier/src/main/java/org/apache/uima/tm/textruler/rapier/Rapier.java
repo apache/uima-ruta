@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.textruler.rapier;
 
@@ -45,7 +45,6 @@ import org.apache.uima.tm.textruler.core.TextRulerToolkit;
 import org.apache.uima.tm.textruler.core.TextRulerWordConstraint;
 import org.apache.uima.tm.textruler.extension.TextRulerLearnerDelegate;
 
-
 public class Rapier extends TextRulerBasicLearner {
 
   public final static String COMPRESSION_FAIL_MAX_COUNT_KEY = "compressionFailMaxCount";
@@ -74,7 +73,7 @@ public class Rapier extends TextRulerBasicLearner {
 
   public final static float STANDARD_NOISE_THREHSOLD = 0.9f;
 
-  public final static String STANDARD_POSTAG_ROOTTYPE = "de.uniwue.ml.ML.postag";
+  public final static String STANDARD_POSTAG_ROOTTYPE = "org.apache.uima.tm.ml.ML.postag";
 
   public final static int STANDARD_MIN_COVERED_POSITIVES = 1;
 
@@ -115,56 +114,56 @@ public class Rapier extends TextRulerBasicLearner {
 
   @Override
   protected void doRun() {
-	for(int i = 0; i < slotNames.length; i++) {
-		int compressionFailCount = 0;
-		
-		// only working for one slot yet !
-		currentSlotName = slotNames[i];
-		cachedTestedRuleStatistics.clear();
-		exampleDocuments.createExamplesForTarget(new TextRulerTarget(currentSlotName, this));
-		examples = exampleDocuments.getAllPositiveExamples();
-		
-		if (shouldAbort())
-		  return;
-		
-		slotRules = new TextRulerRuleList();
-		ruleList = new RapierRulePriorityQueue(ruleListSize);
-		
-		TextRulerToolkit.log("--- RAPIER START for Slot " + currentSlotName);
-		
-		sendStatusUpdateToDelegate("Creating initial rule base...",
-		        TextRulerLearnerState.ML_INITIALIZING, false);
-		
-		fillSlotRulesWithMostSpecificRules();
-		
-		updateCompressionStatusString();
-		
-		if (TextRulerToolkit.DEBUG) {
-		  slotRules.saveToRulesFile(getIntermediateRulesFileName(), getTMFileHeaderString());
-		}
-		
-		while (compressionFailCount < compressionFailMaxCount) {
-		  TextRulerToolkit.log("***** NEW COMPRESSION ROUND; FailCount = " + compressionFailCount);
-		  if (shouldAbort()) {
-		    return;
-		  }
-		
-		  RapierRule bestRule = findNewRule();
-		  if (bestRule != null
-		          && (bestRule.getCoveringStatistics().getCoveredPositivesCount() >= minCoveredPositives)
-		          && (bestRule.noiseValue() >= noiseThreshold) && (!slotRules.contains(bestRule))) {
-		    addRuleAndRemoveEmpiricallySubsumedRules(bestRule);
-		    if (TextRulerToolkit.DEBUG)
-		      slotRules.saveToRulesFile(getIntermediateRulesFileName(), getTMFileHeaderString());
-		  } else {
-		    compressionFailCount++;
-		  }
-		}
-		
-		if (TextRulerToolkit.DEBUG) {
-		  slotRules.saveToRulesFile(getIntermediateRulesFileName(), getTMFileHeaderString());
-}
-	}
+    for (int i = 0; i < slotNames.length; i++) {
+      int compressionFailCount = 0;
+
+      // only working for one slot yet !
+      currentSlotName = slotNames[i];
+      cachedTestedRuleStatistics.clear();
+      exampleDocuments.createExamplesForTarget(new TextRulerTarget(currentSlotName, this));
+      examples = exampleDocuments.getAllPositiveExamples();
+
+      if (shouldAbort())
+        return;
+
+      slotRules = new TextRulerRuleList();
+      ruleList = new RapierRulePriorityQueue(ruleListSize);
+
+      TextRulerToolkit.log("--- RAPIER START for Slot " + currentSlotName);
+
+      sendStatusUpdateToDelegate("Creating initial rule base...",
+              TextRulerLearnerState.ML_INITIALIZING, false);
+
+      fillSlotRulesWithMostSpecificRules();
+
+      updateCompressionStatusString();
+
+      if (TextRulerToolkit.DEBUG) {
+        slotRules.saveToRulesFile(getIntermediateRulesFileName(), getTMFileHeaderString());
+      }
+
+      while (compressionFailCount < compressionFailMaxCount) {
+        TextRulerToolkit.log("***** NEW COMPRESSION ROUND; FailCount = " + compressionFailCount);
+        if (shouldAbort()) {
+          return;
+        }
+
+        RapierRule bestRule = findNewRule();
+        if (bestRule != null
+                && (bestRule.getCoveringStatistics().getCoveredPositivesCount() >= minCoveredPositives)
+                && (bestRule.noiseValue() >= noiseThreshold) && (!slotRules.contains(bestRule))) {
+          addRuleAndRemoveEmpiricallySubsumedRules(bestRule);
+          if (TextRulerToolkit.DEBUG)
+            slotRules.saveToRulesFile(getIntermediateRulesFileName(), getTMFileHeaderString());
+        } else {
+          compressionFailCount++;
+        }
+      }
+
+      if (TextRulerToolkit.DEBUG) {
+        slotRules.saveToRulesFile(getIntermediateRulesFileName(), getTMFileHeaderString());
+      }
+    }
 
     sendStatusUpdateToDelegate("Done", TextRulerLearnerState.ML_DONE, true);
     cachedTestedRuleStatistics.clear();
@@ -211,14 +210,14 @@ public class Rapier extends TextRulerBasicLearner {
       Type tokensRootType = ts.getType(TextRulerToolkit.TM_ANY_TYPE_NAME);
 
       // first, get all words/tokens:
-      List<AnnotationFS> before = TextRulerToolkit.getAnnotationsBeforePosition(example
-              .getDocumentCAS(), slotAnnotation.getBegin(), -1, TextRulerToolkit
-              .getFilterSetWithSlotNames(slotNames, filterSet), tokensRootType);
-      List<AnnotationFS> after = TextRulerToolkit.getAnnotationsAfterPosition(example
-              .getDocumentCAS(), slotAnnotation.getEnd(), -1, TextRulerToolkit
-              .getFilterSetWithSlotNames(slotNames, filterSet), tokensRootType);
-      List<AnnotationFS> inside = TextRulerToolkit.getAnnotationsWithinBounds(example
-              .getDocumentCAS(), slotAnnotation.getBegin(), slotAnnotation.getEnd(),
+      List<AnnotationFS> before = TextRulerToolkit.getAnnotationsBeforePosition(
+              example.getDocumentCAS(), slotAnnotation.getBegin(), -1,
+              TextRulerToolkit.getFilterSetWithSlotNames(slotNames, filterSet), tokensRootType);
+      List<AnnotationFS> after = TextRulerToolkit.getAnnotationsAfterPosition(
+              example.getDocumentCAS(), slotAnnotation.getEnd(), -1,
+              TextRulerToolkit.getFilterSetWithSlotNames(slotNames, filterSet), tokensRootType);
+      List<AnnotationFS> inside = TextRulerToolkit.getAnnotationsWithinBounds(
+              example.getDocumentCAS(), slotAnnotation.getBegin(), slotAnnotation.getEnd(),
               TextRulerToolkit.getFilterSetWithSlotNames(slotNames, filterSet), tokensRootType);
 
       // the before annotations have to be reversed:
@@ -317,8 +316,7 @@ public class Rapier extends TextRulerBasicLearner {
       if (uPairCount > uncompressedRules.size())
         uPairCount /= 2;
       for (int i = 0; i < uPairCount; i++) {
-        RapierRule rule1 = uncompressedRules.get(rand
-                .nextInt(uncompressedRules.size()));
+        RapierRule rule1 = uncompressedRules.get(rand.nextInt(uncompressedRules.size()));
         RapierRule rule2 = null;
         while (rule2 == null || rule1 == rule2) {
           rule2 = uncompressedRules.get(rand.nextInt(uncompressedRules.size()));
@@ -463,8 +461,8 @@ public class Rapier extends TextRulerBasicLearner {
 
     List<RapierRule> result = new ArrayList<RapierRule>();
     List<TextRulerRulePattern> genList = RapierGeneralizationHelper
-            .getGeneralizationsForRuleItemPatterns(rule1.getFillerPattern(), rule2
-                    .getFillerPattern());
+            .getGeneralizationsForRuleItemPatterns(rule1.getFillerPattern(),
+                    rule2.getFillerPattern());
     // create rules:
     for (TextRulerRulePattern pattern : genList) {
       RapierRule newRule = new RapierRule(this, rule1.getTarget());

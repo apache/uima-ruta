@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.internal.debug;
 
@@ -25,7 +25,7 @@ import org.osgi.framework.BundleContext;
 public class TextMarkerDebugPlugin extends Plugin {
 
   // The plug-in ID
-  public static final String PLUGIN_ID = "de.uniwue.dltk.textmarker.debug";
+  public static final String PLUGIN_ID = "org.apache.uima.tm.dltk.debug";
 
   // The shared instance
   private static TextMarkerDebugPlugin plugin;

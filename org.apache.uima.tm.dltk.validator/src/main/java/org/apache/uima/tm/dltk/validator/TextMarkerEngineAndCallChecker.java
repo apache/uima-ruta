@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.tm.dltk.validator;
 
@@ -47,7 +47,6 @@ import org.eclipse.dltk.core.builder.IBuildContext;
 import org.eclipse.dltk.core.builder.IBuildParticipant;
 import org.eclipse.dltk.core.builder.IBuildParticipantExtension;
 import org.eclipse.dltk.core.builder.ISourceLineTracker;
-
 
 public class TextMarkerEngineAndCallChecker implements IBuildParticipant,
         IBuildParticipantExtension {
@@ -217,7 +216,7 @@ public class TextMarkerEngineAndCallChecker implements IBuildParticipant,
 
   // /**
   // * @param filePath
-  // * absolute full path. i.e.: "de.uniwue.myengine" ".xml" will be
+  // * absolute full path. i.e.: "org.apache.uima.tm.myengine" ".xml" will be
   // * added.
   // * @return file.exists
   // */
