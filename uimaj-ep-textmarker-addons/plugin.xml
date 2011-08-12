@@ -1,0 +1,644 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<?eclipse version="3.4"?>
+<plugin>
+<extension-point id="evaluators" name="CAS Evaluator" schema="schema/evaluators.exsd"/>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="false"
+            category="org.apache.uima.textmarker.ide.ui"
+            class="org.apache.uima.textmarker.query.ui.QueryView"
+            icon="icons/basket_edit.png"
+            id="org.apache.uima.textmarker.query.ui.ScriptQueryView"
+            name="TextMarker Query"
+            restorable="true">
+      </view>
+      <view
+            category="org.apache.uima.textmarker.ide.ui"
+            class="org.apache.uima.textmarker.testing.ui.views.fp.FalsePositiveView"
+            icon="icons/bug.png"
+            id="org.apache.uima.textmarker.testing.falsePositive"
+            name="False Positive">
+      </view>
+      <view
+            category="org.apache.uima.textmarker.ide.ui"
+            class="org.apache.uima.textmarker.testing.ui.views.fn.FalseNegativeView"
+            icon="icons/bug.png"
+            id="org.apache.uima.textmarker.testing.falseNegative"
+            name="False Negative">
+      </view>
+      <view
+            category="org.apache.uima.textmarker.ide.ui"
+            class="org.apache.uima.textmarker.testing.ui.views.TestPageBookView"
+            icon="icons/bug_edit.png"
+            id="org.apache.uima.textmarker.testing.TestingView"
+            name="Annotation Test"
+            restorable="true">
+      </view>
+      <view
+            category="org.apache.uima.textmarker.ide.ui"
+            class="org.apache.uima.textmarker.testing.ui.views.tp.TruePositiveView"
+            icon="icons/bug.png"
+            id="org.apache.uima.textmarker.testing.truePositive"
+            name="True Positive">
+      </view>
+   </extension>   <extension
+         point="org.apache.uima.cev.cevSearchStrategies">
+      <strategy
+            factory="org.apache.uima.textmarker.query.QuerySearchStrategyFactory"
+            id="org.apache.uima.textmarker.query.searchStrategy"
+            priority="0">
+      </strategy>
+   </extension>   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.apache.uima.textmarker.query.ui.QueryActionHandler"
+            id="org.apache.uima.textmarker.query.command"
+            name="Query Command">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.textmarker.query.ui.ExportActionHandler"
+            id="org.apache.uima.textmarker.query.export"
+            name="Export List">
+      </command>
+   </extension>   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="toolbar:org.apache.uima.textmarker.query.ui.ScriptQueryView?after=additions">
+         <command
+               commandId="org.apache.uima.textmarker.query.command"
+               icon="icons/13555.actionengine_play.gif"
+               label="Query"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.apache.uima.textmarker.query.export"
+               icon="icons/10892.resource_persp.gif"
+               label="Export List"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar">
+         <toolbar
+               id="org.apache.uima.textmarker.utils.query.queryToolbar">
+         </toolbar>
+      </menuContribution>
+   </extension> <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="toolbar:org.apache.uima.textmarker.testing.TestingView?after=additions">
+         <command
+               commandId="org.apache.uima.textmarker.testing.rerun"
+               icon="icons/13555.actionengine_play.gif"
+               label="Rerun Tests"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.apache.uima.textmarker.testing.PreviousTestCase"
+               icon="icons/back.gif"
+               label="Previous Test Case"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.apache.uima.textmarker.testing.nextTestCase"
+               icon="icons/forward.gif"
+               label="Next Test Case"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.apache.uima.textmarker.testing.LoadFolderCommand"
+               icon="icons/add.gif"
+               label="Load all test files from selected folder"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.apache.uima.textmarker.testing.excludeTypes"
+               icon="icons/exclamation.png"
+               label="Select excluded types"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.apache.uima.textmarker.testing.selectEvaluator"
+               icon="icons/evaluator.gif"
+               label="Select Evaluator"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.apache.uima.textmarker.testing.ExportTabel"
+               icon="icons/10892.resource_persp.gif"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar">
+         <toolbar
+               id="org.apache.uima.textmarker.testing.annotationTestToolbar">
+         </toolbar>
+      </menuContribution>
+   </extension>   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.apache.uima.textmarker.testing.ui.handlers.RemoveTestsHandler"
+            id="org.apache.uima.textmarker.testing.removeTests"
+            name="Remove Resource">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.textmarker.testing.ui.handlers.RerunActionHandler"
+            id="org.apache.uima.textmarker.testing.rerun"
+            name="Rerun Command">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.textmarker.testing.ui.handlers.NextTestCaseHandler"
+            id="org.apache.uima.textmarker.testing.nextTestCase"
+            name="NextTestCase">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.textmarker.testing.ui.handlers.PreviousTestCaseHandler"
+            id="org.apache.uima.textmarker.testing.PreviousTestCase"
+            name="PreviousTestCase">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.textmarker.testing.ui.handlers.LoadFilesFromFolderHandler"
+            id="org.apache.uima.textmarker.testing.LoadFolderCommand"
+            name="LoadFolderCommand">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.textmarker.testing.ui.handlers.SelectedExcludedTypesHandler"
+            id="org.apache.uima.textmarker.testing.excludeTypes"
+            name="Select excluded types">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.textmarker.testing.ui.handlers.SelectEvaluatorHandler"
+            id="org.apache.uima.textmarker.testing.selectEvaluator"
+            name="Select Evaluator">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.textmarker.testing.ui.handlers.ExportTabelHandler"
+            id="org.apache.uima.textmarker.testing.ExportTabel"
+            name="Export Table">
+      </command>
+   </extension>   
+   <extension
+         point="org.apache.uima.cev.cevViews">
+      <view
+            factory="org.apache.uima.textmarker.testing.ui.views.fp.FalsePositiveViewFactory"
+            id="org.apache.uima.textmarker.testing.falsePositive.cev"
+            priority="0"
+            viewId="org.apache.uima.textmarker.testing.falsePositive">
+      </view>
+      <view
+            factory="org.apache.uima.textmarker.testing.ui.views.fn.FalseNegativeViewFactory"
+            id="org.apache.uima.textmarker.testing.falseNegative.cev"
+            priority="0"
+            viewId="org.apache.uima.textmarker.testing.falseNegative">
+      </view>
+      <view
+            factory="org.apache.uima.textmarker.testing.ui.views.tp.TruePositiveViewFactory"
+            id="org.apache.uima.textmarker.testing.truePositive.cev"
+            priority="0"
+            viewId="org.apache.uima.textmarker.testing.truePositive">
+      </view>
+   </extension>   <extension
+         point="org.apache.uima.cev.cevSearchStrategies">
+      <strategy
+            factory="org.apache.uima.textmarker.testing.searchStrategy.TestingSearchStrategyFactory"
+            id="org.apache.uima.textmarker.testing.cev.searchStrategy"
+            priority="5">
+      </strategy>
+   </extension>  
+    <extension
+         point="org.apache.uima.textmarker.addons.evaluators">
+      <evaluator
+            factory="org.apache.uima.textmarker.testing.evaluator.PartialMatchCasEvaluatorFacotry"
+            id="org.apache.uima.textmarker.testing.partialmatchevaluator"
+            name="Partial Match">
+      </evaluator>
+      <evaluator
+            factory="org.apache.uima.textmarker.testing.evaluator.ExactCasEvaluatorFactory"
+            id="org.apache.uima.textmarker.testing.exactCasEvaluator"
+            name="Exact Match">
+      </evaluator>
+      <evaluator
+            factory="org.apache.uima.textmarker.testing.evaluator.CoreMatchCasEvaluatorFactory"
+            id="org.apache.uima.textmarker.testing.corematchevaluator"
+            name="Core Term Match">
+      </evaluator>
+      <evaluator
+            factory="org.apache.uima.textmarker.testing.evaluator.WordAccuracyCasEvaluatorFactory"
+            id="org.apache.uima.textmarker.testing.wordAccurecyCasEvaluator"
+            name="Word Accuracy">
+      </evaluator>
+      <evaluator
+            factory="org.apache.uima.textmarker.testing.evaluator.TemplateCasEvaluatorFactory"
+            id="org.apache.uima.textmarker.testing.templateCasEvaluator"
+            name="Template only">
+      </evaluator>
+      <evaluator
+            factory="org.apache.uima.textmarker.testing.evaluator.WordTemplateCasEvaluatorFactory"
+            id="org.apache.uima.textmarker.testing.wordTemplateCasEvaluator"
+            name="Template on word level">
+      </evaluator>
+      <evaluator
+            factory="org.apache.uima.textmarker.testing.evaluator.FeatureCasEvaluatorFactory"
+            id="org.apache.uima.textmarker.testing.featureCasEvaluator"
+            name="Features: Annotations and Strings">
+      </evaluator>
+      <evaluator
+            factory="org.apache.uima.textmarker.testing.evaluator.StringFeatureCasEvaluatorFactory"
+            id="org.apache.uima.textmarker.testing.stringFeature"
+            name="Annotations with String features">
+      </evaluator>
+   </extension>   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.apache.uima.textmarker.testing.preferences.TestingPreferenceInitializer">
+      </initializer>
+   </extension>   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.apache.uima.textmarker.ide.preferences"
+            class="org.apache.uima.textmarker.testing.preferences.TestingPreferencePage"
+            id="org.apache.uima.textmarker.testing.preferences"
+            name="Testing">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.apache.uima.textmarker.utils.twl.TWLConverterHandler"
+            description="TWLConvertCommand"
+            id="org.apache.uima.textmarker.utils.twl.command"
+            name="Convert to TWL">
+         <defaultHandler
+               class="org.apache.uima.textmarker.utils.twl.TWLConverterHandler">
+         </defaultHandler>
+      </command>
+      <command
+            defaultHandler="org.apache.uima.textmarker.utils.twl.MultiTWLConverterHandler"
+            description="MultiTWLConvertCommand"
+            id="org.apache.uima.textmarker.utils.mtwl.command"
+            name="Convert to Multi TWL">
+         <defaultHandler
+               class="org.apache.uima.textmarker.utils.twl.MultiTWLConverterHandler">
+         </defaultHandler>
+      </command>
+      <command
+            defaultHandler="org.apache.uima.textmarker.utils.apply.ApplyScriptRemoveBasicsHandler"
+            id="org.apache.uima.textmarker.utils.apply.script"
+            name="ApplyScriptCommand">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.textmarker.utils.apply.ApplyScriptKeepBasicsHandler"
+            id="org.apache.uima.textmarker.utils.apply.script.basics"
+            name="ApplyScriptBasicsCommand">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.textmarker.utils.apply.ApplyScriptNoXMIHandler"
+            id="org.apache.uima.textmarker.utils.apply.script.noxmi"
+            name="ApplyScriptNoXMICommand">
+      </command>
+   </extension>   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:org.eclipse.ui.popup.any">
+         <menu
+               icon="icons/tm_obj.png"
+               id="org.apache.uima.textmarker.utils.popup.submenu"
+               label="TextMarker">
+         </menu>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:org.apache.uima.textmarker.utils.popup.submenu">
+         <command
+               commandId="org.apache.uima.textmarker.utils.apply.script.basics"
+               disabledIcon="icons/tm_obj.png"
+               hoverIcon="icons/tm_obj.png"
+               icon="icons/tm_obj.png"
+               id="org.apache.uima.textmarker.utils.apply.script.basics.popup"
+               label="Quick TextMarker"
+               style="push"
+               tooltip="Apply current TextMarker script on folder and keep basics">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:org.apache.uima.textmarker.utils.popup.submenu">
+         <command
+               commandId="org.apache.uima.textmarker.utils.apply.script"
+               disabledIcon="icons/tm_obj.png"
+               hoverIcon="icons/tm_obj.png"
+               icon="icons/tm_obj.png"
+               id="org.apache.uima.textmarker.utils.apply.script.popup"
+               label="Quick TextMarker (remove basics)"
+               style="push"
+               tooltip="Apply current TextMarker script on folder">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:org.apache.uima.textmarker.utils.popup.submenu">
+         <command
+               commandId="org.apache.uima.textmarker.utils.apply.script.noxmi"
+               disabledIcon="icons/tm_obj.png"
+               hoverIcon="icons/tm_obj.png"
+               icon="icons/tm_obj.png"
+               id="org.apache.uima.textmarker.utils.apply.script.noxmi.popup"
+               label="Quick TextMarker (no xmi)"
+               style="push"
+               tooltip="Apply current TextMarker script on folder">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:org.apache.uima.textmarker.utils.popup.submenu">
+         <command
+               commandId="org.apache.uima.textmarker.utils.twl.command"
+               disabledIcon="icons/tm_obj.png"
+               hoverIcon="icons/tm_obj.png"
+               icon="icons/tm_obj.png"
+               id="org.apache.uima.textmarker.utils.twl.popup"
+               label="Convert to TWL"
+               style="push"
+               tooltip="Convert the word list to a tree">
+            <visibleWhen
+                  checkEnabled="true">
+               <reference
+                     definitionId="org.apache.uima.textmarker.utils.twl.definition">
+               </reference>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:org.apache.uima.textmarker.utils.popup.submenu">
+         <command
+               commandId="org.apache.uima.textmarker.utils.mtwl.command"
+               disabledIcon="icons/tm_obj.png"
+               hoverIcon="icons/tm_obj.png"
+               icon="icons/tm_obj.png"
+               id="org.apache.uima.textmarker.utils.mtwl.popup"
+               label="Convert to Multi TWL"
+               style="push"
+               tooltip="Convert several word lists to a tree">
+            <visibleWhen
+                  checkEnabled="true">
+               <reference
+                     definitionId="org.apache.uima.textmarker.utils.mtwl.definition">
+               </reference>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>   <extension
+         point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="org.apache.uima.textmarker.utils.twl.definition">
+         <with
+               variable="selection">
+            <iterate
+                  ifEmpty="false"
+                  operator="and">
+               <test
+                     property="org.eclipse.core.resources.extension"
+                     value="txt">
+               </test>
+            </iterate>
+         </with>
+      </definition>
+      <definition
+            id="org.apache.uima.textmarker.utils.mtwl.definition">
+         <with
+               variable="selection">
+            <iterate
+                  ifEmpty="true">
+               <or>
+                  <test
+                        property="org.eclipse.core.resources.extension"
+                        value="txt">
+                  </test>
+               </or>
+            </iterate>
+         </with>
+      </definition>
+      <definition
+            id="org.apache.uima.textmarker.utils.apply.script.definition">
+         <with
+               variable="selection">
+            <and>
+               <with
+                     variable="activeEditorId">
+                  <equals
+                        value="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor">
+                  </equals>
+               </with>
+            </and>
+         </with>
+      </definition>
+   </extension>   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="org.apache.uima.textmarker.utils.apply.script"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+M3+T">
+      </key>
+      <key
+            commandId="org.apache.uima.textmarker.utils.apply.script.basics"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+T">
+      </key>
+      <key
+            commandId="org.apache.uima.textmarker.utils.apply.script.noxmi"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+M2+M3+T">
+      </key>
+      <key
+            commandId="org.apache.uima.textmarker.utils.twl.command"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+L">
+      </key>
+      <key
+            commandId="org.apache.uima.textmarker.utils.mtwl.command"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+M2+L">
+      </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="org.apache.uima.textmarker.ide.ui"
+            class="org.apache.uima.textmarker.explain.basic.BasicTokenStreamView"
+            icon="icons/text_list_numbers.png"
+            id="org.apache.uima.textmarker.explain.basic"
+            name="Basic Stream">
+      </view>
+      <view
+            category="org.apache.uima.textmarker.ide.ui"
+            class="org.apache.uima.textmarker.explain.apply.ApplyView"
+            icon="icons/chart_organisation.png"
+            id="org.apache.uima.textmarker.explain.apply"
+            name="Applied Rules">
+      </view>
+      <view
+            category="org.apache.uima.textmarker.ide.ui"
+            class="org.apache.uima.textmarker.explain.matched.MatchedView"
+            icon="icons/accept.png"
+            id="org.apache.uima.textmarker.explain.matched"
+            name="Matched Rules"
+            restorable="true">
+      </view>
+      <view
+            category="org.apache.uima.textmarker.ide.ui"
+            class="org.apache.uima.textmarker.explain.failed.FailedView"
+            icon="icons/cancel.png"
+            id="org.apache.uima.textmarker.explain.failed"
+            name="Failed Rules">
+      </view>
+      <view
+            category="org.apache.uima.textmarker.ide.ui"
+            class="org.apache.uima.textmarker.explain.element.ElementView"
+            icon="icons/chart_organisation.png"
+            id="org.apache.uima.textmarker.explain.element"
+            name="Rule Elements">
+      </view>
+      <view
+            category="org.apache.uima.textmarker.ide.ui"
+            class="org.apache.uima.textmarker.statistics.StatisticsView"
+            icon="icons/statistics.png"
+            id="org.apache.uima.textmarker.statistics"
+            name="Statistics">
+      </view>
+      <view
+            category="org.apache.uima.textmarker.ide.ui"
+            class="org.apache.uima.textmarker.explain.selection.ExplainSelectionView"
+            icon="icons/chart_organisation.png"
+            id="org.apache.uima.textmarker.explain.selection"
+            name="Selected Rules">
+      </view>
+      <view
+            category="org.apache.uima.textmarker.ide.ui"
+            class="org.apache.uima.textmarker.explain.rulelist.RuleListSelectionView"
+            icon="icons/chart_organisation.png"
+            id="org.apache.uima.textmarker.explain.rulelist"
+            name="Rule List">
+      </view>
+   </extension>
+   <extension
+         point="org.apache.uima.cev.cevViews">
+      <view
+            factory="org.apache.uima.textmarker.explain.apply.ApplyViewFactory"
+            id="org.apache.uima.textmarker.cev.extension.explain.apply"
+            priority="0"
+            viewId="org.apache.uima.textmarker.explain.apply">
+      </view>
+      <view
+            factory="org.apache.uima.textmarker.explain.matched.MatchedViewFactory"
+            id="org.apache.uima.textmarker.cev.extension.explain.matched"
+            priority="0"
+            viewId="org.apache.uima.textmarker.explain.matched">
+      </view>
+      <view
+            factory="org.apache.uima.textmarker.explain.basic.BasicTokenStreamViewFactory"
+            id="org.apache.uima.textmarker.cev.extension.explain.basic"
+            priority="0"
+            viewId="org.apache.uima.textmarker.explain.basic">
+      </view>
+      <view
+            factory="org.apache.uima.textmarker.explain.failed.FailedViewFactory"
+            id="org.apache.uima.textmarker.cev.extension.explain.failed"
+            priority="0"
+            viewId="org.apache.uima.textmarker.explain.failed">
+      </view>
+      <view
+            factory="org.apache.uima.textmarker.explain.element.ElementViewFactory"
+            id="org.apache.uima.textmarker.cev.extension.explain.element"
+            priority="0"
+            viewId="org.apache.uima.textmarker.explain.element">
+      </view>
+      <view
+            factory="org.apache.uima.textmarker.statistics.StatisticsViewFactory"
+            id="org.apache.uima.textmarker.cev.extension.statistics"
+            priority="0"
+            viewId="org.apache.uima.textmarker.statistics">
+      </view>
+      <view
+            factory="org.apache.uima.textmarker.explain.selection.ExplainSelectionViewFactory"
+            id="org.apache.uima.textmarker.cev.extension.explain.selection"
+            priority="0"
+            viewId="org.apache.uima.textmarker.explain.selection">
+      </view>
+      <view
+            factory="org.apache.uima.textmarker.explain.rulelist.RuleListViewFactory"
+            id="org.apache.uima.textmarker.cev.extension.explain.rulelist"
+            priority="0"
+            viewId="org.apache.uima.textmarker.explain.rulelist">
+      </view>
+   </extension>
+   <extension
+         point="org.apache.uima.cev.cevSearchStrategies">
+      <strategy
+            factory="org.apache.uima.textmarker.searchStrategy.LastLaunchSearchStrategyFactory"
+            id="org.apache.uima.textmarker.cev.LastLaunchSearch"
+            priority="20">
+      </strategy>
+      <strategy
+            factory="org.apache.uima.textmarker.searchStrategy.DescriptorFolderSearchStrategyFactory"
+            id="org.apache.uima.textmarker.cev.DescriptorFolder"
+            priority="100">
+      </strategy>
+   </extension>
+</plugin>
