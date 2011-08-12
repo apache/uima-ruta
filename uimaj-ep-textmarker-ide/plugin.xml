@@ -1,0 +1,1441 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<?eclipse version="3.4"?>
+<plugin>
+  <extension-point id="tmCommandProcessor" name="tmCommandProcessor" schema="schema/tmCommandProcessor.exsd"/>
+   <extension-point id="tmCommandDetector" name="tmCommandDetector" schema="schema/tmCommandDetector.exsd"/>
+   <extension-point id="tmkeywords" name="tmkeywords" schema="schema/tmkeywords.exsd"/>
+   <extension-point id="tmExtension" name="tmExtension" schema="schema/tmExtension.exsd"/>
+   <extension-point id="conditionExtension" name="conditionExtension" schema="schema/conditionExtension.exsd"/>
+   <extension-point id="actionExtension" name="actionExtension" schema="schema/actionExtension.exsd"/>
+   <extension-point id="engineExtension" name="engineExtension" schema="schema/engineExtension.exsd"/>
+   <extension-point id="booleanFunctionExtension" name="booleanFunctionExtension" schema="schema/booleanFunctionExtension.exsd"/>
+   <extension-point id="typeFunctionExtension" name="typeFunctionExtension" schema="schema/typeFunctionExtension.exsd"/>
+   <extension-point id="numberFunctionExtension" name="numberFunctionExtension" schema="schema/numberFunctionExtension.exsd"/>
+   <extension-point id="stringFunctionExtension" name="stringFunctionExtension" schema="schema/stringFunctionExtension.exsd"/>
+   <extension-point id="tmSemanticHighlighting" name="tmSemanticHighlighting" schema="schema/tmSemanticHighlighting.exsd"/>
+   <extension-point id="tmTestEngine" name="tmTestEngine" schema="schema/tmTestEngine.exsd"/>
+   <extension
+         id="nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run class="org.apache.uima.textmarker.ide.core.TextMarkerNature"/>
+      </runtime>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.validators.core.validator">
+      <validatorType
+            class="org.apache.uima.textmarker.ide.core.packages.TextMarkerPackageCheckerType"
+            id="org.apache.uima.textmarker.ide.packageChecker"
+            nature="org.apache.uima.textmarker.ide.nature">
+      </validatorType>
+   </extension>
+   
+   <extension
+         point="org.eclipse.dltk.core.language">
+      <language
+            class="org.apache.uima.textmarker.ide.core.TextMarkerLanguageToolkit"
+            nature="org.apache.uima.textmarker.ide.nature"/>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.sourceElementParsers">
+      <parser
+            class="org.apache.uima.textmarker.ide.core.parser.TextMarkerSourceElementParser"
+            nature="org.apache.uima.textmarker.ide.nature"
+            priority="0">
+      </parser>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.selectionEngine">
+      <selectionEngine
+            class="org.apache.uima.textmarker.ide.core.codeassist.TextMarkerSelectionEngine"
+            nature="org.apache.uima.textmarker.ide.nature"
+            priority="0">
+      </selectionEngine>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.completionEngine">
+      <completionEngine
+            class="org.apache.uima.textmarker.ide.core.codeassist.TextMarkerCompletionEngine"
+            nature="org.apache.uima.textmarker.ide.nature"
+            priority="0">
+      </completionEngine>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.search">
+      <seachFactory
+            class="org.apache.uima.textmarker.ide.core.TextMarkerSearchFactory"
+            nature="org.apache.uima.textmarker.ide.nature"
+            priority="0">
+      </seachFactory>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.callHierarchy">
+      <callHerarchiesFactory
+            class="org.apache.uima.textmarker.ide.core.TextMarkerCallHierarchyFactory"
+            nature="org.apache.uima.textmarker.ide.nature"
+            priority="0">
+      </callHerarchiesFactory>
+   </extension>
+   <extension
+        point="org.eclipse.core.runtime.contentTypes">
+     <content-type
+           base-type="org.eclipse.core.runtime.text"
+           file-extensions="tm"
+           id="org.apache.uima.textmarker.ide.tmContentType"
+           name="%tmContentType"
+           priority="high">
+        <describer
+              class="org.apache.uima.textmarker.ide.core.TextMarkerContentDescriber"
+              plugin="org.apache.uima.textmarker.ide.core">
+        </describer>       
+     </content-type>
+  </extension>
+   <extension
+         point="org.eclipse.dltk.core.sourceParsers">
+      <parserContribution
+            natureId="org.apache.uima.textmarker.ide.nature">
+         <parser
+               class="org.apache.uima.textmarker.ide.core.parser.TextMarkerSourceParserFactory"
+               description="%sourceParser.description"
+               id="org.apache.uima.textmarker.ide.sourceParser"
+               name="%sourceParser.name"
+               priority="0" />
+      </parserContribution>
+   </extension>
+   <extension
+         point="org.apache.uima.textmarker.ide.tmkeywords">
+      <keywords
+            class="org.apache.uima.textmarker.ide.core.TextMarkerKeywords">
+      </keywords>
+   </extension>
+ <extension
+         name="tm commands"
+         point="org.apache.uima.textmarker.ide.tmCommandProcessor">
+      <processor
+            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.TextMarkerNamespaceProcessor"
+            id="namespace"></processor>
+      <processor
+            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.TextMarkerProcProcessor"
+            id="proc">
+      </processor>
+      <processor
+            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.TextMarkerVariableProcessor"
+            id="set">
+      </processor>
+      <processor
+            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.TextMarkerUpvarProcessor"
+            id="upvar">
+      </processor>
+      <processor
+            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.TextMarkerGlobalVariableProcessor"
+            id="global">
+      </processor>
+      <processor
+            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.TextMarkerPackageProcessor"
+            id="package">
+      </processor>
+      <processor
+            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.TextMarkerCatchProcessor"
+            id="catch">
+      </processor>
+      <processor
+            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.TextMarkerIfProcessor"
+            id="if">
+      </processor>
+      <processor
+            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.TextMarkerNamespaceVariableProcessor"
+            id="variable">
+      </processor>
+      <processor
+            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.TextMarkerSwitchCommandProcessor"
+            id="switch">
+      </processor>
+      <processor
+            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.TextMarkerForCommandProcessor"
+            id="for">
+      </processor>
+      <processor
+            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.TextMarkerForeachCommandProcessor"
+            id="foreach">
+      </processor>
+      <processor
+            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.TextMarkerWhileCommandProcessor"
+            id="while">
+      </processor>
+   </extension>
+ <extension
+         point="org.eclipse.dltk.core.mixin">
+      <mixin
+            class="org.apache.uima.textmarker.ide.core.mixin.TextMarkerMixinParser"
+            nature="org.apache.uima.textmarker.ide.nature"
+            priority="0">
+      </mixin>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.apache.uima.textmarker.ide.core.TextMarkerPreferenceInitializer">
+      </initializer>
+   </extension>
+ <extension
+       point="org.eclipse.dltk.core.interpreterContainerExtension">
+    <interpreterContainerExtension
+          class="org.apache.uima.textmarker.ide.core.packages.TextMarkerPackagesInterpreterContainerExtension"
+          nature="org.apache.uima.textmarker.ide.nature"
+          priority="0">
+    </interpreterContainerExtension>
+ </extension>
+   <extension
+         point="org.eclipse.dltk.core.buildpathContainerInitializer">
+      <buildpathContainerInitializer
+            class="org.apache.uima.textmarker.ide.core.packages.TextMarkerPackagesBuildpathContainerInitializer"
+            id="org.apache.uima.textmarker.ide.core.PACKAGES">
+      </buildpathContainerInitializer>
+   </extension>
+   <extension
+         id="org.apache.uima.textmarker.ide.core.builder"
+         point="org.eclipse.dltk.core.builder">
+      <builder
+            class="org.apache.uima.textmarker.ide.core.builder.TextMarkerBuilder"
+            nature="org.apache.uima.textmarker.ide.nature">
+      </builder>
+   </extension>
+<extension
+    point="org.eclipse.dltk.core.buildParticipant">
+      <buildParticipant
+            class="org.eclipse.dltk.core.builder.ParserBuildParticipantFactory"
+            id="org.apache.uima.textmarker.ide.buildParticipant.parser"
+            name="%parserBuildParticipant.name"
+            nature="org.apache.uima.textmarker.ide.nature">
+      </buildParticipant>
+    <buildParticipant
+      class="org.apache.uima.textmarker.ide.core.parser.TextMarkerTodoParserType"
+      id="org.apache.uima.textmarker.ide.todo"
+      name="%taskTagsBuildParticipant.name"
+      nature="org.apache.uima.textmarker.ide.nature">
+      <requires
+            id="org.apache.uima.textmarker.ide.buildParticipant.parser">
+      </requires>
+    </buildParticipant>
+  </extension>
+     <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.apache.uima.textmarker.ide.debug.TextMarkerDebugPreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.debug.scriptDebugModel">
+      <debugModel
+            debugModelId="org.eclipse.dltk.debug.textmarkerModel"
+            natureId="org.apache.uima.textmarker.ide.core.TextMarkerNature"
+            typeFactory="org.apache.uima.textmarker.ide.debug.TextMarkerTypeFactory">
+      </debugModel>
+   </extension>
+   <extension point="org.eclipse.core.runtime.preferences">
+    <initializer
+      class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerConsolePreferenceInitializer" />
+  </extension>
+  
+  <extension point="org.eclipse.ui.viewActions">
+    <viewContribution
+      targetID="org.eclipse.debug.ui.VariableView"
+      id="org.eclipse.jdt.debug.ui.VariableViewActions">
+      <action
+        style="toggle"
+        id="org.eclipse.jdt.debug.ui.variableViewActions.ShowStatic"
+        class="org.apache.uima.textmarker.ide.ui.console.ShowFunctionsAction"
+        helpContextId="show_functions_context"
+        icon="icons/textmarker.png"
+        label="%showStaticAction.label"
+        menubarPath="org.apache.uima.textmarker.ide.debug.ui.menu.VariableView/tm"
+        tooltip="%showStaticAction.tooltip">
+      </action>
+    </viewContribution>
+  </extension>
+  
+  <extension point="org.eclipse.dltk.ui.editorTextHovers">
+    <hover
+      label="%TextMarkerVariableHoverLabel"
+      description="%TextMarkerVariableHoverDescription"
+      class="org.apache.uima.textmarker.ide.debug.ui.TextMarkerDebugHover"
+      id="org.apache.uima.textmarker.ide.debug.ui.TextMarkerDebugHover">
+    </hover>
+  </extension>
+
+  <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+    <launchConfigurationTabGroup
+      type="org.apache.uima.textmarker.ide.launching.TextMarkerLaunchConfigurationType"
+      class="org.apache.uima.textmarker.ide.debug.ui.launchConfiguration.TextMarkerTabGroup"
+      id="org.apache.uima.textmarker.ide.debug.ui.launchConfiguration.TextMarkerTabGroup">
+      <launchMode
+        mode="debug"
+        perspective="org.eclipse.debug.ui.DebugPerspective"
+        description="Debug TextMarker">
+      </launchMode>
+      <launchMode
+        mode="run"
+        description="Run TextMarker">
+      </launchMode>
+    </launchConfigurationTabGroup>
+  </extension>
+
+
+  <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+    <launchConfigurationTypeImage
+      icon="icons/textmarker.png"
+      configTypeID="org.apache.uima.textmarker.ide.launching.TMLaunchConfigurationType"
+      id="org.apache.uima.textmarker.ide.debug.ui.launchConfigurationTypeImage.localTMScript">
+    </launchConfigurationTypeImage>
+    <!--launchConfigurationTypeImage
+      configTypeID="org.apache.uima.textmarker.ide.launching.TMRemoteLaunchConfigurationType"
+      icon="icons/textmarker.png"
+      id="org.apache.uima.textmarker.ide.debug.ui.launchConfigurationTypeImage.remoteTMScript">
+      </launchConfigurationTypeImage-->
+  </extension>
+
+  <extension point="org.eclipse.debug.ui.launchShortcuts">
+    <shortcut
+      class="org.apache.uima.textmarker.ide.debug.ui.launcher.TextMarkerLaunchShortcut"
+      icon="icons/textmarker.png"
+      id="org.apache.uima.textmarker.ide.debug.ui.launchShortcut"
+      label="TextMarker"
+      modes="run, debug">
+      <contextualLaunch>
+        <enablement>
+          <with variable="selection">
+            <count value="1" />
+            <iterate>
+              <or>
+                <test
+                  property="org.eclipse.dltk.launching.hasProjectNature"
+                  args="org.apache.uima.textmarker.ide.nature" />
+              </or>
+            </iterate>
+          </with>
+        </enablement>
+      </contextualLaunch>
+      <perspective id="org.apache.uima.textmarker.ide.ui.TextMarkerPerspective">
+      </perspective>
+      <perspective id="org.eclipse.debug.ui.DebugPerspective"></perspective>
+    </shortcut>
+  </extension>
+
+  <extension point="org.eclipse.ui.popupMenus">
+    <objectContribution
+      adaptable="false"
+      id="org.apache.uima.textmarker.ide.ui.console.objectContribution1"
+      nameFilter="*"
+      objectClass="org.eclipse.dltk.core.ISourceModule">
+      <action
+        class="org.apache.uima.textmarker.ide.ui.console.PasteTextMarkerToConsole"
+        id="org.apache.uima.textmarker.ide.ui.console.PasteTextMarkerTextToConsoleAction"
+        label="%TextMarkerConsole.Actions.PasteToTextMarkerConsole" />
+    </objectContribution>
+
+    <viewerContribution
+      id="org.apache.uima.textmarker.ide.debug.ui.viewerContribution1"
+      targetID="#TextMarkerEditorContext">
+      <!--action
+        class="org.eclipse.dltk.debug.ui.actions.WatchExpressionAction"
+        id="org.apache.uima.textmarker.ide.debug.ui.WatchExpressionAction"
+        label="%WatchVariable"
+        menubarPath="additions"/-->
+      <action
+        id="org.apache.uima.textmarker.ide.ui.console.PasteToTextMarkerConsoleAction"
+        label="%TextMarkerConsole.Actions.PasteToTextMarkerConsole"
+        menubarPath="additions"
+        class="org.apache.uima.textmarker.ide.ui.console.PasteTextMarkerTextToConsoleAction">
+      </action>
+    </viewerContribution>
+    <viewerContribution
+      id="org.apache.uima.textmarker.ide.debug.ui.rulerContribution"
+      targetID="#TextMarkerRulerContext">
+      <action
+        class="org.eclipse.dltk.debug.ui.actions.RulerToggleWatchPointActionDelegate"
+        icon="icons/jwatch_obj.gif"
+        id="textmarker.doubleClickWatchPointAction"
+        label="Toggle Watchpoint"
+        menubarPath="debug"
+        style="push">
+      </action>
+      <action
+        label="%EnableDisableBreakpoint.label"
+        id="org.apache.uima.textmarker.ide.ui.actions.RulerEnableDisableBreakpointActionDelegate"
+        class="org.eclipse.debug.ui.actions.RulerEnableDisableBreakpointActionDelegate"
+        menubarPath="debug">
+      </action>
+
+      <action
+        label="%ToggleBreakpoint.label"
+        id="org.apache.uima.textmarker.ide.ui.actions.RulerToggleBreakpointActionDelegate"
+        class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
+        menubarPath="debug">
+      </action>
+
+      <action
+        class="org.eclipse.dltk.debug.ui.actions.ScriptBreakpointPropertiesRulerActionDelegate"
+        id="org.apache.uima.textmarker.ide.debug.ui.ScriptBreakpointPropertiesRulerActionDelegate"
+        label="%BreakpointProperties.label"
+        menubarPath="group.properties" />
+    </viewerContribution>
+    
+    <viewerContribution
+      targetID="#TextMarkerEditorContext"
+      id="org.eclipse.dltk.debug.ui.DebugPopupActions">
+      <visibility>
+        <and>
+          <systemProperty
+            name="org.eclipse.dltk.debug.ui.debuggerActive"
+            value="true">
+          </systemProperty>
+          <objectClass name="org.eclipse.jface.text.ITextSelection">
+          </objectClass>
+        </and>
+      </visibility>
+      <action
+        label="%ScriptWatch.label"
+        icon="/icons/watch_exp.gif"
+        class="org.eclipse.dltk.internal.debug.ui.actions.ScriptWatchAction"
+        menubarPath="additions"
+        id="org.apache.uima.textmarker.ide.debug.ui.ScriptWatch">
+      </action>
+      <action
+        label="%ScriptInspect.label"
+        icon="/icons/insp_sbook.gif"
+        definitionId="org.eclipse.dlkt.debug.ui.commands.ScriptInspect"
+        class="org.eclipse.dltk.internal.debug.ui.actions.PopupScriptInspectAction"
+        menubarPath="additions"
+        id="org.apache.uima.textmarker.ide.debug.ui.ScriptInspect">
+      </action>
+      <action
+        label="%ScriptDisplay.label"
+        icon="/icons/disp_sbook.gif"
+        definitionId="org.eclipse.dlkt.debug.ui.commands.ScriptDisplay"
+        class="org.eclipse.dltk.internal.debug.ui.actions.PopupScriptDisplayAction"
+        menubarPath="additions"
+        id="org.apache.uima.textmarker.ide.debug.ui.ScriptDisplay">
+      </action>
+    </viewerContribution>
+  </extension>
+
+  <extension point="org.eclipse.ui.actionSetPartAssociations">
+    <actionSetPartAssociation
+      targetID="org.eclipse.debug.ui.launchActionSet">
+      <part id="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor"></part>
+    </actionSetPartAssociation>
+  </extension>
+  <extension point="org.eclipse.ui.actionSetPartAssociations">
+    <actionSetPartAssociation
+      targetID="org.eclipse.debug.ui.launchActionSet">
+      <part id="org.eclipse.dltk.ui.ScriptExplorer"></part>
+      <part id="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor"></part>
+    </actionSetPartAssociation>
+  </extension>
+  <extension point="org.eclipse.ui.console.consolePatternMatchListeners">
+    <consolePatternMatchListener
+      class="org.apache.uima.textmarker.ide.ui.console.TextMarkerConsoleTracker"
+      regex="\(file &quot;.*&quot; line .*\)"
+      id="org.apache.uima.textmarker.ide.debug.ui.TextMarkerConsoleTracker">
+      <enablement>
+        <or>
+          <test
+            property="org.eclipse.debug.ui.processTypeTest"
+            value="tmInterpreter" />
+        </or>
+      </enablement>
+    </consolePatternMatchListener>
+
+  </extension>
+  <!--extension
+    point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+    <launchConfigurationTabGroup
+    type="org.apache.uima.textmarker.ide.launching.localTMApplication"
+    class="org.apache.uima.textmarker.ide.debug.ui.launchConfiguration.TextMarkerTabGroup"
+    id="org.apache.uima.textmarker.ide.debug.ui.TMTabGroup">
+    <launchMode 
+    mode="debug"
+    perspective="org.eclipse.debug.ui.DebugPerspective"
+    description="Debug">
+    </launchMode>
+    </launchConfigurationTabGroup>
+    </extension-->
+
+  <extension point="org.eclipse.ui.preferencePages">
+    <page
+      category="org.apache.uima.textmarker.ide.preferences"
+      class="org.apache.uima.textmarker.ide.debug.ui.interpreters.TextMarkerInterpreterPreferencePage"
+      id="org.eclipse.dltk.debug.ui.TextMarkerInterpreters"
+      name="%Interpreters.PreferencePage" />
+    <page
+      category="org.apache.uima.textmarker.ide.preferences"
+      class="org.apache.uima.textmarker.ide.debug.ui.preferences.TextMarkerDebugPreferencePage"
+      id="org.apache.uima.textmarker.ide.preferences.debug"
+      name="%Debug.PreferencePage" />
+    <page
+      category="org.apache.uima.textmarker.ide.preferences.debug"
+      class="org.apache.uima.textmarker.ide.debug.ui.preferences.TextMarkerDebuggingEnginePreferencePage"
+      id="org.apache.uima.textmarker.ide.preferences.debug.engines"
+      name="%Engines.PreferencePage" />
+    <page
+      category="org.apache.uima.textmarker.ide.preferences"
+      class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerConsolePreferences"
+      id="org.apache.uima.textmarker.ide.ui.console.preferences.TextMarkerConsolePreferences"
+      name="%Console.PreferencePage" />
+  </extension>
+
+  <extension point="org.eclipse.ui.propertyPages">
+    <page
+      class="org.apache.uima.textmarker.ide.debug.ui.preferences.TextMarkerDebugPreferencePage"
+      category="org.apache.uima.textmarker.ide.propertyPage"
+      id="org.apache.uima.textmarker.ide.propertyPage.debug"
+      name="%Debug.PropertyPage">
+      <enabledWhen>
+        <adapt type="org.eclipse.core.resources.IProject">
+          <test property="org.eclipse.core.resources.projectNature" value="org.apache.uima.textmarker.ide.nature"/>
+        </adapt>         
+      </enabledWhen>
+    </page>    
+    <page
+      class="org.apache.uima.textmarker.ide.debug.ui.preferences.TextMarkerDebuggingEnginePreferencePage"
+      category="org.apache.uima.textmarker.ide.propertyPage.debug"
+      id="org.apache.uima.textmarker.ide.propertyPage.debug.engines"
+      name="%Engines.PropertyPage">
+      <enabledWhen>
+        <adapt type="org.eclipse.core.resources.IProject">
+          <test property="org.eclipse.core.resources.projectNature" value="org.apache.uima.textmarker.ide.nature"/>
+        </adapt>         
+      </enabledWhen>
+    </page> 
+  </extension>   
+
+  <extension point="org.eclipse.ui.editorActions">
+    <editorContribution
+      targetID="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor"
+      id="org.apache.uima.textmarker.ide.debug.TextMarkerEditor.BreakpointRulerActions">
+
+      <action
+        label="Toggle Breakpoint"
+        class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
+        style="push"
+        actionID="RulerDoubleClick"
+        id="textmarker.doubleClickBreakpointAction" />
+
+
+    </editorContribution>
+  </extension>
+  <extension point="org.eclipse.ui.console.consoleFactories">
+    <consoleFactory
+      class="org.apache.uima.textmarker.ide.ui.console.TextMarkerConsoleFactory"
+      label="%TextMarkerConsole.Console" />
+  </extension>
+
+  <extension point="org.eclipse.dltk.console.ui.scriptConsole">
+    <scriptConsole
+      class="org.apache.uima.textmarker.ide.ui.console.TextMarkerConsoleFactory"
+      natureID="org.apache.uima.textmarker.ide.nature" />
+  </extension>
+  <extension point="org.eclipse.dltk.ui.buildpathContainerPage">
+    <buildpathContainerPath
+      class="org.apache.uima.textmarker.ide.debug.ui.interpreters.TextMarkerInterpreterContainerWizardPage"
+      id="org.apache.uima.textmarker.ide.launching.INTERPRETER_CONTAINER"
+      name="textmarker Interpreter Libraries"
+      nature="org.apache.uima.textmarker.ide.nature" />
+  </extension>
+  <extension point="org.eclipse.ui.perspectiveExtensions">
+    <perspectiveExtension
+      targetID="org.apache.uima.textmarker.ide.ui.TextMarkerPerspective">
+      <actionSet id="org.eclipse.debug.ui.breakpointActionSet"></actionSet>
+    </perspectiveExtension>
+  </extension>
+
+  <extension point="org.eclipse.debug.ui.debugModelPresentations">
+    <debugModelPresentation
+      class="org.apache.uima.textmarker.ide.debug.ui.TextMarkerDebugModelPresentation"
+      id="org.eclipse.dltk.debug.textmarkerModel" />
+  </extension>
+
+  <extension point="org.eclipse.debug.core.watchExpressionDelegates">
+    <watchExpressionDelegate
+      debugModel="org.eclipse.dltk.debug.textmarkerModel"
+      delegateClass="org.eclipse.dltk.debug.internal.core.model.ScriptWatchExpressionDelegate">
+    </watchExpressionDelegate>
+  </extension>
+
+  <extension point="org.eclipse.debug.ui.debugModelContextBindings">
+    <modelContextBinding
+      contextId="org.eclipse.dltk.debug.ui.debugging"
+      debugModelId="org.eclipse.dltk.debug.textmarkerModel" />
+  </extension>
+
+  <extension point="org.eclipse.core.runtime.adapters">
+    <factory
+      adaptableType="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor"
+      class="org.apache.uima.textmarker.ide.debug.ui.TextMarkerEditorDebugAdapterFactory">
+      <adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget" />
+      <adapter type="org.eclipse.debug.ui.actions.IRunToLineTarget" />
+    </factory>
+  </extension>
+
+  <extension point="org.eclipse.ui.commands">
+    <command
+      id="org.apache.uima.textmarker.ide.debug.ui.commands.toggleGlobalVariables"
+      description="%showGlobalVarsCommand.name"
+      name="%showGlobalVarsCommand.description" />
+    <command
+      id="org.apache.uima.textmarker.ide.debug.ui.commands.toggleClassVariables"
+      description="%showClassVarsCommand.name"
+      name="%showClassVarsCommand.description" />
+    <command
+      id="org.apache.uima.textmarker.ide.debug.ui.commands.toggleLocalVariables"
+      description="%showLocalVarsCommand.name"
+      name="%showLocalVarsCommand.description" />      
+  </extension>
+
+  <extension point="org.eclipse.ui.menus">
+    <menuContribution locationURI="menu:org.eclipse.debug.ui.VariableView">
+      <menu
+        label="%variablesViewMenu.name"
+        id="org.apache.uima.textmarker.ide.debug.ui.menu.VariableView" />
+    </menuContribution>
+    <menuContribution locationURI="menu:org.apache.uima.textmarker.ide.debug.ui.menu.VariableView">
+      <command 
+        commandId="org.apache.uima.textmarker.ide.debug.ui.commands.toggleGlobalVariables"
+        tooltip="%showGlobalVarsCommand.tooltip"     
+        style="toggle" />
+      <command 
+        commandId="org.apache.uima.textmarker.ide.debug.ui.commands.toggleClassVariables"
+        tooltip="%showClassVarsCommand.tooltip"      
+        style="toggle" />       
+      <command 
+        commandId="org.apache.uima.textmarker.ide.debug.ui.commands.toggleLocalVariables"
+        tooltip="%showLocalVarsCommand.tooltip" 
+        style="toggle" />                      
+    </menuContribution>  
+  </extension>
+
+  <extension point="org.eclipse.ui.handlers">
+    <handler 
+      commandId="org.apache.uima.textmarker.ide.debug.ui.commands.toggleGlobalVariables"
+      class="org.apache.uima.textmarker.ide.debug.ui.handlers.ToggleGlobalVariablesHandler" />
+    <handler 
+      commandId="org.apache.uima.textmarker.ide.debug.ui.commands.toggleClassVariables"
+      class="org.apache.uima.textmarker.ide.debug.ui.handlers.ToggleClassVariablesHandler" />
+    <handler 
+      commandId="org.apache.uima.textmarker.ide.debug.ui.commands.toggleLocalVariables"
+      class="org.apache.uima.textmarker.ide.debug.ui.handlers.ToggleLocalVariablesHandler" />      
+  </extension>
+  <extension point="org.eclipse.dltk.launching.debuggingEngine">
+    <engineContribution natureId="org.apache.uima.textmarker.ide.nature">
+      <engine
+        class="org.apache.uima.textmarker.ide.debugger.TextMarkerDebuggerRunnerFactory"
+        description="%DebuggingEngine.description"
+        id="org.apache.uima.textmarker.ide.debugger"
+        name="%DebuggingEngine.name"
+        priority="0"
+        propertyPageId="org.apache.uima.textmarker.ide.propertyPage.debug.engines.debugger"
+        preferencePageId="org.apache.uima.textmarker.ide.preferences.debug.engines.debugger">
+      </engine>
+    </engineContribution>
+  </extension>
+
+  <extension point="org.eclipse.ui.preferencePages">
+    <page
+      category="org.apache.uima.textmarker.ide.preferences.debug.engines"
+      class="org.apache.uima.textmarker.ide.debugger.preferences.TextMarkerDebuggerPreferencePage"
+      id="org.apache.uima.textmarker.ide.preferences.debug.engines.debugger"
+      name="%PreferencePage.name">
+    </page>
+  </extension>
+
+  <extension point="org.eclipse.ui.propertyPages">
+    <page
+      class="org.apache.uima.textmarker.ide.debugger.preferences.TextMarkerDebuggerPreferencePage"
+      category="org.apache.uima.textmarker.ide.propertyPage.debug.engines"
+      id="org.apache.uima.textmarker.ide.propertyPage.debug.engines.debugger"
+      name="%PropertyPage.name">
+      <enabledWhen>
+        <adapt type="org.eclipse.core.resources.IProject">
+          <test
+            property="org.eclipse.core.resources.projectNature"
+            value="org.apache.uima.textmarker.ide.nature" />
+        </adapt>
+      </enabledWhen>
+    </page>
+  </extension>
+  <extension
+        point="org.eclipse.debug.core.launchConfigurationTypes">
+     <launchConfigurationType
+           delegate="org.apache.uima.textmarker.ide.testing.TextMarkerTestingLaunchConfigurationDelegate"
+           id="org.apache.uima.textmarker.ide.testing.launchConfig"
+           modes="run, debug"
+           name="TextMarker Testing"
+           public="true"
+           sourceLocatorId="tmSourceLocator"
+           sourcePathComputerId="tmSourcePathComputer">
+     </launchConfigurationType>
+  </extension>
+  <extension
+        point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+     <launchConfigurationTypeImage
+           configTypeID="org.apache.uima.textmarker.ide.testing.launchConfig"
+           icon="icons/textmarker.png"
+           id="org.apache.uima.textmarker.ide.testing.launchConfigImage">
+     </launchConfigurationTypeImage>
+  </extension>
+  <extension
+        point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+     <launchConfigurationTabGroup
+           class="org.apache.uima.textmarker.ide.testing.TextMarkerTestingTabGroup"
+           id="org.apache.uima.textmarker.ide.testing.launchConfigTabGroup"
+           type="org.apache.uima.textmarker.ide.testing.launchConfig">
+        <launchMode
+              description="Run mode"
+              mode="run">
+        </launchMode>
+        <launchMode
+              mode="debug"
+              perspective="org.eclipse.debug.ui.DebugPerspective">
+        </launchMode>
+     </launchConfigurationTabGroup>
+  </extension>
+  <extension
+        point="org.apache.uima.textmarker.ide.tmTestEngine">
+     <testEngine
+           class="org.apache.uima.textmarker.ide.testing.TextMarkerTestTestingEngine"
+           id="org.apache.uima.textmarker.ide.testing.testingEngine"
+           priority="0">
+     </testEngine>
+  </extension>
+  <extension
+        point="org.eclipse.dltk.testing.memberResolver">
+     <resolver
+           class="org.apache.uima.textmarker.ide.testing.TextMarkerTestMemberResolver"
+           id="org.apache.uima.textmarker.ide.testing.testingEngine"
+           priority="0">
+     </resolver>
+  </extension>
+  <extension
+        point="org.eclipse.dltk.launching.interpreterInstallTypes">
+     <interpreterInstallType
+           class="org.apache.uima.textmarker.ide.launching.GenericTextMarkerInstallType"
+           id="org.apache.uima.textmarker.ide.debug.ui.launcher.GenericTextMarkerInstallType">
+     </interpreterInstallType>
+  </extension>
+  <extension
+        point="org.eclipse.debug.core.launchDelegates">
+     <launchDelegate
+           delegate="org.apache.uima.textmarker.ide.launching.JavaLocalApplicationLaunchConfigurationDelegate"
+           id="com.Instantiations.profiler.localJavaApplicationDelegate"
+           modes="debug"
+           name="Debugging with TextMarker debug support"
+           type="org.eclipse.jdt.launching.localJavaApplication">
+     </launchDelegate>
+  </extension>
+  <extension
+        point="org.eclipse.dltk.console.scriptInterpreter">
+     <scriptInterpreter
+           class="org.apache.uima.textmarker.ide.ui.console.TextMarkerInterpreter"
+           natureID="org.apache.uima.textmarker.ide.nature">
+     </scriptInterpreter>
+  </extension>
+  <extension
+        point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+     <launchConfigurationTypeImage
+           configTypeID="org.apache.uima.textmarker.ide.launching.TextMarkerLaunchConfigurationType"
+           icon="$nl$/icons/textmarker.png"
+           id="org.apache.uima.textmarker.ide.launching.TextMarkerLaunchConfigurationTypeImage">
+     </launchConfigurationTypeImage>
+  </extension>
+  <extension
+        point="org.eclipse.debug.core.launchConfigurationTypes">
+     <launchConfigurationType
+           delegate="org.apache.uima.textmarker.ide.launching.TextMarkerLaunchConfigurationDelegate"
+           id="org.apache.uima.textmarker.ide.launching.TextMarkerLaunchConfigurationType"
+           modes="run,debug"
+           name="TextMarker"
+           public="true"
+           sourceLocatorId="tmSourceLocator"
+           sourcePathComputerId="tmSourcePathComputer">
+     </launchConfigurationType>
+  </extension>
+  <extension
+        point="org.eclipse.debug.core.sourcePathComputers">
+     <sourcePathComputer
+           class="org.apache.uima.textmarker.ide.launching.TextMarkerSourcePathComputer"
+           id="tmSourcePathComputer">
+     </sourcePathComputer>
+  </extension>
+  <extension
+        point="org.eclipse.debug.core.sourceLocators">
+     <sourceLocator
+           class="org.apache.uima.textmarker.ide.launching.TextMarkerSourceLookupDirector"
+           id="tmSourceLocator"
+           name="org.apache.uima.textmarker.ide.launching.tmSourceLocator">
+     </sourceLocator>
+  </extension>
+  <extension
+        point="org.eclipse.dltk.launching.debuggingEngine">
+     <engineContribution
+           natureId="org.apache.uima.textmarker.ide.nature">
+        <selector
+              class="org.apache.uima.textmarker.ide.launching.TextMarkerDebuggingEngineSelector">
+        </selector>
+     </engineContribution>
+  </extension>
+  <extension
+        point="org.eclipse.dltk.launching.interpreterInstalls">
+     <interpreterInstall
+           home="${eclipse_home}"
+           id="org.apache.uima.textmarker.ide.launching.embeddedTextMarker"
+           interpreterInstallType="org.apache.uima.textmarker.ide.debug.ui.launcher.GenericTextMarkerInstallType"
+           name="TextMarker Interpreter">
+     </interpreterInstall>
+  </extension>
+  <extension
+        point="org.eclipse.core.runtime.preferences">
+     <initializer
+           class="org.apache.uima.textmarker.ide.formatter.TextMarkerFormatterPreferenceInitializer">
+     </initializer>
+  </extension>
+  <extension
+        point="org.eclipse.dltk.ui.formatterFactory">
+     <engineContribution
+           natureId="org.apache.uima.textmarker.ide.nature">
+        <formatterFactory
+              class="org.apache.uima.textmarker.ide.formatter.TextMarkerFormatterFactory"
+              description="Default TextMarker formatter providing whitespace control and line wrapping"
+              id="org.apache.uima.textmarker.ide.formatter.formatterFactory"
+              name="Default TextMarker Formatter"
+              priority="10">
+        </formatterFactory>
+     </engineContribution>
+  </extension>
+  <extension
+        id="org.apache.uima.textmarker.ide.ui.editor.DocumentSetupParticipant"
+        name="%documentSetupParticipantName"
+        point="org.eclipse.core.filebuffers.documentSetup">
+     <participant
+           class="org.apache.uima.textmarker.ide.ui.editor.TextMarkerDocumentSetupParticipant">
+     </participant>
+  </extension>
+  <extension
+        point="org.eclipse.core.runtime.adapters">
+     <factory
+           adaptableType="org.apache.uima.textmarker.ide.ui.navigation.ElementsView$ElementList"
+           class="org.apache.uima.textmarker.ide.ui.navigation.ElementListAdapterFactory">
+        <adapter
+              type="org.eclipse.dltk.core.IModelElement">
+        </adapter>
+     </factory>
+  </extension>
+  <extension
+        point="org.eclipse.core.runtime.preferences">
+     <initializer
+           class="org.apache.uima.textmarker.ide.ui.TextMarkerUIPreferenceInitializer">
+     </initializer>
+  </extension>
+  <extension
+        point="org.eclipse.search.searchPages">
+     <page
+           canSearchEnclosingProjects="true"
+           class="org.apache.uima.textmarker.ide.ui.search.TextMarkerSearchPage"
+           enabled="true"
+           extensions="tm:90, exp:30"
+           icon="$nl$/icons/search_obj.png"
+           id="org.eclipse.dltk.ui.TextMarkerSearchPage"
+           label="%TextMarkerSearchPage.label"
+           showScopeSection="true"
+           sizeHint="460,160">
+     </page>
+  </extension>
+  <extension
+        point="org.eclipse.ui.contexts">
+     <context
+           description="%TextMarkerEditContext.description"
+           id="org.apache.uima.textmarker.ide.ui.textMarkerEditorScope"
+           name="%TextMarkerEditContext.name"
+           parentId="org.eclipse.dltk.ui.scriptEditorScope">
+     </context>
+  </extension>
+  <extension
+        point="org.eclipse.ui.perspectives">
+     <perspective
+           class="org.apache.uima.textmarker.ide.ui.TextMarkerPerspective"
+           icon="$nl$/icons/tm_persp.png"
+           id="org.apache.uima.textmarker.ide.ui.TextMarkerPerspective"
+           name="%TextMarkerPerspective.name">
+     </perspective>
+     <perspective
+           class="org.apache.uima.textmarker.ide.ui.ExplainPerspective"
+           icon="icons/explain.png"
+           id="org.apache.uima.textmarker.ide.ui.explainPerspective"
+           name="Explain">
+     </perspective>
+  </extension>
+  <extension
+        point="org.eclipse.ui.perspectiveExtensions">
+     <perspectiveExtension
+           targetID="org.eclipse.ui.resourcePerspective">
+        <perspectiveShortcut
+              id="org.apache.uima.textmarker.ide.ui.TextMarkerPerspective">
+        </perspectiveShortcut>
+     </perspectiveExtension>
+     <perspectiveExtension
+           targetID="org.apache.uima.textmarker.ide.ui.TextMarkerPerspective">
+        <perspectiveShortcut
+              id="org.apache.uima.textmarker.ide.ui.TextMarkerPerspective">
+        </perspectiveShortcut>
+     </perspectiveExtension>
+     <perspectiveExtension
+           targetID="org.apache.uima.textmarker.ide.ui.TextMarkerPerspective">
+        <perspectiveShortcut
+              id="org.eclipse.debug.ui.DebugPerspective">
+        </perspectiveShortcut>
+     </perspectiveExtension>
+     <perspectiveExtension
+           targetID="org.eclipse.debug.ui.DebugPerspective">
+        <perspectiveShortcut
+              id="org.apache.uima.textmarker.ide.ui.TextMarkerPerspective">
+        </perspectiveShortcut>
+     </perspectiveExtension>
+     <perspectiveExtension
+           targetID="org.eclipse.debug.ui.DebugPerspective">
+        <actionSet
+              id="org.eclipse.dltk.ui.DLTKActionSet">
+        </actionSet>
+     </perspectiveExtension>
+     <perspectiveExtension
+           targetID="org.apache.uima.textmarker.ide.ui.TextMarkerPerspective">
+        <showInPart
+              id="org.eclipse.dltk.ui.ScriptExplorer">
+        </showInPart>
+     </perspectiveExtension>
+     <perspectiveExtension
+           targetID="org.eclipse.debug.ui.DebugPerspective">
+        <showInPart
+              id="org.eclipse.dltk.ui.ScriptExplorer">
+        </showInPart>
+     </perspectiveExtension>
+  </extension>
+  <extension
+        point="org.eclipse.ui.newWizards">
+     <category
+           id="org.apache.uima.textmarker.ide.ui"
+           name="%TextMarkerWizardsCategory.name">
+     </category>
+     <wizard
+           category="org.apache.uima.textmarker.ide.ui"
+           class="org.apache.uima.textmarker.ide.ui.wizards.TextMarkerProjectCreationWizard"
+           finalPerspective="org.apache.uima.textmarker.ide.ui.TextMarkerPerspective"
+           icon="$nl$/icons/newprj_wiz.png"
+           id="org.apache.uima.textmarker.ide.ui.wizards.TextMarkerProjectWizard"
+           name="TextMarker Project"
+           preferredPerspectives="org.apache.uima.textmarker.ide.ui.TextMarkerPerspective"
+           project="true">
+        <description>
+           Creates new TextMarker project.
+        </description>
+     </wizard>
+     <wizard
+           category="org.apache.uima.textmarker.ide.ui"
+           class="org.apache.uima.textmarker.ide.ui.wizards.TextMarkerPackageCreationWizard"
+           icon="icons/newpack_wiz.gif"
+           id="org.apache.uima.textmarker.ide.ui.wizards.NewPackageCreationWizard"
+           name="%NewTMPackage.label">
+        <description>
+           %NewTMPackage.description
+        </description>
+     </wizard>
+     <wizard
+           category="org.apache.uima.textmarker.ide.ui"
+           class="org.apache.uima.textmarker.ide.ui.wizards.TextMarkerFileCreationWizard"
+           icon="$nl$/icons/newfile_wiz.png"
+           id="org.apache.uima.textmarker.ide.ui.wizards.TextMarkerFileCreationWizard"
+           name="%NewTextMarkerFile.label">
+        <description></description>
+     </wizard>
+  </extension>
+  <extension
+        point="org.eclipse.ui.editors">
+     <editor
+           class="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor"
+           contributorClass="org.eclipse.dltk.internal.ui.editor.SourceModuleEditorActionContributor"
+           default="true"
+           extensions="tm"
+           icon="$nl$/icons/tm_obj.png"
+           id="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor"
+           name="%TextMarkerEditor.name">
+        <contentTypeBinding
+              contentTypeId="org.apache.uima.textmarker.ide.tmContentType">
+        </contentTypeBinding>
+     </editor>
+  </extension>
+  <extension
+        point="org.eclipse.ui.editors.templates">
+     <contextType
+           class="org.apache.uima.textmarker.ide.ui.templates.TextMarkerUniversalTemplateContextType"
+           id="tmUniversalTemplateContextType"
+           name="%TextMarkerTemplateContext.name">
+     </contextType>
+     <include
+           file="templates/templates.xml">
+     </include>
+  </extension>
+  <extension
+        point="org.eclipse.ui.preferencePages">
+     <page
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerGlobalPreferencePage"
+           id="org.apache.uima.textmarker.ide.preferences"
+           name="%TextMarkerPreferencePage.name">
+     </page>
+     <page
+           category="org.apache.uima.textmarker.ide.preferences"
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerEditorPreferencesPage"
+           id="org.apache.uima.textmarker.ide.preferences.editor"
+           name="%TextMarkerEditorPreferencePage.name">
+     </page>
+     <page
+           category="org.apache.uima.textmarker.ide.preferences.editor"
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerEditorHoverPreferencePage"
+           id="org.apache.uima.textmarker.ide.preferences.editor.hovers"
+           name="%TextMarkerEditorHoversPreferencePage.name">
+     </page>
+     <page
+           category="org.apache.uima.textmarker.ide.preferences.editor"
+           class="org.apache.uima.textmarker.ide.ui.templates.TextMarkerCodeTemplatesPreferencePage"
+           id="org.apache.uima.textmarker.ide.preferences.templates"
+           name="%TextMarkerCodeTemplatesPreferencePage.name">
+     </page>
+     <page
+           category="org.apache.uima.textmarker.ide.preferences.editor"
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerEditorSyntaxColoringPreferencePage"
+           id="org.apache.uima.textmarker.ide.ui.editor.SyntaxColoring"
+           name="%TextMarkerEditorSyntaxColoringPreferencePage.name">
+     </page>
+     <page
+           category="org.apache.uima.textmarker.ide.preferences.editor"
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerSmartTypingPreferencePage"
+           id="org.apache.uima.textmarker.ide.ui.editor.SmartTyping"
+           name="%TextMarkerEditorSmartTypingPreferencePage.name">
+     </page>
+     <page
+           category="org.apache.uima.textmarker.ide.preferences.editor"
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerFoldingPreferencePage"
+           id="org.apache.uima.textmarker.ide.ui.editor.TextMarkerFolding"
+           name="%TextMarkerEditorFoldingPreferencePage.name">
+     </page>
+     <page
+           category="org.apache.uima.textmarker.ide.preferences"
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerTodoTaskPreferencePage"
+           id="org.apache.uima.textmarker.ide.ui.editor.TodoTasks"
+           name="%TextMarkerTaskTags.name">
+     </page>
+     <page
+           category="org.apache.uima.textmarker.ide.preferences.editor"
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerEditorAssistancePreferencePage"
+           id="org.apache.uima.textmarker.ide.ui.editor.Assistence"
+           name="%TextMarkerEditorAssistancePreferencePage.name">
+     </page>
+     <page
+           category="org.apache.uima.textmarker.ide.preferences"
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerBuilderPreferencePage"
+           id="org.apache.uima.textmarker.ide.preferences.builder"
+           name="Builder">
+     </page>
+     <page
+           category="org.apache.uima.textmarker.ide.preferences.editor"
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerFormatterPreferencePage"
+           id="org.apache.uima.textmarker.ide.preferences.formatter"
+           name="Formatter">
+     </page>
+  </extension>
+  <extension
+        point="org.eclipse.ui.propertyPages">
+     <page
+           category="org.apache.uima.textmarker.ide.propertyPage"
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerBuildpathPropertyPage"
+           id="org.apache.uima.textmarker.ide.ui.BuildpathProperties"
+           name="%TextMarkerBuildPathPropertyPage.name">
+        <enabledWhen>
+           <adapt
+                 type="org.eclipse.core.resources.IProject">
+              <test
+                    property="org.eclipse.core.resources.projectNature"
+                    value="org.apache.uima.textmarker.ide.nature">
+              </test>
+           </adapt>
+        </enabledWhen>
+        <keywordReference
+              id="org.eclipse.dltk.ui.buildpath">
+        </keywordReference>
+     </page>
+     <page
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerPropertyPage"
+           id="org.apache.uima.textmarker.ide.propertyPage"
+           name="%TextMarkerPropertyPage.name">
+        <enabledWhen>
+           <adapt
+                 type="org.eclipse.core.resources.IProject">
+              <test
+                    property="org.eclipse.core.resources.projectNature"
+                    value="org.apache.uima.textmarker.ide.nature">
+              </test>
+           </adapt>
+        </enabledWhen>
+     </page>
+     <page
+           category="org.apache.uima.textmarker.ide.propertyPage"
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerTodoTaskPreferencePage"
+           id="org.apache.uima.textmarker.ide.propertyPage.todo"
+           name="%TextMarkerTodoPropertyPage.name">
+        <enabledWhen>
+           <adapt
+                 type="org.eclipse.core.resources.IProject">
+              <test
+                    property="org.eclipse.core.resources.projectNature"
+                    value="org.apache.uima.textmarker.ide.nature">
+              </test>
+           </adapt>
+        </enabledWhen>
+     </page>
+  </extension>
+  <extension
+        point="org.eclipse.ui.views">
+     <category
+           id="org.apache.uima.textmarker.ide.ui"
+           name="%TextMarkerViewsCategory.name">
+     </category>
+     <view
+           category="org.apache.uima.textmarker.ide.ui"
+           class="org.apache.uima.textmarker.ide.ui.infoviews.TextMarkerDocumentationView"
+           icon="$nl$/icons/tmdoc.png"
+           id="org.apache.uima.textmarker.ide.ui.TextMarkerDocumentationView"
+           name="%TextMarkerDocumentationView.name">
+     </view>
+  </extension>
+  <extension
+        point="org.eclipse.ui.actionSets">
+     <actionSet
+           description="%TextMarkerActionSet.description"
+           id="org.apache.uima.textmarker.ide.ui.TextMarkerActionSet"
+           label="%TextMarkerActionSet.label"
+           visible="false">
+        <action
+              class="org.apache.uima.textmarker.ide.ui.actions.TextMarkerOpenTypeAction"
+              definitionId="org.apache.uima.textmarker.ide.ui.navigate.open.type"
+              icon="icons/opentype.gif"
+              id="openType"
+              label="%OpenTypeAction.label"
+              menubarPath="navigate/open.ext2"
+              toolbarPath="org.eclipse.search.searchActionSet/Search"
+              tooltip="%OpenTypeAction.tooltip">
+        </action>
+        <action
+              class="org.apache.uima.textmarker.ide.ui.actions.TextMarkerOpenTypeInHierarchyAction"
+              definitionId="org.apache.uima.textmarker.ide.ui.navigate.open.type.in.hierarchy"
+              id="openTypeInHierarchy"
+              label="%OpenTypeInHierarchyAction.label"
+              menubarPath="navigate/open.ext2"
+              tooltip="%OpenTypeInHierarchyAction.tooltip">
+        </action>
+     </actionSet>
+  </extension>
+  <extension
+        point="org.eclipse.ui.actionSets">
+     <actionSet
+           description="%TextMarkerSearchActionSet.description"
+           id="org.apache.uima.textmarker.ide.ui.SearchActionSet"
+           label="%TextMarkerSearchActionSet.label"
+           visible="false">
+        <menu
+              id="org.eclipse.search.menu"
+              label="%SearchMenu.label"
+              path="navigate">
+           <groupMarker
+                 name="dialogTextMarkerGroup">
+           </groupMarker>
+        </menu>
+        <action
+              class="org.apache.uima.textmarker.ide.ui.actions.OpenTextMarkerSearchPageAction"
+              icon="$nl$/icons/search_obj.png"
+              id="org.apache.uima.textmarker.ide.ui.actions.OpenTextMarkerSearchPage"
+              label="%OpenTextMarkerSearchPageAction.label"
+              menubarPath="org.eclipse.search.menu/dialogTextMarkerGroup">
+        </action>
+     </actionSet>
+  </extension>
+  <extension
+        point="org.eclipse.ui.bindings">
+     <key
+           commandId="org.apache.uima.textmarker.ide.ui.navigate.open.type"
+           contextId="org.apache.uima.textmarker.ide.ui.textMarkerEditorScope"
+           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+           sequence="M1+M2+T">
+     </key>
+     <key
+           commandId="org.eclipse.dltk.ui.edit.text.script.format"
+           contextId="org.apache.uima.textmarker.ide.ui.textMarkerEditorScope"
+           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+           sequence="M1+M2+F">
+     </key>
+     <key
+           commandId="org.eclipse.dltk.ui.edit.text.script.format"
+           contextId="org.apache.uima.textmarker.ide.ui.textMarkerEditorScope"
+           platform="gtk"
+           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+           sequence="ESC CTRL+F">
+     </key>
+  </extension>
+  <extension
+        point="org.eclipse.ui.decorators">
+     <decorator
+           adaptable="false"
+           class="org.apache.uima.textmarker.ide.ui.TextMarkerProjectDecorator"
+           id="org.apache.uima.textmarker.ide.decorators.projectdecorator"
+           label="%TextMarkerProjectDecorator.name"
+           lightweight="true"
+           location="TOP_LEFT"
+           state="true">
+        <enablement>
+           <or>
+              <objectClass
+                    name="org.eclipse.core.resources.IProject">
+              </objectClass>
+              <objectClass
+                    name="org.eclipse.dltk.core.IScriptProject">
+              </objectClass>
+           </or>
+        </enablement>
+     </decorator>
+  </extension>
+  <extension
+        point="org.eclipse.ui.commands">
+     <command
+           categoryId="org.eclipse.ui.category.navigate"
+           description="%ActionDefinition.OpenType.description"
+           id="org.apache.uima.textmarker.ide.ui.navigate.open.type"
+           name="%ActionDefinition.OpenType.name">
+     </command>
+  </extension>
+  <extension
+        point="org.eclipse.ui.menus">
+     <menuContribution
+           locationURI="menu:org.eclipse.dltk.ui.source.menu?after=editGroup">
+        <command
+              commandId="org.eclipse.dltk.ui.edit.text.script.format">
+           <visibleWhen>
+              <with
+                    variable="activeContexts">
+                 <iterate
+                       operator="or">
+                    <equals
+                          value="org.apache.uima.textmarker.ide.ui.textMarkerEditorScope">
+                    </equals>
+                 </iterate>
+              </with>
+           </visibleWhen>
+        </command>
+     </menuContribution>
+  </extension>
+  <extension
+        point="org.eclipse.ui.actionSetPartAssociations">
+     <actionSetPartAssociation
+           targetID="org.eclipse.ui.edit.text.actionSet.presentation">
+        <part
+              id="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor">
+        </part>
+     </actionSetPartAssociation>
+     <actionSetPartAssociation
+           targetID="org.eclipse.dltk.ui.A_OpenActionSet">
+        <part
+              id="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor">
+        </part>
+     </actionSetPartAssociation>
+     <actionSetPartAssociation
+           targetID="org.eclipse.dltk.ui.ScriptCodingActionSet">
+        <part
+              id="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor">
+        </part>
+     </actionSetPartAssociation>
+  </extension>
+  <extension
+        id="TextMarkerScriptNoTypeCompletionProposalComputer"
+        point="org.eclipse.dltk.ui.scriptCompletionProposalComputer">
+     <scriptCompletionProposalComputer
+           categoryId="org.eclipse.dltk.ui.scriptNoTypeProposalCategory"
+           class="org.apache.uima.textmarker.ide.ui.text.completion.TextMarkerNoTypeCompletionProposalComputer"
+           toolkitId="org.apache.uima.textmarker.ide.nature">
+        <partition
+              type="__dftl_partition_content_type">
+        </partition>
+        <partition
+              type="__tm_string">
+        </partition>
+     </scriptCompletionProposalComputer>
+  </extension>
+  <extension
+        point="org.eclipse.dltk.ui.scriptDocumentationProviders">
+     <provider
+           class="org.apache.uima.textmarker.ide.ui.documentation.TextMarkerCommentDocumentationProvider"
+           id="org.apache.uima.textmarker.ide.ui.TextMarkerCommentDocumentationProvider"
+           nature="org.apache.uima.textmarker.ide.nature">
+     </provider>
+     <provider
+           class="org.apache.uima.textmarker.ide.ui.documentation.TextMarkerPagesDocumentationProvider"
+           id="org.apache.uima.textmarker.ide.textmarke.ui.TextMarkerPagesDocumentationProvider"
+           nature="org.apache.uima.textmarker.ide.nature">
+     </provider>
+     <provider
+           class="org.apache.uima.textmarker.ide.ui.documentation.TextMarkerActionDocumentationProvider"
+           id="org.apache.uima.textmarker.ide.ui.TextMarkerActionDocumentationProvider"
+           nature="org.apache.uima.textmarker.ide.nature">
+     </provider>
+     <provider
+           class="org.apache.uima.textmarker.ide.ui.documentation.TextMarkerConditionDocumentationProvider"
+           id="org.apache.uima.textmarker.ide.ui.TextMarkerConditionDocumentationProvider"
+           nature="org.apache.uima.textmarker.ide.nature">
+     </provider>
+     <provider
+           class="org.apache.uima.textmarker.ide.ui.documentation.TextMarkerFunctionDocumentationProvider"
+           id="org.apache.uima.textmarker.ide.ui.TextMarkerFunctionDocumentationProvider"
+           nature="org.apache.uima.textmarker.ide.nature">
+     </provider>
+  </extension>
+  <extension
+        point="org.eclipse.dltk.ui.language">
+     <language
+           class="org.apache.uima.textmarker.ide.ui.TextMarkerUILanguageToolkit"
+           nature="org.apache.uima.textmarker.ide.nature">
+     </language>
+  </extension>
+  <extension
+        point="org.eclipse.ui.actionSetPartAssociations">
+     <actionSetPartAssociation
+           targetID="org.apache.uima.textmarker.ide.ui.SearchActionSet">
+        <part
+              id="org.eclipse.dltk.ui.ScriptExplorer">
+        </part>
+        <part
+              id="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor">
+        </part>
+        <part
+              id="org.eclipse.search.SearchResultView">
+        </part>
+     </actionSetPartAssociation>
+  </extension>
+  <extension
+        point="org.eclipse.ui.ide.markerResolution">
+     <markerResolutionGenerator
+           class="org.apache.uima.textmarker.ide.ui.text.TextMarkerRequireMarkerResolutionGenerator"
+           markerType="org.eclipse.dltk.core.problem">
+     </markerResolutionGenerator>
+  </extension>
+  <extension
+        point="org.eclipse.ui.editorActions">
+     <editorContribution
+           id="org.apache.uima.textmarker.ide.ui.TextMarkerEditor.ruler.actions"
+           targetID="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor">
+        <action
+              actionID="RulerClick"
+              class="org.apache.uima.textmarker.ide.ui.actions.TextMarkerSelectRulerAction"
+              id="org.apache.uima.textmarker.ide.ui.tmeditor.TextMarkerSelectRulerAction"
+              label="TextMarker Selection Ruler action">
+        </action>
+     </editorContribution>
+  </extension>
+  <extension
+        point="org.eclipse.ui.commands">
+     <command
+           categoryId="org.eclipse.dltk.ui.category.source"
+           description="%ActionDefinition.addBlockComment.description"
+           id="org.eclipse.dltk.ui.edit.text.script.add.block.comment"
+           name="%ActionDefinition.addBlockComment.name">
+     </command>
+     <command
+           categoryId="org.eclipse.dltk.ui.category.source"
+           description="%ActionDefinition.removeBlockComment.description"
+           id="org.eclipse.dltk.ui.edit.text.script.remove.block.comment"
+           name="%ActionDefinition.removeBlockComment.name">
+     </command>
+     <command
+           categoryId="org.eclipse.dltk.ui.category.source"
+           description="%ActionDefinition.indent.description"
+           id="org.eclipse.dltk.ui.edit.text.script.indent"
+           name="%ActionDefinition.indent.name">
+     </command>
+     <command
+           categoryId="org.eclipse.dltk.ui.category.source"
+           description="%ActionDefinition.format.description"
+           id="org.eclipse.dltk.ui.edit.text.script.format"
+           name="%ActionDefinition.format.name">
+     </command>
+     <command
+           categoryId="org.eclipse.dltk.ui.category.source"
+           description="%ActionDefinition.quickformat.description"
+           id="org.eclipse.dltk.ui.edit.text.script.quick.format"
+           name="%ActionDefinition.quickformat.name">
+     </command>
+  </extension>
+  <extension
+        point="org.eclipse.dltk.ui.formatterFactory">
+     <engineContribution
+           natureId="org.apache.uima.textmarker.ide.nature">
+        <selector
+              class="org.eclipse.dltk.core.PreferenceBasedContributionSelector">
+           <parameter
+                 name="qualifier"
+                 value="org.apache.uima.textmarker.ide.ui">
+           </parameter>
+           <parameter
+                 name="key"
+                 value="formatterId">
+           </parameter>
+        </selector>
+     </engineContribution>
+  </extension>
+  <extension
+        point="org.eclipse.ui.propertyPages">
+     <page
+           category="org.apache.uima.textmarker.ide.propertyPage"
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerFormatterPreferencePage"
+           id="org.apache.uima.textmarker.ide.propertyPage.formatter"
+           name="TextMarker Formatter">
+        <enabledWhen>
+           <adapt
+                 type="org.eclipse.core.resources.IProject">
+              <test
+                    property="org.eclipse.core.resources.projectNature"
+                    value="org.apache.uima.textmarker.ide.nature">
+              </test>
+           </adapt>
+        </enabledWhen>
+     </page>
+  </extension>
+  <extension
+        point="org.apache.uima.textmarker.ide.tmSemanticHighlighting">
+     <highlightingExtension
+           class="org.apache.uima.textmarker.ide.ui.DefaultTextMarkerSemanticHighlightingExtension">
+     </highlightingExtension>
+  </extension>
+  
+</plugin>

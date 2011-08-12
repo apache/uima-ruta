@@ -1,0 +1,505 @@
+#-------------------------------------------------------------------------------
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+# 
+# http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#-------------------------------------------------------------------------------
+
+[{TableOfContents}]
+
+
+!! __AFTER__
+
+The AFTER condition evaluates true, if an annotation of the given type preceeds the matched annotations.
+
+__Definition__
+%%prettify 
+{{{AFTER(Type|TypeListExpression) }}} /%
+
+__Example__
+
+%%prettify 
+{{{CW{AFTER(SW)};}}} /%
+Here, the rule matches on a capitalized word, if there is any small written word previously.
+
+
+----
+
+!! __AND__
+The AND Condition is a composed condition and evaluates true, if all contained conditions are evaluated true.
+
+__Definition__
+
+%%prettify 
+{{{AND(Condition1,...,ConditionN) }}} /%
+
+__Example__
+
+%%prettify 
+{{{Paragraph{AND(PARTOF(Headline),CONTAINS(Keyword))->MARK(ImportantHeadline)};}}} /%
+
+In this example a Paragraph is annotated with the ImportantHealine annotation, if it is a Headline and contains Keyword.
+
+----
+
+!! __BEFORE__
+
+
+The BEFORE condition evaluates true, if the matched annotations prceeds an annotation of the given type.
+
+__Definition__
+%%prettify 
+{{{BEFORE (Type|TypeListExpression) }}} /%
+
+__Example__
+
+%%prettify 
+{{{CW{BEFORE(SW)};}}} /%
+Here, the rule matches on a capitalized word, if there is any small written word afterwards.
+
+----
+
+!! __CONTAINS__
+The CONTAINS condition evaluates true if the amount or percentage of certain types in the window of the matched annotation is in a predefined interval.
+
+__Definition__
+
+%%prettify 
+{{{CONTAINS(Type(,NumbericalExpression,NumbericalExpression(,BooleanExpression)?)?)}}} /%
+
+__Example__
+
+%%prettify 
+{{{Paragraph{CONTAINS(Keyword)->MARK(KeywordParagraph)};}}} /%
+
+A Pararaph is annotated with a KeywordParagraph annotation, if it contains a Keyword annotation.
+
+%%prettify 
+{{{Paragraph{CONTAINS(Keyword,2,4)->MARK(KeywordParagraph)};}}} /%
+
+A Pararaph is annotated with a KeywordParagraph annotation, if it contains between two and four Keyword annotations.
+
+%%prettify 
+{{{Paragraph{CONTAINS(Keyword,50,100,true)->MARK(KeywordParagraph)};}}} /%
+
+A Pararaph is annotated with a KeywordParagraph annotation, if it contains between 50% and 100% Keyword annotations. This is calculated based on the tokens of the Paragraph. If the Paragraph contains six basic annatotions, two of them are part of one Keyword annotation and one basic annotation is also annotated with a Keyword annotation, then the percantage of the contained Keywords is 50%.
+
+----
+
+!! __CONTEXTCOUNT__
+The CONTEXTCOUNT condition counts the annotations of the matched type and stores the amount in a optional numerical variable. Additionally the condition evaluates true, if the amount is in a predefined interval.
+
+__Definition__
+
+%%prettify 
+{{{CONTEXTCOUNT(Type(,NumbericalExpression,NumbericalExpression(,Variable)?)?)}}} /%
+
+__Example__
+
+%%prettify 
+{{{Keyword{CONTEXTCOUNT(Paragraph,0,1000,var)->MARK(KeywordParagraph)};}}} /%
+
+Here, the position in a Paragraph of the matched Keyword annotation is calculated and stored in the variable var.
+
+----
+
+!! __COUNT__
+The COUNT condition counts the annotations of a given type and stores the amount in a optional numerical variable. Additionally the condition evaluates true, if the amount is in a predefined interval.
+
+__Definition__
+
+%%prettify 
+{{{COUNT(Type(,NumbericalExpression,NumbericalExpression)?(,NumberVariable)?)}}} /%
+%%prettify 
+{{{COUNT(ListExpression(,NumbericalExpression,NumbericalExpression)?(,NumberVariable)?)}}} /%
+
+__Example__
+
+%%prettify 
+{{{Paragraph{COUNT(Keyword,1,10,var)->MARK(KeywordParagraph)};}}} /%
+
+Here, the amount of Keyword annotations in a Paragraph is calculated and stored in the variable var. The action of the rule will be executed if one to ten Keywords were counted.
+
+----
+
+!! __CURRENTCOUNT__
+
+__Definition__
+
+%%prettify 
+{{{CURRENTCOUNT(Type(,NumbericalExpression,NumbericalExpression(,Variable)?)?)}}} /%
+
+__Example__
+
+----
+
+!! __ENDSWITH__
+
+The ENDSWITH condition evaluates true, if an annotation of the given type ends exactly at the same position as the matched annotation.
+
+__Definition__
+%%prettify 
+{{{ENDSWITH(Type|TypeListExpression) }}} /%
+
+__Example__
+
+%%prettify 
+{{{Paragraph{ENDSWITH(SW)};}}} /%
+Here, the rule matches on a Paragraph annotation, if it ends with small written word.
+
+----
+
+
+!! __FEATURE__
+The FEATURE condition compares a feature of the matched annotation with the the second argument.
+
+__Definition__
+
+%%prettify 
+{{{FEATURE(StringExpression,Expression)}}} /%
+
+__Example__
+
+%%prettify 
+{{{
+Document{FEATURE("language",targetLanguage)}
+}}}
+/%
+Here, this rule matched, if the feature with the name "language" of the document annotation equals the value of the variable targetLanguage.
+
+----
+
+!! __IF__
+The IF evaluates true if the contained BooleanExpression does.
+
+__Definition__
+
+%%prettify 
+{{{IF(BooleanExpression)}}} /%
+
+__Example__
+
+%%prettify 
+{{{Paragraph{IF(keywordAmount > 5)->MARK(KeywordParagraph)};}}} /%
+
+A Paragraph annotation is annotated with a KeywordParagraph annotation, if the value of the variable keywordAmount is greater than five.
+
+----
+
+!! __INLIST__
+The INLIST condition is fulfilled, if the matched annotation is listed in a given word list. The (relative) edit distance is currently disabled.
+
+__Definition__
+
+%%prettify 
+{{{INLIST(WordList(,NumberExpression,(BooleanExpression)?)?)}}} /%
+%%prettify 
+{{{INLIST(StringList(,NumberExpression,(BooleanExpression)?)?)}}} /%
+
+__Example__
+
+%%prettify 
+{{{Keyword{INLIST(names.txt)->MARK(SpecialKeyword)};}}} /%
+
+A Keyword is annotated with the type SpecialKeyword, if the text of the Keyword annotation is listed in the word list names.txt.
+
+----
+
+
+!! __IS__
+
+The IS conditions evaluates true, if there is an annotation of the given type with the same offsets as the matched annotations
+
+__Definition__
+
+
+%%prettify 
+{{{IS(Type)}}} /%
+
+__Example__
+
+----
+
+!! __ISINTAG__
+The ISINTAG condition evaluates true, if the matched annotation is in the given HTML tag. Attributes are currently disabled.
+
+__Definition__
+
+%%prettify 
+{{{ISINTAG(StringExpression(,StringExpression '=' StringExpression)?)}}} /%
+
+__Example__
+
+%%prettify 
+{{{Paragraph{ISINTAG("h1")->MARK(Headline)};}}} /%
+
+A Paragraph is marked as a Headline, if the matched text is in a h1 HTML tag.
+
+----
+
+!! __LAST__
+The LAST condition evaluates true, if the type of the last token of the matched annotation is subsumed by the given type.
+
+__Definition__
+
+%%prettify 
+{{{LAST(TypeExpression)}}} /%
+
+__Example__
+
+%%prettify 
+{{{Document{LAST(CW)};}}} /%
+
+This rule fires, if the last token of the document is a capitalized word.
+
+----
+
+!! __MOFN__
+The MOFN condition is a composed condition and evaluates true, if the amount of conditions that evaluated true is in a given interval.
+
+__Definition__
+
+%%prettify 
+{{{MOFN(NumberExpression,NumberExpression(Condition1,...,ConditionN))}}} /%
+
+__Example__
+
+%%prettify 
+{{{Paragraph{MOFN(1,1(PARTOF(Headline),CONTAINS(Keyword))->MARK(HeadlineXORKeywords)};}}} /%
+
+A Paragraph is marked as a HeadlineXORKeywords, if the matched text is either part of a Headline annotation or contains Keyword annotations.
+
+----
+
+!! __NEAR__
+The NEAR condition is fullfilled, if the distance (min/max) of the matched annotation to a given type is smaller than a given NumberExpression. The direction is defined by a parameter. This condition works currently on a unfiltered index.
+
+__Definition__
+
+%%prettify 
+{{{NEAR(TypeExpression,NumberExpression,NumberExpression(,BooleanExpression)?)}}} /%
+
+__Example__
+
+%%prettify 
+{{{Paragraph{NEAR(Headline,0,10,false)->MARK(NoHeadline)};}}} /%
+
+A Paragraph that starts at most ten tokens after a headline, is annotated with the NoHeadline annotation.
+
+----
+
+!! __NOT__
+The NOT condition negates the result of its contained condition.
+
+__Definition__
+
+%%prettify 
+{{{"-"Condition}}} /%
+
+__Example__
+
+%%prettify 
+{{{Paragraph{-PARTOF(Headline)->MARK(Headline)};}}} /%
+
+A Paragraph that is not part of an Headline annotation yet is annotated with a Headline annotation.
+
+----
+
+!! __OR__
+
+The OR Condition is a composed condition and evaluates true, if one contained condition is evaluated true.
+
+__Definition__
+
+%%prettify 
+{{{
+OR(Condition1,...,ConditionN)
+}}}
+/%
+
+
+__Example__
+
+%%prettify 
+{{{
+Paragraph{OR(PARTOF(Headline),CONTAINS(Keyword))->MARK(ImportantParagraph)};
+}}}
+/%
+
+In this example a Paragraph is annotated with the ImportantParagraph annotation, if it is a Headline or contains Keyword.
+
+----
+
+!! __PARSE__
+The PARSE condition is fulfilled, if the covered text of the matched annotation can be transformed in a value of the given variable.
+
+__Definition__
+
+%%prettify 
+{{{PARSE(variable)}}} /%
+
+__Example__
+
+%%prettify 
+{{{NUM{PARSE(var)};}}} /%
+Here, a number is stored in a numerical variable.
+
+----
+!! __PARTOF__
+The PARTOF condition is fulfilled, if the matched annotation is part of an annotation of a given type. However this condition is also fulfilled if the matched type is subsumed or an anchor of the given type. Use the (much slower) PARTOFNEQ condition instead if needed.
+
+__Definition__
+
+%%prettify 
+{{{PARTOF(Type|TypeListExpression)}}} /%
+
+__Example__
+
+%%prettify 
+{{{Paragraph{PARTOF(Headline) -> MARK(ImportantParagraph)};}}} /%
+
+A Paragraph is an ImportantParagraph if the matched text is part of a headline.
+
+----
+!! __PARTOFNEQ__
+The PARTOF condition is fulfilled, if the matched annotation is part of (smaller than and inside of) an annotation of a given type.
+
+__Definition__
+
+%%prettify 
+{{{PARTOFNEQ(Type|TypeListExpression)}}} /%
+
+__Example__
+
+%%prettify 
+{{{W{PARTOFNEQ(Headline) -> MARK(ImportantWord)};}}} /%
+
+A word is an ImportantWord if it is part of a headline.
+
+----
+
+!! __POSITION__
+The POSITION counts the annotations of the type of the matched annotation. The condition is fulfilled if the index equals the value of a given NumericalExpression.
+
+__Definition__
+
+%%prettify 
+{{{POSITION(Type,NumberExpression(,Variable)?)}}} /%
+
+__Example__
+
+%%prettify 
+{{{Keyword{POSITION(Paragraph,2)->MARK(SecondKeyword)};}}} /%
+
+The second Keyword in a Paragraph is annotated with the type SecondKeyword.
+
+----
+
+!! __REGEXP__
+The REGEXP condition is fullfilled, if the given pattern macthes on the matched annotation. Quotes are currently forbidden in a pattern
+
+__Definition__
+
+%%prettify 
+{{{REGEXP(StringExpression)}}} /%
+
+__Example__
+
+%%prettify 
+{{{Keyword{REGEXP("..")->MARK(SmallKeyword)};}}} /%
+
+A Keyword that only consists of the chars is annotated with a SmallKeyword annotation.
+
+----
+
+!! __SCORE__
+The SCORE condition evaluates the value of the heuristic score of the matched annotation. The condition is fulfilled if the value is in a given interval. Optionally the amount can be stored in a variable.
+
+__Definition__
+
+%%prettify 
+{{{SCORE(NumberExpression,NumberExpression(,Variable)?)}}} /%
+
+__Example__
+
+%%prettify 
+{{{MaybeHeadline{SCORE(40,100)->MARK(Headline)};}}} /%
+
+A annotation of the type MaybeHeadline is annotated with Headline, if its score is between 40 and 100.
+
+----
+
+!! __SIZE__
+This contition counts the amount of elements of the given list.
+
+__Definition__
+
+%%prettify 
+{{{SIZE(ListExpression(,NumberExpression,NumberExpression)(,Variable)?)}}} /%
+
+__Example__
+
+%%prettify 
+{{{Document{SIZE(list,4,10,var)};}}} /%
+
+This rule fires, if the given list contains between 4 and 10 elements. Additionally, the exact amount is stored in the variable var.
+
+----
+
+
+!! __STARTSWITH__
+
+The STARTSWITH condition evaluates true, if an annotation of the given type starts exactly at the same position as the matched annotation.
+
+__Definition__
+%%prettify 
+{{{STARTSWITH(Type|TypeListExpression) }}} /%
+
+__Example__
+
+%%prettify 
+{{{Paragraph{STARTSWITH(SW)};}}} /%
+Here, the rule matches on a Paragraph annotation, if it starts with small written word.
+
+----
+
+!! __TOTALCOUNT__
+
+__Definition__
+
+%%prettify 
+{{{TOTALCOUNT(Type(,NumbericalExpression,NumbericalExpression(,Variable)?)?)}}} /%
+
+__Example__
+
+----
+
+!! __VOTE__
+The VOTE condition counts the annotations of the given types and evaluates true, if it found more annotations of the first type.
+
+__Definition__
+
+%%prettify 
+{{{VOTE(TypeExpression,TypeExpression)}}} /%
+
+__Example__
+
+%%prettify 
+{{{
+Paragraph{VOTE(FirstName,LastName)};
+}}}
+/%
+Here, this rule fires, if a paragraph contains more firstnames than lastnames.
+<tags>condition example </tags>
