@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="cevEditors" name="CEV Annotation Editors" schema="schema/cevEditors.exsd"/>
+   <extension-point id="cevViews" name="CEV Annotation Views" schema="schema/cevViews.exsd"/>
+   <extension-point id="cevSearchStrategies" name="Descriptor Search Strategies" schema="schema/cevSearchStrategies.exsd"/>
+   <extension-point id="cevArtifactViewers" name="Viewers of the artifact" schema="schema/cevArtifactViewers.exsd"/>
+
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            name="CEV"
+            extensions="xmi"
+            icon="icons/cevViewer.png"
+            contributorClass="org.apache.uima.cev.editor.CEVViewerContributor"
+            class="org.apache.uima.cev.editor.CEVViewer"
+            id="org.apache.uima.cev.editor.CEVViewer">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="org.apache.uima.cev.views"
+            name="CEV">
+      </category>
+      <view
+            category="org.apache.uima.cev.views"
+            class="org.apache.uima.cev.views.selection.CEVSelectionView"
+            icon="icons/views.png"
+            id="org.apache.uima.cev.views.selection"
+            name="Selection">
+      </view>
+      <view
+            category="org.apache.uima.cev.views"
+            class="org.apache.uima.cev.views.annotationBrowser.CEVAnnotationBrowserView"
+            icon="icons/views.png"
+            id="org.apache.uima.cev.views.annotationBrowser"
+            name="Annotation Browser">
+      </view>
+      <view
+            category="org.apache.uima.cev.views"
+            class="org.apache.uima.cev.views.editor.CEVAnnotationEditorView"
+            icon="icons/edit.png"
+            id="org.apache.uima.cev.views.editor"
+            name="Annotation Editor">
+      </view>
+      <view
+            category="org.apache.uima.cev.views"
+            class="org.apache.uima.cev.views.palette.CEVAnnotationMarkerPaletteView"
+            icon="icons/edit.png"
+            id="org.apache.uima.cev.views.palette"
+            name="Marker Palette">
+      </view>
+      <view
+            category="org.apache.uima.cev.views"
+            class="org.apache.uima.cev.views.fsBrowser.CEVFSBrowserView"
+            icon="icons/views.png"
+            id="org.apache.uima.cev.views.fsBrowser"
+            name="FS only Browser">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.apache.uima.cev.preferences.CEVPreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.apache.uima.cev.preferences.CEVViewerTreeViewPreferencePage"
+            id="org.apache.uima.cev.preferences.CEVViewerTreeViewPreferencePage"
+            name="CEV">
+      </page>
+      <page
+            category="org.apache.uima.cev.preferences.CEVViewerTreeViewPreferencePage"
+            class="org.apache.uima.cev.preferences.CEVViewerAnnotationFilterPreferencePage"
+            id="org.apache.uima.cev.preferences.CEVViewerAnnotationFilterPreferencePage"
+            name="Annotation Filter">
+      </page>
+   </extension>
+   <extension
+         point="org.apache.uima.cev.cevEditors">
+      <editor
+            factory="org.apache.uima.cev.views.editor.CEVAnnotationEditorFactory"
+            id="org.apache.uima.textmarker.cev.extension.editor"
+            priority="0"
+            viewId="org.apache.uima.cev.views.editor">
+      </editor>
+      <editor
+            factory="org.apache.uima.cev.views.palette.CEVAnnotationMarkerPaletteFactory"
+            id="org.apache.uima.textmarker.cev.extension.palette"
+            priority="0"
+            viewId="org.apache.uima.cev.views.palette">
+      </editor>
+   </extension>
+   <extension
+         point="org.apache.uima.cev.cevViews">
+      <view
+            factory="org.apache.uima.cev.views.annotationBrowser.CEVAnnotationBrowserViewFactory"
+            id="org.apache.uima.textmarker.cev.extension.annotationBrowser"
+            priority="0"
+            viewId="org.apache.uima.cev.views.annotationBrowser">
+      </view>
+      <view
+            factory="org.apache.uima.cev.views.selection.CEVSelectionViewFactory"
+            id="org.apache.uima.textmarker.cev.extension.selection"
+            priority="0"
+            viewId="org.apache.uima.cev.views.selection">
+      </view>
+      <view
+            factory="org.apache.uima.cev.views.fsBrowser.CEVFSBrowserViewFactory"
+            id="org.apache.uima.textmarker.cev.extension.fsBrowser"
+            priority="0"
+            viewId="org.apache.uima.cev.views.fsBrowser">
+      </view>
+   </extension>
+   <extension
+         point="org.apache.uima.cev.cevSearchStrategies">
+      <strategy
+            factory="org.apache.uima.cev.searchStrategy.SingleInFolderStrategyFactory"
+            id="org.apache.uima.cev.searchStrategy.SingleInFolder"
+            priority="10">
+      </strategy>
+      <strategy
+            factory="org.apache.uima.cev.searchStrategy.SelectInFolderStrategyFactory"
+            id="org.apache.uima.cev.searchStrategy.SelectInFolder"
+            priority="50">
+      </strategy>
+      <strategy
+            factory="org.apache.uima.cev.searchStrategy.AllXmlInProjectStrategyFactory"
+            id="org.apache.uima.cev.searchStrategy.AllXmlInProject"
+            priority="5000">
+      </strategy>
+   </extension>
+   <extension
+         point="org.apache.uima.cev.cevArtifactViewers">
+      <artifactViewer
+            factory="org.apache.uima.cev.artifactViewer.TextArtifactViewerFactory"
+            id="org.apache.uima.cev.artifactViewer.text"
+            priority="5">
+      </artifactViewer>
+   </extension>
+
+</plugin>
