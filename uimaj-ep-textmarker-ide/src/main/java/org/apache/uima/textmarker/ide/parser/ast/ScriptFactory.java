@@ -15,11 +15,10 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.ide.parser.ast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.antlr.runtime.Token;
@@ -28,63 +27,22 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
 
-
 public class ScriptFactory extends AbstractFactory {
-
-  // commented on 090508 because it wasn't called anywhere
-  // public static TextMarkerScriptBlock createScriptBlock(Token id,
-  // Token declare, List<TextMarkerRuleElement> res, Block block,
-  // TextMarkerBlock parent) {
-  // int bounds[] = getBounds(declare, id);
-  // int nameBounds[] = getBounds(id);
-  // String namespace = "";
-  // if (parent != null) {
-  // namespace = parent.getNamespace();
-  // }
-  // return new TextMarkerScriptBlock(id.getText(), namespace,
-  // nameBounds[0], nameBounds[1], bounds[0], bounds[1]);
-  // }
 
   public static TextMarkerRule createRule(List<Expression> elements) {
     return new TextMarkerRule(elements);
   }
 
-  // public static TextMarkerRuleElement createRuleElement(int start, int end,
-  // String text, List<TextMarkerCondition> cp,
-  // List<TextMarkerAction> ap, String text2, TextMarkerBlock parent) {
-  // return new TextMarkerRuleElement(start, end);
-  // }
-
-  public static TextMarkerRuleElement createRuleElement(Expression head, Expression quantifier,
-          TextMarkerCondition c, TextMarkerAction a) {
-    // TODO
-    List<Expression> conditions = new ArrayList<Expression>();
-    List<Expression> actions = new ArrayList<Expression>();
-    List<Expression> quantifiers = new ArrayList<Expression>();
-    conditions.add(c);
-    actions.add(a);
-    quantifiers.add(quantifier);
-    filterNullObjects(quantifiers);
-    filterNullObjects(conditions);
-    filterNullObjects(actions);
-    ASTNode quantifierPart = null;
-    if (quantifiers != null && !quantifiers.isEmpty()) {
-      quantifierPart = quantifiers.get(quantifiers.size());
-    }
-    int bounds[] = getSurroundingBounds(head, conditions, actions);
-    if (quantifierPart != null) {
-      bounds[1] = Math.max(bounds[1], quantifierPart.sourceEnd());
-    }
-    return new TextMarkerRuleElement(bounds[0], bounds[1], head, quantifiers, conditions, actions);
-  }
-
   public static ComposedRuleElement createComposedRuleElement(List<Expression> res,
-          List<Expression> q, TextMarkerBlock env) {
+          List<Expression> q, List<TextMarkerCondition> c, List<TextMarkerAction> a,
+          TextMarkerBlock env) {
     int bounds[] = getSurroundingBounds((ASTNode) null, res);
     // taking care of null statements - errors should have been recognized
     // in parser
     filterNullObjects(res);
     filterNullObjects(q);
+    filterNullObjects(c);
+    filterNullObjects(a);
     ASTNode quantifierPart = null;
     if (q != null && !q.isEmpty()) {
       quantifierPart = q.get(q.size() - 1);
@@ -92,11 +50,12 @@ public class ScriptFactory extends AbstractFactory {
     if (quantifierPart != null) {
       bounds[1] = Math.max(bounds[1], quantifierPart.sourceEnd());
     }
-    return new ComposedRuleElement(bounds[0], bounds[1], res, q);
+    return new ComposedRuleElement(bounds[0], bounds[1], res, q, c, a);
   }
 
   public static TextMarkerRuleElement createRuleElement(Expression head,
-          List<Expression> quantifierPartExpressions, List conditions, List actions, Token end) {
+          List<Expression> quantifierPartExpressions, List<TextMarkerCondition> conditions,
+          List<TextMarkerAction> actions, Token end) {
     int bounds[] = getSurroundingBounds(head, conditions, actions);
     setMaxEnd(bounds, end);
     // taking care of null statements - errors should have been recognized
@@ -114,20 +73,6 @@ public class ScriptFactory extends AbstractFactory {
     return new TextMarkerRuleElement(bounds[0], bounds[1], head, quantifierPartExpressions,
             conditions, actions);
   }
-
-  // commented on 090508 because it wasn't called anywhere
-  // public static TextMarkerScriptBlock createScriptBlock(Token id,
-  // Token declare, List<TextMarkerRuleElement> res, Block block,
-  // TextMarkerBlock parent) {
-  // int bounds[] = getBounds(declare, id);
-  // int nameBounds[] = getBounds(id);
-  // String namespace = "";
-  // if (parent != null) {
-  // namespace = parent.getNamespace();
-  // }
-  // return new TextMarkerScriptBlock(id.getText(), namespace,
-  // nameBounds[0], nameBounds[1], bounds[0], bounds[1]);
-  // }
 
   /**
    * Creates Root-Block.
@@ -193,7 +138,7 @@ public class ScriptFactory extends AbstractFactory {
   /**
    * @param body
    */
-  private static void filterNullObjects(List body) {
+  private static void filterNullObjects(List<?> body) {
     if (body == null) {
       return;
     }

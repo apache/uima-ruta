@@ -15,11 +15,10 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.ide.parser.ast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.dltk.ast.ASTVisitor;
@@ -29,22 +28,14 @@ import org.eclipse.dltk.ast.expressions.ExpressionConstants;
 public class ComposedRuleElement extends TextMarkerRuleElement {
   List<Expression> elements;
 
-  private List<Expression> quantifierExpressions;
-
   public ComposedRuleElement(int start, int end, List<Expression> elements,
-          List<Expression> quantifierExpressions) {
-    super(start, end);
+          List<Expression> quantifierExpressions, List<TextMarkerCondition> conditionExpressions,
+          List<TextMarkerAction> actionExpressions) {
+    super(start, end, null, quantifierExpressions, conditionExpressions, actionExpressions);
     if (elements != null) {
       this.elements = elements;
-    } else {
-      conditions = new ArrayList<Expression>();
     }
 
-    if (quantifierExpressions != null) {
-      this.quantifierExpressions = quantifierExpressions;
-    } else {
-      this.quantifierExpressions = new ArrayList<Expression>();
-    }
   }
 
   @Override
@@ -54,15 +45,11 @@ public class ComposedRuleElement extends TextMarkerRuleElement {
 
   @Override
   public void traverse(ASTVisitor visitor) throws Exception {
+    super.traverse(visitor);
     if (visitor.visit(this)) {
       if (elements != null) {
-        for (Expression cond : elements) {
-          cond.traverse(visitor);
-        }
-      }
-      if (quantifierExpressions != null) {
-        for (Expression qpe : quantifierExpressions) {
-          qpe.traverse(visitor);
+        for (Expression e : elements) {
+          e.traverse(visitor);
         }
       }
     }
@@ -75,11 +62,6 @@ public class ComposedRuleElement extends TextMarkerRuleElement {
 
   public List<Expression> getElements() {
     return elements;
-  }
-
-  @Override
-  public List<Expression> getQuantifierExpressions() {
-    return quantifierExpressions;
   }
 
 }

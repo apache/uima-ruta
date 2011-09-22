@@ -522,8 +522,8 @@ public class TextMarkerFormattedPrinter extends ASTVisitor {
    */
   private void appendRuleElement(TextMarkerRuleElement ruleEl) {
     append(ruleEl.getHead());
-    List<Expression> conditions = ruleEl.getConditions();
-    List<Expression> actions = ruleEl.getActions();
+    List<TextMarkerCondition> conditions = ruleEl.getConditions();
+    List<TextMarkerAction> actions = ruleEl.getActions();
     // don't print {->} for empty rule elements
 
     // print Quantifiers
