@@ -26,7 +26,7 @@ options {
  * under the License.
 */
 
-package org.apache.uima.textmarker.ide.core.parsers;
+package org.apache.uima.textmarker.ide.core.parser;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,10 +72,10 @@ import org.apache.uima.textmarker.ide.parser.ast.TextMarkerExpression;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerRule;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerRuleElement;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerScriptBlock;
-import org.apache.uima.textmarker.ide.parser.ast.actions.TextMarkerAction;
-import org.apache.uima.textmarker.ide.parser.ast.conditions.TextMarkerCondition;
-import org.apache.uima.textmarker.ide.parser.ast.declarations.TextMarkerFeatureDeclaration;
-import org.apache.uima.textmarker.ide.parser.ast.declarations.TextMarkerPackageDeclaration;
+import org.apache.uima.textmarker.ide.parser.ast.TextMarkerAction;
+import org.apache.uima.textmarker.ide.parser.ast.TextMarkerCondition;
+import org.apache.uima.textmarker.ide.parser.ast.TextMarkerFeatureDeclaration;
+import org.apache.uima.textmarker.ide.parser.ast.TextMarkerPackageDeclaration;
 }
 
 @parser::members {
@@ -570,9 +570,19 @@ ruleElement returns [Expression re = null]
 	;
 	
 ruleElementComposed returns [ComposedRuleElement re = null] 
+@init{
+	boolean disjunctive = false;
+}
 	:
-	LPAREN res = ruleElements RPAREN q = quantifierPart
-	{re = ScriptFactory.createComposedRuleElement(res, q, $blockDeclaration::env);}
+	LPAREN
+	 
+	((ruleElementType VBAR)=> re1 = ruleElementType {disjunctive = true; res = new ArrayList<Expression>(); res.add(re1);} 
+	VBAR re2 = ruleElementType {res.add(re2);}
+	(VBAR re3 = ruleElementType {res.add(re3);})*
+	 |(ruleElements)=>res = ruleElements)
+	
+	RPAREN q = quantifierPart? (LCURLY c = conditions? (THEN a = actions)? RCURLY)?
+	{re = ScriptFactory.createComposedRuleElement(res, q, c, a, $blockDeclaration::env);}
 	;
 
 ruleElementType returns [TextMarkerRuleElement re = null] 

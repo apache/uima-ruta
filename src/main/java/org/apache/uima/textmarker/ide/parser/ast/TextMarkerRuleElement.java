@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.ide.parser.ast;
 
@@ -27,9 +27,9 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.ExpressionConstants;
 
 public class TextMarkerRuleElement extends Expression {
-  List<Expression> conditions;
+  List<TextMarkerCondition> conditions;
 
-  List<Expression> actions;
+  List<TextMarkerAction> actions;
 
   Expression head;
 
@@ -41,18 +41,18 @@ public class TextMarkerRuleElement extends Expression {
   }
 
   public TextMarkerRuleElement(int start, int end, Expression head,
-          List<Expression> quantifierPartExpressions, List<Expression> conditions,
-          List<Expression> actions) {
+          List<Expression> quantifierPartExpressions, List<TextMarkerCondition> conditions,
+          List<TextMarkerAction> actions) {
     super(start, end);
     if (conditions != null) {
       this.conditions = conditions;
     } else {
-      conditions = new ArrayList<Expression>();
+      conditions = new ArrayList<TextMarkerCondition>();
     }
     if (actions != null) {
       this.actions = actions;
     } else {
-      actions = new ArrayList<Expression>();
+      actions = new ArrayList<TextMarkerAction>();
     }
     if (quantifierPartExpressions != null) {
       this.quantifierExpressions = quantifierPartExpressions;
@@ -95,11 +95,11 @@ public class TextMarkerRuleElement extends Expression {
     return head;
   }
 
-  public List<Expression> getActions() {
+  public List<TextMarkerAction> getActions() {
     return actions;
   }
 
-  public List<Expression> getConditions() {
+  public List<TextMarkerCondition> getConditions() {
     return conditions;
   }
 
