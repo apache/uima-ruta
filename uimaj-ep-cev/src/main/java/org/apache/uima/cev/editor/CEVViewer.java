@@ -333,7 +333,7 @@ public class CEVViewer extends MultiPageEditorPart implements IResourceChangeLis
         each.viewChanged(activeCASData);
       }
     }
-    for (ICEVView each : views.values()) {
+    for (ICEVView each : new ArrayList<ICEVView>(views.values())) {
       each.viewChanged(newPageIndex);
     }
     for (ICEVEditor each : editors.values()) {
