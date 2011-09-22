@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.action;
 
@@ -24,11 +24,10 @@ import java.util.List;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
-
 
 public class MarkLastAction extends AbstractMarkAction {
 
@@ -37,14 +36,19 @@ public class MarkLastAction extends AbstractMarkAction {
   }
 
   @Override
-  public void execute(RuleMatch match, TextMarkerRuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
-    AnnotationFS matchedAnnotation = match.getMatchedAnnotation(stream, null);
-    List<TextMarkerBasic> list = stream.getBasicsInWindow(matchedAnnotation);
-    if (!list.isEmpty()) {
-      TextMarkerBasic last = list.get(list.size() - 1);
-      createAnnotation(last, element, stream, last);
+    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(stream, null,
+            element.getContainer());
+    for (AnnotationFS matchedAnnotation : matchedAnnotations) {
+      List<TextMarkerBasic> list = stream.getBasicsInWindow(matchedAnnotation);
+      if (!list.isEmpty()) {
+        TextMarkerBasic last = list.get(list.size() - 1);
+        createAnnotation(last, element, stream, last);
+      }
+
     }
+
   }
 
 }

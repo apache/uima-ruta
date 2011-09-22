@@ -20,7 +20,6 @@
 package org.apache.uima.textmarker.condition;
 
 import org.apache.uima.cas.Feature;
-import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.bool.BooleanExpression;
@@ -28,8 +27,7 @@ import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.string.StringExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class FeatureCondition extends AbstractTextMarkerCondition {
@@ -64,20 +62,20 @@ public class FeatureCondition extends AbstractTextMarkerCondition {
     this.booleanExpr = booleanExpr;
   }
 
-  public FeatureCondition(StringExpression feature, TypeExpression typeExpr, String variable) {
+  public FeatureCondition(StringExpression feature, TypeExpression typeExpr, String variable,
+          RuleElement re) {
     this(feature);
     this.typeExpr = typeExpr;
   }
 
   @Override
-  public EvaluatedCondition eval(TextMarkerBasic basic, Type matchedType,
-          TextMarkerRuleElement element, TextMarkerStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
+          TextMarkerStream stream, InferenceCrowd crowd) {
     String stringValue = featureStringExpression.getStringValue(element.getParent());
-    Feature featureByBaseName = matchedType.getFeatureByBaseName(stringValue);
-    AnnotationFS expandAnchor = stream.expandAnchor(basic, matchedType);
+    Feature featureByBaseName = annotation.getType().getFeatureByBaseName(stringValue);
 
     if (stringExpr != null) {
-      String value = expandAnchor.getStringValue(featureByBaseName);
+      String value = annotation.getStringValue(featureByBaseName);
       String string = stringExpr.getStringValue(element.getParent());
       boolean result = string != null && string.equals(value);
       return new EvaluatedCondition(this, result);
@@ -85,17 +83,17 @@ public class FeatureCondition extends AbstractTextMarkerCondition {
       String range = featureByBaseName.getRange().getName();
       boolean result = false;
       if (range.equals("uima.cas.Integer")) {
-        int value = expandAnchor.getIntValue(featureByBaseName);
+        int value = annotation.getIntValue(featureByBaseName);
         int v = numberExpr.getIntegerValue(element.getParent());
         result = value == v;
       } else if (range.equals("uima.cas.Double")) {
-        double value = expandAnchor.getDoubleValue(featureByBaseName);
+        double value = annotation.getDoubleValue(featureByBaseName);
         double v = numberExpr.getDoubleValue(element.getParent());
         result = value == v;
       }
       return new EvaluatedCondition(this, result);
     } else if (booleanExpr != null) {
-      boolean value = expandAnchor.getBooleanValue(featureByBaseName);
+      boolean value = annotation.getBooleanValue(featureByBaseName);
       boolean v = booleanExpr.getBooleanValue(element.getParent());
       boolean result = value == v;
       return new EvaluatedCondition(this, result);

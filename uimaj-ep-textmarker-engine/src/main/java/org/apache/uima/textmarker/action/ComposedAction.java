@@ -15,17 +15,16 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.action;
 
 import java.util.List;
 
 import org.apache.uima.textmarker.TextMarkerStream;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
-
 
 public class ComposedAction extends AbstractTextMarkerAction {
 
@@ -37,7 +36,7 @@ public class ComposedAction extends AbstractTextMarkerAction {
   }
 
   @Override
-  public void execute(RuleMatch match, TextMarkerRuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
     for (AbstractTextMarkerAction each : actions) {
       crowd.beginVisit(each, null);

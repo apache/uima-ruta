@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.verbalize;
 
@@ -42,7 +42,6 @@ import org.apache.uima.textmarker.rule.quantifier.QuestionReluctant;
 import org.apache.uima.textmarker.rule.quantifier.RuleElementQuantifier;
 import org.apache.uima.textmarker.rule.quantifier.StarGreedy;
 import org.apache.uima.textmarker.rule.quantifier.StarReluctant;
-
 
 public class ScriptVerbalizer {
 
@@ -81,7 +80,7 @@ public class ScriptVerbalizer {
   }
 
   public String verbalizeRule(TextMarkerRule rule) {
-    List<RuleElement> elements = rule.getElements();
+    List<RuleElement> elements = rule.getRuleElements();
     StringBuilder result = new StringBuilder();
     for (RuleElement each : elements) {
       result.append(verbalizeRuleElement(each));
@@ -128,8 +127,8 @@ public class ScriptVerbalizer {
     } else if (re instanceof ComposedRuleElement) {
       ComposedRuleElement cre = (ComposedRuleElement) re;
       StringBuilder result = new StringBuilder("(");
-      for (RuleElement each : cre.getElements()) {
-        if (cre.getElements().indexOf(each) != 0) {
+      for (RuleElement each : cre.getRuleElements()) {
+        if (cre.getRuleElements().indexOf(each) != 0) {
           result.append(" ");
         }
         result.append(verbalizeRuleElement(each));

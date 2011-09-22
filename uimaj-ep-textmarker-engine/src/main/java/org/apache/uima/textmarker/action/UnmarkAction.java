@@ -19,15 +19,16 @@
 
 package org.apache.uima.textmarker.action;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.rule.RuleElementMatch;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
@@ -38,18 +39,22 @@ public class UnmarkAction extends TypeSensitiveAction {
   }
 
   @Override
-  public void execute(RuleMatch match, TextMarkerRuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
-    List<RuleElementMatch> matchInfo = match.getMatchInfo(element);
-    if (matchInfo == null || matchInfo.isEmpty()) {
-      return;
-    }
-    RuleElementMatch ruleElementMatch = matchInfo.get(0);
-    List<AnnotationFS> textsMatched = ruleElementMatch.getTextsMatched();
-    AnnotationFS first = textsMatched.get(0);
-    TextMarkerBasic firstBasicInWindow = stream.getFirstBasicInWindow(first);
+    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element, stream);
     Type t = type.getType(element.getParent());
-    stream.removeAnnotation(firstBasicInWindow, t);
+    for (AnnotationFS annotationFS : matchedAnnotationsOf) {
+      TextMarkerBasic beginAnchor = stream.getBeginAnchor(annotationFS.getBegin());
+      Set<AnnotationFS> beginAnchors = beginAnchor.getBeginAnchors(t);
+      if (beginAnchors != null) {
+        for (AnnotationFS each : new ArrayList<AnnotationFS>(beginAnchors)) {
+          if (each.getEnd() == annotationFS.getEnd()) {
+            stream.removeAnnotation(each, t);
+          }
+        }
+      }
+    }
+
   }
 
 }

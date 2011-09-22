@@ -20,13 +20,15 @@
 package org.apache.uima.textmarker.condition;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.uima.cas.Type;
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.list.TypeListExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
@@ -41,17 +43,17 @@ public class PartOfCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(TextMarkerBasic basic, Type matchedType,
-          TextMarkerRuleElement element, TextMarkerStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
+          TextMarkerStream stream, InferenceCrowd crowd) {
     if (!isWorkingOnList()) {
       Type t = type.getType(element.getParent());
-      boolean result = check(t, basic, element, stream);
+      boolean result = check(t, annotation, element, stream);
       return new EvaluatedCondition(this, result);
     } else {
       boolean result = false;
       List<Type> types = getList().getList(element.getParent());
       for (Type t : types) {
-        result |= check(t, basic, element, stream);
+        result |= check(t, annotation, element, stream);
         if (result == true) {
           break;
         }
@@ -60,11 +62,11 @@ public class PartOfCondition extends TypeSentiveCondition {
     }
   }
 
-  private boolean check(Type t, TextMarkerBasic basic, TextMarkerRuleElement element,
+  private boolean check(Type t, AnnotationFS annotation, RuleElement element,
           TextMarkerStream stream) {
-    boolean result = stream.getCas().getTypeSystem().subsumes(t, basic.getType())
-            || basic.isAnchorOf(t.getName()) || basic.isPartOf(t.getName());
-    return result;
+    TextMarkerBasic beginAnchor = stream.getBeginAnchor(annotation.getBegin());
+    Set<AnnotationFS> beginAnchors = beginAnchor.getBeginAnchors(t);
+    return beginAnchor.isPartOf(t) || (beginAnchors != null && !beginAnchors.isEmpty());
   }
 
 }

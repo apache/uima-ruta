@@ -976,7 +976,6 @@ public class MultiTreeWordList implements TextMarkerWordList {
   // double distance, int index, boolean ignoreCase, String ignoreToken, boolean fragment,
   // EditDistanceCostMap edm) {
   //
-  // // TODO: fragment implementieren, falls es gebraucht wird.
   //
   // EditDistanceResultMap resultMap = new EditDistanceResultMap();
   //

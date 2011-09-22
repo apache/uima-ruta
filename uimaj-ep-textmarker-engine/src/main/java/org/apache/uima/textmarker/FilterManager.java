@@ -167,11 +167,7 @@ public class FilterManager {
   }
 
   private FSMatchConstraint createTypeConstraint(Collection<Type> types) {
-    List<String> typeList = new ArrayList<String>();
-    for (Type each : types) {
-      typeList.add(each.getName());
-    }
-    BasicTypeConstraint result = new BasicTypeConstraint(cf.createTypeConstraint(), typeList, null);
+    BasicTypeConstraint result = new BasicTypeConstraint(cf.createTypeConstraint(), types);
     for (Type each : types) {
       result.add(each);
     }
@@ -230,8 +226,7 @@ public class FilterManager {
     return windowType;
   }
 
-  public FSIterator<AnnotationFS> createFilteredIterator(CAS cas, FSIterator<AnnotationFS> basic,
-          Type basicType) {
+  public FSIterator<AnnotationFS> createFilteredIterator(CAS cas, Type basicType) {
     if (windowAnnotation != null) {
       FSIterator<AnnotationFS> windowIt = cas.getAnnotationIndex(basicType).subiterator(
               windowAnnotation);

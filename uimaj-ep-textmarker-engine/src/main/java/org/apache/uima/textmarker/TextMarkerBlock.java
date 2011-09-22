@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker;
 
@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.textmarker.rule.TextMarkerRule;
-
 
 public abstract class TextMarkerBlock extends TextMarkerStatement {
 
@@ -53,6 +52,10 @@ public abstract class TextMarkerBlock extends TextMarkerStatement {
     return rule;
   }
 
+  public void setRule(TextMarkerRule rule) {
+    this.rule = rule;
+  }
+
   @Override
   public TextMarkerEnvironment getEnvironment() {
     return environment;
@@ -67,7 +70,6 @@ public abstract class TextMarkerBlock extends TextMarkerStatement {
   }
 
   public TextMarkerModule getScript() {
-    // TODO refactor!
     if (getParent() != null) {
       return getParent().getScript();
     } else {

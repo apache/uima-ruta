@@ -26,7 +26,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
@@ -43,24 +43,21 @@ public class VoteCondition extends TerminalTextMarkerCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(TextMarkerBasic basic, Type matchedType,
-          TextMarkerRuleElement element, TextMarkerStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
+          TextMarkerStream stream, InferenceCrowd crowd) {
     int count1 = 0;
     int count2 = 0;
     int totalCount = 0;
-    if (matchedType == null)
-      return new EvaluatedCondition(this, false);
-    AnnotationFS annotation = basic.getType(matchedType.getName());
     if (annotation != null) {
       List<TextMarkerBasic> annotations = stream.getBasicsInWindow(annotation);
-      String name1 = type1.getType(element.getParent()).getName();
-      String name2 = type2.getType(element.getParent()).getName();
+      Type t1 = type1.getType(element.getParent());
+      Type t2 = type2.getType(element.getParent());
       for (TextMarkerBasic each : annotations) {
         totalCount++;
-        if (each.isAnchorOf(name1)) {
+        if (each.beginsWith(t1)) {
           count1++;
         }
-        if (each.isAnchorOf(name2)) {
+        if (each.beginsWith(t2)) {
           count2++;
         }
       }

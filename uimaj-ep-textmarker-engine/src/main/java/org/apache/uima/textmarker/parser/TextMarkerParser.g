@@ -82,6 +82,8 @@ import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.extensions.TextMarkerExternalFactory;
 import org.apache.uima.textmarker.rule.ComposedRuleElement;
 import org.apache.uima.textmarker.rule.RuleElement;
+import org.apache.uima.textmarker.rule.RuleElementContainer;
+import org.apache.uima.textmarker.rule.RuleElementIsolator;
 import org.apache.uima.textmarker.rule.TextMarkerRule;
 import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.rule.quantifier.RuleElementQuantifier;
@@ -398,6 +400,7 @@ scope {
 }
 @init{
 TextMarkerRuleElement re = null;
+RuleElementIsolator container = null;
 level++;
 }
 @after {
@@ -410,12 +413,16 @@ level--;
 	id = Identifier 
 	RPAREN
 	{block = factory.createScriptBlock(id, re, body, $blockDeclaration[level - 1]::env, cas);}
-	{$blockDeclaration::env = block;}
-	re1 = ruleElementWithCA {re = re1;}
+	{$blockDeclaration::env = block;
+	container = new RuleElementIsolator();}
+	re1 = ruleElementWithCA[container]
+	 {re = re1;	 }
 	{TextMarkerRule rule = factory.createRule(re, block);
 	if(block instanceof TextMarkerScriptBlock) {
-	((TextMarkerScriptBlock)block).setMatchRule(rule);
-	}}
+	((TextMarkerScriptBlock)block).setRule(rule);
+	}
+	container.setContainer(rule);
+	}
 	LCURLY body = statements RCURLY
 	{block.setElements(body);
 	$blockDeclaration::env.getScript().addBlock(id.getText(),block);
@@ -432,6 +439,7 @@ scope {
 }
 @init{
 TextMarkerRuleElement re = null;
+RuleElementIsolator container = null;
 TextMarkerScriptFactory oldFactory = factory;
 factory = automataFactory; 
 level++;
@@ -447,12 +455,15 @@ level--;
 	id = Identifier 
 	RPAREN
 	{block = factory.createAutomataBlock(id, re, body, $blockDeclaration[level - 1]::env, cas);}
-	{$blockDeclaration::env = block;}
-	re1 = ruleElementWithCA {re = re1;}
+	{$blockDeclaration::env = block;
+	container = new RuleElementIsolator();}
+	re1 = ruleElementWithCA[container] {re = re1;}
 	{TextMarkerRule rule = factory.createRule(re, block);
 	if(block instanceof TextMarkerAutomataBlock) {
 	((TextMarkerAutomataBlock)block).setMatchRule(rule);
-	}}
+	}
+	container.setContainer(rule);
+	}
 	LCURLY body = statements RCURLY
 	{block.setElements(body);
 	$blockDeclaration::env.getScript().addBlock(id.getText(),block);
@@ -461,64 +472,153 @@ level--;
 	;
 
 	
-ruleElementWithCA returns [TextMarkerRuleElement re = null] 
+ruleElementWithCA[RuleElementContainer container] returns [TextMarkerRuleElement re = null] 
     :
-    idRef=typeExpression quantifier = quantifierPart? 
+    
+    idRef=typeExpression 
+    {re = factory.createRuleElement(idRef,null,null,null, container, $blockDeclaration::env);}
+    q = quantifierPart? 
         LCURLY c = conditions? (THEN a = actions)? RCURLY
-        {re = factory.createRuleElement(idRef,quantifier,c,a, $blockDeclaration::env);}
+         {
+	if(q != null) {
+		re.setQuantifier(q);
+	}
+	if(c!= null) {
+		re.setConditions(c);
+	}
+	if(a != null) {
+		re.setActions(a);
+	}
+	}
     ;
 
-	
-ruleElementWithoutCA returns [TextMarkerRuleElement re = null] 
-    :
-    idRef=typeExpression quantifier = quantifierPart? 
-             {re = factory.createRuleElement(idRef,quantifier,null,null, $blockDeclaration::env);}
 
-    ;	
 	
 simpleStatement returns [TextMarkerRule stmt = null]
 	: 
-	elements = ruleElements SEMI 
-		{stmt = factory.createRule(elements, $blockDeclaration::env);}
+	{stmt = factory.createRule(elements, $blockDeclaration::env);}
+	elements = ruleElements[stmt.getRoot()] SEMI 
+		{stmt.setRuleElements(elements);}
 	;
 	
-ruleElements returns [List<RuleElement> elements = new ArrayList<RuleElement>()]
+ruleElements[RuleElementContainer container] returns [List<RuleElement> elements = new ArrayList<RuleElement>()]
 	:
-	re = ruleElement {elements.add(re);} (re = ruleElement {elements.add(re);})*
+	re = ruleElement[container] {elements.add(re);} (re = ruleElement[container] {elements.add(re);})*
 	;
-	
-blockRuleElement returns [List<RuleElement> elements = new ArrayList<RuleElement>()]
-	:
-	re = ruleElementType {elements.add(re);}
-	;
-	
+		
 
-ruleElement returns [RuleElement re = null]
+ruleElement[RuleElementContainer container] returns [RuleElement re = null]
 	:
-	re1 = ruleElementType {re = re1;}
-	| re2 = ruleElementLiteral {re = re2;}
-	| re3 = ruleElementComposed {re = re3;}	
+	re1 = ruleElementType[container] {re = re1;}
+	| re2 = ruleElementLiteral[container] {re = re2;}
+	| (ruleElementComposed[null])=>re3 = ruleElementComposed[container] {re = re3;}
+	| (ruleElementDisjunctive[null])=> re4 = ruleElementDisjunctive[container] {re = re4;}
 	;	
 
-ruleElementComposed returns [ComposedRuleElement re = null]
-	:
-	LPAREN res = ruleElements RPAREN q = quantifierPart
-	{re = factory.createComposedRuleElement(res, q, $blockDeclaration::env);}
-	;
-
-ruleElementType returns [TextMarkerRuleElement re = null]
+ruleElementDisjunctive [RuleElementContainer container] returns [TextMarkerRuleElement re = null]
+@init{
+	List<TypeExpression> typeExprs = new ArrayList<TypeExpression>();
+}
     :
+    LPAREN
+    (typeExpression VBAR)=>type1 = typeExpression {typeExprs.add(type1);} 
+    VBAR type2 = typeExpression{typeExprs.add(type2);} 
+    (VBAR type3 = typeExpression{typeExprs.add(type3);})?
+    RPAREN
+     { re = factory.createRuleElement(typeExprs, null, null, null, container, $blockDeclaration::env);}   
     
-    (typeExpression)=>typeExpr = typeExpression quantifier = quantifierPart? 
+     q = quantifierPart? 
         (LCURLY c = conditions? (THEN a = actions)? RCURLY)?
-    {re = factory.createRuleElement(typeExpr, quantifier, c, a, $blockDeclaration::env);}   
+    {
+	if(q != null) {
+		re.setQuantifier(q);
+	}
+	if(c!= null) {
+		re.setConditions(c);
+	}
+	if(a != null) {
+		re.setActions(a);
+	}
+	}
     ;
 
-ruleElementLiteral returns [TextMarkerRuleElement re = null]
+ruleElementComposed [RuleElementContainer container] returns [ComposedRuleElement re = null]
+scope {
+	RuleElementContainer con;
+}
+@init{
+
+}	
+	:
+	{re = factory.createComposedRuleElement(container, $blockDeclaration::env);
+	// dre = factory.createDisjunctiveRuleElement(container, $blockDeclaration::env);
+	$ruleElementComposed::con = re;}
+	LPAREN 
+	
+	(
+	//((ruleElement[$ruleElementComposed::con] VBAR)=>re1 = ruleElement[dre]
+	// {disjunctive = true; res = new ArrayList<RuleElement>();res.add(re1);} 
+	// VBAR re2 = ruleElement[dre] {res.add(re2);}
+	//(VBAR re3 = ruleElement[dre] {res.add(re3);})*)
+	//|
+	(ruleElements[$ruleElementComposed::con])=>res = ruleElements[$ruleElementComposed::con] 
+	)
+	
+	RPAREN q = quantifierPart? (LCURLY c = conditions? (THEN a = actions)? RCURLY)?
+	{
+	re.setRuleElements(res);
+	if(q != null) {
+		re.setQuantifier(q);
+	}
+	if(c!= null) {
+		re.setConditions(c);
+	}
+	if(a != null) {
+		re.setActions(a);
+	}
+	}
+	;
+
+
+ruleElementType [RuleElementContainer container] returns [TextMarkerRuleElement re = null]
     :
-    (simpleStringExpression)=>stringExpr = simpleStringExpression quantifier = quantifierPart? 
+    
+    (typeExpression)=>typeExpr = typeExpression 
+     {re = factory.createRuleElement(typeExpr, null, null, null, container, $blockDeclaration::env);} 
+    q = quantifierPart? 
         (LCURLY c = conditions? (THEN a = actions)? RCURLY)?
-    {re = factory.createRuleElement(stringExpr, quantifier, c, a, $blockDeclaration::env);} 
+   {
+	if(q != null) {
+		re.setQuantifier(q);
+	}
+	if(c!= null) {
+		re.setConditions(c);
+	}
+	if(a != null) {
+		re.setActions(a);
+	}
+	}
+    ;
+
+ruleElementLiteral [RuleElementContainer container] returns [TextMarkerRuleElement re = null]
+    :
+    
+    (simpleStringExpression)=>stringExpr = simpleStringExpression 
+     {re = factory.createRuleElement(stringExpr, null, null, null, container, $blockDeclaration::env);} 
+    
+    q = quantifierPart? 
+        (LCURLY c = conditions? (THEN a = actions)? RCURLY)?
+    {
+	if(q != null) {
+		re.setQuantifier(q);
+	}
+	if(c!= null) {
+		re.setConditions(c);
+	}
+	if(a != null) {
+		re.setActions(a);
+	}
+	}
     ;
 	
 conditions returns [List<AbstractTextMarkerCondition> conds = new ArrayList<AbstractTextMarkerCondition>()]
@@ -717,7 +817,7 @@ quantifierPart returns [RuleElementQuantifier quantifier = null]
 	;
 
 
-condition returns [AbstractTextMarkerCondition result = null]
+condition  returns [AbstractTextMarkerCondition result = null]
 	:
 	(
 	c = conditionAnd
@@ -777,6 +877,7 @@ conditionAnd returns [AbstractTextMarkerCondition cond = null]
     AND LPAREN conds = conditions RPAREN 
     {cond = ConditionFactory.createConditionAnd(conds, $blockDeclaration::env);}
     ;
+    
 conditionContains returns [AbstractTextMarkerCondition cond = null]
  options {
 	backtrack = true;
@@ -784,7 +885,7 @@ conditionContains returns [AbstractTextMarkerCondition cond = null]
     :   
     CONTAINS LPAREN (type = typeExpression | list = listExpression COMMA a = argument) 
     (COMMA min = numberExpression COMMA max = numberExpression (COMMA percent = booleanExpression)?)? RPAREN
-    {if(type != null) {cond = ConditionFactory.createConditionContains(type, min, max, percent, $blockDeclaration::env);}
+    {if(type != null) {cond = ConditionFactory.createConditionContains(type, min, max, percent,$blockDeclaration::env);}
     else {cond = ConditionFactory.createConditionContains(list,a, min, max, percent, $blockDeclaration::env);};}
     ;
 conditionContextCount returns [AbstractTextMarkerCondition cond = null]
@@ -800,11 +901,11 @@ conditionCount returns [AbstractTextMarkerCondition cond = null]
     :   
     COUNT LPAREN type = listExpression COMMA a = argument (COMMA min = numberExpression COMMA max = numberExpression)? 
     (COMMA var = numberVariable)? RPAREN
-    {cond = ConditionFactory.createConditionCount(type, a, min, max, var, $blockDeclaration::env);}
+    {cond = ConditionFactory.createConditionCount(type, a, min, max, var,$blockDeclaration::env);}
     |
     COUNT LPAREN list = typeExpression (COMMA min = numberExpression COMMA max = numberExpression)? 
     (COMMA var = numberVariable)? RPAREN
-    {cond = ConditionFactory.createConditionCount(list, min, max, var, $blockDeclaration::env);}   
+    {cond = ConditionFactory.createConditionCount(list, min, max, var,$blockDeclaration::env);}   
     ;
 conditionTotalCount returns [AbstractTextMarkerCondition cond = null]
     :   
@@ -816,7 +917,7 @@ conditionCurrentCount returns [AbstractTextMarkerCondition cond = null]
     :   
     CURRENTCOUNT LPAREN type = typeExpression (COMMA min = numberExpression COMMA max = numberExpression)? 
     (COMMA var = numberVariable)? RPAREN
-    {cond = ConditionFactory.createConditionCurrentCount(type, min, max, var, $blockDeclaration::env);}
+    {cond = ConditionFactory.createConditionCurrentCount(type, min, max, var,$blockDeclaration::env);}
     ;
 conditionInList returns [AbstractTextMarkerCondition cond = null]
  options {
@@ -824,8 +925,8 @@ conditionInList returns [AbstractTextMarkerCondition cond = null]
 }
     :
     INLIST LPAREN ((list2 = stringListExpression)=>list2 = stringListExpression | list1 = wordListExpression) (COMMA dist = numberExpression (COMMA rel = booleanExpression)?)? RPAREN
-    {if(list1 != null) {cond = ConditionFactory.createConditionInList(list1, dist, rel, $blockDeclaration::env);}
-    else {cond = ConditionFactory.createConditionInList(list2, dist, rel, $blockDeclaration::env);};}
+    {if(list1 != null) {cond = ConditionFactory.createConditionInList(list1, dist, rel,$blockDeclaration::env);}
+    else {cond = ConditionFactory.createConditionInList(list2, dist, rel,$blockDeclaration::env);};}
     ;
 conditionIsInTag returns [AbstractTextMarkerCondition cond = null]
 @init {
@@ -834,7 +935,7 @@ List<StringExpression> list2 = new ArrayList<StringExpression>();
 }
     :
     ISINTAG LPAREN id = stringExpression (COMMA id1 = stringExpression ASSIGN_EQUAL id2 = stringExpression {list1.add(id1);list2.add(id2);})* RPAREN
-    {cond = ConditionFactory.createConditionIsInTag(id, list1, list2, $blockDeclaration::env);} 
+    {cond = ConditionFactory.createConditionIsInTag(id, list1, list2,$blockDeclaration::env);} 
     ;
     
 conditionLast returns [AbstractTextMarkerCondition cond = null]
@@ -934,7 +1035,7 @@ conditionBefore returns [AbstractTextMarkerCondition cond = null]
 conditionAfter returns [AbstractTextMarkerCondition cond = null]
     :
     AFTER LPAREN (type1 = typeExpression|type2 = typeListExpression) RPAREN
-    {cond = ConditionFactory.createConditionAfter(type1,type2, $blockDeclaration::env);}
+    {cond = ConditionFactory.createConditionAfter(type1,type2,$blockDeclaration::env);}
     ;
 
 conditionStartsWith returns [AbstractTextMarkerCondition cond = null]
@@ -946,16 +1047,16 @@ conditionStartsWith returns [AbstractTextMarkerCondition cond = null]
 conditionEndsWith returns [AbstractTextMarkerCondition cond = null]
     :
     ENDSWITH LPAREN (type1 = typeExpression|type2 = typeListExpression) RPAREN
-    {cond = ConditionFactory.createConditionEndsWith(type1,type2, $blockDeclaration::env);}
+    {cond = ConditionFactory.createConditionEndsWith(type1,type2,$blockDeclaration::env);}
     ;
 
 conditionSize returns [AbstractTextMarkerCondition cond = null]
     :
     SIZE LPAREN list = listExpression (COMMA min = numberExpression COMMA max = numberExpression)? (COMMA var = numberVariable)? RPAREN
-    {cond = ConditionFactory.createConditionSize(list, min, max, var, $blockDeclaration::env);}
+    {cond = ConditionFactory.createConditionSize(list, min, max, var,$blockDeclaration::env);}
     ;
 
-action returns [AbstractTextMarkerAction result = null]
+action  returns [AbstractTextMarkerAction result = null]
 	:
 	(
 	a = actionColor
@@ -981,9 +1082,9 @@ action returns [AbstractTextMarkerAction result = null]
 	| a = actionTransfer
 	| a = actionMarkOnce
 	| a = actionTrie
-	| a = actionGather	
+	| a = actionGather
 	| a = actionExec
-	| a = actionMarkTable	
+	| a = actionMarkTable
 	| a = actionAdd
 	| a = actionRemove
 	| a = actionRemoveDuplicate
@@ -1049,7 +1150,7 @@ actionMarkTable returns [AbstractTextMarkerAction action = null]
     fname = stringExpression ASSIGN_EQUAL obj1 = numberExpression {map.put(fname,obj1);} 
     (COMMA fname = stringExpression ASSIGN_EQUAL obj1 = numberExpression {map.put(fname,obj1);})*
     )? RPAREN
-    {action = ActionFactory.createMarkTableAction(structure, index, table, map, $blockDeclaration::env);}
+    {action = ActionFactory.createMarkTableAction(structure, index, table, map,$blockDeclaration::env);}
     ;
  
 actionGather returns [AbstractTextMarkerAction action = null]
@@ -1137,7 +1238,7 @@ List<NumberExpression> list = new ArrayList<NumberExpression>();
     )*
      RPAREN
     
-    {action = ActionFactory.createExpandAction(type, list, $blockDeclaration::env);}
+    {action = ActionFactory.createExpandAction(type, list,$blockDeclaration::env);}
     ;
 
 
@@ -1169,7 +1270,7 @@ List<NumberExpression> list = new ArrayList<NumberExpression>();
         {list.add(index);}
     )* RPAREN
     
-    {action = ActionFactory.createMarkOnceAction(score, type, list, $blockDeclaration::env);}
+    {action = ActionFactory.createMarkOnceAction(score, type, list,$blockDeclaration::env);}
     ;
 
 actionMarkFast returns [AbstractTextMarkerAction action = null]
@@ -1196,7 +1297,7 @@ List<StringExpression> list = new ArrayList<StringExpression>();
 }
     :   
     RETAINMARKUP (LPAREN id = stringExpression {list.add(id);} (COMMA id = stringExpression {list.add(id);})* RPAREN)?
-    {action = ActionFactory.createRetainMarkupAction(list, $blockDeclaration::env);}
+    {action = ActionFactory.createRetainMarkupAction(list,$blockDeclaration::env);}
     ;
     
 
@@ -1215,7 +1316,7 @@ List<StringExpression> list = new ArrayList<StringExpression>();
 }
     :   
     FILTERMARKUP (LPAREN id = stringExpression {list.add(id);} (COMMA id = stringExpression {list.add(id);})* RPAREN)?
-    {action = ActionFactory.createFilterMarkupAction(list, $blockDeclaration::env);}
+    {action = ActionFactory.createFilterMarkupAction(list,$blockDeclaration::env);}
     ;
     
 
@@ -1225,7 +1326,7 @@ List<TypeExpression> list = new ArrayList<TypeExpression>();
 }
     :   
     FILTERTYPE (LPAREN id = typeExpression {list.add(id);} (COMMA id = typeExpression {list.add(id);})* RPAREN)?
-    {action = ActionFactory.createFilterTypeAction(list, $blockDeclaration::env);}
+    {action = ActionFactory.createFilterTypeAction(list,$blockDeclaration::env);}
     ;       
 
 actionCall returns [AbstractTextMarkerAction action = null]
@@ -1246,23 +1347,23 @@ actionAssign returns [AbstractTextMarkerAction action = null]
     (
     {isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "TYPE")}? 
         nv = Identifier COMMA e1 = typeExpression 
-        {action = ActionFactory.createAssignAction(nv, e1, $blockDeclaration::env);}
+        {action = ActionFactory.createAssignAction(nv, e1,$blockDeclaration::env);}
     |
     {isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "BOOLEAN")}? 
         nv = Identifier COMMA e2 = booleanExpression 
-        {action = ActionFactory.createAssignAction(nv, e2, $blockDeclaration::env);}
+        {action = ActionFactory.createAssignAction(nv, e2,$blockDeclaration::env);}
     |
     {isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "STRING")}? 
         nv = Identifier COMMA e3 = stringExpression 
-        {action = ActionFactory.createAssignAction(nv, e3, $blockDeclaration::env);}
+        {action = ActionFactory.createAssignAction(nv, e3,$blockDeclaration::env);}
     |
     {isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "INT")}? 
         nv = Identifier COMMA e4 = numberExpression 
-        {action = ActionFactory.createAssignAction(nv, e4, $blockDeclaration::env);}
+        {action = ActionFactory.createAssignAction(nv, e4,$blockDeclaration::env);}
     |
     {isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "DOUBLE")}? 
         nv = Identifier COMMA e5 = numberExpression 
-        {action = ActionFactory.createAssignAction(nv, e5, $blockDeclaration::env);}
+        {action = ActionFactory.createAssignAction(nv, e5,$blockDeclaration::env);}
     ) RPAREN
     ;
 
@@ -1283,7 +1384,7 @@ actionGetFeature returns [AbstractTextMarkerAction action = null]
 actionUnmark returns [AbstractTextMarkerAction action = null]
     :
     name = UNMARK LPAREN f = typeExpression RPAREN
-    {action = ActionFactory.createUnmarkAction(f, $blockDeclaration::env);}
+    {action = ActionFactory.createUnmarkAction(f,$blockDeclaration::env);}
     ;
 
 
@@ -1316,7 +1417,7 @@ Map<StringExpression, TypeExpression> map = new HashMap<StringExpression, TypeEx
     COMMA ignoreChar = stringExpression
     RPAREN
     //TODO cost parameter
-    {action = ActionFactory.createTrieAction(list, map, ignoreCase, ignoreLength, edit, distance, ignoreChar, $blockDeclaration::env);}
+    {action = ActionFactory.createTrieAction(list, map, ignoreCase, ignoreLength, edit, distance, ignoreChar,$blockDeclaration::env);}
     ;
 
 actionAdd returns [AbstractTextMarkerAction action = null]
@@ -1340,7 +1441,7 @@ actionRemove returns [AbstractTextMarkerAction action = null]
 actionRemoveDuplicate returns [AbstractTextMarkerAction action = null]
     :
     name = REMOVEDUPLICATE LPAREN f = listVariable RPAREN
-    {action = ActionFactory.createRemoveDuplicateAction(f, $blockDeclaration::env);}
+    {action = ActionFactory.createRemoveDuplicateAction(f,$blockDeclaration::env);}
     ; 
     
 actionMerge returns [AbstractTextMarkerAction action = null]
@@ -1349,19 +1450,19 @@ actionMerge returns [AbstractTextMarkerAction action = null]
 } 
     :
     name = MERGE LPAREN join = booleanExpression COMMA t = listVariable COMMA f = listExpression {list.add(f);} (COMMA f = listExpression {list.add(f);})+ RPAREN
-    {action = ActionFactory.createMergeAction(join, t, list, $blockDeclaration::env);}
+    {action = ActionFactory.createMergeAction(join, t, list,$blockDeclaration::env);}
     ;
 
 actionGet returns [AbstractTextMarkerAction action = null]
     :
     name = GET LPAREN f = listExpression COMMA var = variable COMMA op = stringExpression RPAREN
-    {action = ActionFactory.createGetAction(f, var, op, $blockDeclaration::env);}
+    {action = ActionFactory.createGetAction(f, var, op,$blockDeclaration::env);}
     ;
 
 actionGetList returns [AbstractTextMarkerAction action = null]
     :
     name = GETLIST LPAREN var = listVariable COMMA op = stringExpression RPAREN
-    {action = ActionFactory.createGetListAction(var, op, $blockDeclaration::env);}
+    {action = ActionFactory.createGetListAction(var, op,$blockDeclaration::env);}
     ;
 
 actionMatchedText returns [AbstractTextMarkerAction action = null]

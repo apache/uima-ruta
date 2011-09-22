@@ -21,14 +21,13 @@ package org.apache.uima.textmarker.condition;
 
 import java.util.Iterator;
 
-import org.apache.uima.cas.Type;
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.number.SimpleNumberExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class TotalCountCondition extends TypeSentiveCondition {
@@ -47,8 +46,8 @@ public class TotalCountCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(TextMarkerBasic annotation, Type matchedType,
-          TextMarkerRuleElement element, TextMarkerStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
+          TextMarkerStream stream, InferenceCrowd crowd) {
     int count = 0;
     Iterator<?> it = stream.getJCas().getAnnotationIndex(type.getType(element.getParent()))
             .iterator();

@@ -22,12 +22,11 @@ package org.apache.uima.textmarker.condition;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.cas.Type;
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class MOfNCondition extends ComposedTextMarkerCondition {
@@ -44,13 +43,13 @@ public class MOfNCondition extends ComposedTextMarkerCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(TextMarkerBasic basic, Type matchedType,
-          TextMarkerRuleElement element, TextMarkerStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
+          TextMarkerStream stream, InferenceCrowd crowd) {
     int result = 0;
     List<EvaluatedCondition> evals = new ArrayList<EvaluatedCondition>();
     for (AbstractTextMarkerCondition each : conditions) {
       crowd.beginVisit(each, null);
-      EvaluatedCondition eval = each.eval(basic, matchedType, element, stream, crowd);
+      EvaluatedCondition eval = each.eval(annotation, element, stream, crowd);
       crowd.endVisit(each, null);
       evals.add(eval);
       if (eval.isValue()) {

@@ -19,12 +19,16 @@
 
 package org.apache.uima.textmarker.action;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerEnvironment;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.string.StringExpression;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
 import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
@@ -42,46 +46,54 @@ public class GetFeatureAction extends AbstractTextMarkerAction {
   }
 
   @Override
-  public void execute(RuleMatch match, TextMarkerRuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
-    Type type = element.getMatcher().getType(element.getParent(), stream);
-    if (type == null)
-      return;
-    String stringValue = featureStringExpression.getStringValue(element.getParent());
-    Feature featureByBaseName = type.getFeatureByBaseName(stringValue);
-    AnnotationFS expandAnchor = stream.expandAnchor(match.getFirstBasic(), type);
-    TextMarkerEnvironment environment = element.getParent().getEnvironment();
-
-    if (expandAnchor.getType().getFeatureByBaseName(stringValue) == null) {
-      System.out.println("Can't access feature " + stringValue
-              + ", because it's not defined in the matched type: " + expandAnchor.getType());
-      return;
+    List<Type> types = new ArrayList<Type>();
+    if (element instanceof TextMarkerRuleElement) {
+      types = ((TextMarkerRuleElement) element).getMatcher().getTypes(element.getParent(), stream);
     }
+    if (types == null)
+      return;
 
-    if (environment.getVariableType(variable).equals(String.class)
-            && featureByBaseName.getRange().getName().equals("uima.cas.String")) {
-      Object value = expandAnchor.getStringValue(featureByBaseName);
-      environment.setVariableValue(variable, value);
-    } else if (environment.getVariableType(variable).equals(Integer.class)
-            && featureByBaseName.getRange().getName().equals("uima.cas.Integer")) {
-      Object value = expandAnchor.getIntValue(featureByBaseName);
-      environment.setVariableValue(variable, value);
-    } else if (environment.getVariableType(variable).equals(Double.class)
-            && featureByBaseName.getRange().getName().equals("uima.cas.Double")) {
-      Object value = expandAnchor.getDoubleValue(featureByBaseName);
-      environment.setVariableValue(variable, value);
-    } else if (environment.getVariableType(variable).equals(Boolean.class)
-            && featureByBaseName.getRange().getName().equals("uima.cas.Boolean")) {
-      Object value = expandAnchor.getBooleanValue(featureByBaseName);
-      environment.setVariableValue(variable, value);
-    } else if (environment.getVariableType(variable).equals(Type.class)
-            && featureByBaseName.getRange().getName().equals("uima.cas.String")) {
-      Object value = expandAnchor.getStringValue(featureByBaseName);
-      Type t = stream.getCas().getTypeSystem().getType((String) value);
-      if (t != null) {
-        environment.setVariableValue(variable, t);
+    for (Type type : types) {
+      String stringValue = featureStringExpression.getStringValue(element.getParent());
+      Feature featureByBaseName = type.getFeatureByBaseName(stringValue);
+      TextMarkerEnvironment environment = element.getParent().getEnvironment();
+      List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOf(element, stream);
+      for (AnnotationFS annotationFS : matchedAnnotations) {
+        if (annotationFS.getType().getFeatureByBaseName(stringValue) == null) {
+          System.out.println("Can't access feature " + stringValue
+                  + ", because it's not defined in the matched type: " + annotationFS.getType());
+          return;
+        }
+
+        if (environment.getVariableType(variable).equals(String.class)
+                && featureByBaseName.getRange().getName().equals("uima.cas.String")) {
+          Object value = annotationFS.getStringValue(featureByBaseName);
+          environment.setVariableValue(variable, value);
+        } else if (environment.getVariableType(variable).equals(Integer.class)
+                && featureByBaseName.getRange().getName().equals("uima.cas.Integer")) {
+          Object value = annotationFS.getIntValue(featureByBaseName);
+          environment.setVariableValue(variable, value);
+        } else if (environment.getVariableType(variable).equals(Double.class)
+                && featureByBaseName.getRange().getName().equals("uima.cas.Double")) {
+          Object value = annotationFS.getDoubleValue(featureByBaseName);
+          environment.setVariableValue(variable, value);
+        } else if (environment.getVariableType(variable).equals(Boolean.class)
+                && featureByBaseName.getRange().getName().equals("uima.cas.Boolean")) {
+          Object value = annotationFS.getBooleanValue(featureByBaseName);
+          environment.setVariableValue(variable, value);
+        } else if (environment.getVariableType(variable).equals(Type.class)
+                && featureByBaseName.getRange().getName().equals("uima.cas.String")) {
+          Object value = annotationFS.getStringValue(featureByBaseName);
+          Type t = stream.getCas().getTypeSystem().getType((String) value);
+          if (t != null) {
+            environment.setVariableValue(variable, t);
+          }
+        }
       }
     }
+
   }
 
   public StringExpression getFeatureStringExpression() {

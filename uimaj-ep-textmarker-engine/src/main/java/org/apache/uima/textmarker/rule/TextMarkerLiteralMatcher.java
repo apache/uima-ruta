@@ -20,9 +20,9 @@
 package org.apache.uima.textmarker.rule;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerBlock;
@@ -40,8 +40,8 @@ public class TextMarkerLiteralMatcher implements TextMarkerMatcher {
     this.expression = expression;
   }
 
-  public List<TextMarkerBasic> getMatchingBasics(TextMarkerStream stream, TextMarkerBlock parent) {
-    List<TextMarkerBasic> result = new ArrayList<TextMarkerBasic>();
+  public List<AnnotationFS> getMatchingAnnotations(TextMarkerStream stream, TextMarkerBlock parent) {
+    List<AnnotationFS> result = new ArrayList<AnnotationFS>();
     AnnotationFS windowAnnotation = stream.getDocumentAnnotation();
     List<TextMarkerBasic> list = stream.getBasicsInWindow(windowAnnotation);
     for (TextMarkerBasic each : list) {
@@ -52,17 +52,7 @@ public class TextMarkerLiteralMatcher implements TextMarkerMatcher {
     return result;
   }
 
-  @Override
-  public FSIterator<AnnotationFS> getMatchingBasics2(TextMarkerStream stream, TextMarkerBlock parent) {
-    assert (false);
-    return null;
-  }
-
-  public Type getType(TextMarkerStream stream) {
-    return null;
-  }
-
-  public boolean match(TextMarkerBasic annotation, TextMarkerStream stream, TextMarkerBlock parent) {
+  public boolean match(AnnotationFS annotation, TextMarkerStream stream, TextMarkerBlock parent) {
     if (annotation == null) {
       return false;
     }
@@ -78,7 +68,25 @@ public class TextMarkerLiteralMatcher implements TextMarkerMatcher {
     return expression;
   }
 
-  public Type getType(TextMarkerBlock parent, TextMarkerStream stream) {
+  @Override
+  public int estimateAnchors(TextMarkerBlock parent, TextMarkerStream stream) {
+    return Integer.MAX_VALUE;
+  }
+
+  @Override
+  public List<AnnotationFS> getAnnotationsAfter(TextMarkerRuleElement ruleElement,
+          AnnotationFS annotation, TextMarkerStream stream, TextMarkerBlock parent) {
+    return null;
+  }
+
+  @Override
+  public Collection<AnnotationFS> getAnnotationsBefore(TextMarkerRuleElement ruleElement,
+          AnnotationFS annotation, TextMarkerStream stream, TextMarkerBlock parent) {
+    return null;
+  }
+
+  @Override
+  public List<Type> getTypes(TextMarkerBlock parent, TextMarkerStream stream) {
     return null;
   }
 

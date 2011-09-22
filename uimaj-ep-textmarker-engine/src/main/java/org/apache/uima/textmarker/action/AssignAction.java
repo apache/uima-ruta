@@ -28,8 +28,8 @@ import org.apache.uima.textmarker.expression.bool.BooleanExpression;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.string.StringExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class AssignAction extends AbstractTextMarkerAction {
@@ -45,7 +45,7 @@ public class AssignAction extends AbstractTextMarkerAction {
   }
 
   @Override
-  public void execute(RuleMatch match, TextMarkerRuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
     TextMarkerBlock parent = element.getParent();
     TextMarkerEnvironment environment = parent.getEnvironment();

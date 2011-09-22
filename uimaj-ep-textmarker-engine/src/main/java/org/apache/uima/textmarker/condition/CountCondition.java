@@ -37,8 +37,7 @@ import org.apache.uima.textmarker.expression.number.SimpleNumberExpression;
 import org.apache.uima.textmarker.expression.string.StringExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class CountCondition extends TypeSentiveCondition {
@@ -71,10 +70,9 @@ public class CountCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(TextMarkerBasic basic, Type matchedType,
-          TextMarkerRuleElement element, TextMarkerStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
+          TextMarkerStream stream, InferenceCrowd crowd) {
     if (arg == null) {
-      AnnotationFS annotation = basic.getType(matchedType.getName());
       List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(annotation,
               type.getType(element.getParent()));
       int count = annotationsInWindow.size();

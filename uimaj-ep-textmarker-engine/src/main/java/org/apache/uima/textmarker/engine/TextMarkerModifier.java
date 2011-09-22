@@ -156,7 +156,7 @@ public class TextMarkerModifier extends JCasAnnotator_ImplBase {
     }
     List<Type> colorTypes = new ArrayList<Type>();
     for (Type each : coloredTypes) {
-      if (cas.getTypeSystem().subsumes(each, basic.getType()) || basic.isPartOf(each.getName())) {
+      if (cas.getTypeSystem().subsumes(each, basic.getType()) || basic.isPartOf(each)) {
         colorTypes.add(each);
       }
     }

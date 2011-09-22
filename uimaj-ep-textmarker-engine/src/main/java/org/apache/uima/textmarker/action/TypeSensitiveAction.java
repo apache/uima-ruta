@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.action;
 
@@ -23,15 +23,15 @@ import org.apache.uima.textmarker.expression.type.TypeExpression;
 
 public abstract class TypeSensitiveAction extends AbstractTextMarkerAction {
 
+  public TypeSensitiveAction(TypeExpression type) {
+    super();
+    this.type = type;
+  }
+
   protected TypeExpression type;
 
   public TypeExpression getType() {
     return type;
-  }
-
-  public TypeSensitiveAction(TypeExpression type) {
-    super();
-    this.type = type;
   }
 
 }

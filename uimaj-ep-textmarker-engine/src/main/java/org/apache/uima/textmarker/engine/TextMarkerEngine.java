@@ -39,7 +39,6 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
@@ -60,7 +59,6 @@ import org.apache.uima.textmarker.extensions.TextMarkerExternalFactory;
 import org.apache.uima.textmarker.parser.TextMarkerLexer;
 import org.apache.uima.textmarker.parser.TextMarkerParser;
 import org.apache.uima.textmarker.seed.TextMarkerAnnotationSeeder;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.verbalize.TextMarkerVerbalizer;
 import org.apache.uima.textmarker.visitor.DebugInfoCollectorVisitor;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
@@ -229,14 +227,6 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
 
   @Override
   public void process(JCas cas) throws AnalysisEngineProcessException {
-    // TODO fix single/multi view stuff
-    if (cas.getViewName() == null) {
-      try {
-        cas = cas.getView(CAS.NAME_DEFAULT_SOFA);
-      } catch (CASException e) {
-        throw new AnalysisEngineProcessException(e);
-      }
-    }
 
     if (!factory.isInitialized()) {
       initializeExtensionWithClassPath();
@@ -399,8 +389,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     FSIterator<AnnotationFS> others = cas.getAnnotationIndex().iterator();
     while (others.isValid()) {
       AnnotationFS a = (AnnotationFS) others.get();
-      TextMarkerBasic anchor = stream.getFirstBasicInWindow(a, stream.getUnfilteredBasicIterator());
-      stream.addAnnotation(anchor, a);
+      stream.addAnnotation(a);
       others.moveToNext();
     }
     return stream;

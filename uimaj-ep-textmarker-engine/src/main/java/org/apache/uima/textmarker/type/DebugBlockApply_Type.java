@@ -13,7 +13,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
 
 /** 
- * Updated by JCasGen Tue Aug 09 16:26:13 CEST 2011
+ * Updated by JCasGen Tue Sep 20 15:37:41 CEST 2011
  * @generated */
 public class DebugBlockApply_Type extends DebugRuleApply_Type {
   /** @generated */
@@ -63,7 +63,7 @@ public class DebugBlockApply_Type extends DebugRuleApply_Type {
     if (lowLevelTypeChecks)
       return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_innerApply), i, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_innerApply), i);
-	return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_innerApply), i);
+  return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_innerApply), i);
   }
    
   /** @generated */ 

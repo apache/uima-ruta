@@ -22,13 +22,14 @@ package org.apache.uima.textmarker.action;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.string.StringExpression;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
@@ -51,42 +52,48 @@ public class GetListAction extends AbstractTextMarkerAction {
   }
 
   @Override
-  public void execute(RuleMatch match, TextMarkerRuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
     String op = opExpr.getStringValue(element.getParent());
     List<Type> list = new ArrayList<Type>();
-    int indexOf = match.getRule().getElements().indexOf(element);
+
+    int indexOf = element.getContainer().getRuleElements().indexOf(element);
     List<Integer> indexes = new ArrayList<Integer>();
     indexes.add(indexOf + 1);
-    AnnotationFS matched = match.getMatchedAnnotation(stream, indexes);
-    TextMarkerBasic firstBasic = stream.getFirstBasicInWindow(matched);
-    Collection<AnnotationFS> anchors = firstBasic.getAnchors();
-    if (TYPES_AT_BEGIN.equals(op)) {
-      for (AnnotationFS each : anchors) {
-        list.add(each.getType());
-      }
-    } else {
-      Type annotationType = stream.getCas().getAnnotationType();
-      if (TYPES_AT_END.equals(op)) {
-        List<AnnotationFS> inWindow = stream.getAnnotationsInWindow(matched, annotationType);
-        for (AnnotationFS each : inWindow) {
-          if (each.getEnd() == matched.getEnd()) {
-            list.add(each.getType());
+    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(stream, indexes,
+            element.getContainer());
+    for (AnnotationFS matched : matchedAnnotations) {
+
+      TextMarkerBasic firstBasic = stream.getFirstBasicInWindow(matched);
+      Collection<Set<AnnotationFS>> values = firstBasic.getBeginMap().values();
+      if (TYPES_AT_BEGIN.equals(op)) {
+        for (Set<AnnotationFS> set : values) {
+          for (AnnotationFS annotationFS : set) {
+            list.add(annotationFS.getType());
           }
         }
-      } else if (TYPES.equals(op)) {
-        List<AnnotationFS> inWindow = stream.getAnnotationsInWindow(matched, annotationType);
-        for (AnnotationFS each : inWindow) {
-          if (each.getBegin() == matched.getBegin() && each.getEnd() == matched.getEnd()) {
-            list.add(each.getType());
+      } else {
+        Type annotationType = stream.getCas().getAnnotationType();
+        if (TYPES_AT_END.equals(op)) {
+          List<AnnotationFS> inWindow = stream.getAnnotationsInWindow(matched, annotationType);
+          for (AnnotationFS each : inWindow) {
+            if (each.getEnd() == matched.getEnd()) {
+              list.add(each.getType());
+            }
           }
-          if (each.getBegin() > matched.getBegin() || each.getEnd() < matched.getEnd()) {
-            break;
+        } else if (TYPES.equals(op)) {
+          List<AnnotationFS> inWindow = stream.getAnnotationsInWindow(matched, annotationType);
+          for (AnnotationFS each : inWindow) {
+            if (each.getBegin() == matched.getBegin() && each.getEnd() == matched.getEnd()) {
+              list.add(each.getType());
+            }
+            if (each.getBegin() > matched.getBegin() || each.getEnd() < matched.getEnd()) {
+              break;
+            }
           }
         }
       }
     }
     element.getParent().getEnvironment().setVariableValue(var, list);
   }
-
 }

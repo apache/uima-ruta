@@ -19,17 +19,18 @@
 
 package org.apache.uima.textmarker.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.bool.BooleanExpression;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.string.StringExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
 import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.utils.UIMAUtils;
@@ -93,47 +94,56 @@ public class SetFeatureAction extends AbstractTextMarkerAction {
   }
 
   @Override
-  public void execute(RuleMatch match, TextMarkerRuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
-    Type type = element.getMatcher().getType(element.getParent(), stream);
-    if (type == null)
-      return;
-    String featureString = featureStringExpression.getStringValue(element.getParent());
-    Feature featureByBaseName = type.getFeatureByBaseName(featureString);
-    Annotation expandAnchor = (Annotation) stream.expandAnchor(match.getFirstBasic(), type);
-    if (expandAnchor.getType().getFeatureByBaseName(featureString) == null) {
-      System.out.println("Can't access feature " + featureString
-              + ", because it's not defined in the matched type: " + expandAnchor.getType());
-      return;
+    List<Type> types = new ArrayList<Type>();
+    if (element instanceof TextMarkerRuleElement) {
+      types = ((TextMarkerRuleElement) element).getMatcher().getTypes(element.getParent(), stream);
     }
-    expandAnchor.removeFromIndexes();
-    if (stringExpr != null) {
-      String string = stringExpr.getStringValue(element.getParent());
-      expandAnchor.setStringValue(featureByBaseName, string);
-    } else if (numberExpr != null) {
-      String range = featureByBaseName.getRange().getName();
-      if (range.equals("uima.cas.Integer")) {
-        int v = numberExpr.getIntegerValue(element.getParent());
-        expandAnchor.setIntValue(featureByBaseName, v);
-      } else if (range.equals("uima.cas.Double")) {
-        double v = numberExpr.getDoubleValue(element.getParent());
-        expandAnchor.setDoubleValue(featureByBaseName, v);
-      }
-    } else if (booleanExpr != null) {
-      boolean v = booleanExpr.getBooleanValue(element.getParent());
-      expandAnchor.setBooleanValue(featureByBaseName, v);
-    } else if (typeExpr != null) {
-      Type t = typeExpr.getType(element.getParent());
-      List<AnnotationFS> inWindow = stream.getAnnotationsInWindow(expandAnchor, t);
-      if (featureByBaseName.getRange().isArray()) {
-        expandAnchor.setFeatureValue(featureByBaseName,
-                UIMAUtils.toFSArray(stream.getJCas(), inWindow));
-      } else {
-        AnnotationFS annotation = inWindow.get(0);
-        expandAnchor.setFeatureValue(featureByBaseName, annotation);
+    if (types == null)
+      return;
+
+    for (Type type : types) {
+      String featureString = featureStringExpression.getStringValue(element.getParent());
+      Feature featureByBaseName = type.getFeatureByBaseName(featureString);
+      List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOf(element, stream);
+      for (AnnotationFS annotationFS : matchedAnnotations) {
+
+        if (annotationFS.getType().getFeatureByBaseName(featureString) == null) {
+          System.out.println("Can't access feature " + featureString
+                  + ", because it's not defined in the matched type: " + annotationFS.getType());
+          return;
+        }
+        stream.getCas().removeFsFromIndexes(annotationFS);
+        if (stringExpr != null) {
+          String string = stringExpr.getStringValue(element.getParent());
+          annotationFS.setStringValue(featureByBaseName, string);
+        } else if (numberExpr != null) {
+          String range = featureByBaseName.getRange().getName();
+          if (range.equals("uima.cas.Integer")) {
+            int v = numberExpr.getIntegerValue(element.getParent());
+            annotationFS.setIntValue(featureByBaseName, v);
+          } else if (range.equals("uima.cas.Double")) {
+            double v = numberExpr.getDoubleValue(element.getParent());
+            annotationFS.setDoubleValue(featureByBaseName, v);
+          }
+        } else if (booleanExpr != null) {
+          boolean v = booleanExpr.getBooleanValue(element.getParent());
+          annotationFS.setBooleanValue(featureByBaseName, v);
+        } else if (typeExpr != null) {
+          Type t = typeExpr.getType(element.getParent());
+          List<AnnotationFS> inWindow = stream.getAnnotationsInWindow(annotationFS, t);
+          if (featureByBaseName.getRange().isArray()) {
+            annotationFS.setFeatureValue(featureByBaseName,
+                    UIMAUtils.toFSArray(stream.getJCas(), inWindow));
+          } else {
+            AnnotationFS annotation = inWindow.get(0);
+            annotationFS.setFeatureValue(featureByBaseName, annotation);
+          }
+        }
+        stream.getCas().addFsToIndexes(annotationFS);
       }
     }
-    expandAnchor.addToIndexes();
   }
 
 }

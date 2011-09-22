@@ -15,37 +15,44 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.rule;
 
+import java.util.Collection;
 import java.util.List;
 
-import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerBlock;
 import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
+import org.apache.uima.textmarker.rule.quantifier.RuleElementQuantifier;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
-
 
 public interface RuleElement {
 
-  void apply(RuleMatch matchInfos, TextMarkerStream symbolStream, InferenceCrowd crowd);
+  void apply(RuleMatch match, TextMarkerStream stream, InferenceCrowd crowd);
 
-  RuleElementMatch match(TextMarkerBasic currentBasic, TextMarkerStream stream, InferenceCrowd crowd);
+  void startMatch(RuleMatch ruleMatch, RuleApply ruleApply,
+          ComposedRuleElementMatch containerMatch, RuleElement entryPoint, TextMarkerStream stream, InferenceCrowd crowd);
+
+  void continueMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
+          RuleApply ruleApply, ComposedRuleElementMatch containerMatch, RuleElement entryPoint,
+          TextMarkerStream stream, InferenceCrowd crowd);
 
   List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches, TextMarkerBlock parent);
 
-  List<TextMarkerBasic> getAnchors(TextMarkerStream symbolStream);
-
-  FSIterator<AnnotationFS> getAnchors2(TextMarkerStream symbolStream);
-
-  boolean continueMatch(int index, List<RuleElement> elements, TextMarkerBasic next,
-          RuleElementMatch match, List<RuleElementMatch> matches, TextMarkerStream stream);
+  Collection<AnnotationFS> getAnchors(TextMarkerStream symbolStream);
 
   TextMarkerBlock getParent();
 
-  TextMarkerMatcher getMatcher();
+  TextMarkerRule getRule();
+
+  RuleElementContainer getContainer();
+
+  RuleElementQuantifier getQuantifier();
+
+  int estimateAnchors(TextMarkerStream stream);
+
+  List<Integer> getSelfIndexList();
 
 }

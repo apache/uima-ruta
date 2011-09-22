@@ -21,7 +21,6 @@ package org.apache.uima.textmarker.condition;
 
 import java.util.List;
 
-import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.bool.BooleanExpression;
@@ -30,8 +29,7 @@ import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.resource.WordListExpression;
 import org.apache.uima.textmarker.resource.TextMarkerWordList;
 import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class InListCondition extends TerminalTextMarkerCondition {
@@ -61,10 +59,9 @@ public class InListCondition extends TerminalTextMarkerCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(TextMarkerBasic annotation, Type matchedType,
-          TextMarkerRuleElement element, TextMarkerStream stream, InferenceCrowd crowd) {
-    AnnotationFS matchedAnnotation = stream.expandAnchor(annotation, matchedType);
-    String coveredText = matchedAnnotation.getCoveredText();
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
+          TextMarkerStream stream, InferenceCrowd crowd) {
+    String coveredText = annotation.getCoveredText();
     if (stringList == null) {
       TextMarkerWordList wordList = listExpr.getList(element.getParent());
       return new EvaluatedCondition(this, wordList.contains(coveredText, false, 0, null, 0));

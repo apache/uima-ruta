@@ -39,8 +39,8 @@ import org.apache.uima.textmarker.TextMarkerBlock;
 import org.apache.uima.textmarker.TextMarkerModule;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.list.TypeListExpression;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
@@ -58,7 +58,7 @@ public class ExecAction extends CallAction {
   }
 
   @Override
-  protected void callScript(String blockName, RuleMatch match, TextMarkerRuleElement element,
+  protected void callScript(String blockName, RuleMatch match, RuleElement element,
           TextMarkerStream stream, InferenceCrowd crowd, TextMarkerModule targetScript) {
     TextMarkerBlock block = targetScript.getBlock(blockName);
     if (block == null) {
@@ -71,8 +71,8 @@ public class ExecAction extends CallAction {
 
   @Override
   protected void callEngine(RuleMatch match, InferenceCrowd crowd, AnalysisEngine targetEngine,
-          TextMarkerRuleElement element, TextMarkerStream stream)
-          throws ResourceInitializationException, AnalysisEngineProcessException {
+          RuleElement element, TextMarkerStream stream) throws ResourceInitializationException,
+          AnalysisEngineProcessException {
     CAS cas = stream.getCas();
     targetEngine.process(cas);
 
@@ -98,7 +98,7 @@ public class ExecAction extends CallAction {
             cas.removeFsFromIndexes(each);
             stream.removeAnnotation(entry.getKey(), each.getType());
             cas.addFsToIndexes(each);
-            stream.addAnnotation(entry.getKey(), each);
+            stream.addAnnotation(each);
           }
         }
       }

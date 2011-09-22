@@ -22,11 +22,10 @@ package org.apache.uima.textmarker.condition;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.cas.Type;
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class AndCondition extends ComposedTextMarkerCondition {
@@ -36,13 +35,13 @@ public class AndCondition extends ComposedTextMarkerCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(TextMarkerBasic currentSymbol, Type matchedType,
-          TextMarkerRuleElement element, TextMarkerStream symbolStream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS currentSymbol, RuleElement element,
+          TextMarkerStream symbolStream, InferenceCrowd crowd) {
     boolean result = true;
     List<EvaluatedCondition> evals = new ArrayList<EvaluatedCondition>();
     for (AbstractTextMarkerCondition each : conditions) {
       crowd.beginVisit(each, null);
-      EvaluatedCondition eval = each.eval(currentSymbol, matchedType, element, symbolStream, crowd);
+      EvaluatedCondition eval = each.eval(currentSymbol, element, symbolStream, crowd);
       crowd.endVisit(each, null);
       result &= eval.isValue();
       evals.add(eval);

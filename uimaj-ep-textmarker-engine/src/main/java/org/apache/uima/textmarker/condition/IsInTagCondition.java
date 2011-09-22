@@ -22,12 +22,11 @@ package org.apache.uima.textmarker.condition;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.string.StringExpression;
 import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
@@ -48,10 +47,9 @@ public class IsInTagCondition extends TerminalTextMarkerCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(TextMarkerBasic basic, Type matchedType,
-          TextMarkerRuleElement element, TextMarkerStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
+          TextMarkerStream stream, InferenceCrowd crowd) {
     boolean result = true;
-    AnnotationFS annotation = stream.expandAnchor(basic, matchedType);
     for (TextMarkerBasic each : stream.getBasicsInWindow(annotation)) {
       Map<String, String> tags = each.getTags();
       result &= tags.containsKey(tag.getStringValue(element.getParent()));

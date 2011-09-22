@@ -27,8 +27,8 @@ import org.apache.uima.textmarker.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.textmarker.expression.string.SimpleStringExpression;
 import org.apache.uima.textmarker.expression.string.StringExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.type.TextMarkerColoring;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
@@ -52,7 +52,7 @@ public class ColorAction extends AbstractTextMarkerAction {
   }
 
   @Override
-  public void execute(RuleMatch match, TextMarkerRuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
     Type casType = stream.getJCas().getCasType(TextMarkerColoring.type);
     FeatureStructure newAnnotationFS = stream.getCas().createFS(casType);

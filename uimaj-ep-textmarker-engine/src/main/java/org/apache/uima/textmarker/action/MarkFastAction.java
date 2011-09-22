@@ -15,11 +15,12 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.action;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerStream;
@@ -31,11 +32,10 @@ import org.apache.uima.textmarker.expression.resource.WordListExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.resource.TextMarkerWordList;
 import org.apache.uima.textmarker.resource.TreeWordList;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
-
 
 public class MarkFastAction extends AbstractMarkAction {
 
@@ -55,20 +55,23 @@ public class MarkFastAction extends AbstractMarkAction {
   }
 
   @Override
-  public void execute(RuleMatch match, TextMarkerRuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
-    // Annotation matchedAnnotation = match.getMatchedAnnotation(stream,
-    // null);
-    // TODO matched annotation is Document!!! HOTFIX
-    TextMarkerWordList wl = list.getList(element.getParent());
-    if (wl instanceof TreeWordList) {
-      Collection<AnnotationFS> found = wl.find(stream, ignore.getBooleanValue(element.getParent()),
-              ignoreLength.getIntegerValue(element.getParent()), null, 0);
-      for (AnnotationFS annotation : found) {
-        TextMarkerBasic anchor = stream.getFirstBasicInWindow(annotation);
-        createAnnotation(anchor, element, stream, annotation);
+    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element, stream);
+    for (AnnotationFS annotationFS : matchedAnnotationsOf) {
+      TextMarkerStream windowStream = stream.getWindowStream(annotationFS, annotationFS.getType());
+      TextMarkerWordList wl = list.getList(element.getParent());
+      if (wl instanceof TreeWordList) {
+        Collection<AnnotationFS> found = wl.find(windowStream,
+                ignore.getBooleanValue(element.getParent()),
+                ignoreLength.getIntegerValue(element.getParent()), null, 0);
+        for (AnnotationFS annotation : found) {
+          TextMarkerBasic anchor = windowStream.getFirstBasicInWindow(annotation);
+          createAnnotation(anchor, element, windowStream, annotation);
+        }
       }
     }
+
     // if(list.contains(matchedAnnotation.getCoveredText(), ignore, 0)) {
     // createAnnotation(match, stream, matchedAnnotation);
     // } else {

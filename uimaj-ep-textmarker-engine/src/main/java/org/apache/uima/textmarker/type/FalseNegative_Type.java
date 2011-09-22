@@ -11,7 +11,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
 
 /** 
- * Updated by JCasGen Tue Aug 09 16:26:13 CEST 2011
+ * Updated by JCasGen Tue Sep 20 15:37:41 CEST 2011
  * @generated */
 public class FalseNegative_Type extends EvalAnnotation_Type {
   /** @generated */

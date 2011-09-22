@@ -34,9 +34,8 @@ import org.apache.uima.textmarker.expression.TextMarkerExpression;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.string.StringExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class CreateAction extends AbstractStructureAction {
@@ -57,38 +56,38 @@ public class CreateAction extends AbstractStructureAction {
   }
 
   @Override
-  public void execute(RuleMatch match, TextMarkerRuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
     List<Integer> indexList = getIndexList(match, element);
-    AnnotationFS matchedAnnotation = match.getMatchedAnnotation(stream, indexList);
-    if (matchedAnnotation == null) {
-      return;
-    }
-    Type type = structureType.getType(element.getParent());
-    FeatureStructure newFS = stream.getCas().createFS(type);
-    if (newFS instanceof Annotation) {
-      Annotation a = (Annotation) newFS;
-      a.setBegin(matchedAnnotation.getBegin());
-      a.setEnd(matchedAnnotation.getEnd());
-      TextMarkerBasic first = stream.getFirstBasicInWindow(matchedAnnotation);
-      if (first == null) {
-        first = match.getFirstBasic();
+    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(stream, indexList,
+            element.getContainer());
+    for (AnnotationFS matchedAnnotation : matchedAnnotations) {
+
+      if (matchedAnnotation == null) {
+        return;
       }
-      stream.addAnnotation(first, a);
-    }
-    TOP newStructure = null;
-    if (newFS instanceof TOP) {
-      newStructure = (TOP) newFS;
-      fillFeatures(newStructure, features, matchedAnnotation, element, stream);
-      newStructure.addToIndexes();
+      Type type = structureType.getType(element.getParent());
+      FeatureStructure newFS = stream.getCas().createFS(type);
+      if (newFS instanceof Annotation) {
+        Annotation a = (Annotation) newFS;
+        a.setBegin(matchedAnnotation.getBegin());
+        a.setEnd(matchedAnnotation.getEnd());
+        stream.addAnnotation(a);
+      }
+      TOP newStructure = null;
+      if (newFS instanceof TOP) {
+        newStructure = (TOP) newFS;
+        fillFeatures(newStructure, features, matchedAnnotation, element, stream);
+        newStructure.addToIndexes();
+      }
     }
   }
 
   // TODO refactor duplicate methods -> MarkAction
-  protected List<Integer> getIndexList(RuleMatch match, TextMarkerRuleElement element) {
+  protected List<Integer> getIndexList(RuleMatch match, RuleElement element) {
     List<Integer> indexList = new ArrayList<Integer>();
     if (indexes == null || indexes.isEmpty()) {
-      int self = match.getRule().getElements().indexOf(element) + 1;
+      int self = element.getContainer().getRuleElements().indexOf(element) + 1;
       indexList.add(self);
       return indexList;
     }

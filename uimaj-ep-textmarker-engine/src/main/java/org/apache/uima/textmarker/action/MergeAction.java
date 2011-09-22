@@ -26,8 +26,8 @@ import org.apache.commons.collections.ListUtils;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.bool.BooleanExpression;
 import org.apache.uima.textmarker.expression.list.ListExpression;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class MergeAction extends AbstractTextMarkerAction {
@@ -47,7 +47,7 @@ public class MergeAction extends AbstractTextMarkerAction {
 
   @SuppressWarnings("unchecked")
   @Override
-  public void execute(RuleMatch match, TextMarkerRuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
     boolean union = unionExpr.getBooleanValue(element.getParent());
     List<Object> list = new ArrayList<Object>();

@@ -15,20 +15,24 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.action;
 
 import org.apache.uima.textmarker.TextMarkerElement;
 import org.apache.uima.textmarker.TextMarkerStream;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public abstract class AbstractTextMarkerAction extends TextMarkerElement {
 
-  public abstract void execute(RuleMatch match, TextMarkerRuleElement element,
-          TextMarkerStream stream, InferenceCrowd crowd);
+  public AbstractTextMarkerAction() {
+    super();
+  }
+
+  public abstract void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
+          InferenceCrowd crowd);
 
   @Override
   public String toString() {

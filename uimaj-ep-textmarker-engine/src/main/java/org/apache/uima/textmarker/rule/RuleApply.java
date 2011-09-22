@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.rule;
 
@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.textmarker.ScriptApply;
-
 
 public class RuleApply extends ScriptApply {
 
@@ -46,12 +45,18 @@ public class RuleApply extends ScriptApply {
   }
 
   public void add(RuleMatch match) {
-    if (match.matched()) {
+    if (match.matchedCompletely()) {
       applied++;
     }
     tried++;
     if (acceptMatches) {
       list.add(match);
+    }
+  }
+
+  public void addAll(List<RuleMatch> matches) {
+    for (RuleMatch ruleMatch : matches) {
+      add(ruleMatch);
     }
   }
 

@@ -21,15 +21,12 @@ package org.apache.uima.textmarker.action;
 
 import java.util.List;
 
-import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.rule.RuleElementMatch;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class ExpandAction extends MarkAction {
@@ -39,22 +36,20 @@ public class ExpandAction extends MarkAction {
   }
 
   @Override
-  public void execute(RuleMatch match, TextMarkerRuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
-    List<Integer> indexList = getIndexList(match, element);
-    AnnotationFS matchedAnnotation = match.getMatchedAnnotation(stream, indexList);
-
-    List<RuleElementMatch> matchInfo = match.getMatchInfo(element);
-    if (matchInfo == null || matchInfo.isEmpty()) {
-      return;
+    List<Integer> indexList = getIndexList(element, list);
+    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(stream, indexList,
+            element.getContainer());
+    for (AnnotationFS matchedAnnotation : matchedAnnotations) {
+      List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element, stream);
+      for (AnnotationFS annotationFS : matchedAnnotationsOf) {
+        if (matchedAnnotation.getBegin() >= annotationFS.getBegin()
+                && matchedAnnotation.getEnd() <= annotationFS.getEnd()) {
+          stream.removeAnnotation(annotationFS, annotationFS.getType());
+          createAnnotation(matchedAnnotation, element, stream);
+        }
+      }
     }
-    RuleElementMatch ruleElementMatch = matchInfo.get(0);
-    List<AnnotationFS> textsMatched = ruleElementMatch.getTextsMatched();
-    AnnotationFS first = textsMatched.get(0);
-    TextMarkerBasic anchor = stream.getFirstBasicInWindow(first);
-    Type t = type.getType(element.getParent());
-    stream.removeAnnotation(anchor, t);
-    createAnnotation(anchor, element, stream, matchedAnnotation);
   }
-
 }

@@ -20,14 +20,16 @@
 package org.apache.uima.textmarker.rule;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.TreeSet;
 
 import org.apache.uima.cas.ConstraintFactory;
 import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.FSTypeConstraint;
+import org.apache.uima.cas.FSMatchConstraint;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.textmarker.TextMarkerBlock;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.constraint.BasicTypeConstraint;
@@ -39,111 +41,138 @@ public class TextMarkerTypeMatcher implements TextMarkerMatcher {
 
   private final TypeExpression expression;
 
+  private AnnotationComparator comparator;
+
   public TextMarkerTypeMatcher(TypeExpression expression) {
     super();
     this.expression = expression;
+    this.comparator = new AnnotationComparator();
   }
 
-  public FSIterator<AnnotationFS> getMatchingBasics2(TextMarkerStream stream, TextMarkerBlock parent) {
-    String name = getType(parent, stream).getName();
-    if ("uima.tcas.DocumentAnnotation".equals(name)
-            || "uima.tcas.DocumentAnnotation".equals(name)
-            || (stream.getDocumentAnnotationType().getName().equals(name) && stream
-                    .getFirstBasicOfAll().isAnchorOf(name))) {
-      TextMarkerBasic firstBasic = stream.getFirstBasicOfAll();
-      if (firstBasic != null) {
-        return new DummyFSIterator(firstBasic);
-      } else {
-        FSIterator<AnnotationFS> it = stream.getUnfilteredBasicIterator();
-        it.moveToFirst();
-        if (it.isValid()) {
-          TextMarkerBasic first = (TextMarkerBasic) it.get();
-          return new DummyFSIterator(first);
-        }
-      }
-      return new DummyFSIterator(null);
-    } else {
-      FSTypeConstraint anchorConstraint = createAnchorConstraints(parent, stream);
-      FSIterator<AnnotationFS> iterator = stream.getFilteredBasicIterator(anchorConstraint);
-      return iterator;
-    }
-  }
+  public Collection<AnnotationFS> getMatchingAnnotations(TextMarkerStream stream,
+          TextMarkerBlock parent) {
 
-  public List<TextMarkerBasic> getMatchingBasics(TextMarkerStream stream, TextMarkerBlock parent) {
-    List<TextMarkerBasic> result = new ArrayList<TextMarkerBasic>();
-    String name = getType(parent, stream).getName();
-    if ("uima.tcas.DocumentAnnotation".equals(name)
-            || "uima.tcas.DocumentAnnotation".equals(name)
-            || (stream.getDocumentAnnotationType().getName().equals(name) && stream
-                    .getFirstBasicOfAll().isAnchorOf(name))) {
-      TextMarkerBasic firstBasic = stream.getFirstBasicOfAll();
-      if (firstBasic != null) {
-        result.add(firstBasic);
-      } else {
-        FSIterator<AnnotationFS> it = stream.getUnfilteredBasicIterator();
-        it.moveToFirst();
-        if (it.isValid()) {
-          TextMarkerBasic first = (TextMarkerBasic) it.get();
-          result.add(first);
-        }
-      }
+    Collection<AnnotationFS> result = new TreeSet<AnnotationFS>(comparator);
+    List<Type> types = getTypes(parent, stream);
+    for (Type type : types) {
+      String name = type.getName();
+      if ("uima.tcas.DocumentAnnotation".equals(name)
+              || "uima.tcas.DocumentAnnotation".equals(name)
+              || (stream.getDocumentAnnotationType().getName().equals(name) && stream
+                      .getFirstBasicOfAll().beginsWith(type))) {
+        // TODO what about dynamic windowing?
+        result.add(stream.getDocumentAnnotation());
 
-    } else {
-      FSTypeConstraint anchorConstraint = createAnchorConstraints(parent, stream);
-      FSIterator<AnnotationFS> iterator = stream.getFilteredBasicIterator(anchorConstraint);
-      iterator.moveToFirst();
-      while (iterator.isValid()) {
-        TextMarkerBasic annotation = (TextMarkerBasic) iterator.get();
-        result.add(annotation);
-        iterator.moveToNext();
+      } else {
+        FSIterator<AnnotationFS> iterator = stream.getFilter().createFilteredIterator(
+                stream.getCas(), type);
+
+        // AnnotationIndex<AnnotationFS> annotationIndex = stream.getCas().getAnnotationIndex(type);
+        // stream.getCas().createFilteredIterator(annotationIndex.iterator(),
+        // stream.getFilter().createFilteredIterator(null, stream, type));
+        // FSMatchConstraint anchorConstraint = createAnchorConstraints(parent, stream);
+        // FSIterator<AnnotationFS> iterator = stream.getFilteredBasicIterator(anchorConstraint);
+        // iterator.moveToFirst();
+        while (iterator.isValid()) {
+          AnnotationFS annotation = iterator.get();
+          result.add(annotation);
+          iterator.moveToNext();
+        }
       }
     }
     return result;
   }
 
-  public FSTypeConstraint createAnchorConstraints(TextMarkerBlock block, TextMarkerStream stream) {
+  @Override
+  public Collection<AnnotationFS> getAnnotationsAfter(TextMarkerRuleElement ruleElement,
+          AnnotationFS annotation, TextMarkerStream stream, TextMarkerBlock parent) {
+    TextMarkerBasic lastBasic = stream.getEndAnchor(annotation.getEnd());
+    stream.moveTo(lastBasic);
+    stream.moveToNext();
+    if (stream.isValid()) {
+      TextMarkerBasic nextBasic = (TextMarkerBasic) stream.get();
+      // TODO also child types!
+      List<Type> reTypes = ruleElement.getMatcher().getTypes(parent, stream);
+
+      Collection<AnnotationFS> anchors = new TreeSet<AnnotationFS>(new AnnotationComparator());
+      for (Type eachMatchType : reTypes) {
+
+        List<Type> types = stream.getCas().getTypeSystem().getProperlySubsumedTypes(eachMatchType);
+        types.add(eachMatchType);
+        for (Type eachType : types) {
+          Collection<AnnotationFS> beginAnchors = nextBasic.getBeginAnchors(eachType);
+          if (beginAnchors != null) {
+            anchors.addAll(beginAnchors);
+          }
+        }
+      }
+      return anchors;
+    }
+    return Collections.emptyList();
+  }
+
+  @Override
+  public Collection<AnnotationFS> getAnnotationsBefore(TextMarkerRuleElement ruleElement,
+          AnnotationFS annotation, TextMarkerStream stream, TextMarkerBlock parent) {
+    TextMarkerBasic firstBasic = stream.getBeginAnchor(annotation.getBegin());
+    stream.moveTo(firstBasic);
+    stream.moveToPrevious();
+    if (stream.isValid()) {
+      TextMarkerBasic nextBasic = (TextMarkerBasic) stream.get();
+      List<Type> reTypes = ruleElement.getMatcher().getTypes(parent, stream);
+      Collection<AnnotationFS> anchors = new TreeSet<AnnotationFS>(new AnnotationComparator());
+      for (Type eachMatchType : reTypes) {
+        List<Type> types = stream.getCas().getTypeSystem().getProperlySubsumedTypes(eachMatchType);
+        types.add(eachMatchType);
+        for (Type eachType : types) {
+          Collection<AnnotationFS> endAnchors = nextBasic.getEndAnchors(eachType);
+          if (endAnchors != null) {
+            anchors.addAll(endAnchors);
+          }
+        }
+      }
+      return anchors;
+
+    }
+    return Collections.emptyList();
+  }
+
+  public FSMatchConstraint createAnchorConstraints(TextMarkerBlock block, TextMarkerStream stream) {
     ConstraintFactory cf = stream.getCas().getConstraintFactory();
-    Type type = getType(block, stream);
-    BasicTypeConstraint anchorConstraint = new BasicTypeConstraint(cf.createTypeConstraint(),
-            type.getName(), null);
-    anchorConstraint.add(type);
-    return anchorConstraint;
-  }
+    List<Type> types = getTypes(block, stream);
+    FSMatchConstraint result = null;
 
-  public List<Annotation> match(List<Annotation> annotations, TextMarkerBlock parent,
-          TextMarkerStream stream) {
-    List<Annotation> result = new ArrayList<Annotation>();
-    for (Annotation annotation : annotations) {
-      if (annotation.getType().equals(getType(parent, stream))) {
-        result.add(annotation);
+    for (Type eachType : types) {
+      BasicTypeConstraint anchorConstraint = new BasicTypeConstraint(cf.createTypeConstraint(),
+              eachType);
+      anchorConstraint.add(eachType);
+      if (result != null) {
+        result = cf.or(result, anchorConstraint);
+      } else {
+        result = anchorConstraint;
       }
     }
     return result;
   }
 
-  public boolean match(TextMarkerBasic annotation, TextMarkerStream stream, TextMarkerBlock parent) {
+  public boolean match(AnnotationFS annotation, TextMarkerStream stream, TextMarkerBlock parent) {
     if (annotation == null) {
       return false;
     }
-    Type type = getType(parent, stream);
-    String name = type.getName();
-
-    if ("uima.tcas.DocumentAnnotation".equals(name)
-            || stream.getDocumentAnnotationType().getName().equals(name)) {
-      return true;
+    List<Type> types = getTypes(parent, stream);
+    for (Type type : types) {
+      String name = type.getName();
+      if ("uima.tcas.DocumentAnnotation".equals(name)
+              || stream.getDocumentAnnotationType().getName().equals(name)) {
+        return true;
+      }
+      boolean b = stream.getJCas().getTypeSystem().subsumes(type, annotation.getType());
+      if (b) {
+        return true;
+      }
     }
-    // if (annotation instanceof TextMarkerBasic) {
-    TextMarkerBasic basic = annotation;
-    return basic.isAnchorOf(name)
-            || stream.getJCas().getTypeSystem().subsumes(type, basic.getType());
-    // }
-    // TypeSystem typeSystem = stream.getJCas().getTypeSystem();
-    // Type basic = stream.getJCas().getCasType(TextMarkerBasic.type);
-    // if (basic != null && typeSystem.subsumes(basic, annotation.getType())) {
-    // TextMarkerBasic b = annotation;
-    // return b.isAnchorOf(name) || b.isPartOf(name);
-    // }
-    // return typeSystem.subsumes(type, annotation.getType());
+    return false;
+
   }
 
   @Override
@@ -155,12 +184,25 @@ public class TextMarkerTypeMatcher implements TextMarkerMatcher {
     return expression;
   }
 
-  public Type getType(TextMarkerBlock parent, TextMarkerStream stream) {
+  protected Type getType(TypeExpression expression, TextMarkerBlock parent, TextMarkerStream stream) {
     Type type = expression.getType(parent);
     if ("uima.tcas.DocumentAnnotation".equals(type.getName())) {
       return stream.getDocumentAnnotationType();
     }
     return type;
+  }
+
+  @Override
+  public int estimateAnchors(TextMarkerBlock parent, TextMarkerStream stream) {
+    return stream.getHistogram(getType(expression, parent, stream));
+  }
+
+  @Override
+  public List<Type> getTypes(TextMarkerBlock parent, TextMarkerStream stream) {
+    List<Type> result = new ArrayList<Type>(1);
+    Type type = getType(expression, parent, stream);
+    result.add(type);
+    return result;
   }
 
 }

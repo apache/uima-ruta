@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.rule;
 
@@ -24,7 +24,6 @@ import java.util.List;
 
 import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
 import org.apache.uima.textmarker.condition.NotCondition;
-
 
 public class EvaluatedCondition {
 

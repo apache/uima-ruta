@@ -27,6 +27,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.rule.RuleApply;
 import org.apache.uima.textmarker.rule.RuleMatch;
 import org.apache.uima.textmarker.rule.TextMarkerRule;
+import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class TextMarkerScriptBlock extends TextMarkerBlock {
@@ -43,15 +44,22 @@ public class TextMarkerScriptBlock extends TextMarkerBlock {
     RuleApply apply = rule.apply(stream, crowd, true);
     for (RuleMatch eachMatch : apply.getList()) {
       if (eachMatch.matched()) {
-        AnnotationFS each = eachMatch.getMatchedAnnotation(stream, null);
+        List<AnnotationFS> matchedAnnotations = eachMatch.getMatchedAnnotations(stream, null, null);
+        if (matchedAnnotations == null || matchedAnnotations.isEmpty()) {
+          continue;
+        }
+        AnnotationFS each = matchedAnnotations.get(0);
         if (each == null) {
           continue;
         }
-        Type type = rule.getElements().get(0).getMatcher().getType(getParent(), stream);
-        TextMarkerStream window = stream.getWindowStream(each, type);
-        for (TextMarkerStatement element : getElements()) {
-          if (element != null) {
-            element.apply(window, crowd);
+        List<Type> types = ((TextMarkerRuleElement) rule.getRuleElements().get(0)).getMatcher()
+                .getTypes(getParent(), stream);
+        for (Type eachType : types) {
+          TextMarkerStream window = stream.getWindowStream(each, eachType);
+          for (TextMarkerStatement element : getElements()) {
+            if (element != null) {
+              element.apply(window, crowd);
+            }
           }
         }
       }
@@ -64,10 +72,6 @@ public class TextMarkerScriptBlock extends TextMarkerBlock {
   public String toString() {
     String ruleString = rule == null ? "Document" : rule.toString();
     return "BLOCK(" + id + ") " + ruleString + " containing " + elements.size() + " Elements";
-  }
-
-  public void setMatchRule(TextMarkerRule rule) {
-    this.rule = rule;
   }
 
 }

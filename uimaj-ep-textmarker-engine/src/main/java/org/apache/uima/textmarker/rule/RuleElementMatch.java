@@ -15,34 +15,34 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.rule;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
 
 public class RuleElementMatch {
 
-  private final RuleElement ruleElement;
+  protected final RuleElement ruleElement;
 
-  private List<AnnotationFS> textsMatched;
+  protected List<AnnotationFS> textsMatched;
 
-  private boolean conditionsMatched = true;
+  protected boolean conditionsMatched = true;
 
-  private boolean baseConditionMatched = true;
+  protected boolean baseConditionMatched = true;
 
-  private List<EvaluatedCondition> conditions;
+  protected List<EvaluatedCondition> conditions;
 
-  private List<RuleElementMatch> innerMatches;
+  protected ComposedRuleElementMatch containerMatch;
 
-  public RuleElementMatch(RuleElement ruleElement) {
+  public RuleElementMatch(RuleElement ruleElement, ComposedRuleElementMatch containerMatch) {
     super();
     this.ruleElement = ruleElement;
-    textsMatched = Collections.emptyList();
+    this.containerMatch = containerMatch;
+    textsMatched = new ArrayList<AnnotationFS>();
   }
 
   public void setMatchInfo(boolean baseCondition, List<AnnotationFS> texts,
@@ -56,10 +56,13 @@ public class RuleElementMatch {
         conditionsMatched &= each.isValue();
       }
     }
+    if (containerMatch != null) {
+      containerMatch.addInnerMatch(ruleElement, this);
+    }
   }
 
   public boolean matched() {
-    return conditionsMatched;
+    return baseConditionMatched && conditionsMatched;
   }
 
   public RuleElement getRuleElement() {
@@ -67,14 +70,31 @@ public class RuleElementMatch {
   }
 
   public List<AnnotationFS> getTextsMatched() {
-    if (textsMatched.size() > 1) {
-      System.out.println("TEXTMATCHED > 1");
-    }
     return textsMatched;
+  }
+
+  public void setTextsMatched(List<AnnotationFS> textsMatched) {
+    this.textsMatched = textsMatched;
   }
 
   public List<EvaluatedCondition> getConditions() {
     return conditions;
+  }
+
+  public void setConditions(List<EvaluatedCondition> conditions) {
+    this.conditions = conditions;
+  }
+
+  public void setConditionsMatched(boolean conditionsMatched) {
+    this.conditionsMatched = conditionsMatched;
+  }
+
+  public void setBaseConditionMatched(boolean baseConditionMatched) {
+    this.baseConditionMatched = baseConditionMatched;
+  }
+
+  public void setContainerMatch(ComposedRuleElementMatch containerMatch) {
+    this.containerMatch = containerMatch;
   }
 
   @Override
@@ -91,29 +111,20 @@ public class RuleElementMatch {
     return string;
   }
 
-  public void setMatched(boolean matched) {
-    conditionsMatched = matched;
-  }
-
   public boolean isBaseConditionMatched() {
     return baseConditionMatched;
   }
 
-  public void setInnerMatches(List<RuleElementMatch> innerMatches) {
-    this.innerMatches = innerMatches;
-    textsMatched = new ArrayList<AnnotationFS>();
-    boolean matched = true;
-    for (RuleElementMatch ruleElementMatch : innerMatches) {
-      List<AnnotationFS> list = ruleElementMatch.getTextsMatched();
-      textsMatched.addAll(list);
-      matched &= ruleElementMatch.matched();
-    }
-    baseConditionMatched = matched;
-    conditionsMatched = matched;
+  public ComposedRuleElementMatch getContainerMatch() {
+    return containerMatch;
   }
 
-  public List<RuleElementMatch> getInnerMatches() {
-    return innerMatches;
+  public RuleElementMatch copy() {
+    RuleElementMatch copy = new RuleElementMatch(ruleElement, containerMatch);
+    copy.setBaseConditionMatched(baseConditionMatched);
+    copy.setConditions(conditions);
+    copy.setConditionsMatched(conditionsMatched);
+    copy.setTextsMatched(textsMatched);
+    return copy;
   }
-
 }

@@ -69,13 +69,11 @@ public class AnonymousWordList implements TextMarkerWordList {
 
   public List<String> contains(String string, boolean ignoreCase, int ignoreLength, boolean edit,
           double distance, String ignoreToken) {
-    // TODO Auto-generated method stub
     return null;
   }
 
   public List<String> containsFragment(String string, boolean ignoreCase, int ignoreLength,
           boolean edit, double distance, String ignoreToken) {
-    // TODO Auto-generated method stub
     return null;
   }
 

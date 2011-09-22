@@ -28,9 +28,8 @@ import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.number.SimpleNumberExpression;
 import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.type.TextMarkerAnnotation;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class ScoreCondition extends TerminalTextMarkerCondition {
@@ -41,15 +40,15 @@ public class ScoreCondition extends TerminalTextMarkerCondition {
   private final String var;
 
   public ScoreCondition(NumberExpression min, NumberExpression max, String var) {
+    super();
     this.min = min == null ? new SimpleNumberExpression(Integer.MIN_VALUE) : min;
     this.max = max == null ? new SimpleNumberExpression(Integer.MAX_VALUE) : max;
     this.var = var;
   }
 
   @Override
-  public EvaluatedCondition eval(TextMarkerBasic basic, Type matchedType,
-          TextMarkerRuleElement element, TextMarkerStream stream, InferenceCrowd crowd) {
-    AnnotationFS annotation = stream.expandAnchor(basic, matchedType);
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
+          TextMarkerStream stream, InferenceCrowd crowd) {
     Type heuristicType = stream.getJCas().getCasType(TextMarkerAnnotation.type);
     List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(annotation,
             heuristicType);

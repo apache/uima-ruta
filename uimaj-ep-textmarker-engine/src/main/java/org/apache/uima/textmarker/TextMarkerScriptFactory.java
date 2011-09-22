@@ -37,13 +37,15 @@ import org.apache.uima.textmarker.expression.type.SimpleTypeExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.rule.ComposedRuleElement;
 import org.apache.uima.textmarker.rule.RuleElement;
+import org.apache.uima.textmarker.rule.RuleElementContainer;
+import org.apache.uima.textmarker.rule.RuleElementIsolator;
+import org.apache.uima.textmarker.rule.TextMarkerDisjunctiveTypeMatcher;
 import org.apache.uima.textmarker.rule.TextMarkerLiteralMatcher;
 import org.apache.uima.textmarker.rule.TextMarkerRule;
 import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.rule.TextMarkerTypeMatcher;
 import org.apache.uima.textmarker.rule.quantifier.MinMaxGreedy;
 import org.apache.uima.textmarker.rule.quantifier.MinMaxReluctant;
-import org.apache.uima.textmarker.rule.quantifier.NormalQuantifier;
 import org.apache.uima.textmarker.rule.quantifier.PlusGreedy;
 import org.apache.uima.textmarker.rule.quantifier.PlusReluctant;
 import org.apache.uima.textmarker.rule.quantifier.QuestionGreedy;
@@ -54,7 +56,7 @@ import org.apache.uima.textmarker.rule.quantifier.StarReluctant;
 
 public class TextMarkerScriptFactory {
 
-  private int idCounter = 0;
+  private static int idCounter = 0;
 
   public TextMarkerScriptFactory() {
     super();
@@ -106,54 +108,67 @@ public class TextMarkerScriptFactory {
     } catch (CASException e) {
       e.printStackTrace();
     }
-    result.setMatchRule(createRule(getDocumentRuleElement(result, cas), result));
-    return result;
-  }
 
-  private List<RuleElement> getDocumentRuleElement(TextMarkerBlock parent, CAS cas) {
-    List<RuleElement> result = new ArrayList<RuleElement>();
+    List<RuleElement> ruleElements = new ArrayList<RuleElement>();
 
-    result.add(createRuleElement(new SimpleTypeExpression(cas.getDocumentAnnotation().getType()),
-            null, null, null, parent));
+    RuleElementIsolator container = new RuleElementIsolator();
+    ruleElements.add(createRuleElement(new SimpleTypeExpression(cas.getDocumentAnnotation()
+            .getType()), null, null, null, container, result));
+    TextMarkerRule createRule = createRule(ruleElements, result);
+    container.setContainer(createRule);
+
+    result.setRule(createRule);
     return result;
   }
 
   public TextMarkerRule createRule(RuleElement element, TextMarkerBlock parent) {
     List<RuleElement> elements = new ArrayList<RuleElement>();
     elements.add(element);
-    return new TextMarkerRule(elements, parent, idCounter++);
+    return createRule(elements, parent);
   }
 
   public TextMarkerRule createRule(List<RuleElement> elements, TextMarkerBlock parent) {
+    // System.out.println("Rule: " + idCounter);
     return new TextMarkerRule(elements, parent, idCounter++);
   }
 
   public TextMarkerRuleElement createRuleElement(TypeExpression typeExpression,
           RuleElementQuantifier quantifier, List<AbstractTextMarkerCondition> conditions,
-          List<AbstractTextMarkerAction> actions, TextMarkerBlock parent) {
-    if (quantifier == null) {
-      quantifier = new NormalQuantifier();
-    }
+          List<AbstractTextMarkerAction> actions, RuleElementContainer container,
+          TextMarkerBlock parent) {
+
     TextMarkerTypeMatcher matcher = new TextMarkerTypeMatcher(typeExpression);
-    return new TextMarkerRuleElement(matcher, quantifier, conditions, actions, parent);
+    return new TextMarkerRuleElement(matcher, quantifier, conditions, actions, container, parent);
+  }
+
+  public TextMarkerRuleElement createRuleElement(List<TypeExpression> typeExprs,
+          RuleElementQuantifier quantifier, List<AbstractTextMarkerCondition> conditions,
+          List<AbstractTextMarkerAction> actions, RuleElementContainer container,
+          TextMarkerBlock parent) {
+    TextMarkerDisjunctiveTypeMatcher matcher = new TextMarkerDisjunctiveTypeMatcher(typeExprs);
+    return new TextMarkerRuleElement(matcher, quantifier, conditions, actions, container, parent);
   }
 
   public TextMarkerRuleElement createRuleElement(StringExpression stringExpression,
           RuleElementQuantifier quantifier, List<AbstractTextMarkerCondition> conditions,
-          List<AbstractTextMarkerAction> actions, TextMarkerBlock parent) {
-    if (quantifier == null) {
-      quantifier = new NormalQuantifier();
-    }
+          List<AbstractTextMarkerAction> actions, RuleElementContainer container,
+          TextMarkerBlock parent) {
+
     TextMarkerLiteralMatcher matcher = new TextMarkerLiteralMatcher(stringExpression);
-    return new TextMarkerRuleElement(matcher, quantifier, conditions, actions, parent);
+    return new TextMarkerRuleElement(matcher, quantifier, conditions, actions, container, parent);
   }
 
   public ComposedRuleElement createComposedRuleElement(List<RuleElement> res,
-          RuleElementQuantifier quantifier, TextMarkerBlock parent) {
-    if (quantifier == null) {
-      quantifier = new NormalQuantifier();
-    }
-    return new ComposedRuleElement(res, quantifier, parent);
+          RuleElementQuantifier quantifier, List<AbstractTextMarkerCondition> conditions,
+          List<AbstractTextMarkerAction> actions, RuleElementContainer container,
+          TextMarkerBlock parent) {
+
+    return new ComposedRuleElement(res, quantifier, conditions, actions, container, parent);
+  }
+
+  public ComposedRuleElement createComposedRuleElement(RuleElementContainer container,
+          TextMarkerBlock parent) {
+    return new ComposedRuleElement(null, null, null, null, container, parent);
   }
 
   public static RuleElementQuantifier createStarGreedyQuantifier() {
@@ -192,7 +207,7 @@ public class TextMarkerScriptFactory {
 
   public TextMarkerBlock createAutomataBlock(Token id, TextMarkerRuleElement re,
           List<TextMarkerStatement> body, TextMarkerBlock env, CAS cas) {
-    return null;
+    return createScriptBlock(id, re, body, env, cas);
   }
 
 }

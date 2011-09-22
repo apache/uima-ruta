@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.action;
 
@@ -25,10 +25,9 @@ import java.util.List;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
-
 
 public class MatchedTextAction extends AbstractTextMarkerAction {
 
@@ -43,11 +42,15 @@ public class MatchedTextAction extends AbstractTextMarkerAction {
   }
 
   @Override
-  public void execute(RuleMatch match, TextMarkerRuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
     List<Integer> indexList = getIndexList(match, element);
-    AnnotationFS matchedAnnotation = match.getMatchedAnnotation(stream, indexList);
-    element.getParent().getEnvironment().setVariableValue(var, matchedAnnotation.getCoveredText());
+    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(stream, indexList,
+            element.getContainer());
+    for (AnnotationFS matchedAnnotation : matchedAnnotations) {
+      element.getParent().getEnvironment()
+              .setVariableValue(var, matchedAnnotation.getCoveredText());
+    }
   }
 
   public String getVar() {
@@ -58,10 +61,10 @@ public class MatchedTextAction extends AbstractTextMarkerAction {
     return list;
   }
 
-  protected List<Integer> getIndexList(RuleMatch match, TextMarkerRuleElement element) {
+  protected List<Integer> getIndexList(RuleMatch match, RuleElement element) {
     List<Integer> indexList = new ArrayList<Integer>();
     if (list == null || list.isEmpty()) {
-      int self = match.getRule().getElements().indexOf(element) + 1;
+      int self = element.getContainer().getRuleElements().indexOf(element) + 1;
       indexList.add(self);
       return indexList;
     }

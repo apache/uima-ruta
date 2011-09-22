@@ -21,12 +21,11 @@ package org.apache.uima.textmarker.condition;
 
 import java.util.List;
 
-import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
@@ -37,10 +36,9 @@ public class LastCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(TextMarkerBasic basic, Type matchedType,
-          TextMarkerRuleElement element, TextMarkerStream stream, InferenceCrowd crowd) {
-    AnnotationFS expand = stream.expandAnchor(basic, matchedType);
-    List<TextMarkerBasic> annotationsInWindow = stream.getBasicsInWindow(expand);
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
+          TextMarkerStream stream, InferenceCrowd crowd) {
+    List<TextMarkerBasic> annotationsInWindow = stream.getBasicsInWindow(annotation);
     TextMarkerBasic textMarkerBasic = annotationsInWindow.get(annotationsInWindow.size() - 1);
     boolean subsumes = stream.getJCas().getTypeSystem()
             .subsumes(type.getType(element.getParent()), textMarkerBasic.getType());

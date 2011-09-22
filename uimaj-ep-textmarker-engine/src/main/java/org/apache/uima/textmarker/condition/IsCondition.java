@@ -20,6 +20,7 @@
 package org.apache.uima.textmarker.condition;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
@@ -27,7 +28,7 @@ import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.list.TypeListExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
@@ -42,21 +43,34 @@ public class IsCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(TextMarkerBasic basic, Type matchedType,
-          TextMarkerRuleElement element, TextMarkerStream stream, InferenceCrowd crowd) {
-    AnnotationFS a1 = basic.getType(matchedType.getName());
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
+          TextMarkerStream stream, InferenceCrowd crowd) {
+    TextMarkerBasic beginAnchor = stream.getBeginAnchor(annotation.getBegin());
     if (!isWorkingOnList()) {
-      AnnotationFS a2 = basic.getType(type.getType(element.getParent()).getName());
-      boolean result = check(a1, a2);
+      Set<AnnotationFS> beginAnchors = beginAnchor
+              .getBeginAnchors(type.getType(element.getParent()));
+      boolean result = false;
+      if (beginAnchors != null) {
+        for (AnnotationFS annotationFS : beginAnchors) {
+          result |= check(annotation, annotationFS);
+          if (result == true) {
+            break;
+          }
+        }
+      }
       return new EvaluatedCondition(this, result);
     } else {
       boolean result = false;
       List<Type> types = getList().getList(element.getParent());
       for (Type type : types) {
-        AnnotationFS a2 = basic.getType(type.getName());
-        result |= check(a1, a2);
-        if (result == true) {
-          break;
+        Set<AnnotationFS> beginAnchors = beginAnchor.getBeginAnchors(type);
+        if (beginAnchors != null) {
+          for (AnnotationFS annotationFS : beginAnchors) {
+            result |= check(annotation, annotationFS);
+            if (result == true) {
+              break;
+            }
+          }
         }
       }
       return new EvaluatedCondition(this, result);

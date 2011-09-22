@@ -15,21 +15,23 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.rule.quantifier;
 
 import java.util.List;
 
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.textmarker.TextMarkerBlock;
 import org.apache.uima.textmarker.TextMarkerStatement;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.number.SimpleNumberExpression;
+import org.apache.uima.textmarker.rule.ComposedRuleElementMatch;
 import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleElementMatch;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
+import org.apache.uima.textmarker.rule.RuleMatch;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
-
 
 public class MinMaxGreedy implements RuleElementQuantifier {
 
@@ -51,15 +53,16 @@ public class MinMaxGreedy implements RuleElementQuantifier {
     }
   }
 
-  public boolean continueMatch(int index, List<RuleElement> elements, TextMarkerBasic next,
-          RuleElementMatch match, List<RuleElementMatch> matches, TextMarkerStream stream,
-          InferenceCrowd crowd) {
-    int minValue = min.getIntegerValue(elements.get(index).getParent());
-    int maxValue = max.getIntegerValue(elements.get(index).getParent());
-    int matchedSize = matches.size();
-    return matchedSize < maxValue
-            || (!match.matched() && matchedSize >= minValue && matchedSize <= maxValue);
-  }
+  // @Override
+  // public boolean continueMatch(int index, List<RuleElement> elements, TextMarkerBasic next,
+  // RuleElementMatch match, List<RuleElementMatch> matches, TextMarkerStream stream,
+  // InferenceCrowd crowd) {
+  // int minValue = min.getIntegerValue(elements.get(index).getParent());
+  // int maxValue = max.getIntegerValue(elements.get(index).getParent());
+  // int matchedSize = matches.size();
+  // return matchedSize < maxValue
+  // || (!match.matched() && matchedSize >= minValue && matchedSize <= maxValue);
+  // }
 
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
           TextMarkerStatement element, InferenceCrowd crowd) {
@@ -80,5 +83,35 @@ public class MinMaxGreedy implements RuleElementQuantifier {
 
   public NumberExpression getMax() {
     return max;
+  }
+
+  @Override
+  public boolean continueMatch(boolean after, AnnotationFS annotation, RuleElement ruleElement,
+          RuleMatch extendedMatch, ComposedRuleElementMatch containerMatch,
+          TextMarkerStream stream, InferenceCrowd crowd) {
+    int minValue = min.getIntegerValue(ruleElement.getParent());
+    int maxValue = max.getIntegerValue(ruleElement.getParent());
+    List<RuleElementMatch> list = containerMatch.getInnerMatches().get(ruleElement);
+    if (list == null && maxValue > 0) {
+      return true;
+    }
+    int matchedSize = list.size();
+    if (list == null || list.isEmpty() || matchedSize < maxValue) {
+      return true;
+    }
+    RuleElementMatch lastMatch = null;
+    if (after) {
+      lastMatch = list.get(list.size() - 1);
+    } else {
+      lastMatch = list.get(0);
+    }
+    return matchedSize < maxValue
+            || (!lastMatch.matched() && matchedSize >= minValue && matchedSize <= maxValue);
+  }
+
+  @Override
+  public boolean isOptional(TextMarkerBlock parent) {
+    int minValue = min.getIntegerValue(parent);
+    return minValue == 0;
   }
 }

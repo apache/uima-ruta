@@ -38,9 +38,8 @@ import org.apache.uima.textmarker.expression.string.StringExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.resource.TextMarkerTable;
 import org.apache.uima.textmarker.resource.TextMarkerWordList;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class MarkTableAction extends AbstractTextMarkerAction {
@@ -63,7 +62,7 @@ public class MarkTableAction extends AbstractTextMarkerAction {
   }
 
   @Override
-  public void execute(RuleMatch match, TextMarkerRuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
     TextMarkerBlock block = element.getParent();
     TextMarkerTable table = tableExpr.getTable(block);
@@ -82,11 +81,7 @@ public class MarkTableAction extends AbstractTextMarkerAction {
         Annotation a = (Annotation) newFS;
         a.setBegin(annotationFS.getBegin());
         a.setEnd(annotationFS.getEnd());
-        TextMarkerBasic first = stream.getFirstBasicInWindow(annotationFS);
-        if (first == null) {
-          first = match.getFirstBasic();
-        }
-        stream.addAnnotation(first, a);
+        stream.addAnnotation(a);
       }
       TOP newStructure = null;
       if (newFS instanceof TOP) {
@@ -98,7 +93,7 @@ public class MarkTableAction extends AbstractTextMarkerAction {
   }
 
   private void fillFeatures(TOP structure, Map<String, Integer> map, AnnotationFS annotationFS,
-          TextMarkerRuleElement element, List<String> row, TextMarkerStream stream) {
+          RuleElement element, List<String> row, TextMarkerStream stream) {
     List<?> featuresList = structure.getType().getFeatures();
     for (int i = 0; i < featuresList.size(); i++) {
       Feature targetFeature = (Feature) featuresList.get(i);

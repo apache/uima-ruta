@@ -20,7 +20,7 @@
 package org.apache.uima.textmarker.constraint;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import org.apache.uima.cas.FSTypeConstraint;
 import org.apache.uima.cas.FeatureStructure;
@@ -32,31 +32,22 @@ public class BasicTypeConstraint implements FSTypeConstraint {
 
   private final FSTypeConstraint constraint;
 
-  private final List<String> types;
+  private final Collection<Type> types;
 
-  private final List<String> partOfs;
-
-  public BasicTypeConstraint(FSTypeConstraint constraint, List<String> types, List<String> partOfs) {
+  public BasicTypeConstraint(FSTypeConstraint constraint, Collection<Type> types) {
     super();
     this.constraint = constraint;
     this.types = types;
-    this.partOfs = partOfs;
   }
 
-  public BasicTypeConstraint(FSTypeConstraint constraint, String type, String partOf) {
+  public BasicTypeConstraint(FSTypeConstraint constraint, Type type) {
     super();
     this.constraint = constraint;
     if (type != null) {
-      this.types = new ArrayList<String>();
+      this.types = new ArrayList<Type>();
       this.types.add(type);
     } else {
       this.types = null;
-    }
-    if (partOf != null) {
-      this.partOfs = new ArrayList<String>();
-      this.partOfs.add(partOf);
-    } else {
-      this.partOfs = null;
     }
   }
 
@@ -72,15 +63,8 @@ public class BasicTypeConstraint implements FSTypeConstraint {
     if (fs instanceof TextMarkerBasic) {
       TextMarkerBasic tmb = (TextMarkerBasic) fs;
       if (types != null) {
-        for (String each : types) {
-          result |= tmb.isAnchorOf(each);
-          if (result)
-            break;
-        }
-      }
-      if (partOfs != null) {
-        for (String each : partOfs) {
-          result |= tmb.isAnchorOf(each);
+        for (Type each : types) {
+          result |= tmb.beginsWith(each) && tmb.endsWith(each);
           if (result)
             break;
         }
@@ -91,7 +75,7 @@ public class BasicTypeConstraint implements FSTypeConstraint {
 
   @Override
   public String toString() {
-    return "(BASIC " + constraint.toString() + " with " + types + " and " + partOfs + ")";
+    return "(BASIC " + constraint.toString() + " with " + types + ")";
   }
 
   public void add(String type) {

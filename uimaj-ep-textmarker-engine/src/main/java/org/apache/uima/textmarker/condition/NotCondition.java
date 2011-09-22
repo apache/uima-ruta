@@ -19,11 +19,10 @@
 
 package org.apache.uima.textmarker.condition;
 
-import org.apache.uima.cas.Type;
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class NotCondition extends ComposedTextMarkerCondition {
@@ -33,11 +32,11 @@ public class NotCondition extends ComposedTextMarkerCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(TextMarkerBasic annotation, Type matchedType,
-          TextMarkerRuleElement element, TextMarkerStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
+          TextMarkerStream stream, InferenceCrowd crowd) {
     AbstractTextMarkerCondition cond = conditions.get(0);
     crowd.beginVisit(cond, null);
-    EvaluatedCondition eval = cond.eval(annotation, matchedType, element, stream, crowd);
+    EvaluatedCondition eval = cond.eval(annotation, element, stream, crowd);
     crowd.endVisit(cond, null);
     return new EvaluatedCondition(this, !eval.isValue(), eval);
   }

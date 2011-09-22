@@ -28,10 +28,9 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleElementMatch;
 import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class TransferAction extends TypeSensitiveAction {
@@ -41,7 +40,7 @@ public class TransferAction extends TypeSensitiveAction {
   }
 
   @Override
-  public void execute(RuleMatch match, TextMarkerRuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
     List<RuleElementMatch> list = match.getMatchInfos().get(element);
     CAS cas = stream.getCas();
@@ -52,8 +51,7 @@ public class TransferAction extends TypeSensitiveAction {
         FeatureStructure createFS = cas.createFS(t);
         copyFeatures(annotationFS, createFS, cas);
         if (createFS instanceof AnnotationFS) {
-          TextMarkerBasic basic = stream.getFirstBasicInWindow(annotationFS);
-          stream.addAnnotation(basic, (AnnotationFS) createFS);
+          stream.addAnnotation((AnnotationFS) createFS);
         }
         cas.addFsToIndexes(createFS);
       }

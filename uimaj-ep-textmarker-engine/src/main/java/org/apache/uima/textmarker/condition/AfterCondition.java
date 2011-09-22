@@ -28,8 +28,7 @@ import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.list.TypeListExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class AfterCondition extends TypeSentiveCondition {
@@ -43,17 +42,17 @@ public class AfterCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(TextMarkerBasic basic, Type matchedType,
-          TextMarkerRuleElement element, TextMarkerStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
+          TextMarkerStream stream, InferenceCrowd crowd) {
     if (!isWorkingOnList()) {
       Type t = type.getType(element.getParent());
-      boolean result = check(basic, stream, t);
+      boolean result = check(annotation, stream, t);
       return new EvaluatedCondition(this, result);
     } else {
       boolean result = false;
       List<Type> types = getList().getList(element.getParent());
       for (Type t : types) {
-        result |= check(basic, stream, t);
+        result |= check(annotation, stream, t);
         if (result == true) {
           break;
         }
@@ -62,15 +61,15 @@ public class AfterCondition extends TypeSentiveCondition {
     }
   }
 
-  private boolean check(TextMarkerBasic basic, TextMarkerStream stream, Type t) {
+  private boolean check(AnnotationFS annotation, TextMarkerStream stream, Type t) {
     boolean result = false;
-    FSIterator<AnnotationFS> it = stream.getCas().getAnnotationIndex(t).iterator(basic);
+    FSIterator<AnnotationFS> it = stream.getCas().getAnnotationIndex(t).iterator(annotation);
     if (!it.isValid()) {
       it.moveToLast();
     }
     while (it.isValid()) {
       AnnotationFS a = (AnnotationFS) it.get();
-      if (a.getBegin() <= basic.getBegin()) {
+      if (a.getBegin() <= annotation.getBegin()) {
         result = true;
         break;
       }

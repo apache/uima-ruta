@@ -27,7 +27,7 @@ import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.list.TypeListExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
@@ -42,35 +42,34 @@ public class StartsWithCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(TextMarkerBasic basic, Type matchedType,
-          TextMarkerRuleElement element, TextMarkerStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
+          TextMarkerStream stream, InferenceCrowd crowd) {
+
+    // TODO rewrite
     if (!isWorkingOnList()) {
       Type t = type.getType(element.getParent());
-      boolean result = check(basic, t);
+      boolean result = check(annotation, t, stream);
       return new EvaluatedCondition(this, result);
     } else {
       boolean result = false;
       List<Type> types = getList().getList(element.getParent());
       for (Type t : types) {
-        result |= check(basic, t);
+        result |= check(annotation, t, stream);
         if (result == true) {
           break;
         }
       }
-      return new EvaluatedCondition(this, result);
     }
+    boolean result = false;
+    return new EvaluatedCondition(this, result);
   }
 
-  private boolean check(TextMarkerBasic basic, Type t) {
-    if (basic == null) {
+  private boolean check(AnnotationFS annotation, Type t, TextMarkerStream stream) {
+    if (annotation == null) {
       return false;
     }
-    AnnotationFS a = basic.getType(t.getName());
-    boolean result = false;
-    if (a != null && basic.getBegin() == a.getBegin()) {
-      result = true;
-    }
-    return result;
+    TextMarkerBasic beginAnchor = stream.getBeginAnchor(annotation.getBegin());
+    return beginAnchor.beginsWith(t);
   }
 
 }

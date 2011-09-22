@@ -14,7 +14,7 @@ import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
 
 /** 
- * Updated by JCasGen Tue Aug 09 16:26:13 CEST 2011
+ * Updated by JCasGen Tue Sep 20 15:37:41 CEST 2011
  * @generated */
 public class Statistics_Type extends TOP_Type {
   /** @generated */
@@ -64,7 +64,7 @@ public class Statistics_Type extends TOP_Type {
     if (lowLevelTypeChecks)
       return ll_cas.ll_getStringArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_name), i, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_name), i);
-	return ll_cas.ll_getStringArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_name), i);
+  return ll_cas.ll_getStringArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_name), i);
   }
    
   /** @generated */ 
@@ -101,7 +101,7 @@ public class Statistics_Type extends TOP_Type {
     if (lowLevelTypeChecks)
       return ll_cas.ll_getDoubleArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_total), i, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_total), i);
-	return ll_cas.ll_getDoubleArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_total), i);
+  return ll_cas.ll_getDoubleArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_total), i);
   }
    
   /** @generated */ 
@@ -138,7 +138,7 @@ public class Statistics_Type extends TOP_Type {
     if (lowLevelTypeChecks)
       return ll_cas.ll_getIntArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_amount), i, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_amount), i);
-	return ll_cas.ll_getIntArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_amount), i);
+  return ll_cas.ll_getIntArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_amount), i);
   }
    
   /** @generated */ 
@@ -175,7 +175,7 @@ public class Statistics_Type extends TOP_Type {
     if (lowLevelTypeChecks)
       return ll_cas.ll_getDoubleArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_part), i, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_part), i);
-	return ll_cas.ll_getDoubleArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_part), i);
+  return ll_cas.ll_getDoubleArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_part), i);
   }
    
   /** @generated */ 

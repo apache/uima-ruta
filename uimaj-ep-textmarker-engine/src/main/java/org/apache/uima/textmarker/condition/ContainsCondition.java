@@ -24,7 +24,6 @@ import java.util.List;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.TextMarkerExpression;
 import org.apache.uima.textmarker.expression.bool.BooleanExpression;
@@ -39,7 +38,7 @@ import org.apache.uima.textmarker.expression.number.SimpleNumberExpression;
 import org.apache.uima.textmarker.expression.string.StringExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
@@ -74,27 +73,22 @@ public class ContainsCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(TextMarkerBasic basic, Type matchedType,
-          TextMarkerRuleElement element, TextMarkerStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
+          TextMarkerStream stream, InferenceCrowd crowd) {
     int basicCount = 0;
     int anchorCount = 0;
     int totalCount = 0;
 
     if (type != null) {
-      if (matchedType == null) {
-        matchedType = (Type) stream.getJCas().getType(Annotation.type);
-      }
-      AnnotationFS annotation = stream.expandAnchor(basic, matchedType);
       if (annotation != null) {
         List<TextMarkerBasic> annotations = stream.getBasicsInWindow(annotation);
         for (TextMarkerBasic each : annotations) {
           totalCount++;
           Type t = type.getType(element.getParent());
-          if (each.isAnchorOf(t.getName())
-                  || stream.getCas().getTypeSystem().subsumes(t, each.getType())) {
+          if (each.beginsWith(t) || stream.getCas().getTypeSystem().subsumes(t, each.getType())) {
             anchorCount++;
             basicCount++;
-          } else if (each.isPartOf(t.getName())) {
+          } else if (each.isPartOf(t)) {
             basicCount++;
           }
         }

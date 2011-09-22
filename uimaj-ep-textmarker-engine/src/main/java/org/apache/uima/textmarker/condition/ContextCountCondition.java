@@ -21,13 +21,13 @@ package org.apache.uima.textmarker.condition;
 
 import java.util.List;
 
-import org.apache.uima.cas.Type;
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.number.SimpleNumberExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
@@ -48,22 +48,22 @@ public class ContextCountCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(TextMarkerBasic basic, Type matchedType,
-          TextMarkerRuleElement element, TextMarkerStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
+          TextMarkerStream stream, InferenceCrowd crowd) {
     List<TextMarkerBasic> annotationsInWindow = null;
     if (stream.getDocumentAnnotation().getType().equals(type.getType(element.getParent()))) {
       annotationsInWindow = stream.getBasicsInWindow(stream.getDocumentAnnotation());
     } else {
-      annotationsInWindow = stream.getAnnotationsOverlappingWindow(basic,
-              type.getType(element.getParent()));
+      annotationsInWindow = stream.getAnnotationsOverlappingWindow(annotation);
     }
     int counter = 0;
     int count = 0;
     for (TextMarkerBasic eachBasic : annotationsInWindow) {
-      if (eachBasic.isAnchorOf(matchedType.getName())
-              || stream.getCas().getTypeSystem().subsumes(matchedType, eachBasic.getType())) {
+      if (eachBasic.beginsWith(annotation.getType())
+              || stream.getCas().getTypeSystem()
+                      .subsumes(annotation.getType(), eachBasic.getType())) {
         counter++;
-        if (eachBasic.equals(basic)) {
+        if (eachBasic.equals(annotation)) {
           count = counter;
           break;
         }

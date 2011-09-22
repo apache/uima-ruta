@@ -15,19 +15,21 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.rule.quantifier;
 
 import java.util.List;
 
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.textmarker.TextMarkerBlock;
 import org.apache.uima.textmarker.TextMarkerStatement;
 import org.apache.uima.textmarker.TextMarkerStream;
+import org.apache.uima.textmarker.rule.ComposedRuleElementMatch;
 import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleElementMatch;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
+import org.apache.uima.textmarker.rule.RuleMatch;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
-
 
 public class PlusGreedy implements RuleElementQuantifier {
 
@@ -35,16 +37,21 @@ public class PlusGreedy implements RuleElementQuantifier {
     super();
   }
 
-  public boolean continueMatch(int index, List<RuleElement> elements, TextMarkerBasic next,
-          RuleElementMatch match, List<RuleElementMatch> matches, TextMarkerStream stream,
-          InferenceCrowd crowd) {
-    return match == null || next != null;
-  }
+  // @Override
+  // public boolean continueMatch(int index, List<RuleElement> elements, TextMarkerBasic next,
+  // RuleElementMatch match, List<RuleElementMatch> matches, TextMarkerStream stream,
+  // InferenceCrowd crowd) {
+  // return match == null || next != null;
+  // }
 
+  @Override
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
           TextMarkerStatement element, InferenceCrowd crowd) {
     boolean result = true;
     boolean allEmpty = true;
+    if (matches == null) {
+      return null;
+    }
     for (RuleElementMatch match : matches) {
       allEmpty &= match.getTextsMatched().isEmpty();
       result &= match.getTextsMatched().isEmpty() || match.matched();
@@ -61,5 +68,42 @@ public class PlusGreedy implements RuleElementQuantifier {
     } else {
       return null;
     }
+  }
+
+  @Override
+  public boolean continueMatch(boolean after, AnnotationFS annotation, RuleElement ruleElement,
+          RuleMatch extendedMatch, ComposedRuleElementMatch containerMatch,
+          TextMarkerStream stream, InferenceCrowd crowd) {
+    List<List<RuleElementMatch>> matchInfo = extendedMatch.getMatchInfo(ruleElement);
+    List<RuleElementMatch> matches;
+    if (after) {
+      matches = matchInfo.get(matchInfo.size() - 1);
+    } else {
+      matches = matchInfo.get(0);
+    }
+    boolean result = true;
+    boolean allEmpty = true;
+    if (matches == null) {
+      return true;
+    }
+
+    for (RuleElementMatch match : matches) {
+      allEmpty &= match.getTextsMatched().isEmpty();
+      result &= match.getTextsMatched().isEmpty() || match.matched();
+    }
+    if (!result && matches.size() > 1) {
+      matches.remove(matches.size() - 1);
+      result = true;
+    }
+    if (matches.size() < 1 || allEmpty) {
+      result = false;
+    }
+    return result;
+
+  }
+
+  @Override
+  public boolean isOptional(TextMarkerBlock parent) {
+    return false;
   }
 }

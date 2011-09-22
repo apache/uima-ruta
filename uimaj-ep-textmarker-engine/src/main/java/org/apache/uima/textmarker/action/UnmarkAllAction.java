@@ -28,9 +28,9 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.list.TypeListExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleElementMatch;
 import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
@@ -44,35 +44,34 @@ public class UnmarkAllAction extends TypeSensitiveAction {
   }
 
   @Override
-  public void execute(RuleMatch match, TextMarkerRuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
-    List<RuleElementMatch> matchInfo = match.getMatchInfo(element);
-    if (matchInfo == null || matchInfo.isEmpty()) {
-      return;
-    }
-    RuleElementMatch ruleElementMatch = matchInfo.get(0);
-    List<AnnotationFS> textsMatched = ruleElementMatch.getTextsMatched();
-    AnnotationFS first = textsMatched.get(0);
-    TextMarkerBasic firstBasicInWindow = stream.getFirstBasicInWindow(first);
-    Type t = type.getType(element.getParent());
-    TypeSystem typeSystem = stream.getCas().getTypeSystem();
-    List<Type> properlySubsumedTypes = typeSystem.getProperlySubsumedTypes(t);
-    List<Type> retainList = new ArrayList<Type>();
+    List<List<RuleElementMatch>> matchInfo = match.getMatchInfo(element);
+    for (List<RuleElementMatch> l : matchInfo) {
+      RuleElementMatch ruleElementMatch = l.get(0);
+      List<AnnotationFS> textsMatched = ruleElementMatch.getTextsMatched();
+      AnnotationFS first = textsMatched.get(0);
+      TextMarkerBasic firstBasicInWindow = stream.getFirstBasicInWindow(first);
+      Type t = type.getType(element.getParent());
+      TypeSystem typeSystem = stream.getCas().getTypeSystem();
+      List<Type> properlySubsumedTypes = typeSystem.getProperlySubsumedTypes(t);
+      List<Type> retainList = new ArrayList<Type>();
 
-    if (list != null) {
-      retainList = list.getList(element.getParent());
-    }
-
-    for (Type type : properlySubsumedTypes) {
-      boolean keep = false;
-      for (Type retainType : retainList) {
-        if (typeSystem.subsumes(retainType, type)) {
-          keep = true;
-          break;
-        }
+      if (list != null) {
+        retainList = list.getList(element.getParent());
       }
-      if (!keep) {
-        stream.removeAnnotation(firstBasicInWindow, type);
+
+      for (Type type : properlySubsumedTypes) {
+        boolean keep = false;
+        for (Type retainType : retainList) {
+          if (typeSystem.subsumes(retainType, type)) {
+            keep = true;
+            break;
+          }
+        }
+        if (!keep) {
+          stream.removeAnnotation(firstBasicInWindow, type);
+        }
       }
     }
   }

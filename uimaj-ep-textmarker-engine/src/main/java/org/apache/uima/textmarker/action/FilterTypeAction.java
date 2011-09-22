@@ -25,8 +25,8 @@ import java.util.List;
 import org.apache.uima.cas.Type;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class FilterTypeAction extends AbstractTextMarkerAction {
@@ -43,7 +43,7 @@ public class FilterTypeAction extends AbstractTextMarkerAction {
   }
 
   @Override
-  public void execute(RuleMatch match, TextMarkerRuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
     List<Type> types = new ArrayList<Type>();
     for (TypeExpression each : list) {

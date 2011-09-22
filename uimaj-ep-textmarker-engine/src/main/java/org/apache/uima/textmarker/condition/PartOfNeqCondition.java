@@ -20,6 +20,7 @@
 package org.apache.uima.textmarker.condition;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
@@ -27,7 +28,7 @@ import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.list.TypeListExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
@@ -42,17 +43,17 @@ public class PartOfNeqCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(TextMarkerBasic basic, Type matchedType,
-          TextMarkerRuleElement element, TextMarkerStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
+          TextMarkerStream stream, InferenceCrowd crowd) {
     if (!isWorkingOnList()) {
       Type t = type.getType(element.getParent());
-      boolean result = check(basic, matchedType, stream, t);
+      boolean result = check(annotation, stream, t);
       return new EvaluatedCondition(this, result);
     } else {
       boolean result = false;
       List<Type> types = getList().getList(element.getParent());
       for (Type t : types) {
-        result |= check(basic, matchedType, stream, t);
+        result |= check(annotation, stream, t);
         if (result == true) {
           break;
         }
@@ -61,19 +62,23 @@ public class PartOfNeqCondition extends TypeSentiveCondition {
     }
   }
 
-  private boolean check(TextMarkerBasic basic, Type matchedType, TextMarkerStream stream, Type t) {
-    AnnotationFS expandAnchor = stream.expandAnchor(basic, matchedType);
-    stream.moveTo(basic);
+  private boolean check(AnnotationFS annotation, TextMarkerStream stream, Type t) {
+    stream.moveTo(annotation);
     while (stream.isValid()) {
       TextMarkerBasic each = (TextMarkerBasic) stream.get();
-      AnnotationFS afs = each.getType(t.getName());
-      if (afs != null
-              && afs.getType().equals(t)
-              && ((afs.getBegin() < expandAnchor.getBegin() && afs.getEnd() > expandAnchor.getEnd())
-                      || (afs.getBegin() == expandAnchor.getBegin() && afs.getEnd() > expandAnchor
-                              .getEnd()) || (afs.getBegin() < expandAnchor.getBegin() && afs
-                      .getEnd() == expandAnchor.getEnd()))) {
-        return true;
+      Set<AnnotationFS> set = each.getBeginAnchors(t);
+
+      // TODO refactor!
+      for (AnnotationFS afs : set) {
+        if (afs != null
+                && afs.getType().equals(t)
+                && ((afs.getBegin() < annotation.getBegin() && afs.getEnd() > annotation.getEnd())
+                        || (afs.getBegin() == annotation.getBegin() && afs.getEnd() > annotation
+                                .getEnd()) || (afs.getBegin() < annotation.getBegin() && afs
+                        .getEnd() == annotation.getEnd()))) {
+          return true;
+        }
+
       }
       stream.moveToPrevious();
     }

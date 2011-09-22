@@ -37,13 +37,17 @@ import org.apache.uima.textmarker.expression.bool.BooleanExpression;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.string.StringExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.utils.UIMAUtils;
 
 public abstract class AbstractStructureAction extends AbstractTextMarkerAction {
 
+  public AbstractStructureAction() {
+    super();
+  }
+
   protected void fillFeatures(TOP structure, Map<StringExpression, TextMarkerExpression> features,
-          AnnotationFS matchedAnnotation, TextMarkerRuleElement element, TextMarkerStream stream) {
+          AnnotationFS matchedAnnotation, RuleElement element, TextMarkerStream stream) {
     Map<String, TextMarkerExpression> map = new HashMap<String, TextMarkerExpression>();
     for (Entry<StringExpression, TextMarkerExpression> each : features.entrySet()) {
       String value = each.getKey().getStringValue(element.getParent());

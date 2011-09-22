@@ -10,8 +10,8 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 /** 
- * Updated by JCasGen Tue Aug 09 16:26:13 CEST 2011
- * XML source: D:/work/workspace-uima2/uimaj-ep-textmarker-engine/desc/BasicTypeSystem.xml
+ * Updated by JCasGen Tue Sep 20 15:37:41 CEST 2011
+ * XML source: D:/work/workspace-uima3/uimaj-ep-textmarker-engine/desc/InternalTypeSystem.xml
  * @generated */
 public class DebugScriptApply extends ProfiledAnnotation {
   /** @generated

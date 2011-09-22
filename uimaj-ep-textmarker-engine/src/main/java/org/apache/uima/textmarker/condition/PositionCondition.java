@@ -21,12 +21,14 @@ package org.apache.uima.textmarker.condition;
 
 import java.util.List;
 
+import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
@@ -44,33 +46,51 @@ public class PositionCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(TextMarkerBasic basic, Type matchedType,
-          TextMarkerRuleElement element, TextMarkerStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
+          TextMarkerStream stream, InferenceCrowd crowd) {
     Type t = type.getType(element.getParent());
-    if (!basic.isPartOf(t.getName())) {
+
+    TextMarkerBasic beginAnchor = stream.getBeginAnchor(annotation.getBegin());
+    TextMarkerBasic endAnchor = stream.getEndAnchor(annotation.getEnd());
+    if (!beginAnchor.isPartOf(t) || !endAnchor.isPartOf(t)) {
       return new EvaluatedCondition(this, false);
     }
-    if (matchedType == null)
+
+    FSIterator<AnnotationFS> iterator = stream.getCas().getAnnotationIndex(t).iterator(beginAnchor);
+    if (!iterator.isValid()) {
+      iterator.moveToNext();
+    }
+    if (!iterator.isValid()) {
+      iterator.moveToLast();
+    }
+    AnnotationFS window = null;
+    while (iterator.isValid()) {
+      AnnotationFS annotationFS = iterator.get();
+      if (annotationFS.getBegin() <= annotation.getBegin()
+              && annotationFS.getEnd() >= annotation.getEnd()) {
+        window = annotationFS;
+        break;
+      }
+      iterator.moveToPrevious();
+    }
+
+    if (window == null) {
       return new EvaluatedCondition(this, false);
+    }
+
     int counter = 0;
-    List<TextMarkerBasic> annotationsInWindow = null;
-    if (t.getName().equals("uima.tcas.DocumentAnnotation")
-            || stream.getDocumentAnnotation().getType().equals(t)) {
-      annotationsInWindow = stream.getBasicsInWindow(stream.getDocumentAnnotation());
-    } else {
-      annotationsInWindow = stream.getAnnotationsOverlappingWindow(basic, t);
-    }
-    for (TextMarkerBasic eachBasic : annotationsInWindow) {
-      if (eachBasic.isAnchorOf(matchedType.getName())
-              || stream.getCas().getTypeSystem().subsumes(matchedType, eachBasic.getType())) {
-        counter++;
-        if (eachBasic.equals(basic)) {
-          if (counter == position.getIntegerValue(element.getParent())) {
-            return new EvaluatedCondition(this, true);
-          }
-        }
+    List<TextMarkerBasic> inWindow = stream.getBasicsInWindow(window);
+    for (TextMarkerBasic each : inWindow) {
+      counter++;
+      boolean beginsWith = each.beginsWith(annotation.getType());
+      int integerValue = position.getIntegerValue(element.getParent());
+      if (each.getBegin() == beginAnchor.getBegin() && beginsWith && counter == integerValue) {
+        return new EvaluatedCondition(this, true);
+      } else if (counter > integerValue) {
+        return new EvaluatedCondition(this, false);
       }
     }
+
     return new EvaluatedCondition(this, false);
   }
 

@@ -19,26 +19,31 @@
 
 package org.apache.uima.textmarker.rule;
 
+import java.util.Collection;
 import java.util.List;
 
-import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerBlock;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.TextMarkerExpression;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
 
 public interface TextMarkerMatcher {
 
-  List<TextMarkerBasic> getMatchingBasics(TextMarkerStream stream, TextMarkerBlock parent);
+  Collection<AnnotationFS> getMatchingAnnotations(TextMarkerStream stream, TextMarkerBlock parent);
 
-  FSIterator<AnnotationFS> getMatchingBasics2(TextMarkerStream stream, TextMarkerBlock parent);
+  boolean match(AnnotationFS annotation, TextMarkerStream stream, TextMarkerBlock parent);
 
-  boolean match(TextMarkerBasic currentBasic, TextMarkerStream stream, TextMarkerBlock parent);
-
-  Type getType(TextMarkerBlock parent, TextMarkerStream stream);
+  List<Type> getTypes(TextMarkerBlock parent, TextMarkerStream stream);
 
   TextMarkerExpression getExpression();
+
+  int estimateAnchors(TextMarkerBlock parent, TextMarkerStream stream);
+
+  Collection<AnnotationFS> getAnnotationsAfter(TextMarkerRuleElement ruleElement,
+          AnnotationFS annotation, TextMarkerStream stream, TextMarkerBlock parent);
+
+  Collection<AnnotationFS> getAnnotationsBefore(TextMarkerRuleElement ruleElement,
+          AnnotationFS annotation, TextMarkerStream stream, TextMarkerBlock parent);
 
 }

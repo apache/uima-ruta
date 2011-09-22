@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.action;
 
@@ -25,10 +25,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.uima.textmarker.TextMarkerStream;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
-
 
 public class RemoveDuplicateAction extends AbstractTextMarkerAction {
 
@@ -45,7 +44,7 @@ public class RemoveDuplicateAction extends AbstractTextMarkerAction {
 
   @SuppressWarnings("unchecked")
   @Override
-  public void execute(RuleMatch match, TextMarkerRuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
     List list = element.getParent().getEnvironment().getVariableValue(var, List.class);
     Set<Object> set = new HashSet<Object>(list);

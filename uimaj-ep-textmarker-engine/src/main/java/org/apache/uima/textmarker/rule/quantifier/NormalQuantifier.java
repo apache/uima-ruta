@@ -15,30 +15,36 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.rule.quantifier;
 
 import java.util.List;
 
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.textmarker.TextMarkerBlock;
 import org.apache.uima.textmarker.TextMarkerStatement;
 import org.apache.uima.textmarker.TextMarkerStream;
+import org.apache.uima.textmarker.rule.ComposedRuleElementMatch;
 import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleElementMatch;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
+import org.apache.uima.textmarker.rule.RuleMatch;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
-
 public class NormalQuantifier implements RuleElementQuantifier {
+  // @Override
+  // public boolean continueMatch(int index, List<RuleElement> elements, TextMarkerBasic next,
+  // RuleElementMatch match, List<RuleElementMatch> matches, TextMarkerStream stream,
+  // InferenceCrowd crowd) {
+  // return match == null;
+  // }
 
-  public boolean continueMatch(int index, List<RuleElement> elements, TextMarkerBasic next,
-          RuleElementMatch match, List<RuleElementMatch> matches, TextMarkerStream stream,
-          InferenceCrowd crowd) {
-    return match == null;
-  }
-
+  @Override
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
           TextMarkerStatement element, InferenceCrowd crowd) {
+    if (matches == null) {
+      return null;
+    }
     boolean result = true;
     boolean allEmpty = true;
     for (RuleElementMatch match : matches) {
@@ -51,5 +57,18 @@ public class NormalQuantifier implements RuleElementQuantifier {
     } else {
       return null;
     }
+  }
+
+  @Override
+  public boolean continueMatch(boolean after, AnnotationFS annotation, RuleElement ruleElement,
+          RuleMatch extendedMatch, ComposedRuleElementMatch containerMatch,
+          TextMarkerStream stream, InferenceCrowd crowd) {
+    List<RuleElementMatch> list = containerMatch.getInnerMatches().get(ruleElement);
+    return list == null || list.isEmpty();
+  }
+
+  @Override
+  public boolean isOptional(TextMarkerBlock parent) {
+    return false;
   }
 }

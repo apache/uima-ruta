@@ -29,8 +29,8 @@ import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.TextMarkerExpression;
 import org.apache.uima.textmarker.expression.string.StringExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class FillAction extends AbstractStructureAction {
@@ -47,27 +47,31 @@ public class FillAction extends AbstractStructureAction {
   }
 
   @Override
-  public void execute(RuleMatch match, TextMarkerRuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
-    AnnotationFS matchedAnnotation = match.getMatchedAnnotation(stream, null);
-    if (matchedAnnotation == null) {
-      return;
+    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(stream, null,
+            element.getContainer());
+    for (AnnotationFS matchedAnnotation : matchedAnnotations) {
+      if (matchedAnnotation == null) {
+        return;
+      }
+      Type type = getStructureType().getType(element.getParent());
+      List<AnnotationFS> list = stream.getAnnotationsInWindow(matchedAnnotation, type);
+      if (list.isEmpty()) {
+        list = stream.getOverappingAnnotations(matchedAnnotation, type);
+      }
+      //
+      // for (AnnotationFS each : list) {
+      // fillFeatures((Annotation)each, features, matchedAnnotation, element, stream);
+      // }
+      if (!list.isEmpty()) {
+        AnnotationFS annotationFS = list.get(0);
+        stream.getCas().removeFsFromIndexes(annotationFS);
+        fillFeatures((Annotation) annotationFS, features, matchedAnnotation, element, stream);
+        stream.getCas().addFsToIndexes(annotationFS);
+      }
     }
-    Type type = getStructureType().getType(element.getParent());
-    List<AnnotationFS> list = stream.getAnnotationsInWindow(matchedAnnotation, type);
-    if (list.isEmpty()) {
-      list = stream.getOverappingAnnotations(matchedAnnotation, type);
-    }
-    //
-    // for (AnnotationFS each : list) {
-    // fillFeatures((Annotation)each, features, matchedAnnotation, element, stream);
-    // }
-    if (!list.isEmpty()) {
-      AnnotationFS annotationFS = list.get(0);
-      stream.getCas().removeFsFromIndexes(annotationFS);
-      fillFeatures((Annotation) annotationFS, features, matchedAnnotation, element, stream);
-      stream.getCas().addFsToIndexes(annotationFS);
-    }
+
   }
 
   public Map<StringExpression, TextMarkerExpression> getFeatures() {

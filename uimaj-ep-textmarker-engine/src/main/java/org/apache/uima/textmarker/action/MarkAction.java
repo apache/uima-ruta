@@ -19,7 +19,6 @@
 
 package org.apache.uima.textmarker.action;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.cas.Type;
@@ -28,10 +27,9 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.type.TextMarkerAnnotation;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class MarkAction extends AbstractMarkAction {
@@ -47,22 +45,26 @@ public class MarkAction extends AbstractMarkAction {
   }
 
   @Override
-  public void execute(RuleMatch match, TextMarkerRuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
-    List<Integer> indexList = getIndexList(match, element);
-    AnnotationFS matchedAnnotation = match.getMatchedAnnotation(stream, indexList);
-    if (matchedAnnotation == null) {
-      return;
+    List<Integer> indexList = getIndexList(element, list);
+    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(stream, indexList,
+            element.getContainer());
+    for (AnnotationFS matchedAnnotation : matchedAnnotations) {
+      if (matchedAnnotation == null) {
+        return;
+      }
+      if (score == null) {
+        createAnnotation(matchedAnnotation, element, stream);
+      } else {
+        double deltaScore = score.getDoubleValue(element.getParent());
+        updateHeuristicAnnotation(match, element, stream, matchedAnnotation, deltaScore);
+      }
     }
-    if (score == null) {
-      createAnnotation(match, element, stream, matchedAnnotation);
-    } else {
-      double deltaScore = score.getDoubleValue(element.getParent());
-      updateHeuristicAnnotation(match, element, stream, matchedAnnotation, deltaScore);
-    }
+
   }
 
-  protected void updateHeuristicAnnotation(RuleMatch match, TextMarkerRuleElement element,
+  protected void updateHeuristicAnnotation(RuleMatch match, RuleElement element,
           TextMarkerStream stream, AnnotationFS matchedAnnotation, double deltaScore) {
     Type heuristicType = stream.getJCas().getCasType(TextMarkerAnnotation.type);
     TextMarkerAnnotation heuristicAnnotation = (TextMarkerAnnotation) stream.getCas()
@@ -79,8 +81,7 @@ public class MarkAction extends AbstractMarkAction {
     if (annotationsInWindow.isEmpty()) {
       heuristicAnnotation.addToIndexes();
       newAnnotation.addToIndexes();
-      TextMarkerBasic first = stream.getFirstBasicInWindow(newAnnotation);
-      stream.addAnnotation(first, newAnnotation);
+      stream.addAnnotation(newAnnotation);
     } else {
       TextMarkerAnnotation tma = stream.getCorrectTMA(annotationsInWindow, heuristicAnnotation);
       if (tma != null) {
@@ -91,29 +92,10 @@ public class MarkAction extends AbstractMarkAction {
       } else {
         heuristicAnnotation.addToIndexes();
         newAnnotation.addToIndexes();
-        TextMarkerBasic first = stream.getFirstBasicInWindow(newAnnotation);
-        stream.addAnnotation(first, newAnnotation);
+        stream.addAnnotation(newAnnotation);
       }
     }
 
-  }
-
-  protected List<Integer> getIndexList(RuleMatch match, TextMarkerRuleElement element) {
-    List<Integer> indexList = new ArrayList<Integer>();
-    if (list == null || list.isEmpty()) {
-      int self = match.getRule().getElements().indexOf(element) + 1;
-      indexList.add(self);
-      return indexList;
-    }
-    int last = Integer.MAX_VALUE - 1;
-    for (NumberExpression each : list) {
-      int value = each.getIntegerValue(element.getParent());
-      for (int i = Math.min(value, last + 1); i < value; i++) {
-        indexList.add(i);
-      }
-      indexList.add(value);
-    }
-    return indexList;
   }
 
   public NumberExpression getScore() {

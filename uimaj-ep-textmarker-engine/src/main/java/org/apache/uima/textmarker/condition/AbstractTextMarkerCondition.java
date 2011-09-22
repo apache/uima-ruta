@@ -19,18 +19,21 @@
 
 package org.apache.uima.textmarker.condition;
 
-import org.apache.uima.cas.Type;
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerElement;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public abstract class AbstractTextMarkerCondition extends TextMarkerElement {
 
-  public abstract EvaluatedCondition eval(TextMarkerBasic basic, Type matchedType,
-          TextMarkerRuleElement element, TextMarkerStream stream, InferenceCrowd crowd);
+  public AbstractTextMarkerCondition() {
+    super();
+  }
+
+  public abstract EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
+          TextMarkerStream stream, InferenceCrowd crowd);
 
   @Override
   public String toString() {

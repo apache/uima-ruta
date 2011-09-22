@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.action;
 
@@ -24,10 +24,9 @@ import java.util.logging.Logger;
 
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.string.StringExpression;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
-
 
 public class LogAction extends AbstractTextMarkerAction {
 
@@ -44,7 +43,7 @@ public class LogAction extends AbstractTextMarkerAction {
   }
 
   @Override
-  public void execute(RuleMatch match, TextMarkerRuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
     String msg = text.getStringValue(element.getParent());
     Logger.getLogger(LOGGER_NAME).log(level, msg);

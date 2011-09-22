@@ -32,9 +32,8 @@ import org.apache.uima.textmarker.expression.resource.WordListExpression;
 import org.apache.uima.textmarker.expression.string.StringExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.resource.TextMarkerWordList;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class TrieAction extends AbstractTextMarkerAction {
@@ -56,6 +55,7 @@ public class TrieAction extends AbstractTextMarkerAction {
   public TrieAction(WordListExpression list, Map<StringExpression, TypeExpression> map,
           BooleanExpression ignoreCase, NumberExpression ignoreLength, BooleanExpression edit,
           NumberExpression distance, StringExpression ignoreChar) {
+    super();
     this.list = list;
     this.map = map;
     this.ignoreCase = ignoreCase;
@@ -66,7 +66,7 @@ public class TrieAction extends AbstractTextMarkerAction {
   }
 
   @Override
-  public void execute(RuleMatch match, TextMarkerRuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
 
     Map<String, Type> typeMap = new HashMap<String, Type>();
@@ -90,8 +90,7 @@ public class TrieAction extends AbstractTextMarkerAction {
 
     if (found != null) {
       for (AnnotationFS annotation : found) {
-        TextMarkerBasic anchor = stream.getFirstBasicInWindow(annotation);
-        stream.addAnnotation(anchor, annotation);
+        stream.addAnnotation(annotation);
         stream.getCas().addFsToIndexes(annotation);
       }
     }

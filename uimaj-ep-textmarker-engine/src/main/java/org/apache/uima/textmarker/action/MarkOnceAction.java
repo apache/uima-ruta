@@ -28,8 +28,8 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class MarkOnceAction extends MarkAction {
@@ -40,30 +40,34 @@ public class MarkOnceAction extends MarkAction {
   }
 
   @Override
-  public void execute(RuleMatch match, TextMarkerRuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
-    List<Integer> indexList = getIndexList(match, element);
-    AnnotationFS matchedAnnotation = match.getMatchedAnnotation(stream, indexList);
-    CAS cas = stream.getCas();
-    if (matchedAnnotation == null)
-      return;
-    Type t = type.getType(element.getParent());
-    AnnotationFS createAnnotation = cas.createAnnotation(t, matchedAnnotation.getBegin(),
-            matchedAnnotation.getEnd());
-    boolean contains = false;
-    FSIterator<AnnotationFS> iterator = cas.getAnnotationIndex(t).iterator(createAnnotation);
-    while (iterator.isValid()
-            && ((AnnotationFS) iterator.get()).getEnd() == createAnnotation.getEnd()) {
-      AnnotationFS a = (AnnotationFS) iterator.get();
-      if (a.getBegin() == createAnnotation.getBegin() && a.getEnd() == createAnnotation.getEnd()
-              && a.getType().getName().equals(createAnnotation.getType().getName())) {
-        contains = true;
-        break;
+    List<Integer> indexList = getIndexList(element, list);
+    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(stream, indexList,
+            element.getContainer());
+    for (AnnotationFS matchedAnnotation : matchedAnnotations) {
+
+      CAS cas = stream.getCas();
+      if (matchedAnnotation == null)
+        return;
+      Type t = type.getType(element.getParent());
+      AnnotationFS createAnnotation = cas.createAnnotation(t, matchedAnnotation.getBegin(),
+              matchedAnnotation.getEnd());
+      boolean contains = false;
+      FSIterator<AnnotationFS> iterator = cas.getAnnotationIndex(t).iterator(createAnnotation);
+      while (iterator.isValid()
+              && ((AnnotationFS) iterator.get()).getEnd() == createAnnotation.getEnd()) {
+        AnnotationFS a = (AnnotationFS) iterator.get();
+        if (a.getBegin() == createAnnotation.getBegin() && a.getEnd() == createAnnotation.getEnd()
+                && a.getType().getName().equals(createAnnotation.getType().getName())) {
+          contains = true;
+          break;
+        }
+        iterator.moveToNext();
       }
-      iterator.moveToNext();
-    }
-    if (!contains) {
-      super.execute(match, element, stream, crowd);
+      if (!contains) {
+        super.execute(match, element, stream, crowd);
+      }
     }
   }
 

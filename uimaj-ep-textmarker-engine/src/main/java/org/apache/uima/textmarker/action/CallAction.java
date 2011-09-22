@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -39,8 +40,8 @@ import org.apache.uima.textmarker.ScriptApply;
 import org.apache.uima.textmarker.TextMarkerBlock;
 import org.apache.uima.textmarker.TextMarkerModule;
 import org.apache.uima.textmarker.TextMarkerStream;
+import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
@@ -54,7 +55,7 @@ public class CallAction extends AbstractTextMarkerAction {
   }
 
   @Override
-  public void execute(RuleMatch match, TextMarkerRuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
 
     TextMarkerModule thisScript = element.getParent().getScript();
@@ -86,125 +87,127 @@ public class CallAction extends AbstractTextMarkerAction {
 
   }
 
-  protected void callScript(String blockName, RuleMatch match, TextMarkerRuleElement element,
+  protected void callScript(String blockName, RuleMatch match, RuleElement element,
           TextMarkerStream stream, InferenceCrowd crowd, TextMarkerModule targetScript) {
     TextMarkerBlock block = targetScript.getBlock(blockName);
     if (block == null) {
       return;
     }
-    // TODO: add window stream, but how to behave with quantifier on rule element?
-    // List<Integer> indexes = new ArrayList<Integer>(1);
-    // int indexOf = match.getRule().getElements().indexOf(element);
-    // indexes.add(indexOf);
-    // AnnotationFS matchedAnnotation = match.getMatchedAnnotation(stream, indexes);
-    // List<RuleElementMatch> matchInfo = match.getMatchInfo(element);
-    // TextMarkerStream windowStream = stream.getWindowStream(matchedAnnotation, stream
-    // .getDocumentAnnotationType());
-    ScriptApply apply = block.apply(stream, crowd);
-    match.addDelegateApply(this, apply);
+    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element, stream);
+    for (AnnotationFS annotationFS : matchedAnnotationsOf) {
+      TextMarkerStream windowStream = stream.getWindowStream(annotationFS,
+              stream.getDocumentAnnotationType());
+      ScriptApply apply = block.apply(windowStream, crowd);
+      match.addDelegateApply(this, apply);
+    }
+
   }
 
   protected void callEngine(RuleMatch match, InferenceCrowd crowd, AnalysisEngine targetEngine,
-          TextMarkerRuleElement element, TextMarkerStream stream)
-          throws ResourceInitializationException, AnalysisEngineProcessException {
+          RuleElement element, TextMarkerStream stream) throws ResourceInitializationException,
+          AnalysisEngineProcessException {
 
-    AnnotationFS matchedAnnotation = match.getMatchedAnnotation(stream, null);
+    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(stream, null,
+            element.getContainer());
+    for (AnnotationFS matchedAnnotation : matchedAnnotations) {
 
-    StringBuilder newDocument = new StringBuilder();
-    TextMarkerStream windowStream = stream.getWindowStream(matchedAnnotation,
-            stream.getDocumentAnnotationType());
-    windowStream.moveToFirst();
+      StringBuilder newDocument = new StringBuilder();
+      TextMarkerStream windowStream = stream.getWindowStream(matchedAnnotation,
+              stream.getDocumentAnnotationType());
+      windowStream.moveToFirst();
 
-    CAS newCAS = targetEngine.newCAS();
-    List<Type> types = newCAS.getTypeSystem().getProperlySubsumedTypes(newCAS.getAnnotationType());
+      CAS newCAS = targetEngine.newCAS();
+      List<Type> types = newCAS.getTypeSystem()
+              .getProperlySubsumedTypes(newCAS.getAnnotationType());
 
-    Collection<AnnotationFS> fsToAdd = new HashSet<AnnotationFS>();
+      Collection<AnnotationFS> fsToAdd = new HashSet<AnnotationFS>();
 
-    Map<Integer, Integer> new2oldBegin = new TreeMap<Integer, Integer>();
-    Map<Integer, Integer> new2oldEnd = new TreeMap<Integer, Integer>();
-    Map<Integer, Integer> old2newBegin = new TreeMap<Integer, Integer>();
-    Map<Integer, Integer> old2newEnd = new TreeMap<Integer, Integer>();
+      Map<Integer, Integer> new2oldBegin = new TreeMap<Integer, Integer>();
+      Map<Integer, Integer> new2oldEnd = new TreeMap<Integer, Integer>();
+      Map<Integer, Integer> old2newBegin = new TreeMap<Integer, Integer>();
+      Map<Integer, Integer> old2newEnd = new TreeMap<Integer, Integer>();
 
-    int localBegin = 0;
-    int localEnd = 0;
-    while (windowStream.isValid()) {
-      FeatureStructure fs = windowStream.get();
-      if (fs instanceof TextMarkerBasic) {
-        TextMarkerBasic basic = (TextMarkerBasic) fs;
-        for (Type type : types) {
-          AnnotationFS a = basic.getType(type.getName());
-          if (a != null && !a.getType().getName().equals("uima.tcas.DocumentAnnotation")
-                  && !(a instanceof TextMarkerBasic)) {
-            fsToAdd.add(a);
+      int localBegin = 0;
+      int localEnd = 0;
+      while (windowStream.isValid()) {
+        FeatureStructure fs = windowStream.get();
+        if (fs instanceof TextMarkerBasic) {
+          TextMarkerBasic basic = (TextMarkerBasic) fs;
+          for (Type type : types) {
+            Set<AnnotationFS> beginAnchors = basic.getBeginAnchors(type);
+            for (AnnotationFS a : beginAnchors) {
+              if (a != null && !a.getType().getName().equals("uima.tcas.DocumentAnnotation")
+                      && !(a instanceof TextMarkerBasic)) {
+                fsToAdd.add(a);
+              }
+            }
           }
+          int length = basic.getEnd() - basic.getBegin();
+          localEnd = localBegin + length;
+
+          new2oldBegin.put(localBegin, basic.getBegin());
+          old2newBegin.put(basic.getBegin(), localBegin);
+          new2oldEnd.put(localEnd, basic.getEnd());
+          old2newEnd.put(basic.getEnd(), localEnd);
+
+          newDocument.append(basic.getCoveredText());
+
+          localBegin += length;
         }
-        int length = basic.getEnd() - basic.getBegin();
-        localEnd = localBegin + length;
-
-        new2oldBegin.put(localBegin, basic.getBegin());
-        old2newBegin.put(basic.getBegin(), localBegin);
-        new2oldEnd.put(localEnd, basic.getEnd());
-        old2newEnd.put(basic.getEnd(), localEnd);
-
-        newDocument.append(basic.getCoveredText());
-
-        localBegin += length;
-      }
-      windowStream.moveToNext();
-    }
-
-    String string = newDocument.toString();
-    newCAS.setDocumentText(string);
-    for (AnnotationFS each : fsToAdd) {
-      int beginOld = each.getBegin();
-      int endOld = each.getEnd();
-
-      Integer beginNew = old2newBegin.get(beginOld);
-      Integer endNew = old2newEnd.get(endOld);
-      if (endNew == null && beginNew != null) {
-        int delta = endOld - beginOld;
-        endNew = beginNew + delta;
-      } else if (endNew != null && beginNew == null) {
-        int delta = endOld - beginOld;
-        beginNew = endNew - delta;
-      } else if (endNew == null && beginNew == null) {
-        int index;
-        int deltaBefore = 0;
-        int deltaAfter = 0;
-        Integer valueBegin = null;
-        index = beginOld;
-        while (valueBegin == null) {
-          valueBegin = new2oldBegin.get(++index);
-          deltaBefore++;
-        }
-        Integer valueEnd = null;
-        index = endOld;
-        while (valueEnd == null) {
-          valueEnd = new2oldEnd.get(--index);
-          deltaAfter++;
-        }
-        beginNew = valueBegin - deltaBefore;
-        endNew = valueEnd + deltaAfter;
-        // TODO what to do here? refactor and refine complete class!!
+        windowStream.moveToNext();
       }
 
-      String typeName = each.getType().getName();
-      Type type = newCAS.getTypeSystem().getType(typeName);
-      FeatureStructure newAnnotation = newCAS.createAnnotation(type, beginNew, endNew);
-      newCAS.addFsToIndexes(newAnnotation);
-    }
+      String string = newDocument.toString();
+      newCAS.setDocumentText(string);
+      for (AnnotationFS each : fsToAdd) {
+        int beginOld = each.getBegin();
+        int endOld = each.getEnd();
 
-    targetEngine.process(newCAS);
+        Integer beginNew = old2newBegin.get(beginOld);
+        Integer endNew = old2newEnd.get(endOld);
+        if (endNew == null && beginNew != null) {
+          int delta = endOld - beginOld;
+          endNew = beginNew + delta;
+        } else if (endNew != null && beginNew == null) {
+          int delta = endOld - beginOld;
+          beginNew = endNew - delta;
+        } else if (endNew == null && beginNew == null) {
+          int index;
+          int deltaBefore = 0;
+          int deltaAfter = 0;
+          Integer valueBegin = null;
+          index = beginOld;
+          while (valueBegin == null) {
+            valueBegin = new2oldBegin.get(++index);
+            deltaBefore++;
+          }
+          Integer valueEnd = null;
+          index = endOld;
+          while (valueEnd == null) {
+            valueEnd = new2oldEnd.get(--index);
+            deltaAfter++;
+          }
+          beginNew = valueBegin - deltaBefore;
+          endNew = valueEnd + deltaAfter;
+        }
 
-    for (Type type : types) {
-      FSIterator<AnnotationFS> iterator = newCAS.getAnnotationIndex(type).iterator();
-      while (iterator.isValid()) {
-        AnnotationFS each = iterator.get();
-        transform(each, new2oldBegin, new2oldEnd, fsToAdd, stream);
-        iterator.moveToNext();
+        String typeName = each.getType().getName();
+        Type type = newCAS.getTypeSystem().getType(typeName);
+        FeatureStructure newAnnotation = newCAS.createAnnotation(type, beginNew, endNew);
+        newCAS.addFsToIndexes(newAnnotation);
+      }
+
+      targetEngine.process(newCAS);
+
+      for (Type type : types) {
+        FSIterator<AnnotationFS> iterator = newCAS.getAnnotationIndex(type).iterator();
+        while (iterator.isValid()) {
+          AnnotationFS each = iterator.get();
+          transform(each, new2oldBegin, new2oldEnd, fsToAdd, stream);
+          iterator.moveToNext();
+        }
       }
     }
-
   }
 
   private void transform(FeatureStructure each, Map<Integer, Integer> new2oldBegin,
@@ -262,15 +265,13 @@ public class CallAction extends AbstractTextMarkerAction {
       }
       beginNew = valueBegin - deltaBefore;
       endNew = valueEnd + deltaAfter;
-      // TODO what to do here? refactor and refinem complete class
     }
 
     if (newFS instanceof Annotation) {
       Annotation newA = (Annotation) newFS;
       newA.setBegin(beginNew);
       newA.setEnd(endNew);
-      TextMarkerBasic basic = stream.getFirstBasicInWindow(newA);
-      stream.addAnnotation(basic, newA);
+      stream.addAnnotation(newA);
     }
     return newFS;
   }

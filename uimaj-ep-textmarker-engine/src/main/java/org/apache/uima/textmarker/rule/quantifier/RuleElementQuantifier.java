@@ -15,27 +15,30 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.rule.quantifier;
 
 import java.util.List;
 
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.textmarker.TextMarkerBlock;
 import org.apache.uima.textmarker.TextMarkerStatement;
 import org.apache.uima.textmarker.TextMarkerStream;
+import org.apache.uima.textmarker.rule.ComposedRuleElementMatch;
 import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleElementMatch;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
+import org.apache.uima.textmarker.rule.RuleMatch;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
-
 
 public interface RuleElementQuantifier {
 
-  boolean continueMatch(int index, List<RuleElement> elements, TextMarkerBasic next,
-          RuleElementMatch match, List<RuleElementMatch> matches, TextMarkerStream stream,
-          InferenceCrowd crowd);
-
   List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
           TextMarkerStatement element, InferenceCrowd crowd);
+
+  boolean continueMatch(boolean after, AnnotationFS annotation, RuleElement ruleElement,
+          RuleMatch extendedMatch, ComposedRuleElementMatch containerMatch, TextMarkerStream stream, InferenceCrowd crowd);
+
+  boolean isOptional(TextMarkerBlock parent);
 
 }
