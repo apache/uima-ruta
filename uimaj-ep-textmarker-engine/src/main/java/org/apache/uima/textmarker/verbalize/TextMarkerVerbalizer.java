@@ -30,7 +30,9 @@ import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
 import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
 import org.apache.uima.textmarker.expression.TextMarkerExpression;
 import org.apache.uima.textmarker.extensions.ITextMarkerExtension;
+import org.apache.uima.textmarker.rule.ComposedRuleElement;
 import org.apache.uima.textmarker.rule.RuleElement;
+import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 
 public class TextMarkerVerbalizer {
 
@@ -113,6 +115,14 @@ public class TextMarkerVerbalizer {
 
   public String verbalizeExpressionList(List<? extends TextMarkerExpression> list) {
     return verbalizerUtils.verbalizeExpressionList(list);
+  }
+
+  public String verbalizeMatcher(TextMarkerRuleElement tmre) {
+    return scriptVerbalizer.verbalizeMatcher(tmre);
+  }
+
+  public String verbalizeComposed(ComposedRuleElement cre) {
+    return scriptVerbalizer.verbalizeComposed(cre);
   }
 
 }

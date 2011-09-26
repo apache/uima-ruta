@@ -155,8 +155,10 @@ public class RuleMatch {
           for (RuleElementMatch ruleElementMatch : list2) {
 
             List<AnnotationFS> textsMatched = ruleElementMatch.getTextsMatched();
-            begin = Math.min(textsMatched.get(0).getBegin(), begin);
-            end = Math.max(textsMatched.get(textsMatched.size() - 1).getEnd(), end);
+            if (textsMatched != null && !textsMatched.isEmpty()) {
+              begin = Math.min(textsMatched.get(0).getBegin(), begin);
+              end = Math.max(textsMatched.get(textsMatched.size() - 1).getEnd(), end);
+            }
           }
         }
       }

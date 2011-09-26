@@ -68,7 +68,16 @@ public class MinMaxGreedy implements RuleElementQuantifier {
           TextMarkerStatement element, InferenceCrowd crowd) {
     int minValue = min.getIntegerValue(element.getParent());
     int maxValue = max.getIntegerValue(element.getParent());
+
+    if (matches.size() > 0) {
+      RuleElementMatch ruleElementMatch = matches.get(matches.size() - 1);
+      if (!ruleElementMatch.matched()) {
+        matches.remove(ruleElementMatch);
+      }
+    }
+
     int matchedSize = matches.size();
+
     boolean result = matchedSize >= minValue && matchedSize <= maxValue;
     if (result) {
       return matches;

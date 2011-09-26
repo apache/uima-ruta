@@ -301,6 +301,15 @@ public class ExplainTree {
     for (FeatureStructure each : fsarray) {
       buildTree(each, remNode, ts, offset, onlyRules);
     }
+
+    feature = fs.getType().getFeatureByBaseName(ExplainTree.ELEMENTS);
+    value = (ArrayFS) fs.getFeatureValue(feature);
+    if (value != null) {
+      fsarray = value.toArray();
+      for (FeatureStructure each : fsarray) {
+        buildTree(each, remNode, ts, offset, onlyRules);
+      }
+    }
   }
 
   private void processEvaluatedCondition(FeatureStructure fs, IExplainTreeNode parent,

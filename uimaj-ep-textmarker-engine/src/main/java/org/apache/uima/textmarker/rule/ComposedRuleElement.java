@@ -155,7 +155,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     if (containerMatch == null) {
       ruleMatch.setRootMatch(composedMatch);
     } else {
-      containerMatch.addInnerMatch(this, composedMatch);
+      containerMatch.addInnerMatch(this, composedMatch, false);
     }
   }
 
@@ -178,7 +178,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       evaluatedConditions.add(eval);
     }
     match.setConditionInfo(evaluatedConditions);
-    match.evaluateInnerMatches();
+    match.evaluateInnerMatches(true);
   }
 
   public Collection<AnnotationFS> getAnchors(TextMarkerStream stream) {

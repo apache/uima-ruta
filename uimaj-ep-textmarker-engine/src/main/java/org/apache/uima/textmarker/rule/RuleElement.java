@@ -25,6 +25,8 @@ import java.util.List;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerBlock;
 import org.apache.uima.textmarker.TextMarkerStream;
+import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
+import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
 import org.apache.uima.textmarker.rule.quantifier.RuleElementQuantifier;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
@@ -33,7 +35,8 @@ public interface RuleElement {
   void apply(RuleMatch match, TextMarkerStream stream, InferenceCrowd crowd);
 
   void startMatch(RuleMatch ruleMatch, RuleApply ruleApply,
-          ComposedRuleElementMatch containerMatch, RuleElement entryPoint, TextMarkerStream stream, InferenceCrowd crowd);
+          ComposedRuleElementMatch containerMatch, RuleElement entryPoint, TextMarkerStream stream,
+          InferenceCrowd crowd);
 
   void continueMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
           RuleApply ruleApply, ComposedRuleElementMatch containerMatch, RuleElement entryPoint,
@@ -54,5 +57,9 @@ public interface RuleElement {
   int estimateAnchors(TextMarkerStream stream);
 
   List<Integer> getSelfIndexList();
+
+  List<AbstractTextMarkerCondition> getConditions();
+
+  List<AbstractTextMarkerAction> getActions();
 
 }

@@ -61,4 +61,8 @@ public class TextMarkerDisjunctiveTypeMatcher extends TextMarkerTypeMatcher {
     return expressions.toString();
   }
 
+  public List<TypeExpression> getExpressions() {
+    return expressions;
+  }
+
 }

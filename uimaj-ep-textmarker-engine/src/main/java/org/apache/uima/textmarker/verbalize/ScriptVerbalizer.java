@@ -27,8 +27,10 @@ import org.apache.uima.textmarker.TextMarkerElement;
 import org.apache.uima.textmarker.TextMarkerStatement;
 import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
 import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
+import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.rule.ComposedRuleElement;
 import org.apache.uima.textmarker.rule.RuleElement;
+import org.apache.uima.textmarker.rule.TextMarkerDisjunctiveTypeMatcher;
 import org.apache.uima.textmarker.rule.TextMarkerMatcher;
 import org.apache.uima.textmarker.rule.TextMarkerRule;
 import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
@@ -90,54 +92,76 @@ public class ScriptVerbalizer {
   }
 
   public String verbalizeRuleElement(RuleElement re) {
-    if (re instanceof TextMarkerRuleElement) {
-      TextMarkerRuleElement element = (TextMarkerRuleElement) re;
-      TextMarkerMatcher matcher = element.getMatcher();
-      List<AbstractTextMarkerCondition> conditions = element.getConditions();
-      List<AbstractTextMarkerAction> actions = element.getActions();
-      RuleElementQuantifier quantifier = element.getQuantifier();
-      StringBuilder result = new StringBuilder();
-      result.append(verbalizer.verbalize(matcher.getExpression()));
-      result.append(verbalizeQuantifier(quantifier));
+    List<AbstractTextMarkerCondition> conditions = re.getConditions();
+    List<AbstractTextMarkerAction> actions = re.getActions();
+    RuleElementQuantifier quantifier = re.getQuantifier();
+    StringBuilder result = new StringBuilder();
+    if (re instanceof ComposedRuleElement) {
+      result.append(verbalizeComposed((ComposedRuleElement) re));
+    } else if (re instanceof TextMarkerRuleElement) {
+      TextMarkerRuleElement tmre = (TextMarkerRuleElement) re;
+      result.append(verbalizeMatcher(tmre));
+    }
+    result.append(verbalizeQuantifier(quantifier));
 
-      if (!conditions.isEmpty() || !actions.isEmpty()) {
-        result.append("{");
-        Iterator<AbstractTextMarkerCondition> cit = conditions.iterator();
-        while (cit.hasNext()) {
-          AbstractTextMarkerCondition each = cit.next();
+    if (!conditions.isEmpty() || !actions.isEmpty()) {
+      result.append("{");
+      Iterator<AbstractTextMarkerCondition> cit = conditions.iterator();
+      while (cit.hasNext()) {
+        AbstractTextMarkerCondition each = cit.next();
+        result.append(verbalizer.verbalize(each));
+        if (cit.hasNext()) {
+          result.append(",");
+        }
+      }
+      if (!actions.isEmpty()) {
+        result.append(" -> ");
+        Iterator<AbstractTextMarkerAction> ait = actions.iterator();
+        while (ait.hasNext()) {
+          AbstractTextMarkerAction each = ait.next();
           result.append(verbalizer.verbalize(each));
-          if (cit.hasNext()) {
+          if (ait.hasNext()) {
             result.append(",");
           }
         }
-        if (!actions.isEmpty()) {
-          result.append(" -> ");
-          Iterator<AbstractTextMarkerAction> ait = actions.iterator();
-          while (ait.hasNext()) {
-            AbstractTextMarkerAction each = ait.next();
-            result.append(verbalizer.verbalize(each));
-            if (ait.hasNext()) {
-              result.append(",");
-            }
-          }
-        }
-        result.append("}");
       }
-      return result.toString();
-    } else if (re instanceof ComposedRuleElement) {
-      ComposedRuleElement cre = (ComposedRuleElement) re;
-      StringBuilder result = new StringBuilder("(");
-      for (RuleElement each : cre.getRuleElements()) {
-        if (cre.getRuleElements().indexOf(each) != 0) {
-          result.append(" ");
+      result.append("}");
+    }
+    return result.toString();
+  }
+
+  public String verbalizeComposed(ComposedRuleElement cre) {
+    StringBuilder result = new StringBuilder();
+    List<RuleElement> ruleElements = cre.getRuleElements();
+    result.append("(");
+    for (RuleElement each : ruleElements) {
+      if (cre.getRuleElements().indexOf(each) != 0) {
+        result.append(" ");
+      }
+      result.append(verbalizeRuleElement(each));
+    }
+    result.append(")");
+    return result.toString();
+  }
+
+  public String verbalizeMatcher(TextMarkerRuleElement tmre) {
+    StringBuilder result = new StringBuilder();
+    TextMarkerMatcher matcher = tmre.getMatcher();
+    if (matcher instanceof TextMarkerDisjunctiveTypeMatcher) {
+      TextMarkerDisjunctiveTypeMatcher dmatcher = (TextMarkerDisjunctiveTypeMatcher) matcher;
+      List<TypeExpression> expressions = dmatcher.getExpressions();
+      result.append("(");
+      for (TypeExpression each : expressions) {
+        if (expressions.indexOf(each) != 0) {
+          result.append(" | ");
         }
-        result.append(verbalizeRuleElement(each));
+        result.append(verbalizer.verbalize(each));
       }
       result.append(")");
-      result.append(verbalizeQuantifier(cre.getQuantifier()));
-      return result.toString();
+    } else {
+      result.append(verbalizer.verbalize(matcher.getExpression()));
     }
-    return "";
+    return result.toString();
   }
 
   public String verbalizeQuantifier(RuleElementQuantifier quantifier) {

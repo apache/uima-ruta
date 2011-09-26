@@ -179,6 +179,9 @@ public class TextMarkerRuleElement extends AbstractRuleElement {
                   entryPoint, stream, crowd);
         }
       } else if (getContainer() instanceof ComposedRuleElement) {
+        RuleElementMatch failedMatch = new RuleElementMatch(this, containerMatch);
+        failedMatch.setBaseConditionMatched(false);
+        containerMatch.addInnerMatch(this, failedMatch);
         ComposedRuleElement composed = (ComposedRuleElement) getContainer();
         composed.fallbackContinue(after, true, annotation, ruleMatch, ruleApply, containerMatch,
                 null, stream, crowd);

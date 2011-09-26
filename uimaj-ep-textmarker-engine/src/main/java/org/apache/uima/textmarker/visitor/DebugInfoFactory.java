@@ -33,13 +33,13 @@ import org.apache.uima.textmarker.ScriptApply;
 import org.apache.uima.textmarker.TextMarkerBlock;
 import org.apache.uima.textmarker.TextMarkerElement;
 import org.apache.uima.textmarker.TextMarkerStream;
+import org.apache.uima.textmarker.rule.ComposedRuleElement;
 import org.apache.uima.textmarker.rule.ComposedRuleElementMatch;
 import org.apache.uima.textmarker.rule.EvaluatedCondition;
 import org.apache.uima.textmarker.rule.RuleApply;
 import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleElementMatch;
 import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.rule.TextMarkerMatcher;
 import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.type.DebugBlockApply;
 import org.apache.uima.textmarker.type.DebugEvaluatedCondition;
@@ -194,7 +194,7 @@ public class DebugInfoFactory {
           boolean addToIndex, boolean withMatches, Map<TextMarkerElement, Long> timeInfo) {
     JCas cas = stream.getJCas();
     DebugRuleMatch drm = null;
-    if (match.matched()) {
+    if (match.matchedCompletely()) {
       drm = new DebugMatchedRuleMatch(cas);
     } else {
       drm = new DebugFailedRuleMatch(cas);
@@ -304,9 +304,13 @@ public class DebugInfoFactory {
 
     DebugEvaluatedCondition base = new DebugEvaluatedCondition(cas);
     base.setValue(rem.isBaseConditionMatched());
-
-    TextMarkerMatcher matcher = ((TextMarkerRuleElement) rem.getRuleElement()).getMatcher();
-    String baseString = verbalizer.verbalize(matcher.getExpression());
+    RuleElement ruleElement = rem.getRuleElement();
+    String baseString = "";
+    if (ruleElement instanceof TextMarkerRuleElement) {
+      baseString = verbalizer.verbalizeMatcher((TextMarkerRuleElement) ruleElement);
+    } else if (ruleElement instanceof ComposedRuleElement) {
+      baseString = verbalizer.verbalizeComposed((ComposedRuleElement) ruleElement);
+    }
     base.setElement(baseString);
     drem.setBaseCondition(base);
     drem.setConditions(createEvaluatedConditions(rem, stream, addToIndex));

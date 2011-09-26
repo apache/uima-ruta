@@ -47,7 +47,24 @@ public class StarGreedy implements RuleElementQuantifier {
   @Override
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
           TextMarkerStatement element, InferenceCrowd crowd) {
-    return matches;
+    boolean result = true;
+    boolean allEmpty = true;
+    if (matches == null) {
+      return null;
+    }
+    for (RuleElementMatch match : matches) {
+      allEmpty &= match.getTextsMatched().isEmpty();
+      result &= match.getTextsMatched().isEmpty() || match.matched();
+    }
+    if (!result && matches.size() > 0) {
+      matches.remove(matches.size() - 1);
+      result = true;
+    }
+    if (result) {
+      return matches;
+    } else {
+      return null;
+    }
   }
 
   @Override

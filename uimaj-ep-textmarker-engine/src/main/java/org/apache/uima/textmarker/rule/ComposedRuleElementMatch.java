@@ -66,6 +66,11 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
   }
 
   public void addInnerMatch(RuleElement ruleElement, RuleElementMatch ruleElementMatch) {
+    addInnerMatch(ruleElement, ruleElementMatch, true);
+  }
+
+  public void addInnerMatch(RuleElement ruleElement, RuleElementMatch ruleElementMatch,
+          boolean included) {
     List<RuleElementMatch> list = innerMatches.get(ruleElement);
     if (list == null) {
       list = new ArrayList<RuleElementMatch>();
@@ -74,15 +79,21 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
     list.add(ruleElementMatch);
     textsMatched.addAll(ruleElementMatch.getTextsMatched());
 
-    evaluateInnerMatches();
+    evaluateInnerMatches(included);
   }
 
-  public void evaluateInnerMatches() {
+  public void evaluateInnerMatches(boolean included) {
     boolean allDone = true;
     Set<Entry<RuleElement, List<RuleElementMatch>>> entrySet = innerMatches.entrySet();
     for (Entry<RuleElement, List<RuleElementMatch>> entry : entrySet) {
       RuleElement element = entry.getKey();
-      allDone &= (element.getQuantifier().isOptional(element.getParent()) || entry.getValue() != null);
+      List<RuleElementMatch> value = entry.getValue();
+      allDone &= (element.getQuantifier().isOptional(element.getParent()) || value != null);
+      if (value != null && !value.isEmpty() && included) {
+        for (RuleElementMatch ruleElementMatch : value) {
+          allDone &= ruleElementMatch.matched();
+        }
+      }
     }
     baseConditionMatched = allDone;
   }
