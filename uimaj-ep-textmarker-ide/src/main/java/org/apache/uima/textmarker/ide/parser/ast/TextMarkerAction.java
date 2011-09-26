@@ -20,7 +20,6 @@
 package org.apache.uima.textmarker.ide.parser.ast;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.dltk.ast.ASTVisitor;
@@ -88,18 +87,18 @@ public class TextMarkerAction extends Expression {
   @Override
   public void traverse(ASTVisitor visitor) throws Exception {
     if (visitor.visit(this)) {
-      for (Iterator iterator = exprs.iterator(); iterator.hasNext();) {
-        Expression expr = (Expression) iterator.next();
+      for (Expression expr : exprs) {
         if (expr != null) {
           expr.traverse(visitor);
         }
+
       }
       visitor.endvisit(this);
     }
   }
 
   @Override
-  public List getChilds() {
+  public List<Expression> getChilds() {
     return exprs;
   }
 

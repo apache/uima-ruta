@@ -1437,5 +1437,21 @@ under the License.
            class="org.apache.uima.textmarker.ide.ui.DefaultTextMarkerSemanticHighlightingExtension">
      </highlightingExtension>
   </extension>
-  
+     <extension
+         point="org.eclipse.dltk.validators.core.validator">
+      <validatorType
+            class="org.apache.uima.textmarker.ide.validator.CheckValidator"
+            id="org.apache.uima.textmarker.ide.validator.checkvalidator"
+            nature="org.apache.uima.textmarker.ide.nature">
+      </validatorType>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.buildParticipant">
+      <buildParticipant
+            class="org.apache.uima.textmarker.ide.validator.CheckValidator"
+            id="org.apache.uima.textmarker.ide.validator.Checker"
+            name="TextMarker Validator"
+            nature="org.apache.uima.textmarker.ide.nature">
+      </buildParticipant>
+   </extension>
 </plugin>

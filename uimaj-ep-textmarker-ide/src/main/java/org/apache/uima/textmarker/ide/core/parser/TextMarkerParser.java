@@ -1,4 +1,4 @@
-// $ANTLR 3.4 D:\\work\\workspace-uima3\\uimaj-ep-textmarker-ide\\src\\main\\java\\org\\apache\\uima\\textmarker\\ide\\core\\parser\\TextMarkerParser.g 2011-09-12 13:04:54
+// $ANTLR 3.4 D:\\work\\workspace-uima3\\uimaj-ep-textmarker-ide\\src\\main\\java\\org\\apache\\uima\\textmarker\\ide\\core\\parser\\TextMarkerParser.g 2011-09-26 13:38:53
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -3214,7 +3214,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            if ( state.backtracking==0 ) {re = ScriptFactory.createComposedRuleElement(res, q, c, a, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
+            if ( state.backtracking==0 ) {re = ScriptFactory.createComposedRuleElement(res, q, c, a, disjunctive,((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
             }
 

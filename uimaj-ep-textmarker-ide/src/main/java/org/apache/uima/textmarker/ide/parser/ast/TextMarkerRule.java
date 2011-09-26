@@ -15,15 +15,17 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.ide.parser.ast;
 
 import java.util.List;
 
+import org.eclipse.dltk.ast.expressions.Expression;
+
 public class TextMarkerRule extends TextMarkerStatement {
 
-  public TextMarkerRule(List expressions) {
+  public TextMarkerRule(List<Expression> expressions) {
     super(expressions);
   }
 

@@ -27,13 +27,13 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.ExpressionConstants;
 
 public class TextMarkerRuleElement extends Expression {
-  List<TextMarkerCondition> conditions;
+  protected List<TextMarkerCondition> conditions;
 
-  List<TextMarkerAction> actions;
+  protected List<TextMarkerAction> actions;
 
-  Expression head;
+  protected Expression head;
 
-  private List<Expression> quantifierExpressions;
+  protected List<Expression> quantifierExpressions;
 
   // TODO to be removed
   public TextMarkerRuleElement(int start, int end) {

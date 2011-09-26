@@ -28,14 +28,16 @@ import org.eclipse.dltk.ast.expressions.ExpressionConstants;
 public class ComposedRuleElement extends TextMarkerRuleElement {
   List<Expression> elements;
 
+  private boolean disjunctive;
+
   public ComposedRuleElement(int start, int end, List<Expression> elements,
           List<Expression> quantifierExpressions, List<TextMarkerCondition> conditionExpressions,
-          List<TextMarkerAction> actionExpressions) {
+          List<TextMarkerAction> actionExpressions, boolean disjunctive) {
     super(start, end, null, quantifierExpressions, conditionExpressions, actionExpressions);
     if (elements != null) {
       this.elements = elements;
     }
-
+    this.disjunctive = disjunctive;
   }
 
   @Override
@@ -45,11 +47,25 @@ public class ComposedRuleElement extends TextMarkerRuleElement {
 
   @Override
   public void traverse(ASTVisitor visitor) throws Exception {
-    super.traverse(visitor);
     if (visitor.visit(this)) {
       if (elements != null) {
         for (Expression e : elements) {
           e.traverse(visitor);
+        }
+      }
+      if (quantifierExpressions != null) {
+        for (Expression qpe : quantifierExpressions) {
+          qpe.traverse(visitor);
+        }
+      }
+      if (conditions != null) {
+        for (Expression cond : conditions) {
+          cond.traverse(visitor);
+        }
+      }
+      if (actions != null) {
+        for (Expression action : actions) {
+          action.traverse(visitor);
         }
       }
     }
@@ -62,6 +78,14 @@ public class ComposedRuleElement extends TextMarkerRuleElement {
 
   public List<Expression> getElements() {
     return elements;
+  }
+
+  public boolean isDisjunctive() {
+    return disjunctive;
+  }
+
+  public void setDisjunctive(boolean disjunctive) {
+    this.disjunctive = disjunctive;
   }
 
 }

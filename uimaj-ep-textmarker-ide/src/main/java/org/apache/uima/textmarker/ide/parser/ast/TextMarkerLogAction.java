@@ -21,13 +21,15 @@ package org.apache.uima.textmarker.ide.parser.ast;
 
 import java.util.List;
 
+import org.eclipse.dltk.ast.expressions.Expression;
+
 public class TextMarkerLogAction extends TextMarkerAction {
   int[] logLevelBounds;
 
   boolean logLevelAssigned;
 
   public TextMarkerLogAction(int exprStart, int exprEnd, String name, int nameStart, int nameEnd,
-          List exprs, int levelStart, int levelEnd) {
+          List<Expression> exprs, int levelStart, int levelEnd) {
     super(exprStart, exprEnd, exprs, TMActionConstants.A_LOG, name, nameStart, nameEnd);
     logLevelBounds = new int[2];
     logLevelBounds[0] = levelStart;
