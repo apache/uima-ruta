@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.antlr.runtime.CommonToken;
+import org.apache.uima.textmarker.ide.parser.ast.ComposedRuleElement;
 import org.apache.uima.textmarker.ide.parser.ast.TMConditionConstants;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerAbstractDeclaration;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerAction;
@@ -192,8 +193,9 @@ public class TextMarkerFormattedPrinter extends ASTVisitor {
         inLargeRule = 1;
         indentLevel++;
       }
-      List<ASTNode> childs = s.getChilds();
-      traverseAstNodes(childs, "");
+      TextMarkerRule rule = (TextMarkerRule) s;
+      List<Expression> expressions = rule.getExpressions();
+      traverseAstNodes(expressions, "");
       appendStatementEnd();
       if (inLargeRule > 0) {
         indentLevel--;
@@ -293,6 +295,22 @@ public class TextMarkerFormattedPrinter extends ASTVisitor {
     // traverse Block (first child of root element:
     if (s instanceof Block) {
       return true;
+    }
+    if (s instanceof ComposedRuleElement) {
+      ComposedRuleElement cre = (ComposedRuleElement) s;
+      List<Expression> elements = cre.getElements();
+      // int length = cre.sourceEnd() - cre.sourceStart();
+      if (inLargeRule == 2) {
+        inLargeRule = 4;
+      }
+      append(PAR_OPEN);
+      traverseAstNodes(elements, cre.isDisjunctive() ? " |" : "");
+      append(PAR_CLOSE);
+      appendRuleElement(cre);
+      if (inLargeRule == 4) {
+        inLargeRule = 1;
+      }
+      return false;
     }
     // special format for RuleElements:
     if (s instanceof TextMarkerRuleElement) {
@@ -521,7 +539,26 @@ public class TextMarkerFormattedPrinter extends ASTVisitor {
    * @param actions
    */
   private void appendRuleElement(TextMarkerRuleElement ruleEl) {
-    append(ruleEl.getHead());
+    // if (ruleEl instanceof ComposedRuleElement) {
+    // ComposedRuleElement cre = (ComposedRuleElement) ruleEl;
+    // List<Expression> elements = cre.getElements();
+    // append(PAR_OPEN);
+    // for (Expression expression : elements) {
+    //
+    // if (expression instanceof TextMarkerRuleElement) {
+    // TextMarkerRuleElement re = (TextMarkerRuleElement) expression;
+    // appendRuleElement(re);
+    // }
+    // if (elements.indexOf(expression) < elements.size() - 1) {
+    // append(" ");
+    // }
+    //
+    // }
+    // append(PAR_CLOSE);
+    // } else
+    if (ruleEl.getHead() != null) {
+      append(ruleEl.getHead());
+    }
     List<TextMarkerCondition> conditions = ruleEl.getConditions();
     List<TextMarkerAction> actions = ruleEl.getActions();
     // don't print {->} for empty rule elements

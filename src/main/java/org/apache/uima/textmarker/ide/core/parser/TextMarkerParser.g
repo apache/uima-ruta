@@ -582,7 +582,7 @@ ruleElementComposed returns [ComposedRuleElement re = null]
 	 |(ruleElements)=>res = ruleElements)
 	
 	RPAREN q = quantifierPart? (LCURLY c = conditions? (THEN a = actions)? RCURLY)?
-	{re = ScriptFactory.createComposedRuleElement(res, q, c, a, $blockDeclaration::env);}
+	{re = ScriptFactory.createComposedRuleElement(res, q, c, a, disjunctive,$blockDeclaration::env);}
 	;
 
 ruleElementType returns [TextMarkerRuleElement re = null] 

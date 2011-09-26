@@ -35,7 +35,7 @@ public class ScriptFactory extends AbstractFactory {
 
   public static ComposedRuleElement createComposedRuleElement(List<Expression> res,
           List<Expression> q, List<TextMarkerCondition> c, List<TextMarkerAction> a,
-          TextMarkerBlock env) {
+          boolean disjunctive, TextMarkerBlock env) {
     int bounds[] = getSurroundingBounds((ASTNode) null, res);
     // taking care of null statements - errors should have been recognized
     // in parser
@@ -50,7 +50,14 @@ public class ScriptFactory extends AbstractFactory {
     if (quantifierPart != null) {
       bounds[1] = Math.max(bounds[1], quantifierPart.sourceEnd());
     }
-    return new ComposedRuleElement(bounds[0], bounds[1], res, q, c, a);
+    if (c != null && !c.isEmpty()) {
+      bounds[1] = Math.max(bounds[1], c.get(c.size() - 1).sourceEnd());
+    }
+    if (a != null && !a.isEmpty()) {
+      bounds[1] = Math.max(bounds[1], a.get(a.size() - 1).sourceEnd());
+    }
+
+    return new ComposedRuleElement(bounds[0], bounds[1], res, q, c, a, disjunctive);
   }
 
   public static TextMarkerRuleElement createRuleElement(Expression head,
