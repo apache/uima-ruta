@@ -116,6 +116,8 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
 
   public static final String DEFAULT_FILTERED_MARKUPS = "defaultFilteredMarkups";
 
+  public static final String DYNAMIC_ANCHORING = "dynamicAnchoring";
+
   private String[] seeders;
 
   private String useBasics;
@@ -172,6 +174,8 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
 
   private Map<String, TypeSystemDescription> localTSDMap;
 
+  private Boolean dynamicAnchoring;
+
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
@@ -201,6 +205,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     scriptEncoding = (String) aContext.getConfigParameterValue(SCRIPT_ENCODING);
     defaultFilteredTypes = (String[]) aContext.getConfigParameterValue(DEFAULT_FILTERED_TYPES);
     defaultFilteredMarkups = (String[]) aContext.getConfigParameterValue(DEFAULT_FILTERED_MARKUPS);
+    dynamicAnchoring = (Boolean) aContext.getConfigParameterValue(DYNAMIC_ANCHORING);
 
     styleMapFactory = new StyleMapFactory();
 
@@ -215,6 +220,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     defaultFilteredTypes = defaultFilteredTypes == null ? new String[0] : defaultFilteredTypes;
     defaultFilteredMarkups = defaultFilteredMarkups == null ? new String[0]
             : defaultFilteredMarkups;
+    dynamicAnchoring = dynamicAnchoring == null ? false : dynamicAnchoring;
 
     this.context = aContext;
 
@@ -236,7 +242,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     }
     initializeScript(cas.getCas());
     TextMarkerStream stream = initializeStream(cas.getCas());
-
+    stream.setDynamicAnchoring(dynamicAnchoring);
     InferenceCrowd crowd = initializeCrowd();
     try {
       script.apply(stream, crowd);

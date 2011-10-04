@@ -50,6 +50,13 @@ public class TextMarkerTestUtils {
           throws URISyntaxException, IOException, InvalidXMLException,
           ResourceInitializationException, AnalysisEngineProcessException,
           ResourceConfigurationException {
+    return process(ruleFileName, textFileName, amount, false);
+  }
+
+  public static CAS process(String ruleFileName, String textFileName, int amount,
+          boolean dynamicAnchoring) throws URISyntaxException, IOException, InvalidXMLException,
+          ResourceInitializationException, AnalysisEngineProcessException,
+          ResourceConfigurationException {
     URL resource = TextMarkerTestUtils.class.getClassLoader().getResource(ruleFileName);
     File ruleFile = new File(resource.toURI());
     resource = TextMarkerTestUtils.class.getClassLoader().getResource(textFileName);
@@ -77,7 +84,7 @@ public class TextMarkerTestUtils {
       name = name.substring(0, name.length() - 3);
     }
     ae.setConfigParameterValue(TextMarkerEngine.MAIN_SCRIPT, name);
-
+    ae.setConfigParameterValue(TextMarkerEngine.DYNAMIC_ANCHORING, dynamicAnchoring);
     ae.reconfigure();
     CAS cas = ae.newCAS();
     cas.setDocumentText(FileUtils.file2String(textFile, "UTF-8"));

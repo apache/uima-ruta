@@ -13,7 +13,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
 
 /** 
- * Updated by JCasGen Tue Sep 20 15:37:41 CEST 2011
+ * Updated by JCasGen Mon Sep 26 19:07:28 CEST 2011
  * @generated */
 public class DebugRuleElementMatch_Type extends ProfiledAnnotation_Type {
   /** @generated */

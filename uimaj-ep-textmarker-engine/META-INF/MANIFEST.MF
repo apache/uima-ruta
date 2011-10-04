@@ -71,9 +71,9 @@ Export-Package:
  org.apache.uima.textmarker.utils,
  org.apache.uima.textmarker.verbalize,
  org.apache.uima.textmarker.visitor
-Require-Bundle: 
- org.apache.uima.runtime;bundle-version="2.3.1"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.apache.uima.runtime;bundle-version="2.3.1",
+ org.junit4;bundle-version="4.8.1"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6 
 Bundle-Vendor: University of Würzburg
 Eclipse-BuddyPolicy: registered
 Eclipse-RegisterBuddy: org.apache.uima.runtime

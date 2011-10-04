@@ -12,7 +12,7 @@ import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Tue Sep 20 15:37:41 CEST 2011
+ * Updated by JCasGen Mon Sep 26 19:07:28 CEST 2011
  * @generated */
 public class TextMarkerFrame_Type extends Annotation_Type {
   /** @generated */

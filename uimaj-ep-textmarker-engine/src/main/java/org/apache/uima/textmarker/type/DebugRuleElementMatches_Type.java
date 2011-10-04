@@ -14,7 +14,7 @@ import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
 
 /** 
- * Updated by JCasGen Tue Sep 20 15:37:41 CEST 2011
+ * Updated by JCasGen Mon Sep 26 19:07:28 CEST 2011
  * @generated */
 public class DebugRuleElementMatches_Type extends TOP_Type {
   /** @generated */
@@ -95,6 +95,24 @@ public class DebugRuleElementMatches_Type extends TOP_Type {
     ll_cas.ll_setStringValue(addr, casFeatCode_element, v);}
     
   
+ 
+  /** @generated */
+  final Feature casFeat_ruleAnchor;
+  /** @generated */
+  final int     casFeatCode_ruleAnchor;
+  /** @generated */ 
+  public boolean getRuleAnchor(int addr) {
+        if (featOkTst && casFeat_ruleAnchor == null)
+      jcas.throwFeatMissing("ruleAnchor", "org.apache.uima.textmarker.type.DebugRuleElementMatches");
+    return ll_cas.ll_getBooleanValue(addr, casFeatCode_ruleAnchor);
+  }
+  /** @generated */    
+  public void setRuleAnchor(int addr, boolean v) {
+        if (featOkTst && casFeat_ruleAnchor == null)
+      jcas.throwFeatMissing("ruleAnchor", "org.apache.uima.textmarker.type.DebugRuleElementMatches");
+    ll_cas.ll_setBooleanValue(addr, casFeatCode_ruleAnchor, v);}
+    
+  
 
 
 
@@ -111,6 +129,10 @@ public class DebugRuleElementMatches_Type extends TOP_Type {
  
     casFeat_element = jcas.getRequiredFeatureDE(casType, "element", "uima.cas.String", featOkTst);
     casFeatCode_element  = (null == casFeat_element) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_element).getCode();
+
+ 
+    casFeat_ruleAnchor = jcas.getRequiredFeatureDE(casType, "ruleAnchor", "uima.cas.Boolean", featOkTst);
+    casFeatCode_ruleAnchor  = (null == casFeat_ruleAnchor) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_ruleAnchor).getCode();
 
   }
 }

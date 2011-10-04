@@ -37,13 +37,6 @@ public class PlusGreedy implements RuleElementQuantifier {
     super();
   }
 
-  // @Override
-  // public boolean continueMatch(int index, List<RuleElement> elements, TextMarkerBasic next,
-  // RuleElementMatch match, List<RuleElementMatch> matches, TextMarkerStream stream,
-  // InferenceCrowd crowd) {
-  // return match == null || next != null;
-  // }
-
   @Override
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
           TextMarkerStatement element, InferenceCrowd crowd) {

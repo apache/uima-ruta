@@ -62,24 +62,27 @@ public class RuleElementCaretaker implements RuleElementContainer {
     if (ruleElements.size() == 1) {
       return ruleElements.get(0);
     }
+
+    if (stream.isDynamicAnchoring()) {
+      // TODO activate dynamic anchoring
+      int min = Integer.MAX_VALUE;
+      RuleElement minElement = null;
+      int i = 1;
+      for (RuleElement each : ruleElements) {
+        int estimate = each.estimateAnchors(stream);
+        // TODO what about this formula?
+        double factor = stream.getIndexPenalty();
+        estimate = (int) (Math.log(estimate) * (i * factor));
+        if (estimate < min) {
+          min = estimate;
+          minElement = each;
+        }
+        i++;
+      }
+      return minElement;
+    }
     return ruleElements.get(0);
 
-    // TODO activate dynamic anchoring
-    // int min = Integer.MAX_VALUE;
-    // RuleElement minElement = null;
-    // int i = 1;
-    // for (RuleElement each : ruleElements) {
-    // int estimate = each.estimateAnchors(stream);
-    // // TODO what about this formula?
-    // double factor = stream.getIndexPenalty();
-    // estimate = (int) (Math.log(estimate) * (i * i * i * factor));
-    // if (estimate < min) {
-    // min = estimate;
-    // minElement = each;
-    // }
-    // i++;
-    // }
-    // return minElement;
   }
 
   @Override

@@ -267,6 +267,9 @@ public class DebugInfoFactory {
         }
       }
     }
+    if (rems != null && !rems.isEmpty()) {
+      drems.setRuleAnchor(rems.get(0).isRuleAnchor());
+    }
     drems.setMatches(UIMAUtils.toFSArray(cas, remList));
     if (addToIndex)
       drems.addToIndexes();
@@ -313,6 +316,7 @@ public class DebugInfoFactory {
     }
     base.setElement(baseString);
     drem.setBaseCondition(base);
+
     drem.setConditions(createEvaluatedConditions(rem, stream, addToIndex));
     List<AnnotationFS> annotations = rem.getTextsMatched();
     if (!annotations.isEmpty()) {

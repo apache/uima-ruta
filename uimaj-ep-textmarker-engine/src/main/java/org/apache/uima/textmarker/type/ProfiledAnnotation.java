@@ -10,7 +10,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Tue Sep 20 15:37:41 CEST 2011
+ * Updated by JCasGen Mon Sep 26 19:07:28 CEST 2011
  * XML source: D:/work/workspace-uima3/uimaj-ep-textmarker-engine/desc/InternalTypeSystem.xml
  * @generated */
 public class ProfiledAnnotation extends Annotation {

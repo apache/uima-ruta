@@ -11,7 +11,7 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 /** 
- * Updated by JCasGen Tue Sep 20 15:37:41 CEST 2011
+ * Updated by JCasGen Mon Sep 26 19:07:28 CEST 2011
  * XML source: D:/work/workspace-uima3/uimaj-ep-textmarker-engine/desc/InternalTypeSystem.xml
  * @generated */
 public class DebugRuleElementMatches extends TOP {
@@ -101,6 +101,24 @@ public class DebugRuleElementMatches extends TOP {
     if (DebugRuleElementMatches_Type.featOkTst && ((DebugRuleElementMatches_Type)jcasType).casFeat_element == null)
       jcasType.jcas.throwFeatMissing("element", "org.apache.uima.textmarker.type.DebugRuleElementMatches");
     jcasType.ll_cas.ll_setStringValue(addr, ((DebugRuleElementMatches_Type)jcasType).casFeatCode_element, v);}    
+   
+    
+  //*--------------*
+  //* Feature: ruleAnchor
+
+  /** getter for ruleAnchor - gets 
+   * @generated */
+  public boolean getRuleAnchor() {
+    if (DebugRuleElementMatches_Type.featOkTst && ((DebugRuleElementMatches_Type)jcasType).casFeat_ruleAnchor == null)
+      jcasType.jcas.throwFeatMissing("ruleAnchor", "org.apache.uima.textmarker.type.DebugRuleElementMatches");
+    return jcasType.ll_cas.ll_getBooleanValue(addr, ((DebugRuleElementMatches_Type)jcasType).casFeatCode_ruleAnchor);}
+    
+  /** setter for ruleAnchor - sets  
+   * @generated */
+  public void setRuleAnchor(boolean v) {
+    if (DebugRuleElementMatches_Type.featOkTst && ((DebugRuleElementMatches_Type)jcasType).casFeat_ruleAnchor == null)
+      jcasType.jcas.throwFeatMissing("ruleAnchor", "org.apache.uima.textmarker.type.DebugRuleElementMatches");
+    jcasType.ll_cas.ll_setBooleanValue(addr, ((DebugRuleElementMatches_Type)jcasType).casFeatCode_ruleAnchor, v);}    
   }
 
     

@@ -112,6 +112,21 @@ public abstract class AbstractRuleElement extends TextMarkerElement implements R
     return result;
   }
 
+  public boolean hasAncestor(boolean after) {
+    RuleElementContainer c = getContainer();
+    if (c == null) {
+      return false;
+    }
+    RuleElement nextElement = c.getNextElement(after, this);
+    if (nextElement != null) {
+      return true;
+    }
+    if (c instanceof ComposedRuleElement) {
+      return ((ComposedRuleElement) c).hasAncestor(after);
+    }
+    return false;
+  }
+
   public RuleElementQuantifier getQuantifier() {
     return quantifier;
   }

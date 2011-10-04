@@ -13,12 +13,10 @@ import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
 import org.apache.uima.jcas.tcas.Annotation;
 
-/**
- * Updated by JCasGen Tue Sep 20 15:37:41 CEST 2011 XML source:
- * D:/work/workspace-uima3/uimaj-ep-textmarker-engine/desc/InternalTypeSystem.xml
- * 
- * @generated
- */
+/** 
+ * Updated by JCasGen Mon Sep 26 19:07:28 CEST 2011
+ * XML source: D:/work/workspace-uima3/uimaj-ep-textmarker-engine/desc/InternalTypeSystem.xml
+ * @generated */
 public class TextMarkerBasic extends Annotation {
 
   private Set<Type> partOf = new HashSet<Type>(20);
@@ -151,18 +149,15 @@ public class TextMarkerBasic extends Annotation {
 
   /** @generated */
   @Override
-  public int getTypeIndexID() {
-    return typeIndexID;
-  }
-
+  public int getTypeIndexID() {return typeIndexID;}
+ 
   /**
    * Never called. Disable default constructor
    * 
    * @generated
    */
-  protected TextMarkerBasic() {
-  }
-
+  protected TextMarkerBasic() {}
+    
   /**
    * Internal - constructor used by generator
    * 
@@ -172,12 +167,12 @@ public class TextMarkerBasic extends Annotation {
     super(addr, type);
     readObject();
   }
-
+  
   /** @generated */
   public TextMarkerBasic(JCas jcas) {
     super(jcas);
-    readObject();
-  }
+    readObject();   
+  } 
 
   /** @generated */
   public TextMarkerBasic(JCas jcas, int begin, int end) {
@@ -185,13 +180,10 @@ public class TextMarkerBasic extends Annotation {
     setBegin(begin);
     setEnd(end);
     readObject();
-  }
+  }   
 
-  /**
-   * <!-- begin-user-doc --> Write your own initialization here <!-- end-user-doc -->
-   * 
-   * @generated modifiable
-   */
+  /** <!-- begin-user-doc --> Write your own initialization here <!-- end-user-doc -->
+  @generated modifiable */
   private void readObject() {
   }
 
@@ -204,29 +196,20 @@ public class TextMarkerBasic extends Annotation {
    * @generated
    */
   public String getReplacement() {
-    if (TextMarkerBasic_Type.featOkTst
-            && ((TextMarkerBasic_Type) jcasType).casFeat_replacement == null)
-      jcasType.jcas.throwFeatMissing("replacement",
-              "org.apache.uima.textmarker.type.TextMarkerBasic");
-    return jcasType.ll_cas.ll_getStringValue(addr,
-            ((TextMarkerBasic_Type) jcasType).casFeatCode_replacement);
-  }
-
+    if (TextMarkerBasic_Type.featOkTst && ((TextMarkerBasic_Type)jcasType).casFeat_replacement == null)
+      jcasType.jcas.throwFeatMissing("replacement", "org.apache.uima.textmarker.type.TextMarkerBasic");
+    return jcasType.ll_cas.ll_getStringValue(addr, ((TextMarkerBasic_Type)jcasType).casFeatCode_replacement);}
+    
   /**
    * setter for Replacement - sets
    * 
    * @generated
    */
   public void setReplacement(String v) {
-    if (TextMarkerBasic_Type.featOkTst
-            && ((TextMarkerBasic_Type) jcasType).casFeat_replacement == null)
-      jcasType.jcas.throwFeatMissing("replacement",
-              "org.apache.uima.textmarker.type.TextMarkerBasic");
-    jcasType.ll_cas.ll_setStringValue(addr,
-            ((TextMarkerBasic_Type) jcasType).casFeatCode_replacement, v);
-  }
-
-  public Map<Type, Set<AnnotationFS>> getEndMap() {
+    if (TextMarkerBasic_Type.featOkTst && ((TextMarkerBasic_Type)jcasType).casFeat_replacement == null)
+      jcasType.jcas.throwFeatMissing("replacement", "org.apache.uima.textmarker.type.TextMarkerBasic");
+    jcasType.ll_cas.ll_setStringValue(addr, ((TextMarkerBasic_Type)jcasType).casFeatCode_replacement, v);}    
+      public Map<Type, Set<AnnotationFS>> getEndMap() {
     return endMap;
   }
 

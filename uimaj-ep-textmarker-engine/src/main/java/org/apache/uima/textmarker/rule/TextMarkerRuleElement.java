@@ -64,30 +64,32 @@ public class TextMarkerRuleElement extends AbstractRuleElement {
         extendedContainerMatch = containerMatch.copy();
         extendedMatch = ruleMatch.copy(extendedContainerMatch);
       }
-      doMatch(eachAnchor, extendedMatch, extendedContainerMatch, stream, crowd);
+      doMatch(eachAnchor, extendedMatch, extendedContainerMatch, true, stream, crowd);
       if (extendedMatch.matched()) {
+        RuleElement after = getContainer().getNextElement(true, this);
+        RuleElement before = getContainer().getNextElement(false, this);
+        TextMarkerRuleElement sideStepOrigin = hasAncestor(false) ? this : null;
         if (quantifier.continueMatch(true, eachAnchor, this, extendedMatch, extendedContainerMatch,
                 stream, crowd)) {
-          continueMatch(true, eachAnchor, extendedMatch, ruleApply, extendedContainerMatch, null,
-                  stream, crowd);
+          continueMatch(true, eachAnchor, extendedMatch, ruleApply, extendedContainerMatch,
+                  sideStepOrigin, null, stream, crowd);
         } else {
-          RuleElement after = getContainer().getNextElement(true, this);
-          RuleElement before = getContainer().getNextElement(false, this);
           if (after != null) {
+            sideStepOrigin = hasAncestor(false) ? this : null;
             after.continueMatch(true, eachAnchor, extendedMatch, ruleApply, extendedContainerMatch,
-                    null, stream, crowd);
-          }
-          // TODO add sidestep functionality here for dynamic anchoring
-          if (before != null) {
+                    sideStepOrigin, null, stream, crowd);
+          } else if (stream.isDynamicAnchoring() && before != null) {
+            sideStepOrigin = hasAncestor(true) ? this : null;
             before.continueMatch(false, eachAnchor, extendedMatch, ruleApply,
-                    extendedContainerMatch, null, stream, crowd);
+                    extendedContainerMatch, sideStepOrigin, null, stream, crowd);
           }
 
           if (after == null && before == null) {
             if (getContainer() instanceof ComposedRuleElement) {
+              sideStepOrigin = hasAncestor(false) ? this : null;
               ComposedRuleElement composed = (ComposedRuleElement) getContainer();
               composed.fallbackContinue(true, false, eachAnchor, extendedMatch, ruleApply,
-                      extendedContainerMatch, entryPoint, stream, crowd);
+                      extendedContainerMatch, sideStepOrigin, entryPoint, stream, crowd);
 
             } else if (getContainer() instanceof RuleElementIsolator) {
               // TODO move and refactor this:
@@ -99,7 +101,7 @@ public class TextMarkerRuleElement extends AbstractRuleElement {
         if (getContainer() instanceof ComposedRuleElement) {
           ComposedRuleElement composed = (ComposedRuleElement) getContainer();
           composed.fallbackContinue(true, true, eachAnchor, extendedMatch, ruleApply,
-                  extendedContainerMatch, null, stream, crowd);
+                  extendedContainerMatch, null, null, stream, crowd);
 
         }
       }
@@ -109,14 +111,15 @@ public class TextMarkerRuleElement extends AbstractRuleElement {
 
   @Override
   public void continueMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
-          RuleApply ruleApply, ComposedRuleElementMatch containerMatch, RuleElement entryPoint,
-          TextMarkerStream stream, InferenceCrowd crowd) {
+          RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
+          TextMarkerRuleElement sideStepOrigin, RuleElement entryPoint, TextMarkerStream stream,
+          InferenceCrowd crowd) {
     // if() for really lazy quantifiers
     if (quantifier.continueMatch(after, annotation, this, ruleMatch, containerMatch, stream, crowd)) {
       Collection<AnnotationFS> nextAnnotations = getNextAnnotations(after, annotation, stream);
       if (nextAnnotations.isEmpty()) {
-        stepbackMatch(after, annotation, ruleMatch, ruleApply, containerMatch, stream, crowd,
-                entryPoint);
+        stepbackMatch(after, annotation, ruleMatch, ruleApply, containerMatch, sideStepOrigin,
+                stream, crowd, entryPoint);
       }
       boolean useAlternatives = entryPoint == null; // nextAnnotations.size() > 1;
       for (AnnotationFS eachAnchor : nextAnnotations) {
@@ -127,7 +130,7 @@ public class TextMarkerRuleElement extends AbstractRuleElement {
           extendedMatch = ruleMatch.copy(extendedContainerMatch);
         }
 
-        doMatch(eachAnchor, extendedMatch, extendedContainerMatch, stream, crowd);
+        doMatch(eachAnchor, extendedMatch, extendedContainerMatch, false, stream, crowd);
 
         if (this.equals(entryPoint)) {
           return;
@@ -136,32 +139,33 @@ public class TextMarkerRuleElement extends AbstractRuleElement {
           if (quantifier.continueMatch(after, annotation, this, extendedMatch,
                   extendedContainerMatch, stream, crowd)) {
             continueMatch(after, eachAnchor, extendedMatch, ruleApply, extendedContainerMatch,
-                    entryPoint, stream, crowd);
+                    sideStepOrigin, entryPoint, stream, crowd);
           } else {
             RuleElement nextRuleElement = getContainer().getNextElement(after, this);
             if (nextRuleElement != null) {
               nextRuleElement.continueMatch(after, eachAnchor, extendedMatch, ruleApply,
-                      extendedContainerMatch, null, stream, crowd);
+                      extendedContainerMatch, sideStepOrigin, null, stream, crowd);
             } else if (getContainer() instanceof ComposedRuleElement) {
               ComposedRuleElement composed = (ComposedRuleElement) getContainer();
               composed.fallbackContinue(after, false, eachAnchor, extendedMatch, ruleApply,
-                      extendedContainerMatch, entryPoint, stream, crowd);
+                      extendedContainerMatch, sideStepOrigin, entryPoint, stream, crowd);
             }
           }
         } else {
           stepbackMatch(after, annotation, extendedMatch, ruleApply, extendedContainerMatch,
-                  stream, crowd, entryPoint);
+                  sideStepOrigin, stream, crowd, entryPoint);
         }
       }
     } else {
-      stepbackMatch(after, annotation, ruleMatch, ruleApply, containerMatch, stream, crowd,
-              entryPoint);
+      stepbackMatch(after, annotation, ruleMatch, ruleApply, containerMatch, sideStepOrigin,
+              stream, crowd, entryPoint);
     }
   }
 
   private void stepbackMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
-          RuleApply ruleApply, ComposedRuleElementMatch containerMatch, TextMarkerStream stream,
-          InferenceCrowd crowd, RuleElement entryPoint) {
+          RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
+          TextMarkerRuleElement sideStepOrigin, TextMarkerStream stream, InferenceCrowd crowd,
+          RuleElement entryPoint) {
     if (ruleApply == null) {
       return;
     }
@@ -172,11 +176,11 @@ public class TextMarkerRuleElement extends AbstractRuleElement {
         RuleElement nextRuleElement = getContainer().getNextElement(after, this);
         if (nextRuleElement != null) {
           nextRuleElement.continueMatch(after, annotation, ruleMatch, ruleApply, containerMatch,
-                  null, stream, crowd);
+                  sideStepOrigin, null, stream, crowd);
         } else if (getContainer() instanceof ComposedRuleElement) {
           ComposedRuleElement composed = (ComposedRuleElement) getContainer();
           composed.fallbackContinue(after, true, annotation, ruleMatch, ruleApply, containerMatch,
-                  entryPoint, stream, crowd);
+                  sideStepOrigin, entryPoint, stream, crowd);
         }
       } else if (getContainer() instanceof ComposedRuleElement) {
         RuleElementMatch failedMatch = new RuleElementMatch(this, containerMatch);
@@ -184,7 +188,7 @@ public class TextMarkerRuleElement extends AbstractRuleElement {
         containerMatch.addInnerMatch(this, failedMatch);
         ComposedRuleElement composed = (ComposedRuleElement) getContainer();
         composed.fallbackContinue(after, true, annotation, ruleMatch, ruleApply, containerMatch,
-                null, stream, crowd);
+                sideStepOrigin, null, stream, crowd);
       }
     } else {
       List<RuleElementMatch> evaluateMatches = quantifier.evaluateMatches(matchInfo, parent, crowd);
@@ -193,22 +197,67 @@ public class TextMarkerRuleElement extends AbstractRuleElement {
         RuleElement nextRuleElement = getContainer().getNextElement(after, this);
         if (nextRuleElement != null) {
           nextRuleElement.continueMatch(after, annotation, ruleMatch, ruleApply, containerMatch,
-                  null, stream, crowd);
+                  sideStepOrigin, null, stream, crowd);
         } else {
           if (getContainer() instanceof ComposedRuleElement) {
             ComposedRuleElement composed = (ComposedRuleElement) getContainer();
             composed.fallbackContinue(after, true, annotation, ruleMatch, ruleApply,
-                    containerMatch, null, stream, crowd);
+                    containerMatch, sideStepOrigin, null, stream, crowd);
           }
         }
       }
     }
   }
 
+  public void continueSideStep(boolean after, RuleMatch ruleMatch, RuleApply ruleApply,
+          ComposedRuleElementMatch containerMatch, RuleElement entryPoint, TextMarkerStream stream,
+          InferenceCrowd crowd) {
+    boolean newDirection = !after;
+
+    List<AnnotationFS> matchedAnnotationsOf = ruleMatch.getMatchedAnnotationsOf(this, stream);
+    AnnotationFS annotation = null;
+    if (newDirection) {
+      annotation = matchedAnnotationsOf.get(matchedAnnotationsOf.size() - 1);
+    } else {
+      annotation = matchedAnnotationsOf.get(0);
+    }
+    ComposedRuleElementMatch sideStepContainerMatch = containerMatch;
+    if (!containerMatch.getRuleElement().equals(getContainer())) {
+      List<List<RuleElementMatch>> matchInfo = ruleMatch
+              .getMatchInfo((ComposedRuleElement) getContainer());
+      if (newDirection) {
+        List<RuleElementMatch> list = matchInfo.get(matchInfo.size() - 1);
+        sideStepContainerMatch = (ComposedRuleElementMatch) list.get(list.size() - 1);
+      } else {
+        List<RuleElementMatch> list = matchInfo.get(0);
+        sideStepContainerMatch = (ComposedRuleElementMatch) list.get(0);
+      }
+    }
+
+    if (quantifier.continueMatch(newDirection, annotation, this, ruleMatch, sideStepContainerMatch,
+            stream, crowd)) {
+      continueMatch(newDirection, annotation, ruleMatch, ruleApply, sideStepContainerMatch, null,
+              entryPoint, stream, crowd);
+    } else {
+      RuleElement nextRuleElement = getContainer().getNextElement(newDirection, this);
+      if (nextRuleElement != null) {
+        nextRuleElement.continueMatch(newDirection, annotation, ruleMatch, ruleApply,
+                sideStepContainerMatch, null, null, stream, crowd);
+      } else if (getContainer() instanceof ComposedRuleElement) {
+        ComposedRuleElement composed = (ComposedRuleElement) getContainer();
+        composed.fallbackContinue(newDirection, false, annotation, ruleMatch, ruleApply,
+                sideStepContainerMatch, null, entryPoint, stream, crowd);
+      }
+    }
+
+  }
+
   private void doMatch(AnnotationFS annotation, RuleMatch ruleMatch,
-          ComposedRuleElementMatch containerMatch, TextMarkerStream stream, InferenceCrowd crowd) {
+          ComposedRuleElementMatch containerMatch, boolean ruleAnchor, TextMarkerStream stream,
+          InferenceCrowd crowd) {
     // TODO rewite this method!
     RuleElementMatch result = new RuleElementMatch(this, containerMatch);
+    result.setRuleAnchor(ruleAnchor);
     List<EvaluatedCondition> evaluatedConditions = new ArrayList<EvaluatedCondition>(
             conditions.size());
     boolean base = matcher.match(annotation, stream, getParent());

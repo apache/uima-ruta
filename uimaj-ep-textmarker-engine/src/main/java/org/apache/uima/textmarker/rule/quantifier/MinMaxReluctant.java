@@ -61,40 +61,17 @@ public class MinMaxReluctant implements RuleElementQuantifier {
     return max;
   }
 
-  // @Override
-  // public boolean continueMatch(int index, List<RuleElement> elements, TextMarkerBasic next,
-  // RuleElementMatch match, List<RuleElementMatch> matches, TextMarkerStream stream,
-  // InferenceCrowd crowd) {
-  // if (next == null)
-  // return false;
-  // int minValue = min.getIntegerValue(elements.get(index).getParent());
-  // int maxValue = max.getIntegerValue(elements.get(index).getParent());
-  // int matchedSize = matches.size();
-  // boolean result = true;
-  // if (index == elements.size() - 1 && matchedSize == minValue) {
-  // // reluctant = minimal ... last element needs to match only once.
-  // return false;
-  // }
-  // if (minValue <= matchedSize) {
-  // if (index + 1 < elements.size()) {
-  // RuleElement element = elements.get(index + 1);
-  // // RuleElementMatch nextMatch = element.startMatch(next, null, stream, crowd);
-  // // if (nextMatch.matched()) {
-  // // result = false;
-  // // }
-  // }
-  // }
-  // if (matchedSize >= maxValue) {
-  // result = false;
-  // }
-  // return result;
-  //
-  // }
   @Override
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
           TextMarkerStatement element, InferenceCrowd crowd) {
     int minValue = min.getIntegerValue(element.getParent());
     int maxValue = max.getIntegerValue(element.getParent());
+    if (matches.size() > 0) {
+      RuleElementMatch ruleElementMatch = matches.get(matches.size() - 1);
+      if (!ruleElementMatch.matched()) {
+        matches.remove(ruleElementMatch);
+      }
+    }
     int matchedSize = matches.size();
     boolean result = matchedSize >= minValue && matchedSize <= maxValue;
     if (result) {
@@ -106,14 +83,44 @@ public class MinMaxReluctant implements RuleElementQuantifier {
 
   @Override
   public boolean continueMatch(boolean after, AnnotationFS annotation, RuleElement ruleElement,
-          RuleMatch extendedMatch, ComposedRuleElementMatch containerMatch,
-          TextMarkerStream stream, InferenceCrowd crowd) {
-    return false;
+          RuleMatch ruleMatch, ComposedRuleElementMatch containerMatch, TextMarkerStream stream,
+          InferenceCrowd crowd) {
+    int minValue = min.getIntegerValue(ruleElement.getParent());
+    int maxValue = max.getIntegerValue(ruleElement.getParent());
+    List<RuleElementMatch> list = containerMatch.getInnerMatches().get(ruleElement);
+    if (list == null && maxValue > 0) {
+      return true;
+    }
+
+    int matchedSize = list.size();
+    if (list == null || list.isEmpty() || matchedSize < minValue) {
+      return true;
+    }
+    RuleElementMatch lastMatch = null;
+    if (after) {
+      lastMatch = list.get(list.size() - 1);
+    } else {
+      lastMatch = list.get(0);
+    }
+
+    RuleElement nextElement = ruleElement.getContainer().getNextElement(after, ruleElement);
+    if (nextElement == null) {
+      return false;
+    }
+    ComposedRuleElementMatch extendedContainerMatch = containerMatch.copy();
+    RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch);
+    nextElement.continueMatch(after, annotation, extendedMatch, null, extendedContainerMatch, null,
+            nextElement, stream, crowd);
+    List<RuleElementMatch> nextList = extendedContainerMatch.getInnerMatches().get(nextElement);
+    boolean nextMatched = (nextList == null || nextList.isEmpty());
+
+    return matchedSize < maxValue
+            || (!lastMatch.matched() && matchedSize >= minValue && matchedSize <= maxValue && !nextMatched);
   }
 
   @Override
   public boolean isOptional(TextMarkerBlock parent) {
     int minValue = min.getIntegerValue(parent);
-    return minValue > 0;
+    return minValue == 0;
   }
 }

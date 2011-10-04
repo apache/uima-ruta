@@ -28,12 +28,12 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.junit.Test;
 
-public class RuleInferenceTest {
+public class DynamicAnchoringTest {
 
   @Test
   public void test() {
-    String name = this.getClass().getSimpleName();
-    String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
+    String name = RuleInferenceTest.class.getSimpleName();
+    String namespace = RuleInferenceTest.class.getPackage().getName().replaceAll("\\.", "/");
     CAS cas = null;
     try {
       cas = TextMarkerTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name

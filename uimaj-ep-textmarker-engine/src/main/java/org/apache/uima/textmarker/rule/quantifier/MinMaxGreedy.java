@@ -53,17 +53,6 @@ public class MinMaxGreedy implements RuleElementQuantifier {
     }
   }
 
-  // @Override
-  // public boolean continueMatch(int index, List<RuleElement> elements, TextMarkerBasic next,
-  // RuleElementMatch match, List<RuleElementMatch> matches, TextMarkerStream stream,
-  // InferenceCrowd crowd) {
-  // int minValue = min.getIntegerValue(elements.get(index).getParent());
-  // int maxValue = max.getIntegerValue(elements.get(index).getParent());
-  // int matchedSize = matches.size();
-  // return matchedSize < maxValue
-  // || (!match.matched() && matchedSize >= minValue && matchedSize <= maxValue);
-  // }
-
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
           TextMarkerStatement element, InferenceCrowd crowd) {
     int minValue = min.getIntegerValue(element.getParent());
@@ -105,7 +94,7 @@ public class MinMaxGreedy implements RuleElementQuantifier {
       return true;
     }
     int matchedSize = list.size();
-    if (list == null || list.isEmpty() || matchedSize < maxValue) {
+    if (list == null || list.isEmpty() || matchedSize < minValue) {
       return true;
     }
     RuleElementMatch lastMatch = null;

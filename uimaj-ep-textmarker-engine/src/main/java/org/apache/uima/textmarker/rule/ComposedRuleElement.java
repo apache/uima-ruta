@@ -68,26 +68,29 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
 
   @Override
   public void continueMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
-          RuleApply ruleApply, ComposedRuleElementMatch containerMatch, RuleElement entryPoint,
-          TextMarkerStream stream, InferenceCrowd crowd) {
+          RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
+          TextMarkerRuleElement sideStepOrigin, RuleElement entryPoint, TextMarkerStream stream,
+          InferenceCrowd crowd) {
+    // TODO: this method cannot be correct!!!!
     RuleElement nextElement = getNextElement(after, this);
     ComposedRuleElementMatch composedMatch = createComposedMatch(ruleMatch, containerMatch);
-    nextElement.continueMatch(after, annotation, ruleMatch, ruleApply, composedMatch, null, stream,
-            crowd);
+    nextElement.continueMatch(after, annotation, ruleMatch, ruleApply, composedMatch,
+            sideStepOrigin, entryPoint, stream, crowd);
 
   }
 
   public void fallbackContinue(boolean after, boolean failed, AnnotationFS annotation,
           RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
-          RuleElement entryPoint, TextMarkerStream stream, InferenceCrowd crowd) {
+          TextMarkerRuleElement sideStepOrigin, RuleElement entryPoint, TextMarkerStream stream,
+          InferenceCrowd crowd) {
     RuleElementContainer container = getContainer();
     doMatch(containerMatch, stream, crowd);
     if (this.equals(entryPoint)) {
       return;
     }
     if (container == null) {
-      fallback(after, failed, annotation, ruleMatch, ruleApply, containerMatch, entryPoint, stream,
-              crowd);
+      fallback(after, failed, annotation, ruleMatch, ruleApply, containerMatch, sideStepOrigin,
+              entryPoint, stream, crowd);
     } else {
       ComposedRuleElementMatch parentContainerMatch = containerMatch.getContainerMatch();
       RuleElement nextElement = container.getNextElement(after, this);
@@ -99,26 +102,26 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
           AnnotationFS backtrackedAnnotation = getBacktrackedAnnotation(evaluateMatches);
           if (backtrackedAnnotation != null) {
             nextElement.continueMatch(after, backtrackedAnnotation, ruleMatch, ruleApply,
-                    parentContainerMatch, null, stream, crowd);
+                    parentContainerMatch, sideStepOrigin, null, stream, crowd);
           } else {
             fallback(after, failed, annotation, ruleMatch, ruleApply, parentContainerMatch,
-                    entryPoint, stream, crowd);
+                    sideStepOrigin, entryPoint, stream, crowd);
           }
         } else {
           fallback(after, failed, annotation, ruleMatch, ruleApply, parentContainerMatch,
-                  entryPoint, stream, crowd);
+                  sideStepOrigin, entryPoint, stream, crowd);
         }
       } else {
         if (quantifier.continueMatch(after, annotation, this, ruleMatch, parentContainerMatch,
                 stream, crowd)) {
-          continueMatch(after, annotation, ruleMatch, ruleApply, parentContainerMatch, null,
-                  stream, crowd);
+          continueMatch(after, annotation, ruleMatch, ruleApply, parentContainerMatch,
+                  sideStepOrigin, null, stream, crowd);
         } else if (nextElement != null) {
           nextElement.continueMatch(after, annotation, ruleMatch, ruleApply, parentContainerMatch,
-                  null, stream, crowd);
+                  sideStepOrigin, null, stream, crowd);
         } else {
           fallback(after, failed, annotation, ruleMatch, ruleApply, parentContainerMatch,
-                  entryPoint, stream, crowd);
+                  sideStepOrigin, entryPoint, stream, crowd);
         }
       }
     }
@@ -128,6 +131,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     if (evaluateMatches == null) {
       return null;
     }
+    // TODO both directions!
     List<AnnotationFS> textsMatched = evaluateMatches.get(evaluateMatches.size() - 1)
             .getTextsMatched();
     AnnotationFS backtrackedAnnotation = textsMatched.get(textsMatched.size() - 1);
@@ -136,15 +140,17 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
 
   private void fallback(boolean after, boolean failed, AnnotationFS annotation,
           RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
-          RuleElement entryPoint, TextMarkerStream stream, InferenceCrowd crowd) {
-    Object sidestep = null;
+          TextMarkerRuleElement sideStepOrigin, RuleElement entryPoint, TextMarkerStream stream,
+          InferenceCrowd crowd) {
     RuleElementContainer parentContainer = getContainer();
     if (parentContainer instanceof ComposedRuleElement) {
       ComposedRuleElement parentElement = (ComposedRuleElement) parentContainer;
       parentElement.fallbackContinue(after, failed, annotation, ruleMatch, ruleApply,
-              containerMatch, entryPoint, stream, crowd);
-    } else if (sidestep != null) {
-      // TODO call sidestep
+              containerMatch, sideStepOrigin, entryPoint, stream, crowd);
+    } else if (sideStepOrigin != null) {
+      // System.out.println("SIDESTEP: " + sideStepOrigin);
+      sideStepOrigin.continueSideStep(after, ruleMatch, ruleApply, containerMatch, entryPoint,
+              stream, crowd);
     } else {
       doneMatching(ruleMatch, ruleApply, stream, crowd);
     }
@@ -193,7 +199,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     for (RuleElement each : elements) {
       result += each.estimateAnchors(stream);
     }
-    return result / elements.size();
+    return result;
   }
 
   @Override

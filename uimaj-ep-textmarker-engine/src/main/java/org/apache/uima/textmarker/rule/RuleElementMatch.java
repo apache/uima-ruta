@@ -38,6 +38,8 @@ public class RuleElementMatch {
 
   protected ComposedRuleElementMatch containerMatch;
 
+  private boolean ruleAnchor = false;
+
   public RuleElementMatch(RuleElement ruleElement, ComposedRuleElementMatch containerMatch) {
     super();
     this.ruleElement = ruleElement;
@@ -125,6 +127,15 @@ public class RuleElementMatch {
     copy.setConditions(conditions);
     copy.setConditionsMatched(conditionsMatched);
     copy.setTextsMatched(textsMatched);
+    copy.setRuleAnchor(ruleAnchor);
     return copy;
+  }
+
+  public boolean isRuleAnchor() {
+    return ruleAnchor;
+  }
+
+  public void setRuleAnchor(boolean ruleAnchor) {
+    this.ruleAnchor = ruleAnchor;
   }
 }
