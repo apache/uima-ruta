@@ -17,6 +17,7 @@
   specific language governing permissions and limitations
   under the License.
 -->
+
 <typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <name>InternalTypeSystem</name>
   <description/>
@@ -140,6 +141,13 @@
           <rangeTypeName>uima.cas.FSArray</rangeTypeName>
           <elementType>org.apache.uima.textmarker.type.DebugEvaluatedCondition</elementType>
         </featureDescription>
+        <featureDescription>
+          <name>elements</name>
+          <description/>
+          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
+          <elementType>org.apache.uima.textmarker.type.DebugRuleElementMatches</elementType>
+          <multipleReferencesAllowed>false</multipleReferencesAllowed>
+        </featureDescription>
       </features>
     </typeDescription>
     <typeDescription>
@@ -157,6 +165,11 @@
           <name>element</name>
           <description/>
           <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>ruleAnchor</name>
+          <description/>
+          <rangeTypeName>uima.cas.Boolean</rangeTypeName>
         </featureDescription>
       </features>
     </typeDescription>
