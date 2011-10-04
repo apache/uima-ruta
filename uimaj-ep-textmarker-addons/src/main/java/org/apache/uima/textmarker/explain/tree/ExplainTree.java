@@ -58,6 +58,8 @@ public class ExplainTree {
 
   public static final String ELEMENT = "element";
 
+  public static final String RULE_ANCHOR = "ruleAnchor";
+
   public static final String TIME = "time";
 
   private IExplainTreeNode root;

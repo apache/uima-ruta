@@ -71,15 +71,18 @@ public class ElementTreeLabelProvider extends LabelProvider implements ILabelPro
         Type type = ts.getType(ExplainConstants.RULE_ELEMENT_MATCHES_TYPE);
         FeatureStructure fs = debugNode.getFeatureStructure();
         Feature f = type.getFeatureByBaseName(ExplainTree.ELEMENT);
-        if (f != null) {
+        Feature fanchor = type.getFeatureByBaseName(ExplainTree.RULE_ANCHOR);
+        if (f != null && fanchor != null) {
           String v = fs.getStringValue(f);
-          return v;
+          String ruleAnchor = fs.getBooleanValue(fanchor) ? "'" : "";
+          return ruleAnchor + v;
         }
       } else if (element instanceof RuleElementMatchNode) {
         FeatureStructure fs = debugNode.getFeatureStructure();
         if (fs instanceof AnnotationFS) {
           String s = ((AnnotationFS) fs).getCoveredText();
           s = s.replaceAll("[\\n\\r]", "");
+
           return s;
         }
       } else if (element instanceof ConditionNode) {
