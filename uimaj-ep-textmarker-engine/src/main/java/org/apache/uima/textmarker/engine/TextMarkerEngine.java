@@ -46,8 +46,11 @@ import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceManager;
+import org.apache.uima.resource.metadata.ConfigurationParameter;
+import org.apache.uima.resource.metadata.ConfigurationParameterDeclarations;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.textmarker.FilterManager;
 import org.apache.uima.textmarker.TextMarkerModule;
@@ -69,6 +72,8 @@ import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
 
 public class TextMarkerEngine extends JCasAnnotator_ImplBase {
+
+  public static final String SOURCE_DOCUMENT_INFORMATION = "org.apache.uima.examples.SourceDocumentInformation";
 
   public static final String BASIC_TYPE = "org.apache.uima.textmarker.type.TextMarkerBasic";
 
@@ -102,15 +107,9 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
 
   public static final String CREATE_MATCH_DEBUG_INFO = "debugWithMatches";
 
-  public static final String CREATE_STYLE_MAP = "style";
-
-  public static final String STYLE_MAP = "styleMap";
-
   public static final String RESOURCE_PATHS = "resourcePaths";
 
   public static final String SCRIPT_ENCODING = "scriptEncoding";
-
-  public static final String MODIFIED_SOFA = "modified";
 
   public static final String DEFAULT_FILTERED_TYPES = "defaultFilteredTypes";
 
@@ -132,8 +131,6 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
 
   private String styleMapLocation;
 
-  private Boolean createStyleMap;
-
   private Boolean withMatches;
 
   private String[] resourcePaths;
@@ -143,8 +140,6 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
   private UimaContext context;
 
   private TextMarkerModule script;
-
-  private StyleMapFactory styleMapFactory;
 
   private String[] additionalScriptLocations;
 
@@ -199,15 +194,12 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     createProfilingInfo = (Boolean) aContext.getConfigParameterValue(CREATE_PROFILING_INFO);
     createStatisticInfo = (Boolean) aContext.getConfigParameterValue(CREATE_STATISTIC_INFO);
     withMatches = (Boolean) aContext.getConfigParameterValue(CREATE_MATCH_DEBUG_INFO);
-    createStyleMap = (Boolean) aContext.getConfigParameterValue(CREATE_STYLE_MAP);
-    styleMapLocation = (String) aContext.getConfigParameterValue(STYLE_MAP);
+
     resourcePaths = (String[]) aContext.getConfigParameterValue(RESOURCE_PATHS);
     scriptEncoding = (String) aContext.getConfigParameterValue(SCRIPT_ENCODING);
     defaultFilteredTypes = (String[]) aContext.getConfigParameterValue(DEFAULT_FILTERED_TYPES);
     defaultFilteredMarkups = (String[]) aContext.getConfigParameterValue(DEFAULT_FILTERED_MARKUPS);
     dynamicAnchoring = (Boolean) aContext.getConfigParameterValue(DYNAMIC_ANCHORING);
-
-    styleMapFactory = new StyleMapFactory();
 
     removeBasics = removeBasics == null ? false : removeBasics;
     createDebugInfo = createDebugInfo == null ? false : createDebugInfo;
@@ -215,7 +207,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     createProfilingInfo = createProfilingInfo == null ? false : createProfilingInfo;
     createStatisticInfo = createStatisticInfo == null ? false : createStatisticInfo;
     withMatches = withMatches == null ? true : withMatches;
-    createStyleMap = createStyleMap == null ? true : createStyleMap;
+
     scriptEncoding = scriptEncoding == null ? "UTF-8" : scriptEncoding;
     defaultFilteredTypes = defaultFilteredTypes == null ? new String[0] : defaultFilteredTypes;
     defaultFilteredMarkups = defaultFilteredMarkups == null ? new String[0]
@@ -252,16 +244,6 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     }
     crowd.finished(stream);
 
-    if (createStyleMap) {
-      try {
-        String locate = locate(styleMapLocation, descriptorPaths, ".xml", false);
-        if (locate != null) {
-          styleMapFactory.createStyleMap(locate, stream);
-        }
-      } catch (IOException e) {
-        throw new AnalysisEngineProcessException(e);
-      }
-    }
     if (removeBasics) {
       List<AnnotationFS> toRemove = new ArrayList<AnnotationFS>();
       Type type = cas.getTypeSystem().getType(BASIC_TYPE);
@@ -417,6 +399,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
         String location = locate(eachEngineLocation, descriptorPaths, ".xml");
         try {
           AnalysisEngine eachEngine = engineLoader.loadEngine(location);
+          configureEngine(eachEngine);
           additionalEngines.put(eachEngineLocation, eachEngine);
         } catch (Exception e) {
           throw new AnalysisEngineProcessException(e);
@@ -439,6 +422,24 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
       each.setEngineDependencies(additionalEngines);
     }
     script.setEngineDependencies(additionalEngines);
+  }
+
+  private void configureEngine(AnalysisEngine engine) throws ResourceConfigurationException {
+    ConfigurationParameterDeclarations configurationParameterDeclarations = engine
+            .getAnalysisEngineMetaData().getConfigurationParameterDeclarations();
+    ConfigurationParameter configurationParameter = configurationParameterDeclarations
+            .getConfigurationParameter(null, DESCRIPTOR_PATHS);
+    if (configurationParameter != null) {
+      engine.setConfigParameterValue(DESCRIPTOR_PATHS, descriptorPaths);
+      engine.reconfigure();
+    }
+    configurationParameter = configurationParameterDeclarations.getConfigurationParameter(null,
+            StyleMapCreator.STYLE_MAP);
+    if (configurationParameter != null) {
+      engine.setConfigParameterValue(StyleMapCreator.STYLE_MAP, mainScript + "StyleMap");
+      engine.reconfigure();
+    }
+
   }
 
   public static void addSourceDocumentInformation(CAS cas, File each) {
@@ -475,7 +476,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
   }
 
   public static String locate(String name, String[] paths, String suffix, boolean mustExist) {
-    if (name == null) {
+    if (name == null || paths == null) {
       return null;
     }
     name = name.replaceAll("[.]", "/");

@@ -39,7 +39,6 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.type.TextMarkerColoring;
 import org.apache.uima.tools.stylemap.ColorParser;
 import org.apache.uima.tools.stylemap.StyleMapEntry;
@@ -118,8 +117,8 @@ public class StyleMapFactory {
     colorNameMap.put("mediumpurple", "#9370db");
   }
 
-  public void createStyleMap(String styleMapLocation, TextMarkerStream stream) throws IOException {
-    List<StyleMapEntry> styleList = createStyleList(stream);
+  public void createStyleMap(String styleMapLocation, JCas jcas) throws IOException {
+    List<StyleMapEntry> styleList = createStyleList(jcas);
     String styleXml = createStyleXml(styleList);
     writeStyleFile(styleXml, styleMapLocation);
   }
@@ -188,11 +187,10 @@ public class StyleMapFactory {
     FileUtils.saveString2File(output, file);
   }
 
-  private List<StyleMapEntry> createStyleList(TextMarkerStream stream) {
+  private List<StyleMapEntry> createStyleList(JCas jcas) {
     List<StyleMapEntry> result = new ArrayList<StyleMapEntry>();
-    JCas cas = stream.getJCas();
-    Type type = cas.getCasType(TextMarkerColoring.type);
-    FSIterator<FeatureStructure> iterator = cas.getFSIndexRepository().getAllIndexedFS(type);
+    Type type = jcas.getCasType(TextMarkerColoring.type);
+    FSIterator<FeatureStructure> iterator = jcas.getFSIndexRepository().getAllIndexedFS(type);
     while (iterator.hasNext()) {
       TextMarkerColoring each = (TextMarkerColoring) iterator.next();
       StyleMapEntry entry = new StyleMapEntry();

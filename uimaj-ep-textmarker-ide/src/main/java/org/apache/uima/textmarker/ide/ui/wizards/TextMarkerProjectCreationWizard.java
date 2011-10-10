@@ -27,6 +27,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.uima.textmarker.engine.TextMarkerEngine;
 import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
 import org.apache.uima.textmarker.ide.ui.TextMarkerImages;
 import org.eclipse.core.resources.IFolder;
@@ -113,6 +114,11 @@ public class TextMarkerProjectCreationWizard extends NewElementWizard implements
       CoreUtility.createFolder(rsrcFolder, true, true, new SubProgressMonitor(monitor, 1));
     }
 
+    IFolder utilsFolder = descFolder.getFolder("utils");
+    if (!utilsFolder.exists()) {
+      CoreUtility.createFolder(utilsFolder, true, true, new SubProgressMonitor(monitor, 1));
+    }
+
     List<BPListElement> buildpathEntries = new ArrayList<BPListElement>();
     for (IBuildpathEntry buildpathEntry : fSecondPage.getRawBuildPath()) {
       BPListElement createFromExisting = BPListElement.createFromExisting(buildpathEntry,
@@ -124,14 +130,9 @@ public class TextMarkerProjectCreationWizard extends NewElementWizard implements
     IBuildpathEntry newSourceEntry = DLTKCore.newSourceEntry(srcFolder.getFullPath());
     buildpathEntries.add(BPListElement.createFromExisting(newSourceEntry,
             fSecondPage.getScriptProject()));
-    // IBuildpathEntry newSourceEntry = DLTKCore.newSourceEntry(descFolder
-    // .getFullPath());
-    // buildpathEntries.add(BPListElement.createFromExisting(newSourceEntry,
-    // fSecondPage.getScriptProject()));
 
     BuildpathsBlock.flush(buildpathEntries, fSecondPage.getScriptProject(), monitor);
     copyDescriptors(descFolder);
-    // modifyDescriptors(descFolder, rsrcFolder);
 
     TextMarkerProjectUtils.setProjectDataPath(project, descFolder);
 
@@ -139,54 +140,56 @@ public class TextMarkerProjectCreationWizard extends NewElementWizard implements
 
   }
 
-  // private void modifyDescriptors(IFolder descFolder, IFolder rsrcFolder) {
-  // File beFile = new File(descFolder.getLocation().toFile(), "BasicEngine.xml");
-  // try {
-  // AnalysisEngineDescription beDescription = UIMAFramework.getXMLParser()
-  // .parseAnalysisEngineDescription(new XMLInputSource(beFile));
-  // String resourcesLocation = rsrcFolder.getRawLocation().makeAbsolute().toFile()
-  // .getAbsolutePath();
-  // beDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
-  // .setParameterValue(TextMarkerEngine.RESOURCES_LOCATION, resourcesLocation);
-  // OutputStream out = new FileOutputStream(beFile);
-  // XMLSerializer sax = new XMLSerializer(out);
-  // ContentHandler ch = sax.getContentHandler();
-  // ch.startDocument();
-  // beDescription.toXML(ch);
-  // ch.endDocument();
-  // } catch (Exception e) {
-  // e.printStackTrace();
-  // }
-  // }
-
   private void copyDescriptors(IFolder descFolder) {
     InputStream in = null;
     OutputStream out = null;
     try {
-      in = this.getClass().getResourceAsStream("BasicTypeSystem.xml");
+      in = TextMarkerEngine.class.getResourceAsStream("BasicTypeSystem.xml");
       out = new FileOutputStream(new File(descFolder.getLocation().toFile(), "BasicTypeSystem.xml"));
       if (in != null && out != null) {
         copy(in, out);
       }
 
-      in = this.getClass().getResourceAsStream("BasicEngine.xml");
+      in = TextMarkerEngine.class.getResourceAsStream("BasicEngine.xml");
       out = new FileOutputStream(new File(descFolder.getLocation().toFile(), "BasicEngine.xml"));
       if (in != null && out != null) {
         copy(in, out);
       }
 
-      in = this.getClass().getResourceAsStream("Modifier.xml");
-      out = new FileOutputStream(new File(descFolder.getLocation().toFile(), "Modifier.xml"));
-      if (in != null && out != null) {
-        copy(in, out);
-      }
-
-      in = this.getClass().getResourceAsStream("InternalTypeSystem.xml");
+      in = TextMarkerEngine.class.getResourceAsStream("InternalTypeSystem.xml");
       out = new FileOutputStream(new File(descFolder.getLocation().toFile(),
               "InternalTypeSystem.xml"));
       if (in != null && out != null) {
         copy(in, out);
       }
+
+      File utilsDir = new File(descFolder.getLocation().toFile(), "utils/");
+      in = TextMarkerEngine.class.getResourceAsStream("Modifier.xml");
+      out = new FileOutputStream(new File(utilsDir, "Modifier.xml"));
+      if (in != null && out != null) {
+        copy(in, out);
+      }
+      in = TextMarkerEngine.class.getResourceAsStream("AnnotationWriter.xml");
+      out = new FileOutputStream(new File(utilsDir, "AnnotationWriter.xml"));
+      if (in != null && out != null) {
+        copy(in, out);
+      }
+      in = TextMarkerEngine.class.getResourceAsStream("StyleMapCreator.xml");
+      out = new FileOutputStream(new File(utilsDir, "StyleMapCreator.xml"));
+      if (in != null && out != null) {
+        copy(in, out);
+      }
+      in = TextMarkerEngine.class.getResourceAsStream("XMIWriter.xml");
+      out = new FileOutputStream(new File(utilsDir, "XMIWriter.xml"));
+      if (in != null && out != null) {
+        copy(in, out);
+      }
+      in = TextMarkerEngine.class.getResourceAsStream("SourceDocumentInformation.xml");
+      out = new FileOutputStream(new File(utilsDir, "SourceDocumentInformation.xml"));
+      if (in != null && out != null) {
+        copy(in, out);
+      }
+
     } catch (Exception e) {
       e.printStackTrace();
     } finally {

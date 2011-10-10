@@ -20,6 +20,7 @@
 package org.apache.uima.textmarker.engine;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -33,13 +34,19 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FSIterator;
+import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.tools.stylemap.StyleMapEntry;
+import org.apache.uima.util.FileUtils;
 
 public class TextMarkerModifier extends JCasAnnotator_ImplBase {
+  public static final String MODIFIED_SOFA = "modified";
+
+  private static final String OUTPUT_LOCATION = "outputLocation";
 
   private StyleMapFactory styleMapFactory;
 
@@ -47,7 +54,9 @@ public class TextMarkerModifier extends JCasAnnotator_ImplBase {
 
   private UimaContext context;
 
-  private String[] enginePaths;
+  private String[] descriptorPaths;
+
+  private String outputLocation;
 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
@@ -55,24 +64,12 @@ public class TextMarkerModifier extends JCasAnnotator_ImplBase {
     if (aContext == null && context != null) {
       aContext = context;
     }
-    styleMapLocation = (String) aContext.getConfigParameterValue(TextMarkerEngine.STYLE_MAP);
-    enginePaths = (String[]) aContext.getConfigParameterValue(TextMarkerEngine.DESCRIPTOR_PATHS);
+    styleMapLocation = (String) aContext.getConfigParameterValue(StyleMapCreator.STYLE_MAP);
+    descriptorPaths = (String[]) aContext
+            .getConfigParameterValue(TextMarkerEngine.DESCRIPTOR_PATHS);
+    outputLocation = (String) aContext.getConfigParameterValue(TextMarkerModifier.OUTPUT_LOCATION);
     styleMapFactory = new StyleMapFactory();
     this.context = aContext;
-  }
-
-  private String locate(String name, String[] paths, String suffix, boolean mustExist) {
-    if (name == null) {
-      return null;
-    }
-    name = name.replaceAll("[.]", "/");
-    for (String each : paths) {
-      File file = new File(each, name + suffix);
-      if (!mustExist || file.exists()) {
-        return file.getAbsolutePath();
-      }
-    }
-    return null;
   }
 
   @Override
@@ -86,7 +83,7 @@ public class TextMarkerModifier extends JCasAnnotator_ImplBase {
       Iterator<?> viewIterator = cas.getViewIterator();
       while (viewIterator.hasNext()) {
         JCas each = (JCas) viewIterator.next();
-        if (each.getViewName().equals(TextMarkerEngine.MODIFIED_SOFA)) {
+        if (each.getViewName().equals(MODIFIED_SOFA)) {
           modifiedView = each;
           break;
         }
@@ -94,24 +91,58 @@ public class TextMarkerModifier extends JCasAnnotator_ImplBase {
 
       if (modifiedView == null) {
         try {
-          modifiedView = cas.createView(TextMarkerEngine.MODIFIED_SOFA);
+          modifiedView = cas.createView(MODIFIED_SOFA);
         } catch (Exception e) {
-          modifiedView = cas.getView(TextMarkerEngine.MODIFIED_SOFA);
+          modifiedView = cas.getView(MODIFIED_SOFA);
         }
       } else {
-        modifiedView = cas.getView(TextMarkerEngine.MODIFIED_SOFA);
+        modifiedView = cas.getView(MODIFIED_SOFA);
       }
-      String locate = locate(styleMapLocation, enginePaths, ".xml", true);
-      // System.out.println(locate + ": " + styleMapLocation + " in " + Arrays.asList(enginePaths));
+      String locate = TextMarkerEngine.locate(styleMapLocation, descriptorPaths, ".xml", true);
       try {
         String modifiedDocument = getModifiedDocument(cas, locate);
         modifiedView.setDocumentText(modifiedDocument);
       } catch (Exception e) {
         throw new AnalysisEngineProcessException(e);
       }
+
+      String documentText = modifiedView.getDocumentText();
+      if (documentText != null) {
+        try {
+          File outputFile = getOutputFile(cas.getCas());
+          FileUtils.saveString2File(documentText, outputFile);
+        } catch (IOException e) {
+          throw new AnalysisEngineProcessException(e);
+        }
+      }
+
     } catch (CASException e) {
       throw new AnalysisEngineProcessException(e);
     }
+
+  }
+
+  private File getOutputFile(CAS cas) {
+    Type sdiType = cas.getTypeSystem().getType(TextMarkerEngine.SOURCE_DOCUMENT_INFORMATION);
+
+    String filename = "output.modified.html";
+    File file = new File(outputLocation, filename);
+    if (sdiType != null) {
+      FSIterator<AnnotationFS> sdiit = cas.getAnnotationIndex(sdiType).iterator();
+      if (sdiit.isValid()) {
+        AnnotationFS annotationFS = sdiit.get();
+        Feature uriFeature = sdiType.getFeatureByBaseName("uri");
+        String stringValue = annotationFS.getStringValue(uriFeature);
+        File f = new File(stringValue);
+        String name = f.getName();
+        if (!name.endsWith(".modified.html")) {
+          name = name + ".modified.html";
+        }
+        file = new File(outputLocation, name);
+      }
+
+    }
+    return file;
   }
 
   private String getModifiedDocument(JCas cas, String styleMapLocation) {

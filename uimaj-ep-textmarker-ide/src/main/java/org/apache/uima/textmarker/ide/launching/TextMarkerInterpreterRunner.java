@@ -40,7 +40,6 @@ import org.apache.uima.textmarker.action.LogAction;
 import org.apache.uima.textmarker.engine.TextMarkerEngine;
 import org.apache.uima.textmarker.ide.TextMarkerIdePlugin;
 import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
-import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.XMLInputSource;
 import org.apache.uima.util.XMLSerializer;
 import org.eclipse.core.resources.IFolder;
@@ -213,28 +212,6 @@ public class TextMarkerInterpreterRunner extends AbstractInterpreterRunner imple
               ScriptLaunchConfigurationConstants.ERR_INTERNAL_ERROR, message, e));
     }
 
-    AnalysisEngine mae = null;
-    try {
-      // modifier
-      IPath modifierPath = rootPath.append("Modifier.xml");
-      File modifierFile = new File(modifierPath.toPortableString());
-      if (modifierFile.exists()) {
-        XMLInputSource min = new XMLInputSource(modifierFile);
-        ResourceSpecifier mspecifier = UIMAFramework.getXMLParser().parseResourceSpecifier(min);
-        mae = UIMAFramework.produceAnalysisEngine(mspecifier);
-        String sml = (String) ae.getConfigParameterValue(TextMarkerEngine.STYLE_MAP);
-        mae.setConfigParameterValue(TextMarkerEngine.STYLE_MAP, sml);
-        mae.setConfigParameterValue(TextMarkerEngine.DESCRIPTOR_PATHS,
-                ae.getConfigParameterValue(TextMarkerEngine.DESCRIPTOR_PATHS));
-        mae.reconfigure();
-      }
-    } catch (Exception e) {
-      String message = e.getMessage();
-      DLTKCore.error(message, e);
-      clearConsoleLink(handler);
-      throw new CoreException(new Status(IStatus.ERROR, TextMarkerIdePlugin.PLUGIN_ID,
-              ScriptLaunchConfigurationConstants.ERR_INTERNAL_ERROR, message, e));
-    }
     try {
       if ("debug".equals(launchMode)) {
         ae.setConfigParameterValue(TextMarkerEngine.CREATE_DEBUG_INFO, true);
@@ -269,21 +246,11 @@ public class TextMarkerInterpreterRunner extends AbstractInterpreterRunner imple
         TextMarkerEngine.addSourceDocumentInformation(cas, each);
 
         ae.process(cas);
-        if (mae != null) {
-          mae.process(cas);
-        }
+
         mon.worked(1);
         File outputFile = new File(outputDir, each.getName() + ".xmi");
         mon.setTaskName("Saving " + outputFile.getName());
         writeXmi(cas, outputFile);
-        if (mae != null) {
-          CAS modifiedCas = cas.getView(TextMarkerEngine.MODIFIED_SOFA);
-          String documentText = modifiedCas.getDocumentText();
-          if (documentText != null) {
-            FileUtils.saveString2File(documentText, new File(outputDir, each.getName()
-                    + ".modified.html"));
-          }
-        }
         mon.worked(1);
       } catch (Exception e) {
         if (cas != null) {

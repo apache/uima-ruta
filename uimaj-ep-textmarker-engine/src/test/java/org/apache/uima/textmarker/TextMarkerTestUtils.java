@@ -61,8 +61,8 @@ public class TextMarkerTestUtils {
     File ruleFile = new File(resource.toURI());
     resource = TextMarkerTestUtils.class.getClassLoader().getResource(textFileName);
     File textFile = new File(resource.toURI());
-    File aedFile = new File("desc/BasicEngine.xml");
-    XMLInputSource in = new XMLInputSource(aedFile);
+    URL url = TextMarkerEngine.class.getResource("BasicEngine.xml");
+    XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
     AnalysisEngineDescription aed = (AnalysisEngineDescription) specifier;
 

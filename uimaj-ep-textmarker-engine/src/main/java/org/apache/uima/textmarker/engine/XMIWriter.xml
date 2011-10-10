@@ -21,27 +21,29 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>org.apache.uima.textmarker.engine.TextMarkerModifier</annotatorImplementationName>
+  <annotatorImplementationName>org.apache.uima.textmarker.engine.XMIWriter</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>Modifier</name>
+    <name>ReferenceSectionWriterDescriptor</name>
     <description/>
     <version>1.0</version>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>styleMapLocation</name>
+        <name>Output</name>
+        <description>Location where the xmi is stored</description>
         <type>String</type>
         <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-      </configurationParameter>
-      <configurationParameter>
-        <name>enginePaths</name>
-        <type>String</type>
-        <multiValued>true</multiValued>
-        <mandatory>false</mandatory>
+        <mandatory>true</mandatory>
       </configurationParameter>
     </configurationParameters>
-    <configurationParameterSettings/>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>Output</name>
+        <value>
+          <string>/../output/</string>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
     <typeSystemDescription/>
     <typePriorities/>
     <fsIndexCollection/>
@@ -49,9 +51,6 @@
       <capability>
         <inputs/>
         <outputs/>
-        <outputSofas>
-          <sofaName>modified</sofaName>
-        </outputSofas>
         <languagesSupported/>
       </capability>
     </capabilities>
