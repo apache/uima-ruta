@@ -359,9 +359,6 @@ public class TextMarkerSimpleBuilder {
     analysisEngineDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
             .setParameterValue(TextMarkerEngine.ADDITIONAL_ENGINES, additionalEnginesArray);
 
-    String styleMapLocation = getStyleMapLocation(mainScript, engineOutput);
-    analysisEngineDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
-            .setParameterValue(TextMarkerEngine.STYLE_MAP, styleMapLocation);
     analysisEngineDescription.getAnalysisEngineMetaData().setTypeSystem(typeSystemDescription);
 
     configureExtensions(option);
@@ -389,31 +386,6 @@ public class TextMarkerSimpleBuilder {
             options.getEngines().toArray(new String[0]));
   }
 
-  private String getPackage(String eachName) {
-    if (eachName.endsWith(".tm")) {
-      int indexOf = eachName.lastIndexOf(".tm");
-      eachName = eachName.substring(0, indexOf);
-    }
-    int lastIndexOf = eachName.lastIndexOf(".");
-    if (lastIndexOf != -1) {
-      eachName = eachName.substring(0, lastIndexOf);
-      return eachName;
-    }
-    return "";
-  }
-
-  private String getModuleName(String eachName) {
-    if (eachName.endsWith(".tm")) {
-      int indexOf = eachName.lastIndexOf(".tm");
-      eachName = eachName.substring(0, indexOf);
-    }
-    int lastIndexOf = eachName.lastIndexOf(".");
-    if (lastIndexOf != -1) {
-      eachName = eachName.substring(lastIndexOf + 1, eachName.length());
-    }
-    return eachName;
-  }
-
   private TypeSystemDescription getTypeSystemDescriptor(File file, TextMarkerBuildOptions option)
           throws InvalidXMLException, IOException {
     TypeSystemDescription tsdesc = UIMAFramework.getXMLParser().parseTypeSystemDescription(
@@ -422,12 +394,6 @@ public class TextMarkerSimpleBuilder {
       tsdesc.resolveImports();
     }
     return tsdesc;
-  }
-
-  private String getStyleMapLocation(String scriptLocation, String engineDescriptorOutputLocation) {
-    String module = getModuleName(scriptLocation);
-    String pack = getPackage(scriptLocation);
-    return pack + "." + module + "StyleMap";
   }
 
   private File getFile(String location) {
