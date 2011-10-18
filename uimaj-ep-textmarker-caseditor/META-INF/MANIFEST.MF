@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: uimaj-ep-textmarker-caseditor
-Bundle-SymbolicName: uimaj-ep-textmarker-caseditor;singleton:=true
+Bundle-SymbolicName: org.apache.uima.textmarker.caseditor;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.apache.uima.caseditor;bundle-version="2.4.0",
