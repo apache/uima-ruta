@@ -22,6 +22,7 @@ package org.apache.uima.textmarker.caseditor.view.browser;
 import org.apache.uima.caseditor.editor.AnnotationEditor;
 import org.apache.uima.caseditor.editor.AnnotationEditorView;
 import org.apache.uima.caseditor.editor.ICasEditor;
+import org.apache.uima.textmarker.caseditor.view.tree.AnnotationTreeViewPage;
 
 public class AnnotationBrowserView extends AnnotationEditorView {
   public static final String ID = "org.apache.uima.caseditor.browser";
@@ -34,7 +35,7 @@ public class AnnotationBrowserView extends AnnotationEditorView {
   protected PageRec doCreatePage(ICasEditor editor) {
     PageRec result = null;
     if (editor.getDocument() != null && editor instanceof AnnotationEditor) {
-      AnnotationBrowserPage page = new AnnotationBrowserPage((AnnotationEditor) editor);
+      AnnotationTreeViewPage page = new AnnotationTreeViewPage(false, (AnnotationEditor) editor);
       initPage(page);
       page.createControl(getPageBook());
       result = new PageRec(editor, page);

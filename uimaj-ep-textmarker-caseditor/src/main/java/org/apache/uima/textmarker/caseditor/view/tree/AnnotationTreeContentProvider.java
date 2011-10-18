@@ -44,7 +44,7 @@ public class AnnotationTreeContentProvider extends AbstractAnnotationDocumentLis
 
   @Override
   public void dispose() {
-
+    document.removeChangeListener(this);
   }
 
   /*

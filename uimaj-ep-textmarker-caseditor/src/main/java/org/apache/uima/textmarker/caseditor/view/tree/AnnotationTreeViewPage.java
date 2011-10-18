@@ -73,9 +73,8 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 
-public abstract class AnnotationTreeViewPage extends Page implements MouseListener,
-        IDoubleClickListener, Listener, ISelectionListener, ICheckStateListener,
-        IAnnotationEditorModifyListener {
+public class AnnotationTreeViewPage extends Page implements MouseListener, IDoubleClickListener,
+        Listener, ISelectionListener, ICheckStateListener, IAnnotationEditorModifyListener {
 
   public class TreeViewAnnotationStyleChangeListener extends AnnotationStyleChangeListener {
 
@@ -109,6 +108,8 @@ public abstract class AnnotationTreeViewPage extends Page implements MouseListen
   private Text filterCoveredTextTextField;
 
   private int offset = -1;
+
+  private TreeViewAnnotationStyleChangeListener styleListener;
 
   public AnnotationTreeViewPage(boolean useSelection, AnnotationEditor editor) {
     super();
@@ -202,7 +203,7 @@ public abstract class AnnotationTreeViewPage extends Page implements MouseListen
 
     });
 
-    TreeViewAnnotationStyleChangeListener styleListener = new TreeViewAnnotationStyleChangeListener();
+    styleListener = new TreeViewAnnotationStyleChangeListener();
     editor.getCasDocumentProvider().getTypeSystemPreferenceStore(editor.getEditorInput())
             .addPropertyChangeListener(styleListener);
 
@@ -224,6 +225,9 @@ public abstract class AnnotationTreeViewPage extends Page implements MouseListen
   @Override
   public void dispose() {
     super.dispose();
+    getSite().getPage().removeSelectionListener(this);
+    editor.getCasDocumentProvider().getTypeSystemPreferenceStore(editor.getEditorInput())
+            .removePropertyChangeListener(styleListener);
     overlay.dispose();
     Collection<Image> values = icons.values();
     for (Image image : values) {
@@ -520,7 +524,7 @@ public abstract class AnnotationTreeViewPage extends Page implements MouseListen
   }
 
   public void annotationModeChanged(Type newMode) {
-    getTreeViewer().setGrayed(new TypeTreeNode(editor.getAnnotationMode()), true);
+    getTreeViewer().setGrayed(new TypeTreeNode(newMode), true);
   }
 
   public void showAnnotationsChanged(Collection<Type> shownAnnotationTypes) {

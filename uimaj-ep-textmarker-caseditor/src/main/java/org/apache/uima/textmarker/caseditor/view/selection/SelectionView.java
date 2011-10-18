@@ -22,6 +22,7 @@ package org.apache.uima.textmarker.caseditor.view.selection;
 import org.apache.uima.caseditor.editor.AnnotationEditor;
 import org.apache.uima.caseditor.editor.AnnotationEditorView;
 import org.apache.uima.caseditor.editor.ICasEditor;
+import org.apache.uima.textmarker.caseditor.view.tree.AnnotationTreeViewPage;
 
 /**
  */
@@ -37,7 +38,7 @@ public final class SelectionView extends AnnotationEditorView {
   protected PageRec doCreatePage(ICasEditor editor) {
     PageRec result = null;
     if (editor.getDocument() != null && editor instanceof AnnotationEditor) {
-      SelectionViewPage page = new SelectionViewPage((AnnotationEditor) editor);
+      AnnotationTreeViewPage page = new AnnotationTreeViewPage(true, (AnnotationEditor) editor);
       initPage(page);
       page.createControl(getPageBook());
       result = new PageRec(editor, page);
