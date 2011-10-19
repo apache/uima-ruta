@@ -37,6 +37,7 @@ import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.impl.XmiCasDeserializer;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.ResourceSpecifier;
@@ -142,7 +143,7 @@ public class QueryActionHandler implements IHandler {
       // script += "TYPESYSTEM " + typeSystemFileText.getText();
       script += rules;
       try {
-        URL aedesc = getClass().getResource("BasicEngine.xml");
+        URL aedesc = TextMarkerEngine.class.getResource("BasicEngine.xml");
         XMLInputSource inae = new XMLInputSource(aedesc);
         ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(inae);
         ResourceManager resMgr = UIMAFramework.newDefaultResourceManager();
@@ -213,14 +214,16 @@ public class QueryActionHandler implements IHandler {
             cas.setDocumentText(getText(each));
           }
 
-          ae.process(cas);
-
           Type matchedType = cas.getTypeSystem().getType(
                   "org.apache.uima.textmarker.type.DebugMatchedRuleMatch");
           Type ruleApplyType = cas.getTypeSystem().getType(
                   "org.apache.uima.textmarker.type.DebugRuleApply");
           Type blockApplyType = cas.getTypeSystem().getType(
                   "org.apache.uima.textmarker.type.DebugBlockApply");
+
+          removeDebugAnnotations(cas, matchedType, ruleApplyType, blockApplyType);
+
+          ae.process(cas);
 
           Feature innerApplyFeature = blockApplyType.getFeatureByBaseName("innerApply");
           Feature ruleApplyFeature = blockApplyType.getFeatureByBaseName("rules");
@@ -241,12 +244,14 @@ public class QueryActionHandler implements IHandler {
 
             final int constFound = found;
             final int constFiles = files;
-            queryComposite.getDisplay().asyncExec(new Runnable() {
+            queryComposite.getDisplay().syncExec(new Runnable() {
               @Override
               public void run() {
+                queryComposite.setResult(result);
                 queryComposite.setResultInfo(constFound, constFiles);
               }
             });
+
           }
 
           monitor.worked(1);
@@ -259,6 +264,26 @@ public class QueryActionHandler implements IHandler {
 
       return Status.OK_STATUS;
 
+    }
+
+    private void removeDebugAnnotations(CAS cas, Type matchedType, Type ruleApplyType,
+            Type blockApplyType) {
+      Collection<AnnotationFS> toRemove = new ArrayList<AnnotationFS>();
+      AnnotationIndex<AnnotationFS> annotationIndex = cas.getAnnotationIndex(blockApplyType);
+      for (AnnotationFS annotationFS : annotationIndex) {
+        toRemove.add(annotationFS);
+      }
+      annotationIndex = cas.getAnnotationIndex(ruleApplyType);
+      for (AnnotationFS annotationFS : annotationIndex) {
+        toRemove.add(annotationFS);
+      }
+      annotationIndex = cas.getAnnotationIndex(matchedType);
+      for (AnnotationFS annotationFS : annotationIndex) {
+        toRemove.add(annotationFS);
+      }
+      for (AnnotationFS annotationFS : toRemove) {
+        cas.removeFsFromIndexes(annotationFS);
+      }
     }
 
     public int findRuleMatches(final List<QueryResult> result, AnnotationFS fs, File file,
@@ -285,12 +310,6 @@ public class QueryActionHandler implements IHandler {
         String text = fs.getCoveredText();
         result.add(new QueryResult(text, file));
         ret += 1;
-        queryComposite.getDisplay().asyncExec(new Runnable() {
-          @Override
-          public void run() {
-            queryComposite.setResult(result);
-          }
-        });
 
       }
       return ret;
