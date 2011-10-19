@@ -125,6 +125,7 @@ public class TextMarkerBuilder extends StandardScriptBuilder {
         IResource findMember = folder.findMember(iPath);
         if (findMember != null) {
           findMember.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+          findMember.getParent().refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
         }
 
       }
