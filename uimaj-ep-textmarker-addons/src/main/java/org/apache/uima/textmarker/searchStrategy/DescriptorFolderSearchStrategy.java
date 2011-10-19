@@ -20,41 +20,74 @@
 package org.apache.uima.textmarker.searchStrategy;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Collection;
 import java.util.List;
 
-import org.apache.uima.cev.extension.ICEVSearchStrategy;
-import org.apache.uima.cev.searchStrategy.CEVCollectionContentProvider;
+import org.apache.uima.caseditor.ide.searchstrategy.ITypeSystemSearchStrategy;
+import org.apache.uima.textmarker.ide.core.TextMarkerNature;
 import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.dialogs.ListDialog;
 
-public class DescriptorFolderSearchStrategy implements ICEVSearchStrategy {
+public class DescriptorFolderSearchStrategy implements ITypeSystemSearchStrategy {
 
-  private int priority;
-
-  public DescriptorFolderSearchStrategy(int priority) {
-    super();
-    this.priority = priority;
+  private List<IFile> collectTypeSystems(IFolder folder) throws CoreException {
+    List<IFile> result = new ArrayList<IFile>();
+    for (IResource each : folder.members()) {
+      if (each instanceof IFolder) {
+        result.addAll(collectTypeSystems((IFolder) each));
+      } else if (each instanceof IFile && each.getFileExtension() != null
+              && each.getFileExtension().equals("xml")) {
+        result.add((IFile) each);
+      }
+    }
+    return result;
   }
 
-  public int getPriority() {
-    return priority;
-  }
+  @Override
+  public IFile findTypeSystem(IFile casFile) {
+    IProject project = casFile.getProject();
 
-  public IFile searchDescriptor(IFile file) {
-    IProject project = file.getProject();
+    try {
+      IProjectNature nature = project.getNature(TextMarkerNature.NATURE_ID);
+      if (!(nature instanceof TextMarkerNature)) {
+        return null;
+      }
+    } catch (CoreException e) {
+      return null;
+    }
+
     IFolder folder = project.getFolder(TextMarkerProjectUtils.getDefaultDescriptorLocation());
     try {
       List<IFile> list = collectTypeSystems(folder);
       ListDialog ld = new ListDialog(Display.getCurrent().getActiveShell());
-      ld.setContentProvider(new CEVCollectionContentProvider<LinkedList<IFile>>());
+      ld.setContentProvider(new IStructuredContentProvider() {
+
+        @Override
+        public void dispose() {
+
+        }
+
+        @Override
+        public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+
+        }
+
+        @Override
+        public Object[] getElements(Object inputElement) {
+          return ((Collection<?>) inputElement).toArray();
+        }
+
+      });
       ld.setLabelProvider(new LabelProvider() {
         @Override
         public String getText(Object element) {
@@ -77,19 +110,5 @@ public class DescriptorFolderSearchStrategy implements ICEVSearchStrategy {
     } catch (Exception e) {
       return null;
     }
-
-  }
-
-  private List<IFile> collectTypeSystems(IFolder folder) throws CoreException {
-    List<IFile> result = new ArrayList<IFile>();
-    for (IResource each : folder.members()) {
-      if (each instanceof IFolder) {
-        result.addAll(collectTypeSystems((IFolder) each));
-      } else if (each instanceof IFile && each.getFileExtension() != null
-              && each.getFileExtension().equals("xml")) {
-        result.add((IFile) each);
-      }
-    }
-    return result;
   }
 }

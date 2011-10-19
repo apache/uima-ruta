@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.explain.apply;
 
@@ -26,7 +26,6 @@ import org.apache.uima.textmarker.explain.tree.ExplainRootNode;
 import org.apache.uima.textmarker.explain.tree.IExplainTreeNode;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-
 
 public class ApplyTreeContentProvider implements ITreeContentProvider {
 

@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.explain.tree;
 
@@ -24,8 +24,10 @@ import java.util.List;
 
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.TypeSystem;
+import org.apache.uima.cas.text.AnnotationFS;
+import org.eclipse.core.runtime.IAdaptable;
 
-public abstract class ExplainAbstractTreeNode implements IExplainTreeNode {
+public abstract class ExplainAbstractTreeNode implements IExplainTreeNode, IAdaptable {
 
   private IExplainTreeNode parent;
 
@@ -78,4 +80,14 @@ public abstract class ExplainAbstractTreeNode implements IExplainTreeNode {
     return fs.toString();
   }
 
+  public Object getAdapter(Class adapter) {
+
+    if (FeatureStructure.class.equals(adapter)) {
+      return getFeatureStructure();
+    } else if (AnnotationFS.class.equals(adapter) && getFeatureStructure() instanceof AnnotationFS) {
+      return getFeatureStructure();
+    }
+
+    return null;
+  }
 }

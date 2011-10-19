@@ -23,44 +23,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.cas.ArrayFS;
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cev.data.CEVData;
 import org.apache.uima.textmarker.explain.ExplainConstants;
 
 public class ExplainTree {
-
-  public static final String BASE_CONDITION = "baseCondition";
-
-  public static final String MATCHES = "matches";
-
-  public static final String ELEMENTS = "elements";
-
-  public static final String MATCHED = "matched";
-
-  public static final String DELEGATES = "delegates";
-
-  public static final String RULES = "rules";
-
-  public static final String INNER_APPLY = "innerApply";
-
-  public static final String CONDITIONS = "conditions";
-
-  public static final String VALUE = "value";
-
-  public static final String APPLIED = "applied";
-
-  public static final String TRIED = "tried";
-
-  public static final String ELEMENT = "element";
-
-  public static final String RULE_ANCHOR = "ruleAnchor";
-
-  public static final String TIME = "time";
 
   private IExplainTreeNode root;
 
@@ -80,27 +52,27 @@ public class ExplainTree {
 
   private Type failedRuleMatchType;
 
-  public ExplainTree(CEVData casData) {
-    this(casData, -1);
+  public ExplainTree(CAS cas) {
+    this(cas, -1);
   }
 
-  public ExplainTree(CEVData casData, int offset) {
-    this(casData, offset, false);
+  public ExplainTree(CAS cas, int offset) {
+    this(cas, offset, false);
     if (offset >= 0) {
       prune(root);
     }
   }
 
-  public ExplainTree(CEVData casData, int offset, boolean onlyRules) {
-    createTree(casData, offset, onlyRules);
+  public ExplainTree(CAS cas, int offset, boolean onlyRules) {
+    createTree(cas, offset, onlyRules);
   }
 
   public IExplainTreeNode getRoot() {
     return root;
   }
 
-  private void createTree(CEVData casData, int offset, boolean onlyRules) {
-    TypeSystem ts = casData.getCAS().getTypeSystem();
+  private void createTree(CAS cas, int offset, boolean onlyRules) {
+    TypeSystem ts = cas.getTypeSystem();
     Type scriptApply = ts.getType(ExplainConstants.SCRIPT_APPLY_TYPE);
 
     blockApplyType = ts.getType(ExplainConstants.BLOCK_APPLY_TYPE);
@@ -114,7 +86,7 @@ public class ExplainTree {
 
     if (scriptApply == null)
       return;
-    FSIterator<AnnotationFS> it = casData.getCAS().getAnnotationIndex(scriptApply).iterator();
+    FSIterator<AnnotationFS> it = cas.getAnnotationIndex(scriptApply).iterator();
     root = new ApplyRootNode(null, ts);
 
     if (it.isValid()) {
@@ -157,7 +129,7 @@ public class ExplainTree {
       parent.addChild(blockNode);
       processBlockRuleApply(fs, blockNode, ts, offset, onlyRules);
     }
-    Feature feature = blockApplyType.getFeatureByBaseName(INNER_APPLY);
+    Feature feature = blockApplyType.getFeatureByBaseName(ExplainConstants.INNER_APPLY);
     FeatureStructure featureValue = fs.getFeatureValue(feature);
     ArrayFS value = (ArrayFS) featureValue;
     FeatureStructure[] fsarray = value.toArray();
@@ -179,7 +151,7 @@ public class ExplainTree {
     RuleApplyNode ruleNode = new RuleApplyNode(parent, fs, ts);
     parent.setBlockRuleApply(ruleNode);
 
-    Feature feature = ruleApplyType.getFeatureByBaseName(RULES);
+    Feature feature = ruleApplyType.getFeatureByBaseName(ExplainConstants.RULES);
     ArrayFS value = (ArrayFS) fs.getFeatureValue(feature);
     if (value == null)
       return;
@@ -191,7 +163,7 @@ public class ExplainTree {
     ruleNode.addChild(failed);
 
     for (FeatureStructure eachRuleMatch : fsarray) {
-      Feature f = eachRuleMatch.getType().getFeatureByBaseName(MATCHED);
+      Feature f = eachRuleMatch.getType().getFeatureByBaseName(ExplainConstants.MATCHED);
       boolean matchedValue = eachRuleMatch.getBooleanValue(f);
       if (matchedValue) {
         buildTree(eachRuleMatch, matched, ts, offset, onlyRules);
@@ -199,7 +171,7 @@ public class ExplainTree {
         buildTree(eachRuleMatch, failed, ts, offset, onlyRules);
       }
 
-      Feature df = eachRuleMatch.getType().getFeatureByBaseName(DELEGATES);
+      Feature df = eachRuleMatch.getType().getFeatureByBaseName(ExplainConstants.DELEGATES);
       if (df != null) {
         ArrayFS dv = (ArrayFS) eachRuleMatch.getFeatureValue(df);
         if (dv != null) {
@@ -221,7 +193,7 @@ public class ExplainTree {
     RuleApplyNode ruleNode = new RuleApplyNode(parent, fs, ts);
     parent.addChild(ruleNode);
 
-    Feature feature = ruleApplyType.getFeatureByBaseName(RULES);
+    Feature feature = ruleApplyType.getFeatureByBaseName(ExplainConstants.RULES);
     ArrayFS value = (ArrayFS) fs.getFeatureValue(feature);
     FeatureStructure[] fsarray = value.toArray();
 
@@ -231,7 +203,7 @@ public class ExplainTree {
     ruleNode.addChild(failed);
 
     for (FeatureStructure eachRuleMatch : fsarray) {
-      Feature f = eachRuleMatch.getType().getFeatureByBaseName(MATCHED);
+      Feature f = eachRuleMatch.getType().getFeatureByBaseName(ExplainConstants.MATCHED);
       boolean matchedValue = eachRuleMatch.getBooleanValue(f);
       if (matchedValue) {
         buildTree(eachRuleMatch, matched, ts, offset, onlyRules);
@@ -239,7 +211,7 @@ public class ExplainTree {
         buildTree(eachRuleMatch, failed, ts, offset, onlyRules);
       }
 
-      Feature df = eachRuleMatch.getType().getFeatureByBaseName(DELEGATES);
+      Feature df = eachRuleMatch.getType().getFeatureByBaseName(ExplainConstants.DELEGATES);
       if (df != null) {
         ArrayFS dv = (ArrayFS) eachRuleMatch.getFeatureValue(df);
         if (dv != null) {
@@ -264,7 +236,7 @@ public class ExplainTree {
     RuleElementRootNode remRoot = new RuleElementRootNode(matchNode, ts);
     matchNode.addChild(remRoot);
 
-    Feature feature = ruleMatchType.getFeatureByBaseName(ELEMENTS);
+    Feature feature = ruleMatchType.getFeatureByBaseName(ExplainConstants.ELEMENTS);
     ArrayFS value = (ArrayFS) fs.getFeatureValue(feature);
     FeatureStructure[] fsarray = value.toArray();
     for (FeatureStructure each : fsarray) {
@@ -277,7 +249,7 @@ public class ExplainTree {
     RuleElementMatchesNode remsNode = new RuleElementMatchesNode(parent, fs, ts);
     parent.addChild(remsNode);
 
-    Feature feature = ruleElementMatchesType.getFeatureByBaseName(MATCHES);
+    Feature feature = ruleElementMatchesType.getFeatureByBaseName(ExplainConstants.MATCHES);
     ArrayFS value = (ArrayFS) fs.getFeatureValue(feature);
     FeatureStructure[] fsarray = value.toArray();
     for (FeatureStructure each : fsarray) {
@@ -293,18 +265,18 @@ public class ExplainTree {
     RuleElementMatchNode remNode = new RuleElementMatchNode(parent, fs, ts);
     parent.addChild(remNode);
 
-    Feature feature = ruleElementMatchType.getFeatureByBaseName(BASE_CONDITION);
+    Feature feature = ruleElementMatchType.getFeatureByBaseName(ExplainConstants.BASE_CONDITION);
     FeatureStructure base = fs.getFeatureValue(feature);
     buildTree(base, remNode, ts, offset, onlyRules);
 
-    feature = ruleElementMatchType.getFeatureByBaseName(CONDITIONS);
+    feature = ruleElementMatchType.getFeatureByBaseName(ExplainConstants.CONDITIONS);
     ArrayFS value = (ArrayFS) fs.getFeatureValue(feature);
     FeatureStructure[] fsarray = value.toArray();
     for (FeatureStructure each : fsarray) {
       buildTree(each, remNode, ts, offset, onlyRules);
     }
 
-    feature = fs.getType().getFeatureByBaseName(ExplainTree.ELEMENTS);
+    feature = fs.getType().getFeatureByBaseName(ExplainConstants.ELEMENTS);
     value = (ArrayFS) fs.getFeatureValue(feature);
     if (value != null) {
       fsarray = value.toArray();
@@ -319,7 +291,7 @@ public class ExplainTree {
     ConditionNode condNode = new ConditionNode(parent, fs, ts);
     parent.addChild(condNode);
 
-    Feature feature = evaluatedConditionType.getFeatureByBaseName(CONDITIONS);
+    Feature feature = evaluatedConditionType.getFeatureByBaseName(ExplainConstants.CONDITIONS);
     ArrayFS value = (ArrayFS) fs.getFeatureValue(feature);
     if (value != null) {
       FeatureStructure[] fsarray = value.toArray();

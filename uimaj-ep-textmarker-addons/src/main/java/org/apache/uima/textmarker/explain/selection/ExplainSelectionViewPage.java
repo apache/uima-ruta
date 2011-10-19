@@ -15,28 +15,29 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.explain.selection;
 
-import org.apache.uima.cev.data.CEVDocument;
-import org.apache.uima.cev.editor.CEVViewer;
+import org.apache.uima.caseditor.editor.AnnotationEditor;
 import org.apache.uima.textmarker.explain.apply.ApplyTreeContentProvider;
 import org.apache.uima.textmarker.explain.apply.ApplyTreeLabelProvider;
 import org.apache.uima.textmarker.explain.apply.ApplyViewPage;
 import org.apache.uima.textmarker.explain.tree.ApplyRootNode;
 import org.apache.uima.textmarker.explain.tree.ExplainTree;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IWorkbenchPart;
 
-
-public class ExplainSelectionViewPage extends ApplyViewPage implements IExplainSelectionViewPage {
+public class ExplainSelectionViewPage extends ApplyViewPage {
 
   private int offset = -1;
 
-  public ExplainSelectionViewPage(CEVViewer casViewer, CEVDocument casDoc, int index) {
-    super(casViewer, casDoc, index);
+  public ExplainSelectionViewPage(AnnotationEditor editor) {
+    super(editor);
   }
 
   @Override
@@ -45,25 +46,21 @@ public class ExplainSelectionViewPage extends ApplyViewPage implements IExplainS
     viewer.setContentProvider(new ApplyTreeContentProvider());
     viewer.setLabelProvider(new ApplyTreeLabelProvider(this));
 
-    viewer.addDoubleClickListener(this);
-    viewer.addSelectionChangedListener(this);
-    viewer.setInput(new ApplyRootNode(null, getCurrentCEVData().getCAS().getTypeSystem()));
+    viewer.setInput(new ApplyRootNode(null, document.getCAS().getTypeSystem()));
+
+    getSite().setSelectionProvider(viewer);
+    getSite().getPage().addSelectionListener(this);
   }
 
-  public void viewChanged(int newIndex) {
-    getCurrentCEVData().removeAnnotationListener(this);
-    current = newIndex;
-    getCurrentCEVData().addAnnotationListener(this);
-    newSelection(offset);
-  }
-
-  public void newSelection(int offset) {
-    this.offset = offset;
-
-    if (offset >= 0) {
-      ExplainTree tree = new ExplainTree(getCurrentCEVData(), offset);
-      viewer.setInput(tree.getRoot());
-      viewer.refresh();
+  @Override
+  public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+    if (selection instanceof StructuredSelection && part instanceof AnnotationEditor) {
+      offset = editor.getCaretOffset();
+      if (offset >= 0) {
+        ExplainTree tree = new ExplainTree(document.getCAS(), offset);
+        viewer.setInput(tree.getRoot());
+        viewer.refresh();
+      }
     }
   }
 

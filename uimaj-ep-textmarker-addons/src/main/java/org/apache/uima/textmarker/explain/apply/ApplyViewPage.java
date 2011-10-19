@@ -20,46 +20,28 @@
 package org.apache.uima.textmarker.explain.apply;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cev.data.CEVData;
-import org.apache.uima.cev.data.CEVDocument;
-import org.apache.uima.cev.editor.CEVViewer;
-import org.apache.uima.cev.extension.ICEVView;
+import org.apache.uima.caseditor.editor.AnnotationEditor;
+import org.apache.uima.caseditor.editor.ICasDocument;
 import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
 import org.apache.uima.textmarker.explain.ExplainConstants;
-import org.apache.uima.textmarker.explain.failed.FailedViewPage;
-import org.apache.uima.textmarker.explain.failed.IFailedViewPage;
-import org.apache.uima.textmarker.explain.matched.IMatchedViewPage;
-import org.apache.uima.textmarker.explain.matched.MatchedViewPage;
-import org.apache.uima.textmarker.explain.tree.BlockApplyNode;
 import org.apache.uima.textmarker.explain.tree.ExplainTree;
-import org.apache.uima.textmarker.explain.tree.RuleApplyNode;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.ITreeSelection;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 
-public class ApplyViewPage extends Page implements IApplyViewPage, IDoubleClickListener, ICEVView,
-        ISelectionChangedListener {
-
-  protected CEVViewer casViewer;
-
-  protected CEVDocument casDoc;
+public class ApplyViewPage extends Page implements ISelectionListener {
 
   protected TreeViewer viewer;
 
@@ -67,11 +49,14 @@ public class ApplyViewPage extends Page implements IApplyViewPage, IDoubleClickL
 
   protected Map<String, Image> images;
 
-  public ApplyViewPage(CEVViewer casViewer, CEVDocument casDoc, int index) {
+  protected AnnotationEditor editor;
+
+  protected ICasDocument document;
+
+  public ApplyViewPage(AnnotationEditor editor) {
     super();
-    this.casViewer = casViewer;
-    this.casDoc = casDoc;
-    this.current = index;
+    this.editor = editor;
+    this.document = editor.getDocument();
   }
 
   private void initImages() {
@@ -122,20 +107,16 @@ public class ApplyViewPage extends Page implements IApplyViewPage, IDoubleClickL
     return viewer;
   }
 
-  public CEVData getCurrentCEVData() {
-    return casDoc.getCASData(current);
-  }
-
   @Override
   public void createControl(Composite parent) {
     viewer = new TreeViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL);
     viewer.setContentProvider(new ApplyTreeContentProvider());
     viewer.setLabelProvider(new ApplyTreeLabelProvider(this));
 
-    viewer.addDoubleClickListener(this);
-    viewer.addSelectionChangedListener(this);
-    ExplainTree tree = new ExplainTree(getCurrentCEVData());
+    ExplainTree tree = new ExplainTree(document.getCAS());
     viewer.setInput(tree.getRoot());
+    getSite().setSelectionProvider(viewer);
+    getSite().getPage().addSelectionListener(this);
     viewer.refresh();
   }
 
@@ -146,6 +127,7 @@ public class ApplyViewPage extends Page implements IApplyViewPage, IDoubleClickL
   @Override
   public void dispose() {
     super.dispose();
+    getSite().getPage().removeSelectionListener(this);
     if (images != null) {
       for (Image each : images.values()) {
         each.dispose();
@@ -165,72 +147,9 @@ public class ApplyViewPage extends Page implements IApplyViewPage, IDoubleClickL
 
   }
 
-  public void viewChanged(int newIndex) {
-    getCurrentCEVData().removeAnnotationListener(this);
-    current = newIndex;
-    getCurrentCEVData().addAnnotationListener(this);
-
-    ExplainTree tree = new ExplainTree(getCurrentCEVData());
-    viewer.setInput(tree.getRoot());
-    viewer.refresh();
+  @Override
+  public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 
   }
 
-  public void annotationsAdded(List<AnnotationFS> annots) {
-
-  }
-
-  public void annotationsRemoved(List<AnnotationFS> annots) {
-
-  }
-
-  public void annotationStateChanged(Type type) {
-
-  }
-
-  public void annotationStateChanged(AnnotationFS annot) {
-
-  }
-
-  public void colorChanged(Type type) {
-
-  }
-
-  public void newSelection(int offset) {
-
-  }
-
-  public void selectionChanged(SelectionChangedEvent event) {
-    ISelection selection = event.getSelection();
-    if (selection instanceof ITreeSelection) {
-      ITreeSelection struct = (ITreeSelection) selection;
-      Object firstElement = struct.getFirstElement();
-      if (firstElement instanceof RuleApplyNode) {
-        RuleApplyNode node = (RuleApplyNode) firstElement;
-        Object matchedPage = casViewer.getAdapter(IMatchedViewPage.class);
-        if (matchedPage instanceof MatchedViewPage) {
-          ((MatchedViewPage) matchedPage).inputChange(node.getMatchedChild());
-        }
-        Object failedPage = casViewer.getAdapter(IFailedViewPage.class);
-        if (failedPage instanceof FailedViewPage) {
-          ((FailedViewPage) failedPage).inputChange(node.getFailedNode());
-        }
-      } else if (firstElement instanceof BlockApplyNode) {
-        BlockApplyNode node = (BlockApplyNode) firstElement;
-        RuleApplyNode ruleNode = node.getBlockRuleNode();
-        Object matchedPage = casViewer.getAdapter(IMatchedViewPage.class);
-        if (matchedPage instanceof MatchedViewPage) {
-          ((MatchedViewPage) matchedPage).inputChange(ruleNode.getMatchedChild());
-        }
-        Object failedPage = casViewer.getAdapter(IFailedViewPage.class);
-        if (failedPage instanceof FailedViewPage) {
-          ((FailedViewPage) failedPage).inputChange(ruleNode.getFailedNode());
-        }
-      }
-    }
-  }
-
-  public void casChanged(CEVDocument casDocument) {
-    this.casDoc = casDocument;
-  }
 }

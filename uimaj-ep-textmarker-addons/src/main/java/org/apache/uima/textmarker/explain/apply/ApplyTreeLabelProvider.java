@@ -24,7 +24,6 @@ import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.textmarker.explain.ExplainConstants;
-import org.apache.uima.textmarker.explain.tree.ExplainTree;
 import org.apache.uima.textmarker.explain.tree.IExplainTreeNode;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -71,14 +70,14 @@ public class ApplyTreeLabelProvider extends LabelProvider implements ILabelProvi
       Type ruleType = ts.getType(ExplainConstants.RULE_APPLY_TYPE);
       FeatureStructure fs = debugNode.getFeatureStructure();
       if (fs != null && ts.subsumes(ruleType, fs.getType())) {
-        Feature f1 = ruleType.getFeatureByBaseName(ExplainTree.APPLIED);
+        Feature f1 = ruleType.getFeatureByBaseName(ExplainConstants.APPLIED);
         int v1 = fs.getIntValue(f1);
-        Feature f2 = ruleType.getFeatureByBaseName(ExplainTree.TRIED);
+        Feature f2 = ruleType.getFeatureByBaseName(ExplainConstants.TRIED);
         int v2 = fs.getIntValue(f2);
-        Feature f3 = ruleType.getFeatureByBaseName(ExplainTree.ELEMENT);
+        Feature f3 = ruleType.getFeatureByBaseName(ExplainConstants.ELEMENT);
         String v3 = fs.getStringValue(f3);
         v3 = v3.replaceAll("[\\n\\r]", "");
-        Feature f4 = ruleType.getFeatureByBaseName(ExplainTree.TIME);
+        Feature f4 = ruleType.getFeatureByBaseName(ExplainConstants.TIME);
         long v4 = fs.getLongValue(f4);
         String time = "";
         if (v4 > 0.0) {

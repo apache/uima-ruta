@@ -15,23 +15,31 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.explain.element;
 
-import org.apache.uima.cev.views.CEVPageBookView;
-import org.eclipse.ui.IWorkbenchPart;
+import org.apache.uima.caseditor.editor.AnnotationEditor;
+import org.apache.uima.caseditor.editor.AnnotationEditorView;
+import org.apache.uima.caseditor.editor.ICasEditor;
 
+public class ElementView extends AnnotationEditorView {
 
-public class ElementView extends CEVPageBookView {
+  public static final String ID = "org.apache.uima.textmarker.explain.element";
 
   public ElementView() {
-    super();
+    super("The instance view is currently not available.");
   }
 
   @Override
-  protected PageRec doCreatePage(IWorkbenchPart part) {
-    return doCreatePage(part, IElementViewPage.class);
+  protected PageRec doCreatePage(ICasEditor editor) {
+    PageRec result = null;
+    if (editor.getDocument() != null && editor instanceof AnnotationEditor) {
+      ElementViewPage page = new ElementViewPage((AnnotationEditor) editor);
+      initPage(page);
+      page.createControl(getPageBook());
+      result = new PageRec(editor, page);
+    }
+    return result;
   }
-
 }

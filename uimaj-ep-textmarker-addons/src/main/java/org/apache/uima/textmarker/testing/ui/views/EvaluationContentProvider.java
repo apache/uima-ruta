@@ -17,42 +17,47 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.testing.ui.views.fn;
+package org.apache.uima.textmarker.testing.ui.views;
 
-import org.apache.uima.cev.data.tree.CEVAnnotationTreeNode;
-import org.apache.uima.cev.data.tree.CEVTypeTreeNode;
-import org.apache.uima.cev.data.tree.ICEVTreeNode;
+import org.apache.uima.textmarker.caseditor.view.tree.AnnotationTreeNode;
+import org.apache.uima.textmarker.caseditor.view.tree.ITreeNode;
+import org.apache.uima.textmarker.caseditor.view.tree.TypeTreeNode;
 import org.apache.uima.textmarker.testing.ui.views.tree.TestEvaluationTree;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-public class FalseNegativeContentProvider implements ITreeContentProvider {
+public class EvaluationContentProvider implements ITreeContentProvider {
 
   private Object[] empty = new Object[] {};
+
+  private String type;
+
+  public EvaluationContentProvider(String type) {
+    super();
+    this.type = type;
+  }
 
   @Override
   public Object[] getChildren(Object parentElement) {
     if (parentElement instanceof TestEvaluationTree) {
-      CEVTypeTreeNode root = (CEVTypeTreeNode) ((TestEvaluationTree) parentElement).getRoot();
+      TypeTreeNode root = (TypeTreeNode) ((TestEvaluationTree) parentElement).getRoot();
       if (root == null) {
         return empty;
       }
-      for (ICEVTreeNode node : root.getChildren()) {
-        if (node instanceof CEVTypeTreeNode) {
-          if (((CEVTypeTreeNode) node).getType().getName()
-                  .equals("org.apache.uima.textmarker.type.FalseNegative")) {
+      for (ITreeNode node : root.getChildren()) {
+        if (node instanceof TypeTreeNode) {
+          if (((TypeTreeNode) node).getType().getName().equals(type)) {
             return node.getChildren();
           }
         }
       }
     }
-    if (parentElement instanceof CEVTypeTreeNode) {
-
-      CEVTypeTreeNode node = (CEVTypeTreeNode) parentElement;
+    if (parentElement instanceof TypeTreeNode) {
+      TypeTreeNode node = (TypeTreeNode) parentElement;
       return node.getChildren();
     }
-    if (parentElement instanceof CEVAnnotationTreeNode) {
-      CEVAnnotationTreeNode node = (CEVAnnotationTreeNode) parentElement;
+    if (parentElement instanceof AnnotationTreeNode) {
+      AnnotationTreeNode node = (AnnotationTreeNode) parentElement;
       return node.getChildren();
     }
     return empty;
@@ -60,8 +65,8 @@ public class FalseNegativeContentProvider implements ITreeContentProvider {
 
   @Override
   public Object getParent(Object element) {
-    if (element instanceof ICEVTreeNode) {
-      return ((ICEVTreeNode) element).getParent();
+    if (element instanceof ITreeNode) {
+      return ((ITreeNode) element).getParent();
     }
     return null;
   }
@@ -69,12 +74,12 @@ public class FalseNegativeContentProvider implements ITreeContentProvider {
   @Override
   public boolean hasChildren(Object element) {
     if (element instanceof TestEvaluationTree) {
-      CEVTypeTreeNode root = (CEVTypeTreeNode) ((TestEvaluationTree) element).getRoot();
+      TypeTreeNode root = (TypeTreeNode) ((TestEvaluationTree) element).getRoot();
       return root.hasChildren();
 
     }
-    if (element instanceof ICEVTreeNode) {
-      return ((ICEVTreeNode) element).hasChildren();
+    if (element instanceof ITreeNode) {
+      return ((ITreeNode) element).hasChildren();
     }
     return false;
   }

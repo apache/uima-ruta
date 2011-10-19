@@ -32,6 +32,9 @@ import org.apache.uima.textmarker.testing.ui.views.evalDataTable.EvalTableConten
 import org.apache.uima.textmarker.testing.ui.views.evalDataTable.EvalTableLabelProvider;
 import org.apache.uima.textmarker.testing.ui.views.evalDataTable.TypeEvalTableConst;
 import org.apache.uima.textmarker.testing.ui.views.evalDataTable.TypeTableSorter;
+import org.apache.uima.textmarker.testing.ui.views.fn.FalseNegativeView;
+import org.apache.uima.textmarker.testing.ui.views.fp.FalsePositiveView;
+import org.apache.uima.textmarker.testing.ui.views.tp.TruePositiveView;
 import org.apache.uima.textmarker.testing.ui.views.util.CASLoader;
 import org.apache.uima.textmarker.testing.ui.views.util.Caretaker;
 import org.apache.uima.textmarker.testing.ui.views.util.EvalDataProcessor;
@@ -224,7 +227,7 @@ public class TestViewPage extends Page implements IPageBookViewPage {
             if (element instanceof TestCasData) {
               TestCasData data = (TestCasData) element;
               if (data.getResultPath() != null) {
-                openInCEV(data.getResultPath());
+                openInCasEditor(data.getResultPath());
               }
             }
           }
@@ -328,18 +331,26 @@ public class TestViewPage extends Page implements IPageBookViewPage {
 
   }
 
-  protected void openInCEV(IPath resultPath) {
-    IPath s = resultPath;
+  protected void openInCasEditor(IPath resultPath) {
     if (resultPath == null) {
       return;
     }
     IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
     IFile file = workspace.getRoot().getFileForLocation(resultPath);
+
+    if (!file.isSynchronized(IResource.DEPTH_ZERO)) {
+      try {
+        file.refreshLocal(IResource.DEPTH_ZERO, new NullProgressMonitor());
+      } catch (CoreException e) {
+        e.printStackTrace();
+      }
+    }
     try {
-      page.openEditor(new FileEditorInput(file), "org.apache.uima.cev.editor.CEVViewer");
-      page.showView("org.apache.uima.textmarker.testing.falsePositive");
-      page.showView("org.apache.uima.textmarker.testing.falseNegative");
+      page.openEditor(new FileEditorInput(file), "org.apache.uima.caseditor.editor");
+      page.showView(TruePositiveView.ID);
+      page.showView(FalsePositiveView.ID);
+      page.showView(FalseNegativeView.ID);
     } catch (PartInitException e) {
       e.printStackTrace();
     }

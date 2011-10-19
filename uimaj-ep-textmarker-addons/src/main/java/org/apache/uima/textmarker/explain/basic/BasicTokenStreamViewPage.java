@@ -15,18 +15,12 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.explain.basic;
 
-import java.util.List;
-
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cev.data.CEVData;
-import org.apache.uima.cev.data.CEVDocument;
-import org.apache.uima.cev.editor.CEVViewer;
-import org.apache.uima.cev.extension.ICEVView;
+import org.apache.uima.caseditor.editor.AnnotationEditor;
+import org.apache.uima.caseditor.editor.ICasDocument;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -37,31 +31,29 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.part.Page;
 
-
-public class BasicTokenStreamViewPage extends Page implements IBasicTokenStreamViewPage, ICEVView,
-        IDoubleClickListener {
+public class BasicTokenStreamViewPage extends Page implements IDoubleClickListener {
 
   private TableViewer tableViewer;
-
-  private CEVViewer casViewer;
-
-  private CEVDocument casDoc;
 
   private int current = 0;
 
   private BasicTokenStreamTableContentProvider provider;
 
-  public BasicTokenStreamViewPage(CEVViewer casViewer, CEVDocument casDoc, int index) {
-    this.casDoc = casDoc;
-    this.casViewer = casViewer;
-    this.current = index;
+  private AnnotationEditor editor;
+
+  private ICasDocument document;
+
+  public BasicTokenStreamViewPage(AnnotationEditor editor) {
+    super();
+    this.editor = editor;
+    this.document = editor.getDocument();
   }
 
   @Override
   public void createControl(Composite parent) {
     tableViewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL
             | SWT.FULL_SELECTION);
-    provider = new BasicTokenStreamTableContentProvider(getCurrentCEVData());
+    provider = new BasicTokenStreamTableContentProvider(document.getCAS());
     tableViewer.setContentProvider(provider);
     BasicTokenStreamTableLabelProvider columnLabels = new BasicTokenStreamTableLabelProvider();
     columnLabels.createColumns(tableViewer);
@@ -76,10 +68,6 @@ public class BasicTokenStreamViewPage extends Page implements IBasicTokenStreamV
   @Override
   public Control getControl() {
     return tableViewer.getControl();
-  }
-
-  public CEVData getCurrentCEVData() {
-    return casDoc.getCASData(current);
   }
 
   @Override
@@ -104,44 +92,14 @@ public class BasicTokenStreamViewPage extends Page implements IBasicTokenStreamV
     return null;
   }
 
-  public void viewChanged(int newIndex) {
-    getCurrentCEVData().removeAnnotationListener(this);
-    current = newIndex;
-    getCurrentCEVData().addAnnotationListener(this);
-    provider.init(getCurrentCEVData());
-    tableViewer.refresh();
-  }
-
-  public void annotationsAdded(List<AnnotationFS> annots) {
-
-  }
-
-  public void annotationsRemoved(List<AnnotationFS> annots) {
-
-  }
-
-  public void annotationStateChanged(Type type) {
-
-  }
-
-  public void annotationStateChanged(AnnotationFS annot) {
-
-  }
-
-  public void colorChanged(Type type) {
-
-  }
-
   public void doubleClick(DoubleClickEvent event) {
     if (event.getSelection() != null && event.getSelection() instanceof IStructuredSelection) {
       Object entry = ((IStructuredSelection) event.getSelection()).getFirstElement();
       if (entry instanceof BasicTokenEntry) {
-        casViewer.moveToAnnotation(((BasicTokenEntry) entry).getAnnotation());
+        // TODO
+        // casViewer.moveToAnnotation(((BasicTokenEntry) entry).getAnnotation());
       }
     }
   }
 
-  public void casChanged(CEVDocument casDocument) {
-    this.casDoc = casDocument;
-  }
 }

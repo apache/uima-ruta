@@ -22,11 +22,11 @@ package org.apache.uima.textmarker.explain.basic;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.cev.data.CEVData;
 import org.apache.uima.textmarker.explain.ExplainConstants;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
@@ -35,16 +35,16 @@ public class BasicTokenStreamTableContentProvider implements IStructuredContentP
 
   private List<BasicTokenEntry> basicTokenEntries;
 
-  public BasicTokenStreamTableContentProvider(CEVData casData) {
-    init(casData);
+  public BasicTokenStreamTableContentProvider(CAS cas) {
+    init(cas);
   }
 
-  public void init(CEVData casData) {
+  public void init(CAS cas) {
     basicTokenEntries = new ArrayList<BasicTokenEntry>();
 
-    Type basicType = casData.getCAS().getTypeSystem().getType(ExplainConstants.BASIC_TYPE);
+    Type basicType = cas.getTypeSystem().getType(ExplainConstants.BASIC_TYPE);
     if (basicType != null) {
-      AnnotationIndex anInd = casData.getCAS().getAnnotationIndex(basicType);
+      AnnotationIndex anInd = cas.getAnnotationIndex(basicType);
       FSIterator iti = anInd.iterator(true);
       iti.moveToFirst();
       int i = 0;

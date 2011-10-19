@@ -60,14 +60,7 @@ under the License.
             id="org.apache.uima.textmarker.testing.truePositive"
             name="True Positive">
       </view>
-   </extension>   <extension
-         point="org.apache.uima.cev.cevSearchStrategies">
-      <strategy
-            factory="org.apache.uima.textmarker.query.QuerySearchStrategyFactory"
-            id="org.apache.uima.textmarker.query.searchStrategy"
-            priority="0">
-      </strategy>
-   </extension>   <extension
+   </extension> <extension
          point="org.eclipse.ui.commands">
       <command
             defaultHandler="org.apache.uima.textmarker.query.ui.QueryActionHandler"
@@ -223,35 +216,7 @@ under the License.
             id="org.apache.uima.textmarker.testing.ExportTabel"
             name="Export Table">
       </command>
-   </extension>   
-   <extension
-         point="org.apache.uima.cev.cevViews">
-      <view
-            factory="org.apache.uima.textmarker.testing.ui.views.fp.FalsePositiveViewFactory"
-            id="org.apache.uima.textmarker.testing.falsePositive.cev"
-            priority="0"
-            viewId="org.apache.uima.textmarker.testing.falsePositive">
-      </view>
-      <view
-            factory="org.apache.uima.textmarker.testing.ui.views.fn.FalseNegativeViewFactory"
-            id="org.apache.uima.textmarker.testing.falseNegative.cev"
-            priority="0"
-            viewId="org.apache.uima.textmarker.testing.falseNegative">
-      </view>
-      <view
-            factory="org.apache.uima.textmarker.testing.ui.views.tp.TruePositiveViewFactory"
-            id="org.apache.uima.textmarker.testing.truePositive.cev"
-            priority="0"
-            viewId="org.apache.uima.textmarker.testing.truePositive">
-      </view>
-   </extension>   <extension
-         point="org.apache.uima.cev.cevSearchStrategies">
-      <strategy
-            factory="org.apache.uima.textmarker.testing.searchStrategy.TestingSearchStrategyFactory"
-            id="org.apache.uima.textmarker.testing.cev.searchStrategy"
-            priority="5">
-      </strategy>
-   </extension>  
+   </extension>
     <extension
          point="org.apache.uima.textmarker.addons.evaluators">
       <evaluator
@@ -571,74 +536,31 @@ under the License.
       </view>
       <view
             category="org.apache.uima.textmarker.ide.ui"
-            class="org.apache.uima.textmarker.explain.rulelist.RuleListSelectionView"
+            class="org.apache.uima.textmarker.explain.rulelist.RuleListView"
             icon="icons/chart_organisation.png"
             id="org.apache.uima.textmarker.explain.rulelist"
             name="Rule List">
       </view>
    </extension>
    <extension
-         point="org.apache.uima.cev.cevViews">
-      <view
-            factory="org.apache.uima.textmarker.explain.apply.ApplyViewFactory"
-            id="org.apache.uima.textmarker.cev.extension.explain.apply"
-            priority="0"
-            viewId="org.apache.uima.textmarker.explain.apply">
-      </view>
-      <view
-            factory="org.apache.uima.textmarker.explain.matched.MatchedViewFactory"
-            id="org.apache.uima.textmarker.cev.extension.explain.matched"
-            priority="0"
-            viewId="org.apache.uima.textmarker.explain.matched">
-      </view>
-      <view
-            factory="org.apache.uima.textmarker.explain.basic.BasicTokenStreamViewFactory"
-            id="org.apache.uima.textmarker.cev.extension.explain.basic"
-            priority="0"
-            viewId="org.apache.uima.textmarker.explain.basic">
-      </view>
-      <view
-            factory="org.apache.uima.textmarker.explain.failed.FailedViewFactory"
-            id="org.apache.uima.textmarker.cev.extension.explain.failed"
-            priority="0"
-            viewId="org.apache.uima.textmarker.explain.failed">
-      </view>
-      <view
-            factory="org.apache.uima.textmarker.explain.element.ElementViewFactory"
-            id="org.apache.uima.textmarker.cev.extension.explain.element"
-            priority="0"
-            viewId="org.apache.uima.textmarker.explain.element">
-      </view>
-      <view
-            factory="org.apache.uima.textmarker.statistics.StatisticsViewFactory"
-            id="org.apache.uima.textmarker.cev.extension.statistics"
-            priority="0"
-            viewId="org.apache.uima.textmarker.statistics">
-      </view>
-      <view
-            factory="org.apache.uima.textmarker.explain.selection.ExplainSelectionViewFactory"
-            id="org.apache.uima.textmarker.cev.extension.explain.selection"
-            priority="0"
-            viewId="org.apache.uima.textmarker.explain.selection">
-      </view>
-      <view
-            factory="org.apache.uima.textmarker.explain.rulelist.RuleListViewFactory"
-            id="org.apache.uima.textmarker.cev.extension.explain.rulelist"
-            priority="0"
-            viewId="org.apache.uima.textmarker.explain.rulelist">
-      </view>
-   </extension>
-   <extension
-         point="org.apache.uima.cev.cevSearchStrategies">
-      <strategy
-            factory="org.apache.uima.textmarker.searchStrategy.LastLaunchSearchStrategyFactory"
-            id="org.apache.uima.textmarker.cev.LastLaunchSearch"
-            priority="20">
-      </strategy>
-      <strategy
-            factory="org.apache.uima.textmarker.searchStrategy.DescriptorFolderSearchStrategyFactory"
-            id="org.apache.uima.textmarker.cev.DescriptorFolder"
-            priority="100">
-      </strategy>
+         point="org.apache.uima.caseditor.ide.searchstrategy">
+      <searchStrategy
+            class="org.apache.uima.textmarker.searchStrategy.LastLaunchSearchStrategy"
+            description="Use the type system of the last launched TextMarker script in the same project"
+            id="org.apache.uima.textmarker.searchstrategy.lastlaunch"
+            priority="10">
+      </searchStrategy>
+      <searchStrategy
+            class="org.apache.uima.textmarker.searchStrategy.DescriptorFolderSearchStrategy"
+            description="Pick one type system from the TextMarker project descriptor folder"
+            id="org.apache.uima.textmarker.searchstrategy.descriptorfolder"
+            priority="500">
+      </searchStrategy>
+      <searchStrategy
+            class="org.apache.uima.textmarker.testing.searchStrategy.TestingSearchStrategy"
+            description="Use the type system of the tested TextMarker script when opening a evaluated CAS"
+            id="org.apache.uima.textmarker.searchstrategy.testing"
+            priority="5">
+      </searchStrategy>
    </extension>
 </plugin>

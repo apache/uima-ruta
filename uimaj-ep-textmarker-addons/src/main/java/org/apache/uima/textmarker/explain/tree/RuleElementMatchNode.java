@@ -24,25 +24,26 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cev.data.tree.ICEVAnnotationNode;
+import org.apache.uima.textmarker.caseditor.view.tree.IAnnotationNode;
+import org.apache.uima.textmarker.explain.ExplainConstants;
 
 public class RuleElementMatchNode extends ExplainAbstractTreeNode implements IEvaluatedNode,
-        ICEVAnnotationNode {
+        IAnnotationNode {
 
   private boolean matched;
 
   public RuleElementMatchNode(IExplainTreeNode parent, FeatureStructure fs, TypeSystem ts) {
     super(parent, fs, ts);
-    Feature f = fs.getType().getFeatureByBaseName(ExplainTree.BASE_CONDITION);
+    Feature f = fs.getType().getFeatureByBaseName(ExplainConstants.BASE_CONDITION);
     FeatureStructure baseFS = fs.getFeatureValue(f);
-    Feature baseFeat = baseFS.getType().getFeatureByBaseName(ExplainTree.VALUE);
+    Feature baseFeat = baseFS.getType().getFeatureByBaseName(ExplainConstants.VALUE);
     matched = baseFS.getBooleanValue(baseFeat);
 
-    f = fs.getType().getFeatureByBaseName(ExplainTree.CONDITIONS);
+    f = fs.getType().getFeatureByBaseName(ExplainConstants.CONDITIONS);
     ArrayFS value = (ArrayFS) fs.getFeatureValue(f);
     FeatureStructure[] fsarray = value.toArray();
     for (FeatureStructure each : fsarray) {
-      Feature eachFeat = each.getType().getFeatureByBaseName(ExplainTree.VALUE);
+      Feature eachFeat = each.getType().getFeatureByBaseName(ExplainConstants.VALUE);
       boolean eachValue = each.getBooleanValue(eachFeat);
       matched &= eachValue;
     }

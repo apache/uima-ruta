@@ -15,13 +15,14 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.explain.tree;
 
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.TypeSystem;
+import org.apache.uima.textmarker.explain.ExplainConstants;
 
 public class ConditionNode extends ExplainAbstractTreeNode implements IEvaluatedNode {
 
@@ -29,7 +30,7 @@ public class ConditionNode extends ExplainAbstractTreeNode implements IEvaluated
 
   public ConditionNode(IExplainTreeNode parent, FeatureStructure fs, TypeSystem ts) {
     super(parent, fs, ts);
-    Feature f = fs.getType().getFeatureByBaseName(ExplainTree.VALUE);
+    Feature f = fs.getType().getFeatureByBaseName(ExplainConstants.VALUE);
     matched = fs.getBooleanValue(f);
   }
 

@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.testing.ui.views.tree;
 
@@ -25,15 +25,14 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cev.data.tree.CEVAnnotationTreeNode;
-import org.apache.uima.cev.data.tree.CEVTypeTreeNode;
-import org.apache.uima.cev.data.tree.ICEVTreeNode;
+import org.apache.uima.textmarker.caseditor.view.tree.AnnotationTreeNode;
+import org.apache.uima.textmarker.caseditor.view.tree.ITreeNode;
+import org.apache.uima.textmarker.caseditor.view.tree.TypeTreeNode;
 import org.apache.uima.textmarker.testing.evaluator.ICasEvaluator;
-
 
 public class TestEvaluationTree {
 
-  private CEVTypeTreeNode root;
+  private TypeTreeNode root;
 
   public TestEvaluationTree() {
 
@@ -49,12 +48,12 @@ public class TestEvaluationTree {
     }
     // Creating RootNode and children that function as root nodes
     // for the FalsePositive /FalseNegative subtrees
-    root = new CEVTypeTreeNode(null, cas.getAnnotationType());
+    root = new TypeTreeNode(null, cas.getAnnotationType());
     boolean containsEvalInfos = false;
 
-    CEVTypeTreeNode fproot = new CEVTypeTreeNode(root, falsePositiveType);
-    CEVTypeTreeNode fnroot = new CEVTypeTreeNode(root, falseNegativeType);
-    CEVTypeTreeNode tproot = new CEVTypeTreeNode(root, truePositiveType);
+    TypeTreeNode fproot = new TypeTreeNode(root, falsePositiveType);
+    TypeTreeNode fnroot = new TypeTreeNode(root, falseNegativeType);
+    TypeTreeNode tproot = new TypeTreeNode(root, truePositiveType);
 
     // Iterating through CAS and adding nodes to according subtrees
 
@@ -69,7 +68,7 @@ public class TestEvaluationTree {
     // }
   }
 
-  private void addEvalNodes(CAS cas, Type falsePositiveType, CEVTypeTreeNode fproot) {
+  private void addEvalNodes(CAS cas, Type falsePositiveType, TypeTreeNode fproot) {
     FSIterator<AnnotationFS> iter = cas.getAnnotationIndex(falsePositiveType).iterator();
     while (iter.isValid()) {
       FeatureStructure fs = iter.get();
@@ -77,23 +76,23 @@ public class TestEvaluationTree {
         AnnotationFS a = (AnnotationFS) fs;
         Feature original = fs.getType().getFeatureByBaseName(ICasEvaluator.ORIGINAL);
         FeatureStructure originalfs = fs.getFeatureValue(original);
-        CEVTypeTreeNode parentTypeNode = containsTypeNode(fproot, originalfs);
+        TypeTreeNode parentTypeNode = containsTypeNode(fproot, originalfs);
         if (parentTypeNode == null && originalfs != null) {
-          parentTypeNode = new CEVTypeTreeNode(fproot, originalfs.getType());
+          parentTypeNode = new TypeTreeNode(fproot, originalfs.getType());
           fproot.addChild(parentTypeNode);
         }
-        CEVAnnotationTreeNode newNode = new CEVAnnotationTreeNode(parentTypeNode, a);
+        AnnotationTreeNode newNode = new AnnotationTreeNode(parentTypeNode, a);
         parentTypeNode.addChild(newNode);
       }
       iter.moveToNext();
     }
   }
 
-  private CEVTypeTreeNode containsTypeNode(CEVTypeTreeNode fproot, FeatureStructure originalfs) {
-    ICEVTreeNode[] children = fproot.getChildren();
-    for (ICEVTreeNode each : children) {
-      if (each instanceof CEVTypeTreeNode) {
-        CEVTypeTreeNode node = (CEVTypeTreeNode) each;
+  private TypeTreeNode containsTypeNode(TypeTreeNode fproot, FeatureStructure originalfs) {
+    ITreeNode[] children = fproot.getChildren();
+    for (ITreeNode each : children) {
+      if (each instanceof TypeTreeNode) {
+        TypeTreeNode node = (TypeTreeNode) each;
         if (node.getType().equals(originalfs.getType())) {
           return node;
         }
@@ -102,7 +101,7 @@ public class TestEvaluationTree {
     return null;
   }
 
-  public ICEVTreeNode getRoot() {
+  public ITreeNode getRoot() {
     return this.root;
   }
 

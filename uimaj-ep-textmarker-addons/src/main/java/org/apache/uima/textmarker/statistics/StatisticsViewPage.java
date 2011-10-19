@@ -29,11 +29,8 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cev.data.CEVData;
-import org.apache.uima.cev.data.CEVDocument;
-import org.apache.uima.cev.editor.CEVViewer;
-import org.apache.uima.cev.extension.ICEVView;
+import org.apache.uima.caseditor.editor.AnnotationEditor;
+import org.apache.uima.caseditor.editor.ICasDocument;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -51,26 +48,25 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.part.Page;
 
-public class StatisticsViewPage extends Page implements IStatisticsViewPage, ICEVView,
-        IDoubleClickListener, ISelectionChangedListener {
+public class StatisticsViewPage extends Page implements IDoubleClickListener,
+        ISelectionChangedListener {
 
   private static final String TYPE = "org.apache.uima.textmarker.type.Statistics";
 
-  private CEVDocument casDoc;
-
   private int current;
-
-  private CEVViewer casViewer;
 
   private Map<String, Image> images;
 
   private TableViewer viewer;
 
-  public StatisticsViewPage(CEVViewer casViewer, CEVDocument casDoc, int index) {
+  private AnnotationEditor editor;
+
+  private ICasDocument document;
+
+  public StatisticsViewPage(AnnotationEditor editor) {
     super();
-    this.casViewer = casViewer;
-    this.casDoc = casDoc;
-    this.current = index;
+    this.editor = editor;
+    this.document = editor.getDocument();
   }
 
   @Override
@@ -105,57 +101,15 @@ public class StatisticsViewPage extends Page implements IStatisticsViewPage, ICE
   @Override
   public void createControl(Composite parent) {
     createViewer(parent);
-    viewChanged(current);
-    //
-    //
-    //
-    // public void handleEvent(Event e) {
-    // TableItem item = (TableItem) e.item;
-    // int index = table.indexOf(item);
-    // // int[] datum = data[index];
-    // // item.setText(new String[] { Integer.toString(datum[0]), Integer.toString(datum[1]) });
-    // }
-    // });
-    // // Add sort indicator and sort data when column selected
-    // Listener sortListener = new Listener() {
-    // public void handleEvent(Event e) {
-    // // determine new sort column and direction
-    // TableColumn sortColumn = table.getSortColumn();
-    // TableColumn currentColumn = (TableColumn) e.widget;
-    // int dir = table.getSortDirection();
-    // if (sortColumn == currentColumn) {
-    // dir = dir == SWT.UP ? SWT.DOWN : SWT.UP;
-    // } else {
-    // table.setSortColumn(currentColumn);
-    // dir = SWT.UP;
-    // }
-    // // sort the data based on column and direction
-    // final int index = currentColumn == cname ? 0 : 1;
-    // final int direction = dir;
-    // // Object[] data = new ;
-    // // Arrays.sort(data, new Comparator() {
-    // // public int compare(Object arg0, Object arg1) {
-    // // int[] a = (int[]) arg0;
-    // // int[] b = (int[]) arg1;
-    // // if (a[index] == b[index])
-    // // return 0;
-    // // if (direction == SWT.UP) {
-    // // return a[index] < b[index] ? -1 : 1;
-    // // }
-    // // return a[index] < b[index] ? 1 : -1;
-    // // }
-    // // });
-    // // update data displayed in table
-    // table.setSortDirection(dir);
-    // table.clearAll();
-    // }
-    // };
-    // cname.addListener(SWT.Selection, sortListener);
-    // ctotal.addListener(SWT.Selection, sortListener);
-    // camount.addListener(SWT.Selection, sortListener);
-    // cpart.addListener(SWT.Selection, sortListener);
-    // table.setSortColumn(cname);
-    // table.setSortDirection(SWT.UP);
+    CAS cas = document.getCAS();
+    Type type = cas.getTypeSystem().getType(TYPE);
+    if (type != null) {
+      FSIterator<FeatureStructure> allIndexedFS = cas.getIndexRepository().getAllIndexedFS(type);
+      if (allIndexedFS.isValid()) {
+        inputChange(allIndexedFS.get());
+      }
+    }
+    viewer.refresh();
 
   }
 
@@ -224,10 +178,6 @@ public class StatisticsViewPage extends Page implements IStatisticsViewPage, ICE
     return viewer.getControl();
   }
 
-  public CEVData getCurrentCEVData() {
-    return casDoc.getCASData(current);
-  }
-
   public void doubleClick(DoubleClickEvent event) {
   }
 
@@ -237,44 +187,9 @@ public class StatisticsViewPage extends Page implements IStatisticsViewPage, ICE
     }
   }
 
-  public void viewChanged(int newIndex) {
-    getCurrentCEVData().removeAnnotationListener(this);
-    current = newIndex;
-    getCurrentCEVData().addAnnotationListener(this);
-    CAS cas = getCurrentCEVData().getCAS();
-    Type type = cas.getTypeSystem().getType(TYPE);
-    if (type != null) {
-      FSIterator allIndexedFS = cas.getIndexRepository().getAllIndexedFS(type);
-      if (allIndexedFS.isValid()) {
-        inputChange(allIndexedFS.get());
-      }
-    }
-    viewer.refresh();
-  }
-
-  public void annotationsAdded(List<AnnotationFS> annots) {
-  }
-
-  public void annotationsRemoved(List<AnnotationFS> annots) {
-  }
-
-  public void annotationStateChanged(Type type) {
-  }
-
-  public void annotationStateChanged(AnnotationFS annot) {
-  }
-
-  public void colorChanged(Type type) {
-  }
-
-  public void newSelection(int offset) {
-  }
-
+  @Override
   public void selectionChanged(SelectionChangedEvent event) {
-  }
 
-  public void casChanged(CEVDocument casDocument) {
-    this.casDoc = casDocument;
   }
 
 }

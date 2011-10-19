@@ -15,17 +15,16 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.explain.tree;
 
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cev.data.tree.ICEVAnnotationNode;
+import org.apache.uima.textmarker.caseditor.view.tree.IAnnotationNode;
 
-
-public class RuleMatchNode extends ExplainAbstractTreeNode implements ICEVAnnotationNode {
+public class RuleMatchNode extends ExplainAbstractTreeNode implements IAnnotationNode {
 
   public RuleMatchNode(IExplainTreeNode parent, FeatureStructure fs, TypeSystem ts) {
     super(parent, fs, ts);

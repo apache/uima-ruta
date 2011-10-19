@@ -17,52 +17,53 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.testing.ui.views.fn;
+package org.apache.uima.textmarker.testing.ui.views;
 
-import org.apache.uima.cev.data.tree.CEVAnnotationTreeNode;
-import org.apache.uima.cev.data.tree.CEVFeatureTreeNode;
-import org.apache.uima.cev.data.tree.CEVTypeTreeNode;
-import org.apache.uima.cev.views.TextUtils;
+import org.apache.uima.textmarker.caseditor.view.tree.AnnotationTreeNode;
+import org.apache.uima.textmarker.caseditor.view.tree.FeatureTreeNode;
+import org.apache.uima.textmarker.caseditor.view.tree.TextUtils;
+import org.apache.uima.textmarker.caseditor.view.tree.TypeTreeNode;
+import org.apache.uima.textmarker.testing.evaluator.ICasEvaluator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-public class FalseNegativeLabelProvider extends LabelProvider implements ILabelProvider {
+public class EvaluationLabelProvider extends LabelProvider implements ILabelProvider {
 
-  private FalseNegativeViewPage owner;
+  private EvaluationViewPage owner;
 
-  public FalseNegativeLabelProvider() {
+  public EvaluationLabelProvider() {
     super();
   }
 
-  public FalseNegativeLabelProvider(FalseNegativeViewPage owner) {
+  public EvaluationLabelProvider(EvaluationViewPage owner) {
     super();
     this.owner = owner;
   }
 
   @Override
   public String getText(Object element) {
-    if (element instanceof CEVAnnotationTreeNode) {
-      CEVAnnotationTreeNode fnNode = (CEVAnnotationTreeNode) element;
+    if (element instanceof AnnotationTreeNode) {
+      AnnotationTreeNode fnNode = (AnnotationTreeNode) element;
       if (fnNode.getAnnotation() != null) {
         String typeName = fnNode.getAnnotation().getType().getName();
         String coveredText = fnNode.getAnnotation().getCoveredText();
         coveredText = coveredText.replaceAll("[\\n]", "").replaceAll("[\\r]", "");
-        if (typeName.equals("org.apache.uima.textmarker.type.FalsePositive")
-                || typeName.equals("org.apache.uima.textmarker.type.FalseNegative")
-                || typeName.equals("org.apache.uima.textmarker.type.TruePositive")) {
+        if (typeName.equals(ICasEvaluator.FALSE_POSITIVE)
+                || typeName.equals(ICasEvaluator.FALSE_NEGATIVE)
+                || typeName.equals(ICasEvaluator.TRUE_POSITIVE)) {
           return coveredText;
         }
         String name = TextUtils.shrinkNamespace(fnNode.getAnnotation().getType().getName());
         return (name + ": " + coveredText);
       }
     }
-    if (element instanceof CEVTypeTreeNode) {
-      CEVTypeTreeNode testNode = (CEVTypeTreeNode) element;
+    if (element instanceof TypeTreeNode) {
+      TypeTreeNode testNode = (TypeTreeNode) element;
       return TextUtils.shrinkNamespace(testNode.getType().getName());
     }
-    if (element instanceof CEVFeatureTreeNode) {
-      CEVFeatureTreeNode fNode = (CEVFeatureTreeNode) element;
+    if (element instanceof FeatureTreeNode) {
+      FeatureTreeNode fNode = (FeatureTreeNode) element;
       return fNode.getName();
     }
 
@@ -71,13 +72,13 @@ public class FalseNegativeLabelProvider extends LabelProvider implements ILabelP
 
   @Override
   public Image getImage(Object element) {
-    if (element instanceof CEVTypeTreeNode) {
-      return owner.getCurrentCEVData().getIcon(((CEVTypeTreeNode) element).getType());
-    }
-    if (element instanceof CEVAnnotationTreeNode) {
-      return owner.getCurrentCEVData().getIcon(
-              ((CEVAnnotationTreeNode) element).getAnnotation().getType());
-    }
+    // if (element instanceof TypeTreeNode) {
+    // return owner.getCurrentData().getIcon(((TypeTreeNode) element).getType());
+    // }
+    // if (element instanceof AnnotationTreeNode) {
+    // return owner.getCurrentData().getIcon(
+    // ((AnnotationTreeNode) element).getAnnotation().getType());
+    // }
     return null;
   }
 }

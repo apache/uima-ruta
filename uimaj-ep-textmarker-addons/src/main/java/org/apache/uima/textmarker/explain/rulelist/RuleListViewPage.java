@@ -24,9 +24,7 @@ import java.util.List;
 
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
-import org.apache.uima.cev.data.CEVData;
-import org.apache.uima.cev.data.CEVDocument;
-import org.apache.uima.cev.editor.CEVViewer;
+import org.apache.uima.caseditor.editor.AnnotationEditor;
 import org.apache.uima.textmarker.explain.ExplainConstants;
 import org.apache.uima.textmarker.explain.apply.ApplyTreeContentProvider;
 import org.apache.uima.textmarker.explain.apply.ApplyTreeLabelProvider;
@@ -36,6 +34,8 @@ import org.apache.uima.textmarker.explain.tree.ExplainTree;
 import org.apache.uima.textmarker.explain.tree.IExplainTreeNode;
 import org.apache.uima.textmarker.explain.tree.RuleApplyNode;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -44,8 +44,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IWorkbenchPart;
 
-public class RuleListViewPage extends ApplyViewPage implements IRuleListViewPage, Listener {
+public class RuleListViewPage extends ApplyViewPage implements Listener {
 
   protected Text filterTextField;
 
@@ -55,8 +56,8 @@ public class RuleListViewPage extends ApplyViewPage implements IRuleListViewPage
 
   private int offset = -1;
 
-  public RuleListViewPage(CEVViewer casViewer, CEVDocument casDoc, int index) {
-    super(casViewer, casDoc, index);
+  public RuleListViewPage(AnnotationEditor editor) {
+    super(editor);
   }
 
   @Override
@@ -80,48 +81,28 @@ public class RuleListViewPage extends ApplyViewPage implements IRuleListViewPage
     filterTextField.addListener(SWT.KeyUp, this);
     filterTextField.addListener(SWT.MouseUp, this);
     filterTextField.addListener(SWT.Modify, this);
+    filterTextField.setMessage("Only rules with...");
 
     viewer = new CheckboxTreeViewer(overlay, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
     gd = new GridData(GridData.FILL_BOTH);
     viewer.getTree().setLayoutData(gd);
     viewer.setContentProvider(new ApplyTreeContentProvider());
     viewer.setLabelProvider(new ApplyTreeLabelProvider(this));
-    viewer.addDoubleClickListener(this);
-    viewer.addSelectionChangedListener(this);
-    viewer.setInput(new ApplyRootNode(null, getCurrentCEVData().getCAS().getTypeSystem()));
-  }
+    viewer.setInput(new ApplyRootNode(null, document.getCAS().getTypeSystem()));
 
-  public void viewChanged(int newIndex) {
-    getCurrentCEVData().removeAnnotationListener(this);
-    current = newIndex;
-    getCurrentCEVData().addAnnotationListener(this);
-    newSelection(offset);
-  }
+    getSite().setSelectionProvider(viewer);
+    getSite().getPage().addSelectionListener(this);
 
-  public CEVData getCurrentCEVData() {
-    return casDoc.getCASData(current);
-  }
-
-  public void newSelection(int offset) {
-    this.offset = offset;
-
-    if (offset >= 0) {
-      ExplainTree tree = new ExplainTree(getCurrentCEVData(), offset, true);
-      filterTree(tree);
-      viewer.setInput(tree.getRoot());
-      viewer.refresh();
-    }
   }
 
   private void filterTree(ExplainTree tree) {
-    Type ruleType = getCurrentCEVData().getCAS().getTypeSystem()
-            .getType(ExplainConstants.RULE_APPLY_TYPE);
+    Type ruleType = document.getCAS().getTypeSystem().getType(ExplainConstants.RULE_APPLY_TYPE);
     IExplainTreeNode root = tree.getRoot();
     List<IExplainTreeNode> children = new ArrayList<IExplainTreeNode>(root.getChildren());
     for (IExplainTreeNode each : children) {
       if (each instanceof RuleApplyNode) {
         RuleApplyNode ran = (RuleApplyNode) each;
-        Feature f = ruleType.getFeatureByBaseName(ExplainTree.ELEMENTS);
+        Feature f = ruleType.getFeatureByBaseName(ExplainConstants.ELEMENTS);
         if (f != null) {
           String v = ran.getFeatureStructure().getStringValue(f);
           if (manualFilter != null && !"".equals(manualFilter) && v.indexOf(manualFilter) == -1) {
@@ -135,7 +116,7 @@ public class RuleListViewPage extends ApplyViewPage implements IRuleListViewPage
   public void handleEvent(Event event) {
     if (event.widget == filterTextField && event.type == SWT.Modify) {
       manualFilter = filterTextField.getText();
-      newSelection(offset);
+      reloadTree();
     }
   }
 
@@ -170,4 +151,20 @@ public class RuleListViewPage extends ApplyViewPage implements IRuleListViewPage
     overlay.setFocus();
   }
 
+  @Override
+  public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+    if (selection instanceof StructuredSelection && part instanceof AnnotationEditor) {
+      offset = editor.getCaretOffset();
+      if (offset >= 0) {
+        reloadTree();
+      }
+    }
+  }
+
+  private void reloadTree() {
+    ExplainTree tree = new ExplainTree(document.getCAS(), offset, true);
+    filterTree(tree);
+    viewer.setInput(tree.getRoot());
+    viewer.refresh();
+  }
 }

@@ -15,26 +15,31 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.explain.rulelist;
 
-import org.apache.uima.cev.data.CEVDocument;
-import org.apache.uima.cev.editor.CEVViewer;
-import org.apache.uima.cev.extension.ICEVView;
-import org.apache.uima.cev.extension.ICEVViewFactory;
+import org.apache.uima.caseditor.editor.AnnotationEditor;
+import org.apache.uima.caseditor.editor.AnnotationEditorView;
+import org.apache.uima.caseditor.editor.ICasEditor;
 
-public class RuleListViewFactory implements ICEVViewFactory {
+public class RuleListView extends AnnotationEditorView {
 
-  public RuleListViewFactory() {
+  public static final String ID = "org.apache.uima.textmarker.explain.rulelist";
+
+  public RuleListView() {
+    super("The instance view is currently not available.");
   }
 
-  public ICEVView createView(CEVViewer viewer, CEVDocument cevDocument, int index) {
-    return new RuleListViewPage(viewer, cevDocument, index);
+  @Override
+  protected PageRec doCreatePage(ICasEditor editor) {
+    PageRec result = null;
+    if (editor.getDocument() != null && editor instanceof AnnotationEditor) {
+      RuleListViewPage page = new RuleListViewPage((AnnotationEditor) editor);
+      initPage(page);
+      page.createControl(getPageBook());
+      result = new PageRec(editor, page);
+    }
+    return result;
   }
-
-  public Class<?> getAdapterInterface() {
-    return IRuleListViewPage.class;
-  }
-
 }

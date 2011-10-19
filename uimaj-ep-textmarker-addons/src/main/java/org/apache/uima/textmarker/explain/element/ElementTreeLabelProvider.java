@@ -26,7 +26,6 @@ import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.explain.ExplainConstants;
 import org.apache.uima.textmarker.explain.tree.ConditionNode;
-import org.apache.uima.textmarker.explain.tree.ExplainTree;
 import org.apache.uima.textmarker.explain.tree.IExplainTreeNode;
 import org.apache.uima.textmarker.explain.tree.RuleElementMatchNode;
 import org.apache.uima.textmarker.explain.tree.RuleElementMatchesNode;
@@ -70,8 +69,8 @@ public class ElementTreeLabelProvider extends LabelProvider implements ILabelPro
       if (element instanceof RuleElementMatchesNode) {
         Type type = ts.getType(ExplainConstants.RULE_ELEMENT_MATCHES_TYPE);
         FeatureStructure fs = debugNode.getFeatureStructure();
-        Feature f = type.getFeatureByBaseName(ExplainTree.ELEMENT);
-        Feature fanchor = type.getFeatureByBaseName(ExplainTree.RULE_ANCHOR);
+        Feature f = type.getFeatureByBaseName(ExplainConstants.ELEMENT);
+        Feature fanchor = type.getFeatureByBaseName(ExplainConstants.RULE_ANCHOR);
         if (f != null && fanchor != null) {
           String v = fs.getStringValue(f);
           String ruleAnchor = fs.getBooleanValue(fanchor) ? "'" : "";
@@ -88,7 +87,7 @@ public class ElementTreeLabelProvider extends LabelProvider implements ILabelPro
       } else if (element instanceof ConditionNode) {
         Type type = ts.getType(ExplainConstants.EVAL_CONDITION_TYPE);
         FeatureStructure fs = debugNode.getFeatureStructure();
-        Feature f = type.getFeatureByBaseName(ExplainTree.ELEMENT);
+        Feature f = type.getFeatureByBaseName(ExplainConstants.ELEMENT);
         if (f != null) {
           String v = fs.getStringValue(f);
           return v;

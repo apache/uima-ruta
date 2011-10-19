@@ -20,57 +20,51 @@
 package org.apache.uima.textmarker.explain.element;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cev.data.CEVData;
-import org.apache.uima.cev.data.CEVDocument;
-import org.apache.uima.cev.data.tree.ICEVAnnotationNode;
-import org.apache.uima.cev.editor.CEVViewer;
-import org.apache.uima.cev.extension.ICEVView;
+import org.apache.uima.caseditor.editor.AnnotationEditor;
+import org.apache.uima.caseditor.editor.ICasDocument;
 import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
 import org.apache.uima.textmarker.explain.ExplainConstants;
+import org.apache.uima.textmarker.explain.failed.FailedView;
+import org.apache.uima.textmarker.explain.matched.MatchedView;
 import org.apache.uima.textmarker.explain.tree.IExplainTreeNode;
 import org.apache.uima.textmarker.explain.tree.RuleElementRootNode;
+import org.apache.uima.textmarker.explain.tree.RuleMatchNode;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.ITreeSelection;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.Page;
 
-public class ElementViewPage extends Page implements IElementViewPage, ICEVView,
-        IDoubleClickListener {
+public class ElementViewPage extends Page implements ISelectionListener {
 
   private IExplainTreeNode node;
 
-  // private CheckboxTreeViewer treeView;
   private TreeViewer treeView;
-
-  private CEVDocument casDoc;
-
-  private int current;
-
-  private CEVViewer casViewer;
 
   private Map<String, Image> images;
 
-  public ElementViewPage(CEVViewer casViewer, CEVDocument casDoc, int index) {
+  private AnnotationEditor editor;
+
+  private ICasDocument document;
+
+  public ElementViewPage(AnnotationEditor editor) {
     super();
-    this.casViewer = casViewer;
-    this.casDoc = casDoc;
-    this.current = index;
+    this.editor = editor;
+    this.document = editor.getDocument();
   }
 
   @Override
   public void dispose() {
     super.dispose();
+    getSite().getPage().removeSelectionListener(this);
     if (images != null) {
       for (Image each : images.values()) {
         each.dispose();
@@ -137,20 +131,8 @@ public class ElementViewPage extends Page implements IElementViewPage, ICEVView,
     treeView.setLabelProvider(new ElementTreeLabelProvider(this));
     treeView.setInput(node);
     // treeView.addCheckStateListener(getCurrentCEVData());
-    treeView.addDoubleClickListener(this);
-  }
-
-  public void doubleClick(DoubleClickEvent event) {
-    if (event.getSelection() != null && event.getSelection() instanceof ITreeSelection) {
-      Object treeNode = ((ITreeSelection) event.getSelection()).getFirstElement();
-      if (treeNode instanceof ICEVAnnotationNode) {
-        casViewer.moveToAnnotation(((ICEVAnnotationNode) treeNode).getAnnotation());
-      }
-    }
-  }
-
-  public CEVData getCurrentCEVData() {
-    return casDoc.getCASData(current);
+    getSite().setSelectionProvider(treeView);
+    getSite().getPage().addSelectionListener(this);
   }
 
   @Override
@@ -180,38 +162,21 @@ public class ElementViewPage extends Page implements IElementViewPage, ICEVView,
     }
   }
 
-  public void viewChanged(int newIndex) {
-    getCurrentCEVData().removeAnnotationListener(this);
-    current = newIndex;
-    getCurrentCEVData().addAnnotationListener(this);
-    inputChange(null);
+  @Override
+  public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+    if (selection instanceof TreeSelection
+            && (part instanceof MatchedView || part instanceof FailedView)) {
+      TreeSelection ts = (TreeSelection) selection;
+      Object firstElement = ts.getFirstElement();
+
+      if (firstElement instanceof RuleMatchNode) {
+        RuleMatchNode match = (RuleMatchNode) firstElement;
+        if (match.hasChildren()) {
+          inputChange(match.getChildren().get(0));
+        }
+      }
+
+    }
   }
 
-  public void annotationsAdded(List<AnnotationFS> annots) {
-
-  }
-
-  public void annotationsRemoved(List<AnnotationFS> annots) {
-
-  }
-
-  public void annotationStateChanged(Type type) {
-
-  }
-
-  public void annotationStateChanged(AnnotationFS annot) {
-
-  }
-
-  public void colorChanged(Type type) {
-
-  }
-
-  public void newSelection(int offset) {
-
-  }
-
-  public void casChanged(CEVDocument casDocument) {
-    this.casDoc = casDocument;
-  }
 }

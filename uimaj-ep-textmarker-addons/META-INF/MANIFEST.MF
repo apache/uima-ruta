@@ -6,7 +6,6 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.apache.uima.cev;bundle-version="1.0.0",
  org.apache.uima.runtime;bundle-version="2.3.1",
  org.apache.uima.textmarker.engine;bundle-version="1.0.0",
  org.eclipse.core.resources,
@@ -17,6 +16,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.dltk.ui;bundle-version="1.0.2",
  org.eclipse.ui.editors,
  org.eclipse.dltk.launching;bundle-version="[1.0.0,2.0.0)",
- org.eclipse.debug.ui;bundle-version="3.5.0"
+ org.eclipse.debug.ui;bundle-version="3.5.0",
+ org.apache.uima.caseditor;bundle-version="2.4.0",
+ org.apache.uima.textmarker.caseditor;bundle-version="1.0.0",
+ org.apache.uima.caseditor.ide;bundle-version="2.4.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

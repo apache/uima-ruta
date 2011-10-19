@@ -19,10 +19,13 @@
 
 package org.apache.uima.textmarker.searchStrategy;
 
-import org.apache.uima.cev.extension.ICEVSearchStrategy;
+import org.apache.uima.caseditor.ide.searchstrategy.ITypeSystemSearchStrategy;
+import org.apache.uima.textmarker.ide.core.TextMarkerNature;
 import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IProjectNature;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -30,21 +33,19 @@ import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.dltk.internal.launching.LaunchConfigurationUtils;
 import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 
-public class LastLaunchSearchStrategy implements ICEVSearchStrategy {
+public class LastLaunchSearchStrategy implements ITypeSystemSearchStrategy {
 
-  private int priority;
-
-  public LastLaunchSearchStrategy(int priority) {
-    super();
-    this.priority = priority;
-  }
-
-  public int getPriority() {
-    return priority;
-  }
-
-  public IFile searchDescriptor(IFile file) {
-    IProject project = file.getProject();
+  @Override
+  public IFile findTypeSystem(IFile casFile) {
+    IProject project = casFile.getProject();
+    try {
+      IProjectNature nature = project.getNature(TextMarkerNature.NATURE_ID);
+      if (!(nature instanceof TextMarkerNature)) {
+        return null;
+      }
+    } catch (CoreException e) {
+      return null;
+    }
     ILaunchConfiguration lastRun = DebugUITools
             .getLastLaunch("org.eclipse.debug.ui.launchGroup.run");
     String scriptName = LaunchConfigurationUtils.getString(lastRun,

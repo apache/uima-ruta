@@ -15,22 +15,34 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.testing.ui.views.tp;
 
-import org.apache.uima.cev.views.CEVPageBookView;
-import org.eclipse.ui.IWorkbenchPart;
+import org.apache.uima.caseditor.editor.AnnotationEditor;
+import org.apache.uima.caseditor.editor.AnnotationEditorView;
+import org.apache.uima.caseditor.editor.ICasEditor;
+import org.apache.uima.textmarker.testing.evaluator.ICasEvaluator;
+import org.apache.uima.textmarker.testing.ui.views.EvaluationViewPage;
 
+public class TruePositiveView extends AnnotationEditorView {
 
-public class TruePositiveView extends CEVPageBookView {
+  public static final String ID = "org.apache.uima.textmarker.testing.truePositive";
 
   public TruePositiveView() {
-    super();
+    super("The instance view is currently not available.");
   }
 
   @Override
-  protected PageRec doCreatePage(IWorkbenchPart part) {
-    return doCreatePage(part, ITruePositiveViewPage.class);
+  protected PageRec doCreatePage(ICasEditor editor) {
+    PageRec result = null;
+    if (editor.getDocument() != null && editor instanceof AnnotationEditor) {
+      EvaluationViewPage page = new EvaluationViewPage(ICasEvaluator.TRUE_POSITIVE,
+              (AnnotationEditor) editor);
+      initPage(page);
+      page.createControl(getPageBook());
+      result = new PageRec(editor, page);
+    }
+    return result;
   }
 }
