@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.ide.core;
 
@@ -36,7 +36,7 @@ public class TextMarkerKeywords implements ITextMarkerKeywords {
       "ATTRIBUTE", "MARKFAST", "FILTERTYPE", "FILTERMARKUP", "CREATE", "FILL", "MARKTABLE",
       "UNMARK", "TRANSFER", "MARKONCE", "TRIE", "GATHER", "EXEC", "MARKLAST", "ADD", "REMOVE",
       "MERGE", "GET", "GETLIST", "REMOVEDUPLICATE", "GETFEATURE", "MATCHEDTEXT", "CLEAR",
-      "UNMARKALL", "EXPAND" };
+      "UNMARKALL", "EXPAND", "CONFIGURE" };
 
   private static String[] basic = { "ALL", "ANY", "AMP", "BREAK", "W", "NUM", "PM", "Document",
       "MARKUP", "SW", "CW", "CAP", "PERIOD", "NBSP", "SENTENCEEND", "COLON", "COMMA", "SEMICOLON",

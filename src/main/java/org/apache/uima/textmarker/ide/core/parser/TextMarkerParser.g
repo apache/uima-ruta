@@ -1125,6 +1125,7 @@ action returns [TextMarkerAction result = null]
 	| a = actionMatchedText
 	| a = actionClear
 	| a = actionExpand
+	| a = actionConfigure
 	| (a = externalAction)=> a = externalAction
 	| a = variableAction
 	) {result = a;}
@@ -1406,6 +1407,27 @@ String string = "";
     {   if(ns != null) {action = ActionFactory.createCallAction(name, ns);}} 
     RPAREN
     ;
+
+
+actionConfigure returns [TextMarkerAction action = null]
+@init {
+    List left = new ArrayList();
+    List right = new ArrayList();
+}
+    :
+    name = CONFIGURE lp = LPAREN 
+    {   action = ActionFactory.createConfigureAction(name, StatementFactory.createEmtpyComponentReference(lp), null , null);}
+    
+    ns = dottedComponentReference 
+    {   if(ns != null) {action = ActionFactory.createConfigureAction(name, ns, null , null);}} 
+    
+     (COMMA fname = stringExpression ASSIGN_EQUAL obj1 = argument {left.add(fname); right.add(obj1);} 
+    (COMMA fname = stringExpression ASSIGN_EQUAL obj1 = argument {left.add(fname);right.add(obj1);})*)?
+    {   action = ActionFactory.createConfigureAction(name, ns, left , right);} 
+    
+    RPAREN
+    ;
+
 
 actionExec returns [TextMarkerAction action = null]
 @init {
