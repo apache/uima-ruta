@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.ide.parser.ast;
 
@@ -28,7 +28,6 @@ import java.util.Map;
 import org.antlr.runtime.Token;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.ExpressionConstants;
-
 
 public class ActionFactory extends AbstractFactory {
 
@@ -207,4 +206,16 @@ public class ActionFactory extends AbstractFactory {
     return createAction(name, complete);
   }
 
+  public static TextMarkerAction createConfigureAction(Token name, ComponentReference ns,
+          List<Expression> left, List<Expression> right) {
+    List<Expression> exprs = new ArrayList<Expression>();
+    exprs.add(ns);
+    if (left != null && right != null) {
+      for (int i = 0; i < Math.min(left.size(), right.size()); i++) {
+        exprs.add(left.get(i));
+        exprs.add(right.get(i));
+      }
+    }
+    return createAction(name, exprs);
+  }
 }

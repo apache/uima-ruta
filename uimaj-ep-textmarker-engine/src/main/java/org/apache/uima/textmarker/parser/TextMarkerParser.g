@@ -1094,6 +1094,7 @@ action  returns [AbstractTextMarkerAction result = null]
 	| a = actionMatchedText
 	| a = actionClear
 	| a = actionExpand
+	| a = actionConfigure
 	| (a = externalAction)=> a = externalAction
 	| a = variableAction
 	) {result = a;}
@@ -1334,6 +1335,22 @@ actionCall returns [AbstractTextMarkerAction action = null]
     CALL LPAREN ns = dottedIdentifier RPAREN
     {action = ActionFactory.createCallAction(ns, $blockDeclaration::env);}
     ;
+
+
+actionConfigure returns [AbstractTextMarkerAction action = null]
+@init {
+	Map<StringExpression, TextMarkerExpression> map = new HashMap<StringExpression, TextMarkerExpression>();
+}
+
+    :
+    CONFIGURE LPAREN ns = dottedIdentifier  
+   COMMA 
+   fname = stringExpression ASSIGN_EQUAL obj1 = argument {map.put(fname,obj1);} 
+    (COMMA fname = stringExpression ASSIGN_EQUAL obj1 = argument {map.put(fname,obj1);})*
+    RPAREN
+    {action = ActionFactory.createConfigureAction(ns, map, $blockDeclaration::env);}
+    ;
+
 
 actionExec returns [AbstractTextMarkerAction action = null]
     :

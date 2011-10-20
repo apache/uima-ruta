@@ -114,6 +114,11 @@ public class ActionFactory {
     return new CallAction(ns);
   }
 
+  public static AbstractTextMarkerAction createConfigureAction(String ns,
+          Map<StringExpression, TextMarkerExpression> map, TextMarkerBlock env) {
+    return new ConfigureAction(ns, map);
+  }
+
   public static AbstractTextMarkerAction createAssignAction(Token nv, TextMarkerExpression e,
           TextMarkerBlock parent) {
     return new AssignAction(nv.getText(), e);

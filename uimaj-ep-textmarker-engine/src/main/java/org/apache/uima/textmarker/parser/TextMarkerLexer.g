@@ -222,6 +222,10 @@ EXEC
 	:	'EXEC'
 	;
 
+CONFIGURE
+	:	'CONFIGURE'
+	;
+
 ASSIGN
 	:	'ASSIGN'
 	;
