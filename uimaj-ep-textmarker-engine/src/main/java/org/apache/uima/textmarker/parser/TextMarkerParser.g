@@ -1078,6 +1078,7 @@ action  returns [AbstractTextMarkerAction result = null]
 	| a = actionClear
 	| a = actionExpand
 	| a = actionConfigure
+	| a = actionDynamicAnchoring 
 	| (a = externalAction)=> a = externalAction
 	| a = variableAction
 	) {result = a;}
@@ -1378,6 +1379,16 @@ actionGetFeature returns [AbstractTextMarkerAction action = null]
     :   
     name = GETFEATURE LPAREN f = stringExpression COMMA v = variable RPAREN
     {action = ActionFactory.createGetFeatureAction(f, v, $blockDeclaration::env);}
+    ;
+
+//unknown
+actionDynamicAnchoring returns [AbstractTextMarkerAction action = null]
+    :
+    name = DYNAMICANCHORING LPAREN active = booleanExpression 
+    (COMMA penalty = numberExpression 
+    (COMMA factor = numberExpression)?)? 
+    {action = ActionFactory.createDynamicAnchoringAction(active, penalty, factor, $blockDeclaration::env);}
+    RPAREN
     ;
 
 

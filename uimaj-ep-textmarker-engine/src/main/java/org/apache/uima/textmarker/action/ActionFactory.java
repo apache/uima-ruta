@@ -234,4 +234,9 @@ public class ActionFactory {
     return new ExpandAction(type, list);
   }
 
+  public static AbstractTextMarkerAction createDynamicAnchoringAction(BooleanExpression active,
+          NumberExpression penalty, NumberExpression factor, TextMarkerBlock env) {
+    return new DynamicAnchoringAction(active, penalty, factor);
+  }
+
 }

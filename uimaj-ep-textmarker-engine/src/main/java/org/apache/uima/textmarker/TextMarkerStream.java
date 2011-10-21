@@ -72,6 +72,10 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
 
   private boolean dynamicAnchoring;
 
+  private double indexPenalty = 5;
+
+  private double anchoringFactor;
+
   protected TextMarkerStream(CAS cas, FSIterator<AnnotationFS> basic,
           FSIterator<AnnotationFS> current, Type basicType, FilterManager filter) {
     super();
@@ -584,7 +588,7 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public double getIndexPenalty() {
-    return 2;
+    return indexPenalty;
   }
 
   public TextMarkerBasic getEndAnchor(int end) {
@@ -601,6 +605,18 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
 
   public void setDynamicAnchoring(boolean dynamicAnchoring) {
     this.dynamicAnchoring = dynamicAnchoring;
+  }
+
+  public void setIndexPenalty(double indexPenalty) {
+    this.indexPenalty = indexPenalty;
+  }
+
+  public double getAnchoringFactor() {
+    return anchoringFactor;
+  }
+
+  public void setAnchoringFactor(double anchoringFactor) {
+    this.anchoringFactor = anchoringFactor;
   }
 
 }

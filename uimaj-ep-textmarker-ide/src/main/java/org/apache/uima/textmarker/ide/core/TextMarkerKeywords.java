@@ -36,7 +36,7 @@ public class TextMarkerKeywords implements ITextMarkerKeywords {
       "ATTRIBUTE", "MARKFAST", "FILTERTYPE", "FILTERMARKUP", "CREATE", "FILL", "MARKTABLE",
       "UNMARK", "TRANSFER", "MARKONCE", "TRIE", "GATHER", "EXEC", "MARKLAST", "ADD", "REMOVE",
       "MERGE", "GET", "GETLIST", "REMOVEDUPLICATE", "GETFEATURE", "MATCHEDTEXT", "CLEAR",
-      "UNMARKALL", "EXPAND", "CONFIGURE" };
+      "UNMARKALL", "EXPAND", "CONFIGURE", "DYNAMICANCHORING" };
 
   private static String[] basic = { "ALL", "ANY", "AMP", "BREAK", "W", "NUM", "PM", "Document",
       "MARKUP", "SW", "CW", "CAP", "PERIOD", "NBSP", "SENTENCEEND", "COLON", "COMMA", "SEMICOLON",

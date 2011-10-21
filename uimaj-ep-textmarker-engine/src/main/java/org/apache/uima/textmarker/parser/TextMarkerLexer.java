@@ -1,4 +1,4 @@
-// $ANTLR 3.4 D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g 2011-10-20 11:19:39
+// $ANTLR 3.4 D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g 2011-10-21 15:04:41
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -67,120 +67,121 @@ public class TextMarkerLexer extends Lexer {
     public static final int DEL=38;
     public static final int DOT=39;
     public static final int DOUBLELIST=40;
-    public static final int DecimalLiteral=41;
-    public static final int DocComment=42;
-    public static final int DoubleString=43;
-    public static final int ENDSWITH=44;
-    public static final int EQUAL=45;
-    public static final int EXEC=46;
-    public static final int EXP=47;
-    public static final int EXPAND=48;
-    public static final int EngineString=49;
-    public static final int EscapeSequence=50;
-    public static final int Exponent=51;
-    public static final int FALSE=52;
-    public static final int FEATURE=53;
-    public static final int FILL=54;
-    public static final int FILTERMARKUP=55;
-    public static final int FILTERTYPE=56;
-    public static final int FloatTypeSuffix=57;
-    public static final int FloatingPointLiteral=58;
-    public static final int GATHER=59;
-    public static final int GET=60;
-    public static final int GETFEATURE=61;
-    public static final int GETLIST=62;
-    public static final int GREATER=63;
-    public static final int GREATEREQUAL=64;
-    public static final int HexDigit=65;
-    public static final int HexLiteral=66;
-    public static final int IF=67;
-    public static final int INLIST=68;
-    public static final int INTLIST=69;
-    public static final int IS=70;
-    public static final int ISINTAG=71;
-    public static final int Identifier=72;
-    public static final int IntString=73;
-    public static final int IntegerTypeSuffix=74;
-    public static final int JavaIDDigit=75;
-    public static final int LAST=76;
-    public static final int LBRACK=77;
-    public static final int LCURLY=78;
-    public static final int LESS=79;
-    public static final int LESSEQUAL=80;
-    public static final int LINE_COMMENT=81;
-    public static final int LOG=82;
-    public static final int LOGN=83;
-    public static final int LPAREN=84;
-    public static final int Letter=85;
-    public static final int ListIdentifier=86;
-    public static final int LogLevel=87;
-    public static final int MARK=88;
-    public static final int MARKFAST=89;
-    public static final int MARKLAST=90;
-    public static final int MARKONCE=91;
-    public static final int MARKSCORE=92;
-    public static final int MARKTABLE=93;
-    public static final int MATCHEDTEXT=94;
-    public static final int MERGE=95;
-    public static final int MINUS=96;
-    public static final int MOFN=97;
-    public static final int NEAR=98;
-    public static final int NOT=99;
-    public static final int NOTEQUAL=100;
-    public static final int OR=101;
-    public static final int OctalEscape=102;
-    public static final int OctalLiteral=103;
-    public static final int OldColor=104;
-    public static final int PARSE=105;
-    public static final int PARTOF=106;
-    public static final int PARTOFNEQ=107;
-    public static final int PERCENT=108;
-    public static final int PLUS=109;
-    public static final int POSITION=110;
-    public static final int PackageString=111;
-    public static final int QUESTION=112;
-    public static final int RBRACK=113;
-    public static final int RCURLY=114;
-    public static final int REGEXP=115;
-    public static final int REMOVE=116;
-    public static final int REMOVEDUPLICATE=117;
-    public static final int REMOVESTRING=118;
-    public static final int REPLACE=119;
-    public static final int RETAINMARKUP=120;
-    public static final int RETAINTYPE=121;
-    public static final int RPAREN=122;
-    public static final int RessourceLiteral=123;
-    public static final int SCORE=124;
-    public static final int SEMI=125;
-    public static final int SETFEATURE=126;
-    public static final int SIN=127;
-    public static final int SIZE=128;
-    public static final int SLASH=129;
-    public static final int STAR=130;
-    public static final int STARTSWITH=131;
-    public static final int STRINGLIST=132;
-    public static final int ScriptString=133;
-    public static final int StringLiteral=134;
-    public static final int StringString=135;
-    public static final int SymbolString=136;
-    public static final int TAN=137;
-    public static final int THEN=138;
-    public static final int TOTALCOUNT=139;
-    public static final int TRANSFER=140;
-    public static final int TRIE=141;
-    public static final int TRUE=142;
-    public static final int TYPELIST=143;
-    public static final int TypeString=144;
-    public static final int TypeSystemString=145;
-    public static final int UNMARK=146;
-    public static final int UNMARKALL=147;
-    public static final int UnicodeEscape=148;
-    public static final int VBAR=149;
-    public static final int VOTE=150;
-    public static final int WORDLIST=151;
-    public static final int WORDTABLE=152;
-    public static final int WS=153;
-    public static final int XOR=154;
+    public static final int DYNAMICANCHORING=41;
+    public static final int DecimalLiteral=42;
+    public static final int DocComment=43;
+    public static final int DoubleString=44;
+    public static final int ENDSWITH=45;
+    public static final int EQUAL=46;
+    public static final int EXEC=47;
+    public static final int EXP=48;
+    public static final int EXPAND=49;
+    public static final int EngineString=50;
+    public static final int EscapeSequence=51;
+    public static final int Exponent=52;
+    public static final int FALSE=53;
+    public static final int FEATURE=54;
+    public static final int FILL=55;
+    public static final int FILTERMARKUP=56;
+    public static final int FILTERTYPE=57;
+    public static final int FloatTypeSuffix=58;
+    public static final int FloatingPointLiteral=59;
+    public static final int GATHER=60;
+    public static final int GET=61;
+    public static final int GETFEATURE=62;
+    public static final int GETLIST=63;
+    public static final int GREATER=64;
+    public static final int GREATEREQUAL=65;
+    public static final int HexDigit=66;
+    public static final int HexLiteral=67;
+    public static final int IF=68;
+    public static final int INLIST=69;
+    public static final int INTLIST=70;
+    public static final int IS=71;
+    public static final int ISINTAG=72;
+    public static final int Identifier=73;
+    public static final int IntString=74;
+    public static final int IntegerTypeSuffix=75;
+    public static final int JavaIDDigit=76;
+    public static final int LAST=77;
+    public static final int LBRACK=78;
+    public static final int LCURLY=79;
+    public static final int LESS=80;
+    public static final int LESSEQUAL=81;
+    public static final int LINE_COMMENT=82;
+    public static final int LOG=83;
+    public static final int LOGN=84;
+    public static final int LPAREN=85;
+    public static final int Letter=86;
+    public static final int ListIdentifier=87;
+    public static final int LogLevel=88;
+    public static final int MARK=89;
+    public static final int MARKFAST=90;
+    public static final int MARKLAST=91;
+    public static final int MARKONCE=92;
+    public static final int MARKSCORE=93;
+    public static final int MARKTABLE=94;
+    public static final int MATCHEDTEXT=95;
+    public static final int MERGE=96;
+    public static final int MINUS=97;
+    public static final int MOFN=98;
+    public static final int NEAR=99;
+    public static final int NOT=100;
+    public static final int NOTEQUAL=101;
+    public static final int OR=102;
+    public static final int OctalEscape=103;
+    public static final int OctalLiteral=104;
+    public static final int OldColor=105;
+    public static final int PARSE=106;
+    public static final int PARTOF=107;
+    public static final int PARTOFNEQ=108;
+    public static final int PERCENT=109;
+    public static final int PLUS=110;
+    public static final int POSITION=111;
+    public static final int PackageString=112;
+    public static final int QUESTION=113;
+    public static final int RBRACK=114;
+    public static final int RCURLY=115;
+    public static final int REGEXP=116;
+    public static final int REMOVE=117;
+    public static final int REMOVEDUPLICATE=118;
+    public static final int REMOVESTRING=119;
+    public static final int REPLACE=120;
+    public static final int RETAINMARKUP=121;
+    public static final int RETAINTYPE=122;
+    public static final int RPAREN=123;
+    public static final int RessourceLiteral=124;
+    public static final int SCORE=125;
+    public static final int SEMI=126;
+    public static final int SETFEATURE=127;
+    public static final int SIN=128;
+    public static final int SIZE=129;
+    public static final int SLASH=130;
+    public static final int STAR=131;
+    public static final int STARTSWITH=132;
+    public static final int STRINGLIST=133;
+    public static final int ScriptString=134;
+    public static final int StringLiteral=135;
+    public static final int StringString=136;
+    public static final int SymbolString=137;
+    public static final int TAN=138;
+    public static final int THEN=139;
+    public static final int TOTALCOUNT=140;
+    public static final int TRANSFER=141;
+    public static final int TRIE=142;
+    public static final int TRUE=143;
+    public static final int TYPELIST=144;
+    public static final int TypeString=145;
+    public static final int TypeSystemString=146;
+    public static final int UNMARK=147;
+    public static final int UNMARKALL=148;
+    public static final int UnicodeEscape=149;
+    public static final int VBAR=150;
+    public static final int VOTE=151;
+    public static final int WORDLIST=152;
+    public static final int WORDTABLE=153;
+    public static final int WS=154;
+    public static final int XOR=155;
 
     	public int implicitLineJoiningLevel = 0;
     	public int startPos=-1;
@@ -1422,13 +1423,36 @@ public class TextMarkerLexer extends Lexer {
     }
     // $ANTLR end "EXPAND"
 
+    // $ANTLR start "DYNAMICANCHORING"
+    public final void mDYNAMICANCHORING() throws RecognitionException {
+        try {
+            int _type = DYNAMICANCHORING;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:259:2: ( 'DYNAMICANCHORING' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:259:4: 'DYNAMICANCHORING'
+            {
+            match("DYNAMICANCHORING"); 
+
+
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        	// do for sure before leaving
+        }
+    }
+    // $ANTLR end "DYNAMICANCHORING"
+
     // $ANTLR start "BEFORE"
     public final void mBEFORE() throws RecognitionException {
         try {
             int _type = BEFORE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:259:2: ( 'BEFORE' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:259:4: 'BEFORE'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:263:2: ( 'BEFORE' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:263:4: 'BEFORE'
             {
             match("BEFORE"); 
 
@@ -1450,8 +1474,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = AFTER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:263:2: ( 'AFTER' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:263:4: 'AFTER'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:267:2: ( 'AFTER' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:267:4: 'AFTER'
             {
             match("AFTER"); 
 
@@ -1473,8 +1497,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = IS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:267:2: ( 'IS' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:267:4: 'IS'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:271:2: ( 'IS' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:271:4: 'IS'
             {
             match("IS"); 
 
@@ -1496,8 +1520,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = STARTSWITH;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:272:2: ( 'STARTSWITH' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:272:4: 'STARTSWITH'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:276:2: ( 'STARTSWITH' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:276:4: 'STARTSWITH'
             {
             match("STARTSWITH"); 
 
@@ -1519,8 +1543,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = ENDSWITH;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:276:2: ( 'ENDSWITH' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:276:4: 'ENDSWITH'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:280:2: ( 'ENDSWITH' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:280:4: 'ENDSWITH'
             {
             match("ENDSWITH"); 
 
@@ -1542,8 +1566,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = NOT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:282:2: ( 'NOT' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:282:4: 'NOT'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:286:2: ( 'NOT' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:286:4: 'NOT'
             {
             match("NOT"); 
 
@@ -1565,8 +1589,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = ADD;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:285:5: ( 'ADD' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:285:7: 'ADD'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:289:5: ( 'ADD' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:289:7: 'ADD'
             {
             match("ADD"); 
 
@@ -1588,8 +1612,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = REMOVE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:286:8: ( 'REMOVE' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:286:10: 'REMOVE'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:290:8: ( 'REMOVE' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:290:10: 'REMOVE'
             {
             match("REMOVE"); 
 
@@ -1611,8 +1635,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = REMOVEDUPLICATE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:287:17: ( 'REMOVEDUPLICATE' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:287:19: 'REMOVEDUPLICATE'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:291:17: ( 'REMOVEDUPLICATE' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:291:19: 'REMOVEDUPLICATE'
             {
             match("REMOVEDUPLICATE"); 
 
@@ -1634,8 +1658,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = MERGE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:288:8: ( 'MERGE' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:288:10: 'MERGE'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:292:8: ( 'MERGE' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:292:10: 'MERGE'
             {
             match("MERGE"); 
 
@@ -1657,8 +1681,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = GET;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:289:5: ( 'GET' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:289:7: 'GET'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:293:5: ( 'GET' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:293:7: 'GET'
             {
             match("GET"); 
 
@@ -1680,8 +1704,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = GETLIST;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:290:9: ( 'GETLIST' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:290:11: 'GETLIST'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:294:9: ( 'GETLIST' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:294:11: 'GETLIST'
             {
             match("GETLIST"); 
 
@@ -1703,8 +1727,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = SIZE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:291:6: ( 'SIZE' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:291:8: 'SIZE'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:295:6: ( 'SIZE' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:295:8: 'SIZE'
             {
             match("SIZE"); 
 
@@ -1726,8 +1750,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = MATCHEDTEXT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:292:13: ( 'MATCHEDTEXT' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:292:15: 'MATCHEDTEXT'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:296:13: ( 'MATCHEDTEXT' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:296:15: 'MATCHEDTEXT'
             {
             match("MATCHEDTEXT"); 
 
@@ -1749,8 +1773,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = REMOVESTRING;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:293:14: ( 'REMOVESTRING' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:293:16: 'REMOVESTRING'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:297:14: ( 'REMOVESTRING' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:297:16: 'REMOVESTRING'
             {
             match("REMOVESTRING"); 
 
@@ -1772,8 +1796,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = CLEAR;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:294:8: ( 'CLEAR' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:294:11: 'CLEAR'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:298:8: ( 'CLEAR' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:298:11: 'CLEAR'
             {
             match("CLEAR"); 
 
@@ -1795,8 +1819,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = THEN;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:297:2: ( '->' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:297:5: '->'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:301:2: ( '->' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:301:5: '->'
             {
             match("->"); 
 
@@ -1818,7 +1842,7 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = BasicAnnotationType;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:301:2: ( 'COLON' | 'SW' | 'MARKUP' | 'PERIOD' | 'CW' | 'NUM' | 'QUESTION' | 'SPECIAL' | 'CAP' | 'COMMA' | 'EXCLAMATION' | 'SEMICOLON' | 'NBSP' | 'AMP' | '_' | 'SENTENCEEND' | 'W' | 'PM' | 'ANY' | 'ALL' | 'SPACE' | 'BREAK' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:305:2: ( 'COLON' | 'SW' | 'MARKUP' | 'PERIOD' | 'CW' | 'NUM' | 'QUESTION' | 'SPECIAL' | 'CAP' | 'COMMA' | 'EXCLAMATION' | 'SEMICOLON' | 'NBSP' | 'AMP' | '_' | 'SENTENCEEND' | 'W' | 'PM' | 'ANY' | 'ALL' | 'SPACE' | 'BREAK' )
             int alt1=22;
             switch ( input.LA(1) ) {
             case 'C':
@@ -2025,7 +2049,7 @@ public class TextMarkerLexer extends Lexer {
 
             switch (alt1) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:301:4: 'COLON'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:305:4: 'COLON'
                     {
                     match("COLON"); 
 
@@ -2034,7 +2058,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:301:13: 'SW'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:305:13: 'SW'
                     {
                     match("SW"); 
 
@@ -2043,7 +2067,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:301:20: 'MARKUP'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:305:20: 'MARKUP'
                     {
                     match("MARKUP"); 
 
@@ -2052,7 +2076,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 4 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:301:31: 'PERIOD'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:305:31: 'PERIOD'
                     {
                     match("PERIOD"); 
 
@@ -2061,7 +2085,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 5 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:301:42: 'CW'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:305:42: 'CW'
                     {
                     match("CW"); 
 
@@ -2070,7 +2094,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 6 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:301:48: 'NUM'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:305:48: 'NUM'
                     {
                     match("NUM"); 
 
@@ -2079,7 +2103,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 7 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:301:56: 'QUESTION'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:305:56: 'QUESTION'
                     {
                     match("QUESTION"); 
 
@@ -2088,7 +2112,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 8 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:301:69: 'SPECIAL'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:305:69: 'SPECIAL'
                     {
                     match("SPECIAL"); 
 
@@ -2097,7 +2121,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 9 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:301:81: 'CAP'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:305:81: 'CAP'
                     {
                     match("CAP"); 
 
@@ -2106,7 +2130,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 10 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:301:89: 'COMMA'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:305:89: 'COMMA'
                     {
                     match("COMMA"); 
 
@@ -2115,7 +2139,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 11 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:301:99: 'EXCLAMATION'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:305:99: 'EXCLAMATION'
                     {
                     match("EXCLAMATION"); 
 
@@ -2124,7 +2148,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 12 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:301:115: 'SEMICOLON'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:305:115: 'SEMICOLON'
                     {
                     match("SEMICOLON"); 
 
@@ -2133,7 +2157,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 13 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:301:129: 'NBSP'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:305:129: 'NBSP'
                     {
                     match("NBSP"); 
 
@@ -2142,7 +2166,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 14 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:301:137: 'AMP'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:305:137: 'AMP'
                     {
                     match("AMP"); 
 
@@ -2151,14 +2175,14 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 15 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:302:2: '_'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:306:2: '_'
                     {
                     match('_'); 
 
                     }
                     break;
                 case 16 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:302:8: 'SENTENCEEND'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:306:8: 'SENTENCEEND'
                     {
                     match("SENTENCEEND"); 
 
@@ -2167,14 +2191,14 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 17 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:302:24: 'W'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:306:24: 'W'
                     {
                     match('W'); 
 
                     }
                     break;
                 case 18 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:302:30: 'PM'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:306:30: 'PM'
                     {
                     match("PM"); 
 
@@ -2183,7 +2207,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 19 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:302:37: 'ANY'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:306:37: 'ANY'
                     {
                     match("ANY"); 
 
@@ -2192,7 +2216,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 20 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:302:45: 'ALL'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:306:45: 'ALL'
                     {
                     match("ALL"); 
 
@@ -2201,7 +2225,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 21 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:302:53: 'SPACE'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:306:53: 'SPACE'
                     {
                     match("SPACE"); 
 
@@ -2210,7 +2234,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 22 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:302:63: 'BREAK'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:306:63: 'BREAK'
                     {
                     match("BREAK"); 
 
@@ -2234,7 +2258,7 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = LogLevel;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:305:9: ( 'finest' | 'finer' | 'fine' | 'config' | 'info' | 'warning' | 'severe' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:309:9: ( 'finest' | 'finer' | 'fine' | 'config' | 'info' | 'warning' | 'severe' )
             int alt2=7;
             switch ( input.LA(1) ) {
             case 'f':
@@ -2319,7 +2343,7 @@ public class TextMarkerLexer extends Lexer {
 
             switch (alt2) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:306:2: 'finest'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:310:2: 'finest'
                     {
                     match("finest"); 
 
@@ -2328,7 +2352,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:306:13: 'finer'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:310:13: 'finer'
                     {
                     match("finer"); 
 
@@ -2337,7 +2361,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:306:23: 'fine'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:310:23: 'fine'
                     {
                     match("fine"); 
 
@@ -2346,7 +2370,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 4 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:306:32: 'config'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:310:32: 'config'
                     {
                     match("config"); 
 
@@ -2355,7 +2379,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 5 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:306:43: 'info'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:310:43: 'info'
                     {
                     match("info"); 
 
@@ -2364,7 +2388,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 6 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:306:52: 'warning'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:310:52: 'warning'
                     {
                     match("warning"); 
 
@@ -2373,7 +2397,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 7 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:306:64: 'severe'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:310:64: 'severe'
                     {
                     match("severe"); 
 
@@ -2397,7 +2421,7 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = OldColor;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:310:2: ( 'black' | 'maroon' | 'green' | 'olive' | 'navy' | 'purple' | 'teal' | 'gray' | 'silver' | 'red' | 'lime' | 'yellow' | 'blue' | 'fuchsia' | 'aqua' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:314:2: ( 'black' | 'maroon' | 'green' | 'olive' | 'navy' | 'purple' | 'teal' | 'gray' | 'silver' | 'red' | 'lime' | 'yellow' | 'blue' | 'fuchsia' | 'aqua' )
             int alt3=15;
             switch ( input.LA(1) ) {
             case 'b':
@@ -2525,7 +2549,7 @@ public class TextMarkerLexer extends Lexer {
 
             switch (alt3) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:310:4: 'black'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:314:4: 'black'
                     {
                     match("black"); 
 
@@ -2534,7 +2558,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:310:14: 'maroon'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:314:14: 'maroon'
                     {
                     match("maroon"); 
 
@@ -2543,7 +2567,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:310:25: 'green'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:314:25: 'green'
                     {
                     match("green"); 
 
@@ -2552,7 +2576,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 4 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:310:35: 'olive'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:314:35: 'olive'
                     {
                     match("olive"); 
 
@@ -2561,7 +2585,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 5 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:310:45: 'navy'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:314:45: 'navy'
                     {
                     match("navy"); 
 
@@ -2570,7 +2594,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 6 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:310:54: 'purple'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:314:54: 'purple'
                     {
                     match("purple"); 
 
@@ -2579,7 +2603,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 7 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:310:65: 'teal'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:314:65: 'teal'
                     {
                     match("teal"); 
 
@@ -2588,7 +2612,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 8 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:310:74: 'gray'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:314:74: 'gray'
                     {
                     match("gray"); 
 
@@ -2597,7 +2621,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 9 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:310:83: 'silver'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:314:83: 'silver'
                     {
                     match("silver"); 
 
@@ -2606,7 +2630,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 10 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:310:94: 'red'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:314:94: 'red'
                     {
                     match("red"); 
 
@@ -2615,7 +2639,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 11 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:310:102: 'lime'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:314:102: 'lime'
                     {
                     match("lime"); 
 
@@ -2624,7 +2648,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 12 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:310:111: 'yellow'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:314:111: 'yellow'
                     {
                     match("yellow"); 
 
@@ -2633,7 +2657,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 13 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:310:122: 'blue'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:314:122: 'blue'
                     {
                     match("blue"); 
 
@@ -2642,7 +2666,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 14 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:310:131: 'fuchsia'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:314:131: 'fuchsia'
                     {
                     match("fuchsia"); 
 
@@ -2651,7 +2675,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 15 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:310:143: 'aqua'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:314:143: 'aqua'
                     {
                     match("aqua"); 
 
@@ -2675,8 +2699,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = PackageString;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:313:17: ( 'PACKAGE' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:313:19: 'PACKAGE'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:317:17: ( 'PACKAGE' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:317:19: 'PACKAGE'
             {
             match("PACKAGE"); 
 
@@ -2698,8 +2722,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = ScriptString;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:314:14: ( 'SCRIPT' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:314:16: 'SCRIPT'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:318:14: ( 'SCRIPT' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:318:16: 'SCRIPT'
             {
             match("SCRIPT"); 
 
@@ -2721,8 +2745,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = EngineString;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:315:14: ( 'ENGINE' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:315:16: 'ENGINE'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:319:14: ( 'ENGINE' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:319:16: 'ENGINE'
             {
             match("ENGINE"); 
 
@@ -2744,8 +2768,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = BlockString;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:316:14: ( 'BLOCK' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:316:16: 'BLOCK'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:320:14: ( 'BLOCK' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:320:16: 'BLOCK'
             {
             match("BLOCK"); 
 
@@ -2767,8 +2791,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = AutomataBlockString;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:317:22: ( 'RULES' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:317:24: 'RULES'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:321:22: ( 'RULES' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:321:24: 'RULES'
             {
             match("RULES"); 
 
@@ -2790,8 +2814,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = TypeString;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:318:13: ( 'TYPE' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:318:15: 'TYPE'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:322:13: ( 'TYPE' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:322:15: 'TYPE'
             {
             match("TYPE"); 
 
@@ -2813,8 +2837,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = IntString;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:319:11: ( 'INT' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:319:13: 'INT'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:323:11: ( 'INT' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:323:13: 'INT'
             {
             match("INT"); 
 
@@ -2836,8 +2860,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = DoubleString;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:320:14: ( 'DOUBLE' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:320:16: 'DOUBLE'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:324:14: ( 'DOUBLE' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:324:16: 'DOUBLE'
             {
             match("DOUBLE"); 
 
@@ -2859,8 +2883,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = StringString;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:321:14: ( 'STRING' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:321:16: 'STRING'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:325:14: ( 'STRING' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:325:16: 'STRING'
             {
             match("STRING"); 
 
@@ -2882,8 +2906,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = BooleanString;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:322:15: ( 'BOOLEAN' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:322:17: 'BOOLEAN'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:326:15: ( 'BOOLEAN' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:326:17: 'BOOLEAN'
             {
             match("BOOLEAN"); 
 
@@ -2905,8 +2929,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = TypeSystemString;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:323:17: ( 'TYPESYSTEM' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:323:19: 'TYPESYSTEM'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:327:17: ( 'TYPESYSTEM' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:327:19: 'TYPESYSTEM'
             {
             match("TYPESYSTEM"); 
 
@@ -2928,8 +2952,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = SymbolString;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:324:14: ( 'SYMBOL' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:324:16: 'SYMBOL'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:328:14: ( 'SYMBOL' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:328:16: 'SYMBOL'
             {
             match("SYMBOL"); 
 
@@ -2951,8 +2975,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = CONDITION;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:325:11: ( 'CONDITION' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:325:13: 'CONDITION'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:329:11: ( 'CONDITION' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:329:13: 'CONDITION'
             {
             match("CONDITION"); 
 
@@ -2974,8 +2998,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = ACTION;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:326:9: ( 'ACTION' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:326:11: 'ACTION'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:330:9: ( 'ACTION' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:330:11: 'ACTION'
             {
             match("ACTION"); 
 
@@ -2997,8 +3021,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = BOOLEANLIST;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:328:2: ( 'BOOLEANLIST' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:328:5: 'BOOLEANLIST'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:332:2: ( 'BOOLEANLIST' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:332:5: 'BOOLEANLIST'
             {
             match("BOOLEANLIST"); 
 
@@ -3020,8 +3044,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = INTLIST;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:329:9: ( 'INTLIST' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:329:11: 'INTLIST'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:333:9: ( 'INTLIST' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:333:11: 'INTLIST'
             {
             match("INTLIST"); 
 
@@ -3043,8 +3067,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = DOUBLELIST;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:331:2: ( 'DOUBLELIST' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:331:5: 'DOUBLELIST'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:335:2: ( 'DOUBLELIST' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:335:5: 'DOUBLELIST'
             {
             match("DOUBLELIST"); 
 
@@ -3066,8 +3090,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = STRINGLIST;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:333:2: ( 'STRINGLIST' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:333:4: 'STRINGLIST'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:337:2: ( 'STRINGLIST' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:337:4: 'STRINGLIST'
             {
             match("STRINGLIST"); 
 
@@ -3089,8 +3113,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = TYPELIST;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:334:9: ( 'TYPELIST' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:334:11: 'TYPELIST'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:338:9: ( 'TYPELIST' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:338:11: 'TYPELIST'
             {
             match("TYPELIST"); 
 
@@ -3112,8 +3136,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = EXP;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:338:6: ( 'EXP' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:338:8: 'EXP'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:342:6: ( 'EXP' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:342:8: 'EXP'
             {
             match("EXP"); 
 
@@ -3135,8 +3159,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = LOGN;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:339:6: ( 'LOGN' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:339:8: 'LOGN'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:343:6: ( 'LOGN' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:343:8: 'LOGN'
             {
             match("LOGN"); 
 
@@ -3158,8 +3182,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = SIN;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:340:5: ( 'SIN' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:340:7: 'SIN'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:344:5: ( 'SIN' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:344:7: 'SIN'
             {
             match("SIN"); 
 
@@ -3181,8 +3205,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = COS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:341:5: ( 'COS' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:341:7: 'COS'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:345:5: ( 'COS' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:345:7: 'COS'
             {
             match("COS"); 
 
@@ -3204,8 +3228,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = TAN;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:342:5: ( 'TAN' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:342:7: 'TAN'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:346:5: ( 'TAN' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:346:7: 'TAN'
             {
             match("TAN"); 
 
@@ -3227,8 +3251,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = XOR;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:343:5: ( 'XOR' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:343:8: 'XOR'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:347:5: ( 'XOR' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:347:8: 'XOR'
             {
             match("XOR"); 
 
@@ -3250,8 +3274,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = TRUE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:344:7: ( 'true' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:344:9: 'true'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:348:7: ( 'true' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:348:9: 'true'
             {
             match("true"); 
 
@@ -3273,8 +3297,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = FALSE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:345:8: ( 'false' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:345:10: 'false'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:349:8: ( 'false' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:349:10: 'false'
             {
             match("false"); 
 
@@ -3296,8 +3320,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = HexLiteral;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:347:12: ( '0' ( 'x' | 'X' ) ( HexDigit )+ ( IntegerTypeSuffix )? )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:347:14: '0' ( 'x' | 'X' ) ( HexDigit )+ ( IntegerTypeSuffix )?
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:351:12: ( '0' ( 'x' | 'X' ) ( HexDigit )+ ( IntegerTypeSuffix )? )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:351:14: '0' ( 'x' | 'X' ) ( HexDigit )+ ( IntegerTypeSuffix )?
             {
             match('0'); 
 
@@ -3311,7 +3335,7 @@ public class TextMarkerLexer extends Lexer {
             }
 
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:347:28: ( HexDigit )+
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:351:28: ( HexDigit )+
             int cnt4=0;
             loop4:
             do {
@@ -3350,7 +3374,7 @@ public class TextMarkerLexer extends Lexer {
             } while (true);
 
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:347:38: ( IntegerTypeSuffix )?
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:351:38: ( IntegerTypeSuffix )?
             int alt5=2;
             int LA5_0 = input.LA(1);
 
@@ -3393,10 +3417,10 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = DecimalLiteral;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:349:16: ( ( '0' | '1' .. '9' ( '0' .. '9' )* ) ( IntegerTypeSuffix )? )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:349:18: ( '0' | '1' .. '9' ( '0' .. '9' )* ) ( IntegerTypeSuffix )?
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:353:16: ( ( '0' | '1' .. '9' ( '0' .. '9' )* ) ( IntegerTypeSuffix )? )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:353:18: ( '0' | '1' .. '9' ( '0' .. '9' )* ) ( IntegerTypeSuffix )?
             {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:349:18: ( '0' | '1' .. '9' ( '0' .. '9' )* )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:353:18: ( '0' | '1' .. '9' ( '0' .. '9' )* )
             int alt7=2;
             int LA7_0 = input.LA(1);
 
@@ -3415,18 +3439,18 @@ public class TextMarkerLexer extends Lexer {
             }
             switch (alt7) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:349:19: '0'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:353:19: '0'
                     {
                     match('0'); 
 
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:349:25: '1' .. '9' ( '0' .. '9' )*
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:353:25: '1' .. '9' ( '0' .. '9' )*
                     {
                     matchRange('1','9'); 
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:349:34: ( '0' .. '9' )*
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:353:34: ( '0' .. '9' )*
                     loop6:
                     do {
                         int alt6=2;
@@ -3466,7 +3490,7 @@ public class TextMarkerLexer extends Lexer {
             }
 
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:349:45: ( IntegerTypeSuffix )?
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:353:45: ( IntegerTypeSuffix )?
             int alt8=2;
             int LA8_0 = input.LA(1);
 
@@ -3509,12 +3533,12 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = OctalLiteral;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:351:14: ( '0' ( '0' .. '7' )+ ( IntegerTypeSuffix )? )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:351:16: '0' ( '0' .. '7' )+ ( IntegerTypeSuffix )?
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:355:14: ( '0' ( '0' .. '7' )+ ( IntegerTypeSuffix )? )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:355:16: '0' ( '0' .. '7' )+ ( IntegerTypeSuffix )?
             {
             match('0'); 
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:351:20: ( '0' .. '7' )+
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:355:20: ( '0' .. '7' )+
             int cnt9=0;
             loop9:
             do {
@@ -3553,7 +3577,7 @@ public class TextMarkerLexer extends Lexer {
             } while (true);
 
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:351:32: ( IntegerTypeSuffix )?
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:355:32: ( IntegerTypeSuffix )?
             int alt10=2;
             int LA10_0 = input.LA(1);
 
@@ -3594,7 +3618,7 @@ public class TextMarkerLexer extends Lexer {
     // $ANTLR start "HexDigit"
     public final void mHexDigit() throws RecognitionException {
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:354:10: ( ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' ) )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:358:10: ( ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' ) )
             // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:
             {
             if ( (input.LA(1) >= '0' && input.LA(1) <= '9')||(input.LA(1) >= 'A' && input.LA(1) <= 'F')||(input.LA(1) >= 'a' && input.LA(1) <= 'f') ) {
@@ -3620,7 +3644,7 @@ public class TextMarkerLexer extends Lexer {
     // $ANTLR start "IntegerTypeSuffix"
     public final void mIntegerTypeSuffix() throws RecognitionException {
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:357:19: ( ( 'l' | 'L' ) )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:361:19: ( ( 'l' | 'L' ) )
             // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:
             {
             if ( input.LA(1)=='L'||input.LA(1)=='l' ) {
@@ -3648,7 +3672,7 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = FloatingPointLiteral;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:360:5: ( ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( Exponent )? ( FloatTypeSuffix )? | '.' ( '0' .. '9' )+ ( Exponent )? ( FloatTypeSuffix )? )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:364:5: ( ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( Exponent )? ( FloatTypeSuffix )? | '.' ( '0' .. '9' )+ ( Exponent )? ( FloatTypeSuffix )? )
             int alt18=2;
             int LA18_0 = input.LA(1);
 
@@ -3667,9 +3691,9 @@ public class TextMarkerLexer extends Lexer {
             }
             switch (alt18) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:360:9: ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( Exponent )? ( FloatTypeSuffix )?
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:364:9: ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( Exponent )? ( FloatTypeSuffix )?
                     {
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:360:9: ( '0' .. '9' )+
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:364:9: ( '0' .. '9' )+
                     int cnt11=0;
                     loop11:
                     do {
@@ -3710,7 +3734,7 @@ public class TextMarkerLexer extends Lexer {
 
                     match('.'); 
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:360:25: ( '0' .. '9' )*
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:364:25: ( '0' .. '9' )*
                     loop12:
                     do {
                         int alt12=2;
@@ -3744,7 +3768,7 @@ public class TextMarkerLexer extends Lexer {
                     } while (true);
 
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:360:37: ( Exponent )?
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:364:37: ( Exponent )?
                     int alt13=2;
                     int LA13_0 = input.LA(1);
 
@@ -3753,7 +3777,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     switch (alt13) {
                         case 1 :
-                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:360:37: Exponent
+                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:364:37: Exponent
                             {
                             mExponent(); 
 
@@ -3764,7 +3788,7 @@ public class TextMarkerLexer extends Lexer {
                     }
 
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:360:47: ( FloatTypeSuffix )?
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:364:47: ( FloatTypeSuffix )?
                     int alt14=2;
                     int LA14_0 = input.LA(1);
 
@@ -3794,11 +3818,11 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:361:9: '.' ( '0' .. '9' )+ ( Exponent )? ( FloatTypeSuffix )?
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:365:9: '.' ( '0' .. '9' )+ ( Exponent )? ( FloatTypeSuffix )?
                     {
                     match('.'); 
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:361:13: ( '0' .. '9' )+
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:365:13: ( '0' .. '9' )+
                     int cnt15=0;
                     loop15:
                     do {
@@ -3837,7 +3861,7 @@ public class TextMarkerLexer extends Lexer {
                     } while (true);
 
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:361:25: ( Exponent )?
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:365:25: ( Exponent )?
                     int alt16=2;
                     int LA16_0 = input.LA(1);
 
@@ -3846,7 +3870,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     switch (alt16) {
                         case 1 :
-                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:361:25: Exponent
+                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:365:25: Exponent
                             {
                             mExponent(); 
 
@@ -3857,7 +3881,7 @@ public class TextMarkerLexer extends Lexer {
                     }
 
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:361:35: ( FloatTypeSuffix )?
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:365:35: ( FloatTypeSuffix )?
                     int alt17=2;
                     int LA17_0 = input.LA(1);
 
@@ -3900,8 +3924,8 @@ public class TextMarkerLexer extends Lexer {
     // $ANTLR start "Exponent"
     public final void mExponent() throws RecognitionException {
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:367:10: ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:367:12: ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:371:10: ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:371:12: ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+
             {
             if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
                 input.consume();
@@ -3913,7 +3937,7 @@ public class TextMarkerLexer extends Lexer {
             }
 
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:367:22: ( '+' | '-' )?
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:371:22: ( '+' | '-' )?
             int alt19=2;
             int LA19_0 = input.LA(1);
 
@@ -3940,7 +3964,7 @@ public class TextMarkerLexer extends Lexer {
             }
 
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:367:33: ( '0' .. '9' )+
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:371:33: ( '0' .. '9' )+
             int cnt20=0;
             loop20:
             do {
@@ -3992,7 +4016,7 @@ public class TextMarkerLexer extends Lexer {
     // $ANTLR start "FloatTypeSuffix"
     public final void mFloatTypeSuffix() throws RecognitionException {
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:370:17: ( ( 'f' | 'F' | 'd' | 'D' ) )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:374:17: ( ( 'f' | 'F' | 'd' | 'D' ) )
             // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:
             {
             if ( input.LA(1)=='D'||input.LA(1)=='F'||input.LA(1)=='d'||input.LA(1)=='f' ) {
@@ -4020,12 +4044,12 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = CharacterLiteral;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:373:5: ( '\\'' ( EscapeSequence |~ ( '\\'' | '\\\\' ) ) '\\'' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:373:9: '\\'' ( EscapeSequence |~ ( '\\'' | '\\\\' ) ) '\\''
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:377:5: ( '\\'' ( EscapeSequence |~ ( '\\'' | '\\\\' ) ) '\\'' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:377:9: '\\'' ( EscapeSequence |~ ( '\\'' | '\\\\' ) ) '\\''
             {
             match('\''); 
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:373:14: ( EscapeSequence |~ ( '\\'' | '\\\\' ) )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:377:14: ( EscapeSequence |~ ( '\\'' | '\\\\' ) )
             int alt21=2;
             int LA21_0 = input.LA(1);
 
@@ -4044,7 +4068,7 @@ public class TextMarkerLexer extends Lexer {
             }
             switch (alt21) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:373:16: EscapeSequence
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:377:16: EscapeSequence
                     {
                     mEscapeSequence(); 
 
@@ -4052,7 +4076,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:373:33: ~ ( '\\'' | '\\\\' )
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:377:33: ~ ( '\\'' | '\\\\' )
                     {
                     if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '&')||(input.LA(1) >= '(' && input.LA(1) <= '[')||(input.LA(1) >= ']' && input.LA(1) <= '\uFFFF') ) {
                         input.consume();
@@ -4088,12 +4112,12 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = StringLiteral;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:377:5: ( '\"' ( EscapeSequence |~ ( '\\\\' | '\"' ) )* '\"' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:377:8: '\"' ( EscapeSequence |~ ( '\\\\' | '\"' ) )* '\"'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:381:5: ( '\"' ( EscapeSequence |~ ( '\\\\' | '\"' ) )* '\"' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:381:8: '\"' ( EscapeSequence |~ ( '\\\\' | '\"' ) )* '\"'
             {
             match('\"'); 
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:377:12: ( EscapeSequence |~ ( '\\\\' | '\"' ) )*
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:381:12: ( EscapeSequence |~ ( '\\\\' | '\"' ) )*
             loop22:
             do {
                 int alt22=3;
@@ -4109,7 +4133,7 @@ public class TextMarkerLexer extends Lexer {
 
                 switch (alt22) {
             	case 1 :
-            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:377:14: EscapeSequence
+            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:381:14: EscapeSequence
             	    {
             	    mEscapeSequence(); 
 
@@ -4117,7 +4141,7 @@ public class TextMarkerLexer extends Lexer {
             	    }
             	    break;
             	case 2 :
-            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:377:31: ~ ( '\\\\' | '\"' )
+            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:381:31: ~ ( '\\\\' | '\"' )
             	    {
             	    if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '!')||(input.LA(1) >= '#' && input.LA(1) <= '[')||(input.LA(1) >= ']' && input.LA(1) <= '\uFFFF') ) {
             	        input.consume();
@@ -4156,12 +4180,12 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = RessourceLiteral;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:381:5: ( '\\'' ( EscapeSequence |~ ( '\\\\' | '\\'' ) )* '\\'' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:381:8: '\\'' ( EscapeSequence |~ ( '\\\\' | '\\'' ) )* '\\''
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:385:5: ( '\\'' ( EscapeSequence |~ ( '\\\\' | '\\'' ) )* '\\'' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:385:8: '\\'' ( EscapeSequence |~ ( '\\\\' | '\\'' ) )* '\\''
             {
             match('\''); 
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:381:13: ( EscapeSequence |~ ( '\\\\' | '\\'' ) )*
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:385:13: ( EscapeSequence |~ ( '\\\\' | '\\'' ) )*
             loop23:
             do {
                 int alt23=3;
@@ -4177,7 +4201,7 @@ public class TextMarkerLexer extends Lexer {
 
                 switch (alt23) {
             	case 1 :
-            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:381:15: EscapeSequence
+            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:385:15: EscapeSequence
             	    {
             	    mEscapeSequence(); 
 
@@ -4185,7 +4209,7 @@ public class TextMarkerLexer extends Lexer {
             	    }
             	    break;
             	case 2 :
-            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:381:32: ~ ( '\\\\' | '\\'' )
+            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:385:32: ~ ( '\\\\' | '\\'' )
             	    {
             	    if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '&')||(input.LA(1) >= '(' && input.LA(1) <= '[')||(input.LA(1) >= ']' && input.LA(1) <= '\uFFFF') ) {
             	        input.consume();
@@ -4222,7 +4246,7 @@ public class TextMarkerLexer extends Lexer {
     // $ANTLR start "EscapeSequence"
     public final void mEscapeSequence() throws RecognitionException {
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:386:5: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) | UnicodeEscape | OctalEscape )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:390:5: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) | UnicodeEscape | OctalEscape )
             int alt24=3;
             int LA24_0 = input.LA(1);
 
@@ -4275,7 +4299,7 @@ public class TextMarkerLexer extends Lexer {
             }
             switch (alt24) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:386:9: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:390:9: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
                     {
                     match('\\'); 
 
@@ -4292,7 +4316,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:387:9: UnicodeEscape
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:391:9: UnicodeEscape
                     {
                     mUnicodeEscape(); 
 
@@ -4300,7 +4324,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:388:9: OctalEscape
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:392:9: OctalEscape
                     {
                     mOctalEscape(); 
 
@@ -4320,7 +4344,7 @@ public class TextMarkerLexer extends Lexer {
     // $ANTLR start "OctalEscape"
     public final void mOctalEscape() throws RecognitionException {
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:393:5: ( '\\\\' ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' ) | '\\\\' ( '0' .. '7' ) ( '0' .. '7' ) | '\\\\' ( '0' .. '7' ) )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:397:5: ( '\\\\' ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' ) | '\\\\' ( '0' .. '7' ) ( '0' .. '7' ) | '\\\\' ( '0' .. '7' ) )
             int alt25=3;
             int LA25_0 = input.LA(1);
 
@@ -4371,7 +4395,7 @@ public class TextMarkerLexer extends Lexer {
             }
             switch (alt25) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:393:9: '\\\\' ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' )
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:397:9: '\\\\' ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' )
                     {
                     match('\\'); 
 
@@ -4408,7 +4432,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:394:9: '\\\\' ( '0' .. '7' ) ( '0' .. '7' )
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:398:9: '\\\\' ( '0' .. '7' ) ( '0' .. '7' )
                     {
                     match('\\'); 
 
@@ -4435,7 +4459,7 @@ public class TextMarkerLexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:395:9: '\\\\' ( '0' .. '7' )
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:399:9: '\\\\' ( '0' .. '7' )
                     {
                     match('\\'); 
 
@@ -4464,8 +4488,8 @@ public class TextMarkerLexer extends Lexer {
     // $ANTLR start "UnicodeEscape"
     public final void mUnicodeEscape() throws RecognitionException {
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:400:5: ( '\\\\' 'u' HexDigit HexDigit HexDigit HexDigit )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:400:9: '\\\\' 'u' HexDigit HexDigit HexDigit HexDigit
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:404:5: ( '\\\\' 'u' HexDigit HexDigit HexDigit HexDigit )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:404:9: '\\\\' 'u' HexDigit HexDigit HexDigit HexDigit
             {
             match('\\'); 
 
@@ -4498,13 +4522,13 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = Identifier;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:405:5: ( Letter ( Letter | JavaIDDigit )* )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:405:9: Letter ( Letter | JavaIDDigit )*
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:409:5: ( Letter ( Letter | JavaIDDigit )* )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:409:9: Letter ( Letter | JavaIDDigit )*
             {
             mLetter(); 
 
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:405:16: ( Letter | JavaIDDigit )*
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:409:16: ( Letter | JavaIDDigit )*
             loop26:
             do {
                 int alt26=2;
@@ -4552,7 +4576,7 @@ public class TextMarkerLexer extends Lexer {
     // $ANTLR start "Letter"
     public final void mLetter() throws RecognitionException {
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:411:5: ( '\\u0024' | '\\u0041' .. '\\u005a' | '\\u005f' | '\\u0061' .. '\\u007a' | '\\u00c0' .. '\\u00d6' | '\\u00d8' .. '\\u00f6' | '\\u00f8' .. '\\u00ff' | '\\u0100' .. '\\u1fff' | '\\u3040' .. '\\u318f' | '\\u3300' .. '\\u337f' | '\\u3400' .. '\\u3d2d' | '\\u4e00' .. '\\u9fff' | '\\uf900' .. '\\ufaff' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:415:5: ( '\\u0024' | '\\u0041' .. '\\u005a' | '\\u005f' | '\\u0061' .. '\\u007a' | '\\u00c0' .. '\\u00d6' | '\\u00d8' .. '\\u00f6' | '\\u00f8' .. '\\u00ff' | '\\u0100' .. '\\u1fff' | '\\u3040' .. '\\u318f' | '\\u3300' .. '\\u337f' | '\\u3400' .. '\\u3d2d' | '\\u4e00' .. '\\u9fff' | '\\uf900' .. '\\ufaff' )
             // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:
             {
             if ( input.LA(1)=='$'||(input.LA(1) >= 'A' && input.LA(1) <= 'Z')||input.LA(1)=='_'||(input.LA(1) >= 'a' && input.LA(1) <= 'z')||(input.LA(1) >= '\u00C0' && input.LA(1) <= '\u00D6')||(input.LA(1) >= '\u00D8' && input.LA(1) <= '\u00F6')||(input.LA(1) >= '\u00F8' && input.LA(1) <= '\u1FFF')||(input.LA(1) >= '\u3040' && input.LA(1) <= '\u318F')||(input.LA(1) >= '\u3300' && input.LA(1) <= '\u337F')||(input.LA(1) >= '\u3400' && input.LA(1) <= '\u3D2D')||(input.LA(1) >= '\u4E00' && input.LA(1) <= '\u9FFF')||(input.LA(1) >= '\uF900' && input.LA(1) <= '\uFAFF') ) {
@@ -4578,7 +4602,7 @@ public class TextMarkerLexer extends Lexer {
     // $ANTLR start "JavaIDDigit"
     public final void mJavaIDDigit() throws RecognitionException {
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:428:5: ( '\\u0030' .. '\\u0039' | '\\u0660' .. '\\u0669' | '\\u06f0' .. '\\u06f9' | '\\u0966' .. '\\u096f' | '\\u09e6' .. '\\u09ef' | '\\u0a66' .. '\\u0a6f' | '\\u0ae6' .. '\\u0aef' | '\\u0b66' .. '\\u0b6f' | '\\u0be7' .. '\\u0bef' | '\\u0c66' .. '\\u0c6f' | '\\u0ce6' .. '\\u0cef' | '\\u0d66' .. '\\u0d6f' | '\\u0e50' .. '\\u0e59' | '\\u0ed0' .. '\\u0ed9' | '\\u1040' .. '\\u1049' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:432:5: ( '\\u0030' .. '\\u0039' | '\\u0660' .. '\\u0669' | '\\u06f0' .. '\\u06f9' | '\\u0966' .. '\\u096f' | '\\u09e6' .. '\\u09ef' | '\\u0a66' .. '\\u0a6f' | '\\u0ae6' .. '\\u0aef' | '\\u0b66' .. '\\u0b6f' | '\\u0be7' .. '\\u0bef' | '\\u0c66' .. '\\u0c6f' | '\\u0ce6' .. '\\u0cef' | '\\u0d66' .. '\\u0d6f' | '\\u0e50' .. '\\u0e59' | '\\u0ed0' .. '\\u0ed9' | '\\u1040' .. '\\u1049' )
             // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:
             {
             if ( (input.LA(1) >= '0' && input.LA(1) <= '9')||(input.LA(1) >= '\u0660' && input.LA(1) <= '\u0669')||(input.LA(1) >= '\u06F0' && input.LA(1) <= '\u06F9')||(input.LA(1) >= '\u0966' && input.LA(1) <= '\u096F')||(input.LA(1) >= '\u09E6' && input.LA(1) <= '\u09EF')||(input.LA(1) >= '\u0A66' && input.LA(1) <= '\u0A6F')||(input.LA(1) >= '\u0AE6' && input.LA(1) <= '\u0AEF')||(input.LA(1) >= '\u0B66' && input.LA(1) <= '\u0B6F')||(input.LA(1) >= '\u0BE7' && input.LA(1) <= '\u0BEF')||(input.LA(1) >= '\u0C66' && input.LA(1) <= '\u0C6F')||(input.LA(1) >= '\u0CE6' && input.LA(1) <= '\u0CEF')||(input.LA(1) >= '\u0D66' && input.LA(1) <= '\u0D6F')||(input.LA(1) >= '\u0E50' && input.LA(1) <= '\u0E59')||(input.LA(1) >= '\u0ED0' && input.LA(1) <= '\u0ED9')||(input.LA(1) >= '\u1040' && input.LA(1) <= '\u1049') ) {
@@ -4606,8 +4630,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = LPAREN;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:447:8: ( '(' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:447:10: '('
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:451:8: ( '(' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:451:10: '('
             {
             match('('); 
 
@@ -4629,8 +4653,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = RPAREN;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:449:8: ( ')' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:449:10: ')'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:453:8: ( ')' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:453:10: ')'
             {
             match(')'); 
 
@@ -4652,8 +4676,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = LBRACK;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:451:8: ( '[' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:451:10: '['
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:455:8: ( '[' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:455:10: '['
             {
             match('['); 
 
@@ -4675,8 +4699,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = RBRACK;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:453:8: ( ']' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:453:10: ']'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:457:8: ( ']' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:457:10: ']'
             {
             match(']'); 
 
@@ -4698,8 +4722,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = LCURLY;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:455:8: ( '{' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:455:10: '{'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:459:8: ( '{' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:459:10: '{'
             {
             match('{'); 
 
@@ -4721,8 +4745,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = RCURLY;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:457:8: ( '}' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:457:10: '}'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:461:8: ( '}' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:461:10: '}'
             {
             match('}'); 
 
@@ -4744,8 +4768,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = CIRCUMFLEX;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:459:12: ( '^' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:459:14: '^'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:463:12: ( '^' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:463:14: '^'
             {
             match('^'); 
 
@@ -4765,8 +4789,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = AT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:461:4: ( '@' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:461:6: '@'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:465:4: ( '@' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:465:6: '@'
             {
             match('@'); 
 
@@ -4786,8 +4810,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = DOT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:463:5: ( '.' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:463:7: '.'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:467:5: ( '.' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:467:7: '.'
             {
             match('.'); 
 
@@ -4807,8 +4831,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = COLON;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:465:8: ( ':' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:465:10: ':'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:469:8: ( ':' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:469:10: ':'
             {
             match(':'); 
 
@@ -4828,8 +4852,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = COMMA;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:467:7: ( ',' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:467:9: ','
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:471:7: ( ',' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:471:9: ','
             {
             match(','); 
 
@@ -4849,8 +4873,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = SEMI;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:469:6: ( ';' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:469:8: ';'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:473:6: ( ';' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:473:8: ';'
             {
             match(';'); 
 
@@ -4870,8 +4894,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = PLUS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:471:6: ( '+' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:471:8: '+'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:475:6: ( '+' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:475:8: '+'
             {
             match('+'); 
 
@@ -4891,8 +4915,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = MINUS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:473:7: ( '-' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:473:9: '-'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:477:7: ( '-' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:477:9: '-'
             {
             match('-'); 
 
@@ -4912,8 +4936,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = STAR;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:475:6: ( '*' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:475:8: '*'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:479:6: ( '*' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:479:8: '*'
             {
             match('*'); 
 
@@ -4933,8 +4957,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = SLASH;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:477:7: ( '/' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:477:9: '/'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:481:7: ( '/' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:481:9: '/'
             {
             match('/'); 
 
@@ -4954,8 +4978,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = VBAR;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:479:6: ( '|' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:479:8: '|'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:483:6: ( '|' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:483:8: '|'
             {
             match('|'); 
 
@@ -4975,8 +4999,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = AMPER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:481:7: ( '&' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:481:9: '&'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:485:7: ( '&' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:485:9: '&'
             {
             match('&'); 
 
@@ -4996,8 +5020,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = LESS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:483:6: ( '<' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:483:8: '<'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:487:6: ( '<' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:487:8: '<'
             {
             match('<'); 
 
@@ -5017,8 +5041,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = GREATER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:485:9: ( '>' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:485:11: '>'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:489:9: ( '>' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:489:11: '>'
             {
             match('>'); 
 
@@ -5038,8 +5062,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = ASSIGN_EQUAL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:487:14: ( '=' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:487:16: '='
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:491:14: ( '=' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:491:16: '='
             {
             match('='); 
 
@@ -5059,8 +5083,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = PERCENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:489:9: ( '%' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:489:11: '%'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:493:9: ( '%' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:493:11: '%'
             {
             match('%'); 
 
@@ -5080,8 +5104,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = QUESTION;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:491:10: ( '?' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:491:12: '?'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:495:10: ( '?' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:495:12: '?'
             {
             match('?'); 
 
@@ -5101,8 +5125,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = EQUAL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:493:7: ( '==' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:493:9: '=='
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:497:7: ( '==' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:497:9: '=='
             {
             match("=="); 
 
@@ -5124,8 +5148,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = NOTEQUAL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:495:10: ( '!=' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:495:12: '!='
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:499:10: ( '!=' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:499:12: '!='
             {
             match("!="); 
 
@@ -5147,8 +5171,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = ALT_NOTEQUAL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:497:13: ( '<>' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:497:15: '<>'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:501:13: ( '<>' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:501:15: '<>'
             {
             match("<>"); 
 
@@ -5170,8 +5194,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = LESSEQUAL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:499:11: ( '<=' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:499:13: '<='
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:503:11: ( '<=' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:503:13: '<='
             {
             match("<="); 
 
@@ -5193,8 +5217,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = GREATEREQUAL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:502:14: ( '>=' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:502:16: '>='
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:506:14: ( '>=' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:506:16: '>='
             {
             match(">="); 
 
@@ -5216,8 +5240,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:504:5: ( ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' ) )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:504:8: ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:508:5: ( ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' ) )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:508:8: ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' )
             {
             if ( (input.LA(1) >= '\t' && input.LA(1) <= '\n')||(input.LA(1) >= '\f' && input.LA(1) <= '\r')||input.LA(1)==' ' ) {
                 input.consume();
@@ -5247,8 +5271,8 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:514:5: ( '/*' ( options {greedy=false; } : . )* '*/' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:514:9: '/*' ( options {greedy=false; } : . )* '*/'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:518:5: ( '/*' ( options {greedy=false; } : . )* '*/' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:518:9: '/*' ( options {greedy=false; } : . )* '*/'
             {
             match("/*"); 
 
@@ -5256,7 +5280,7 @@ public class TextMarkerLexer extends Lexer {
 
             if (input.LA(1)=='*') _type=DocComment; else _channel=HIDDEN;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:514:77: ( options {greedy=false; } : . )*
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:518:77: ( options {greedy=false; } : . )*
             loop27:
             do {
                 int alt27=2;
@@ -5281,7 +5305,7 @@ public class TextMarkerLexer extends Lexer {
 
                 switch (alt27) {
             	case 1 :
-            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:514:105: .
+            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:518:105: .
             	    {
             	    matchAny(); 
 
@@ -5314,14 +5338,14 @@ public class TextMarkerLexer extends Lexer {
         try {
             int _type = LINE_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:518:5: ( '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n' )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:518:7: '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n'
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:522:5: ( '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n' )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:522:7: '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n'
             {
             match("//"); 
 
 
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:518:12: (~ ( '\\n' | '\\r' ) )*
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:522:12: (~ ( '\\n' | '\\r' ) )*
             loop28:
             do {
                 int alt28=2;
@@ -5355,7 +5379,7 @@ public class TextMarkerLexer extends Lexer {
             } while (true);
 
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:518:26: ( '\\r' )?
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:522:26: ( '\\r' )?
             int alt29=2;
             int LA29_0 = input.LA(1);
 
@@ -5364,7 +5388,7 @@ public class TextMarkerLexer extends Lexer {
             }
             switch (alt29) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:518:26: '\\r'
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:522:26: '\\r'
                     {
                     match('\r'); 
 
@@ -5390,8 +5414,8 @@ public class TextMarkerLexer extends Lexer {
     // $ANTLR end "LINE_COMMENT"
 
     public void mTokens() throws RecognitionException {
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:8: ( TRIE | CONTAINS | DECLARE | WORDLIST | WORDTABLE | AND | CONTEXTCOUNT | COUNT | TOTALCOUNT | CURRENTCOUNT | INLIST | ISINTAG | LAST | MOFN | NEAR | OR | PARTOF | PARTOFNEQ | POSITION | REGEXP | SCORE | VOTE | IF | FEATURE | PARSE | CREATE | GATHER | FILL | ATTRIBUTE | COLOR | DEL | LOG | MARK | MARKSCORE | MARKONCE | MARKFAST | MARKTABLE | MARKLAST | REPLACE | RETAINMARKUP | RETAINTYPE | FILTERMARKUP | FILTERTYPE | CALL | EXEC | CONFIGURE | ASSIGN | SETFEATURE | GETFEATURE | UNMARK | UNMARKALL | TRANSFER | EXPAND | BEFORE | AFTER | IS | STARTSWITH | ENDSWITH | NOT | ADD | REMOVE | REMOVEDUPLICATE | MERGE | GET | GETLIST | SIZE | MATCHEDTEXT | REMOVESTRING | CLEAR | THEN | BasicAnnotationType | LogLevel | OldColor | PackageString | ScriptString | EngineString | BlockString | AutomataBlockString | TypeString | IntString | DoubleString | StringString | BooleanString | TypeSystemString | SymbolString | CONDITION | ACTION | BOOLEANLIST | INTLIST | DOUBLELIST | STRINGLIST | TYPELIST | EXP | LOGN | SIN | COS | TAN | XOR | TRUE | FALSE | HexLiteral | DecimalLiteral | OctalLiteral | FloatingPointLiteral | CharacterLiteral | StringLiteral | RessourceLiteral | Identifier | LPAREN | RPAREN | LBRACK | RBRACK | LCURLY | RCURLY | CIRCUMFLEX | AT | DOT | COLON | COMMA | SEMI | PLUS | MINUS | STAR | SLASH | VBAR | AMPER | LESS | GREATER | ASSIGN_EQUAL | PERCENT | QUESTION | EQUAL | NOTEQUAL | ALT_NOTEQUAL | LESSEQUAL | GREATEREQUAL | WS | COMMENT | LINE_COMMENT )
-        int alt30=139;
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:8: ( TRIE | CONTAINS | DECLARE | WORDLIST | WORDTABLE | AND | CONTEXTCOUNT | COUNT | TOTALCOUNT | CURRENTCOUNT | INLIST | ISINTAG | LAST | MOFN | NEAR | OR | PARTOF | PARTOFNEQ | POSITION | REGEXP | SCORE | VOTE | IF | FEATURE | PARSE | CREATE | GATHER | FILL | ATTRIBUTE | COLOR | DEL | LOG | MARK | MARKSCORE | MARKONCE | MARKFAST | MARKTABLE | MARKLAST | REPLACE | RETAINMARKUP | RETAINTYPE | FILTERMARKUP | FILTERTYPE | CALL | EXEC | CONFIGURE | ASSIGN | SETFEATURE | GETFEATURE | UNMARK | UNMARKALL | TRANSFER | EXPAND | DYNAMICANCHORING | BEFORE | AFTER | IS | STARTSWITH | ENDSWITH | NOT | ADD | REMOVE | REMOVEDUPLICATE | MERGE | GET | GETLIST | SIZE | MATCHEDTEXT | REMOVESTRING | CLEAR | THEN | BasicAnnotationType | LogLevel | OldColor | PackageString | ScriptString | EngineString | BlockString | AutomataBlockString | TypeString | IntString | DoubleString | StringString | BooleanString | TypeSystemString | SymbolString | CONDITION | ACTION | BOOLEANLIST | INTLIST | DOUBLELIST | STRINGLIST | TYPELIST | EXP | LOGN | SIN | COS | TAN | XOR | TRUE | FALSE | HexLiteral | DecimalLiteral | OctalLiteral | FloatingPointLiteral | CharacterLiteral | StringLiteral | RessourceLiteral | Identifier | LPAREN | RPAREN | LBRACK | RBRACK | LCURLY | RCURLY | CIRCUMFLEX | AT | DOT | COLON | COMMA | SEMI | PLUS | MINUS | STAR | SLASH | VBAR | AMPER | LESS | GREATER | ASSIGN_EQUAL | PERCENT | QUESTION | EQUAL | NOTEQUAL | ALT_NOTEQUAL | LESSEQUAL | GREATEREQUAL | WS | COMMENT | LINE_COMMENT )
+        int alt30=140;
         alt30 = dfa30.predict(input);
         switch (alt30) {
             case 1 :
@@ -5819,687 +5843,695 @@ public class TextMarkerLexer extends Lexer {
                 }
                 break;
             case 54 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:425: BEFORE
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:425: DYNAMICANCHORING
+                {
+                mDYNAMICANCHORING(); 
+
+
+                }
+                break;
+            case 55 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:442: BEFORE
                 {
                 mBEFORE(); 
 
 
                 }
                 break;
-            case 55 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:432: AFTER
+            case 56 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:449: AFTER
                 {
                 mAFTER(); 
 
 
                 }
                 break;
-            case 56 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:438: IS
+            case 57 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:455: IS
                 {
                 mIS(); 
 
 
                 }
                 break;
-            case 57 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:441: STARTSWITH
+            case 58 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:458: STARTSWITH
                 {
                 mSTARTSWITH(); 
 
 
                 }
                 break;
-            case 58 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:452: ENDSWITH
+            case 59 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:469: ENDSWITH
                 {
                 mENDSWITH(); 
 
 
                 }
                 break;
-            case 59 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:461: NOT
+            case 60 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:478: NOT
                 {
                 mNOT(); 
 
 
                 }
                 break;
-            case 60 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:465: ADD
+            case 61 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:482: ADD
                 {
                 mADD(); 
 
 
                 }
                 break;
-            case 61 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:469: REMOVE
+            case 62 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:486: REMOVE
                 {
                 mREMOVE(); 
 
 
                 }
                 break;
-            case 62 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:476: REMOVEDUPLICATE
+            case 63 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:493: REMOVEDUPLICATE
                 {
                 mREMOVEDUPLICATE(); 
 
 
                 }
                 break;
-            case 63 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:492: MERGE
+            case 64 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:509: MERGE
                 {
                 mMERGE(); 
 
 
                 }
                 break;
-            case 64 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:498: GET
+            case 65 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:515: GET
                 {
                 mGET(); 
 
 
                 }
                 break;
-            case 65 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:502: GETLIST
+            case 66 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:519: GETLIST
                 {
                 mGETLIST(); 
 
 
                 }
                 break;
-            case 66 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:510: SIZE
+            case 67 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:527: SIZE
                 {
                 mSIZE(); 
 
 
                 }
                 break;
-            case 67 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:515: MATCHEDTEXT
+            case 68 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:532: MATCHEDTEXT
                 {
                 mMATCHEDTEXT(); 
 
 
                 }
                 break;
-            case 68 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:527: REMOVESTRING
+            case 69 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:544: REMOVESTRING
                 {
                 mREMOVESTRING(); 
 
 
                 }
                 break;
-            case 69 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:540: CLEAR
+            case 70 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:557: CLEAR
                 {
                 mCLEAR(); 
 
 
                 }
                 break;
-            case 70 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:546: THEN
+            case 71 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:563: THEN
                 {
                 mTHEN(); 
 
 
                 }
                 break;
-            case 71 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:551: BasicAnnotationType
+            case 72 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:568: BasicAnnotationType
                 {
                 mBasicAnnotationType(); 
 
 
                 }
                 break;
-            case 72 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:571: LogLevel
+            case 73 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:588: LogLevel
                 {
                 mLogLevel(); 
 
 
                 }
                 break;
-            case 73 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:580: OldColor
+            case 74 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:597: OldColor
                 {
                 mOldColor(); 
 
 
                 }
                 break;
-            case 74 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:589: PackageString
+            case 75 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:606: PackageString
                 {
                 mPackageString(); 
 
 
                 }
                 break;
-            case 75 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:603: ScriptString
+            case 76 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:620: ScriptString
                 {
                 mScriptString(); 
 
 
                 }
                 break;
-            case 76 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:616: EngineString
+            case 77 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:633: EngineString
                 {
                 mEngineString(); 
 
 
                 }
                 break;
-            case 77 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:629: BlockString
+            case 78 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:646: BlockString
                 {
                 mBlockString(); 
 
 
                 }
                 break;
-            case 78 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:641: AutomataBlockString
+            case 79 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:658: AutomataBlockString
                 {
                 mAutomataBlockString(); 
 
 
                 }
                 break;
-            case 79 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:661: TypeString
+            case 80 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:678: TypeString
                 {
                 mTypeString(); 
 
 
                 }
                 break;
-            case 80 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:672: IntString
+            case 81 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:689: IntString
                 {
                 mIntString(); 
 
 
                 }
                 break;
-            case 81 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:682: DoubleString
+            case 82 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:699: DoubleString
                 {
                 mDoubleString(); 
 
 
                 }
                 break;
-            case 82 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:695: StringString
+            case 83 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:712: StringString
                 {
                 mStringString(); 
 
 
                 }
                 break;
-            case 83 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:708: BooleanString
+            case 84 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:725: BooleanString
                 {
                 mBooleanString(); 
 
 
                 }
                 break;
-            case 84 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:722: TypeSystemString
+            case 85 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:739: TypeSystemString
                 {
                 mTypeSystemString(); 
 
 
                 }
                 break;
-            case 85 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:739: SymbolString
+            case 86 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:756: SymbolString
                 {
                 mSymbolString(); 
 
 
                 }
                 break;
-            case 86 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:752: CONDITION
+            case 87 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:769: CONDITION
                 {
                 mCONDITION(); 
 
 
                 }
                 break;
-            case 87 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:762: ACTION
+            case 88 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:779: ACTION
                 {
                 mACTION(); 
 
 
                 }
                 break;
-            case 88 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:769: BOOLEANLIST
+            case 89 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:786: BOOLEANLIST
                 {
                 mBOOLEANLIST(); 
 
 
                 }
                 break;
-            case 89 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:781: INTLIST
+            case 90 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:798: INTLIST
                 {
                 mINTLIST(); 
 
 
                 }
                 break;
-            case 90 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:789: DOUBLELIST
+            case 91 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:806: DOUBLELIST
                 {
                 mDOUBLELIST(); 
 
 
                 }
                 break;
-            case 91 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:800: STRINGLIST
+            case 92 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:817: STRINGLIST
                 {
                 mSTRINGLIST(); 
 
 
                 }
                 break;
-            case 92 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:811: TYPELIST
+            case 93 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:828: TYPELIST
                 {
                 mTYPELIST(); 
 
 
                 }
                 break;
-            case 93 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:820: EXP
+            case 94 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:837: EXP
                 {
                 mEXP(); 
 
 
                 }
                 break;
-            case 94 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:824: LOGN
+            case 95 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:841: LOGN
                 {
                 mLOGN(); 
 
 
                 }
                 break;
-            case 95 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:829: SIN
+            case 96 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:846: SIN
                 {
                 mSIN(); 
 
 
                 }
                 break;
-            case 96 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:833: COS
+            case 97 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:850: COS
                 {
                 mCOS(); 
 
 
                 }
                 break;
-            case 97 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:837: TAN
+            case 98 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:854: TAN
                 {
                 mTAN(); 
 
 
                 }
                 break;
-            case 98 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:841: XOR
+            case 99 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:858: XOR
                 {
                 mXOR(); 
 
 
                 }
                 break;
-            case 99 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:845: TRUE
+            case 100 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:862: TRUE
                 {
                 mTRUE(); 
 
 
                 }
                 break;
-            case 100 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:850: FALSE
+            case 101 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:867: FALSE
                 {
                 mFALSE(); 
 
 
                 }
                 break;
-            case 101 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:856: HexLiteral
+            case 102 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:873: HexLiteral
                 {
                 mHexLiteral(); 
 
 
                 }
                 break;
-            case 102 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:867: DecimalLiteral
+            case 103 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:884: DecimalLiteral
                 {
                 mDecimalLiteral(); 
 
 
                 }
                 break;
-            case 103 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:882: OctalLiteral
+            case 104 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:899: OctalLiteral
                 {
                 mOctalLiteral(); 
 
 
                 }
                 break;
-            case 104 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:895: FloatingPointLiteral
+            case 105 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:912: FloatingPointLiteral
                 {
                 mFloatingPointLiteral(); 
 
 
                 }
                 break;
-            case 105 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:916: CharacterLiteral
+            case 106 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:933: CharacterLiteral
                 {
                 mCharacterLiteral(); 
 
 
                 }
                 break;
-            case 106 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:933: StringLiteral
+            case 107 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:950: StringLiteral
                 {
                 mStringLiteral(); 
 
 
                 }
                 break;
-            case 107 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:947: RessourceLiteral
+            case 108 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:964: RessourceLiteral
                 {
                 mRessourceLiteral(); 
 
 
                 }
                 break;
-            case 108 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:964: Identifier
+            case 109 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:981: Identifier
                 {
                 mIdentifier(); 
 
 
                 }
                 break;
-            case 109 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:975: LPAREN
+            case 110 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:992: LPAREN
                 {
                 mLPAREN(); 
 
 
                 }
                 break;
-            case 110 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:982: RPAREN
+            case 111 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:999: RPAREN
                 {
                 mRPAREN(); 
 
 
                 }
                 break;
-            case 111 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:989: LBRACK
+            case 112 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1006: LBRACK
                 {
                 mLBRACK(); 
 
 
                 }
                 break;
-            case 112 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:996: RBRACK
+            case 113 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1013: RBRACK
                 {
                 mRBRACK(); 
 
 
                 }
                 break;
-            case 113 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1003: LCURLY
+            case 114 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1020: LCURLY
                 {
                 mLCURLY(); 
 
 
                 }
                 break;
-            case 114 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1010: RCURLY
+            case 115 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1027: RCURLY
                 {
                 mRCURLY(); 
 
 
                 }
                 break;
-            case 115 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1017: CIRCUMFLEX
+            case 116 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1034: CIRCUMFLEX
                 {
                 mCIRCUMFLEX(); 
 
 
                 }
                 break;
-            case 116 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1028: AT
+            case 117 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1045: AT
                 {
                 mAT(); 
 
 
                 }
                 break;
-            case 117 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1031: DOT
+            case 118 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1048: DOT
                 {
                 mDOT(); 
 
 
                 }
                 break;
-            case 118 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1035: COLON
+            case 119 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1052: COLON
                 {
                 mCOLON(); 
 
 
                 }
                 break;
-            case 119 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1041: COMMA
+            case 120 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1058: COMMA
                 {
                 mCOMMA(); 
 
 
                 }
                 break;
-            case 120 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1047: SEMI
+            case 121 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1064: SEMI
                 {
                 mSEMI(); 
 
 
                 }
                 break;
-            case 121 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1052: PLUS
+            case 122 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1069: PLUS
                 {
                 mPLUS(); 
 
 
                 }
                 break;
-            case 122 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1057: MINUS
+            case 123 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1074: MINUS
                 {
                 mMINUS(); 
 
 
                 }
                 break;
-            case 123 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1063: STAR
+            case 124 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1080: STAR
                 {
                 mSTAR(); 
 
 
                 }
                 break;
-            case 124 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1068: SLASH
+            case 125 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1085: SLASH
                 {
                 mSLASH(); 
 
 
                 }
                 break;
-            case 125 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1074: VBAR
+            case 126 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1091: VBAR
                 {
                 mVBAR(); 
 
 
                 }
                 break;
-            case 126 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1079: AMPER
+            case 127 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1096: AMPER
                 {
                 mAMPER(); 
 
 
                 }
                 break;
-            case 127 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1085: LESS
+            case 128 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1102: LESS
                 {
                 mLESS(); 
 
 
                 }
                 break;
-            case 128 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1090: GREATER
+            case 129 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1107: GREATER
                 {
                 mGREATER(); 
 
 
                 }
                 break;
-            case 129 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1098: ASSIGN_EQUAL
+            case 130 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1115: ASSIGN_EQUAL
                 {
                 mASSIGN_EQUAL(); 
 
 
                 }
                 break;
-            case 130 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1111: PERCENT
+            case 131 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1128: PERCENT
                 {
                 mPERCENT(); 
 
 
                 }
                 break;
-            case 131 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1119: QUESTION
+            case 132 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1136: QUESTION
                 {
                 mQUESTION(); 
 
 
                 }
                 break;
-            case 132 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1128: EQUAL
+            case 133 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1145: EQUAL
                 {
                 mEQUAL(); 
 
 
                 }
                 break;
-            case 133 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1134: NOTEQUAL
+            case 134 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1151: NOTEQUAL
                 {
                 mNOTEQUAL(); 
 
 
                 }
                 break;
-            case 134 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1143: ALT_NOTEQUAL
+            case 135 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1160: ALT_NOTEQUAL
                 {
                 mALT_NOTEQUAL(); 
 
 
                 }
                 break;
-            case 135 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1156: LESSEQUAL
+            case 136 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1173: LESSEQUAL
                 {
                 mLESSEQUAL(); 
 
 
                 }
                 break;
-            case 136 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1166: GREATEREQUAL
+            case 137 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1183: GREATEREQUAL
                 {
                 mGREATEREQUAL(); 
 
 
                 }
                 break;
-            case 137 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1179: WS
+            case 138 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1196: WS
                 {
                 mWS(); 
 
 
                 }
                 break;
-            case 138 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1182: COMMENT
+            case 139 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1199: COMMENT
                 {
                 mCOMMENT(); 
 
 
                 }
                 break;
-            case 139 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1190: LINE_COMMENT
+            case 140 :
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerLexer.g:1:1207: LINE_COMMENT
                 {
                 mLINE_COMMENT(); 
 
@@ -6514,128 +6546,130 @@ public class TextMarkerLexer extends Lexer {
 
     protected DFA30 dfa30 = new DFA30(this);
     static final String DFA30_eotS =
-        "\1\uffff\3\55\1\122\17\55\1\u0082\1\55\1\122\21\55\2\u009a\1\u009e"+
-        "\20\uffff\1\u00a4\2\uffff\1\u00a7\1\u00a9\1\u00ab\4\uffff\11\55"+
-        "\1\122\3\55\1\uffff\11\55\1\u00cb\1\u00cc\11\55\1\u00d7\3\55\1\122"+
-        "\6\55\1\122\16\55\2\uffff\26\55\2\uffff\1\u0114\1\uffff\1\u009a"+
-        "\16\uffff\4\55\1\u011e\4\55\1\u0125\3\55\1\122\2\55\1\u012b\2\55"+
-        "\1\u012e\1\122\3\55\1\u0132\2\122\2\55\1\u0136\1\55\2\uffff\1\55"+
-        "\1\u013a\5\55\1\u0140\1\122\1\55\1\uffff\21\55\1\u0154\7\55\1\u015f"+
-        "\1\55\1\u0162\33\55\1\u017e\3\55\1\u0182\6\uffff\1\u0187\2\55\1"+
-        "\u018c\1\uffff\6\55\1\uffff\2\55\1\u0197\2\55\1\uffff\2\55\1\uffff"+
-        "\3\55\1\uffff\3\55\1\uffff\1\55\1\u01a4\1\u01a5\1\uffff\1\u01a6"+
-        "\1\u01ad\2\55\1\u01b0\1\uffff\1\122\21\55\1\u01c2\1\uffff\3\55\1"+
-        "\u01c6\1\55\1\u01c8\4\55\1\uffff\1\u01cd\1\55\1\uffff\11\55\1\u01da"+
-        "\3\55\1\u01da\4\55\1\u017e\2\55\1\u017e\1\55\1\u017e\1\55\1\u017e"+
-        "\1\u01e6\1\uffff\1\u017e\1\55\1\u017e\6\uffff\4\55\1\uffff\4\55"+
-        "\1\u01f2\1\u01f3\2\122\2\55\1\uffff\1\u01f6\6\55\1\u01fd\4\55\3"+
-        "\uffff\6\55\1\uffff\1\55\1\u0209\1\uffff\1\55\1\u020b\7\55\1\u0213"+
-        "\1\u0214\6\55\1\uffff\1\55\1\122\1\55\1\uffff\1\55\1\uffff\4\55"+
-        "\1\uffff\6\55\1\122\1\u0228\3\55\1\u01da\1\uffff\1\55\1\u022d\4"+
-        "\55\1\u017e\1\55\2\u017e\1\55\1\uffff\1\55\2\uffff\10\55\2\uffff"+
-        "\1\55\1\u023f\1\uffff\1\55\1\u0242\3\55\1\u0246\1\uffff\1\u0247"+
-        "\1\u0248\7\55\1\122\1\55\1\uffff\1\u0252\1\uffff\2\55\1\122\1\u0255"+
-        "\2\55\1\u025b\2\uffff\1\u025c\4\55\1\u0262\1\55\1\u0264\2\55\1\u0268"+
-        "\2\55\1\u026b\2\55\1\u026e\1\u0270\1\u0271\1\uffff\2\55\1\u01da"+
-        "\1\55\1\uffff\1\u01da\1\55\1\u01da\4\u017e\1\uffff\11\55\1\uffff"+
-        "\1\u0280\1\55\1\uffff\3\55\3\uffff\1\u0285\1\u0286\7\55\1\uffff"+
-        "\1\u028e\1\55\1\uffff\1\u0290\4\55\2\uffff\5\55\1\uffff\1\122\1"+
-        "\uffff\1\u029a\2\55\1\uffff\1\55\1\u029e\1\uffff\2\55\1\uffff\1"+
-        "\55\2\uffff\1\u02a3\1\55\1\u017e\1\u01da\1\uffff\1\u02a5\2\55\1"+
-        "\u02a8\1\u02a9\4\55\1\uffff\1\55\1\u02af\2\55\2\uffff\1\55\1\u02b3"+
-        "\1\u02b4\1\55\1\u02b6\2\55\1\uffff\1\u02b9\1\uffff\11\55\1\uffff"+
-        "\3\55\1\uffff\1\55\1\u02c7\2\55\1\uffff\1\122\1\uffff\2\55\2\uffff"+
-        "\1\55\1\u02cd\1\u02ce\2\55\1\uffff\1\u02d1\1\u02d2\1\u02d3\2\uffff"+
-        "\1\u02d4\1\uffff\1\55\1\u02d6\1\uffff\5\55\1\122\7\55\1\uffff\1"+
-        "\u02e3\1\55\1\u02e5\1\u02e6\1\55\2\uffff\1\55\1\u02e9\4\uffff\1"+
-        "\55\1\uffff\1\55\1\u02ec\2\55\1\u02ef\1\55\1\u02f1\1\u02f2\1\55"+
-        "\1\u02f4\1\u02f5\1\55\1\uffff\1\55\2\uffff\2\55\1\uffff\1\u02fa"+
-        "\1\55\1\uffff\2\55\1\uffff\1\122\2\uffff\1\55\2\uffff\1\122\1\u02ff"+
-        "\1\u0300\1\u0301\1\uffff\1\u0302\1\55\1\u0304\1\u0305\4\uffff\1"+
-        "\55\2\uffff\1\55\1\u0308\1\uffff";
+        "\1\uffff\3\55\1\123\17\55\1\u0083\1\55\1\123\21\55\2\u009b\1\u009f"+
+        "\20\uffff\1\u00a5\2\uffff\1\u00a8\1\u00aa\1\u00ac\4\uffff\11\55"+
+        "\1\123\4\55\1\uffff\11\55\1\u00cd\1\u00ce\11\55\1\u00d9\3\55\1\123"+
+        "\6\55\1\123\16\55\2\uffff\26\55\2\uffff\1\u0116\1\uffff\1\u009b"+
+        "\16\uffff\4\55\1\u0120\4\55\1\u0127\3\55\1\123\2\55\1\u012d\3\55"+
+        "\1\u0131\1\123\3\55\1\u0135\2\123\2\55\1\u0139\1\55\2\uffff\1\55"+
+        "\1\u013d\5\55\1\u0143\1\123\1\55\1\uffff\21\55\1\u0157\7\55\1\u0162"+
+        "\1\55\1\u0165\33\55\1\u0181\3\55\1\u0185\6\uffff\1\u018a\2\55\1"+
+        "\u018f\1\uffff\6\55\1\uffff\2\55\1\u019a\2\55\1\uffff\3\55\1\uffff"+
+        "\3\55\1\uffff\3\55\1\uffff\1\55\1\u01a8\1\u01a9\1\uffff\1\u01aa"+
+        "\1\u01b1\2\55\1\u01b4\1\uffff\1\123\21\55\1\u01c6\1\uffff\3\55\1"+
+        "\u01ca\1\55\1\u01cc\4\55\1\uffff\1\u01d1\1\55\1\uffff\11\55\1\u01de"+
+        "\3\55\1\u01de\4\55\1\u0181\2\55\1\u0181\1\55\1\u0181\1\55\1\u0181"+
+        "\1\u01ea\1\uffff\1\u0181\1\55\1\u0181\6\uffff\4\55\1\uffff\4\55"+
+        "\1\u01f6\1\u01f7\2\123\2\55\1\uffff\1\u01fa\7\55\1\u0202\4\55\3"+
+        "\uffff\6\55\1\uffff\1\55\1\u020e\1\uffff\1\55\1\u0210\7\55\1\u0218"+
+        "\1\u0219\6\55\1\uffff\1\55\1\123\1\55\1\uffff\1\55\1\uffff\4\55"+
+        "\1\uffff\6\55\1\123\1\u022d\3\55\1\u01de\1\uffff\1\55\1\u0232\4"+
+        "\55\1\u0181\1\55\2\u0181\1\55\1\uffff\1\55\2\uffff\10\55\2\uffff"+
+        "\1\55\1\u0244\1\uffff\2\55\1\u0248\3\55\1\u024c\1\uffff\1\u024d"+
+        "\1\u024e\7\55\1\123\1\55\1\uffff\1\u0258\1\uffff\2\55\1\123\1\u025b"+
+        "\2\55\1\u0261\2\uffff\1\u0262\4\55\1\u0268\1\55\1\u026a\2\55\1\u026e"+
+        "\2\55\1\u0271\2\55\1\u0274\1\u0276\1\u0277\1\uffff\2\55\1\u01de"+
+        "\1\55\1\uffff\1\u01de\1\55\1\u01de\4\u0181\1\uffff\11\55\1\uffff"+
+        "\1\u0286\2\55\1\uffff\3\55\3\uffff\1\u028c\1\u028d\7\55\1\uffff"+
+        "\1\u0295\1\55\1\uffff\1\u0297\4\55\2\uffff\5\55\1\uffff\1\123\1"+
+        "\uffff\1\u02a1\2\55\1\uffff\1\55\1\u02a5\1\uffff\2\55\1\uffff\1"+
+        "\55\2\uffff\1\u02aa\1\55\1\u0181\1\u01de\1\uffff\1\u02ac\2\55\1"+
+        "\u02af\1\u02b0\4\55\1\uffff\2\55\1\u02b7\2\55\2\uffff\1\55\1\u02bb"+
+        "\1\u02bc\1\55\1\u02be\2\55\1\uffff\1\u02c1\1\uffff\11\55\1\uffff"+
+        "\3\55\1\uffff\1\55\1\u02cf\2\55\1\uffff\1\123\1\uffff\2\55\2\uffff"+
+        "\1\55\1\u02d5\1\u02d6\3\55\1\uffff\1\u02da\1\u02db\1\u02dc\2\uffff"+
+        "\1\u02dd\1\uffff\1\55\1\u02df\1\uffff\5\55\1\123\7\55\1\uffff\1"+
+        "\u02ec\1\55\1\u02ee\1\u02ef\1\55\2\uffff\2\55\1\u02f3\4\uffff\1"+
+        "\55\1\uffff\1\55\1\u02f6\2\55\1\u02f9\1\55\1\u02fb\1\u02fc\1\55"+
+        "\1\u02fe\1\u02ff\1\55\1\uffff\1\55\2\uffff\3\55\1\uffff\1\u0305"+
+        "\1\55\1\uffff\2\55\1\uffff\1\123\2\uffff\1\55\2\uffff\1\123\1\u030a"+
+        "\1\u030b\1\u030c\1\55\1\uffff\1\u030e\1\55\1\u0310\1\u0311\3\uffff"+
+        "\1\55\1\uffff\1\55\2\uffff\3\55\1\u0317\1\u0318\2\uffff";
     static final String DFA30_eofS =
-        "\u0309\uffff";
+        "\u0319\uffff";
     static final String DFA30_minS =
         "\1\11\2\101\1\105\1\44\1\103\1\106\2\101\1\102\1\122\1\101\1\105"+
         "\1\103\1\117\1\105\1\101\2\116\1\105\1\76\1\125\1\44\1\141\1\157"+
         "\1\156\1\141\1\145\1\154\1\141\1\162\1\154\1\141\1\165\2\145\1\151"+
         "\1\145\1\161\1\117\2\56\1\60\1\0\17\uffff\1\52\2\uffff\3\75\4\uffff"+
         "\1\101\1\124\1\120\1\116\1\114\1\122\1\105\1\114\1\105\1\44\1\103"+
-        "\1\125\1\122\1\uffff\1\104\1\124\1\123\1\124\1\104\1\120\1\114\1"+
-        "\124\1\114\2\44\1\123\1\107\1\106\2\122\1\101\1\124\1\115\1\123"+
-        "\1\44\1\103\1\123\1\122\1\44\1\107\1\114\1\117\1\115\1\101\1\116"+
-        "\1\44\1\101\1\115\1\124\1\101\1\114\2\124\1\103\1\104\1\115\1\106"+
-        "\1\105\2\117\2\uffff\1\105\1\156\1\143\1\154\1\156\1\146\1\162\1"+
-        "\166\1\154\1\141\1\162\1\141\1\151\1\166\1\162\1\141\1\165\1\144"+
-        "\1\155\1\154\1\165\1\122\2\uffff\1\56\1\uffff\1\56\1\uffff\1\42"+
-        "\1\0\13\uffff\1\105\1\116\1\101\1\105\1\44\1\104\1\116\1\117\1\115"+
-        "\1\44\1\122\1\101\1\114\1\44\1\101\1\114\1\44\1\102\1\104\2\44\1"+
-        "\122\1\111\1\105\3\44\2\111\1\44\1\116\2\uffff\1\124\1\44\1\116"+
-        "\1\113\1\103\1\107\1\122\2\44\1\120\1\uffff\1\123\1\113\2\111\1"+
-        "\105\1\114\1\101\1\117\1\105\1\122\1\111\1\106\1\111\1\124\1\122"+
-        "\1\111\1\105\1\44\2\103\1\102\1\105\1\124\1\114\1\110\1\44\1\103"+
-        "\1\44\1\114\1\123\1\111\1\101\1\117\1\101\1\103\1\114\1\123\1\145"+
-        "\1\150\1\163\1\146\1\157\1\156\1\145\1\166\1\143\1\145\1\157\1\145"+
-        "\1\171\1\166\1\171\1\160\1\154\1\145\1\44\1\145\1\154\1\141\1\44"+
-        "\1\uffff\1\0\1\60\2\0\1\uffff\1\44\1\123\1\114\1\44\1\uffff\1\101"+
-        "\2\111\1\124\1\116\1\101\1\uffff\1\105\1\124\1\44\1\122\1\101\1"+
-        "\uffff\2\114\1\uffff\1\111\1\107\1\122\1\uffff\1\117\1\123\1\111"+
-        "\1\uffff\1\124\2\44\1\uffff\2\44\1\110\1\105\1\44\1\uffff\1\44\1"+
-        "\117\1\105\1\101\1\124\1\117\1\130\1\101\1\111\1\126\1\123\1\105"+
-        "\1\120\1\105\1\103\1\105\1\124\1\116\1\44\1\uffff\1\111\1\105\1"+
-        "\117\1\44\1\125\1\44\3\105\1\111\1\uffff\1\44\1\116\1\uffff\1\101"+
-        "\1\127\1\116\2\122\2\113\1\105\1\124\1\44\1\163\1\145\1\151\1\44"+
-        "\1\151\1\162\1\145\1\153\1\44\1\157\1\156\1\44\1\145\1\44\1\154"+
-        "\2\44\1\uffff\1\44\1\157\1\44\1\uffff\1\60\2\0\2\uffff\1\106\1\103"+
-        "\1\131\1\111\1\uffff\1\111\1\130\1\107\1\124\4\44\1\116\1\105\1"+
-        "\uffff\1\44\1\122\1\105\1\111\1\101\1\102\1\116\1\44\1\116\1\124"+
-        "\1\123\1\101\3\uffff\1\103\1\116\3\101\1\120\1\uffff\1\105\1\44"+
-        "\1\uffff\1\106\1\44\1\107\1\111\1\104\1\120\1\103\1\116\1\105\2"+
-        "\44\1\124\1\101\1\117\1\116\1\123\1\107\1\uffff\1\101\1\44\1\114"+
-        "\1\uffff\1\122\1\uffff\2\122\1\101\1\123\1\uffff\1\104\1\115\1\111"+
-        "\1\105\1\113\1\105\2\44\1\101\1\111\1\164\1\44\1\uffff\1\151\1\44"+
-        "\1\147\1\156\1\145\1\162\1\44\1\156\2\44\1\145\1\uffff\1\167\1\60"+
-        "\1\0\1\105\1\117\2\123\1\116\1\124\1\125\1\111\2\uffff\1\124\1\44"+
-        "\1\uffff\1\105\1\44\1\123\1\102\1\125\1\44\1\uffff\2\44\1\124\1"+
-        "\107\1\117\1\103\1\123\1\102\1\123\1\44\1\104\1\uffff\1\44\1\uffff"+
-        "\1\105\1\117\2\44\1\105\1\115\1\44\2\uffff\1\44\1\124\1\114\1\103"+
-        "\1\127\1\44\1\114\1\44\1\105\1\115\1\44\2\124\1\44\1\101\1\124\3"+
-        "\44\1\uffff\1\116\1\117\1\44\1\141\1\uffff\1\44\1\147\5\44\1\60"+
-        "\1\122\1\125\2\124\1\123\1\103\1\122\1\117\1\103\1\uffff\1\44\1"+
-        "\111\1\uffff\1\124\1\114\1\124\3\uffff\2\44\1\122\1\105\1\124\1"+
-        "\114\2\124\1\105\1\uffff\1\44\1\116\1\uffff\1\44\1\101\1\131\1\125"+
-        "\1\124\2\uffff\1\125\1\117\1\105\2\111\1\uffff\1\44\1\uffff\1\44"+
-        "\1\101\1\131\1\uffff\1\125\1\44\1\uffff\1\124\1\110\1\uffff\1\114"+
-        "\2\uffff\1\44\1\116\2\44\1\0\1\44\1\116\1\105\2\44\1\117\1\105\1"+
-        "\116\1\117\1\uffff\1\123\1\44\2\105\2\uffff\1\105\2\44\1\105\1\44"+
-        "\1\105\1\121\1\uffff\1\44\1\uffff\1\122\2\120\2\122\1\116\1\105"+
-        "\1\124\1\123\1\uffff\1\122\1\120\1\122\1\uffff\1\111\1\44\1\114"+
-        "\1\111\1\uffff\1\44\1\uffff\1\124\1\115\2\uffff\1\125\2\44\1\125"+
-        "\1\124\1\uffff\3\44\2\uffff\1\44\1\uffff\1\130\1\44\1\uffff\1\113"+
-        "\1\105\1\114\1\111\1\105\1\44\1\116\1\110\1\124\1\113\2\105\1\117"+
-        "\1\uffff\1\44\1\123\2\44\1\116\2\uffff\1\116\1\44\4\uffff\1\124"+
-        "\1\uffff\1\125\1\44\1\111\1\116\1\44\1\104\2\44\1\125\2\44\1\116"+
-        "\1\uffff\1\124\2\uffff\2\124\1\uffff\1\44\1\120\1\uffff\1\103\1"+
-        "\107\1\uffff\1\44\2\uffff\1\120\2\uffff\4\44\1\uffff\1\44\1\101"+
-        "\2\44\4\uffff\1\124\2\uffff\1\105\1\44\1\uffff";
+        "\1\116\1\125\1\122\1\uffff\1\104\1\124\1\123\1\124\1\104\1\120\1"+
+        "\114\1\124\1\114\2\44\1\123\1\107\1\106\2\122\1\101\1\124\1\115"+
+        "\1\123\1\44\1\103\1\123\1\122\1\44\1\107\1\114\1\117\1\115\1\101"+
+        "\1\116\1\44\1\101\1\115\1\124\1\101\1\114\2\124\1\103\1\104\1\115"+
+        "\1\106\1\105\2\117\2\uffff\1\105\1\156\1\143\1\154\1\156\1\146\1"+
+        "\162\1\166\1\154\1\141\1\162\1\141\1\151\1\166\1\162\1\141\1\165"+
+        "\1\144\1\155\1\154\1\165\1\122\2\uffff\1\56\1\uffff\1\56\1\uffff"+
+        "\1\42\1\0\13\uffff\1\105\1\116\1\101\1\105\1\44\1\104\1\116\1\117"+
+        "\1\115\1\44\1\122\1\101\1\114\1\44\1\101\1\114\1\44\1\101\1\102"+
+        "\1\104\2\44\1\122\1\111\1\105\3\44\2\111\1\44\1\116\2\uffff\1\124"+
+        "\1\44\1\116\1\113\1\103\1\107\1\122\2\44\1\120\1\uffff\1\123\1\113"+
+        "\2\111\1\105\1\114\1\101\1\117\1\105\1\122\1\111\1\106\1\111\1\124"+
+        "\1\122\1\111\1\105\1\44\2\103\1\102\1\105\1\124\1\114\1\110\1\44"+
+        "\1\103\1\44\1\114\1\123\1\111\1\101\1\117\1\101\1\103\1\114\1\123"+
+        "\1\145\1\150\1\163\1\146\1\157\1\156\1\145\1\166\1\143\1\145\1\157"+
+        "\1\145\1\171\1\166\1\171\1\160\1\154\1\145\1\44\1\145\1\154\1\141"+
+        "\1\44\1\uffff\1\0\1\60\2\0\1\uffff\1\44\1\123\1\114\1\44\1\uffff"+
+        "\1\101\2\111\1\124\1\116\1\101\1\uffff\1\105\1\124\1\44\1\122\1"+
+        "\101\1\uffff\1\115\2\114\1\uffff\1\111\1\107\1\122\1\uffff\1\117"+
+        "\1\123\1\111\1\uffff\1\124\2\44\1\uffff\2\44\1\110\1\105\1\44\1"+
+        "\uffff\1\44\1\117\1\105\1\101\1\124\1\117\1\130\1\101\1\111\1\126"+
+        "\1\123\1\105\1\120\1\105\1\103\1\105\1\124\1\116\1\44\1\uffff\1"+
+        "\111\1\105\1\117\1\44\1\125\1\44\3\105\1\111\1\uffff\1\44\1\116"+
+        "\1\uffff\1\101\1\127\1\116\2\122\2\113\1\105\1\124\1\44\1\163\1"+
+        "\145\1\151\1\44\1\151\1\162\1\145\1\153\1\44\1\157\1\156\1\44\1"+
+        "\145\1\44\1\154\2\44\1\uffff\1\44\1\157\1\44\1\uffff\1\60\2\0\2"+
+        "\uffff\1\106\1\103\1\131\1\111\1\uffff\1\111\1\130\1\107\1\124\4"+
+        "\44\1\116\1\105\1\uffff\1\44\1\122\1\111\1\105\1\111\1\101\1\102"+
+        "\1\116\1\44\1\116\1\124\1\123\1\101\3\uffff\1\103\1\116\3\101\1"+
+        "\120\1\uffff\1\105\1\44\1\uffff\1\106\1\44\1\107\1\111\1\104\1\120"+
+        "\1\103\1\116\1\105\2\44\1\124\1\101\1\117\1\116\1\123\1\107\1\uffff"+
+        "\1\101\1\44\1\114\1\uffff\1\122\1\uffff\2\122\1\101\1\123\1\uffff"+
+        "\1\104\1\115\1\111\1\105\1\113\1\105\2\44\1\101\1\111\1\164\1\44"+
+        "\1\uffff\1\151\1\44\1\147\1\156\1\145\1\162\1\44\1\156\2\44\1\145"+
+        "\1\uffff\1\167\1\60\1\0\1\105\1\117\2\123\1\116\1\124\1\125\1\111"+
+        "\2\uffff\1\124\1\44\1\uffff\1\105\1\103\1\44\1\123\1\102\1\125\1"+
+        "\44\1\uffff\2\44\1\124\1\107\1\117\1\103\1\123\1\102\1\123\1\44"+
+        "\1\104\1\uffff\1\44\1\uffff\1\105\1\117\2\44\1\105\1\115\1\44\2"+
+        "\uffff\1\44\1\124\1\114\1\103\1\127\1\44\1\114\1\44\1\105\1\115"+
+        "\1\44\2\124\1\44\1\101\1\124\3\44\1\uffff\1\116\1\117\1\44\1\141"+
+        "\1\uffff\1\44\1\147\5\44\1\60\1\122\1\125\2\124\1\123\1\103\1\122"+
+        "\1\117\1\103\1\uffff\1\44\1\101\1\111\1\uffff\1\124\1\114\1\124"+
+        "\3\uffff\2\44\1\122\1\105\1\124\1\114\2\124\1\105\1\uffff\1\44\1"+
+        "\116\1\uffff\1\44\1\101\1\131\1\125\1\124\2\uffff\1\125\1\117\1"+
+        "\105\2\111\1\uffff\1\44\1\uffff\1\44\1\101\1\131\1\uffff\1\125\1"+
+        "\44\1\uffff\1\124\1\110\1\uffff\1\114\2\uffff\1\44\1\116\2\44\1"+
+        "\0\1\44\1\116\1\105\2\44\1\117\1\105\1\116\1\117\1\uffff\1\116\1"+
+        "\123\1\44\2\105\2\uffff\1\105\2\44\1\105\1\44\1\105\1\121\1\uffff"+
+        "\1\44\1\uffff\1\122\2\120\2\122\1\116\1\105\1\124\1\123\1\uffff"+
+        "\1\122\1\120\1\122\1\uffff\1\111\1\44\1\114\1\111\1\uffff\1\44\1"+
+        "\uffff\1\124\1\115\2\uffff\1\125\2\44\1\125\1\103\1\124\1\uffff"+
+        "\3\44\2\uffff\1\44\1\uffff\1\130\1\44\1\uffff\1\113\1\105\1\114"+
+        "\1\111\1\105\1\44\1\116\1\110\1\124\1\113\2\105\1\117\1\uffff\1"+
+        "\44\1\123\2\44\1\116\2\uffff\1\116\1\110\1\44\4\uffff\1\124\1\uffff"+
+        "\1\125\1\44\1\111\1\116\1\44\1\104\2\44\1\125\2\44\1\116\1\uffff"+
+        "\1\124\2\uffff\2\124\1\117\1\uffff\1\44\1\120\1\uffff\1\103\1\107"+
+        "\1\uffff\1\44\2\uffff\1\120\2\uffff\4\44\1\122\1\uffff\1\44\1\101"+
+        "\2\44\3\uffff\1\111\1\uffff\1\124\2\uffff\1\116\1\105\1\107\2\44"+
+        "\2\uffff";
     static final String DFA30_maxS =
-        "\1\ufaff\1\131\1\127\1\117\1\ufaff\1\124\1\123\2\117\1\125\1\122"+
+        "\1\ufaff\1\131\1\127\1\131\1\ufaff\1\124\1\123\2\117\1\125\1\122"+
         "\1\117\1\125\1\131\1\117\1\111\1\105\1\130\1\116\1\122\1\76\1\125"+
         "\1\ufaff\1\165\1\157\1\156\1\141\1\151\1\154\1\141\1\162\1\154\1"+
         "\141\1\165\1\162\1\145\1\151\1\145\1\161\1\117\1\170\2\71\1\uffff"+
         "\17\uffff\1\57\2\uffff\1\76\2\75\4\uffff\1\111\1\124\1\120\1\116"+
-        "\1\125\1\122\1\105\1\120\1\105\1\ufaff\1\114\1\125\1\122\1\uffff"+
-        "\1\131\1\124\1\123\1\124\1\104\1\120\1\114\2\124\2\ufaff\1\123\1"+
-        "\107\1\106\1\124\1\122\1\101\1\124\1\115\1\123\1\ufaff\1\122\1\123"+
-        "\1\122\1\ufaff\1\124\1\114\1\122\1\124\1\122\1\132\1\ufaff\1\105"+
-        "\1\115\1\124\1\101\1\114\2\124\1\120\1\107\1\115\1\106\1\105\2\117"+
-        "\2\uffff\1\105\1\156\1\143\1\154\1\156\1\146\1\162\1\166\1\154\1"+
-        "\165\1\162\1\145\1\151\1\166\1\162\1\141\1\165\1\144\1\155\1\154"+
-        "\1\165\1\122\2\uffff\1\71\1\uffff\1\71\1\uffff\1\165\1\uffff\13"+
-        "\uffff\1\105\1\116\1\101\1\105\1\ufaff\1\124\1\116\1\117\1\115\1"+
-        "\ufaff\1\122\1\101\1\114\1\ufaff\1\101\1\114\1\ufaff\1\102\1\104"+
-        "\2\ufaff\1\122\1\111\1\105\3\ufaff\2\111\1\ufaff\1\116\2\uffff\1"+
-        "\124\1\ufaff\1\116\1\113\1\103\1\107\1\122\2\ufaff\1\120\1\uffff"+
+        "\1\125\1\122\1\105\1\120\1\105\1\ufaff\1\114\1\116\1\125\1\122\1"+
+        "\uffff\1\131\1\124\1\123\1\124\1\104\1\120\1\114\2\124\2\ufaff\1"+
+        "\123\1\107\1\106\1\124\1\122\1\101\1\124\1\115\1\123\1\ufaff\1\122"+
+        "\1\123\1\122\1\ufaff\1\124\1\114\1\122\1\124\1\122\1\132\1\ufaff"+
+        "\1\105\1\115\1\124\1\101\1\114\2\124\1\120\1\107\1\115\1\106\1\105"+
+        "\2\117\2\uffff\1\105\1\156\1\143\1\154\1\156\1\146\1\162\1\166\1"+
+        "\154\1\165\1\162\1\145\1\151\1\166\1\162\1\141\1\165\1\144\1\155"+
+        "\1\154\1\165\1\122\2\uffff\1\71\1\uffff\1\71\1\uffff\1\165\1\uffff"+
+        "\13\uffff\1\105\1\116\1\101\1\105\1\ufaff\1\124\1\116\1\117\1\115"+
+        "\1\ufaff\1\122\1\101\1\114\1\ufaff\1\101\1\114\1\ufaff\1\101\1\102"+
+        "\1\104\2\ufaff\1\122\1\111\1\105\3\ufaff\2\111\1\ufaff\1\116\2\uffff"+
+        "\1\124\1\ufaff\1\116\1\113\1\103\1\107\1\122\2\ufaff\1\120\1\uffff"+
         "\1\124\1\113\2\111\1\105\1\114\1\101\1\117\1\105\1\122\1\111\1\106"+
         "\1\111\1\124\1\122\1\111\1\105\1\ufaff\2\103\1\102\1\105\2\124\1"+
         "\110\1\ufaff\1\103\1\ufaff\1\114\1\123\1\111\1\101\1\117\1\101\1"+
@@ -6643,77 +6677,79 @@ public class TextMarkerLexer extends Lexer {
         "\1\143\1\145\1\157\1\145\1\171\1\166\1\171\1\160\1\154\1\145\1\ufaff"+
         "\1\145\1\154\1\141\1\ufaff\1\uffff\1\uffff\1\146\2\uffff\1\uffff"+
         "\1\ufaff\1\123\1\114\1\ufaff\1\uffff\1\105\2\111\1\124\1\122\1\101"+
-        "\1\uffff\1\105\1\124\1\ufaff\1\122\1\101\1\uffff\1\114\1\124\1\uffff"+
-        "\1\111\1\107\1\122\1\uffff\1\117\1\123\1\111\1\uffff\1\124\2\ufaff"+
-        "\1\uffff\2\ufaff\1\110\1\105\1\ufaff\1\uffff\1\ufaff\1\117\1\105"+
-        "\1\101\1\124\1\117\1\130\1\101\1\111\1\126\1\123\1\105\1\120\1\105"+
-        "\1\103\1\105\1\124\1\116\1\ufaff\1\uffff\1\111\1\105\1\117\1\ufaff"+
-        "\1\125\1\ufaff\3\105\1\111\1\uffff\1\ufaff\1\116\1\uffff\1\101\1"+
-        "\127\1\116\2\122\2\113\1\105\1\124\1\ufaff\1\163\1\145\1\151\1\ufaff"+
-        "\1\151\1\162\1\145\1\153\1\ufaff\1\157\1\156\1\ufaff\1\145\1\ufaff"+
-        "\1\154\2\ufaff\1\uffff\1\ufaff\1\157\1\ufaff\1\uffff\1\146\2\uffff"+
-        "\2\uffff\1\106\1\103\1\131\1\111\1\uffff\1\111\1\130\1\107\1\124"+
-        "\4\ufaff\1\116\1\105\1\uffff\1\ufaff\1\122\1\105\1\111\1\101\1\102"+
-        "\1\116\1\ufaff\1\116\1\124\1\123\1\101\3\uffff\1\103\1\116\3\101"+
-        "\1\120\1\uffff\1\105\1\ufaff\1\uffff\1\106\1\ufaff\1\107\1\111\1"+
-        "\104\1\120\1\103\1\116\1\105\2\ufaff\1\124\1\101\1\117\1\116\1\123"+
-        "\1\107\1\uffff\1\101\1\ufaff\1\114\1\uffff\1\122\1\uffff\2\122\1"+
-        "\101\1\123\1\uffff\1\104\1\115\1\111\1\105\1\113\1\105\2\ufaff\1"+
-        "\101\1\111\1\164\1\ufaff\1\uffff\1\151\1\ufaff\1\147\1\156\1\145"+
-        "\1\162\1\ufaff\1\156\2\ufaff\1\145\1\uffff\1\167\1\146\1\uffff\1"+
-        "\105\1\117\2\123\1\116\1\124\1\125\1\111\2\uffff\1\124\1\ufaff\1"+
-        "\uffff\1\105\1\ufaff\1\123\1\102\1\125\1\ufaff\1\uffff\2\ufaff\1"+
-        "\124\1\107\1\117\1\103\1\123\1\102\1\123\1\ufaff\1\104\1\uffff\1"+
-        "\ufaff\1\uffff\1\105\1\117\2\ufaff\1\105\1\124\1\ufaff\2\uffff\1"+
-        "\ufaff\1\124\1\114\1\103\1\127\1\ufaff\1\114\1\ufaff\1\105\1\124"+
-        "\1\ufaff\2\124\1\ufaff\1\101\1\124\3\ufaff\1\uffff\1\116\1\117\1"+
-        "\ufaff\1\141\1\uffff\1\ufaff\1\147\5\ufaff\1\146\1\122\1\125\2\124"+
-        "\1\123\1\103\1\122\1\117\1\103\1\uffff\1\ufaff\1\111\1\uffff\1\124"+
-        "\1\114\1\124\3\uffff\2\ufaff\1\122\1\105\1\124\1\114\2\124\1\105"+
-        "\1\uffff\1\ufaff\1\116\1\uffff\1\ufaff\1\101\1\131\1\125\1\124\2"+
-        "\uffff\1\125\1\117\1\105\2\111\1\uffff\1\ufaff\1\uffff\1\ufaff\1"+
-        "\101\1\131\1\uffff\1\125\1\ufaff\1\uffff\1\124\1\110\1\uffff\1\114"+
-        "\2\uffff\1\ufaff\1\116\2\ufaff\1\uffff\1\ufaff\1\116\1\105\2\ufaff"+
-        "\1\117\1\105\1\116\1\117\1\uffff\1\123\1\ufaff\2\105\2\uffff\1\105"+
-        "\2\ufaff\1\105\1\ufaff\1\105\1\121\1\uffff\1\ufaff\1\uffff\1\122"+
-        "\2\120\2\122\1\116\1\105\1\124\1\123\1\uffff\1\122\1\120\1\122\1"+
-        "\uffff\1\111\1\ufaff\1\114\1\111\1\uffff\1\ufaff\1\uffff\1\124\1"+
-        "\115\2\uffff\1\125\2\ufaff\1\125\1\124\1\uffff\3\ufaff\2\uffff\1"+
-        "\ufaff\1\uffff\1\130\1\ufaff\1\uffff\1\113\1\105\1\114\1\111\1\105"+
-        "\1\ufaff\1\116\1\110\1\124\1\113\2\105\1\117\1\uffff\1\ufaff\1\123"+
-        "\2\ufaff\1\116\2\uffff\1\116\1\ufaff\4\uffff\1\124\1\uffff\1\125"+
-        "\1\ufaff\1\111\1\116\1\ufaff\1\104\2\ufaff\1\125\2\ufaff\1\116\1"+
-        "\uffff\1\124\2\uffff\2\124\1\uffff\1\ufaff\1\120\1\uffff\1\103\1"+
-        "\107\1\uffff\1\ufaff\2\uffff\1\120\2\uffff\4\ufaff\1\uffff\1\ufaff"+
-        "\1\101\2\ufaff\4\uffff\1\124\2\uffff\1\105\1\ufaff\1\uffff";
+        "\1\uffff\1\105\1\124\1\ufaff\1\122\1\101\1\uffff\1\115\1\114\1\124"+
+        "\1\uffff\1\111\1\107\1\122\1\uffff\1\117\1\123\1\111\1\uffff\1\124"+
+        "\2\ufaff\1\uffff\2\ufaff\1\110\1\105\1\ufaff\1\uffff\1\ufaff\1\117"+
+        "\1\105\1\101\1\124\1\117\1\130\1\101\1\111\1\126\1\123\1\105\1\120"+
+        "\1\105\1\103\1\105\1\124\1\116\1\ufaff\1\uffff\1\111\1\105\1\117"+
+        "\1\ufaff\1\125\1\ufaff\3\105\1\111\1\uffff\1\ufaff\1\116\1\uffff"+
+        "\1\101\1\127\1\116\2\122\2\113\1\105\1\124\1\ufaff\1\163\1\145\1"+
+        "\151\1\ufaff\1\151\1\162\1\145\1\153\1\ufaff\1\157\1\156\1\ufaff"+
+        "\1\145\1\ufaff\1\154\2\ufaff\1\uffff\1\ufaff\1\157\1\ufaff\1\uffff"+
+        "\1\146\2\uffff\2\uffff\1\106\1\103\1\131\1\111\1\uffff\1\111\1\130"+
+        "\1\107\1\124\4\ufaff\1\116\1\105\1\uffff\1\ufaff\1\122\1\111\1\105"+
+        "\1\111\1\101\1\102\1\116\1\ufaff\1\116\1\124\1\123\1\101\3\uffff"+
+        "\1\103\1\116\3\101\1\120\1\uffff\1\105\1\ufaff\1\uffff\1\106\1\ufaff"+
+        "\1\107\1\111\1\104\1\120\1\103\1\116\1\105\2\ufaff\1\124\1\101\1"+
+        "\117\1\116\1\123\1\107\1\uffff\1\101\1\ufaff\1\114\1\uffff\1\122"+
+        "\1\uffff\2\122\1\101\1\123\1\uffff\1\104\1\115\1\111\1\105\1\113"+
+        "\1\105\2\ufaff\1\101\1\111\1\164\1\ufaff\1\uffff\1\151\1\ufaff\1"+
+        "\147\1\156\1\145\1\162\1\ufaff\1\156\2\ufaff\1\145\1\uffff\1\167"+
+        "\1\146\1\uffff\1\105\1\117\2\123\1\116\1\124\1\125\1\111\2\uffff"+
+        "\1\124\1\ufaff\1\uffff\1\105\1\103\1\ufaff\1\123\1\102\1\125\1\ufaff"+
+        "\1\uffff\2\ufaff\1\124\1\107\1\117\1\103\1\123\1\102\1\123\1\ufaff"+
+        "\1\104\1\uffff\1\ufaff\1\uffff\1\105\1\117\2\ufaff\1\105\1\124\1"+
+        "\ufaff\2\uffff\1\ufaff\1\124\1\114\1\103\1\127\1\ufaff\1\114\1\ufaff"+
+        "\1\105\1\124\1\ufaff\2\124\1\ufaff\1\101\1\124\3\ufaff\1\uffff\1"+
+        "\116\1\117\1\ufaff\1\141\1\uffff\1\ufaff\1\147\5\ufaff\1\146\1\122"+
+        "\1\125\2\124\1\123\1\103\1\122\1\117\1\103\1\uffff\1\ufaff\1\101"+
+        "\1\111\1\uffff\1\124\1\114\1\124\3\uffff\2\ufaff\1\122\1\105\1\124"+
+        "\1\114\2\124\1\105\1\uffff\1\ufaff\1\116\1\uffff\1\ufaff\1\101\1"+
+        "\131\1\125\1\124\2\uffff\1\125\1\117\1\105\2\111\1\uffff\1\ufaff"+
+        "\1\uffff\1\ufaff\1\101\1\131\1\uffff\1\125\1\ufaff\1\uffff\1\124"+
+        "\1\110\1\uffff\1\114\2\uffff\1\ufaff\1\116\2\ufaff\1\uffff\1\ufaff"+
+        "\1\116\1\105\2\ufaff\1\117\1\105\1\116\1\117\1\uffff\1\116\1\123"+
+        "\1\ufaff\2\105\2\uffff\1\105\2\ufaff\1\105\1\ufaff\1\105\1\121\1"+
+        "\uffff\1\ufaff\1\uffff\1\122\2\120\2\122\1\116\1\105\1\124\1\123"+
+        "\1\uffff\1\122\1\120\1\122\1\uffff\1\111\1\ufaff\1\114\1\111\1\uffff"+
+        "\1\ufaff\1\uffff\1\124\1\115\2\uffff\1\125\2\ufaff\1\125\1\103\1"+
+        "\124\1\uffff\3\ufaff\2\uffff\1\ufaff\1\uffff\1\130\1\ufaff\1\uffff"+
+        "\1\113\1\105\1\114\1\111\1\105\1\ufaff\1\116\1\110\1\124\1\113\2"+
+        "\105\1\117\1\uffff\1\ufaff\1\123\2\ufaff\1\116\2\uffff\1\116\1\110"+
+        "\1\ufaff\4\uffff\1\124\1\uffff\1\125\1\ufaff\1\111\1\116\1\ufaff"+
+        "\1\104\2\ufaff\1\125\2\ufaff\1\116\1\uffff\1\124\2\uffff\2\124\1"+
+        "\117\1\uffff\1\ufaff\1\120\1\uffff\1\103\1\107\1\uffff\1\ufaff\2"+
+        "\uffff\1\120\2\uffff\4\ufaff\1\122\1\uffff\1\ufaff\1\101\2\ufaff"+
+        "\3\uffff\1\111\1\uffff\1\124\2\uffff\1\116\1\105\1\107\2\ufaff\2"+
+        "\uffff";
     static final String DFA30_acceptS =
-        "\54\uffff\1\152\1\154\1\155\1\156\1\157\1\160\1\161\1\162\1\163"+
-        "\1\164\1\166\1\167\1\170\1\171\1\173\1\uffff\1\175\1\176\3\uffff"+
-        "\1\u0082\1\u0083\1\u0085\1\u0089\15\uffff\1\107\56\uffff\1\106\1"+
-        "\172\26\uffff\1\145\1\146\1\uffff\1\150\1\uffff\1\165\2\uffff\1"+
-        "\153\1\u008a\1\u008b\1\174\1\u0086\1\u0087\1\177\1\u0088\1\u0080"+
-        "\1\u0084\1\u0081\37\uffff\1\70\1\27\12\uffff\1\20\74\uffff\1\147"+
-        "\4\uffff\1\151\4\uffff\1\141\6\uffff\1\140\5\uffff\1\37\2\uffff"+
-        "\1\6\3\uffff\1\74\3\uffff\1\120\3\uffff\1\40\5\uffff\1\73\23\uffff"+
-        "\1\137\12\uffff\1\100\2\uffff\1\135\33\uffff\1\111\3\uffff\1\142"+
-        "\3\uffff\1\151\1\1\4\uffff\1\117\12\uffff\1\54\14\uffff\1\15\1\136"+
-        "\1\16\6\uffff\1\41\2\uffff\1\17\21\uffff\1\102\3\uffff\1\26\1\uffff"+
-        "\1\34\4\uffff\1\55\14\uffff\1\110\13\uffff\1\143\13\uffff\1\10\1"+
-        "\36\2\uffff\1\105\6\uffff\1\67\13\uffff\1\77\1\uffff\1\31\7\uffff"+
-        "\1\116\1\25\23\uffff\1\115\4\uffff\1\144\21\uffff\1\32\2\uffff\1"+
-        "\121\3\uffff\1\57\1\127\1\13\11\uffff\1\21\2\uffff\1\24\5\uffff"+
-        "\1\75\1\113\5\uffff\1\122\1\uffff\1\125\3\uffff\1\33\2\uffff\1\65"+
-        "\2\uffff\1\114\1\uffff\1\62\1\66\16\uffff\1\3\4\uffff\1\131\1\14"+
-        "\7\uffff\1\112\1\uffff\1\47\11\uffff\1\30\3\uffff\1\101\4\uffff"+
-        "\1\123\1\uffff\1\64\2\uffff\1\134\1\2\5\uffff\1\4\3\uffff\1\43\1"+
-        "\44\1\uffff\1\46\2\uffff\1\23\15\uffff\1\72\5\uffff\1\56\1\126\2"+
+        "\54\uffff\1\153\1\155\1\156\1\157\1\160\1\161\1\162\1\163\1\164"+
+        "\1\165\1\167\1\170\1\171\1\172\1\174\1\uffff\1\176\1\177\3\uffff"+
+        "\1\u0083\1\u0084\1\u0086\1\u008a\16\uffff\1\110\56\uffff\1\107\1"+
+        "\173\26\uffff\1\146\1\147\1\uffff\1\151\1\uffff\1\166\2\uffff\1"+
+        "\154\1\u008b\1\u008c\1\175\1\u0087\1\u0088\1\u0080\1\u0089\1\u0081"+
+        "\1\u0085\1\u0082\40\uffff\1\71\1\27\12\uffff\1\20\74\uffff\1\150"+
+        "\4\uffff\1\152\4\uffff\1\142\6\uffff\1\141\5\uffff\1\37\3\uffff"+
+        "\1\6\3\uffff\1\75\3\uffff\1\121\3\uffff\1\40\5\uffff\1\74\23\uffff"+
+        "\1\140\12\uffff\1\101\2\uffff\1\136\33\uffff\1\112\3\uffff\1\143"+
+        "\3\uffff\1\152\1\1\4\uffff\1\120\12\uffff\1\54\15\uffff\1\15\1\137"+
+        "\1\16\6\uffff\1\41\2\uffff\1\17\21\uffff\1\103\3\uffff\1\26\1\uffff"+
+        "\1\34\4\uffff\1\55\14\uffff\1\111\13\uffff\1\144\13\uffff\1\10\1"+
+        "\36\2\uffff\1\106\7\uffff\1\70\13\uffff\1\100\1\uffff\1\31\7\uffff"+
+        "\1\117\1\25\23\uffff\1\116\4\uffff\1\145\21\uffff\1\32\3\uffff\1"+
+        "\122\3\uffff\1\57\1\130\1\13\11\uffff\1\21\2\uffff\1\24\5\uffff"+
+        "\1\76\1\114\5\uffff\1\123\1\uffff\1\126\3\uffff\1\33\2\uffff\1\65"+
+        "\2\uffff\1\115\1\uffff\1\62\1\67\16\uffff\1\3\5\uffff\1\132\1\14"+
+        "\7\uffff\1\113\1\uffff\1\47\11\uffff\1\30\3\uffff\1\102\4\uffff"+
+        "\1\124\1\uffff\1\64\2\uffff\1\135\1\2\6\uffff\1\4\3\uffff\1\43\1"+
+        "\44\1\uffff\1\46\2\uffff\1\23\15\uffff\1\73\5\uffff\1\56\1\127\3"+
         "\uffff\1\5\1\35\1\42\1\45\1\uffff\1\22\14\uffff\1\63\1\uffff\1\11"+
-        "\1\124\2\uffff\1\132\2\uffff\1\51\2\uffff\1\60\1\uffff\1\71\1\133"+
-        "\1\uffff\1\53\1\61\4\uffff\1\103\4\uffff\1\130\1\7\1\12\1\50\1\uffff"+
-        "\1\104\1\52\2\uffff\1\76";
+        "\1\125\3\uffff\1\133\2\uffff\1\51\2\uffff\1\60\1\uffff\1\72\1\134"+
+        "\1\uffff\1\53\1\61\5\uffff\1\104\4\uffff\1\131\1\7\1\12\1\uffff"+
+        "\1\50\1\uffff\1\105\1\52\5\uffff\1\77\1\66";
     static final String DFA30_specialS =
-        "\53\uffff\1\2\164\uffff\1\5\164\uffff\1\1\1\uffff\1\3\1\0\153\uffff"+
-        "\1\4\1\10\143\uffff\1\7\u008c\uffff\1\6\u0092\uffff}>";
+        "\53\uffff\1\5\165\uffff\1\2\165\uffff\1\10\1\uffff\1\1\1\6\154\uffff"+
+        "\1\7\1\4\144\uffff\1\3\u008e\uffff\1\0\u009c\uffff}>";
     static final String[] DFA30_transitionS = {
             "\2\104\1\uffff\2\104\22\uffff\1\104\1\103\1\54\1\uffff\1\55"+
             "\1\101\1\75\1\53\1\56\1\57\1\72\1\71\1\67\1\24\1\52\1\73\1\50"+
@@ -6728,56 +6764,56 @@ public class TextMarkerLexer extends Lexer {
             "\1\110\15\uffff\1\106\2\uffff\1\105\6\uffff\1\107",
             "\1\114\12\uffff\1\115\2\uffff\1\111\2\uffff\1\113\2\uffff\1"+
             "\112\1\uffff\1\116",
-            "\1\117\11\uffff\1\120",
-            "\1\55\13\uffff\12\55\7\uffff\16\55\1\121\13\55\4\uffff\1\55"+
+            "\1\117\11\uffff\1\121\11\uffff\1\120",
+            "\1\55\13\uffff\12\55\7\uffff\16\55\1\122\13\55\4\uffff\1\55"+
             "\1\uffff\32\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55"+
             "\u1040\uffff\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e"+
             "\55\u10d2\uffff\u5200\55\u5900\uffff\u0200\55",
-            "\1\132\1\127\1\uffff\1\126\5\uffff\1\131\1\130\1\123\4\uffff"+
-            "\1\125\1\124",
-            "\1\135\7\uffff\1\133\4\uffff\1\134",
-            "\1\136\15\uffff\1\137",
-            "\1\141\3\uffff\1\142\11\uffff\1\140",
-            "\1\146\2\uffff\1\143\11\uffff\1\144\5\uffff\1\145",
-            "\1\147",
-            "\1\150\3\uffff\1\152\7\uffff\1\153\1\uffff\1\151",
-            "\1\154\17\uffff\1\155",
-            "\1\156\1\uffff\1\157\3\uffff\1\161\6\uffff\1\163\3\uffff\1"+
-            "\160\2\uffff\1\162\1\uffff\1\164",
-            "\1\165",
-            "\1\166\3\uffff\1\167",
-            "\1\170\3\uffff\1\171",
-            "\1\173\11\uffff\1\172",
-            "\1\174",
-            "\1\175\6\uffff\1\177\2\uffff\1\u0080\2\uffff\1\176",
-            "\1\u0081",
-            "\1\u0083",
+            "\1\133\1\130\1\uffff\1\127\5\uffff\1\132\1\131\1\124\4\uffff"+
+            "\1\126\1\125",
+            "\1\136\7\uffff\1\134\4\uffff\1\135",
+            "\1\137\15\uffff\1\140",
+            "\1\142\3\uffff\1\143\11\uffff\1\141",
+            "\1\147\2\uffff\1\144\11\uffff\1\145\5\uffff\1\146",
+            "\1\150",
+            "\1\151\3\uffff\1\153\7\uffff\1\154\1\uffff\1\152",
+            "\1\155\17\uffff\1\156",
+            "\1\157\1\uffff\1\160\3\uffff\1\162\6\uffff\1\164\3\uffff\1"+
+            "\161\2\uffff\1\163\1\uffff\1\165",
+            "\1\166",
+            "\1\167\3\uffff\1\170",
+            "\1\171\3\uffff\1\172",
+            "\1\174\11\uffff\1\173",
+            "\1\175",
+            "\1\176\6\uffff\1\u0080\2\uffff\1\u0081\2\uffff\1\177",
+            "\1\u0082",
+            "\1\u0084",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u0086\7\uffff\1\u0084\13\uffff\1\u0085",
-            "\1\u0087",
+            "\1\u0087\7\uffff\1\u0085\13\uffff\1\u0086",
             "\1\u0088",
             "\1\u0089",
-            "\1\u008a\3\uffff\1\u008b",
-            "\1\u008c",
+            "\1\u008a",
+            "\1\u008b\3\uffff\1\u008c",
             "\1\u008d",
             "\1\u008e",
             "\1\u008f",
             "\1\u0090",
             "\1\u0091",
-            "\1\u0092\14\uffff\1\u0093",
-            "\1\u0094",
+            "\1\u0092",
+            "\1\u0093\14\uffff\1\u0094",
             "\1\u0095",
             "\1\u0096",
             "\1\u0097",
             "\1\u0098",
-            "\1\u009c\1\uffff\10\u009b\2\u009c\36\uffff\1\u0099\37\uffff"+
             "\1\u0099",
-            "\1\u009c\1\uffff\12\u009d",
-            "\12\u009c",
-            "\47\u00a0\1\u00a1\64\u00a0\1\u009f\uffa3\u00a0",
+            "\1\u009d\1\uffff\10\u009c\2\u009d\36\uffff\1\u009a\37\uffff"+
+            "\1\u009a",
+            "\1\u009d\1\uffff\12\u009e",
+            "\12\u009d",
+            "\47\u00a1\1\u00a2\64\u00a1\1\u00a0\uffa3\u00a1",
             "",
             "",
             "",
@@ -6793,43 +6829,44 @@ public class TextMarkerLexer extends Lexer {
             "",
             "",
             "",
-            "\1\u00a2\4\uffff\1\u00a3",
+            "\1\u00a3\4\uffff\1\u00a4",
             "",
             "",
-            "\1\u00a6\1\u00a5",
-            "\1\u00a8",
-            "\1\u00aa",
+            "\1\u00a7\1\u00a6",
+            "\1\u00a9",
+            "\1\u00ab",
             "",
             "",
             "",
             "",
-            "\1\u00ad\7\uffff\1\u00ac",
-            "\1\u00ae",
+            "\1\u00ae\7\uffff\1\u00ad",
             "\1\u00af",
             "\1\u00b0",
-            "\1\u00b3\1\u00b4\1\u00b1\4\uffff\1\u00b5\1\uffff\1\u00b2",
-            "\1\u00b6",
+            "\1\u00b1",
+            "\1\u00b4\1\u00b5\1\u00b2\4\uffff\1\u00b6\1\uffff\1\u00b3",
             "\1\u00b7",
-            "\1\u00b8\3\uffff\1\u00b9",
-            "\1\u00ba",
+            "\1\u00b8",
+            "\1\u00b9\3\uffff\1\u00ba",
+            "\1\u00bb",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u00bb\10\uffff\1\u00bc",
-            "\1\u00bd",
+            "\1\u00bc\10\uffff\1\u00bd",
             "\1\u00be",
+            "\1\u00bf",
+            "\1\u00c0",
             "",
-            "\1\u00bf\24\uffff\1\u00c0",
-            "\1\u00c1",
-            "\1\u00c2",
+            "\1\u00c1\24\uffff\1\u00c2",
             "\1\u00c3",
             "\1\u00c4",
             "\1\u00c5",
             "\1\u00c6",
             "\1\u00c7",
-            "\1\u00c8\7\uffff\1\u00c9",
-            "\1\55\13\uffff\12\55\7\uffff\10\55\1\u00ca\21\55\4\uffff\1"+
+            "\1\u00c8",
+            "\1\u00c9",
+            "\1\u00ca\7\uffff\1\u00cb",
+            "\1\55\13\uffff\12\55\7\uffff\10\55\1\u00cc\21\55\4\uffff\1"+
             "\55\1\uffff\32\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08"+
             "\55\u1040\uffff\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e"+
             "\55\u10d2\uffff\u5200\55\u5900\uffff\u0200\55",
@@ -6837,54 +6874,52 @@ public class TextMarkerLexer extends Lexer {
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u00cd",
-            "\1\u00ce",
             "\1\u00cf",
-            "\1\u00d0\1\uffff\1\u00d1",
-            "\1\u00d2",
-            "\1\u00d3",
+            "\1\u00d0",
+            "\1\u00d1",
+            "\1\u00d2\1\uffff\1\u00d3",
             "\1\u00d4",
             "\1\u00d5",
             "\1\u00d6",
+            "\1\u00d7",
+            "\1\u00d8",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u00d9\16\uffff\1\u00d8",
-            "\1\u00da",
-            "\1\u00db",
+            "\1\u00db\16\uffff\1\u00da",
+            "\1\u00dc",
+            "\1\u00dd",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u00dc\5\uffff\1\u00df\2\uffff\1\u00dd\3\uffff\1\u00de",
-            "\1\u00e0",
-            "\1\u00e1\2\uffff\1\u00e2",
-            "\1\u00e4\1\u00e5\5\uffff\1\u00e3",
-            "\1\u00e6\20\uffff\1\u00e7",
-            "\1\u00e9\13\uffff\1\u00e8",
+            "\1\u00de\5\uffff\1\u00e1\2\uffff\1\u00df\3\uffff\1\u00e0",
+            "\1\u00e2",
+            "\1\u00e3\2\uffff\1\u00e4",
+            "\1\u00e6\1\u00e7\5\uffff\1\u00e5",
+            "\1\u00e8\20\uffff\1\u00e9",
+            "\1\u00eb\13\uffff\1\u00ea",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u00eb\3\uffff\1\u00ea",
-            "\1\u00ec",
-            "\1\u00ed",
+            "\1\u00ed\3\uffff\1\u00ec",
             "\1\u00ee",
             "\1\u00ef",
             "\1\u00f0",
             "\1\u00f1",
-            "\1\u00f4\1\uffff\1\u00f2\12\uffff\1\u00f3",
-            "\1\u00f5\2\uffff\1\u00f6",
-            "\1\u00f7",
-            "\1\u00f8",
+            "\1\u00f2",
+            "\1\u00f3",
+            "\1\u00f6\1\uffff\1\u00f4\12\uffff\1\u00f5",
+            "\1\u00f7\2\uffff\1\u00f8",
             "\1\u00f9",
             "\1\u00fa",
             "\1\u00fb",
-            "",
-            "",
             "\1\u00fc",
             "\1\u00fd",
+            "",
+            "",
             "\1\u00fe",
             "\1\u00ff",
             "\1\u0100",
@@ -6892,11 +6927,11 @@ public class TextMarkerLexer extends Lexer {
             "\1\u0102",
             "\1\u0103",
             "\1\u0104",
-            "\1\u0105\23\uffff\1\u0106",
-            "\1\u0107",
-            "\1\u0109\3\uffff\1\u0108",
-            "\1\u010a",
-            "\1\u010b",
+            "\1\u0105",
+            "\1\u0106",
+            "\1\u0107\23\uffff\1\u0108",
+            "\1\u0109",
+            "\1\u010b\3\uffff\1\u010a",
             "\1\u010c",
             "\1\u010d",
             "\1\u010e",
@@ -6905,69 +6940,61 @@ public class TextMarkerLexer extends Lexer {
             "\1\u0111",
             "\1\u0112",
             "\1\u0113",
+            "\1\u0114",
+            "\1\u0115",
             "",
             "",
-            "\1\u009c\1\uffff\10\u009b\2\u009c",
+            "\1\u009d\1\uffff\10\u009c\2\u009d",
             "",
-            "\1\u009c\1\uffff\12\u009d",
+            "\1\u009d\1\uffff\12\u009e",
             "",
-            "\1\u0115\4\uffff\1\u0115\10\uffff\4\u0117\4\u0118\44\uffff"+
-            "\1\u0115\5\uffff\1\u0115\3\uffff\1\u0115\7\uffff\1\u0115\3\uffff"+
-            "\1\u0115\1\uffff\1\u0115\1\u0116",
-            "\47\u00a1\1\u0119\uffd8\u00a1",
-            "",
-            "",
-            "",
-            "",
-            "",
+            "\1\u0117\4\uffff\1\u0117\10\uffff\4\u0119\4\u011a\44\uffff"+
+            "\1\u0117\5\uffff\1\u0117\3\uffff\1\u0117\7\uffff\1\u0117\3\uffff"+
+            "\1\u0117\1\uffff\1\u0117\1\u0118",
+            "\47\u00a2\1\u011b\uffd8\u00a2",
             "",
             "",
             "",
             "",
             "",
             "",
-            "\1\u011a",
-            "\1\u011b",
+            "",
+            "",
+            "",
+            "",
+            "",
             "\1\u011c",
             "\1\u011d",
+            "\1\u011e",
+            "\1\u011f",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u0121\1\uffff\1\u0120\15\uffff\1\u011f",
-            "\1\u0122",
-            "\1\u0123",
+            "\1\u0123\1\uffff\1\u0122\15\uffff\1\u0121",
             "\1\u0124",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u0125",
             "\1\u0126",
-            "\1\u0127",
-            "\1\u0128",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u0128",
             "\1\u0129",
             "\1\u012a",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u012b",
             "\1\u012c",
-            "\1\u012d",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u012e",
             "\1\u012f",
             "\1\u0130",
-            "\1\u0131",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
@@ -6976,43 +7003,51 @@ public class TextMarkerLexer extends Lexer {
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u0132",
             "\1\u0133",
             "\1\u0134",
-            "\1\55\13\uffff\12\55\7\uffff\13\55\1\u0135\16\55\4\uffff\1"+
-            "\55\1\uffff\32\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08"+
-            "\55\u1040\uffff\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e"+
-            "\55\u10d2\uffff\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u0136",
             "\1\u0137",
-            "",
-            "",
-            "\1\u0138",
-            "\1\55\13\uffff\12\55\7\uffff\15\55\1\u0139\14\55\4\uffff\1"+
+            "\1\55\13\uffff\12\55\7\uffff\13\55\1\u0138\16\55\4\uffff\1"+
             "\55\1\uffff\32\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08"+
             "\55\u1040\uffff\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e"+
             "\55\u10d2\uffff\u5200\55\u5900\uffff\u0200\55",
+            "\1\u013a",
+            "",
+            "",
             "\1\u013b",
-            "\1\u013c",
-            "\1\u013d",
+            "\1\55\13\uffff\12\55\7\uffff\15\55\1\u013c\14\55\4\uffff\1"+
+            "\55\1\uffff\32\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08"+
+            "\55\u1040\uffff\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e"+
+            "\55\u10d2\uffff\u5200\55\u5900\uffff\u0200\55",
             "\1\u013e",
             "\1\u013f",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u0140",
             "\1\u0141",
-            "",
-            "\1\u0143\1\u0142",
+            "\1\u0142",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
             "\1\u0144",
-            "\1\u0145",
-            "\1\u0146",
+            "",
+            "\1\u0146\1\u0145",
             "\1\u0147",
             "\1\u0148",
             "\1\u0149",
@@ -7026,29 +7061,29 @@ public class TextMarkerLexer extends Lexer {
             "\1\u0151",
             "\1\u0152",
             "\1\u0153",
+            "\1\u0154",
+            "\1\u0155",
+            "\1\u0156",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u0155",
-            "\1\u0156",
-            "\1\u0157",
             "\1\u0158",
             "\1\u0159",
-            "\1\u015a\7\uffff\1\u015b",
+            "\1\u015a",
+            "\1\u015b",
             "\1\u015c",
-            "\1\55\13\uffff\12\55\7\uffff\5\55\1\u015d\5\55\1\u015e\16\55"+
+            "\1\u015d\7\uffff\1\u015e",
+            "\1\u015f",
+            "\1\55\13\uffff\12\55\7\uffff\5\55\1\u0160\5\55\1\u0161\16\55"+
             "\4\uffff\1\55\1\uffff\32\55\105\uffff\27\55\1\uffff\37\55\1"+
             "\uffff\u1f08\55\u1040\uffff\u0150\55\u0170\uffff\u0080\55\u0080"+
             "\uffff\u092e\55\u10d2\uffff\u5200\55\u5900\uffff\u0200\55",
-            "\1\u0160",
-            "\1\55\13\uffff\12\55\7\uffff\1\u0161\31\55\4\uffff\1\55\1\uffff"+
+            "\1\u0163",
+            "\1\55\13\uffff\12\55\7\uffff\1\u0164\31\55\4\uffff\1\55\1\uffff"+
             "\32\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040"+
             "\uffff\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2"+
             "\uffff\u5200\55\u5900\uffff\u0200\55",
-            "\1\u0163",
-            "\1\u0164",
-            "\1\u0165",
             "\1\u0166",
             "\1\u0167",
             "\1\u0168",
@@ -7073,62 +7108,66 @@ public class TextMarkerLexer extends Lexer {
             "\1\u017b",
             "\1\u017c",
             "\1\u017d",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u017e",
             "\1\u017f",
             "\1\u0180",
-            "\1\u0181",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u0182",
+            "\1\u0183",
+            "\1\u0184",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
             "",
-            "\47\u00a1\1\u0119\uffd8\u00a1",
-            "\12\u0183\7\uffff\6\u0183\32\uffff\6\u0183",
-            "\47\u00a1\1\u0119\10\u00a1\10\u0184\uffc8\u00a1",
-            "\47\u00a1\1\u0119\10\u00a1\10\u0185\uffc8\u00a1",
+            "\47\u00a2\1\u011b\uffd8\u00a2",
+            "\12\u0186\7\uffff\6\u0186\32\uffff\6\u0186",
+            "\47\u00a2\1\u011b\10\u00a2\10\u0187\uffc8\u00a2",
+            "\47\u00a2\1\u011b\10\u00a2\10\u0188\uffc8\u00a2",
             "",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u0188",
-            "\1\u0189",
-            "\1\55\13\uffff\12\55\7\uffff\13\55\1\u018b\6\55\1\u018a\7\55"+
+            "\1\u018b",
+            "\1\u018c",
+            "\1\55\13\uffff\12\55\7\uffff\13\55\1\u018e\6\55\1\u018d\7\55"+
             "\4\uffff\1\55\1\uffff\32\55\105\uffff\27\55\1\uffff\37\55\1"+
             "\uffff\u1f08\55\u1040\uffff\u0150\55\u0170\uffff\u0080\55\u0080"+
             "\uffff\u092e\55\u10d2\uffff\u5200\55\u5900\uffff\u0200\55",
             "",
-            "\1\u018d\3\uffff\1\u018e",
-            "\1\u018f",
-            "\1\u0190",
-            "\1\u0191",
-            "\1\u0193\3\uffff\1\u0192",
+            "\1\u0190\3\uffff\1\u0191",
+            "\1\u0192",
+            "\1\u0193",
             "\1\u0194",
+            "\1\u0196\3\uffff\1\u0195",
+            "\1\u0197",
             "",
-            "\1\u0195",
-            "\1\u0196",
+            "\1\u0198",
+            "\1\u0199",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u0198",
-            "\1\u0199",
-            "",
-            "\1\u019a",
-            "\1\u019b\7\uffff\1\u019c",
+            "\1\u019b",
+            "\1\u019c",
             "",
             "\1\u019d",
             "\1\u019e",
-            "\1\u019f",
+            "\1\u019f\7\uffff\1\u01a0",
             "",
-            "\1\u01a0",
             "\1\u01a1",
             "\1\u01a2",
-            "",
             "\1\u01a3",
+            "",
+            "\1\u01a4",
+            "\1\u01a5",
+            "\1\u01a6",
+            "",
+            "\1\u01a7",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
@@ -7142,13 +7181,13 @@ public class TextMarkerLexer extends Lexer {
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\5\55\1\u01a9\5\55\1\u01ab\2\55"+
-            "\1\u01a8\3\55\1\u01a7\1\u01aa\1\u01ac\5\55\4\uffff\1\55\1\uffff"+
+            "\1\55\13\uffff\12\55\7\uffff\5\55\1\u01ad\5\55\1\u01af\2\55"+
+            "\1\u01ac\3\55\1\u01ab\1\u01ae\1\u01b0\5\55\4\uffff\1\55\1\uffff"+
             "\32\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040"+
             "\uffff\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2"+
             "\uffff\u5200\55\u5900\uffff\u0200\55",
-            "\1\u01ae",
-            "\1\u01af",
+            "\1\u01b2",
+            "\1\u01b3",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
@@ -7158,10 +7197,6 @@ public class TextMarkerLexer extends Lexer {
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u01b1",
-            "\1\u01b2",
-            "\1\u01b3",
-            "\1\u01b4",
             "\1\u01b5",
             "\1\u01b6",
             "\1\u01b7",
@@ -7175,11 +7210,7 @@ public class TextMarkerLexer extends Lexer {
             "\1\u01bf",
             "\1\u01c0",
             "\1\u01c1",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "",
+            "\1\u01c2",
             "\1\u01c3",
             "\1\u01c4",
             "\1\u01c5",
@@ -7187,43 +7218,43 @@ public class TextMarkerLexer extends Lexer {
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
+            "",
             "\1\u01c7",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u01c8",
             "\1\u01c9",
-            "\1\u01ca",
-            "\1\u01cb",
-            "\1\u01cc",
-            "",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u01cb",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u01cd",
             "\1\u01ce",
-            "",
             "\1\u01cf",
             "\1\u01d0",
-            "\1\u01d1",
+            "",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
             "\1\u01d2",
+            "",
             "\1\u01d3",
             "\1\u01d4",
             "\1\u01d5",
             "\1\u01d6",
             "\1\u01d7",
+            "\1\u01d8",
+            "\1\u01d9",
+            "\1\u01da",
+            "\1\u01db",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\21"+
-            "\55\1\u01d9\1\u01d8\7\55\105\uffff\27\55\1\uffff\37\55\1\uffff"+
+            "\55\1\u01dd\1\u01dc\7\55\105\uffff\27\55\1\uffff\37\55\1\uffff"+
             "\u1f08\55\u1040\uffff\u0150\55\u0170\uffff\u0080\55\u0080\uffff"+
             "\u092e\55\u10d2\uffff\u5200\55\u5900\uffff\u0200\55",
-            "\1\u01db",
-            "\1\u01dc",
-            "\1\u01dd",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u01de",
             "\1\u01df",
             "\1\u01e0",
             "\1\u01e1",
@@ -7233,166 +7264,162 @@ public class TextMarkerLexer extends Lexer {
             "\u5200\55\u5900\uffff\u0200\55",
             "\1\u01e2",
             "\1\u01e3",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
             "\1\u01e4",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
             "\1\u01e5",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u01e6",
             "\1\u01e7",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u01e8",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u01e9",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
             "",
-            "\12\u01e8\7\uffff\6\u01e8\32\uffff\6\u01e8",
-            "\47\u00a1\1\u0119\10\u00a1\10\u01e9\uffc8\u00a1",
-            "\47\u00a1\1\u0119\uffd8\u00a1",
-            "",
-            "",
-            "\1\u01ea",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
             "\1\u01eb",
-            "\1\u01ec",
-            "\1\u01ed",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "",
+            "\12\u01ec\7\uffff\6\u01ec\32\uffff\6\u01ec",
+            "\47\u00a2\1\u011b\10\u00a2\10\u01ed\uffc8\u00a2",
+            "\47\u00a2\1\u011b\uffd8\u00a2",
+            "",
             "",
             "\1\u01ee",
             "\1\u01ef",
             "\1\u01f0",
             "\1\u01f1",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
+            "",
+            "\1\u01f2",
+            "\1\u01f3",
             "\1\u01f4",
             "\1\u01f5",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u01f8",
+            "\1\u01f9",
             "",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u01f7",
-            "\1\u01f8",
-            "\1\u01f9",
-            "\1\u01fa",
             "\1\u01fb",
             "\1\u01fc",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u01fd",
             "\1\u01fe",
             "\1\u01ff",
             "\1\u0200",
             "\1\u0201",
-            "",
-            "",
-            "",
-            "\1\u0202",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
             "\1\u0203",
             "\1\u0204",
             "\1\u0205",
             "\1\u0206",
+            "",
+            "",
+            "",
             "\1\u0207",
-            "",
             "\1\u0208",
+            "\1\u0209",
+            "\1\u020a",
+            "\1\u020b",
+            "\1\u020c",
+            "",
+            "\1\u020d",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
             "",
-            "\1\u020a",
+            "\1\u020f",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u020c",
-            "\1\u020d",
-            "\1\u020e",
-            "\1\u020f",
-            "\1\u0210",
             "\1\u0211",
             "\1\u0212",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u0213",
+            "\1\u0214",
             "\1\u0215",
             "\1\u0216",
             "\1\u0217",
-            "\1\u0218",
-            "\1\u0219",
-            "\1\u021a",
-            "",
-            "\1\u021b",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u021a",
+            "\1\u021b",
             "\1\u021c",
-            "",
             "\1\u021d",
-            "",
             "\1\u021e",
             "\1\u021f",
+            "",
             "\1\u0220",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
             "\1\u0221",
             "",
             "\1\u0222",
+            "",
             "\1\u0223",
             "\1\u0224",
             "\1\u0225",
             "\1\u0226",
+            "",
             "\1\u0227",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u0228",
             "\1\u0229",
             "\1\u022a",
             "\1\u022b",
+            "\1\u022c",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "",
-            "\1\u022c",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
@@ -7400,93 +7427,107 @@ public class TextMarkerLexer extends Lexer {
             "\1\u022e",
             "\1\u022f",
             "\1\u0230",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "",
             "\1\u0231",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u0232",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
             "\1\u0233",
-            "",
             "\1\u0234",
-            "\12\u0235\7\uffff\6\u0235\32\uffff\6\u0235",
-            "\47\u00a1\1\u0119\uffd8\u00a1",
+            "\1\u0235",
             "\1\u0236",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
             "\1\u0237",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
             "\1\u0238",
+            "",
             "\1\u0239",
-            "\1\u023a",
+            "\12\u023a\7\uffff\6\u023a\32\uffff\6\u023a",
+            "\47\u00a2\1\u011b\uffd8\u00a2",
             "\1\u023b",
             "\1\u023c",
             "\1\u023d",
-            "",
-            "",
             "\1\u023e",
+            "\1\u023f",
+            "\1\u0240",
+            "\1\u0241",
+            "\1\u0242",
+            "",
+            "",
+            "\1\u0243",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
             "",
-            "\1\u0240",
-            "\1\55\13\uffff\12\55\7\uffff\13\55\1\u0241\16\55\4\uffff\1"+
+            "\1\u0245",
+            "\1\u0246",
+            "\1\55\13\uffff\12\55\7\uffff\13\55\1\u0247\16\55\4\uffff\1"+
             "\55\1\uffff\32\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08"+
             "\55\u1040\uffff\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e"+
             "\55\u10d2\uffff\u5200\55\u5900\uffff\u0200\55",
-            "\1\u0243",
-            "\1\u0244",
-            "\1\u0245",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
             "\1\u0249",
             "\1\u024a",
             "\1\u024b",
-            "\1\u024c",
-            "\1\u024d",
-            "\1\u024e",
-            "\1\u024f",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
+            "",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u024f",
             "\1\u0250",
-            "",
-            "\1\55\13\uffff\12\55\7\uffff\15\55\1\u0251\14\55\4\uffff\1"+
-            "\55\1\uffff\32\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08"+
-            "\55\u1040\uffff\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e"+
-            "\55\u10d2\uffff\u5200\55\u5900\uffff\u0200\55",
-            "",
+            "\1\u0251",
+            "\1\u0252",
             "\1\u0253",
             "\1\u0254",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u0255",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
             "\1\u0256",
-            "\1\u0257\6\uffff\1\u0258",
-            "\1\55\13\uffff\12\55\7\uffff\3\55\1\u0259\16\55\1\u025a\7\55"+
+            "",
+            "\1\55\13\uffff\12\55\7\uffff\15\55\1\u0257\14\55\4\uffff\1"+
+            "\55\1\uffff\32\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08"+
+            "\55\u1040\uffff\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e"+
+            "\55\u10d2\uffff\u5200\55\u5900\uffff\u0200\55",
+            "",
+            "\1\u0259",
+            "\1\u025a",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u025c",
+            "\1\u025d\6\uffff\1\u025e",
+            "\1\55\13\uffff\12\55\7\uffff\3\55\1\u025f\16\55\1\u0260\7\55"+
             "\4\uffff\1\55\1\uffff\32\55\105\uffff\27\55\1\uffff\37\55\1"+
             "\uffff\u1f08\55\u1040\uffff\u0150\55\u0170\uffff\u0080\55\u0080"+
             "\uffff\u092e\55\u10d2\uffff\u5200\55\u5900\uffff\u0200\55",
@@ -7496,38 +7537,38 @@ public class TextMarkerLexer extends Lexer {
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u025d",
-            "\1\u025e",
-            "\1\u025f",
-            "\1\u0260",
-            "\1\55\13\uffff\12\55\7\uffff\13\55\1\u0261\16\55\4\uffff\1"+
+            "\1\u0263",
+            "\1\u0264",
+            "\1\u0265",
+            "\1\u0266",
+            "\1\55\13\uffff\12\55\7\uffff\13\55\1\u0267\16\55\4\uffff\1"+
             "\55\1\uffff\32\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08"+
             "\55\u1040\uffff\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e"+
             "\55\u10d2\uffff\u5200\55\u5900\uffff\u0200\55",
-            "\1\u0263",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u0265",
-            "\1\u0266\6\uffff\1\u0267",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
             "\1\u0269",
-            "\1\u026a",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u026c",
-            "\1\u026d",
+            "\1\u026b",
+            "\1\u026c\6\uffff\1\u026d",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\1\u026f\31\55\4\uffff\1\55\1\uffff"+
+            "\1\u026f",
+            "\1\u0270",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u0272",
+            "\1\u0273",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\1\u0275\31\55\4\uffff\1\55\1\uffff"+
             "\32\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040"+
             "\uffff\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2"+
             "\uffff\u5200\55\u5900\uffff\u0200\55",
@@ -7536,231 +7577,222 @@ public class TextMarkerLexer extends Lexer {
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
             "",
-            "\1\u0272",
-            "\1\u0273",
+            "\1\u0278",
+            "\1\u0279",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u0274",
+            "\1\u027a",
             "",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u0275",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\12\u0276\7\uffff\6\u0276\32\uffff\6\u0276",
-            "\1\u0277",
-            "\1\u0278",
-            "\1\u0279",
-            "\1\u027a",
             "\1\u027b",
-            "\1\u027c",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\12\u027c\7\uffff\6\u027c\32\uffff\6\u027c",
             "\1\u027d",
             "\1\u027e",
             "\1\u027f",
-            "",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u0280",
             "\1\u0281",
-            "",
             "\1\u0282",
             "\1\u0283",
             "\1\u0284",
+            "\1\u0285",
             "",
-            "",
-            "",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
             "\1\u0287",
             "\1\u0288",
+            "",
             "\1\u0289",
             "\1\u028a",
             "\1\u028b",
-            "\1\u028c",
-            "\1\u028d",
+            "",
+            "",
             "",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u028e",
             "\1\u028f",
-            "",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u0290",
             "\1\u0291",
             "\1\u0292",
             "\1\u0293",
             "\1\u0294",
             "",
-            "",
-            "\1\u0295",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
             "\1\u0296",
-            "\1\u0297",
+            "",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
             "\1\u0298",
             "\1\u0299",
-            "",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u029a",
             "\1\u029b",
+            "",
+            "",
             "\1\u029c",
-            "",
             "\1\u029d",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "",
+            "\1\u029e",
             "\1\u029f",
             "\1\u02a0",
             "",
-            "\1\u02a1",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
             "",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u02a2",
+            "\1\u02a3",
             "",
-            "\1\55\13\uffff\12\55\7\uffff\13\55\1\u02a2\16\55\4\uffff\1"+
-            "\55\1\uffff\32\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08"+
-            "\55\u1040\uffff\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e"+
-            "\55\u10d2\uffff\u5200\55\u5900\uffff\u0200\55",
             "\1\u02a4",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\47\u00a1\1\u0119\uffd8\u00a1",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
+            "",
             "\1\u02a6",
             "\1\u02a7",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u02aa",
-            "\1\u02ab",
-            "\1\u02ac",
-            "\1\u02ad",
             "",
+            "\1\u02a8",
+            "",
+            "",
+            "\1\55\13\uffff\12\55\7\uffff\13\55\1\u02a9\16\55\4\uffff\1"+
+            "\55\1\uffff\32\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08"+
+            "\55\u1040\uffff\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e"+
+            "\55\u10d2\uffff\u5200\55\u5900\uffff\u0200\55",
+            "\1\u02ab",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\47\u00a2\1\u011b\uffd8\u00a2",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u02ad",
             "\1\u02ae",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u02b0",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
             "\1\u02b1",
-            "",
-            "",
             "\1\u02b2",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u02b5",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u02b7",
-            "\1\u02b8",
+            "\1\u02b3",
+            "\1\u02b4",
             "",
+            "\1\u02b5",
+            "\1\u02b6",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u02b8",
+            "\1\u02b9",
+            "",
             "",
             "\1\u02ba",
-            "\1\u02bb",
-            "\1\u02bc",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
             "\1\u02bd",
-            "\1\u02be",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
             "\1\u02bf",
             "\1\u02c0",
-            "\1\u02c1",
-            "\1\u02c2",
             "",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "",
+            "\1\u02c2",
             "\1\u02c3",
             "\1\u02c4",
             "\1\u02c5",
-            "",
             "\1\u02c6",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u02c7",
             "\1\u02c8",
             "\1\u02c9",
-            "",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "",
             "\1\u02ca",
+            "",
             "\1\u02cb",
-            "",
-            "",
             "\1\u02cc",
+            "\1\u02cd",
+            "",
+            "\1\u02ce",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u02cf",
             "\1\u02d0",
+            "\1\u02d1",
             "",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "",
+            "\1\u02d2",
+            "\1\u02d3",
+            "",
+            "",
+            "\1\u02d4",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
@@ -7769,122 +7801,101 @@ public class TextMarkerLexer extends Lexer {
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "",
-            "",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "",
-            "\1\u02d5",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "",
             "\1\u02d7",
             "\1\u02d8",
             "\1\u02d9",
-            "\1\u02da",
-            "\1\u02db",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u02dc",
-            "\1\u02dd",
-            "\1\u02de",
-            "\1\u02df",
-            "\1\u02e0",
-            "\1\u02e1",
-            "\1\u02e2",
             "",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "",
+            "",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "",
+            "\1\u02de",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "",
+            "\1\u02e0",
+            "\1\u02e1",
+            "\1\u02e2",
+            "\1\u02e3",
             "\1\u02e4",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u02e5",
+            "\1\u02e6",
             "\1\u02e7",
-            "",
-            "",
             "\1\u02e8",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "",
-            "",
-            "",
-            "",
+            "\1\u02e9",
             "\1\u02ea",
-            "",
             "\1\u02eb",
+            "",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
             "\1\u02ed",
-            "\1\u02ee",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
             "\1\u02f0",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u02f3",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u02f6",
             "",
+            "",
+            "\1\u02f1",
+            "\1\u02f2",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "",
+            "",
+            "",
+            "",
+            "\1\u02f4",
+            "",
+            "\1\u02f5",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
             "\1\u02f7",
-            "",
-            "",
             "\1\u02f8",
-            "\1\u02f9",
-            "",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\u02fb",
-            "",
-            "\1\u02fc",
+            "\1\u02fa",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
             "\1\u02fd",
-            "",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "",
-            "",
-            "\1\u02fe",
-            "",
-            "",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
@@ -7893,40 +7904,84 @@ public class TextMarkerLexer extends Lexer {
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u0300",
             "",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u0301",
+            "",
+            "",
+            "\1\u0302",
             "\1\u0303",
+            "\1\u0304",
+            "",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
-            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
-            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
-            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
-            "\u5200\55\u5900\uffff\u0200\55",
-            "",
-            "",
-            "",
-            "",
             "\1\u0306",
             "",
-            "",
             "\1\u0307",
+            "\1\u0308",
+            "",
             "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
             "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
             "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
             "\u5200\55\u5900\uffff\u0200\55",
+            "",
+            "",
+            "\1\u0309",
+            "",
+            "",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u030d",
+            "",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\u030f",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "",
+            "",
+            "",
+            "\1\u0312",
+            "",
+            "\1\u0313",
+            "",
+            "",
+            "\1\u0314",
+            "\1\u0315",
+            "\1\u0316",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "\1\55\13\uffff\12\55\7\uffff\32\55\4\uffff\1\55\1\uffff\32"+
+            "\55\105\uffff\27\55\1\uffff\37\55\1\uffff\u1f08\55\u1040\uffff"+
+            "\u0150\55\u0170\uffff\u0080\55\u0080\uffff\u092e\55\u10d2\uffff"+
+            "\u5200\55\u5900\uffff\u0200\55",
+            "",
             ""
     };
 
@@ -7960,115 +8015,115 @@ public class TextMarkerLexer extends Lexer {
             this.transition = DFA30_transition;
         }
         public String getDescription() {
-            return "1:1: Tokens : ( TRIE | CONTAINS | DECLARE | WORDLIST | WORDTABLE | AND | CONTEXTCOUNT | COUNT | TOTALCOUNT | CURRENTCOUNT | INLIST | ISINTAG | LAST | MOFN | NEAR | OR | PARTOF | PARTOFNEQ | POSITION | REGEXP | SCORE | VOTE | IF | FEATURE | PARSE | CREATE | GATHER | FILL | ATTRIBUTE | COLOR | DEL | LOG | MARK | MARKSCORE | MARKONCE | MARKFAST | MARKTABLE | MARKLAST | REPLACE | RETAINMARKUP | RETAINTYPE | FILTERMARKUP | FILTERTYPE | CALL | EXEC | CONFIGURE | ASSIGN | SETFEATURE | GETFEATURE | UNMARK | UNMARKALL | TRANSFER | EXPAND | BEFORE | AFTER | IS | STARTSWITH | ENDSWITH | NOT | ADD | REMOVE | REMOVEDUPLICATE | MERGE | GET | GETLIST | SIZE | MATCHEDTEXT | REMOVESTRING | CLEAR | THEN | BasicAnnotationType | LogLevel | OldColor | PackageString | ScriptString | EngineString | BlockString | AutomataBlockString | TypeString | IntString | DoubleString | StringString | BooleanString | TypeSystemString | SymbolString | CONDITION | ACTION | BOOLEANLIST | INTLIST | DOUBLELIST | STRINGLIST | TYPELIST | EXP | LOGN | SIN | COS | TAN | XOR | TRUE | FALSE | HexLiteral | DecimalLiteral | OctalLiteral | FloatingPointLiteral | CharacterLiteral | StringLiteral | RessourceLiteral | Identifier | LPAREN | RPAREN | LBRACK | RBRACK | LCURLY | RCURLY | CIRCUMFLEX | AT | DOT | COLON | COMMA | SEMI | PLUS | MINUS | STAR | SLASH | VBAR | AMPER | LESS | GREATER | ASSIGN_EQUAL | PERCENT | QUESTION | EQUAL | NOTEQUAL | ALT_NOTEQUAL | LESSEQUAL | GREATEREQUAL | WS | COMMENT | LINE_COMMENT );";
+            return "1:1: Tokens : ( TRIE | CONTAINS | DECLARE | WORDLIST | WORDTABLE | AND | CONTEXTCOUNT | COUNT | TOTALCOUNT | CURRENTCOUNT | INLIST | ISINTAG | LAST | MOFN | NEAR | OR | PARTOF | PARTOFNEQ | POSITION | REGEXP | SCORE | VOTE | IF | FEATURE | PARSE | CREATE | GATHER | FILL | ATTRIBUTE | COLOR | DEL | LOG | MARK | MARKSCORE | MARKONCE | MARKFAST | MARKTABLE | MARKLAST | REPLACE | RETAINMARKUP | RETAINTYPE | FILTERMARKUP | FILTERTYPE | CALL | EXEC | CONFIGURE | ASSIGN | SETFEATURE | GETFEATURE | UNMARK | UNMARKALL | TRANSFER | EXPAND | DYNAMICANCHORING | BEFORE | AFTER | IS | STARTSWITH | ENDSWITH | NOT | ADD | REMOVE | REMOVEDUPLICATE | MERGE | GET | GETLIST | SIZE | MATCHEDTEXT | REMOVESTRING | CLEAR | THEN | BasicAnnotationType | LogLevel | OldColor | PackageString | ScriptString | EngineString | BlockString | AutomataBlockString | TypeString | IntString | DoubleString | StringString | BooleanString | TypeSystemString | SymbolString | CONDITION | ACTION | BOOLEANLIST | INTLIST | DOUBLELIST | STRINGLIST | TYPELIST | EXP | LOGN | SIN | COS | TAN | XOR | TRUE | FALSE | HexLiteral | DecimalLiteral | OctalLiteral | FloatingPointLiteral | CharacterLiteral | StringLiteral | RessourceLiteral | Identifier | LPAREN | RPAREN | LBRACK | RBRACK | LCURLY | RCURLY | CIRCUMFLEX | AT | DOT | COLON | COMMA | SEMI | PLUS | MINUS | STAR | SLASH | VBAR | AMPER | LESS | GREATER | ASSIGN_EQUAL | PERCENT | QUESTION | EQUAL | NOTEQUAL | ALT_NOTEQUAL | LESSEQUAL | GREATEREQUAL | WS | COMMENT | LINE_COMMENT );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             IntStream input = _input;
         	int _s = s;
             switch ( s ) {
                     case 0 : 
-                        int LA30_280 = input.LA(1);
+                        int LA30_636 = input.LA(1);
 
                         s = -1;
-                        if ( ((LA30_280 >= '0' && LA30_280 <= '7')) ) {s = 389;}
+                        if ( (LA30_636=='\'') ) {s = 283;}
 
-                        else if ( (LA30_280=='\'') ) {s = 281;}
-
-                        else if ( ((LA30_280 >= '\u0000' && LA30_280 <= '&')||(LA30_280 >= '(' && LA30_280 <= '/')||(LA30_280 >= '8' && LA30_280 <= '\uFFFF')) ) {s = 161;}
+                        else if ( ((LA30_636 >= '\u0000' && LA30_636 <= '&')||(LA30_636 >= '(' && LA30_636 <= '\uFFFF')) ) {s = 162;}
 
                         if ( s>=0 ) return s;
                         break;
 
                     case 1 : 
-                        int LA30_277 = input.LA(1);
+                        int LA30_281 = input.LA(1);
 
                         s = -1;
-                        if ( (LA30_277=='\'') ) {s = 281;}
+                        if ( ((LA30_281 >= '0' && LA30_281 <= '7')) ) {s = 391;}
 
-                        else if ( ((LA30_277 >= '\u0000' && LA30_277 <= '&')||(LA30_277 >= '(' && LA30_277 <= '\uFFFF')) ) {s = 161;}
+                        else if ( (LA30_281=='\'') ) {s = 283;}
+
+                        else if ( ((LA30_281 >= '\u0000' && LA30_281 <= '&')||(LA30_281 >= '(' && LA30_281 <= '/')||(LA30_281 >= '8' && LA30_281 <= '\uFFFF')) ) {s = 162;}
 
                         if ( s>=0 ) return s;
                         break;
 
                     case 2 : 
-                        int LA30_43 = input.LA(1);
+                        int LA30_161 = input.LA(1);
 
                         s = -1;
-                        if ( (LA30_43=='\\') ) {s = 159;}
+                        if ( (LA30_161=='\'') ) {s = 283;}
 
-                        else if ( ((LA30_43 >= '\u0000' && LA30_43 <= '&')||(LA30_43 >= '(' && LA30_43 <= '[')||(LA30_43 >= ']' && LA30_43 <= '\uFFFF')) ) {s = 160;}
-
-                        else if ( (LA30_43=='\'') ) {s = 161;}
+                        else if ( ((LA30_161 >= '\u0000' && LA30_161 <= '&')||(LA30_161 >= '(' && LA30_161 <= '\uFFFF')) ) {s = 162;}
 
                         if ( s>=0 ) return s;
                         break;
 
                     case 3 : 
-                        int LA30_279 = input.LA(1);
+                        int LA30_493 = input.LA(1);
 
                         s = -1;
-                        if ( ((LA30_279 >= '0' && LA30_279 <= '7')) ) {s = 388;}
+                        if ( (LA30_493=='\'') ) {s = 283;}
 
-                        else if ( (LA30_279=='\'') ) {s = 281;}
-
-                        else if ( ((LA30_279 >= '\u0000' && LA30_279 <= '&')||(LA30_279 >= '(' && LA30_279 <= '/')||(LA30_279 >= '8' && LA30_279 <= '\uFFFF')) ) {s = 161;}
+                        else if ( ((LA30_493 >= '\u0000' && LA30_493 <= '&')||(LA30_493 >= '(' && LA30_493 <= '\uFFFF')) ) {s = 162;}
 
                         if ( s>=0 ) return s;
                         break;
 
                     case 4 : 
-                        int LA30_388 = input.LA(1);
+                        int LA30_392 = input.LA(1);
 
                         s = -1;
-                        if ( ((LA30_388 >= '0' && LA30_388 <= '7')) ) {s = 489;}
+                        if ( (LA30_392=='\'') ) {s = 283;}
 
-                        else if ( (LA30_388=='\'') ) {s = 281;}
-
-                        else if ( ((LA30_388 >= '\u0000' && LA30_388 <= '&')||(LA30_388 >= '(' && LA30_388 <= '/')||(LA30_388 >= '8' && LA30_388 <= '\uFFFF')) ) {s = 161;}
+                        else if ( ((LA30_392 >= '\u0000' && LA30_392 <= '&')||(LA30_392 >= '(' && LA30_392 <= '\uFFFF')) ) {s = 162;}
 
                         if ( s>=0 ) return s;
                         break;
 
                     case 5 : 
-                        int LA30_160 = input.LA(1);
+                        int LA30_43 = input.LA(1);
 
                         s = -1;
-                        if ( (LA30_160=='\'') ) {s = 281;}
+                        if ( (LA30_43=='\\') ) {s = 160;}
 
-                        else if ( ((LA30_160 >= '\u0000' && LA30_160 <= '&')||(LA30_160 >= '(' && LA30_160 <= '\uFFFF')) ) {s = 161;}
+                        else if ( ((LA30_43 >= '\u0000' && LA30_43 <= '&')||(LA30_43 >= '(' && LA30_43 <= '[')||(LA30_43 >= ']' && LA30_43 <= '\uFFFF')) ) {s = 161;}
+
+                        else if ( (LA30_43=='\'') ) {s = 162;}
 
                         if ( s>=0 ) return s;
                         break;
 
                     case 6 : 
-                        int LA30_630 = input.LA(1);
+                        int LA30_282 = input.LA(1);
 
                         s = -1;
-                        if ( (LA30_630=='\'') ) {s = 281;}
+                        if ( ((LA30_282 >= '0' && LA30_282 <= '7')) ) {s = 392;}
 
-                        else if ( ((LA30_630 >= '\u0000' && LA30_630 <= '&')||(LA30_630 >= '(' && LA30_630 <= '\uFFFF')) ) {s = 161;}
+                        else if ( (LA30_282=='\'') ) {s = 283;}
+
+                        else if ( ((LA30_282 >= '\u0000' && LA30_282 <= '&')||(LA30_282 >= '(' && LA30_282 <= '/')||(LA30_282 >= '8' && LA30_282 <= '\uFFFF')) ) {s = 162;}
 
                         if ( s>=0 ) return s;
                         break;
 
                     case 7 : 
-                        int LA30_489 = input.LA(1);
+                        int LA30_391 = input.LA(1);
 
                         s = -1;
-                        if ( (LA30_489=='\'') ) {s = 281;}
+                        if ( ((LA30_391 >= '0' && LA30_391 <= '7')) ) {s = 493;}
 
-                        else if ( ((LA30_489 >= '\u0000' && LA30_489 <= '&')||(LA30_489 >= '(' && LA30_489 <= '\uFFFF')) ) {s = 161;}
+                        else if ( (LA30_391=='\'') ) {s = 283;}
+
+                        else if ( ((LA30_391 >= '\u0000' && LA30_391 <= '&')||(LA30_391 >= '(' && LA30_391 <= '/')||(LA30_391 >= '8' && LA30_391 <= '\uFFFF')) ) {s = 162;}
 
                         if ( s>=0 ) return s;
                         break;
 
                     case 8 : 
-                        int LA30_389 = input.LA(1);
+                        int LA30_279 = input.LA(1);
 
                         s = -1;
-                        if ( (LA30_389=='\'') ) {s = 281;}
+                        if ( (LA30_279=='\'') ) {s = 283;}
 
-                        else if ( ((LA30_389 >= '\u0000' && LA30_389 <= '&')||(LA30_389 >= '(' && LA30_389 <= '\uFFFF')) ) {s = 161;}
+                        else if ( ((LA30_279 >= '\u0000' && LA30_279 <= '&')||(LA30_279 >= '(' && LA30_279 <= '\uFFFF')) ) {s = 162;}
 
                         if ( s>=0 ) return s;
                         break;
