@@ -1126,6 +1126,7 @@ action returns [TextMarkerAction result = null]
 	| a = actionClear
 	| a = actionExpand
 	| a = actionConfigure
+	| a = actionDynamicAnchoring
 	| (a = externalAction)=> a = externalAction
 	| a = variableAction
 	) {result = a;}
@@ -1478,6 +1479,18 @@ actionGetFeature returns [TextMarkerAction action = null]
     {action = ActionFactory.createAction(name, f, v);}
     COMMA v = variable 
     {action = ActionFactory.createAction(name, f, v);}
+    RPAREN
+    ;
+
+//unknown
+actionDynamicAnchoring returns [TextMarkerAction action = null]
+    :
+    name = DYNAMICANCHORING LPAREN active = booleanExpression 
+     {action = ActionFactory.createAction(name, active);}
+    (COMMA penalty = numberExpression 
+    {action = ActionFactory.createAction(name, active, penalty);}
+    (COMMA factor = numberExpression)?)? 
+    {action = ActionFactory.createAction(name, active, penalty, factor);}
     RPAREN
     ;
 
