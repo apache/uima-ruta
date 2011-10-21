@@ -30,7 +30,7 @@ tokens {
  * under the License.
 */
 
-	package org.apache.uima.textmarkeride.core.parser;
+	package org.apache.uima.textmarker.parser;
 }
 
 @lexer::members {
@@ -222,6 +222,10 @@ EXEC
 	:	'EXEC'
 	;
 
+CONFIGURE
+	:	'CONFIGURE'
+	;
+
 ASSIGN
 	:	'ASSIGN'
 	;
@@ -249,6 +253,10 @@ TRANSFER
 
 EXPAND 	
 	:	'EXPAND'	 
+	;
+
+DYNAMICANCHORING 	
+	:	'DYNAMICANCHORING'	 
 	;
 
 BEFORE
