@@ -24,12 +24,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.Type;
-import org.apache.uima.cas.TypeSystem;
+import org.apache.uima.jcas.cas.TOP;
+import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
 import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
 import org.apache.uima.textmarker.expression.list.ListExpression;
@@ -46,6 +50,8 @@ import org.apache.uima.textmarker.resource.TextMarkerWordList;
 import org.apache.uima.textmarker.resource.TreeWordList;
 
 public class TextMarkerEnvironment {
+
+  private final Object annotationTypeDummy = new Object();
 
   private Map<String, Type> types;
 
@@ -71,10 +77,9 @@ public class TextMarkerEnvironment {
 
   private CAS cas;
 
-  public TextMarkerEnvironment(CAS cas, TextMarkerBlock owner) {
+  public TextMarkerEnvironment(TextMarkerBlock owner) {
     super();
     this.owner = owner;
-    this.cas = cas;
     types = new HashMap<String, Type>();
     namespaces = new HashMap<String, String>();
     wordLists = new HashMap<String, TextMarkerWordList>();
@@ -104,6 +109,26 @@ public class TextMarkerEnvironment {
     availableListTypes.put("STRINGLIST", String.class);
     availableListTypes.put("TYPELIST", Type.class);
     resourcePaths = getResourcePaths();
+  }
+
+  public void initializeTypes(CAS cas) {
+    this.cas = cas;
+    Type topType = null;
+    try {
+      topType = cas.getJCas().getCasType(TOP.type);
+      if (topType != null) {
+        List<Type> list = cas.getTypeSystem().getProperlySubsumedTypes(topType);
+        for (Type type : list) {
+          addType(type);
+        }
+      }
+      Type documentType = cas.getJCas().getCasType(DocumentAnnotation.type);
+      addType("Document", documentType);
+      Type annotationType = cas.getJCas().getCasType(org.apache.uima.jcas.tcas.Annotation.type);
+      addType("Annotation", annotationType);
+    } catch (CASException e) {
+    }
+
   }
 
   public String[] getResourcePaths() {
@@ -151,15 +176,6 @@ public class TextMarkerEnvironment {
       }
     }
     return type;
-  }
-
-  public void addType(String string) {
-    TypeSystem ts = cas.getTypeSystem();
-    string = expand(string);
-    Type type = ts.getType(string);
-    if (type != null) {
-      types.put(string, type);
-    }
   }
 
   public void addType(String string, Type type) {
@@ -233,7 +249,11 @@ public class TextMarkerEnvironment {
     } else if (Boolean.class.equals(type)) {
       return false;
     } else if (Type.class.equals(type)) {
-      return cas.getAnnotationType();
+      if (cas == null) {
+        return annotationTypeDummy;
+      } else {
+        return cas.getAnnotationType();
+      }
     } else if (List.class.equals(type)) {
       return new ArrayList<Object>();
     }
@@ -292,7 +312,16 @@ public class TextMarkerEnvironment {
   }
 
   public <T> T getVariableValue(String name, Class<T> type) {
+    boolean containsKey = variableValues.containsKey(name);
     Object result = variableValues.get(name);
+    if (containsKey && result == null) {
+      // TODO find the problem with the null values!
+      // this might now work for word lists in another env.
+      return type.cast(getInitialValue(type));
+    }
+    if (result == annotationTypeDummy) {
+      return type.cast(cas.getAnnotationType());
+    }
     if (result != null) {
       return type.cast(result);
     } else if (owner.getParent() != null) {
@@ -353,6 +382,19 @@ public class TextMarkerEnvironment {
       return e.getList();
     }
     return null;
+  }
+
+  public void reset(CAS cas) {
+    this.cas = cas;
+    Set<Entry<String, Object>> entrySet = variableValues.entrySet();
+    for (Entry<String, Object> entry : entrySet) {
+      String key = entry.getKey();
+      Object initialValue = getInitialValue(variableTypes.get(key));
+      if (initialValue != null) {
+        // not for word lists
+        entry.setValue(initialValue);
+      }
+    }
   }
 
 }

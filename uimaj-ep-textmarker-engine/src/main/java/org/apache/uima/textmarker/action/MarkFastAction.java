@@ -71,19 +71,6 @@ public class MarkFastAction extends AbstractMarkAction {
         }
       }
     }
-
-    // if(list.contains(matchedAnnotation.getCoveredText(), ignore, 0)) {
-    // createAnnotation(match, stream, matchedAnnotation);
-    // } else {
-    // List<TextMarkerBasic> annotationsInWindow =
-    // stream.getBasicAnnotationsInWindow(matchedAnnotation,
-    // TextMarkerBasic.class);
-    // for (TextMarkerBasic textMarkerBasic : annotationsInWindow) {
-    // if(list.contains(textMarkerBasic.getCoveredText(), ignore, 0)) {
-    // createAnnotation(match, stream, textMarkerBasic);
-    // }
-    // }
-    // }
   }
 
   public WordListExpression getList() {

@@ -15,10 +15,11 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.expression.bool;
 
+import org.apache.uima.cas.Type;
 import org.apache.uima.textmarker.TextMarkerStatement;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
 
@@ -39,8 +40,10 @@ public class BooleanTypeExpression extends BooleanExpression {
 
   @Override
   public boolean getBooleanValue(TextMarkerStatement parent) {
-    String first = getFristExpression().getType(parent).getName();
-    String second = getSecondExpression().getType(parent).getName();
+    Type type1 = getFristExpression().getType(parent);
+    String first = type1.getName();
+    Type type2 = getSecondExpression().getType(parent);
+    String second = type2.getName();
     return eval(first, getOperator(), second);
   }
 

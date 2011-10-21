@@ -48,10 +48,6 @@ import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.RecognizerSharedState;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.TokenStream;
-import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.CASException;
-import org.apache.uima.cas.Type;
-import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 
 import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
@@ -176,14 +172,10 @@ public void emitErrorMessage(String msg) {
     		return null;
     	}
 	
-	private CAS cas;
 	private TypeSystemDescription localTSD;
 	private String[] resourcePaths;
 	
-	public void setCAS(CAS cas) {
-		this.cas = cas;
-	}
-	
+
 	public void setResourcePaths(String[] resourcePaths) {
 		this.resourcePaths = resourcePaths;
 	}
@@ -211,17 +203,8 @@ List<TextMarkerStatement> stmts = new ArrayList<TextMarkerStatement>();
 	:
 	p = packageDeclaration	
 	{
-	rootBlock = factory.createRootScriptBlock(moduleName, p, cas, localTSD);
-       	
-        try {
-        	Type documentType = cas.getJCas().getCasType(DocumentAnnotation.type);
-        	rootBlock.getEnvironment().addType("Document", documentType);
-        	Type annotationType = cas.getJCas().getCasType(org.apache.uima.jcas.tcas.Annotation.type);
-        	rootBlock.getEnvironment().addType("Annotation", annotationType);
-        	rootBlock.getEnvironment().setResourcePaths(resourcePaths);
-        	} catch (CASException e) {
-        		e.printStackTrace();
-       	}
+	rootBlock = factory.createRootScriptBlock(moduleName, p, localTSD);
+        rootBlock.getEnvironment().setResourcePaths(resourcePaths);
 	rootBlock.setElements(stmts);
 	module = new TextMarkerModule(rootBlock);
 	rootBlock.setScript(module);
@@ -412,7 +395,7 @@ level--;
 	LPAREN
 	id = Identifier 
 	RPAREN
-	{block = factory.createScriptBlock(id, re, body, $blockDeclaration[level - 1]::env, cas);}
+	{block = factory.createScriptBlock(id, re, body, $blockDeclaration[level - 1]::env);}
 	{$blockDeclaration::env = block;
 	container = new RuleElementIsolator();}
 	re1 = ruleElementWithCA[container]
@@ -454,7 +437,7 @@ level--;
 	LPAREN
 	id = Identifier 
 	RPAREN
-	{block = factory.createAutomataBlock(id, re, body, $blockDeclaration[level - 1]::env, cas);}
+	{block = factory.createAutomataBlock(id, re, body, $blockDeclaration[level - 1]::env);}
 	{$blockDeclaration::env = block;
 	container = new RuleElementIsolator();}
 	re1 = ruleElementWithCA[container] {re = re1;}

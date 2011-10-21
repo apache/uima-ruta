@@ -23,11 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.antlr.runtime.Token;
-import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.CASException;
-import org.apache.uima.cas.CASRuntimeException;
-import org.apache.uima.cas.Type;
-import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
 import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
@@ -63,17 +58,17 @@ public class TextMarkerScriptFactory {
   }
 
   public TextMarkerScriptBlock createScriptBlock(Token id, TextMarkerRuleElement ruleElement,
-          List<TextMarkerStatement> body, TextMarkerBlock parent, CAS cas) {
+          List<TextMarkerStatement> body, TextMarkerBlock parent) {
     String text = id == null ? "root" : id.getText();
     String defaultNamespace = parent.getNamespace();
     if (id != null) {
       defaultNamespace = defaultNamespace + "." + text;
     }
-    return createScriptBlock(text, ruleElement, body, parent, defaultNamespace, cas);
+    return createScriptBlock(text, ruleElement, body, parent, defaultNamespace);
   }
 
   public TextMarkerScriptBlock createScriptBlock(String text, TextMarkerRuleElement ruleElement,
-          List<TextMarkerStatement> body, TextMarkerBlock parent, String defaultNamespace, CAS cas) {
+          List<TextMarkerStatement> body, TextMarkerBlock parent, String defaultNamespace) {
     TextMarkerRule rule = null;
     if (ruleElement != null) {
       rule = createRule(ruleElement, parent);
@@ -86,34 +81,17 @@ public class TextMarkerScriptFactory {
         }
       }
     }
-    return new TextMarkerScriptBlock(text, rule, elements, parent, defaultNamespace, cas);
+    return new TextMarkerScriptBlock(text, rule, elements, parent, defaultNamespace);
   }
 
-  public TextMarkerScriptBlock createRootScriptBlock(String module, String pack, CAS cas,
+  public TextMarkerScriptBlock createRootScriptBlock(String module, String pack,
           TypeSystemDescription localTSD) {
     String defaultNamespace = pack + "." + module;
-    TextMarkerScriptBlock result = createScriptBlock(module, null, null, null, defaultNamespace,
-            cas);
-    TextMarkerEnvironment environment = result.getEnvironment();
-    try {
-      Type topType = cas.getJCas().getCasType(TOP.type);
-      List<Type> list = cas.getTypeSystem().getProperlySubsumedTypes(topType);
-      for (Type type : list) {
-        if (localTSD == null || localTSD.getType(type.getName()) != null) {
-          environment.addType(type);
-        }
-      }
-    } catch (CASRuntimeException e) {
-      e.printStackTrace();
-    } catch (CASException e) {
-      e.printStackTrace();
-    }
-
+    TextMarkerScriptBlock result = createScriptBlock(module, null, null, null, defaultNamespace);
     List<RuleElement> ruleElements = new ArrayList<RuleElement>();
-
     RuleElementIsolator container = new RuleElementIsolator();
-    ruleElements.add(createRuleElement(new SimpleTypeExpression(cas.getDocumentAnnotation()
-            .getType()), null, null, null, container, result));
+    ruleElements.add(createRuleElement(new SimpleTypeExpression("uima.tcas.DocumentAnnotation"),
+            null, null, null, container, result));
     TextMarkerRule createRule = createRule(ruleElements, result);
     container.setContainer(createRule);
 
@@ -206,8 +184,8 @@ public class TextMarkerScriptFactory {
   }
 
   public TextMarkerBlock createAutomataBlock(Token id, TextMarkerRuleElement re,
-          List<TextMarkerStatement> body, TextMarkerBlock env, CAS cas) {
-    return createScriptBlock(id, re, body, env, cas);
+          List<TextMarkerStatement> body, TextMarkerBlock env) {
+    return createScriptBlock(id, re, body, env);
   }
 
 }

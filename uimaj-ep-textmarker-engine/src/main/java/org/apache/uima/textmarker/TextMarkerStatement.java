@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker;
 
@@ -23,19 +23,23 @@ import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public abstract class TextMarkerStatement extends TextMarkerElement {
 
-  private final TextMarkerBlock parent;
+  private TextMarkerBlock parent;
 
   public TextMarkerStatement(TextMarkerBlock parent) {
     super();
     this.parent = parent;
   }
 
+  public abstract ScriptApply apply(TextMarkerStream stream, InferenceCrowd crowd);
+
+  public abstract TextMarkerEnvironment getEnvironment();
+
   public TextMarkerBlock getParent() {
     return parent;
   }
 
-  public abstract ScriptApply apply(TextMarkerStream stream, InferenceCrowd crowd);
-
-  public abstract TextMarkerEnvironment getEnvironment();
+  public void setParent(TextMarkerBlock parent) {
+    this.parent = parent;
+  }
 
 }

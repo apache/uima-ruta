@@ -21,7 +21,6 @@ package org.apache.uima.textmarker.verbalize;
 
 import java.util.Iterator;
 
-import org.apache.uima.cas.Type;
 import org.apache.uima.textmarker.expression.TextMarkerExpression;
 import org.apache.uima.textmarker.expression.bool.BooleanExpression;
 import org.apache.uima.textmarker.expression.bool.BooleanNumberExpression;
@@ -240,12 +239,15 @@ public class ExpressionVerbalizer {
   public String verbalize(TypeExpression expression) {
     if (expression instanceof SimpleTypeExpression) {
       SimpleTypeExpression e = (SimpleTypeExpression) expression;
-      Type type = e.getType(null);
-      String shortName = type.getShortName();
-      if (shortName.equals("DocumentAnnotation")) {
-        shortName = "Document";
+      String type = e.getTypeString();
+      int indexOf = type.lastIndexOf(".");
+      if (indexOf != -1) {
+        type = type.substring(indexOf + 1, type.length());
       }
-      return shortName;
+      if (type.equals("DocumentAnnotation")) {
+        type = "Document";
+      }
+      return type;
     } else if (expression instanceof ReferenceTypeExpression) {
       ReferenceTypeExpression e = (ReferenceTypeExpression) expression;
       return e.getVar();

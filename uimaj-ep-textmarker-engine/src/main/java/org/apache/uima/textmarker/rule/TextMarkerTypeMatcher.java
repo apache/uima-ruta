@@ -57,7 +57,7 @@ public class TextMarkerTypeMatcher implements TextMarkerMatcher {
     for (Type type : types) {
       String name = type.getName();
       if ("uima.tcas.DocumentAnnotation".equals(name)
-              || "uima.tcas.DocumentAnnotation".equals(name)
+              || "org.apache.uima.textmarker.type.Document".equals(name)
               || (stream.getDocumentAnnotationType().getName().equals(name) && stream
                       .getFirstBasicOfAll().beginsWith(type))) {
         // TODO what about dynamic windowing?

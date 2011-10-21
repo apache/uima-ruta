@@ -22,14 +22,13 @@ package org.apache.uima.textmarker;
 import java.util.List;
 
 import org.antlr.runtime.Token;
-import org.apache.uima.cas.CAS;
 import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 
 public class TextMarkerAutomataFactory extends TextMarkerScriptFactory {
 
   public TextMarkerBlock createAutomataBlock(Token id, TextMarkerRuleElement re,
-          List<TextMarkerStatement> body, TextMarkerBlock env, CAS cas) {
-    return createScriptBlock(id, re, body, env, cas);
+          List<TextMarkerStatement> body, TextMarkerBlock env) {
+    return createScriptBlock(id, re, body, env);
   }
 
 }

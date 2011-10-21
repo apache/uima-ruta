@@ -53,6 +53,7 @@ import org.apache.uima.resource.metadata.ConfigurationParameter;
 import org.apache.uima.resource.metadata.ConfigurationParameterDeclarations;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.textmarker.FilterManager;
+import org.apache.uima.textmarker.TextMarkerBlock;
 import org.apache.uima.textmarker.TextMarkerModule;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.extensions.IEngineLoader;
@@ -117,6 +118,8 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
 
   public static final String DYNAMIC_ANCHORING = "dynamicAnchoring";
 
+  public static final String RELOAD_SCRIPT = "reloadScript";
+
   private String[] seeders;
 
   private String useBasics;
@@ -128,8 +131,6 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
   private Boolean createProfilingInfo;
 
   private Boolean createStatisticInfo;
-
-  private String styleMapLocation;
 
   private Boolean withMatches;
 
@@ -171,6 +172,10 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
 
   private Boolean dynamicAnchoring;
 
+  private Boolean reloadScript;
+
+  private boolean initialized = false;
+
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
@@ -200,6 +205,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     defaultFilteredTypes = (String[]) aContext.getConfigParameterValue(DEFAULT_FILTERED_TYPES);
     defaultFilteredMarkups = (String[]) aContext.getConfigParameterValue(DEFAULT_FILTERED_MARKUPS);
     dynamicAnchoring = (Boolean) aContext.getConfigParameterValue(DYNAMIC_ANCHORING);
+    reloadScript = (Boolean) aContext.getConfigParameterValue(RELOAD_SCRIPT);
 
     removeBasics = removeBasics == null ? false : removeBasics;
     createDebugInfo = createDebugInfo == null ? false : createDebugInfo;
@@ -213,6 +219,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     defaultFilteredMarkups = defaultFilteredMarkups == null ? new String[0]
             : defaultFilteredMarkups;
     dynamicAnchoring = dynamicAnchoring == null ? false : dynamicAnchoring;
+    reloadScript = reloadScript == null ? false : reloadScript;
 
     this.context = aContext;
 
@@ -221,10 +228,6 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     verbalizer = new TextMarkerVerbalizer();
 
     localTSDMap = new HashMap<String, TypeSystemDescription>();
-  }
-
-  @Override
-  public void process(JCas cas) throws AnalysisEngineProcessException {
 
     if (!factory.isInitialized()) {
       initializeExtensionWithClassPath();
@@ -232,8 +235,28 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     if (!engineLoader.isInitialized()) {
       initializeEngineLoaderWithClassPath();
     }
-    initializeScript(cas.getCas());
-    TextMarkerStream stream = initializeStream(cas.getCas());
+    if (!reloadScript) {
+      try {
+        initializeScript();
+      } catch (AnalysisEngineProcessException e) {
+        throw new ResourceInitializationException(e);
+      }
+    }
+  }
+
+  @Override
+  public void process(JCas jcas) throws AnalysisEngineProcessException {
+    CAS cas = jcas.getCas();
+    if (reloadScript) {
+      initializeScript();
+    } else {
+      resetEnvironments(cas);
+    }
+    if (!initialized || reloadScript) {
+      initializeTypes(script, cas);
+      initialized = true;
+    }
+    TextMarkerStream stream = initializeStream(cas);
     stream.setDynamicAnchoring(dynamicAnchoring);
     InferenceCrowd crowd = initializeCrowd();
     try {
@@ -247,7 +270,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     if (removeBasics) {
       List<AnnotationFS> toRemove = new ArrayList<AnnotationFS>();
       Type type = cas.getTypeSystem().getType(BASIC_TYPE);
-      FSIterator<AnnotationFS> iterator = cas.getCas().getAnnotationIndex(type).iterator();
+      FSIterator<AnnotationFS> iterator = cas.getAnnotationIndex(type).iterator();
       while (iterator.isValid()) {
         AnnotationFS fs = iterator.get();
         toRemove.add(fs);
@@ -256,6 +279,43 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
       for (AnnotationFS annotationFS : toRemove) {
         cas.removeFsFromIndexes(annotationFS);
       }
+    }
+  }
+
+  private void resetEnvironments(CAS cas) {
+    resetEnvironment(script, cas);
+    Collection<TextMarkerModule> scripts = script.getScripts().values();
+    for (TextMarkerModule module : scripts) {
+      resetEnvironment(module, cas);
+    }
+  }
+
+  private void resetEnvironment(TextMarkerModule module, CAS cas) {
+    TextMarkerBlock block = module.getBlock(null);
+    block.getEnvironment().reset(cas);
+    Collection<TextMarkerBlock> blocks = module.getBlocks().values();
+    for (TextMarkerBlock each : blocks) {
+      each.getEnvironment().reset(cas);
+    }
+  }
+
+  private void initializeTypes(TextMarkerModule script, CAS cas) {
+    // TODO find a better solution for telling everyone about the types!
+    TextMarkerBlock mainRootBlock = script.getBlock(null);
+    mainRootBlock.getEnvironment().initializeTypes(cas);
+    Collection<TextMarkerModule> values = script.getScripts().values();
+    for (TextMarkerModule eachModule : values) {
+      relinkEnvironments(eachModule, mainRootBlock);
+      // initializeTypes(eachModule, cas);
+    }
+  }
+
+  private void relinkEnvironments(TextMarkerModule script, TextMarkerBlock mainRootBlock) {
+    TextMarkerBlock block = script.getBlock(null);
+    block.setParent(mainRootBlock);
+    Collection<TextMarkerModule> innerScripts = script.getScripts().values();
+    for (TextMarkerModule textMarkerModule : innerScripts) {
+      relinkEnvironments(textMarkerModule, mainRootBlock);
     }
   }
 
@@ -383,14 +443,17 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     return stream;
   }
 
-  private void initializeScript(CAS cas) throws AnalysisEngineProcessException {
+  private void initializeScript() throws AnalysisEngineProcessException {
     String scriptLocation = locate(mainScript, scriptPaths, ".tm");
+    if (scriptLocation == null) {
+      // if someone loads an empty analysis engine and then reconfigures it
+      return;
+    }
     try {
-      script = loadScript(scriptLocation, cas, null);
+      script = loadScript(scriptLocation, null);
     } catch (Exception e) {
       throw new AnalysisEngineProcessException(e);
     }
-
     Map<String, TextMarkerModule> additionalScripts = new HashMap<String, TextMarkerModule>();
     Map<String, AnalysisEngine> additionalEngines = new HashMap<String, AnalysisEngine>();
 
@@ -409,10 +472,9 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
 
     if (additionalScriptLocations != null) {
       for (String add : additionalScriptLocations) {
-        recursiveLoadScript(add, additionalScripts, additionalEngines, cas);
+        recursiveLoadScript(add, additionalScripts, additionalEngines);
       }
     }
-
     for (TextMarkerModule each : additionalScripts.values()) {
       each.setScriptDependencies(additionalScripts);
     }
@@ -490,16 +552,15 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
   }
 
   private void recursiveLoadScript(String toLoad, Map<String, TextMarkerModule> additionalScripts,
-          Map<String, AnalysisEngine> additionalEngines, CAS cas)
-          throws AnalysisEngineProcessException {
+          Map<String, AnalysisEngine> additionalEngines) throws AnalysisEngineProcessException {
     String location = locate(toLoad, scriptPaths, ".tm");
     try {
       TypeSystemDescription localTSD = getLocalTSD(toLoad);
-      TextMarkerModule eachScript = loadScript(location, cas, localTSD);
+      TextMarkerModule eachScript = loadScript(location, localTSD);
       additionalScripts.put(toLoad, eachScript);
       for (String add : eachScript.getScripts().keySet()) {
         if (!additionalScripts.containsKey(add)) {
-          recursiveLoadScript(add, additionalScripts, additionalEngines, cas);
+          recursiveLoadScript(add, additionalScripts, additionalEngines);
         }
       }
       Set<String> engineKeySet = eachScript.getEngines().keySet();
@@ -549,14 +610,13 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     return result;
   }
 
-  private TextMarkerModule loadScript(String scriptLocation, CAS cas, TypeSystemDescription localTSD)
+  private TextMarkerModule loadScript(String scriptLocation, TypeSystemDescription localTSD)
           throws IOException, RecognitionException {
     File scriptFile = new File(scriptLocation);
     CharStream st = new ANTLRFileStream(scriptLocation, scriptEncoding);
     TextMarkerLexer lexer = new TextMarkerLexer(st);
     CommonTokenStream tokens = new CommonTokenStream(lexer);
     TextMarkerParser parser = new TextMarkerParser(tokens);
-    parser.setCAS(cas);
     parser.setLocalTSD(localTSD);
     parser.setExternalFactory(factory);
     parser.setResourcePaths(resourcePaths);

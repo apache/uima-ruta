@@ -21,7 +21,6 @@ package org.apache.uima.textmarker;
 
 import java.util.List;
 
-import org.apache.uima.cas.CAS;
 import org.apache.uima.textmarker.rule.TextMarkerRule;
 
 public abstract class TextMarkerBlock extends TextMarkerStatement {
@@ -39,12 +38,12 @@ public abstract class TextMarkerBlock extends TextMarkerStatement {
   private TextMarkerModule script;
 
   public TextMarkerBlock(String id, TextMarkerRule rule, List<TextMarkerStatement> elements,
-          TextMarkerBlock parent, String defaultNamespace, CAS cas) {
+          TextMarkerBlock parent, String defaultNamespace) {
     super(parent);
     this.id = id;
     this.rule = rule;
     this.elements = elements;
-    this.environment = new TextMarkerEnvironment(cas, this);
+    this.environment = new TextMarkerEnvironment(this);
     this.namespace = defaultNamespace;
   }
 
@@ -70,10 +69,15 @@ public abstract class TextMarkerBlock extends TextMarkerStatement {
   }
 
   public TextMarkerModule getScript() {
-    if (getParent() != null) {
+    if (script != null) {
+      return script;
+    } else if (getParent() != null) {
       return getParent().getScript();
     } else {
-      return script;
+      // may not happen!
+      assert (false);
+      return null;
+
     }
   }
 

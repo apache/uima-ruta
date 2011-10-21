@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.antlr.runtime.Token;
-import org.apache.uima.cas.Type;
 import org.apache.uima.textmarker.TextMarkerBlock;
 import org.apache.uima.textmarker.expression.bool.BooleanExpression;
 import org.apache.uima.textmarker.expression.bool.BooleanNumberExpression;
@@ -143,13 +142,7 @@ public class ExpressionFactory {
 
   public static TypeExpression createSimpleTypeExpression(Token typeToken, TextMarkerBlock parent) {
     String typeString = typeToken == null ? "uima.tcas.DocumentAnnotation" : typeToken.getText();
-    Type type = parent.getEnvironment().getType(typeString);
-    if (type == null) {
-      NullPointerException exception = new NullPointerException("Type " + typeString
-              + " is not defined in current type system");
-      throw exception;
-    }
-    return new SimpleTypeExpression(type);
+    return new SimpleTypeExpression(typeString);
   }
 
   public static TypeExpression createReferenceTypeExpression(Token varToken) {
@@ -158,8 +151,7 @@ public class ExpressionFactory {
   }
 
   public static TypeExpression createSimpleTypeExpression(String typeString, TextMarkerBlock parent) {
-    Type type = parent.getEnvironment().getType(typeString);
-    return new SimpleTypeExpression(type);
+    return new SimpleTypeExpression(typeString);
   }
 
   public static BooleanExpression createBooleanFunction(Token op, BooleanExpression e1,

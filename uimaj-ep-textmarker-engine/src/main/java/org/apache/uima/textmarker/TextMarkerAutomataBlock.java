@@ -21,7 +21,6 @@ package org.apache.uima.textmarker;
 
 import java.util.List;
 
-import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.rule.RuleApply;
@@ -33,9 +32,8 @@ import org.apache.uima.textmarker.visitor.InferenceCrowd;
 public class TextMarkerAutomataBlock extends TextMarkerBlock {
 
   public TextMarkerAutomataBlock(String id, TextMarkerRule rule,
-          List<TextMarkerStatement> elements, TextMarkerBlock parent, String defaultNamespace,
-          CAS cas) {
-    super(id, rule, elements, parent, defaultNamespace, cas);
+          List<TextMarkerStatement> elements, TextMarkerBlock parent, String defaultNamespace) {
+    super(id, rule, elements, parent, defaultNamespace);
   }
 
   @Override

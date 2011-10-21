@@ -21,7 +21,6 @@ package org.apache.uima.textmarker;
 
 import java.util.List;
 
-import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.rule.RuleApply;
@@ -33,8 +32,8 @@ import org.apache.uima.textmarker.visitor.InferenceCrowd;
 public class TextMarkerScriptBlock extends TextMarkerBlock {
 
   public TextMarkerScriptBlock(String id, TextMarkerRule rule, List<TextMarkerStatement> elements,
-          TextMarkerBlock parent, String defaultNamespace, CAS cas) {
-    super(id, rule, elements, parent, defaultNamespace, cas);
+          TextMarkerBlock parent, String defaultNamespace) {
+    super(id, rule, elements, parent, defaultNamespace);
   }
 
   @Override
@@ -53,7 +52,7 @@ public class TextMarkerScriptBlock extends TextMarkerBlock {
           continue;
         }
         List<Type> types = ((TextMarkerRuleElement) rule.getRuleElements().get(0)).getMatcher()
-                .getTypes(getParent(), stream);
+                .getTypes(getParent() == null ? this : getParent(), stream);
         for (Type eachType : types) {
           TextMarkerStream window = stream.getWindowStream(each, eachType);
           for (TextMarkerStatement element : getElements()) {

@@ -24,26 +24,30 @@ import org.apache.uima.textmarker.TextMarkerStatement;
 
 public class SimpleTypeExpression extends TypeExpression {
 
-  private final Type type;
+  private final String typeString;
 
-  public SimpleTypeExpression(Type type) {
+  public SimpleTypeExpression(String typeString) {
     super();
-    this.type = type;
+    this.typeString = typeString;
   }
 
   @Override
   public Type getType(TextMarkerStatement parent) {
-    return type;
+    return parent.getEnvironment().getType(typeString);
   }
 
   @Override
   public String toString() {
-    return type.getShortName();
+    return typeString;
   }
 
   @Override
   public String getStringValue(TextMarkerStatement parent) {
-    return type.getName();
+    return typeString;
+  }
+
+  public String getTypeString() {
+    return typeString;
   }
 
 }
