@@ -19,11 +19,15 @@
 
 package org.apache.uima.textmarker.explain.apply;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.caseditor.editor.AbstractAnnotationDocumentListener;
 import org.apache.uima.caseditor.editor.AnnotationEditor;
 import org.apache.uima.caseditor.editor.ICasDocument;
+import org.apache.uima.caseditor.editor.ICasDocumentListener;
 import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
 import org.apache.uima.textmarker.explain.ExplainConstants;
 import org.apache.uima.textmarker.explain.tree.ExplainTree;
@@ -52,6 +56,8 @@ public class ApplyViewPage extends Page implements ISelectionListener {
   protected AnnotationEditor editor;
 
   protected ICasDocument document;
+
+  private ICasDocumentListener listener;
 
   public ApplyViewPage(AnnotationEditor editor) {
     super();
@@ -117,6 +123,41 @@ public class ApplyViewPage extends Page implements ISelectionListener {
     viewer.setInput(tree.getRoot());
     getSite().setSelectionProvider(viewer);
     getSite().getPage().addSelectionListener(this);
+
+    listener = new AbstractAnnotationDocumentListener() {
+
+      @Override
+      public void changed() {
+      }
+
+      @Override
+      public void viewChanged(String oldViewName, String newViewName) {
+      }
+
+      @Override
+      protected void addedAnnotation(Collection<AnnotationFS> annotations) {
+      }
+
+      @Override
+      protected void removedAnnotation(Collection<AnnotationFS> annotations) {
+      }
+
+      @Override
+      protected void updatedAnnotation(Collection<AnnotationFS> annotations) {
+      }
+
+      @Override
+      public void casDocumentChanged(ICasDocument oldDocument, ICasDocument newDocument) {
+        document.removeChangeListener(this);
+        document = newDocument;
+        document.addChangeListener(this);
+        ExplainTree tree = new ExplainTree(document.getCAS());
+        viewer.setInput(tree.getRoot());
+        viewer.refresh();
+      }
+
+    };
+    document.addChangeListener(listener);
     viewer.refresh();
   }
 
@@ -128,6 +169,7 @@ public class ApplyViewPage extends Page implements ISelectionListener {
   public void dispose() {
     super.dispose();
     getSite().getPage().removeSelectionListener(this);
+    document.removeChangeListener(listener);
     if (images != null) {
       for (Image each : images.values()) {
         each.dispose();
