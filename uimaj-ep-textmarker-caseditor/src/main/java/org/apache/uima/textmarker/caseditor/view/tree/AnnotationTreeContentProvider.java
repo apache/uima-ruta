@@ -25,26 +25,32 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.caseditor.editor.AbstractAnnotationDocumentListener;
 import org.apache.uima.caseditor.editor.AnnotationEditor;
 import org.apache.uima.caseditor.editor.ICasDocument;
+import org.apache.uima.caseditor.editor.ICasEditorInputListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Display;
 
 public class AnnotationTreeContentProvider extends AbstractAnnotationDocumentListener implements
-        ITreeContentProvider {
+        ITreeContentProvider, ICasEditorInputListener {
 
   private ICasDocument document;
 
   private final AnnotationTreeViewPage page;
 
+  private AnnotationEditor editor;
+
   public AnnotationTreeContentProvider(AnnotationEditor editor, AnnotationTreeViewPage page) {
     super();
+    this.editor = editor;
     this.document = editor.getDocument();
     this.page = page;
+    editor.addCasEditorInputListener(this);
   }
 
   @Override
   public void dispose() {
     document.removeChangeListener(this);
+    editor.removeCasEditorInputListener(this);
   }
 
   /*

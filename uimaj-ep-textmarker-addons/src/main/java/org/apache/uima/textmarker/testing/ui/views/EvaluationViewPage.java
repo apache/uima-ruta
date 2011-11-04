@@ -26,6 +26,7 @@ import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.caseditor.editor.AnnotationEditor;
 import org.apache.uima.caseditor.editor.ICasDocument;
 import org.apache.uima.caseditor.editor.ICasDocumentListener;
+import org.apache.uima.caseditor.editor.ICasEditorInputListener;
 import org.apache.uima.textmarker.caseditor.view.tree.AnnotationTreeViewDragListener;
 import org.apache.uima.textmarker.testing.ui.views.tree.TestEvaluationTree;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
@@ -43,7 +44,8 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 
-public class EvaluationViewPage extends Page implements ICasDocumentListener, ISelectionListener {
+public class EvaluationViewPage extends Page implements ICasDocumentListener, ISelectionListener,
+        ICasEditorInputListener {
 
   private CheckboxTreeViewer viewer;
 
@@ -97,7 +99,7 @@ public class EvaluationViewPage extends Page implements ICasDocumentListener, IS
     getSite().getPage().addSelectionListener(this);
 
     document.addChangeListener(this);
-
+    editor.addCasEditorInputListener(this);
     reloadTree();
   }
 
@@ -113,6 +115,7 @@ public class EvaluationViewPage extends Page implements ICasDocumentListener, IS
     super.dispose();
     getSite().getPage().removeSelectionListener(this);
     document.removeChangeListener(this);
+    editor.removeCasEditorInputListener(this);
     if (images != null) {
       for (Image each : images.values()) {
         each.dispose();
@@ -123,7 +126,6 @@ public class EvaluationViewPage extends Page implements ICasDocumentListener, IS
   @Override
   public void selectionChanged(IWorkbenchPart part, ISelection selection) {
     // TODO Auto-generated method stub
-
   }
 
   @Override
