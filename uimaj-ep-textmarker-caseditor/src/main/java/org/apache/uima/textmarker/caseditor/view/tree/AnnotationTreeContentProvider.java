@@ -29,6 +29,7 @@ import org.apache.uima.caseditor.editor.ICasEditorInputListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IEditorInput;
 
 public class AnnotationTreeContentProvider extends AbstractAnnotationDocumentListener implements
         ITreeContentProvider, ICasEditorInputListener {
@@ -131,8 +132,10 @@ public class AnnotationTreeContentProvider extends AbstractAnnotationDocumentLis
     changed();
   }
 
+
   @Override
-  public void casDocumentChanged(ICasDocument oldDocument, ICasDocument newDocument) {
+  public void casDocumentChanged(IEditorInput oldInput, ICasDocument oldDocument,
+          IEditorInput newInput, ICasDocument newDocument) {
     document.removeChangeListener(this);
     document = newDocument;
     document.addChangeListener(this);

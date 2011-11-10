@@ -39,6 +39,7 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.IPageSite;
@@ -170,7 +171,8 @@ public class EvaluationViewPage extends Page implements ICasDocumentListener, IS
   }
 
   @Override
-  public void casDocumentChanged(ICasDocument oldDocument, ICasDocument newDocument) {
+  public void casDocumentChanged(IEditorInput oldInput, ICasDocument oldDocument,
+          IEditorInput newInput, ICasDocument newDocument) {
     document.removeChangeListener(this);
     document = newDocument;
     document.addChangeListener(this);

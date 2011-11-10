@@ -38,6 +38,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.IPageSite;
@@ -158,13 +159,16 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
 
   }
 
+
   @Override
-  public void casDocumentChanged(ICasDocument oldDocument, ICasDocument newDocument) {
+  public void casDocumentChanged(IEditorInput oldInput, ICasDocument oldDocument,
+          IEditorInput newInput, ICasDocument newDocument) {
     editor.removeCasEditorInputListener(this);
     document = newDocument;
     editor.addCasEditorInputListener(this);
     ExplainTree tree = new ExplainTree(document.getCAS());
     viewer.setInput(tree.getRoot());
     viewer.refresh();
+    
   }
 }
