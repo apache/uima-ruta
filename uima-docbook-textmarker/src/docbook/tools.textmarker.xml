@@ -25,4 +25,227 @@ under the License.
 -->
 
 <chapter id="ugr.tools.tm">
+	<title>TextMarker User&apos;s Guide</title>
+	<titleabbrev>TextMarker User&apos;s Guide</titleabbrev>
+
+	<section id="ugr.tools.tm.introduction">
+		<title>TextMarker</title>
+		<para>The TextMarker system is a rule-based tool for information
+			extraction and text processing tasks. The comprehensible rule
+			language
+			can be easily extended and supports several scripting
+			functionalities.
+			TextMarker provides a DLTK-based IDE, an integration
+			and a build
+			process for UIMA components.
+		</para>
+		<section id="ugr.tools.tm.introduction.metaphor">
+			<title>Introduction</title>
+			<para>
+				In manual information extraction humans often apply a strategy
+				according to a highlighter metaphor: First relevant headlines are
+				considered and classified according to their content by coloring
+				them
+				with different highlighters. The paragraphs of the annotated
+				headlines
+				are then considered further. Relevant text fragments or
+				single words
+				in the context of that headline can then be colored. In
+				this way, a
+				top-down analysis and extraction strategy is implemented.
+				Necessary
+				additional information can then be added that either refers
+				to other
+				text segments or contains valuable domain specific
+				information.
+				Finally the colored text can be easily analyzed
+				concerning the
+				relevant information.
+
+				The TextMarker system (textmarker
+				is a common german word for a
+				highlighter) tries to imitate this
+				manual extraction method by
+				formalizing the appropriate actions using
+				matching rules: The rules
+				mark sequences of words, extract text
+				segments or modify the input
+				document depending on textual
+				features.The default input for the
+				TextMarker system is
+				semi-structured text, but it can also process
+				structured or free
+				text. Technically, HTML is often the input
+				format,
+				since most word
+				processing documents can be converted to HTML.
+				Additionally, the
+				TextMarker systems offers the possibility to
+				create
+				a modified output
+				document.
+			</para>
+		</section>
+		<section id="ugr.tools.tm.introduction.concepts">
+			<title>Core Concepts</title>
+			<para>
+				As a first step in the extraction process the TextMarker system uses
+				a
+				tokenizer (scanner) to tokenize the input document and to create a
+				stream of basic symbols. The types and valid annotations of the
+				possible tokens are predefined by a taxonomy of annotation types.
+				Annotations simply refer to a section of the input document and
+				assign a type or concept to the respective text fragment. The figure
+				on the right shows an excerpt of a basic annotation taxonomy: CW
+				describes all tokens, for example, that contains a single word
+				starting with a capital letter, MARKUP corresponds to HTML or XML
+				tags, and PM refers to all kinds of punctuations marks. Take a look
+				at [basic annotations|BasicAnnotationList] for a complete list of
+				initial annotations.
+
+
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata scale="100" format="PNG" fileref="&imgroot;symboltaxo.png" />
+						</imageobject>
+						<textobject>
+							<phrase>Part of a taxonomy for basic annotation types.</phrase>
+						</textobject>
+					</mediaobject>
+				</screenshot>
+
+				By using (and extending) the taxonomy, the knowledge engineer is
+				able
+				to choose the most adequate types and concepts when defining new
+				matching rules, i.e., TextMarker rules for matching a text fragment
+				given by a set of symbols to an annotation. If the capitalization of
+				a word, for example, is of no importance, then the annotation type W
+				that describes words of any kind can be used. The initial scanner
+				creates a set of basic annotations that may be used by the matching
+				rules of the TextMarker language. However, most information
+				extraction applications require domain specific concepts and
+				annotations. Therefore, the knowledge engineer is able to extend the
+				set of annotations, and to define new annotation types tuned to the
+				requirements of the given domain. These types can be flexibly
+				integrated in the taxonomy of annotation types.
+
+				One of the goals in
+				developing a new information extraction language
+				was
+				to maintain an
+				easily readable syntax while still providing a
+				scalable
+				expressiveness of the language. Basically, the TextMarker
+				language
+				contains expressions for the definition of new annotation
+				types and
+				for defining new matching rules. The rules are defined by a
+				list of
+				rule elements.
+				Each rule element contains at least a basic matching
+				condition referring
+				to text fragments or already specified
+				annotations. Additionally a
+				list of conditions and actions may be
+				specified for a rule element.
+				Whereas the conditions describe
+				necessary attributes of the matched
+				text fragment, the actions point
+				to operations and assignments on
+				the
+				current fragments. These actions
+				will then only be executed if all
+				basic conditions matched on a text
+				fragment or the annotation and the
+				related conditions are fulfilled.
+			</para>
+		</section>
+		<section id="ugr.tools.tm.introduction.examples">
+			<title>Examples</title>
+			<para>
+				The usage of the language and its readability can be demonstrated by
+				simple examples:
+
+				<programlisting>
+					CW{INLIST('animals.txt') -> MARK(Animal)};
+					Animal "and" Animal{-> MARK(Animalpair, 1, 2, 3)};
+        </programlisting>
+
+				The first rule looks at all capitalized words that are listed in an
+				external document animals.txt and creates a new annotation of the
+				type
+				animal using the boundaries of the matched word. The second rule
+				searches for an annotation of the type animal followed by the
+				literal
+				and and a second animal annotation. Then it will create a new
+				annotation animalpair covering the text segment that matched the
+				three
+				rule elements (the digit parameters refer to the number of
+				matched
+				rule element).
+
+				<programlisting>
+					Document{-> MARKFAST(Firstname, 'firstnames.txt')};
+					Firstname CW{-> MARK(Lastname)};
+					Paragraph{VOTE(Firstname, Lastname) -> LOG("Found more Firstnames than Lastnames")};
+      	</programlisting>  
+
+				In this example, the first rule annotates all words that occur in
+				the
+				external document firstnames.txt with the type firstname. The
+				second
+				rule creates a lastname annotation for all capitalized word
+				that
+				follow a firstname annotation. The last rule finally processes
+				all
+				paragraph} annotations. If the VOTE condition counts more
+				firstname
+				than lastname annotations, then the rule writes a log entry
+				with a
+				predefined message.
+
+
+				<programlisting>
+					ANY+{PARTOF(Paragraph), CONTAINS(Delete, 50, 100, true) -> MARK(Delete)};
+					Firstname{-> MARK(Delete,1 , 2)} Lastname;
+					Delete{-> DEL};
+				</programlisting>
+
+				Here, the first rule looks for sequences of any kind of tokens
+				except
+				markup and creates one annotation of the type delete for each
+				sequence, if the tokens are part of a paragraph annotation and
+				contains together already more than 50% of delete annoations. The +
+				signs indicate this greedy processing. The second rule annotates
+				first
+				names followed by last names with the type delete and the third
+				rule
+				simply deletes all text segments that are associated with that
+				delete
+				annotation.
+
+			</para>
+		</section>
+		<section id="ugr.tools.tm.introduction.features">
+			<title>Special Features</title>
+			<para>
+				The TextMarker language features some special characteristics
+				that are
+				usually not found in other rule-based information extraction
+				systems
+				or even shift it towards scripting languages. The possibility
+				of
+				creating new annotation types and integrating them into the
+				taxonomy
+				facilitates an even more modular development of information
+				extraction systems.
+
+				Read more about robust extraction using
+				filtering, complex control
+				structures and heuristic extraction using
+				scoring rules.
+			</para>
+		</section>
+	</section>
 </chapter>
