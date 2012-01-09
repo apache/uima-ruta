@@ -49,6 +49,7 @@ import org.apache.uima.resource.metadata.Import;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.resource.metadata.impl.Import_impl;
+import org.apache.uima.textmarker.UIMAConstants;
 import org.apache.uima.textmarker.engine.TextMarkerEngine;
 import org.apache.uima.util.CasCreationUtils;
 import org.apache.uima.util.InvalidXMLException;
@@ -295,15 +296,17 @@ public class TextMarkerSimpleBuilder {
     if (name.equals("Annotation")) {
       return "uima.tcas.Annotation";
     } else if (name.equals("STRING")) {
-      return "uima.cas.String";
+      return UIMAConstants.TYPE_STRING;
     } else if (name.equals("INT")) {
-      return "uima.cas.Integer";
+      return UIMAConstants.TYPE_INTEGER;
     } else if (name.equals("DOUBLE")) {
-      return "uima.cas.Double";
+      return UIMAConstants.TYPE_DOUBLE;
+    } else if (name.equals("FLOAT")) {
+      return UIMAConstants.TYPE_FLOAT;
     } else if (name.equals("BOOLEAN")) {
-      return "uima.cas.Boolean";
+      return UIMAConstants.TYPE_BOOLEAN;
     } else if (name.equals("TYPE")) {
-      return "uima.cas.String";
+      return UIMAConstants.TYPE_STRING;
     }
     return name;
   }

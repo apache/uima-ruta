@@ -242,7 +242,7 @@ public class TextMarkerTypeChecker implements IBuildParticipant, IBuildParticipa
 
           for (TextMarkerFeatureDeclaration each : features) {
             String type = each.getType();
-            if (type.equals("INT") || type.equals("STRING") || type.equals("DOUBLE")
+            if (type.equals("INT") || type.equals("STRING") || type.equals("DOUBLE")|| type.equals("FLOAT")
                     || type.equals("BOOLEAN")) {
               continue;
             }
