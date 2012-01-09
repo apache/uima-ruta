@@ -123,6 +123,15 @@ public class StatementFactory extends AbstractFactory {
    * @param type
    * @return
    */
+  public static Object createFloatVariable(Token id, Token type) {
+    return createVariable(id, type, TMTypeConstants.TM_TYPE_F);
+  }
+  
+  /**
+   * @param id
+   * @param type
+   * @return
+   */
   public static TextMarkerVariableDeclaration createDoubleVariable(Token id, Token type) {
     return createVariable(id, type, TMTypeConstants.TM_TYPE_D);
   }
@@ -311,5 +320,7 @@ public class StatementFactory extends AbstractFactory {
     int nameBounds[] = getBounds(ct);
     return new ComponentDeclaration(nameBounds[0], nameBounds[1], ct.getText());
   }
+
+
 
 }
