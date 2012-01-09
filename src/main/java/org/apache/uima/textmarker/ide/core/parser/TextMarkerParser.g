@@ -340,6 +340,13 @@ variableDeclaration returns [List<Statement> stmts = new ArrayList<Statement>()]
 		 stmts.add(StatementFactory.createDeclarationsStatement(type, decls, init));
 		 }
 	|
+	type = FloatString id = Identifier {addVariable(id.getText(), type.getText());decls.add(StatementFactory.createFloatVariable(id, type));}
+			(COMMA id = Identifier {addVariable(id.getText(), type.getText());decls.add(StatementFactory.createFloatVariable(id, type));}
+		 )* (ASSIGN_EQUAL init = numberExpression)?  SEMI
+		{
+		 stmts.add(StatementFactory.createDeclarationsStatement(type, decls, init));
+		 }
+	|
 	type = StringString id = Identifier {addVariable(id.getText(), type.getText());decls.add(StatementFactory.createStringVariable(id, type));}
 			(COMMA id = Identifier {addVariable(id.getText(), type.getText());decls.add(StatementFactory.createStringVariable(id, type));}
 		 )* (ASSIGN_EQUAL init = stringExpression)?  SEMI
@@ -390,6 +397,13 @@ variableDeclaration returns [List<Statement> stmts = new ArrayList<Statement>()]
         }
          |
         type = DOUBLELIST id = Identifier (ASSIGN_EQUAL list = numberListExpression)?  SEMI
+        {
+        addVariable(id.getText(), type.getText());
+        decls.add(StatementFactory.createVarListVariable(id,type,list, TMTypeConstants.TM_TYPE_NL));
+        stmts.add(StatementFactory.createDeclarationsStatement(type, decls, list));
+        }
+          |
+        type = FLOATLIST id = Identifier (ASSIGN_EQUAL list = numberListExpression)?  SEMI
         {
         addVariable(id.getText(), type.getText());
         decls.add(StatementFactory.createVarListVariable(id,type,list, TMTypeConstants.TM_TYPE_NL));
@@ -461,7 +475,8 @@ declaration returns [List<Statement> stmts = new ArrayList<Statement>()]
 			(
 			obj1 = annotationType{featureTypes.add(obj1);} 
 			| obj2 = StringString{featureTypes.add(obj2);} 
-			| obj3 = DoubleString{featureTypes.add(obj3);} 
+			| obj3 = DoubleString{featureTypes.add(obj3);}
+			| obj6 = FloatString{featureTypes.add(obj6);}  
 			| obj4 = IntString{featureTypes.add(obj4);}
 			| obj5 = BooleanString{featureTypes.add(obj5);}
 			//| obj6 = fsType{featureTypes.add(obj6.getText());}
@@ -473,6 +488,7 @@ declaration returns [List<Statement> stmts = new ArrayList<Statement>()]
 			obj1 = annotationType{featureTypes.add(obj1);} 
 			| obj2 = StringString{featureTypes.add(obj2);} 
 			| obj3 = DoubleString{featureTypes.add(obj3);}
+			| obj6 = FloatString{featureTypes.add(obj6);}  
 			| obj4 = IntString{featureTypes.add(obj4);}
 			| obj5 = BooleanString{featureTypes.add(obj5);}
 			//| obj6 = fsType{featureTypes.add(obj5.getText());}
@@ -622,6 +638,7 @@ listExpression returns [Expression expr = null]
 	(booleanListExpression)=> e = booleanListExpression {expr = e;}
 	| (intListExpression)=> e = intListExpression {expr = e;}
 	| (doubleListExpression)=> e = doubleListExpression {expr = e;}
+	| (floatListExpression)=> e = floatListExpression {expr = e;}
 	| (stringListExpression)=> e = stringListExpression {expr = e;}
 	| (typeListExpression)=> e = typeListExpression {expr = e;}
 	;
@@ -667,6 +684,8 @@ numberListExpression returns [Expression expr = null]
 	:
 	(e1 = doubleListExpression)=> e1 = doubleListExpression {expr = e1;}
 	|
+	(e1 = floatListExpression)=> e1 = floatListExpression {expr = e1;}
+	|
 	e2 = intListExpression {expr = e2;}
 	;
 	
@@ -683,6 +702,23 @@ simpleDoubleListExpression returns [Expression expr = null]
 	{expr = ExpressionFactory.createListExpression(list, TMTypeConstants.TM_TYPE_NL);}
 	|
 	{isVariableOfType(input.LT(1).getText(), "DOUBLELIST")}? 
+	var = Identifier 
+	{expr = ExpressionFactory.createListExpression(var, TMTypeConstants.TM_TYPE_NL);}
+	;
+
+floatListExpression returns [Expression expr = null]
+	:
+	e = simpleFloatListExpression {expr = e;}
+	;
+
+simpleFloatListExpression returns [Expression expr = null]
+@init{
+	List<Expression> list = new ArrayList<Expression>();
+}	:
+	LCURLY (e = simpleNumberExpression {list.add(e);} (COMMA e = simpleNumberExpression {list.add(e);})*)?  RCURLY
+	{expr = ExpressionFactory.createListExpression(list, TMTypeConstants.TM_TYPE_NL);}
+	|
+	{isVariableOfType(input.LT(1).getText(), "FLOATLIST")}? 
 	var = Identifier 
 	{expr = ExpressionFactory.createListExpression(var, TMTypeConstants.TM_TYPE_NL);}
 	;
@@ -764,6 +800,7 @@ listVariable returns [Expression var = null]
 	:
 	{isVariableOfType(input.LT(1).getText(), "BOOLEANLIST")
 	||isVariableOfType(input.LT(1).getText(), "INTLIST")
+	||isVariableOfType(input.LT(1).getText(), "FLOATLIST")
 	||isVariableOfType(input.LT(1).getText(), "DOUBLELIST")
 	||isVariableOfType(input.LT(1).getText(), "STRINGLIST")
 	||isVariableOfType(input.LT(1).getText(), "TYPELIST")
@@ -1837,6 +1874,7 @@ numberVariable returns [Expression expr = null]
 	:
 	   ( {isVariableOfType(input.LT(1).getText(), "INT")}? numVarRef = Identifier //
 	 | {isVariableOfType(input.LT(1).getText(), "DOUBLE")}? numVarRef = Identifier)
+	  | {isVariableOfType(input.LT(1).getText(), "FLOAT")}? numVarRef = Identifier)
 	 {	 expr = ExpressionFactory.createNumberVariableReference(numVarRef);}
 	;
 	catch [Exception e]{expr = ExpressionFactory.createNumberVariableReference(input.LT(1));}
