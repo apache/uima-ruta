@@ -77,14 +77,26 @@ public abstract class AbstractStructureAction extends AbstractTextMarkerAction {
             AnnotationFS annotation = annotationsInWindow.get(0);
             structure.setStringValue(targetFeature, annotation.getCoveredText());
           }
-        } else if (valueObject instanceof NumberExpression
-                && range.getName().equals(UIMAConstants.TYPE_INTEGER)) {
-          structure.setIntValue(targetFeature,
-                  ((NumberExpression) valueObject).getIntegerValue(element.getParent()));
-        } else if (valueObject instanceof NumberExpression
-                && range.getName().equals(UIMAConstants.TYPE_DOUBLE)) {
-          structure.setDoubleValue(targetFeature,
-                  ((NumberExpression) valueObject).getDoubleValue(element.getParent()));
+        } else if (valueObject instanceof NumberExpression) {
+          if(range.getName().equals(UIMAConstants.TYPE_INTEGER)) {
+            structure.setIntValue(targetFeature,
+                    ((NumberExpression) valueObject).getIntegerValue(element.getParent()));
+          } else if(range.getName().equals(UIMAConstants.TYPE_DOUBLE)) {
+            structure.setDoubleValue(targetFeature,
+                    ((NumberExpression) valueObject).getDoubleValue(element.getParent()));
+          } else if(range.getName().equals(UIMAConstants.TYPE_FLOAT)) {
+            structure.setFloatValue(targetFeature,
+                    ((NumberExpression) valueObject).getFloatValue(element.getParent()));
+          } else if(range.getName().equals(UIMAConstants.TYPE_BYTE)) {
+            structure.setByteValue(targetFeature, (byte)
+                    ((NumberExpression) valueObject).getIntegerValue(element.getParent()));
+          } else if(range.getName().equals(UIMAConstants.TYPE_SHORT)) {
+            structure.setShortValue(targetFeature, (short)
+                    ((NumberExpression) valueObject).getIntegerValue(element.getParent()));
+          } else if(range.getName().equals(UIMAConstants.TYPE_LONG)) {
+            structure.setLongValue(targetFeature, (long)
+                    ((NumberExpression) valueObject).getIntegerValue(element.getParent()));
+          }
         } else if (valueObject instanceof BooleanExpression
                 && range.getName().equals(UIMAConstants.TYPE_BOOLEAN)) {
           structure.setBooleanValue(targetFeature,

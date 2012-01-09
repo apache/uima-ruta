@@ -91,6 +91,22 @@ public class FeatureCondition extends AbstractTextMarkerCondition {
         double value = annotation.getDoubleValue(featureByBaseName);
         double v = numberExpr.getDoubleValue(element.getParent());
         result = value == v;
+      } else if (range.equals(UIMAConstants.TYPE_FLOAT)) {
+        float value = annotation.getFloatValue(featureByBaseName);
+        float v = numberExpr.getFloatValue(element.getParent());
+        result = value == v;
+      } else if (range.equals(UIMAConstants.TYPE_BYTE)) {
+        byte value = annotation.getByteValue(featureByBaseName);
+        byte v = (byte) numberExpr.getIntegerValue(element.getParent());
+        result = value == v;
+      } else if (range.equals(UIMAConstants.TYPE_SHORT)) {
+        short value = annotation.getShortValue(featureByBaseName);
+        short v = (short) numberExpr.getIntegerValue(element.getParent());
+        result = value == v;
+      } else if (range.equals(UIMAConstants.TYPE_LONG)) {
+        long value = annotation.getLongValue(featureByBaseName);
+        long v = numberExpr.getIntegerValue(element.getParent());
+        result = value == v;
       }
       return new EvaluatedCondition(this, result);
     } else if (booleanExpr != null) {

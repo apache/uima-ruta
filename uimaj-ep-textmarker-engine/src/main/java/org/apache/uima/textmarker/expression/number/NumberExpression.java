@@ -28,6 +28,6 @@ public abstract class NumberExpression extends StringExpression {
 
   public abstract double getDoubleValue(TextMarkerStatement parent);
   
-  public abstract double getFloatValue(TextMarkerStatement parent);
+  public abstract float getFloatValue(TextMarkerStatement parent);
 
 }

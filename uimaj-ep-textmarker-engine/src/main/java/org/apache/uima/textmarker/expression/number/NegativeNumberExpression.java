@@ -36,7 +36,7 @@ public class NegativeNumberExpression extends NumberExpression {
   }
 
   @Override
-  public double getFloatValue(TextMarkerStatement parent) {
+  public float getFloatValue(TextMarkerStatement parent) {
     return -ne.getFloatValue(parent);
   }
   

@@ -36,7 +36,7 @@ public class SimpleNumberExpression extends NumberExpression {
   }
 
   @Override
-  public double getFloatValue(TextMarkerStatement parent) {
+  public float getFloatValue(TextMarkerStatement parent) {
     return number.floatValue();
   }
   

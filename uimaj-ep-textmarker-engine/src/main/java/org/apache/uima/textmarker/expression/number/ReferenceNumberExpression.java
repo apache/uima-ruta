@@ -41,9 +41,9 @@ public class ReferenceNumberExpression extends NumberExpression {
   }
 
   @Override
-  public double getFloatValue(TextMarkerStatement parent) {
+  public float getFloatValue(TextMarkerStatement parent) {
     Object value = parent.getEnvironment().getVariableValue(getVar());
-    double variableValue = 0;
+    float variableValue = 0;
     if (value instanceof Number) {
       variableValue = ((Number) value).floatValue();
     }

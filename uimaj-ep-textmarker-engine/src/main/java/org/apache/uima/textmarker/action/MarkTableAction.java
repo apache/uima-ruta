@@ -112,6 +112,18 @@ public class MarkTableAction extends AbstractTextMarkerAction {
         } else if (range.getName().equals(UIMAConstants.TYPE_DOUBLE)) {
           Double d = Double.parseDouble(value);
           structure.setDoubleValue(targetFeature, d);
+        } else if (range.getName().equals(UIMAConstants.TYPE_FLOAT)) {
+          Float d = Float.parseFloat(value);
+          structure.setFloatValue(targetFeature, d);
+        } else if (range.getName().equals(UIMAConstants.TYPE_BYTE)) {
+          Byte d = Byte.parseByte(value);
+          structure.setByteValue(targetFeature, d);
+        } else if (range.getName().equals(UIMAConstants.TYPE_SHORT)) {
+          Short d = Short.parseShort(value);
+          structure.setShortValue(targetFeature, d);
+        } else if (range.getName().equals(UIMAConstants.TYPE_LONG)) {
+          Long d = Long.parseLong(value);
+          structure.setLongValue(targetFeature, d);
         } else if (range.getName().equals(UIMAConstants.TYPE_BOOLEAN)) {
           Boolean b = Boolean.parseBoolean(value);
           structure.setBooleanValue(targetFeature, b);

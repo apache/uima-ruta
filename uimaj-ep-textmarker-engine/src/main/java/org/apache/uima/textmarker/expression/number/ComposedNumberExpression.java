@@ -54,14 +54,14 @@ public class ComposedNumberExpression extends AbstractNumberExpression {
   }
   
   @Override
-  public double getFloatValue(TextMarkerStatement parent) {
+  public float getFloatValue(TextMarkerStatement parent) {
     NumberExpression numberExpression = getExpressions().get(0);
     if (numberExpression == null) {
       return 0;
     }
-    double result = numberExpression.getFloatValue(parent);
+    float result = numberExpression.getFloatValue(parent);
     for (int i = 0; i < getOperators().size(); i++) {
-      double second = 0;
+      float second = 0;
       if (getExpressions().size() > i + 1) {
         second = getExpressions().get(i + 1).getFloatValue(parent);
       }

@@ -68,24 +68,33 @@ public class GetFeatureAction extends AbstractTextMarkerAction {
           return;
         }
 
+        String featName = featureByBaseName.getRange().getName();
         if (environment.getVariableType(variable).equals(String.class)
-                && featureByBaseName.getRange().getName().equals(UIMAConstants.TYPE_STRING)) {
+                && featName.equals(UIMAConstants.TYPE_STRING)) {
           Object value = annotationFS.getStringValue(featureByBaseName);
           environment.setVariableValue(variable, value);
-        } else if (environment.getVariableType(variable).equals(Integer.class)
-                && featureByBaseName.getRange().getName().equals(UIMAConstants.TYPE_INTEGER)) {
-          Object value = annotationFS.getIntValue(featureByBaseName);
-          environment.setVariableValue(variable, value);
-        } else if (environment.getVariableType(variable).equals(Double.class)
-                && featureByBaseName.getRange().getName().equals(UIMAConstants.TYPE_DOUBLE)) {
-          Object value = annotationFS.getDoubleValue(featureByBaseName);
+        } else if (Number.class.isAssignableFrom(environment.getVariableType(variable))) {
+          Number value = 0;     
+          if(featName.equals(UIMAConstants.TYPE_INTEGER)) {
+            value = annotationFS.getIntValue(featureByBaseName);
+          } else if (featName.equals(UIMAConstants.TYPE_DOUBLE)) {
+            value = annotationFS.getDoubleValue(featureByBaseName);
+          } else if (featName.equals(UIMAConstants.TYPE_FLOAT)) {
+            value = annotationFS.getFloatValue(featureByBaseName);
+          } else if (featName.equals(UIMAConstants.TYPE_BYTE)) {
+            value = annotationFS.getByteValue(featureByBaseName);
+          } else if (featName.equals(UIMAConstants.TYPE_SHORT)) {
+            value = annotationFS.getShortValue(featureByBaseName);
+          } else if (featName.equals(UIMAConstants.TYPE_LONG)) {
+            value = annotationFS.getLongValue(featureByBaseName);
+          } 
           environment.setVariableValue(variable, value);
         } else if (environment.getVariableType(variable).equals(Boolean.class)
-                && featureByBaseName.getRange().getName().equals(UIMAConstants.TYPE_BOOLEAN)) {
+                && featName.equals(UIMAConstants.TYPE_BOOLEAN)) {
           Object value = annotationFS.getBooleanValue(featureByBaseName);
           environment.setVariableValue(variable, value);
         } else if (environment.getVariableType(variable).equals(Type.class)
-                && featureByBaseName.getRange().getName().equals(UIMAConstants.TYPE_STRING)) {
+                && featName.equals(UIMAConstants.TYPE_STRING)) {
           Object value = annotationFS.getStringValue(featureByBaseName);
           Type t = stream.getCas().getTypeSystem().getType((String) value);
           if (t != null) {

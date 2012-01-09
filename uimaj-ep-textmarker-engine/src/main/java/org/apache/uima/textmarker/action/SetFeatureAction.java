@@ -109,7 +109,6 @@ public class SetFeatureAction extends AbstractTextMarkerAction {
       Feature featureByBaseName = type.getFeatureByBaseName(featureString);
       List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOf(element, stream);
       for (AnnotationFS annotationFS : matchedAnnotations) {
-
         if (annotationFS.getType().getFeatureByBaseName(featureString) == null) {
           System.out.println("Can't access feature " + featureString
                   + ", because it's not defined in the matched type: " + annotationFS.getType());
@@ -127,6 +126,18 @@ public class SetFeatureAction extends AbstractTextMarkerAction {
           } else if (range.equals(UIMAConstants.TYPE_DOUBLE)) {
             double v = numberExpr.getDoubleValue(element.getParent());
             annotationFS.setDoubleValue(featureByBaseName, v);
+          } else if (range.equals(UIMAConstants.TYPE_FLOAT)) {
+            float v = (float) numberExpr.getDoubleValue(element.getParent());
+            annotationFS.setFloatValue(featureByBaseName, v);
+          } else if (range.equals(UIMAConstants.TYPE_BYTE)) {
+            byte v = (byte) numberExpr.getIntegerValue(element.getParent());
+            annotationFS.setByteValue(featureByBaseName, v);
+          } else if (range.equals(UIMAConstants.TYPE_SHORT)) {
+            short v = (short) numberExpr.getIntegerValue(element.getParent());
+            annotationFS.setShortValue(featureByBaseName, v);
+          } else if (range.equals(UIMAConstants.TYPE_LONG)) {
+            long v = numberExpr.getIntegerValue(element.getParent());
+            annotationFS.setLongValue(featureByBaseName, v);
           }
         } else if (booleanExpr != null) {
           boolean v = booleanExpr.getBooleanValue(element.getParent());

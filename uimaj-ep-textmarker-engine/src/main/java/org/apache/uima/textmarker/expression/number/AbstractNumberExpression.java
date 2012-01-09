@@ -47,6 +47,31 @@ public abstract class AbstractNumberExpression extends NumberExpression {
     return 0;
   }
 
+  protected float calculate(float t1, float t2, String op) {
+    if ("+".equals(op)) {
+      return t1 + t2;
+    } else if ("-".equals(op)) {
+      return t1 - t2;
+    } else if ("*".equals(op)) {
+      return t1 * t2;
+    } else if ("/".equals(op)) {
+      return t1 / t2;
+    } else if ("%".equals(op)) {
+      return t1 % t2;
+    } else if ("EXP".equals(op)) {
+      return (float)Math.exp(t1);
+    } else if ("LOG".equals(op)) {
+      return (float)Math.log(t1);
+    } else if ("SIN".equals(op)) {
+      return (float)Math.sin(t1);
+    } else if ("COS".equals(op)) {
+      return (float)Math.cos(t1);
+    } else if ("TAN".equals(op)) {
+      return (float)Math.tan(t1);
+    }
+    return 0;
+  }
+  
   protected int calculate(int t1, int t2, String op) {
     if ("+".equals(op)) {
       return t1 + t2;
