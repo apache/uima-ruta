@@ -1873,7 +1873,7 @@ externalNumberFunction returns [Expression expr = null]
 numberVariable returns [Expression expr = null]
 	:
 	   ( {isVariableOfType(input.LT(1).getText(), "INT")}? numVarRef = Identifier //
-	 | {isVariableOfType(input.LT(1).getText(), "DOUBLE")}? numVarRef = Identifier)
+	 | {isVariableOfType(input.LT(1).getText(), "DOUBLE")}? numVarRef = Identifier
 	  | {isVariableOfType(input.LT(1).getText(), "FLOAT")}? numVarRef = Identifier)
 	 {	 expr = ExpressionFactory.createNumberVariableReference(numVarRef);}
 	;
