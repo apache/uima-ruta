@@ -1,13 +1,13 @@
 lexer grammar TextMarkerLexer;
 options {
-	language = Java;
+  language = Java;
 }
 
 
 tokens {
-	DocComment;
-	Annotation;
-	ListIdentifier;
+  DocComment;
+  Annotation;
+  ListIdentifier;
 }
 
 @lexer::header {
@@ -30,323 +30,326 @@ tokens {
  * under the License.
 */
 
-	package org.apache.uima.textmarker.parser;
+  package org.apache.uima.textmarker.parser;
 }
 
 @lexer::members {
-	public int implicitLineJoiningLevel = 0;
-	public int startPos=-1;
-	public void emitErrorMessage(String msg) {
-	}
+  public int implicitLineJoiningLevel = 0;
+  public int startPos=-1;
+  public void emitErrorMessage(String msg) {
+  }
 }
 
 
 TRIE
-	:	'TRIE'
-	;
+  : 'TRIE'
+  ;
 
 CONTAINS
-	:	'CONTAINS'
-	;
+  : 'CONTAINS'
+  ;
 
 DECLARE
-	:	'DECLARE'
-	;
+  : 'DECLARE'
+  ;
 
 WORDLIST
-	:	'WORDLIST'
-	;
+  : 'WORDLIST'
+  ;
 
 WORDTABLE
-	:	'WORDTABLE'
-	;
+  : 'WORDTABLE'
+  ;
 
 AND
-	:	'AND'
-	;
+  : 'AND'
+  ;
 
 CONTEXTCOUNT
-	:	'CONTEXTCOUNT'
-	;
+  : 'CONTEXTCOUNT'
+  ;
 
 COUNT
-	:	'COUNT'
-	;
+  : 'COUNT'
+  ;
 
 TOTALCOUNT
-	:	'TOTALCOUNT'
-	;
+  : 'TOTALCOUNT'
+  ;
 
 CURRENTCOUNT
-	:	'CURRENTCOUNT'
-	;
+  : 'CURRENTCOUNT'
+  ;
 
 INLIST
-	:	'INLIST'
-	;
+  : 'INLIST'
+  ;
 
 ISINTAG
-	:	'ISINTAG'
-	;
+  : 'ISINTAG'
+  ;
 
 LAST
-	:	'LAST'
-	;
+  : 'LAST'
+  ;
 
 MOFN
-	:	'MOFN'
-	;
+  : 'MOFN'
+  ;
 
 NEAR
-	:	'NEAR'
-	;
+  : 'NEAR'
+  ;
 
 OR
-	:	'OR'
-	;
+  : 'OR'
+  ;
 
 PARTOF
-	:	'PARTOF'
-	;
-	
+  : 'PARTOF'
+  ;
+  
 PARTOFNEQ
-	:	'PARTOFNEQ'
-	;
+  : 'PARTOFNEQ'
+  ;
 
 POSITION
-	:	'POSITION'
-	;
+  : 'POSITION'
+  ;
 
 REGEXP
-	:	'REGEXP'
-	;
+  : 'REGEXP'
+  ;
 
 SCORE
-	:	'SCORE'
-	;
+  : 'SCORE'
+  ;
 
 VOTE
-	:	'VOTE'
-	;
+  : 'VOTE'
+  ;
 
 IF
-	:	'IF'
-	;
+  : 'IF'
+  ;
 
 FEATURE
-	:	'FEATURE'
-	;
+  : 'FEATURE'
+  ;
 
 PARSE
-	:	'PARSE'
-	;
+  : 'PARSE'
+  ;
 
 CREATE
-	:	'CREATE'
-	;
+  : 'CREATE'
+  ;
 
 GATHER
-	:	'GATHER'
-	;
+  : 'GATHER'
+  ;
 
 FILL
-	:	'FILL'
-	;
+  : 'FILL'
+  ;
 
 ATTRIBUTE
-	:	'ATTRIBUTE'
-	;
+  : 'ATTRIBUTE'
+  ;
 
 COLOR
-	:	'COLOR'
-	;
+  : 'COLOR'
+  ;
 
 DEL
-	:	'DEL'
-	;
+  : 'DEL'
+  ;
 
 LOG
-	:	'LOG'
-	;
+  : 'LOG'
+  ;
 
 MARK
-	:	'MARK'
-	;
+  : 'MARK'
+  ;
 
 MARKSCORE
-	:	'MARKSCORE'
-	;
+  : 'MARKSCORE'
+  ;
 
 MARKONCE
-	:	'MARKONCE'
-	;
+  : 'MARKONCE'
+  ;
 
 MARKFAST
-	:	'MARKFAST'
-	;
-	
+  : 'MARKFAST'
+  ;
+  
 MARKTABLE
-	:	'MARKTABLE'
-	;
-	
+  : 'MARKTABLE'
+  ;
+  
 MARKLAST
-	:	'MARKLAST'
-	;
+  : 'MARKLAST'
+  ;
 
 REPLACE
-	:	'REPLACE'
-	;
+  : 'REPLACE'
+  ;
 
 RETAINMARKUP
-	:	'RETAINMARKUP'
-	;
+  : 'RETAINMARKUP'
+  ;
 
 RETAINTYPE
-	:	'RETAINTYPE'
-	;
+  : 'RETAINTYPE'
+  ;
 
 FILTERMARKUP
-	:	'FILTERMARKUP'
-	;
+  : 'FILTERMARKUP'
+  ;
 
 FILTERTYPE
-	:	'FILTERTYPE'
-	;
+  : 'FILTERTYPE'
+  ;
 
 CALL
-	:	'CALL'
-	;
+  : 'CALL'
+  ;
 
 
 EXEC
-	:	'EXEC'
-	;
+  : 'EXEC'
+  ;
 
 CONFIGURE
-	:	'CONFIGURE'
-	;
+  : 'CONFIGURE'
+  ;
 
 ASSIGN
-	:	'ASSIGN'
-	;
+  : 'ASSIGN'
+  ;
 
 SETFEATURE
-	:	'SETFEATURE'
-	;
+  : 'SETFEATURE'
+  ;
 
 GETFEATURE
-	:	'GETFEATURE'
-	;
+  : 'GETFEATURE'
+  ;
 
 UNMARK
-	:	'UNMARK'
-	;
+  : 'UNMARK'
+  ;
 
 UNMARKALL
-	:	'UNMARKALL'
-	;
+  : 'UNMARKALL'
+  ;
 
 TRANSFER
-	:	'TRANSFER'
-	;
+  : 'TRANSFER'
+  ;
 
 
-EXPAND 	
-	:	'EXPAND'	 
-	;
+EXPAND  
+  : 'EXPAND'   
+  ;
 
-DYNAMICANCHORING 	
-	:	'DYNAMICANCHORING'	 
-	;
+DYNAMICANCHORING  
+  : 'DYNAMICANCHORING'   
+  ;
 
 BEFORE
-	:	'BEFORE'
-	;
+  : 'BEFORE'
+  ;
 
 AFTER
-	:	'AFTER'
-	;
+  : 'AFTER'
+  ;
 
-IS 	
-	:	'IS'	 
-	;
+IS  
+  : 'IS'   
+  ;
 
 
-STARTSWITH 	
-	:	'STARTSWITH'	 
-	;
+STARTSWITH  
+  : 'STARTSWITH'   
+  ;
 
-ENDSWITH 	
-	:	'ENDSWITH'	 
-	;
+ENDSWITH  
+  : 'ENDSWITH'   
+  ;
 
 
 
 NOT
-	:	'NOT'
-	;
+  : 'NOT'
+  ;
 
-ADD	:	'ADD';
-REMOVE	:	'REMOVE';
-REMOVEDUPLICATE	:	'REMOVEDUPLICATE';
-MERGE 	:	'MERGE';
-GET	:	'GET';
-GETLIST	:	'GETLIST';
-SIZE	:	'SIZE';
-MATCHEDTEXT	:	'MATCHEDTEXT';
-REMOVESTRING	:	'REMOVESTRING';
-CLEAR 	:	 'CLEAR';
+ADD : 'ADD';
+REMOVE  : 'REMOVE';
+REMOVEDUPLICATE : 'REMOVEDUPLICATE';
+MERGE   : 'MERGE';
+GET : 'GET';
+GETLIST : 'GETLIST';
+SIZE  : 'SIZE';
+MATCHEDTEXT : 'MATCHEDTEXT';
+REMOVESTRING  : 'REMOVESTRING';
+CLEAR   :  'CLEAR';
 
 THEN 
-	: 	'->'
-	;
+  :   '->'
+  ;
 
 BasicAnnotationType 
-	: 'COLON'| 'SW' | 'MARKUP' | 'PERIOD' | 'CW'| 'NUM' | 'QUESTION' | 'SPECIAL' | 'CAP' | 'COMMA' | 'EXCLAMATION' | 'SEMICOLON' | 'NBSP'| 'AMP' |
-	'_' | 'SENTENCEEND' | 'W' | 'PM' | 'ANY' | 'ALL' | 'SPACE' | 'BREAK' 
-	;
-	
+  : 'COLON'| 'SW' | 'MARKUP' | 'PERIOD' | 'CW'| 'NUM' | 'QUESTION' | 'SPECIAL' | 'CAP' | 'COMMA' | 'EXCLAMATION' | 'SEMICOLON' | 'NBSP'| 'AMP' |
+  '_' | 'SENTENCEEND' | 'W' | 'PM' | 'ANY' | 'ALL' | 'SPACE' | 'BREAK' 
+  ;
+  
 LogLevel:
-	'finest' | 'finer' | 'fine' | 'config' | 'info' | 'warning' | 'severe'
-	;	
+  'finest' | 'finer' | 'fine' | 'config' | 'info' | 'warning' | 'severe'
+  ; 
 
 OldColor 
-	: 'black' | 'maroon' | 'green' | 'olive' | 'navy' | 'purple' | 'teal' | 'gray' | 'silver' | 'red' | 'lime' | 'yellow' | 'blue' | 'fuchsia' | 'aqua'
-	;
+  : 'black' | 'maroon' | 'green' | 'olive' | 'navy' | 'purple' | 'teal' | 'gray' | 'silver' | 'red' | 'lime' | 'yellow' | 'blue' | 'fuchsia' | 'aqua'
+  ;
 
-PackageString   :	'PACKAGE';
-ScriptString	:	'SCRIPT';
-EngineString	:	'ENGINE';
-BlockString 	:	'BLOCK';
-AutomataBlockString 	:	'RULES';
-TypeString 	:	'TYPE';
-IntString	:	'INT';
-DoubleString	:	'DOUBLE';
-StringString	:	'STRING';
-BooleanString	:	'BOOLEAN';
-TypeSystemString:	'TYPESYSTEM';	
-SymbolString	:	'SYMBOL';
-CONDITION	:	'CONDITION';	
-ACTION		:	'ACTION';
+PackageString   : 'PACKAGE';
+ScriptString  : 'SCRIPT';
+EngineString  : 'ENGINE';
+BlockString   : 'BLOCK';
+AutomataBlockString   : 'RULES';
+TypeString  : 'TYPE';
+IntString : 'INT';
+DoubleString  : 'DOUBLE';
+FloatString : 'FLOAT';
+StringString  : 'STRING';
+BooleanString : 'BOOLEAN';
+TypeSystemString: 'TYPESYSTEM'; 
+SymbolString  : 'SYMBOL';
+CONDITION : 'CONDITION';  
+ACTION    : 'ACTION';
 BOOLEANLIST 
-	:	 'BOOLEANLIST';
-INTLIST :	'INTLIST';
+  :  'BOOLEANLIST';
+INTLIST : 'INTLIST';
 DOUBLELIST
-	:	 'DOUBLELIST';
+  :  'DOUBLELIST';
+FLOATLIST
+  :  'FLOATLIST';
 STRINGLIST
-	:	'STRINGLIST';	
-TYPELIST:	'TYPELIST';
+  : 'STRINGLIST'; 
+TYPELIST: 'TYPELIST';
 
 
 
-EXP 	:	'EXP';
-LOGN	:	'LOGN';
-SIN	:	'SIN';
-COS	:	'COS';
-TAN	:	'TAN';
-XOR	: 	'XOR';
-TRUE 	:	'true';
-FALSE 	:	'false';
+EXP   : 'EXP';
+LOGN  : 'LOGN';
+SIN : 'SIN';
+COS : 'COS';
+TAN : 'TAN';
+XOR :   'XOR';
+TRUE  : 'true';
+FALSE   : 'false';
 
 HexLiteral : '0' ('x'|'X') HexDigit+ IntegerTypeSuffix? ;
 
@@ -365,8 +368,8 @@ FloatingPointLiteral
     |   '.' ('0'..'9')+ Exponent? FloatTypeSuffix?
     //|   ('0'..'9')+ Exponent FloatTypeSuffix?
     //|   ('0'..'9')+ Exponent? FloatTypeSuffix
-	;
-	
+  ;
+  
 fragment
 Exponent : ('e'|'E') ('+'|'-')? ('0'..'9')+ ;
 
@@ -404,7 +407,7 @@ UnicodeEscape
     :   '\\' 'u' HexDigit HexDigit HexDigit HexDigit
     ;
 
-	
+  
 Identifier 
     :   Letter (Letter|JavaIDDigit)*
     ;
@@ -448,62 +451,62 @@ JavaIDDigit
 
 
 
-LPAREN	: '(' {implicitLineJoiningLevel++;} ;
+LPAREN  : '(' {implicitLineJoiningLevel++;} ;
 
-RPAREN	: ')' {implicitLineJoiningLevel--;} ;
+RPAREN  : ')' {implicitLineJoiningLevel--;} ;
 
-LBRACK	: '[' {implicitLineJoiningLevel++;} ;
+LBRACK  : '[' {implicitLineJoiningLevel++;} ;
 
-RBRACK	: ']' {implicitLineJoiningLevel--;} ;
+RBRACK  : ']' {implicitLineJoiningLevel--;} ;
 
-LCURLY	: '{' {implicitLineJoiningLevel++;} ;
+LCURLY  : '{' {implicitLineJoiningLevel++;} ;
 
-RCURLY	: '}' {implicitLineJoiningLevel--;} ;
+RCURLY  : '}' {implicitLineJoiningLevel--;} ;
 
-CIRCUMFLEX	: '^' ;
+CIRCUMFLEX  : '^' ;
 
 AT : '@' ;
 
 DOT : '.' ;
 
-COLON 	: ':' ;
+COLON   : ':' ;
 
-COMMA	: ',' ;
+COMMA : ',' ;
 
-SEMI	: ';' ;
+SEMI  : ';' ;
 
-PLUS	: '+' ;
+PLUS  : '+' ;
 
-MINUS	: '-' ;
+MINUS : '-' ;
 
-STAR	: '*' ;
+STAR  : '*' ;
 
-SLASH	: '/' ;
+SLASH : '/' ;
 
-VBAR	: '|' ;
+VBAR  : '|' ;
 
-AMPER	: '&' ;
+AMPER : '&' ;
 
-LESS	: '<' ;
+LESS  : '<' ;
 
-GREATER	: '>' ;
+GREATER : '>' ;
 
-ASSIGN_EQUAL	: '=' ;
+ASSIGN_EQUAL  : '=' ;
 
-PERCENT	: '%' ;
+PERCENT : '%' ;
 
-QUESTION	: '?' ;
+QUESTION  : '?' ;
 
-EQUAL	: '==' ;
+EQUAL : '==' ;
 
-NOTEQUAL	: '!=' ;
+NOTEQUAL  : '!=' ;
 
 ALT_NOTEQUAL: '<>' ;
 
-LESSEQUAL	: '<=' ;
+LESSEQUAL : '<=' ;
 
 
-GREATEREQUAL	: '>=' ;
+GREATEREQUAL  : '>=' ;
 
 WS  :  (' '|'\r'|'\t'|'\u000C'|'\n') {$channel=HIDDEN;}
     ;
