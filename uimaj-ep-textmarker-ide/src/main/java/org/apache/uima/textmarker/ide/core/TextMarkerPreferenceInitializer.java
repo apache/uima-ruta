@@ -20,9 +20,8 @@
 package org.apache.uima.textmarker.ide.core;
 
 import org.apache.uima.textmarker.ide.TextMarkerIdePlugin;
-import org.eclipse.core.runtime.Preferences;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
-import org.eclipse.dltk.compiler.task.TaskTagUtils;
+import org.eclipse.jface.preference.IPreferenceStore;
 
 public class TextMarkerPreferenceInitializer extends AbstractPreferenceInitializer {
 
@@ -31,8 +30,8 @@ public class TextMarkerPreferenceInitializer extends AbstractPreferenceInitializ
 
   @Override
   public void initializeDefaultPreferences() {
-    Preferences store = TextMarkerIdePlugin.getDefault().getPluginPreferences();
-    TaskTagUtils.initializeDefaultValues(store);
+    IPreferenceStore store = TextMarkerIdePlugin.getDefault().getPreferenceStore();
+//    TaskTagUtils.initializeDefaultValues(store);
     store.setDefault(TextMarkerCorePreferences.BUILDER_IMPORT_BY_NAME, false);
     store.setDefault(TextMarkerCorePreferences.BUILDER_RESOLVE_IMPORTS, false);
     store.setDefault(TextMarkerCorePreferences.BUILDER_IGNORE_DUPLICATE_SHORTNAMES, false);
