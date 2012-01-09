@@ -36,12 +36,10 @@ import org.apache.uima.textmarker.expression.list.SimpleBooleanListExpression;
 import org.apache.uima.textmarker.expression.list.SimpleNumberListExpression;
 import org.apache.uima.textmarker.expression.list.SimpleStringListExpression;
 import org.apache.uima.textmarker.expression.list.SimpleTypeListExpression;
-import org.apache.uima.textmarker.expression.number.ComposedDoubleExpression;
-import org.apache.uima.textmarker.expression.number.ComposedIntegerExpression;
+import org.apache.uima.textmarker.expression.number.ComposedNumberExpression;
 import org.apache.uima.textmarker.expression.number.NegativeNumberExpression;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.number.ReferenceDoubleExpression;
-import org.apache.uima.textmarker.expression.number.ReferenceIntegerExpression;
+import org.apache.uima.textmarker.expression.number.ReferenceNumberExpression;
 import org.apache.uima.textmarker.expression.number.SimpleNumberExpression;
 import org.apache.uima.textmarker.expression.resource.ReferenceWordListExpression;
 import org.apache.uima.textmarker.expression.resource.ReferenceWordTableExpression;
@@ -135,17 +133,14 @@ public class ExpressionVerbalizer {
     } else if (expression instanceof NegativeNumberExpression) {
       NegativeNumberExpression e = (NegativeNumberExpression) expression;
       return "-(" + e.getExpression() + ")";
-    } else if (expression instanceof ReferenceDoubleExpression) {
-      ReferenceDoubleExpression e = (ReferenceDoubleExpression) expression;
-      return e.getVar();
-    } else if (expression instanceof ReferenceIntegerExpression) {
-      ReferenceIntegerExpression e = (ReferenceIntegerExpression) expression;
+    } else if (expression instanceof ReferenceNumberExpression) {
+      ReferenceNumberExpression e = (ReferenceNumberExpression) expression;
       return e.getVar();
     } else if (expression instanceof SimpleNumberExpression) {
       SimpleNumberExpression e = (SimpleNumberExpression) expression;
       return e.getNumber().toString();
-    } else if (expression instanceof ComposedDoubleExpression) {
-      ComposedDoubleExpression e = (ComposedDoubleExpression) expression;
+    } else if (expression instanceof ComposedNumberExpression) {
+      ComposedNumberExpression e = (ComposedNumberExpression) expression;
       NumberExpression ne = e.getExpressions().get(0);
       if (ne == null) {
         return "";
@@ -158,17 +153,6 @@ public class ExpressionVerbalizer {
         }
       }
       return result.toString();
-    } else if (expression instanceof ComposedIntegerExpression) {
-      ComposedIntegerExpression e = (ComposedIntegerExpression) expression;
-      NumberExpression ne = e.getExpressions().get(0);
-      if (ne == null) {
-        return "";
-      }
-      String result = verbalize(ne);
-      for (int i = 0; i < e.getOperators().size(); i++) {
-        result += e.getOperators().get(i) + verbalize(e.getExpressions().get(i + 1));
-      }
-      return result;
     }
     return expression.getClass().getSimpleName();
   }

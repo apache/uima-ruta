@@ -27,5 +27,7 @@ public abstract class NumberExpression extends StringExpression {
   public abstract int getIntegerValue(TextMarkerStatement parent);
 
   public abstract double getDoubleValue(TextMarkerStatement parent);
+  
+  public abstract double getFloatValue(TextMarkerStatement parent);
 
 }

@@ -258,6 +258,11 @@ variableDeclaration returns [TextMarkerStatement stmt = null]
 		(COMMA {!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {addVariable($blockDeclaration::env, id.getText(), type.getText());}
 		 )* (ASSIGN_EQUAL value2 = numberExpression)? {setValue($blockDeclaration::env, id.getText(), value2);} SEMI
 	|
+	type = FloatString
+	{!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {addVariable($blockDeclaration::env, id.getText(), type.getText());}
+		(COMMA {!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {addVariable($blockDeclaration::env, id.getText(), type.getText());}
+		 )* (ASSIGN_EQUAL value2 = numberExpression)? {setValue($blockDeclaration::env, id.getText(), value2);} SEMI
+	|
 	type = StringString
 	{!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {addVariable($blockDeclaration::env, id.getText(), type.getText());}
 		(COMMA {!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {addVariable($blockDeclaration::env, id.getText(), type.getText());}
@@ -294,6 +299,10 @@ variableDeclaration returns [TextMarkerStatement stmt = null]
 	name = Identifier (ASSIGN_EQUAL il = numberListExpression)? SEMI {addVariable($blockDeclaration::env, name.getText(), type.getText());if(il != null){setValue($blockDeclaration::env, name.getText(), il);}} 
 	|
 	type = DOUBLELIST 
+	{!isVariableOfType($blockDeclaration::env, input.LT(1).getText(), type.getText())}? 
+	name = Identifier (ASSIGN_EQUAL dl = numberListExpression)? SEMI {addVariable($blockDeclaration::env, name.getText(), type.getText());if(dl != null){setValue($blockDeclaration::env, name.getText(), dl);}} 
+	|
+	type = FLOATLIST 
 	{!isVariableOfType($blockDeclaration::env, input.LT(1).getText(), type.getText())}? 
 	name = Identifier (ASSIGN_EQUAL dl = numberListExpression)? SEMI {addVariable($blockDeclaration::env, name.getText(), type.getText());if(dl != null){setValue($blockDeclaration::env, name.getText(), dl);}} 
 	|
@@ -353,6 +362,7 @@ List featureNames = new ArrayList();
 			obj1 = annotationType{featureTypes.add(obj1.getText());} 
 			| obj2 = StringString{featureTypes.add(obj2.getText());} 
 			| obj3 = DoubleString{featureTypes.add(obj3.getText());}
+			| obj6 = FloatString{featureTypes.add(obj6.getText());}
 			| obj4 = IntString{featureTypes.add(obj4.getText());}
 			| obj5 = BooleanString{featureTypes.add(obj5.getText());}
 			) 
@@ -363,6 +373,7 @@ List featureNames = new ArrayList();
 			obj1 = annotationType{featureTypes.add(obj1.getText());} 
 			| obj2 = StringString{featureTypes.add(obj2.getText());} 
 			| obj3 = DoubleString{featureTypes.add(obj3.getText());}
+			| obj6 = FloatString{featureTypes.add(obj6.getText());}
 			| obj4 = IntString{featureTypes.add(obj4.getText());}
 			| obj5 = BooleanString{featureTypes.add(obj5.getText());}
 			) 
@@ -620,6 +631,7 @@ listExpression returns [ListExpression expr = null]
 	(booleanListExpression)=> bl = booleanListExpression {expr = bl;}
 	| (intListExpression)=> il = intListExpression {expr = il;}
 	| (doubleListExpression)=> dl = doubleListExpression {expr = dl;}
+	| (floatListExpression)=> dl = floatListExpression {expr = dl;}
 	| (stringListExpression)=> sl = stringListExpression {expr = sl;}
 	| (typeListExpression)=> tl = typeListExpression {expr = tl;}
 	;
@@ -662,6 +674,8 @@ numberListExpression returns [NumberListExpression expr = null]
 	:
 	(e1 = doubleListExpression)=> e1 = doubleListExpression {expr = e1;}
 	|
+	(e1 = floatListExpression)=> e1 = floatListExpression {expr = e1;}
+	|
 	e2 = intListExpression {expr = e2;}
 	;
 	
@@ -681,6 +695,22 @@ simpleDoubleListExpression returns [NumberListExpression expr = null]
 	{expr = ExpressionFactory.createReferenceDoubleListExpression(var);}
 	;
 
+	
+floatListExpression returns [NumberListExpression expr = null]
+	:
+	e = simpleFloatListExpression {expr = e;}
+	;
+
+simpleFloatListExpression returns [NumberListExpression expr = null]
+@init{
+	List<NumberExpression> list = new ArrayList<NumberExpression>();
+}	:
+	LCURLY (e = simpleNumberExpression {list.add(e);} (COMMA e = simpleNumberExpression {list.add(e);})*)?  RCURLY
+	{expr = ExpressionFactory.createNumberListExpression(list);}
+	|
+	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "FLOATLIST")}? var = Identifier 
+	{expr = ExpressionFactory.createReferenceFloatListExpression(var);}
+	;
 
 stringListExpression returns [StringListExpression expr = null]
 	:
@@ -763,6 +793,7 @@ listVariable returns [Token var = null]
 	{isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "BOOLEANLIST")
 	||isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "INTLIST")
 	||isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "DOUBLELIST")
+	||isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "FLOATLIST")
 	||isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "STRINGLIST")
 	||isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "TYPELIST")
 	}? v = Identifier {var = v;}
@@ -1362,6 +1393,10 @@ actionAssign returns [AbstractTextMarkerAction action = null]
         nv = Identifier COMMA e4 = numberExpression 
         {action = ActionFactory.createAssignAction(nv, e4,$blockDeclaration::env);}
     |
+     {isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "FLOAT")}? 
+        nv = Identifier COMMA e6 = numberExpression 
+        {action = ActionFactory.createAssignAction(nv, e6,$blockDeclaration::env);}
+    |
     {isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "DOUBLE")}? 
         nv = Identifier COMMA e5 = numberExpression 
         {action = ActionFactory.createAssignAction(nv, e5,$blockDeclaration::env);}
@@ -1609,6 +1644,7 @@ numberVariable returns [Token ref = null]
 	:
 	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "INT")}? token1 = Identifier {ref = token1;}
 	| {isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "DOUBLE")}? token2 = Identifier {ref = token2;}
+	| {isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "FLOAT")}? token2 = Identifier {ref = token2;}
 	;
 
 
@@ -1642,6 +1678,7 @@ numberExpressionInPar returns [NumberExpression expr = null]
 simpleNumberExpression returns [NumberExpression expr = null]
 	:	
 	m = MINUS? lit = DecimalLiteral {expr = ExpressionFactory.createIntegerExpression(lit,m);} 
+	// TODO what about float numbers?
 	| m = MINUS? lit = FloatingPointLiteral {expr = ExpressionFactory.createDoubleExpression(lit,m);}
 	| m = MINUS? var = numberVariable {expr = ExpressionFactory.createReferenceNumberExpression(var,m);}
 	| e = numberExpressionInPar {expr = e;}

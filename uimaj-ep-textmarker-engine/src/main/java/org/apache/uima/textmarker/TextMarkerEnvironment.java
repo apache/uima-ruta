@@ -91,6 +91,7 @@ public class TextMarkerEnvironment {
     availableTypes.put("INT", Integer.class);
     availableTypes.put("STRING", String.class);
     availableTypes.put("DOUBLE", Double.class);
+    availableTypes.put("FLOAT", Double.class);
     availableTypes.put("BOOLEAN", Boolean.class);
     availableTypes.put("TYPE", Type.class);
     availableTypes.put("CONDITION", AbstractTextMarkerCondition.class);
@@ -100,12 +101,14 @@ public class TextMarkerEnvironment {
     availableTypes.put("BOOLEANLIST", List.class);
     availableTypes.put("INTLIST", List.class);
     availableTypes.put("DOUBLELIST", List.class);
+    availableTypes.put("FLOATLIST", List.class);
     availableTypes.put("STRINGLIST", List.class);
     availableTypes.put("TYPELIST", List.class);
     availableListTypes = new HashMap<String, Class<?>>();
     availableListTypes.put("BOOLEANLIST", Boolean.class);
     availableListTypes.put("INTLIST", Integer.class);
     availableListTypes.put("DOUBLELIST", Double.class);
+    availableListTypes.put("FLOATLIST", Float.class);
     availableListTypes.put("STRINGLIST", String.class);
     availableListTypes.put("TYPELIST", Type.class);
     resourcePaths = getResourcePaths();
@@ -242,10 +245,12 @@ public class TextMarkerEnvironment {
   private Object getInitialValue(Class<?> type) {
     if (Integer.class.equals(type)) {
       return 0;
+    } else if (Double.class.equals(type)) {
+      return 0d;
+    } else if (Float.class.equals(type)) {
+      return 0f;
     } else if (String.class.equals(type)) {
       return "";
-    } else if (Double.class.equals(type)) {
-      return 0;
     } else if (Boolean.class.equals(type)) {
       return false;
     } else if (Type.class.equals(type)) {

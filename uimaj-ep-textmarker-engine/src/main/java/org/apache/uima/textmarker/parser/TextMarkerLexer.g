@@ -322,6 +322,7 @@ AutomataBlockString 	:	'RULES';
 TypeString 	:	'TYPE';
 IntString	:	'INT';
 DoubleString	:	'DOUBLE';
+FloatString	:	'FLOAT';
 StringString	:	'STRING';
 BooleanString	:	'BOOLEAN';
 TypeSystemString:	'TYPESYSTEM';	
@@ -333,6 +334,8 @@ BOOLEANLIST
 INTLIST :	'INTLIST';
 DOUBLELIST
 	:	 'DOUBLELIST';
+FLOATLIST
+	:	 'FLOATLIST';
 STRINGLIST
 	:	'STRINGLIST';	
 TYPELIST:	'TYPELIST';

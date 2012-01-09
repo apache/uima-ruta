@@ -24,13 +24,13 @@ import java.util.List;
 import org.apache.uima.textmarker.TextMarkerStatement;
 
 
-public class ComposedDoubleExpression extends AbstractNumberExpression {
+public class ComposedNumberExpression extends AbstractNumberExpression {
 
   private final List<NumberExpression> expressions;
 
   private final List<String> ops;
 
-  public ComposedDoubleExpression(List<NumberExpression> expressions, List<String> ops) {
+  public ComposedNumberExpression(List<NumberExpression> expressions, List<String> ops) {
     super();
     this.expressions = expressions;
     this.ops = ops;
@@ -46,13 +46,30 @@ public class ComposedDoubleExpression extends AbstractNumberExpression {
     for (int i = 0; i < getOperators().size(); i++) {
       double second = 0;
       if (getExpressions().size() > i + 1) {
-        second = getExpressions().get(i + 1).getIntegerValue(parent);
+        second = getExpressions().get(i + 1).getDoubleValue(parent);
       }
       result = calculate(result, second, getOperators().get(i));
     }
     return result;
   }
-
+  
+  @Override
+  public double getFloatValue(TextMarkerStatement parent) {
+    NumberExpression numberExpression = getExpressions().get(0);
+    if (numberExpression == null) {
+      return 0;
+    }
+    double result = numberExpression.getFloatValue(parent);
+    for (int i = 0; i < getOperators().size(); i++) {
+      double second = 0;
+      if (getExpressions().size() > i + 1) {
+        second = getExpressions().get(i + 1).getFloatValue(parent);
+      }
+      result = calculate(result, second, getOperators().get(i));
+    }
+    return result;
+  }
+  
   @Override
   public int getIntegerValue(TextMarkerStatement parent) {
     int result = getExpressions().get(0).getIntegerValue(parent);
@@ -78,5 +95,7 @@ public class ComposedDoubleExpression extends AbstractNumberExpression {
   public List<String> getOperators() {
     return ops;
   }
+
+ 
 
 }

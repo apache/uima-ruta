@@ -42,10 +42,10 @@ import org.apache.uima.textmarker.expression.list.SimpleStringListExpression;
 import org.apache.uima.textmarker.expression.list.SimpleTypeListExpression;
 import org.apache.uima.textmarker.expression.list.StringListExpression;
 import org.apache.uima.textmarker.expression.list.TypeListExpression;
-import org.apache.uima.textmarker.expression.number.ComposedDoubleExpression;
+import org.apache.uima.textmarker.expression.number.ComposedNumberExpression;
 import org.apache.uima.textmarker.expression.number.NegativeNumberExpression;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.number.ReferenceDoubleExpression;
+import org.apache.uima.textmarker.expression.number.ReferenceNumberExpression;
 import org.apache.uima.textmarker.expression.number.SimpleNumberExpression;
 import org.apache.uima.textmarker.expression.resource.LiteralWordListExpression;
 import org.apache.uima.textmarker.expression.resource.LiteralWordTableExpression;
@@ -87,7 +87,7 @@ public class ExpressionFactory {
   }
 
   public static NumberExpression createReferenceNumberExpression(Token var, Token minus) {
-    ReferenceDoubleExpression simpleNumberExpression = new ReferenceDoubleExpression(var.getText());
+    ReferenceNumberExpression simpleNumberExpression = new ReferenceNumberExpression(var.getText());
     if (minus != null) {
       return new NegativeNumberExpression(simpleNumberExpression);
     } else {
@@ -101,7 +101,7 @@ public class ExpressionFactory {
     for (Token token : opTokens) {
       ops.add(token.getText());
     }
-    return new ComposedDoubleExpression(expressions, ops);
+    return new ComposedNumberExpression(expressions, ops);
   }
 
   public static NumberExpression createComposedNumberExpression(NumberExpression expression,
@@ -110,7 +110,7 @@ public class ExpressionFactory {
     List<NumberExpression> exprList = new ArrayList<NumberExpression>();
     ops.add(opToken.getText());
     exprList.add(expression);
-    return new ComposedDoubleExpression(exprList, ops);
+    return new ComposedNumberExpression(exprList, ops);
   }
 
   public static StringExpression createSimpleStringExpression(Token token) {
@@ -200,6 +200,10 @@ public class ExpressionFactory {
     return new ReferenceNumberListExpression(var.getText());
   }
 
+  public static NumberListExpression createReferenceFloatListExpression(Token var) {
+    return new ReferenceNumberListExpression(var.getText());
+  }
+  
   public static BooleanListExpression createBooleanListExpression(List<BooleanExpression> list) {
     return new SimpleBooleanListExpression(list);
   }
@@ -215,5 +219,7 @@ public class ExpressionFactory {
   public static StringListExpression createStringListExpression(List<StringExpression> list) {
     return new SimpleStringListExpression(list);
   }
+
+
 
 }

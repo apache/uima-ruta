@@ -21,11 +21,11 @@ package org.apache.uima.textmarker.expression.number;
 
 import org.apache.uima.textmarker.TextMarkerStatement;
 
-public class ReferenceDoubleExpression extends NumberExpression {
+public class ReferenceNumberExpression extends NumberExpression {
 
   private final String var;
 
-  public ReferenceDoubleExpression(String var) {
+  public ReferenceNumberExpression(String var) {
     super();
     this.var = var;
   }
@@ -40,6 +40,16 @@ public class ReferenceDoubleExpression extends NumberExpression {
     return variableValue;
   }
 
+  @Override
+  public double getFloatValue(TextMarkerStatement parent) {
+    Object value = parent.getEnvironment().getVariableValue(getVar());
+    double variableValue = 0;
+    if (value instanceof Number) {
+      variableValue = ((Number) value).floatValue();
+    }
+    return variableValue;
+  }
+  
   @Override
   public int getIntegerValue(TextMarkerStatement parent) {
     Object value = parent.getEnvironment().getVariableValue(getVar());
