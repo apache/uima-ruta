@@ -49,7 +49,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Preferences;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.core.DLTKCore;
@@ -64,6 +63,7 @@ import org.eclipse.dltk.internal.core.builder.BuildProblemReporter;
 import org.eclipse.dltk.internal.core.builder.Messages;
 import org.eclipse.dltk.internal.core.builder.SourceModuleBuildContext;
 import org.eclipse.dltk.internal.core.builder.StandardScriptBuilder;
+import org.eclipse.jface.preference.IPreferenceStore;
 
 public class TextMarkerBuilder extends StandardScriptBuilder {
 
@@ -259,7 +259,7 @@ public class TextMarkerBuilder extends StandardScriptBuilder {
 
     try {
       TextMarkerBuildOptions option = new TextMarkerBuildOptions(language, engines);
-      Preferences store = TextMarkerIdePlugin.getDefault().getPluginPreferences();
+      IPreferenceStore store = TextMarkerIdePlugin.getDefault().getPreferenceStore();
       option.setImportByName(store.getBoolean(TextMarkerCorePreferences.BUILDER_IMPORT_BY_NAME));
       option.setResolveImports(store.getBoolean(TextMarkerCorePreferences.BUILDER_RESOLVE_IMPORTS));
       builder.build(sm, typeSystemDest, engineDest, option, mainScript, scriptPaths, enginePaths);

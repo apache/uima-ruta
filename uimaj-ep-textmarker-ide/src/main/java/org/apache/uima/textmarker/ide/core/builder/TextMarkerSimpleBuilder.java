@@ -42,6 +42,8 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.resource.ResourceManager;
+import org.apache.uima.resource.impl.ResourceManager_impl;
 import org.apache.uima.resource.metadata.Capability;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 import org.apache.uima.resource.metadata.FsIndexDescription;
@@ -71,6 +73,8 @@ public class TextMarkerSimpleBuilder {
 
   private final String defaultTypeSystem;
 
+  private ResourceManager rm;
+  
   public TextMarkerSimpleBuilder(String defaultTypeSystem, String defaultEngine)
           throws InvalidXMLException, IOException {
     super();
@@ -82,12 +86,21 @@ public class TextMarkerSimpleBuilder {
     typeSystemDescription = uimaFactory.createTypeSystemDescription();
     analysisEngineDescription = UIMAFramework.getXMLParser().parseAnalysisEngineDescription(
             new XMLInputSource(new File(defaultEngine)));
+
   }
 
   public void build(DescriptorManager desc, String typeSystemOutput, String engineOutput,
           TextMarkerBuildOptions option, String mainScript, String[] scriptPaths,
           String[] enginePaths) throws SAXException, TextMarkerBuildException, InvalidXMLException,
           IOException, ResourceInitializationException {
+       
+    rm = new ResourceManager_impl();
+    String dataPath ="";
+    for (String string : enginePaths) {
+      dataPath += string + File.pathSeparator;
+    }
+    rm.setDataPath(dataPath);
+    
     Map<String, String> typeNameMap = new HashMap<String, String>();
     Capability capability = uimaFactory.createCapability();
     // String defaultTypeSystem2 = defaultTypeSystem.replaceAll("/", "\\\\");
@@ -163,7 +176,7 @@ public class TextMarkerSimpleBuilder {
     typeSystemDescription.setImports(newImports);
     if (option.isResolveImports()) {
       try {
-        typeSystemDescription.resolveImports();
+        typeSystemDescription.resolveImports(rm);
       } catch (InvalidXMLException e) {
         throw new TextMarkerBuildException("Failed to resolve imported Type Systems", e);
       }
@@ -394,7 +407,7 @@ public class TextMarkerSimpleBuilder {
     TypeSystemDescription tsdesc = UIMAFramework.getXMLParser().parseTypeSystemDescription(
             new XMLInputSource(file));
     if (option.isResolveImports()) {
-      tsdesc.resolveImports();
+      tsdesc.resolveImports(rm);
     }
     return tsdesc;
   }

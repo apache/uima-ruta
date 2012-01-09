@@ -155,10 +155,13 @@ public class TextMarkerProjectUtils {
   }
 
   public static void setProjectDataPath(IProject project, IFolder folder) throws CoreException {
+//    TODO: what about referenced projects?
     project.setPersistentProperty(new QualifiedName("", "CDEdataPath"), folder.getLocation()
             .toPortableString());
-
   }
+  
+  
+  
 
   public static String getDefaultInputLocation() {
     return "input";
