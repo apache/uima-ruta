@@ -32,6 +32,7 @@ import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.textmarker.TextMarkerBlock;
 import org.apache.uima.textmarker.TextMarkerStream;
+import org.apache.uima.textmarker.UIMAConstants;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.resource.WordTableExpression;
 import org.apache.uima.textmarker.expression.string.StringExpression;
@@ -103,15 +104,15 @@ public class MarkTableAction extends AbstractTextMarkerAction {
       Type range = targetFeature.getRange();
       if (entryIndex != null && row.size() >= entryIndex) {
         String value = row.get(entryIndex - 1);
-        if (range.getName().equals("uima.cas.String")) {
+        if (range.getName().equals(UIMAConstants.TYPE_STRING)) {
           structure.setStringValue(targetFeature, value);
-        } else if (range.getName().equals("uima.cas.Integer")) {
+        } else if (range.getName().equals(UIMAConstants.TYPE_INTEGER)) {
           Integer integer = Integer.parseInt(value);
           structure.setIntValue(targetFeature, integer);
-        } else if (range.getName().equals("uima.cas.Double")) {
+        } else if (range.getName().equals(UIMAConstants.TYPE_DOUBLE)) {
           Double d = Double.parseDouble(value);
           structure.setDoubleValue(targetFeature, d);
-        } else if (range.getName().equals("uima.cas.Boolean")) {
+        } else if (range.getName().equals(UIMAConstants.TYPE_BOOLEAN)) {
           Boolean b = Boolean.parseBoolean(value);
           structure.setBooleanValue(targetFeature, b);
         } else {

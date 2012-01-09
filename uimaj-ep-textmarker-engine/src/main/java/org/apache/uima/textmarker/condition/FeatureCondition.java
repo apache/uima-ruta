@@ -22,6 +22,7 @@ package org.apache.uima.textmarker.condition;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerStream;
+import org.apache.uima.textmarker.UIMAConstants;
 import org.apache.uima.textmarker.expression.bool.BooleanExpression;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.string.StringExpression;
@@ -82,11 +83,11 @@ public class FeatureCondition extends AbstractTextMarkerCondition {
     } else if (numberExpr != null) {
       String range = featureByBaseName.getRange().getName();
       boolean result = false;
-      if (range.equals("uima.cas.Integer")) {
+      if (range.equals(UIMAConstants.TYPE_INTEGER)) {
         int value = annotation.getIntValue(featureByBaseName);
         int v = numberExpr.getIntegerValue(element.getParent());
         result = value == v;
-      } else if (range.equals("uima.cas.Double")) {
+      } else if (range.equals(UIMAConstants.TYPE_DOUBLE)) {
         double value = annotation.getDoubleValue(featureByBaseName);
         double v = numberExpr.getDoubleValue(element.getParent());
         result = value == v;

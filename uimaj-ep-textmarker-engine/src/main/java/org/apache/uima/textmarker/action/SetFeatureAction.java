@@ -26,6 +26,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerStream;
+import org.apache.uima.textmarker.UIMAConstants;
 import org.apache.uima.textmarker.expression.bool.BooleanExpression;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.string.StringExpression;
@@ -120,10 +121,10 @@ public class SetFeatureAction extends AbstractTextMarkerAction {
           annotationFS.setStringValue(featureByBaseName, string);
         } else if (numberExpr != null) {
           String range = featureByBaseName.getRange().getName();
-          if (range.equals("uima.cas.Integer")) {
+          if (range.equals(UIMAConstants.TYPE_INTEGER)) {
             int v = numberExpr.getIntegerValue(element.getParent());
             annotationFS.setIntValue(featureByBaseName, v);
-          } else if (range.equals("uima.cas.Double")) {
+          } else if (range.equals(UIMAConstants.TYPE_DOUBLE)) {
             double v = numberExpr.getDoubleValue(element.getParent());
             annotationFS.setDoubleValue(featureByBaseName, v);
           }

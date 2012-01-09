@@ -41,6 +41,11 @@ public final class TMTypeConstants {
   public static final int TM_TYPE_D = TM_TYPE_N | 2 << 19;
 
   /**
+   * float
+   */
+  public static final int TM_TYPE_F = TM_TYPE_N | 2 << 28;
+  
+  /**
    * string
    */
   public static final int TM_TYPE_S = 2 << 20;
@@ -100,6 +105,7 @@ public final class TMTypeConstants {
     typeStringOfInt.put(TM_TYPE_B, "BOOLEAN");
     typeStringOfInt.put(TM_TYPE_C, "CONDITION");
     typeStringOfInt.put(TM_TYPE_D, "DOUBLE");
+    typeStringOfInt.put(TM_TYPE_F, "FLOAT");
     typeStringOfInt.put(TM_TYPE_N, "NUMBER");
     typeStringOfInt.put(TM_TYPE_I, "INT");
     typeStringOfInt.put(TM_TYPE_S, "STRING");

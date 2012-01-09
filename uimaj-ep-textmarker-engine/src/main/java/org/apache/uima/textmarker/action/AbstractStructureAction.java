@@ -32,6 +32,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.textmarker.TextMarkerStream;
+import org.apache.uima.textmarker.UIMAConstants;
 import org.apache.uima.textmarker.expression.TextMarkerExpression;
 import org.apache.uima.textmarker.expression.bool.BooleanExpression;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
@@ -64,11 +65,11 @@ public abstract class AbstractStructureAction extends AbstractTextMarkerAction {
       Object valueObject = map.get(shortFName);
       Type range = targetFeature.getRange();
       if (valueObject != null) {
-        if (valueObject instanceof StringExpression && range.getName().equals("uima.cas.String")) {
+        if (valueObject instanceof StringExpression && range.getName().equals(UIMAConstants.TYPE_STRING)) {
           structure.setStringValue(targetFeature,
                   ((StringExpression) valueObject).getStringValue(element.getParent()));
         } else if (valueObject instanceof TypeExpression
-                && range.getName().equals("uima.cas.String")) {
+                && range.getName().equals(UIMAConstants.TYPE_STRING)) {
           TypeExpression type = (TypeExpression) valueObject;
           List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(matchedAnnotation,
                   type.getType(element.getParent()));
@@ -77,15 +78,15 @@ public abstract class AbstractStructureAction extends AbstractTextMarkerAction {
             structure.setStringValue(targetFeature, annotation.getCoveredText());
           }
         } else if (valueObject instanceof NumberExpression
-                && range.getName().equals("uima.cas.Integer")) {
+                && range.getName().equals(UIMAConstants.TYPE_INTEGER)) {
           structure.setIntValue(targetFeature,
                   ((NumberExpression) valueObject).getIntegerValue(element.getParent()));
         } else if (valueObject instanceof NumberExpression
-                && range.getName().equals("uima.cas.Double")) {
+                && range.getName().equals(UIMAConstants.TYPE_DOUBLE)) {
           structure.setDoubleValue(targetFeature,
                   ((NumberExpression) valueObject).getDoubleValue(element.getParent()));
         } else if (valueObject instanceof BooleanExpression
-                && range.getName().equals("uima.cas.Boolean")) {
+                && range.getName().equals(UIMAConstants.TYPE_BOOLEAN)) {
           structure.setBooleanValue(targetFeature,
                   ((BooleanExpression) valueObject).getBooleanValue(element.getParent()));
         } else if (valueObject instanceof TypeExpression) {

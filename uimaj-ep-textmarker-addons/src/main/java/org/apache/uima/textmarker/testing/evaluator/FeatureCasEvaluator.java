@@ -34,6 +34,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.apache.uima.textmarker.UIMAConstants;
 import org.apache.uima.textmarker.engine.TextMarkerEngine;
 
 public class FeatureCasEvaluator implements ICasEvaluator {
@@ -47,7 +48,7 @@ public class FeatureCasEvaluator implements ICasEvaluator {
     Type truePositiveType = run.getTypeSystem().getType(ICasEvaluator.TRUE_POSITIVE);
     Feature feature = falsePositiveType.getFeatureByBaseName(ICasEvaluator.ORIGINAL);
     Type annotationType = test.getAnnotationType();
-    Type stringType = run.getTypeSystem().getType("uima.cas.String");
+    Type stringType = run.getTypeSystem().getType(UIMAConstants.TYPE_STRING);
     Type basicType = run.getTypeSystem().getType(TextMarkerEngine.BASIC_TYPE);
     List<Type> allTypes = test.getTypeSystem().getProperlySubsumedTypes(annotationType);
     List<Type> types = new ArrayList<Type>();
@@ -208,7 +209,7 @@ public class FeatureCasEvaluator implements ICasEvaluator {
           }
         }
 
-        if ("uima.cas.String".equals(range.getName())) {
+        if (UIMAConstants.TYPE_STRING.equals(range.getName())) {
           String valueTest = fs.getFeatureValueAsString(feature);
           if (valueTest != null) {
             Feature feature2 = newFS.getType().getFeatureByBaseName(feature.getShortName());
@@ -245,7 +246,7 @@ public class FeatureCasEvaluator implements ICasEvaluator {
           for (Feature feature : features) {
             Type range = feature.getRange();
             if (typeSystem.subsumes(annotationType, range)
-                    || "uima.cas.String".equals(range.getName())) {
+                    || UIMAConstants.TYPE_STRING.equals(range.getName())) {
               result.add(fs);
               break;
             }
@@ -322,7 +323,7 @@ public class FeatureCasEvaluator implements ICasEvaluator {
 
       }
 
-      if ("uima.cas.String".equals(range.getName())) {
+      if (UIMAConstants.TYPE_STRING.equals(range.getName())) {
 
         String name = eachFeature1.getShortName();
 
