@@ -122,9 +122,17 @@ public void emitErrorMessage(String msg) {
 		return parent.getEnvironment().isVariable(name);
 	}
 	
-	public void setValue(TextMarkerBlock parent, String name, Object value) {
-		if(value != null) {
+	public void setValue(TextMarkerBlock parent, List<String> names, Object obj) {
+		for(String name : names) {
+			setValue(parent,name,obj);
+		}
+	}
+	
+	public void setValue(TextMarkerBlock parent, String name, Object obj) {
+		if(obj != null) {
+			Object value = parent.getEnvironment().getLiteralValue(name, obj);
 			parent.getEnvironment().setVariableValue(name, value);
+			parent.getEnvironment().setInitialVariableValue(name, value);
 		}
 	}
 	
@@ -247,36 +255,39 @@ statement returns [TextMarkerStatement stmt = null]
 	;
 
 variableDeclaration returns [TextMarkerStatement stmt = null]
+@init {
+List<String> vars = new ArrayList<String>();
+}
 	:
 	type = IntString
-	{!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {addVariable($blockDeclaration::env, id.getText(), type.getText());}
-		(COMMA {!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {addVariable($blockDeclaration::env, id.getText(), type.getText());}
-		 )*(ASSIGN_EQUAL value1 = numberExpression)? {setValue($blockDeclaration::env, id.getText(), value1);}  SEMI
+	{!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {vars.add(id.getText());addVariable($blockDeclaration::env, id.getText(), type.getText());}
+		(COMMA {!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {vars.add(id.getText());addVariable($blockDeclaration::env, id.getText(), type.getText());}
+		 )*(ASSIGN_EQUAL value1 = numberExpression)? {setValue($blockDeclaration::env, vars, value1);}  SEMI
 	|
 	type = DoubleString
-	{!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {addVariable($blockDeclaration::env, id.getText(), type.getText());}
-		(COMMA {!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {addVariable($blockDeclaration::env, id.getText(), type.getText());}
-		 )* (ASSIGN_EQUAL value2 = numberExpression)? {setValue($blockDeclaration::env, id.getText(), value2);} SEMI
+	{!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {vars.add(id.getText());addVariable($blockDeclaration::env, id.getText(), type.getText());}
+		(COMMA {!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {vars.add(id.getText());addVariable($blockDeclaration::env, id.getText(), type.getText());}
+		 )* (ASSIGN_EQUAL value2 = numberExpression)? {setValue($blockDeclaration::env, vars, value2);} SEMI
 	|
 	type = FloatString
-	{!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {addVariable($blockDeclaration::env, id.getText(), type.getText());}
-		(COMMA {!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {addVariable($blockDeclaration::env, id.getText(), type.getText());}
-		 )* (ASSIGN_EQUAL value2 = numberExpression)? {setValue($blockDeclaration::env, id.getText(), value2);} SEMI
+	{!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {vars.add(id.getText());addVariable($blockDeclaration::env, id.getText(), type.getText());}
+		(COMMA {!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {vars.add(id.getText());addVariable($blockDeclaration::env, id.getText(), type.getText());}
+		 )* (ASSIGN_EQUAL value2 = numberExpression)? {setValue($blockDeclaration::env, vars, value2);} SEMI
 	|
 	type = StringString
-	{!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {addVariable($blockDeclaration::env, id.getText(), type.getText());}
-		(COMMA {!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {addVariable($blockDeclaration::env, id.getText(), type.getText());}
-		 )* (ASSIGN_EQUAL value3 = stringExpression)? {setValue($blockDeclaration::env, id.getText(), value3);} SEMI
+	{!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {vars.add(id.getText());addVariable($blockDeclaration::env, id.getText(), type.getText());}
+		(COMMA {!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {vars.add(id.getText());addVariable($blockDeclaration::env, id.getText(), type.getText());}
+		 )* (ASSIGN_EQUAL value3 = stringExpression)? {setValue($blockDeclaration::env, vars, value3);} SEMI
 	|
 	type = BooleanString
-	{!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {addVariable($blockDeclaration::env, id.getText(), type.getText());}
-		(COMMA {!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {addVariable($blockDeclaration::env, id.getText(), type.getText());}
-		 )* (ASSIGN_EQUAL value4 = booleanExpression)? {setValue($blockDeclaration::env, id.getText(), value4);} SEMI
+	{!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {vars.add(id.getText());addVariable($blockDeclaration::env, id.getText(), type.getText());}
+		(COMMA {!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {vars.add(id.getText());addVariable($blockDeclaration::env, id.getText(), type.getText());}
+		 )* (ASSIGN_EQUAL value4 = booleanExpression)? {setValue($blockDeclaration::env, vars, value4);} SEMI
 	|
 	type = TypeString
-	{!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {addVariable($blockDeclaration::env, id.getText(), type.getText());}
-		(COMMA {!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {addVariable($blockDeclaration::env, id.getText(), type.getText());}
-		 )* (ASSIGN_EQUAL value5 = annotationType)? {setValue($blockDeclaration::env, id.getText(), value5);} SEMI
+	{!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {vars.add(id.getText());addVariable($blockDeclaration::env, id.getText(), type.getText());}
+		(COMMA {!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {vars.add(id.getText());addVariable($blockDeclaration::env, id.getText(), type.getText());}
+		 )* (ASSIGN_EQUAL value5 = annotationType)? {setValue($blockDeclaration::env, vars, value5);} SEMI
 	| 
 	type = WORDLIST 
 	{!isVariableOfType($blockDeclaration::env, input.LT(1).getText(), type.getText())}? 

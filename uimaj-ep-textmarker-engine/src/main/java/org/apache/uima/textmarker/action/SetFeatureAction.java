@@ -127,7 +127,7 @@ public class SetFeatureAction extends AbstractTextMarkerAction {
             double v = numberExpr.getDoubleValue(element.getParent());
             annotationFS.setDoubleValue(featureByBaseName, v);
           } else if (range.equals(UIMAConstants.TYPE_FLOAT)) {
-            float v = (float) numberExpr.getDoubleValue(element.getParent());
+            float v = (float) numberExpr.getFloatValue(element.getParent());
             annotationFS.setFloatValue(featureByBaseName, v);
           } else if (range.equals(UIMAConstants.TYPE_BYTE)) {
             byte v = (byte) numberExpr.getIntegerValue(element.getParent());

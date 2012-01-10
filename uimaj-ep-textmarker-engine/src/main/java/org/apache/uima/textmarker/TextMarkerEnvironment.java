@@ -36,13 +36,16 @@ import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
 import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
+import org.apache.uima.textmarker.expression.bool.BooleanExpression;
 import org.apache.uima.textmarker.expression.list.ListExpression;
 import org.apache.uima.textmarker.expression.list.SimpleBooleanListExpression;
 import org.apache.uima.textmarker.expression.list.SimpleNumberListExpression;
 import org.apache.uima.textmarker.expression.list.SimpleStringListExpression;
 import org.apache.uima.textmarker.expression.list.SimpleTypeListExpression;
+import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.resource.LiteralWordListExpression;
 import org.apache.uima.textmarker.expression.resource.LiteralWordTableExpression;
+import org.apache.uima.textmarker.expression.string.StringExpression;
 import org.apache.uima.textmarker.resource.CSVTable;
 import org.apache.uima.textmarker.resource.MultiTreeWordList;
 import org.apache.uima.textmarker.resource.TextMarkerTable;
@@ -77,6 +80,8 @@ public class TextMarkerEnvironment {
 
   private CAS cas;
 
+  private Map<String, Object> initializedVariables;
+
   public TextMarkerEnvironment(TextMarkerBlock owner) {
     super();
     this.owner = owner;
@@ -91,7 +96,7 @@ public class TextMarkerEnvironment {
     availableTypes.put("INT", Integer.class);
     availableTypes.put("STRING", String.class);
     availableTypes.put("DOUBLE", Double.class);
-    availableTypes.put("FLOAT", Double.class);
+    availableTypes.put("FLOAT", Float.class);
     availableTypes.put("BOOLEAN", Boolean.class);
     availableTypes.put("TYPE", Type.class);
     availableTypes.put("CONDITION", AbstractTextMarkerCondition.class);
@@ -112,6 +117,7 @@ public class TextMarkerEnvironment {
     availableListTypes.put("STRINGLIST", String.class);
     availableListTypes.put("TYPELIST", Type.class);
     resourcePaths = getResourcePaths();
+    initializedVariables = new HashMap<String, Object>();
   }
 
   public void initializeTypes(CAS cas) {
@@ -239,10 +245,14 @@ public class TextMarkerEnvironment {
     if (generic != null) {
       variableGenericTypes.put(name, generic);
     }
-    variableValues.put(name, getInitialValue(type));
+    variableValues.put(name, getInitialValue(name, type));
   }
 
-  private Object getInitialValue(Class<?> type) {
+  private Object getInitialValue(String name, Class<?> type) {
+    Object init = initializedVariables.get(name);
+    if (init != null) {
+      return init;
+    }
     if (Integer.class.equals(type)) {
       return 0;
     } else if (Double.class.equals(type)) {
@@ -262,7 +272,6 @@ public class TextMarkerEnvironment {
     } else if (List.class.equals(type)) {
       return new ArrayList<Object>();
     }
-
     return null;
   }
 
@@ -322,7 +331,7 @@ public class TextMarkerEnvironment {
     if (containsKey && result == null) {
       // TODO find the problem with the null values!
       // this might now work for word lists in another env.
-      return type.cast(getInitialValue(type));
+      return type.cast(getInitialValue(name, type));
     }
     if (result == annotationTypeDummy) {
       return type.cast(cas.getAnnotationType());
@@ -337,6 +346,42 @@ public class TextMarkerEnvironment {
 
   public Object getVariableValue(String name) {
     return getVariableValue(name, Object.class);
+  }
+
+  public Object getLiteralValue(String var, Object value) {
+    if (ownsVariable(var)) {
+      Class<?> clazz = variableTypes.get(var);
+      if (value instanceof NumberExpression) {
+        NumberExpression ne = (NumberExpression) value;
+        if (clazz.equals(Integer.class)) {
+          return ne.getIntegerValue(owner);
+        } else if (clazz.equals(Double.class)) {
+          return ne.getDoubleValue(owner);
+        } else if (clazz.equals(Float.class)) {
+          return ne.getFloatValue(owner);
+        } else if (clazz.equals(String.class)) {
+          return ne.getStringValue(owner);
+        }
+      } else if (clazz.equals(String.class) && value instanceof StringExpression) {
+        StringExpression se = (StringExpression) value;
+        return se.getStringValue(owner);
+      } else if (clazz.equals(Boolean.class) && value instanceof BooleanExpression) {
+        BooleanExpression be = (BooleanExpression) value;
+        return be.getBooleanValue(owner);
+      }
+      return null;
+    } else {
+      return owner.getParent().getEnvironment().getLiteralValue(var, value);
+    }
+  }
+
+  public void setInitialVariableValue(String var, Object value) {
+    if (ownsVariable(var)) {
+      initializedVariables.put(var, value);
+      setVariableValue(var, value);
+    } else if (owner.getParent() != null) {
+      owner.getParent().getEnvironment().setInitialVariableValue(var, value);
+    }
   }
 
   public void setVariableValue(String var, Object value) {
@@ -363,7 +408,7 @@ public class TextMarkerEnvironment {
         variableValues.put(var, list);
       } else {
         if (value == null) {
-          value = getInitialValue(clazz);
+          value = getInitialValue(var, clazz);
         }
         variableValues.put(var, value);
       }
@@ -394,7 +439,7 @@ public class TextMarkerEnvironment {
     Set<Entry<String, Object>> entrySet = variableValues.entrySet();
     for (Entry<String, Object> entry : entrySet) {
       String key = entry.getKey();
-      Object initialValue = getInitialValue(variableTypes.get(key));
+      Object initialValue = getInitialValue(key, variableTypes.get(key));
       if (initialValue != null) {
         // not for word lists
         entry.setValue(initialValue);
