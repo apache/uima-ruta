@@ -232,12 +232,8 @@ public class FilterManager {
               windowAnnotation);
       FSIterator<AnnotationFS> iterator = cas.createFilteredIterator(windowIt,
               createCurrentConstraint(false));
-      // FSIterator<AnnotationFS> iterator = cas.createFilteredIterator(basic,
-      // createCurrentConstraint(false));
       return iterator;
     } else {
-      // FSIterator<AnnotationFS> iterator = cas.createFilteredIterator(basic,
-      // createCurrentConstraint(false));
       FSIterator<AnnotationFS> iterator = cas.createFilteredIterator(
               cas.getAnnotationIndex(basicType).iterator(), createCurrentConstraint(false));
       return iterator;

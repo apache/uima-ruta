@@ -14,8 +14,8 @@ import org.apache.uima.jcas.cas.TOP_Type;
 import org.apache.uima.jcas.tcas.Annotation;
 
 /** 
- * Updated by JCasGen Mon Sep 26 19:07:28 CEST 2011
- * XML source: D:/work/workspace-uima3/uimaj-ep-textmarker-engine/desc/InternalTypeSystem.xml
+ * Updated by JCasGen Wed Jan 11 14:42:26 CET 2012
+ * XML source: D:/work/workspace-uima3/uimaj-ep-textmarker-engine/src/main/java/org/apache/uima/textmarker/engine/BasicTypeSystem.xml
  * @generated */
 public class TextMarkerBasic extends Annotation {
 
@@ -24,10 +24,6 @@ public class TextMarkerBasic extends Annotation {
   private final Map<Type, Set<AnnotationFS>> beginMap = new HashMap<Type, Set<AnnotationFS>>(10);
 
   private final Map<Type, Set<AnnotationFS>> endMap = new HashMap<Type, Set<AnnotationFS>>(10);
-
-  // private Map<String, AnnotationFS> typeMap = new HashMap<String, AnnotationFS>(7);
-
-  // private Map<String, AnnotationFS> instanceMap = new HashMap<String, AnnotationFS>(10);
 
   public Map<String, String> tags = new HashMap<String, String>(20);
 
@@ -39,24 +35,6 @@ public class TextMarkerBasic extends Annotation {
     return tags;
   }
 
-  // public void setAnnotation(String name, AnnotationFS annotation, boolean instance) {
-  // if (instance) {
-  // typeMap.put(name, annotation);
-  // instanceMap.put(name, annotation);
-  // } else if (!instanceMap.containsKey(name)) {
-  // typeMap.put(name, annotation);
-  // }
-  // }
-  //
-  // public void removeAnnotation(String name, boolean instance) {
-  // if (instance && instanceMap.containsKey(name)) {
-  // typeMap.remove(name);
-  // instanceMap.remove(name);
-  // } else if (!instance && !instanceMap.containsKey(name)) {
-  // typeMap.remove(name);
-  // }
-  // }
-
   public void addPartOf(Type type) {
     partOf.add(type);
   }
@@ -65,21 +43,9 @@ public class TextMarkerBasic extends Annotation {
     partOf.remove(type);
   }
 
-  // public boolean isAnchorOf(String name) {
-  // return typeMap.containsKey(name);
-  // }
-
-  // public AnnotationFS getType(String name) {
-  // return typeMap.get(name);
-  // }
-
   public boolean isPartOf(Type type) {
     return partOf.contains(type);
   }
-
-  // public Collection<AnnotationFS> getAnchors() {
-  // return typeMap.values();
-  // }
 
   public Set<AnnotationFS> getBeginAnchors(Type type) {
     return beginMap.get(type);
@@ -209,7 +175,7 @@ public class TextMarkerBasic extends Annotation {
     if (TextMarkerBasic_Type.featOkTst && ((TextMarkerBasic_Type)jcasType).casFeat_replacement == null)
       jcasType.jcas.throwFeatMissing("replacement", "org.apache.uima.textmarker.type.TextMarkerBasic");
     jcasType.ll_cas.ll_setStringValue(addr, ((TextMarkerBasic_Type)jcasType).casFeatCode_replacement, v);}    
-      public Map<Type, Set<AnnotationFS>> getEndMap() {
+          public Map<Type, Set<AnnotationFS>> getEndMap() {
     return endMap;
   }
 

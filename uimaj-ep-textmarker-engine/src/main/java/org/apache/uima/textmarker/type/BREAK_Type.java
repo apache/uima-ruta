@@ -11,7 +11,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
 
 /** 
- * Updated by JCasGen Tue Aug 09 16:26:13 CEST 2011
+ * Updated by JCasGen Wed Jan 11 14:42:26 CET 2012
  * @generated */
 public class BREAK_Type extends WS_Type {
   /** @generated */

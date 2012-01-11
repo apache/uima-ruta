@@ -10,8 +10,8 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 /** 
- * Updated by JCasGen Tue Aug 09 16:26:13 CEST 2011
- * XML source: D:/work/workspace-uima2/uimaj-ep-textmarker-engine/desc/BasicTypeSystem.xml
+ * Updated by JCasGen Wed Jan 11 14:42:26 CET 2012
+ * XML source: D:/work/workspace-uima3/uimaj-ep-textmarker-engine/src/main/java/org/apache/uima/textmarker/engine/BasicTypeSystem.xml
  * @generated */
 public class QUESTION extends SENTENCEEND {
   /** @generated

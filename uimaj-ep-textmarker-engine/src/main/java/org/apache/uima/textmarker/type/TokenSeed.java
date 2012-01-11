@@ -1,23 +1,24 @@
 
 
-/* First created by JCasGen Tue Aug 09 16:26:13 CEST 2011 */
+/* First created by JCasGen Wed Jan 11 14:42:22 CET 2012 */
 package org.apache.uima.textmarker.type;
 
-import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.JCas; 
 import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
 
+import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Tue Aug 09 16:26:13 CEST 2011
- * XML source: D:/work/workspace-uima2/uimaj-ep-textmarker-engine/desc/BasicTypeSystem.xml
+ * Updated by JCasGen Wed Jan 11 14:42:26 CET 2012
+ * XML source: D:/work/workspace-uima3/uimaj-ep-textmarker-engine/src/main/java/org/apache/uima/textmarker/engine/BasicTypeSystem.xml
  * @generated */
-public class BasicAnnotation extends TextMarkerBasic {
+public class TokenSeed extends Annotation {
   /** @generated
    * @ordered 
    */
-  public final static int typeIndexID = JCasRegistry.register(BasicAnnotation.class);
+  public final static int typeIndexID = JCasRegistry.register(TokenSeed.class);
   /** @generated
    * @ordered 
    */
@@ -27,23 +28,23 @@ public class BasicAnnotation extends TextMarkerBasic {
  
   /** Never called.  Disable default constructor
    * @generated */
-  protected BasicAnnotation() {}
+  protected TokenSeed() {}
     
   /** Internal - constructor used by generator 
    * @generated */
-  public BasicAnnotation(int addr, TOP_Type type) {
+  public TokenSeed(int addr, TOP_Type type) {
     super(addr, type);
     readObject();
   }
   
   /** @generated */
-  public BasicAnnotation(JCas jcas) {
+  public TokenSeed(JCas jcas) {
     super(jcas);
     readObject();   
   } 
 
   /** @generated */  
-  public BasicAnnotation(JCas jcas, int begin, int end) {
+  public TokenSeed(JCas jcas, int begin, int end) {
     super(jcas);
     setBegin(begin);
     setEnd(end);

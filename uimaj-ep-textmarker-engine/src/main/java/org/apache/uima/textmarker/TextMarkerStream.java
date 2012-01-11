@@ -20,11 +20,15 @@
 package org.apache.uima.textmarker;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.NavigableSet;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
@@ -36,31 +40,29 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.impl.FSIteratorImplBase;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.textmarker.rule.RuleElementMatch;
 import org.apache.uima.textmarker.type.TextMarkerAnnotation;
 import org.apache.uima.textmarker.type.TextMarkerBasic;
-import org.apache.uima.textmarker.type.TextMarkerFrame;
 
 public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
 
   private final CAS cas;
 
-  private final FSIterator<AnnotationFS> basicIt;
+  private FSIterator<AnnotationFS> basicIt;
 
   private FSIterator<AnnotationFS> currentIt;
 
   private AnnotationFS documentAnnotation;
 
-  private TextMarkerBasic firstBasic;
-
   private Type documentAnnotationType;
 
   private Type basicType;
 
-  private final List<TextMarkerBasic> basics;
+  private final TreeSet<TextMarkerBasic> basics;
 
   private TreeMap<Integer, TextMarkerBasic> beginAnchors;
 
@@ -76,98 +78,144 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
 
   private double anchoringFactor;
 
-  protected TextMarkerStream(CAS cas, FSIterator<AnnotationFS> basic,
-          FSIterator<AnnotationFS> current, Type basicType, FilterManager filter) {
+  protected TextMarkerStream(CAS cas, FSIterator<AnnotationFS> current, Type basicType,
+          FilterManager filter) {
     super();
     this.cas = cas;
     this.filter = filter;
     this.basicType = basicType;
     AnnotationFS additionalWindow = filter.getWindowAnnotation();
-    if (additionalWindow != null) {
-      this.basicIt = cas.getAnnotationIndex(basicType).subiterator(additionalWindow);
-    } else {
-      this.basicIt = basic;
-    }
-    if (current == null) {
-      // TODO use here a subiterator??
-      currentIt = filter.createFilteredIterator(cas, basicType);
-      // currentIt = cas.createFilteredIterator(basic, filter.getDefaultConstraint());
-    } else {
-      currentIt = current;
-    }
+    updateIterators(cas, basicType, filter, additionalWindow);
     // really an if? sub it of basic should fix this
     if (additionalWindow == null) {
       documentAnnotation = (DocumentAnnotation) getJCas().getDocumentAnnotationFs();
       documentAnnotationType = getCas().getDocumentAnnotation().getType();
       basicIt.moveToFirst();
-      if (basicIt.isValid()) {
-        firstBasic = (TextMarkerBasic) basicIt.get();
-      }
     } else {
       documentAnnotation = additionalWindow;
       documentAnnotationType = filter.getWindowType();
-      firstBasic = getFirstBasicInWindow(additionalWindow, basic);
     }
-    // really faster???
-    basics = new ArrayList<TextMarkerBasic>();
+    // // really faster???
+    // TODO this needs to be changed!! use collection of prior stream
+    org.apache.uima.textmarker.rule.AnnotationComparator comparator = new org.apache.uima.textmarker.rule.AnnotationComparator();
+    basics = new TreeSet<TextMarkerBasic>(comparator);
     beginAnchors = new TreeMap<Integer, TextMarkerBasic>();
     endAnchors = new TreeMap<Integer, TextMarkerBasic>();
     FSIterator<AnnotationFS> iterator = cas.getAnnotationIndex(basicType).subiterator(
             documentAnnotation);
     while (iterator.isValid()) {
-
       TextMarkerBasic e = (TextMarkerBasic) iterator.get();
       beginAnchors.put(e.getBegin(), e);
       endAnchors.put(e.getEnd(), e);
-
       basics.add(e);
       iterator.moveToNext();
     }
 
   }
 
-  public TextMarkerStream(CAS cas, FSIterator<AnnotationFS> basic, Type basicType,
-          FilterManager filter) {
-    this(cas, basic, null, basicType, filter);
+  private void updateIterators(AnnotationFS additionalWindow) {
+    updateIterators(cas, basicType, filter, additionalWindow);
   }
 
-  // public void addAnnotation(TextMarkerBasic anchor, AnnotationFS annotation) {
-  // if (anchor == null)
-  // return;
-  // Type type = annotation.getType();
-  // String name = type.getName();
-  // TypeSystem typeSystem = cas.getTypeSystem();
-  // Type parent = type;
-  // while (parent != null) {
-  // // anchor.setAnnotation(parent.getName(), annotation, parent == type);
-  // TextMarkerBasic beginAnchor = getBeginAnchor(annotation.getBegin());
-  // TextMarkerBasic endAnchor = getEndAnchor(annotation.getEnd());
-  // beginAnchor.addBegin(annotation);
-  // endAnchor.addEnd(annotation);
-  // parent = typeSystem.getParent(parent);
-  // }
-  // List<TextMarkerBasic> basicAnnotationsInWindow = getAllBasicsInWindow(annotation);
-  // for (TextMarkerBasic basic : basicAnnotationsInWindow) {
-  // basic.addPartOf(name);
-  // }
-  // }
+  private void updateIterators(CAS cas,  Type basicType,
+          FilterManager filter, AnnotationFS additionalWindow) {
+    if (additionalWindow != null) {
+      this.basicIt = cas.getAnnotationIndex(basicType).subiterator(additionalWindow);
+    } else {
+      this.basicIt = cas.getAnnotationIndex(basicType).iterator();
+    }
+    currentIt = filter.createFilteredIterator(cas, basicType);
+  }
+
+  public TextMarkerStream(CAS cas, Type basicType, FilterManager filter) {
+    this(cas, null, basicType, filter);
+  }
+
+  public void initalizeBasics() {
+    AnnotationIndex<AnnotationFS> annotationIndex = cas.getAnnotationIndex();
+    TreeSet<Integer> anchors = new TreeSet<Integer>();
+    for (AnnotationFS a : annotationIndex) {
+      anchors.add(a.getBegin());
+      anchors.add(a.getEnd());
+    }
+    while (anchors.size() >= 2) {
+      Integer first = anchors.pollFirst();
+      Integer second = anchors.first();
+      TextMarkerBasic newTMB = new TextMarkerBasic(getJCas(), first, second);
+      beginAnchors.put(first, newTMB);
+      endAnchors.put(second, newTMB);
+      basics.add(newTMB);
+      cas.addFsToIndexes(newTMB);
+    }
+    for (AnnotationFS a : annotationIndex) {
+      if (!a.getType().equals(basicType)) {
+        addAnnotation(a, false);
+      }
+    }
+    updateIterators(documentAnnotation);
+  }
 
   public void addAnnotation(AnnotationFS annotation) {
+    addAnnotation(annotation, false);
+  }
+
+  public void addAnnotation(AnnotationFS annotation, boolean update) {
     Type type = annotation.getType();
     TypeSystem typeSystem = cas.getTypeSystem();
     Type parent = type;
+    boolean modified = checkSpan(annotation);
+    if (modified) {
+      updateIterators(filter.getWindowAnnotation());
+    }
+    TextMarkerBasic beginAnchor = getBeginAnchor(annotation.getBegin());
+    TextMarkerBasic endAnchor = getEndAnchor(annotation.getEnd());
     while (parent != null) {
-      // anchor.setAnnotation(parent.getName(), annotation, parent == type);
-      TextMarkerBasic beginAnchor = getBeginAnchor(annotation.getBegin());
-      TextMarkerBasic endAnchor = getEndAnchor(annotation.getEnd());
       beginAnchor.addBegin(annotation, parent);
       endAnchor.addEnd(annotation, parent);
       parent = typeSystem.getParent(parent);
     }
-    List<TextMarkerBasic> basicAnnotationsInWindow = getAllBasicsInWindow(annotation);
+    Collection<TextMarkerBasic> basicAnnotationsInWindow = getAllBasicsInWindow(annotation);
     for (TextMarkerBasic basic : basicAnnotationsInWindow) {
       basic.addPartOf(type);
     }
+  }
+
+  private boolean checkSpan(AnnotationFS annotation) {
+    boolean result = false;
+    int begin = annotation.getBegin();
+    int end = annotation.getEnd();
+    TextMarkerBasic beginAnchor = getBeginAnchor(begin);
+    TextMarkerBasic endAnchor = getEndAnchor(end);
+    if (beginAnchor != null && endAnchor != null) {
+      result = false;
+    } else {
+      if (beginAnchor == null) {
+        result |= checkAnchor(begin);
+      }
+      if (endAnchor == null) {
+        result |= checkAnchor(end);
+      }
+    }
+    return result;
+  }
+
+  private boolean checkAnchor(int anchor) {
+    Entry<Integer, TextMarkerBasic> floorEntry = endAnchors.floorEntry(anchor);
+    Entry<Integer, TextMarkerBasic> ceilingEntry = endAnchors.ceilingEntry(anchor);
+    if (floorEntry != null && ceilingEntry != null) {
+      TextMarkerBasic floor = floorEntry.getValue();
+      TextMarkerBasic ceiling = ceilingEntry.getValue();
+      cas.removeFsFromIndexes(floor);
+      floor.setEnd(anchor);
+      AnnotationFS createAnnotation = cas.createAnnotation(basicType, anchor, ceiling.getBegin());
+      cas.addFsToIndexes(floor);
+      cas.addFsToIndexes(createAnnotation);
+      return true;
+    } else {
+      // TODO this should never happen! test it and remove the assert!
+      assert (false);
+    }
+    return false;
   }
 
   public void removeAnnotation(AnnotationFS annotationFS) {
@@ -176,7 +224,7 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
 
   public void removeAnnotation(AnnotationFS annotation, Type type) {
     TypeSystem typeSystem = cas.getTypeSystem();
-    List<TextMarkerBasic> basicAnnotationsInWindow = getAllBasicsInWindow(annotation);
+    Collection<TextMarkerBasic> basicAnnotationsInWindow = getAllBasicsInWindow(annotation);
     for (TextMarkerBasic basic : basicAnnotationsInWindow) {
       basic.removePartOf(type);
     }
@@ -193,30 +241,6 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     }
 
   }
-
-  // public void removeAnnotation(TextMarkerBasic anchor, Type type) {
-  // TypeSystem typeSystem = cas.getTypeSystem();
-  // String name = type.getName();
-  // AnnotationFS expandAnchor = expandAnchor(anchor, type, true);
-  // if (expandAnchor == null) {
-  // // there is no annotation to remove
-  // return;
-  // }
-  // List<TextMarkerBasic> basicAnnotationsInWindow = getAllBasicsInWindow(expandAnchor);
-  // for (TextMarkerBasic basic : basicAnnotationsInWindow) {
-  // basic.removePartOf(name);
-  // }
-  // Type parent = type;
-  // TextMarkerBasic beginAnchor = getBeginAnchor(annotation.getBegin());
-  // TextMarkerBasic endAnchor = getEndAnchor(annotation.getEnd());
-  // while (parent != null) {
-  // anchor.removeAnnotation(parent.getName(), parent == type);
-  // parent = typeSystem.getParent(parent);
-  // }
-  // if (!(expandAnchor instanceof TextMarkerBasic)) {
-  // cas.removeFsFromIndexes(expandAnchor);
-  // }
-  // }
 
   public FSIterator<AnnotationFS> getFilteredBasicIterator(FSMatchConstraint constraint) {
     ConstraintFactory cf = cas.getConstraintFactory();
@@ -239,7 +263,7 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public FSIterator<AnnotationFS> copy() {
-    return new TextMarkerStream(cas, basicIt.copy(), currentIt.copy(), basicType, filter);
+    return new TextMarkerStream(cas, currentIt.copy(), basicType, filter);
   }
 
   public AnnotationFS get() throws NoSuchElementException {
@@ -388,23 +412,28 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     return result;
   }
 
-  public List<TextMarkerBasic> getAllBasicsInWindow(AnnotationFS windowAnnotation) {
-    List<TextMarkerBasic> result = new ArrayList<TextMarkerBasic>();
-    if (windowAnnotation instanceof TextMarkerBasic) {
-      result.add((TextMarkerBasic) windowAnnotation);
-      return result;
-    } else if (windowAnnotation.getBegin() <= documentAnnotation.getBegin()
-            && windowAnnotation.getEnd() >= documentAnnotation.getEnd()) {
-      return basics;
-    }
-    TextMarkerFrame frame = new TextMarkerFrame(getJCas(), windowAnnotation.getBegin(),
-            windowAnnotation.getEnd());
-    FSIterator<AnnotationFS> iterator = cas.getAnnotationIndex(basicType).subiterator(frame);
-    while (iterator.isValid()) {
-      result.add((TextMarkerBasic) iterator.get());
-      iterator.moveToNext();
-    }
-    return result;
+  public Collection<TextMarkerBasic> getAllBasicsInWindow(AnnotationFS windowAnnotation) {
+
+    TextMarkerBasic beginAnchor = getBeginAnchor(windowAnnotation.getBegin());
+    TextMarkerBasic endAnchor = getEndAnchor(windowAnnotation.getEnd());
+    NavigableSet<TextMarkerBasic> subSet = basics.subSet(beginAnchor, true, endAnchor, true);
+    return subSet;
+    // List<TextMarkerBasic> result = new ArrayList<TextMarkerBasic>();
+    // if (windowAnnotation instanceof TextMarkerBasic) {
+    // result.add((TextMarkerBasic) windowAnnotation);
+    // return result;
+    // } else if (windowAnnotation.getBegin() <= documentAnnotation.getBegin()
+    // && windowAnnotation.getEnd() >= documentAnnotation.getEnd()) {
+    // return basics;
+    // }
+    // TextMarkerFrame frame = new TextMarkerFrame(getJCas(), windowAnnotation.getBegin(),
+    // windowAnnotation.getEnd());
+    // FSIterator<AnnotationFS> iterator = cas.getAnnotationIndex(basicType).subiterator(frame);
+    // while (iterator.isValid()) {
+    // result.add((TextMarkerBasic) iterator.get());
+    // iterator.moveToNext();
+    // }
+    // return result;
   }
 
   public List<TextMarkerBasic> getBasicsInWindow(AnnotationFS windowAnnotation) {
@@ -501,7 +530,7 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public TextMarkerBasic getFirstBasicOfAll() {
-    return firstBasic;
+    return basics.first();
   }
 
   public Type getDocumentAnnotationType() {

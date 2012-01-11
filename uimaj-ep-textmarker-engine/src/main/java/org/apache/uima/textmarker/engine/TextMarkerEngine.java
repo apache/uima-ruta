@@ -80,8 +80,6 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
 
   public static final String SEEDERS = "seeders";
 
-  public static final String USE_BASICS = "useBasics";
-
   public static final String REMOVE_BASICS = "removeBasics";
 
   public static final String SCRIPT_PATHS = "scriptPaths";
@@ -121,8 +119,6 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
   public static final String RELOAD_SCRIPT = "reloadScript";
 
   private String[] seeders;
-
-  private String useBasics;
 
   private Boolean createDebugInfo;
 
@@ -176,6 +172,8 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
 
   private boolean initialized = false;
 
+
+
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
@@ -183,7 +181,6 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
       aContext = context;
     }
     seeders = (String[]) aContext.getConfigParameterValue(SEEDERS);
-    useBasics = (String) aContext.getConfigParameterValue(USE_BASICS);
     removeBasics = (Boolean) aContext.getConfigParameterValue(REMOVE_BASICS);
     scriptPaths = (String[]) aContext.getConfigParameterValue(SCRIPT_PATHS);
     descriptorPaths = (String[]) aContext.getConfigParameterValue(DESCRIPTOR_PATHS);
@@ -384,14 +381,18 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
         filterTypes.add(type);
       }
     }
-
     FilterManager filter = new FilterManager(filterTypes, filterTags, cas);
 
     Type basicType = typeSystem.getType(BASIC_TYPE);
-    if (seeders != null) {
-      // not already contains that basics:
-      if (cas.getAnnotationIndex(basicType).size() <= 0) {
 
+    seedAnnotations(cas);
+    TextMarkerStream stream = new TextMarkerStream(cas, basicType, filter);
+    stream.initalizeBasics();
+    return stream;
+  }
+
+  private void seedAnnotations(CAS cas) throws AnalysisEngineProcessException {
+    if (seeders != null) {
         for (String seederClass : seeders) {
           Class<?> loadClass = null;
           try {
@@ -405,44 +406,16 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
           } catch (Exception e) {
             throw new AnalysisEngineProcessException(e);
           }
-
           try {
             TextMarkerAnnotationSeeder seeder = (TextMarkerAnnotationSeeder) newInstance;
             seeder.seed(cas.getDocumentText(), cas);
-
           } catch (Exception e) {
             throw new AnalysisEngineProcessException(e);
           }
         }
-
-      }
-
-    } else if (useBasics != null) {
-      // thats the case if predefined annotation should be used for inference
-      Type givenType = typeSystem.getType(useBasics);
-      FSIterator<AnnotationFS> iterator = cas.getAnnotationIndex(givenType).iterator();
-      while (iterator.isValid()) {
-        AnnotationFS fs = iterator.get();
-        AnnotationFS createAnnotation = cas.createAnnotation(basicType, fs.getBegin(), fs.getEnd());
-        cas.addFsToIndexes(createAnnotation);
-        iterator.moveToNext();
-      }
     }
-
-    FSIterator<AnnotationFS> it = cas.getAnnotationIndex(basicType).iterator();
-
-    TextMarkerStream stream = new TextMarkerStream(cas, it, basicType, filter);
-
-    // TODO find a better solution for this!! -> feature request open
-    FSIterator<AnnotationFS> others = cas.getAnnotationIndex().iterator();
-    while (others.isValid()) {
-      AnnotationFS a = (AnnotationFS) others.get();
-      stream.addAnnotation(a);
-      others.moveToNext();
-    }
-    return stream;
   }
-
+  
   private void initializeScript() throws AnalysisEngineProcessException {
     String scriptLocation = locate(mainScript, scriptPaths, ".tm");
     if (scriptLocation == null) {

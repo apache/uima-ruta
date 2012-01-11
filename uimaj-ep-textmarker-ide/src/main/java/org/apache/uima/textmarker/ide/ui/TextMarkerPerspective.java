@@ -32,13 +32,9 @@ public class TextMarkerPerspective implements IPerspectiveFactory {
 
   public static final String BASIC_STREAM = "org.apache.uima.textmarker.explain.basic";
 
-  public static final String PALETTE_VIEW = "org.apache.uima.cev.views.palette";
+  public static final String TYPE_BROWSER = "org.apache.uima.caseditor.browser";
 
-  public static final String TYPE_BROWSER = "org.apache.uima.cev.views.annotationBrowser";
-
-  public static final String SELECTION_VIEW = "org.apache.uima.cev.views.selection";
-
-  public static final String ANNOTATION_EDITOR = "org.apache.uima.cev.views.editor";
+  public static final String SELECTION_VIEW = "org.apache.uima.caseditor.selection";
 
   public static final String ANNOTATION_TESTING = "org.apache.uima.textmarker.testing.TestingView";
 
@@ -80,11 +76,9 @@ public class TextMarkerPerspective implements IPerspectiveFactory {
 
     layout.addShowViewShortcut(SCRIPT_EXPLORER);
     layout.addShowViewShortcut(BASIC_STREAM);
-    layout.addShowViewShortcut(PALETTE_VIEW);
     layout.addShowViewShortcut(TYPE_BROWSER);
     layout.addShowViewShortcut(SELECTION_VIEW);
     layout.addShowViewShortcut(TEXTRULER);
-    layout.addShowViewShortcut(ANNOTATION_EDITOR);
     layout.addShowViewShortcut(ANNOTATION_TESTING);
     layout.addShowViewShortcut(QUERY);
 
@@ -101,7 +95,6 @@ public class TextMarkerPerspective implements IPerspectiveFactory {
             editorArea);
     rightFolder.addView(IPageLayout.ID_OUTLINE);
     rightFolder.addView(TYPE_BROWSER);
-    rightFolder.addView(PALETTE_VIEW);
     rightFolder.addView(BASIC_STREAM);
 
     // Folder
@@ -119,7 +112,6 @@ public class TextMarkerPerspective implements IPerspectiveFactory {
     outputFolder.addView(IConsoleConstants.ID_CONSOLE_VIEW);
     outputFolder.addView(SELECTION_VIEW);
     outputFolder.addView(TEXTRULER);
-    outputFolder.addView(ANNOTATION_EDITOR);
     outputFolder.addView(ANNOTATION_TESTING);
     outputFolder.addView(QUERY);
 

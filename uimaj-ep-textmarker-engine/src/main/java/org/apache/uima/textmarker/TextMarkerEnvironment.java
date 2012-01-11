@@ -348,6 +348,36 @@ public class TextMarkerEnvironment {
     return getVariableValue(name, Object.class);
   }
 
+//  public Object getLiteralValue(String var, Object value) {
+//    if (ownsVariable(var)) {
+//      Class<?> clazz = variableTypes.get(var);
+//      if (value instanceof NumberExpression) {
+//        NumberExpression ne = (NumberExpression) value;
+//        if (clazz.equals(Integer.class)) {
+//          return ne.getIntegerValue(owner);
+//        } else if (clazz.equals(Double.class)) {
+//          return ne.getDoubleValue(owner);
+//        } else if (clazz.equals(Float.class)) {
+//          return ne.getFloatValue(owner);
+//        } else if (clazz.equals(String.class)) {
+//          return ne.getStringValue(owner);
+//        }
+//      } else if (clazz.equals(String.class) && value instanceof StringExpression) {
+//        StringExpression se = (StringExpression) value;
+//        return se.getStringValue(owner);
+//      } else if (clazz.equals(Boolean.class) && value instanceof BooleanExpression) {
+//        BooleanExpression be = (BooleanExpression) value;
+//        return be.getBooleanValue(owner);
+//      } else if(clazz.equals(TextMarkerWordList.class)||clazz.equals(TextMarkerTable.class) ) {
+//        // TODO: refactor this: lists are handled by setVariableValue... resources should be ae resources in future!
+//        return value;
+//      }
+//      return null;
+//    } else {
+//      return owner.getParent().getEnvironment().getLiteralValue(var, value);
+//    }
+//  }
+
   public Object getLiteralValue(String var, Object value) {
     if (ownsVariable(var)) {
       Class<?> clazz = variableTypes.get(var);
@@ -369,12 +399,34 @@ public class TextMarkerEnvironment {
         BooleanExpression be = (BooleanExpression) value;
         return be.getBooleanValue(owner);
       }
+      if (clazz.equals(TextMarkerWordList.class) && value instanceof LiteralWordListExpression) {
+        LiteralWordListExpression lle = (LiteralWordListExpression) value;
+        String path = lle.getText();
+        TextMarkerWordList wordList = getWordList(path);
+        return wordList;
+      } else if (clazz.equals(TextMarkerWordList.class)) {
+        TextMarkerWordList list = getWordList((String) value);
+        return list;
+      } else if (clazz.equals(TextMarkerTable.class) && value instanceof LiteralWordTableExpression) {
+        LiteralWordTableExpression lte = (LiteralWordTableExpression) value;
+        String path = lte.getText();
+        TextMarkerTable table = getWordTable(path);
+        return table;
+      } else if (clazz.equals(TextMarkerTable.class)) {
+        TextMarkerTable table = getWordTable((String) value);
+        return table;
+      } else if (clazz.equals(List.class) && value instanceof ListExpression) {
+        List list = getList((ListExpression) value);
+        return list;
+      } 
+      
       return null;
     } else {
       return owner.getParent().getEnvironment().getLiteralValue(var, value);
     }
   }
-
+  
+  
   public void setInitialVariableValue(String var, Object value) {
     if (ownsVariable(var)) {
       initializedVariables.put(var, value);
@@ -387,36 +439,48 @@ public class TextMarkerEnvironment {
   public void setVariableValue(String var, Object value) {
     if (ownsVariable(var)) {
       Class<?> clazz = variableTypes.get(var);
-      if (clazz.equals(TextMarkerWordList.class) && value instanceof LiteralWordListExpression) {
-        LiteralWordListExpression lle = (LiteralWordListExpression) value;
-        String path = lle.getText();
-        TextMarkerWordList wordList = getWordList(path);
-        variableValues.put(var, wordList);
-      } else if (clazz.equals(TextMarkerWordList.class)) {
-        TextMarkerWordList list = getWordList((String) value);
-        variableValues.put(var, list);
-      } else if (clazz.equals(TextMarkerTable.class) && value instanceof LiteralWordTableExpression) {
-        LiteralWordTableExpression lte = (LiteralWordTableExpression) value;
-        String path = lte.getText();
-        TextMarkerTable table = getWordTable(path);
-        variableValues.put(var, table);
-      } else if (clazz.equals(TextMarkerTable.class)) {
-        TextMarkerTable table = getWordTable((String) value);
-        variableValues.put(var, table);
-      } else if (clazz.equals(List.class) && value instanceof ListExpression) {
-        List list = getList((ListExpression) value);
-        variableValues.put(var, list);
-      } else {
         if (value == null) {
           value = getInitialValue(var, clazz);
         }
         variableValues.put(var, value);
-      }
     } else if (owner.getParent() != null) {
       owner.getParent().getEnvironment().setVariableValue(var, value);
     }
   }
 
+//  public void setVariableValue(String var, Object value) {
+//    if (ownsVariable(var)) {
+//      Class<?> clazz = variableTypes.get(var);
+//      if (clazz.equals(TextMarkerWordList.class) && value instanceof LiteralWordListExpression) {
+//        LiteralWordListExpression lle = (LiteralWordListExpression) value;
+//        String path = lle.getText();
+//        TextMarkerWordList wordList = getWordList(path);
+//        variableValues.put(var, wordList);
+//      } else if (clazz.equals(TextMarkerWordList.class)) {
+//        TextMarkerWordList list = getWordList((String) value);
+//        variableValues.put(var, list);
+//      } else if (clazz.equals(TextMarkerTable.class) && value instanceof LiteralWordTableExpression) {
+//        LiteralWordTableExpression lte = (LiteralWordTableExpression) value;
+//        String path = lte.getText();
+//        TextMarkerTable table = getWordTable(path);
+//        variableValues.put(var, table);
+//      } else if (clazz.equals(TextMarkerTable.class)) {
+//        TextMarkerTable table = getWordTable((String) value);
+//        variableValues.put(var, table);
+//      } else if (clazz.equals(List.class) && value instanceof ListExpression) {
+//        List list = getList((ListExpression) value);
+//        variableValues.put(var, list);
+//      } else {
+//        if (value == null) {
+//          value = getInitialValue(var, clazz);
+//        }
+//        variableValues.put(var, value);
+//      }
+//    } else if (owner.getParent() != null) {
+//      owner.getParent().getEnvironment().setVariableValue(var, value);
+//    }
+//  }
+  
   private List getList(ListExpression value) {
     if (value instanceof SimpleBooleanListExpression) {
       SimpleBooleanListExpression e = (SimpleBooleanListExpression) value;

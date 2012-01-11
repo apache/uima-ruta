@@ -12,7 +12,7 @@ import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.tcas.DocumentAnnotation_Type;
 
 /** 
- * Updated by JCasGen Tue Aug 09 16:26:13 CEST 2011
+ * Updated by JCasGen Wed Jan 11 14:42:26 CET 2012
  * @generated */
 public class Document_Type extends DocumentAnnotation_Type {
   /** @generated */

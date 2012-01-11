@@ -41,18 +41,17 @@ import org.antlr.runtime.RecognizerSharedState;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.TokenStream;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-
-import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
-import org.apache.uima.textmarker.action.ActionFactory;
-import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
-import org.apache.uima.textmarker.condition.ConditionFactory;
 import org.apache.uima.textmarker.TextMarkerAutomataBlock;
+import org.apache.uima.textmarker.TextMarkerAutomataFactory;
 import org.apache.uima.textmarker.TextMarkerBlock;
 import org.apache.uima.textmarker.TextMarkerModule;
 import org.apache.uima.textmarker.TextMarkerScriptBlock;
 import org.apache.uima.textmarker.TextMarkerScriptFactory;
-import org.apache.uima.textmarker.TextMarkerAutomataFactory;
 import org.apache.uima.textmarker.TextMarkerStatement;
+import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
+import org.apache.uima.textmarker.action.ActionFactory;
+import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
+import org.apache.uima.textmarker.condition.ConditionFactory;
 import org.apache.uima.textmarker.expression.ExpressionFactory;
 import org.apache.uima.textmarker.expression.TextMarkerExpression;
 import org.apache.uima.textmarker.expression.bool.BooleanExpression;
@@ -75,14 +74,6 @@ import org.apache.uima.textmarker.rule.RuleElementIsolator;
 import org.apache.uima.textmarker.rule.TextMarkerRule;
 import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.rule.quantifier.RuleElementQuantifier;
-
-
-import org.antlr.runtime.*;
-import java.util.Stack;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
 
 @SuppressWarnings({"all", "warnings", "unchecked"})
 public class TextMarkerParser extends Parser {

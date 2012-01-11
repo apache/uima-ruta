@@ -10,8 +10,8 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 /** 
- * Updated by JCasGen Mon Sep 26 19:07:28 CEST 2011
- * XML source: D:/work/workspace-uima3/uimaj-ep-textmarker-engine/desc/InternalTypeSystem.xml
+ * Updated by JCasGen Wed Jan 11 14:42:26 CET 2012
+ * XML source: D:/work/workspace-uima3/uimaj-ep-textmarker-engine/src/main/java/org/apache/uima/textmarker/engine/BasicTypeSystem.xml
  * @generated */
 public class DebugMatchedRuleMatch extends DebugRuleMatch {
   /** @generated

@@ -18,13 +18,13 @@
  */
 
 
-package org.apache.uima.textmarker.scanner;
+package org.apache.uima.textmarker.seed;
 import java.util.*;
 import java.util.regex.*;
 
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.JCas;
 
-import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.type.AMP;
 import org.apache.uima.textmarker.type.BREAK;
 import org.apache.uima.textmarker.type.CAP;
@@ -45,27 +45,8 @@ import org.apache.uima.textmarker.type.SW;
 %%
 
 %{
-    private int number = 0;
-
-    private Map<String,String> tags = new HashMap<String,String>();
     private JCas cas;
-    private final static Pattern tagPattern =
-        Pattern.compile("</?(\\w+)([^>]*)>");
-    private String splitAndPutInMap(String tag){
-        Matcher m = tagPattern.matcher(tag);
-        if(m.find()){
-            String name = m.group(1).toLowerCase();
-            tags.put(name,m.group(2));
-            return name;
-        } else {
-            return "!";
-        }
-    }   
-    private void removeTag(String closingTag){
-        String cTag = closingTag.replace("</","");
-        cTag = cTag.replace(">","").toLowerCase();
-        tags.remove(cTag.trim());
-    }
+        
     public void setJCas(JCas cas) {
         this.cas = cas;
     }
@@ -74,7 +55,7 @@ import org.apache.uima.textmarker.type.SW;
 %unicode
 %line
 %char
-%type TextMarkerBasic
+%type AnnotationFS
 %class SeedLexer
 
 ALPHA=[A-Za-z]
@@ -89,38 +70,34 @@ SPACE=[ \t]
 <YYINITIAL> {
     
     \<[/][!][^>]*> {
-                removeTag(yytext());
                 MARKUP t = new MARKUP(cas);
                 t.setBegin(yychar);
                 t.setEnd(yychar + yytext().length());
-                t.setTags(tags);
+                
                 return t;
     }
                     
     \<[!][^>]*> {
-                String tag = splitAndPutInMap(yytext());
                 MARKUP t = new MARKUP(cas);
                 t.setBegin(yychar);
                 t.setEnd(yychar + yytext().length());
-                t.setTags(tags);
+                
                 return t;
     }
     
     \<[/][A-Za-z][A-Za-z0-9]*[^>]*> {
-                removeTag(yytext());
                 MARKUP t = new MARKUP(cas);
                 t.setBegin(yychar);
                 t.setEnd(yychar + yytext().length());
-                t.setTags(tags);
+                
                 return t;
     }
                     
     \<[A-Za-z][A-Za-z0-9]*[^>]*> {
-                String tag = splitAndPutInMap(yytext());
                 MARKUP t = new MARKUP(cas);
                 t.setBegin(yychar);
                 t.setEnd(yychar + yytext().length());
-                t.setTags(tags);
+                
                 return t;
     }
                 
@@ -128,7 +105,7 @@ SPACE=[ \t]
                 NBSP t = new NBSP(cas);
                 t.setBegin(yychar);
                 t.setEnd(yychar + yytext().length());
-                t.setTags(tags);
+                
                 return t;
     }
 
@@ -136,7 +113,7 @@ SPACE=[ \t]
                 AMP t = new AMP(cas);
                 t.setBegin(yychar);
                 t.setEnd(yychar + yytext().length());
-                t.setTags(tags);
+                
                 return t;
     }
 
@@ -144,7 +121,7 @@ SPACE=[ \t]
                 BREAK t = new BREAK(cas);
                 t.setBegin(yychar);
                 t.setEnd(yychar + yytext().length());
-                t.setTags(tags);
+                
                 return t;
     }
 
@@ -152,7 +129,7 @@ SPACE=[ \t]
                 SPACE t = new SPACE(cas);
                 t.setBegin(yychar);
                 t.setEnd(yychar + yytext().length());
-                t.setTags(tags);
+                
                 return t;
     }
 
@@ -160,7 +137,7 @@ SPACE=[ \t]
                 COLON t = new COLON(cas);
                 t.setBegin(yychar);
                 t.setEnd(yychar + yytext().length());
-                t.setTags(tags);
+                
                 return t;
     }
 
@@ -168,7 +145,7 @@ SPACE=[ \t]
                 COMMA t = new COMMA(cas);
                 t.setBegin(yychar);
                 t.setEnd(yychar + yytext().length());
-                t.setTags(tags);
+                
                 return t;
     }
 
@@ -176,7 +153,7 @@ SPACE=[ \t]
                 PERIOD t = new PERIOD(cas);
                 t.setBegin(yychar);
                 t.setEnd(yychar + yytext().length());
-                t.setTags(tags);
+                
                 return t;
     }
 
@@ -185,7 +162,7 @@ SPACE=[ \t]
                 EXCLAMATION t = new EXCLAMATION(cas);
                 t.setBegin(yychar);
                 t.setEnd(yychar + yytext().length());
-                t.setTags(tags);
+                
                 return t;    
     }
 
@@ -193,7 +170,7 @@ SPACE=[ \t]
                 SEMICOLON t = new SEMICOLON(cas);
                 t.setBegin(yychar);
                 t.setEnd(yychar + yytext().length());
-                t.setTags(tags);
+                
                 return t;
     }
 
@@ -201,7 +178,7 @@ SPACE=[ \t]
                 QUESTION t = new QUESTION(cas);
                 t.setBegin(yychar);
                 t.setEnd(yychar + yytext().length());
-                t.setTags(tags);
+                
                 return t;
     }
 
@@ -209,7 +186,7 @@ SPACE=[ \t]
                 SW t = new SW(cas);
                 t.setBegin(yychar);
                 t.setEnd(yychar + yytext().length());
-                t.setTags(tags);
+                
                 return t;
     }
 
@@ -217,7 +194,7 @@ SPACE=[ \t]
                 CW t = new CW(cas);
                 t.setBegin(yychar);
                 t.setEnd(yychar + yytext().length());
-                t.setTags(tags);
+                
                 return t;
     }
 
@@ -225,7 +202,7 @@ SPACE=[ \t]
                 CAP t = new CAP(cas);
                 t.setBegin(yychar);
                 t.setEnd(yychar + yytext().length());
-                t.setTags(tags);
+                
                 return t;
     }
 
@@ -233,7 +210,7 @@ SPACE=[ \t]
                 NUM t = new NUM(cas);
                 t.setBegin(yychar);
                 t.setEnd(yychar + yytext().length());
-                t.setTags(tags);
+                
                 return t;
     }
 
@@ -241,7 +218,7 @@ SPACE=[ \t]
                 SPECIAL t = new SPECIAL(cas);
                 t.setBegin(yychar);
                 t.setEnd(yychar + yytext().length());
-                t.setTags(tags);
+                
                 return t;
     }
 
