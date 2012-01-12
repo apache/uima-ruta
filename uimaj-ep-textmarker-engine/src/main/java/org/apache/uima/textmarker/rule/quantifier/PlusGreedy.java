@@ -47,7 +47,7 @@ public class PlusGreedy implements RuleElementQuantifier {
     }
     for (RuleElementMatch match : matches) {
       allEmpty &= match.getTextsMatched().isEmpty();
-      result &= match.getTextsMatched().isEmpty() || match.matched();
+      result &=  match.matched();
     }
     if (!result && matches.size() > 1) {
       matches.remove(matches.size() - 1);

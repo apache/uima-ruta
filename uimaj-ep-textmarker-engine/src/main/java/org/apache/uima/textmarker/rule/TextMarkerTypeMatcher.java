@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.TreeSet;
 
 import org.apache.uima.cas.ConstraintFactory;
-import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.FSMatchConstraint;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
@@ -51,7 +50,8 @@ public class TextMarkerTypeMatcher implements TextMarkerMatcher {
 
   public Collection<AnnotationFS> getMatchingAnnotations(TextMarkerStream stream,
           TextMarkerBlock parent) {
-
+    // TODO what about the matching direction?
+    // TODO this comparator can ignore some annotations?! same offset same type
     Collection<AnnotationFS> result = new TreeSet<AnnotationFS>(comparator);
     List<Type> types = getTypes(parent, stream);
     for (Type type : types) {
@@ -64,19 +64,18 @@ public class TextMarkerTypeMatcher implements TextMarkerMatcher {
         result.add(stream.getDocumentAnnotation());
 
       } else {
-        FSIterator<AnnotationFS> iterator = stream.getFilter().createFilteredIterator(
-                stream.getCas(), type);
-
-        // AnnotationIndex<AnnotationFS> annotationIndex = stream.getCas().getAnnotationIndex(type);
-        // stream.getCas().createFilteredIterator(annotationIndex.iterator(),
-        // stream.getFilter().createFilteredIterator(null, stream, type));
-        // FSMatchConstraint anchorConstraint = createAnchorConstraints(parent, stream);
-        // FSIterator<AnnotationFS> iterator = stream.getFilteredBasicIterator(anchorConstraint);
-        // iterator.moveToFirst();
-        while (iterator.isValid()) {
-          AnnotationFS annotation = iterator.get();
-          result.add(annotation);
-          iterator.moveToNext();
+        stream.moveToFirst();
+        while (stream.isValid()) {
+          TextMarkerBasic nextBasic = (TextMarkerBasic) stream.get();
+          List<Type> allTypes = stream.getCas().getTypeSystem().getProperlySubsumedTypes(type);
+          allTypes.add(type);
+          for (Type eachType : allTypes) {
+            Collection<AnnotationFS> beginAnchors = nextBasic.getBeginAnchors(eachType);
+            if (beginAnchors != null) {
+              result.addAll(beginAnchors);
+            }
+          }
+          stream.moveToNext();
         }
       }
     }
@@ -91,12 +90,10 @@ public class TextMarkerTypeMatcher implements TextMarkerMatcher {
     stream.moveToNext();
     if (stream.isValid()) {
       TextMarkerBasic nextBasic = (TextMarkerBasic) stream.get();
-      // TODO also child types!
       List<Type> reTypes = ruleElement.getMatcher().getTypes(parent, stream);
 
       Collection<AnnotationFS> anchors = new TreeSet<AnnotationFS>(new AnnotationComparator());
       for (Type eachMatchType : reTypes) {
-
         List<Type> types = stream.getCas().getTypeSystem().getProperlySubsumedTypes(eachMatchType);
         types.add(eachMatchType);
         for (Type eachType : types) {

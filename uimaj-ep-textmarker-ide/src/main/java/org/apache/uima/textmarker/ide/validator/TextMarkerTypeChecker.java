@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
+import java.util.TreeSet;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.resource.ResourceManager;
@@ -485,7 +486,7 @@ public class TextMarkerTypeChecker implements IBuildParticipant, IBuildParticipa
       System.err.println("ERROR: Failed to get BasicTypeSystem!! " + this.toString());
     }
     if (types == null) {
-      types = new HashSet<String>();
+      types = new TreeSet<String>();
     }
 
     // traverse:
@@ -511,7 +512,7 @@ public class TextMarkerTypeChecker implements IBuildParticipant, IBuildParticipa
   }
 
   public Set<String> getShortTypeNames(Set<String> types) {
-    Set<String> result = new HashSet<String>();
+    Set<String> result = new TreeSet<String>();
     for (String string : types) {
       String[] nameSpace = string.split("[.]");
       result.add(nameSpace[nameSpace.length - 1]);
@@ -539,7 +540,7 @@ public class TextMarkerTypeChecker implements IBuildParticipant, IBuildParticipa
       fileExtended += "/";
     }
     fileExtended = fileExtended.substring(0, fileExtended.length() - 1) + ".xml";
-    Set<String> types = new HashSet<String>();
+    Set<String> types = new TreeSet<String>();
     for (IFolder folder : folders) {
       types.addAll(getTypes(folder, fileExtended));
     }

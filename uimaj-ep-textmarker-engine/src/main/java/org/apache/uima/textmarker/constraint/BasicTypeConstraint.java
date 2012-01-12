@@ -64,7 +64,7 @@ public class BasicTypeConstraint implements FSTypeConstraint {
       TextMarkerBasic tmb = (TextMarkerBasic) fs;
       if (types != null) {
         for (Type each : types) {
-          result |= tmb.beginsWith(each) && tmb.endsWith(each);
+          result |= tmb.isPartOf(each)|| tmb.beginsWith(each) || tmb.endsWith(each);
           if (result)
             break;
         }
