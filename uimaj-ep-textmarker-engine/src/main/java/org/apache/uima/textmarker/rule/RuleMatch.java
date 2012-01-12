@@ -206,6 +206,14 @@ public class RuleMatch {
     copy.setDelegateApply(newDelegateApply);
     return copy;
   }
+  
+  public void update(ComposedRuleElementMatch extendedContainerMatch) {
+    if (extendedContainerMatch.getContainerMatch() == null) {
+      setRootMatch(extendedContainerMatch);
+    } else {
+      rootMatch.update(extendedContainerMatch);
+    }
+  }
 
   public void setDelegateApply(Map<AbstractTextMarkerAction, ScriptApply> delegateApply) {
     this.delegateApply = delegateApply;

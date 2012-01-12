@@ -56,13 +56,15 @@ public class TextMarkerRuleElement extends AbstractRuleElement {
           InferenceCrowd crowd) {
     Collection<AnnotationFS> anchors = getAnchors(stream);
 
-    boolean useAlternatives = entryPoint == null; // anchors.size() > 1;
+    boolean useAlternatives = entryPoint == null && !(anchors.size() == 1);
     for (AnnotationFS eachAnchor : anchors) {
       ComposedRuleElementMatch extendedContainerMatch = containerMatch;
       RuleMatch extendedMatch = ruleMatch;
       if (useAlternatives) {
         extendedContainerMatch = containerMatch.copy();
         extendedMatch = ruleMatch.copy(extendedContainerMatch);
+      } else {
+        extendedMatch.update(extendedContainerMatch);
       }
       doMatch(eachAnchor, extendedMatch, extendedContainerMatch, true, stream, crowd);
       if (extendedMatch.matched()) {
@@ -121,13 +123,15 @@ public class TextMarkerRuleElement extends AbstractRuleElement {
         stepbackMatch(after, annotation, ruleMatch, ruleApply, containerMatch, sideStepOrigin,
                 stream, crowd, entryPoint);
       }
-      boolean useAlternatives = entryPoint == null; // nextAnnotations.size() > 1;
+      boolean useAlternatives = entryPoint == null && !(nextAnnotations.size() == 1);
       for (AnnotationFS eachAnchor : nextAnnotations) {
         ComposedRuleElementMatch extendedContainerMatch = containerMatch;
         RuleMatch extendedMatch = ruleMatch;
         if (useAlternatives) {
           extendedContainerMatch = containerMatch.copy();
           extendedMatch = ruleMatch.copy(extendedContainerMatch);
+        } else {
+          extendedMatch.update(extendedContainerMatch);
         }
 
         doMatch(eachAnchor, extendedMatch, extendedContainerMatch, false, stream, crowd);

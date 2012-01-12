@@ -168,6 +168,29 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
     return copy;
   }
 
+  public void update(ComposedRuleElementMatch extendedContainerMatch) {
+    for (Entry<RuleElement, List<RuleElementMatch>> entry : innerMatches.entrySet()) {
+      RuleElement key = entry.getKey();
+      List<RuleElementMatch> value = entry.getValue();
+      if (key.equals(extendedContainerMatch.getRuleElement())) {
+        extendedContainerMatch.setContainerMatch(this);
+        if (value != null) {
+          value.set(value.size() - 1, extendedContainerMatch);
+        }
+      } else {
+        if (value != null) {
+          for (RuleElementMatch each : value) {
+            if (each instanceof ComposedRuleElementMatch) {
+              ((ComposedRuleElementMatch)each).update(extendedContainerMatch);
+            }
+          }
+        } 
+      }
+    }
+  }
+
+  
+  
   public String toString() {
     return "CREM" + innerMatches.toString();
   }
@@ -194,4 +217,5 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
 
   }
 
+ 
 }
