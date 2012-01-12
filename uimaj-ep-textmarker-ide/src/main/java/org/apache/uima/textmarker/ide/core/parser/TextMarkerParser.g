@@ -831,7 +831,6 @@ condition returns [TextMarkerCondition result = null]
 	| c = conditionCount
 	| c = conditionCurrentCount
 	| c = conditionInList
-	| c = conditionIsInTag
 	| c = conditionLast
 	| c = conditionMofN
 	| c = conditionNear
@@ -964,23 +963,7 @@ conditionInList returns [TextMarkerCondition cond = null]
     else {cond = ConditionFactory.createCondition(name, list2, dist, rel);};}
     RPAREN
     ;
-    
-    
-conditionIsInTag returns [TextMarkerCondition cond = null]
-@init {
-List<Expression> list1 = new ArrayList<Expression>();
-List<Expression> list2 = new ArrayList<Expression>();
-}
-    :
-    name = ISINTAG LPAREN id = stringExpression (COMMA id1 = stringExpression ASSIGN_EQUAL id2 = stringExpression {list1.add(id1);list2.add(id2);})* 
-    {List exprs = new ArrayList();
-    exprs.add(id);
-    exprs.addAll(list1);
-    exprs.addAll(list2);
-    cond = ConditionFactory.createCondition(name, exprs);}  
-    RPAREN
-    ;
-        
+            
 conditionLast returns [TextMarkerCondition cond = null]
     :   
     name = LAST LPAREN type = typeExpression 
@@ -1135,9 +1118,7 @@ action returns [TextMarkerAction result = null]
 	| a = actionMarkFast
 	| a = actionMarkLast
 	| a = actionReplace
-	| a = actionRetainMarkup
 	| a = actionRetainType
-	| a = actionFilterMarkup
 	| a = actionFilterType
 	| a = actionCreate
 	| a = actionFill
@@ -1380,18 +1361,6 @@ actionReplace returns [TextMarkerAction action = null]
     RPAREN
     ;
 
-actionRetainMarkup returns [TextMarkerAction action = null]
-@init {
-List<Expression> list = new ArrayList<Expression>();
-}
-    :   
-    name = RETAINMARKUP (LPAREN id = stringExpression {list.add(id);} 
-    {action = ActionFactory.createAction(name, list);}
-    (COMMA id = stringExpression {list.add(id);})* 
-    {action = ActionFactory.createAction(name, list);}
-    RPAREN)?
-    {action = ActionFactory.createAction(name, list);}
-    ;
         
 actionRetainType returns [TextMarkerAction action = null]
 @init {
@@ -1406,18 +1375,6 @@ List<Expression> list = new ArrayList<Expression>();
     {action = ActionFactory.createAction(name, list);}
     ;
     
-actionFilterMarkup returns [TextMarkerAction action = null]
-@init {
-List<Expression> list = new ArrayList<Expression>();
-}
-    :   
-    name = FILTERMARKUP (LPAREN id = stringExpression {list.add(id);} 
-    {action = ActionFactory.createAction(name, list);}
-    (COMMA id = stringExpression {list.add(id);})* 
-    {action = ActionFactory.createAction(name, list);}
-    RPAREN)?
-    {action = ActionFactory.createAction(name, list);}
-    ;
 
 actionFilterType returns [TextMarkerAction action = null]
 @init {
