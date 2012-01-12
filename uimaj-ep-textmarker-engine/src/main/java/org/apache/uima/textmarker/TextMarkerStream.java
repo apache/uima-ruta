@@ -132,20 +132,23 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public void initalizeBasics() {
+    AnnotationIndex<AnnotationFS> basicIndex = cas.getAnnotationIndex(basicType);
     AnnotationIndex<AnnotationFS> annotationIndex = cas.getAnnotationIndex();
-    TreeSet<Integer> anchors = new TreeSet<Integer>();
-    for (AnnotationFS a : annotationIndex) {
-      anchors.add(a.getBegin());
-      anchors.add(a.getEnd());
-    }
-    while (anchors.size() >= 2) {
-      Integer first = anchors.pollFirst();
-      Integer second = anchors.first();
-      TextMarkerBasic newTMB = new TextMarkerBasic(getJCas(), first, second);
-      beginAnchors.put(first, newTMB);
-      endAnchors.put(second, newTMB);
-      basics.add(newTMB);
-      cas.addFsToIndexes(newTMB);
+    if (basicIndex.size() == 0) {
+      TreeSet<Integer> anchors = new TreeSet<Integer>();
+      for (AnnotationFS a : annotationIndex) {
+        anchors.add(a.getBegin());
+        anchors.add(a.getEnd());
+      }
+      while (anchors.size() >= 2) {
+        Integer first = anchors.pollFirst();
+        Integer second = anchors.first();
+        TextMarkerBasic newTMB = new TextMarkerBasic(getJCas(), first, second);
+        beginAnchors.put(first, newTMB);
+        endAnchors.put(second, newTMB);
+        basics.add(newTMB);
+        cas.addFsToIndexes(newTMB);
+      }
     }
     for (AnnotationFS a : annotationIndex) {
       if (!a.getType().equals(basicType)) {

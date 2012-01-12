@@ -39,7 +39,6 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
@@ -168,7 +167,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
 
   private boolean initialized = false;
 
-
+  private List<Type> seedTypes;
 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
@@ -259,12 +258,16 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
 
     if (removeBasics) {
       List<AnnotationFS> toRemove = new ArrayList<AnnotationFS>();
-      Type type = cas.getTypeSystem().getType(BASIC_TYPE);
-      FSIterator<AnnotationFS> iterator = cas.getAnnotationIndex(type).iterator();
-      while (iterator.isValid()) {
-        AnnotationFS fs = iterator.get();
+      Type basicType = cas.getTypeSystem().getType(BASIC_TYPE);
+      AnnotationIndex<AnnotationFS> basicIndex = cas.getAnnotationIndex(basicType);
+      for (AnnotationFS fs : basicIndex) {
         toRemove.add(fs);
-        iterator.moveToNext();
+      }
+      for (Type seedType : seedTypes) {
+        AnnotationIndex<AnnotationFS> seedIndex = cas.getAnnotationIndex(seedType);
+        for (AnnotationFS fs : seedIndex) {
+          toRemove.add(fs);
+        }
       }
       for (AnnotationFS annotationFS : toRemove) {
         cas.removeFsFromIndexes(annotationFS);
@@ -374,37 +377,39 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     }
     FilterManager filter = new FilterManager(filterTypes, cas);
     Type basicType = typeSystem.getType(BASIC_TYPE);
-    seedAnnotations(cas);
+    seedTypes = seedAnnotations(cas);
     TextMarkerStream stream = new TextMarkerStream(cas, basicType, filter);
     stream.initalizeBasics();
     return stream;
   }
 
-  private void seedAnnotations(CAS cas) throws AnalysisEngineProcessException {
+  private List<Type> seedAnnotations(CAS cas) throws AnalysisEngineProcessException {
+    List<Type> result = new ArrayList<Type>();
     if (seeders != null) {
-        for (String seederClass : seeders) {
-          Class<?> loadClass = null;
-          try {
-            loadClass = Class.forName(seederClass);
-          } catch (ClassNotFoundException e) {
-            throw new AnalysisEngineProcessException(e);
-          }
-          Object newInstance = null;
-          try {
-            newInstance = loadClass.newInstance();
-          } catch (Exception e) {
-            throw new AnalysisEngineProcessException(e);
-          }
-          try {
-            TextMarkerAnnotationSeeder seeder = (TextMarkerAnnotationSeeder) newInstance;
-            seeder.seed(cas.getDocumentText(), cas);
-          } catch (Exception e) {
-            throw new AnalysisEngineProcessException(e);
-          }
+      for (String seederClass : seeders) {
+        Class<?> loadClass = null;
+        try {
+          loadClass = Class.forName(seederClass);
+        } catch (ClassNotFoundException e) {
+          throw new AnalysisEngineProcessException(e);
         }
+        Object newInstance = null;
+        try {
+          newInstance = loadClass.newInstance();
+        } catch (Exception e) {
+          throw new AnalysisEngineProcessException(e);
+        }
+        try {
+          TextMarkerAnnotationSeeder seeder = (TextMarkerAnnotationSeeder) newInstance;
+          result.add(seeder.seed(cas.getDocumentText(), cas));
+        } catch (Exception e) {
+          throw new AnalysisEngineProcessException(e);
+        }
+      }
     }
+    return result;
   }
-  
+
   private void initializeScript() throws AnalysisEngineProcessException {
     String scriptLocation = locate(mainScript, scriptPaths, ".tm");
     if (scriptLocation == null) {

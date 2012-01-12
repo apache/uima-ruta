@@ -24,23 +24,28 @@ import java.io.StringReader;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
+import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.textmarker.type.TokenSeed;
 
 public class DefaultSeeder implements TextMarkerAnnotationSeeder {
 
-  public void seed(String text, CAS cas) {
+  public static final String seedType =  "org.apache.uima.textmarker.type.TokenSeed";
+  
+  public Type seed(String text, CAS cas) {
+    Type result = null;
     JCas jCas = null;
     int size = 0;
     try {
       jCas = cas.getJCas();
       size = jCas.getAnnotationIndex(TokenSeed.type).size();
+      result =  jCas.getTypeSystem().getType(seedType);
     } catch (CASException e1) {
     }
     // do not apply seeding if there are already annotations of this seed type
     if (jCas == null || size != 0) {
-      return;
+      return result;
     }
     BufferedReader reader = new BufferedReader(new StringReader(text));
     final SeedLexer sourceLexer = new SeedLexer(reader);
@@ -58,5 +63,6 @@ public class DefaultSeeder implements TextMarkerAnnotationSeeder {
       } catch (Exception e) {
       }
     }
+    return result;
   }
 }

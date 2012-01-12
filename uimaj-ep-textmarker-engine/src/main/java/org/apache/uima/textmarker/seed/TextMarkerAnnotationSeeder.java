@@ -20,10 +20,11 @@
 package org.apache.uima.textmarker.seed;
 
 import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.Type;
 
 
 public interface TextMarkerAnnotationSeeder {
 
-  void seed(String text, CAS cas);
+  Type seed(String text, CAS cas);
 
 }
