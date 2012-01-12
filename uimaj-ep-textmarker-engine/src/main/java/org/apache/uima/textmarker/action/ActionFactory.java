@@ -61,10 +61,7 @@ public class ActionFactory {
     return new MarkLastAction(type);
   }
 
-  public static AbstractTextMarkerAction createRetainMarkupAction(List<StringExpression> markup,
-          TextMarkerBlock parent) {
-    return new RetainMarkupAction(markup);
-  }
+ 
 
   public static AbstractTextMarkerAction createRetainTypeAction(List<TypeExpression> types,
           TextMarkerBlock parent) {
@@ -129,11 +126,7 @@ public class ActionFactory {
     return new FilterTypeAction(types);
   }
 
-  public static AbstractTextMarkerAction createFilterMarkupAction(List<StringExpression> list,
-          TextMarkerBlock parent) {
-    return new FilterMarkupAction(list);
-  }
-
+ 
   public static AbstractTextMarkerAction createSetFeatureAction(StringExpression f, Object v,
           TextMarkerBlock parent) {
     if (v instanceof NumberExpression) {

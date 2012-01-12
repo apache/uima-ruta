@@ -112,8 +112,6 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
 
   public static final String DEFAULT_FILTERED_TYPES = "defaultFilteredTypes";
 
-  public static final String DEFAULT_FILTERED_MARKUPS = "defaultFilteredMarkups";
-
   public static final String DYNAMIC_ANCHORING = "dynamicAnchoring";
 
   public static final String RELOAD_SCRIPT = "reloadScript";
@@ -151,8 +149,6 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
   private TextMarkerEngineLoader engineLoader;
 
   private String[] defaultFilteredTypes;
-
-  private String[] defaultFilteredMarkups;
 
   private String mainScript;
 
@@ -200,7 +196,6 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     resourcePaths = (String[]) aContext.getConfigParameterValue(RESOURCE_PATHS);
     scriptEncoding = (String) aContext.getConfigParameterValue(SCRIPT_ENCODING);
     defaultFilteredTypes = (String[]) aContext.getConfigParameterValue(DEFAULT_FILTERED_TYPES);
-    defaultFilteredMarkups = (String[]) aContext.getConfigParameterValue(DEFAULT_FILTERED_MARKUPS);
     dynamicAnchoring = (Boolean) aContext.getConfigParameterValue(DYNAMIC_ANCHORING);
     reloadScript = (Boolean) aContext.getConfigParameterValue(RELOAD_SCRIPT);
 
@@ -213,8 +208,6 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
 
     scriptEncoding = scriptEncoding == null ? "UTF-8" : scriptEncoding;
     defaultFilteredTypes = defaultFilteredTypes == null ? new String[0] : defaultFilteredTypes;
-    defaultFilteredMarkups = defaultFilteredMarkups == null ? new String[0]
-            : defaultFilteredMarkups;
     dynamicAnchoring = dynamicAnchoring == null ? false : dynamicAnchoring;
     reloadScript = reloadScript == null ? false : reloadScript;
 
@@ -372,8 +365,6 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
 
   private TextMarkerStream initializeStream(CAS cas) throws AnalysisEngineProcessException {
     Collection<Type> filterTypes = new ArrayList<Type>();
-    Collection<String> filterTags = Arrays.asList(defaultFilteredMarkups);
-
     TypeSystem typeSystem = cas.getTypeSystem();
     for (String each : defaultFilteredTypes) {
       Type type = typeSystem.getType(each);
@@ -381,10 +372,8 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
         filterTypes.add(type);
       }
     }
-    FilterManager filter = new FilterManager(filterTypes, filterTags, cas);
-
+    FilterManager filter = new FilterManager(filterTypes, cas);
     Type basicType = typeSystem.getType(BASIC_TYPE);
-
     seedAnnotations(cas);
     TextMarkerStream stream = new TextMarkerStream(cas, basicType, filter);
     stream.initalizeBasics();

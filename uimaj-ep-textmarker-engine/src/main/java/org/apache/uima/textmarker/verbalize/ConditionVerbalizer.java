@@ -35,7 +35,6 @@ import org.apache.uima.textmarker.condition.FeatureCondition;
 import org.apache.uima.textmarker.condition.IfCondition;
 import org.apache.uima.textmarker.condition.InListCondition;
 import org.apache.uima.textmarker.condition.IsCondition;
-import org.apache.uima.textmarker.condition.IsInTagCondition;
 import org.apache.uima.textmarker.condition.LastCondition;
 import org.apache.uima.textmarker.condition.MOfNCondition;
 import org.apache.uima.textmarker.condition.NearCondition;
@@ -84,8 +83,6 @@ public class ConditionVerbalizer {
       return name;
     } else if (condition instanceof InListCondition) {
       return "INLIST";
-    } else if (condition instanceof IsInTagCondition) {
-      return "ISINTAG";
     } else if (condition instanceof LastCondition) {
       return "LAST";
     } else if (condition instanceof MOfNCondition) {
@@ -240,9 +237,6 @@ public class ConditionVerbalizer {
         rel = "," + verbalizer.verbalize(c.getRelative());
       }
       return name + "(" + list + dist + rel + ")";
-    } else if (condition instanceof IsInTagCondition) {
-      IsInTagCondition c = (IsInTagCondition) condition;
-      return "ISINTAG(" + verbalizer.verbalize(c.getTag()) + ")";
     } else if (condition instanceof LastCondition) {
       LastCondition c = (LastCondition) condition;
       return "LAST(" + verbalizer.verbalize(c.getType()) + ")";

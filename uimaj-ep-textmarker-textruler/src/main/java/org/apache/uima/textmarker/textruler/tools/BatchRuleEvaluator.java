@@ -59,7 +59,6 @@ public class BatchRuleEvaluator {
 
       // set filters to NO filtering so that we can add it manually with
       // the FILTERTYPE expression!
-      ae.setConfigParameterValue(TextMarkerEngine.DEFAULT_FILTERED_MARKUPS, new String[0]);
       IPath path = new Path(tempDir + "/results.tm");
       ae.setConfigParameterValue(TextMarkerEngine.MAIN_SCRIPT, path.removeFileExtension()
               .lastSegment());

@@ -25,16 +25,6 @@ public class TextMarkerBasic extends Annotation {
 
   private final Map<Type, Set<AnnotationFS>> endMap = new HashMap<Type, Set<AnnotationFS>>(10);
 
-  public Map<String, String> tags = new HashMap<String, String>(20);
-
-  public void setTags(Map<String, String> tags) {
-    this.tags = new HashMap<String, String>(tags);
-  }
-
-  public Map<String, String> getTags() {
-    return tags;
-  }
-
   public void addPartOf(Type type) {
     partOf.add(type);
   }

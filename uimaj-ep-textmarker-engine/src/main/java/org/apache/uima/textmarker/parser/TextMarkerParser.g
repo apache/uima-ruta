@@ -851,7 +851,6 @@ condition  returns [AbstractTextMarkerCondition result = null]
 	| c = conditionCount
 	| c = conditionCurrentCount
 	| c = conditionInList
-	| c = conditionIsInTag
 	| c = conditionLast
 	| c = conditionMofN
 	| c = conditionNear
@@ -953,15 +952,7 @@ conditionInList returns [AbstractTextMarkerCondition cond = null]
     {if(list1 != null) {cond = ConditionFactory.createConditionInList(list1, dist, rel,$blockDeclaration::env);}
     else {cond = ConditionFactory.createConditionInList(list2, dist, rel,$blockDeclaration::env);};}
     ;
-conditionIsInTag returns [AbstractTextMarkerCondition cond = null]
-@init {
-List<StringExpression> list1 = new ArrayList<StringExpression>();
-List<StringExpression> list2 = new ArrayList<StringExpression>();
-}
-    :
-    ISINTAG LPAREN id = stringExpression (COMMA id1 = stringExpression ASSIGN_EQUAL id2 = stringExpression {list1.add(id1);list2.add(id2);})* RPAREN
-    {cond = ConditionFactory.createConditionIsInTag(id, list1, list2,$blockDeclaration::env);} 
-    ;
+
     
 conditionLast returns [AbstractTextMarkerCondition cond = null]
     :   
@@ -1092,9 +1083,7 @@ action  returns [AbstractTextMarkerAction result = null]
 	| a = actionMarkFast
 	| a = actionMarkLast
 	| a = actionReplace
-	| a = actionFilterMarkup
 	| a = actionFilterType
-	| a = actionRetainMarkup
 	| a = actionRetainType
 	| a = actionCreate
 	| a = actionFill
@@ -1318,15 +1307,7 @@ actionReplace returns [AbstractTextMarkerAction action = null]
     {action = ActionFactory.createReplaceAction(lit, $blockDeclaration::env);}
     ;
     
-actionRetainMarkup returns [AbstractTextMarkerAction action = null]
-@init {
-List<StringExpression> list = new ArrayList<StringExpression>();
-}
-    :   
-    RETAINMARKUP (LPAREN id = stringExpression {list.add(id);} (COMMA id = stringExpression {list.add(id);})* RPAREN)?
-    {action = ActionFactory.createRetainMarkupAction(list,$blockDeclaration::env);}
-    ;
-    
+  
 
 actionRetainType returns [AbstractTextMarkerAction action = null]
 @init {
@@ -1337,15 +1318,7 @@ List<TypeExpression> list = new ArrayList<TypeExpression>();
     {action = ActionFactory.createRetainTypeAction(list, $blockDeclaration::env);}
     ;   
     
-actionFilterMarkup returns [AbstractTextMarkerAction action = null]
-@init {
-List<StringExpression> list = new ArrayList<StringExpression>();
-}
-    :   
-    FILTERMARKUP (LPAREN id = stringExpression {list.add(id);} (COMMA id = stringExpression {list.add(id);})* RPAREN)?
-    {action = ActionFactory.createFilterMarkupAction(list,$blockDeclaration::env);}
-    ;
-    
+ 
 
 actionFilterType returns [AbstractTextMarkerAction action = null]
 @init {

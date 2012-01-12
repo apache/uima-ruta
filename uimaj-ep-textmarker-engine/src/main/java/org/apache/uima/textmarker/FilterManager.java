@@ -26,25 +26,19 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.ConstraintFactory;
 import org.apache.uima.cas.FSIntConstraint;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.FSMatchConstraint;
-import org.apache.uima.cas.FSTypeConstraint;
 import org.apache.uima.cas.FeaturePath;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.constraint.BasicTypeConstraint;
-import org.apache.uima.textmarker.constraint.MarkupConstraint;
 import org.apache.uima.textmarker.constraint.NotConstraint;
-import org.apache.uima.textmarker.type.MARKUP;
 
 public class FilterManager {
 
   private final Collection<Type> defaultFilterTypes;
-
-  private final Collection<String> defaultRetainTags;
 
   private final FSMatchConstraint additionalWindow;
 
@@ -56,59 +50,35 @@ public class FilterManager {
 
   private Collection<Type> currentRetainTypes;
 
-  private Collection<String> currentFilterTags;
-
-  private Collection<String> currentRetainTags;
-
   private ConstraintFactory cf;
 
-  private Type markupType;
-
-  public FilterManager(Collection<Type> filterTypes, Collection<String> filterTags, CAS cas) {
+  public FilterManager(Collection<Type> filterTypes, CAS cas) {
     super();
     this.defaultFilterTypes = filterTypes;
-    this.defaultRetainTags = filterTags;
 
     currentFilterTypes = new ArrayList<Type>();
     currentRetainTypes = new ArrayList<Type>();
-    currentFilterTags = new ArrayList<String>();
-    currentRetainTags = new ArrayList<String>();
 
     cf = cas.getConstraintFactory();
 
     this.windowAnnotation = null;
     this.windowType = null;
     this.additionalWindow = null;
-    try {
-      markupType = cas.getJCas().getCasType(MARKUP.type);
-    } catch (CASException e) {
-      e.printStackTrace();
-    }
   }
 
-  public FilterManager(Collection<Type> defaultFilterTypes, Collection<String> defaultFilterTags,
-          Collection<Type> filterTypes, Collection<Type> retainTypes,
-          Collection<String> filterTags, Collection<String> retainTags,
-          AnnotationFS windowAnnotation, Type windowType, CAS cas) {
+  public FilterManager(Collection<Type> defaultFilterTypes, Collection<Type> filterTypes,
+          Collection<Type> retainTypes, AnnotationFS windowAnnotation, Type windowType, CAS cas) {
     super();
     this.defaultFilterTypes = defaultFilterTypes;
-    this.defaultRetainTags = defaultFilterTags;
 
     currentFilterTypes = new ArrayList<Type>(filterTypes);
     currentRetainTypes = new ArrayList<Type>(retainTypes);
-    currentFilterTags = new ArrayList<String>(filterTags);
-    currentRetainTags = new ArrayList<String>(retainTags);
 
     cf = cas.getConstraintFactory();
 
     this.windowAnnotation = windowAnnotation;
     this.windowType = windowType;
     this.additionalWindow = createWindowConstraint(windowAnnotation, cas);
-    try {
-      markupType = cas.getJCas().getCasType(MARKUP.type);
-    } catch (CASException e) {
-      e.printStackTrace();
-    }
   }
 
   private FSMatchConstraint createWindowConstraint(AnnotationFS windowAnnotation, CAS cas) {
@@ -141,29 +111,13 @@ public class FilterManager {
     filterTypes.addAll(currentFilterTypes);
     filterTypes.removeAll(currentRetainTypes);
 
-    Set<String> retainTags = new HashSet<String>();
-    retainTags.addAll(defaultRetainTags);
-    retainTags.addAll(currentRetainTags);
-    retainTags.removeAll(currentFilterTags);
-
     FSMatchConstraint typeConstraint = createTypeConstraint(filterTypes);
-    FSMatchConstraint markupConstraint = createTagConstraint(retainTags);
 
-    FSMatchConstraint constraint = cf.or(new NotConstraint(typeConstraint), markupConstraint);
+    FSMatchConstraint constraint = new NotConstraint(typeConstraint);
     if (additionalWindow != null && windowConstraint) {
       constraint = cf.and(additionalWindow, constraint);
     }
     return constraint;
-  }
-
-  private FSMatchConstraint createTagConstraint(Collection<String> tags) {
-    FSTypeConstraint constraint = cf.createTypeConstraint();
-    constraint.add(markupType);
-    MarkupConstraint result = new MarkupConstraint(constraint);
-    for (String string : tags) {
-      result.addTag(string);
-    }
-    return result;
   }
 
   private FSMatchConstraint createTypeConstraint(Collection<Type> types) {
@@ -182,20 +136,8 @@ public class FilterManager {
     currentFilterTypes = list;
   }
 
-  public void retainTags(List<String> list) {
-    currentRetainTags = list;
-  }
-
-  public void filterTags(List<String> list) {
-    currentFilterTags = list;
-  }
-
   public Collection<Type> getDefaultFilterTypes() {
     return defaultFilterTypes;
-  }
-
-  public Collection<String> getDefaultRetainTags() {
-    return defaultRetainTags;
   }
 
   public FSMatchConstraint getAdditionalWindow() {
@@ -208,14 +150,6 @@ public class FilterManager {
 
   public Collection<Type> getCurrentRetainTypes() {
     return currentRetainTypes;
-  }
-
-  public Collection<String> getCurrentFilterTags() {
-    return currentFilterTags;
-  }
-
-  public Collection<String> getCurrentRetainTags() {
-    return currentRetainTags;
   }
 
   public AnnotationFS getWindowAnnotation() {

@@ -30,7 +30,6 @@ import org.apache.uima.textmarker.action.CreateAction;
 import org.apache.uima.textmarker.action.DelAction;
 import org.apache.uima.textmarker.action.ExpandAction;
 import org.apache.uima.textmarker.action.FillAction;
-import org.apache.uima.textmarker.action.FilterMarkupAction;
 import org.apache.uima.textmarker.action.FilterTypeAction;
 import org.apache.uima.textmarker.action.GatherAction;
 import org.apache.uima.textmarker.action.GetAction;
@@ -44,7 +43,6 @@ import org.apache.uima.textmarker.action.MergeAction;
 import org.apache.uima.textmarker.action.RemoveAction;
 import org.apache.uima.textmarker.action.RemoveDuplicateAction;
 import org.apache.uima.textmarker.action.ReplaceAction;
-import org.apache.uima.textmarker.action.RetainMarkupAction;
 import org.apache.uima.textmarker.action.RetainTypeAction;
 import org.apache.uima.textmarker.action.SetFeatureAction;
 import org.apache.uima.textmarker.action.TransferAction;
@@ -78,8 +76,6 @@ public class ActionVerbalizer {
       return "DEL";
     } else if (action instanceof FillAction) {
       return "FILL";
-    } else if (action instanceof FilterMarkupAction) {
-      return "FILTERMARKUP";
     } else if (action instanceof FilterTypeAction) {
       return "FILTERTYPE";
     } else if (action instanceof LogAction) {
@@ -100,8 +96,6 @@ public class ActionVerbalizer {
       return "MARKLAST";
     } else if (action instanceof ReplaceAction) {
       return "REPLACE";
-    } else if (action instanceof RetainMarkupAction) {
-      return "RETAINMARKUP";
     } else if (action instanceof RetainTypeAction) {
       return "RETAINTYPE";
     } else if (action instanceof SetFeatureAction) {
@@ -207,10 +201,6 @@ public class ActionVerbalizer {
         features = features.substring(0, features.length() - 1);
       }
       return "FILL(" + verbalizer.verbalize(a.getStructureType()) + features + ")";
-    } else if (action instanceof FilterMarkupAction) {
-      FilterMarkupAction a = (FilterMarkupAction) action;
-      return a.getMarkup().isEmpty() ? "FILTERMARKUP" : "FILTERMARKUP("
-              + verbalizer.verbalizeExpressionList(a.getMarkup()) + ")";
     } else if (action instanceof FilterTypeAction) {
       FilterTypeAction a = (FilterTypeAction) action;
       return a.getList().isEmpty() ? "FILTERTYPE" : "FILTERTYPE("
@@ -265,10 +255,6 @@ public class ActionVerbalizer {
     } else if (action instanceof ReplaceAction) {
       ReplaceAction a = (ReplaceAction) action;
       return "REPLACE(" + verbalizer.verbalize(a.getReplacement()) + ")";
-    } else if (action instanceof RetainMarkupAction) {
-      RetainMarkupAction a = (RetainMarkupAction) action;
-      return a.getMarkup().isEmpty() ? "RETAINMARKUP" : "RETAINMARKUP("
-              + verbalizer.verbalizeExpressionList(a.getMarkup()) + ")";
     } else if (action instanceof RetainTypeAction) {
       RetainTypeAction a = (RetainTypeAction) action;
       return a.getList().isEmpty() ? "RETAINTYPE" : "RETAINTYPE("

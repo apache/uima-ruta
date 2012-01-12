@@ -1,4 +1,4 @@
-// $ANTLR 3.4 D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g 2012-01-10 14:15:15
+// $ANTLR 3.4 D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g 2012-01-12 13:31:15
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -41,17 +41,18 @@ import org.antlr.runtime.RecognizerSharedState;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.TokenStream;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.apache.uima.textmarker.TextMarkerAutomataBlock;
-import org.apache.uima.textmarker.TextMarkerAutomataFactory;
-import org.apache.uima.textmarker.TextMarkerBlock;
-import org.apache.uima.textmarker.TextMarkerModule;
-import org.apache.uima.textmarker.TextMarkerScriptBlock;
-import org.apache.uima.textmarker.TextMarkerScriptFactory;
-import org.apache.uima.textmarker.TextMarkerStatement;
+
 import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
 import org.apache.uima.textmarker.action.ActionFactory;
 import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
 import org.apache.uima.textmarker.condition.ConditionFactory;
+import org.apache.uima.textmarker.TextMarkerAutomataBlock;
+import org.apache.uima.textmarker.TextMarkerBlock;
+import org.apache.uima.textmarker.TextMarkerModule;
+import org.apache.uima.textmarker.TextMarkerScriptBlock;
+import org.apache.uima.textmarker.TextMarkerScriptFactory;
+import org.apache.uima.textmarker.TextMarkerAutomataFactory;
+import org.apache.uima.textmarker.TextMarkerStatement;
 import org.apache.uima.textmarker.expression.ExpressionFactory;
 import org.apache.uima.textmarker.expression.TextMarkerExpression;
 import org.apache.uima.textmarker.expression.bool.BooleanExpression;
@@ -74,6 +75,14 @@ import org.apache.uima.textmarker.rule.RuleElementIsolator;
 import org.apache.uima.textmarker.rule.TextMarkerRule;
 import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.rule.quantifier.RuleElementQuantifier;
+
+
+import org.antlr.runtime.*;
+import java.util.Stack;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 @SuppressWarnings({"all", "warnings", "unchecked"})
 public class TextMarkerParser extends Parser {
@@ -2702,7 +2711,7 @@ public class TextMarkerParser extends Parser {
             int alt33=2;
             int LA33_0 = input.LA(1);
 
-            if ( (LA33_0==AFTER||LA33_0==AND||LA33_0==BEFORE||(LA33_0 >= CONTAINS && LA33_0 <= CONTEXTCOUNT)||LA33_0==COUNT||LA33_0==CURRENTCOUNT||LA33_0==ENDSWITH||LA33_0==FEATURE||(LA33_0 >= IF && LA33_0 <= INLIST)||(LA33_0 >= IS && LA33_0 <= Identifier)||LA33_0==LAST||(LA33_0 >= MINUS && LA33_0 <= NOT)||LA33_0==OR||(LA33_0 >= PARSE && LA33_0 <= PARTOFNEQ)||LA33_0==POSITION||LA33_0==REGEXP||LA33_0==SCORE||LA33_0==SIZE||LA33_0==STARTSWITH||LA33_0==TOTALCOUNT||LA33_0==VOTE) ) {
+            if ( (LA33_0==AFTER||LA33_0==AND||LA33_0==BEFORE||(LA33_0 >= CONTAINS && LA33_0 <= CONTEXTCOUNT)||LA33_0==COUNT||LA33_0==CURRENTCOUNT||LA33_0==ENDSWITH||LA33_0==FEATURE||(LA33_0 >= IF && LA33_0 <= INLIST)||LA33_0==IS||LA33_0==Identifier||LA33_0==LAST||(LA33_0 >= MINUS && LA33_0 <= NOT)||LA33_0==OR||(LA33_0 >= PARSE && LA33_0 <= PARTOFNEQ)||LA33_0==POSITION||LA33_0==REGEXP||LA33_0==SCORE||LA33_0==SIZE||LA33_0==STARTSWITH||LA33_0==TOTALCOUNT||LA33_0==VOTE) ) {
                 alt33=1;
             }
             switch (alt33) {
@@ -3166,7 +3175,7 @@ public class TextMarkerParser extends Parser {
                     int alt39=2;
                     int LA39_0 = input.LA(1);
 
-                    if ( (LA39_0==AFTER||LA39_0==AND||LA39_0==BEFORE||(LA39_0 >= CONTAINS && LA39_0 <= CONTEXTCOUNT)||LA39_0==COUNT||LA39_0==CURRENTCOUNT||LA39_0==ENDSWITH||LA39_0==FEATURE||(LA39_0 >= IF && LA39_0 <= INLIST)||(LA39_0 >= IS && LA39_0 <= Identifier)||LA39_0==LAST||(LA39_0 >= MINUS && LA39_0 <= NOT)||LA39_0==OR||(LA39_0 >= PARSE && LA39_0 <= PARTOFNEQ)||LA39_0==POSITION||LA39_0==REGEXP||LA39_0==SCORE||LA39_0==SIZE||LA39_0==STARTSWITH||LA39_0==TOTALCOUNT||LA39_0==VOTE) ) {
+                    if ( (LA39_0==AFTER||LA39_0==AND||LA39_0==BEFORE||(LA39_0 >= CONTAINS && LA39_0 <= CONTEXTCOUNT)||LA39_0==COUNT||LA39_0==CURRENTCOUNT||LA39_0==ENDSWITH||LA39_0==FEATURE||(LA39_0 >= IF && LA39_0 <= INLIST)||LA39_0==IS||LA39_0==Identifier||LA39_0==LAST||(LA39_0 >= MINUS && LA39_0 <= NOT)||LA39_0==OR||(LA39_0 >= PARSE && LA39_0 <= PARTOFNEQ)||LA39_0==POSITION||LA39_0==REGEXP||LA39_0==SCORE||LA39_0==SIZE||LA39_0==STARTSWITH||LA39_0==TOTALCOUNT||LA39_0==VOTE) ) {
                         alt39=1;
                     }
                     switch (alt39) {
@@ -3339,7 +3348,7 @@ public class TextMarkerParser extends Parser {
                     int alt43=2;
                     int LA43_0 = input.LA(1);
 
-                    if ( (LA43_0==AFTER||LA43_0==AND||LA43_0==BEFORE||(LA43_0 >= CONTAINS && LA43_0 <= CONTEXTCOUNT)||LA43_0==COUNT||LA43_0==CURRENTCOUNT||LA43_0==ENDSWITH||LA43_0==FEATURE||(LA43_0 >= IF && LA43_0 <= INLIST)||(LA43_0 >= IS && LA43_0 <= Identifier)||LA43_0==LAST||(LA43_0 >= MINUS && LA43_0 <= NOT)||LA43_0==OR||(LA43_0 >= PARSE && LA43_0 <= PARTOFNEQ)||LA43_0==POSITION||LA43_0==REGEXP||LA43_0==SCORE||LA43_0==SIZE||LA43_0==STARTSWITH||LA43_0==TOTALCOUNT||LA43_0==VOTE) ) {
+                    if ( (LA43_0==AFTER||LA43_0==AND||LA43_0==BEFORE||(LA43_0 >= CONTAINS && LA43_0 <= CONTEXTCOUNT)||LA43_0==COUNT||LA43_0==CURRENTCOUNT||LA43_0==ENDSWITH||LA43_0==FEATURE||(LA43_0 >= IF && LA43_0 <= INLIST)||LA43_0==IS||LA43_0==Identifier||LA43_0==LAST||(LA43_0 >= MINUS && LA43_0 <= NOT)||LA43_0==OR||(LA43_0 >= PARSE && LA43_0 <= PARTOFNEQ)||LA43_0==POSITION||LA43_0==REGEXP||LA43_0==SCORE||LA43_0==SIZE||LA43_0==STARTSWITH||LA43_0==TOTALCOUNT||LA43_0==VOTE) ) {
                         alt43=1;
                     }
                     switch (alt43) {
@@ -3492,7 +3501,7 @@ public class TextMarkerParser extends Parser {
                     int alt47=2;
                     int LA47_0 = input.LA(1);
 
-                    if ( (LA47_0==AFTER||LA47_0==AND||LA47_0==BEFORE||(LA47_0 >= CONTAINS && LA47_0 <= CONTEXTCOUNT)||LA47_0==COUNT||LA47_0==CURRENTCOUNT||LA47_0==ENDSWITH||LA47_0==FEATURE||(LA47_0 >= IF && LA47_0 <= INLIST)||(LA47_0 >= IS && LA47_0 <= Identifier)||LA47_0==LAST||(LA47_0 >= MINUS && LA47_0 <= NOT)||LA47_0==OR||(LA47_0 >= PARSE && LA47_0 <= PARTOFNEQ)||LA47_0==POSITION||LA47_0==REGEXP||LA47_0==SCORE||LA47_0==SIZE||LA47_0==STARTSWITH||LA47_0==TOTALCOUNT||LA47_0==VOTE) ) {
+                    if ( (LA47_0==AFTER||LA47_0==AND||LA47_0==BEFORE||(LA47_0 >= CONTAINS && LA47_0 <= CONTEXTCOUNT)||LA47_0==COUNT||LA47_0==CURRENTCOUNT||LA47_0==ENDSWITH||LA47_0==FEATURE||(LA47_0 >= IF && LA47_0 <= INLIST)||LA47_0==IS||LA47_0==Identifier||LA47_0==LAST||(LA47_0 >= MINUS && LA47_0 <= NOT)||LA47_0==OR||(LA47_0 >= PARSE && LA47_0 <= PARTOFNEQ)||LA47_0==POSITION||LA47_0==REGEXP||LA47_0==SCORE||LA47_0==SIZE||LA47_0==STARTSWITH||LA47_0==TOTALCOUNT||LA47_0==VOTE) ) {
                         alt47=1;
                     }
                     switch (alt47) {
@@ -3643,7 +3652,7 @@ public class TextMarkerParser extends Parser {
                     int alt51=2;
                     int LA51_0 = input.LA(1);
 
-                    if ( (LA51_0==AFTER||LA51_0==AND||LA51_0==BEFORE||(LA51_0 >= CONTAINS && LA51_0 <= CONTEXTCOUNT)||LA51_0==COUNT||LA51_0==CURRENTCOUNT||LA51_0==ENDSWITH||LA51_0==FEATURE||(LA51_0 >= IF && LA51_0 <= INLIST)||(LA51_0 >= IS && LA51_0 <= Identifier)||LA51_0==LAST||(LA51_0 >= MINUS && LA51_0 <= NOT)||LA51_0==OR||(LA51_0 >= PARSE && LA51_0 <= PARTOFNEQ)||LA51_0==POSITION||LA51_0==REGEXP||LA51_0==SCORE||LA51_0==SIZE||LA51_0==STARTSWITH||LA51_0==TOTALCOUNT||LA51_0==VOTE) ) {
+                    if ( (LA51_0==AFTER||LA51_0==AND||LA51_0==BEFORE||(LA51_0 >= CONTAINS && LA51_0 <= CONTEXTCOUNT)||LA51_0==COUNT||LA51_0==CURRENTCOUNT||LA51_0==ENDSWITH||LA51_0==FEATURE||(LA51_0 >= IF && LA51_0 <= INLIST)||LA51_0==IS||LA51_0==Identifier||LA51_0==LAST||(LA51_0 >= MINUS && LA51_0 <= NOT)||LA51_0==OR||(LA51_0 >= PARSE && LA51_0 <= PARTOFNEQ)||LA51_0==POSITION||LA51_0==REGEXP||LA51_0==SCORE||LA51_0==SIZE||LA51_0==STARTSWITH||LA51_0==TOTALCOUNT||LA51_0==VOTE) ) {
                         alt51=1;
                     }
                     switch (alt51) {
@@ -5857,7 +5866,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "condition"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:845:1: condition returns [AbstractTextMarkerCondition result = null] : (c= conditionAnd |c= conditionContains |c= conditionContextCount |c= conditionCount |c= conditionCurrentCount |c= conditionInList |c= conditionIsInTag |c= conditionLast |c= conditionMofN |c= conditionNear |c= conditionNot |c= conditionOr |c= conditionPartOf |c= conditionPosition |c= conditionRegExp |c= conditionScore |c= conditionTotalCount |c= conditionVote |c= conditionIf |c= conditionFeature |c= conditionParse |c= conditionIs |c= conditionBefore |c= conditionAfter |c= conditionStartsWith |c= conditionEndsWith |c= conditionPartOfNeq |c= conditionSize | (c= externalCondition )=>c= externalCondition |c= variableCondition ) ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:845:1: condition returns [AbstractTextMarkerCondition result = null] : (c= conditionAnd |c= conditionContains |c= conditionContextCount |c= conditionCount |c= conditionCurrentCount |c= conditionInList |c= conditionLast |c= conditionMofN |c= conditionNear |c= conditionNot |c= conditionOr |c= conditionPartOf |c= conditionPosition |c= conditionRegExp |c= conditionScore |c= conditionTotalCount |c= conditionVote |c= conditionIf |c= conditionFeature |c= conditionParse |c= conditionIs |c= conditionBefore |c= conditionAfter |c= conditionStartsWith |c= conditionEndsWith |c= conditionPartOfNeq |c= conditionSize | (c= externalCondition )=>c= externalCondition |c= variableCondition ) ;
     public final AbstractTextMarkerCondition condition() throws RecognitionException {
         AbstractTextMarkerCondition result =  null;
 
@@ -5866,11 +5875,11 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:846:2: ( (c= conditionAnd |c= conditionContains |c= conditionContextCount |c= conditionCount |c= conditionCurrentCount |c= conditionInList |c= conditionIsInTag |c= conditionLast |c= conditionMofN |c= conditionNear |c= conditionNot |c= conditionOr |c= conditionPartOf |c= conditionPosition |c= conditionRegExp |c= conditionScore |c= conditionTotalCount |c= conditionVote |c= conditionIf |c= conditionFeature |c= conditionParse |c= conditionIs |c= conditionBefore |c= conditionAfter |c= conditionStartsWith |c= conditionEndsWith |c= conditionPartOfNeq |c= conditionSize | (c= externalCondition )=>c= externalCondition |c= variableCondition ) )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:847:2: (c= conditionAnd |c= conditionContains |c= conditionContextCount |c= conditionCount |c= conditionCurrentCount |c= conditionInList |c= conditionIsInTag |c= conditionLast |c= conditionMofN |c= conditionNear |c= conditionNot |c= conditionOr |c= conditionPartOf |c= conditionPosition |c= conditionRegExp |c= conditionScore |c= conditionTotalCount |c= conditionVote |c= conditionIf |c= conditionFeature |c= conditionParse |c= conditionIs |c= conditionBefore |c= conditionAfter |c= conditionStartsWith |c= conditionEndsWith |c= conditionPartOfNeq |c= conditionSize | (c= externalCondition )=>c= externalCondition |c= variableCondition )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:846:2: ( (c= conditionAnd |c= conditionContains |c= conditionContextCount |c= conditionCount |c= conditionCurrentCount |c= conditionInList |c= conditionLast |c= conditionMofN |c= conditionNear |c= conditionNot |c= conditionOr |c= conditionPartOf |c= conditionPosition |c= conditionRegExp |c= conditionScore |c= conditionTotalCount |c= conditionVote |c= conditionIf |c= conditionFeature |c= conditionParse |c= conditionIs |c= conditionBefore |c= conditionAfter |c= conditionStartsWith |c= conditionEndsWith |c= conditionPartOfNeq |c= conditionSize | (c= externalCondition )=>c= externalCondition |c= variableCondition ) )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:847:2: (c= conditionAnd |c= conditionContains |c= conditionContextCount |c= conditionCount |c= conditionCurrentCount |c= conditionInList |c= conditionLast |c= conditionMofN |c= conditionNear |c= conditionNot |c= conditionOr |c= conditionPartOf |c= conditionPosition |c= conditionRegExp |c= conditionScore |c= conditionTotalCount |c= conditionVote |c= conditionIf |c= conditionFeature |c= conditionParse |c= conditionIs |c= conditionBefore |c= conditionAfter |c= conditionStartsWith |c= conditionEndsWith |c= conditionPartOfNeq |c= conditionSize | (c= externalCondition )=>c= externalCondition |c= variableCondition )
             {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:847:2: (c= conditionAnd |c= conditionContains |c= conditionContextCount |c= conditionCount |c= conditionCurrentCount |c= conditionInList |c= conditionIsInTag |c= conditionLast |c= conditionMofN |c= conditionNear |c= conditionNot |c= conditionOr |c= conditionPartOf |c= conditionPosition |c= conditionRegExp |c= conditionScore |c= conditionTotalCount |c= conditionVote |c= conditionIf |c= conditionFeature |c= conditionParse |c= conditionIs |c= conditionBefore |c= conditionAfter |c= conditionStartsWith |c= conditionEndsWith |c= conditionPartOfNeq |c= conditionSize | (c= externalCondition )=>c= externalCondition |c= variableCondition )
-            int alt85=30;
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:847:2: (c= conditionAnd |c= conditionContains |c= conditionContextCount |c= conditionCount |c= conditionCurrentCount |c= conditionInList |c= conditionLast |c= conditionMofN |c= conditionNear |c= conditionNot |c= conditionOr |c= conditionPartOf |c= conditionPosition |c= conditionRegExp |c= conditionScore |c= conditionTotalCount |c= conditionVote |c= conditionIf |c= conditionFeature |c= conditionParse |c= conditionIs |c= conditionBefore |c= conditionAfter |c= conditionStartsWith |c= conditionEndsWith |c= conditionPartOfNeq |c= conditionSize | (c= externalCondition )=>c= externalCondition |c= variableCondition )
+            int alt85=29;
             switch ( input.LA(1) ) {
             case AND:
                 {
@@ -5902,131 +5911,126 @@ public class TextMarkerParser extends Parser {
                 alt85=6;
                 }
                 break;
-            case ISINTAG:
+            case LAST:
                 {
                 alt85=7;
                 }
                 break;
-            case LAST:
+            case MOFN:
                 {
                 alt85=8;
                 }
                 break;
-            case MOFN:
-                {
-                alt85=9;
-                }
-                break;
             case NEAR:
                 {
-                alt85=10;
+                alt85=9;
                 }
                 break;
             case MINUS:
             case NOT:
                 {
-                alt85=11;
+                alt85=10;
                 }
                 break;
             case OR:
                 {
-                alt85=12;
+                alt85=11;
                 }
                 break;
             case PARTOF:
                 {
-                alt85=13;
+                alt85=12;
                 }
                 break;
             case POSITION:
                 {
-                alt85=14;
+                alt85=13;
                 }
                 break;
             case REGEXP:
                 {
-                alt85=15;
+                alt85=14;
                 }
                 break;
             case SCORE:
                 {
-                alt85=16;
+                alt85=15;
                 }
                 break;
             case TOTALCOUNT:
                 {
-                alt85=17;
+                alt85=16;
                 }
                 break;
             case VOTE:
                 {
-                alt85=18;
+                alt85=17;
                 }
                 break;
             case IF:
                 {
-                alt85=19;
+                alt85=18;
                 }
                 break;
             case FEATURE:
                 {
-                alt85=20;
+                alt85=19;
                 }
                 break;
             case PARSE:
                 {
-                alt85=21;
+                alt85=20;
                 }
                 break;
             case IS:
                 {
-                alt85=22;
+                alt85=21;
                 }
                 break;
             case BEFORE:
                 {
-                alt85=23;
+                alt85=22;
                 }
                 break;
             case AFTER:
                 {
-                alt85=24;
+                alt85=23;
                 }
                 break;
             case STARTSWITH:
                 {
-                alt85=25;
+                alt85=24;
                 }
                 break;
             case ENDSWITH:
                 {
-                alt85=26;
+                alt85=25;
                 }
                 break;
             case PARTOFNEQ:
                 {
-                alt85=27;
+                alt85=26;
                 }
                 break;
             case SIZE:
                 {
-                alt85=28;
+                alt85=27;
                 }
                 break;
             case Identifier:
                 {
-                int LA85_29 = input.LA(2);
+                int LA85_28 = input.LA(2);
 
-                if ( (LA85_29==LPAREN) && (synpred17_TextMarkerParser())) {
-                    alt85=29;
+                if ( (LA85_28==LPAREN) && (synpred17_TextMarkerParser())) {
+                    alt85=28;
                 }
-                else if ( (LA85_29==COMMA||LA85_29==RCURLY||LA85_29==RPAREN||LA85_29==THEN) ) {
-                    alt85=30;
+                else if ( (LA85_28==COMMA||LA85_28==RCURLY||LA85_28==RPAREN||LA85_28==THEN) ) {
+                    alt85=29;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return result;}
                     NoViableAltException nvae =
-                        new NoViableAltException("", 85, 29, input);
+                        new NoViableAltException("", 85, 28, input);
 
                     throw nvae;
 
@@ -6110,20 +6114,9 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 7 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:854:4: c= conditionIsInTag
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:854:4: c= conditionLast
                     {
-                    pushFollow(FOLLOW_conditionIsInTag_in_condition3548);
-                    c=conditionIsInTag();
-
-                    state._fsp--;
-                    if (state.failed) return result;
-
-                    }
-                    break;
-                case 8 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:855:4: c= conditionLast
-                    {
-                    pushFollow(FOLLOW_conditionLast_in_condition3557);
+                    pushFollow(FOLLOW_conditionLast_in_condition3548);
                     c=conditionLast();
 
                     state._fsp--;
@@ -6131,10 +6124,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 9 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:856:4: c= conditionMofN
+                case 8 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:855:4: c= conditionMofN
                     {
-                    pushFollow(FOLLOW_conditionMofN_in_condition3566);
+                    pushFollow(FOLLOW_conditionMofN_in_condition3557);
                     c=conditionMofN();
 
                     state._fsp--;
@@ -6142,10 +6135,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 10 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:857:4: c= conditionNear
+                case 9 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:856:4: c= conditionNear
                     {
-                    pushFollow(FOLLOW_conditionNear_in_condition3575);
+                    pushFollow(FOLLOW_conditionNear_in_condition3566);
                     c=conditionNear();
 
                     state._fsp--;
@@ -6153,10 +6146,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 11 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:858:4: c= conditionNot
+                case 10 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:857:4: c= conditionNot
                     {
-                    pushFollow(FOLLOW_conditionNot_in_condition3584);
+                    pushFollow(FOLLOW_conditionNot_in_condition3575);
                     c=conditionNot();
 
                     state._fsp--;
@@ -6164,10 +6157,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 12 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:859:4: c= conditionOr
+                case 11 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:858:4: c= conditionOr
                     {
-                    pushFollow(FOLLOW_conditionOr_in_condition3593);
+                    pushFollow(FOLLOW_conditionOr_in_condition3584);
                     c=conditionOr();
 
                     state._fsp--;
@@ -6175,10 +6168,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 13 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:860:4: c= conditionPartOf
+                case 12 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:859:4: c= conditionPartOf
                     {
-                    pushFollow(FOLLOW_conditionPartOf_in_condition3602);
+                    pushFollow(FOLLOW_conditionPartOf_in_condition3593);
                     c=conditionPartOf();
 
                     state._fsp--;
@@ -6186,10 +6179,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 14 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:861:4: c= conditionPosition
+                case 13 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:860:4: c= conditionPosition
                     {
-                    pushFollow(FOLLOW_conditionPosition_in_condition3611);
+                    pushFollow(FOLLOW_conditionPosition_in_condition3602);
                     c=conditionPosition();
 
                     state._fsp--;
@@ -6197,10 +6190,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 15 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:862:4: c= conditionRegExp
+                case 14 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:861:4: c= conditionRegExp
                     {
-                    pushFollow(FOLLOW_conditionRegExp_in_condition3620);
+                    pushFollow(FOLLOW_conditionRegExp_in_condition3611);
                     c=conditionRegExp();
 
                     state._fsp--;
@@ -6208,10 +6201,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 16 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:863:4: c= conditionScore
+                case 15 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:862:4: c= conditionScore
                     {
-                    pushFollow(FOLLOW_conditionScore_in_condition3629);
+                    pushFollow(FOLLOW_conditionScore_in_condition3620);
                     c=conditionScore();
 
                     state._fsp--;
@@ -6219,10 +6212,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 17 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:864:4: c= conditionTotalCount
+                case 16 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:863:4: c= conditionTotalCount
                     {
-                    pushFollow(FOLLOW_conditionTotalCount_in_condition3638);
+                    pushFollow(FOLLOW_conditionTotalCount_in_condition3629);
                     c=conditionTotalCount();
 
                     state._fsp--;
@@ -6230,10 +6223,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 18 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:865:4: c= conditionVote
+                case 17 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:864:4: c= conditionVote
                     {
-                    pushFollow(FOLLOW_conditionVote_in_condition3647);
+                    pushFollow(FOLLOW_conditionVote_in_condition3638);
                     c=conditionVote();
 
                     state._fsp--;
@@ -6241,10 +6234,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 19 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:866:4: c= conditionIf
+                case 18 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:865:4: c= conditionIf
                     {
-                    pushFollow(FOLLOW_conditionIf_in_condition3656);
+                    pushFollow(FOLLOW_conditionIf_in_condition3647);
                     c=conditionIf();
 
                     state._fsp--;
@@ -6252,10 +6245,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 20 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:867:4: c= conditionFeature
+                case 19 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:866:4: c= conditionFeature
                     {
-                    pushFollow(FOLLOW_conditionFeature_in_condition3665);
+                    pushFollow(FOLLOW_conditionFeature_in_condition3656);
                     c=conditionFeature();
 
                     state._fsp--;
@@ -6263,10 +6256,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 21 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:868:4: c= conditionParse
+                case 20 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:867:4: c= conditionParse
                     {
-                    pushFollow(FOLLOW_conditionParse_in_condition3674);
+                    pushFollow(FOLLOW_conditionParse_in_condition3665);
                     c=conditionParse();
 
                     state._fsp--;
@@ -6274,10 +6267,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 22 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:869:4: c= conditionIs
+                case 21 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:868:4: c= conditionIs
                     {
-                    pushFollow(FOLLOW_conditionIs_in_condition3683);
+                    pushFollow(FOLLOW_conditionIs_in_condition3674);
                     c=conditionIs();
 
                     state._fsp--;
@@ -6285,10 +6278,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 23 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:870:4: c= conditionBefore
+                case 22 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:869:4: c= conditionBefore
                     {
-                    pushFollow(FOLLOW_conditionBefore_in_condition3692);
+                    pushFollow(FOLLOW_conditionBefore_in_condition3683);
                     c=conditionBefore();
 
                     state._fsp--;
@@ -6296,10 +6289,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 24 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:871:4: c= conditionAfter
+                case 23 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:870:4: c= conditionAfter
                     {
-                    pushFollow(FOLLOW_conditionAfter_in_condition3701);
+                    pushFollow(FOLLOW_conditionAfter_in_condition3692);
                     c=conditionAfter();
 
                     state._fsp--;
@@ -6307,10 +6300,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 25 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:872:4: c= conditionStartsWith
+                case 24 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:871:4: c= conditionStartsWith
                     {
-                    pushFollow(FOLLOW_conditionStartsWith_in_condition3711);
+                    pushFollow(FOLLOW_conditionStartsWith_in_condition3702);
                     c=conditionStartsWith();
 
                     state._fsp--;
@@ -6318,10 +6311,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 26 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:873:4: c= conditionEndsWith
+                case 25 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:872:4: c= conditionEndsWith
                     {
-                    pushFollow(FOLLOW_conditionEndsWith_in_condition3720);
+                    pushFollow(FOLLOW_conditionEndsWith_in_condition3711);
                     c=conditionEndsWith();
 
                     state._fsp--;
@@ -6329,10 +6322,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 27 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:874:4: c= conditionPartOfNeq
+                case 26 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:873:4: c= conditionPartOfNeq
                     {
-                    pushFollow(FOLLOW_conditionPartOfNeq_in_condition3729);
+                    pushFollow(FOLLOW_conditionPartOfNeq_in_condition3720);
                     c=conditionPartOfNeq();
 
                     state._fsp--;
@@ -6340,10 +6333,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 28 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:875:4: c= conditionSize
+                case 27 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:874:4: c= conditionSize
                     {
-                    pushFollow(FOLLOW_conditionSize_in_condition3738);
+                    pushFollow(FOLLOW_conditionSize_in_condition3729);
                     c=conditionSize();
 
                     state._fsp--;
@@ -6351,10 +6344,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 29 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:876:4: (c= externalCondition )=>c= externalCondition
+                case 28 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:875:4: (c= externalCondition )=>c= externalCondition
                     {
-                    pushFollow(FOLLOW_externalCondition_in_condition3757);
+                    pushFollow(FOLLOW_externalCondition_in_condition3748);
                     c=externalCondition();
 
                     state._fsp--;
@@ -6362,10 +6355,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 30 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:877:4: c= variableCondition
+                case 29 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:876:4: c= variableCondition
                     {
-                    pushFollow(FOLLOW_variableCondition_in_condition3766);
+                    pushFollow(FOLLOW_variableCondition_in_condition3757);
                     c=variableCondition();
 
                     state._fsp--;
@@ -6400,7 +6393,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "variableCondition"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:882:1: variableCondition returns [AbstractTextMarkerCondition condition = null] : id= Identifier ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:881:1: variableCondition returns [AbstractTextMarkerCondition condition = null] : id= Identifier ;
     public final AbstractTextMarkerCondition variableCondition() throws RecognitionException {
         AbstractTextMarkerCondition condition =  null;
 
@@ -6408,10 +6401,10 @@ public class TextMarkerParser extends Parser {
         Token id=null;
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:883:2: (id= Identifier )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:885:2: id= Identifier
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:882:2: (id= Identifier )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:884:2: id= Identifier
             {
-            id=(Token)match(input,Identifier,FOLLOW_Identifier_in_variableCondition3796); if (state.failed) return condition;
+            id=(Token)match(input,Identifier,FOLLOW_Identifier_in_variableCondition3787); if (state.failed) return condition;
 
             if ( state.backtracking==0 ) {
             		condition = ConditionFactory.createConditionVariable(id);
@@ -6438,7 +6431,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "externalCondition"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:891:1: externalCondition returns [AbstractTextMarkerCondition condition = null] : id= Identifier LPAREN args= varArgumentList RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:890:1: externalCondition returns [AbstractTextMarkerCondition condition = null] : id= Identifier LPAREN args= varArgumentList RPAREN ;
     public final AbstractTextMarkerCondition externalCondition() throws RecognitionException {
         AbstractTextMarkerCondition condition =  null;
 
@@ -6448,20 +6441,20 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:892:2: (id= Identifier LPAREN args= varArgumentList RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:894:2: id= Identifier LPAREN args= varArgumentList RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:891:2: (id= Identifier LPAREN args= varArgumentList RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:893:2: id= Identifier LPAREN args= varArgumentList RPAREN
             {
-            id=(Token)match(input,Identifier,FOLLOW_Identifier_in_externalCondition3823); if (state.failed) return condition;
+            id=(Token)match(input,Identifier,FOLLOW_Identifier_in_externalCondition3814); if (state.failed) return condition;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_externalCondition3825); if (state.failed) return condition;
+            match(input,LPAREN,FOLLOW_LPAREN_in_externalCondition3816); if (state.failed) return condition;
 
-            pushFollow(FOLLOW_varArgumentList_in_externalCondition3831);
+            pushFollow(FOLLOW_varArgumentList_in_externalCondition3822);
             args=varArgumentList();
 
             state._fsp--;
             if (state.failed) return condition;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_externalCondition3833); if (state.failed) return condition;
+            match(input,RPAREN,FOLLOW_RPAREN_in_externalCondition3824); if (state.failed) return condition;
 
             if ( state.backtracking==0 ) {
             		condition = external.createExternalCondition(id, args);
@@ -6488,7 +6481,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "conditionAnd"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:900:1: conditionAnd returns [AbstractTextMarkerCondition cond = null] : AND LPAREN conds= conditions RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:899:1: conditionAnd returns [AbstractTextMarkerCondition cond = null] : AND LPAREN conds= conditions RPAREN ;
     public final AbstractTextMarkerCondition conditionAnd() throws RecognitionException {
         AbstractTextMarkerCondition cond =  null;
 
@@ -6497,20 +6490,20 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:901:5: ( AND LPAREN conds= conditions RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:902:5: AND LPAREN conds= conditions RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:900:5: ( AND LPAREN conds= conditions RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:901:5: AND LPAREN conds= conditions RPAREN
             {
-            match(input,AND,FOLLOW_AND_in_conditionAnd3862); if (state.failed) return cond;
+            match(input,AND,FOLLOW_AND_in_conditionAnd3853); if (state.failed) return cond;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_conditionAnd3864); if (state.failed) return cond;
+            match(input,LPAREN,FOLLOW_LPAREN_in_conditionAnd3855); if (state.failed) return cond;
 
-            pushFollow(FOLLOW_conditions_in_conditionAnd3870);
+            pushFollow(FOLLOW_conditions_in_conditionAnd3861);
             conds=conditions();
 
             state._fsp--;
             if (state.failed) return cond;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_conditionAnd3872); if (state.failed) return cond;
+            match(input,RPAREN,FOLLOW_RPAREN_in_conditionAnd3863); if (state.failed) return cond;
 
             if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionAnd(conds, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -6535,7 +6528,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "conditionContains"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:906:1: conditionContains returns [AbstractTextMarkerCondition cond = null] options {backtrack=true; } : CONTAINS LPAREN (type= typeExpression |list= listExpression COMMA a= argument ) ( COMMA min= numberExpression COMMA max= numberExpression ( COMMA percent= booleanExpression )? )? RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:905:1: conditionContains returns [AbstractTextMarkerCondition cond = null] options {backtrack=true; } : CONTAINS LPAREN (type= typeExpression |list= listExpression COMMA a= argument ) ( COMMA min= numberExpression COMMA max= numberExpression ( COMMA percent= booleanExpression )? )? RPAREN ;
     public final AbstractTextMarkerCondition conditionContains() throws RecognitionException {
         AbstractTextMarkerCondition cond =  null;
 
@@ -6554,14 +6547,14 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:910:5: ( CONTAINS LPAREN (type= typeExpression |list= listExpression COMMA a= argument ) ( COMMA min= numberExpression COMMA max= numberExpression ( COMMA percent= booleanExpression )? )? RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:911:5: CONTAINS LPAREN (type= typeExpression |list= listExpression COMMA a= argument ) ( COMMA min= numberExpression COMMA max= numberExpression ( COMMA percent= booleanExpression )? )? RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:909:5: ( CONTAINS LPAREN (type= typeExpression |list= listExpression COMMA a= argument ) ( COMMA min= numberExpression COMMA max= numberExpression ( COMMA percent= booleanExpression )? )? RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:910:5: CONTAINS LPAREN (type= typeExpression |list= listExpression COMMA a= argument ) ( COMMA min= numberExpression COMMA max= numberExpression ( COMMA percent= booleanExpression )? )? RPAREN
             {
-            match(input,CONTAINS,FOLLOW_CONTAINS_in_conditionContains3924); if (state.failed) return cond;
+            match(input,CONTAINS,FOLLOW_CONTAINS_in_conditionContains3915); if (state.failed) return cond;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_conditionContains3926); if (state.failed) return cond;
+            match(input,LPAREN,FOLLOW_LPAREN_in_conditionContains3917); if (state.failed) return cond;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:911:21: (type= typeExpression |list= listExpression COMMA a= argument )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:910:21: (type= typeExpression |list= listExpression COMMA a= argument )
             int alt86=2;
             switch ( input.LA(1) ) {
             case Identifier:
@@ -6605,9 +6598,9 @@ public class TextMarkerParser extends Parser {
 
             switch (alt86) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:911:22: type= typeExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:910:22: type= typeExpression
                     {
-                    pushFollow(FOLLOW_typeExpression_in_conditionContains3933);
+                    pushFollow(FOLLOW_typeExpression_in_conditionContains3924);
                     type=typeExpression();
 
                     state._fsp--;
@@ -6616,17 +6609,17 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:911:46: list= listExpression COMMA a= argument
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:910:46: list= listExpression COMMA a= argument
                     {
-                    pushFollow(FOLLOW_listExpression_in_conditionContains3941);
+                    pushFollow(FOLLOW_listExpression_in_conditionContains3932);
                     list=listExpression();
 
                     state._fsp--;
                     if (state.failed) return cond;
 
-                    match(input,COMMA,FOLLOW_COMMA_in_conditionContains3943); if (state.failed) return cond;
+                    match(input,COMMA,FOLLOW_COMMA_in_conditionContains3934); if (state.failed) return cond;
 
-                    pushFollow(FOLLOW_argument_in_conditionContains3949);
+                    pushFollow(FOLLOW_argument_in_conditionContains3940);
                     a=argument();
 
                     state._fsp--;
@@ -6638,7 +6631,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:912:5: ( COMMA min= numberExpression COMMA max= numberExpression ( COMMA percent= booleanExpression )? )?
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:911:5: ( COMMA min= numberExpression COMMA max= numberExpression ( COMMA percent= booleanExpression )? )?
             int alt88=2;
             int LA88_0 = input.LA(1);
 
@@ -6647,25 +6640,25 @@ public class TextMarkerParser extends Parser {
             }
             switch (alt88) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:912:6: COMMA min= numberExpression COMMA max= numberExpression ( COMMA percent= booleanExpression )?
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:911:6: COMMA min= numberExpression COMMA max= numberExpression ( COMMA percent= booleanExpression )?
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_conditionContains3958); if (state.failed) return cond;
+                    match(input,COMMA,FOLLOW_COMMA_in_conditionContains3949); if (state.failed) return cond;
 
-                    pushFollow(FOLLOW_numberExpression_in_conditionContains3964);
+                    pushFollow(FOLLOW_numberExpression_in_conditionContains3955);
                     min=numberExpression();
 
                     state._fsp--;
                     if (state.failed) return cond;
 
-                    match(input,COMMA,FOLLOW_COMMA_in_conditionContains3966); if (state.failed) return cond;
+                    match(input,COMMA,FOLLOW_COMMA_in_conditionContains3957); if (state.failed) return cond;
 
-                    pushFollow(FOLLOW_numberExpression_in_conditionContains3972);
+                    pushFollow(FOLLOW_numberExpression_in_conditionContains3963);
                     max=numberExpression();
 
                     state._fsp--;
                     if (state.failed) return cond;
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:912:64: ( COMMA percent= booleanExpression )?
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:911:64: ( COMMA percent= booleanExpression )?
                     int alt87=2;
                     int LA87_0 = input.LA(1);
 
@@ -6674,11 +6667,11 @@ public class TextMarkerParser extends Parser {
                     }
                     switch (alt87) {
                         case 1 :
-                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:912:65: COMMA percent= booleanExpression
+                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:911:65: COMMA percent= booleanExpression
                             {
-                            match(input,COMMA,FOLLOW_COMMA_in_conditionContains3975); if (state.failed) return cond;
+                            match(input,COMMA,FOLLOW_COMMA_in_conditionContains3966); if (state.failed) return cond;
 
-                            pushFollow(FOLLOW_booleanExpression_in_conditionContains3981);
+                            pushFollow(FOLLOW_booleanExpression_in_conditionContains3972);
                             percent=booleanExpression();
 
                             state._fsp--;
@@ -6696,7 +6689,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_conditionContains3987); if (state.failed) return cond;
+            match(input,RPAREN,FOLLOW_RPAREN_in_conditionContains3978); if (state.failed) return cond;
 
             if ( state.backtracking==0 ) {if(type != null) {cond = ConditionFactory.createConditionContains(type, min, max, percent,((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
                 else {cond = ConditionFactory.createConditionContains(list,a, min, max, percent, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);};}
@@ -6722,7 +6715,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "conditionContextCount"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:916:1: conditionContextCount returns [AbstractTextMarkerCondition cond = null] : CONTEXTCOUNT LPAREN type= typeExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:915:1: conditionContextCount returns [AbstractTextMarkerCondition cond = null] : CONTEXTCOUNT LPAREN type= typeExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN ;
     public final AbstractTextMarkerCondition conditionContextCount() throws RecognitionException {
         AbstractTextMarkerCondition cond =  null;
 
@@ -6737,20 +6730,20 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:917:5: ( CONTEXTCOUNT LPAREN type= typeExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:918:5: CONTEXTCOUNT LPAREN type= typeExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:916:5: ( CONTEXTCOUNT LPAREN type= typeExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:917:5: CONTEXTCOUNT LPAREN type= typeExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN
             {
-            match(input,CONTEXTCOUNT,FOLLOW_CONTEXTCOUNT_in_conditionContextCount4020); if (state.failed) return cond;
+            match(input,CONTEXTCOUNT,FOLLOW_CONTEXTCOUNT_in_conditionContextCount4011); if (state.failed) return cond;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_conditionContextCount4022); if (state.failed) return cond;
+            match(input,LPAREN,FOLLOW_LPAREN_in_conditionContextCount4013); if (state.failed) return cond;
 
-            pushFollow(FOLLOW_typeExpression_in_conditionContextCount4028);
+            pushFollow(FOLLOW_typeExpression_in_conditionContextCount4019);
             type=typeExpression();
 
             state._fsp--;
             if (state.failed) return cond;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:918:47: ( COMMA min= numberExpression COMMA max= numberExpression )?
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:917:47: ( COMMA min= numberExpression COMMA max= numberExpression )?
             int alt89=2;
             int LA89_0 = input.LA(1);
 
@@ -6770,19 +6763,19 @@ public class TextMarkerParser extends Parser {
             }
             switch (alt89) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:918:48: COMMA min= numberExpression COMMA max= numberExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:917:48: COMMA min= numberExpression COMMA max= numberExpression
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_conditionContextCount4031); if (state.failed) return cond;
+                    match(input,COMMA,FOLLOW_COMMA_in_conditionContextCount4022); if (state.failed) return cond;
 
-                    pushFollow(FOLLOW_numberExpression_in_conditionContextCount4037);
+                    pushFollow(FOLLOW_numberExpression_in_conditionContextCount4028);
                     min=numberExpression();
 
                     state._fsp--;
                     if (state.failed) return cond;
 
-                    match(input,COMMA,FOLLOW_COMMA_in_conditionContextCount4039); if (state.failed) return cond;
+                    match(input,COMMA,FOLLOW_COMMA_in_conditionContextCount4030); if (state.failed) return cond;
 
-                    pushFollow(FOLLOW_numberExpression_in_conditionContextCount4045);
+                    pushFollow(FOLLOW_numberExpression_in_conditionContextCount4036);
                     max=numberExpression();
 
                     state._fsp--;
@@ -6794,7 +6787,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:919:5: ( COMMA var= numberVariable )?
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:918:5: ( COMMA var= numberVariable )?
             int alt90=2;
             int LA90_0 = input.LA(1);
 
@@ -6803,11 +6796,11 @@ public class TextMarkerParser extends Parser {
             }
             switch (alt90) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:919:6: COMMA var= numberVariable
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:918:6: COMMA var= numberVariable
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_conditionContextCount4055); if (state.failed) return cond;
+                    match(input,COMMA,FOLLOW_COMMA_in_conditionContextCount4046); if (state.failed) return cond;
 
-                    pushFollow(FOLLOW_numberVariable_in_conditionContextCount4061);
+                    pushFollow(FOLLOW_numberVariable_in_conditionContextCount4052);
                     var=numberVariable();
 
                     state._fsp--;
@@ -6819,7 +6812,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_conditionContextCount4065); if (state.failed) return cond;
+            match(input,RPAREN,FOLLOW_RPAREN_in_conditionContextCount4056); if (state.failed) return cond;
 
             if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionContextCount(type, min, max, var, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -6844,7 +6837,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "conditionCount"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:922:1: conditionCount returns [AbstractTextMarkerCondition cond = null] options {backtrack=true; } : ( COUNT LPAREN type= listExpression COMMA a= argument ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN | COUNT LPAREN list= typeExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN );
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:921:1: conditionCount returns [AbstractTextMarkerCondition cond = null] options {backtrack=true; } : ( COUNT LPAREN type= listExpression COMMA a= argument ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN | COUNT LPAREN list= typeExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN );
     public final AbstractTextMarkerCondition conditionCount() throws RecognitionException {
         AbstractTextMarkerCondition cond =  null;
 
@@ -6863,7 +6856,7 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:926:5: ( COUNT LPAREN type= listExpression COMMA a= argument ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN | COUNT LPAREN list= typeExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:925:5: ( COUNT LPAREN type= listExpression COMMA a= argument ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN | COUNT LPAREN list= typeExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN )
             int alt95=2;
             int LA95_0 = input.LA(1);
 
@@ -6895,27 +6888,27 @@ public class TextMarkerParser extends Parser {
             }
             switch (alt95) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:927:5: COUNT LPAREN type= listExpression COMMA a= argument ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:926:5: COUNT LPAREN type= listExpression COMMA a= argument ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN
                     {
-                    match(input,COUNT,FOLLOW_COUNT_in_conditionCount4111); if (state.failed) return cond;
+                    match(input,COUNT,FOLLOW_COUNT_in_conditionCount4102); if (state.failed) return cond;
 
-                    match(input,LPAREN,FOLLOW_LPAREN_in_conditionCount4113); if (state.failed) return cond;
+                    match(input,LPAREN,FOLLOW_LPAREN_in_conditionCount4104); if (state.failed) return cond;
 
-                    pushFollow(FOLLOW_listExpression_in_conditionCount4119);
+                    pushFollow(FOLLOW_listExpression_in_conditionCount4110);
                     type=listExpression();
 
                     state._fsp--;
                     if (state.failed) return cond;
 
-                    match(input,COMMA,FOLLOW_COMMA_in_conditionCount4121); if (state.failed) return cond;
+                    match(input,COMMA,FOLLOW_COMMA_in_conditionCount4112); if (state.failed) return cond;
 
-                    pushFollow(FOLLOW_argument_in_conditionCount4127);
+                    pushFollow(FOLLOW_argument_in_conditionCount4118);
                     a=argument();
 
                     state._fsp--;
                     if (state.failed) return cond;
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:927:59: ( COMMA min= numberExpression COMMA max= numberExpression )?
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:926:59: ( COMMA min= numberExpression COMMA max= numberExpression )?
                     int alt91=2;
                     int LA91_0 = input.LA(1);
 
@@ -6935,19 +6928,19 @@ public class TextMarkerParser extends Parser {
                     }
                     switch (alt91) {
                         case 1 :
-                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:927:60: COMMA min= numberExpression COMMA max= numberExpression
+                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:926:60: COMMA min= numberExpression COMMA max= numberExpression
                             {
-                            match(input,COMMA,FOLLOW_COMMA_in_conditionCount4130); if (state.failed) return cond;
+                            match(input,COMMA,FOLLOW_COMMA_in_conditionCount4121); if (state.failed) return cond;
 
-                            pushFollow(FOLLOW_numberExpression_in_conditionCount4136);
+                            pushFollow(FOLLOW_numberExpression_in_conditionCount4127);
                             min=numberExpression();
 
                             state._fsp--;
                             if (state.failed) return cond;
 
-                            match(input,COMMA,FOLLOW_COMMA_in_conditionCount4138); if (state.failed) return cond;
+                            match(input,COMMA,FOLLOW_COMMA_in_conditionCount4129); if (state.failed) return cond;
 
-                            pushFollow(FOLLOW_numberExpression_in_conditionCount4144);
+                            pushFollow(FOLLOW_numberExpression_in_conditionCount4135);
                             max=numberExpression();
 
                             state._fsp--;
@@ -6959,7 +6952,7 @@ public class TextMarkerParser extends Parser {
                     }
 
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:928:5: ( COMMA var= numberVariable )?
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:927:5: ( COMMA var= numberVariable )?
                     int alt92=2;
                     int LA92_0 = input.LA(1);
 
@@ -6968,11 +6961,11 @@ public class TextMarkerParser extends Parser {
                     }
                     switch (alt92) {
                         case 1 :
-                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:928:6: COMMA var= numberVariable
+                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:927:6: COMMA var= numberVariable
                             {
-                            match(input,COMMA,FOLLOW_COMMA_in_conditionCount4154); if (state.failed) return cond;
+                            match(input,COMMA,FOLLOW_COMMA_in_conditionCount4145); if (state.failed) return cond;
 
-                            pushFollow(FOLLOW_numberVariable_in_conditionCount4160);
+                            pushFollow(FOLLOW_numberVariable_in_conditionCount4151);
                             var=numberVariable();
 
                             state._fsp--;
@@ -6984,26 +6977,26 @@ public class TextMarkerParser extends Parser {
                     }
 
 
-                    match(input,RPAREN,FOLLOW_RPAREN_in_conditionCount4164); if (state.failed) return cond;
+                    match(input,RPAREN,FOLLOW_RPAREN_in_conditionCount4155); if (state.failed) return cond;
 
                     if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionCount(type, a, min, max, var,((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:931:5: COUNT LPAREN list= typeExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:930:5: COUNT LPAREN list= typeExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN
                     {
-                    match(input,COUNT,FOLLOW_COUNT_in_conditionCount4182); if (state.failed) return cond;
+                    match(input,COUNT,FOLLOW_COUNT_in_conditionCount4173); if (state.failed) return cond;
 
-                    match(input,LPAREN,FOLLOW_LPAREN_in_conditionCount4184); if (state.failed) return cond;
+                    match(input,LPAREN,FOLLOW_LPAREN_in_conditionCount4175); if (state.failed) return cond;
 
-                    pushFollow(FOLLOW_typeExpression_in_conditionCount4190);
+                    pushFollow(FOLLOW_typeExpression_in_conditionCount4181);
                     list=typeExpression();
 
                     state._fsp--;
                     if (state.failed) return cond;
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:931:40: ( COMMA min= numberExpression COMMA max= numberExpression )?
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:930:40: ( COMMA min= numberExpression COMMA max= numberExpression )?
                     int alt93=2;
                     int LA93_0 = input.LA(1);
 
@@ -7023,19 +7016,19 @@ public class TextMarkerParser extends Parser {
                     }
                     switch (alt93) {
                         case 1 :
-                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:931:41: COMMA min= numberExpression COMMA max= numberExpression
+                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:930:41: COMMA min= numberExpression COMMA max= numberExpression
                             {
-                            match(input,COMMA,FOLLOW_COMMA_in_conditionCount4193); if (state.failed) return cond;
+                            match(input,COMMA,FOLLOW_COMMA_in_conditionCount4184); if (state.failed) return cond;
 
-                            pushFollow(FOLLOW_numberExpression_in_conditionCount4199);
+                            pushFollow(FOLLOW_numberExpression_in_conditionCount4190);
                             min=numberExpression();
 
                             state._fsp--;
                             if (state.failed) return cond;
 
-                            match(input,COMMA,FOLLOW_COMMA_in_conditionCount4201); if (state.failed) return cond;
+                            match(input,COMMA,FOLLOW_COMMA_in_conditionCount4192); if (state.failed) return cond;
 
-                            pushFollow(FOLLOW_numberExpression_in_conditionCount4207);
+                            pushFollow(FOLLOW_numberExpression_in_conditionCount4198);
                             max=numberExpression();
 
                             state._fsp--;
@@ -7047,7 +7040,7 @@ public class TextMarkerParser extends Parser {
                     }
 
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:932:5: ( COMMA var= numberVariable )?
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:931:5: ( COMMA var= numberVariable )?
                     int alt94=2;
                     int LA94_0 = input.LA(1);
 
@@ -7056,11 +7049,11 @@ public class TextMarkerParser extends Parser {
                     }
                     switch (alt94) {
                         case 1 :
-                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:932:6: COMMA var= numberVariable
+                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:931:6: COMMA var= numberVariable
                             {
-                            match(input,COMMA,FOLLOW_COMMA_in_conditionCount4217); if (state.failed) return cond;
+                            match(input,COMMA,FOLLOW_COMMA_in_conditionCount4208); if (state.failed) return cond;
 
-                            pushFollow(FOLLOW_numberVariable_in_conditionCount4223);
+                            pushFollow(FOLLOW_numberVariable_in_conditionCount4214);
                             var=numberVariable();
 
                             state._fsp--;
@@ -7072,7 +7065,7 @@ public class TextMarkerParser extends Parser {
                     }
 
 
-                    match(input,RPAREN,FOLLOW_RPAREN_in_conditionCount4227); if (state.failed) return cond;
+                    match(input,RPAREN,FOLLOW_RPAREN_in_conditionCount4218); if (state.failed) return cond;
 
                     if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionCount(list, min, max, var,((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -7099,7 +7092,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "conditionTotalCount"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:935:1: conditionTotalCount returns [AbstractTextMarkerCondition cond = null] : TOTALCOUNT LPAREN type= typeExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:934:1: conditionTotalCount returns [AbstractTextMarkerCondition cond = null] : TOTALCOUNT LPAREN type= typeExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN ;
     public final AbstractTextMarkerCondition conditionTotalCount() throws RecognitionException {
         AbstractTextMarkerCondition cond =  null;
 
@@ -7114,20 +7107,20 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:936:5: ( TOTALCOUNT LPAREN type= typeExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:937:5: TOTALCOUNT LPAREN type= typeExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:935:5: ( TOTALCOUNT LPAREN type= typeExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:936:5: TOTALCOUNT LPAREN type= typeExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN
             {
-            match(input,TOTALCOUNT,FOLLOW_TOTALCOUNT_in_conditionTotalCount4263); if (state.failed) return cond;
+            match(input,TOTALCOUNT,FOLLOW_TOTALCOUNT_in_conditionTotalCount4254); if (state.failed) return cond;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_conditionTotalCount4265); if (state.failed) return cond;
+            match(input,LPAREN,FOLLOW_LPAREN_in_conditionTotalCount4256); if (state.failed) return cond;
 
-            pushFollow(FOLLOW_typeExpression_in_conditionTotalCount4271);
+            pushFollow(FOLLOW_typeExpression_in_conditionTotalCount4262);
             type=typeExpression();
 
             state._fsp--;
             if (state.failed) return cond;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:937:45: ( COMMA min= numberExpression COMMA max= numberExpression )?
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:936:45: ( COMMA min= numberExpression COMMA max= numberExpression )?
             int alt96=2;
             int LA96_0 = input.LA(1);
 
@@ -7147,19 +7140,19 @@ public class TextMarkerParser extends Parser {
             }
             switch (alt96) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:937:46: COMMA min= numberExpression COMMA max= numberExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:936:46: COMMA min= numberExpression COMMA max= numberExpression
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_conditionTotalCount4274); if (state.failed) return cond;
+                    match(input,COMMA,FOLLOW_COMMA_in_conditionTotalCount4265); if (state.failed) return cond;
 
-                    pushFollow(FOLLOW_numberExpression_in_conditionTotalCount4280);
+                    pushFollow(FOLLOW_numberExpression_in_conditionTotalCount4271);
                     min=numberExpression();
 
                     state._fsp--;
                     if (state.failed) return cond;
 
-                    match(input,COMMA,FOLLOW_COMMA_in_conditionTotalCount4282); if (state.failed) return cond;
+                    match(input,COMMA,FOLLOW_COMMA_in_conditionTotalCount4273); if (state.failed) return cond;
 
-                    pushFollow(FOLLOW_numberExpression_in_conditionTotalCount4288);
+                    pushFollow(FOLLOW_numberExpression_in_conditionTotalCount4279);
                     max=numberExpression();
 
                     state._fsp--;
@@ -7171,7 +7164,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:938:5: ( COMMA var= numberVariable )?
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:937:5: ( COMMA var= numberVariable )?
             int alt97=2;
             int LA97_0 = input.LA(1);
 
@@ -7180,11 +7173,11 @@ public class TextMarkerParser extends Parser {
             }
             switch (alt97) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:938:6: COMMA var= numberVariable
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:937:6: COMMA var= numberVariable
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_conditionTotalCount4297); if (state.failed) return cond;
+                    match(input,COMMA,FOLLOW_COMMA_in_conditionTotalCount4288); if (state.failed) return cond;
 
-                    pushFollow(FOLLOW_numberVariable_in_conditionTotalCount4303);
+                    pushFollow(FOLLOW_numberVariable_in_conditionTotalCount4294);
                     var=numberVariable();
 
                     state._fsp--;
@@ -7196,7 +7189,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_conditionTotalCount4307); if (state.failed) return cond;
+            match(input,RPAREN,FOLLOW_RPAREN_in_conditionTotalCount4298); if (state.failed) return cond;
 
             if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionTotalCount(type, min, max, var, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -7221,7 +7214,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "conditionCurrentCount"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:941:1: conditionCurrentCount returns [AbstractTextMarkerCondition cond = null] : CURRENTCOUNT LPAREN type= typeExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:940:1: conditionCurrentCount returns [AbstractTextMarkerCondition cond = null] : CURRENTCOUNT LPAREN type= typeExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN ;
     public final AbstractTextMarkerCondition conditionCurrentCount() throws RecognitionException {
         AbstractTextMarkerCondition cond =  null;
 
@@ -7236,20 +7229,20 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:942:5: ( CURRENTCOUNT LPAREN type= typeExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:943:5: CURRENTCOUNT LPAREN type= typeExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:941:5: ( CURRENTCOUNT LPAREN type= typeExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:942:5: CURRENTCOUNT LPAREN type= typeExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN
             {
-            match(input,CURRENTCOUNT,FOLLOW_CURRENTCOUNT_in_conditionCurrentCount4340); if (state.failed) return cond;
+            match(input,CURRENTCOUNT,FOLLOW_CURRENTCOUNT_in_conditionCurrentCount4331); if (state.failed) return cond;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_conditionCurrentCount4342); if (state.failed) return cond;
+            match(input,LPAREN,FOLLOW_LPAREN_in_conditionCurrentCount4333); if (state.failed) return cond;
 
-            pushFollow(FOLLOW_typeExpression_in_conditionCurrentCount4348);
+            pushFollow(FOLLOW_typeExpression_in_conditionCurrentCount4339);
             type=typeExpression();
 
             state._fsp--;
             if (state.failed) return cond;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:943:47: ( COMMA min= numberExpression COMMA max= numberExpression )?
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:942:47: ( COMMA min= numberExpression COMMA max= numberExpression )?
             int alt98=2;
             int LA98_0 = input.LA(1);
 
@@ -7269,19 +7262,19 @@ public class TextMarkerParser extends Parser {
             }
             switch (alt98) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:943:48: COMMA min= numberExpression COMMA max= numberExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:942:48: COMMA min= numberExpression COMMA max= numberExpression
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_conditionCurrentCount4351); if (state.failed) return cond;
+                    match(input,COMMA,FOLLOW_COMMA_in_conditionCurrentCount4342); if (state.failed) return cond;
 
-                    pushFollow(FOLLOW_numberExpression_in_conditionCurrentCount4357);
+                    pushFollow(FOLLOW_numberExpression_in_conditionCurrentCount4348);
                     min=numberExpression();
 
                     state._fsp--;
                     if (state.failed) return cond;
 
-                    match(input,COMMA,FOLLOW_COMMA_in_conditionCurrentCount4359); if (state.failed) return cond;
+                    match(input,COMMA,FOLLOW_COMMA_in_conditionCurrentCount4350); if (state.failed) return cond;
 
-                    pushFollow(FOLLOW_numberExpression_in_conditionCurrentCount4365);
+                    pushFollow(FOLLOW_numberExpression_in_conditionCurrentCount4356);
                     max=numberExpression();
 
                     state._fsp--;
@@ -7293,7 +7286,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:944:5: ( COMMA var= numberVariable )?
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:943:5: ( COMMA var= numberVariable )?
             int alt99=2;
             int LA99_0 = input.LA(1);
 
@@ -7302,11 +7295,11 @@ public class TextMarkerParser extends Parser {
             }
             switch (alt99) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:944:6: COMMA var= numberVariable
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:943:6: COMMA var= numberVariable
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_conditionCurrentCount4375); if (state.failed) return cond;
+                    match(input,COMMA,FOLLOW_COMMA_in_conditionCurrentCount4366); if (state.failed) return cond;
 
-                    pushFollow(FOLLOW_numberVariable_in_conditionCurrentCount4381);
+                    pushFollow(FOLLOW_numberVariable_in_conditionCurrentCount4372);
                     var=numberVariable();
 
                     state._fsp--;
@@ -7318,7 +7311,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_conditionCurrentCount4385); if (state.failed) return cond;
+            match(input,RPAREN,FOLLOW_RPAREN_in_conditionCurrentCount4376); if (state.failed) return cond;
 
             if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionCurrentCount(type, min, max, var,((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -7343,7 +7336,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "conditionInList"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:947:1: conditionInList returns [AbstractTextMarkerCondition cond = null] options {backtrack=true; } : INLIST LPAREN ( (list2= stringListExpression )=>list2= stringListExpression |list1= wordListExpression ) ( COMMA dist= numberExpression ( COMMA rel= booleanExpression )? )? RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:946:1: conditionInList returns [AbstractTextMarkerCondition cond = null] options {backtrack=true; } : INLIST LPAREN ( (list2= stringListExpression )=>list2= stringListExpression |list1= wordListExpression ) ( COMMA dist= numberExpression ( COMMA rel= booleanExpression )? )? RPAREN ;
     public final AbstractTextMarkerCondition conditionInList() throws RecognitionException {
         AbstractTextMarkerCondition cond =  null;
 
@@ -7358,14 +7351,14 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:951:5: ( INLIST LPAREN ( (list2= stringListExpression )=>list2= stringListExpression |list1= wordListExpression ) ( COMMA dist= numberExpression ( COMMA rel= booleanExpression )? )? RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:952:5: INLIST LPAREN ( (list2= stringListExpression )=>list2= stringListExpression |list1= wordListExpression ) ( COMMA dist= numberExpression ( COMMA rel= booleanExpression )? )? RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:950:5: ( INLIST LPAREN ( (list2= stringListExpression )=>list2= stringListExpression |list1= wordListExpression ) ( COMMA dist= numberExpression ( COMMA rel= booleanExpression )? )? RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:951:5: INLIST LPAREN ( (list2= stringListExpression )=>list2= stringListExpression |list1= wordListExpression ) ( COMMA dist= numberExpression ( COMMA rel= booleanExpression )? )? RPAREN
             {
-            match(input,INLIST,FOLLOW_INLIST_in_conditionInList4428); if (state.failed) return cond;
+            match(input,INLIST,FOLLOW_INLIST_in_conditionInList4419); if (state.failed) return cond;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_conditionInList4430); if (state.failed) return cond;
+            match(input,LPAREN,FOLLOW_LPAREN_in_conditionInList4421); if (state.failed) return cond;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:952:19: ( (list2= stringListExpression )=>list2= stringListExpression |list1= wordListExpression )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:951:19: ( (list2= stringListExpression )=>list2= stringListExpression |list1= wordListExpression )
             int alt100=2;
             int LA100_0 = input.LA(1);
 
@@ -7403,9 +7396,9 @@ public class TextMarkerParser extends Parser {
             }
             switch (alt100) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:952:20: (list2= stringListExpression )=>list2= stringListExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:951:20: (list2= stringListExpression )=>list2= stringListExpression
                     {
-                    pushFollow(FOLLOW_stringListExpression_in_conditionInList4445);
+                    pushFollow(FOLLOW_stringListExpression_in_conditionInList4436);
                     list2=stringListExpression();
 
                     state._fsp--;
@@ -7414,9 +7407,9 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:952:83: list1= wordListExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:951:83: list1= wordListExpression
                     {
-                    pushFollow(FOLLOW_wordListExpression_in_conditionInList4453);
+                    pushFollow(FOLLOW_wordListExpression_in_conditionInList4444);
                     list1=wordListExpression();
 
                     state._fsp--;
@@ -7428,7 +7421,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:952:111: ( COMMA dist= numberExpression ( COMMA rel= booleanExpression )? )?
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:951:111: ( COMMA dist= numberExpression ( COMMA rel= booleanExpression )? )?
             int alt102=2;
             int LA102_0 = input.LA(1);
 
@@ -7437,17 +7430,17 @@ public class TextMarkerParser extends Parser {
             }
             switch (alt102) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:952:112: COMMA dist= numberExpression ( COMMA rel= booleanExpression )?
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:951:112: COMMA dist= numberExpression ( COMMA rel= booleanExpression )?
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_conditionInList4457); if (state.failed) return cond;
+                    match(input,COMMA,FOLLOW_COMMA_in_conditionInList4448); if (state.failed) return cond;
 
-                    pushFollow(FOLLOW_numberExpression_in_conditionInList4463);
+                    pushFollow(FOLLOW_numberExpression_in_conditionInList4454);
                     dist=numberExpression();
 
                     state._fsp--;
                     if (state.failed) return cond;
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:952:142: ( COMMA rel= booleanExpression )?
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:951:142: ( COMMA rel= booleanExpression )?
                     int alt101=2;
                     int LA101_0 = input.LA(1);
 
@@ -7456,11 +7449,11 @@ public class TextMarkerParser extends Parser {
                     }
                     switch (alt101) {
                         case 1 :
-                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:952:143: COMMA rel= booleanExpression
+                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:951:143: COMMA rel= booleanExpression
                             {
-                            match(input,COMMA,FOLLOW_COMMA_in_conditionInList4466); if (state.failed) return cond;
+                            match(input,COMMA,FOLLOW_COMMA_in_conditionInList4457); if (state.failed) return cond;
 
-                            pushFollow(FOLLOW_booleanExpression_in_conditionInList4472);
+                            pushFollow(FOLLOW_booleanExpression_in_conditionInList4463);
                             rel=booleanExpression();
 
                             state._fsp--;
@@ -7478,7 +7471,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_conditionInList4478); if (state.failed) return cond;
+            match(input,RPAREN,FOLLOW_RPAREN_in_conditionInList4469); if (state.failed) return cond;
 
             if ( state.backtracking==0 ) {if(list1 != null) {cond = ConditionFactory.createConditionInList(list1, dist, rel,((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
                 else {cond = ConditionFactory.createConditionInList(list2, dist, rel,((blockDeclaration_scope)blockDeclaration_stack.peek()).env);};}
@@ -7503,105 +7496,8 @@ public class TextMarkerParser extends Parser {
 
 
 
-    // $ANTLR start "conditionIsInTag"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:956:1: conditionIsInTag returns [AbstractTextMarkerCondition cond = null] : ISINTAG LPAREN id= stringExpression ( COMMA id1= stringExpression ASSIGN_EQUAL id2= stringExpression )* RPAREN ;
-    public final AbstractTextMarkerCondition conditionIsInTag() throws RecognitionException {
-        AbstractTextMarkerCondition cond =  null;
-
-
-        StringExpression id =null;
-
-        StringExpression id1 =null;
-
-        StringExpression id2 =null;
-
-
-
-        List<StringExpression> list1 = new ArrayList<StringExpression>();
-        List<StringExpression> list2 = new ArrayList<StringExpression>();
-
-        try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:961:5: ( ISINTAG LPAREN id= stringExpression ( COMMA id1= stringExpression ASSIGN_EQUAL id2= stringExpression )* RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:962:5: ISINTAG LPAREN id= stringExpression ( COMMA id1= stringExpression ASSIGN_EQUAL id2= stringExpression )* RPAREN
-            {
-            match(input,ISINTAG,FOLLOW_ISINTAG_in_conditionIsInTag4513); if (state.failed) return cond;
-
-            match(input,LPAREN,FOLLOW_LPAREN_in_conditionIsInTag4515); if (state.failed) return cond;
-
-            pushFollow(FOLLOW_stringExpression_in_conditionIsInTag4521);
-            id=stringExpression();
-
-            state._fsp--;
-            if (state.failed) return cond;
-
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:962:42: ( COMMA id1= stringExpression ASSIGN_EQUAL id2= stringExpression )*
-            loop103:
-            do {
-                int alt103=2;
-                int LA103_0 = input.LA(1);
-
-                if ( (LA103_0==COMMA) ) {
-                    alt103=1;
-                }
-
-
-                switch (alt103) {
-            	case 1 :
-            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:962:43: COMMA id1= stringExpression ASSIGN_EQUAL id2= stringExpression
-            	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_conditionIsInTag4524); if (state.failed) return cond;
-
-            	    pushFollow(FOLLOW_stringExpression_in_conditionIsInTag4530);
-            	    id1=stringExpression();
-
-            	    state._fsp--;
-            	    if (state.failed) return cond;
-
-            	    match(input,ASSIGN_EQUAL,FOLLOW_ASSIGN_EQUAL_in_conditionIsInTag4532); if (state.failed) return cond;
-
-            	    pushFollow(FOLLOW_stringExpression_in_conditionIsInTag4538);
-            	    id2=stringExpression();
-
-            	    state._fsp--;
-            	    if (state.failed) return cond;
-
-            	    if ( state.backtracking==0 ) {list1.add(id1);list2.add(id2);}
-
-            	    }
-            	    break;
-
-            	default :
-            	    break loop103;
-                }
-            } while (true);
-
-
-            match(input,RPAREN,FOLLOW_RPAREN_in_conditionIsInTag4544); if (state.failed) return cond;
-
-            if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionIsInTag(id, list1, list2,((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
-
-            }
-
-        }
-
-        	catch (RecognitionException exception1) {
-        		emitErrorMessage(exception1.toString());
-        	}
-        	catch (Throwable exception2) {
-        		emitErrorMessage(exception2.toString());
-        	}
-
-        finally {
-        	// do for sure before leaving
-        }
-        return cond;
-    }
-    // $ANTLR end "conditionIsInTag"
-
-
-
     // $ANTLR start "conditionLast"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:966:1: conditionLast returns [AbstractTextMarkerCondition cond = null] : LAST LPAREN type= typeExpression RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:957:1: conditionLast returns [AbstractTextMarkerCondition cond = null] : LAST LPAREN type= typeExpression RPAREN ;
     public final AbstractTextMarkerCondition conditionLast() throws RecognitionException {
         AbstractTextMarkerCondition cond =  null;
 
@@ -7610,20 +7506,20 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:967:5: ( LAST LPAREN type= typeExpression RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:968:5: LAST LPAREN type= typeExpression RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:958:5: ( LAST LPAREN type= typeExpression RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:959:5: LAST LPAREN type= typeExpression RPAREN
             {
-            match(input,LAST,FOLLOW_LAST_in_conditionLast4583); if (state.failed) return cond;
+            match(input,LAST,FOLLOW_LAST_in_conditionLast4508); if (state.failed) return cond;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_conditionLast4585); if (state.failed) return cond;
+            match(input,LPAREN,FOLLOW_LPAREN_in_conditionLast4510); if (state.failed) return cond;
 
-            pushFollow(FOLLOW_typeExpression_in_conditionLast4591);
+            pushFollow(FOLLOW_typeExpression_in_conditionLast4516);
             type=typeExpression();
 
             state._fsp--;
             if (state.failed) return cond;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_conditionLast4593); if (state.failed) return cond;
+            match(input,RPAREN,FOLLOW_RPAREN_in_conditionLast4518); if (state.failed) return cond;
 
             if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionLast(type, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -7648,7 +7544,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "conditionMofN"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:973:1: conditionMofN returns [AbstractTextMarkerCondition cond = null] : MOFN LPAREN min= numberExpression COMMA max= numberExpression COMMA conds= conditions RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:964:1: conditionMofN returns [AbstractTextMarkerCondition cond = null] : MOFN LPAREN min= numberExpression COMMA max= numberExpression COMMA conds= conditions RPAREN ;
     public final AbstractTextMarkerCondition conditionMofN() throws RecognitionException {
         AbstractTextMarkerCondition cond =  null;
 
@@ -7661,36 +7557,36 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:974:5: ( MOFN LPAREN min= numberExpression COMMA max= numberExpression COMMA conds= conditions RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:975:5: MOFN LPAREN min= numberExpression COMMA max= numberExpression COMMA conds= conditions RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:965:5: ( MOFN LPAREN min= numberExpression COMMA max= numberExpression COMMA conds= conditions RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:966:5: MOFN LPAREN min= numberExpression COMMA max= numberExpression COMMA conds= conditions RPAREN
             {
-            match(input,MOFN,FOLLOW_MOFN_in_conditionMofN4640); if (state.failed) return cond;
+            match(input,MOFN,FOLLOW_MOFN_in_conditionMofN4565); if (state.failed) return cond;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_conditionMofN4642); if (state.failed) return cond;
+            match(input,LPAREN,FOLLOW_LPAREN_in_conditionMofN4567); if (state.failed) return cond;
 
-            pushFollow(FOLLOW_numberExpression_in_conditionMofN4648);
+            pushFollow(FOLLOW_numberExpression_in_conditionMofN4573);
             min=numberExpression();
 
             state._fsp--;
             if (state.failed) return cond;
 
-            match(input,COMMA,FOLLOW_COMMA_in_conditionMofN4650); if (state.failed) return cond;
+            match(input,COMMA,FOLLOW_COMMA_in_conditionMofN4575); if (state.failed) return cond;
 
-            pushFollow(FOLLOW_numberExpression_in_conditionMofN4656);
+            pushFollow(FOLLOW_numberExpression_in_conditionMofN4581);
             max=numberExpression();
 
             state._fsp--;
             if (state.failed) return cond;
 
-            match(input,COMMA,FOLLOW_COMMA_in_conditionMofN4658); if (state.failed) return cond;
+            match(input,COMMA,FOLLOW_COMMA_in_conditionMofN4583); if (state.failed) return cond;
 
-            pushFollow(FOLLOW_conditions_in_conditionMofN4664);
+            pushFollow(FOLLOW_conditions_in_conditionMofN4589);
             conds=conditions();
 
             state._fsp--;
             if (state.failed) return cond;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_conditionMofN4666); if (state.failed) return cond;
+            match(input,RPAREN,FOLLOW_RPAREN_in_conditionMofN4591); if (state.failed) return cond;
 
             if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionMOfN(conds, min, max, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -7715,7 +7611,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "conditionNear"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:979:1: conditionNear returns [AbstractTextMarkerCondition cond = null] : NEAR LPAREN type= typeExpression COMMA min= numberExpression COMMA max= numberExpression ( COMMA direction= booleanExpression ( COMMA filtered= booleanExpression )? )? RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:970:1: conditionNear returns [AbstractTextMarkerCondition cond = null] : NEAR LPAREN type= typeExpression COMMA min= numberExpression COMMA max= numberExpression ( COMMA direction= booleanExpression ( COMMA filtered= booleanExpression )? )? RPAREN ;
     public final AbstractTextMarkerCondition conditionNear() throws RecognitionException {
         AbstractTextMarkerCondition cond =  null;
 
@@ -7732,68 +7628,68 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:980:5: ( NEAR LPAREN type= typeExpression COMMA min= numberExpression COMMA max= numberExpression ( COMMA direction= booleanExpression ( COMMA filtered= booleanExpression )? )? RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:981:5: NEAR LPAREN type= typeExpression COMMA min= numberExpression COMMA max= numberExpression ( COMMA direction= booleanExpression ( COMMA filtered= booleanExpression )? )? RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:971:5: ( NEAR LPAREN type= typeExpression COMMA min= numberExpression COMMA max= numberExpression ( COMMA direction= booleanExpression ( COMMA filtered= booleanExpression )? )? RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:972:5: NEAR LPAREN type= typeExpression COMMA min= numberExpression COMMA max= numberExpression ( COMMA direction= booleanExpression ( COMMA filtered= booleanExpression )? )? RPAREN
             {
-            match(input,NEAR,FOLLOW_NEAR_in_conditionNear4701); if (state.failed) return cond;
+            match(input,NEAR,FOLLOW_NEAR_in_conditionNear4626); if (state.failed) return cond;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_conditionNear4703); if (state.failed) return cond;
+            match(input,LPAREN,FOLLOW_LPAREN_in_conditionNear4628); if (state.failed) return cond;
 
-            pushFollow(FOLLOW_typeExpression_in_conditionNear4709);
+            pushFollow(FOLLOW_typeExpression_in_conditionNear4634);
             type=typeExpression();
 
             state._fsp--;
             if (state.failed) return cond;
 
-            match(input,COMMA,FOLLOW_COMMA_in_conditionNear4711); if (state.failed) return cond;
+            match(input,COMMA,FOLLOW_COMMA_in_conditionNear4636); if (state.failed) return cond;
 
-            pushFollow(FOLLOW_numberExpression_in_conditionNear4717);
+            pushFollow(FOLLOW_numberExpression_in_conditionNear4642);
             min=numberExpression();
 
             state._fsp--;
             if (state.failed) return cond;
 
-            match(input,COMMA,FOLLOW_COMMA_in_conditionNear4719); if (state.failed) return cond;
+            match(input,COMMA,FOLLOW_COMMA_in_conditionNear4644); if (state.failed) return cond;
 
-            pushFollow(FOLLOW_numberExpression_in_conditionNear4725);
+            pushFollow(FOLLOW_numberExpression_in_conditionNear4650);
             max=numberExpression();
 
             state._fsp--;
             if (state.failed) return cond;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:981:97: ( COMMA direction= booleanExpression ( COMMA filtered= booleanExpression )? )?
-            int alt105=2;
-            int LA105_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:972:97: ( COMMA direction= booleanExpression ( COMMA filtered= booleanExpression )? )?
+            int alt104=2;
+            int LA104_0 = input.LA(1);
 
-            if ( (LA105_0==COMMA) ) {
-                alt105=1;
+            if ( (LA104_0==COMMA) ) {
+                alt104=1;
             }
-            switch (alt105) {
+            switch (alt104) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:981:98: COMMA direction= booleanExpression ( COMMA filtered= booleanExpression )?
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:972:98: COMMA direction= booleanExpression ( COMMA filtered= booleanExpression )?
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_conditionNear4728); if (state.failed) return cond;
+                    match(input,COMMA,FOLLOW_COMMA_in_conditionNear4653); if (state.failed) return cond;
 
-                    pushFollow(FOLLOW_booleanExpression_in_conditionNear4734);
+                    pushFollow(FOLLOW_booleanExpression_in_conditionNear4659);
                     direction=booleanExpression();
 
                     state._fsp--;
                     if (state.failed) return cond;
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:981:134: ( COMMA filtered= booleanExpression )?
-                    int alt104=2;
-                    int LA104_0 = input.LA(1);
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:972:134: ( COMMA filtered= booleanExpression )?
+                    int alt103=2;
+                    int LA103_0 = input.LA(1);
 
-                    if ( (LA104_0==COMMA) ) {
-                        alt104=1;
+                    if ( (LA103_0==COMMA) ) {
+                        alt103=1;
                     }
-                    switch (alt104) {
+                    switch (alt103) {
                         case 1 :
-                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:981:135: COMMA filtered= booleanExpression
+                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:972:135: COMMA filtered= booleanExpression
                             {
-                            match(input,COMMA,FOLLOW_COMMA_in_conditionNear4737); if (state.failed) return cond;
+                            match(input,COMMA,FOLLOW_COMMA_in_conditionNear4662); if (state.failed) return cond;
 
-                            pushFollow(FOLLOW_booleanExpression_in_conditionNear4743);
+                            pushFollow(FOLLOW_booleanExpression_in_conditionNear4668);
                             filtered=booleanExpression();
 
                             state._fsp--;
@@ -7811,7 +7707,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_conditionNear4749); if (state.failed) return cond;
+            match(input,RPAREN,FOLLOW_RPAREN_in_conditionNear4674); if (state.failed) return cond;
 
             if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionNear(type, min, max, direction, filtered, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -7836,7 +7732,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "conditionNot"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:984:1: conditionNot returns [AbstractTextMarkerCondition cond = null] : ( ( MINUS c= condition ) | ( NOT LPAREN c= condition RPAREN ) ) ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:975:1: conditionNot returns [AbstractTextMarkerCondition cond = null] : ( ( MINUS c= condition ) | ( NOT LPAREN c= condition RPAREN ) ) ;
     public final AbstractTextMarkerCondition conditionNot() throws RecognitionException {
         AbstractTextMarkerCondition cond =  null;
 
@@ -7845,37 +7741,37 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:985:5: ( ( ( MINUS c= condition ) | ( NOT LPAREN c= condition RPAREN ) ) )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:986:5: ( ( MINUS c= condition ) | ( NOT LPAREN c= condition RPAREN ) )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:976:5: ( ( ( MINUS c= condition ) | ( NOT LPAREN c= condition RPAREN ) ) )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:977:5: ( ( MINUS c= condition ) | ( NOT LPAREN c= condition RPAREN ) )
             {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:986:5: ( ( MINUS c= condition ) | ( NOT LPAREN c= condition RPAREN ) )
-            int alt106=2;
-            int LA106_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:977:5: ( ( MINUS c= condition ) | ( NOT LPAREN c= condition RPAREN ) )
+            int alt105=2;
+            int LA105_0 = input.LA(1);
 
-            if ( (LA106_0==MINUS) ) {
-                alt106=1;
+            if ( (LA105_0==MINUS) ) {
+                alt105=1;
             }
-            else if ( (LA106_0==NOT) ) {
-                alt106=2;
+            else if ( (LA105_0==NOT) ) {
+                alt105=2;
             }
             else {
                 if (state.backtracking>0) {state.failed=true; return cond;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 106, 0, input);
+                    new NoViableAltException("", 105, 0, input);
 
                 throw nvae;
 
             }
-            switch (alt106) {
+            switch (alt105) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:986:6: ( MINUS c= condition )
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:977:6: ( MINUS c= condition )
                     {
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:986:6: ( MINUS c= condition )
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:986:7: MINUS c= condition
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:977:6: ( MINUS c= condition )
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:977:7: MINUS c= condition
                     {
-                    match(input,MINUS,FOLLOW_MINUS_in_conditionNot4785); if (state.failed) return cond;
+                    match(input,MINUS,FOLLOW_MINUS_in_conditionNot4710); if (state.failed) return cond;
 
-                    pushFollow(FOLLOW_condition_in_conditionNot4791);
+                    pushFollow(FOLLOW_condition_in_conditionNot4716);
                     c=condition();
 
                     state._fsp--;
@@ -7887,22 +7783,22 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:986:31: ( NOT LPAREN c= condition RPAREN )
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:977:31: ( NOT LPAREN c= condition RPAREN )
                     {
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:986:31: ( NOT LPAREN c= condition RPAREN )
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:986:32: NOT LPAREN c= condition RPAREN
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:977:31: ( NOT LPAREN c= condition RPAREN )
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:977:32: NOT LPAREN c= condition RPAREN
                     {
-                    match(input,NOT,FOLLOW_NOT_in_conditionNot4798); if (state.failed) return cond;
+                    match(input,NOT,FOLLOW_NOT_in_conditionNot4723); if (state.failed) return cond;
 
-                    match(input,LPAREN,FOLLOW_LPAREN_in_conditionNot4800); if (state.failed) return cond;
+                    match(input,LPAREN,FOLLOW_LPAREN_in_conditionNot4725); if (state.failed) return cond;
 
-                    pushFollow(FOLLOW_condition_in_conditionNot4806);
+                    pushFollow(FOLLOW_condition_in_conditionNot4731);
                     c=condition();
 
                     state._fsp--;
                     if (state.failed) return cond;
 
-                    match(input,RPAREN,FOLLOW_RPAREN_in_conditionNot4808); if (state.failed) return cond;
+                    match(input,RPAREN,FOLLOW_RPAREN_in_conditionNot4733); if (state.failed) return cond;
 
                     }
 
@@ -7936,7 +7832,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "conditionOr"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:989:1: conditionOr returns [AbstractTextMarkerCondition cond = null] : OR LPAREN conds= conditions RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:980:1: conditionOr returns [AbstractTextMarkerCondition cond = null] : OR LPAREN conds= conditions RPAREN ;
     public final AbstractTextMarkerCondition conditionOr() throws RecognitionException {
         AbstractTextMarkerCondition cond =  null;
 
@@ -7945,20 +7841,20 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:990:5: ( OR LPAREN conds= conditions RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:991:5: OR LPAREN conds= conditions RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:981:5: ( OR LPAREN conds= conditions RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:982:5: OR LPAREN conds= conditions RPAREN
             {
-            match(input,OR,FOLLOW_OR_in_conditionOr4847); if (state.failed) return cond;
+            match(input,OR,FOLLOW_OR_in_conditionOr4772); if (state.failed) return cond;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_conditionOr4849); if (state.failed) return cond;
+            match(input,LPAREN,FOLLOW_LPAREN_in_conditionOr4774); if (state.failed) return cond;
 
-            pushFollow(FOLLOW_conditions_in_conditionOr4855);
+            pushFollow(FOLLOW_conditions_in_conditionOr4780);
             conds=conditions();
 
             state._fsp--;
             if (state.failed) return cond;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_conditionOr4857); if (state.failed) return cond;
+            match(input,RPAREN,FOLLOW_RPAREN_in_conditionOr4782); if (state.failed) return cond;
 
             if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionOr(conds, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -7983,7 +7879,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "conditionPartOf"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:994:1: conditionPartOf returns [AbstractTextMarkerCondition cond = null] : PARTOF LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:985:1: conditionPartOf returns [AbstractTextMarkerCondition cond = null] : PARTOF LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN ;
     public final AbstractTextMarkerCondition conditionPartOf() throws RecognitionException {
         AbstractTextMarkerCondition cond =  null;
 
@@ -7994,14 +7890,126 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:995:5: ( PARTOF LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:996:5: PARTOF LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:986:5: ( PARTOF LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:987:5: PARTOF LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN
             {
-            match(input,PARTOF,FOLLOW_PARTOF_in_conditionPartOf4887); if (state.failed) return cond;
+            match(input,PARTOF,FOLLOW_PARTOF_in_conditionPartOf4812); if (state.failed) return cond;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_conditionPartOf4889); if (state.failed) return cond;
+            match(input,LPAREN,FOLLOW_LPAREN_in_conditionPartOf4814); if (state.failed) return cond;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:996:19: (type1= typeExpression |type2= typeListExpression )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:987:19: (type1= typeExpression |type2= typeListExpression )
+            int alt106=2;
+            switch ( input.LA(1) ) {
+            case Identifier:
+                {
+                int LA106_1 = input.LA(2);
+
+                if ( (!(((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "TYPELIST"))))) ) {
+                    alt106=1;
+                }
+                else if ( ((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "TYPELIST"))) ) {
+                    alt106=2;
+                }
+                else {
+                    if (state.backtracking>0) {state.failed=true; return cond;}
+                    NoViableAltException nvae =
+                        new NoViableAltException("", 106, 1, input);
+
+                    throw nvae;
+
+                }
+                }
+                break;
+            case BasicAnnotationType:
+                {
+                alt106=1;
+                }
+                break;
+            case LCURLY:
+                {
+                alt106=2;
+                }
+                break;
+            default:
+                if (state.backtracking>0) {state.failed=true; return cond;}
+                NoViableAltException nvae =
+                    new NoViableAltException("", 106, 0, input);
+
+                throw nvae;
+
+            }
+
+            switch (alt106) {
+                case 1 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:987:20: type1= typeExpression
+                    {
+                    pushFollow(FOLLOW_typeExpression_in_conditionPartOf4821);
+                    type1=typeExpression();
+
+                    state._fsp--;
+                    if (state.failed) return cond;
+
+                    }
+                    break;
+                case 2 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:987:43: type2= typeListExpression
+                    {
+                    pushFollow(FOLLOW_typeListExpression_in_conditionPartOf4827);
+                    type2=typeListExpression();
+
+                    state._fsp--;
+                    if (state.failed) return cond;
+
+                    }
+                    break;
+
+            }
+
+
+            match(input,RPAREN,FOLLOW_RPAREN_in_conditionPartOf4830); if (state.failed) return cond;
+
+            if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionPartOf(type1, type2, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
+
+            }
+
+        }
+
+        	catch (RecognitionException exception1) {
+        		emitErrorMessage(exception1.toString());
+        	}
+        	catch (Throwable exception2) {
+        		emitErrorMessage(exception2.toString());
+        	}
+
+        finally {
+        	// do for sure before leaving
+        }
+        return cond;
+    }
+    // $ANTLR end "conditionPartOf"
+
+
+
+    // $ANTLR start "conditionPartOfNeq"
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:990:1: conditionPartOfNeq returns [AbstractTextMarkerCondition cond = null] : PARTOFNEQ LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN ;
+    public final AbstractTextMarkerCondition conditionPartOfNeq() throws RecognitionException {
+        AbstractTextMarkerCondition cond =  null;
+
+
+        TypeExpression type1 =null;
+
+        TypeListExpression type2 =null;
+
+
+        try {
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:991:5: ( PARTOFNEQ LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:992:5: PARTOFNEQ LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN
+            {
+            match(input,PARTOFNEQ,FOLLOW_PARTOFNEQ_in_conditionPartOfNeq4860); if (state.failed) return cond;
+
+            match(input,LPAREN,FOLLOW_LPAREN_in_conditionPartOfNeq4862); if (state.failed) return cond;
+
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:992:22: (type1= typeExpression |type2= typeListExpression )
             int alt107=2;
             switch ( input.LA(1) ) {
             case Identifier:
@@ -8045,9 +8053,9 @@ public class TextMarkerParser extends Parser {
 
             switch (alt107) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:996:20: type1= typeExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:992:23: type1= typeExpression
                     {
-                    pushFollow(FOLLOW_typeExpression_in_conditionPartOf4896);
+                    pushFollow(FOLLOW_typeExpression_in_conditionPartOfNeq4869);
                     type1=typeExpression();
 
                     state._fsp--;
@@ -8056,9 +8064,9 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:996:43: type2= typeListExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:992:46: type2= typeListExpression
                     {
-                    pushFollow(FOLLOW_typeListExpression_in_conditionPartOf4902);
+                    pushFollow(FOLLOW_typeListExpression_in_conditionPartOfNeq4875);
                     type2=typeListExpression();
 
                     state._fsp--;
@@ -8070,119 +8078,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_conditionPartOf4905); if (state.failed) return cond;
-
-            if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionPartOf(type1, type2, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
-
-            }
-
-        }
-
-        	catch (RecognitionException exception1) {
-        		emitErrorMessage(exception1.toString());
-        	}
-        	catch (Throwable exception2) {
-        		emitErrorMessage(exception2.toString());
-        	}
-
-        finally {
-        	// do for sure before leaving
-        }
-        return cond;
-    }
-    // $ANTLR end "conditionPartOf"
-
-
-
-    // $ANTLR start "conditionPartOfNeq"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:999:1: conditionPartOfNeq returns [AbstractTextMarkerCondition cond = null] : PARTOFNEQ LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN ;
-    public final AbstractTextMarkerCondition conditionPartOfNeq() throws RecognitionException {
-        AbstractTextMarkerCondition cond =  null;
-
-
-        TypeExpression type1 =null;
-
-        TypeListExpression type2 =null;
-
-
-        try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1000:5: ( PARTOFNEQ LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1001:5: PARTOFNEQ LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN
-            {
-            match(input,PARTOFNEQ,FOLLOW_PARTOFNEQ_in_conditionPartOfNeq4935); if (state.failed) return cond;
-
-            match(input,LPAREN,FOLLOW_LPAREN_in_conditionPartOfNeq4937); if (state.failed) return cond;
-
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1001:22: (type1= typeExpression |type2= typeListExpression )
-            int alt108=2;
-            switch ( input.LA(1) ) {
-            case Identifier:
-                {
-                int LA108_1 = input.LA(2);
-
-                if ( (!(((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "TYPELIST"))))) ) {
-                    alt108=1;
-                }
-                else if ( ((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "TYPELIST"))) ) {
-                    alt108=2;
-                }
-                else {
-                    if (state.backtracking>0) {state.failed=true; return cond;}
-                    NoViableAltException nvae =
-                        new NoViableAltException("", 108, 1, input);
-
-                    throw nvae;
-
-                }
-                }
-                break;
-            case BasicAnnotationType:
-                {
-                alt108=1;
-                }
-                break;
-            case LCURLY:
-                {
-                alt108=2;
-                }
-                break;
-            default:
-                if (state.backtracking>0) {state.failed=true; return cond;}
-                NoViableAltException nvae =
-                    new NoViableAltException("", 108, 0, input);
-
-                throw nvae;
-
-            }
-
-            switch (alt108) {
-                case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1001:23: type1= typeExpression
-                    {
-                    pushFollow(FOLLOW_typeExpression_in_conditionPartOfNeq4944);
-                    type1=typeExpression();
-
-                    state._fsp--;
-                    if (state.failed) return cond;
-
-                    }
-                    break;
-                case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1001:46: type2= typeListExpression
-                    {
-                    pushFollow(FOLLOW_typeListExpression_in_conditionPartOfNeq4950);
-                    type2=typeListExpression();
-
-                    state._fsp--;
-                    if (state.failed) return cond;
-
-                    }
-                    break;
-
-            }
-
-
-            match(input,RPAREN,FOLLOW_RPAREN_in_conditionPartOfNeq4953); if (state.failed) return cond;
+            match(input,RPAREN,FOLLOW_RPAREN_in_conditionPartOfNeq4878); if (state.failed) return cond;
 
             if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionPartOfNeq(type1, type2, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -8207,7 +8103,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "conditionPosition"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1005:1: conditionPosition returns [AbstractTextMarkerCondition cond = null] : POSITION LPAREN type= typeExpression COMMA pos= numberExpression RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:996:1: conditionPosition returns [AbstractTextMarkerCondition cond = null] : POSITION LPAREN type= typeExpression COMMA pos= numberExpression RPAREN ;
     public final AbstractTextMarkerCondition conditionPosition() throws RecognitionException {
         AbstractTextMarkerCondition cond =  null;
 
@@ -8218,28 +8114,28 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1006:5: ( POSITION LPAREN type= typeExpression COMMA pos= numberExpression RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1007:5: POSITION LPAREN type= typeExpression COMMA pos= numberExpression RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:997:5: ( POSITION LPAREN type= typeExpression COMMA pos= numberExpression RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:998:5: POSITION LPAREN type= typeExpression COMMA pos= numberExpression RPAREN
             {
-            match(input,POSITION,FOLLOW_POSITION_in_conditionPosition4987); if (state.failed) return cond;
+            match(input,POSITION,FOLLOW_POSITION_in_conditionPosition4912); if (state.failed) return cond;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_conditionPosition4989); if (state.failed) return cond;
+            match(input,LPAREN,FOLLOW_LPAREN_in_conditionPosition4914); if (state.failed) return cond;
 
-            pushFollow(FOLLOW_typeExpression_in_conditionPosition4995);
+            pushFollow(FOLLOW_typeExpression_in_conditionPosition4920);
             type=typeExpression();
 
             state._fsp--;
             if (state.failed) return cond;
 
-            match(input,COMMA,FOLLOW_COMMA_in_conditionPosition4997); if (state.failed) return cond;
+            match(input,COMMA,FOLLOW_COMMA_in_conditionPosition4922); if (state.failed) return cond;
 
-            pushFollow(FOLLOW_numberExpression_in_conditionPosition5003);
+            pushFollow(FOLLOW_numberExpression_in_conditionPosition4928);
             pos=numberExpression();
 
             state._fsp--;
             if (state.failed) return cond;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_conditionPosition5005); if (state.failed) return cond;
+            match(input,RPAREN,FOLLOW_RPAREN_in_conditionPosition4930); if (state.failed) return cond;
 
             if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionPosition(type, pos, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -8264,7 +8160,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "conditionRegExp"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1010:1: conditionRegExp returns [AbstractTextMarkerCondition cond = null] : REGEXP LPAREN pattern= stringExpression ( COMMA caseSensitive= booleanExpression )? RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1001:1: conditionRegExp returns [AbstractTextMarkerCondition cond = null] : REGEXP LPAREN pattern= stringExpression ( COMMA caseSensitive= booleanExpression )? RPAREN ;
     public final AbstractTextMarkerCondition conditionRegExp() throws RecognitionException {
         AbstractTextMarkerCondition cond =  null;
 
@@ -8275,33 +8171,33 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1011:5: ( REGEXP LPAREN pattern= stringExpression ( COMMA caseSensitive= booleanExpression )? RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1012:5: REGEXP LPAREN pattern= stringExpression ( COMMA caseSensitive= booleanExpression )? RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1002:5: ( REGEXP LPAREN pattern= stringExpression ( COMMA caseSensitive= booleanExpression )? RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1003:5: REGEXP LPAREN pattern= stringExpression ( COMMA caseSensitive= booleanExpression )? RPAREN
             {
-            match(input,REGEXP,FOLLOW_REGEXP_in_conditionRegExp5035); if (state.failed) return cond;
+            match(input,REGEXP,FOLLOW_REGEXP_in_conditionRegExp4960); if (state.failed) return cond;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_conditionRegExp5037); if (state.failed) return cond;
+            match(input,LPAREN,FOLLOW_LPAREN_in_conditionRegExp4962); if (state.failed) return cond;
 
-            pushFollow(FOLLOW_stringExpression_in_conditionRegExp5043);
+            pushFollow(FOLLOW_stringExpression_in_conditionRegExp4968);
             pattern=stringExpression();
 
             state._fsp--;
             if (state.failed) return cond;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1012:46: ( COMMA caseSensitive= booleanExpression )?
-            int alt109=2;
-            int LA109_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1003:46: ( COMMA caseSensitive= booleanExpression )?
+            int alt108=2;
+            int LA108_0 = input.LA(1);
 
-            if ( (LA109_0==COMMA) ) {
-                alt109=1;
+            if ( (LA108_0==COMMA) ) {
+                alt108=1;
             }
-            switch (alt109) {
+            switch (alt108) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1012:47: COMMA caseSensitive= booleanExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1003:47: COMMA caseSensitive= booleanExpression
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_conditionRegExp5046); if (state.failed) return cond;
+                    match(input,COMMA,FOLLOW_COMMA_in_conditionRegExp4971); if (state.failed) return cond;
 
-                    pushFollow(FOLLOW_booleanExpression_in_conditionRegExp5052);
+                    pushFollow(FOLLOW_booleanExpression_in_conditionRegExp4977);
                     caseSensitive=booleanExpression();
 
                     state._fsp--;
@@ -8313,7 +8209,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_conditionRegExp5056); if (state.failed) return cond;
+            match(input,RPAREN,FOLLOW_RPAREN_in_conditionRegExp4981); if (state.failed) return cond;
 
             if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionRegExp(pattern, caseSensitive, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -8338,7 +8234,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "conditionScore"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1016:1: conditionScore returns [AbstractTextMarkerCondition cond = null] : SCORE LPAREN min= numberExpression ( COMMA max= numberExpression ( COMMA var= numberVariable )? )? RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1007:1: conditionScore returns [AbstractTextMarkerCondition cond = null] : SCORE LPAREN min= numberExpression ( COMMA max= numberExpression ( COMMA var= numberVariable )? )? RPAREN ;
     public final AbstractTextMarkerCondition conditionScore() throws RecognitionException {
         AbstractTextMarkerCondition cond =  null;
 
@@ -8351,52 +8247,52 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1017:5: ( SCORE LPAREN min= numberExpression ( COMMA max= numberExpression ( COMMA var= numberVariable )? )? RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1018:5: SCORE LPAREN min= numberExpression ( COMMA max= numberExpression ( COMMA var= numberVariable )? )? RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1008:5: ( SCORE LPAREN min= numberExpression ( COMMA max= numberExpression ( COMMA var= numberVariable )? )? RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1009:5: SCORE LPAREN min= numberExpression ( COMMA max= numberExpression ( COMMA var= numberVariable )? )? RPAREN
             {
-            match(input,SCORE,FOLLOW_SCORE_in_conditionScore5091); if (state.failed) return cond;
+            match(input,SCORE,FOLLOW_SCORE_in_conditionScore5016); if (state.failed) return cond;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_conditionScore5093); if (state.failed) return cond;
+            match(input,LPAREN,FOLLOW_LPAREN_in_conditionScore5018); if (state.failed) return cond;
 
-            pushFollow(FOLLOW_numberExpression_in_conditionScore5099);
+            pushFollow(FOLLOW_numberExpression_in_conditionScore5024);
             min=numberExpression();
 
             state._fsp--;
             if (state.failed) return cond;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1018:41: ( COMMA max= numberExpression ( COMMA var= numberVariable )? )?
-            int alt111=2;
-            int LA111_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1009:41: ( COMMA max= numberExpression ( COMMA var= numberVariable )? )?
+            int alt110=2;
+            int LA110_0 = input.LA(1);
 
-            if ( (LA111_0==COMMA) ) {
-                alt111=1;
+            if ( (LA110_0==COMMA) ) {
+                alt110=1;
             }
-            switch (alt111) {
+            switch (alt110) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1018:42: COMMA max= numberExpression ( COMMA var= numberVariable )?
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1009:42: COMMA max= numberExpression ( COMMA var= numberVariable )?
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_conditionScore5102); if (state.failed) return cond;
+                    match(input,COMMA,FOLLOW_COMMA_in_conditionScore5027); if (state.failed) return cond;
 
-                    pushFollow(FOLLOW_numberExpression_in_conditionScore5108);
+                    pushFollow(FOLLOW_numberExpression_in_conditionScore5033);
                     max=numberExpression();
 
                     state._fsp--;
                     if (state.failed) return cond;
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1019:5: ( COMMA var= numberVariable )?
-                    int alt110=2;
-                    int LA110_0 = input.LA(1);
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1010:5: ( COMMA var= numberVariable )?
+                    int alt109=2;
+                    int LA109_0 = input.LA(1);
 
-                    if ( (LA110_0==COMMA) ) {
-                        alt110=1;
+                    if ( (LA109_0==COMMA) ) {
+                        alt109=1;
                     }
-                    switch (alt110) {
+                    switch (alt109) {
                         case 1 :
-                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1019:6: COMMA var= numberVariable
+                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1010:6: COMMA var= numberVariable
                             {
-                            match(input,COMMA,FOLLOW_COMMA_in_conditionScore5115); if (state.failed) return cond;
+                            match(input,COMMA,FOLLOW_COMMA_in_conditionScore5040); if (state.failed) return cond;
 
-                            pushFollow(FOLLOW_numberVariable_in_conditionScore5121);
+                            pushFollow(FOLLOW_numberVariable_in_conditionScore5046);
                             var=numberVariable();
 
                             state._fsp--;
@@ -8414,7 +8310,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_conditionScore5128); if (state.failed) return cond;
+            match(input,RPAREN,FOLLOW_RPAREN_in_conditionScore5053); if (state.failed) return cond;
 
             if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionScore(min, max, var, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -8439,7 +8335,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "conditionVote"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1024:1: conditionVote returns [AbstractTextMarkerCondition cond = null] : VOTE LPAREN type1= typeExpression COMMA type2= typeExpression RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1015:1: conditionVote returns [AbstractTextMarkerCondition cond = null] : VOTE LPAREN type1= typeExpression COMMA type2= typeExpression RPAREN ;
     public final AbstractTextMarkerCondition conditionVote() throws RecognitionException {
         AbstractTextMarkerCondition cond =  null;
 
@@ -8450,28 +8346,28 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1025:5: ( VOTE LPAREN type1= typeExpression COMMA type2= typeExpression RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1026:5: VOTE LPAREN type1= typeExpression COMMA type2= typeExpression RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1016:5: ( VOTE LPAREN type1= typeExpression COMMA type2= typeExpression RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1017:5: VOTE LPAREN type1= typeExpression COMMA type2= typeExpression RPAREN
             {
-            match(input,VOTE,FOLLOW_VOTE_in_conditionVote5163); if (state.failed) return cond;
+            match(input,VOTE,FOLLOW_VOTE_in_conditionVote5088); if (state.failed) return cond;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_conditionVote5165); if (state.failed) return cond;
+            match(input,LPAREN,FOLLOW_LPAREN_in_conditionVote5090); if (state.failed) return cond;
 
-            pushFollow(FOLLOW_typeExpression_in_conditionVote5171);
+            pushFollow(FOLLOW_typeExpression_in_conditionVote5096);
             type1=typeExpression();
 
             state._fsp--;
             if (state.failed) return cond;
 
-            match(input,COMMA,FOLLOW_COMMA_in_conditionVote5173); if (state.failed) return cond;
+            match(input,COMMA,FOLLOW_COMMA_in_conditionVote5098); if (state.failed) return cond;
 
-            pushFollow(FOLLOW_typeExpression_in_conditionVote5179);
+            pushFollow(FOLLOW_typeExpression_in_conditionVote5104);
             type2=typeExpression();
 
             state._fsp--;
             if (state.failed) return cond;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_conditionVote5181); if (state.failed) return cond;
+            match(input,RPAREN,FOLLOW_RPAREN_in_conditionVote5106); if (state.failed) return cond;
 
             if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionVote(type1, type2, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -8496,7 +8392,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "conditionIf"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1030:1: conditionIf returns [AbstractTextMarkerCondition cond = null] : IF LPAREN e= booleanExpression RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1021:1: conditionIf returns [AbstractTextMarkerCondition cond = null] : IF LPAREN e= booleanExpression RPAREN ;
     public final AbstractTextMarkerCondition conditionIf() throws RecognitionException {
         AbstractTextMarkerCondition cond =  null;
 
@@ -8505,20 +8401,20 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1031:5: ( IF LPAREN e= booleanExpression RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1032:5: IF LPAREN e= booleanExpression RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1022:5: ( IF LPAREN e= booleanExpression RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1023:5: IF LPAREN e= booleanExpression RPAREN
             {
-            match(input,IF,FOLLOW_IF_in_conditionIf5219); if (state.failed) return cond;
+            match(input,IF,FOLLOW_IF_in_conditionIf5144); if (state.failed) return cond;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_conditionIf5221); if (state.failed) return cond;
+            match(input,LPAREN,FOLLOW_LPAREN_in_conditionIf5146); if (state.failed) return cond;
 
-            pushFollow(FOLLOW_booleanExpression_in_conditionIf5227);
+            pushFollow(FOLLOW_booleanExpression_in_conditionIf5152);
             e=booleanExpression();
 
             state._fsp--;
             if (state.failed) return cond;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_conditionIf5229); if (state.failed) return cond;
+            match(input,RPAREN,FOLLOW_RPAREN_in_conditionIf5154); if (state.failed) return cond;
 
             if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionIf(e, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -8543,7 +8439,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "conditionFeature"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1036:1: conditionFeature returns [AbstractTextMarkerCondition cond = null] : FEATURE LPAREN se= stringExpression COMMA v= argument RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1027:1: conditionFeature returns [AbstractTextMarkerCondition cond = null] : FEATURE LPAREN se= stringExpression COMMA v= argument RPAREN ;
     public final AbstractTextMarkerCondition conditionFeature() throws RecognitionException {
         AbstractTextMarkerCondition cond =  null;
 
@@ -8554,28 +8450,28 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1037:5: ( FEATURE LPAREN se= stringExpression COMMA v= argument RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1038:5: FEATURE LPAREN se= stringExpression COMMA v= argument RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1028:5: ( FEATURE LPAREN se= stringExpression COMMA v= argument RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1029:5: FEATURE LPAREN se= stringExpression COMMA v= argument RPAREN
             {
-            match(input,FEATURE,FOLLOW_FEATURE_in_conditionFeature5263); if (state.failed) return cond;
+            match(input,FEATURE,FOLLOW_FEATURE_in_conditionFeature5188); if (state.failed) return cond;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_conditionFeature5265); if (state.failed) return cond;
+            match(input,LPAREN,FOLLOW_LPAREN_in_conditionFeature5190); if (state.failed) return cond;
 
-            pushFollow(FOLLOW_stringExpression_in_conditionFeature5271);
+            pushFollow(FOLLOW_stringExpression_in_conditionFeature5196);
             se=stringExpression();
 
             state._fsp--;
             if (state.failed) return cond;
 
-            match(input,COMMA,FOLLOW_COMMA_in_conditionFeature5273); if (state.failed) return cond;
+            match(input,COMMA,FOLLOW_COMMA_in_conditionFeature5198); if (state.failed) return cond;
 
-            pushFollow(FOLLOW_argument_in_conditionFeature5279);
+            pushFollow(FOLLOW_argument_in_conditionFeature5204);
             v=argument();
 
             state._fsp--;
             if (state.failed) return cond;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_conditionFeature5281); if (state.failed) return cond;
+            match(input,RPAREN,FOLLOW_RPAREN_in_conditionFeature5206); if (state.failed) return cond;
 
             if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionFeature(se, v, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -8600,7 +8496,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "conditionParse"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1042:1: conditionParse returns [AbstractTextMarkerCondition cond = null] : PARSE LPAREN {...}?id= Identifier RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1033:1: conditionParse returns [AbstractTextMarkerCondition cond = null] : PARSE LPAREN {...}?id= Identifier RPAREN ;
     public final AbstractTextMarkerCondition conditionParse() throws RecognitionException {
         AbstractTextMarkerCondition cond =  null;
 
@@ -8608,21 +8504,21 @@ public class TextMarkerParser extends Parser {
         Token id=null;
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1043:5: ( PARSE LPAREN {...}?id= Identifier RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1044:5: PARSE LPAREN {...}?id= Identifier RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1034:5: ( PARSE LPAREN {...}?id= Identifier RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1035:5: PARSE LPAREN {...}?id= Identifier RPAREN
             {
-            match(input,PARSE,FOLLOW_PARSE_in_conditionParse5315); if (state.failed) return cond;
+            match(input,PARSE,FOLLOW_PARSE_in_conditionParse5240); if (state.failed) return cond;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_conditionParse5317); if (state.failed) return cond;
+            match(input,LPAREN,FOLLOW_LPAREN_in_conditionParse5242); if (state.failed) return cond;
 
             if ( !((isVariable(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText()))) ) {
                 if (state.backtracking>0) {state.failed=true; return cond;}
                 throw new FailedPredicateException(input, "conditionParse", "isVariable($blockDeclaration::env,input.LT(1).getText())");
             }
 
-            id=(Token)match(input,Identifier,FOLLOW_Identifier_in_conditionParse5325); if (state.failed) return cond;
+            id=(Token)match(input,Identifier,FOLLOW_Identifier_in_conditionParse5250); if (state.failed) return cond;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_conditionParse5327); if (state.failed) return cond;
+            match(input,RPAREN,FOLLOW_RPAREN_in_conditionParse5252); if (state.failed) return cond;
 
             if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionParse(id, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -8647,7 +8543,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "conditionIs"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1048:1: conditionIs returns [AbstractTextMarkerCondition cond = null] : IS LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1039:1: conditionIs returns [AbstractTextMarkerCondition cond = null] : IS LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN ;
     public final AbstractTextMarkerCondition conditionIs() throws RecognitionException {
         AbstractTextMarkerCondition cond =  null;
 
@@ -8658,14 +8554,126 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1049:5: ( IS LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1050:5: IS LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1040:5: ( IS LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1041:5: IS LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN
             {
-            match(input,IS,FOLLOW_IS_in_conditionIs5358); if (state.failed) return cond;
+            match(input,IS,FOLLOW_IS_in_conditionIs5283); if (state.failed) return cond;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_conditionIs5360); if (state.failed) return cond;
+            match(input,LPAREN,FOLLOW_LPAREN_in_conditionIs5285); if (state.failed) return cond;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1050:15: (type1= typeExpression |type2= typeListExpression )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1041:15: (type1= typeExpression |type2= typeListExpression )
+            int alt111=2;
+            switch ( input.LA(1) ) {
+            case Identifier:
+                {
+                int LA111_1 = input.LA(2);
+
+                if ( (!(((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "TYPELIST"))))) ) {
+                    alt111=1;
+                }
+                else if ( ((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "TYPELIST"))) ) {
+                    alt111=2;
+                }
+                else {
+                    if (state.backtracking>0) {state.failed=true; return cond;}
+                    NoViableAltException nvae =
+                        new NoViableAltException("", 111, 1, input);
+
+                    throw nvae;
+
+                }
+                }
+                break;
+            case BasicAnnotationType:
+                {
+                alt111=1;
+                }
+                break;
+            case LCURLY:
+                {
+                alt111=2;
+                }
+                break;
+            default:
+                if (state.backtracking>0) {state.failed=true; return cond;}
+                NoViableAltException nvae =
+                    new NoViableAltException("", 111, 0, input);
+
+                throw nvae;
+
+            }
+
+            switch (alt111) {
+                case 1 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1041:16: type1= typeExpression
+                    {
+                    pushFollow(FOLLOW_typeExpression_in_conditionIs5292);
+                    type1=typeExpression();
+
+                    state._fsp--;
+                    if (state.failed) return cond;
+
+                    }
+                    break;
+                case 2 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1041:39: type2= typeListExpression
+                    {
+                    pushFollow(FOLLOW_typeListExpression_in_conditionIs5298);
+                    type2=typeListExpression();
+
+                    state._fsp--;
+                    if (state.failed) return cond;
+
+                    }
+                    break;
+
+            }
+
+
+            match(input,RPAREN,FOLLOW_RPAREN_in_conditionIs5301); if (state.failed) return cond;
+
+            if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionIs(type1, type2, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
+
+            }
+
+        }
+
+        	catch (RecognitionException exception1) {
+        		emitErrorMessage(exception1.toString());
+        	}
+        	catch (Throwable exception2) {
+        		emitErrorMessage(exception2.toString());
+        	}
+
+        finally {
+        	// do for sure before leaving
+        }
+        return cond;
+    }
+    // $ANTLR end "conditionIs"
+
+
+
+    // $ANTLR start "conditionBefore"
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1045:1: conditionBefore returns [AbstractTextMarkerCondition cond = null] : BEFORE LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN ;
+    public final AbstractTextMarkerCondition conditionBefore() throws RecognitionException {
+        AbstractTextMarkerCondition cond =  null;
+
+
+        TypeExpression type1 =null;
+
+        TypeListExpression type2 =null;
+
+
+        try {
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1046:5: ( BEFORE LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1047:5: BEFORE LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN
+            {
+            match(input,BEFORE,FOLLOW_BEFORE_in_conditionBefore5332); if (state.failed) return cond;
+
+            match(input,LPAREN,FOLLOW_LPAREN_in_conditionBefore5334); if (state.failed) return cond;
+
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1047:19: (type1= typeExpression |type2= typeListExpression )
             int alt112=2;
             switch ( input.LA(1) ) {
             case Identifier:
@@ -8709,9 +8717,9 @@ public class TextMarkerParser extends Parser {
 
             switch (alt112) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1050:16: type1= typeExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1047:20: type1= typeExpression
                     {
-                    pushFollow(FOLLOW_typeExpression_in_conditionIs5367);
+                    pushFollow(FOLLOW_typeExpression_in_conditionBefore5341);
                     type1=typeExpression();
 
                     state._fsp--;
@@ -8720,9 +8728,9 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1050:39: type2= typeListExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1047:43: type2= typeListExpression
                     {
-                    pushFollow(FOLLOW_typeListExpression_in_conditionIs5373);
+                    pushFollow(FOLLOW_typeListExpression_in_conditionBefore5347);
                     type2=typeListExpression();
 
                     state._fsp--;
@@ -8734,9 +8742,9 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_conditionIs5376); if (state.failed) return cond;
+            match(input,RPAREN,FOLLOW_RPAREN_in_conditionBefore5350); if (state.failed) return cond;
 
-            if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionIs(type1, type2, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
+            if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionBefore(type1,type2, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
             }
 
@@ -8754,13 +8762,13 @@ public class TextMarkerParser extends Parser {
         }
         return cond;
     }
-    // $ANTLR end "conditionIs"
+    // $ANTLR end "conditionBefore"
 
 
 
-    // $ANTLR start "conditionBefore"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1054:1: conditionBefore returns [AbstractTextMarkerCondition cond = null] : BEFORE LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN ;
-    public final AbstractTextMarkerCondition conditionBefore() throws RecognitionException {
+    // $ANTLR start "conditionAfter"
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1051:1: conditionAfter returns [AbstractTextMarkerCondition cond = null] : AFTER LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN ;
+    public final AbstractTextMarkerCondition conditionAfter() throws RecognitionException {
         AbstractTextMarkerCondition cond =  null;
 
 
@@ -8770,14 +8778,14 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1055:5: ( BEFORE LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1056:5: BEFORE LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1052:5: ( AFTER LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1053:5: AFTER LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN
             {
-            match(input,BEFORE,FOLLOW_BEFORE_in_conditionBefore5407); if (state.failed) return cond;
+            match(input,AFTER,FOLLOW_AFTER_in_conditionAfter5381); if (state.failed) return cond;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_conditionBefore5409); if (state.failed) return cond;
+            match(input,LPAREN,FOLLOW_LPAREN_in_conditionAfter5383); if (state.failed) return cond;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1056:19: (type1= typeExpression |type2= typeListExpression )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1053:18: (type1= typeExpression |type2= typeListExpression )
             int alt113=2;
             switch ( input.LA(1) ) {
             case Identifier:
@@ -8821,9 +8829,9 @@ public class TextMarkerParser extends Parser {
 
             switch (alt113) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1056:20: type1= typeExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1053:19: type1= typeExpression
                     {
-                    pushFollow(FOLLOW_typeExpression_in_conditionBefore5416);
+                    pushFollow(FOLLOW_typeExpression_in_conditionAfter5390);
                     type1=typeExpression();
 
                     state._fsp--;
@@ -8832,9 +8840,9 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1056:43: type2= typeListExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1053:42: type2= typeListExpression
                     {
-                    pushFollow(FOLLOW_typeListExpression_in_conditionBefore5422);
+                    pushFollow(FOLLOW_typeListExpression_in_conditionAfter5396);
                     type2=typeListExpression();
 
                     state._fsp--;
@@ -8846,9 +8854,9 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_conditionBefore5425); if (state.failed) return cond;
+            match(input,RPAREN,FOLLOW_RPAREN_in_conditionAfter5399); if (state.failed) return cond;
 
-            if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionBefore(type1,type2, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
+            if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionAfter(type1,type2,((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
             }
 
@@ -8866,13 +8874,13 @@ public class TextMarkerParser extends Parser {
         }
         return cond;
     }
-    // $ANTLR end "conditionBefore"
+    // $ANTLR end "conditionAfter"
 
 
 
-    // $ANTLR start "conditionAfter"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1060:1: conditionAfter returns [AbstractTextMarkerCondition cond = null] : AFTER LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN ;
-    public final AbstractTextMarkerCondition conditionAfter() throws RecognitionException {
+    // $ANTLR start "conditionStartsWith"
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1057:1: conditionStartsWith returns [AbstractTextMarkerCondition cond = null] : STARTSWITH LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN ;
+    public final AbstractTextMarkerCondition conditionStartsWith() throws RecognitionException {
         AbstractTextMarkerCondition cond =  null;
 
 
@@ -8882,14 +8890,14 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1061:5: ( AFTER LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1062:5: AFTER LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1058:5: ( STARTSWITH LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1059:5: STARTSWITH LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN
             {
-            match(input,AFTER,FOLLOW_AFTER_in_conditionAfter5456); if (state.failed) return cond;
+            match(input,STARTSWITH,FOLLOW_STARTSWITH_in_conditionStartsWith5430); if (state.failed) return cond;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_conditionAfter5458); if (state.failed) return cond;
+            match(input,LPAREN,FOLLOW_LPAREN_in_conditionStartsWith5432); if (state.failed) return cond;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1062:18: (type1= typeExpression |type2= typeListExpression )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1059:23: (type1= typeExpression |type2= typeListExpression )
             int alt114=2;
             switch ( input.LA(1) ) {
             case Identifier:
@@ -8933,9 +8941,9 @@ public class TextMarkerParser extends Parser {
 
             switch (alt114) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1062:19: type1= typeExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1059:24: type1= typeExpression
                     {
-                    pushFollow(FOLLOW_typeExpression_in_conditionAfter5465);
+                    pushFollow(FOLLOW_typeExpression_in_conditionStartsWith5439);
                     type1=typeExpression();
 
                     state._fsp--;
@@ -8944,9 +8952,9 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1062:42: type2= typeListExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1059:47: type2= typeListExpression
                     {
-                    pushFollow(FOLLOW_typeListExpression_in_conditionAfter5471);
+                    pushFollow(FOLLOW_typeListExpression_in_conditionStartsWith5445);
                     type2=typeListExpression();
 
                     state._fsp--;
@@ -8958,9 +8966,9 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_conditionAfter5474); if (state.failed) return cond;
+            match(input,RPAREN,FOLLOW_RPAREN_in_conditionStartsWith5448); if (state.failed) return cond;
 
-            if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionAfter(type1,type2,((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
+            if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionStartsWith(type1,type2, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
             }
 
@@ -8978,13 +8986,13 @@ public class TextMarkerParser extends Parser {
         }
         return cond;
     }
-    // $ANTLR end "conditionAfter"
+    // $ANTLR end "conditionStartsWith"
 
 
 
-    // $ANTLR start "conditionStartsWith"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1066:1: conditionStartsWith returns [AbstractTextMarkerCondition cond = null] : STARTSWITH LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN ;
-    public final AbstractTextMarkerCondition conditionStartsWith() throws RecognitionException {
+    // $ANTLR start "conditionEndsWith"
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1063:1: conditionEndsWith returns [AbstractTextMarkerCondition cond = null] : ENDSWITH LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN ;
+    public final AbstractTextMarkerCondition conditionEndsWith() throws RecognitionException {
         AbstractTextMarkerCondition cond =  null;
 
 
@@ -8994,14 +9002,14 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1067:5: ( STARTSWITH LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1068:5: STARTSWITH LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1064:5: ( ENDSWITH LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1065:5: ENDSWITH LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN
             {
-            match(input,STARTSWITH,FOLLOW_STARTSWITH_in_conditionStartsWith5505); if (state.failed) return cond;
+            match(input,ENDSWITH,FOLLOW_ENDSWITH_in_conditionEndsWith5479); if (state.failed) return cond;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_conditionStartsWith5507); if (state.failed) return cond;
+            match(input,LPAREN,FOLLOW_LPAREN_in_conditionEndsWith5481); if (state.failed) return cond;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1068:23: (type1= typeExpression |type2= typeListExpression )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1065:21: (type1= typeExpression |type2= typeListExpression )
             int alt115=2;
             switch ( input.LA(1) ) {
             case Identifier:
@@ -9045,9 +9053,9 @@ public class TextMarkerParser extends Parser {
 
             switch (alt115) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1068:24: type1= typeExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1065:22: type1= typeExpression
                     {
-                    pushFollow(FOLLOW_typeExpression_in_conditionStartsWith5514);
+                    pushFollow(FOLLOW_typeExpression_in_conditionEndsWith5488);
                     type1=typeExpression();
 
                     state._fsp--;
@@ -9056,9 +9064,9 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1068:47: type2= typeListExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1065:45: type2= typeListExpression
                     {
-                    pushFollow(FOLLOW_typeListExpression_in_conditionStartsWith5520);
+                    pushFollow(FOLLOW_typeListExpression_in_conditionEndsWith5494);
                     type2=typeListExpression();
 
                     state._fsp--;
@@ -9070,119 +9078,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_conditionStartsWith5523); if (state.failed) return cond;
-
-            if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionStartsWith(type1,type2, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
-
-            }
-
-        }
-
-        	catch (RecognitionException exception1) {
-        		emitErrorMessage(exception1.toString());
-        	}
-        	catch (Throwable exception2) {
-        		emitErrorMessage(exception2.toString());
-        	}
-
-        finally {
-        	// do for sure before leaving
-        }
-        return cond;
-    }
-    // $ANTLR end "conditionStartsWith"
-
-
-
-    // $ANTLR start "conditionEndsWith"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1072:1: conditionEndsWith returns [AbstractTextMarkerCondition cond = null] : ENDSWITH LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN ;
-    public final AbstractTextMarkerCondition conditionEndsWith() throws RecognitionException {
-        AbstractTextMarkerCondition cond =  null;
-
-
-        TypeExpression type1 =null;
-
-        TypeListExpression type2 =null;
-
-
-        try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1073:5: ( ENDSWITH LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1074:5: ENDSWITH LPAREN (type1= typeExpression |type2= typeListExpression ) RPAREN
-            {
-            match(input,ENDSWITH,FOLLOW_ENDSWITH_in_conditionEndsWith5554); if (state.failed) return cond;
-
-            match(input,LPAREN,FOLLOW_LPAREN_in_conditionEndsWith5556); if (state.failed) return cond;
-
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1074:21: (type1= typeExpression |type2= typeListExpression )
-            int alt116=2;
-            switch ( input.LA(1) ) {
-            case Identifier:
-                {
-                int LA116_1 = input.LA(2);
-
-                if ( (!(((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "TYPELIST"))))) ) {
-                    alt116=1;
-                }
-                else if ( ((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "TYPELIST"))) ) {
-                    alt116=2;
-                }
-                else {
-                    if (state.backtracking>0) {state.failed=true; return cond;}
-                    NoViableAltException nvae =
-                        new NoViableAltException("", 116, 1, input);
-
-                    throw nvae;
-
-                }
-                }
-                break;
-            case BasicAnnotationType:
-                {
-                alt116=1;
-                }
-                break;
-            case LCURLY:
-                {
-                alt116=2;
-                }
-                break;
-            default:
-                if (state.backtracking>0) {state.failed=true; return cond;}
-                NoViableAltException nvae =
-                    new NoViableAltException("", 116, 0, input);
-
-                throw nvae;
-
-            }
-
-            switch (alt116) {
-                case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1074:22: type1= typeExpression
-                    {
-                    pushFollow(FOLLOW_typeExpression_in_conditionEndsWith5563);
-                    type1=typeExpression();
-
-                    state._fsp--;
-                    if (state.failed) return cond;
-
-                    }
-                    break;
-                case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1074:45: type2= typeListExpression
-                    {
-                    pushFollow(FOLLOW_typeListExpression_in_conditionEndsWith5569);
-                    type2=typeListExpression();
-
-                    state._fsp--;
-                    if (state.failed) return cond;
-
-                    }
-                    break;
-
-            }
-
-
-            match(input,RPAREN,FOLLOW_RPAREN_in_conditionEndsWith5572); if (state.failed) return cond;
+            match(input,RPAREN,FOLLOW_RPAREN_in_conditionEndsWith5497); if (state.failed) return cond;
 
             if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionEndsWith(type1,type2,((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -9207,7 +9103,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "conditionSize"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1078:1: conditionSize returns [AbstractTextMarkerCondition cond = null] : SIZE LPAREN list= listExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1069:1: conditionSize returns [AbstractTextMarkerCondition cond = null] : SIZE LPAREN list= listExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN ;
     public final AbstractTextMarkerCondition conditionSize() throws RecognitionException {
         AbstractTextMarkerCondition cond =  null;
 
@@ -9222,52 +9118,52 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1079:5: ( SIZE LPAREN list= listExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1080:5: SIZE LPAREN list= listExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1070:5: ( SIZE LPAREN list= listExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1071:5: SIZE LPAREN list= listExpression ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN
             {
-            match(input,SIZE,FOLLOW_SIZE_in_conditionSize5603); if (state.failed) return cond;
+            match(input,SIZE,FOLLOW_SIZE_in_conditionSize5528); if (state.failed) return cond;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_conditionSize5605); if (state.failed) return cond;
+            match(input,LPAREN,FOLLOW_LPAREN_in_conditionSize5530); if (state.failed) return cond;
 
-            pushFollow(FOLLOW_listExpression_in_conditionSize5611);
+            pushFollow(FOLLOW_listExpression_in_conditionSize5536);
             list=listExpression();
 
             state._fsp--;
             if (state.failed) return cond;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1080:39: ( COMMA min= numberExpression COMMA max= numberExpression )?
-            int alt117=2;
-            int LA117_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1071:39: ( COMMA min= numberExpression COMMA max= numberExpression )?
+            int alt116=2;
+            int LA116_0 = input.LA(1);
 
-            if ( (LA117_0==COMMA) ) {
-                int LA117_1 = input.LA(2);
+            if ( (LA116_0==COMMA) ) {
+                int LA116_1 = input.LA(2);
 
-                if ( (LA117_1==COS||LA117_1==DecimalLiteral||LA117_1==EXP||LA117_1==FloatingPointLiteral||(LA117_1 >= LOGN && LA117_1 <= LPAREN)||LA117_1==MINUS||LA117_1==SIN||LA117_1==TAN) ) {
-                    alt117=1;
+                if ( (LA116_1==COS||LA116_1==DecimalLiteral||LA116_1==EXP||LA116_1==FloatingPointLiteral||(LA116_1 >= LOGN && LA116_1 <= LPAREN)||LA116_1==MINUS||LA116_1==SIN||LA116_1==TAN) ) {
+                    alt116=1;
                 }
-                else if ( (LA117_1==Identifier) ) {
-                    int LA117_4 = input.LA(3);
+                else if ( (LA116_1==Identifier) ) {
+                    int LA116_4 = input.LA(3);
 
-                    if ( (LA117_4==COMMA||LA117_4==LPAREN||LA117_4==MINUS||(LA117_4 >= PERCENT && LA117_4 <= PLUS)||(LA117_4 >= SLASH && LA117_4 <= STAR)) ) {
-                        alt117=1;
+                    if ( (LA116_4==COMMA||LA116_4==LPAREN||LA116_4==MINUS||(LA116_4 >= PERCENT && LA116_4 <= PLUS)||(LA116_4 >= SLASH && LA116_4 <= STAR)) ) {
+                        alt116=1;
                     }
                 }
             }
-            switch (alt117) {
+            switch (alt116) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1080:40: COMMA min= numberExpression COMMA max= numberExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1071:40: COMMA min= numberExpression COMMA max= numberExpression
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_conditionSize5614); if (state.failed) return cond;
+                    match(input,COMMA,FOLLOW_COMMA_in_conditionSize5539); if (state.failed) return cond;
 
-                    pushFollow(FOLLOW_numberExpression_in_conditionSize5620);
+                    pushFollow(FOLLOW_numberExpression_in_conditionSize5545);
                     min=numberExpression();
 
                     state._fsp--;
                     if (state.failed) return cond;
 
-                    match(input,COMMA,FOLLOW_COMMA_in_conditionSize5622); if (state.failed) return cond;
+                    match(input,COMMA,FOLLOW_COMMA_in_conditionSize5547); if (state.failed) return cond;
 
-                    pushFollow(FOLLOW_numberExpression_in_conditionSize5628);
+                    pushFollow(FOLLOW_numberExpression_in_conditionSize5553);
                     max=numberExpression();
 
                     state._fsp--;
@@ -9279,20 +9175,20 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1080:100: ( COMMA var= numberVariable )?
-            int alt118=2;
-            int LA118_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1071:100: ( COMMA var= numberVariable )?
+            int alt117=2;
+            int LA117_0 = input.LA(1);
 
-            if ( (LA118_0==COMMA) ) {
-                alt118=1;
+            if ( (LA117_0==COMMA) ) {
+                alt117=1;
             }
-            switch (alt118) {
+            switch (alt117) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1080:101: COMMA var= numberVariable
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1071:101: COMMA var= numberVariable
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_conditionSize5633); if (state.failed) return cond;
+                    match(input,COMMA,FOLLOW_COMMA_in_conditionSize5558); if (state.failed) return cond;
 
-                    pushFollow(FOLLOW_numberVariable_in_conditionSize5639);
+                    pushFollow(FOLLOW_numberVariable_in_conditionSize5564);
                     var=numberVariable();
 
                     state._fsp--;
@@ -9304,7 +9200,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_conditionSize5643); if (state.failed) return cond;
+            match(input,RPAREN,FOLLOW_RPAREN_in_conditionSize5568); if (state.failed) return cond;
 
             if ( state.backtracking==0 ) {cond = ConditionFactory.createConditionSize(list, min, max, var,((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -9329,7 +9225,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "action"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1084:1: action returns [AbstractTextMarkerAction result = null] : (a= actionColor |a= actionDel |a= actionLog |a= actionMark |a= actionMarkScore |a= actionMarkFast |a= actionMarkLast |a= actionReplace |a= actionFilterMarkup |a= actionFilterType |a= actionRetainMarkup |a= actionRetainType |a= actionCreate |a= actionFill |a= actionCall |a= actionAssign |a= actionSetFeature |a= actionGetFeature |a= actionUnmark |a= actionUnmarkAll |a= actionTransfer |a= actionMarkOnce |a= actionTrie |a= actionGather |a= actionExec |a= actionMarkTable |a= actionAdd |a= actionRemove |a= actionRemoveDuplicate |a= actionMerge |a= actionGet |a= actionGetList |a= actionMatchedText |a= actionClear |a= actionExpand |a= actionConfigure |a= actionDynamicAnchoring | (a= externalAction )=>a= externalAction |a= variableAction ) ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1075:1: action returns [AbstractTextMarkerAction result = null] : (a= actionColor |a= actionDel |a= actionLog |a= actionMark |a= actionMarkScore |a= actionMarkFast |a= actionMarkLast |a= actionReplace |a= actionFilterType |a= actionRetainType |a= actionCreate |a= actionFill |a= actionCall |a= actionAssign |a= actionSetFeature |a= actionGetFeature |a= actionUnmark |a= actionUnmarkAll |a= actionTransfer |a= actionMarkOnce |a= actionTrie |a= actionGather |a= actionExec |a= actionMarkTable |a= actionAdd |a= actionRemove |a= actionRemoveDuplicate |a= actionMerge |a= actionGet |a= actionGetList |a= actionMatchedText |a= actionClear |a= actionExpand |a= actionConfigure |a= actionDynamicAnchoring | (a= externalAction )=>a= externalAction |a= variableAction ) ;
     public final AbstractTextMarkerAction action() throws RecognitionException {
         AbstractTextMarkerAction result =  null;
 
@@ -9338,211 +9234,201 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1085:2: ( (a= actionColor |a= actionDel |a= actionLog |a= actionMark |a= actionMarkScore |a= actionMarkFast |a= actionMarkLast |a= actionReplace |a= actionFilterMarkup |a= actionFilterType |a= actionRetainMarkup |a= actionRetainType |a= actionCreate |a= actionFill |a= actionCall |a= actionAssign |a= actionSetFeature |a= actionGetFeature |a= actionUnmark |a= actionUnmarkAll |a= actionTransfer |a= actionMarkOnce |a= actionTrie |a= actionGather |a= actionExec |a= actionMarkTable |a= actionAdd |a= actionRemove |a= actionRemoveDuplicate |a= actionMerge |a= actionGet |a= actionGetList |a= actionMatchedText |a= actionClear |a= actionExpand |a= actionConfigure |a= actionDynamicAnchoring | (a= externalAction )=>a= externalAction |a= variableAction ) )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1086:2: (a= actionColor |a= actionDel |a= actionLog |a= actionMark |a= actionMarkScore |a= actionMarkFast |a= actionMarkLast |a= actionReplace |a= actionFilterMarkup |a= actionFilterType |a= actionRetainMarkup |a= actionRetainType |a= actionCreate |a= actionFill |a= actionCall |a= actionAssign |a= actionSetFeature |a= actionGetFeature |a= actionUnmark |a= actionUnmarkAll |a= actionTransfer |a= actionMarkOnce |a= actionTrie |a= actionGather |a= actionExec |a= actionMarkTable |a= actionAdd |a= actionRemove |a= actionRemoveDuplicate |a= actionMerge |a= actionGet |a= actionGetList |a= actionMatchedText |a= actionClear |a= actionExpand |a= actionConfigure |a= actionDynamicAnchoring | (a= externalAction )=>a= externalAction |a= variableAction )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1076:2: ( (a= actionColor |a= actionDel |a= actionLog |a= actionMark |a= actionMarkScore |a= actionMarkFast |a= actionMarkLast |a= actionReplace |a= actionFilterType |a= actionRetainType |a= actionCreate |a= actionFill |a= actionCall |a= actionAssign |a= actionSetFeature |a= actionGetFeature |a= actionUnmark |a= actionUnmarkAll |a= actionTransfer |a= actionMarkOnce |a= actionTrie |a= actionGather |a= actionExec |a= actionMarkTable |a= actionAdd |a= actionRemove |a= actionRemoveDuplicate |a= actionMerge |a= actionGet |a= actionGetList |a= actionMatchedText |a= actionClear |a= actionExpand |a= actionConfigure |a= actionDynamicAnchoring | (a= externalAction )=>a= externalAction |a= variableAction ) )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1077:2: (a= actionColor |a= actionDel |a= actionLog |a= actionMark |a= actionMarkScore |a= actionMarkFast |a= actionMarkLast |a= actionReplace |a= actionFilterType |a= actionRetainType |a= actionCreate |a= actionFill |a= actionCall |a= actionAssign |a= actionSetFeature |a= actionGetFeature |a= actionUnmark |a= actionUnmarkAll |a= actionTransfer |a= actionMarkOnce |a= actionTrie |a= actionGather |a= actionExec |a= actionMarkTable |a= actionAdd |a= actionRemove |a= actionRemoveDuplicate |a= actionMerge |a= actionGet |a= actionGetList |a= actionMatchedText |a= actionClear |a= actionExpand |a= actionConfigure |a= actionDynamicAnchoring | (a= externalAction )=>a= externalAction |a= variableAction )
             {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1086:2: (a= actionColor |a= actionDel |a= actionLog |a= actionMark |a= actionMarkScore |a= actionMarkFast |a= actionMarkLast |a= actionReplace |a= actionFilterMarkup |a= actionFilterType |a= actionRetainMarkup |a= actionRetainType |a= actionCreate |a= actionFill |a= actionCall |a= actionAssign |a= actionSetFeature |a= actionGetFeature |a= actionUnmark |a= actionUnmarkAll |a= actionTransfer |a= actionMarkOnce |a= actionTrie |a= actionGather |a= actionExec |a= actionMarkTable |a= actionAdd |a= actionRemove |a= actionRemoveDuplicate |a= actionMerge |a= actionGet |a= actionGetList |a= actionMatchedText |a= actionClear |a= actionExpand |a= actionConfigure |a= actionDynamicAnchoring | (a= externalAction )=>a= externalAction |a= variableAction )
-            int alt119=39;
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1077:2: (a= actionColor |a= actionDel |a= actionLog |a= actionMark |a= actionMarkScore |a= actionMarkFast |a= actionMarkLast |a= actionReplace |a= actionFilterType |a= actionRetainType |a= actionCreate |a= actionFill |a= actionCall |a= actionAssign |a= actionSetFeature |a= actionGetFeature |a= actionUnmark |a= actionUnmarkAll |a= actionTransfer |a= actionMarkOnce |a= actionTrie |a= actionGather |a= actionExec |a= actionMarkTable |a= actionAdd |a= actionRemove |a= actionRemoveDuplicate |a= actionMerge |a= actionGet |a= actionGetList |a= actionMatchedText |a= actionClear |a= actionExpand |a= actionConfigure |a= actionDynamicAnchoring | (a= externalAction )=>a= externalAction |a= variableAction )
+            int alt118=37;
             switch ( input.LA(1) ) {
             case COLOR:
                 {
-                alt119=1;
+                alt118=1;
                 }
                 break;
             case DEL:
                 {
-                alt119=2;
+                alt118=2;
                 }
                 break;
             case LOG:
                 {
-                alt119=3;
+                alt118=3;
                 }
                 break;
             case MARK:
                 {
-                alt119=4;
+                alt118=4;
                 }
                 break;
             case MARKSCORE:
                 {
-                alt119=5;
+                alt118=5;
                 }
                 break;
             case MARKFAST:
                 {
-                alt119=6;
+                alt118=6;
                 }
                 break;
             case MARKLAST:
                 {
-                alt119=7;
+                alt118=7;
                 }
                 break;
             case REPLACE:
                 {
-                alt119=8;
-                }
-                break;
-            case FILTERMARKUP:
-                {
-                alt119=9;
+                alt118=8;
                 }
                 break;
             case FILTERTYPE:
                 {
-                alt119=10;
-                }
-                break;
-            case RETAINMARKUP:
-                {
-                alt119=11;
+                alt118=9;
                 }
                 break;
             case RETAINTYPE:
                 {
-                alt119=12;
+                alt118=10;
                 }
                 break;
             case CREATE:
                 {
-                alt119=13;
+                alt118=11;
                 }
                 break;
             case FILL:
                 {
-                alt119=14;
+                alt118=12;
                 }
                 break;
             case CALL:
                 {
-                alt119=15;
+                alt118=13;
                 }
                 break;
             case ASSIGN:
                 {
-                alt119=16;
+                alt118=14;
                 }
                 break;
             case SETFEATURE:
                 {
-                alt119=17;
+                alt118=15;
                 }
                 break;
             case GETFEATURE:
                 {
-                alt119=18;
+                alt118=16;
                 }
                 break;
             case UNMARK:
                 {
-                alt119=19;
+                alt118=17;
                 }
                 break;
             case UNMARKALL:
                 {
-                alt119=20;
+                alt118=18;
                 }
                 break;
             case TRANSFER:
                 {
-                alt119=21;
+                alt118=19;
                 }
                 break;
             case MARKONCE:
                 {
-                alt119=22;
+                alt118=20;
                 }
                 break;
             case TRIE:
                 {
-                alt119=23;
+                alt118=21;
                 }
                 break;
             case GATHER:
                 {
-                alt119=24;
+                alt118=22;
                 }
                 break;
             case EXEC:
                 {
-                alt119=25;
+                alt118=23;
                 }
                 break;
             case MARKTABLE:
                 {
-                alt119=26;
+                alt118=24;
                 }
                 break;
             case ADD:
                 {
-                alt119=27;
+                alt118=25;
                 }
                 break;
             case REMOVE:
                 {
-                alt119=28;
+                alt118=26;
                 }
                 break;
             case REMOVEDUPLICATE:
                 {
-                alt119=29;
+                alt118=27;
                 }
                 break;
             case MERGE:
                 {
-                alt119=30;
+                alt118=28;
                 }
                 break;
             case GET:
                 {
-                alt119=31;
+                alt118=29;
                 }
                 break;
             case GETLIST:
                 {
-                alt119=32;
+                alt118=30;
                 }
                 break;
             case MATCHEDTEXT:
                 {
-                alt119=33;
+                alt118=31;
                 }
                 break;
             case CLEAR:
                 {
-                alt119=34;
+                alt118=32;
                 }
                 break;
             case EXPAND:
                 {
-                alt119=35;
+                alt118=33;
                 }
                 break;
             case CONFIGURE:
                 {
-                alt119=36;
+                alt118=34;
                 }
                 break;
             case DYNAMICANCHORING:
                 {
-                alt119=37;
+                alt118=35;
                 }
                 break;
             case Identifier:
                 {
-                int LA119_38 = input.LA(2);
+                int LA118_36 = input.LA(2);
 
-                if ( (LA119_38==LPAREN) && (synpred20_TextMarkerParser())) {
-                    alt119=38;
+                if ( (LA118_36==LPAREN) && (synpred20_TextMarkerParser())) {
+                    alt118=36;
                 }
-                else if ( (LA119_38==COMMA||LA119_38==RCURLY||LA119_38==RPAREN) ) {
-                    alt119=39;
+                else if ( (LA118_36==COMMA||LA118_36==RCURLY||LA118_36==RPAREN) ) {
+                    alt118=37;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return result;}
                     NoViableAltException nvae =
-                        new NoViableAltException("", 119, 38, input);
+                        new NoViableAltException("", 118, 36, input);
 
                     throw nvae;
 
@@ -9552,17 +9438,17 @@ public class TextMarkerParser extends Parser {
             default:
                 if (state.backtracking>0) {state.failed=true; return result;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 119, 0, input);
+                    new NoViableAltException("", 118, 0, input);
 
                 throw nvae;
 
             }
 
-            switch (alt119) {
+            switch (alt118) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1087:2: a= actionColor
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1078:2: a= actionColor
                     {
-                    pushFollow(FOLLOW_actionColor_in_action5676);
+                    pushFollow(FOLLOW_actionColor_in_action5601);
                     a=actionColor();
 
                     state._fsp--;
@@ -9571,9 +9457,9 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1088:4: a= actionDel
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1079:4: a= actionDel
                     {
-                    pushFollow(FOLLOW_actionDel_in_action5685);
+                    pushFollow(FOLLOW_actionDel_in_action5610);
                     a=actionDel();
 
                     state._fsp--;
@@ -9582,9 +9468,9 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1089:4: a= actionLog
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1080:4: a= actionLog
                     {
-                    pushFollow(FOLLOW_actionLog_in_action5694);
+                    pushFollow(FOLLOW_actionLog_in_action5619);
                     a=actionLog();
 
                     state._fsp--;
@@ -9593,9 +9479,9 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 4 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1090:4: a= actionMark
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1081:4: a= actionMark
                     {
-                    pushFollow(FOLLOW_actionMark_in_action5703);
+                    pushFollow(FOLLOW_actionMark_in_action5628);
                     a=actionMark();
 
                     state._fsp--;
@@ -9604,9 +9490,9 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 5 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1091:4: a= actionMarkScore
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1082:4: a= actionMarkScore
                     {
-                    pushFollow(FOLLOW_actionMarkScore_in_action5712);
+                    pushFollow(FOLLOW_actionMarkScore_in_action5637);
                     a=actionMarkScore();
 
                     state._fsp--;
@@ -9615,9 +9501,9 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 6 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1092:4: a= actionMarkFast
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1083:4: a= actionMarkFast
                     {
-                    pushFollow(FOLLOW_actionMarkFast_in_action5721);
+                    pushFollow(FOLLOW_actionMarkFast_in_action5646);
                     a=actionMarkFast();
 
                     state._fsp--;
@@ -9626,9 +9512,9 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 7 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1093:4: a= actionMarkLast
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1084:4: a= actionMarkLast
                     {
-                    pushFollow(FOLLOW_actionMarkLast_in_action5730);
+                    pushFollow(FOLLOW_actionMarkLast_in_action5655);
                     a=actionMarkLast();
 
                     state._fsp--;
@@ -9637,9 +9523,9 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 8 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1094:4: a= actionReplace
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1085:4: a= actionReplace
                     {
-                    pushFollow(FOLLOW_actionReplace_in_action5739);
+                    pushFollow(FOLLOW_actionReplace_in_action5664);
                     a=actionReplace();
 
                     state._fsp--;
@@ -9648,20 +9534,9 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 9 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1095:4: a= actionFilterMarkup
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1086:4: a= actionFilterType
                     {
-                    pushFollow(FOLLOW_actionFilterMarkup_in_action5748);
-                    a=actionFilterMarkup();
-
-                    state._fsp--;
-                    if (state.failed) return result;
-
-                    }
-                    break;
-                case 10 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1096:4: a= actionFilterType
-                    {
-                    pushFollow(FOLLOW_actionFilterType_in_action5757);
+                    pushFollow(FOLLOW_actionFilterType_in_action5673);
                     a=actionFilterType();
 
                     state._fsp--;
@@ -9669,21 +9544,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 11 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1097:4: a= actionRetainMarkup
+                case 10 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1087:4: a= actionRetainType
                     {
-                    pushFollow(FOLLOW_actionRetainMarkup_in_action5766);
-                    a=actionRetainMarkup();
-
-                    state._fsp--;
-                    if (state.failed) return result;
-
-                    }
-                    break;
-                case 12 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1098:4: a= actionRetainType
-                    {
-                    pushFollow(FOLLOW_actionRetainType_in_action5775);
+                    pushFollow(FOLLOW_actionRetainType_in_action5682);
                     a=actionRetainType();
 
                     state._fsp--;
@@ -9691,10 +9555,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 13 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1099:4: a= actionCreate
+                case 11 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1088:4: a= actionCreate
                     {
-                    pushFollow(FOLLOW_actionCreate_in_action5784);
+                    pushFollow(FOLLOW_actionCreate_in_action5691);
                     a=actionCreate();
 
                     state._fsp--;
@@ -9702,10 +9566,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 14 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1100:4: a= actionFill
+                case 12 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1089:4: a= actionFill
                     {
-                    pushFollow(FOLLOW_actionFill_in_action5793);
+                    pushFollow(FOLLOW_actionFill_in_action5700);
                     a=actionFill();
 
                     state._fsp--;
@@ -9713,10 +9577,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 15 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1101:4: a= actionCall
+                case 13 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1090:4: a= actionCall
                     {
-                    pushFollow(FOLLOW_actionCall_in_action5802);
+                    pushFollow(FOLLOW_actionCall_in_action5709);
                     a=actionCall();
 
                     state._fsp--;
@@ -9724,10 +9588,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 16 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1102:4: a= actionAssign
+                case 14 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1091:4: a= actionAssign
                     {
-                    pushFollow(FOLLOW_actionAssign_in_action5811);
+                    pushFollow(FOLLOW_actionAssign_in_action5718);
                     a=actionAssign();
 
                     state._fsp--;
@@ -9735,10 +9599,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 17 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1103:4: a= actionSetFeature
+                case 15 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1092:4: a= actionSetFeature
                     {
-                    pushFollow(FOLLOW_actionSetFeature_in_action5820);
+                    pushFollow(FOLLOW_actionSetFeature_in_action5727);
                     a=actionSetFeature();
 
                     state._fsp--;
@@ -9746,10 +9610,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 18 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1104:4: a= actionGetFeature
+                case 16 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1093:4: a= actionGetFeature
                     {
-                    pushFollow(FOLLOW_actionGetFeature_in_action5829);
+                    pushFollow(FOLLOW_actionGetFeature_in_action5736);
                     a=actionGetFeature();
 
                     state._fsp--;
@@ -9757,10 +9621,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 19 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1105:4: a= actionUnmark
+                case 17 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1094:4: a= actionUnmark
                     {
-                    pushFollow(FOLLOW_actionUnmark_in_action5838);
+                    pushFollow(FOLLOW_actionUnmark_in_action5745);
                     a=actionUnmark();
 
                     state._fsp--;
@@ -9768,10 +9632,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 20 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1106:4: a= actionUnmarkAll
+                case 18 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1095:4: a= actionUnmarkAll
                     {
-                    pushFollow(FOLLOW_actionUnmarkAll_in_action5847);
+                    pushFollow(FOLLOW_actionUnmarkAll_in_action5754);
                     a=actionUnmarkAll();
 
                     state._fsp--;
@@ -9779,10 +9643,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 21 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1107:4: a= actionTransfer
+                case 19 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1096:4: a= actionTransfer
                     {
-                    pushFollow(FOLLOW_actionTransfer_in_action5856);
+                    pushFollow(FOLLOW_actionTransfer_in_action5763);
                     a=actionTransfer();
 
                     state._fsp--;
@@ -9790,10 +9654,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 22 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1108:4: a= actionMarkOnce
+                case 20 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1097:4: a= actionMarkOnce
                     {
-                    pushFollow(FOLLOW_actionMarkOnce_in_action5865);
+                    pushFollow(FOLLOW_actionMarkOnce_in_action5772);
                     a=actionMarkOnce();
 
                     state._fsp--;
@@ -9801,10 +9665,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 23 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1109:4: a= actionTrie
+                case 21 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1098:4: a= actionTrie
                     {
-                    pushFollow(FOLLOW_actionTrie_in_action5874);
+                    pushFollow(FOLLOW_actionTrie_in_action5781);
                     a=actionTrie();
 
                     state._fsp--;
@@ -9812,10 +9676,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 24 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1110:4: a= actionGather
+                case 22 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1099:4: a= actionGather
                     {
-                    pushFollow(FOLLOW_actionGather_in_action5883);
+                    pushFollow(FOLLOW_actionGather_in_action5790);
                     a=actionGather();
 
                     state._fsp--;
@@ -9823,10 +9687,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 25 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1111:4: a= actionExec
+                case 23 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1100:4: a= actionExec
                     {
-                    pushFollow(FOLLOW_actionExec_in_action5892);
+                    pushFollow(FOLLOW_actionExec_in_action5799);
                     a=actionExec();
 
                     state._fsp--;
@@ -9834,10 +9698,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 26 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1112:4: a= actionMarkTable
+                case 24 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1101:4: a= actionMarkTable
                     {
-                    pushFollow(FOLLOW_actionMarkTable_in_action5901);
+                    pushFollow(FOLLOW_actionMarkTable_in_action5808);
                     a=actionMarkTable();
 
                     state._fsp--;
@@ -9845,10 +9709,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 27 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1113:4: a= actionAdd
+                case 25 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1102:4: a= actionAdd
                     {
-                    pushFollow(FOLLOW_actionAdd_in_action5910);
+                    pushFollow(FOLLOW_actionAdd_in_action5817);
                     a=actionAdd();
 
                     state._fsp--;
@@ -9856,10 +9720,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 28 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1114:4: a= actionRemove
+                case 26 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1103:4: a= actionRemove
                     {
-                    pushFollow(FOLLOW_actionRemove_in_action5919);
+                    pushFollow(FOLLOW_actionRemove_in_action5826);
                     a=actionRemove();
 
                     state._fsp--;
@@ -9867,10 +9731,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 29 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1115:4: a= actionRemoveDuplicate
+                case 27 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1104:4: a= actionRemoveDuplicate
                     {
-                    pushFollow(FOLLOW_actionRemoveDuplicate_in_action5928);
+                    pushFollow(FOLLOW_actionRemoveDuplicate_in_action5835);
                     a=actionRemoveDuplicate();
 
                     state._fsp--;
@@ -9878,10 +9742,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 30 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1116:4: a= actionMerge
+                case 28 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1105:4: a= actionMerge
                     {
-                    pushFollow(FOLLOW_actionMerge_in_action5937);
+                    pushFollow(FOLLOW_actionMerge_in_action5844);
                     a=actionMerge();
 
                     state._fsp--;
@@ -9889,10 +9753,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 31 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1117:4: a= actionGet
+                case 29 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1106:4: a= actionGet
                     {
-                    pushFollow(FOLLOW_actionGet_in_action5946);
+                    pushFollow(FOLLOW_actionGet_in_action5853);
                     a=actionGet();
 
                     state._fsp--;
@@ -9900,10 +9764,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 32 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1118:4: a= actionGetList
+                case 30 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1107:4: a= actionGetList
                     {
-                    pushFollow(FOLLOW_actionGetList_in_action5955);
+                    pushFollow(FOLLOW_actionGetList_in_action5862);
                     a=actionGetList();
 
                     state._fsp--;
@@ -9911,10 +9775,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 33 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1119:4: a= actionMatchedText
+                case 31 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1108:4: a= actionMatchedText
                     {
-                    pushFollow(FOLLOW_actionMatchedText_in_action5964);
+                    pushFollow(FOLLOW_actionMatchedText_in_action5871);
                     a=actionMatchedText();
 
                     state._fsp--;
@@ -9922,10 +9786,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 34 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1120:4: a= actionClear
+                case 32 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1109:4: a= actionClear
                     {
-                    pushFollow(FOLLOW_actionClear_in_action5973);
+                    pushFollow(FOLLOW_actionClear_in_action5880);
                     a=actionClear();
 
                     state._fsp--;
@@ -9933,10 +9797,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 35 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1121:4: a= actionExpand
+                case 33 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1110:4: a= actionExpand
                     {
-                    pushFollow(FOLLOW_actionExpand_in_action5982);
+                    pushFollow(FOLLOW_actionExpand_in_action5889);
                     a=actionExpand();
 
                     state._fsp--;
@@ -9944,10 +9808,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 36 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1122:4: a= actionConfigure
+                case 34 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1111:4: a= actionConfigure
                     {
-                    pushFollow(FOLLOW_actionConfigure_in_action5991);
+                    pushFollow(FOLLOW_actionConfigure_in_action5898);
                     a=actionConfigure();
 
                     state._fsp--;
@@ -9955,10 +9819,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 37 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1123:4: a= actionDynamicAnchoring
+                case 35 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1112:4: a= actionDynamicAnchoring
                     {
-                    pushFollow(FOLLOW_actionDynamicAnchoring_in_action6000);
+                    pushFollow(FOLLOW_actionDynamicAnchoring_in_action5907);
                     a=actionDynamicAnchoring();
 
                     state._fsp--;
@@ -9966,10 +9830,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 38 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1124:4: (a= externalAction )=>a= externalAction
+                case 36 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1113:4: (a= externalAction )=>a= externalAction
                     {
-                    pushFollow(FOLLOW_externalAction_in_action6019);
+                    pushFollow(FOLLOW_externalAction_in_action5926);
                     a=externalAction();
 
                     state._fsp--;
@@ -9977,10 +9841,10 @@ public class TextMarkerParser extends Parser {
 
                     }
                     break;
-                case 39 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1125:4: a= variableAction
+                case 37 :
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1114:4: a= variableAction
                     {
-                    pushFollow(FOLLOW_variableAction_in_action6028);
+                    pushFollow(FOLLOW_variableAction_in_action5935);
                     a=variableAction();
 
                     state._fsp--;
@@ -10015,7 +9879,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "variableAction"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1129:1: variableAction returns [AbstractTextMarkerAction action = null] : id= Identifier ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1118:1: variableAction returns [AbstractTextMarkerAction action = null] : id= Identifier ;
     public final AbstractTextMarkerAction variableAction() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -10023,10 +9887,10 @@ public class TextMarkerParser extends Parser {
         Token id=null;
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1130:2: (id= Identifier )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1132:2: id= Identifier
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1119:2: (id= Identifier )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1121:2: id= Identifier
             {
-            id=(Token)match(input,Identifier,FOLLOW_Identifier_in_variableAction6057); if (state.failed) return action;
+            id=(Token)match(input,Identifier,FOLLOW_Identifier_in_variableAction5964); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {
             		action = ActionFactory.createActionVariable(id);
@@ -10053,7 +9917,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "externalAction"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1139:1: externalAction returns [AbstractTextMarkerAction action = null] : id= Identifier LPAREN args= varArgumentList RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1128:1: externalAction returns [AbstractTextMarkerAction action = null] : id= Identifier LPAREN args= varArgumentList RPAREN ;
     public final AbstractTextMarkerAction externalAction() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -10063,20 +9927,20 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1140:2: (id= Identifier LPAREN args= varArgumentList RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1142:2: id= Identifier LPAREN args= varArgumentList RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1129:2: (id= Identifier LPAREN args= varArgumentList RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1131:2: id= Identifier LPAREN args= varArgumentList RPAREN
             {
-            id=(Token)match(input,Identifier,FOLLOW_Identifier_in_externalAction6085); if (state.failed) return action;
+            id=(Token)match(input,Identifier,FOLLOW_Identifier_in_externalAction5992); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_externalAction6087); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_externalAction5994); if (state.failed) return action;
 
-            pushFollow(FOLLOW_varArgumentList_in_externalAction6093);
+            pushFollow(FOLLOW_varArgumentList_in_externalAction6000);
             args=varArgumentList();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_externalAction6095); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_externalAction6002); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {
             		action = external.createExternalAction(id, args);
@@ -10103,7 +9967,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionCreate"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1150:1: actionCreate returns [AbstractTextMarkerAction action = null] : name= CREATE LPAREN structure= typeExpression ( COMMA ( (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA )? (fname= stringExpression ASSIGN_EQUAL obj1= argument ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument )* )? )? RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1139:1: actionCreate returns [AbstractTextMarkerAction action = null] : name= CREATE LPAREN structure= typeExpression ( COMMA ( (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA )? (fname= stringExpression ASSIGN_EQUAL obj1= argument ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument )* )? )? RPAREN ;
     public final AbstractTextMarkerAction actionCreate() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -10123,63 +9987,63 @@ public class TextMarkerParser extends Parser {
             	List<NumberExpression> indexes = new ArrayList<NumberExpression>();
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1155:5: (name= CREATE LPAREN structure= typeExpression ( COMMA ( (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA )? (fname= stringExpression ASSIGN_EQUAL obj1= argument ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument )* )? )? RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1156:5: name= CREATE LPAREN structure= typeExpression ( COMMA ( (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA )? (fname= stringExpression ASSIGN_EQUAL obj1= argument ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument )* )? )? RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1144:5: (name= CREATE LPAREN structure= typeExpression ( COMMA ( (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA )? (fname= stringExpression ASSIGN_EQUAL obj1= argument ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument )* )? )? RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1145:5: name= CREATE LPAREN structure= typeExpression ( COMMA ( (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA )? (fname= stringExpression ASSIGN_EQUAL obj1= argument ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument )* )? )? RPAREN
             {
-            name=(Token)match(input,CREATE,FOLLOW_CREATE_in_actionCreate6131); if (state.failed) return action;
+            name=(Token)match(input,CREATE,FOLLOW_CREATE_in_actionCreate6038); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionCreate6133); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionCreate6040); if (state.failed) return action;
 
-            pushFollow(FOLLOW_typeExpression_in_actionCreate6139);
+            pushFollow(FOLLOW_typeExpression_in_actionCreate6046);
             structure=typeExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1157:4: ( COMMA ( (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA )? (fname= stringExpression ASSIGN_EQUAL obj1= argument ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument )* )? )?
-            int alt124=2;
-            int LA124_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1146:4: ( COMMA ( (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA )? (fname= stringExpression ASSIGN_EQUAL obj1= argument ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument )* )? )?
+            int alt123=2;
+            int LA123_0 = input.LA(1);
 
-            if ( (LA124_0==COMMA) ) {
-                alt124=1;
+            if ( (LA123_0==COMMA) ) {
+                alt123=1;
             }
-            switch (alt124) {
+            switch (alt123) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1157:5: COMMA ( (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA )? (fname= stringExpression ASSIGN_EQUAL obj1= argument ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument )* )?
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1146:5: COMMA ( (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA )? (fname= stringExpression ASSIGN_EQUAL obj1= argument ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument )* )?
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_actionCreate6146); if (state.failed) return action;
+                    match(input,COMMA,FOLLOW_COMMA_in_actionCreate6053); if (state.failed) return action;
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1158:5: ( (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA )?
-                    int alt121=2;
-                    int LA121_0 = input.LA(1);
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1147:5: ( (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA )?
+                    int alt120=2;
+                    int LA120_0 = input.LA(1);
 
-                    if ( (LA121_0==MINUS) && (synpred21_TextMarkerParser())) {
-                        alt121=1;
+                    if ( (LA120_0==MINUS) && (synpred21_TextMarkerParser())) {
+                        alt120=1;
                     }
-                    else if ( (LA121_0==DecimalLiteral) && (synpred21_TextMarkerParser())) {
-                        alt121=1;
+                    else if ( (LA120_0==DecimalLiteral) && (synpred21_TextMarkerParser())) {
+                        alt120=1;
                     }
-                    else if ( (LA121_0==FloatingPointLiteral) && (synpred21_TextMarkerParser())) {
-                        alt121=1;
+                    else if ( (LA120_0==FloatingPointLiteral) && (synpred21_TextMarkerParser())) {
+                        alt120=1;
                     }
-                    else if ( (LA121_0==Identifier) ) {
-                        int LA121_4 = input.LA(2);
+                    else if ( (LA120_0==Identifier) ) {
+                        int LA120_4 = input.LA(2);
 
                         if ( (synpred21_TextMarkerParser()) ) {
-                            alt121=1;
+                            alt120=1;
                         }
                     }
-                    else if ( (LA121_0==LPAREN) && (synpred21_TextMarkerParser())) {
-                        alt121=1;
+                    else if ( (LA120_0==LPAREN) && (synpred21_TextMarkerParser())) {
+                        alt120=1;
                     }
-                    else if ( (LA121_0==COS||LA121_0==EXP||LA121_0==LOGN||LA121_0==SIN||LA121_0==TAN) && (synpred21_TextMarkerParser())) {
-                        alt121=1;
+                    else if ( (LA120_0==COS||LA120_0==EXP||LA120_0==LOGN||LA120_0==SIN||LA120_0==TAN) && (synpred21_TextMarkerParser())) {
+                        alt120=1;
                     }
-                    switch (alt121) {
+                    switch (alt120) {
                         case 1 :
-                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1159:5: (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA
+                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1148:5: (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA
                             {
-                            pushFollow(FOLLOW_numberExpression_in_actionCreate6171);
+                            pushFollow(FOLLOW_numberExpression_in_actionCreate6078);
                             index=numberExpression();
 
                             state._fsp--;
@@ -10187,33 +10051,33 @@ public class TextMarkerParser extends Parser {
 
                             if ( state.backtracking==0 ) {indexes.add(index);}
 
-                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1159:80: ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )*
-                            loop120:
+                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1148:80: ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )*
+                            loop119:
                             do {
-                                int alt120=2;
-                                int LA120_0 = input.LA(1);
+                                int alt119=2;
+                                int LA119_0 = input.LA(1);
 
-                                if ( (LA120_0==COMMA) ) {
-                                    int LA120_1 = input.LA(2);
+                                if ( (LA119_0==COMMA) ) {
+                                    int LA119_1 = input.LA(2);
 
                                     if ( (synpred22_TextMarkerParser()) ) {
-                                        alt120=1;
+                                        alt119=1;
                                     }
 
 
                                 }
 
 
-                                switch (alt120) {
+                                switch (alt119) {
                             	case 1 :
-                            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1159:81: ( COMMA index= numberExpression )=> ( COMMA index= numberExpression )
+                            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1148:81: ( COMMA index= numberExpression )=> ( COMMA index= numberExpression )
                             	    {
-                            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1159:116: ( COMMA index= numberExpression )
-                            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1159:117: COMMA index= numberExpression
+                            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1148:116: ( COMMA index= numberExpression )
+                            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1148:117: COMMA index= numberExpression
                             	    {
-                            	    match(input,COMMA,FOLLOW_COMMA_in_actionCreate6188); if (state.failed) return action;
+                            	    match(input,COMMA,FOLLOW_COMMA_in_actionCreate6095); if (state.failed) return action;
 
-                            	    pushFollow(FOLLOW_numberExpression_in_actionCreate6194);
+                            	    pushFollow(FOLLOW_numberExpression_in_actionCreate6101);
                             	    index=numberExpression();
 
                             	    state._fsp--;
@@ -10228,12 +10092,12 @@ public class TextMarkerParser extends Parser {
                             	    break;
 
                             	default :
-                            	    break loop120;
+                            	    break loop119;
                                 }
                             } while (true);
 
 
-                            match(input,COMMA,FOLLOW_COMMA_in_actionCreate6201); if (state.failed) return action;
+                            match(input,COMMA,FOLLOW_COMMA_in_actionCreate6108); if (state.failed) return action;
 
                             }
                             break;
@@ -10241,26 +10105,26 @@ public class TextMarkerParser extends Parser {
                     }
 
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1160:5: (fname= stringExpression ASSIGN_EQUAL obj1= argument ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument )* )?
-                    int alt123=2;
-                    int LA123_0 = input.LA(1);
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1149:5: (fname= stringExpression ASSIGN_EQUAL obj1= argument ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument )* )?
+                    int alt122=2;
+                    int LA122_0 = input.LA(1);
 
-                    if ( (LA123_0==Identifier||LA123_0==REMOVESTRING||LA123_0==StringLiteral) ) {
-                        alt123=1;
+                    if ( (LA122_0==Identifier||LA122_0==REMOVESTRING||LA122_0==StringLiteral) ) {
+                        alt122=1;
                     }
-                    switch (alt123) {
+                    switch (alt122) {
                         case 1 :
-                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1160:6: fname= stringExpression ASSIGN_EQUAL obj1= argument ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument )*
+                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1149:6: fname= stringExpression ASSIGN_EQUAL obj1= argument ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument )*
                             {
-                            pushFollow(FOLLOW_stringExpression_in_actionCreate6214);
+                            pushFollow(FOLLOW_stringExpression_in_actionCreate6121);
                             fname=stringExpression();
 
                             state._fsp--;
                             if (state.failed) return action;
 
-                            match(input,ASSIGN_EQUAL,FOLLOW_ASSIGN_EQUAL_in_actionCreate6216); if (state.failed) return action;
+                            match(input,ASSIGN_EQUAL,FOLLOW_ASSIGN_EQUAL_in_actionCreate6123); if (state.failed) return action;
 
-                            pushFollow(FOLLOW_argument_in_actionCreate6222);
+                            pushFollow(FOLLOW_argument_in_actionCreate6129);
                             obj1=argument();
 
                             state._fsp--;
@@ -10268,32 +10132,32 @@ public class TextMarkerParser extends Parser {
 
                             if ( state.backtracking==0 ) {map.put(fname,obj1);}
 
-                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1161:5: ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument )*
-                            loop122:
+                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1150:5: ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument )*
+                            loop121:
                             do {
-                                int alt122=2;
-                                int LA122_0 = input.LA(1);
+                                int alt121=2;
+                                int LA121_0 = input.LA(1);
 
-                                if ( (LA122_0==COMMA) ) {
-                                    alt122=1;
+                                if ( (LA121_0==COMMA) ) {
+                                    alt121=1;
                                 }
 
 
-                                switch (alt122) {
+                                switch (alt121) {
                             	case 1 :
-                            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1161:6: COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument
+                            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1150:6: COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument
                             	    {
-                            	    match(input,COMMA,FOLLOW_COMMA_in_actionCreate6232); if (state.failed) return action;
+                            	    match(input,COMMA,FOLLOW_COMMA_in_actionCreate6139); if (state.failed) return action;
 
-                            	    pushFollow(FOLLOW_stringExpression_in_actionCreate6238);
+                            	    pushFollow(FOLLOW_stringExpression_in_actionCreate6145);
                             	    fname=stringExpression();
 
                             	    state._fsp--;
                             	    if (state.failed) return action;
 
-                            	    match(input,ASSIGN_EQUAL,FOLLOW_ASSIGN_EQUAL_in_actionCreate6240); if (state.failed) return action;
+                            	    match(input,ASSIGN_EQUAL,FOLLOW_ASSIGN_EQUAL_in_actionCreate6147); if (state.failed) return action;
 
-                            	    pushFollow(FOLLOW_argument_in_actionCreate6246);
+                            	    pushFollow(FOLLOW_argument_in_actionCreate6153);
                             	    obj1=argument();
 
                             	    state._fsp--;
@@ -10305,7 +10169,7 @@ public class TextMarkerParser extends Parser {
                             	    break;
 
                             	default :
-                            	    break loop122;
+                            	    break loop121;
                                 }
                             } while (true);
 
@@ -10322,7 +10186,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionCreate6261); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionCreate6168); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createCreateAction(structure, map, indexes, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -10347,7 +10211,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionMarkTable"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1167:1: actionMarkTable returns [AbstractTextMarkerAction action = null] : name= MARKTABLE LPAREN structure= typeExpression COMMA index= numberExpression COMMA table= wordTableExpression ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= numberExpression ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= numberExpression )* )? RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1156:1: actionMarkTable returns [AbstractTextMarkerAction action = null] : name= MARKTABLE LPAREN structure= typeExpression COMMA index= numberExpression COMMA table= wordTableExpression ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= numberExpression ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= numberExpression )* )? RPAREN ;
     public final AbstractTextMarkerAction actionMarkTable() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -10368,57 +10232,57 @@ public class TextMarkerParser extends Parser {
         	Map<StringExpression, NumberExpression> map = new HashMap<StringExpression, NumberExpression>();
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1171:5: (name= MARKTABLE LPAREN structure= typeExpression COMMA index= numberExpression COMMA table= wordTableExpression ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= numberExpression ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= numberExpression )* )? RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1172:5: name= MARKTABLE LPAREN structure= typeExpression COMMA index= numberExpression COMMA table= wordTableExpression ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= numberExpression ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= numberExpression )* )? RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1160:5: (name= MARKTABLE LPAREN structure= typeExpression COMMA index= numberExpression COMMA table= wordTableExpression ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= numberExpression ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= numberExpression )* )? RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1161:5: name= MARKTABLE LPAREN structure= typeExpression COMMA index= numberExpression COMMA table= wordTableExpression ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= numberExpression ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= numberExpression )* )? RPAREN
             {
-            name=(Token)match(input,MARKTABLE,FOLLOW_MARKTABLE_in_actionMarkTable6302); if (state.failed) return action;
+            name=(Token)match(input,MARKTABLE,FOLLOW_MARKTABLE_in_actionMarkTable6209); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionMarkTable6304); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionMarkTable6211); if (state.failed) return action;
 
-            pushFollow(FOLLOW_typeExpression_in_actionMarkTable6315);
+            pushFollow(FOLLOW_typeExpression_in_actionMarkTable6222);
             structure=typeExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,COMMA,FOLLOW_COMMA_in_actionMarkTable6317); if (state.failed) return action;
+            match(input,COMMA,FOLLOW_COMMA_in_actionMarkTable6224); if (state.failed) return action;
 
-            pushFollow(FOLLOW_numberExpression_in_actionMarkTable6328);
+            pushFollow(FOLLOW_numberExpression_in_actionMarkTable6235);
             index=numberExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,COMMA,FOLLOW_COMMA_in_actionMarkTable6330); if (state.failed) return action;
+            match(input,COMMA,FOLLOW_COMMA_in_actionMarkTable6237); if (state.failed) return action;
 
-            pushFollow(FOLLOW_wordTableExpression_in_actionMarkTable6340);
+            pushFollow(FOLLOW_wordTableExpression_in_actionMarkTable6247);
             table=wordTableExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1176:5: ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= numberExpression ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= numberExpression )* )?
-            int alt126=2;
-            int LA126_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1165:5: ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= numberExpression ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= numberExpression )* )?
+            int alt125=2;
+            int LA125_0 = input.LA(1);
 
-            if ( (LA126_0==COMMA) ) {
-                alt126=1;
+            if ( (LA125_0==COMMA) ) {
+                alt125=1;
             }
-            switch (alt126) {
+            switch (alt125) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1176:6: COMMA fname= stringExpression ASSIGN_EQUAL obj1= numberExpression ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= numberExpression )*
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1165:6: COMMA fname= stringExpression ASSIGN_EQUAL obj1= numberExpression ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= numberExpression )*
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_actionMarkTable6348); if (state.failed) return action;
+                    match(input,COMMA,FOLLOW_COMMA_in_actionMarkTable6255); if (state.failed) return action;
 
-                    pushFollow(FOLLOW_stringExpression_in_actionMarkTable6362);
+                    pushFollow(FOLLOW_stringExpression_in_actionMarkTable6269);
                     fname=stringExpression();
 
                     state._fsp--;
                     if (state.failed) return action;
 
-                    match(input,ASSIGN_EQUAL,FOLLOW_ASSIGN_EQUAL_in_actionMarkTable6364); if (state.failed) return action;
+                    match(input,ASSIGN_EQUAL,FOLLOW_ASSIGN_EQUAL_in_actionMarkTable6271); if (state.failed) return action;
 
-                    pushFollow(FOLLOW_numberExpression_in_actionMarkTable6370);
+                    pushFollow(FOLLOW_numberExpression_in_actionMarkTable6277);
                     obj1=numberExpression();
 
                     state._fsp--;
@@ -10426,32 +10290,32 @@ public class TextMarkerParser extends Parser {
 
                     if ( state.backtracking==0 ) {map.put(fname,obj1);}
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1178:5: ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= numberExpression )*
-                    loop125:
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1167:5: ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= numberExpression )*
+                    loop124:
                     do {
-                        int alt125=2;
-                        int LA125_0 = input.LA(1);
+                        int alt124=2;
+                        int LA124_0 = input.LA(1);
 
-                        if ( (LA125_0==COMMA) ) {
-                            alt125=1;
+                        if ( (LA124_0==COMMA) ) {
+                            alt124=1;
                         }
 
 
-                        switch (alt125) {
+                        switch (alt124) {
                     	case 1 :
-                    	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1178:6: COMMA fname= stringExpression ASSIGN_EQUAL obj1= numberExpression
+                    	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1167:6: COMMA fname= stringExpression ASSIGN_EQUAL obj1= numberExpression
                     	    {
-                    	    match(input,COMMA,FOLLOW_COMMA_in_actionMarkTable6380); if (state.failed) return action;
+                    	    match(input,COMMA,FOLLOW_COMMA_in_actionMarkTable6287); if (state.failed) return action;
 
-                    	    pushFollow(FOLLOW_stringExpression_in_actionMarkTable6386);
+                    	    pushFollow(FOLLOW_stringExpression_in_actionMarkTable6293);
                     	    fname=stringExpression();
 
                     	    state._fsp--;
                     	    if (state.failed) return action;
 
-                    	    match(input,ASSIGN_EQUAL,FOLLOW_ASSIGN_EQUAL_in_actionMarkTable6388); if (state.failed) return action;
+                    	    match(input,ASSIGN_EQUAL,FOLLOW_ASSIGN_EQUAL_in_actionMarkTable6295); if (state.failed) return action;
 
-                    	    pushFollow(FOLLOW_numberExpression_in_actionMarkTable6394);
+                    	    pushFollow(FOLLOW_numberExpression_in_actionMarkTable6301);
                     	    obj1=numberExpression();
 
                     	    state._fsp--;
@@ -10463,7 +10327,7 @@ public class TextMarkerParser extends Parser {
                     	    break;
 
                     	default :
-                    	    break loop125;
+                    	    break loop124;
                         }
                     } while (true);
 
@@ -10474,7 +10338,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionMarkTable6407); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionMarkTable6314); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createMarkTableAction(structure, index, table, map,((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -10499,7 +10363,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionGather"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1183:1: actionGather returns [AbstractTextMarkerAction action = null] : name= GATHER LPAREN structure= typeExpression ( COMMA ( (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA )? (fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) ( COMMA fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) )* )? )? RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1172:1: actionGather returns [AbstractTextMarkerAction action = null] : name= GATHER LPAREN structure= typeExpression ( COMMA ( (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA )? (fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) ( COMMA fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) )* )? )? RPAREN ;
     public final AbstractTextMarkerAction actionGather() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -10521,63 +10385,63 @@ public class TextMarkerParser extends Parser {
             	List<NumberExpression> indexes = new ArrayList<NumberExpression>();
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1188:5: (name= GATHER LPAREN structure= typeExpression ( COMMA ( (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA )? (fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) ( COMMA fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) )* )? )? RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1189:5: name= GATHER LPAREN structure= typeExpression ( COMMA ( (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA )? (fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) ( COMMA fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) )* )? )? RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1177:5: (name= GATHER LPAREN structure= typeExpression ( COMMA ( (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA )? (fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) ( COMMA fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) )* )? )? RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1178:5: name= GATHER LPAREN structure= typeExpression ( COMMA ( (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA )? (fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) ( COMMA fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) )* )? )? RPAREN
             {
-            name=(Token)match(input,GATHER,FOLLOW_GATHER_in_actionGather6448); if (state.failed) return action;
+            name=(Token)match(input,GATHER,FOLLOW_GATHER_in_actionGather6355); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionGather6450); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionGather6357); if (state.failed) return action;
 
-            pushFollow(FOLLOW_typeExpression_in_actionGather6456);
+            pushFollow(FOLLOW_typeExpression_in_actionGather6363);
             structure=typeExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1190:4: ( COMMA ( (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA )? (fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) ( COMMA fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) )* )? )?
-            int alt133=2;
-            int LA133_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1179:4: ( COMMA ( (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA )? (fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) ( COMMA fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) )* )? )?
+            int alt132=2;
+            int LA132_0 = input.LA(1);
 
-            if ( (LA133_0==COMMA) ) {
-                alt133=1;
+            if ( (LA132_0==COMMA) ) {
+                alt132=1;
             }
-            switch (alt133) {
+            switch (alt132) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1190:5: COMMA ( (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA )? (fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) ( COMMA fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) )* )?
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1179:5: COMMA ( (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA )? (fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) ( COMMA fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) )* )?
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_actionGather6463); if (state.failed) return action;
+                    match(input,COMMA,FOLLOW_COMMA_in_actionGather6370); if (state.failed) return action;
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1191:5: ( (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA )?
-                    int alt128=2;
-                    int LA128_0 = input.LA(1);
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1180:5: ( (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA )?
+                    int alt127=2;
+                    int LA127_0 = input.LA(1);
 
-                    if ( (LA128_0==MINUS) && (synpred23_TextMarkerParser())) {
-                        alt128=1;
+                    if ( (LA127_0==MINUS) && (synpred23_TextMarkerParser())) {
+                        alt127=1;
                     }
-                    else if ( (LA128_0==DecimalLiteral) && (synpred23_TextMarkerParser())) {
-                        alt128=1;
+                    else if ( (LA127_0==DecimalLiteral) && (synpred23_TextMarkerParser())) {
+                        alt127=1;
                     }
-                    else if ( (LA128_0==FloatingPointLiteral) && (synpred23_TextMarkerParser())) {
-                        alt128=1;
+                    else if ( (LA127_0==FloatingPointLiteral) && (synpred23_TextMarkerParser())) {
+                        alt127=1;
                     }
-                    else if ( (LA128_0==Identifier) ) {
-                        int LA128_4 = input.LA(2);
+                    else if ( (LA127_0==Identifier) ) {
+                        int LA127_4 = input.LA(2);
 
                         if ( (synpred23_TextMarkerParser()) ) {
-                            alt128=1;
+                            alt127=1;
                         }
                     }
-                    else if ( (LA128_0==LPAREN) && (synpred23_TextMarkerParser())) {
-                        alt128=1;
+                    else if ( (LA127_0==LPAREN) && (synpred23_TextMarkerParser())) {
+                        alt127=1;
                     }
-                    else if ( (LA128_0==COS||LA128_0==EXP||LA128_0==LOGN||LA128_0==SIN||LA128_0==TAN) && (synpred23_TextMarkerParser())) {
-                        alt128=1;
+                    else if ( (LA127_0==COS||LA127_0==EXP||LA127_0==LOGN||LA127_0==SIN||LA127_0==TAN) && (synpred23_TextMarkerParser())) {
+                        alt127=1;
                     }
-                    switch (alt128) {
+                    switch (alt127) {
                         case 1 :
-                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1191:6: (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA
+                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1180:6: (index= numberExpression )=>index= numberExpression ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )* COMMA
                             {
-                            pushFollow(FOLLOW_numberExpression_in_actionGather6483);
+                            pushFollow(FOLLOW_numberExpression_in_actionGather6390);
                             index=numberExpression();
 
                             state._fsp--;
@@ -10585,33 +10449,33 @@ public class TextMarkerParser extends Parser {
 
                             if ( state.backtracking==0 ) {indexes.add(index);}
 
-                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1191:81: ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )*
-                            loop127:
+                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1180:81: ( ( COMMA index= numberExpression )=> ( COMMA index= numberExpression ) )*
+                            loop126:
                             do {
-                                int alt127=2;
-                                int LA127_0 = input.LA(1);
+                                int alt126=2;
+                                int LA126_0 = input.LA(1);
 
-                                if ( (LA127_0==COMMA) ) {
-                                    int LA127_1 = input.LA(2);
+                                if ( (LA126_0==COMMA) ) {
+                                    int LA126_1 = input.LA(2);
 
                                     if ( (synpred24_TextMarkerParser()) ) {
-                                        alt127=1;
+                                        alt126=1;
                                     }
 
 
                                 }
 
 
-                                switch (alt127) {
+                                switch (alt126) {
                             	case 1 :
-                            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1191:82: ( COMMA index= numberExpression )=> ( COMMA index= numberExpression )
+                            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1180:82: ( COMMA index= numberExpression )=> ( COMMA index= numberExpression )
                             	    {
-                            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1191:116: ( COMMA index= numberExpression )
-                            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1191:117: COMMA index= numberExpression
+                            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1180:116: ( COMMA index= numberExpression )
+                            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1180:117: COMMA index= numberExpression
                             	    {
-                            	    match(input,COMMA,FOLLOW_COMMA_in_actionGather6499); if (state.failed) return action;
+                            	    match(input,COMMA,FOLLOW_COMMA_in_actionGather6406); if (state.failed) return action;
 
-                            	    pushFollow(FOLLOW_numberExpression_in_actionGather6505);
+                            	    pushFollow(FOLLOW_numberExpression_in_actionGather6412);
                             	    index=numberExpression();
 
                             	    state._fsp--;
@@ -10626,12 +10490,12 @@ public class TextMarkerParser extends Parser {
                             	    break;
 
                             	default :
-                            	    break loop127;
+                            	    break loop126;
                                 }
                             } while (true);
 
 
-                            match(input,COMMA,FOLLOW_COMMA_in_actionGather6512); if (state.failed) return action;
+                            match(input,COMMA,FOLLOW_COMMA_in_actionGather6419); if (state.failed) return action;
 
                             }
                             break;
@@ -10639,27 +10503,27 @@ public class TextMarkerParser extends Parser {
                     }
 
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1192:5: (fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) ( COMMA fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) )* )?
-                    int alt132=2;
-                    int LA132_0 = input.LA(1);
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1181:5: (fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) ( COMMA fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) )* )?
+                    int alt131=2;
+                    int LA131_0 = input.LA(1);
 
-                    if ( (LA132_0==Identifier||LA132_0==REMOVESTRING||LA132_0==StringLiteral) ) {
-                        alt132=1;
+                    if ( (LA131_0==Identifier||LA131_0==REMOVESTRING||LA131_0==StringLiteral) ) {
+                        alt131=1;
                     }
-                    switch (alt132) {
+                    switch (alt131) {
                         case 1 :
-                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1192:6: fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) ( COMMA fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) )*
+                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1181:6: fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) ( COMMA fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) )*
                             {
-                            pushFollow(FOLLOW_stringExpression_in_actionGather6525);
+                            pushFollow(FOLLOW_stringExpression_in_actionGather6432);
                             fname=stringExpression();
 
                             state._fsp--;
                             if (state.failed) return action;
 
-                            match(input,ASSIGN_EQUAL,FOLLOW_ASSIGN_EQUAL_in_actionGather6527); if (state.failed) return action;
+                            match(input,ASSIGN_EQUAL,FOLLOW_ASSIGN_EQUAL_in_actionGather6434); if (state.failed) return action;
 
-                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1192:44: (obj1= numberExpression |obj2= numberListExpression )
-                            int alt129=2;
+                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1181:44: (obj1= numberExpression |obj2= numberListExpression )
+                            int alt128=2;
                             switch ( input.LA(1) ) {
                             case COS:
                             case DecimalLiteral:
@@ -10671,23 +10535,23 @@ public class TextMarkerParser extends Parser {
                             case SIN:
                             case TAN:
                                 {
-                                alt129=1;
+                                alt128=1;
                                 }
                                 break;
                             case Identifier:
                                 {
-                                int LA129_2 = input.LA(2);
+                                int LA128_2 = input.LA(2);
 
                                 if ( (!((((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "DOUBLELIST"))||(isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "FLOATLIST"))||(isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "INTLIST")))))) ) {
-                                    alt129=1;
+                                    alt128=1;
                                 }
                                 else if ( (((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "DOUBLELIST"))||(isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "FLOATLIST"))||(isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "INTLIST")))) ) {
-                                    alt129=2;
+                                    alt128=2;
                                 }
                                 else {
                                     if (state.backtracking>0) {state.failed=true; return action;}
                                     NoViableAltException nvae =
-                                        new NoViableAltException("", 129, 2, input);
+                                        new NoViableAltException("", 128, 2, input);
 
                                     throw nvae;
 
@@ -10696,23 +10560,23 @@ public class TextMarkerParser extends Parser {
                                 break;
                             case LCURLY:
                                 {
-                                alt129=2;
+                                alt128=2;
                                 }
                                 break;
                             default:
                                 if (state.backtracking>0) {state.failed=true; return action;}
                                 NoViableAltException nvae =
-                                    new NoViableAltException("", 129, 0, input);
+                                    new NoViableAltException("", 128, 0, input);
 
                                 throw nvae;
 
                             }
 
-                            switch (alt129) {
+                            switch (alt128) {
                                 case 1 :
-                                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1192:45: obj1= numberExpression
+                                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1181:45: obj1= numberExpression
                                     {
-                                    pushFollow(FOLLOW_numberExpression_in_actionGather6534);
+                                    pushFollow(FOLLOW_numberExpression_in_actionGather6441);
                                     obj1=numberExpression();
 
                                     state._fsp--;
@@ -10721,9 +10585,9 @@ public class TextMarkerParser extends Parser {
                                     }
                                     break;
                                 case 2 :
-                                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1192:71: obj2= numberListExpression
+                                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1181:71: obj2= numberListExpression
                                     {
-                                    pushFollow(FOLLOW_numberListExpression_in_actionGather6542);
+                                    pushFollow(FOLLOW_numberListExpression_in_actionGather6449);
                                     obj2=numberListExpression();
 
                                     state._fsp--;
@@ -10737,33 +10601,33 @@ public class TextMarkerParser extends Parser {
 
                             if ( state.backtracking==0 ) {map.put(fname,obj1 != null? obj1 : obj2);}
 
-                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1193:5: ( COMMA fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) )*
-                            loop131:
+                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1182:5: ( COMMA fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression ) )*
+                            loop130:
                             do {
-                                int alt131=2;
-                                int LA131_0 = input.LA(1);
+                                int alt130=2;
+                                int LA130_0 = input.LA(1);
 
-                                if ( (LA131_0==COMMA) ) {
-                                    alt131=1;
+                                if ( (LA130_0==COMMA) ) {
+                                    alt130=1;
                                 }
 
 
-                                switch (alt131) {
+                                switch (alt130) {
                             	case 1 :
-                            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1193:6: COMMA fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression )
+                            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1182:6: COMMA fname= stringExpression ASSIGN_EQUAL (obj1= numberExpression |obj2= numberListExpression )
                             	    {
-                            	    match(input,COMMA,FOLLOW_COMMA_in_actionGather6553); if (state.failed) return action;
+                            	    match(input,COMMA,FOLLOW_COMMA_in_actionGather6460); if (state.failed) return action;
 
-                            	    pushFollow(FOLLOW_stringExpression_in_actionGather6559);
+                            	    pushFollow(FOLLOW_stringExpression_in_actionGather6466);
                             	    fname=stringExpression();
 
                             	    state._fsp--;
                             	    if (state.failed) return action;
 
-                            	    match(input,ASSIGN_EQUAL,FOLLOW_ASSIGN_EQUAL_in_actionGather6561); if (state.failed) return action;
+                            	    match(input,ASSIGN_EQUAL,FOLLOW_ASSIGN_EQUAL_in_actionGather6468); if (state.failed) return action;
 
-                            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1193:50: (obj1= numberExpression |obj2= numberListExpression )
-                            	    int alt130=2;
+                            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1182:50: (obj1= numberExpression |obj2= numberListExpression )
+                            	    int alt129=2;
                             	    switch ( input.LA(1) ) {
                             	    case COS:
                             	    case DecimalLiteral:
@@ -10775,23 +10639,23 @@ public class TextMarkerParser extends Parser {
                             	    case SIN:
                             	    case TAN:
                             	        {
-                            	        alt130=1;
+                            	        alt129=1;
                             	        }
                             	        break;
                             	    case Identifier:
                             	        {
-                            	        int LA130_2 = input.LA(2);
+                            	        int LA129_2 = input.LA(2);
 
                             	        if ( (!((((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "DOUBLELIST"))||(isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "FLOATLIST"))||(isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "INTLIST")))))) ) {
-                            	            alt130=1;
+                            	            alt129=1;
                             	        }
                             	        else if ( (((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "DOUBLELIST"))||(isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "FLOATLIST"))||(isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "INTLIST")))) ) {
-                            	            alt130=2;
+                            	            alt129=2;
                             	        }
                             	        else {
                             	            if (state.backtracking>0) {state.failed=true; return action;}
                             	            NoViableAltException nvae =
-                            	                new NoViableAltException("", 130, 2, input);
+                            	                new NoViableAltException("", 129, 2, input);
 
                             	            throw nvae;
 
@@ -10800,23 +10664,23 @@ public class TextMarkerParser extends Parser {
                             	        break;
                             	    case LCURLY:
                             	        {
-                            	        alt130=2;
+                            	        alt129=2;
                             	        }
                             	        break;
                             	    default:
                             	        if (state.backtracking>0) {state.failed=true; return action;}
                             	        NoViableAltException nvae =
-                            	            new NoViableAltException("", 130, 0, input);
+                            	            new NoViableAltException("", 129, 0, input);
 
                             	        throw nvae;
 
                             	    }
 
-                            	    switch (alt130) {
+                            	    switch (alt129) {
                             	        case 1 :
-                            	            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1193:51: obj1= numberExpression
+                            	            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1182:51: obj1= numberExpression
                             	            {
-                            	            pushFollow(FOLLOW_numberExpression_in_actionGather6568);
+                            	            pushFollow(FOLLOW_numberExpression_in_actionGather6475);
                             	            obj1=numberExpression();
 
                             	            state._fsp--;
@@ -10825,9 +10689,9 @@ public class TextMarkerParser extends Parser {
                             	            }
                             	            break;
                             	        case 2 :
-                            	            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1193:77: obj2= numberListExpression
+                            	            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1182:77: obj2= numberListExpression
                             	            {
-                            	            pushFollow(FOLLOW_numberListExpression_in_actionGather6576);
+                            	            pushFollow(FOLLOW_numberListExpression_in_actionGather6483);
                             	            obj2=numberListExpression();
 
                             	            state._fsp--;
@@ -10845,7 +10709,7 @@ public class TextMarkerParser extends Parser {
                             	    break;
 
                             	default :
-                            	    break loop131;
+                            	    break loop130;
                                 }
                             } while (true);
 
@@ -10862,7 +10726,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionGather6592); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionGather6499); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createGatherAction(structure, map, indexes, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -10887,7 +10751,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionFill"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1200:1: actionFill returns [AbstractTextMarkerAction action = null] : FILL LPAREN type= typeExpression ( COMMA fname= stringExpression ASSIGN_EQUAL (obj1= argument ) )+ RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1189:1: actionFill returns [AbstractTextMarkerAction action = null] : FILL LPAREN type= typeExpression ( COMMA fname= stringExpression ASSIGN_EQUAL (obj1= argument ) )+ RPAREN ;
     public final AbstractTextMarkerAction actionFill() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -10903,49 +10767,49 @@ public class TextMarkerParser extends Parser {
         Map<StringExpression, TextMarkerExpression> map = new HashMap<StringExpression, TextMarkerExpression>();
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1204:5: ( FILL LPAREN type= typeExpression ( COMMA fname= stringExpression ASSIGN_EQUAL (obj1= argument ) )+ RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1205:5: FILL LPAREN type= typeExpression ( COMMA fname= stringExpression ASSIGN_EQUAL (obj1= argument ) )+ RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1193:5: ( FILL LPAREN type= typeExpression ( COMMA fname= stringExpression ASSIGN_EQUAL (obj1= argument ) )+ RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1194:5: FILL LPAREN type= typeExpression ( COMMA fname= stringExpression ASSIGN_EQUAL (obj1= argument ) )+ RPAREN
             {
-            match(input,FILL,FOLLOW_FILL_in_actionFill6634); if (state.failed) return action;
+            match(input,FILL,FOLLOW_FILL_in_actionFill6541); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionFill6636); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionFill6543); if (state.failed) return action;
 
-            pushFollow(FOLLOW_typeExpression_in_actionFill6642);
+            pushFollow(FOLLOW_typeExpression_in_actionFill6549);
             type=typeExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1205:39: ( COMMA fname= stringExpression ASSIGN_EQUAL (obj1= argument ) )+
-            int cnt134=0;
-            loop134:
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1194:39: ( COMMA fname= stringExpression ASSIGN_EQUAL (obj1= argument ) )+
+            int cnt133=0;
+            loop133:
             do {
-                int alt134=2;
-                int LA134_0 = input.LA(1);
+                int alt133=2;
+                int LA133_0 = input.LA(1);
 
-                if ( (LA134_0==COMMA) ) {
-                    alt134=1;
+                if ( (LA133_0==COMMA) ) {
+                    alt133=1;
                 }
 
 
-                switch (alt134) {
+                switch (alt133) {
             	case 1 :
-            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1205:40: COMMA fname= stringExpression ASSIGN_EQUAL (obj1= argument )
+            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1194:40: COMMA fname= stringExpression ASSIGN_EQUAL (obj1= argument )
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_actionFill6645); if (state.failed) return action;
+            	    match(input,COMMA,FOLLOW_COMMA_in_actionFill6552); if (state.failed) return action;
 
-            	    pushFollow(FOLLOW_stringExpression_in_actionFill6651);
+            	    pushFollow(FOLLOW_stringExpression_in_actionFill6558);
             	    fname=stringExpression();
 
             	    state._fsp--;
             	    if (state.failed) return action;
 
-            	    match(input,ASSIGN_EQUAL,FOLLOW_ASSIGN_EQUAL_in_actionFill6653); if (state.failed) return action;
+            	    match(input,ASSIGN_EQUAL,FOLLOW_ASSIGN_EQUAL_in_actionFill6560); if (state.failed) return action;
 
-            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1206:5: (obj1= argument )
-            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1207:5: obj1= argument
+            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1195:5: (obj1= argument )
+            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1196:5: obj1= argument
             	    {
-            	    pushFollow(FOLLOW_argument_in_actionFill6670);
+            	    pushFollow(FOLLOW_argument_in_actionFill6577);
             	    obj1=argument();
 
             	    state._fsp--;
@@ -10960,17 +10824,17 @@ public class TextMarkerParser extends Parser {
             	    break;
 
             	default :
-            	    if ( cnt134 >= 1 ) break loop134;
+            	    if ( cnt133 >= 1 ) break loop133;
             	    if (state.backtracking>0) {state.failed=true; return action;}
                         EarlyExitException eee =
-                            new EarlyExitException(134, input);
+                            new EarlyExitException(133, input);
                         throw eee;
                 }
-                cnt134++;
+                cnt133++;
             } while (true);
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionFill6687); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionFill6594); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createFillAction(type, map, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -10995,7 +10859,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionColor"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1213:1: actionColor returns [AbstractTextMarkerAction action = null] : COLOR LPAREN type= typeExpression COMMA bgcolor= stringExpression ( COMMA fgcolor= stringExpression ( COMMA selected= booleanExpression )? )? RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1202:1: actionColor returns [AbstractTextMarkerAction action = null] : COLOR LPAREN type= typeExpression COMMA bgcolor= stringExpression ( COMMA fgcolor= stringExpression ( COMMA selected= booleanExpression )? )? RPAREN ;
     public final AbstractTextMarkerAction actionColor() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -11010,60 +10874,60 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1214:5: ( COLOR LPAREN type= typeExpression COMMA bgcolor= stringExpression ( COMMA fgcolor= stringExpression ( COMMA selected= booleanExpression )? )? RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1215:5: COLOR LPAREN type= typeExpression COMMA bgcolor= stringExpression ( COMMA fgcolor= stringExpression ( COMMA selected= booleanExpression )? )? RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1203:5: ( COLOR LPAREN type= typeExpression COMMA bgcolor= stringExpression ( COMMA fgcolor= stringExpression ( COMMA selected= booleanExpression )? )? RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1204:5: COLOR LPAREN type= typeExpression COMMA bgcolor= stringExpression ( COMMA fgcolor= stringExpression ( COMMA selected= booleanExpression )? )? RPAREN
             {
-            match(input,COLOR,FOLLOW_COLOR_in_actionColor6725); if (state.failed) return action;
+            match(input,COLOR,FOLLOW_COLOR_in_actionColor6632); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionColor6727); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionColor6634); if (state.failed) return action;
 
-            pushFollow(FOLLOW_typeExpression_in_actionColor6733);
+            pushFollow(FOLLOW_typeExpression_in_actionColor6640);
             type=typeExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,COMMA,FOLLOW_COMMA_in_actionColor6745); if (state.failed) return action;
+            match(input,COMMA,FOLLOW_COMMA_in_actionColor6652); if (state.failed) return action;
 
-            pushFollow(FOLLOW_stringExpression_in_actionColor6756);
+            pushFollow(FOLLOW_stringExpression_in_actionColor6663);
             bgcolor=stringExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1219:5: ( COMMA fgcolor= stringExpression ( COMMA selected= booleanExpression )? )?
-            int alt136=2;
-            int LA136_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1208:5: ( COMMA fgcolor= stringExpression ( COMMA selected= booleanExpression )? )?
+            int alt135=2;
+            int LA135_0 = input.LA(1);
 
-            if ( (LA136_0==COMMA) ) {
-                alt136=1;
+            if ( (LA135_0==COMMA) ) {
+                alt135=1;
             }
-            switch (alt136) {
+            switch (alt135) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1219:6: COMMA fgcolor= stringExpression ( COMMA selected= booleanExpression )?
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1208:6: COMMA fgcolor= stringExpression ( COMMA selected= booleanExpression )?
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_actionColor6764); if (state.failed) return action;
+                    match(input,COMMA,FOLLOW_COMMA_in_actionColor6671); if (state.failed) return action;
 
-                    pushFollow(FOLLOW_stringExpression_in_actionColor6774);
+                    pushFollow(FOLLOW_stringExpression_in_actionColor6681);
                     fgcolor=stringExpression();
 
                     state._fsp--;
                     if (state.failed) return action;
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1221:5: ( COMMA selected= booleanExpression )?
-                    int alt135=2;
-                    int LA135_0 = input.LA(1);
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1210:5: ( COMMA selected= booleanExpression )?
+                    int alt134=2;
+                    int LA134_0 = input.LA(1);
 
-                    if ( (LA135_0==COMMA) ) {
-                        alt135=1;
+                    if ( (LA134_0==COMMA) ) {
+                        alt134=1;
                     }
-                    switch (alt135) {
+                    switch (alt134) {
                         case 1 :
-                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1221:6: COMMA selected= booleanExpression
+                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1210:6: COMMA selected= booleanExpression
                             {
-                            match(input,COMMA,FOLLOW_COMMA_in_actionColor6782); if (state.failed) return action;
+                            match(input,COMMA,FOLLOW_COMMA_in_actionColor6689); if (state.failed) return action;
 
-                            pushFollow(FOLLOW_booleanExpression_in_actionColor6792);
+                            pushFollow(FOLLOW_booleanExpression_in_actionColor6699);
                             selected=booleanExpression();
 
                             state._fsp--;
@@ -11081,7 +10945,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionColor6802); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionColor6709); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createColorAction(type, bgcolor, fgcolor, selected, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -11106,16 +10970,16 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionDel"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1227:1: actionDel returns [AbstractTextMarkerAction action = null] : DEL ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1216:1: actionDel returns [AbstractTextMarkerAction action = null] : DEL ;
     public final AbstractTextMarkerAction actionDel() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1228:5: ( DEL )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1229:5: DEL
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1217:5: ( DEL )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1218:5: DEL
             {
-            match(input,DEL,FOLLOW_DEL_in_actionDel6836); if (state.failed) return action;
+            match(input,DEL,FOLLOW_DEL_in_actionDel6743); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createDelAction(((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -11140,7 +11004,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionLog"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1233:1: actionLog returns [AbstractTextMarkerAction action = null] : LOG LPAREN lit= stringExpression ( COMMA log= LogLevel )? RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1222:1: actionLog returns [AbstractTextMarkerAction action = null] : LOG LPAREN lit= stringExpression ( COMMA log= LogLevel )? RPAREN ;
     public final AbstractTextMarkerAction actionLog() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -11150,33 +11014,33 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1234:5: ( LOG LPAREN lit= stringExpression ( COMMA log= LogLevel )? RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1235:5: LOG LPAREN lit= stringExpression ( COMMA log= LogLevel )? RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1223:5: ( LOG LPAREN lit= stringExpression ( COMMA log= LogLevel )? RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1224:5: LOG LPAREN lit= stringExpression ( COMMA log= LogLevel )? RPAREN
             {
-            match(input,LOG,FOLLOW_LOG_in_actionLog6878); if (state.failed) return action;
+            match(input,LOG,FOLLOW_LOG_in_actionLog6785); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionLog6880); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionLog6787); if (state.failed) return action;
 
-            pushFollow(FOLLOW_stringExpression_in_actionLog6886);
+            pushFollow(FOLLOW_stringExpression_in_actionLog6793);
             lit=stringExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1235:39: ( COMMA log= LogLevel )?
-            int alt137=2;
-            int LA137_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1224:39: ( COMMA log= LogLevel )?
+            int alt136=2;
+            int LA136_0 = input.LA(1);
 
-            if ( (LA137_0==COMMA) ) {
-                alt137=1;
+            if ( (LA136_0==COMMA) ) {
+                alt136=1;
             }
-            switch (alt137) {
+            switch (alt136) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1235:40: COMMA log= LogLevel
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1224:40: COMMA log= LogLevel
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_actionLog6889); if (state.failed) return action;
+                    match(input,COMMA,FOLLOW_COMMA_in_actionLog6796); if (state.failed) return action;
 
-                    log=(Token)match(input,LogLevel,FOLLOW_LogLevel_in_actionLog6895); if (state.failed) return action;
+                    log=(Token)match(input,LogLevel,FOLLOW_LogLevel_in_actionLog6802); if (state.failed) return action;
 
                     }
                     break;
@@ -11184,7 +11048,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionLog6899); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionLog6806); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createLogAction(lit, log, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -11209,7 +11073,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionMark"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1239:1: actionMark returns [AbstractTextMarkerAction action = null] : MARK LPAREN type= typeExpression ( COMMA (index= numberExpression )=>index= numberExpression )* RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1228:1: actionMark returns [AbstractTextMarkerAction action = null] : MARK LPAREN type= typeExpression ( COMMA (index= numberExpression )=>index= numberExpression )* RPAREN ;
     public final AbstractTextMarkerAction actionMark() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -11223,37 +11087,37 @@ public class TextMarkerParser extends Parser {
         List<NumberExpression> list = new ArrayList<NumberExpression>();
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1243:5: ( MARK LPAREN type= typeExpression ( COMMA (index= numberExpression )=>index= numberExpression )* RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1244:5: MARK LPAREN type= typeExpression ( COMMA (index= numberExpression )=>index= numberExpression )* RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1232:5: ( MARK LPAREN type= typeExpression ( COMMA (index= numberExpression )=>index= numberExpression )* RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1233:5: MARK LPAREN type= typeExpression ( COMMA (index= numberExpression )=>index= numberExpression )* RPAREN
             {
-            match(input,MARK,FOLLOW_MARK_in_actionMark6938); if (state.failed) return action;
+            match(input,MARK,FOLLOW_MARK_in_actionMark6845); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionMark6940); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionMark6847); if (state.failed) return action;
 
-            pushFollow(FOLLOW_typeExpression_in_actionMark6951);
+            pushFollow(FOLLOW_typeExpression_in_actionMark6858);
             type=typeExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1246:5: ( COMMA (index= numberExpression )=>index= numberExpression )*
-            loop138:
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1235:5: ( COMMA (index= numberExpression )=>index= numberExpression )*
+            loop137:
             do {
-                int alt138=2;
-                int LA138_0 = input.LA(1);
+                int alt137=2;
+                int LA137_0 = input.LA(1);
 
-                if ( (LA138_0==COMMA) ) {
-                    alt138=1;
+                if ( (LA137_0==COMMA) ) {
+                    alt137=1;
                 }
 
 
-                switch (alt138) {
+                switch (alt137) {
             	case 1 :
-            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1247:9: COMMA (index= numberExpression )=>index= numberExpression
+            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1236:9: COMMA (index= numberExpression )=>index= numberExpression
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_actionMark6967); if (state.failed) return action;
+            	    match(input,COMMA,FOLLOW_COMMA_in_actionMark6874); if (state.failed) return action;
 
-            	    pushFollow(FOLLOW_numberExpression_in_actionMark6983);
+            	    pushFollow(FOLLOW_numberExpression_in_actionMark6890);
             	    index=numberExpression();
 
             	    state._fsp--;
@@ -11265,12 +11129,12 @@ public class TextMarkerParser extends Parser {
             	    break;
 
             	default :
-            	    break loop138;
+            	    break loop137;
                 }
             } while (true);
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionMark7007); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionMark6914); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createMarkAction(null, type, list, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -11295,7 +11159,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionExpand"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1255:1: actionExpand returns [AbstractTextMarkerAction action = null] : EXPAND LPAREN type= typeExpression ( COMMA (index= numberExpression )=>index= numberExpression )* RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1244:1: actionExpand returns [AbstractTextMarkerAction action = null] : EXPAND LPAREN type= typeExpression ( COMMA (index= numberExpression )=>index= numberExpression )* RPAREN ;
     public final AbstractTextMarkerAction actionExpand() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -11309,37 +11173,37 @@ public class TextMarkerParser extends Parser {
         List<NumberExpression> list = new ArrayList<NumberExpression>();
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1259:5: ( EXPAND LPAREN type= typeExpression ( COMMA (index= numberExpression )=>index= numberExpression )* RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1260:5: EXPAND LPAREN type= typeExpression ( COMMA (index= numberExpression )=>index= numberExpression )* RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1248:5: ( EXPAND LPAREN type= typeExpression ( COMMA (index= numberExpression )=>index= numberExpression )* RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1249:5: EXPAND LPAREN type= typeExpression ( COMMA (index= numberExpression )=>index= numberExpression )* RPAREN
             {
-            match(input,EXPAND,FOLLOW_EXPAND_in_actionExpand7051); if (state.failed) return action;
+            match(input,EXPAND,FOLLOW_EXPAND_in_actionExpand6958); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionExpand7053); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionExpand6960); if (state.failed) return action;
 
-            pushFollow(FOLLOW_typeExpression_in_actionExpand7064);
+            pushFollow(FOLLOW_typeExpression_in_actionExpand6971);
             type=typeExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1262:5: ( COMMA (index= numberExpression )=>index= numberExpression )*
-            loop139:
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1251:5: ( COMMA (index= numberExpression )=>index= numberExpression )*
+            loop138:
             do {
-                int alt139=2;
-                int LA139_0 = input.LA(1);
+                int alt138=2;
+                int LA138_0 = input.LA(1);
 
-                if ( (LA139_0==COMMA) ) {
-                    alt139=1;
+                if ( (LA138_0==COMMA) ) {
+                    alt138=1;
                 }
 
 
-                switch (alt139) {
+                switch (alt138) {
             	case 1 :
-            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1263:9: COMMA (index= numberExpression )=>index= numberExpression
+            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1252:9: COMMA (index= numberExpression )=>index= numberExpression
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_actionExpand7080); if (state.failed) return action;
+            	    match(input,COMMA,FOLLOW_COMMA_in_actionExpand6987); if (state.failed) return action;
 
-            	    pushFollow(FOLLOW_numberExpression_in_actionExpand7096);
+            	    pushFollow(FOLLOW_numberExpression_in_actionExpand7003);
             	    index=numberExpression();
 
             	    state._fsp--;
@@ -11351,12 +11215,12 @@ public class TextMarkerParser extends Parser {
             	    break;
 
             	default :
-            	    break loop139;
+            	    break loop138;
                 }
             } while (true);
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionExpand7120); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionExpand7027); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createExpandAction(type, list,((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -11381,7 +11245,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionMarkScore"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1272:1: actionMarkScore returns [AbstractTextMarkerAction action = null] : MARKSCORE LPAREN score= numberExpression COMMA type= typeExpression ( COMMA (index= numberExpression )=>index= numberExpression )* RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1261:1: actionMarkScore returns [AbstractTextMarkerAction action = null] : MARKSCORE LPAREN score= numberExpression COMMA type= typeExpression ( COMMA (index= numberExpression )=>index= numberExpression )* RPAREN ;
     public final AbstractTextMarkerAction actionMarkScore() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -11397,45 +11261,45 @@ public class TextMarkerParser extends Parser {
         List<NumberExpression> list = new ArrayList<NumberExpression>();
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1276:5: ( MARKSCORE LPAREN score= numberExpression COMMA type= typeExpression ( COMMA (index= numberExpression )=>index= numberExpression )* RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1277:5: MARKSCORE LPAREN score= numberExpression COMMA type= typeExpression ( COMMA (index= numberExpression )=>index= numberExpression )* RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1265:5: ( MARKSCORE LPAREN score= numberExpression COMMA type= typeExpression ( COMMA (index= numberExpression )=>index= numberExpression )* RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1266:5: MARKSCORE LPAREN score= numberExpression COMMA type= typeExpression ( COMMA (index= numberExpression )=>index= numberExpression )* RPAREN
             {
-            match(input,MARKSCORE,FOLLOW_MARKSCORE_in_actionMarkScore7165); if (state.failed) return action;
+            match(input,MARKSCORE,FOLLOW_MARKSCORE_in_actionMarkScore7072); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionMarkScore7167); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionMarkScore7074); if (state.failed) return action;
 
-            pushFollow(FOLLOW_numberExpression_in_actionMarkScore7178);
+            pushFollow(FOLLOW_numberExpression_in_actionMarkScore7085);
             score=numberExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,COMMA,FOLLOW_COMMA_in_actionMarkScore7180); if (state.failed) return action;
+            match(input,COMMA,FOLLOW_COMMA_in_actionMarkScore7087); if (state.failed) return action;
 
-            pushFollow(FOLLOW_typeExpression_in_actionMarkScore7190);
+            pushFollow(FOLLOW_typeExpression_in_actionMarkScore7097);
             type=typeExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1280:5: ( COMMA (index= numberExpression )=>index= numberExpression )*
-            loop140:
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1269:5: ( COMMA (index= numberExpression )=>index= numberExpression )*
+            loop139:
             do {
-                int alt140=2;
-                int LA140_0 = input.LA(1);
+                int alt139=2;
+                int LA139_0 = input.LA(1);
 
-                if ( (LA140_0==COMMA) ) {
-                    alt140=1;
+                if ( (LA139_0==COMMA) ) {
+                    alt139=1;
                 }
 
 
-                switch (alt140) {
+                switch (alt139) {
             	case 1 :
-            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1281:9: COMMA (index= numberExpression )=>index= numberExpression
+            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1270:9: COMMA (index= numberExpression )=>index= numberExpression
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_actionMarkScore7206); if (state.failed) return action;
+            	    match(input,COMMA,FOLLOW_COMMA_in_actionMarkScore7113); if (state.failed) return action;
 
-            	    pushFollow(FOLLOW_numberExpression_in_actionMarkScore7222);
+            	    pushFollow(FOLLOW_numberExpression_in_actionMarkScore7129);
             	    index=numberExpression();
 
             	    state._fsp--;
@@ -11447,12 +11311,12 @@ public class TextMarkerParser extends Parser {
             	    break;
 
             	default :
-            	    break loop140;
+            	    break loop139;
                 }
             } while (true);
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionMarkScore7246); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionMarkScore7153); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createMarkAction(score, type, list, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -11477,7 +11341,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionMarkOnce"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1289:1: actionMarkOnce returns [AbstractTextMarkerAction action = null] : MARKONCE LPAREN ( (score= numberExpression )=>score= numberExpression COMMA )? (type= typeExpression )=>type= typeExpression ( COMMA (index= numberExpression )=>index= numberExpression )* RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1278:1: actionMarkOnce returns [AbstractTextMarkerAction action = null] : MARKONCE LPAREN ( (score= numberExpression )=>score= numberExpression COMMA )? (type= typeExpression )=>type= typeExpression ( COMMA (index= numberExpression )=>index= numberExpression )* RPAREN ;
     public final AbstractTextMarkerAction actionMarkOnce() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -11493,50 +11357,50 @@ public class TextMarkerParser extends Parser {
         List<NumberExpression> list = new ArrayList<NumberExpression>();
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1293:5: ( MARKONCE LPAREN ( (score= numberExpression )=>score= numberExpression COMMA )? (type= typeExpression )=>type= typeExpression ( COMMA (index= numberExpression )=>index= numberExpression )* RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1294:5: MARKONCE LPAREN ( (score= numberExpression )=>score= numberExpression COMMA )? (type= typeExpression )=>type= typeExpression ( COMMA (index= numberExpression )=>index= numberExpression )* RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1282:5: ( MARKONCE LPAREN ( (score= numberExpression )=>score= numberExpression COMMA )? (type= typeExpression )=>type= typeExpression ( COMMA (index= numberExpression )=>index= numberExpression )* RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1283:5: MARKONCE LPAREN ( (score= numberExpression )=>score= numberExpression COMMA )? (type= typeExpression )=>type= typeExpression ( COMMA (index= numberExpression )=>index= numberExpression )* RPAREN
             {
-            match(input,MARKONCE,FOLLOW_MARKONCE_in_actionMarkOnce7290); if (state.failed) return action;
+            match(input,MARKONCE,FOLLOW_MARKONCE_in_actionMarkOnce7197); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionMarkOnce7292); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionMarkOnce7199); if (state.failed) return action;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1294:21: ( (score= numberExpression )=>score= numberExpression COMMA )?
-            int alt141=2;
-            int LA141_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1283:21: ( (score= numberExpression )=>score= numberExpression COMMA )?
+            int alt140=2;
+            int LA140_0 = input.LA(1);
 
-            if ( (LA141_0==MINUS) && (synpred28_TextMarkerParser())) {
-                alt141=1;
+            if ( (LA140_0==MINUS) && (synpred28_TextMarkerParser())) {
+                alt140=1;
             }
-            else if ( (LA141_0==DecimalLiteral) && (synpred28_TextMarkerParser())) {
-                alt141=1;
+            else if ( (LA140_0==DecimalLiteral) && (synpred28_TextMarkerParser())) {
+                alt140=1;
             }
-            else if ( (LA141_0==FloatingPointLiteral) && (synpred28_TextMarkerParser())) {
-                alt141=1;
+            else if ( (LA140_0==FloatingPointLiteral) && (synpred28_TextMarkerParser())) {
+                alt140=1;
             }
-            else if ( (LA141_0==Identifier) ) {
-                int LA141_4 = input.LA(2);
+            else if ( (LA140_0==Identifier) ) {
+                int LA140_4 = input.LA(2);
 
                 if ( (synpred28_TextMarkerParser()) ) {
-                    alt141=1;
+                    alt140=1;
                 }
             }
-            else if ( (LA141_0==LPAREN) && (synpred28_TextMarkerParser())) {
-                alt141=1;
+            else if ( (LA140_0==LPAREN) && (synpred28_TextMarkerParser())) {
+                alt140=1;
             }
-            else if ( (LA141_0==COS||LA141_0==EXP||LA141_0==LOGN||LA141_0==SIN||LA141_0==TAN) && (synpred28_TextMarkerParser())) {
-                alt141=1;
+            else if ( (LA140_0==COS||LA140_0==EXP||LA140_0==LOGN||LA140_0==SIN||LA140_0==TAN) && (synpred28_TextMarkerParser())) {
+                alt140=1;
             }
-            switch (alt141) {
+            switch (alt140) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1294:22: (score= numberExpression )=>score= numberExpression COMMA
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1283:22: (score= numberExpression )=>score= numberExpression COMMA
                     {
-                    pushFollow(FOLLOW_numberExpression_in_actionMarkOnce7309);
+                    pushFollow(FOLLOW_numberExpression_in_actionMarkOnce7216);
                     score=numberExpression();
 
                     state._fsp--;
                     if (state.failed) return action;
 
-                    match(input,COMMA,FOLLOW_COMMA_in_actionMarkOnce7311); if (state.failed) return action;
+                    match(input,COMMA,FOLLOW_COMMA_in_actionMarkOnce7218); if (state.failed) return action;
 
                     }
                     break;
@@ -11544,30 +11408,30 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            pushFollow(FOLLOW_typeExpression_in_actionMarkOnce7329);
+            pushFollow(FOLLOW_typeExpression_in_actionMarkOnce7236);
             type=typeExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1295:5: ( COMMA (index= numberExpression )=>index= numberExpression )*
-            loop142:
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1284:5: ( COMMA (index= numberExpression )=>index= numberExpression )*
+            loop141:
             do {
-                int alt142=2;
-                int LA142_0 = input.LA(1);
+                int alt141=2;
+                int LA141_0 = input.LA(1);
 
-                if ( (LA142_0==COMMA) ) {
-                    alt142=1;
+                if ( (LA141_0==COMMA) ) {
+                    alt141=1;
                 }
 
 
-                switch (alt142) {
+                switch (alt141) {
             	case 1 :
-            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1296:9: COMMA (index= numberExpression )=>index= numberExpression
+            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1285:9: COMMA (index= numberExpression )=>index= numberExpression
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_actionMarkOnce7345); if (state.failed) return action;
+            	    match(input,COMMA,FOLLOW_COMMA_in_actionMarkOnce7252); if (state.failed) return action;
 
-            	    pushFollow(FOLLOW_numberExpression_in_actionMarkOnce7361);
+            	    pushFollow(FOLLOW_numberExpression_in_actionMarkOnce7268);
             	    index=numberExpression();
 
             	    state._fsp--;
@@ -11579,12 +11443,12 @@ public class TextMarkerParser extends Parser {
             	    break;
 
             	default :
-            	    break loop142;
+            	    break loop141;
                 }
             } while (true);
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionMarkOnce7380); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionMarkOnce7287); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createMarkOnceAction(score, type, list,((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -11609,7 +11473,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionMarkFast"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1303:1: actionMarkFast returns [AbstractTextMarkerAction action = null] : MARKFAST LPAREN type= typeExpression COMMA list= wordListExpression ( COMMA ignore= booleanExpression ( COMMA ignoreLength= numberExpression )? )? RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1292:1: actionMarkFast returns [AbstractTextMarkerAction action = null] : MARKFAST LPAREN type= typeExpression COMMA list= wordListExpression ( COMMA ignore= booleanExpression ( COMMA ignoreLength= numberExpression )? )? RPAREN ;
     public final AbstractTextMarkerAction actionMarkFast() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -11624,60 +11488,60 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1304:5: ( MARKFAST LPAREN type= typeExpression COMMA list= wordListExpression ( COMMA ignore= booleanExpression ( COMMA ignoreLength= numberExpression )? )? RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1305:5: MARKFAST LPAREN type= typeExpression COMMA list= wordListExpression ( COMMA ignore= booleanExpression ( COMMA ignoreLength= numberExpression )? )? RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1293:5: ( MARKFAST LPAREN type= typeExpression COMMA list= wordListExpression ( COMMA ignore= booleanExpression ( COMMA ignoreLength= numberExpression )? )? RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1294:5: MARKFAST LPAREN type= typeExpression COMMA list= wordListExpression ( COMMA ignore= booleanExpression ( COMMA ignoreLength= numberExpression )? )? RPAREN
             {
-            match(input,MARKFAST,FOLLOW_MARKFAST_in_actionMarkFast7419); if (state.failed) return action;
+            match(input,MARKFAST,FOLLOW_MARKFAST_in_actionMarkFast7326); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionMarkFast7421); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionMarkFast7328); if (state.failed) return action;
 
-            pushFollow(FOLLOW_typeExpression_in_actionMarkFast7427);
+            pushFollow(FOLLOW_typeExpression_in_actionMarkFast7334);
             type=typeExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,COMMA,FOLLOW_COMMA_in_actionMarkFast7429); if (state.failed) return action;
+            match(input,COMMA,FOLLOW_COMMA_in_actionMarkFast7336); if (state.failed) return action;
 
-            pushFollow(FOLLOW_wordListExpression_in_actionMarkFast7435);
+            pushFollow(FOLLOW_wordListExpression_in_actionMarkFast7342);
             list=wordListExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1305:75: ( COMMA ignore= booleanExpression ( COMMA ignoreLength= numberExpression )? )?
-            int alt144=2;
-            int LA144_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1294:75: ( COMMA ignore= booleanExpression ( COMMA ignoreLength= numberExpression )? )?
+            int alt143=2;
+            int LA143_0 = input.LA(1);
 
-            if ( (LA144_0==COMMA) ) {
-                alt144=1;
+            if ( (LA143_0==COMMA) ) {
+                alt143=1;
             }
-            switch (alt144) {
+            switch (alt143) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1305:76: COMMA ignore= booleanExpression ( COMMA ignoreLength= numberExpression )?
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1294:76: COMMA ignore= booleanExpression ( COMMA ignoreLength= numberExpression )?
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_actionMarkFast7438); if (state.failed) return action;
+                    match(input,COMMA,FOLLOW_COMMA_in_actionMarkFast7345); if (state.failed) return action;
 
-                    pushFollow(FOLLOW_booleanExpression_in_actionMarkFast7444);
+                    pushFollow(FOLLOW_booleanExpression_in_actionMarkFast7351);
                     ignore=booleanExpression();
 
                     state._fsp--;
                     if (state.failed) return action;
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1305:109: ( COMMA ignoreLength= numberExpression )?
-                    int alt143=2;
-                    int LA143_0 = input.LA(1);
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1294:109: ( COMMA ignoreLength= numberExpression )?
+                    int alt142=2;
+                    int LA142_0 = input.LA(1);
 
-                    if ( (LA143_0==COMMA) ) {
-                        alt143=1;
+                    if ( (LA142_0==COMMA) ) {
+                        alt142=1;
                     }
-                    switch (alt143) {
+                    switch (alt142) {
                         case 1 :
-                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1305:110: COMMA ignoreLength= numberExpression
+                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1294:110: COMMA ignoreLength= numberExpression
                             {
-                            match(input,COMMA,FOLLOW_COMMA_in_actionMarkFast7447); if (state.failed) return action;
+                            match(input,COMMA,FOLLOW_COMMA_in_actionMarkFast7354); if (state.failed) return action;
 
-                            pushFollow(FOLLOW_numberExpression_in_actionMarkFast7453);
+                            pushFollow(FOLLOW_numberExpression_in_actionMarkFast7360);
                             ignoreLength=numberExpression();
 
                             state._fsp--;
@@ -11695,7 +11559,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionMarkFast7459); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionMarkFast7366); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createMarkFastAction(type, list, ignore, ignoreLength, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -11720,7 +11584,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionMarkLast"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1309:1: actionMarkLast returns [AbstractTextMarkerAction action = null] : MARKLAST LPAREN type= typeExpression RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1298:1: actionMarkLast returns [AbstractTextMarkerAction action = null] : MARKLAST LPAREN type= typeExpression RPAREN ;
     public final AbstractTextMarkerAction actionMarkLast() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -11729,20 +11593,20 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1310:5: ( MARKLAST LPAREN type= typeExpression RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1311:5: MARKLAST LPAREN type= typeExpression RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1299:5: ( MARKLAST LPAREN type= typeExpression RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1300:5: MARKLAST LPAREN type= typeExpression RPAREN
             {
-            match(input,MARKLAST,FOLLOW_MARKLAST_in_actionMarkLast7493); if (state.failed) return action;
+            match(input,MARKLAST,FOLLOW_MARKLAST_in_actionMarkLast7400); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionMarkLast7495); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionMarkLast7402); if (state.failed) return action;
 
-            pushFollow(FOLLOW_typeExpression_in_actionMarkLast7501);
+            pushFollow(FOLLOW_typeExpression_in_actionMarkLast7408);
             type=typeExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionMarkLast7503); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionMarkLast7410); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createMarkLastAction(type, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -11767,7 +11631,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionReplace"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1315:1: actionReplace returns [AbstractTextMarkerAction action = null] : REPLACE LPAREN lit= stringExpression RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1304:1: actionReplace returns [AbstractTextMarkerAction action = null] : REPLACE LPAREN lit= stringExpression RPAREN ;
     public final AbstractTextMarkerAction actionReplace() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -11776,20 +11640,20 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1316:5: ( REPLACE LPAREN lit= stringExpression RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1317:5: REPLACE LPAREN lit= stringExpression RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1305:5: ( REPLACE LPAREN lit= stringExpression RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1306:5: REPLACE LPAREN lit= stringExpression RPAREN
             {
-            match(input,REPLACE,FOLLOW_REPLACE_in_actionReplace7537); if (state.failed) return action;
+            match(input,REPLACE,FOLLOW_REPLACE_in_actionReplace7444); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionReplace7539); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionReplace7446); if (state.failed) return action;
 
-            pushFollow(FOLLOW_stringExpression_in_actionReplace7545);
+            pushFollow(FOLLOW_stringExpression_in_actionReplace7452);
             lit=stringExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionReplace7547); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionReplace7454); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createReplaceAction(lit, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -11813,111 +11677,8 @@ public class TextMarkerParser extends Parser {
 
 
 
-    // $ANTLR start "actionRetainMarkup"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1321:1: actionRetainMarkup returns [AbstractTextMarkerAction action = null] : RETAINMARKUP ( LPAREN id= stringExpression ( COMMA id= stringExpression )* RPAREN )? ;
-    public final AbstractTextMarkerAction actionRetainMarkup() throws RecognitionException {
-        AbstractTextMarkerAction action =  null;
-
-
-        StringExpression id =null;
-
-
-
-        List<StringExpression> list = new ArrayList<StringExpression>();
-
-        try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1325:5: ( RETAINMARKUP ( LPAREN id= stringExpression ( COMMA id= stringExpression )* RPAREN )? )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1326:5: RETAINMARKUP ( LPAREN id= stringExpression ( COMMA id= stringExpression )* RPAREN )?
-            {
-            match(input,RETAINMARKUP,FOLLOW_RETAINMARKUP_in_actionRetainMarkup7590); if (state.failed) return action;
-
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1326:18: ( LPAREN id= stringExpression ( COMMA id= stringExpression )* RPAREN )?
-            int alt146=2;
-            int LA146_0 = input.LA(1);
-
-            if ( (LA146_0==LPAREN) ) {
-                alt146=1;
-            }
-            switch (alt146) {
-                case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1326:19: LPAREN id= stringExpression ( COMMA id= stringExpression )* RPAREN
-                    {
-                    match(input,LPAREN,FOLLOW_LPAREN_in_actionRetainMarkup7593); if (state.failed) return action;
-
-                    pushFollow(FOLLOW_stringExpression_in_actionRetainMarkup7599);
-                    id=stringExpression();
-
-                    state._fsp--;
-                    if (state.failed) return action;
-
-                    if ( state.backtracking==0 ) {list.add(id);}
-
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1326:64: ( COMMA id= stringExpression )*
-                    loop145:
-                    do {
-                        int alt145=2;
-                        int LA145_0 = input.LA(1);
-
-                        if ( (LA145_0==COMMA) ) {
-                            alt145=1;
-                        }
-
-
-                        switch (alt145) {
-                    	case 1 :
-                    	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1326:65: COMMA id= stringExpression
-                    	    {
-                    	    match(input,COMMA,FOLLOW_COMMA_in_actionRetainMarkup7604); if (state.failed) return action;
-
-                    	    pushFollow(FOLLOW_stringExpression_in_actionRetainMarkup7610);
-                    	    id=stringExpression();
-
-                    	    state._fsp--;
-                    	    if (state.failed) return action;
-
-                    	    if ( state.backtracking==0 ) {list.add(id);}
-
-                    	    }
-                    	    break;
-
-                    	default :
-                    	    break loop145;
-                        }
-                    } while (true);
-
-
-                    match(input,RPAREN,FOLLOW_RPAREN_in_actionRetainMarkup7616); if (state.failed) return action;
-
-                    }
-                    break;
-
-            }
-
-
-            if ( state.backtracking==0 ) {action = ActionFactory.createRetainMarkupAction(list,((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
-
-            }
-
-        }
-
-        	catch (RecognitionException exception1) {
-        		emitErrorMessage(exception1.toString());
-        	}
-        	catch (Throwable exception2) {
-        		emitErrorMessage(exception2.toString());
-        	}
-
-        finally {
-        	// do for sure before leaving
-        }
-        return action;
-    }
-    // $ANTLR end "actionRetainMarkup"
-
-
-
     // $ANTLR start "actionRetainType"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1331:1: actionRetainType returns [AbstractTextMarkerAction action = null] : RETAINTYPE ( LPAREN id= typeExpression ( COMMA id= typeExpression )* RPAREN )? ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1312:1: actionRetainType returns [AbstractTextMarkerAction action = null] : RETAINTYPE ( LPAREN id= typeExpression ( COMMA id= typeExpression )* RPAREN )? ;
     public final AbstractTextMarkerAction actionRetainType() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -11929,25 +11690,25 @@ public class TextMarkerParser extends Parser {
         List<TypeExpression> list = new ArrayList<TypeExpression>();
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1335:5: ( RETAINTYPE ( LPAREN id= typeExpression ( COMMA id= typeExpression )* RPAREN )? )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1336:5: RETAINTYPE ( LPAREN id= typeExpression ( COMMA id= typeExpression )* RPAREN )?
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1316:5: ( RETAINTYPE ( LPAREN id= typeExpression ( COMMA id= typeExpression )* RPAREN )? )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1317:5: RETAINTYPE ( LPAREN id= typeExpression ( COMMA id= typeExpression )* RPAREN )?
             {
-            match(input,RETAINTYPE,FOLLOW_RETAINTYPE_in_actionRetainType7662); if (state.failed) return action;
+            match(input,RETAINTYPE,FOLLOW_RETAINTYPE_in_actionRetainType7501); if (state.failed) return action;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1336:16: ( LPAREN id= typeExpression ( COMMA id= typeExpression )* RPAREN )?
-            int alt148=2;
-            int LA148_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1317:16: ( LPAREN id= typeExpression ( COMMA id= typeExpression )* RPAREN )?
+            int alt145=2;
+            int LA145_0 = input.LA(1);
 
-            if ( (LA148_0==LPAREN) ) {
-                alt148=1;
+            if ( (LA145_0==LPAREN) ) {
+                alt145=1;
             }
-            switch (alt148) {
+            switch (alt145) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1336:17: LPAREN id= typeExpression ( COMMA id= typeExpression )* RPAREN
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1317:17: LPAREN id= typeExpression ( COMMA id= typeExpression )* RPAREN
                     {
-                    match(input,LPAREN,FOLLOW_LPAREN_in_actionRetainType7665); if (state.failed) return action;
+                    match(input,LPAREN,FOLLOW_LPAREN_in_actionRetainType7504); if (state.failed) return action;
 
-                    pushFollow(FOLLOW_typeExpression_in_actionRetainType7671);
+                    pushFollow(FOLLOW_typeExpression_in_actionRetainType7510);
                     id=typeExpression();
 
                     state._fsp--;
@@ -11955,24 +11716,24 @@ public class TextMarkerParser extends Parser {
 
                     if ( state.backtracking==0 ) {list.add(id);}
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1336:60: ( COMMA id= typeExpression )*
-                    loop147:
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1317:60: ( COMMA id= typeExpression )*
+                    loop144:
                     do {
-                        int alt147=2;
-                        int LA147_0 = input.LA(1);
+                        int alt144=2;
+                        int LA144_0 = input.LA(1);
 
-                        if ( (LA147_0==COMMA) ) {
-                            alt147=1;
+                        if ( (LA144_0==COMMA) ) {
+                            alt144=1;
                         }
 
 
-                        switch (alt147) {
+                        switch (alt144) {
                     	case 1 :
-                    	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1336:61: COMMA id= typeExpression
+                    	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1317:61: COMMA id= typeExpression
                     	    {
-                    	    match(input,COMMA,FOLLOW_COMMA_in_actionRetainType7676); if (state.failed) return action;
+                    	    match(input,COMMA,FOLLOW_COMMA_in_actionRetainType7515); if (state.failed) return action;
 
-                    	    pushFollow(FOLLOW_typeExpression_in_actionRetainType7682);
+                    	    pushFollow(FOLLOW_typeExpression_in_actionRetainType7521);
                     	    id=typeExpression();
 
                     	    state._fsp--;
@@ -11984,12 +11745,12 @@ public class TextMarkerParser extends Parser {
                     	    break;
 
                     	default :
-                    	    break loop147;
+                    	    break loop144;
                         }
                     } while (true);
 
 
-                    match(input,RPAREN,FOLLOW_RPAREN_in_actionRetainType7688); if (state.failed) return action;
+                    match(input,RPAREN,FOLLOW_RPAREN_in_actionRetainType7527); if (state.failed) return action;
 
                     }
                     break;
@@ -12019,111 +11780,8 @@ public class TextMarkerParser extends Parser {
 
 
 
-    // $ANTLR start "actionFilterMarkup"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1340:1: actionFilterMarkup returns [AbstractTextMarkerAction action = null] : FILTERMARKUP ( LPAREN id= stringExpression ( COMMA id= stringExpression )* RPAREN )? ;
-    public final AbstractTextMarkerAction actionFilterMarkup() throws RecognitionException {
-        AbstractTextMarkerAction action =  null;
-
-
-        StringExpression id =null;
-
-
-
-        List<StringExpression> list = new ArrayList<StringExpression>();
-
-        try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1344:5: ( FILTERMARKUP ( LPAREN id= stringExpression ( COMMA id= stringExpression )* RPAREN )? )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1345:5: FILTERMARKUP ( LPAREN id= stringExpression ( COMMA id= stringExpression )* RPAREN )?
-            {
-            match(input,FILTERMARKUP,FOLLOW_FILTERMARKUP_in_actionFilterMarkup7736); if (state.failed) return action;
-
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1345:18: ( LPAREN id= stringExpression ( COMMA id= stringExpression )* RPAREN )?
-            int alt150=2;
-            int LA150_0 = input.LA(1);
-
-            if ( (LA150_0==LPAREN) ) {
-                alt150=1;
-            }
-            switch (alt150) {
-                case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1345:19: LPAREN id= stringExpression ( COMMA id= stringExpression )* RPAREN
-                    {
-                    match(input,LPAREN,FOLLOW_LPAREN_in_actionFilterMarkup7739); if (state.failed) return action;
-
-                    pushFollow(FOLLOW_stringExpression_in_actionFilterMarkup7745);
-                    id=stringExpression();
-
-                    state._fsp--;
-                    if (state.failed) return action;
-
-                    if ( state.backtracking==0 ) {list.add(id);}
-
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1345:64: ( COMMA id= stringExpression )*
-                    loop149:
-                    do {
-                        int alt149=2;
-                        int LA149_0 = input.LA(1);
-
-                        if ( (LA149_0==COMMA) ) {
-                            alt149=1;
-                        }
-
-
-                        switch (alt149) {
-                    	case 1 :
-                    	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1345:65: COMMA id= stringExpression
-                    	    {
-                    	    match(input,COMMA,FOLLOW_COMMA_in_actionFilterMarkup7750); if (state.failed) return action;
-
-                    	    pushFollow(FOLLOW_stringExpression_in_actionFilterMarkup7756);
-                    	    id=stringExpression();
-
-                    	    state._fsp--;
-                    	    if (state.failed) return action;
-
-                    	    if ( state.backtracking==0 ) {list.add(id);}
-
-                    	    }
-                    	    break;
-
-                    	default :
-                    	    break loop149;
-                        }
-                    } while (true);
-
-
-                    match(input,RPAREN,FOLLOW_RPAREN_in_actionFilterMarkup7762); if (state.failed) return action;
-
-                    }
-                    break;
-
-            }
-
-
-            if ( state.backtracking==0 ) {action = ActionFactory.createFilterMarkupAction(list,((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
-
-            }
-
-        }
-
-        	catch (RecognitionException exception1) {
-        		emitErrorMessage(exception1.toString());
-        	}
-        	catch (Throwable exception2) {
-        		emitErrorMessage(exception2.toString());
-        	}
-
-        finally {
-        	// do for sure before leaving
-        }
-        return action;
-    }
-    // $ANTLR end "actionFilterMarkup"
-
-
-
     // $ANTLR start "actionFilterType"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1350:1: actionFilterType returns [AbstractTextMarkerAction action = null] : FILTERTYPE ( LPAREN id= typeExpression ( COMMA id= typeExpression )* RPAREN )? ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1323:1: actionFilterType returns [AbstractTextMarkerAction action = null] : FILTERTYPE ( LPAREN id= typeExpression ( COMMA id= typeExpression )* RPAREN )? ;
     public final AbstractTextMarkerAction actionFilterType() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -12135,25 +11793,25 @@ public class TextMarkerParser extends Parser {
         List<TypeExpression> list = new ArrayList<TypeExpression>();
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1354:5: ( FILTERTYPE ( LPAREN id= typeExpression ( COMMA id= typeExpression )* RPAREN )? )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1355:5: FILTERTYPE ( LPAREN id= typeExpression ( COMMA id= typeExpression )* RPAREN )?
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1327:5: ( FILTERTYPE ( LPAREN id= typeExpression ( COMMA id= typeExpression )* RPAREN )? )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1328:5: FILTERTYPE ( LPAREN id= typeExpression ( COMMA id= typeExpression )* RPAREN )?
             {
-            match(input,FILTERTYPE,FOLLOW_FILTERTYPE_in_actionFilterType7808); if (state.failed) return action;
+            match(input,FILTERTYPE,FOLLOW_FILTERTYPE_in_actionFilterType7578); if (state.failed) return action;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1355:16: ( LPAREN id= typeExpression ( COMMA id= typeExpression )* RPAREN )?
-            int alt152=2;
-            int LA152_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1328:16: ( LPAREN id= typeExpression ( COMMA id= typeExpression )* RPAREN )?
+            int alt147=2;
+            int LA147_0 = input.LA(1);
 
-            if ( (LA152_0==LPAREN) ) {
-                alt152=1;
+            if ( (LA147_0==LPAREN) ) {
+                alt147=1;
             }
-            switch (alt152) {
+            switch (alt147) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1355:17: LPAREN id= typeExpression ( COMMA id= typeExpression )* RPAREN
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1328:17: LPAREN id= typeExpression ( COMMA id= typeExpression )* RPAREN
                     {
-                    match(input,LPAREN,FOLLOW_LPAREN_in_actionFilterType7811); if (state.failed) return action;
+                    match(input,LPAREN,FOLLOW_LPAREN_in_actionFilterType7581); if (state.failed) return action;
 
-                    pushFollow(FOLLOW_typeExpression_in_actionFilterType7817);
+                    pushFollow(FOLLOW_typeExpression_in_actionFilterType7587);
                     id=typeExpression();
 
                     state._fsp--;
@@ -12161,24 +11819,24 @@ public class TextMarkerParser extends Parser {
 
                     if ( state.backtracking==0 ) {list.add(id);}
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1355:60: ( COMMA id= typeExpression )*
-                    loop151:
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1328:60: ( COMMA id= typeExpression )*
+                    loop146:
                     do {
-                        int alt151=2;
-                        int LA151_0 = input.LA(1);
+                        int alt146=2;
+                        int LA146_0 = input.LA(1);
 
-                        if ( (LA151_0==COMMA) ) {
-                            alt151=1;
+                        if ( (LA146_0==COMMA) ) {
+                            alt146=1;
                         }
 
 
-                        switch (alt151) {
+                        switch (alt146) {
                     	case 1 :
-                    	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1355:61: COMMA id= typeExpression
+                    	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1328:61: COMMA id= typeExpression
                     	    {
-                    	    match(input,COMMA,FOLLOW_COMMA_in_actionFilterType7822); if (state.failed) return action;
+                    	    match(input,COMMA,FOLLOW_COMMA_in_actionFilterType7592); if (state.failed) return action;
 
-                    	    pushFollow(FOLLOW_typeExpression_in_actionFilterType7828);
+                    	    pushFollow(FOLLOW_typeExpression_in_actionFilterType7598);
                     	    id=typeExpression();
 
                     	    state._fsp--;
@@ -12190,12 +11848,12 @@ public class TextMarkerParser extends Parser {
                     	    break;
 
                     	default :
-                    	    break loop151;
+                    	    break loop146;
                         }
                     } while (true);
 
 
-                    match(input,RPAREN,FOLLOW_RPAREN_in_actionFilterType7834); if (state.failed) return action;
+                    match(input,RPAREN,FOLLOW_RPAREN_in_actionFilterType7604); if (state.failed) return action;
 
                     }
                     break;
@@ -12226,7 +11884,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionCall"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1359:1: actionCall returns [AbstractTextMarkerAction action = null] : CALL LPAREN ns= dottedIdentifier RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1332:1: actionCall returns [AbstractTextMarkerAction action = null] : CALL LPAREN ns= dottedIdentifier RPAREN ;
     public final AbstractTextMarkerAction actionCall() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -12235,20 +11893,20 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1360:5: ( CALL LPAREN ns= dottedIdentifier RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1361:5: CALL LPAREN ns= dottedIdentifier RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1333:5: ( CALL LPAREN ns= dottedIdentifier RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1334:5: CALL LPAREN ns= dottedIdentifier RPAREN
             {
-            match(input,CALL,FOLLOW_CALL_in_actionCall7874); if (state.failed) return action;
+            match(input,CALL,FOLLOW_CALL_in_actionCall7644); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionCall7876); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionCall7646); if (state.failed) return action;
 
-            pushFollow(FOLLOW_dottedIdentifier_in_actionCall7882);
+            pushFollow(FOLLOW_dottedIdentifier_in_actionCall7652);
             ns=dottedIdentifier();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionCall7884); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionCall7654); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createCallAction(ns, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -12273,7 +11931,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionConfigure"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1366:1: actionConfigure returns [AbstractTextMarkerAction action = null] : CONFIGURE LPAREN ns= dottedIdentifier COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument )* RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1339:1: actionConfigure returns [AbstractTextMarkerAction action = null] : CONFIGURE LPAREN ns= dottedIdentifier COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument )* RPAREN ;
     public final AbstractTextMarkerAction actionConfigure() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -12289,30 +11947,30 @@ public class TextMarkerParser extends Parser {
         	Map<StringExpression, TextMarkerExpression> map = new HashMap<StringExpression, TextMarkerExpression>();
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1371:5: ( CONFIGURE LPAREN ns= dottedIdentifier COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument )* RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1372:5: CONFIGURE LPAREN ns= dottedIdentifier COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument )* RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1344:5: ( CONFIGURE LPAREN ns= dottedIdentifier COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument )* RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1345:5: CONFIGURE LPAREN ns= dottedIdentifier COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument )* RPAREN
             {
-            match(input,CONFIGURE,FOLLOW_CONFIGURE_in_actionConfigure7922); if (state.failed) return action;
+            match(input,CONFIGURE,FOLLOW_CONFIGURE_in_actionConfigure7692); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionConfigure7924); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionConfigure7694); if (state.failed) return action;
 
-            pushFollow(FOLLOW_dottedIdentifier_in_actionConfigure7930);
+            pushFollow(FOLLOW_dottedIdentifier_in_actionConfigure7700);
             ns=dottedIdentifier();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,COMMA,FOLLOW_COMMA_in_actionConfigure7937); if (state.failed) return action;
+            match(input,COMMA,FOLLOW_COMMA_in_actionConfigure7707); if (state.failed) return action;
 
-            pushFollow(FOLLOW_stringExpression_in_actionConfigure7947);
+            pushFollow(FOLLOW_stringExpression_in_actionConfigure7717);
             fname=stringExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,ASSIGN_EQUAL,FOLLOW_ASSIGN_EQUAL_in_actionConfigure7949); if (state.failed) return action;
+            match(input,ASSIGN_EQUAL,FOLLOW_ASSIGN_EQUAL_in_actionConfigure7719); if (state.failed) return action;
 
-            pushFollow(FOLLOW_argument_in_actionConfigure7955);
+            pushFollow(FOLLOW_argument_in_actionConfigure7725);
             obj1=argument();
 
             state._fsp--;
@@ -12320,32 +11978,32 @@ public class TextMarkerParser extends Parser {
 
             if ( state.backtracking==0 ) {map.put(fname,obj1);}
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1375:5: ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument )*
-            loop153:
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1348:5: ( COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument )*
+            loop148:
             do {
-                int alt153=2;
-                int LA153_0 = input.LA(1);
+                int alt148=2;
+                int LA148_0 = input.LA(1);
 
-                if ( (LA153_0==COMMA) ) {
-                    alt153=1;
+                if ( (LA148_0==COMMA) ) {
+                    alt148=1;
                 }
 
 
-                switch (alt153) {
+                switch (alt148) {
             	case 1 :
-            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1375:6: COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument
+            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1348:6: COMMA fname= stringExpression ASSIGN_EQUAL obj1= argument
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_actionConfigure7965); if (state.failed) return action;
+            	    match(input,COMMA,FOLLOW_COMMA_in_actionConfigure7735); if (state.failed) return action;
 
-            	    pushFollow(FOLLOW_stringExpression_in_actionConfigure7971);
+            	    pushFollow(FOLLOW_stringExpression_in_actionConfigure7741);
             	    fname=stringExpression();
 
             	    state._fsp--;
             	    if (state.failed) return action;
 
-            	    match(input,ASSIGN_EQUAL,FOLLOW_ASSIGN_EQUAL_in_actionConfigure7973); if (state.failed) return action;
+            	    match(input,ASSIGN_EQUAL,FOLLOW_ASSIGN_EQUAL_in_actionConfigure7743); if (state.failed) return action;
 
-            	    pushFollow(FOLLOW_argument_in_actionConfigure7979);
+            	    pushFollow(FOLLOW_argument_in_actionConfigure7749);
             	    obj1=argument();
 
             	    state._fsp--;
@@ -12357,12 +12015,12 @@ public class TextMarkerParser extends Parser {
             	    break;
 
             	default :
-            	    break loop153;
+            	    break loop148;
                 }
             } while (true);
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionConfigure7989); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionConfigure7759); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createConfigureAction(ns, map, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -12387,7 +12045,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionExec"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1381:1: actionExec returns [AbstractTextMarkerAction action = null] : EXEC LPAREN ns= dottedIdentifier ( COMMA tl= typeListExpression )? RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1354:1: actionExec returns [AbstractTextMarkerAction action = null] : EXEC LPAREN ns= dottedIdentifier ( COMMA tl= typeListExpression )? RPAREN ;
     public final AbstractTextMarkerAction actionExec() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -12398,33 +12056,33 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1382:5: ( EXEC LPAREN ns= dottedIdentifier ( COMMA tl= typeListExpression )? RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1383:5: EXEC LPAREN ns= dottedIdentifier ( COMMA tl= typeListExpression )? RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1355:5: ( EXEC LPAREN ns= dottedIdentifier ( COMMA tl= typeListExpression )? RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1356:5: EXEC LPAREN ns= dottedIdentifier ( COMMA tl= typeListExpression )? RPAREN
             {
-            match(input,EXEC,FOLLOW_EXEC_in_actionExec8021); if (state.failed) return action;
+            match(input,EXEC,FOLLOW_EXEC_in_actionExec7791); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionExec8023); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionExec7793); if (state.failed) return action;
 
-            pushFollow(FOLLOW_dottedIdentifier_in_actionExec8029);
+            pushFollow(FOLLOW_dottedIdentifier_in_actionExec7799);
             ns=dottedIdentifier();
 
             state._fsp--;
             if (state.failed) return action;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1383:39: ( COMMA tl= typeListExpression )?
-            int alt154=2;
-            int LA154_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1356:39: ( COMMA tl= typeListExpression )?
+            int alt149=2;
+            int LA149_0 = input.LA(1);
 
-            if ( (LA154_0==COMMA) ) {
-                alt154=1;
+            if ( (LA149_0==COMMA) ) {
+                alt149=1;
             }
-            switch (alt154) {
+            switch (alt149) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1383:40: COMMA tl= typeListExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1356:40: COMMA tl= typeListExpression
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_actionExec8032); if (state.failed) return action;
+                    match(input,COMMA,FOLLOW_COMMA_in_actionExec7802); if (state.failed) return action;
 
-                    pushFollow(FOLLOW_typeListExpression_in_actionExec8038);
+                    pushFollow(FOLLOW_typeListExpression_in_actionExec7808);
                     tl=typeListExpression();
 
                     state._fsp--;
@@ -12436,7 +12094,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionExec8042); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionExec7812); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createExecAction(ns, tl, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -12461,7 +12119,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionAssign"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1387:1: actionAssign returns [AbstractTextMarkerAction action = null] : name= ASSIGN LPAREN ({...}?nv= Identifier COMMA e1= typeExpression |{...}?nv= Identifier COMMA e2= booleanExpression |{...}?nv= Identifier COMMA e3= stringExpression |{...}?nv= Identifier COMMA e4= numberExpression |{...}?nv= Identifier COMMA e6= numberExpression |{...}?nv= Identifier COMMA e5= numberExpression ) RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1360:1: actionAssign returns [AbstractTextMarkerAction action = null] : name= ASSIGN LPAREN ({...}?nv= Identifier COMMA e1= typeExpression |{...}?nv= Identifier COMMA e2= booleanExpression |{...}?nv= Identifier COMMA e3= stringExpression |{...}?nv= Identifier COMMA e4= numberExpression |{...}?nv= Identifier COMMA e6= numberExpression |{...}?nv= Identifier COMMA e5= numberExpression ) RPAREN ;
     public final AbstractTextMarkerAction actionAssign() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -12482,42 +12140,42 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1388:5: (name= ASSIGN LPAREN ({...}?nv= Identifier COMMA e1= typeExpression |{...}?nv= Identifier COMMA e2= booleanExpression |{...}?nv= Identifier COMMA e3= stringExpression |{...}?nv= Identifier COMMA e4= numberExpression |{...}?nv= Identifier COMMA e6= numberExpression |{...}?nv= Identifier COMMA e5= numberExpression ) RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1389:5: name= ASSIGN LPAREN ({...}?nv= Identifier COMMA e1= typeExpression |{...}?nv= Identifier COMMA e2= booleanExpression |{...}?nv= Identifier COMMA e3= stringExpression |{...}?nv= Identifier COMMA e4= numberExpression |{...}?nv= Identifier COMMA e6= numberExpression |{...}?nv= Identifier COMMA e5= numberExpression ) RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1361:5: (name= ASSIGN LPAREN ({...}?nv= Identifier COMMA e1= typeExpression |{...}?nv= Identifier COMMA e2= booleanExpression |{...}?nv= Identifier COMMA e3= stringExpression |{...}?nv= Identifier COMMA e4= numberExpression |{...}?nv= Identifier COMMA e6= numberExpression |{...}?nv= Identifier COMMA e5= numberExpression ) RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1362:5: name= ASSIGN LPAREN ({...}?nv= Identifier COMMA e1= typeExpression |{...}?nv= Identifier COMMA e2= booleanExpression |{...}?nv= Identifier COMMA e3= stringExpression |{...}?nv= Identifier COMMA e4= numberExpression |{...}?nv= Identifier COMMA e6= numberExpression |{...}?nv= Identifier COMMA e5= numberExpression ) RPAREN
             {
-            name=(Token)match(input,ASSIGN,FOLLOW_ASSIGN_in_actionAssign8085); if (state.failed) return action;
+            name=(Token)match(input,ASSIGN,FOLLOW_ASSIGN_in_actionAssign7855); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionAssign8087); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionAssign7857); if (state.failed) return action;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1390:5: ({...}?nv= Identifier COMMA e1= typeExpression |{...}?nv= Identifier COMMA e2= booleanExpression |{...}?nv= Identifier COMMA e3= stringExpression |{...}?nv= Identifier COMMA e4= numberExpression |{...}?nv= Identifier COMMA e6= numberExpression |{...}?nv= Identifier COMMA e5= numberExpression )
-            int alt155=6;
-            int LA155_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1363:5: ({...}?nv= Identifier COMMA e1= typeExpression |{...}?nv= Identifier COMMA e2= booleanExpression |{...}?nv= Identifier COMMA e3= stringExpression |{...}?nv= Identifier COMMA e4= numberExpression |{...}?nv= Identifier COMMA e6= numberExpression |{...}?nv= Identifier COMMA e5= numberExpression )
+            int alt150=6;
+            int LA150_0 = input.LA(1);
 
-            if ( (LA155_0==Identifier) ) {
-                int LA155_1 = input.LA(2);
+            if ( (LA150_0==Identifier) ) {
+                int LA150_1 = input.LA(2);
 
                 if ( ((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env, input.LT(1).getText(), "TYPE"))) ) {
-                    alt155=1;
+                    alt150=1;
                 }
                 else if ( ((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env, input.LT(1).getText(), "BOOLEAN"))) ) {
-                    alt155=2;
+                    alt150=2;
                 }
                 else if ( ((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env, input.LT(1).getText(), "STRING"))) ) {
-                    alt155=3;
+                    alt150=3;
                 }
                 else if ( ((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env, input.LT(1).getText(), "INT"))) ) {
-                    alt155=4;
+                    alt150=4;
                 }
                 else if ( ((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env, input.LT(1).getText(), "FLOAT"))) ) {
-                    alt155=5;
+                    alt150=5;
                 }
                 else if ( ((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env, input.LT(1).getText(), "DOUBLE"))) ) {
-                    alt155=6;
+                    alt150=6;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return action;}
                     NoViableAltException nvae =
-                        new NoViableAltException("", 155, 1, input);
+                        new NoViableAltException("", 150, 1, input);
 
                     throw nvae;
 
@@ -12526,25 +12184,25 @@ public class TextMarkerParser extends Parser {
             else {
                 if (state.backtracking>0) {state.failed=true; return action;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 155, 0, input);
+                    new NoViableAltException("", 150, 0, input);
 
                 throw nvae;
 
             }
-            switch (alt155) {
+            switch (alt150) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1391:5: {...}?nv= Identifier COMMA e1= typeExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1364:5: {...}?nv= Identifier COMMA e1= typeExpression
                     {
                     if ( !((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env, input.LT(1).getText(), "TYPE"))) ) {
                         if (state.backtracking>0) {state.failed=true; return action;}
                         throw new FailedPredicateException(input, "actionAssign", "isVariableOfType($blockDeclaration::env, input.LT(1).getText(), \"TYPE\")");
                     }
 
-                    nv=(Token)match(input,Identifier,FOLLOW_Identifier_in_actionAssign8114); if (state.failed) return action;
+                    nv=(Token)match(input,Identifier,FOLLOW_Identifier_in_actionAssign7884); if (state.failed) return action;
 
-                    match(input,COMMA,FOLLOW_COMMA_in_actionAssign8116); if (state.failed) return action;
+                    match(input,COMMA,FOLLOW_COMMA_in_actionAssign7886); if (state.failed) return action;
 
-                    pushFollow(FOLLOW_typeExpression_in_actionAssign8122);
+                    pushFollow(FOLLOW_typeExpression_in_actionAssign7892);
                     e1=typeExpression();
 
                     state._fsp--;
@@ -12555,18 +12213,18 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1395:5: {...}?nv= Identifier COMMA e2= booleanExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1368:5: {...}?nv= Identifier COMMA e2= booleanExpression
                     {
                     if ( !((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env, input.LT(1).getText(), "BOOLEAN"))) ) {
                         if (state.backtracking>0) {state.failed=true; return action;}
                         throw new FailedPredicateException(input, "actionAssign", "isVariableOfType($blockDeclaration::env, input.LT(1).getText(), \"BOOLEAN\")");
                     }
 
-                    nv=(Token)match(input,Identifier,FOLLOW_Identifier_in_actionAssign8160); if (state.failed) return action;
+                    nv=(Token)match(input,Identifier,FOLLOW_Identifier_in_actionAssign7930); if (state.failed) return action;
 
-                    match(input,COMMA,FOLLOW_COMMA_in_actionAssign8162); if (state.failed) return action;
+                    match(input,COMMA,FOLLOW_COMMA_in_actionAssign7932); if (state.failed) return action;
 
-                    pushFollow(FOLLOW_booleanExpression_in_actionAssign8168);
+                    pushFollow(FOLLOW_booleanExpression_in_actionAssign7938);
                     e2=booleanExpression();
 
                     state._fsp--;
@@ -12577,18 +12235,18 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1399:5: {...}?nv= Identifier COMMA e3= stringExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1372:5: {...}?nv= Identifier COMMA e3= stringExpression
                     {
                     if ( !((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env, input.LT(1).getText(), "STRING"))) ) {
                         if (state.backtracking>0) {state.failed=true; return action;}
                         throw new FailedPredicateException(input, "actionAssign", "isVariableOfType($blockDeclaration::env, input.LT(1).getText(), \"STRING\")");
                     }
 
-                    nv=(Token)match(input,Identifier,FOLLOW_Identifier_in_actionAssign8206); if (state.failed) return action;
+                    nv=(Token)match(input,Identifier,FOLLOW_Identifier_in_actionAssign7976); if (state.failed) return action;
 
-                    match(input,COMMA,FOLLOW_COMMA_in_actionAssign8208); if (state.failed) return action;
+                    match(input,COMMA,FOLLOW_COMMA_in_actionAssign7978); if (state.failed) return action;
 
-                    pushFollow(FOLLOW_stringExpression_in_actionAssign8214);
+                    pushFollow(FOLLOW_stringExpression_in_actionAssign7984);
                     e3=stringExpression();
 
                     state._fsp--;
@@ -12599,18 +12257,18 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 4 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1403:5: {...}?nv= Identifier COMMA e4= numberExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1376:5: {...}?nv= Identifier COMMA e4= numberExpression
                     {
                     if ( !((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env, input.LT(1).getText(), "INT"))) ) {
                         if (state.backtracking>0) {state.failed=true; return action;}
                         throw new FailedPredicateException(input, "actionAssign", "isVariableOfType($blockDeclaration::env, input.LT(1).getText(), \"INT\")");
                     }
 
-                    nv=(Token)match(input,Identifier,FOLLOW_Identifier_in_actionAssign8252); if (state.failed) return action;
+                    nv=(Token)match(input,Identifier,FOLLOW_Identifier_in_actionAssign8022); if (state.failed) return action;
 
-                    match(input,COMMA,FOLLOW_COMMA_in_actionAssign8254); if (state.failed) return action;
+                    match(input,COMMA,FOLLOW_COMMA_in_actionAssign8024); if (state.failed) return action;
 
-                    pushFollow(FOLLOW_numberExpression_in_actionAssign8260);
+                    pushFollow(FOLLOW_numberExpression_in_actionAssign8030);
                     e4=numberExpression();
 
                     state._fsp--;
@@ -12621,18 +12279,18 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 5 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1407:6: {...}?nv= Identifier COMMA e6= numberExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1380:6: {...}?nv= Identifier COMMA e6= numberExpression
                     {
                     if ( !((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env, input.LT(1).getText(), "FLOAT"))) ) {
                         if (state.backtracking>0) {state.failed=true; return action;}
                         throw new FailedPredicateException(input, "actionAssign", "isVariableOfType($blockDeclaration::env, input.LT(1).getText(), \"FLOAT\")");
                     }
 
-                    nv=(Token)match(input,Identifier,FOLLOW_Identifier_in_actionAssign8299); if (state.failed) return action;
+                    nv=(Token)match(input,Identifier,FOLLOW_Identifier_in_actionAssign8069); if (state.failed) return action;
 
-                    match(input,COMMA,FOLLOW_COMMA_in_actionAssign8301); if (state.failed) return action;
+                    match(input,COMMA,FOLLOW_COMMA_in_actionAssign8071); if (state.failed) return action;
 
-                    pushFollow(FOLLOW_numberExpression_in_actionAssign8307);
+                    pushFollow(FOLLOW_numberExpression_in_actionAssign8077);
                     e6=numberExpression();
 
                     state._fsp--;
@@ -12643,18 +12301,18 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 6 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1411:5: {...}?nv= Identifier COMMA e5= numberExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1384:5: {...}?nv= Identifier COMMA e5= numberExpression
                     {
                     if ( !((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env, input.LT(1).getText(), "DOUBLE"))) ) {
                         if (state.backtracking>0) {state.failed=true; return action;}
                         throw new FailedPredicateException(input, "actionAssign", "isVariableOfType($blockDeclaration::env, input.LT(1).getText(), \"DOUBLE\")");
                     }
 
-                    nv=(Token)match(input,Identifier,FOLLOW_Identifier_in_actionAssign8345); if (state.failed) return action;
+                    nv=(Token)match(input,Identifier,FOLLOW_Identifier_in_actionAssign8115); if (state.failed) return action;
 
-                    match(input,COMMA,FOLLOW_COMMA_in_actionAssign8347); if (state.failed) return action;
+                    match(input,COMMA,FOLLOW_COMMA_in_actionAssign8117); if (state.failed) return action;
 
-                    pushFollow(FOLLOW_numberExpression_in_actionAssign8353);
+                    pushFollow(FOLLOW_numberExpression_in_actionAssign8123);
                     e5=numberExpression();
 
                     state._fsp--;
@@ -12668,7 +12326,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionAssign8372); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionAssign8142); if (state.failed) return action;
 
             }
 
@@ -12691,7 +12349,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionSetFeature"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1417:1: actionSetFeature returns [AbstractTextMarkerAction action = null] : name= SETFEATURE LPAREN f= stringExpression COMMA v= argument RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1390:1: actionSetFeature returns [AbstractTextMarkerAction action = null] : name= SETFEATURE LPAREN f= stringExpression COMMA v= argument RPAREN ;
     public final AbstractTextMarkerAction actionSetFeature() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -12703,28 +12361,28 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1418:5: (name= SETFEATURE LPAREN f= stringExpression COMMA v= argument RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1419:5: name= SETFEATURE LPAREN f= stringExpression COMMA v= argument RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1391:5: (name= SETFEATURE LPAREN f= stringExpression COMMA v= argument RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1392:5: name= SETFEATURE LPAREN f= stringExpression COMMA v= argument RPAREN
             {
-            name=(Token)match(input,SETFEATURE,FOLLOW_SETFEATURE_in_actionSetFeature8404); if (state.failed) return action;
+            name=(Token)match(input,SETFEATURE,FOLLOW_SETFEATURE_in_actionSetFeature8174); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionSetFeature8406); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionSetFeature8176); if (state.failed) return action;
 
-            pushFollow(FOLLOW_stringExpression_in_actionSetFeature8412);
+            pushFollow(FOLLOW_stringExpression_in_actionSetFeature8182);
             f=stringExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,COMMA,FOLLOW_COMMA_in_actionSetFeature8414); if (state.failed) return action;
+            match(input,COMMA,FOLLOW_COMMA_in_actionSetFeature8184); if (state.failed) return action;
 
-            pushFollow(FOLLOW_argument_in_actionSetFeature8420);
+            pushFollow(FOLLOW_argument_in_actionSetFeature8190);
             v=argument();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionSetFeature8422); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionSetFeature8192); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createSetFeatureAction(f, v, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -12749,7 +12407,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionGetFeature"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1424:1: actionGetFeature returns [AbstractTextMarkerAction action = null] : name= GETFEATURE LPAREN f= stringExpression COMMA v= variable RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1397:1: actionGetFeature returns [AbstractTextMarkerAction action = null] : name= GETFEATURE LPAREN f= stringExpression COMMA v= variable RPAREN ;
     public final AbstractTextMarkerAction actionGetFeature() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -12761,28 +12419,28 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1425:5: (name= GETFEATURE LPAREN f= stringExpression COMMA v= variable RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1426:5: name= GETFEATURE LPAREN f= stringExpression COMMA v= variable RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1398:5: (name= GETFEATURE LPAREN f= stringExpression COMMA v= variable RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1399:5: name= GETFEATURE LPAREN f= stringExpression COMMA v= variable RPAREN
             {
-            name=(Token)match(input,GETFEATURE,FOLLOW_GETFEATURE_in_actionGetFeature8461); if (state.failed) return action;
+            name=(Token)match(input,GETFEATURE,FOLLOW_GETFEATURE_in_actionGetFeature8231); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionGetFeature8463); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionGetFeature8233); if (state.failed) return action;
 
-            pushFollow(FOLLOW_stringExpression_in_actionGetFeature8469);
+            pushFollow(FOLLOW_stringExpression_in_actionGetFeature8239);
             f=stringExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,COMMA,FOLLOW_COMMA_in_actionGetFeature8471); if (state.failed) return action;
+            match(input,COMMA,FOLLOW_COMMA_in_actionGetFeature8241); if (state.failed) return action;
 
-            pushFollow(FOLLOW_variable_in_actionGetFeature8477);
+            pushFollow(FOLLOW_variable_in_actionGetFeature8247);
             v=variable();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionGetFeature8479); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionGetFeature8249); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createGetFeatureAction(f, v, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -12807,7 +12465,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionDynamicAnchoring"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1431:1: actionDynamicAnchoring returns [AbstractTextMarkerAction action = null] : name= DYNAMICANCHORING LPAREN active= booleanExpression ( COMMA penalty= numberExpression ( COMMA factor= numberExpression )? )? RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1404:1: actionDynamicAnchoring returns [AbstractTextMarkerAction action = null] : name= DYNAMICANCHORING LPAREN active= booleanExpression ( COMMA penalty= numberExpression ( COMMA factor= numberExpression )? )? RPAREN ;
     public final AbstractTextMarkerAction actionDynamicAnchoring() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -12821,52 +12479,52 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1432:5: (name= DYNAMICANCHORING LPAREN active= booleanExpression ( COMMA penalty= numberExpression ( COMMA factor= numberExpression )? )? RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1433:5: name= DYNAMICANCHORING LPAREN active= booleanExpression ( COMMA penalty= numberExpression ( COMMA factor= numberExpression )? )? RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1405:5: (name= DYNAMICANCHORING LPAREN active= booleanExpression ( COMMA penalty= numberExpression ( COMMA factor= numberExpression )? )? RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1406:5: name= DYNAMICANCHORING LPAREN active= booleanExpression ( COMMA penalty= numberExpression ( COMMA factor= numberExpression )? )? RPAREN
             {
-            name=(Token)match(input,DYNAMICANCHORING,FOLLOW_DYNAMICANCHORING_in_actionDynamicAnchoring8515); if (state.failed) return action;
+            name=(Token)match(input,DYNAMICANCHORING,FOLLOW_DYNAMICANCHORING_in_actionDynamicAnchoring8285); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionDynamicAnchoring8517); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionDynamicAnchoring8287); if (state.failed) return action;
 
-            pushFollow(FOLLOW_booleanExpression_in_actionDynamicAnchoring8523);
+            pushFollow(FOLLOW_booleanExpression_in_actionDynamicAnchoring8293);
             active=booleanExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1434:5: ( COMMA penalty= numberExpression ( COMMA factor= numberExpression )? )?
-            int alt157=2;
-            int LA157_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1407:5: ( COMMA penalty= numberExpression ( COMMA factor= numberExpression )? )?
+            int alt152=2;
+            int LA152_0 = input.LA(1);
 
-            if ( (LA157_0==COMMA) ) {
-                alt157=1;
+            if ( (LA152_0==COMMA) ) {
+                alt152=1;
             }
-            switch (alt157) {
+            switch (alt152) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1434:6: COMMA penalty= numberExpression ( COMMA factor= numberExpression )?
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1407:6: COMMA penalty= numberExpression ( COMMA factor= numberExpression )?
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_actionDynamicAnchoring8531); if (state.failed) return action;
+                    match(input,COMMA,FOLLOW_COMMA_in_actionDynamicAnchoring8301); if (state.failed) return action;
 
-                    pushFollow(FOLLOW_numberExpression_in_actionDynamicAnchoring8537);
+                    pushFollow(FOLLOW_numberExpression_in_actionDynamicAnchoring8307);
                     penalty=numberExpression();
 
                     state._fsp--;
                     if (state.failed) return action;
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1435:5: ( COMMA factor= numberExpression )?
-                    int alt156=2;
-                    int LA156_0 = input.LA(1);
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1408:5: ( COMMA factor= numberExpression )?
+                    int alt151=2;
+                    int LA151_0 = input.LA(1);
 
-                    if ( (LA156_0==COMMA) ) {
-                        alt156=1;
+                    if ( (LA151_0==COMMA) ) {
+                        alt151=1;
                     }
-                    switch (alt156) {
+                    switch (alt151) {
                         case 1 :
-                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1435:6: COMMA factor= numberExpression
+                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1408:6: COMMA factor= numberExpression
                             {
-                            match(input,COMMA,FOLLOW_COMMA_in_actionDynamicAnchoring8545); if (state.failed) return action;
+                            match(input,COMMA,FOLLOW_COMMA_in_actionDynamicAnchoring8315); if (state.failed) return action;
 
-                            pushFollow(FOLLOW_numberExpression_in_actionDynamicAnchoring8551);
+                            pushFollow(FOLLOW_numberExpression_in_actionDynamicAnchoring8321);
                             factor=numberExpression();
 
                             state._fsp--;
@@ -12886,7 +12544,7 @@ public class TextMarkerParser extends Parser {
 
             if ( state.backtracking==0 ) {action = ActionFactory.createDynamicAnchoringAction(active, penalty, factor, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionDynamicAnchoring8568); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionDynamicAnchoring8338); if (state.failed) return action;
 
             }
 
@@ -12909,7 +12567,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionUnmark"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1441:1: actionUnmark returns [AbstractTextMarkerAction action = null] : name= UNMARK LPAREN f= typeExpression RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1414:1: actionUnmark returns [AbstractTextMarkerAction action = null] : name= UNMARK LPAREN f= typeExpression RPAREN ;
     public final AbstractTextMarkerAction actionUnmark() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -12919,20 +12577,20 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1442:5: (name= UNMARK LPAREN f= typeExpression RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1443:5: name= UNMARK LPAREN f= typeExpression RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1415:5: (name= UNMARK LPAREN f= typeExpression RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1416:5: name= UNMARK LPAREN f= typeExpression RPAREN
             {
-            name=(Token)match(input,UNMARK,FOLLOW_UNMARK_in_actionUnmark8598); if (state.failed) return action;
+            name=(Token)match(input,UNMARK,FOLLOW_UNMARK_in_actionUnmark8368); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionUnmark8600); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionUnmark8370); if (state.failed) return action;
 
-            pushFollow(FOLLOW_typeExpression_in_actionUnmark8606);
+            pushFollow(FOLLOW_typeExpression_in_actionUnmark8376);
             f=typeExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionUnmark8608); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionUnmark8378); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createUnmarkAction(f,((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -12957,7 +12615,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionUnmarkAll"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1448:1: actionUnmarkAll returns [AbstractTextMarkerAction action = null] : name= UNMARKALL LPAREN f= typeExpression ( COMMA list= typeListExpression )? RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1421:1: actionUnmarkAll returns [AbstractTextMarkerAction action = null] : name= UNMARKALL LPAREN f= typeExpression ( COMMA list= typeListExpression )? RPAREN ;
     public final AbstractTextMarkerAction actionUnmarkAll() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -12969,33 +12627,33 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1449:5: (name= UNMARKALL LPAREN f= typeExpression ( COMMA list= typeListExpression )? RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1450:5: name= UNMARKALL LPAREN f= typeExpression ( COMMA list= typeListExpression )? RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1422:5: (name= UNMARKALL LPAREN f= typeExpression ( COMMA list= typeListExpression )? RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1423:5: name= UNMARKALL LPAREN f= typeExpression ( COMMA list= typeListExpression )? RPAREN
             {
-            name=(Token)match(input,UNMARKALL,FOLLOW_UNMARKALL_in_actionUnmarkAll8644); if (state.failed) return action;
+            name=(Token)match(input,UNMARKALL,FOLLOW_UNMARKALL_in_actionUnmarkAll8414); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionUnmarkAll8646); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionUnmarkAll8416); if (state.failed) return action;
 
-            pushFollow(FOLLOW_typeExpression_in_actionUnmarkAll8652);
+            pushFollow(FOLLOW_typeExpression_in_actionUnmarkAll8422);
             f=typeExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1451:5: ( COMMA list= typeListExpression )?
-            int alt158=2;
-            int LA158_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1424:5: ( COMMA list= typeListExpression )?
+            int alt153=2;
+            int LA153_0 = input.LA(1);
 
-            if ( (LA158_0==COMMA) ) {
-                alt158=1;
+            if ( (LA153_0==COMMA) ) {
+                alt153=1;
             }
-            switch (alt158) {
+            switch (alt153) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1451:6: COMMA list= typeListExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1424:6: COMMA list= typeListExpression
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_actionUnmarkAll8660); if (state.failed) return action;
+                    match(input,COMMA,FOLLOW_COMMA_in_actionUnmarkAll8430); if (state.failed) return action;
 
-                    pushFollow(FOLLOW_typeListExpression_in_actionUnmarkAll8666);
+                    pushFollow(FOLLOW_typeListExpression_in_actionUnmarkAll8436);
                     list=typeListExpression();
 
                     state._fsp--;
@@ -13007,7 +12665,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionUnmarkAll8670); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionUnmarkAll8440); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createUnmarkAllAction(f, list, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -13032,7 +12690,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionTransfer"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1455:1: actionTransfer returns [AbstractTextMarkerAction action = null] : name= TRANSFER LPAREN f= typeExpression RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1428:1: actionTransfer returns [AbstractTextMarkerAction action = null] : name= TRANSFER LPAREN f= typeExpression RPAREN ;
     public final AbstractTextMarkerAction actionTransfer() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -13042,20 +12700,20 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1456:5: (name= TRANSFER LPAREN f= typeExpression RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1457:5: name= TRANSFER LPAREN f= typeExpression RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1429:5: (name= TRANSFER LPAREN f= typeExpression RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1430:5: name= TRANSFER LPAREN f= typeExpression RPAREN
             {
-            name=(Token)match(input,TRANSFER,FOLLOW_TRANSFER_in_actionTransfer8705); if (state.failed) return action;
+            name=(Token)match(input,TRANSFER,FOLLOW_TRANSFER_in_actionTransfer8475); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionTransfer8707); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionTransfer8477); if (state.failed) return action;
 
-            pushFollow(FOLLOW_typeExpression_in_actionTransfer8713);
+            pushFollow(FOLLOW_typeExpression_in_actionTransfer8483);
             f=typeExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionTransfer8715); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionTransfer8485); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createTransferAction(f, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -13080,7 +12738,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionTrie"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1461:1: actionTrie returns [AbstractTextMarkerAction action = null] : name= TRIE LPAREN key= stringExpression ASSIGN_EQUAL value= typeExpression ( COMMA key= stringExpression ASSIGN_EQUAL value= typeExpression )* COMMA list= wordListExpression COMMA ignoreCase= booleanExpression COMMA ignoreLength= numberExpression COMMA edit= booleanExpression COMMA distance= numberExpression COMMA ignoreChar= stringExpression RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1434:1: actionTrie returns [AbstractTextMarkerAction action = null] : name= TRIE LPAREN key= stringExpression ASSIGN_EQUAL value= typeExpression ( COMMA key= stringExpression ASSIGN_EQUAL value= typeExpression )* COMMA list= wordListExpression COMMA ignoreCase= booleanExpression COMMA ignoreLength= numberExpression COMMA edit= booleanExpression COMMA distance= numberExpression COMMA ignoreChar= stringExpression RPAREN ;
     public final AbstractTextMarkerAction actionTrie() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -13107,22 +12765,22 @@ public class TextMarkerParser extends Parser {
         Map<StringExpression, TypeExpression> map = new HashMap<StringExpression, TypeExpression>();
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1465:5: (name= TRIE LPAREN key= stringExpression ASSIGN_EQUAL value= typeExpression ( COMMA key= stringExpression ASSIGN_EQUAL value= typeExpression )* COMMA list= wordListExpression COMMA ignoreCase= booleanExpression COMMA ignoreLength= numberExpression COMMA edit= booleanExpression COMMA distance= numberExpression COMMA ignoreChar= stringExpression RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1466:5: name= TRIE LPAREN key= stringExpression ASSIGN_EQUAL value= typeExpression ( COMMA key= stringExpression ASSIGN_EQUAL value= typeExpression )* COMMA list= wordListExpression COMMA ignoreCase= booleanExpression COMMA ignoreLength= numberExpression COMMA edit= booleanExpression COMMA distance= numberExpression COMMA ignoreChar= stringExpression RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1438:5: (name= TRIE LPAREN key= stringExpression ASSIGN_EQUAL value= typeExpression ( COMMA key= stringExpression ASSIGN_EQUAL value= typeExpression )* COMMA list= wordListExpression COMMA ignoreCase= booleanExpression COMMA ignoreLength= numberExpression COMMA edit= booleanExpression COMMA distance= numberExpression COMMA ignoreChar= stringExpression RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1439:5: name= TRIE LPAREN key= stringExpression ASSIGN_EQUAL value= typeExpression ( COMMA key= stringExpression ASSIGN_EQUAL value= typeExpression )* COMMA list= wordListExpression COMMA ignoreCase= booleanExpression COMMA ignoreLength= numberExpression COMMA edit= booleanExpression COMMA distance= numberExpression COMMA ignoreChar= stringExpression RPAREN
             {
-            name=(Token)match(input,TRIE,FOLLOW_TRIE_in_actionTrie8755); if (state.failed) return action;
+            name=(Token)match(input,TRIE,FOLLOW_TRIE_in_actionTrie8525); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionTrie8757); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionTrie8527); if (state.failed) return action;
 
-            pushFollow(FOLLOW_stringExpression_in_actionTrie8767);
+            pushFollow(FOLLOW_stringExpression_in_actionTrie8537);
             key=stringExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,ASSIGN_EQUAL,FOLLOW_ASSIGN_EQUAL_in_actionTrie8769); if (state.failed) return action;
+            match(input,ASSIGN_EQUAL,FOLLOW_ASSIGN_EQUAL_in_actionTrie8539); if (state.failed) return action;
 
-            pushFollow(FOLLOW_typeExpression_in_actionTrie8775);
+            pushFollow(FOLLOW_typeExpression_in_actionTrie8545);
             value=typeExpression();
 
             state._fsp--;
@@ -13130,47 +12788,47 @@ public class TextMarkerParser extends Parser {
 
             if ( state.backtracking==0 ) {map.put(key,value);}
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1468:5: ( COMMA key= stringExpression ASSIGN_EQUAL value= typeExpression )*
-            loop159:
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1441:5: ( COMMA key= stringExpression ASSIGN_EQUAL value= typeExpression )*
+            loop154:
             do {
-                int alt159=2;
-                int LA159_0 = input.LA(1);
+                int alt154=2;
+                int LA154_0 = input.LA(1);
 
-                if ( (LA159_0==COMMA) ) {
-                    int LA159_1 = input.LA(2);
+                if ( (LA154_0==COMMA) ) {
+                    int LA154_1 = input.LA(2);
 
-                    if ( (LA159_1==Identifier) ) {
-                        int LA159_2 = input.LA(3);
+                    if ( (LA154_1==Identifier) ) {
+                        int LA154_2 = input.LA(3);
 
-                        if ( (LA159_2==ASSIGN_EQUAL||LA159_2==LPAREN||LA159_2==PLUS) ) {
-                            alt159=1;
+                        if ( (LA154_2==ASSIGN_EQUAL||LA154_2==LPAREN||LA154_2==PLUS) ) {
+                            alt154=1;
                         }
 
 
                     }
-                    else if ( (LA159_1==REMOVESTRING||LA159_1==StringLiteral) ) {
-                        alt159=1;
+                    else if ( (LA154_1==REMOVESTRING||LA154_1==StringLiteral) ) {
+                        alt154=1;
                     }
 
 
                 }
 
 
-                switch (alt159) {
+                switch (alt154) {
             	case 1 :
-            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1468:6: COMMA key= stringExpression ASSIGN_EQUAL value= typeExpression
+            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1441:6: COMMA key= stringExpression ASSIGN_EQUAL value= typeExpression
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_actionTrie8783); if (state.failed) return action;
+            	    match(input,COMMA,FOLLOW_COMMA_in_actionTrie8553); if (state.failed) return action;
 
-            	    pushFollow(FOLLOW_stringExpression_in_actionTrie8789);
+            	    pushFollow(FOLLOW_stringExpression_in_actionTrie8559);
             	    key=stringExpression();
 
             	    state._fsp--;
             	    if (state.failed) return action;
 
-            	    match(input,ASSIGN_EQUAL,FOLLOW_ASSIGN_EQUAL_in_actionTrie8791); if (state.failed) return action;
+            	    match(input,ASSIGN_EQUAL,FOLLOW_ASSIGN_EQUAL_in_actionTrie8561); if (state.failed) return action;
 
-            	    pushFollow(FOLLOW_typeExpression_in_actionTrie8797);
+            	    pushFollow(FOLLOW_typeExpression_in_actionTrie8567);
             	    value=typeExpression();
 
             	    state._fsp--;
@@ -13182,60 +12840,60 @@ public class TextMarkerParser extends Parser {
             	    break;
 
             	default :
-            	    break loop159;
+            	    break loop154;
                 }
             } while (true);
 
 
-            match(input,COMMA,FOLLOW_COMMA_in_actionTrie8807); if (state.failed) return action;
+            match(input,COMMA,FOLLOW_COMMA_in_actionTrie8577); if (state.failed) return action;
 
-            pushFollow(FOLLOW_wordListExpression_in_actionTrie8813);
+            pushFollow(FOLLOW_wordListExpression_in_actionTrie8583);
             list=wordListExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,COMMA,FOLLOW_COMMA_in_actionTrie8820); if (state.failed) return action;
+            match(input,COMMA,FOLLOW_COMMA_in_actionTrie8590); if (state.failed) return action;
 
-            pushFollow(FOLLOW_booleanExpression_in_actionTrie8826);
+            pushFollow(FOLLOW_booleanExpression_in_actionTrie8596);
             ignoreCase=booleanExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,COMMA,FOLLOW_COMMA_in_actionTrie8833); if (state.failed) return action;
+            match(input,COMMA,FOLLOW_COMMA_in_actionTrie8603); if (state.failed) return action;
 
-            pushFollow(FOLLOW_numberExpression_in_actionTrie8839);
+            pushFollow(FOLLOW_numberExpression_in_actionTrie8609);
             ignoreLength=numberExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,COMMA,FOLLOW_COMMA_in_actionTrie8846); if (state.failed) return action;
+            match(input,COMMA,FOLLOW_COMMA_in_actionTrie8616); if (state.failed) return action;
 
-            pushFollow(FOLLOW_booleanExpression_in_actionTrie8852);
+            pushFollow(FOLLOW_booleanExpression_in_actionTrie8622);
             edit=booleanExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,COMMA,FOLLOW_COMMA_in_actionTrie8859); if (state.failed) return action;
+            match(input,COMMA,FOLLOW_COMMA_in_actionTrie8629); if (state.failed) return action;
 
-            pushFollow(FOLLOW_numberExpression_in_actionTrie8865);
+            pushFollow(FOLLOW_numberExpression_in_actionTrie8635);
             distance=numberExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,COMMA,FOLLOW_COMMA_in_actionTrie8872); if (state.failed) return action;
+            match(input,COMMA,FOLLOW_COMMA_in_actionTrie8642); if (state.failed) return action;
 
-            pushFollow(FOLLOW_stringExpression_in_actionTrie8878);
+            pushFollow(FOLLOW_stringExpression_in_actionTrie8648);
             ignoreChar=stringExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionTrie8884); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionTrie8654); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createTrieAction(list, map, ignoreCase, ignoreLength, edit, distance, ignoreChar,((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -13260,7 +12918,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionAdd"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1480:1: actionAdd returns [AbstractTextMarkerAction action = null] : name= ADD LPAREN f= listVariable ( COMMA a= argument )+ RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1453:1: actionAdd returns [AbstractTextMarkerAction action = null] : name= ADD LPAREN f= listVariable ( COMMA a= argument )+ RPAREN ;
     public final AbstractTextMarkerAction actionAdd() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -13275,38 +12933,38 @@ public class TextMarkerParser extends Parser {
         	List<TextMarkerExpression> list = new ArrayList<TextMarkerExpression>();
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1484:5: (name= ADD LPAREN f= listVariable ( COMMA a= argument )+ RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1485:5: name= ADD LPAREN f= listVariable ( COMMA a= argument )+ RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1457:5: (name= ADD LPAREN f= listVariable ( COMMA a= argument )+ RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1458:5: name= ADD LPAREN f= listVariable ( COMMA a= argument )+ RPAREN
             {
-            name=(Token)match(input,ADD,FOLLOW_ADD_in_actionAdd8929); if (state.failed) return action;
+            name=(Token)match(input,ADD,FOLLOW_ADD_in_actionAdd8699); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionAdd8931); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionAdd8701); if (state.failed) return action;
 
-            pushFollow(FOLLOW_listVariable_in_actionAdd8937);
+            pushFollow(FOLLOW_listVariable_in_actionAdd8707);
             f=listVariable();
 
             state._fsp--;
             if (state.failed) return action;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1485:40: ( COMMA a= argument )+
-            int cnt160=0;
-            loop160:
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1458:40: ( COMMA a= argument )+
+            int cnt155=0;
+            loop155:
             do {
-                int alt160=2;
-                int LA160_0 = input.LA(1);
+                int alt155=2;
+                int LA155_0 = input.LA(1);
 
-                if ( (LA160_0==COMMA) ) {
-                    alt160=1;
+                if ( (LA155_0==COMMA) ) {
+                    alt155=1;
                 }
 
 
-                switch (alt160) {
+                switch (alt155) {
             	case 1 :
-            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1485:41: COMMA a= argument
+            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1458:41: COMMA a= argument
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_actionAdd8940); if (state.failed) return action;
+            	    match(input,COMMA,FOLLOW_COMMA_in_actionAdd8710); if (state.failed) return action;
 
-            	    pushFollow(FOLLOW_argument_in_actionAdd8946);
+            	    pushFollow(FOLLOW_argument_in_actionAdd8716);
             	    a=argument();
 
             	    state._fsp--;
@@ -13318,17 +12976,17 @@ public class TextMarkerParser extends Parser {
             	    break;
 
             	default :
-            	    if ( cnt160 >= 1 ) break loop160;
+            	    if ( cnt155 >= 1 ) break loop155;
             	    if (state.backtracking>0) {state.failed=true; return action;}
                         EarlyExitException eee =
-                            new EarlyExitException(160, input);
+                            new EarlyExitException(155, input);
                         throw eee;
                 }
-                cnt160++;
+                cnt155++;
             } while (true);
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionAdd8952); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionAdd8722); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createAddAction(f, list, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -13353,7 +13011,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionRemove"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1489:1: actionRemove returns [AbstractTextMarkerAction action = null] : name= REMOVE LPAREN f= listVariable ( COMMA a= argument )+ RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1462:1: actionRemove returns [AbstractTextMarkerAction action = null] : name= REMOVE LPAREN f= listVariable ( COMMA a= argument )+ RPAREN ;
     public final AbstractTextMarkerAction actionRemove() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -13368,38 +13026,38 @@ public class TextMarkerParser extends Parser {
         	List<TextMarkerExpression> list = new ArrayList<TextMarkerExpression>();
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1493:5: (name= REMOVE LPAREN f= listVariable ( COMMA a= argument )+ RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1494:5: name= REMOVE LPAREN f= listVariable ( COMMA a= argument )+ RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1466:5: (name= REMOVE LPAREN f= listVariable ( COMMA a= argument )+ RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1467:5: name= REMOVE LPAREN f= listVariable ( COMMA a= argument )+ RPAREN
             {
-            name=(Token)match(input,REMOVE,FOLLOW_REMOVE_in_actionRemove8992); if (state.failed) return action;
+            name=(Token)match(input,REMOVE,FOLLOW_REMOVE_in_actionRemove8762); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionRemove8994); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionRemove8764); if (state.failed) return action;
 
-            pushFollow(FOLLOW_listVariable_in_actionRemove9000);
+            pushFollow(FOLLOW_listVariable_in_actionRemove8770);
             f=listVariable();
 
             state._fsp--;
             if (state.failed) return action;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1494:43: ( COMMA a= argument )+
-            int cnt161=0;
-            loop161:
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1467:43: ( COMMA a= argument )+
+            int cnt156=0;
+            loop156:
             do {
-                int alt161=2;
-                int LA161_0 = input.LA(1);
+                int alt156=2;
+                int LA156_0 = input.LA(1);
 
-                if ( (LA161_0==COMMA) ) {
-                    alt161=1;
+                if ( (LA156_0==COMMA) ) {
+                    alt156=1;
                 }
 
 
-                switch (alt161) {
+                switch (alt156) {
             	case 1 :
-            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1494:44: COMMA a= argument
+            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1467:44: COMMA a= argument
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_actionRemove9003); if (state.failed) return action;
+            	    match(input,COMMA,FOLLOW_COMMA_in_actionRemove8773); if (state.failed) return action;
 
-            	    pushFollow(FOLLOW_argument_in_actionRemove9009);
+            	    pushFollow(FOLLOW_argument_in_actionRemove8779);
             	    a=argument();
 
             	    state._fsp--;
@@ -13411,17 +13069,17 @@ public class TextMarkerParser extends Parser {
             	    break;
 
             	default :
-            	    if ( cnt161 >= 1 ) break loop161;
+            	    if ( cnt156 >= 1 ) break loop156;
             	    if (state.backtracking>0) {state.failed=true; return action;}
                         EarlyExitException eee =
-                            new EarlyExitException(161, input);
+                            new EarlyExitException(156, input);
                         throw eee;
                 }
-                cnt161++;
+                cnt156++;
             } while (true);
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionRemove9015); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionRemove8785); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createRemoveAction(f, list, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -13446,7 +13104,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionRemoveDuplicate"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1498:1: actionRemoveDuplicate returns [AbstractTextMarkerAction action = null] : name= REMOVEDUPLICATE LPAREN f= listVariable RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1471:1: actionRemoveDuplicate returns [AbstractTextMarkerAction action = null] : name= REMOVEDUPLICATE LPAREN f= listVariable RPAREN ;
     public final AbstractTextMarkerAction actionRemoveDuplicate() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -13456,20 +13114,20 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1499:5: (name= REMOVEDUPLICATE LPAREN f= listVariable RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1500:5: name= REMOVEDUPLICATE LPAREN f= listVariable RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1472:5: (name= REMOVEDUPLICATE LPAREN f= listVariable RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1473:5: name= REMOVEDUPLICATE LPAREN f= listVariable RPAREN
             {
-            name=(Token)match(input,REMOVEDUPLICATE,FOLLOW_REMOVEDUPLICATE_in_actionRemoveDuplicate9051); if (state.failed) return action;
+            name=(Token)match(input,REMOVEDUPLICATE,FOLLOW_REMOVEDUPLICATE_in_actionRemoveDuplicate8821); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionRemoveDuplicate9053); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionRemoveDuplicate8823); if (state.failed) return action;
 
-            pushFollow(FOLLOW_listVariable_in_actionRemoveDuplicate9059);
+            pushFollow(FOLLOW_listVariable_in_actionRemoveDuplicate8829);
             f=listVariable();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionRemoveDuplicate9061); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionRemoveDuplicate8831); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createRemoveDuplicateAction(f,((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -13494,7 +13152,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionMerge"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1504:1: actionMerge returns [AbstractTextMarkerAction action = null] : name= MERGE LPAREN join= booleanExpression COMMA t= listVariable COMMA f= listExpression ( COMMA f= listExpression )+ RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1477:1: actionMerge returns [AbstractTextMarkerAction action = null] : name= MERGE LPAREN join= booleanExpression COMMA t= listVariable COMMA f= listExpression ( COMMA f= listExpression )+ RPAREN ;
     public final AbstractTextMarkerAction actionMerge() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -13511,30 +13169,30 @@ public class TextMarkerParser extends Parser {
         	List<ListExpression> list = new ArrayList<ListExpression>();
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1508:5: (name= MERGE LPAREN join= booleanExpression COMMA t= listVariable COMMA f= listExpression ( COMMA f= listExpression )+ RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1509:5: name= MERGE LPAREN join= booleanExpression COMMA t= listVariable COMMA f= listExpression ( COMMA f= listExpression )+ RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1481:5: (name= MERGE LPAREN join= booleanExpression COMMA t= listVariable COMMA f= listExpression ( COMMA f= listExpression )+ RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1482:5: name= MERGE LPAREN join= booleanExpression COMMA t= listVariable COMMA f= listExpression ( COMMA f= listExpression )+ RPAREN
             {
-            name=(Token)match(input,MERGE,FOLLOW_MERGE_in_actionMerge9106); if (state.failed) return action;
+            name=(Token)match(input,MERGE,FOLLOW_MERGE_in_actionMerge8876); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionMerge9108); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionMerge8878); if (state.failed) return action;
 
-            pushFollow(FOLLOW_booleanExpression_in_actionMerge9114);
+            pushFollow(FOLLOW_booleanExpression_in_actionMerge8884);
             join=booleanExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,COMMA,FOLLOW_COMMA_in_actionMerge9116); if (state.failed) return action;
+            match(input,COMMA,FOLLOW_COMMA_in_actionMerge8886); if (state.failed) return action;
 
-            pushFollow(FOLLOW_listVariable_in_actionMerge9122);
+            pushFollow(FOLLOW_listVariable_in_actionMerge8892);
             t=listVariable();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,COMMA,FOLLOW_COMMA_in_actionMerge9124); if (state.failed) return action;
+            match(input,COMMA,FOLLOW_COMMA_in_actionMerge8894); if (state.failed) return action;
 
-            pushFollow(FOLLOW_listExpression_in_actionMerge9130);
+            pushFollow(FOLLOW_listExpression_in_actionMerge8900);
             f=listExpression();
 
             state._fsp--;
@@ -13542,25 +13200,25 @@ public class TextMarkerParser extends Parser {
 
             if ( state.backtracking==0 ) {list.add(f);}
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1509:113: ( COMMA f= listExpression )+
-            int cnt162=0;
-            loop162:
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1482:113: ( COMMA f= listExpression )+
+            int cnt157=0;
+            loop157:
             do {
-                int alt162=2;
-                int LA162_0 = input.LA(1);
+                int alt157=2;
+                int LA157_0 = input.LA(1);
 
-                if ( (LA162_0==COMMA) ) {
-                    alt162=1;
+                if ( (LA157_0==COMMA) ) {
+                    alt157=1;
                 }
 
 
-                switch (alt162) {
+                switch (alt157) {
             	case 1 :
-            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1509:114: COMMA f= listExpression
+            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1482:114: COMMA f= listExpression
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_actionMerge9135); if (state.failed) return action;
+            	    match(input,COMMA,FOLLOW_COMMA_in_actionMerge8905); if (state.failed) return action;
 
-            	    pushFollow(FOLLOW_listExpression_in_actionMerge9141);
+            	    pushFollow(FOLLOW_listExpression_in_actionMerge8911);
             	    f=listExpression();
 
             	    state._fsp--;
@@ -13572,17 +13230,17 @@ public class TextMarkerParser extends Parser {
             	    break;
 
             	default :
-            	    if ( cnt162 >= 1 ) break loop162;
+            	    if ( cnt157 >= 1 ) break loop157;
             	    if (state.backtracking>0) {state.failed=true; return action;}
                         EarlyExitException eee =
-                            new EarlyExitException(162, input);
+                            new EarlyExitException(157, input);
                         throw eee;
                 }
-                cnt162++;
+                cnt157++;
             } while (true);
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionMerge9147); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionMerge8917); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createMergeAction(join, t, list,((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -13607,7 +13265,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionGet"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1513:1: actionGet returns [AbstractTextMarkerAction action = null] : name= GET LPAREN f= listExpression COMMA var= variable COMMA op= stringExpression RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1486:1: actionGet returns [AbstractTextMarkerAction action = null] : name= GET LPAREN f= listExpression COMMA var= variable COMMA op= stringExpression RPAREN ;
     public final AbstractTextMarkerAction actionGet() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -13621,36 +13279,36 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1514:5: (name= GET LPAREN f= listExpression COMMA var= variable COMMA op= stringExpression RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1515:5: name= GET LPAREN f= listExpression COMMA var= variable COMMA op= stringExpression RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1487:5: (name= GET LPAREN f= listExpression COMMA var= variable COMMA op= stringExpression RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1488:5: name= GET LPAREN f= listExpression COMMA var= variable COMMA op= stringExpression RPAREN
             {
-            name=(Token)match(input,GET,FOLLOW_GET_in_actionGet9182); if (state.failed) return action;
+            name=(Token)match(input,GET,FOLLOW_GET_in_actionGet8952); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionGet9184); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionGet8954); if (state.failed) return action;
 
-            pushFollow(FOLLOW_listExpression_in_actionGet9190);
+            pushFollow(FOLLOW_listExpression_in_actionGet8960);
             f=listExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,COMMA,FOLLOW_COMMA_in_actionGet9192); if (state.failed) return action;
+            match(input,COMMA,FOLLOW_COMMA_in_actionGet8962); if (state.failed) return action;
 
-            pushFollow(FOLLOW_variable_in_actionGet9198);
+            pushFollow(FOLLOW_variable_in_actionGet8968);
             var=variable();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,COMMA,FOLLOW_COMMA_in_actionGet9200); if (state.failed) return action;
+            match(input,COMMA,FOLLOW_COMMA_in_actionGet8970); if (state.failed) return action;
 
-            pushFollow(FOLLOW_stringExpression_in_actionGet9206);
+            pushFollow(FOLLOW_stringExpression_in_actionGet8976);
             op=stringExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionGet9208); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionGet8978); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createGetAction(f, var, op,((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -13675,7 +13333,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionGetList"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1519:1: actionGetList returns [AbstractTextMarkerAction action = null] : name= GETLIST LPAREN var= listVariable COMMA op= stringExpression RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1492:1: actionGetList returns [AbstractTextMarkerAction action = null] : name= GETLIST LPAREN var= listVariable COMMA op= stringExpression RPAREN ;
     public final AbstractTextMarkerAction actionGetList() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -13687,28 +13345,28 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1520:5: (name= GETLIST LPAREN var= listVariable COMMA op= stringExpression RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1521:5: name= GETLIST LPAREN var= listVariable COMMA op= stringExpression RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1493:5: (name= GETLIST LPAREN var= listVariable COMMA op= stringExpression RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1494:5: name= GETLIST LPAREN var= listVariable COMMA op= stringExpression RPAREN
             {
-            name=(Token)match(input,GETLIST,FOLLOW_GETLIST_in_actionGetList9243); if (state.failed) return action;
+            name=(Token)match(input,GETLIST,FOLLOW_GETLIST_in_actionGetList9013); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionGetList9245); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionGetList9015); if (state.failed) return action;
 
-            pushFollow(FOLLOW_listVariable_in_actionGetList9251);
+            pushFollow(FOLLOW_listVariable_in_actionGetList9021);
             var=listVariable();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,COMMA,FOLLOW_COMMA_in_actionGetList9253); if (state.failed) return action;
+            match(input,COMMA,FOLLOW_COMMA_in_actionGetList9023); if (state.failed) return action;
 
-            pushFollow(FOLLOW_stringExpression_in_actionGetList9259);
+            pushFollow(FOLLOW_stringExpression_in_actionGetList9029);
             op=stringExpression();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionGetList9261); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionGetList9031); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createGetListAction(var, op,((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -13733,7 +13391,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionMatchedText"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1525:1: actionMatchedText returns [AbstractTextMarkerAction action = null] : MATCHEDTEXT LPAREN var= variable ( COMMA index= numberExpression )* RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1498:1: actionMatchedText returns [AbstractTextMarkerAction action = null] : MATCHEDTEXT LPAREN var= variable ( COMMA index= numberExpression )* RPAREN ;
     public final AbstractTextMarkerAction actionMatchedText() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -13747,37 +13405,37 @@ public class TextMarkerParser extends Parser {
         List<NumberExpression> list = new ArrayList<NumberExpression>();
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1529:5: ( MATCHEDTEXT LPAREN var= variable ( COMMA index= numberExpression )* RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1530:5: MATCHEDTEXT LPAREN var= variable ( COMMA index= numberExpression )* RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1502:5: ( MATCHEDTEXT LPAREN var= variable ( COMMA index= numberExpression )* RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1503:5: MATCHEDTEXT LPAREN var= variable ( COMMA index= numberExpression )* RPAREN
             {
-            match(input,MATCHEDTEXT,FOLLOW_MATCHEDTEXT_in_actionMatchedText9300); if (state.failed) return action;
+            match(input,MATCHEDTEXT,FOLLOW_MATCHEDTEXT_in_actionMatchedText9070); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionMatchedText9302); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionMatchedText9072); if (state.failed) return action;
 
-            pushFollow(FOLLOW_variable_in_actionMatchedText9313);
+            pushFollow(FOLLOW_variable_in_actionMatchedText9083);
             var=variable();
 
             state._fsp--;
             if (state.failed) return action;
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1532:5: ( COMMA index= numberExpression )*
-            loop163:
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1505:5: ( COMMA index= numberExpression )*
+            loop158:
             do {
-                int alt163=2;
-                int LA163_0 = input.LA(1);
+                int alt158=2;
+                int LA158_0 = input.LA(1);
 
-                if ( (LA163_0==COMMA) ) {
-                    alt163=1;
+                if ( (LA158_0==COMMA) ) {
+                    alt158=1;
                 }
 
 
-                switch (alt163) {
+                switch (alt158) {
             	case 1 :
-            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1533:9: COMMA index= numberExpression
+            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1506:9: COMMA index= numberExpression
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_actionMatchedText9329); if (state.failed) return action;
+            	    match(input,COMMA,FOLLOW_COMMA_in_actionMatchedText9099); if (state.failed) return action;
 
-            	    pushFollow(FOLLOW_numberExpression_in_actionMatchedText9335);
+            	    pushFollow(FOLLOW_numberExpression_in_actionMatchedText9105);
             	    index=numberExpression();
 
             	    state._fsp--;
@@ -13789,12 +13447,12 @@ public class TextMarkerParser extends Parser {
             	    break;
 
             	default :
-            	    break loop163;
+            	    break loop158;
                 }
             } while (true);
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionMatchedText9359); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionMatchedText9129); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createMatchedTextAction(var, list, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -13819,7 +13477,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "actionClear"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1541:1: actionClear returns [AbstractTextMarkerAction action = null] : name= CLEAR LPAREN var= listVariable RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1514:1: actionClear returns [AbstractTextMarkerAction action = null] : name= CLEAR LPAREN var= listVariable RPAREN ;
     public final AbstractTextMarkerAction actionClear() throws RecognitionException {
         AbstractTextMarkerAction action =  null;
 
@@ -13829,20 +13487,20 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1542:5: (name= CLEAR LPAREN var= listVariable RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1543:5: name= CLEAR LPAREN var= listVariable RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1515:5: (name= CLEAR LPAREN var= listVariable RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1516:5: name= CLEAR LPAREN var= listVariable RPAREN
             {
-            name=(Token)match(input,CLEAR,FOLLOW_CLEAR_in_actionClear9399); if (state.failed) return action;
+            name=(Token)match(input,CLEAR,FOLLOW_CLEAR_in_actionClear9169); if (state.failed) return action;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_actionClear9401); if (state.failed) return action;
+            match(input,LPAREN,FOLLOW_LPAREN_in_actionClear9171); if (state.failed) return action;
 
-            pushFollow(FOLLOW_listVariable_in_actionClear9407);
+            pushFollow(FOLLOW_listVariable_in_actionClear9177);
             var=listVariable();
 
             state._fsp--;
             if (state.failed) return action;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_actionClear9409); if (state.failed) return action;
+            match(input,RPAREN,FOLLOW_RPAREN_in_actionClear9179); if (state.failed) return action;
 
             if ( state.backtracking==0 ) {action = ActionFactory.createClearAction(var, ((blockDeclaration_scope)blockDeclaration_stack.peek()).env);}
 
@@ -13867,7 +13525,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "varArgumentList"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1548:1: varArgumentList returns [List args = new ArrayList()] : ( LPAREN arg= argument ( COMMA arg= argument )* RPAREN )? ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1521:1: varArgumentList returns [List args = new ArrayList()] : ( LPAREN arg= argument ( COMMA arg= argument )* RPAREN )? ;
     public final List varArgumentList() throws RecognitionException {
         List args =  new ArrayList();
 
@@ -13876,23 +13534,23 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1549:2: ( ( LPAREN arg= argument ( COMMA arg= argument )* RPAREN )? )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1550:2: ( LPAREN arg= argument ( COMMA arg= argument )* RPAREN )?
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1522:2: ( ( LPAREN arg= argument ( COMMA arg= argument )* RPAREN )? )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1523:2: ( LPAREN arg= argument ( COMMA arg= argument )* RPAREN )?
             {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1550:2: ( LPAREN arg= argument ( COMMA arg= argument )* RPAREN )?
-            int alt165=2;
-            int LA165_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1523:2: ( LPAREN arg= argument ( COMMA arg= argument )* RPAREN )?
+            int alt160=2;
+            int LA160_0 = input.LA(1);
 
-            if ( (LA165_0==LPAREN) ) {
-                alt165=1;
+            if ( (LA160_0==LPAREN) ) {
+                alt160=1;
             }
-            switch (alt165) {
+            switch (alt160) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1550:3: LPAREN arg= argument ( COMMA arg= argument )* RPAREN
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1523:3: LPAREN arg= argument ( COMMA arg= argument )* RPAREN
                     {
-                    match(input,LPAREN,FOLLOW_LPAREN_in_varArgumentList9436); if (state.failed) return args;
+                    match(input,LPAREN,FOLLOW_LPAREN_in_varArgumentList9206); if (state.failed) return args;
 
-                    pushFollow(FOLLOW_argument_in_varArgumentList9442);
+                    pushFollow(FOLLOW_argument_in_varArgumentList9212);
                     arg=argument();
 
                     state._fsp--;
@@ -13900,24 +13558,24 @@ public class TextMarkerParser extends Parser {
 
                     if ( state.backtracking==0 ) {args.add(arg);}
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1550:41: ( COMMA arg= argument )*
-                    loop164:
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1523:41: ( COMMA arg= argument )*
+                    loop159:
                     do {
-                        int alt164=2;
-                        int LA164_0 = input.LA(1);
+                        int alt159=2;
+                        int LA159_0 = input.LA(1);
 
-                        if ( (LA164_0==COMMA) ) {
-                            alt164=1;
+                        if ( (LA159_0==COMMA) ) {
+                            alt159=1;
                         }
 
 
-                        switch (alt164) {
+                        switch (alt159) {
                     	case 1 :
-                    	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1550:42: COMMA arg= argument
+                    	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1523:42: COMMA arg= argument
                     	    {
-                    	    match(input,COMMA,FOLLOW_COMMA_in_varArgumentList9446); if (state.failed) return args;
+                    	    match(input,COMMA,FOLLOW_COMMA_in_varArgumentList9216); if (state.failed) return args;
 
-                    	    pushFollow(FOLLOW_argument_in_varArgumentList9452);
+                    	    pushFollow(FOLLOW_argument_in_varArgumentList9222);
                     	    arg=argument();
 
                     	    state._fsp--;
@@ -13929,12 +13587,12 @@ public class TextMarkerParser extends Parser {
                     	    break;
 
                     	default :
-                    	    break loop164;
+                    	    break loop159;
                         }
                     } while (true);
 
 
-                    match(input,RPAREN,FOLLOW_RPAREN_in_varArgumentList9458); if (state.failed) return args;
+                    match(input,RPAREN,FOLLOW_RPAREN_in_varArgumentList9228); if (state.failed) return args;
 
                     }
                     break;
@@ -13963,7 +13621,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "argument"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1553:1: argument returns [TextMarkerExpression expr = null] options {backtrack=true; } : (a4= stringExpression |a2= booleanExpression |a3= numberExpression |a1= typeExpression );
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1526:1: argument returns [TextMarkerExpression expr = null] options {backtrack=true; } : (a4= stringExpression |a2= booleanExpression |a3= numberExpression |a1= typeExpression );
     public final TextMarkerExpression argument() throws RecognitionException {
         TextMarkerExpression expr =  null;
 
@@ -13978,35 +13636,35 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1557:2: (a4= stringExpression |a2= booleanExpression |a3= numberExpression |a1= typeExpression )
-            int alt166=4;
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1530:2: (a4= stringExpression |a2= booleanExpression |a3= numberExpression |a1= typeExpression )
+            int alt161=4;
             switch ( input.LA(1) ) {
             case REMOVESTRING:
             case StringLiteral:
                 {
-                alt166=1;
+                alt161=1;
                 }
                 break;
             case Identifier:
                 {
-                int LA166_2 = input.LA(2);
+                int LA161_2 = input.LA(2);
 
                 if ( (synpred31_TextMarkerParser()) ) {
-                    alt166=1;
+                    alt161=1;
                 }
                 else if ( (synpred32_TextMarkerParser()) ) {
-                    alt166=2;
+                    alt161=2;
                 }
                 else if ( (synpred33_TextMarkerParser()) ) {
-                    alt166=3;
+                    alt161=3;
                 }
                 else if ( (true) ) {
-                    alt166=4;
+                    alt161=4;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return expr;}
                     NoViableAltException nvae =
-                        new NoViableAltException("", 166, 2, input);
+                        new NoViableAltException("", 161, 2, input);
 
                     throw nvae;
 
@@ -14017,23 +13675,23 @@ public class TextMarkerParser extends Parser {
             case TRUE:
             case XOR:
                 {
-                alt166=2;
+                alt161=2;
                 }
                 break;
             case BasicAnnotationType:
                 {
-                int LA166_6 = input.LA(2);
+                int LA161_6 = input.LA(2);
 
                 if ( (synpred32_TextMarkerParser()) ) {
-                    alt166=2;
+                    alt161=2;
                 }
                 else if ( (true) ) {
-                    alt166=4;
+                    alt161=4;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return expr;}
                     NoViableAltException nvae =
-                        new NoViableAltException("", 166, 6, input);
+                        new NoViableAltException("", 161, 6, input);
 
                     throw nvae;
 
@@ -14042,18 +13700,18 @@ public class TextMarkerParser extends Parser {
                 break;
             case LPAREN:
                 {
-                int LA166_7 = input.LA(2);
+                int LA161_7 = input.LA(2);
 
                 if ( (synpred32_TextMarkerParser()) ) {
-                    alt166=2;
+                    alt161=2;
                 }
                 else if ( (synpred33_TextMarkerParser()) ) {
-                    alt166=3;
+                    alt161=3;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return expr;}
                     NoViableAltException nvae =
-                        new NoViableAltException("", 166, 7, input);
+                        new NoViableAltException("", 161, 7, input);
 
                     throw nvae;
 
@@ -14069,23 +13727,23 @@ public class TextMarkerParser extends Parser {
             case SIN:
             case TAN:
                 {
-                alt166=3;
+                alt161=3;
                 }
                 break;
             default:
                 if (state.backtracking>0) {state.failed=true; return expr;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 166, 0, input);
+                    new NoViableAltException("", 161, 0, input);
 
                 throw nvae;
 
             }
 
-            switch (alt166) {
+            switch (alt161) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1558:2: a4= stringExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1531:2: a4= stringExpression
                     {
-                    pushFollow(FOLLOW_stringExpression_in_argument9492);
+                    pushFollow(FOLLOW_stringExpression_in_argument9262);
                     a4=stringExpression();
 
                     state._fsp--;
@@ -14096,9 +13754,9 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1559:4: a2= booleanExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1532:4: a2= booleanExpression
                     {
-                    pushFollow(FOLLOW_booleanExpression_in_argument9503);
+                    pushFollow(FOLLOW_booleanExpression_in_argument9273);
                     a2=booleanExpression();
 
                     state._fsp--;
@@ -14109,9 +13767,9 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1560:4: a3= numberExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1533:4: a3= numberExpression
                     {
-                    pushFollow(FOLLOW_numberExpression_in_argument9514);
+                    pushFollow(FOLLOW_numberExpression_in_argument9284);
                     a3=numberExpression();
 
                     state._fsp--;
@@ -14122,9 +13780,9 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 4 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1561:4: a1= typeExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1534:4: a1= typeExpression
                     {
-                    pushFollow(FOLLOW_typeExpression_in_argument9525);
+                    pushFollow(FOLLOW_typeExpression_in_argument9295);
                     a1=typeExpression();
 
                     state._fsp--;
@@ -14155,7 +13813,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "dottedIdentifier"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1570:1: dottedIdentifier returns [String idString = \"\"] : id= Identifier (dot= DOT idn= Identifier )* ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1543:1: dottedIdentifier returns [String idString = \"\"] : id= Identifier (dot= DOT idn= Identifier )* ;
     public final String dottedIdentifier() throws RecognitionException {
         String idString =  "";
 
@@ -14165,33 +13823,33 @@ public class TextMarkerParser extends Parser {
         Token idn=null;
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1571:2: (id= Identifier (dot= DOT idn= Identifier )* )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1572:2: id= Identifier (dot= DOT idn= Identifier )*
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1544:2: (id= Identifier (dot= DOT idn= Identifier )* )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1545:2: id= Identifier (dot= DOT idn= Identifier )*
             {
-            id=(Token)match(input,Identifier,FOLLOW_Identifier_in_dottedIdentifier9559); if (state.failed) return idString;
+            id=(Token)match(input,Identifier,FOLLOW_Identifier_in_dottedIdentifier9329); if (state.failed) return idString;
 
             if ( state.backtracking==0 ) {idString += id.getText();}
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1573:2: (dot= DOT idn= Identifier )*
-            loop167:
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1546:2: (dot= DOT idn= Identifier )*
+            loop162:
             do {
-                int alt167=2;
-                int LA167_0 = input.LA(1);
+                int alt162=2;
+                int LA162_0 = input.LA(1);
 
-                if ( (LA167_0==DOT) ) {
-                    alt167=1;
+                if ( (LA162_0==DOT) ) {
+                    alt162=1;
                 }
 
 
-                switch (alt167) {
+                switch (alt162) {
             	case 1 :
-            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1574:3: dot= DOT idn= Identifier
+            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1547:3: dot= DOT idn= Identifier
             	    {
-            	    dot=(Token)match(input,DOT,FOLLOW_DOT_in_dottedIdentifier9572); if (state.failed) return idString;
+            	    dot=(Token)match(input,DOT,FOLLOW_DOT_in_dottedIdentifier9342); if (state.failed) return idString;
 
             	    if ( state.backtracking==0 ) {idString += dot.getText();}
 
-            	    idn=(Token)match(input,Identifier,FOLLOW_Identifier_in_dottedIdentifier9582); if (state.failed) return idString;
+            	    idn=(Token)match(input,Identifier,FOLLOW_Identifier_in_dottedIdentifier9352); if (state.failed) return idString;
 
             	    if ( state.backtracking==0 ) {idString += idn.getText();}
 
@@ -14199,7 +13857,7 @@ public class TextMarkerParser extends Parser {
             	    break;
 
             	default :
-            	    break loop167;
+            	    break loop162;
                 }
             } while (true);
 
@@ -14225,7 +13883,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "dottedIdentifier2"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1579:1: dottedIdentifier2 returns [String idString = \"\"] : id= Identifier (dot= ( DOT | MINUS ) idn= Identifier )* ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1552:1: dottedIdentifier2 returns [String idString = \"\"] : id= Identifier (dot= ( DOT | MINUS ) idn= Identifier )* ;
     public final String dottedIdentifier2() throws RecognitionException {
         String idString =  "";
 
@@ -14235,27 +13893,27 @@ public class TextMarkerParser extends Parser {
         Token idn=null;
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1580:2: (id= Identifier (dot= ( DOT | MINUS ) idn= Identifier )* )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1581:2: id= Identifier (dot= ( DOT | MINUS ) idn= Identifier )*
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1553:2: (id= Identifier (dot= ( DOT | MINUS ) idn= Identifier )* )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1554:2: id= Identifier (dot= ( DOT | MINUS ) idn= Identifier )*
             {
-            id=(Token)match(input,Identifier,FOLLOW_Identifier_in_dottedIdentifier29608); if (state.failed) return idString;
+            id=(Token)match(input,Identifier,FOLLOW_Identifier_in_dottedIdentifier29378); if (state.failed) return idString;
 
             if ( state.backtracking==0 ) {idString += id.getText();}
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1582:2: (dot= ( DOT | MINUS ) idn= Identifier )*
-            loop168:
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1555:2: (dot= ( DOT | MINUS ) idn= Identifier )*
+            loop163:
             do {
-                int alt168=2;
-                int LA168_0 = input.LA(1);
+                int alt163=2;
+                int LA163_0 = input.LA(1);
 
-                if ( (LA168_0==DOT||LA168_0==MINUS) ) {
-                    alt168=1;
+                if ( (LA163_0==DOT||LA163_0==MINUS) ) {
+                    alt163=1;
                 }
 
 
-                switch (alt168) {
+                switch (alt163) {
             	case 1 :
-            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1583:3: dot= ( DOT | MINUS ) idn= Identifier
+            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1556:3: dot= ( DOT | MINUS ) idn= Identifier
             	    {
             	    dot=(Token)input.LT(1);
 
@@ -14273,7 +13931,7 @@ public class TextMarkerParser extends Parser {
 
             	    if ( state.backtracking==0 ) {idString += dot.getText();}
 
-            	    idn=(Token)match(input,Identifier,FOLLOW_Identifier_in_dottedIdentifier29635); if (state.failed) return idString;
+            	    idn=(Token)match(input,Identifier,FOLLOW_Identifier_in_dottedIdentifier29405); if (state.failed) return idString;
 
             	    if ( state.backtracking==0 ) {idString += idn.getText();}
 
@@ -14281,7 +13939,7 @@ public class TextMarkerParser extends Parser {
             	    break;
 
             	default :
-            	    break loop168;
+            	    break loop163;
                 }
             } while (true);
 
@@ -14307,7 +13965,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "dottedId"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1589:1: dottedId returns [Token token = null ] : id= Identifier (dot= DOT id= Identifier )* ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1562:1: dottedId returns [Token token = null ] : id= Identifier (dot= DOT id= Identifier )* ;
     public final Token dottedId() throws RecognitionException {
         Token token =  null;
 
@@ -14317,35 +13975,35 @@ public class TextMarkerParser extends Parser {
 
         CommonToken ct = null;
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1591:2: (id= Identifier (dot= DOT id= Identifier )* )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1592:2: id= Identifier (dot= DOT id= Identifier )*
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1564:2: (id= Identifier (dot= DOT id= Identifier )* )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1565:2: id= Identifier (dot= DOT id= Identifier )*
             {
-            id=(Token)match(input,Identifier,FOLLOW_Identifier_in_dottedId9667); if (state.failed) return token;
+            id=(Token)match(input,Identifier,FOLLOW_Identifier_in_dottedId9437); if (state.failed) return token;
 
             if ( state.backtracking==0 ) {
             		ct = new CommonToken(id);
             		}
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1595:2: (dot= DOT id= Identifier )*
-            loop169:
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1568:2: (dot= DOT id= Identifier )*
+            loop164:
             do {
-                int alt169=2;
-                int LA169_0 = input.LA(1);
+                int alt164=2;
+                int LA164_0 = input.LA(1);
 
-                if ( (LA169_0==DOT) ) {
-                    alt169=1;
+                if ( (LA164_0==DOT) ) {
+                    alt164=1;
                 }
 
 
-                switch (alt169) {
+                switch (alt164) {
             	case 1 :
-            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1596:3: dot= DOT id= Identifier
+            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1569:3: dot= DOT id= Identifier
             	    {
-            	    dot=(Token)match(input,DOT,FOLLOW_DOT_in_dottedId9680); if (state.failed) return token;
+            	    dot=(Token)match(input,DOT,FOLLOW_DOT_in_dottedId9450); if (state.failed) return token;
 
             	    if ( state.backtracking==0 ) {ct.setText(ct.getText() + dot.getText());}
 
-            	    id=(Token)match(input,Identifier,FOLLOW_Identifier_in_dottedId9690); if (state.failed) return token;
+            	    id=(Token)match(input,Identifier,FOLLOW_Identifier_in_dottedId9460); if (state.failed) return token;
 
             	    if ( state.backtracking==0 ) {ct.setStopIndex(getBounds(id)[1]);
             	    		                 ct.setText(ct.getText() + id.getText());}
@@ -14354,7 +14012,7 @@ public class TextMarkerParser extends Parser {
             	    break;
 
             	default :
-            	    break loop169;
+            	    break loop164;
                 }
             } while (true);
 
@@ -14383,7 +14041,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "annotationType"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1604:1: annotationType returns [Token ref = null] : (token= BasicAnnotationType |did= dottedId ) ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1577:1: annotationType returns [Token ref = null] : (token= BasicAnnotationType |did= dottedId ) ;
     public final Token annotationType() throws RecognitionException {
         Token ref =  null;
 
@@ -14393,41 +14051,41 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1605:2: ( (token= BasicAnnotationType |did= dottedId ) )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1606:2: (token= BasicAnnotationType |did= dottedId )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1578:2: ( (token= BasicAnnotationType |did= dottedId ) )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1579:2: (token= BasicAnnotationType |did= dottedId )
             {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1606:2: (token= BasicAnnotationType |did= dottedId )
-            int alt170=2;
-            int LA170_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1579:2: (token= BasicAnnotationType |did= dottedId )
+            int alt165=2;
+            int LA165_0 = input.LA(1);
 
-            if ( (LA170_0==BasicAnnotationType) ) {
-                alt170=1;
+            if ( (LA165_0==BasicAnnotationType) ) {
+                alt165=1;
             }
-            else if ( (LA170_0==Identifier) ) {
-                alt170=2;
+            else if ( (LA165_0==Identifier) ) {
+                alt165=2;
             }
             else {
                 if (state.backtracking>0) {state.failed=true; return ref;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 170, 0, input);
+                    new NoViableAltException("", 165, 0, input);
 
                 throw nvae;
 
             }
-            switch (alt170) {
+            switch (alt165) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1608:2: token= BasicAnnotationType
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1581:2: token= BasicAnnotationType
                     {
-                    token=(Token)match(input,BasicAnnotationType,FOLLOW_BasicAnnotationType_in_annotationType9725); if (state.failed) return ref;
+                    token=(Token)match(input,BasicAnnotationType,FOLLOW_BasicAnnotationType_in_annotationType9495); if (state.failed) return ref;
 
                     if ( state.backtracking==0 ) {ref = token;}
 
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1610:2: did= dottedId
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1583:2: did= dottedId
                     {
-                    pushFollow(FOLLOW_dottedId_in_annotationType9737);
+                    pushFollow(FOLLOW_dottedId_in_annotationType9507);
                     did=dottedId();
 
                     state._fsp--;
@@ -14462,7 +14120,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "wordListExpression"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1614:1: wordListExpression returns [WordListExpression expr = null] : (id= Identifier |path= RessourceLiteral );
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1587:1: wordListExpression returns [WordListExpression expr = null] : (id= Identifier |path= RessourceLiteral );
     public final WordListExpression wordListExpression() throws RecognitionException {
         WordListExpression expr =  null;
 
@@ -14471,38 +14129,38 @@ public class TextMarkerParser extends Parser {
         Token path=null;
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1615:2: (id= Identifier |path= RessourceLiteral )
-            int alt171=2;
-            int LA171_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1588:2: (id= Identifier |path= RessourceLiteral )
+            int alt166=2;
+            int LA166_0 = input.LA(1);
 
-            if ( (LA171_0==Identifier) ) {
-                alt171=1;
+            if ( (LA166_0==Identifier) ) {
+                alt166=1;
             }
-            else if ( (LA171_0==RessourceLiteral) ) {
-                alt171=2;
+            else if ( (LA166_0==RessourceLiteral) ) {
+                alt166=2;
             }
             else {
                 if (state.backtracking>0) {state.failed=true; return expr;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 171, 0, input);
+                    new NoViableAltException("", 166, 0, input);
 
                 throw nvae;
 
             }
-            switch (alt171) {
+            switch (alt166) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1616:2: id= Identifier
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1589:2: id= Identifier
                     {
-                    id=(Token)match(input,Identifier,FOLLOW_Identifier_in_wordListExpression9762); if (state.failed) return expr;
+                    id=(Token)match(input,Identifier,FOLLOW_Identifier_in_wordListExpression9532); if (state.failed) return expr;
 
                     if ( state.backtracking==0 ) {expr = ExpressionFactory.createReferenceWordListExpression(id);}
 
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1619:2: path= RessourceLiteral
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1592:2: path= RessourceLiteral
                     {
-                    path=(Token)match(input,RessourceLiteral,FOLLOW_RessourceLiteral_in_wordListExpression9775); if (state.failed) return expr;
+                    path=(Token)match(input,RessourceLiteral,FOLLOW_RessourceLiteral_in_wordListExpression9545); if (state.failed) return expr;
 
                     if ( state.backtracking==0 ) {expr = ExpressionFactory.createLiteralWordListExpression(path);}
 
@@ -14529,7 +14187,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "wordTableExpression"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1624:1: wordTableExpression returns [WordTableExpression expr = null] : (id= Identifier |path= RessourceLiteral );
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1597:1: wordTableExpression returns [WordTableExpression expr = null] : (id= Identifier |path= RessourceLiteral );
     public final WordTableExpression wordTableExpression() throws RecognitionException {
         WordTableExpression expr =  null;
 
@@ -14538,38 +14196,38 @@ public class TextMarkerParser extends Parser {
         Token path=null;
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1625:2: (id= Identifier |path= RessourceLiteral )
-            int alt172=2;
-            int LA172_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1598:2: (id= Identifier |path= RessourceLiteral )
+            int alt167=2;
+            int LA167_0 = input.LA(1);
 
-            if ( (LA172_0==Identifier) ) {
-                alt172=1;
+            if ( (LA167_0==Identifier) ) {
+                alt167=1;
             }
-            else if ( (LA172_0==RessourceLiteral) ) {
-                alt172=2;
+            else if ( (LA167_0==RessourceLiteral) ) {
+                alt167=2;
             }
             else {
                 if (state.backtracking>0) {state.failed=true; return expr;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 172, 0, input);
+                    new NoViableAltException("", 167, 0, input);
 
                 throw nvae;
 
             }
-            switch (alt172) {
+            switch (alt167) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1626:2: id= Identifier
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1599:2: id= Identifier
                     {
-                    id=(Token)match(input,Identifier,FOLLOW_Identifier_in_wordTableExpression9799); if (state.failed) return expr;
+                    id=(Token)match(input,Identifier,FOLLOW_Identifier_in_wordTableExpression9569); if (state.failed) return expr;
 
                     if ( state.backtracking==0 ) {expr = ExpressionFactory.createReferenceWordTableExpression(id);}
 
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1629:2: path= RessourceLiteral
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1602:2: path= RessourceLiteral
                     {
-                    path=(Token)match(input,RessourceLiteral,FOLLOW_RessourceLiteral_in_wordTableExpression9812); if (state.failed) return expr;
+                    path=(Token)match(input,RessourceLiteral,FOLLOW_RessourceLiteral_in_wordTableExpression9582); if (state.failed) return expr;
 
                     if ( state.backtracking==0 ) {expr = ExpressionFactory.createLiteralWordTableExpression(path);}
 
@@ -14596,7 +14254,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "numberFunction"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1634:1: numberFunction returns [NumberExpression expr = null] : ( (op= ( EXP | LOGN | SIN | COS | TAN ) numExprP= numberExpressionInPar ) | (e= externalNumberFunction )=>e= externalNumberFunction );
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1607:1: numberFunction returns [NumberExpression expr = null] : ( (op= ( EXP | LOGN | SIN | COS | TAN ) numExprP= numberExpressionInPar ) | (e= externalNumberFunction )=>e= externalNumberFunction );
     public final NumberExpression numberFunction() throws RecognitionException {
         NumberExpression expr =  null;
 
@@ -14608,30 +14266,30 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1635:2: ( (op= ( EXP | LOGN | SIN | COS | TAN ) numExprP= numberExpressionInPar ) | (e= externalNumberFunction )=>e= externalNumberFunction )
-            int alt173=2;
-            int LA173_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1608:2: ( (op= ( EXP | LOGN | SIN | COS | TAN ) numExprP= numberExpressionInPar ) | (e= externalNumberFunction )=>e= externalNumberFunction )
+            int alt168=2;
+            int LA168_0 = input.LA(1);
 
-            if ( (LA173_0==COS||LA173_0==EXP||LA173_0==LOGN||LA173_0==SIN||LA173_0==TAN) ) {
-                alt173=1;
+            if ( (LA168_0==COS||LA168_0==EXP||LA168_0==LOGN||LA168_0==SIN||LA168_0==TAN) ) {
+                alt168=1;
             }
-            else if ( (LA173_0==Identifier) && (synpred34_TextMarkerParser())) {
-                alt173=2;
+            else if ( (LA168_0==Identifier) && (synpred34_TextMarkerParser())) {
+                alt168=2;
             }
             else {
                 if (state.backtracking>0) {state.failed=true; return expr;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 173, 0, input);
+                    new NoViableAltException("", 168, 0, input);
 
                 throw nvae;
 
             }
-            switch (alt173) {
+            switch (alt168) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1636:2: (op= ( EXP | LOGN | SIN | COS | TAN ) numExprP= numberExpressionInPar )
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1609:2: (op= ( EXP | LOGN | SIN | COS | TAN ) numExprP= numberExpressionInPar )
                     {
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1636:2: (op= ( EXP | LOGN | SIN | COS | TAN ) numExprP= numberExpressionInPar )
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1636:3: op= ( EXP | LOGN | SIN | COS | TAN ) numExprP= numberExpressionInPar
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1609:2: (op= ( EXP | LOGN | SIN | COS | TAN ) numExprP= numberExpressionInPar )
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1609:3: op= ( EXP | LOGN | SIN | COS | TAN ) numExprP= numberExpressionInPar
                     {
                     op=(Token)input.LT(1);
 
@@ -14647,7 +14305,7 @@ public class TextMarkerParser extends Parser {
                     }
 
 
-                    pushFollow(FOLLOW_numberExpressionInPar_in_numberFunction9857);
+                    pushFollow(FOLLOW_numberExpressionInPar_in_numberFunction9627);
                     numExprP=numberExpressionInPar();
 
                     state._fsp--;
@@ -14661,9 +14319,9 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1639:4: (e= externalNumberFunction )=>e= externalNumberFunction
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1612:4: (e= externalNumberFunction )=>e= externalNumberFunction
                     {
-                    pushFollow(FOLLOW_externalNumberFunction_in_numberFunction9881);
+                    pushFollow(FOLLOW_externalNumberFunction_in_numberFunction9651);
                     e=externalNumberFunction();
 
                     state._fsp--;
@@ -14694,7 +14352,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "externalNumberFunction"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1644:1: externalNumberFunction returns [NumberExpression expr = null] : id= Identifier LPAREN args= varArgumentList RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1617:1: externalNumberFunction returns [NumberExpression expr = null] : id= Identifier LPAREN args= varArgumentList RPAREN ;
     public final NumberExpression externalNumberFunction() throws RecognitionException {
         NumberExpression expr =  null;
 
@@ -14704,20 +14362,20 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1645:2: (id= Identifier LPAREN args= varArgumentList RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1647:2: id= Identifier LPAREN args= varArgumentList RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1618:2: (id= Identifier LPAREN args= varArgumentList RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1620:2: id= Identifier LPAREN args= varArgumentList RPAREN
             {
-            id=(Token)match(input,Identifier,FOLLOW_Identifier_in_externalNumberFunction9907); if (state.failed) return expr;
+            id=(Token)match(input,Identifier,FOLLOW_Identifier_in_externalNumberFunction9677); if (state.failed) return expr;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_externalNumberFunction9909); if (state.failed) return expr;
+            match(input,LPAREN,FOLLOW_LPAREN_in_externalNumberFunction9679); if (state.failed) return expr;
 
-            pushFollow(FOLLOW_varArgumentList_in_externalNumberFunction9916);
+            pushFollow(FOLLOW_varArgumentList_in_externalNumberFunction9686);
             args=varArgumentList();
 
             state._fsp--;
             if (state.failed) return expr;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_externalNumberFunction9918); if (state.failed) return expr;
+            match(input,RPAREN,FOLLOW_RPAREN_in_externalNumberFunction9688); if (state.failed) return expr;
 
             if ( state.backtracking==0 ) {
             		expr = external.createExternalNumberFunction(id, args);
@@ -14744,7 +14402,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "numberVariable"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1654:1: numberVariable returns [Token ref = null] : ({...}?token1= Identifier |{...}?token2= Identifier |{...}?token2= Identifier );
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1627:1: numberVariable returns [Token ref = null] : ({...}?token1= Identifier |{...}?token2= Identifier |{...}?token2= Identifier );
     public final Token numberVariable() throws RecognitionException {
         Token ref =  null;
 
@@ -14753,26 +14411,26 @@ public class TextMarkerParser extends Parser {
         Token token2=null;
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1655:2: ({...}?token1= Identifier |{...}?token2= Identifier |{...}?token2= Identifier )
-            int alt174=3;
-            int LA174_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1628:2: ({...}?token1= Identifier |{...}?token2= Identifier |{...}?token2= Identifier )
+            int alt169=3;
+            int LA169_0 = input.LA(1);
 
-            if ( (LA174_0==Identifier) ) {
-                int LA174_1 = input.LA(2);
+            if ( (LA169_0==Identifier) ) {
+                int LA169_1 = input.LA(2);
 
                 if ( ((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "INT"))) ) {
-                    alt174=1;
+                    alt169=1;
                 }
                 else if ( ((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "DOUBLE"))) ) {
-                    alt174=2;
+                    alt169=2;
                 }
                 else if ( ((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "FLOAT"))) ) {
-                    alt174=3;
+                    alt169=3;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return ref;}
                     NoViableAltException nvae =
-                        new NoViableAltException("", 174, 1, input);
+                        new NoViableAltException("", 169, 1, input);
 
                     throw nvae;
 
@@ -14781,49 +14439,49 @@ public class TextMarkerParser extends Parser {
             else {
                 if (state.backtracking>0) {state.failed=true; return ref;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 174, 0, input);
+                    new NoViableAltException("", 169, 0, input);
 
                 throw nvae;
 
             }
-            switch (alt174) {
+            switch (alt169) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1656:2: {...}?token1= Identifier
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1629:2: {...}?token1= Identifier
                     {
                     if ( !((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "INT"))) ) {
                         if (state.backtracking>0) {state.failed=true; return ref;}
                         throw new FailedPredicateException(input, "numberVariable", "isVariableOfType($blockDeclaration::env,input.LT(1).getText(), \"INT\")");
                     }
 
-                    token1=(Token)match(input,Identifier,FOLLOW_Identifier_in_numberVariable9943); if (state.failed) return ref;
+                    token1=(Token)match(input,Identifier,FOLLOW_Identifier_in_numberVariable9713); if (state.failed) return ref;
 
                     if ( state.backtracking==0 ) {ref = token1;}
 
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1657:4: {...}?token2= Identifier
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1630:4: {...}?token2= Identifier
                     {
                     if ( !((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "DOUBLE"))) ) {
                         if (state.backtracking>0) {state.failed=true; return ref;}
                         throw new FailedPredicateException(input, "numberVariable", "isVariableOfType($blockDeclaration::env,input.LT(1).getText(), \"DOUBLE\")");
                     }
 
-                    token2=(Token)match(input,Identifier,FOLLOW_Identifier_in_numberVariable9956); if (state.failed) return ref;
+                    token2=(Token)match(input,Identifier,FOLLOW_Identifier_in_numberVariable9726); if (state.failed) return ref;
 
                     if ( state.backtracking==0 ) {ref = token2;}
 
                     }
                     break;
                 case 3 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1658:4: {...}?token2= Identifier
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1631:4: {...}?token2= Identifier
                     {
                     if ( !((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "FLOAT"))) ) {
                         if (state.backtracking>0) {state.failed=true; return ref;}
                         throw new FailedPredicateException(input, "numberVariable", "isVariableOfType($blockDeclaration::env,input.LT(1).getText(), \"FLOAT\")");
                     }
 
-                    token2=(Token)match(input,Identifier,FOLLOW_Identifier_in_numberVariable9969); if (state.failed) return ref;
+                    token2=(Token)match(input,Identifier,FOLLOW_Identifier_in_numberVariable9739); if (state.failed) return ref;
 
                     if ( state.backtracking==0 ) {ref = token2;}
 
@@ -14850,7 +14508,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "additiveExpression"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1662:1: additiveExpression returns [NumberExpression expr = null] : e= multiplicativeExpression (op= ( PLUS | MINUS ) e= multiplicativeExpression )* ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1635:1: additiveExpression returns [NumberExpression expr = null] : e= multiplicativeExpression (op= ( PLUS | MINUS ) e= multiplicativeExpression )* ;
     public final NumberExpression additiveExpression() throws RecognitionException {
         NumberExpression expr =  null;
 
@@ -14862,10 +14520,10 @@ public class TextMarkerParser extends Parser {
         List<NumberExpression> exprs = new ArrayList<NumberExpression>();
         	List<Token> ops = new ArrayList<Token>();
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1665:2: (e= multiplicativeExpression (op= ( PLUS | MINUS ) e= multiplicativeExpression )* )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1666:2: e= multiplicativeExpression (op= ( PLUS | MINUS ) e= multiplicativeExpression )*
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1638:2: (e= multiplicativeExpression (op= ( PLUS | MINUS ) e= multiplicativeExpression )* )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1639:2: e= multiplicativeExpression (op= ( PLUS | MINUS ) e= multiplicativeExpression )*
             {
-            pushFollow(FOLLOW_multiplicativeExpression_in_additiveExpression9999);
+            pushFollow(FOLLOW_multiplicativeExpression_in_additiveExpression9769);
             e=multiplicativeExpression();
 
             state._fsp--;
@@ -14873,20 +14531,20 @@ public class TextMarkerParser extends Parser {
 
             if ( state.backtracking==0 ) {exprs.add(e);}
 
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1666:46: (op= ( PLUS | MINUS ) e= multiplicativeExpression )*
-            loop175:
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1639:46: (op= ( PLUS | MINUS ) e= multiplicativeExpression )*
+            loop170:
             do {
-                int alt175=2;
-                int LA175_0 = input.LA(1);
+                int alt170=2;
+                int LA170_0 = input.LA(1);
 
-                if ( (LA175_0==MINUS||LA175_0==PLUS) ) {
-                    alt175=1;
+                if ( (LA170_0==MINUS||LA170_0==PLUS) ) {
+                    alt170=1;
                 }
 
 
-                switch (alt175) {
+                switch (alt170) {
             	case 1 :
-            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1666:48: op= ( PLUS | MINUS ) e= multiplicativeExpression
+            	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1639:48: op= ( PLUS | MINUS ) e= multiplicativeExpression
             	    {
             	    op=(Token)input.LT(1);
 
@@ -14904,7 +14562,7 @@ public class TextMarkerParser extends Parser {
 
             	    if ( state.backtracking==0 ) {ops.add(op);}
 
-            	    pushFollow(FOLLOW_multiplicativeExpression_in_additiveExpression10021);
+            	    pushFollow(FOLLOW_multiplicativeExpression_in_additiveExpression9791);
             	    e=multiplicativeExpression();
 
             	    state._fsp--;
@@ -14916,7 +14574,7 @@ public class TextMarkerParser extends Parser {
             	    break;
 
             	default :
-            	    break loop175;
+            	    break loop170;
                 }
             } while (true);
 
@@ -14944,7 +14602,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "multiplicativeExpression"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1670:1: multiplicativeExpression returns [NumberExpression expr = null] : (e= simpleNumberExpression (op= ( STAR | SLASH | PERCENT ) e= simpleNumberExpression )* |e1= numberFunction ) ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1643:1: multiplicativeExpression returns [NumberExpression expr = null] : (e= simpleNumberExpression (op= ( STAR | SLASH | PERCENT ) e= simpleNumberExpression )* |e1= numberFunction ) ;
     public final NumberExpression multiplicativeExpression() throws RecognitionException {
         NumberExpression expr =  null;
 
@@ -14958,34 +14616,34 @@ public class TextMarkerParser extends Parser {
         List<NumberExpression> exprs = new ArrayList<NumberExpression>();
         	List<Token> ops = new ArrayList<Token>();
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1673:2: ( (e= simpleNumberExpression (op= ( STAR | SLASH | PERCENT ) e= simpleNumberExpression )* |e1= numberFunction ) )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1674:2: (e= simpleNumberExpression (op= ( STAR | SLASH | PERCENT ) e= simpleNumberExpression )* |e1= numberFunction )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1646:2: ( (e= simpleNumberExpression (op= ( STAR | SLASH | PERCENT ) e= simpleNumberExpression )* |e1= numberFunction ) )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1647:2: (e= simpleNumberExpression (op= ( STAR | SLASH | PERCENT ) e= simpleNumberExpression )* |e1= numberFunction )
             {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1674:2: (e= simpleNumberExpression (op= ( STAR | SLASH | PERCENT ) e= simpleNumberExpression )* |e1= numberFunction )
-            int alt177=2;
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1647:2: (e= simpleNumberExpression (op= ( STAR | SLASH | PERCENT ) e= simpleNumberExpression )* |e1= numberFunction )
+            int alt172=2;
             switch ( input.LA(1) ) {
             case DecimalLiteral:
             case FloatingPointLiteral:
             case LPAREN:
             case MINUS:
                 {
-                alt177=1;
+                alt172=1;
                 }
                 break;
             case Identifier:
                 {
-                int LA177_2 = input.LA(2);
+                int LA172_2 = input.LA(2);
 
-                if ( (LA177_2==LPAREN) ) {
-                    alt177=2;
+                if ( (LA172_2==LPAREN) ) {
+                    alt172=2;
                 }
-                else if ( (LA177_2==EOF||LA177_2==COMMA||LA177_2==EQUAL||(LA177_2 >= GREATER && LA177_2 <= GREATEREQUAL)||(LA177_2 >= LESS && LA177_2 <= LESSEQUAL)||LA177_2==MINUS||LA177_2==NOTEQUAL||(LA177_2 >= PERCENT && LA177_2 <= PLUS)||LA177_2==RBRACK||LA177_2==RPAREN||LA177_2==SEMI||(LA177_2 >= SLASH && LA177_2 <= STAR)) ) {
-                    alt177=1;
+                else if ( (LA172_2==EOF||LA172_2==COMMA||LA172_2==EQUAL||(LA172_2 >= GREATER && LA172_2 <= GREATEREQUAL)||(LA172_2 >= LESS && LA172_2 <= LESSEQUAL)||LA172_2==MINUS||LA172_2==NOTEQUAL||(LA172_2 >= PERCENT && LA172_2 <= PLUS)||LA172_2==RBRACK||LA172_2==RPAREN||LA172_2==SEMI||(LA172_2 >= SLASH && LA172_2 <= STAR)) ) {
+                    alt172=1;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return expr;}
                     NoViableAltException nvae =
-                        new NoViableAltException("", 177, 2, input);
+                        new NoViableAltException("", 172, 2, input);
 
                     throw nvae;
 
@@ -14998,23 +14656,23 @@ public class TextMarkerParser extends Parser {
             case SIN:
             case TAN:
                 {
-                alt177=2;
+                alt172=2;
                 }
                 break;
             default:
                 if (state.backtracking>0) {state.failed=true; return expr;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 177, 0, input);
+                    new NoViableAltException("", 172, 0, input);
 
                 throw nvae;
 
             }
 
-            switch (alt177) {
+            switch (alt172) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1674:3: e= simpleNumberExpression (op= ( STAR | SLASH | PERCENT ) e= simpleNumberExpression )*
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1647:3: e= simpleNumberExpression (op= ( STAR | SLASH | PERCENT ) e= simpleNumberExpression )*
                     {
-                    pushFollow(FOLLOW_simpleNumberExpression_in_multiplicativeExpression10054);
+                    pushFollow(FOLLOW_simpleNumberExpression_in_multiplicativeExpression9824);
                     e=simpleNumberExpression();
 
                     state._fsp--;
@@ -15022,20 +14680,20 @@ public class TextMarkerParser extends Parser {
 
                     if ( state.backtracking==0 ) {exprs.add(e);}
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1674:45: (op= ( STAR | SLASH | PERCENT ) e= simpleNumberExpression )*
-                    loop176:
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1647:45: (op= ( STAR | SLASH | PERCENT ) e= simpleNumberExpression )*
+                    loop171:
                     do {
-                        int alt176=2;
-                        int LA176_0 = input.LA(1);
+                        int alt171=2;
+                        int LA171_0 = input.LA(1);
 
-                        if ( (LA176_0==PERCENT||(LA176_0 >= SLASH && LA176_0 <= STAR)) ) {
-                            alt176=1;
+                        if ( (LA171_0==PERCENT||(LA171_0 >= SLASH && LA171_0 <= STAR)) ) {
+                            alt171=1;
                         }
 
 
-                        switch (alt176) {
+                        switch (alt171) {
                     	case 1 :
-                    	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1674:47: op= ( STAR | SLASH | PERCENT ) e= simpleNumberExpression
+                    	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1647:47: op= ( STAR | SLASH | PERCENT ) e= simpleNumberExpression
                     	    {
                     	    op=(Token)input.LT(1);
 
@@ -15053,7 +14711,7 @@ public class TextMarkerParser extends Parser {
 
                     	    if ( state.backtracking==0 ) {ops.add(op);}
 
-                    	    pushFollow(FOLLOW_simpleNumberExpression_in_multiplicativeExpression10082);
+                    	    pushFollow(FOLLOW_simpleNumberExpression_in_multiplicativeExpression9852);
                     	    e=simpleNumberExpression();
 
                     	    state._fsp--;
@@ -15065,7 +14723,7 @@ public class TextMarkerParser extends Parser {
                     	    break;
 
                     	default :
-                    	    break loop176;
+                    	    break loop171;
                         }
                     } while (true);
 
@@ -15075,9 +14733,9 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1676:6: e1= numberFunction
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1649:6: e1= numberFunction
                     {
-                    pushFollow(FOLLOW_numberFunction_in_multiplicativeExpression10100);
+                    pushFollow(FOLLOW_numberFunction_in_multiplicativeExpression9870);
                     e1=numberFunction();
 
                     state._fsp--;
@@ -15112,7 +14770,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "numberExpression"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1679:1: numberExpression returns [NumberExpression expr = null] : e= additiveExpression ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1652:1: numberExpression returns [NumberExpression expr = null] : e= additiveExpression ;
     public final NumberExpression numberExpression() throws RecognitionException {
         NumberExpression expr =  null;
 
@@ -15121,10 +14779,10 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1680:2: (e= additiveExpression )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1681:2: e= additiveExpression
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1653:2: (e= additiveExpression )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1654:2: e= additiveExpression
             {
-            pushFollow(FOLLOW_additiveExpression_in_numberExpression10123);
+            pushFollow(FOLLOW_additiveExpression_in_numberExpression9893);
             e=additiveExpression();
 
             state._fsp--;
@@ -15153,7 +14811,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "numberExpressionInPar"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1684:1: numberExpressionInPar returns [NumberExpression expr = null] : LPAREN e= additiveExpression RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1657:1: numberExpressionInPar returns [NumberExpression expr = null] : LPAREN e= additiveExpression RPAREN ;
     public final NumberExpression numberExpressionInPar() throws RecognitionException {
         NumberExpression expr =  null;
 
@@ -15162,18 +14820,18 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1685:2: ( LPAREN e= additiveExpression RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1686:2: LPAREN e= additiveExpression RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1658:2: ( LPAREN e= additiveExpression RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1659:2: LPAREN e= additiveExpression RPAREN
             {
-            match(input,LPAREN,FOLLOW_LPAREN_in_numberExpressionInPar10141); if (state.failed) return expr;
+            match(input,LPAREN,FOLLOW_LPAREN_in_numberExpressionInPar9911); if (state.failed) return expr;
 
-            pushFollow(FOLLOW_additiveExpression_in_numberExpressionInPar10148);
+            pushFollow(FOLLOW_additiveExpression_in_numberExpressionInPar9918);
             e=additiveExpression();
 
             state._fsp--;
             if (state.failed) return expr;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_numberExpressionInPar10150); if (state.failed) return expr;
+            match(input,RPAREN,FOLLOW_RPAREN_in_numberExpressionInPar9920); if (state.failed) return expr;
 
             if ( state.backtracking==0 ) {expr = e;}
 
@@ -15198,7 +14856,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "simpleNumberExpression"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1689:1: simpleNumberExpression returns [NumberExpression expr = null] : ( (m= MINUS )? lit= DecimalLiteral | (m= MINUS )? lit= FloatingPointLiteral | (m= MINUS )? var= numberVariable |e= numberExpressionInPar );
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1662:1: simpleNumberExpression returns [NumberExpression expr = null] : ( (m= MINUS )? lit= DecimalLiteral | (m= MINUS )? lit= FloatingPointLiteral | (m= MINUS )? var= numberVariable |e= numberExpressionInPar );
     public final NumberExpression simpleNumberExpression() throws RecognitionException {
         NumberExpression expr =  null;
 
@@ -15211,31 +14869,31 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1690:2: ( (m= MINUS )? lit= DecimalLiteral | (m= MINUS )? lit= FloatingPointLiteral | (m= MINUS )? var= numberVariable |e= numberExpressionInPar )
-            int alt181=4;
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1663:2: ( (m= MINUS )? lit= DecimalLiteral | (m= MINUS )? lit= FloatingPointLiteral | (m= MINUS )? var= numberVariable |e= numberExpressionInPar )
+            int alt176=4;
             switch ( input.LA(1) ) {
             case MINUS:
                 {
                 switch ( input.LA(2) ) {
                 case DecimalLiteral:
                     {
-                    alt181=1;
+                    alt176=1;
                     }
                     break;
                 case FloatingPointLiteral:
                     {
-                    alt181=2;
+                    alt176=2;
                     }
                     break;
                 case Identifier:
                     {
-                    alt181=3;
+                    alt176=3;
                     }
                     break;
                 default:
                     if (state.backtracking>0) {state.failed=true; return expr;}
                     NoViableAltException nvae =
-                        new NoViableAltException("", 181, 1, input);
+                        new NoViableAltException("", 176, 1, input);
 
                     throw nvae;
 
@@ -15245,49 +14903,49 @@ public class TextMarkerParser extends Parser {
                 break;
             case DecimalLiteral:
                 {
-                alt181=1;
+                alt176=1;
                 }
                 break;
             case FloatingPointLiteral:
                 {
-                alt181=2;
+                alt176=2;
                 }
                 break;
             case Identifier:
                 {
-                alt181=3;
+                alt176=3;
                 }
                 break;
             case LPAREN:
                 {
-                alt181=4;
+                alt176=4;
                 }
                 break;
             default:
                 if (state.backtracking>0) {state.failed=true; return expr;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 181, 0, input);
+                    new NoViableAltException("", 176, 0, input);
 
                 throw nvae;
 
             }
 
-            switch (alt181) {
+            switch (alt176) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1691:2: (m= MINUS )? lit= DecimalLiteral
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1664:2: (m= MINUS )? lit= DecimalLiteral
                     {
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1691:4: (m= MINUS )?
-                    int alt178=2;
-                    int LA178_0 = input.LA(1);
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1664:4: (m= MINUS )?
+                    int alt173=2;
+                    int LA173_0 = input.LA(1);
 
-                    if ( (LA178_0==MINUS) ) {
-                        alt178=1;
+                    if ( (LA173_0==MINUS) ) {
+                        alt173=1;
                     }
-                    switch (alt178) {
+                    switch (alt173) {
                         case 1 :
-                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1691:4: m= MINUS
+                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1664:4: m= MINUS
                             {
-                            m=(Token)match(input,MINUS,FOLLOW_MINUS_in_simpleNumberExpression10173); if (state.failed) return expr;
+                            m=(Token)match(input,MINUS,FOLLOW_MINUS_in_simpleNumberExpression9943); if (state.failed) return expr;
 
                             }
                             break;
@@ -15295,27 +14953,27 @@ public class TextMarkerParser extends Parser {
                     }
 
 
-                    lit=(Token)match(input,DecimalLiteral,FOLLOW_DecimalLiteral_in_simpleNumberExpression10180); if (state.failed) return expr;
+                    lit=(Token)match(input,DecimalLiteral,FOLLOW_DecimalLiteral_in_simpleNumberExpression9950); if (state.failed) return expr;
 
                     if ( state.backtracking==0 ) {expr = ExpressionFactory.createIntegerExpression(lit,m);}
 
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1693:4: (m= MINUS )? lit= FloatingPointLiteral
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1666:4: (m= MINUS )? lit= FloatingPointLiteral
                     {
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1693:6: (m= MINUS )?
-                    int alt179=2;
-                    int LA179_0 = input.LA(1);
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1666:6: (m= MINUS )?
+                    int alt174=2;
+                    int LA174_0 = input.LA(1);
 
-                    if ( (LA179_0==MINUS) ) {
-                        alt179=1;
+                    if ( (LA174_0==MINUS) ) {
+                        alt174=1;
                     }
-                    switch (alt179) {
+                    switch (alt174) {
                         case 1 :
-                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1693:6: m= MINUS
+                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1666:6: m= MINUS
                             {
-                            m=(Token)match(input,MINUS,FOLLOW_MINUS_in_simpleNumberExpression10194); if (state.failed) return expr;
+                            m=(Token)match(input,MINUS,FOLLOW_MINUS_in_simpleNumberExpression9964); if (state.failed) return expr;
 
                             }
                             break;
@@ -15323,27 +14981,27 @@ public class TextMarkerParser extends Parser {
                     }
 
 
-                    lit=(Token)match(input,FloatingPointLiteral,FOLLOW_FloatingPointLiteral_in_simpleNumberExpression10201); if (state.failed) return expr;
+                    lit=(Token)match(input,FloatingPointLiteral,FOLLOW_FloatingPointLiteral_in_simpleNumberExpression9971); if (state.failed) return expr;
 
                     if ( state.backtracking==0 ) {expr = ExpressionFactory.createDoubleExpression(lit,m);}
 
                     }
                     break;
                 case 3 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1694:4: (m= MINUS )? var= numberVariable
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1667:4: (m= MINUS )? var= numberVariable
                     {
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1694:6: (m= MINUS )?
-                    int alt180=2;
-                    int LA180_0 = input.LA(1);
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1667:6: (m= MINUS )?
+                    int alt175=2;
+                    int LA175_0 = input.LA(1);
 
-                    if ( (LA180_0==MINUS) ) {
-                        alt180=1;
+                    if ( (LA175_0==MINUS) ) {
+                        alt175=1;
                     }
-                    switch (alt180) {
+                    switch (alt175) {
                         case 1 :
-                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1694:6: m= MINUS
+                            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1667:6: m= MINUS
                             {
-                            m=(Token)match(input,MINUS,FOLLOW_MINUS_in_simpleNumberExpression10212); if (state.failed) return expr;
+                            m=(Token)match(input,MINUS,FOLLOW_MINUS_in_simpleNumberExpression9982); if (state.failed) return expr;
 
                             }
                             break;
@@ -15351,7 +15009,7 @@ public class TextMarkerParser extends Parser {
                     }
 
 
-                    pushFollow(FOLLOW_numberVariable_in_simpleNumberExpression10219);
+                    pushFollow(FOLLOW_numberVariable_in_simpleNumberExpression9989);
                     var=numberVariable();
 
                     state._fsp--;
@@ -15362,9 +15020,9 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 4 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1695:4: e= numberExpressionInPar
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1668:4: e= numberExpressionInPar
                     {
-                    pushFollow(FOLLOW_numberExpressionInPar_in_simpleNumberExpression10230);
+                    pushFollow(FOLLOW_numberExpressionInPar_in_simpleNumberExpression10000);
                     e=numberExpressionInPar();
 
                     state._fsp--;
@@ -15395,7 +15053,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "stringExpression"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1698:1: stringExpression returns [StringExpression expr = null] options {backtrack=true; } : (e= simpleStringExpression ( PLUS (e1= simpleStringExpression |e2= numberExpressionInPar |be= simpleBooleanExpression |te= typeExpression |le= listExpression ) )* | (e= stringFunction )=>e= stringFunction );
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1671:1: stringExpression returns [StringExpression expr = null] options {backtrack=true; } : (e= simpleStringExpression ( PLUS (e1= simpleStringExpression |e2= numberExpressionInPar |be= simpleBooleanExpression |te= typeExpression |le= listExpression ) )* | (e= stringFunction )=>e= stringFunction );
     public final StringExpression stringExpression() throws RecognitionException {
         StringExpression expr =  null;
 
@@ -15417,47 +15075,47 @@ public class TextMarkerParser extends Parser {
         List<StringExpression> exprs = new ArrayList<StringExpression>();
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1705:2: (e= simpleStringExpression ( PLUS (e1= simpleStringExpression |e2= numberExpressionInPar |be= simpleBooleanExpression |te= typeExpression |le= listExpression ) )* | (e= stringFunction )=>e= stringFunction )
-            int alt184=2;
-            int LA184_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1678:2: (e= simpleStringExpression ( PLUS (e1= simpleStringExpression |e2= numberExpressionInPar |be= simpleBooleanExpression |te= typeExpression |le= listExpression ) )* | (e= stringFunction )=>e= stringFunction )
+            int alt179=2;
+            int LA179_0 = input.LA(1);
 
-            if ( (LA184_0==StringLiteral) ) {
-                alt184=1;
+            if ( (LA179_0==StringLiteral) ) {
+                alt179=1;
             }
-            else if ( (LA184_0==Identifier) ) {
-                int LA184_2 = input.LA(2);
+            else if ( (LA179_0==Identifier) ) {
+                int LA179_2 = input.LA(2);
 
-                if ( (LA184_2==LPAREN) && (synpred36_TextMarkerParser())) {
-                    alt184=2;
+                if ( (LA179_2==LPAREN) && (synpred36_TextMarkerParser())) {
+                    alt179=2;
                 }
-                else if ( (LA184_2==EOF||LA184_2==ASSIGN_EQUAL||LA184_2==COMMA||LA184_2==PLUS||LA184_2==RPAREN||LA184_2==SEMI) ) {
-                    alt184=1;
+                else if ( (LA179_2==EOF||LA179_2==ASSIGN_EQUAL||LA179_2==COMMA||LA179_2==PLUS||LA179_2==RPAREN||LA179_2==SEMI) ) {
+                    alt179=1;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return expr;}
                     NoViableAltException nvae =
-                        new NoViableAltException("", 184, 2, input);
+                        new NoViableAltException("", 179, 2, input);
 
                     throw nvae;
 
                 }
             }
-            else if ( (LA184_0==REMOVESTRING) && (synpred36_TextMarkerParser())) {
-                alt184=2;
+            else if ( (LA179_0==REMOVESTRING) && (synpred36_TextMarkerParser())) {
+                alt179=2;
             }
             else {
                 if (state.backtracking>0) {state.failed=true; return expr;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 184, 0, input);
+                    new NoViableAltException("", 179, 0, input);
 
                 throw nvae;
 
             }
-            switch (alt184) {
+            switch (alt179) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1706:2: e= simpleStringExpression ( PLUS (e1= simpleStringExpression |e2= numberExpressionInPar |be= simpleBooleanExpression |te= typeExpression |le= listExpression ) )*
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1679:2: e= simpleStringExpression ( PLUS (e1= simpleStringExpression |e2= numberExpressionInPar |be= simpleBooleanExpression |te= typeExpression |le= listExpression ) )*
                     {
-                    pushFollow(FOLLOW_simpleStringExpression_in_stringExpression10270);
+                    pushFollow(FOLLOW_simpleStringExpression_in_stringExpression10040);
                     e=simpleStringExpression();
 
                     state._fsp--;
@@ -15465,51 +15123,51 @@ public class TextMarkerParser extends Parser {
 
                     if ( state.backtracking==0 ) {exprs.add(e);}
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1707:2: ( PLUS (e1= simpleStringExpression |e2= numberExpressionInPar |be= simpleBooleanExpression |te= typeExpression |le= listExpression ) )*
-                    loop183:
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1680:2: ( PLUS (e1= simpleStringExpression |e2= numberExpressionInPar |be= simpleBooleanExpression |te= typeExpression |le= listExpression ) )*
+                    loop178:
                     do {
-                        int alt183=2;
-                        int LA183_0 = input.LA(1);
+                        int alt178=2;
+                        int LA178_0 = input.LA(1);
 
-                        if ( (LA183_0==PLUS) ) {
-                            alt183=1;
+                        if ( (LA178_0==PLUS) ) {
+                            alt178=1;
                         }
 
 
-                        switch (alt183) {
+                        switch (alt178) {
                     	case 1 :
-                    	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1707:3: PLUS (e1= simpleStringExpression |e2= numberExpressionInPar |be= simpleBooleanExpression |te= typeExpression |le= listExpression )
+                    	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1680:3: PLUS (e1= simpleStringExpression |e2= numberExpressionInPar |be= simpleBooleanExpression |te= typeExpression |le= listExpression )
                     	    {
-                    	    match(input,PLUS,FOLLOW_PLUS_in_stringExpression10277); if (state.failed) return expr;
+                    	    match(input,PLUS,FOLLOW_PLUS_in_stringExpression10047); if (state.failed) return expr;
 
-                    	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1707:8: (e1= simpleStringExpression |e2= numberExpressionInPar |be= simpleBooleanExpression |te= typeExpression |le= listExpression )
-                    	    int alt182=5;
+                    	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1680:8: (e1= simpleStringExpression |e2= numberExpressionInPar |be= simpleBooleanExpression |te= typeExpression |le= listExpression )
+                    	    int alt177=5;
                     	    switch ( input.LA(1) ) {
                     	    case StringLiteral:
                     	        {
-                    	        alt182=1;
+                    	        alt177=1;
                     	        }
                     	        break;
                     	    case Identifier:
                     	        {
-                    	        int LA182_2 = input.LA(2);
+                    	        int LA177_2 = input.LA(2);
 
                     	        if ( ((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "STRING"))) ) {
-                    	            alt182=1;
+                    	            alt177=1;
                     	        }
                     	        else if ( ((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "BOOLEAN"))) ) {
-                    	            alt182=3;
+                    	            alt177=3;
                     	        }
                     	        else if ( (!((((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "TYPELIST"))||(isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "STRING"))||(isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "DOUBLELIST"))||(isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "FLOATLIST"))||(isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "STRINGLIST"))||(isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "BOOLEANLIST"))||(isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "INTLIST"))||(isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "BOOLEAN")))))) ) {
-                    	            alt182=4;
+                    	            alt177=4;
                     	        }
                     	        else if ( (((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "TYPELIST"))||(isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "DOUBLELIST"))||(isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "FLOATLIST"))||(isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "STRINGLIST"))||(isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "INTLIST"))||(isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "BOOLEANLIST")))) ) {
-                    	            alt182=5;
+                    	            alt177=5;
                     	        }
                     	        else {
                     	            if (state.backtracking>0) {state.failed=true; return expr;}
                     	            NoViableAltException nvae =
-                    	                new NoViableAltException("", 182, 2, input);
+                    	                new NoViableAltException("", 177, 2, input);
 
                     	            throw nvae;
 
@@ -15518,39 +15176,39 @@ public class TextMarkerParser extends Parser {
                     	        break;
                     	    case LPAREN:
                     	        {
-                    	        alt182=2;
+                    	        alt177=2;
                     	        }
                     	        break;
                     	    case FALSE:
                     	    case TRUE:
                     	        {
-                    	        alt182=3;
+                    	        alt177=3;
                     	        }
                     	        break;
                     	    case BasicAnnotationType:
                     	        {
-                    	        alt182=4;
+                    	        alt177=4;
                     	        }
                     	        break;
                     	    case LCURLY:
                     	        {
-                    	        alt182=5;
+                    	        alt177=5;
                     	        }
                     	        break;
                     	    default:
                     	        if (state.backtracking>0) {state.failed=true; return expr;}
                     	        NoViableAltException nvae =
-                    	            new NoViableAltException("", 182, 0, input);
+                    	            new NoViableAltException("", 177, 0, input);
 
                     	        throw nvae;
 
                     	    }
 
-                    	    switch (alt182) {
+                    	    switch (alt177) {
                     	        case 1 :
-                    	            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1707:9: e1= simpleStringExpression
+                    	            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1680:9: e1= simpleStringExpression
                     	            {
-                    	            pushFollow(FOLLOW_simpleStringExpression_in_stringExpression10284);
+                    	            pushFollow(FOLLOW_simpleStringExpression_in_stringExpression10054);
                     	            e1=simpleStringExpression();
 
                     	            state._fsp--;
@@ -15561,9 +15219,9 @@ public class TextMarkerParser extends Parser {
                     	            }
                     	            break;
                     	        case 2 :
-                    	            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1708:5: e2= numberExpressionInPar
+                    	            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1681:5: e2= numberExpressionInPar
                     	            {
-                    	            pushFollow(FOLLOW_numberExpressionInPar_in_stringExpression10297);
+                    	            pushFollow(FOLLOW_numberExpressionInPar_in_stringExpression10067);
                     	            e2=numberExpressionInPar();
 
                     	            state._fsp--;
@@ -15574,9 +15232,9 @@ public class TextMarkerParser extends Parser {
                     	            }
                     	            break;
                     	        case 3 :
-                    	            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1709:5: be= simpleBooleanExpression
+                    	            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1682:5: be= simpleBooleanExpression
                     	            {
-                    	            pushFollow(FOLLOW_simpleBooleanExpression_in_stringExpression10309);
+                    	            pushFollow(FOLLOW_simpleBooleanExpression_in_stringExpression10079);
                     	            be=simpleBooleanExpression();
 
                     	            state._fsp--;
@@ -15587,9 +15245,9 @@ public class TextMarkerParser extends Parser {
                     	            }
                     	            break;
                     	        case 4 :
-                    	            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1710:5: te= typeExpression
+                    	            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1683:5: te= typeExpression
                     	            {
-                    	            pushFollow(FOLLOW_typeExpression_in_stringExpression10321);
+                    	            pushFollow(FOLLOW_typeExpression_in_stringExpression10091);
                     	            te=typeExpression();
 
                     	            state._fsp--;
@@ -15600,9 +15258,9 @@ public class TextMarkerParser extends Parser {
                     	            }
                     	            break;
                     	        case 5 :
-                    	            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1711:5: le= listExpression
+                    	            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1684:5: le= listExpression
                     	            {
-                    	            pushFollow(FOLLOW_listExpression_in_stringExpression10333);
+                    	            pushFollow(FOLLOW_listExpression_in_stringExpression10103);
                     	            le=listExpression();
 
                     	            state._fsp--;
@@ -15620,7 +15278,7 @@ public class TextMarkerParser extends Parser {
                     	    break;
 
                     	default :
-                    	    break loop183;
+                    	    break loop178;
                         }
                     } while (true);
 
@@ -15630,9 +15288,9 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1714:3: (e= stringFunction )=>e= stringFunction
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1687:3: (e= stringFunction )=>e= stringFunction
                     {
-                    pushFollow(FOLLOW_stringFunction_in_stringExpression10361);
+                    pushFollow(FOLLOW_stringFunction_in_stringExpression10131);
                     e=stringFunction();
 
                     state._fsp--;
@@ -15663,7 +15321,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "stringFunction"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1718:1: stringFunction returns [StringExpression expr = null] : (name= REMOVESTRING LPAREN var= variable ( COMMA t= stringExpression )+ RPAREN | (e= externalStringFunction )=>e= externalStringFunction );
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1691:1: stringFunction returns [StringExpression expr = null] : (name= REMOVESTRING LPAREN var= variable ( COMMA t= stringExpression )+ RPAREN | (e= externalStringFunction )=>e= externalStringFunction );
     public final StringExpression stringFunction() throws RecognitionException {
         StringExpression expr =  null;
 
@@ -15678,57 +15336,57 @@ public class TextMarkerParser extends Parser {
 
         List<StringExpression> list = new ArrayList<StringExpression>();
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1720:2: (name= REMOVESTRING LPAREN var= variable ( COMMA t= stringExpression )+ RPAREN | (e= externalStringFunction )=>e= externalStringFunction )
-            int alt186=2;
-            int LA186_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1693:2: (name= REMOVESTRING LPAREN var= variable ( COMMA t= stringExpression )+ RPAREN | (e= externalStringFunction )=>e= externalStringFunction )
+            int alt181=2;
+            int LA181_0 = input.LA(1);
 
-            if ( (LA186_0==REMOVESTRING) ) {
-                alt186=1;
+            if ( (LA181_0==REMOVESTRING) ) {
+                alt181=1;
             }
-            else if ( (LA186_0==Identifier) && (synpred37_TextMarkerParser())) {
-                alt186=2;
+            else if ( (LA181_0==Identifier) && (synpred37_TextMarkerParser())) {
+                alt181=2;
             }
             else {
                 if (state.backtracking>0) {state.failed=true; return expr;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 186, 0, input);
+                    new NoViableAltException("", 181, 0, input);
 
                 throw nvae;
 
             }
-            switch (alt186) {
+            switch (alt181) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1721:2: name= REMOVESTRING LPAREN var= variable ( COMMA t= stringExpression )+ RPAREN
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1694:2: name= REMOVESTRING LPAREN var= variable ( COMMA t= stringExpression )+ RPAREN
                     {
-                    name=(Token)match(input,REMOVESTRING,FOLLOW_REMOVESTRING_in_stringFunction10388); if (state.failed) return expr;
+                    name=(Token)match(input,REMOVESTRING,FOLLOW_REMOVESTRING_in_stringFunction10158); if (state.failed) return expr;
 
-                    match(input,LPAREN,FOLLOW_LPAREN_in_stringFunction10390); if (state.failed) return expr;
+                    match(input,LPAREN,FOLLOW_LPAREN_in_stringFunction10160); if (state.failed) return expr;
 
-                    pushFollow(FOLLOW_variable_in_stringFunction10396);
+                    pushFollow(FOLLOW_variable_in_stringFunction10166);
                     var=variable();
 
                     state._fsp--;
                     if (state.failed) return expr;
 
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1721:44: ( COMMA t= stringExpression )+
-                    int cnt185=0;
-                    loop185:
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1694:44: ( COMMA t= stringExpression )+
+                    int cnt180=0;
+                    loop180:
                     do {
-                        int alt185=2;
-                        int LA185_0 = input.LA(1);
+                        int alt180=2;
+                        int LA180_0 = input.LA(1);
 
-                        if ( (LA185_0==COMMA) ) {
-                            alt185=1;
+                        if ( (LA180_0==COMMA) ) {
+                            alt180=1;
                         }
 
 
-                        switch (alt185) {
+                        switch (alt180) {
                     	case 1 :
-                    	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1721:45: COMMA t= stringExpression
+                    	    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1694:45: COMMA t= stringExpression
                     	    {
-                    	    match(input,COMMA,FOLLOW_COMMA_in_stringFunction10399); if (state.failed) return expr;
+                    	    match(input,COMMA,FOLLOW_COMMA_in_stringFunction10169); if (state.failed) return expr;
 
-                    	    pushFollow(FOLLOW_stringExpression_in_stringFunction10405);
+                    	    pushFollow(FOLLOW_stringExpression_in_stringFunction10175);
                     	    t=stringExpression();
 
                     	    state._fsp--;
@@ -15740,26 +15398,26 @@ public class TextMarkerParser extends Parser {
                     	    break;
 
                     	default :
-                    	    if ( cnt185 >= 1 ) break loop185;
+                    	    if ( cnt180 >= 1 ) break loop180;
                     	    if (state.backtracking>0) {state.failed=true; return expr;}
                                 EarlyExitException eee =
-                                    new EarlyExitException(185, input);
+                                    new EarlyExitException(180, input);
                                 throw eee;
                         }
-                        cnt185++;
+                        cnt180++;
                     } while (true);
 
 
-                    match(input,RPAREN,FOLLOW_RPAREN_in_stringFunction10411); if (state.failed) return expr;
+                    match(input,RPAREN,FOLLOW_RPAREN_in_stringFunction10181); if (state.failed) return expr;
 
                     if ( state.backtracking==0 ) {expr = StringFunctionFactory.createRemoveFunction(var,list);}
 
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1724:2: (e= externalStringFunction )=>e= externalStringFunction
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1697:2: (e= externalStringFunction )=>e= externalStringFunction
                     {
-                    pushFollow(FOLLOW_externalStringFunction_in_stringFunction10433);
+                    pushFollow(FOLLOW_externalStringFunction_in_stringFunction10203);
                     e=externalStringFunction();
 
                     state._fsp--;
@@ -15790,7 +15448,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "externalStringFunction"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1728:1: externalStringFunction returns [StringExpression expr = null] : id= Identifier LPAREN args= varArgumentList RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1701:1: externalStringFunction returns [StringExpression expr = null] : id= Identifier LPAREN args= varArgumentList RPAREN ;
     public final StringExpression externalStringFunction() throws RecognitionException {
         StringExpression expr =  null;
 
@@ -15800,20 +15458,20 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1729:2: (id= Identifier LPAREN args= varArgumentList RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1731:2: id= Identifier LPAREN args= varArgumentList RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1702:2: (id= Identifier LPAREN args= varArgumentList RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1704:2: id= Identifier LPAREN args= varArgumentList RPAREN
             {
-            id=(Token)match(input,Identifier,FOLLOW_Identifier_in_externalStringFunction10458); if (state.failed) return expr;
+            id=(Token)match(input,Identifier,FOLLOW_Identifier_in_externalStringFunction10228); if (state.failed) return expr;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_externalStringFunction10460); if (state.failed) return expr;
+            match(input,LPAREN,FOLLOW_LPAREN_in_externalStringFunction10230); if (state.failed) return expr;
 
-            pushFollow(FOLLOW_varArgumentList_in_externalStringFunction10467);
+            pushFollow(FOLLOW_varArgumentList_in_externalStringFunction10237);
             args=varArgumentList();
 
             state._fsp--;
             if (state.failed) return expr;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_externalStringFunction10469); if (state.failed) return expr;
+            match(input,RPAREN,FOLLOW_RPAREN_in_externalStringFunction10239); if (state.failed) return expr;
 
             if ( state.backtracking==0 ) {
             		expr = external.createExternalStringFunction(id, args);
@@ -15840,7 +15498,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "simpleStringExpression"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1738:1: simpleStringExpression returns [StringExpression expr = null] : (lit= StringLiteral |{...}?id= Identifier );
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1711:1: simpleStringExpression returns [StringExpression expr = null] : (lit= StringLiteral |{...}?id= Identifier );
     public final StringExpression simpleStringExpression() throws RecognitionException {
         StringExpression expr =  null;
 
@@ -15849,43 +15507,43 @@ public class TextMarkerParser extends Parser {
         Token id=null;
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1739:2: (lit= StringLiteral |{...}?id= Identifier )
-            int alt187=2;
-            int LA187_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1712:2: (lit= StringLiteral |{...}?id= Identifier )
+            int alt182=2;
+            int LA182_0 = input.LA(1);
 
-            if ( (LA187_0==StringLiteral) ) {
-                alt187=1;
+            if ( (LA182_0==StringLiteral) ) {
+                alt182=1;
             }
-            else if ( (LA187_0==Identifier) ) {
-                alt187=2;
+            else if ( (LA182_0==Identifier) ) {
+                alt182=2;
             }
             else {
                 if (state.backtracking>0) {state.failed=true; return expr;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 187, 0, input);
+                    new NoViableAltException("", 182, 0, input);
 
                 throw nvae;
 
             }
-            switch (alt187) {
+            switch (alt182) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1740:2: lit= StringLiteral
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1713:2: lit= StringLiteral
                     {
-                    lit=(Token)match(input,StringLiteral,FOLLOW_StringLiteral_in_simpleStringExpression10493); if (state.failed) return expr;
+                    lit=(Token)match(input,StringLiteral,FOLLOW_StringLiteral_in_simpleStringExpression10263); if (state.failed) return expr;
 
                     if ( state.backtracking==0 ) {expr = ExpressionFactory.createSimpleStringExpression(lit);}
 
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1741:4: {...}?id= Identifier
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1714:4: {...}?id= Identifier
                     {
                     if ( !((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "STRING"))) ) {
                         if (state.backtracking>0) {state.failed=true; return expr;}
                         throw new FailedPredicateException(input, "simpleStringExpression", "isVariableOfType($blockDeclaration::env,input.LT(1).getText(), \"STRING\")");
                     }
 
-                    id=(Token)match(input,Identifier,FOLLOW_Identifier_in_simpleStringExpression10507); if (state.failed) return expr;
+                    id=(Token)match(input,Identifier,FOLLOW_Identifier_in_simpleStringExpression10277); if (state.failed) return expr;
 
                     if ( state.backtracking==0 ) {expr = ExpressionFactory.createReferenceStringExpression(id);}
 
@@ -15912,7 +15570,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "booleanExpression"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1745:1: booleanExpression returns [BooleanExpression expr = null] : ( (e= composedBooleanExpression )=>e= composedBooleanExpression |sbE= simpleBooleanExpression );
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1718:1: booleanExpression returns [BooleanExpression expr = null] : ( (e= composedBooleanExpression )=>e= composedBooleanExpression |sbE= simpleBooleanExpression );
     public final BooleanExpression booleanExpression() throws RecognitionException {
         BooleanExpression expr =  null;
 
@@ -15923,92 +15581,92 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1746:2: ( (e= composedBooleanExpression )=>e= composedBooleanExpression |sbE= simpleBooleanExpression )
-            int alt188=2;
-            int LA188_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1719:2: ( (e= composedBooleanExpression )=>e= composedBooleanExpression |sbE= simpleBooleanExpression )
+            int alt183=2;
+            int LA183_0 = input.LA(1);
 
-            if ( (LA188_0==TRUE) ) {
-                int LA188_1 = input.LA(2);
+            if ( (LA183_0==TRUE) ) {
+                int LA183_1 = input.LA(2);
 
-                if ( (LA188_1==EQUAL||LA188_1==NOTEQUAL) && (synpred38_TextMarkerParser())) {
-                    alt188=1;
+                if ( (LA183_1==EQUAL||LA183_1==NOTEQUAL) && (synpred38_TextMarkerParser())) {
+                    alt183=1;
                 }
-                else if ( (LA188_1==EOF||LA188_1==COMMA||LA188_1==RPAREN||LA188_1==SEMI) ) {
-                    alt188=2;
+                else if ( (LA183_1==EOF||LA183_1==COMMA||LA183_1==RPAREN||LA183_1==SEMI) ) {
+                    alt183=2;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return expr;}
                     NoViableAltException nvae =
-                        new NoViableAltException("", 188, 1, input);
+                        new NoViableAltException("", 183, 1, input);
 
                     throw nvae;
 
                 }
             }
-            else if ( (LA188_0==FALSE) ) {
-                int LA188_2 = input.LA(2);
+            else if ( (LA183_0==FALSE) ) {
+                int LA183_2 = input.LA(2);
 
-                if ( (LA188_2==EQUAL||LA188_2==NOTEQUAL) && (synpred38_TextMarkerParser())) {
-                    alt188=1;
+                if ( (LA183_2==EQUAL||LA183_2==NOTEQUAL) && (synpred38_TextMarkerParser())) {
+                    alt183=1;
                 }
-                else if ( (LA188_2==EOF||LA188_2==COMMA||LA188_2==RPAREN||LA188_2==SEMI) ) {
-                    alt188=2;
+                else if ( (LA183_2==EOF||LA183_2==COMMA||LA183_2==RPAREN||LA183_2==SEMI) ) {
+                    alt183=2;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return expr;}
                     NoViableAltException nvae =
-                        new NoViableAltException("", 188, 2, input);
+                        new NoViableAltException("", 183, 2, input);
 
                     throw nvae;
 
                 }
             }
-            else if ( (LA188_0==Identifier) ) {
-                int LA188_3 = input.LA(2);
+            else if ( (LA183_0==Identifier) ) {
+                int LA183_3 = input.LA(2);
 
-                if ( (LA188_3==LPAREN) && (synpred38_TextMarkerParser())) {
-                    alt188=1;
+                if ( (LA183_3==LPAREN) && (synpred38_TextMarkerParser())) {
+                    alt183=1;
                 }
-                else if ( (LA188_3==EQUAL||LA188_3==NOTEQUAL) && (synpred38_TextMarkerParser())) {
-                    alt188=1;
+                else if ( (LA183_3==EQUAL||LA183_3==NOTEQUAL) && (synpred38_TextMarkerParser())) {
+                    alt183=1;
                 }
-                else if ( (LA188_3==DOT) && (synpred38_TextMarkerParser())) {
-                    alt188=1;
+                else if ( (LA183_3==DOT) && (synpred38_TextMarkerParser())) {
+                    alt183=1;
                 }
-                else if ( (LA188_3==EOF||LA188_3==COMMA||LA188_3==RPAREN||LA188_3==SEMI) ) {
-                    alt188=2;
+                else if ( (LA183_3==EOF||LA183_3==COMMA||LA183_3==RPAREN||LA183_3==SEMI) ) {
+                    alt183=2;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return expr;}
                     NoViableAltException nvae =
-                        new NoViableAltException("", 188, 3, input);
+                        new NoViableAltException("", 183, 3, input);
 
                     throw nvae;
 
                 }
             }
-            else if ( (LA188_0==BasicAnnotationType) && (synpred38_TextMarkerParser())) {
-                alt188=1;
+            else if ( (LA183_0==BasicAnnotationType) && (synpred38_TextMarkerParser())) {
+                alt183=1;
             }
-            else if ( (LA188_0==LPAREN) && (synpred38_TextMarkerParser())) {
-                alt188=1;
+            else if ( (LA183_0==LPAREN) && (synpred38_TextMarkerParser())) {
+                alt183=1;
             }
-            else if ( (LA188_0==XOR) && (synpred38_TextMarkerParser())) {
-                alt188=1;
+            else if ( (LA183_0==XOR) && (synpred38_TextMarkerParser())) {
+                alt183=1;
             }
             else {
                 if (state.backtracking>0) {state.failed=true; return expr;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 188, 0, input);
+                    new NoViableAltException("", 183, 0, input);
 
                 throw nvae;
 
             }
-            switch (alt188) {
+            switch (alt183) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1747:2: (e= composedBooleanExpression )=>e= composedBooleanExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1720:2: (e= composedBooleanExpression )=>e= composedBooleanExpression
                     {
-                    pushFollow(FOLLOW_composedBooleanExpression_in_booleanExpression10540);
+                    pushFollow(FOLLOW_composedBooleanExpression_in_booleanExpression10310);
                     e=composedBooleanExpression();
 
                     state._fsp--;
@@ -16019,9 +15677,9 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1748:3: sbE= simpleBooleanExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1721:3: sbE= simpleBooleanExpression
                     {
-                    pushFollow(FOLLOW_simpleBooleanExpression_in_booleanExpression10551);
+                    pushFollow(FOLLOW_simpleBooleanExpression_in_booleanExpression10321);
                     sbE=simpleBooleanExpression();
 
                     state._fsp--;
@@ -16052,7 +15710,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "simpleBooleanExpression"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1751:1: simpleBooleanExpression returns [BooleanExpression expr = null] : (e= literalBooleanExpression |{...}?id= Identifier );
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1724:1: simpleBooleanExpression returns [BooleanExpression expr = null] : (e= literalBooleanExpression |{...}?id= Identifier );
     public final BooleanExpression simpleBooleanExpression() throws RecognitionException {
         BooleanExpression expr =  null;
 
@@ -16062,29 +15720,29 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1752:2: (e= literalBooleanExpression |{...}?id= Identifier )
-            int alt189=2;
-            int LA189_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1725:2: (e= literalBooleanExpression |{...}?id= Identifier )
+            int alt184=2;
+            int LA184_0 = input.LA(1);
 
-            if ( (LA189_0==FALSE||LA189_0==TRUE) ) {
-                alt189=1;
+            if ( (LA184_0==FALSE||LA184_0==TRUE) ) {
+                alt184=1;
             }
-            else if ( (LA189_0==Identifier) ) {
-                alt189=2;
+            else if ( (LA184_0==Identifier) ) {
+                alt184=2;
             }
             else {
                 if (state.backtracking>0) {state.failed=true; return expr;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 189, 0, input);
+                    new NoViableAltException("", 184, 0, input);
 
                 throw nvae;
 
             }
-            switch (alt189) {
+            switch (alt184) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1753:3: e= literalBooleanExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1726:3: e= literalBooleanExpression
                     {
-                    pushFollow(FOLLOW_literalBooleanExpression_in_simpleBooleanExpression10574);
+                    pushFollow(FOLLOW_literalBooleanExpression_in_simpleBooleanExpression10344);
                     e=literalBooleanExpression();
 
                     state._fsp--;
@@ -16095,14 +15753,14 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1754:4: {...}?id= Identifier
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1727:4: {...}?id= Identifier
                     {
                     if ( !((isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "BOOLEAN"))) ) {
                         if (state.backtracking>0) {state.failed=true; return expr;}
                         throw new FailedPredicateException(input, "simpleBooleanExpression", "isVariableOfType($blockDeclaration::env,input.LT(1).getText(), \"BOOLEAN\")");
                     }
 
-                    id=(Token)match(input,Identifier,FOLLOW_Identifier_in_simpleBooleanExpression10589); if (state.failed) return expr;
+                    id=(Token)match(input,Identifier,FOLLOW_Identifier_in_simpleBooleanExpression10359); if (state.failed) return expr;
 
                     if ( state.backtracking==0 ) {expr = ExpressionFactory.createReferenceBooleanExpression(id);}
 
@@ -16129,7 +15787,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "composedBooleanExpression"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1759:1: composedBooleanExpression returns [BooleanExpression expr = null] : ( (e2= booleanCompare )=>e2= booleanCompare | (bte= booleanTypeExpression )=>bte= booleanTypeExpression | (bne= booleanNumberExpression )=>bne= booleanNumberExpression |e1= booleanFunction );
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1732:1: composedBooleanExpression returns [BooleanExpression expr = null] : ( (e2= booleanCompare )=>e2= booleanCompare | (bte= booleanTypeExpression )=>bte= booleanTypeExpression | (bne= booleanNumberExpression )=>bne= booleanNumberExpression |e1= booleanFunction );
     public final BooleanExpression composedBooleanExpression() throws RecognitionException {
         BooleanExpression expr =  null;
 
@@ -16144,59 +15802,59 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1761:2: ( (e2= booleanCompare )=>e2= booleanCompare | (bte= booleanTypeExpression )=>bte= booleanTypeExpression | (bne= booleanNumberExpression )=>bne= booleanNumberExpression |e1= booleanFunction )
-            int alt190=4;
-            int LA190_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1734:2: ( (e2= booleanCompare )=>e2= booleanCompare | (bte= booleanTypeExpression )=>bte= booleanTypeExpression | (bne= booleanNumberExpression )=>bne= booleanNumberExpression |e1= booleanFunction )
+            int alt185=4;
+            int LA185_0 = input.LA(1);
 
-            if ( (LA190_0==TRUE) && (synpred39_TextMarkerParser())) {
-                alt190=1;
+            if ( (LA185_0==TRUE) && (synpred39_TextMarkerParser())) {
+                alt185=1;
             }
-            else if ( (LA190_0==FALSE) && (synpred39_TextMarkerParser())) {
-                alt190=1;
+            else if ( (LA185_0==FALSE) && (synpred39_TextMarkerParser())) {
+                alt185=1;
             }
-            else if ( (LA190_0==Identifier) ) {
-                int LA190_3 = input.LA(2);
+            else if ( (LA185_0==Identifier) ) {
+                int LA185_3 = input.LA(2);
 
                 if ( (((synpred39_TextMarkerParser()&&synpred39_TextMarkerParser())&&(isVariableOfType(((blockDeclaration_scope)blockDeclaration_stack.peek()).env,input.LT(1).getText(), "BOOLEAN")))) ) {
-                    alt190=1;
+                    alt185=1;
                 }
                 else if ( (synpred40_TextMarkerParser()) ) {
-                    alt190=2;
+                    alt185=2;
                 }
                 else if ( (true) ) {
-                    alt190=4;
+                    alt185=4;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return expr;}
                     NoViableAltException nvae =
-                        new NoViableAltException("", 190, 3, input);
+                        new NoViableAltException("", 185, 3, input);
 
                     throw nvae;
 
                 }
             }
-            else if ( (LA190_0==BasicAnnotationType) && (synpred40_TextMarkerParser())) {
-                alt190=2;
+            else if ( (LA185_0==BasicAnnotationType) && (synpred40_TextMarkerParser())) {
+                alt185=2;
             }
-            else if ( (LA190_0==LPAREN) && (synpred41_TextMarkerParser())) {
-                alt190=3;
+            else if ( (LA185_0==LPAREN) && (synpred41_TextMarkerParser())) {
+                alt185=3;
             }
-            else if ( (LA190_0==XOR) ) {
-                alt190=4;
+            else if ( (LA185_0==XOR) ) {
+                alt185=4;
             }
             else {
                 if (state.backtracking>0) {state.failed=true; return expr;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 190, 0, input);
+                    new NoViableAltException("", 185, 0, input);
 
                 throw nvae;
 
             }
-            switch (alt190) {
+            switch (alt185) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1762:2: (e2= booleanCompare )=>e2= booleanCompare
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1735:2: (e2= booleanCompare )=>e2= booleanCompare
                     {
-                    pushFollow(FOLLOW_booleanCompare_in_composedBooleanExpression10623);
+                    pushFollow(FOLLOW_booleanCompare_in_composedBooleanExpression10393);
                     e2=booleanCompare();
 
                     state._fsp--;
@@ -16207,9 +15865,9 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1763:4: (bte= booleanTypeExpression )=>bte= booleanTypeExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1736:4: (bte= booleanTypeExpression )=>bte= booleanTypeExpression
                     {
-                    pushFollow(FOLLOW_booleanTypeExpression_in_composedBooleanExpression10643);
+                    pushFollow(FOLLOW_booleanTypeExpression_in_composedBooleanExpression10413);
                     bte=booleanTypeExpression();
 
                     state._fsp--;
@@ -16220,9 +15878,9 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1764:4: (bne= booleanNumberExpression )=>bne= booleanNumberExpression
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1737:4: (bne= booleanNumberExpression )=>bne= booleanNumberExpression
                     {
-                    pushFollow(FOLLOW_booleanNumberExpression_in_composedBooleanExpression10662);
+                    pushFollow(FOLLOW_booleanNumberExpression_in_composedBooleanExpression10432);
                     bne=booleanNumberExpression();
 
                     state._fsp--;
@@ -16233,9 +15891,9 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 4 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1765:4: e1= booleanFunction
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1738:4: e1= booleanFunction
                     {
-                    pushFollow(FOLLOW_booleanFunction_in_composedBooleanExpression10672);
+                    pushFollow(FOLLOW_booleanFunction_in_composedBooleanExpression10442);
                     e1=booleanFunction();
 
                     state._fsp--;
@@ -16266,7 +15924,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "booleanFunction"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1769:1: booleanFunction returns [BooleanExpression expr = null] : ( (op= XOR LPAREN e1= booleanExpression COMMA e2= booleanExpression RPAREN ) | (e= externalBooleanFunction )=>e= externalBooleanFunction );
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1742:1: booleanFunction returns [BooleanExpression expr = null] : ( (op= XOR LPAREN e1= booleanExpression COMMA e2= booleanExpression RPAREN ) | (e= externalBooleanFunction )=>e= externalBooleanFunction );
     public final BooleanExpression booleanFunction() throws RecognitionException {
         BooleanExpression expr =  null;
 
@@ -16280,50 +15938,50 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1771:2: ( (op= XOR LPAREN e1= booleanExpression COMMA e2= booleanExpression RPAREN ) | (e= externalBooleanFunction )=>e= externalBooleanFunction )
-            int alt191=2;
-            int LA191_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1744:2: ( (op= XOR LPAREN e1= booleanExpression COMMA e2= booleanExpression RPAREN ) | (e= externalBooleanFunction )=>e= externalBooleanFunction )
+            int alt186=2;
+            int LA186_0 = input.LA(1);
 
-            if ( (LA191_0==XOR) ) {
-                alt191=1;
+            if ( (LA186_0==XOR) ) {
+                alt186=1;
             }
-            else if ( (LA191_0==Identifier) && (synpred42_TextMarkerParser())) {
-                alt191=2;
+            else if ( (LA186_0==Identifier) && (synpred42_TextMarkerParser())) {
+                alt186=2;
             }
             else {
                 if (state.backtracking>0) {state.failed=true; return expr;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 191, 0, input);
+                    new NoViableAltException("", 186, 0, input);
 
                 throw nvae;
 
             }
-            switch (alt191) {
+            switch (alt186) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1772:2: (op= XOR LPAREN e1= booleanExpression COMMA e2= booleanExpression RPAREN )
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1745:2: (op= XOR LPAREN e1= booleanExpression COMMA e2= booleanExpression RPAREN )
                     {
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1772:2: (op= XOR LPAREN e1= booleanExpression COMMA e2= booleanExpression RPAREN )
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1772:3: op= XOR LPAREN e1= booleanExpression COMMA e2= booleanExpression RPAREN
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1745:2: (op= XOR LPAREN e1= booleanExpression COMMA e2= booleanExpression RPAREN )
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1745:3: op= XOR LPAREN e1= booleanExpression COMMA e2= booleanExpression RPAREN
                     {
-                    op=(Token)match(input,XOR,FOLLOW_XOR_in_booleanFunction10697); if (state.failed) return expr;
+                    op=(Token)match(input,XOR,FOLLOW_XOR_in_booleanFunction10467); if (state.failed) return expr;
 
-                    match(input,LPAREN,FOLLOW_LPAREN_in_booleanFunction10699); if (state.failed) return expr;
+                    match(input,LPAREN,FOLLOW_LPAREN_in_booleanFunction10469); if (state.failed) return expr;
 
-                    pushFollow(FOLLOW_booleanExpression_in_booleanFunction10705);
+                    pushFollow(FOLLOW_booleanExpression_in_booleanFunction10475);
                     e1=booleanExpression();
 
                     state._fsp--;
                     if (state.failed) return expr;
 
-                    match(input,COMMA,FOLLOW_COMMA_in_booleanFunction10707); if (state.failed) return expr;
+                    match(input,COMMA,FOLLOW_COMMA_in_booleanFunction10477); if (state.failed) return expr;
 
-                    pushFollow(FOLLOW_booleanExpression_in_booleanFunction10713);
+                    pushFollow(FOLLOW_booleanExpression_in_booleanFunction10483);
                     e2=booleanExpression();
 
                     state._fsp--;
                     if (state.failed) return expr;
 
-                    match(input,RPAREN,FOLLOW_RPAREN_in_booleanFunction10715); if (state.failed) return expr;
+                    match(input,RPAREN,FOLLOW_RPAREN_in_booleanFunction10485); if (state.failed) return expr;
 
                     }
 
@@ -16333,9 +15991,9 @@ public class TextMarkerParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1774:4: (e= externalBooleanFunction )=>e= externalBooleanFunction
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1747:4: (e= externalBooleanFunction )=>e= externalBooleanFunction
                     {
-                    pushFollow(FOLLOW_externalBooleanFunction_in_booleanFunction10737);
+                    pushFollow(FOLLOW_externalBooleanFunction_in_booleanFunction10507);
                     e=externalBooleanFunction();
 
                     state._fsp--;
@@ -16366,7 +16024,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "externalBooleanFunction"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1778:1: externalBooleanFunction returns [BooleanExpression expr = null] : id= Identifier LPAREN args= varArgumentList RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1751:1: externalBooleanFunction returns [BooleanExpression expr = null] : id= Identifier LPAREN args= varArgumentList RPAREN ;
     public final BooleanExpression externalBooleanFunction() throws RecognitionException {
         BooleanExpression expr =  null;
 
@@ -16376,20 +16034,20 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1779:2: (id= Identifier LPAREN args= varArgumentList RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1781:2: id= Identifier LPAREN args= varArgumentList RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1752:2: (id= Identifier LPAREN args= varArgumentList RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1754:2: id= Identifier LPAREN args= varArgumentList RPAREN
             {
-            id=(Token)match(input,Identifier,FOLLOW_Identifier_in_externalBooleanFunction10762); if (state.failed) return expr;
+            id=(Token)match(input,Identifier,FOLLOW_Identifier_in_externalBooleanFunction10532); if (state.failed) return expr;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_externalBooleanFunction10764); if (state.failed) return expr;
+            match(input,LPAREN,FOLLOW_LPAREN_in_externalBooleanFunction10534); if (state.failed) return expr;
 
-            pushFollow(FOLLOW_varArgumentList_in_externalBooleanFunction10771);
+            pushFollow(FOLLOW_varArgumentList_in_externalBooleanFunction10541);
             args=varArgumentList();
 
             state._fsp--;
             if (state.failed) return expr;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_externalBooleanFunction10773); if (state.failed) return expr;
+            match(input,RPAREN,FOLLOW_RPAREN_in_externalBooleanFunction10543); if (state.failed) return expr;
 
             if ( state.backtracking==0 ) {
             		expr = external.createExternalBooleanFunction(id, args);
@@ -16416,7 +16074,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "booleanCompare"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1789:1: booleanCompare returns [BooleanExpression expr = null] : (e1= simpleBooleanExpression op= ( EQUAL | NOTEQUAL ) e2= booleanExpression ) ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1762:1: booleanCompare returns [BooleanExpression expr = null] : (e1= simpleBooleanExpression op= ( EQUAL | NOTEQUAL ) e2= booleanExpression ) ;
     public final BooleanExpression booleanCompare() throws RecognitionException {
         BooleanExpression expr =  null;
 
@@ -16428,13 +16086,13 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1790:2: ( (e1= simpleBooleanExpression op= ( EQUAL | NOTEQUAL ) e2= booleanExpression ) )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1791:2: (e1= simpleBooleanExpression op= ( EQUAL | NOTEQUAL ) e2= booleanExpression )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1763:2: ( (e1= simpleBooleanExpression op= ( EQUAL | NOTEQUAL ) e2= booleanExpression ) )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1764:2: (e1= simpleBooleanExpression op= ( EQUAL | NOTEQUAL ) e2= booleanExpression )
             {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1791:2: (e1= simpleBooleanExpression op= ( EQUAL | NOTEQUAL ) e2= booleanExpression )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1791:3: e1= simpleBooleanExpression op= ( EQUAL | NOTEQUAL ) e2= booleanExpression
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1764:2: (e1= simpleBooleanExpression op= ( EQUAL | NOTEQUAL ) e2= booleanExpression )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1764:3: e1= simpleBooleanExpression op= ( EQUAL | NOTEQUAL ) e2= booleanExpression
             {
-            pushFollow(FOLLOW_simpleBooleanExpression_in_booleanCompare10798);
+            pushFollow(FOLLOW_simpleBooleanExpression_in_booleanCompare10568);
             e1=simpleBooleanExpression();
 
             state._fsp--;
@@ -16454,7 +16112,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            pushFollow(FOLLOW_booleanExpression_in_booleanCompare10816);
+            pushFollow(FOLLOW_booleanExpression_in_booleanCompare10586);
             e2=booleanExpression();
 
             state._fsp--;
@@ -16486,7 +16144,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "literalBooleanExpression"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1796:1: literalBooleanExpression returns [BooleanExpression expr = null] : (v= TRUE |v= FALSE );
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1769:1: literalBooleanExpression returns [BooleanExpression expr = null] : (v= TRUE |v= FALSE );
     public final BooleanExpression literalBooleanExpression() throws RecognitionException {
         BooleanExpression expr =  null;
 
@@ -16494,38 +16152,38 @@ public class TextMarkerParser extends Parser {
         Token v=null;
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1797:2: (v= TRUE |v= FALSE )
-            int alt192=2;
-            int LA192_0 = input.LA(1);
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1770:2: (v= TRUE |v= FALSE )
+            int alt187=2;
+            int LA187_0 = input.LA(1);
 
-            if ( (LA192_0==TRUE) ) {
-                alt192=1;
+            if ( (LA187_0==TRUE) ) {
+                alt187=1;
             }
-            else if ( (LA192_0==FALSE) ) {
-                alt192=2;
+            else if ( (LA187_0==FALSE) ) {
+                alt187=2;
             }
             else {
                 if (state.backtracking>0) {state.failed=true; return expr;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 192, 0, input);
+                    new NoViableAltException("", 187, 0, input);
 
                 throw nvae;
 
             }
-            switch (alt192) {
+            switch (alt187) {
                 case 1 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1798:2: v= TRUE
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1771:2: v= TRUE
                     {
-                    v=(Token)match(input,TRUE,FOLLOW_TRUE_in_literalBooleanExpression10842); if (state.failed) return expr;
+                    v=(Token)match(input,TRUE,FOLLOW_TRUE_in_literalBooleanExpression10612); if (state.failed) return expr;
 
                     if ( state.backtracking==0 ) {expr = ExpressionFactory.createSimpleBooleanExpression(v);}
 
                     }
                     break;
                 case 2 :
-                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1799:4: v= FALSE
+                    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1772:4: v= FALSE
                     {
-                    v=(Token)match(input,FALSE,FOLLOW_FALSE_in_literalBooleanExpression10854); if (state.failed) return expr;
+                    v=(Token)match(input,FALSE,FOLLOW_FALSE_in_literalBooleanExpression10624); if (state.failed) return expr;
 
                     if ( state.backtracking==0 ) {expr = ExpressionFactory.createSimpleBooleanExpression(v);}
 
@@ -16552,7 +16210,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "booleanTypeExpression"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1804:1: booleanTypeExpression returns [BooleanExpression expr = null] : e1= typeExpression op= ( EQUAL | NOTEQUAL ) e2= typeExpression ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1777:1: booleanTypeExpression returns [BooleanExpression expr = null] : e1= typeExpression op= ( EQUAL | NOTEQUAL ) e2= typeExpression ;
     public final BooleanExpression booleanTypeExpression() throws RecognitionException {
         BooleanExpression expr =  null;
 
@@ -16564,10 +16222,10 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1805:2: (e1= typeExpression op= ( EQUAL | NOTEQUAL ) e2= typeExpression )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1806:2: e1= typeExpression op= ( EQUAL | NOTEQUAL ) e2= typeExpression
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1778:2: (e1= typeExpression op= ( EQUAL | NOTEQUAL ) e2= typeExpression )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1779:2: e1= typeExpression op= ( EQUAL | NOTEQUAL ) e2= typeExpression
             {
-            pushFollow(FOLLOW_typeExpression_in_booleanTypeExpression10880);
+            pushFollow(FOLLOW_typeExpression_in_booleanTypeExpression10650);
             e1=typeExpression();
 
             state._fsp--;
@@ -16587,7 +16245,7 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            pushFollow(FOLLOW_typeExpression_in_booleanTypeExpression10900);
+            pushFollow(FOLLOW_typeExpression_in_booleanTypeExpression10670);
             e2=typeExpression();
 
             state._fsp--;
@@ -16616,7 +16274,7 @@ public class TextMarkerParser extends Parser {
 
 
     // $ANTLR start "booleanNumberExpression"
-    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1812:1: booleanNumberExpression returns [BooleanExpression expr = null] : LPAREN e1= numberExpression op= ( LESS | GREATER | GREATEREQUAL | LESSEQUAL | EQUAL | NOTEQUAL ) e2= numberExpression RPAREN ;
+    // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1785:1: booleanNumberExpression returns [BooleanExpression expr = null] : LPAREN e1= numberExpression op= ( LESS | GREATER | GREATEREQUAL | LESSEQUAL | EQUAL | NOTEQUAL ) e2= numberExpression RPAREN ;
     public final BooleanExpression booleanNumberExpression() throws RecognitionException {
         BooleanExpression expr =  null;
 
@@ -16628,12 +16286,12 @@ public class TextMarkerParser extends Parser {
 
 
         try {
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1813:2: ( LPAREN e1= numberExpression op= ( LESS | GREATER | GREATEREQUAL | LESSEQUAL | EQUAL | NOTEQUAL ) e2= numberExpression RPAREN )
-            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1814:2: LPAREN e1= numberExpression op= ( LESS | GREATER | GREATEREQUAL | LESSEQUAL | EQUAL | NOTEQUAL ) e2= numberExpression RPAREN
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1786:2: ( LPAREN e1= numberExpression op= ( LESS | GREATER | GREATEREQUAL | LESSEQUAL | EQUAL | NOTEQUAL ) e2= numberExpression RPAREN )
+            // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1787:2: LPAREN e1= numberExpression op= ( LESS | GREATER | GREATEREQUAL | LESSEQUAL | EQUAL | NOTEQUAL ) e2= numberExpression RPAREN
             {
-            match(input,LPAREN,FOLLOW_LPAREN_in_booleanNumberExpression10922); if (state.failed) return expr;
+            match(input,LPAREN,FOLLOW_LPAREN_in_booleanNumberExpression10692); if (state.failed) return expr;
 
-            pushFollow(FOLLOW_numberExpression_in_booleanNumberExpression10929);
+            pushFollow(FOLLOW_numberExpression_in_booleanNumberExpression10699);
             e1=numberExpression();
 
             state._fsp--;
@@ -16653,13 +16311,13 @@ public class TextMarkerParser extends Parser {
             }
 
 
-            pushFollow(FOLLOW_numberExpression_in_booleanNumberExpression10965);
+            pushFollow(FOLLOW_numberExpression_in_booleanNumberExpression10735);
             e2=numberExpression();
 
             state._fsp--;
             if (state.failed) return expr;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_booleanNumberExpression10968); if (state.failed) return expr;
+            match(input,RPAREN,FOLLOW_RPAREN_in_booleanNumberExpression10738); if (state.failed) return expr;
 
             if ( state.backtracking==0 ) {expr = ExpressionFactory.createBooleanNumberExpression(e1,op,e2);}
 
@@ -16871,10 +16529,10 @@ public class TextMarkerParser extends Parser {
         AbstractTextMarkerCondition c =null;
 
 
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:876:4: (c= externalCondition )
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:876:5: c= externalCondition
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:875:4: (c= externalCondition )
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:875:5: c= externalCondition
         {
-        pushFollow(FOLLOW_externalCondition_in_synpred17_TextMarkerParser3749);
+        pushFollow(FOLLOW_externalCondition_in_synpred17_TextMarkerParser3740);
         c=externalCondition();
 
         state._fsp--;
@@ -16898,60 +16556,60 @@ public class TextMarkerParser extends Parser {
         Token var =null;
 
 
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:927:5: ( COUNT LPAREN type= listExpression COMMA a= argument ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN )
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:927:5: COUNT LPAREN type= listExpression COMMA a= argument ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:926:5: ( COUNT LPAREN type= listExpression COMMA a= argument ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN )
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:926:5: COUNT LPAREN type= listExpression COMMA a= argument ( COMMA min= numberExpression COMMA max= numberExpression )? ( COMMA var= numberVariable )? RPAREN
         {
-        match(input,COUNT,FOLLOW_COUNT_in_synpred18_TextMarkerParser4111); if (state.failed) return ;
+        match(input,COUNT,FOLLOW_COUNT_in_synpred18_TextMarkerParser4102); if (state.failed) return ;
 
-        match(input,LPAREN,FOLLOW_LPAREN_in_synpred18_TextMarkerParser4113); if (state.failed) return ;
+        match(input,LPAREN,FOLLOW_LPAREN_in_synpred18_TextMarkerParser4104); if (state.failed) return ;
 
-        pushFollow(FOLLOW_listExpression_in_synpred18_TextMarkerParser4119);
+        pushFollow(FOLLOW_listExpression_in_synpred18_TextMarkerParser4110);
         type=listExpression();
 
         state._fsp--;
         if (state.failed) return ;
 
-        match(input,COMMA,FOLLOW_COMMA_in_synpred18_TextMarkerParser4121); if (state.failed) return ;
+        match(input,COMMA,FOLLOW_COMMA_in_synpred18_TextMarkerParser4112); if (state.failed) return ;
 
-        pushFollow(FOLLOW_argument_in_synpred18_TextMarkerParser4127);
+        pushFollow(FOLLOW_argument_in_synpred18_TextMarkerParser4118);
         a=argument();
 
         state._fsp--;
         if (state.failed) return ;
 
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:927:59: ( COMMA min= numberExpression COMMA max= numberExpression )?
-        int alt193=2;
-        int LA193_0 = input.LA(1);
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:926:59: ( COMMA min= numberExpression COMMA max= numberExpression )?
+        int alt188=2;
+        int LA188_0 = input.LA(1);
 
-        if ( (LA193_0==COMMA) ) {
-            int LA193_1 = input.LA(2);
+        if ( (LA188_0==COMMA) ) {
+            int LA188_1 = input.LA(2);
 
-            if ( (LA193_1==COS||LA193_1==DecimalLiteral||LA193_1==EXP||LA193_1==FloatingPointLiteral||(LA193_1 >= LOGN && LA193_1 <= LPAREN)||LA193_1==MINUS||LA193_1==SIN||LA193_1==TAN) ) {
-                alt193=1;
+            if ( (LA188_1==COS||LA188_1==DecimalLiteral||LA188_1==EXP||LA188_1==FloatingPointLiteral||(LA188_1 >= LOGN && LA188_1 <= LPAREN)||LA188_1==MINUS||LA188_1==SIN||LA188_1==TAN) ) {
+                alt188=1;
             }
-            else if ( (LA193_1==Identifier) ) {
-                int LA193_4 = input.LA(3);
+            else if ( (LA188_1==Identifier) ) {
+                int LA188_4 = input.LA(3);
 
-                if ( (LA193_4==COMMA||LA193_4==LPAREN||LA193_4==MINUS||(LA193_4 >= PERCENT && LA193_4 <= PLUS)||(LA193_4 >= SLASH && LA193_4 <= STAR)) ) {
-                    alt193=1;
+                if ( (LA188_4==COMMA||LA188_4==LPAREN||LA188_4==MINUS||(LA188_4 >= PERCENT && LA188_4 <= PLUS)||(LA188_4 >= SLASH && LA188_4 <= STAR)) ) {
+                    alt188=1;
                 }
             }
         }
-        switch (alt193) {
+        switch (alt188) {
             case 1 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:927:60: COMMA min= numberExpression COMMA max= numberExpression
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:926:60: COMMA min= numberExpression COMMA max= numberExpression
                 {
-                match(input,COMMA,FOLLOW_COMMA_in_synpred18_TextMarkerParser4130); if (state.failed) return ;
+                match(input,COMMA,FOLLOW_COMMA_in_synpred18_TextMarkerParser4121); if (state.failed) return ;
 
-                pushFollow(FOLLOW_numberExpression_in_synpred18_TextMarkerParser4136);
+                pushFollow(FOLLOW_numberExpression_in_synpred18_TextMarkerParser4127);
                 min=numberExpression();
 
                 state._fsp--;
                 if (state.failed) return ;
 
-                match(input,COMMA,FOLLOW_COMMA_in_synpred18_TextMarkerParser4138); if (state.failed) return ;
+                match(input,COMMA,FOLLOW_COMMA_in_synpred18_TextMarkerParser4129); if (state.failed) return ;
 
-                pushFollow(FOLLOW_numberExpression_in_synpred18_TextMarkerParser4144);
+                pushFollow(FOLLOW_numberExpression_in_synpred18_TextMarkerParser4135);
                 max=numberExpression();
 
                 state._fsp--;
@@ -16963,20 +16621,20 @@ public class TextMarkerParser extends Parser {
         }
 
 
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:928:5: ( COMMA var= numberVariable )?
-        int alt194=2;
-        int LA194_0 = input.LA(1);
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:927:5: ( COMMA var= numberVariable )?
+        int alt189=2;
+        int LA189_0 = input.LA(1);
 
-        if ( (LA194_0==COMMA) ) {
-            alt194=1;
+        if ( (LA189_0==COMMA) ) {
+            alt189=1;
         }
-        switch (alt194) {
+        switch (alt189) {
             case 1 :
-                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:928:6: COMMA var= numberVariable
+                // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:927:6: COMMA var= numberVariable
                 {
-                match(input,COMMA,FOLLOW_COMMA_in_synpred18_TextMarkerParser4154); if (state.failed) return ;
+                match(input,COMMA,FOLLOW_COMMA_in_synpred18_TextMarkerParser4145); if (state.failed) return ;
 
-                pushFollow(FOLLOW_numberVariable_in_synpred18_TextMarkerParser4160);
+                pushFollow(FOLLOW_numberVariable_in_synpred18_TextMarkerParser4151);
                 var=numberVariable();
 
                 state._fsp--;
@@ -16988,7 +16646,7 @@ public class TextMarkerParser extends Parser {
         }
 
 
-        match(input,RPAREN,FOLLOW_RPAREN_in_synpred18_TextMarkerParser4164); if (state.failed) return ;
+        match(input,RPAREN,FOLLOW_RPAREN_in_synpred18_TextMarkerParser4155); if (state.failed) return ;
 
         }
 
@@ -17000,10 +16658,10 @@ public class TextMarkerParser extends Parser {
         StringListExpression list2 =null;
 
 
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:952:20: (list2= stringListExpression )
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:952:21: list2= stringListExpression
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:951:20: (list2= stringListExpression )
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:951:21: list2= stringListExpression
         {
-        pushFollow(FOLLOW_stringListExpression_in_synpred19_TextMarkerParser4438);
+        pushFollow(FOLLOW_stringListExpression_in_synpred19_TextMarkerParser4429);
         list2=stringListExpression();
 
         state._fsp--;
@@ -17019,10 +16677,10 @@ public class TextMarkerParser extends Parser {
         AbstractTextMarkerAction a =null;
 
 
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1124:4: (a= externalAction )
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1124:5: a= externalAction
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1113:4: (a= externalAction )
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1113:5: a= externalAction
         {
-        pushFollow(FOLLOW_externalAction_in_synpred20_TextMarkerParser6011);
+        pushFollow(FOLLOW_externalAction_in_synpred20_TextMarkerParser5918);
         a=externalAction();
 
         state._fsp--;
@@ -17038,10 +16696,10 @@ public class TextMarkerParser extends Parser {
         NumberExpression index =null;
 
 
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1159:5: (index= numberExpression )
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1159:6: index= numberExpression
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1148:5: (index= numberExpression )
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1148:6: index= numberExpression
         {
-        pushFollow(FOLLOW_numberExpression_in_synpred21_TextMarkerParser6164);
+        pushFollow(FOLLOW_numberExpression_in_synpred21_TextMarkerParser6071);
         index=numberExpression();
 
         state._fsp--;
@@ -17057,12 +16715,12 @@ public class TextMarkerParser extends Parser {
         NumberExpression index =null;
 
 
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1159:81: ( COMMA index= numberExpression )
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1159:82: COMMA index= numberExpression
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1148:81: ( COMMA index= numberExpression )
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1148:82: COMMA index= numberExpression
         {
-        match(input,COMMA,FOLLOW_COMMA_in_synpred22_TextMarkerParser6177); if (state.failed) return ;
+        match(input,COMMA,FOLLOW_COMMA_in_synpred22_TextMarkerParser6084); if (state.failed) return ;
 
-        pushFollow(FOLLOW_numberExpression_in_synpred22_TextMarkerParser6183);
+        pushFollow(FOLLOW_numberExpression_in_synpred22_TextMarkerParser6090);
         index=numberExpression();
 
         state._fsp--;
@@ -17078,10 +16736,10 @@ public class TextMarkerParser extends Parser {
         NumberExpression index =null;
 
 
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1191:6: (index= numberExpression )
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1191:7: index= numberExpression
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1180:6: (index= numberExpression )
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1180:7: index= numberExpression
         {
-        pushFollow(FOLLOW_numberExpression_in_synpred23_TextMarkerParser6476);
+        pushFollow(FOLLOW_numberExpression_in_synpred23_TextMarkerParser6383);
         index=numberExpression();
 
         state._fsp--;
@@ -17097,12 +16755,12 @@ public class TextMarkerParser extends Parser {
         NumberExpression index =null;
 
 
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1191:82: ( COMMA index= numberExpression )
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1191:83: COMMA index= numberExpression
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1180:82: ( COMMA index= numberExpression )
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1180:83: COMMA index= numberExpression
         {
-        match(input,COMMA,FOLLOW_COMMA_in_synpred24_TextMarkerParser6489); if (state.failed) return ;
+        match(input,COMMA,FOLLOW_COMMA_in_synpred24_TextMarkerParser6396); if (state.failed) return ;
 
-        pushFollow(FOLLOW_numberExpression_in_synpred24_TextMarkerParser6495);
+        pushFollow(FOLLOW_numberExpression_in_synpred24_TextMarkerParser6402);
         index=numberExpression();
 
         state._fsp--;
@@ -17118,10 +16776,10 @@ public class TextMarkerParser extends Parser {
         NumberExpression score =null;
 
 
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1294:22: (score= numberExpression )
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1294:23: score= numberExpression
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1283:22: (score= numberExpression )
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1283:23: score= numberExpression
         {
-        pushFollow(FOLLOW_numberExpression_in_synpred28_TextMarkerParser7300);
+        pushFollow(FOLLOW_numberExpression_in_synpred28_TextMarkerParser7207);
         score=numberExpression();
 
         state._fsp--;
@@ -17137,10 +16795,10 @@ public class TextMarkerParser extends Parser {
         TypeExpression type =null;
 
 
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1294:85: (type= typeExpression )
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1294:86: type= typeExpression
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1283:85: (type= typeExpression )
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1283:86: type= typeExpression
         {
-        pushFollow(FOLLOW_typeExpression_in_synpred29_TextMarkerParser7320);
+        pushFollow(FOLLOW_typeExpression_in_synpred29_TextMarkerParser7227);
         type=typeExpression();
 
         state._fsp--;
@@ -17156,10 +16814,10 @@ public class TextMarkerParser extends Parser {
         StringExpression a4 =null;
 
 
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1558:2: (a4= stringExpression )
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1558:2: a4= stringExpression
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1531:2: (a4= stringExpression )
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1531:2: a4= stringExpression
         {
-        pushFollow(FOLLOW_stringExpression_in_synpred31_TextMarkerParser9492);
+        pushFollow(FOLLOW_stringExpression_in_synpred31_TextMarkerParser9262);
         a4=stringExpression();
 
         state._fsp--;
@@ -17175,10 +16833,10 @@ public class TextMarkerParser extends Parser {
         BooleanExpression a2 =null;
 
 
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1559:4: (a2= booleanExpression )
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1559:4: a2= booleanExpression
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1532:4: (a2= booleanExpression )
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1532:4: a2= booleanExpression
         {
-        pushFollow(FOLLOW_booleanExpression_in_synpred32_TextMarkerParser9503);
+        pushFollow(FOLLOW_booleanExpression_in_synpred32_TextMarkerParser9273);
         a2=booleanExpression();
 
         state._fsp--;
@@ -17194,10 +16852,10 @@ public class TextMarkerParser extends Parser {
         NumberExpression a3 =null;
 
 
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1560:4: (a3= numberExpression )
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1560:4: a3= numberExpression
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1533:4: (a3= numberExpression )
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1533:4: a3= numberExpression
         {
-        pushFollow(FOLLOW_numberExpression_in_synpred33_TextMarkerParser9514);
+        pushFollow(FOLLOW_numberExpression_in_synpred33_TextMarkerParser9284);
         a3=numberExpression();
 
         state._fsp--;
@@ -17213,10 +16871,10 @@ public class TextMarkerParser extends Parser {
         NumberExpression e =null;
 
 
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1639:4: (e= externalNumberFunction )
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1639:5: e= externalNumberFunction
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1612:4: (e= externalNumberFunction )
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1612:5: e= externalNumberFunction
         {
-        pushFollow(FOLLOW_externalNumberFunction_in_synpred34_TextMarkerParser9873);
+        pushFollow(FOLLOW_externalNumberFunction_in_synpred34_TextMarkerParser9643);
         e=externalNumberFunction();
 
         state._fsp--;
@@ -17232,10 +16890,10 @@ public class TextMarkerParser extends Parser {
         StringExpression e =null;
 
 
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1714:3: (e= stringFunction )
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1714:4: e= stringFunction
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1687:3: (e= stringFunction )
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1687:4: e= stringFunction
         {
-        pushFollow(FOLLOW_stringFunction_in_synpred36_TextMarkerParser10353);
+        pushFollow(FOLLOW_stringFunction_in_synpred36_TextMarkerParser10123);
         e=stringFunction();
 
         state._fsp--;
@@ -17251,10 +16909,10 @@ public class TextMarkerParser extends Parser {
         StringExpression e =null;
 
 
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1724:2: (e= externalStringFunction )
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1724:3: e= externalStringFunction
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1697:2: (e= externalStringFunction )
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1697:3: e= externalStringFunction
         {
-        pushFollow(FOLLOW_externalStringFunction_in_synpred37_TextMarkerParser10425);
+        pushFollow(FOLLOW_externalStringFunction_in_synpred37_TextMarkerParser10195);
         e=externalStringFunction();
 
         state._fsp--;
@@ -17270,10 +16928,10 @@ public class TextMarkerParser extends Parser {
         BooleanExpression e =null;
 
 
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1747:2: (e= composedBooleanExpression )
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1747:3: e= composedBooleanExpression
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1720:2: (e= composedBooleanExpression )
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1720:3: e= composedBooleanExpression
         {
-        pushFollow(FOLLOW_composedBooleanExpression_in_synpred38_TextMarkerParser10532);
+        pushFollow(FOLLOW_composedBooleanExpression_in_synpred38_TextMarkerParser10302);
         e=composedBooleanExpression();
 
         state._fsp--;
@@ -17289,10 +16947,10 @@ public class TextMarkerParser extends Parser {
         BooleanExpression e2 =null;
 
 
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1762:2: (e2= booleanCompare )
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1762:3: e2= booleanCompare
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1735:2: (e2= booleanCompare )
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1735:3: e2= booleanCompare
         {
-        pushFollow(FOLLOW_booleanCompare_in_synpred39_TextMarkerParser10615);
+        pushFollow(FOLLOW_booleanCompare_in_synpred39_TextMarkerParser10385);
         e2=booleanCompare();
 
         state._fsp--;
@@ -17308,10 +16966,10 @@ public class TextMarkerParser extends Parser {
         BooleanExpression bte =null;
 
 
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1763:4: (bte= booleanTypeExpression )
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1763:5: bte= booleanTypeExpression
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1736:4: (bte= booleanTypeExpression )
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1736:5: bte= booleanTypeExpression
         {
-        pushFollow(FOLLOW_booleanTypeExpression_in_synpred40_TextMarkerParser10635);
+        pushFollow(FOLLOW_booleanTypeExpression_in_synpred40_TextMarkerParser10405);
         bte=booleanTypeExpression();
 
         state._fsp--;
@@ -17327,10 +16985,10 @@ public class TextMarkerParser extends Parser {
         BooleanExpression bne =null;
 
 
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1764:4: (bne= booleanNumberExpression )
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1764:5: bne= booleanNumberExpression
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1737:4: (bne= booleanNumberExpression )
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1737:5: bne= booleanNumberExpression
         {
-        pushFollow(FOLLOW_booleanNumberExpression_in_synpred41_TextMarkerParser10654);
+        pushFollow(FOLLOW_booleanNumberExpression_in_synpred41_TextMarkerParser10424);
         bne=booleanNumberExpression();
 
         state._fsp--;
@@ -17346,10 +17004,10 @@ public class TextMarkerParser extends Parser {
         BooleanExpression e =null;
 
 
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1774:4: (e= externalBooleanFunction )
-        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1774:5: e= externalBooleanFunction
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1747:4: (e= externalBooleanFunction )
+        // D:\\work\\workspace-uima3\\uimaj-ep-textmarker-engine\\src\\main\\java\\org\\apache\\uima\\textmarker\\parser\\TextMarkerParser.g:1747:5: e= externalBooleanFunction
         {
-        pushFollow(FOLLOW_externalBooleanFunction_in_synpred42_TextMarkerParser10729);
+        pushFollow(FOLLOW_externalBooleanFunction_in_synpred42_TextMarkerParser10499);
         e=externalBooleanFunction();
 
         state._fsp--;
@@ -17974,14 +17632,14 @@ public class TextMarkerParser extends Parser {
     public static final BitSet FOLLOW_CONDITION_in_conditionDeclaration992 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
     public static final BitSet FOLLOW_Identifier_in_conditionDeclaration998 = new BitSet(new long[]{0x0000000000000800L});
     public static final BitSet FOLLOW_ASSIGN_EQUAL_in_conditionDeclaration1000 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionDeclaration1002 = new BitSet(new long[]{0x0040200AC0010240L,0x8042717800008EC0L,0x0000000002004048L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionDeclaration1002 = new BitSet(new long[]{0x0040200AC0010240L,0x8042717800008AC0L,0x0000000002004048L});
     public static final BitSet FOLLOW_conditions_in_conditionDeclaration1008 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
     public static final BitSet FOLLOW_RPAREN_in_conditionDeclaration1010 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000001L});
     public static final BitSet FOLLOW_SEMI_in_conditionDeclaration1012 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ACTION_in_actionDeclaration1048 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
     public static final BitSet FOLLOW_Identifier_in_actionDeclaration1054 = new BitSet(new long[]{0x0000000000000800L});
     public static final BitSet FOLLOW_ASSIGN_EQUAL_in_actionDeclaration1056 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionDeclaration1058 = new BitSet(new long[]{0xC382824422A00420L,0x1D800007F8200803L,0x0000000000618002L});
+    public static final BitSet FOLLOW_LPAREN_in_actionDeclaration1058 = new BitSet(new long[]{0xC282824422A00420L,0x15800007F8200803L,0x0000000000618002L});
     public static final BitSet FOLLOW_actions_in_actionDeclaration1064 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
     public static final BitSet FOLLOW_RPAREN_in_actionDeclaration1066 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000001L});
     public static final BitSet FOLLOW_SEMI_in_actionDeclaration1068 = new BitSet(new long[]{0x0000000000000002L});
@@ -18039,9 +17697,9 @@ public class TextMarkerParser extends Parser {
     public static final BitSet FOLLOW_RCURLY_in_automataDeclaration1638 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_typeExpression_in_ruleElementWithCA1675 = new BitSet(new long[]{0x0000000000000000L,0x0009000000030000L,0x0000000000000020L});
     public static final BitSet FOLLOW_quantifierPart_in_ruleElementWithCA1692 = new BitSet(new long[]{0x0000000000000000L,0x0000000000020000L});
-    public static final BitSet FOLLOW_LCURLY_in_ruleElementWithCA1704 = new BitSet(new long[]{0x0040200AC0010240L,0x8062717800008EC0L,0x0000000002006048L});
+    public static final BitSet FOLLOW_LCURLY_in_ruleElementWithCA1704 = new BitSet(new long[]{0x0040200AC0010240L,0x8062717800008AC0L,0x0000000002006048L});
     public static final BitSet FOLLOW_conditions_in_ruleElementWithCA1710 = new BitSet(new long[]{0x0000000000000000L,0x0020000000000000L,0x0000000000002000L});
-    public static final BitSet FOLLOW_THEN_in_ruleElementWithCA1714 = new BitSet(new long[]{0xC382824422A00420L,0x1D800007F8200803L,0x0000000000618002L});
+    public static final BitSet FOLLOW_THEN_in_ruleElementWithCA1714 = new BitSet(new long[]{0xC282824422A00420L,0x15800007F8200803L,0x0000000000618002L});
     public static final BitSet FOLLOW_actions_in_ruleElementWithCA1720 = new BitSet(new long[]{0x0000000000000000L,0x0020000000000000L});
     public static final BitSet FOLLOW_RCURLY_in_ruleElementWithCA1724 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleElements_in_simpleStatement1765 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000001L});
@@ -18060,39 +17718,39 @@ public class TextMarkerParser extends Parser {
     public static final BitSet FOLLOW_typeExpression_in_ruleElementDisjunctive1959 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
     public static final BitSet FOLLOW_RPAREN_in_ruleElementDisjunctive1968 = new BitSet(new long[]{0x0000000000000002L,0x0009000000030000L,0x0000000000000020L});
     public static final BitSet FOLLOW_quantifierPart_in_ruleElementDisjunctive1994 = new BitSet(new long[]{0x0000000000000002L,0x0000000000020000L});
-    public static final BitSet FOLLOW_LCURLY_in_ruleElementDisjunctive2007 = new BitSet(new long[]{0x0040200AC0010240L,0x8062717800008EC0L,0x0000000002006048L});
+    public static final BitSet FOLLOW_LCURLY_in_ruleElementDisjunctive2007 = new BitSet(new long[]{0x0040200AC0010240L,0x8062717800008AC0L,0x0000000002006048L});
     public static final BitSet FOLLOW_conditions_in_ruleElementDisjunctive2013 = new BitSet(new long[]{0x0000000000000000L,0x0020000000000000L,0x0000000000002000L});
-    public static final BitSet FOLLOW_THEN_in_ruleElementDisjunctive2017 = new BitSet(new long[]{0xC382824422A00420L,0x1D800007F8200803L,0x0000000000618002L});
+    public static final BitSet FOLLOW_THEN_in_ruleElementDisjunctive2017 = new BitSet(new long[]{0xC282824422A00420L,0x15800007F8200803L,0x0000000000618002L});
     public static final BitSet FOLLOW_actions_in_ruleElementDisjunctive2023 = new BitSet(new long[]{0x0000000000000000L,0x0020000000000000L});
     public static final BitSet FOLLOW_RCURLY_in_ruleElementDisjunctive2027 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_LPAREN_in_ruleElementComposed2068 = new BitSet(new long[]{0x0000000000040000L,0x0000000000800800L,0x0000000000000200L});
     public static final BitSet FOLLOW_ruleElements_in_ruleElementComposed2096 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
     public static final BitSet FOLLOW_RPAREN_in_ruleElementComposed2106 = new BitSet(new long[]{0x0000000000000002L,0x0009000000030000L,0x0000000000000020L});
     public static final BitSet FOLLOW_quantifierPart_in_ruleElementComposed2112 = new BitSet(new long[]{0x0000000000000002L,0x0000000000020000L});
-    public static final BitSet FOLLOW_LCURLY_in_ruleElementComposed2116 = new BitSet(new long[]{0x0040200AC0010240L,0x8062717800008EC0L,0x0000000002006048L});
+    public static final BitSet FOLLOW_LCURLY_in_ruleElementComposed2116 = new BitSet(new long[]{0x0040200AC0010240L,0x8062717800008AC0L,0x0000000002006048L});
     public static final BitSet FOLLOW_conditions_in_ruleElementComposed2122 = new BitSet(new long[]{0x0000000000000000L,0x0020000000000000L,0x0000000000002000L});
-    public static final BitSet FOLLOW_THEN_in_ruleElementComposed2126 = new BitSet(new long[]{0xC382824422A00420L,0x1D800007F8200803L,0x0000000000618002L});
+    public static final BitSet FOLLOW_THEN_in_ruleElementComposed2126 = new BitSet(new long[]{0xC282824422A00420L,0x15800007F8200803L,0x0000000000618002L});
     public static final BitSet FOLLOW_actions_in_ruleElementComposed2132 = new BitSet(new long[]{0x0000000000000000L,0x0020000000000000L});
     public static final BitSet FOLLOW_RCURLY_in_ruleElementComposed2136 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_typeExpression_in_ruleElementType2179 = new BitSet(new long[]{0x0000000000000002L,0x0009000000030000L,0x0000000000000020L});
     public static final BitSet FOLLOW_quantifierPart_in_ruleElementType2198 = new BitSet(new long[]{0x0000000000000002L,0x0000000000020000L});
-    public static final BitSet FOLLOW_LCURLY_in_ruleElementType2211 = new BitSet(new long[]{0x0040200AC0010240L,0x8062717800008EC0L,0x0000000002006048L});
+    public static final BitSet FOLLOW_LCURLY_in_ruleElementType2211 = new BitSet(new long[]{0x0040200AC0010240L,0x8062717800008AC0L,0x0000000002006048L});
     public static final BitSet FOLLOW_conditions_in_ruleElementType2217 = new BitSet(new long[]{0x0000000000000000L,0x0020000000000000L,0x0000000000002000L});
-    public static final BitSet FOLLOW_THEN_in_ruleElementType2221 = new BitSet(new long[]{0xC382824422A00420L,0x1D800007F8200803L,0x0000000000618002L});
+    public static final BitSet FOLLOW_THEN_in_ruleElementType2221 = new BitSet(new long[]{0xC282824422A00420L,0x15800007F8200803L,0x0000000000618002L});
     public static final BitSet FOLLOW_actions_in_ruleElementType2227 = new BitSet(new long[]{0x0000000000000000L,0x0020000000000000L});
     public static final BitSet FOLLOW_RCURLY_in_ruleElementType2231 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_simpleStringExpression_in_ruleElementLiteral2278 = new BitSet(new long[]{0x0000000000000002L,0x0009000000030000L,0x0000000000000020L});
     public static final BitSet FOLLOW_quantifierPart_in_ruleElementLiteral2302 = new BitSet(new long[]{0x0000000000000002L,0x0000000000020000L});
-    public static final BitSet FOLLOW_LCURLY_in_ruleElementLiteral2315 = new BitSet(new long[]{0x0040200AC0010240L,0x8062717800008EC0L,0x0000000002006048L});
+    public static final BitSet FOLLOW_LCURLY_in_ruleElementLiteral2315 = new BitSet(new long[]{0x0040200AC0010240L,0x8062717800008AC0L,0x0000000002006048L});
     public static final BitSet FOLLOW_conditions_in_ruleElementLiteral2321 = new BitSet(new long[]{0x0000000000000000L,0x0020000000000000L,0x0000000000002000L});
-    public static final BitSet FOLLOW_THEN_in_ruleElementLiteral2325 = new BitSet(new long[]{0xC382824422A00420L,0x1D800007F8200803L,0x0000000000618002L});
+    public static final BitSet FOLLOW_THEN_in_ruleElementLiteral2325 = new BitSet(new long[]{0xC282824422A00420L,0x15800007F8200803L,0x0000000000618002L});
     public static final BitSet FOLLOW_actions_in_ruleElementLiteral2331 = new BitSet(new long[]{0x0000000000000000L,0x0020000000000000L});
     public static final BitSet FOLLOW_RCURLY_in_ruleElementLiteral2335 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_condition_in_conditions2373 = new BitSet(new long[]{0x0000000004000002L});
-    public static final BitSet FOLLOW_COMMA_in_conditions2378 = new BitSet(new long[]{0x0040200AC0010240L,0x8042717800008EC0L,0x0000000002004048L});
+    public static final BitSet FOLLOW_COMMA_in_conditions2378 = new BitSet(new long[]{0x0040200AC0010240L,0x8042717800008AC0L,0x0000000002004048L});
     public static final BitSet FOLLOW_condition_in_conditions2384 = new BitSet(new long[]{0x0000000004000002L});
     public static final BitSet FOLLOW_action_in_actions2422 = new BitSet(new long[]{0x0000000004000002L});
-    public static final BitSet FOLLOW_COMMA_in_actions2427 = new BitSet(new long[]{0xC382824422A00420L,0x1D800007F8200803L,0x0000000000618002L});
+    public static final BitSet FOLLOW_COMMA_in_actions2427 = new BitSet(new long[]{0xC282824422A00420L,0x15800007F8200803L,0x0000000000618002L});
     public static final BitSet FOLLOW_action_in_actions2433 = new BitSet(new long[]{0x0000000004000002L});
     public static final BitSet FOLLOW_booleanListExpression_in_listExpression2469 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_intListExpression_in_listExpression2485 = new BitSet(new long[]{0x0000000000000002L});
@@ -18174,683 +17832,660 @@ public class TextMarkerParser extends Parser {
     public static final BitSet FOLLOW_conditionCount_in_condition3521 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_conditionCurrentCount_in_condition3530 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_conditionInList_in_condition3539 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionIsInTag_in_condition3548 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionLast_in_condition3557 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionMofN_in_condition3566 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionNear_in_condition3575 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionNot_in_condition3584 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionOr_in_condition3593 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionPartOf_in_condition3602 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionPosition_in_condition3611 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionRegExp_in_condition3620 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionScore_in_condition3629 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionTotalCount_in_condition3638 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionVote_in_condition3647 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionIf_in_condition3656 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionFeature_in_condition3665 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionParse_in_condition3674 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionIs_in_condition3683 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionBefore_in_condition3692 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionAfter_in_condition3701 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionStartsWith_in_condition3711 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionEndsWith_in_condition3720 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionPartOfNeq_in_condition3729 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionSize_in_condition3738 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_externalCondition_in_condition3757 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_variableCondition_in_condition3766 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_variableCondition3796 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_externalCondition3823 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_externalCondition3825 = new BitSet(new long[]{0x0000000000000000L,0x2000000000800000L});
-    public static final BitSet FOLLOW_varArgumentList_in_externalCondition3831 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_externalCondition3833 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_AND_in_conditionAnd3862 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionAnd3864 = new BitSet(new long[]{0x0040200AC0010240L,0x8042717800008EC0L,0x0000000002004048L});
-    public static final BitSet FOLLOW_conditions_in_conditionAnd3870 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionAnd3872 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_CONTAINS_in_conditionContains3924 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionContains3926 = new BitSet(new long[]{0x0000000000040000L,0x0000000000020800L});
-    public static final BitSet FOLLOW_typeExpression_in_conditionContains3933 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_listExpression_in_conditionContains3941 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionContains3943 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
-    public static final BitSet FOLLOW_argument_in_conditionContains3949 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionContains3958 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_conditionContains3964 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionContains3966 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_conditionContains3972 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionContains3975 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
-    public static final BitSet FOLLOW_booleanExpression_in_conditionContains3981 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionContains3987 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_CONTEXTCOUNT_in_conditionContextCount4020 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionContextCount4022 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_conditionContextCount4028 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionContextCount4031 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_conditionContextCount4037 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionContextCount4039 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_conditionContextCount4045 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionContextCount4055 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_numberVariable_in_conditionContextCount4061 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionContextCount4065 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_COUNT_in_conditionCount4111 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionCount4113 = new BitSet(new long[]{0x0000000000000000L,0x0000000000020800L});
-    public static final BitSet FOLLOW_listExpression_in_conditionCount4119 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionCount4121 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
-    public static final BitSet FOLLOW_argument_in_conditionCount4127 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionCount4130 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_conditionCount4136 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionCount4138 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_conditionCount4144 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionCount4154 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_numberVariable_in_conditionCount4160 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionCount4164 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_COUNT_in_conditionCount4182 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionCount4184 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_conditionCount4190 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionCount4193 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_conditionCount4199 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionCount4201 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_conditionCount4207 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionCount4217 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_numberVariable_in_conditionCount4223 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionCount4227 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_TOTALCOUNT_in_conditionTotalCount4263 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionTotalCount4265 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_conditionTotalCount4271 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionTotalCount4274 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_conditionTotalCount4280 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionTotalCount4282 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_conditionTotalCount4288 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionTotalCount4297 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_numberVariable_in_conditionTotalCount4303 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionTotalCount4307 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_CURRENTCOUNT_in_conditionCurrentCount4340 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionCurrentCount4342 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_conditionCurrentCount4348 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionCurrentCount4351 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_conditionCurrentCount4357 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionCurrentCount4359 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_conditionCurrentCount4365 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionCurrentCount4375 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_numberVariable_in_conditionCurrentCount4381 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionCurrentCount4385 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_INLIST_in_conditionInList4428 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionInList4430 = new BitSet(new long[]{0x0000000000000000L,0x4000000000020800L});
-    public static final BitSet FOLLOW_stringListExpression_in_conditionInList4445 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_wordListExpression_in_conditionInList4453 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionInList4457 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_conditionInList4463 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionInList4466 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
-    public static final BitSet FOLLOW_booleanExpression_in_conditionInList4472 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionInList4478 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ISINTAG_in_conditionIsInTag4513 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionIsInTag4515 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_conditionIsInTag4521 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionIsInTag4524 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_conditionIsInTag4530 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_ASSIGN_EQUAL_in_conditionIsInTag4532 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_conditionIsInTag4538 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionIsInTag4544 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LAST_in_conditionLast4583 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionLast4585 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_conditionLast4591 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionLast4593 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_MOFN_in_conditionMofN4640 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionMofN4642 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_conditionMofN4648 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionMofN4650 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_conditionMofN4656 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionMofN4658 = new BitSet(new long[]{0x0040200AC0010240L,0x8042717800008EC0L,0x0000000002004048L});
-    public static final BitSet FOLLOW_conditions_in_conditionMofN4664 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionMofN4666 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_NEAR_in_conditionNear4701 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionNear4703 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_conditionNear4709 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionNear4711 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_conditionNear4717 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionNear4719 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_conditionNear4725 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionNear4728 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
-    public static final BitSet FOLLOW_booleanExpression_in_conditionNear4734 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionNear4737 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
-    public static final BitSet FOLLOW_booleanExpression_in_conditionNear4743 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionNear4749 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_MINUS_in_conditionNot4785 = new BitSet(new long[]{0x0040200AC0010240L,0x8042717800008EC0L,0x0000000002004048L});
-    public static final BitSet FOLLOW_condition_in_conditionNot4791 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_NOT_in_conditionNot4798 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionNot4800 = new BitSet(new long[]{0x0040200AC0010240L,0x8042717800008EC0L,0x0000000002004048L});
-    public static final BitSet FOLLOW_condition_in_conditionNot4806 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionNot4808 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_OR_in_conditionOr4847 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionOr4849 = new BitSet(new long[]{0x0040200AC0010240L,0x8042717800008EC0L,0x0000000002004048L});
-    public static final BitSet FOLLOW_conditions_in_conditionOr4855 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionOr4857 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_PARTOF_in_conditionPartOf4887 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionPartOf4889 = new BitSet(new long[]{0x0000000000040000L,0x0000000000020800L});
-    public static final BitSet FOLLOW_typeExpression_in_conditionPartOf4896 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_typeListExpression_in_conditionPartOf4902 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionPartOf4905 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_PARTOFNEQ_in_conditionPartOfNeq4935 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionPartOfNeq4937 = new BitSet(new long[]{0x0000000000040000L,0x0000000000020800L});
-    public static final BitSet FOLLOW_typeExpression_in_conditionPartOfNeq4944 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_typeListExpression_in_conditionPartOfNeq4950 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionPartOfNeq4953 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_POSITION_in_conditionPosition4987 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionPosition4989 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_conditionPosition4995 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionPosition4997 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_conditionPosition5003 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionPosition5005 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_REGEXP_in_conditionRegExp5035 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionRegExp5037 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_conditionRegExp5043 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionRegExp5046 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
-    public static final BitSet FOLLOW_booleanExpression_in_conditionRegExp5052 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionRegExp5056 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SCORE_in_conditionScore5091 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionScore5093 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_conditionScore5099 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionScore5102 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_conditionScore5108 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionScore5115 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_numberVariable_in_conditionScore5121 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionScore5128 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_VOTE_in_conditionVote5163 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionVote5165 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_conditionVote5171 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionVote5173 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_conditionVote5179 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionVote5181 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IF_in_conditionIf5219 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionIf5221 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
-    public static final BitSet FOLLOW_booleanExpression_in_conditionIf5227 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionIf5229 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_FEATURE_in_conditionFeature5263 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionFeature5265 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_conditionFeature5271 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionFeature5273 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
-    public static final BitSet FOLLOW_argument_in_conditionFeature5279 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionFeature5281 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_PARSE_in_conditionParse5315 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionParse5317 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_Identifier_in_conditionParse5325 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionParse5327 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IS_in_conditionIs5358 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionIs5360 = new BitSet(new long[]{0x0000000000040000L,0x0000000000020800L});
-    public static final BitSet FOLLOW_typeExpression_in_conditionIs5367 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_typeListExpression_in_conditionIs5373 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionIs5376 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_BEFORE_in_conditionBefore5407 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionBefore5409 = new BitSet(new long[]{0x0000000000040000L,0x0000000000020800L});
-    public static final BitSet FOLLOW_typeExpression_in_conditionBefore5416 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_typeListExpression_in_conditionBefore5422 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionBefore5425 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_AFTER_in_conditionAfter5456 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionAfter5458 = new BitSet(new long[]{0x0000000000040000L,0x0000000000020800L});
-    public static final BitSet FOLLOW_typeExpression_in_conditionAfter5465 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_typeListExpression_in_conditionAfter5471 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionAfter5474 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_STARTSWITH_in_conditionStartsWith5505 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionStartsWith5507 = new BitSet(new long[]{0x0000000000040000L,0x0000000000020800L});
-    public static final BitSet FOLLOW_typeExpression_in_conditionStartsWith5514 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_typeListExpression_in_conditionStartsWith5520 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionStartsWith5523 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ENDSWITH_in_conditionEndsWith5554 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionEndsWith5556 = new BitSet(new long[]{0x0000000000040000L,0x0000000000020800L});
-    public static final BitSet FOLLOW_typeExpression_in_conditionEndsWith5563 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_typeListExpression_in_conditionEndsWith5569 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionEndsWith5572 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SIZE_in_conditionSize5603 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_conditionSize5605 = new BitSet(new long[]{0x0000000000000000L,0x0000000000020800L});
-    public static final BitSet FOLLOW_listExpression_in_conditionSize5611 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionSize5614 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_conditionSize5620 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionSize5622 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_conditionSize5628 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_conditionSize5633 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_numberVariable_in_conditionSize5639 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_conditionSize5643 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionColor_in_action5676 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionDel_in_action5685 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionLog_in_action5694 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionMark_in_action5703 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionMarkScore_in_action5712 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionMarkFast_in_action5721 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionMarkLast_in_action5730 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionReplace_in_action5739 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionFilterMarkup_in_action5748 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionFilterType_in_action5757 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionRetainMarkup_in_action5766 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionRetainType_in_action5775 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionCreate_in_action5784 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionFill_in_action5793 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionCall_in_action5802 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionAssign_in_action5811 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionSetFeature_in_action5820 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionGetFeature_in_action5829 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionUnmark_in_action5838 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionUnmarkAll_in_action5847 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionTransfer_in_action5856 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionMarkOnce_in_action5865 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionTrie_in_action5874 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionGather_in_action5883 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionExec_in_action5892 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionMarkTable_in_action5901 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionAdd_in_action5910 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionRemove_in_action5919 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionRemoveDuplicate_in_action5928 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionMerge_in_action5937 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionGet_in_action5946 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionGetList_in_action5955 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionMatchedText_in_action5964 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionClear_in_action5973 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionExpand_in_action5982 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionConfigure_in_action5991 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_actionDynamicAnchoring_in_action6000 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_externalAction_in_action6019 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_variableAction_in_action6028 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_variableAction6057 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_externalAction6085 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_externalAction6087 = new BitSet(new long[]{0x0000000000000000L,0x2000000000800000L});
-    public static final BitSet FOLLOW_varArgumentList_in_externalAction6093 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_externalAction6095 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_CREATE_in_actionCreate6131 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionCreate6133 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_actionCreate6139 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionCreate6146 = new BitSet(new long[]{0x2001040100000000L,0x2200000800C00800L,0x0000000000001204L});
-    public static final BitSet FOLLOW_numberExpression_in_actionCreate6171 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionCreate6188 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_actionCreate6194 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionCreate6201 = new BitSet(new long[]{0x0000000000000000L,0x2200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_actionCreate6214 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_ASSIGN_EQUAL_in_actionCreate6216 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
-    public static final BitSet FOLLOW_argument_in_actionCreate6222 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionCreate6232 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_actionCreate6238 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_ASSIGN_EQUAL_in_actionCreate6240 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
-    public static final BitSet FOLLOW_argument_in_actionCreate6246 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionCreate6261 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_MARKTABLE_in_actionMarkTable6302 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionMarkTable6304 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_actionMarkTable6315 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionMarkTable6317 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_actionMarkTable6328 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionMarkTable6330 = new BitSet(new long[]{0x0000000000000000L,0x4000000000000800L});
-    public static final BitSet FOLLOW_wordTableExpression_in_actionMarkTable6340 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionMarkTable6348 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_actionMarkTable6362 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_ASSIGN_EQUAL_in_actionMarkTable6364 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_actionMarkTable6370 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionMarkTable6380 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_actionMarkTable6386 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_ASSIGN_EQUAL_in_actionMarkTable6388 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_actionMarkTable6394 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionMarkTable6407 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_GATHER_in_actionGather6448 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionGather6450 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_actionGather6456 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionGather6463 = new BitSet(new long[]{0x2001040100000000L,0x2200000800C00800L,0x0000000000001204L});
-    public static final BitSet FOLLOW_numberExpression_in_actionGather6483 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionGather6499 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_actionGather6505 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionGather6512 = new BitSet(new long[]{0x0000000000000000L,0x2200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_actionGather6525 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_ASSIGN_EQUAL_in_actionGather6527 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C20800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_actionGather6534 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_numberListExpression_in_actionGather6542 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionGather6553 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_actionGather6559 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_ASSIGN_EQUAL_in_actionGather6561 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C20800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_actionGather6568 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_numberListExpression_in_actionGather6576 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionGather6592 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_FILL_in_actionFill6634 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionFill6636 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_actionFill6642 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionFill6645 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_actionFill6651 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_ASSIGN_EQUAL_in_actionFill6653 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
-    public static final BitSet FOLLOW_argument_in_actionFill6670 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionFill6687 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_COLOR_in_actionColor6725 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionColor6727 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_actionColor6733 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionColor6745 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_actionColor6756 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionColor6764 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_actionColor6774 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionColor6782 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
-    public static final BitSet FOLLOW_booleanExpression_in_actionColor6792 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionColor6802 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DEL_in_actionDel6836 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LOG_in_actionLog6878 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionLog6880 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_actionLog6886 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionLog6889 = new BitSet(new long[]{0x0000000000000000L,0x0000000004000000L});
-    public static final BitSet FOLLOW_LogLevel_in_actionLog6895 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionLog6899 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_MARK_in_actionMark6938 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionMark6940 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_actionMark6951 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionMark6967 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_actionMark6983 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionMark7007 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_EXPAND_in_actionExpand7051 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionExpand7053 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_actionExpand7064 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionExpand7080 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_actionExpand7096 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionExpand7120 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_MARKSCORE_in_actionMarkScore7165 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionMarkScore7167 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_actionMarkScore7178 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionMarkScore7180 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_actionMarkScore7190 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionMarkScore7206 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_actionMarkScore7222 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionMarkScore7246 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_MARKONCE_in_actionMarkOnce7290 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionMarkOnce7292 = new BitSet(new long[]{0x2001040100040000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_actionMarkOnce7309 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionMarkOnce7311 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_actionMarkOnce7329 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionMarkOnce7345 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_actionMarkOnce7361 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionMarkOnce7380 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_MARKFAST_in_actionMarkFast7419 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionMarkFast7421 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_actionMarkFast7427 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionMarkFast7429 = new BitSet(new long[]{0x0000000000000000L,0x4000000000000800L});
-    public static final BitSet FOLLOW_wordListExpression_in_actionMarkFast7435 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionMarkFast7438 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
-    public static final BitSet FOLLOW_booleanExpression_in_actionMarkFast7444 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionMarkFast7447 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_actionMarkFast7453 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionMarkFast7459 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_MARKLAST_in_actionMarkLast7493 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionMarkLast7495 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_actionMarkLast7501 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionMarkLast7503 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_REPLACE_in_actionReplace7537 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionReplace7539 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_actionReplace7545 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionReplace7547 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RETAINMARKUP_in_actionRetainMarkup7590 = new BitSet(new long[]{0x0000000000000002L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionRetainMarkup7593 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_actionRetainMarkup7599 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionRetainMarkup7604 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_actionRetainMarkup7610 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionRetainMarkup7616 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RETAINTYPE_in_actionRetainType7662 = new BitSet(new long[]{0x0000000000000002L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionRetainType7665 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_actionRetainType7671 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionRetainType7676 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_actionRetainType7682 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionRetainType7688 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_FILTERMARKUP_in_actionFilterMarkup7736 = new BitSet(new long[]{0x0000000000000002L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionFilterMarkup7739 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_actionFilterMarkup7745 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionFilterMarkup7750 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_actionFilterMarkup7756 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionFilterMarkup7762 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_FILTERTYPE_in_actionFilterType7808 = new BitSet(new long[]{0x0000000000000002L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionFilterType7811 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_actionFilterType7817 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionFilterType7822 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_actionFilterType7828 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionFilterType7834 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_CALL_in_actionCall7874 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionCall7876 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_dottedIdentifier_in_actionCall7882 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionCall7884 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_CONFIGURE_in_actionConfigure7922 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionConfigure7924 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_dottedIdentifier_in_actionConfigure7930 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionConfigure7937 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_actionConfigure7947 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_ASSIGN_EQUAL_in_actionConfigure7949 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
-    public static final BitSet FOLLOW_argument_in_actionConfigure7955 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionConfigure7965 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_actionConfigure7971 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_ASSIGN_EQUAL_in_actionConfigure7973 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
-    public static final BitSet FOLLOW_argument_in_actionConfigure7979 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionConfigure7989 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_EXEC_in_actionExec8021 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionExec8023 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_dottedIdentifier_in_actionExec8029 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionExec8032 = new BitSet(new long[]{0x0000000000000000L,0x0000000000020800L});
-    public static final BitSet FOLLOW_typeListExpression_in_actionExec8038 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionExec8042 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ASSIGN_in_actionAssign8085 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionAssign8087 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_Identifier_in_actionAssign8114 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionAssign8116 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_actionAssign8122 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_Identifier_in_actionAssign8160 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionAssign8162 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
-    public static final BitSet FOLLOW_booleanExpression_in_actionAssign8168 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_Identifier_in_actionAssign8206 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionAssign8208 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_actionAssign8214 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_Identifier_in_actionAssign8252 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionAssign8254 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_actionAssign8260 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_Identifier_in_actionAssign8299 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionAssign8301 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_actionAssign8307 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_Identifier_in_actionAssign8345 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionAssign8347 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_actionAssign8353 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionAssign8372 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SETFEATURE_in_actionSetFeature8404 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionSetFeature8406 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_actionSetFeature8412 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionSetFeature8414 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
-    public static final BitSet FOLLOW_argument_in_actionSetFeature8420 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionSetFeature8422 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_GETFEATURE_in_actionGetFeature8461 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionGetFeature8463 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_actionGetFeature8469 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionGetFeature8471 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_variable_in_actionGetFeature8477 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionGetFeature8479 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DYNAMICANCHORING_in_actionDynamicAnchoring8515 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionDynamicAnchoring8517 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
-    public static final BitSet FOLLOW_booleanExpression_in_actionDynamicAnchoring8523 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionDynamicAnchoring8531 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_actionDynamicAnchoring8537 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionDynamicAnchoring8545 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_actionDynamicAnchoring8551 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionDynamicAnchoring8568 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_UNMARK_in_actionUnmark8598 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionUnmark8600 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_actionUnmark8606 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionUnmark8608 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_UNMARKALL_in_actionUnmarkAll8644 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionUnmarkAll8646 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_actionUnmarkAll8652 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionUnmarkAll8660 = new BitSet(new long[]{0x0000000000000000L,0x0000000000020800L});
-    public static final BitSet FOLLOW_typeListExpression_in_actionUnmarkAll8666 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionUnmarkAll8670 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_TRANSFER_in_actionTransfer8705 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionTransfer8707 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_actionTransfer8713 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionTransfer8715 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_TRIE_in_actionTrie8755 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionTrie8757 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_actionTrie8767 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_ASSIGN_EQUAL_in_actionTrie8769 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_actionTrie8775 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionTrie8783 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_actionTrie8789 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_ASSIGN_EQUAL_in_actionTrie8791 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_actionTrie8797 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionTrie8807 = new BitSet(new long[]{0x0000000000000000L,0x4000000000000800L});
-    public static final BitSet FOLLOW_wordListExpression_in_actionTrie8813 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionTrie8820 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
-    public static final BitSet FOLLOW_booleanExpression_in_actionTrie8826 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionTrie8833 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_actionTrie8839 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionTrie8846 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
-    public static final BitSet FOLLOW_booleanExpression_in_actionTrie8852 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionTrie8859 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_actionTrie8865 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionTrie8872 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_actionTrie8878 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionTrie8884 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ADD_in_actionAdd8929 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionAdd8931 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_listVariable_in_actionAdd8937 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionAdd8940 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
-    public static final BitSet FOLLOW_argument_in_actionAdd8946 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionAdd8952 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_REMOVE_in_actionRemove8992 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionRemove8994 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_listVariable_in_actionRemove9000 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionRemove9003 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
-    public static final BitSet FOLLOW_argument_in_actionRemove9009 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionRemove9015 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_REMOVEDUPLICATE_in_actionRemoveDuplicate9051 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionRemoveDuplicate9053 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_listVariable_in_actionRemoveDuplicate9059 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionRemoveDuplicate9061 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_MERGE_in_actionMerge9106 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionMerge9108 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
-    public static final BitSet FOLLOW_booleanExpression_in_actionMerge9114 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionMerge9116 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_listVariable_in_actionMerge9122 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionMerge9124 = new BitSet(new long[]{0x0000000000000000L,0x0000000000020800L});
-    public static final BitSet FOLLOW_listExpression_in_actionMerge9130 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionMerge9135 = new BitSet(new long[]{0x0000000000000000L,0x0000000000020800L});
-    public static final BitSet FOLLOW_listExpression_in_actionMerge9141 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionMerge9147 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_GET_in_actionGet9182 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionGet9184 = new BitSet(new long[]{0x0000000000000000L,0x0000000000020800L});
-    public static final BitSet FOLLOW_listExpression_in_actionGet9190 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionGet9192 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_variable_in_actionGet9198 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionGet9200 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_actionGet9206 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionGet9208 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_GETLIST_in_actionGetList9243 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionGetList9245 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_listVariable_in_actionGetList9251 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionGetList9253 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_actionGetList9259 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionGetList9261 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_MATCHEDTEXT_in_actionMatchedText9300 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionMatchedText9302 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_variable_in_actionMatchedText9313 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_actionMatchedText9329 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_actionMatchedText9335 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionMatchedText9359 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_CLEAR_in_actionClear9399 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_actionClear9401 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_listVariable_in_actionClear9407 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_actionClear9409 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LPAREN_in_varArgumentList9436 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
-    public static final BitSet FOLLOW_argument_in_varArgumentList9442 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_varArgumentList9446 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
-    public static final BitSet FOLLOW_argument_in_varArgumentList9452 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_varArgumentList9458 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_stringExpression_in_argument9492 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_booleanExpression_in_argument9503 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_numberExpression_in_argument9514 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_typeExpression_in_argument9525 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_dottedIdentifier9559 = new BitSet(new long[]{0x0000008000000002L});
-    public static final BitSet FOLLOW_DOT_in_dottedIdentifier9572 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_Identifier_in_dottedIdentifier9582 = new BitSet(new long[]{0x0000008000000002L});
-    public static final BitSet FOLLOW_Identifier_in_dottedIdentifier29608 = new BitSet(new long[]{0x0000008000000002L,0x0000000800000000L});
-    public static final BitSet FOLLOW_set_in_dottedIdentifier29621 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_Identifier_in_dottedIdentifier29635 = new BitSet(new long[]{0x0000008000000002L,0x0000000800000000L});
-    public static final BitSet FOLLOW_Identifier_in_dottedId9667 = new BitSet(new long[]{0x0000008000000002L});
-    public static final BitSet FOLLOW_DOT_in_dottedId9680 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_Identifier_in_dottedId9690 = new BitSet(new long[]{0x0000008000000002L});
-    public static final BitSet FOLLOW_BasicAnnotationType_in_annotationType9725 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_dottedId_in_annotationType9737 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_wordListExpression9762 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RessourceLiteral_in_wordListExpression9775 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_wordTableExpression9799 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RessourceLiteral_in_wordTableExpression9812 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_numberFunction9835 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_numberExpressionInPar_in_numberFunction9857 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_externalNumberFunction_in_numberFunction9881 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_externalNumberFunction9907 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_externalNumberFunction9909 = new BitSet(new long[]{0x0000000000000000L,0x2000000000800000L});
-    public static final BitSet FOLLOW_varArgumentList_in_externalNumberFunction9916 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_externalNumberFunction9918 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_numberVariable9943 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_numberVariable9956 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_numberVariable9969 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_multiplicativeExpression_in_additiveExpression9999 = new BitSet(new long[]{0x0000000000000002L,0x0001000800000000L});
-    public static final BitSet FOLLOW_set_in_additiveExpression10008 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_multiplicativeExpression_in_additiveExpression10021 = new BitSet(new long[]{0x0000000000000002L,0x0001000800000000L});
-    public static final BitSet FOLLOW_simpleNumberExpression_in_multiplicativeExpression10054 = new BitSet(new long[]{0x0000000000000002L,0x0000800000000000L,0x0000000000000030L});
-    public static final BitSet FOLLOW_set_in_multiplicativeExpression10063 = new BitSet(new long[]{0x2000040000000000L,0x0000000800800800L});
-    public static final BitSet FOLLOW_simpleNumberExpression_in_multiplicativeExpression10082 = new BitSet(new long[]{0x0000000000000002L,0x0000800000000000L,0x0000000000000030L});
-    public static final BitSet FOLLOW_numberFunction_in_multiplicativeExpression10100 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_additiveExpression_in_numberExpression10123 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LPAREN_in_numberExpressionInPar10141 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_additiveExpression_in_numberExpressionInPar10148 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_numberExpressionInPar10150 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_MINUS_in_simpleNumberExpression10173 = new BitSet(new long[]{0x0000040000000000L});
-    public static final BitSet FOLLOW_DecimalLiteral_in_simpleNumberExpression10180 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_MINUS_in_simpleNumberExpression10194 = new BitSet(new long[]{0x2000000000000000L});
-    public static final BitSet FOLLOW_FloatingPointLiteral_in_simpleNumberExpression10201 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_MINUS_in_simpleNumberExpression10212 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_numberVariable_in_simpleNumberExpression10219 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_numberExpressionInPar_in_simpleNumberExpression10230 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_simpleStringExpression_in_stringExpression10270 = new BitSet(new long[]{0x0000000000000002L,0x0001000000000000L});
-    public static final BitSet FOLLOW_PLUS_in_stringExpression10277 = new BitSet(new long[]{0x0020000000040000L,0x0000000000820800L,0x0000000000020200L});
-    public static final BitSet FOLLOW_simpleStringExpression_in_stringExpression10284 = new BitSet(new long[]{0x0000000000000002L,0x0001000000000000L});
-    public static final BitSet FOLLOW_numberExpressionInPar_in_stringExpression10297 = new BitSet(new long[]{0x0000000000000002L,0x0001000000000000L});
-    public static final BitSet FOLLOW_simpleBooleanExpression_in_stringExpression10309 = new BitSet(new long[]{0x0000000000000002L,0x0001000000000000L});
-    public static final BitSet FOLLOW_typeExpression_in_stringExpression10321 = new BitSet(new long[]{0x0000000000000002L,0x0001000000000000L});
-    public static final BitSet FOLLOW_listExpression_in_stringExpression10333 = new BitSet(new long[]{0x0000000000000002L,0x0001000000000000L});
-    public static final BitSet FOLLOW_stringFunction_in_stringExpression10361 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_REMOVESTRING_in_stringFunction10388 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_stringFunction10390 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_variable_in_stringFunction10396 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_stringFunction10399 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
-    public static final BitSet FOLLOW_stringExpression_in_stringFunction10405 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_stringFunction10411 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_externalStringFunction_in_stringFunction10433 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_externalStringFunction10458 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_externalStringFunction10460 = new BitSet(new long[]{0x0000000000000000L,0x2000000000800000L});
-    public static final BitSet FOLLOW_varArgumentList_in_externalStringFunction10467 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_externalStringFunction10469 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_StringLiteral_in_simpleStringExpression10493 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_simpleStringExpression10507 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_composedBooleanExpression_in_booleanExpression10540 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_simpleBooleanExpression_in_booleanExpression10551 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_literalBooleanExpression_in_simpleBooleanExpression10574 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_simpleBooleanExpression10589 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_booleanCompare_in_composedBooleanExpression10623 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_booleanTypeExpression_in_composedBooleanExpression10643 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_booleanNumberExpression_in_composedBooleanExpression10662 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_booleanFunction_in_composedBooleanExpression10672 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_XOR_in_booleanFunction10697 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_booleanFunction10699 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
-    public static final BitSet FOLLOW_booleanExpression_in_booleanFunction10705 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_booleanFunction10707 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
-    public static final BitSet FOLLOW_booleanExpression_in_booleanFunction10713 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_booleanFunction10715 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_externalBooleanFunction_in_booleanFunction10737 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_externalBooleanFunction10762 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_externalBooleanFunction10764 = new BitSet(new long[]{0x0000000000000000L,0x2000000000800000L});
-    public static final BitSet FOLLOW_varArgumentList_in_externalBooleanFunction10771 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_externalBooleanFunction10773 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_simpleBooleanExpression_in_booleanCompare10798 = new BitSet(new long[]{0x0000400000000000L,0x0000008000000000L});
-    public static final BitSet FOLLOW_set_in_booleanCompare10804 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
-    public static final BitSet FOLLOW_booleanExpression_in_booleanCompare10816 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_TRUE_in_literalBooleanExpression10842 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_FALSE_in_literalBooleanExpression10854 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_typeExpression_in_booleanTypeExpression10880 = new BitSet(new long[]{0x0000400000000000L,0x0000008000000000L});
-    public static final BitSet FOLLOW_set_in_booleanTypeExpression10887 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_typeExpression_in_booleanTypeExpression10900 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LPAREN_in_booleanNumberExpression10922 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_booleanNumberExpression10929 = new BitSet(new long[]{0x0000400000000000L,0x00000080000C000CL});
-    public static final BitSet FOLLOW_set_in_booleanNumberExpression10936 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_booleanNumberExpression10965 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_booleanNumberExpression10968 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionLast_in_condition3548 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionMofN_in_condition3557 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionNear_in_condition3566 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionNot_in_condition3575 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionOr_in_condition3584 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionPartOf_in_condition3593 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionPosition_in_condition3602 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionRegExp_in_condition3611 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionScore_in_condition3620 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionTotalCount_in_condition3629 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionVote_in_condition3638 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionIf_in_condition3647 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionFeature_in_condition3656 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionParse_in_condition3665 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionIs_in_condition3674 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionBefore_in_condition3683 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionAfter_in_condition3692 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionStartsWith_in_condition3702 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionEndsWith_in_condition3711 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionPartOfNeq_in_condition3720 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionSize_in_condition3729 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_externalCondition_in_condition3748 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_variableCondition_in_condition3757 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_variableCondition3787 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_externalCondition3814 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_externalCondition3816 = new BitSet(new long[]{0x0000000000000000L,0x2000000000800000L});
+    public static final BitSet FOLLOW_varArgumentList_in_externalCondition3822 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_externalCondition3824 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_AND_in_conditionAnd3853 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionAnd3855 = new BitSet(new long[]{0x0040200AC0010240L,0x8042717800008AC0L,0x0000000002004048L});
+    public static final BitSet FOLLOW_conditions_in_conditionAnd3861 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionAnd3863 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_CONTAINS_in_conditionContains3915 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionContains3917 = new BitSet(new long[]{0x0000000000040000L,0x0000000000020800L});
+    public static final BitSet FOLLOW_typeExpression_in_conditionContains3924 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_listExpression_in_conditionContains3932 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionContains3934 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
+    public static final BitSet FOLLOW_argument_in_conditionContains3940 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionContains3949 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_conditionContains3955 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionContains3957 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_conditionContains3963 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionContains3966 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
+    public static final BitSet FOLLOW_booleanExpression_in_conditionContains3972 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionContains3978 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_CONTEXTCOUNT_in_conditionContextCount4011 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionContextCount4013 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_conditionContextCount4019 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionContextCount4022 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_conditionContextCount4028 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionContextCount4030 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_conditionContextCount4036 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionContextCount4046 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_numberVariable_in_conditionContextCount4052 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionContextCount4056 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_COUNT_in_conditionCount4102 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionCount4104 = new BitSet(new long[]{0x0000000000000000L,0x0000000000020800L});
+    public static final BitSet FOLLOW_listExpression_in_conditionCount4110 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionCount4112 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
+    public static final BitSet FOLLOW_argument_in_conditionCount4118 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionCount4121 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_conditionCount4127 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionCount4129 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_conditionCount4135 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionCount4145 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_numberVariable_in_conditionCount4151 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionCount4155 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_COUNT_in_conditionCount4173 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionCount4175 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_conditionCount4181 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionCount4184 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_conditionCount4190 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionCount4192 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_conditionCount4198 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionCount4208 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_numberVariable_in_conditionCount4214 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionCount4218 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_TOTALCOUNT_in_conditionTotalCount4254 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionTotalCount4256 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_conditionTotalCount4262 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionTotalCount4265 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_conditionTotalCount4271 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionTotalCount4273 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_conditionTotalCount4279 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionTotalCount4288 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_numberVariable_in_conditionTotalCount4294 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionTotalCount4298 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_CURRENTCOUNT_in_conditionCurrentCount4331 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionCurrentCount4333 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_conditionCurrentCount4339 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionCurrentCount4342 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_conditionCurrentCount4348 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionCurrentCount4350 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_conditionCurrentCount4356 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionCurrentCount4366 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_numberVariable_in_conditionCurrentCount4372 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionCurrentCount4376 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_INLIST_in_conditionInList4419 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionInList4421 = new BitSet(new long[]{0x0000000000000000L,0x4000000000020800L});
+    public static final BitSet FOLLOW_stringListExpression_in_conditionInList4436 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_wordListExpression_in_conditionInList4444 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionInList4448 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_conditionInList4454 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionInList4457 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
+    public static final BitSet FOLLOW_booleanExpression_in_conditionInList4463 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionInList4469 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LAST_in_conditionLast4508 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionLast4510 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_conditionLast4516 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionLast4518 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_MOFN_in_conditionMofN4565 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionMofN4567 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_conditionMofN4573 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionMofN4575 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_conditionMofN4581 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionMofN4583 = new BitSet(new long[]{0x0040200AC0010240L,0x8042717800008AC0L,0x0000000002004048L});
+    public static final BitSet FOLLOW_conditions_in_conditionMofN4589 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionMofN4591 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_NEAR_in_conditionNear4626 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionNear4628 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_conditionNear4634 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionNear4636 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_conditionNear4642 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionNear4644 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_conditionNear4650 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionNear4653 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
+    public static final BitSet FOLLOW_booleanExpression_in_conditionNear4659 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionNear4662 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
+    public static final BitSet FOLLOW_booleanExpression_in_conditionNear4668 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionNear4674 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_MINUS_in_conditionNot4710 = new BitSet(new long[]{0x0040200AC0010240L,0x8042717800008AC0L,0x0000000002004048L});
+    public static final BitSet FOLLOW_condition_in_conditionNot4716 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_NOT_in_conditionNot4723 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionNot4725 = new BitSet(new long[]{0x0040200AC0010240L,0x8042717800008AC0L,0x0000000002004048L});
+    public static final BitSet FOLLOW_condition_in_conditionNot4731 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionNot4733 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_OR_in_conditionOr4772 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionOr4774 = new BitSet(new long[]{0x0040200AC0010240L,0x8042717800008AC0L,0x0000000002004048L});
+    public static final BitSet FOLLOW_conditions_in_conditionOr4780 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionOr4782 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_PARTOF_in_conditionPartOf4812 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionPartOf4814 = new BitSet(new long[]{0x0000000000040000L,0x0000000000020800L});
+    public static final BitSet FOLLOW_typeExpression_in_conditionPartOf4821 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_typeListExpression_in_conditionPartOf4827 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionPartOf4830 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_PARTOFNEQ_in_conditionPartOfNeq4860 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionPartOfNeq4862 = new BitSet(new long[]{0x0000000000040000L,0x0000000000020800L});
+    public static final BitSet FOLLOW_typeExpression_in_conditionPartOfNeq4869 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_typeListExpression_in_conditionPartOfNeq4875 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionPartOfNeq4878 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_POSITION_in_conditionPosition4912 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionPosition4914 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_conditionPosition4920 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionPosition4922 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_conditionPosition4928 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionPosition4930 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_REGEXP_in_conditionRegExp4960 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionRegExp4962 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
+    public static final BitSet FOLLOW_stringExpression_in_conditionRegExp4968 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionRegExp4971 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
+    public static final BitSet FOLLOW_booleanExpression_in_conditionRegExp4977 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionRegExp4981 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SCORE_in_conditionScore5016 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionScore5018 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_conditionScore5024 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionScore5027 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_conditionScore5033 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionScore5040 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_numberVariable_in_conditionScore5046 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionScore5053 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_VOTE_in_conditionVote5088 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionVote5090 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_conditionVote5096 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionVote5098 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_conditionVote5104 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionVote5106 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IF_in_conditionIf5144 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionIf5146 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
+    public static final BitSet FOLLOW_booleanExpression_in_conditionIf5152 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionIf5154 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_FEATURE_in_conditionFeature5188 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionFeature5190 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
+    public static final BitSet FOLLOW_stringExpression_in_conditionFeature5196 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionFeature5198 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
+    public static final BitSet FOLLOW_argument_in_conditionFeature5204 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionFeature5206 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_PARSE_in_conditionParse5240 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionParse5242 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_Identifier_in_conditionParse5250 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionParse5252 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IS_in_conditionIs5283 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionIs5285 = new BitSet(new long[]{0x0000000000040000L,0x0000000000020800L});
+    public static final BitSet FOLLOW_typeExpression_in_conditionIs5292 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_typeListExpression_in_conditionIs5298 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionIs5301 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_BEFORE_in_conditionBefore5332 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionBefore5334 = new BitSet(new long[]{0x0000000000040000L,0x0000000000020800L});
+    public static final BitSet FOLLOW_typeExpression_in_conditionBefore5341 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_typeListExpression_in_conditionBefore5347 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionBefore5350 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_AFTER_in_conditionAfter5381 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionAfter5383 = new BitSet(new long[]{0x0000000000040000L,0x0000000000020800L});
+    public static final BitSet FOLLOW_typeExpression_in_conditionAfter5390 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_typeListExpression_in_conditionAfter5396 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionAfter5399 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_STARTSWITH_in_conditionStartsWith5430 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionStartsWith5432 = new BitSet(new long[]{0x0000000000040000L,0x0000000000020800L});
+    public static final BitSet FOLLOW_typeExpression_in_conditionStartsWith5439 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_typeListExpression_in_conditionStartsWith5445 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionStartsWith5448 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ENDSWITH_in_conditionEndsWith5479 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionEndsWith5481 = new BitSet(new long[]{0x0000000000040000L,0x0000000000020800L});
+    public static final BitSet FOLLOW_typeExpression_in_conditionEndsWith5488 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_typeListExpression_in_conditionEndsWith5494 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionEndsWith5497 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SIZE_in_conditionSize5528 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_conditionSize5530 = new BitSet(new long[]{0x0000000000000000L,0x0000000000020800L});
+    public static final BitSet FOLLOW_listExpression_in_conditionSize5536 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionSize5539 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_conditionSize5545 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionSize5547 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_conditionSize5553 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_conditionSize5558 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_numberVariable_in_conditionSize5564 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_conditionSize5568 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionColor_in_action5601 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionDel_in_action5610 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionLog_in_action5619 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionMark_in_action5628 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionMarkScore_in_action5637 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionMarkFast_in_action5646 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionMarkLast_in_action5655 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionReplace_in_action5664 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionFilterType_in_action5673 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionRetainType_in_action5682 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionCreate_in_action5691 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionFill_in_action5700 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionCall_in_action5709 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionAssign_in_action5718 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionSetFeature_in_action5727 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionGetFeature_in_action5736 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionUnmark_in_action5745 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionUnmarkAll_in_action5754 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionTransfer_in_action5763 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionMarkOnce_in_action5772 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionTrie_in_action5781 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionGather_in_action5790 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionExec_in_action5799 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionMarkTable_in_action5808 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionAdd_in_action5817 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionRemove_in_action5826 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionRemoveDuplicate_in_action5835 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionMerge_in_action5844 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionGet_in_action5853 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionGetList_in_action5862 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionMatchedText_in_action5871 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionClear_in_action5880 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionExpand_in_action5889 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionConfigure_in_action5898 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_actionDynamicAnchoring_in_action5907 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_externalAction_in_action5926 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_variableAction_in_action5935 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_variableAction5964 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_externalAction5992 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_externalAction5994 = new BitSet(new long[]{0x0000000000000000L,0x2000000000800000L});
+    public static final BitSet FOLLOW_varArgumentList_in_externalAction6000 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_externalAction6002 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_CREATE_in_actionCreate6038 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionCreate6040 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_actionCreate6046 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionCreate6053 = new BitSet(new long[]{0x2001040100000000L,0x2200000800C00800L,0x0000000000001204L});
+    public static final BitSet FOLLOW_numberExpression_in_actionCreate6078 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionCreate6095 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_actionCreate6101 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionCreate6108 = new BitSet(new long[]{0x0000000000000000L,0x2200000000000800L,0x0000000000000200L});
+    public static final BitSet FOLLOW_stringExpression_in_actionCreate6121 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_ASSIGN_EQUAL_in_actionCreate6123 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
+    public static final BitSet FOLLOW_argument_in_actionCreate6129 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionCreate6139 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
+    public static final BitSet FOLLOW_stringExpression_in_actionCreate6145 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_ASSIGN_EQUAL_in_actionCreate6147 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
+    public static final BitSet FOLLOW_argument_in_actionCreate6153 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionCreate6168 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_MARKTABLE_in_actionMarkTable6209 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionMarkTable6211 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_actionMarkTable6222 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionMarkTable6224 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_actionMarkTable6235 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionMarkTable6237 = new BitSet(new long[]{0x0000000000000000L,0x4000000000000800L});
+    public static final BitSet FOLLOW_wordTableExpression_in_actionMarkTable6247 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionMarkTable6255 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
+    public static final BitSet FOLLOW_stringExpression_in_actionMarkTable6269 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_ASSIGN_EQUAL_in_actionMarkTable6271 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_actionMarkTable6277 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionMarkTable6287 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
+    public static final BitSet FOLLOW_stringExpression_in_actionMarkTable6293 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_ASSIGN_EQUAL_in_actionMarkTable6295 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_actionMarkTable6301 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionMarkTable6314 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_GATHER_in_actionGather6355 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionGather6357 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_actionGather6363 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionGather6370 = new BitSet(new long[]{0x2001040100000000L,0x2200000800C00800L,0x0000000000001204L});
+    public static final BitSet FOLLOW_numberExpression_in_actionGather6390 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionGather6406 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_actionGather6412 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionGather6419 = new BitSet(new long[]{0x0000000000000000L,0x2200000000000800L,0x0000000000000200L});
+    public static final BitSet FOLLOW_stringExpression_in_actionGather6432 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_ASSIGN_EQUAL_in_actionGather6434 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C20800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_actionGather6441 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_numberListExpression_in_actionGather6449 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionGather6460 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
+    public static final BitSet FOLLOW_stringExpression_in_actionGather6466 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_ASSIGN_EQUAL_in_actionGather6468 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C20800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_actionGather6475 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_numberListExpression_in_actionGather6483 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionGather6499 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_FILL_in_actionFill6541 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionFill6543 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_actionFill6549 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionFill6552 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
+    public static final BitSet FOLLOW_stringExpression_in_actionFill6558 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_ASSIGN_EQUAL_in_actionFill6560 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
+    public static final BitSet FOLLOW_argument_in_actionFill6577 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionFill6594 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_COLOR_in_actionColor6632 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionColor6634 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_actionColor6640 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionColor6652 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
+    public static final BitSet FOLLOW_stringExpression_in_actionColor6663 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionColor6671 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
+    public static final BitSet FOLLOW_stringExpression_in_actionColor6681 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionColor6689 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
+    public static final BitSet FOLLOW_booleanExpression_in_actionColor6699 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionColor6709 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DEL_in_actionDel6743 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LOG_in_actionLog6785 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionLog6787 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
+    public static final BitSet FOLLOW_stringExpression_in_actionLog6793 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionLog6796 = new BitSet(new long[]{0x0000000000000000L,0x0000000004000000L});
+    public static final BitSet FOLLOW_LogLevel_in_actionLog6802 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionLog6806 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_MARK_in_actionMark6845 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionMark6847 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_actionMark6858 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionMark6874 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_actionMark6890 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionMark6914 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_EXPAND_in_actionExpand6958 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionExpand6960 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_actionExpand6971 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionExpand6987 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_actionExpand7003 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionExpand7027 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_MARKSCORE_in_actionMarkScore7072 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionMarkScore7074 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_actionMarkScore7085 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionMarkScore7087 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_actionMarkScore7097 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionMarkScore7113 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_actionMarkScore7129 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionMarkScore7153 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_MARKONCE_in_actionMarkOnce7197 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionMarkOnce7199 = new BitSet(new long[]{0x2001040100040000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_actionMarkOnce7216 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionMarkOnce7218 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_actionMarkOnce7236 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionMarkOnce7252 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_actionMarkOnce7268 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionMarkOnce7287 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_MARKFAST_in_actionMarkFast7326 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionMarkFast7328 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_actionMarkFast7334 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionMarkFast7336 = new BitSet(new long[]{0x0000000000000000L,0x4000000000000800L});
+    public static final BitSet FOLLOW_wordListExpression_in_actionMarkFast7342 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionMarkFast7345 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
+    public static final BitSet FOLLOW_booleanExpression_in_actionMarkFast7351 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionMarkFast7354 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_actionMarkFast7360 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionMarkFast7366 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_MARKLAST_in_actionMarkLast7400 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionMarkLast7402 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_actionMarkLast7408 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionMarkLast7410 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_REPLACE_in_actionReplace7444 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionReplace7446 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
+    public static final BitSet FOLLOW_stringExpression_in_actionReplace7452 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionReplace7454 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_RETAINTYPE_in_actionRetainType7501 = new BitSet(new long[]{0x0000000000000002L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionRetainType7504 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_actionRetainType7510 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionRetainType7515 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_actionRetainType7521 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionRetainType7527 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_FILTERTYPE_in_actionFilterType7578 = new BitSet(new long[]{0x0000000000000002L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionFilterType7581 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_actionFilterType7587 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionFilterType7592 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_actionFilterType7598 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionFilterType7604 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_CALL_in_actionCall7644 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionCall7646 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_dottedIdentifier_in_actionCall7652 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionCall7654 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_CONFIGURE_in_actionConfigure7692 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionConfigure7694 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_dottedIdentifier_in_actionConfigure7700 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionConfigure7707 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
+    public static final BitSet FOLLOW_stringExpression_in_actionConfigure7717 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_ASSIGN_EQUAL_in_actionConfigure7719 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
+    public static final BitSet FOLLOW_argument_in_actionConfigure7725 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionConfigure7735 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
+    public static final BitSet FOLLOW_stringExpression_in_actionConfigure7741 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_ASSIGN_EQUAL_in_actionConfigure7743 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
+    public static final BitSet FOLLOW_argument_in_actionConfigure7749 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionConfigure7759 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_EXEC_in_actionExec7791 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionExec7793 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_dottedIdentifier_in_actionExec7799 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionExec7802 = new BitSet(new long[]{0x0000000000000000L,0x0000000000020800L});
+    public static final BitSet FOLLOW_typeListExpression_in_actionExec7808 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionExec7812 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ASSIGN_in_actionAssign7855 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionAssign7857 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_Identifier_in_actionAssign7884 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionAssign7886 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_actionAssign7892 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_Identifier_in_actionAssign7930 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionAssign7932 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
+    public static final BitSet FOLLOW_booleanExpression_in_actionAssign7938 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_Identifier_in_actionAssign7976 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionAssign7978 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
+    public static final BitSet FOLLOW_stringExpression_in_actionAssign7984 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_Identifier_in_actionAssign8022 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionAssign8024 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_actionAssign8030 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_Identifier_in_actionAssign8069 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionAssign8071 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_actionAssign8077 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_Identifier_in_actionAssign8115 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionAssign8117 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_actionAssign8123 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionAssign8142 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SETFEATURE_in_actionSetFeature8174 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionSetFeature8176 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
+    public static final BitSet FOLLOW_stringExpression_in_actionSetFeature8182 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionSetFeature8184 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
+    public static final BitSet FOLLOW_argument_in_actionSetFeature8190 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionSetFeature8192 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_GETFEATURE_in_actionGetFeature8231 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionGetFeature8233 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
+    public static final BitSet FOLLOW_stringExpression_in_actionGetFeature8239 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionGetFeature8241 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_variable_in_actionGetFeature8247 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionGetFeature8249 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DYNAMICANCHORING_in_actionDynamicAnchoring8285 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionDynamicAnchoring8287 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
+    public static final BitSet FOLLOW_booleanExpression_in_actionDynamicAnchoring8293 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionDynamicAnchoring8301 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_actionDynamicAnchoring8307 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionDynamicAnchoring8315 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_actionDynamicAnchoring8321 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionDynamicAnchoring8338 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_UNMARK_in_actionUnmark8368 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionUnmark8370 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_actionUnmark8376 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionUnmark8378 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_UNMARKALL_in_actionUnmarkAll8414 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionUnmarkAll8416 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_actionUnmarkAll8422 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionUnmarkAll8430 = new BitSet(new long[]{0x0000000000000000L,0x0000000000020800L});
+    public static final BitSet FOLLOW_typeListExpression_in_actionUnmarkAll8436 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionUnmarkAll8440 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_TRANSFER_in_actionTransfer8475 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionTransfer8477 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_actionTransfer8483 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionTransfer8485 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_TRIE_in_actionTrie8525 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionTrie8527 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
+    public static final BitSet FOLLOW_stringExpression_in_actionTrie8537 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_ASSIGN_EQUAL_in_actionTrie8539 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_actionTrie8545 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionTrie8553 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
+    public static final BitSet FOLLOW_stringExpression_in_actionTrie8559 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_ASSIGN_EQUAL_in_actionTrie8561 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_actionTrie8567 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionTrie8577 = new BitSet(new long[]{0x0000000000000000L,0x4000000000000800L});
+    public static final BitSet FOLLOW_wordListExpression_in_actionTrie8583 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionTrie8590 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
+    public static final BitSet FOLLOW_booleanExpression_in_actionTrie8596 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionTrie8603 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_actionTrie8609 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionTrie8616 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
+    public static final BitSet FOLLOW_booleanExpression_in_actionTrie8622 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionTrie8629 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_actionTrie8635 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionTrie8642 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
+    public static final BitSet FOLLOW_stringExpression_in_actionTrie8648 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionTrie8654 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ADD_in_actionAdd8699 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionAdd8701 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_listVariable_in_actionAdd8707 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionAdd8710 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
+    public static final BitSet FOLLOW_argument_in_actionAdd8716 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionAdd8722 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_REMOVE_in_actionRemove8762 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionRemove8764 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_listVariable_in_actionRemove8770 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionRemove8773 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
+    public static final BitSet FOLLOW_argument_in_actionRemove8779 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionRemove8785 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_REMOVEDUPLICATE_in_actionRemoveDuplicate8821 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionRemoveDuplicate8823 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_listVariable_in_actionRemoveDuplicate8829 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionRemoveDuplicate8831 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_MERGE_in_actionMerge8876 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionMerge8878 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
+    public static final BitSet FOLLOW_booleanExpression_in_actionMerge8884 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionMerge8886 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_listVariable_in_actionMerge8892 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionMerge8894 = new BitSet(new long[]{0x0000000000000000L,0x0000000000020800L});
+    public static final BitSet FOLLOW_listExpression_in_actionMerge8900 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionMerge8905 = new BitSet(new long[]{0x0000000000000000L,0x0000000000020800L});
+    public static final BitSet FOLLOW_listExpression_in_actionMerge8911 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionMerge8917 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_GET_in_actionGet8952 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionGet8954 = new BitSet(new long[]{0x0000000000000000L,0x0000000000020800L});
+    public static final BitSet FOLLOW_listExpression_in_actionGet8960 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionGet8962 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_variable_in_actionGet8968 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionGet8970 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
+    public static final BitSet FOLLOW_stringExpression_in_actionGet8976 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionGet8978 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_GETLIST_in_actionGetList9013 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionGetList9015 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_listVariable_in_actionGetList9021 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionGetList9023 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
+    public static final BitSet FOLLOW_stringExpression_in_actionGetList9029 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionGetList9031 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_MATCHEDTEXT_in_actionMatchedText9070 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionMatchedText9072 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_variable_in_actionMatchedText9083 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_actionMatchedText9099 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_actionMatchedText9105 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionMatchedText9129 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_CLEAR_in_actionClear9169 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_actionClear9171 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_listVariable_in_actionClear9177 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_actionClear9179 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LPAREN_in_varArgumentList9206 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
+    public static final BitSet FOLLOW_argument_in_varArgumentList9212 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_varArgumentList9216 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
+    public static final BitSet FOLLOW_argument_in_varArgumentList9222 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_varArgumentList9228 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_stringExpression_in_argument9262 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_booleanExpression_in_argument9273 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_numberExpression_in_argument9284 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_typeExpression_in_argument9295 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_dottedIdentifier9329 = new BitSet(new long[]{0x0000008000000002L});
+    public static final BitSet FOLLOW_DOT_in_dottedIdentifier9342 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_Identifier_in_dottedIdentifier9352 = new BitSet(new long[]{0x0000008000000002L});
+    public static final BitSet FOLLOW_Identifier_in_dottedIdentifier29378 = new BitSet(new long[]{0x0000008000000002L,0x0000000800000000L});
+    public static final BitSet FOLLOW_set_in_dottedIdentifier29391 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_Identifier_in_dottedIdentifier29405 = new BitSet(new long[]{0x0000008000000002L,0x0000000800000000L});
+    public static final BitSet FOLLOW_Identifier_in_dottedId9437 = new BitSet(new long[]{0x0000008000000002L});
+    public static final BitSet FOLLOW_DOT_in_dottedId9450 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_Identifier_in_dottedId9460 = new BitSet(new long[]{0x0000008000000002L});
+    public static final BitSet FOLLOW_BasicAnnotationType_in_annotationType9495 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_dottedId_in_annotationType9507 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_wordListExpression9532 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_RessourceLiteral_in_wordListExpression9545 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_wordTableExpression9569 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_RessourceLiteral_in_wordTableExpression9582 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_numberFunction9605 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_numberExpressionInPar_in_numberFunction9627 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_externalNumberFunction_in_numberFunction9651 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_externalNumberFunction9677 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_externalNumberFunction9679 = new BitSet(new long[]{0x0000000000000000L,0x2000000000800000L});
+    public static final BitSet FOLLOW_varArgumentList_in_externalNumberFunction9686 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_externalNumberFunction9688 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_numberVariable9713 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_numberVariable9726 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_numberVariable9739 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_multiplicativeExpression_in_additiveExpression9769 = new BitSet(new long[]{0x0000000000000002L,0x0001000800000000L});
+    public static final BitSet FOLLOW_set_in_additiveExpression9778 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_multiplicativeExpression_in_additiveExpression9791 = new BitSet(new long[]{0x0000000000000002L,0x0001000800000000L});
+    public static final BitSet FOLLOW_simpleNumberExpression_in_multiplicativeExpression9824 = new BitSet(new long[]{0x0000000000000002L,0x0000800000000000L,0x0000000000000030L});
+    public static final BitSet FOLLOW_set_in_multiplicativeExpression9833 = new BitSet(new long[]{0x2000040000000000L,0x0000000800800800L});
+    public static final BitSet FOLLOW_simpleNumberExpression_in_multiplicativeExpression9852 = new BitSet(new long[]{0x0000000000000002L,0x0000800000000000L,0x0000000000000030L});
+    public static final BitSet FOLLOW_numberFunction_in_multiplicativeExpression9870 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_additiveExpression_in_numberExpression9893 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LPAREN_in_numberExpressionInPar9911 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_additiveExpression_in_numberExpressionInPar9918 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_numberExpressionInPar9920 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_MINUS_in_simpleNumberExpression9943 = new BitSet(new long[]{0x0000040000000000L});
+    public static final BitSet FOLLOW_DecimalLiteral_in_simpleNumberExpression9950 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_MINUS_in_simpleNumberExpression9964 = new BitSet(new long[]{0x2000000000000000L});
+    public static final BitSet FOLLOW_FloatingPointLiteral_in_simpleNumberExpression9971 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_MINUS_in_simpleNumberExpression9982 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_numberVariable_in_simpleNumberExpression9989 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_numberExpressionInPar_in_simpleNumberExpression10000 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_simpleStringExpression_in_stringExpression10040 = new BitSet(new long[]{0x0000000000000002L,0x0001000000000000L});
+    public static final BitSet FOLLOW_PLUS_in_stringExpression10047 = new BitSet(new long[]{0x0020000000040000L,0x0000000000820800L,0x0000000000020200L});
+    public static final BitSet FOLLOW_simpleStringExpression_in_stringExpression10054 = new BitSet(new long[]{0x0000000000000002L,0x0001000000000000L});
+    public static final BitSet FOLLOW_numberExpressionInPar_in_stringExpression10067 = new BitSet(new long[]{0x0000000000000002L,0x0001000000000000L});
+    public static final BitSet FOLLOW_simpleBooleanExpression_in_stringExpression10079 = new BitSet(new long[]{0x0000000000000002L,0x0001000000000000L});
+    public static final BitSet FOLLOW_typeExpression_in_stringExpression10091 = new BitSet(new long[]{0x0000000000000002L,0x0001000000000000L});
+    public static final BitSet FOLLOW_listExpression_in_stringExpression10103 = new BitSet(new long[]{0x0000000000000002L,0x0001000000000000L});
+    public static final BitSet FOLLOW_stringFunction_in_stringExpression10131 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_REMOVESTRING_in_stringFunction10158 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_stringFunction10160 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_variable_in_stringFunction10166 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_stringFunction10169 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000800L,0x0000000000000200L});
+    public static final BitSet FOLLOW_stringExpression_in_stringFunction10175 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_stringFunction10181 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_externalStringFunction_in_stringFunction10203 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_externalStringFunction10228 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_externalStringFunction10230 = new BitSet(new long[]{0x0000000000000000L,0x2000000000800000L});
+    public static final BitSet FOLLOW_varArgumentList_in_externalStringFunction10237 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_externalStringFunction10239 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_StringLiteral_in_simpleStringExpression10263 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_simpleStringExpression10277 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_composedBooleanExpression_in_booleanExpression10310 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_simpleBooleanExpression_in_booleanExpression10321 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_literalBooleanExpression_in_simpleBooleanExpression10344 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_simpleBooleanExpression10359 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_booleanCompare_in_composedBooleanExpression10393 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_booleanTypeExpression_in_composedBooleanExpression10413 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_booleanNumberExpression_in_composedBooleanExpression10432 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_booleanFunction_in_composedBooleanExpression10442 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_XOR_in_booleanFunction10467 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_booleanFunction10469 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
+    public static final BitSet FOLLOW_booleanExpression_in_booleanFunction10475 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_booleanFunction10477 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
+    public static final BitSet FOLLOW_booleanExpression_in_booleanFunction10483 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_booleanFunction10485 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_externalBooleanFunction_in_booleanFunction10507 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_externalBooleanFunction10532 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_externalBooleanFunction10534 = new BitSet(new long[]{0x0000000000000000L,0x2000000000800000L});
+    public static final BitSet FOLLOW_varArgumentList_in_externalBooleanFunction10541 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_externalBooleanFunction10543 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_simpleBooleanExpression_in_booleanCompare10568 = new BitSet(new long[]{0x0000400000000000L,0x0000008000000000L});
+    public static final BitSet FOLLOW_set_in_booleanCompare10574 = new BitSet(new long[]{0x0020000000040000L,0x0000000000800800L,0x0000000020020000L});
+    public static final BitSet FOLLOW_booleanExpression_in_booleanCompare10586 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_TRUE_in_literalBooleanExpression10612 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_FALSE_in_literalBooleanExpression10624 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_typeExpression_in_booleanTypeExpression10650 = new BitSet(new long[]{0x0000400000000000L,0x0000008000000000L});
+    public static final BitSet FOLLOW_set_in_booleanTypeExpression10657 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_typeExpression_in_booleanTypeExpression10670 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LPAREN_in_booleanNumberExpression10692 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_booleanNumberExpression10699 = new BitSet(new long[]{0x0000400000000000L,0x00000080000C000CL});
+    public static final BitSet FOLLOW_set_in_booleanNumberExpression10706 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_booleanNumberExpression10735 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_booleanNumberExpression10738 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleElementComposed_in_synpred1_TextMarkerParser1855 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleElementDisjunctive_in_synpred2_TextMarkerParser1872 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_booleanListExpression_in_synpred7_TextMarkerParser2461 = new BitSet(new long[]{0x0000000000000002L});
@@ -18862,39 +18497,39 @@ public class TextMarkerParser extends Parser {
     public static final BitSet FOLLOW_doubleListExpression_in_synpred13_TextMarkerParser2748 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_floatListExpression_in_synpred14_TextMarkerParser2769 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_typeFunction_in_synpred15_TextMarkerParser3177 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_externalCondition_in_synpred17_TextMarkerParser3749 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_COUNT_in_synpred18_TextMarkerParser4111 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
-    public static final BitSet FOLLOW_LPAREN_in_synpred18_TextMarkerParser4113 = new BitSet(new long[]{0x0000000000000000L,0x0000000000020800L});
-    public static final BitSet FOLLOW_listExpression_in_synpred18_TextMarkerParser4119 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_synpred18_TextMarkerParser4121 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
-    public static final BitSet FOLLOW_argument_in_synpred18_TextMarkerParser4127 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_synpred18_TextMarkerParser4130 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_synpred18_TextMarkerParser4136 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_COMMA_in_synpred18_TextMarkerParser4138 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_synpred18_TextMarkerParser4144 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_COMMA_in_synpred18_TextMarkerParser4154 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_numberVariable_in_synpred18_TextMarkerParser4160 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_RPAREN_in_synpred18_TextMarkerParser4164 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_stringListExpression_in_synpred19_TextMarkerParser4438 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_externalAction_in_synpred20_TextMarkerParser6011 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_numberExpression_in_synpred21_TextMarkerParser6164 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_COMMA_in_synpred22_TextMarkerParser6177 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_synpred22_TextMarkerParser6183 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_numberExpression_in_synpred23_TextMarkerParser6476 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_COMMA_in_synpred24_TextMarkerParser6489 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
-    public static final BitSet FOLLOW_numberExpression_in_synpred24_TextMarkerParser6495 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_numberExpression_in_synpred28_TextMarkerParser7300 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_typeExpression_in_synpred29_TextMarkerParser7320 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_stringExpression_in_synpred31_TextMarkerParser9492 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_booleanExpression_in_synpred32_TextMarkerParser9503 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_numberExpression_in_synpred33_TextMarkerParser9514 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_externalNumberFunction_in_synpred34_TextMarkerParser9873 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_stringFunction_in_synpred36_TextMarkerParser10353 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_externalStringFunction_in_synpred37_TextMarkerParser10425 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_composedBooleanExpression_in_synpred38_TextMarkerParser10532 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_booleanCompare_in_synpred39_TextMarkerParser10615 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_booleanTypeExpression_in_synpred40_TextMarkerParser10635 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_booleanNumberExpression_in_synpred41_TextMarkerParser10654 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_externalBooleanFunction_in_synpred42_TextMarkerParser10729 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_externalCondition_in_synpred17_TextMarkerParser3740 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_COUNT_in_synpred18_TextMarkerParser4102 = new BitSet(new long[]{0x0000000000000000L,0x0000000000800000L});
+    public static final BitSet FOLLOW_LPAREN_in_synpred18_TextMarkerParser4104 = new BitSet(new long[]{0x0000000000000000L,0x0000000000020800L});
+    public static final BitSet FOLLOW_listExpression_in_synpred18_TextMarkerParser4110 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_synpred18_TextMarkerParser4112 = new BitSet(new long[]{0x2021040100040000L,0x0200000800C00800L,0x0000000020021204L});
+    public static final BitSet FOLLOW_argument_in_synpred18_TextMarkerParser4118 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_synpred18_TextMarkerParser4121 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_synpred18_TextMarkerParser4127 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_COMMA_in_synpred18_TextMarkerParser4129 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_synpred18_TextMarkerParser4135 = new BitSet(new long[]{0x0000000004000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_COMMA_in_synpred18_TextMarkerParser4145 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_numberVariable_in_synpred18_TextMarkerParser4151 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
+    public static final BitSet FOLLOW_RPAREN_in_synpred18_TextMarkerParser4155 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_stringListExpression_in_synpred19_TextMarkerParser4429 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_externalAction_in_synpred20_TextMarkerParser5918 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_numberExpression_in_synpred21_TextMarkerParser6071 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_COMMA_in_synpred22_TextMarkerParser6084 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_synpred22_TextMarkerParser6090 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_numberExpression_in_synpred23_TextMarkerParser6383 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_COMMA_in_synpred24_TextMarkerParser6396 = new BitSet(new long[]{0x2001040100000000L,0x0000000800C00800L,0x0000000000001004L});
+    public static final BitSet FOLLOW_numberExpression_in_synpred24_TextMarkerParser6402 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_numberExpression_in_synpred28_TextMarkerParser7207 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_typeExpression_in_synpred29_TextMarkerParser7227 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_stringExpression_in_synpred31_TextMarkerParser9262 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_booleanExpression_in_synpred32_TextMarkerParser9273 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_numberExpression_in_synpred33_TextMarkerParser9284 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_externalNumberFunction_in_synpred34_TextMarkerParser9643 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_stringFunction_in_synpred36_TextMarkerParser10123 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_externalStringFunction_in_synpred37_TextMarkerParser10195 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_composedBooleanExpression_in_synpred38_TextMarkerParser10302 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_booleanCompare_in_synpred39_TextMarkerParser10385 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_booleanTypeExpression_in_synpred40_TextMarkerParser10405 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_booleanNumberExpression_in_synpred41_TextMarkerParser10424 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_externalBooleanFunction_in_synpred42_TextMarkerParser10499 = new BitSet(new long[]{0x0000000000000002L});
 
 }

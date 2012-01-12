@@ -100,11 +100,6 @@ public class ConditionFactory {
     return new InListCondition(listExpr, dist, rel);
   }
 
-  public static AbstractTextMarkerCondition createConditionIsInTag(StringExpression id,
-          List<StringExpression> list1, List<StringExpression> list2, TextMarkerBlock parent) {
-    return new IsInTagCondition(id, list1, list2);
-  }
-
   public static AbstractTextMarkerCondition createConditionMOfN(
           List<AbstractTextMarkerCondition> conds, NumberExpression min, NumberExpression max,
           TextMarkerBlock parent) {

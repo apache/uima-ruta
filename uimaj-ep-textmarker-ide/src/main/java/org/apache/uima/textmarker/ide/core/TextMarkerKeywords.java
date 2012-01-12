@@ -21,7 +21,7 @@ package org.apache.uima.textmarker.ide.core;
 
 public class TextMarkerKeywords implements ITextMarkerKeywords {
 
-  private static String[] condition = { "CONTAINS", "IF", "INLIST", "ISINTAG", "PARTOF",
+  private static String[] condition = { "CONTAINS", "IF", "INLIST", "PARTOF",
       "TOTALCOUNT", "CURRENTCOUNT", "CONTEXTCOUNT", "LAST", "VOTE", "COUNT", "NEAR", "REGEXP",
       "POSITION", "SCORE", "ISLISTEMPTY", "MOFN", "AND", "OR", "FEATURE", "PARSE", "IS", "BEFORE",
       "AFTER", "STARTSWITH", "ENDSWITH", "PARTOFNEQ", "SIZE" };
@@ -32,8 +32,8 @@ public class TextMarkerKeywords implements ITextMarkerKeywords {
       "TYPELIST" };
 
   private static String[] action = { "DEL", "CALL", "MARK", "MARKSCORE", "COLOR", "LOG", "TAG",
-      "REPLACE", "FILLOBJECT", "RETAINMARKUP", "RETAINTYPE", "SETFEATURE", "ASSIGN", "PUTINLIST",
-      "ATTRIBUTE", "MARKFAST", "FILTERTYPE", "FILTERMARKUP", "CREATE", "FILL", "MARKTABLE",
+      "REPLACE", "FILLOBJECT", "RETAINTYPE", "SETFEATURE", "ASSIGN", "PUTINLIST",
+      "ATTRIBUTE", "MARKFAST", "FILTERTYPE", "CREATE", "FILL", "MARKTABLE",
       "UNMARK", "TRANSFER", "MARKONCE", "TRIE", "GATHER", "EXEC", "MARKLAST", "ADD", "REMOVE",
       "MERGE", "GET", "GETLIST", "REMOVEDUPLICATE", "GETFEATURE", "MATCHEDTEXT", "CLEAR",
       "UNMARKALL", "EXPAND", "CONFIGURE", "DYNAMICANCHORING" };

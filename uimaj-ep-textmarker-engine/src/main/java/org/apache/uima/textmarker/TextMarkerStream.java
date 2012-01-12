@@ -117,8 +117,8 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     updateIterators(cas, basicType, filter, additionalWindow);
   }
 
-  private void updateIterators(CAS cas,  Type basicType,
-          FilterManager filter, AnnotationFS additionalWindow) {
+  private void updateIterators(CAS cas, Type basicType, FilterManager filter,
+          AnnotationFS additionalWindow) {
     if (additionalWindow != null) {
       this.basicIt = cas.getAnnotationIndex(basicType).subiterator(additionalWindow);
     } else {
@@ -255,9 +255,8 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     }
 
     FilterManager filterManager = new FilterManager(filter.getDefaultFilterTypes(),
-            filter.getDefaultRetainTags(), filter.getCurrentFilterTypes(),
-            filter.getCurrentRetainTypes(), filter.getCurrentFilterTags(),
-            filter.getCurrentRetainTags(), windowAnnotation, windowType, cas);
+            filter.getCurrentFilterTypes(), filter.getCurrentRetainTypes(), windowAnnotation,
+            windowType, cas);
     TextMarkerStream stream = new TextMarkerStream(cas, basicIt, basicType, filterManager);
     return stream;
   }
@@ -513,18 +512,6 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     currentIt = cas.createFilteredIterator(basicIt, defaultConstraint);
   }
 
-  public void retainTags(List<String> list) {
-    filter.retainTags(list);
-    FSMatchConstraint defaultConstraint = filter.getDefaultConstraint();
-    currentIt = cas.createFilteredIterator(basicIt, defaultConstraint);
-  }
-
-  public void filterTags(List<String> list) {
-    filter.filterTags(list);
-    FSMatchConstraint defaultConstraint = filter.getDefaultConstraint();
-    currentIt = cas.createFilteredIterator(basicIt, defaultConstraint);
-  }
-
   public FilterManager getFilter() {
     return filter;
   }
@@ -607,8 +594,7 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public TextMarkerStream getCompleteStream() {
-    FilterManager defaultFilter = new FilterManager(filter.getDefaultFilterTypes(),
-            filter.getDefaultRetainTags(), getCas());
+    FilterManager defaultFilter = new FilterManager(filter.getDefaultFilterTypes(), getCas());
     return new TextMarkerStream(getCas(), basicIt, basicType, defaultFilter);
   }
 

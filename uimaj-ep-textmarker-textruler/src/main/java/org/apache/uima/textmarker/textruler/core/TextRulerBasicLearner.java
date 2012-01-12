@@ -115,7 +115,6 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
 
       // set filters to NO filtering so that we can add it manually with
       // the FILTERTYPE expression!
-      ae.setConfigParameterValue(TextMarkerEngine.DEFAULT_FILTERED_MARKUPS, new String[0]);
       String tempRulesFileName = getTempRulesFileName();
       IPath path = new Path(tempRulesFileName);
       ae.setConfigParameterValue(TextMarkerEngine.MAIN_SCRIPT, path.removeFileExtension()
