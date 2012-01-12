@@ -107,12 +107,6 @@
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>defaultFilteredMarkups</name>
-        <type>String</type>
-        <multiValued>true</multiValued>
-        <mandatory>false</mandatory>
-      </configurationParameter>
-      <configurationParameter>
         <name>mainScript</name>
         <type>String</type>
         <multiValued>false</multiValued>
