@@ -174,7 +174,7 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
           TextMarkerModuleDeclaration parsed, String startPart, int type, String complString) {
     Collection<String> importedEngines = parsed.descriptorInfo.getImportedEngines();
     for (String string : importedEngines) {
-      if (string.startsWith(complString) || removeLowerCase(string).startsWith(complString)) {
+      if (match(complString, string)) {
         addProposal(complString, string, CompletionProposal.PACKAGE_REF);
       }
     }
@@ -182,7 +182,7 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
     for (String each : importedScripts) {
       String[] split = each.split("\\.");
       String string = split[split.length - 1];
-      if (string.startsWith(complString) || removeLowerCase(string).startsWith(complString)) {
+      if (match(complString, string)) {
         addProposal(complString, string, CompletionProposal.PACKAGE_REF);
       }
     }
@@ -198,7 +198,7 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
     }
     for (IMethod m : blocks) {
       String string = m.getElementName();
-      if (string.startsWith(complString) || removeLowerCase(string).startsWith(complString)) {
+      if (match(complString, string)) {
         addProposal(complString, string, CompletionProposal.PACKAGE_REF);
       }
     }
@@ -219,7 +219,7 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
         }
       }
       for (String string : scripts) {
-        if (string.startsWith(complString) || removeLowerCase(string).startsWith(complString)) {
+        if (match(complString, string)) {
           addProposal(complString, string, CompletionProposal.PACKAGE_REF);
         }
       }
@@ -234,7 +234,7 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
         }
       }
       for (String string : engines) {
-        if (string.startsWith(complString) || removeLowerCase(string).startsWith(complString)) {
+        if (match(complString, string)) {
           addProposal(complString, string, CompletionProposal.PACKAGE_REF);
         }
       }
@@ -249,7 +249,7 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
         }
       }
       for (String string : tss) {
-        if (string.startsWith(complString) || removeLowerCase(string).startsWith(complString)) {
+        if (match(complString, string)) {
           addProposal(complString, string, CompletionProposal.PACKAGE_REF);
         }
       }
@@ -327,7 +327,7 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
   private void doCompletionOnDeclaration(ISourceModule cu, String startPart) {
     String[] keywords = TextMarkerKeywordsManager.getKeywords(ITextMarkerKeywords.DECLARATION);
     for (String string : keywords) {
-      if (string.startsWith(startPart) || removeLowerCase(string).startsWith(startPart)) {
+      if (match(startPart, string)) {
         addProposal(startPart, string, CompletionProposal.KEYWORD);
       }
     }
@@ -400,7 +400,7 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
           String startPart, int type, String complString) {
     String[] keywords = TextMarkerKeywordsManager.getKeywords(ITextMarkerKeywords.ACTION);
     for (String string : keywords) {
-      if (string.startsWith(complString) || removeLowerCase(string).startsWith(complString)) {
+      if (match(complString, string)) {
         addProposal(complString, string, CompletionProposal.METHOD_NAME_REFERENCE);
       }
     }
@@ -413,7 +413,7 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
     }
     String[] keywords = TextMarkerKeywordsManager.getKeywords(ITextMarkerKeywords.CONDITION);
     for (String string : keywords) {
-      if (string.startsWith(complString) || removeLowerCase(string).startsWith(complString)) {
+      if (match(complString, string)) {
         addProposal(complString, string, CompletionProposal.METHOD_NAME_REFERENCE);
       }
     }
@@ -430,7 +430,7 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
     } catch (Exception e) {
     }
     for (String string : types) {
-      if (string.startsWith(complString) || removeLowerCase(string).startsWith(complString)) {
+      if (match(complString, string)) {
         addProposal(complString, string, CompletionProposal.TYPE_REF);
       }
     }
@@ -463,6 +463,11 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
       }
     } catch (ModelException e) {
     }
+  }
+
+  private boolean match(String complString, String string) {
+    return string.toLowerCase().startsWith(complString.toLowerCase())
+            || removeLowerCase(string).startsWith(complString);
   }
 
   private void collectFields(SourceMethod sm, List<IField> fields) throws ModelException {
@@ -546,9 +551,10 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
     char[] fieldName = field.getElementName().toCharArray();
     char[] complFragment = complString.toCharArray();
 
-    if (CharOperation.camelCaseMatch(complString.toCharArray(), fieldName)) {
+    if (CharOperation.camelCaseMatch(complString.toCharArray(), fieldName)
+            || match(complString, field.getElementName())) {
 
-      int relevance = RelevanceConstants.R_DEFAULT;
+      int relevance = RelevanceConstants.R_DEFAULT +1;
       relevance += computeRelevanceForCaseMatching(complFragment, fieldName);
 
       // accept result
@@ -581,9 +587,9 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
     if (complString.length() > 0) {
       pattern = complString.toCharArray();
     }
-    if (CharOperation.camelCaseMatch(pattern, fieldName)) {
+    if (CharOperation.camelCaseMatch(pattern, fieldName) || match(complString, string)) {
 
-      int relevance = RelevanceConstants.R_DEFAULT;
+      int relevance = RelevanceConstants.R_DEFAULT +1;
       relevance += computeRelevanceForCaseMatching(complFragment, fieldName);
 
       // accept result
