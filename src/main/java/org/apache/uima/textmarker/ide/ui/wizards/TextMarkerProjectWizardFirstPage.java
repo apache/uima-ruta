@@ -19,7 +19,6 @@
 
 package org.apache.uima.textmarker.ide.ui.wizards;
 
-import org.apache.uima.textmarker.ide.core.TextMarkerNature;
 import org.eclipse.dltk.ui.wizards.ProjectWizardFirstPage;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -39,26 +38,10 @@ final class TextMarkerProjectWizardFirstPage extends ProjectWizardFirstPage {
     setDescription(TextMarkerWizardMessages.ProjectCreationWizardFirstPage_description);
   }
 
-  final class TextMarkerInterpreterGroup extends AbstractInterpreterGroup {
-
-    public TextMarkerInterpreterGroup(Composite composite) {
-      super(composite);
-    }
-
-    @Override
-    protected String getCurrentLanguageNature() {
-      return TextMarkerNature.NATURE_ID;
-    }
-
-    @Override
-    protected String getIntereprtersPreferencePageId() {
-      return "org.apache.uima.textmarker.ide.preferences.interpreters"; //$NON-NLS-1$
-    }
-  }
-
+  
   @Override
   protected IInterpreterGroup createInterpreterGroup(Composite parent) {
-    return new TextMarkerInterpreterGroup(parent);
+    return new DefaultInterpreterGroup(parent);
   }
 
   @Override

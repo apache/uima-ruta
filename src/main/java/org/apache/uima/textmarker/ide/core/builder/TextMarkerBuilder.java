@@ -46,7 +46,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.SubProgressMonitor;
@@ -56,12 +55,9 @@ import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.core.SourceParserUtil;
 import org.eclipse.dltk.core.builder.IBuildContext;
 import org.eclipse.dltk.core.builder.IBuildParticipant;
-import org.eclipse.dltk.internal.core.builder.BuildProblemReporter;
 import org.eclipse.dltk.internal.core.builder.Messages;
-import org.eclipse.dltk.internal.core.builder.SourceModuleBuildContext;
 import org.eclipse.dltk.internal.core.builder.StandardScriptBuilder;
 import org.eclipse.jface.preference.IPreferenceStore;
 
@@ -75,25 +71,25 @@ public class TextMarkerBuilder extends StandardScriptBuilder {
     super();// m
   }
 
-  @Override
-  @SuppressWarnings("unchecked")
-  public IStatus buildModelElements(IScriptProject project, List elements,
-          IProgressMonitor monitor, int status) {
-    List<ISourceModule> sources = elements;
-    for (ISourceModule sourceModule : sources) {
-      ModuleDeclaration moduleDeclaration = SourceParserUtil.getModuleDeclaration(sourceModule,
-              null);
-      generateDescriptorResources(sourceModule, moduleDeclaration, monitor);
-      // callParticipants(project, moduleDeclaration);
-      initialize(project);
-      final SourceModuleBuildContext context = new SourceModuleBuildContext(sourceModule, status); // guessed
-      context.set(IBuildContext.ATTR_MODULE_DECLARATION, moduleDeclaration);
-      buildModule(context);
-      BuildProblemReporter bpr = (BuildProblemReporter) context.getProblemReporter();
-      bpr.flush();
-    }
-    return super.buildModelElements(project, elements, monitor, status);
-  }
+//  @Override
+//  @SuppressWarnings("unchecked")
+//  public IStatus buildModelElements(IScriptProject project, List elements,
+//          IProgressMonitor monitor, int status) {
+//    List<ISourceModule> sources = elements;
+//    for (ISourceModule sourceModule : sources) {
+//      ModuleDeclaration moduleDeclaration = SourceParserUtil.getModuleDeclaration(sourceModule,
+//              null);
+//      generateDescriptorResources(sourceModule, moduleDeclaration, monitor);
+//      // callParticipants(project, moduleDeclaration);
+//      initialize(project);
+//      final SourceModuleBuildContext context = new SourceModuleBuildContext(sourceModule, status); // guessed
+//      context.set(IBuildContext.ATTR_MODULE_DECLARATION, moduleDeclaration);
+//      buildModule(context);
+//      BuildProblemReporter bpr = (BuildProblemReporter) context.getProblemReporter();
+//      bpr.flush();
+//    }
+//    return super.buildModelElements(project, elements, monitor, status);
+//  }
 
   private void buildModule(IBuildContext context) {
     if (participants != null) {

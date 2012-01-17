@@ -39,7 +39,6 @@ import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IScriptModelMarker;
 import org.eclipse.dltk.core.IScriptProject;
-import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.ScriptRuntime;
@@ -137,20 +136,20 @@ public class TextMarkerCorrectionProcessor implements IQuickAssistProcessor {
   }
 
   public static boolean isFixable(IScriptAnnotation annotation) {
-    if (annotation.getId() == TextMarkerProblems.UNKNOWN_REQUIRED_PACKAGE) {
-      final String[] args = annotation.getArguments();
-      if (args != null && args.length != 0 && args[0] != null) {
-        final ISourceModule module = annotation.getSourceModule();
-        if (module != null) {
-          final IScriptProject project = module.getScriptProject();
-          if (project != null) {
-            if (isFixable(args[0], project)) {
-              return true;
-            }
-          }
-        }
-      }
-    }
+//    if (annotation.getId() == TextMarkerProblems.UNKNOWN_REQUIRED_PACKAGE) {
+//      final String[] args = annotation.getArguments();
+//      if (args != null && args.length != 0 && args[0] != null) {
+//        final ISourceModule module = annotation.getSourceModule();
+//        if (module != null) {
+//          final IScriptProject project = module.getScriptProject();
+//          if (project != null) {
+//            if (isFixable(args[0], project)) {
+//              return true;
+//            }
+//          }
+//        }
+//      }
+//    }
     return false;
   }
 

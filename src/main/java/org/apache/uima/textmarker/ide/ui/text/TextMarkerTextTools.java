@@ -28,7 +28,7 @@ import org.apache.uima.textmarker.ide.ui.ISemanticHighlightingExtension;
 import org.apache.uima.textmarker.ide.ui.TextMarkerPartitions;
 import org.apache.uima.textmarker.ide.ui.TextMarkerSemanticPositionUpdater;
 import org.eclipse.dltk.core.SimpleClassDLTKExtensionManager;
-import org.eclipse.dltk.ui.editor.highlighting.ISemanticHighlighter;
+import org.eclipse.dltk.ui.editor.highlighting.ISemanticHighlightingUpdater;
 import org.eclipse.dltk.ui.editor.highlighting.SemanticHighlighting;
 import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
 import org.eclipse.dltk.ui.text.ScriptTextTools;
@@ -90,11 +90,12 @@ public class TextMarkerTextTools extends ScriptTextTools {
     return ret;
   }
 
-  @Override
-  public ISemanticHighlighter getSemanticPositionUpdater() {
-    return new TextMarkerSemanticPositionUpdater(getExtensions());
-  }
 
+  public ISemanticHighlightingUpdater getSemanticPositionUpdater(
+          String natureId) {
+        return new TextMarkerSemanticPositionUpdater(getExtensions());
+      }
+  
   public final static class SH extends SemanticHighlighting {
 
     private final String preferenceKey;

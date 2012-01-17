@@ -19,16 +19,12 @@
 
 package org.apache.uima.textmarker.ide.core.search;
 
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IParent;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
-import org.eclipse.dltk.core.search.IDLTKSearchScope;
-import org.eclipse.dltk.core.search.SearchPattern;
-import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.internal.core.BuiltinSourceModule;
 import org.eclipse.dltk.internal.core.ExternalSourceModule;
@@ -37,9 +33,8 @@ import org.eclipse.dltk.internal.core.SourceModule;
 
 public class TextMarkerMatchLocator extends MatchLocator {
 
-  public TextMarkerMatchLocator(SearchPattern pattern, SearchRequestor requestor,
-          IDLTKSearchScope scope, IProgressMonitor progressMonitor) {
-    super(pattern, requestor, scope, progressMonitor);
+  public TextMarkerMatchLocator() {
+    super();
   }
 
   @Override

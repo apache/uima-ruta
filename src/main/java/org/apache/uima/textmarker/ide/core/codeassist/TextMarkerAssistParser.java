@@ -28,7 +28,6 @@ import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.parser.ISourceParser;
 import org.eclipse.dltk.codeassist.IAssistParser;
-import org.eclipse.dltk.compiler.env.ISourceModule;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 
 
@@ -97,16 +96,16 @@ public abstract class TextMarkerAssistParser implements IAssistParser {
     this.module = unit;
   }
 
-  public ModuleDeclaration parse(ISourceModule sourceUnit) {
-    module = this.parser.parse(sourceUnit.getFileName(), sourceUnit.getSourceContents()
-            .toCharArray(), null);
-    module.rebuild();
-
-    // TextMarkerASTUtil.extendStatements(module, sourceUnit
-    // .getSourceContents());
-
-    return module;
-  }
+//  public ModuleDeclaration parse(ISourceModule sourceUnit) {
+//    
+//    module = this.parser.parse(sourceUnit., null);
+//    module.rebuild();
+//
+//    // TextMarkerASTUtil.extendStatements(module, sourceUnit
+//    // .getSourceContents());
+//
+//    return module;
+//  }
 
   public ModuleDeclaration getModule() {
     return this.module;

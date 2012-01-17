@@ -35,6 +35,7 @@ import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.codeassist.complete.CompletionNodeFound;
+import org.eclipse.dltk.compiler.env.IModuleSource;
 
 public class TextMarkerCompletionParser extends TextMarkerAssistParser {
   private static class TextMarkerEmptyCompleteStatement extends TextMarkerStatement {
@@ -385,4 +386,12 @@ public class TextMarkerCompletionParser extends TextMarkerAssistParser {
   public void setAssistNodeParent(ASTNode prevParent) {
     this.assistNodeParent = prevParent;
   }
+
+  @Override
+  public ModuleDeclaration parse(IModuleSource sourceModule) {
+    ModuleDeclaration module = (ModuleDeclaration) this.parser.parse(sourceModule, null);
+    module.rebuild();
+    return module;
+  }
+
 }

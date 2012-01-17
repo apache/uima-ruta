@@ -19,14 +19,15 @@
 
 package org.apache.uima.textmarker.ide.debug.ui.interpreters;
 
-import org.eclipse.dltk.internal.debug.ui.interpreters.AbstractInterpreterComboBlock;
+import org.apache.uima.textmarker.ide.core.TextMarkerNature;
 import org.eclipse.dltk.internal.debug.ui.interpreters.AbstractInterpreterContainerWizardPage;
 
 public class TextMarkerInterpreterContainerWizardPage extends
         AbstractInterpreterContainerWizardPage {
 
+
   @Override
-  protected AbstractInterpreterComboBlock getInterpreterBlock() {
-    return new TextMarkerInterpreterComboBlock();
+  public String getScriptNature() {
+    return TextMarkerNature.NATURE_ID;
   }
 }

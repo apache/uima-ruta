@@ -31,6 +31,7 @@ import org.antlr.runtime.CommonTokenStream;
 import org.apache.uima.textmarker.ide.core.parser.TextMarkerParser;
 import org.apache.uima.textmarker.ide.core.parser.TextMarkerSourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
+import org.eclipse.dltk.ast.parser.IModuleDeclaration;
 import org.eclipse.dltk.compiler.problem.IProblem;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.formatter.AbstractScriptFormatter;
@@ -46,10 +47,6 @@ public class TextMarkerFormatter extends AbstractScriptFormatter {
 
     private boolean gotProblems = false;
 
-    @Override
-    public Object getAdapter(Class adapter) {
-      return null;
-    }
 
     @Override
     public void reportProblem(IProblem problem) {
@@ -88,8 +85,7 @@ public class TextMarkerFormatter extends AbstractScriptFormatter {
     TextMarkerSourceParser tmsp = new TextMarkerSourceParser();
 
     DummyReporter reporter = new DummyReporter();
-
-    ModuleDeclaration md = tmsp.parse("format.tm".toCharArray(), source.toCharArray(), reporter);
+    IModuleDeclaration md = tmsp.parse("format.tm", source, reporter);
     CommonTokenStream tokenStream = tmsp.getTokenStream();
 
     if (!reporter.gotProblems()) {
@@ -99,7 +95,7 @@ public class TextMarkerFormatter extends AbstractScriptFormatter {
       bs.add(TextMarkerParser.COMMENT);
       List<CommonToken> comments = tokenStream.getTokens(0, tokenStream.size(), bs);
 
-      final String output = format(input, md, comments, indent);
+      final String output = format(input, (ModuleDeclaration)md, comments, indent);
       if (output != null) {
         if (!input.equals(output)) {
           return new ReplaceEdit(0, source.length(), output);

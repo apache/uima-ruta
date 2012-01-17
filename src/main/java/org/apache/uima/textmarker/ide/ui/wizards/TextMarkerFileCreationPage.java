@@ -21,7 +21,6 @@ package org.apache.uima.textmarker.ide.ui.wizards;
 
 import org.apache.uima.textmarker.ide.core.TextMarkerNature;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.ui.wizards.NewSourceModulePage;
 
@@ -38,8 +37,7 @@ public class TextMarkerFileCreationPage extends NewSourceModulePage {
     StringBuilder sb = new StringBuilder();
     sb.append("PACKAGE ");
     IScriptFolder scriptFolder = getScriptFolder();
-    IModelElement ancestor = scriptFolder.getAncestor(IModelElement.PROJECT_FRAGMENT);
-    IPath path = ancestor.getPath().removeFirstSegments(1);
+    IPath path =  scriptFolder.getPath().removeFirstSegments(1);
     String pathString = "";
     for (int i = 1; i < path.segments().length; i++) {
       pathString += path.segments()[i];

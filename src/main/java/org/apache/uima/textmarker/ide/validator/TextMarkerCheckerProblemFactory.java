@@ -29,6 +29,7 @@ import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.compiler.problem.IProblem;
+import org.eclipse.dltk.compiler.problem.ProblemSeverity;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.builder.ISourceLineTracker;
 
@@ -67,7 +68,7 @@ public class TextMarkerCheckerProblemFactory {
   }
 
   public IProblem createDuplicateShortNameInImported(ASTNode node, String localPath,
-          List<String> checkDuplicateShortNames, int severity) {
+          List<String> checkDuplicateShortNames, ProblemSeverity severity) {
     StringBuilder sb = new StringBuilder();
     for (String string : checkDuplicateShortNames) {
       sb.append(string);
@@ -79,7 +80,7 @@ public class TextMarkerCheckerProblemFactory {
             getLine(node), severity);
   }
 
-  public IProblem createDuplicateShortName(TextMarkerAbstractDeclaration var, int severity) {
+  public IProblem createDuplicateShortName(TextMarkerAbstractDeclaration var, ProblemSeverity severity) {
     return new TextMarkerCheckerDefaultProblem(this.fileName, "The type " + var.getName()
             + " conflicts with other types with same short name, but different namespace.", var,
             getLine(var), severity);

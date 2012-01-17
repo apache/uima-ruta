@@ -56,11 +56,10 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.ast.ASTNode;
-import org.eclipse.dltk.codeassist.IAssistParser;
 import org.eclipse.dltk.codeassist.RelevanceConstants;
 import org.eclipse.dltk.codeassist.ScriptCompletionEngine;
 import org.eclipse.dltk.compiler.CharOperation;
-import org.eclipse.dltk.compiler.env.ISourceModule;
+import org.eclipse.dltk.compiler.env.IModuleSource;
 import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
@@ -74,7 +73,7 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
 
   protected TextMarkerCompletionParser parser;
 
-  protected org.eclipse.dltk.core.ISourceModule sourceModule;
+  protected IModuleSource sourceModule;
 
   protected final static boolean TRACE_COMPLETION_TIME = false;
 
@@ -91,11 +90,6 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
   }
 
   @Override
-  protected String processFieldName(IField field, String token) {
-    return TextMarkerParseUtils.processFieldName(field, token);
-  }
-
-  @Override
   protected String processMethodName(IMethod method, String token) {
     return TextMarkerParseUtils.processMethodName(method, token);
   }
@@ -106,16 +100,12 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
   }
 
   @Override
-  public IAssistParser getParser() {
-    return parser;
-  }
-
-  public void complete(ISourceModule cu, int position, int i) {
-    this.sourceModule = (org.eclipse.dltk.core.ISourceModule) cu.getModelElement();
+  public void complete(IModuleSource module, int position, int i) {
+    this.sourceModule =  module;
     this.actualCompletionPosition = position;
     this.offset = i;
     this.requestor.beginReporting();
-    String content = cu.getSourceContents();
+    String content = module.getSourceContents();
     if (position < 0 || position > content.length()) {
       return;
     }
@@ -126,7 +116,7 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
     this.setSourceRange(position - startPart.length(), position);
 
     // 090813:
-    TextMarkerModuleDeclaration parsed = (TextMarkerModuleDeclaration) this.parser.parse(cu);
+    TextMarkerModuleDeclaration parsed = (TextMarkerModuleDeclaration) this.parser.parse(module);
 
     // types = getShortNames(types);
 
@@ -138,24 +128,24 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
         parsed.traverse(referenceVisitor);
         node = referenceVisitor.getResult();
         if (node == null) {
-          doCompletionOnEmptyStatement(cu, position, i);
-          doCompletionOnDeclaration(cu, startPart);
+          doCompletionOnEmptyStatement(module, position, i);
+          doCompletionOnDeclaration(module, startPart);
         } else if (node instanceof TextMarkerVariableReference) {
           int type = ((TextMarkerVariableReference) node).getType();
-          doCompletionOnVarRef(cu, parsed, startPart, type,
+          doCompletionOnVarRef(module, parsed, startPart, type,
                   ((TextMarkerVariableReference) node).getName());
           // TODO: only if first rule element
-          doCompletionOnDeclaration(cu, startPart);
+          doCompletionOnDeclaration(module, startPart);
         } else if (node instanceof ComponentDeclaration) {
-          doCompletionOnComponentDeclaration(cu, parsed, startPart,
+          doCompletionOnComponentDeclaration(module, parsed, startPart,
                   ((ComponentDeclaration) node).getType(), startPart);
         } else if (node instanceof ComponentReference) {
-          doCompletionOnComponentReference(cu, parsed, startPart,
+          doCompletionOnComponentReference(module, parsed, startPart,
                   ((ComponentReference) node).getType(), startPart);
         } else if (node instanceof TextMarkerAction) {
-          doCompletionOnAction(cu, parsed, startPart, TMTypeConstants.TM_TYPE_A, startPart);
+          doCompletionOnAction(module, parsed, startPart, TMTypeConstants.TM_TYPE_A, startPart);
         } else if (node instanceof TextMarkerCondition) {
-          doCompletionOnCondition(cu, parsed, startPart, TMTypeConstants.TM_TYPE_C, startPart);
+          doCompletionOnCondition(module, parsed, startPart, TMTypeConstants.TM_TYPE_C, startPart);
         }
         // if(requestor.)
         // doCompletionOnKeyword(position, i, startPart);
@@ -170,7 +160,7 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
     }
   }
 
-  private void doCompletionOnComponentReference(ISourceModule cu,
+  private void doCompletionOnComponentReference(IModuleSource cu,
           TextMarkerModuleDeclaration parsed, String startPart, int type, String complString) {
     Collection<String> importedEngines = parsed.descriptorInfo.getImportedEngines();
     for (String string : importedEngines) {
@@ -188,7 +178,7 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
     }
     List<IMethod> blocks = new ArrayList<IMethod>();
     try {
-      IModelElement[] children = sourceModule.getChildren();
+      IModelElement[] children = sourceModule.getModelElement().getModel().getChildren();
       for (IModelElement iModelElement : children) {
         if (iModelElement instanceof SourceMethod) {
           collectBlocks((SourceMethod) iModelElement, blocks);
@@ -204,11 +194,11 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
     }
   }
 
-  private void doCompletionOnComponentDeclaration(ISourceModule cu,
+  private void doCompletionOnComponentDeclaration(IModuleSource cu,
           TextMarkerModuleDeclaration parsed, String startPart, int type, String complString)
           throws CoreException {
     if (type == ComponentDeclaration.SCRIPT) {
-      List<IFolder> scriptFolders = TextMarkerProjectUtils.getAllScriptFolders(sourceModule
+      List<IFolder> scriptFolders = TextMarkerProjectUtils.getAllScriptFolders(sourceModule.getModelElement()
               .getScriptProject());
 
       List<String> scripts = new ArrayList<String>();
@@ -224,7 +214,7 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
         }
       }
     } else if (type == ComponentDeclaration.ENGINE) {
-      List<IFolder> descriptorFolders = TextMarkerProjectUtils.getAllDescriptorFolders(sourceModule
+      List<IFolder> descriptorFolders = TextMarkerProjectUtils.getAllDescriptorFolders(sourceModule.getModelElement()
               .getScriptProject().getProject());
       List<String> engines = new ArrayList<String>();
       for (IFolder folder : descriptorFolders) {
@@ -239,7 +229,7 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
         }
       }
     } else {
-      List<IFolder> descriptorFolders = TextMarkerProjectUtils.getAllDescriptorFolders(sourceModule
+      List<IFolder> descriptorFolders = TextMarkerProjectUtils.getAllDescriptorFolders(sourceModule.getModelElement()
               .getScriptProject().getProject());
       List<String> tss = new ArrayList<String>();
       for (IFolder folder : descriptorFolders) {
@@ -324,7 +314,7 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
     return result;
   }
 
-  private void doCompletionOnDeclaration(ISourceModule cu, String startPart) {
+  private void doCompletionOnDeclaration(IModuleSource cu, String startPart) {
     String[] keywords = TextMarkerKeywordsManager.getKeywords(ITextMarkerKeywords.DECLARATION);
     for (String string : keywords) {
       if (match(startPart, string)) {
@@ -396,7 +386,7 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
     return folder.getFile(fName);
   }
 
-  private void doCompletionOnAction(ISourceModule cu, TextMarkerModuleDeclaration parsed,
+  private void doCompletionOnAction(IModuleSource cu, TextMarkerModuleDeclaration parsed,
           String startPart, int type, String complString) {
     String[] keywords = TextMarkerKeywordsManager.getKeywords(ITextMarkerKeywords.ACTION);
     for (String string : keywords) {
@@ -406,7 +396,7 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
     }
   }
 
-  private void doCompletionOnCondition(ISourceModule cu, TextMarkerModuleDeclaration parsed,
+  private void doCompletionOnCondition(IModuleSource cu, TextMarkerModuleDeclaration parsed,
           String startPart, int type, String complString) {
     if (complString.startsWith("-")) {
       complString = complString.substring(1, complString.length());
@@ -419,13 +409,13 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
     }
   }
 
-  private void doCompletionOnVarRef(ISourceModule cu, TextMarkerModuleDeclaration parsed,
+  private void doCompletionOnVarRef(IModuleSource cu, TextMarkerModuleDeclaration parsed,
           String startPart, int type, String complString) {
     Collection<String> types = new HashSet<String>();
     try {
-      IPath path = sourceModule.getPath();
+      IPath path = sourceModule.getModelElement().getPath();
       path = path.removeFirstSegments(2);
-      types = importTypeSystem(path.toPortableString(), sourceModule.getScriptProject()
+      types = importTypeSystem(path.toPortableString(), sourceModule.getModelElement().getScriptProject()
               .getProject());
     } catch (Exception e) {
     }
@@ -434,35 +424,35 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
         addProposal(complString, string, CompletionProposal.TYPE_REF);
       }
     }
-    try {
-      if (cu != null) {
-        IField[] fieldsArray = sourceModule.getFields();
-        for (IField field : fieldsArray) {
-          // if (type != TMTypeConstants.TM_TYPE_AT && Flags.isPrivate(field.getFlags())
-          // || (type & TMTypeConstants.TM_TYPE_AT) != 0 && Flags.isPublic(field.getFlags())) {
-          if ((type & TextMarkerParseUtils.getTypeOfIModelElement(field)) != 0) {
-            addProposal(complString, new ArrayList<String>(), field);
-          }
-        }
-        List<IField> fields = new ArrayList<IField>();
-        IModelElement[] children = sourceModule.getChildren();
-        for (IModelElement iModelElement : children) {
-          if (iModelElement instanceof SourceMethod) {
-            collectFields((SourceMethod) iModelElement, fields);
-          }
-        }
-        for (IField field : fields) {
-          // if (type != TMTypeConstants.TM_TYPE_AT && Flags.isPrivate(field.getFlags())
-          // || (type & TMTypeConstants.TM_TYPE_AT) != 0 && Flags.isPublic(field.getFlags())) {
-          // if ((type & TextMarkerParseUtils.getTypeOfIModelElement(field)) != 0) {
-          if (!types.contains(field.getElementName())) {
-            addProposal(complString, new ArrayList<String>(), field);
-          }
+//    try {
+//      if (cu != null) {
+//        IField[] fieldsArray = sourceModule.getModelElement().getFields();
+//        for (IField field : fieldsArray) {
+//          // if (type != TMTypeConstants.TM_TYPE_AT && Flags.isPrivate(field.getFlags())
+//          // || (type & TMTypeConstants.TM_TYPE_AT) != 0 && Flags.isPublic(field.getFlags())) {
+//          if ((type & TextMarkerParseUtils.getTypeOfIModelElement(field)) != 0) {
+//            addProposal(complString, new ArrayList<String>(), field);
+//          }
+//        }
+//        List<IField> fields = new ArrayList<IField>();
+//        IModelElement[] children = sourceModule.getModelElement().getChildren();
+//        for (IModelElement iModelElement : children) {
+//          if (iModelElement instanceof SourceMethod) {
+//            collectFields((SourceMethod) iModelElement, fields);
+//          }
+//        }
+//        for (IField field : fields) {
+//          // if (type != TMTypeConstants.TM_TYPE_AT && Flags.isPrivate(field.getFlags())
+//          // || (type & TMTypeConstants.TM_TYPE_AT) != 0 && Flags.isPublic(field.getFlags())) {
+//          // if ((type & TextMarkerParseUtils.getTypeOfIModelElement(field)) != 0) {
+//          if (!types.contains(field.getElementName())) {
+//            addProposal(complString, new ArrayList<String>(), field);
+//          }
           // }
-        }
-      }
-    } catch (ModelException e) {
-    }
+//        }
+//      }
+//    } catch (ModelException e) {
+//    }
   }
 
   private boolean match(String complString, String string) {
@@ -497,7 +487,7 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
   }
 
   @SuppressWarnings({ "unchecked" })
-  private void doCompletionOnEmptyStatement(ISourceModule cu, int position, int i) {
+  private void doCompletionOnEmptyStatement(IModuleSource cu, int position, int i) {
     int kind = CompletionProposal.LOCAL_VARIABLE_REF;
     // doCompletionOnKeyword(position, i, "");
     if (!super.requestor.isIgnored(kind)) {
@@ -508,38 +498,36 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
   /**
    * @param cu
    */
-  private void suggestFields(ISourceModule cu) {
-    List names = new ArrayList();
-    try {
-      if (cu != null) {
-        IField[] fieldsArray = sourceModule.getFields();
-        for (IField field : fieldsArray) {
-          int relevance = RelevanceConstants.R_EXACT_EXPECTED_TYPE;
-          // accept result
-          super.noProposal = false;
-          int kind = CompletionProposal.LOCAL_VARIABLE_REF;
-          if (!super.requestor.isIgnored(kind)) {
-            CompletionProposal proposal = super.createProposal(kind, actualCompletionPosition);
-            proposal.setRelevance(relevance);
-            proposal.setModelElement(field);
-            char[] fieldName = field.getElementName().toCharArray();
-            proposal.setName(fieldName);
-            proposal.setCompletion(fieldName);
-            proposal.setReplaceRange(this.startPosition - this.offset, this.endPosition
-                    - this.offset);
-            try {
-              proposal.setFlags(field.getFlags());
-            } catch (ModelException e) {
-            }
-            this.requestor.accept(proposal);
-            if (DEBUG) {
-              this.printDebug(proposal);
-            }
-          }
-        }
-      }
-    } catch (ModelException e) {
-    }
+  private void suggestFields(IModuleSource cu) {
+//    try {
+//      if (cu != null) {
+//        IField[] fieldsArray = sourceModule.getFields();
+//        for (IField field : fieldsArray) {
+//          int relevance = RelevanceConstants.R_EXACT_EXPECTED_TYPE;
+//          // accept result
+//          super.noProposal = false;
+//          int kind = CompletionProposal.LOCAL_VARIABLE_REF;
+//          if (!super.requestor.isIgnored(kind)) {
+//            CompletionProposal proposal = super.createProposal(kind, actualCompletionPosition);
+//            proposal.setRelevance(relevance);
+//            proposal.setModelElement(field);
+//            proposal.setName(field.getElementName());
+//            proposal.setCompletion(field.getElementName());
+//            proposal.setReplaceRange(this.startPosition - this.offset, this.endPosition
+//                    - this.offset);
+//            try {
+//              proposal.setFlags(field.getFlags());
+//            } catch (ModelException e) {
+//            }
+//            this.requestor.accept(proposal);
+//            if (DEBUG) {
+//              this.printDebug(proposal);
+//            }
+//          }
+//        }
+//      }
+//    } catch (ModelException e) {
+//    }
   }
 
   /**
@@ -555,7 +543,7 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
             || match(complString, field.getElementName())) {
 
       int relevance = RelevanceConstants.R_DEFAULT +1;
-      relevance += computeRelevanceForCaseMatching(complFragment, fieldName);
+      relevance += computeRelevanceForCaseMatching(complFragment, field.getElementName());
 
       // accept result
       super.noProposal = false;
@@ -564,8 +552,8 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
         CompletionProposal proposal = super.createProposal(kind, actualCompletionPosition);
         proposal.setRelevance(relevance);
         proposal.setModelElement(field);
-        proposal.setName(fieldName);
-        proposal.setCompletion(fieldName);
+        proposal.setName(field.getElementName());
+        proposal.setCompletion(field.getElementName());
         proposal.setReplaceRange(this.startPosition - this.offset, this.endPosition - this.offset);
         try {
           proposal.setFlags(field.getFlags());
@@ -590,15 +578,15 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
     if (CharOperation.camelCaseMatch(pattern, fieldName) || match(complString, string)) {
 
       int relevance = RelevanceConstants.R_DEFAULT +1;
-      relevance += computeRelevanceForCaseMatching(complFragment, fieldName);
+      relevance += computeRelevanceForCaseMatching(complFragment, string);
 
       // accept result
       super.noProposal = false;
       if (!super.requestor.isIgnored(kind)) {
         CompletionProposal proposal = super.createProposal(kind, actualCompletionPosition);
         proposal.setRelevance(relevance);
-        proposal.setName(fieldName);
-        proposal.setCompletion(fieldName);
+        proposal.setName(string);
+        proposal.setCompletion(string);
         proposal.setReplaceRange(this.startPosition - this.offset, this.endPosition - this.offset);
         // try {
         // proposal.setFlags(field.getFlags());
@@ -621,7 +609,9 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
     for (int a = 0; a < keywords.size(); a++) {
       keyWordsArray[a] = keywords.get(a).toCharArray();
     }
-    findKeywords(startPart.toCharArray(), keyWordsArray, true);
+    findKeywords(startPart.toCharArray(), keywords.toArray( new String[0]), true);
   }
+
+ 
 
 }

@@ -32,8 +32,9 @@ import org.apache.uima.textmarker.ide.core.TextMarkerKeywordsManager;
 import org.apache.uima.textmarker.ide.core.builder.DescriptorManager;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerModuleDeclaration;
 import org.apache.uima.textmarker.parser.TextMarkerLexer;
-import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.parser.AbstractSourceParser;
+import org.eclipse.dltk.ast.parser.IModuleDeclaration;
+import org.eclipse.dltk.compiler.env.IModuleSource;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.core.DLTKCore;
 
@@ -58,14 +59,17 @@ public class TextMarkerSourceParser extends AbstractSourceParser {
       return super.nextToken();
     }
   }
+  public IModuleDeclaration parse(IModuleSource input, IProblemReporter reporter) {
+    return parse(input.getFileName(), input.getSourceContents(), reporter);
+  }
 
-  public ModuleDeclaration parse(char[] fileName, char[] content, IProblemReporter reporter) {// throws
+  public IModuleDeclaration parse(String fileName, String content, IProblemReporter reporter) {
     this.problemReporter = reporter;
 
-    TextMarkerModuleDeclaration moduleDeclaration = new TextMarkerModuleDeclaration(content.length,
+    TextMarkerModuleDeclaration moduleDeclaration = new TextMarkerModuleDeclaration(content.length(),
             true);
 
-    CharStream st = new ANTLRStringStream(new String(content));
+    CharStream st = new ANTLRStringStream(content);
     TextMarkerLexer lexer = new TMLexer(st);
 
     CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -107,8 +111,8 @@ public class TextMarkerSourceParser extends AbstractSourceParser {
     parser.addPredefinedType("Annotation");
 
     parser.md = moduleDeclaration;
-    parser.length = content.length;
-    parser.converter = new DLTKTokenConverter(content);
+    parser.length = content.length();
+    parser.converter = new DLTKTokenConverter(content.toCharArray());
     parser.reporter = new DLTKTextMarkerErrorReporter(parser.converter, problemReporter, parser);
 
     parser.descriptor = new DescriptorManager();
@@ -117,10 +121,12 @@ public class TextMarkerSourceParser extends AbstractSourceParser {
 
     String name = "Dynamic";
     if (fileName != null) {
-      File fn = new File(new String(fileName));
+      File fn = new File(fileName);
       name = fn.getName();
       int lastIndexOf = name.lastIndexOf(".tm");
-      name = name.substring(0, lastIndexOf);
+      if(lastIndexOf>0) {
+        name = name.substring(0, lastIndexOf);
+      }
     }
     try {
       parser.file_input(name);
@@ -131,9 +137,11 @@ public class TextMarkerSourceParser extends AbstractSourceParser {
     }
     return moduleDeclaration;
   }
-
+  
+  
   public CommonTokenStream getTokenStream() {
     return tokenStream;
   }
+
 
 }

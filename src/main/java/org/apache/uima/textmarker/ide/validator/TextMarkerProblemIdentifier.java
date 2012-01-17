@@ -15,29 +15,20 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
-
-package org.apache.uima.textmarker.ide.core;
-
-import org.eclipse.dltk.core.search.AbstractSearchFactory;
-import org.eclipse.dltk.core.search.IMatchLocatorParser;
-import org.eclipse.dltk.core.search.matching.MatchLocator;
-
-
-/**
- * TextMarker search factory
  */
-public class TextMarkerSearchFactory extends AbstractSearchFactory {
 
-  public IMatchLocatorParser createMatchParser(MatchLocator locator) {
-    return new TextMarkerMatchLocatorParser(locator);
+package org.apache.uima.textmarker.ide.validator;
+
+import org.apache.uima.textmarker.ide.TextMarkerIdePlugin;
+import org.eclipse.dltk.compiler.problem.IProblemIdentifier;
+
+public enum TextMarkerProblemIdentifier implements IProblemIdentifier {
+
+  PROBLEM;
+
+  public String contributor() {
+    return TextMarkerIdePlugin.PLUGIN_ID;
   }
 
-//  public SourceIndexerRequestor createSourceRequestor() {
-//    return new TextMarkerSourceIndexerRequestor();
-//  }
-
-//  public ISearchPatternProcessor createSearchPatternProcessor() {
-//    return new TextMarkerSearchPatternProcessor();
-//  }
 }
+

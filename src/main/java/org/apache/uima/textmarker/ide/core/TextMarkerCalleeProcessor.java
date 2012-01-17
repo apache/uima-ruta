@@ -61,8 +61,8 @@ public class TextMarkerCalleeProcessor implements ICalleeProcessor {
   private class CaleeSourceElementRequestor extends SourceElementRequestorAdaptor {
 
     @Override
-    public void acceptMethodReference(char[] methodName, int argCount, int sourcePosition,
-            int sourceEndPosition) {
+    public void acceptMethodReference(String methodName, int argCount,
+            int sourcePosition, int sourceEndPosition) {
       String name = new String(methodName);
       int off = 0;
       try {
@@ -85,7 +85,7 @@ public class TextMarkerCalleeProcessor implements ICalleeProcessor {
         ISourceElementParser parser = DLTKLanguageManager
                 .getSourceElementParser(TextMarkerNature.NATURE_ID);
         parser.setRequestor(requestor);
-        parser.parseSourceModule(new MethodSourceCode(method), null);
+        parser.parseSourceModule(new MethodSourceCode(method));
       } else {
         // TODO: Report error here.
       }

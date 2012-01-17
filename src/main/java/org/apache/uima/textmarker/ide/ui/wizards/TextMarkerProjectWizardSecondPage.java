@@ -19,15 +19,12 @@
 
 package org.apache.uima.textmarker.ide.ui.wizards;
 
-import org.apache.uima.textmarker.ide.TextMarkerIdePlugin;
-import org.apache.uima.textmarker.ide.core.TextMarkerNature;
 import org.apache.uima.textmarker.ide.ui.preferences.TextMarkerBuildPathsBlock;
 import org.eclipse.dltk.ui.util.BusyIndicatorRunnableContext;
 import org.eclipse.dltk.ui.util.IStatusChangeListener;
 import org.eclipse.dltk.ui.wizards.BuildpathsBlock;
 import org.eclipse.dltk.ui.wizards.ProjectWizardFirstPage;
 import org.eclipse.dltk.ui.wizards.ProjectWizardSecondPage;
-import org.eclipse.jface.preference.IPreferenceStore;
 
 final class TextMarkerProjectWizardSecondPage extends ProjectWizardSecondPage {
   TextMarkerProjectWizardSecondPage(ProjectWizardFirstPage mainPage) {
@@ -39,17 +36,9 @@ final class TextMarkerProjectWizardSecondPage extends ProjectWizardSecondPage {
     return new TextMarkerBuildPathsBlock(new BusyIndicatorRunnableContext(), listener, 0,
             useNewSourcePage(), null);
   }
+ 
 
-  @Override
-  protected String getScriptNature() {
-    return TextMarkerNature.NATURE_ID;
-  }
-
-  @Override
-  protected IPreferenceStore getPreferenceStore() {
-    return TextMarkerIdePlugin.getDefault().getPreferenceStore();
-  }
-
+ 
   // protected BuildpathDetector createBuildpathDetector(
   // IProgressMonitor monitor, IDLTKLanguageToolkit toolkit)
   // throws CoreException {

@@ -47,11 +47,12 @@ import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.core.builder.IBuildChange;
 import org.eclipse.dltk.core.builder.IBuildContext;
 import org.eclipse.dltk.core.builder.IBuildParticipant;
 import org.eclipse.dltk.core.builder.IBuildParticipantExtension;
 import org.eclipse.dltk.core.builder.IBuildParticipantExtension2;
-import org.eclipse.dltk.core.builder.IScriptBuilder.DependencyResponse;
+import org.eclipse.dltk.core.builder.IBuildState;
 import org.eclipse.dltk.core.environment.EnvironmentPathUtils;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.ScriptRuntime;
@@ -316,13 +317,11 @@ public class TextMarkerCheckBuilder implements IBuildParticipant, IBuildParticip
     return false;
   }
 
-  public DependencyResponse getDependencies(int buildType, Set localElements, Set externalElements,
-          Set oldExternalFolders, Set externalFolders) {
-    if (buildType == FULL_BUILD || !oldExternalFolders.equals(externalFolders)) {
-      return DependencyResponse.FULL_EXTERNAL_BUILD;
-    } else {
-      return null;
-    }
+  @Override
+  public void prepare(IBuildChange buildChange, IBuildState buildState) throws CoreException {
+    
   }
+
+ 
 
 }

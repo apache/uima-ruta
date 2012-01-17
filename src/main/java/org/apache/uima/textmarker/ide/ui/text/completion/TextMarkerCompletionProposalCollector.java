@@ -19,14 +19,13 @@
 
 package org.apache.uima.textmarker.ide.ui.text.completion;
 
+import org.apache.uima.textmarker.ide.core.TextMarkerNature;
 import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.ui.text.completion.CompletionProposalLabelProvider;
 import org.eclipse.dltk.ui.text.completion.IScriptCompletionProposal;
 import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposal;
 import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalCollector;
-import org.eclipse.dltk.ui.text.completion.ScriptContentAssistInvocationContext;
 import org.eclipse.swt.graphics.Image;
 
 public class TextMarkerCompletionProposalCollector extends ScriptCompletionProposalCollector {
@@ -42,23 +41,7 @@ public class TextMarkerCompletionProposalCollector extends ScriptCompletionPropo
     super(module);
   }
 
-  // Label provider
-  @Override
-  protected CompletionProposalLabelProvider createLabelProvider() {
-    return new TextMarkerCompletionProposalLabelProvider();
-  }
-
-  // Invocation context
-  @Override
-  protected ScriptContentAssistInvocationContext createScriptContentAssistInvocationContext(
-          ISourceModule sourceModule) {
-    return new ScriptContentAssistInvocationContext(sourceModule) {
-      @Override
-      protected CompletionProposalLabelProvider createLabelProvider() {
-        return new TextMarkerCompletionProposalLabelProvider();
-      }
-    };
-  }
+ 
 
   // Specific proposals creation. May be use factory?
   @Override
@@ -92,5 +75,10 @@ public class TextMarkerCompletionProposalCollector extends ScriptCompletionPropo
     Image img = getImage(getLabelProvider().createMethodImageDescriptor(proposal));
     int relevance = computeRelevance(proposal);
     return createScriptCompletionProposal(completion, start, length, img, label, relevance);
+  }
+
+  @Override
+  protected String getNatureId() {
+    return TextMarkerNature.NATURE_ID;
   }
 }

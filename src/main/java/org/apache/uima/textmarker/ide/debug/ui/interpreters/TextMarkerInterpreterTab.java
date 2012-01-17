@@ -19,25 +19,27 @@
 
 package org.apache.uima.textmarker.ide.debug.ui.interpreters;
 
-import org.apache.uima.textmarker.ide.core.TextMarkerNature;
-import org.eclipse.dltk.debug.ui.launchConfigurations.IMainLaunchConfigurationTabListenerManager;
+import org.eclipse.dltk.debug.ui.launchConfigurations.IMainLaunchConfigurationTab;
 import org.eclipse.dltk.debug.ui.launchConfigurations.InterpreterTab;
 import org.eclipse.dltk.internal.debug.ui.interpreters.AbstractInterpreterComboBlock;
+import org.eclipse.dltk.internal.debug.ui.interpreters.IInterpreterComboBlockContext;
 
 public class TextMarkerInterpreterTab extends InterpreterTab {
 
-  public TextMarkerInterpreterTab(IMainLaunchConfigurationTabListenerManager listenerManager) {
-    super(listenerManager);
+   public TextMarkerInterpreterTab(IMainLaunchConfigurationTab mainTab) {
+    super(mainTab);
   }
 
   @Override
-  protected AbstractInterpreterComboBlock getInterpreterBlock() {
-    return new TextMarkerInterpreterComboBlock();
+  protected AbstractInterpreterComboBlock createInterpreterBlock(
+      IInterpreterComboBlockContext context) {
+    return new TextMarkerInterpreterComboBlock(context);
   }
 
   @Override
-  protected String getNature() {
-    return TextMarkerNature.NATURE_ID;
+  protected void refreshInterpreters() {
+//    ((TextMarkerInterpreterComboBlock) fInterpreterBlock)
+//        .initialize(getScriptProject());
+    super.refreshInterpreters();
   }
-
 }

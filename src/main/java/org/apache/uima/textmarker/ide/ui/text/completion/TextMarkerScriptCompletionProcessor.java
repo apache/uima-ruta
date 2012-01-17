@@ -19,13 +19,8 @@
 
 package org.apache.uima.textmarker.ide.ui.text.completion;
 
-import org.apache.uima.textmarker.ide.TextMarkerIdePlugin;
 import org.apache.uima.textmarker.ide.core.TextMarkerNature;
-import org.eclipse.dltk.ui.text.completion.CompletionProposalLabelProvider;
-import org.eclipse.dltk.ui.text.completion.ContentAssistInvocationContext;
 import org.eclipse.dltk.ui.text.completion.ScriptCompletionProcessor;
-import org.eclipse.dltk.ui.text.completion.ScriptContentAssistInvocationContext;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.TextPresentation;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
@@ -40,23 +35,7 @@ public class TextMarkerScriptCompletionProcessor extends ScriptCompletionProcess
     super(editor, assistant, partition);
   }
 
-  @Override
-  protected IPreferenceStore getPreferenceStore() {
-    return TextMarkerIdePlugin.getDefault().getPreferenceStore();
-  }
-
-  @Override
-  protected ContentAssistInvocationContext createContext(ITextViewer viewer, int offset) {
-    return new ScriptContentAssistInvocationContext(viewer, offset, fEditor,
-            TextMarkerNature.NATURE_ID) {
-      @Override
-      protected CompletionProposalLabelProvider createLabelProvider() {
-        return new TextMarkerCompletionProposalLabelProvider();
-      }
-    };
-  }
-
-  @Override
+   @Override
   protected String getNatureId() {
     return TextMarkerNature.NATURE_ID;
   }
@@ -79,11 +58,7 @@ public class TextMarkerScriptCompletionProcessor extends ScriptCompletionProcess
     }
   }
 
-  @Override
-  protected CompletionProposalLabelProvider getProposalLabelProvider() {
-    return new TextMarkerCompletionProposalLabelProvider();
-  }
-
+ 
   private IContextInformationValidator validator;
 
   @Override

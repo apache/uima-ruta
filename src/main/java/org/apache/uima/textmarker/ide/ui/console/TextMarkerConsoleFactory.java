@@ -23,6 +23,7 @@ import org.apache.uima.textmarker.ide.TextMarkerIdePlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.dltk.console.IScriptInterpreter;
 import org.eclipse.dltk.console.ScriptConsolePrompt;
+import org.eclipse.dltk.console.ui.IScriptConsole;
 import org.eclipse.dltk.console.ui.IScriptConsoleFactory;
 import org.eclipse.dltk.console.ui.ScriptConsole;
 import org.eclipse.dltk.console.ui.ScriptConsoleFactoryBase;
@@ -74,10 +75,11 @@ public class TextMarkerConsoleFactory extends ScriptConsoleFactoryBase implement
     registerAndOpenConsole(createConsoleInstance(interpreter, id));
   }
 
-  public void openConsole(IScriptInterpreter interpreter, String id, ILaunch launch) {
+  public IScriptConsole openConsole(IScriptInterpreter interpreter, String id, ILaunch launch) {
     TextMarkerConsole tmConsole = createConsoleInstance(interpreter, id);
     tmConsole.setLaunch(launch);
     registerAndOpenConsole(tmConsole);
+    return tmConsole;
   }
 
 }

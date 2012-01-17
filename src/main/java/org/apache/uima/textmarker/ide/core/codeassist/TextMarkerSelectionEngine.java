@@ -41,7 +41,6 @@ import org.apache.uima.util.XMLInputSource;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
@@ -50,9 +49,8 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Statement;
-import org.eclipse.dltk.codeassist.IAssistParser;
 import org.eclipse.dltk.codeassist.ScriptSelectionEngine;
-import org.eclipse.dltk.compiler.env.ISourceModule;
+import org.eclipse.dltk.compiler.env.IModuleSource;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IField;
@@ -410,19 +408,14 @@ public class TextMarkerSelectionEngine extends ScriptSelectionEngine {
 
   protected IDLTKLanguageToolkit toolkit;
 
-  @Override
-  public IAssistParser getParser() {
-    return parser;
-  }
-
-  public IModelElement[] select(ISourceModule module, final int offset, int i) {
+ 
+  public IModelElement[] select(IModuleSource module, final int offset, int i) {
     sourceModule = (org.eclipse.dltk.core.ISourceModule) module.getModelElement();
     ModuleDeclaration moduleDeclaration = this.parser.parse(module);
 
     final List results = new ArrayList();
     try {
-      moduleDeclaration.traverse(new ModelElementFinder(offset, results, String.copyValueOf(module
-              .getFileName())));
+      moduleDeclaration.traverse(new ModelElementFinder(offset, results, module.getFileName()));
     } catch (Exception e) {
       if (DLTKCore.DEBUG) {
         e.printStackTrace();
@@ -463,12 +456,6 @@ public class TextMarkerSelectionEngine extends ScriptSelectionEngine {
     this.actualSelectionStart = start;
     this.actualSelectionEnd = end;
     return true;
-  }
-
-  @Override
-  protected ASTNode parseBlockStatements(ModuleDeclaration unit, int position) {
-    // TODO Auto-generated method stub
-    return super.parseBlockStatements(unit, position);
   }
 
 }
