@@ -19,7 +19,7 @@
 
 package org.apache.uima.textmarker.ide.ui.console;
 
-import org.eclipse.dltk.console.ui.ScriptConsole;
+import org.eclipse.dltk.console.ui.IScriptConsole;
 import org.eclipse.dltk.console.ui.ScriptConsoleManager;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.IDocument;
@@ -52,7 +52,7 @@ public class PasteTextMarkerTextToConsoleAction implements IEditorActionDelegate
   public void run(IAction action) {
     ScriptConsoleManager manager = ScriptConsoleManager.getInstance();
 
-    ScriptConsole console = manager.getActiveScriptConsole(TextMarkerConsole.CONSOLE_TYPE);
+    IScriptConsole console = manager.getActiveScriptConsole(TextMarkerConsole.CONSOLE_TYPE);
 
     if (console == null) {
       return;
@@ -60,7 +60,7 @@ public class PasteTextMarkerTextToConsoleAction implements IEditorActionDelegate
 
     if (selection instanceof ITextSelection) {
       String text = ((ITextSelection) selection).getText();
-      console.getInput().insertText(text);
+      console.insertText(text);
     }
   }
 

@@ -37,6 +37,7 @@ import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.parser.ISourceParser;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.compiler.env.ModuleSource;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.ui.text.folding.AbstractASTFoldingStructureProvider;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -70,7 +71,7 @@ public class TextMarkerFoldingStructureProvider extends AbstractASTFoldingStruct
      */
     ISourceParser pp = null;
     pp = DLTKLanguageManager.getSourceParser(TextMarkerNature.NATURE_ID);
-    ModuleDeclaration md = pp.parse(null, code.toCharArray(), null);
+    ModuleDeclaration md = (ModuleDeclaration) pp.parse(new ModuleSource(code), null);
     List statements = md.getStatements();
     if (statements == null) {
       return new CodeBlock[0];

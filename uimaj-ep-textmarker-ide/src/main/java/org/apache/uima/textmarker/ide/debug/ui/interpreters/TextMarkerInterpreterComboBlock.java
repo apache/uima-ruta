@@ -19,19 +19,19 @@
 
 package org.apache.uima.textmarker.ide.debug.ui.interpreters;
 
-import org.apache.uima.textmarker.ide.core.TextMarkerNature;
 import org.eclipse.dltk.internal.debug.ui.interpreters.AbstractInterpreterComboBlock;
+import org.eclipse.dltk.internal.debug.ui.interpreters.IInterpreterComboBlockContext;
 import org.eclipse.jface.preference.IPreferencePage;
 
 public class TextMarkerInterpreterComboBlock extends AbstractInterpreterComboBlock {
+
+  public TextMarkerInterpreterComboBlock(IInterpreterComboBlockContext context) {
+    super(context);
+  }
 
   @Override
   protected void showInterpreterPreferencePage() {
     IPreferencePage page = new TextMarkerInterpreterPreferencePage();
   }
 
-  @Override
-  protected String getCurrentLanguageNature() {
-    return TextMarkerNature.NATURE_ID;
-  }
 }

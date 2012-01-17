@@ -64,6 +64,7 @@ import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.compiler.problem.IProblem;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
+import org.eclipse.dltk.compiler.problem.ProblemSeverity;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
@@ -223,7 +224,7 @@ public class TextMarkerTypeChecker implements IBuildParticipant, IBuildParticipa
         TextMarkerTypeDeclaration newType = (TextMarkerTypeDeclaration) s;
         if (reportWarningOnShortNames && shortTypes.contains(newType.getName())) {
           IProblem problem = problemFactory.createDuplicateShortName(newType,
-                  TextMarkerCheckerDefaultProblem.WARNING);
+                  ProblemSeverity.WARNING);
           rep.reportProblem(problem);
           return false;
         }
@@ -281,7 +282,7 @@ public class TextMarkerTypeChecker implements IBuildParticipant, IBuildParticipa
               if (!checkDuplicateShortNames.isEmpty()) {
                 rep.reportProblem(problemFactory.createDuplicateShortNameInImported(sRef,
                         localPath, checkDuplicateShortNames,
-                        TextMarkerCheckerDefaultProblem.WARNING));
+                        ProblemSeverity.WARNING));
               }
             }
             completeTypes.addAll(importedTypes);
@@ -314,7 +315,7 @@ public class TextMarkerTypeChecker implements IBuildParticipant, IBuildParticipa
               if (!checkDuplicateShortNames.isEmpty()) {
                 rep.reportProblem(problemFactory.createDuplicateShortNameInImported(sRef,
                         localpath, checkDuplicateShortNames,
-                        TextMarkerCheckerDefaultProblem.WARNING));
+                        ProblemSeverity.WARNING));
               }
             }
             completeTypes.addAll(importedTypes);

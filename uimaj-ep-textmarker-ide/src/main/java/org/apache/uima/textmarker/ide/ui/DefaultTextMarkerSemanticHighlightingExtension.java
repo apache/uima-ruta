@@ -50,18 +50,6 @@ public class DefaultTextMarkerSemanticHighlightingExtension implements
       new TextMarkerTextTools.SH(TextMarkerPreferenceConstants.EDITOR_VARIABLE_COLOR,
               TextMarkerPreferenceConstants.EDITOR_CONDITION_COLOR, null) };
 
-  private static final int HL_PROCEDURES = 0;
-
-  private static final int HL_ARGUMENTS = 1;
-
-  private static final int HL_CLASSES = 2;
-
-  private static final int HL_BASE_CLASSES = 3;
-
-  private static final int HL_STRINGS = 4;
-
-  private static final int HL_VARIABLES = 5;
-
   public DefaultTextMarkerSemanticHighlightingExtension() {
   }
 
@@ -70,16 +58,14 @@ public class DefaultTextMarkerSemanticHighlightingExtension implements
 
     // Check TextMarker procedures
     if (node instanceof MethodDeclaration) {
-
       MethodDeclaration m = (MethodDeclaration) node;
-      requestor.addPosition(m.getNameStart(), m.getNameEnd(), HL_PROCEDURES);
+      requestor.addPosition(m.getNameStart(), m.getNameEnd(), TextMarkerPreferenceConstants.EDITOR_FUNCTION_COLOR);
 
     }
 
     if (node instanceof Argument) {
       Argument m = (Argument) node;
-      requestor.addPosition(m.getNameStart(), m.getNameEnd(), HL_ARGUMENTS);
-
+      requestor.addPosition(m.getNameStart(), m.getNameEnd(), TextMarkerPreferenceConstants.EDITOR_VARIABLE_COLOR);
     }
 
     if (node instanceof TypeDeclaration) {
@@ -95,13 +81,11 @@ public class DefaultTextMarkerSemanticHighlightingExtension implements
         Iterator it = children.iterator();
         while (it.hasNext()) {
           ASTNode n = (ASTNode) it.next();
-
-          requestor.addPosition(n.sourceStart(), n.sourceEnd(), HL_BASE_CLASSES);
-
+          requestor.addPosition(n.sourceStart(), n.sourceEnd(), TextMarkerPreferenceConstants.EDITOR_DECLARATION_DEFINITION_COLOR);
         }
       }
 
-      requestor.addPosition(t.getNameStart(), t.getNameEnd(), HL_CLASSES);
+      requestor.addPosition(t.getNameStart(), t.getNameEnd(), TextMarkerPreferenceConstants.EDITOR_VARIABLE_COLOR);
     }
 
     return null;

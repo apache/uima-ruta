@@ -196,7 +196,7 @@ public class TextMarkerSourceElementRequestVisitor extends SourceElementRequestV
   public boolean visit(Expression expression) throws Exception {
     if (expression instanceof VariableReference) {
       VariableReference varRef = (VariableReference) expression;
-      this.fRequestor.acceptFieldReference(varRef.getName().toCharArray(), varRef.sourceStart());
+      this.fRequestor.acceptFieldReference(varRef.getName(), varRef.sourceStart());
     }
     return super.visit(expression);
   }
@@ -204,7 +204,7 @@ public class TextMarkerSourceElementRequestVisitor extends SourceElementRequestV
   private void processPackage(Statement statement) {
     TextMarkerPackageDeclaration pack = (TextMarkerPackageDeclaration) statement;
     this.fRequestor.acceptPackage(pack.getNameStart(), pack.getNameEnd(),
-            (pack.getName()).toCharArray());
+           pack.getName());
   }
 
   private void processFieldDeclaration(SimpleReference variableIDRef, Statement fullDeclaration) {
@@ -274,10 +274,9 @@ public class TextMarkerSourceElementRequestVisitor extends SourceElementRequestV
     mi.nameSourceEnd = method.getNameEnd() - 1;
     mi.declarationStart = method.sourceStart();
 
-    this.fRequestor.enterMethodRemoveSame(mi);
-
     this.fInMethod = true;
     this.fCurrentMethod = method;
+    this.fRequestor.enterMethod(mi);
     return true;
   }
 

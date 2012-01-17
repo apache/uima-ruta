@@ -29,6 +29,7 @@ import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.parser.ISourceParser;
 import org.eclipse.dltk.ast.statements.Block;
+import org.eclipse.dltk.compiler.env.ModuleSource;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IModelElement;
@@ -101,7 +102,7 @@ public final class TextMarkerPairMatcher implements ICharacterPairMatcher {
       md = SourceParserUtil.getModuleDeclaration((ISourceModule) el, null);
     }
     if (md == null) {
-      md = pp.parse(null, contents.toCharArray(), null);
+      md = (ModuleDeclaration) pp.parse(new ModuleSource(contents), null);
     }
     if (md == null) {
       return new PairBlock[0];

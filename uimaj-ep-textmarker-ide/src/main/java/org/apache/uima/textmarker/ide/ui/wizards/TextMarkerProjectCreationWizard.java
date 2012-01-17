@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.textmarker.engine.TextMarkerEngine;
+import org.apache.uima.textmarker.ide.core.TextMarkerNature;
 import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
 import org.apache.uima.textmarker.ide.ui.TextMarkerImages;
 import org.eclipse.core.resources.IFolder;
@@ -35,25 +36,22 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.internal.ui.util.CoreUtility;
 import org.eclipse.dltk.internal.ui.wizards.buildpath.BPListElement;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.wizards.BuildpathsBlock;
-import org.eclipse.dltk.ui.wizards.NewElementWizard;
+import org.eclipse.dltk.ui.wizards.ProjectWizard;
 import org.eclipse.dltk.ui.wizards.ProjectWizardFirstPage;
 import org.eclipse.dltk.ui.wizards.ProjectWizardSecondPage;
-import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 
-public class TextMarkerProjectCreationWizard extends NewElementWizard implements INewWizard,
-        IExecutableExtension {
+public class TextMarkerProjectCreationWizard extends ProjectWizard {
 
+ 
   public static final String ID_WIZARD = "org.apache.uima.textmarker.ide.ui.wizards.TextMarkerProjectWizard"; //$NON-NLS-1$
 
   private ProjectWizardFirstPage fFirstPage;
@@ -68,6 +66,7 @@ public class TextMarkerProjectCreationWizard extends NewElementWizard implements
     setWindowTitle(TextMarkerWizardMessages.ProjectCreationWizard_title);
   }
 
+  
   @Override
   public void addPages() {
     super.addPages();
@@ -82,8 +81,7 @@ public class TextMarkerProjectCreationWizard extends NewElementWizard implements
 
   @Override
   protected void finishPage(IProgressMonitor monitor) throws InterruptedException, CoreException {
-
-    fSecondPage.performFinish(monitor); // use the full progress monitor
+super.finishPage(monitor);
     createProject(monitor);
   }
 
@@ -249,12 +247,11 @@ public class TextMarkerProjectCreationWizard extends NewElementWizard implements
 
   @Override
   public boolean performCancel() {
-    fSecondPage.performCancel();
     return super.performCancel();
   }
 
   @Override
-  public IModelElement getCreatedElement() {
-    return DLTKCore.create(fFirstPage.getProjectHandle());
+  public String getScriptNature() {
+    return TextMarkerNature.NATURE_ID;
   }
 }

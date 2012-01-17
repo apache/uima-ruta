@@ -221,8 +221,8 @@ public class TextMarkerEditor extends ScriptEditor {
 
     ActionGroup generateActions = new TextMarkerGenerateActionGroup(this,
             ITextEditorActionConstants.GROUP_EDIT);
-    fActionGroups.addGroup(generateActions);
-    fContextMenuGroup.addGroup(generateActions);
+//    getActionGroup().addGroup(generateActions);
+//    fContextMenuGroup.addGroup(generateActions);
     // commented 090326->
     // action = new FormatElementAction();
     // action
@@ -304,7 +304,7 @@ public class TextMarkerEditor extends ScriptEditor {
   // }
 
   @Override
-  protected IPreferenceStore getScriptPreferenceStore() {
+  public IPreferenceStore getScriptPreferenceStore() {
     return TextMarkerIdePlugin.getDefault().getPreferenceStore();
   }
 

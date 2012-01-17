@@ -52,12 +52,11 @@ public class TextMarkerMainLaunchConfigurationTab extends MainLaunchConfiguratio
             DLTKDebugPreferenceConstants.PREF_DBGP_ENABLE_LOGGING);
   }
 
-  /*
-   * @see org.eclipse.dltk.debug.ui.launchConfigurations.ScriptLaunchConfigurationTab#getNatureID()
-   */
   @Override
-  protected String getNatureID() {
+  public String getNatureID() {
     return TextMarkerNature.NATURE_ID;
   }
+
+
 
 }

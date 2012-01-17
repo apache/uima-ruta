@@ -59,7 +59,7 @@ import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.formatter.FormatterDocument;
-import org.eclipse.dltk.ui.formatter.IFormatterIndentGenerator;
+import org.eclipse.dltk.formatter.IFormatterIndentGenerator;
 
 /**
  * Formats a document.<br>
@@ -99,7 +99,7 @@ public class TextMarkerFormattedPrinter extends ASTVisitor {
 
   private IFormatterIndentGenerator indentGenerator;
 
-  private StringBuffer output;
+  private StringBuilder output;
 
   private List<CommonToken> comments;
 
@@ -130,7 +130,7 @@ public class TextMarkerFormattedPrinter extends ASTVisitor {
     this.document = document;
     this.lineDelimiter = lineDelimiter;
     this.indentGenerator = indentGenerator;
-    this.output = new StringBuffer();
+    this.output = new StringBuilder();
 
     // read format preferences
     this.lines_before_long_declarations = tmf

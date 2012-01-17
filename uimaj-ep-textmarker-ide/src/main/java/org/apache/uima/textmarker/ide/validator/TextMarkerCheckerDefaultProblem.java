@@ -22,38 +22,27 @@ package org.apache.uima.textmarker.ide.validator;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerAbstractDeclaration;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.compiler.problem.DefaultProblem;
-import org.eclipse.dltk.compiler.problem.ProblemSeverities;
+import org.eclipse.dltk.compiler.problem.ProblemSeverity;
 
 public class TextMarkerCheckerDefaultProblem extends DefaultProblem {
-  public static final int WARNING = ProblemSeverities.Warning;
 
-  public static final int ERROR = ProblemSeverities.Error;
-
-  // public TextMarkerCheckerDefaultProblem(String message, int id, String[]
-  // stringArguments,
-  // int severity, int start, int end) {
-  // super(message, id, stringArguments, severity, start,
-  // end, 10);
-  // }
-
-  public TextMarkerCheckerDefaultProblem(String fileName, String message,
-          TextMarkerAbstractDeclaration node, int line, int severity) {
-    super(fileName, message, 0, new String[] {}, severity, node.getNameStart(), node.getNameEnd(),
-            line);
+    public TextMarkerCheckerDefaultProblem(String fileName, String message,
+          TextMarkerAbstractDeclaration node, int line, int column, ProblemSeverity severity) {
+    super(fileName, message, TextMarkerProblemIdentifier.PROBLEM, new String[] {}, severity, node.getNameStart(), node.getNameEnd(), line, column);
   }
 
   public TextMarkerCheckerDefaultProblem(String fileName, String message,
           TextMarkerAbstractDeclaration node, int line) {
-    super(fileName, message, 0, new String[] {}, ERROR, node.getNameStart(), node.getNameEnd(),
+    super(fileName, message, 0, new String[] {}, ProblemSeverity.ERROR, node.getNameStart(), node.getNameEnd(),
             line);
   }
 
   public TextMarkerCheckerDefaultProblem(String fileName, String message, ASTNode node, int line) {
-    this(fileName, message, node, line, ERROR);
+    this(fileName, message, node, line, ProblemSeverity.ERROR);
   }
 
   public TextMarkerCheckerDefaultProblem(String fileName, String message, ASTNode node, int line,
-          int severity) {
+          ProblemSeverity severity) {
     super(fileName, message, 0, new String[] {}, severity, node.sourceStart(), node.sourceEnd(),
             line);
   }

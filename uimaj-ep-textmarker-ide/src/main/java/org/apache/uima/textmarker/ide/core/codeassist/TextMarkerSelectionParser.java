@@ -20,17 +20,23 @@
 package org.apache.uima.textmarker.ide.core.codeassist;
 
 import org.eclipse.dltk.ast.ASTNode;
+import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
+import org.eclipse.dltk.compiler.env.IModuleSource;
 
 public class TextMarkerSelectionParser extends TextMarkerAssistParser {
 
   public void handleNotInElement(ASTNode unit, int position) {
-    // TODO Auto-generated method stub
 
   }
 
   public void parseBlockStatements(ASTNode node, ASTNode unit, int position) {
-    // TODO Auto-generated method stub
 
   }
 
+  @Override
+  public ModuleDeclaration parse(IModuleSource sourceModule) {
+    ModuleDeclaration module = (ModuleDeclaration) this.parser.parse(sourceModule, null);
+    module.rebuild();
+    return module;
+  }
 }

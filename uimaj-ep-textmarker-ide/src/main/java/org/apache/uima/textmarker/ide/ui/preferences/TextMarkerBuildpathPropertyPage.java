@@ -19,6 +19,8 @@
 
 package org.apache.uima.textmarker.ide.ui.preferences;
 
+import org.apache.uima.textmarker.ide.core.TextMarkerLanguageToolkit;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.ui.preferences.BuildPathsPropertyPage;
 import org.eclipse.dltk.ui.util.BusyIndicatorRunnableContext;
 import org.eclipse.dltk.ui.wizards.BuildpathsBlock;
@@ -34,6 +36,11 @@ public class TextMarkerBuildpathPropertyPage extends BuildPathsPropertyPage impl
   protected BuildpathsBlock createBuildPathBlock(IWorkbenchPreferenceContainer pageContainer) {
     return new TextMarkerBuildPathsBlock(new BusyIndicatorRunnableContext(), this, getSettings()
             .getInt(INDEX), false, pageContainer);
+  }
+
+  @Override
+  public IDLTKLanguageToolkit getLanguageToolkit() {
+    return TextMarkerLanguageToolkit.getDefault();
   }
 
 }

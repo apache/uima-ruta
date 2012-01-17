@@ -9,10 +9,10 @@ Require-Bundle: org.eclipse.ui,
  org.apache.uima.textmarker.engine,
  org.apache.uima.runtime;bundle-version="2.3.0",
  org.eclipse.jface.text,
- org.eclipse.dltk.ui;bundle-version="[1.0.0,2.0.0)",
+ org.eclipse.dltk.ui;bundle-version="[3.0.0,4.0.0)",
  org.apache.uima.textmarker.ide,
  org.eclipse.ui.workbench.texteditor,
  org.eclipse.ui.editors,
- org.eclipse.dltk.core;bundle-version="[1.0.0,2.0.0)"
+ org.eclipse.dltk.core;bundle-version="[3.0.0,4.0.0)"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

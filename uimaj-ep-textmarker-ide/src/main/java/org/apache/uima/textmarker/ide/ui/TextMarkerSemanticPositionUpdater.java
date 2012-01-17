@@ -20,11 +20,11 @@
 package org.apache.uima.textmarker.ide.ui;
 
 import org.apache.uima.textmarker.ide.core.TextMarkerNature;
-import org.eclipse.dltk.ast.ASTNode;
-import org.eclipse.dltk.ast.ASTVisitor;
-import org.eclipse.dltk.core.ModelException;
+import org.apache.uima.textmarker.ide.ui.text.TextMarkerTextTools;
+import org.eclipse.dltk.compiler.env.IModuleSource;
 import org.eclipse.dltk.ui.editor.highlighting.ASTSemanticHighlighter;
 import org.eclipse.dltk.ui.editor.highlighting.ISemanticHighlightingRequestor;
+import org.eclipse.dltk.ui.editor.highlighting.SemanticHighlighting;
 
 
 public class TextMarkerSemanticPositionUpdater extends ASTSemanticHighlighter {
@@ -48,8 +48,10 @@ public class TextMarkerSemanticPositionUpdater extends ASTSemanticHighlighter {
       this.requestor = requestor;
     }
 
-    public void addPosition(int start, int end, int highlightingIndex) {
-      requestor.addPosition(start, end, highlightingIndex + offset);
+    @Override
+    public void addPosition(int start, int end, String highlightingKey) {
+      requestor.addPosition(start, end, highlightingKey);
+      
     }
 
   }
@@ -64,24 +66,32 @@ public class TextMarkerSemanticPositionUpdater extends ASTSemanticHighlighter {
     }
   }
 
-  @Override
-  protected ASTVisitor createVisitor(org.eclipse.dltk.compiler.env.ISourceModule sourceCode)
-          throws ModelException {
-    return new ASTVisitor() {
-
-      @Override
-      public boolean visitGeneral(ASTNode node) throws Exception {
-        for (int i = 0; i < extensions.length; i++) {
-          extensions[i].processNode(node, requestors[i]);
-        }
-        return true;
-      }
-
-    };
-  }
+ 
 
   @Override
   protected String getNature() {
     return TextMarkerNature.NATURE_ID;
+  }
+
+
+
+  @Override
+  public SemanticHighlighting[] getSemanticHighlightings() {
+   return  new SemanticHighlighting[] {
+            new TextMarkerTextTools.SH(TextMarkerPreferenceConstants.EDITOR_DECLARATION_DEFINITION_COLOR,
+                    null, null),
+            new TextMarkerTextTools.SH(TextMarkerPreferenceConstants.EDITOR_FUNCTION_COLOR, null, null),
+            new TextMarkerTextTools.SH(TextMarkerPreferenceConstants.EDITOR_ACTION_COLOR, null, null),
+            new TextMarkerTextTools.SH(TextMarkerPreferenceConstants.EDITOR_CONDITION_COLOR, null, null),
+            new TextMarkerTextTools.SH(TextMarkerPreferenceConstants.EDITOR_STRING_COLOR, null, null),
+            new TextMarkerTextTools.SH(TextMarkerPreferenceConstants.EDITOR_VARIABLE_COLOR,
+                    TextMarkerPreferenceConstants.EDITOR_CONDITION_COLOR, null) };
+  }
+
+
+
+  @Override
+  protected boolean doHighlighting(IModuleSource code) throws Exception {
+    return false;
   }
 }
