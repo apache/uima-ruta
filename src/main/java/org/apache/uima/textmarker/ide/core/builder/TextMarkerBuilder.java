@@ -19,13 +19,6 @@
 
 package org.apache.uima.textmarker.ide.core.builder;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,69 +44,43 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.core.builder.AbstractBuildParticipantType;
+import org.eclipse.dltk.core.builder.IBuildChange;
 import org.eclipse.dltk.core.builder.IBuildContext;
 import org.eclipse.dltk.core.builder.IBuildParticipant;
-import org.eclipse.dltk.internal.core.builder.Messages;
-import org.eclipse.dltk.internal.core.builder.StandardScriptBuilder;
+import org.eclipse.dltk.core.builder.IBuildParticipantExtension;
+import org.eclipse.dltk.core.builder.IBuildParticipantExtension2;
+import org.eclipse.dltk.core.builder.IBuildParticipantExtension3;
+import org.eclipse.dltk.core.builder.IBuildState;
 import org.eclipse.jface.preference.IPreferenceStore;
 
-public class TextMarkerBuilder extends StandardScriptBuilder {
+public class TextMarkerBuilder extends AbstractBuildParticipantType implements IBuildParticipant,
+        IBuildParticipantExtension, IBuildParticipantExtension2, IBuildParticipantExtension3 {
 
-  private IBuildParticipant[] participants = null;
-
-  private IDLTKLanguageToolkit toolkit = null;
+  private IScriptProject project;
 
   public TextMarkerBuilder() {
-    super();// m
+    super();
   }
 
-//  @Override
-//  @SuppressWarnings("unchecked")
-//  public IStatus buildModelElements(IScriptProject project, List elements,
-//          IProgressMonitor monitor, int status) {
-//    List<ISourceModule> sources = elements;
-//    for (ISourceModule sourceModule : sources) {
-//      ModuleDeclaration moduleDeclaration = SourceParserUtil.getModuleDeclaration(sourceModule,
-//              null);
-//      generateDescriptorResources(sourceModule, moduleDeclaration, monitor);
-//      // callParticipants(project, moduleDeclaration);
-//      initialize(project);
-//      final SourceModuleBuildContext context = new SourceModuleBuildContext(sourceModule, status); // guessed
-//      context.set(IBuildContext.ATTR_MODULE_DECLARATION, moduleDeclaration);
-//      buildModule(context);
-//      BuildProblemReporter bpr = (BuildProblemReporter) context.getProblemReporter();
-//      bpr.flush();
-//    }
-//    return super.buildModelElements(project, elements, monitor, status);
-//  }
-
-  private void buildModule(IBuildContext context) {
-    if (participants != null) {
-      for (int k = 0; k < participants.length; ++k) {
-        final IBuildParticipant participant = participants[k];
-        try {
-          participant.build(context);
-        } catch (CoreException e) {
-          DLTKCore.error(Messages.StandardScriptBuilder_errorBuildingModule, e);
-        }
-      }
-    }
+  public TextMarkerBuilder(IScriptProject project) {
+    super();
+    this.project = project;
   }
 
   private void generateDescriptorResources(ISourceModule sourceModule,
-          ModuleDeclaration moduleDeclaration, IProgressMonitor monitor) {
-    SubProgressMonitor subProgressMonitor = createMonitor(monitor, 10);
+          ModuleDeclaration moduleDeclaration) {
+    IProgressMonitor monitor = createMonitor(10);
     try {
       IContainer container = getContainer(sourceModule);
 
       IPath outputPath = getAbsolutePath(sourceModule);
       IPath[] generateResources = generateResources(moduleDeclaration, outputPath, container,
               sourceModule);
-      subProgressMonitor.worked(2);
+      monitor.worked(2);
       String defaultDescriptorLocation = TextMarkerProjectUtils.getDefaultDescriptorLocation();
       IFolder folder = container.getProject().getFolder(defaultDescriptorLocation);
       for (IPath iPath : generateResources) {
@@ -125,10 +92,10 @@ public class TextMarkerBuilder extends StandardScriptBuilder {
         }
 
       }
-      folder.refreshLocal(IResource.DEPTH_INFINITE, new SubProgressMonitor(subProgressMonitor,
+      folder.refreshLocal(IResource.DEPTH_INFINITE, new SubProgressMonitor(monitor,
               generateResources.length));
 
-      subProgressMonitor.worked(1);
+      monitor.worked(1);
     } catch (ModelException e) {
       if (DLTKCore.DEBUG_PARSER) {
         e.printStackTrace();
@@ -138,7 +105,7 @@ public class TextMarkerBuilder extends StandardScriptBuilder {
         e.printStackTrace();
       }
     }
-    subProgressMonitor.done();
+    monitor.done();
   }
 
   private IPath[] generateResources(ModuleDeclaration moduleDeclaration, IPath outputPath,
@@ -267,10 +234,10 @@ public class TextMarkerBuilder extends StandardScriptBuilder {
     }
   }
 
-  private SubProgressMonitor createMonitor(IProgressMonitor monitor, int totalWork) {
-    SubProgressMonitor subProgressMonitor = new SubProgressMonitor(monitor, 500);
-    subProgressMonitor.beginTask("Creating descriptors ", totalWork);
-    return subProgressMonitor;
+  private IProgressMonitor createMonitor(int totalWork) {
+    IProgressMonitor pm = new NullProgressMonitor();
+    pm.beginTask("Creating descriptors ", totalWork);
+    return pm;
   }
 
   public static IContainer getContainer(ISourceModule sourceModule) {
@@ -305,30 +272,39 @@ public class TextMarkerBuilder extends StandardScriptBuilder {
     return relativeFilePath;
   }
 
-  private void copy(File source, File target) throws FileNotFoundException {
-    copy(new FileInputStream(source), new FileOutputStream(target));
+  @Override
+  public void clean() {
   }
 
-  private void copy(InputStream fis, OutputStream fos) {
-    try {
-      byte[] buffer = new byte[0xFFFF];
-      for (int len; (len = fis.read(buffer)) != -1;)
-        fos.write(buffer, 0, len);
-    } catch (IOException e) {
-      System.err.println(e);
-    } finally {
-      if (fis != null)
-        try {
-          fis.close();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      if (fos != null)
-        try {
-          fos.close();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-    }
+  @Override
+  public void prepare(IBuildChange buildChange, IBuildState buildState) throws CoreException {
+  }
+
+  @Override
+  public void buildExternalModule(IBuildContext context) throws CoreException {
+
+  }
+
+  @Override
+  public boolean beginBuild(int buildType) {
+    return buildType != RECONCILE_BUILD;
+  }
+
+  @Override
+  public void endBuild(IProgressMonitor monitor) {
+
+  }
+
+  @Override
+  public void build(IBuildContext context) throws CoreException {
+    final ModuleDeclaration ast = (ModuleDeclaration) context
+            .get(IBuildContext.ATTR_MODULE_DECLARATION);
+    ISourceModule sourceModule = context.getSourceModule();
+    generateDescriptorResources(sourceModule, ast);
+  }
+
+  @Override
+  public IBuildParticipant createBuildParticipant(IScriptProject project) throws CoreException {
+    return new TextMarkerBuilder(project);
   }
 }
