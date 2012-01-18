@@ -320,29 +320,29 @@ List<String> vars = new ArrayList<String>();
 	type = TYPELIST 
 	{!isVariableOfType($blockDeclaration::env, input.LT(1).getText(), type.getText())}? 
 	name = Identifier (ASSIGN_EQUAL tl = typeListExpression)? SEMI {addVariable($blockDeclaration::env, name.getText(), type.getText());if(tl != null){setValue($blockDeclaration::env, name.getText(), tl);}} 
-	|
-	stmt1 = conditionDeclaration {stmt = stmt1;}
-	|
-	stmt2 = actionDeclaration {stmt = stmt2;}
+	//|
+	//stmt1 = conditionDeclaration {stmt = stmt1;}
+	//|
+	//stmt2 = actionDeclaration {stmt = stmt2;}
 	;
 
 //TODO added rule
-conditionDeclaration returns [TextMarkerStatement stmt = null]
-    :
-    type = CONDITION id = Identifier ASSIGN_EQUAL LPAREN cons = conditions RPAREN SEMI
-    {addVariable($blockDeclaration::env, id.getText(), type.getText());
-    AbstractTextMarkerCondition condition = ConditionFactory.createConditionAnd(cons,$blockDeclaration::env);
-    setValue($blockDeclaration::env, id.getText(), condition);}
-    ;
+//conditionDeclaration returns [TextMarkerStatement stmt = null]
+  //  :
+//    type = CONDITION id = Identifier ASSIGN_EQUAL LPAREN cons = conditions RPAREN SEMI
+//    {addVariable($blockDeclaration::env, id.getText(), type.getText());
+//    AbstractTextMarkerCondition condition = ConditionFactory.createConditionAnd(cons,$blockDeclaration::env);
+//    setValue($blockDeclaration::env, id.getText(), condition);}
+//    ;
 
 //TODO added rule
-actionDeclaration returns [TextMarkerStatement stmt = null]
-    :
-    type = ACTION id = Identifier ASSIGN_EQUAL LPAREN a = actions RPAREN SEMI
-    {addVariable($blockDeclaration::env, id.getText(), type.getText());
-    AbstractTextMarkerAction action = ActionFactory.createComposedAction(a,$blockDeclaration::env);
-    setValue($blockDeclaration::env, id.getText(), action);}
-    ;
+//actionDeclaration returns [TextMarkerStatement stmt = null]
+//    :
+//    type = ACTION id = Identifier ASSIGN_EQUAL LPAREN a = actions RPAREN SEMI
+//    {addVariable($blockDeclaration::env, id.getText(), type.getText());
+//    AbstractTextMarkerAction action = ActionFactory.createComposedAction(a,$blockDeclaration::env);
+//    setValue($blockDeclaration::env, id.getText(), action);}
+//    ;
 
 importStatement returns [TextMarkerStatement stmt = null]
 	:
@@ -873,19 +873,19 @@ condition  returns [AbstractTextMarkerCondition result = null]
 	| c = conditionPartOfNeq
 	| c = conditionSize	
 	| (c = externalCondition)=> c = externalCondition
-	| c = variableCondition
+//	| c = variableCondition
 	) {result = c;}
 	;
 
 
-variableCondition returns [AbstractTextMarkerCondition condition = null]
-	:		
-	
-	id = Identifier
-	{
-		condition = ConditionFactory.createConditionVariable(id);
-	}
-	;
+//variableCondition returns [AbstractTextMarkerCondition condition = null]
+//	:		
+//	
+//	id = Identifier
+//	{
+//		condition = ConditionFactory.createConditionVariable(id);
+//	}
+//	;
 
 externalCondition returns [AbstractTextMarkerCondition condition = null]
 	:		
@@ -1111,18 +1111,18 @@ action  returns [AbstractTextMarkerAction result = null]
 	| a = actionConfigure
 	| a = actionDynamicAnchoring 
 	| (a = externalAction)=> a = externalAction
-	| a = variableAction
+//	| a = variableAction
 	) {result = a;}
 	;
 
-variableAction returns [AbstractTextMarkerAction action = null]
-	:		
-	
-	id = Identifier
-	{
-		action = ActionFactory.createActionVariable(id);
-	}
-	;
+//variableAction returns [AbstractTextMarkerAction action = null]
+//	:		
+//	
+//	id = Identifier
+//	{
+//		action = ActionFactory.createActionVariable(id);
+//	}
+//	;
 
 
 externalAction returns [AbstractTextMarkerAction action = null]

@@ -36,7 +36,7 @@ public class VariableAction extends AbstractTextMarkerAction {
   @Override
   public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
-
+    // TODO
   }
 
   public String getVar() {
