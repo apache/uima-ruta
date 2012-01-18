@@ -423,28 +423,28 @@ variableDeclaration returns [List<Statement> stmts = new ArrayList<Statement>()]
         decls.add(StatementFactory.createVarListVariable(id,type,list, TMTypeConstants.TM_TYPE_TL));
         stmts.add(StatementFactory.createDeclarationsStatement(type, decls, list));
         }       
-	|
-	stmt = conditionDeclaration {stmts.add(stmt);}
-	|
-	stmt = actionDeclaration {stmts.add(stmt);}
+	//|
+	//stmt = conditionDeclaration {stmts.add(stmt);}
+	//|
+	//stmt = actionDeclaration {stmts.add(stmt);}
 	;
 
-conditionDeclaration returns [Statement stmt = null]
-    :
-    declareToken = CONDITION id = Identifier {addVariable(id.getText(), declareToken.getText());}
-    ASSIGN_EQUAL 
-    LPAREN cons = conditions RPAREN SEMI
-    {stmt = StatementFactory.createComposedVariableConditionDeclaration(id, cons);}
-    ;
+//conditionDeclaration returns [Statement stmt = null]
+//    :
+//    declareToken = CONDITION id = Identifier {addVariable(id.getText(), declareToken.getText());}
+//    ASSIGN_EQUAL 
+//    LPAREN cons = conditions RPAREN SEMI
+//    {stmt = StatementFactory.createComposedVariableConditionDeclaration(id, cons);}
+//    ;
 
 //TODO added rule
-actionDeclaration returns [Statement stmt = null]
-    :
-    declareToken = ACTION id = Identifier {addVariable(id.getText(), declareToken.getText());}
-    ASSIGN_EQUAL
-    LPAREN a = actions RPAREN SEMI
-    {stmt = StatementFactory.createComposedVariableActionDeclaration(id, a);}
-    ;
+//actionDeclaration returns [Statement stmt = null]
+//    :
+//    declareToken = ACTION id = Identifier {addVariable(id.getText(), declareToken.getText());}
+//    ASSIGN_EQUAL
+//    LPAREN a = actions RPAREN SEMI
+//    {stmt = StatementFactory.createComposedVariableActionDeclaration(id, a);}
+//    ;
 
 declaration returns [List<Statement> stmts = new ArrayList<Statement>()]
 @init {
@@ -853,20 +853,21 @@ condition returns [TextMarkerCondition result = null]
 	| c = conditionPartOfNeq
 	| c = conditionSize
 	| (c = externalCondition)=> c = externalCondition
-	| c = variableCondition
+	//| c = variableCondition
 	) {result = c;}
 	;
 	
 //TODO added rule
-variableCondition returns [TextMarkerCondition condition = null]
-	:		
-	// also create condition for auto-completion
-	//{isVariableOfType(input.LT(1).getText(), "CONDITION")}? 
-	id = Identifier
-	{
-		condition = ConditionFactory.createCondition(id);
-	}
-	;	
+//variableCondition returns [TextMarkerCondition condition = null]
+//	:		
+//	// also create condition for auto-completion
+//	//{isVariableOfType(input.LT(1).getText(), "CONDITION")}? 
+//	id = Identifier
+//	{
+//		condition = ConditionFactory.createCondition(id);
+//	}
+//	;	
+	
 	
 externalCondition returns [TextMarkerCondition condition = null]
 	:
@@ -1146,20 +1147,21 @@ action returns [TextMarkerAction result = null]
 	| a = actionConfigure
 	| a = actionDynamicAnchoring
 	| (a = externalAction)=> a = externalAction
-	| a = variableAction
+	//| a = variableAction
 	) {result = a;}
 	;
 
 
-variableAction returns [TextMarkerAction action = null]
-	:
-	// also create an dummy action for auto-completion
-	//{isVariableOfType(input.LT(1).getText(), "ACTION")}?
-	 id = Identifier
-	{
-		action = ActionFactory.createAction(id);
-	}
-	;
+//variableAction returns [TextMarkerAction action = null]
+//	:
+//	// also create an dummy action for auto-completion
+//	//{isVariableOfType(input.LT(1).getText(), "ACTION")}?
+//	 id = Identifier
+//	{
+//		action = ActionFactory.createAction(id);
+//	}
+//	;
+	
 externalAction returns [TextMarkerAction action = null]
 	:
 	{isVariableOfType(input.LT(1).getText(), "ACTION")}? id = Identifier

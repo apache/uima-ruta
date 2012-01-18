@@ -27,8 +27,8 @@ public class TextMarkerKeywords implements ITextMarkerKeywords {
       "AFTER", "STARTSWITH", "ENDSWITH", "PARTOFNEQ", "SIZE" };
 
   private static String[] declaration = { "WORDLIST", "DECLARE", "BOOLEAN", "PACKAGE", "TYPE",
-      "TYPESYSTEM", "INT", "DOUBLE", "FLOAT", "STRING", "SCRIPT", "WORDTABLE", "ENGINE", "ACTION",
-      "CONDITION", "BLOCK", "RULES", "BOOLEANLIST", "INTLIST", "DOUBLELIST", "FLOATLIST","STRINGLIST",
+      "TYPESYSTEM", "INT", "DOUBLE", "FLOAT", "STRING", "SCRIPT", "WORDTABLE", "ENGINE", 
+      "BLOCK", "RULES", "BOOLEANLIST", "INTLIST", "DOUBLELIST", "FLOATLIST","STRINGLIST",
       "TYPELIST" };
 
   private static String[] action = { "DEL", "CALL", "MARK", "MARKSCORE", "COLOR", "LOG", "TAG",
