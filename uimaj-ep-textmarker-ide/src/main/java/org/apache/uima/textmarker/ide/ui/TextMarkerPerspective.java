@@ -30,8 +30,6 @@ import org.eclipse.ui.progress.IProgressConstants;
 
 public class TextMarkerPerspective implements IPerspectiveFactory {
 
-  public static final String BASIC_STREAM = "org.apache.uima.textmarker.explain.basic";
-
   public static final String TYPE_BROWSER = "org.apache.uima.caseditor.browser";
 
   public static final String SELECTION_VIEW = "org.apache.uima.caseditor.selection";
@@ -75,7 +73,6 @@ public class TextMarkerPerspective implements IPerspectiveFactory {
     layout.addShowViewShortcut(IProgressConstants.PROGRESS_VIEW_ID);
 
     layout.addShowViewShortcut(SCRIPT_EXPLORER);
-    layout.addShowViewShortcut(BASIC_STREAM);
     layout.addShowViewShortcut(TYPE_BROWSER);
     layout.addShowViewShortcut(SELECTION_VIEW);
     layout.addShowViewShortcut(TEXTRULER);
@@ -95,7 +92,6 @@ public class TextMarkerPerspective implements IPerspectiveFactory {
             editorArea);
     rightFolder.addView(IPageLayout.ID_OUTLINE);
     rightFolder.addView(TYPE_BROWSER);
-    rightFolder.addView(BASIC_STREAM);
 
     // Folder
     IFolderLayout folder = layout.createFolder("left", IPageLayout.LEFT, (float) 0.2, editorArea); //$NON-NLS-1$		

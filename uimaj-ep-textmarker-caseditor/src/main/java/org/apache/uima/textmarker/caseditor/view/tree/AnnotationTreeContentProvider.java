@@ -136,10 +136,10 @@ public class AnnotationTreeContentProvider extends AbstractAnnotationDocumentLis
   @Override
   public void casDocumentChanged(IEditorInput oldInput, ICasDocument oldDocument,
           IEditorInput newInput, ICasDocument newDocument) {
-    document.removeChangeListener(this);
-    document = newDocument;
-    document.addChangeListener(this);
-    changed();
+//    document.removeChangeListener(this);
+//    document = newDocument;
+//    document.addChangeListener(this);
+//    changed();
   }
 
 }

@@ -44,8 +44,6 @@ public class ExplainPerspective implements IPerspectiveFactory {
 
   public static final String QUERY = "org.apache.uima.textmarker.query.ui.ScriptQueryView";
 
-  public static final String BASIC_STREAM = "org.apache.uima.textmarker.explain.basic";
-
   public static final String PALETTE_VIEW = "org.apache.uima.cev.views.palette";
 
   public static final String TYPE_BROWSER = "org.apache.uima.cev.views.typeBrowser";
@@ -87,7 +85,6 @@ public class ExplainPerspective implements IPerspectiveFactory {
     layout.addShowViewShortcut(IProgressConstants.PROGRESS_VIEW_ID);
 
     layout.addShowViewShortcut(SCRIPT_EXPLORER);
-    layout.addShowViewShortcut(BASIC_STREAM);
     layout.addShowViewShortcut(PALETTE_VIEW);
     layout.addShowViewShortcut(TYPE_BROWSER);
     layout.addShowViewShortcut(SELECTION_VIEW);
@@ -101,7 +98,6 @@ public class ExplainPerspective implements IPerspectiveFactory {
 
     IFolderLayout rightFolder = layout.createFolder("rightFolder", IPageLayout.RIGHT, (float) 0.75,
             editorArea);
-    rightFolder.addView(BASIC_STREAM);
     rightFolder.addView(APPLIED_RULES);
     rightFolder.addView(SELECTION_RULES);
     rightFolder.addView(RULE_LIST);
