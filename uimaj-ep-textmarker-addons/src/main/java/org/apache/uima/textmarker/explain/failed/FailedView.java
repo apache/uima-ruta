@@ -20,10 +20,11 @@
 package org.apache.uima.textmarker.explain.failed;
 
 import org.apache.uima.caseditor.editor.AnnotationEditor;
-import org.apache.uima.caseditor.editor.AnnotationEditorView;
+import org.apache.uima.caseditor.editor.CasEditorView;
 import org.apache.uima.caseditor.editor.ICasEditor;
+import org.eclipse.ui.part.IPageBookViewPage;
 
-public class FailedView extends AnnotationEditorView {
+public class FailedView extends CasEditorView {
 
   public static final String ID = "org.apache.uima.textmarker.explain.failed";
 
@@ -32,13 +33,11 @@ public class FailedView extends AnnotationEditorView {
   }
 
   @Override
-  protected PageRec doCreatePage(ICasEditor editor) {
-    PageRec result = null;
+  protected IPageBookViewPage doCreatePage(ICasEditor editor) {
+    IPageBookViewPage result = null;
     if (editor.getDocument() != null && editor instanceof AnnotationEditor) {
       FailedViewPage page = new FailedViewPage((AnnotationEditor) editor);
-      initPage(page);
-      page.createControl(getPageBook());
-      result = new PageRec(editor, page);
+      result = page;
     }
     return result;
   }

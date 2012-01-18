@@ -20,10 +20,11 @@
 package org.apache.uima.textmarker.statistics;
 
 import org.apache.uima.caseditor.editor.AnnotationEditor;
-import org.apache.uima.caseditor.editor.AnnotationEditorView;
+import org.apache.uima.caseditor.editor.CasEditorView;
 import org.apache.uima.caseditor.editor.ICasEditor;
+import org.eclipse.ui.part.IPageBookViewPage;
 
-public class StatisticsView extends AnnotationEditorView {
+public class StatisticsView extends CasEditorView {
 
   public static final String ID = "org.apache.uima.textmarker.explain.apply";
 
@@ -32,13 +33,13 @@ public class StatisticsView extends AnnotationEditorView {
   }
 
   @Override
-  protected PageRec doCreatePage(ICasEditor editor) {
-    PageRec result = null;
+  protected IPageBookViewPage doCreatePage(ICasEditor editor) {
+    IPageBookViewPage result = null;
     if (editor.getDocument() != null && editor instanceof AnnotationEditor) {
       StatisticsViewPage page = new StatisticsViewPage((AnnotationEditor) editor);
       initPage(page);
       page.createControl(getPageBook());
-      result = new PageRec(editor, page);
+      result = page;
     }
     return result;
   }

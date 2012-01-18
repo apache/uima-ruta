@@ -163,12 +163,12 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
   @Override
   public void casDocumentChanged(IEditorInput oldInput, ICasDocument oldDocument,
           IEditorInput newInput, ICasDocument newDocument) {
-    editor.removeCasEditorInputListener(this);
-    document = newDocument;
-    editor.addCasEditorInputListener(this);
-    ExplainTree tree = new ExplainTree(document.getCAS());
-    viewer.setInput(tree.getRoot());
-    viewer.refresh();
+//    editor.removeCasEditorInputListener(this);
+//    document = newDocument;
+//    editor.addCasEditorInputListener(this);
+//    ExplainTree tree = new ExplainTree(document.getCAS());
+//    viewer.setInput(tree.getRoot());
+//    viewer.refresh();
     
   }
 }

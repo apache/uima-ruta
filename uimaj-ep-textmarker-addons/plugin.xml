@@ -486,13 +486,6 @@ under the License.
          point="org.eclipse.ui.views">
       <view
             category="org.apache.uima.textmarker.ide.ui"
-            class="org.apache.uima.textmarker.explain.basic.BasicTokenStreamView"
-            icon="icons/text_list_numbers.png"
-            id="org.apache.uima.textmarker.explain.basic"
-            name="Basic Stream">
-      </view>
-      <view
-            category="org.apache.uima.textmarker.ide.ui"
             class="org.apache.uima.textmarker.explain.apply.ApplyView"
             icon="icons/chart_organisation.png"
             id="org.apache.uima.textmarker.explain.apply"

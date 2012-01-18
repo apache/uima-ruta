@@ -20,12 +20,13 @@
 package org.apache.uima.textmarker.testing.ui.views.fn;
 
 import org.apache.uima.caseditor.editor.AnnotationEditor;
-import org.apache.uima.caseditor.editor.AnnotationEditorView;
+import org.apache.uima.caseditor.editor.CasEditorView;
 import org.apache.uima.caseditor.editor.ICasEditor;
 import org.apache.uima.textmarker.testing.evaluator.ICasEvaluator;
 import org.apache.uima.textmarker.testing.ui.views.EvaluationViewPage;
+import org.eclipse.ui.part.IPageBookViewPage;
 
-public class FalseNegativeView extends AnnotationEditorView {
+public class FalseNegativeView extends CasEditorView {
 
   public static final String ID = "org.apache.uima.textmarker.testing.falseNegative";
 
@@ -34,14 +35,12 @@ public class FalseNegativeView extends AnnotationEditorView {
   }
 
   @Override
-  protected PageRec doCreatePage(ICasEditor editor) {
-    PageRec result = null;
+  protected IPageBookViewPage doCreatePage(ICasEditor editor) {
+    IPageBookViewPage result = null;
     if (editor.getDocument() != null && editor instanceof AnnotationEditor) {
       EvaluationViewPage page = new EvaluationViewPage(ICasEvaluator.FALSE_NEGATIVE,
               (AnnotationEditor) editor);
-      initPage(page);
-      page.createControl(getPageBook());
-      result = new PageRec(editor, page);
+      result = page;
     }
     return result;
   }
