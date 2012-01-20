@@ -43,6 +43,12 @@ public interface RuleElement {
           TextMarkerRuleElement sideStepOrigin, RuleElement entryPoint, TextMarkerStream stream,
           InferenceCrowd crowd);
 
+  void continueOwnMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
+          RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
+          TextMarkerRuleElement sideStepOrigin, RuleElement entryPoint, TextMarkerStream stream,
+          InferenceCrowd crowd);
+
+  
   List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches, TextMarkerBlock parent);
 
   Collection<AnnotationFS> getAnchors(TextMarkerStream symbolStream);
@@ -65,3 +71,4 @@ public interface RuleElement {
 
   boolean hasAncestor(boolean after);
 }
+ 

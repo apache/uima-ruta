@@ -138,7 +138,6 @@ public class StatisticsVisitor implements TextMarkerInferenceVisitor {
       part *= 10000;
       part = Math.round(part);
       part /= 10000;
-      // System.out.println(each + " : " + total + "ms / " + amount + " = " + part + "ms");
       names.add(each);
       totals.add(total);
       amounts.add((int) amount);

@@ -137,7 +137,6 @@ public class DebugInfoCollectorVisitor implements TextMarkerInferenceVisitor {
                 ) {
                   blockApply.add(result);
                 } else {
-                  // System.out.println();
                   // TODO too many blocks added
                 }
               } else {
@@ -152,7 +151,6 @@ public class DebugInfoCollectorVisitor implements TextMarkerInferenceVisitor {
               ) {
                 blockApply.add(result);
               } else {
-                // System.out.println();
                 // TODO too many blocks added
               }
             }

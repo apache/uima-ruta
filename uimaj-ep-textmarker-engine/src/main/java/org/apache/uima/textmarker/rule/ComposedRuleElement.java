@@ -71,14 +71,34 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
           RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
           TextMarkerRuleElement sideStepOrigin, RuleElement entryPoint, TextMarkerStream stream,
           InferenceCrowd crowd) {
-    // TODO: this method cannot be correct!!!!
     RuleElement nextElement = getNextElement(after, this);
-    ComposedRuleElementMatch composedMatch = createComposedMatch(ruleMatch, containerMatch);
-    nextElement.continueMatch(after, annotation, ruleMatch, ruleApply, composedMatch,
-            sideStepOrigin, entryPoint, stream, crowd);
-
+    if (nextElement != null) {
+      ComposedRuleElementMatch composedMatch = createComposedMatch(ruleMatch, containerMatch);
+      nextElement.continueMatch(after, annotation, ruleMatch, ruleApply, composedMatch,
+              sideStepOrigin, entryPoint, stream, crowd);
+    } else {
+      fallback(after, false, annotation, ruleMatch, ruleApply, containerMatch, sideStepOrigin,
+              entryPoint, stream, crowd);
+    }
   }
 
+  @Override
+  public void continueOwnMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
+          RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
+          TextMarkerRuleElement sideStepOrigin, RuleElement entryPoint, TextMarkerStream stream,
+          InferenceCrowd crowd) {
+    // TODO minimize recursion call for greedy rule elements
+    RuleElement nextElement = getNextElement(after, this);
+    if (nextElement != null) {
+      ComposedRuleElementMatch composedMatch = createComposedMatch(ruleMatch, containerMatch);
+      nextElement.continueMatch(after, annotation, ruleMatch, ruleApply, composedMatch,
+              sideStepOrigin, entryPoint, stream, crowd);
+    } else {
+      fallback(after, false, annotation, ruleMatch, ruleApply, containerMatch, sideStepOrigin,
+              entryPoint, stream, crowd);
+    }
+  }
+  
   public void fallbackContinue(boolean after, boolean failed, AnnotationFS annotation,
           RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
           TextMarkerRuleElement sideStepOrigin, RuleElement entryPoint, TextMarkerStream stream,
@@ -114,7 +134,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       } else {
         if (quantifier.continueMatch(after, annotation, this, ruleMatch, parentContainerMatch,
                 stream, crowd)) {
-          continueMatch(after, annotation, ruleMatch, ruleApply, parentContainerMatch,
+          continueOwnMatch(after, annotation, ruleMatch, ruleApply, parentContainerMatch,
                   sideStepOrigin, null, stream, crowd);
         } else if (nextElement != null) {
           nextElement.continueMatch(after, annotation, ruleMatch, ruleApply, parentContainerMatch,
