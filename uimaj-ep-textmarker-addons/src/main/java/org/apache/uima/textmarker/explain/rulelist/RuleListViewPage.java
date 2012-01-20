@@ -102,7 +102,7 @@ public class RuleListViewPage extends ApplyViewPage implements Listener {
     for (IExplainTreeNode each : children) {
       if (each instanceof RuleApplyNode) {
         RuleApplyNode ran = (RuleApplyNode) each;
-        Feature f = ruleType.getFeatureByBaseName(ExplainConstants.ELEMENTS);
+        Feature f = ruleType.getFeatureByBaseName(ExplainConstants.ELEMENT);
         if (f != null) {
           String v = ran.getFeatureStructure().getStringValue(f);
           if (manualFilter != null && !"".equals(manualFilter) && v.indexOf(manualFilter) == -1) {

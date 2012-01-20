@@ -525,7 +525,7 @@ under the License.
             class="org.apache.uima.textmarker.explain.selection.ExplainSelectionView"
             icon="icons/chart_organisation.png"
             id="org.apache.uima.textmarker.explain.selection"
-            name="Selected Rules">
+            name="Covering Rules">
       </view>
       <view
             category="org.apache.uima.textmarker.ide.ui"
