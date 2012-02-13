@@ -1,0 +1,116 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>uimaj-ep-textmarker-engine</artifactId>
+	<version>2.4.1-SNAPSHOT</version>
+	<parent>
+		<groupId>org.apache.uima</groupId>
+		<artifactId>uimaj-parent</artifactId>
+		<version>2.4.1-SNAPSHOT</version>
+		<relativePath>../uimaj-parent/pom.xml</relativePath>
+	</parent>
+	<properties>
+		<uimaScmProject>${project.artifactId}</uimaScmProject>
+	</properties>
+	<name>Apache UIMA Eclipse: ${project.artifactId}</name>
+	<url>${uimaWebsiteUrl}</url>
+	<description>Provides the UIMA TextMarker engine to other Eclipse 
+    plugins for their use</description>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.uima</groupId>
+			<artifactId>uimaj-textmarker</artifactId>
+			<version>${project.parent.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+      <groupId>org.antlr</groupId>
+      <artifactId>antlr-runtime</artifactId>
+      <version>3.4</version>
+    <scope>compile</scope>
+    </dependency>
+		<!-- <dependency> <groupId>org.antlr</groupId> <artifactId>antlr-runtime</artifactId> 
+			<version>3.4</version> <scope>compile</scope> </dependency> -->
+	</dependencies>
+	<scm>
+		<url>http://svn.apache.org/viewvc/uima/sandbox/trunk/uimaj-ep-textmarker-engine</url>
+		<connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/trunk/uimaj-ep-textmarker-engine</connection>
+		<developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/trunk/uimaj-ep-textmarker-engine</developerConnection>
+	</scm>
+	<build>
+		<!-- don't use artifactId as first part of finalName, follow instead the 
+			eclipse convention -->
+		<finalName>org.apache.uima.textmarker.engine_${parsedVersion.osgiVersion}</finalName>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.rat</groupId>
+					<artifactId>apache-rat-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>default-cli</id>
+							<configuration>
+								<excludes>
+									<exclude>release.properties</exclude> <!-- release generated artifact -->
+									<exclude>src/test/resources/ManualTests/*</exclude> <!-- test data -->
+									<exclude>marker-file-identifying-*</exclude>
+								</excludes>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>uima-bundle</id>
+						<configuration>
+							<instructions>
+							  <_nouses>true</_nouses>
+								<Export-Package>
+									org.apache.uima.textmarker.*,
+									org.antlr.runtime.*
+								</Export-Package>
+								<Require-Bundle>
+									org.apache.uima.runtime,
+									org.junit4;bundle-version="4.8.1";resolution:=optional
+								</Require-Bundle>
+								<Import-Package>
+								</Import-Package>
+								<!-- <Embed-Dependency>*,antlr-runtime-3.4.jar;scope=compile;inline=true</Embed-Dependency> -->
+								<Embed-Dependency>*;scope=compile;inline=true</Embed-Dependency>
+								<Bundle-SymbolicName>org.apache.uima.textmarker.engine;singleton:=true</Bundle-SymbolicName>
+								<Bundle-RequiredExecutionEnvironment>J2SE-1.5</Bundle-RequiredExecutionEnvironment>
+								<Eclipse-ExtensibleAPI>true</Eclipse-ExtensibleAPI>
+								<!-- <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy> -->
+								<Eclipse-BuddyPolicy>registered</Eclipse-BuddyPolicy>
+								<Eclipse-RegisterBuddy>org.apache.uima.runtime</Eclipse-RegisterBuddy>
+							</instructions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>unpackDependentJars</id>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.outputDirectory}</outputDirectory>
+							<!-- <excludes>org/apache/uima/*.*</excludes> <includes>org/apache/uima/textmarker/**,org/antlr/**,antlr/**,org/apache/commons/**</includes> -->
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
