@@ -33,19 +33,16 @@ public class RunTestHandler implements IHandler {
 
   private IResource resource;
 
-  @Override
   public void addHandlerListener(IHandlerListener handlerListener) {
     // TODO Auto-generated method stub
 
   }
 
-  @Override
   public void dispose() {
     // TODO Auto-generated method stub
 
   }
 
-  @Override
   public Object execute(ExecutionEvent event) throws ExecutionException {
 
     // TODO create a new view for every resource file
@@ -91,19 +88,16 @@ public class RunTestHandler implements IHandler {
     return null;
   }
 
-  @Override
   public boolean isEnabled() {
     // TODO Auto-generated method stub
     return true;
   }
 
-  @Override
   public boolean isHandled() {
     // TODO Auto-generated method stub
     return true;
   }
 
-  @Override
   public void removeHandlerListener(IHandlerListener handlerListener) {
     // TODO Auto-generated method stub
 

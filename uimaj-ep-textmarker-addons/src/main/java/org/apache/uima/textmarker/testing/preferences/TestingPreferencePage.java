@@ -52,7 +52,6 @@ public class TestingPreferencePage extends PreferencePage implements IWorkbenchP
     setPreferenceStore(store);
   }
 
-  @Override
   public void init(IWorkbench workbench) {
     // TODO Auto-generated method stub
 

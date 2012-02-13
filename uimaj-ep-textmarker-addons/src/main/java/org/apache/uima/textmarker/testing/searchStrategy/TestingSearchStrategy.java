@@ -31,7 +31,6 @@ import org.eclipse.core.runtime.IPath;
 
 public class TestingSearchStrategy implements ITypeSystemSearchStrategy {
 
-  @Override
   public IFile findTypeSystem(IFile casFile) {
     IPath location = casFile.getLocation();
     IProject project = casFile.getProject();

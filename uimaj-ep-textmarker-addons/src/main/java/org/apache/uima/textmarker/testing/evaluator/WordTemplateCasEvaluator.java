@@ -39,7 +39,6 @@ import org.apache.uima.textmarker.seed.DefaultSeeder;
 
 public class WordTemplateCasEvaluator implements ICasEvaluator {
 
-  @Override
   public CAS evaluate(CAS test, CAS run, Collection<String> excludedTypes)
           throws CASRuntimeException, CASException {
     Type falsePositiveType = run.getTypeSystem().getType(ICasEvaluator.FALSE_POSITIVE);

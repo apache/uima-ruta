@@ -138,7 +138,6 @@ public class MatchedViewPage extends Page implements ISelectionListener {
     }
   }
 
-  @Override
   public void selectionChanged(IWorkbenchPart part, ISelection selection) {
     if (selection instanceof TreeSelection
             && (part instanceof ApplyView || part instanceof RuleListView || part instanceof ExplainSelectionView)) {

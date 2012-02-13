@@ -78,7 +78,6 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
 
   public class TreeViewAnnotationStyleChangeListener extends AnnotationStyleChangeListener {
 
-    @Override
     public void annotationStylesChanged(Collection<AnnotationStyle> styles) {
       for (AnnotationStyle annotationStyle : styles) {
         String annotation = annotationStyle.getAnnotation();
@@ -153,7 +152,8 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     filterTypeTextField.addListener(SWT.KeyUp, this);
     filterTypeTextField.addListener(SWT.MouseUp, this);
     filterTypeTextField.addListener(SWT.Modify, this);
-    filterTypeTextField.setMessage("Only types with...");
+    // TODO only for 3.3 see pom
+     filterTypeTextField.setMessage("Only types with...");
 
     filterCoveredTextTextField = new Text(overlay, SWT.SINGLE | SWT.BORDER);
     GridData gd2 = new GridData();
@@ -165,6 +165,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     filterCoveredTextTextField.addListener(SWT.KeyUp, this);
     filterCoveredTextTextField.addListener(SWT.MouseUp, this);
     filterCoveredTextTextField.addListener(SWT.Modify, this);
+    // TODO only for 3.3 see pom
     filterCoveredTextTextField.setMessage("Only annotations with...");
 
     treeView = new CheckboxTreeViewer(overlay, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
@@ -480,7 +481,6 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     return root;
   }
 
-  @Override
   public void selectionChanged(IWorkbenchPart part, ISelection selection) {
     if (!useSelection)
       return;

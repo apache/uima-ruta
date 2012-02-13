@@ -162,7 +162,6 @@ public class ElementViewPage extends Page implements ISelectionListener {
     }
   }
 
-  @Override
   public void selectionChanged(IWorkbenchPart part, ISelection selection) {
     if (selection instanceof TreeSelection
             && (part instanceof MatchedView || part instanceof FailedView)) {

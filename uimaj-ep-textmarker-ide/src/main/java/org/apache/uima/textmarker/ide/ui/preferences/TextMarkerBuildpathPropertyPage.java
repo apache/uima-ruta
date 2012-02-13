@@ -38,7 +38,6 @@ public class TextMarkerBuildpathPropertyPage extends BuildPathsPropertyPage impl
             .getInt(INDEX), false, pageContainer);
   }
 
-  @Override
   public IDLTKLanguageToolkit getLanguageToolkit() {
     return TextMarkerLanguageToolkit.getDefault();
   }

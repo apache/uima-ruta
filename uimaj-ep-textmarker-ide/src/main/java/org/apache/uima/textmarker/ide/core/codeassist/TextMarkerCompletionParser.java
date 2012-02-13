@@ -387,7 +387,6 @@ public class TextMarkerCompletionParser extends TextMarkerAssistParser {
     this.assistNodeParent = prevParent;
   }
 
-  @Override
   public ModuleDeclaration parse(IModuleSource sourceModule) {
     ModuleDeclaration module = (ModuleDeclaration) this.parser.parse(sourceModule, null);
     module.rebuild();

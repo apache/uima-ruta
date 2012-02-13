@@ -48,18 +48,15 @@ public class LoadFilesFromFolderHandler implements IHandler {
 
   TestViewPage debugPage;
 
-  @Override
   public void addHandlerListener(IHandlerListener handlerListener) {
 
   }
 
-  @Override
   public void dispose() {
     // TODO Auto-generated method stub
 
   }
 
-  @Override
   public Object execute(ExecutionEvent event) throws ExecutionException {
 
     debugView = (TestPageBookView) HandlerUtil.getActivePart(event);
@@ -87,19 +84,16 @@ public class LoadFilesFromFolderHandler implements IHandler {
     return null;
   }
 
-  @Override
   public boolean isEnabled() {
     // TODO Auto-generated method stub
     return true;
   }
 
-  @Override
   public boolean isHandled() {
     // TODO Auto-generated method stub
     return true;
   }
 
-  @Override
   public void removeHandlerListener(IHandlerListener handlerListener) {
     // TODO Auto-generated method stub
 

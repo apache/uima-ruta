@@ -48,7 +48,6 @@ public class AnnotationTreeContentProvider extends AbstractAnnotationDocumentLis
     editor.addCasEditorInputListener(this);
   }
 
-  @Override
   public void dispose() {
     document.removeChangeListener(this);
     editor.removeCasEditorInputListener(this);
@@ -98,7 +97,6 @@ public class AnnotationTreeContentProvider extends AbstractAnnotationDocumentLis
     return null;
   }
 
-  @Override
   public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
     // changed();
   }
@@ -133,7 +131,6 @@ public class AnnotationTreeContentProvider extends AbstractAnnotationDocumentLis
   }
 
 
-  @Override
   public void casDocumentChanged(IEditorInput oldInput, ICasDocument oldDocument,
           IEditorInput newInput, ICasDocument newDocument) {
 //    document.removeChangeListener(this);

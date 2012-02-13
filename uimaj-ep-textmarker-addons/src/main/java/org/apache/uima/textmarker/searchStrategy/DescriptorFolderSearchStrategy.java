@@ -53,7 +53,6 @@ public class DescriptorFolderSearchStrategy implements ITypeSystemSearchStrategy
     return result;
   }
 
-  @Override
   public IFile findTypeSystem(IFile casFile) {
     IProject project = casFile.getProject();
 
@@ -72,17 +71,14 @@ public class DescriptorFolderSearchStrategy implements ITypeSystemSearchStrategy
       ListDialog ld = new ListDialog(Display.getCurrent().getActiveShell());
       ld.setContentProvider(new IStructuredContentProvider() {
 
-        @Override
         public void dispose() {
 
         }
 
-        @Override
         public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 
         }
 
-        @Override
         public Object[] getElements(Object inputElement) {
           return ((Collection<?>) inputElement).toArray();
         }

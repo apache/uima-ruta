@@ -55,7 +55,6 @@ public class RapierPreferencePage extends FieldEditorPreferencePage implements
     setPreferenceStore(store);
   }
 
-  @Override
   public void init(IWorkbench workbench) {
   }
 

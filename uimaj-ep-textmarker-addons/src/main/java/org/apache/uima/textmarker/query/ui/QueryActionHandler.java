@@ -121,12 +121,11 @@ public class QueryActionHandler implements IHandler {
     @Override
     public IStatus run(IProgressMonitor monitor) {
       final QueryView queryView = (QueryView) HandlerUtil.getActivePart(event);
-      final QueryComposite queryComposite = (QueryComposite) queryView.getComposite();
+      final QueryComposite queryComposite = queryView.getComposite();
       // queryView.saveState();
       queryView.showBusy(true);
       monitor.beginTask("Initializing analysis engine...", 1);
       queryComposite.getDisplay().asyncExec(new Runnable() {
-        @Override
         public void run() {
           queryComposite.setResult(null);
         }
@@ -166,7 +165,7 @@ public class QueryActionHandler implements IHandler {
           }
           File tsFile = new File(tsLocation);
           XMLInputSource ints = new XMLInputSource(tsFile);
-          TypeSystemDescription importTSD = (TypeSystemDescription) UIMAFramework.getXMLParser()
+          TypeSystemDescription importTSD = UIMAFramework.getXMLParser()
                   .parseTypeSystemDescription(ints);
           importTSD.resolveImports(resMgr);
           tsds.add(importTSD);
@@ -245,7 +244,6 @@ public class QueryActionHandler implements IHandler {
             final int constFound = found;
             final int constFiles = files;
             queryComposite.getDisplay().syncExec(new Runnable() {
-              @Override
               public void run() {
                 queryComposite.setResult(result);
                 queryComposite.setResultInfo(constFound, constFiles);
@@ -316,21 +314,18 @@ public class QueryActionHandler implements IHandler {
     }
   }
 
-  @Override
   public void addHandlerListener(IHandlerListener handlerListener) {
 
   }
 
-  @Override
   public void dispose() {
 
   }
 
-  @Override
   public Object execute(ExecutionEvent event) throws ExecutionException {
 
     QueryView queryView = (QueryView) HandlerUtil.getActivePart(event);
-    QueryComposite queryComposite = (QueryComposite) queryView.getComposite();
+    QueryComposite queryComposite = queryView.getComposite();
 
     String dir = queryComposite.getDataDirectory();
     String typesystem = queryComposite.getTypeSystem();
@@ -346,17 +341,14 @@ public class QueryActionHandler implements IHandler {
     return null;
   }
 
-  @Override
   public boolean isEnabled() {
     return true;
   }
 
-  @Override
   public boolean isHandled() {
     return true;
   }
 
-  @Override
   public void removeHandlerListener(IHandlerListener handlerListener) {
 
   }

@@ -124,53 +124,43 @@ public class EvaluationViewPage extends Page implements ICasDocumentListener, IS
     }
   }
 
-  @Override
   public void selectionChanged(IWorkbenchPart part, ISelection selection) {
     // TODO Auto-generated method stub
   }
 
-  @Override
   public void added(FeatureStructure newFeatureStructure) {
 
   }
 
-  @Override
   public void added(Collection<FeatureStructure> newFeatureStructure) {
 
   }
 
-  @Override
   public void removed(FeatureStructure deletedFeatureStructure) {
 
   }
 
-  @Override
   public void removed(Collection<FeatureStructure> deletedFeatureStructure) {
 
   }
 
-  @Override
   public void updated(FeatureStructure featureStructure) {
 
   }
 
-  @Override
   public void updated(Collection<FeatureStructure> featureStructure) {
 
   }
 
-  @Override
   public void changed() {
     reloadTree();
 
   }
 
-  @Override
   public void viewChanged(String oldViewName, String newViewName) {
     reloadTree();
   }
 
-  @Override
   public void casDocumentChanged(IEditorInput oldInput, ICasDocument oldDocument,
           IEditorInput newInput, ICasDocument newDocument) {
 //    document.removeChangeListener(this);

@@ -286,7 +286,6 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite {
       resultViewer.setLabelProvider(new QueryResultLabelProvider());
       resultViewer.setContentProvider(new QueryResultContentProvider());
       resultViewer.addDoubleClickListener(new IDoubleClickListener() {
-        @Override
         public void doubleClick(DoubleClickEvent event) {
           Object obj = event.getSelection();
           if (obj instanceof IStructuredSelection) {

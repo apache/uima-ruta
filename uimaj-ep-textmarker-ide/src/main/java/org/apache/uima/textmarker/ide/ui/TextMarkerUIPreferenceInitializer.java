@@ -33,7 +33,6 @@ public class TextMarkerUIPreferenceInitializer extends AbstractPreferenceInitial
    * org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences
    * ()
    */
-  @Override
   public void initializeDefaultPreferences() {
     IPreferenceStore store = TextMarkerIdePlugin.getDefault().getPreferenceStore();
 

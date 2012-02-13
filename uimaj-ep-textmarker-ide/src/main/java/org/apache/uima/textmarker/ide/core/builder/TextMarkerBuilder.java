@@ -272,30 +272,24 @@ public class TextMarkerBuilder extends AbstractBuildParticipantType implements I
     return relativeFilePath;
   }
 
-  @Override
   public void clean() {
   }
 
-  @Override
   public void prepare(IBuildChange buildChange, IBuildState buildState) throws CoreException {
   }
 
-  @Override
   public void buildExternalModule(IBuildContext context) throws CoreException {
 
   }
 
-  @Override
   public boolean beginBuild(int buildType) {
     return buildType != RECONCILE_BUILD;
   }
 
-  @Override
   public void endBuild(IProgressMonitor monitor) {
 
   }
 
-  @Override
   public void build(IBuildContext context) throws CoreException {
     final ModuleDeclaration ast = (ModuleDeclaration) context
             .get(IBuildContext.ATTR_MODULE_DECLARATION);

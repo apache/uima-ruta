@@ -40,7 +40,6 @@ public class Caretaker {
       this.list = list;
     }
 
-    @Override
     public void run() {
       viewer.setInput(list);
 

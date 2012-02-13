@@ -187,7 +187,6 @@ public class StatisticsViewPage extends Page implements IDoubleClickListener,
     }
   }
 
-  @Override
   public void selectionChanged(SelectionChangedEvent event) {
 
   }

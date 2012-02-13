@@ -120,7 +120,6 @@ public class MultiTWLConverterHandler implements IHandler {
   public void dispose() {
   }
 
-  @Override
   public Object execute(ExecutionEvent event) throws ExecutionException {
     new ConverterHandlerJob(event).schedule();
     return null;

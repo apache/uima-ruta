@@ -1,21 +1,53 @@
 Manifest-Version: 1.0
+Export-Package: org.apache.uima.textmarker.caseditor.view.selection;us
+ es:="org.apache.uima.textmarker.caseditor.view.tree,org.apache.uima.c
+ aseditor.editor",org.apache.uima.textmarker.caseditor.view.tree;uses:
+ ="org.eclipse.jface.viewers,org.apache.uima.cas.text,org.eclipse.swt.
+ widgets,org.apache.uima.caseditor.editor,org.eclipse.swt.graphics,org
+ .apache.uima.cas,org.eclipse.swt.dnd,org.eclipse.swt.events,org.eclip
+ se.swt.layout,org.eclipse.jface.preference,org.eclipse.jface.util,org
+ .eclipse.jface.dialogs",org.apache.uima.textmarker.caseditor.view.bro
+ wser;uses:="org.apache.uima.textmarker.caseditor.view.tree,org.apache
+ .uima.caseditor.editor",org.apache.uima.textmarker.caseditor;uses:="o
+ rg.eclipse.ui.plugin,org.osgi.framework"
+Ignore-Package: org.eclipse.core.runtime,org.eclipse.ui,org.eclipse.ui
+ .part
+Bundle-ActivationPolicy: lazy
+Implementation-Title: Apache UIMA Eclipse: uimaj-ep-textmarker-casedit
+ or
+Built-By: pkluegl
+Tool: Bnd-1.15.0
+Implementation-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Require-Bundle: org.eclipse.jface.text,org.eclipse.text,org.eclipse.ui
+ .editors,org.eclipse.ui.workbench.texteditor,org.eclipse.ui,org.eclip
+ se.ui.workbench,org.eclipse.core.runtime,org.eclipse.core.resources,o
+ rg.apache.uima.caseditor.ide,org.junit4;bundle-version="4.5.0";resolu
+ tion:=optional
+Implementation-Vendor: The Apache Software Foundation
+Implementation-Vendor-Id: org.apache.uima
+Bundle-Activator: org.apache.uima.textmarker.caseditor.TextMarkerCasEd
+ itorPlugin
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-SymbolicName: org.apache.uima.textmarker.caseditor;singleton:=t
+ rue
+Implementation-Version: 2.4.1-SNAPSHOT
+Bundle-Name: Apache UIMA Eclipse: uimaj-ep-textmarker-caseditor
+Created-By: Apache Maven Bundle Plugin
+Implementation-Url: http://uima.apache.org
+Build-Date: ${maven.build.timestamp}
+Bundle-Vendor: The Apache Software Foundation
+Project-Title: Apache UIMA
+Bundle-Version: 2.4.1.SNAPSHOT
+Build-Jdk: 1.6.0_23
+Bnd-LastModified: 1329140063696
 Bundle-ManifestVersion: 2
-Bundle-Name: uimaj-ep-textmarker-caseditor
-Bundle-SymbolicName: org.apache.uima.textmarker.caseditor;singleton:=true
-Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.apache.uima.caseditor;bundle-version="2.4.0",
- org.eclipse.ui,
- org.eclipse.core.runtime,
- org.apache.uima.runtime;bundle-version="2.3.1",
- org.apache.uima.textmarker.engine;bundle-version="1.0.0",
- org.eclipse.core.resources,
- org.apache.uima.textmarker.ide;bundle-version="1.0.0",
- org.eclipse.ui.ide,
- org.eclipse.jface.text,
- org.eclipse.dltk.ui;bundle-version="1.0.2",
- org.eclipse.ui.editors,
- org.eclipse.debug.ui;bundle-version="3.5.0"
-Export-Package: org.apache.uima.textmarker.caseditor.view.browser,
- org.apache.uima.textmarker.caseditor.view.selection,
- org.apache.uima.textmarker.caseditor.view.tree
+Bundle-Description: Provides additional views for the CAS Editor
+Import-Package: org.apache.uima.cas,org.apache.uima.cas.text,org.apach
+ e.uima.caseditor.editor,org.eclipse.jface.dialogs,org.eclipse.jface.p
+ reference,org.eclipse.jface.util,org.eclipse.jface.viewers,org.eclips
+ e.swt.dnd,org.eclipse.swt.events,org.eclipse.swt.graphics,org.eclipse
+ .swt.layout,org.eclipse.swt.widgets,org.eclipse.ui.plugin,org.osgi.fr
+ amework;version="[1.6,2)"
+Bundle-DocURL: http://www.apache.org/
+

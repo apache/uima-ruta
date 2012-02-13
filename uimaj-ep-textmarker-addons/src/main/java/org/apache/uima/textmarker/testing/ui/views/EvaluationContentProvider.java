@@ -37,7 +37,6 @@ public class EvaluationContentProvider implements ITreeContentProvider {
     this.type = type;
   }
 
-  @Override
   public Object[] getChildren(Object parentElement) {
     if (parentElement instanceof TestEvaluationTree) {
       TypeTreeNode root = (TypeTreeNode) ((TestEvaluationTree) parentElement).getRoot();
@@ -63,7 +62,6 @@ public class EvaluationContentProvider implements ITreeContentProvider {
     return empty;
   }
 
-  @Override
   public Object getParent(Object element) {
     if (element instanceof ITreeNode) {
       return ((ITreeNode) element).getParent();
@@ -71,7 +69,6 @@ public class EvaluationContentProvider implements ITreeContentProvider {
     return null;
   }
 
-  @Override
   public boolean hasChildren(Object element) {
     if (element instanceof TestEvaluationTree) {
       TypeTreeNode root = (TypeTreeNode) ((TestEvaluationTree) element).getRoot();
@@ -84,17 +81,14 @@ public class EvaluationContentProvider implements ITreeContentProvider {
     return false;
   }
 
-  @Override
   public Object[] getElements(Object inputElement) {
     return getChildren(inputElement);
   }
 
-  @Override
   public void dispose() {
 
   }
 
-  @Override
   public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 
   }

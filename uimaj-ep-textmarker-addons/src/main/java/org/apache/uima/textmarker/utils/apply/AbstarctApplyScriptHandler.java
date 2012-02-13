@@ -39,7 +39,6 @@ public abstract class AbstarctApplyScriptHandler implements IHandler {
   public void dispose() {
   }
 
-  @Override
   public Object execute(ExecutionEvent event) throws ExecutionException {
     IWorkbench workbench = TextMarkerAddonsPlugin.getDefault().getWorkbench();
     IWorkbenchPage page = workbench.getActiveWorkbenchWindow().getActivePage();

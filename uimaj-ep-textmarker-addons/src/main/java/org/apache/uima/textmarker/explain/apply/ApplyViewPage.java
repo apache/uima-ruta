@@ -154,13 +154,11 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
 
   }
 
-  @Override
   public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 
   }
 
 
-  @Override
   public void casDocumentChanged(IEditorInput oldInput, ICasDocument oldDocument,
           IEditorInput newInput, ICasDocument newDocument) {
 //    editor.removeCasEditorInputListener(this);

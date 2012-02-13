@@ -53,6 +53,7 @@ public class TypeTableSorter extends ViewerSorter {
   /**
    * Compares the object for sorting
    */
+  @Override
   public int compare(Viewer viewer, Object e1, Object e2) {
     int rc = 0;
     TypeEvalData td1 = (TypeEvalData) e1;

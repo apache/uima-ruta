@@ -39,6 +39,7 @@ public class ResultListDialog extends ApplicationWindow {
     this.data = data;
   }
 
+  @Override
   protected Control createContents(Composite parent) {
     GridLayout layout = new GridLayout();
     parent.setLayout(layout);

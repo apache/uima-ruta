@@ -1,0 +1,27 @@
+// ------------------------------------------------------------------
+// Transitive dependencies of this project determined from the
+// maven pom organized by organization.
+// ------------------------------------------------------------------
+
+Apache UIMA Eclipse: uimaj-ep-textmarker-caseditor
+
+
+From: 'The Apache Software Foundation' (http://www.apache.org/)
+  - Apache UIMA Base: jVinci: Vinci Transport Library (http://uima.apache.org) org.apache.uima:jVinci:jar:2.4.1-SNAPSHOT
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache UIMA Base: uimaj-adapter-vinci: Vinci Adapter (http://uima.apache.org) org.apache.uima:uimaj-adapter-vinci:jar:2.4.1-SNAPSHOT
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - UIMA Base: uimaj-core (http://uima.apache.org) org.apache.uima:uimaj-core:jar:2.4.1-SNAPSHOT
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache UIMA Base: uimaj-cpe: Collection Processing Engine (http://uima.apache.org) org.apache.uima:uimaj-cpe:jar:2.4.1-SNAPSHOT
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache UIMA Base: uimaj-document-annotation (http://uima.apache.org) org.apache.uima:uimaj-document-annotation:jar:2.4.1-SNAPSHOT
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache UIMA Eclipse: uimaj-ep-cas-editor (http://uima.apache.org) org.apache.uima:uimaj-ep-cas-editor:jar:2.4.1-SNAPSHOT
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache UIMA Base: uimaj-tools: Tools (http://uima.apache.org) org.apache.uima:uimaj-tools:jar:2.4.1-SNAPSHOT
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+
+
+

@@ -39,7 +39,6 @@ public class ListLabelProvider implements ILabelProvider {
 
   private final Image pink = TestViewPage.createImage("/icons/bullet_pink.png"); //$NON-NLS-1$
 
-  @Override
   public Image getImage(Object element) {
     if (element instanceof TestCasData) {
       TestCasData testData = (TestCasData) element;
@@ -70,7 +69,6 @@ public class ListLabelProvider implements ILabelProvider {
     return black;
   }
 
-  @Override
   public String getText(Object element) {
     if (element instanceof TestCasData) {
       TestCasData testData = (TestCasData) element;
@@ -88,12 +86,10 @@ public class ListLabelProvider implements ILabelProvider {
     return "error";
   }
 
-  @Override
   public void addListener(ILabelProviderListener listener) {
 
   }
 
-  @Override
   public void dispose() {
     black.dispose();
     blue.dispose();
@@ -104,12 +100,10 @@ public class ListLabelProvider implements ILabelProvider {
     red.dispose();
   }
 
-  @Override
   public boolean isLabelProperty(Object element, String property) {
     return false;
   }
 
-  @Override
   public void removeListener(ILabelProviderListener listener) {
 
   }

@@ -39,7 +39,6 @@ import org.apache.uima.textmarker.engine.TextMarkerEngine;
 
 public class FeatureCasEvaluator implements ICasEvaluator {
 
-  @Override
   public CAS evaluate(CAS test, CAS run, Collection<String> excludedTypes)
           throws CASRuntimeException, CASException {
 

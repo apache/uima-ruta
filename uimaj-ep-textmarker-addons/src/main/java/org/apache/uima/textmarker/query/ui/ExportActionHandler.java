@@ -30,10 +30,9 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class ExportActionHandler extends AbstractHandler {
 
-  @Override
   public Object execute(ExecutionEvent event) throws ExecutionException {
     QueryView view = (QueryView) HandlerUtil.getActivePart(event);
-    QueryComposite composite = (QueryComposite) view.getComposite();
+    QueryComposite composite = view.getComposite();
 
     TableViewer viewer = composite.getResultViewer();
     Shell shell = HandlerUtil.getActiveShell(event);

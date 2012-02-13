@@ -72,7 +72,7 @@ public class EvalDataProcessor {
         String typeName = fs.getType().getName();
 
         if (map.containsKey(typeName)) {
-          TypeEvalData element = (TypeEvalData) map.get(typeName);
+          TypeEvalData element = map.get(typeName);
           int oldCount = element.getTruePositives();
           element.setTruePositives(oldCount + 1);
         } else {
@@ -91,7 +91,7 @@ public class EvalDataProcessor {
         String typeName = fs.getType().getName();
 
         if (map.containsKey(typeName)) {
-          TypeEvalData element = (TypeEvalData) map.get(typeName);
+          TypeEvalData element = map.get(typeName);
           int oldCount = element.getFalsePositives();
           element.setFalsePositives(oldCount + 1);
         } else {
@@ -110,7 +110,7 @@ public class EvalDataProcessor {
         String typeName = fs.getType().getName();
 
         if (map.containsKey(typeName)) {
-          TypeEvalData element = (TypeEvalData) map.get(typeName);
+          TypeEvalData element = map.get(typeName);
           int oldCount = element.getFalseNegatives();
           element.setFalseNegatives(oldCount + 1);
         } else {

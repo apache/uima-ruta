@@ -51,7 +51,6 @@ public class ConfigPreferencePage extends PreferencePage implements IWorkbenchPr
     return top;
   }
 
-  @Override
   public void init(IWorkbench workbench) {
 
   }

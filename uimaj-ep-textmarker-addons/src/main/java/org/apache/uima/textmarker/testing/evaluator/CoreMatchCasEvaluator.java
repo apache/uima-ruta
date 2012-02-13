@@ -36,7 +36,6 @@ import org.apache.uima.cas.text.AnnotationFS;
 
 public class CoreMatchCasEvaluator implements ICasEvaluator {
 
-  @Override
   public CAS evaluate(CAS test, CAS run, Collection<String> excludedTypes)
           throws CASRuntimeException, CASException {
     Type annotationType = test.getAnnotationType();

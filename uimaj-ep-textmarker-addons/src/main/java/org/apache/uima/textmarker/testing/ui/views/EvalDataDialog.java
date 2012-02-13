@@ -38,6 +38,7 @@ public class EvalDataDialog extends ApplicationWindow {
     // TODO Auto-generated constructor stub
   }
   
+  @Override
   protected Control createContents (Composite parent) {
     GridLayout layout = new GridLayout();
     parent.setLayout(layout);

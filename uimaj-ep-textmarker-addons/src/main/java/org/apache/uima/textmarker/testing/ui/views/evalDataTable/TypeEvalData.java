@@ -82,7 +82,6 @@ public class TypeEvalData implements Comparable{
     return FOne;
   }
 
-  @Override
   public int compareTo(Object o) {
     if (o instanceof TypeEvalData) {
       String name = ((TypeEvalData) o).getTypeName();

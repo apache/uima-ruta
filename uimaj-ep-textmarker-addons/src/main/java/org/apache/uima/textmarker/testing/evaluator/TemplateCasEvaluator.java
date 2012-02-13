@@ -37,7 +37,6 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 public class TemplateCasEvaluator implements ICasEvaluator {
 
-  @Override
   public CAS evaluate(CAS test, CAS run, Collection<String> excludedTypes)
           throws CASRuntimeException, CASException {
     Type falsePositiveType = run.getTypeSystem().getType(ICasEvaluator.FALSE_POSITIVE);

@@ -35,7 +35,6 @@ import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 
 public class LastLaunchSearchStrategy implements ITypeSystemSearchStrategy {
 
-  @Override
   public IFile findTypeSystem(IFile casFile) {
     IProject project = casFile.getProject();
     try {

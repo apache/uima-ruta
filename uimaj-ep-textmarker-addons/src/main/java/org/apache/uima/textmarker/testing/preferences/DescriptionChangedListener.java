@@ -21,7 +21,6 @@ package org.apache.uima.textmarker.testing.preferences;
 
 public class DescriptionChangedListener implements IDescriptionChangedListener {
 
-  @Override
   public void descriptionChanged(String description) {
     
 

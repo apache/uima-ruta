@@ -37,7 +37,6 @@ import org.apache.uima.textmarker.seed.DefaultSeeder;
 
 public class WordAccuracyCasEvaluator implements ICasEvaluator {
 
-  @Override
   public CAS evaluate(CAS test, CAS run, Collection<String> excludedTypes)
           throws CASRuntimeException, CASException {
     Type annotationType = test.getAnnotationType();

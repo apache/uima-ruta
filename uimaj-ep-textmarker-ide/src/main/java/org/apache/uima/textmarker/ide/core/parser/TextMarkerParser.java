@@ -40,17 +40,8 @@ import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.RecognizerSharedState;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.TokenStream;
-import org.eclipse.dltk.ast.ASTNode;
-import org.eclipse.dltk.ast.DLTKToken;
-import org.eclipse.dltk.ast.declarations.Declaration;
-import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
-import org.eclipse.dltk.ast.expressions.BooleanLiteral;
-import org.eclipse.dltk.ast.expressions.Expression;
-import org.eclipse.dltk.ast.references.VariableReference;
-import org.eclipse.dltk.ast.statements.Statement;
-
-import org.apache.uima.textmarker.ide.core.extensions.TextMarkerExternalFactory;
 import org.apache.uima.textmarker.ide.core.builder.DescriptorManager;
+import org.apache.uima.textmarker.ide.core.extensions.TextMarkerExternalFactory;
 import org.apache.uima.textmarker.ide.parser.ast.ActionFactory;
 import org.apache.uima.textmarker.ide.parser.ast.ComponentDeclaration;
 import org.apache.uima.textmarker.ide.parser.ast.ComponentReference;
@@ -60,23 +51,23 @@ import org.apache.uima.textmarker.ide.parser.ast.ExpressionFactory;
 import org.apache.uima.textmarker.ide.parser.ast.ScriptFactory;
 import org.apache.uima.textmarker.ide.parser.ast.StatementFactory;
 import org.apache.uima.textmarker.ide.parser.ast.TMTypeConstants;
+import org.apache.uima.textmarker.ide.parser.ast.TextMarkerAction;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerBlock;
+import org.apache.uima.textmarker.ide.parser.ast.TextMarkerCondition;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerExpression;
+import org.apache.uima.textmarker.ide.parser.ast.TextMarkerFeatureDeclaration;
+import org.apache.uima.textmarker.ide.parser.ast.TextMarkerPackageDeclaration;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerRule;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerRuleElement;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerScriptBlock;
-import org.apache.uima.textmarker.ide.parser.ast.TextMarkerAction;
-import org.apache.uima.textmarker.ide.parser.ast.TextMarkerCondition;
-import org.apache.uima.textmarker.ide.parser.ast.TextMarkerFeatureDeclaration;
-import org.apache.uima.textmarker.ide.parser.ast.TextMarkerPackageDeclaration;
-
-
-import org.antlr.runtime.*;
-import java.util.Stack;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
+import org.eclipse.dltk.ast.ASTNode;
+import org.eclipse.dltk.ast.DLTKToken;
+import org.eclipse.dltk.ast.declarations.Declaration;
+import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
+import org.eclipse.dltk.ast.expressions.BooleanLiteral;
+import org.eclipse.dltk.ast.expressions.Expression;
+import org.eclipse.dltk.ast.references.VariableReference;
+import org.eclipse.dltk.ast.statements.Statement;
 
 @SuppressWarnings({"all", "warnings", "unchecked"})
 public class TextMarkerParser extends Parser {

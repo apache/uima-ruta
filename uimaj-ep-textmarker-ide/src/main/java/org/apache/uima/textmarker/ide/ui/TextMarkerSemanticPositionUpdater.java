@@ -48,7 +48,6 @@ public class TextMarkerSemanticPositionUpdater extends ASTSemanticHighlighter {
       this.requestor = requestor;
     }
 
-    @Override
     public void addPosition(int start, int end, String highlightingKey) {
       requestor.addPosition(start, end, highlightingKey);
       
@@ -75,7 +74,6 @@ public class TextMarkerSemanticPositionUpdater extends ASTSemanticHighlighter {
 
 
 
-  @Override
   public SemanticHighlighting[] getSemanticHighlightings() {
    return  new SemanticHighlighting[] {
             new TextMarkerTextTools.SH(TextMarkerPreferenceConstants.EDITOR_DECLARATION_DEFINITION_COLOR,

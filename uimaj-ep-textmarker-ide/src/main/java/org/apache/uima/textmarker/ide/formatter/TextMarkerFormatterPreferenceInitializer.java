@@ -25,7 +25,6 @@ import org.eclipse.jface.preference.IPreferenceStore;
 
 public class TextMarkerFormatterPreferenceInitializer extends AbstractPreferenceInitializer {
 
-  @Override
   public void initializeDefaultPreferences() {
     TextMarkerIdePlugin plugin = TextMarkerIdePlugin.getDefault();
     IPreferenceStore store = plugin.getPreferenceStore();

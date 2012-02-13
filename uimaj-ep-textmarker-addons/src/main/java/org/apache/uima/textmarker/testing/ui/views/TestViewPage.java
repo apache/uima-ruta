@@ -129,11 +129,11 @@ public class TestViewPage extends Page implements IPageBookViewPage {
     this.caretaker = new Caretaker();
   }
 
+  @Override
   public void createControl(Composite parent) {
 
     IPreferenceStore store = TextMarkerAddonsPlugin.getDefault().getPreferenceStore();
     this.propertyChangeListener = new IPropertyChangeListener() {
-      @Override
       public void propertyChange(PropertyChangeEvent event) {
         if (event.getProperty().equals("LOAD_OLD_TEST_RESULTS")) {
 
@@ -216,7 +216,6 @@ public class TestViewPage extends Page implements IPageBookViewPage {
 
     listviewer.addDoubleClickListener(new IDoubleClickListener() {
 
-      @Override
       public void doubleClick(DoubleClickEvent event) {
         Object obj = event.getSelection();
         if (obj instanceof IStructuredSelection) {
@@ -258,6 +257,7 @@ public class TestViewPage extends Page implements IPageBookViewPage {
     TableColumn tc = new TableColumn(table, SWT.LEFT);
     tc.setText("Type");
     tc.addSelectionListener(new SelectionAdapter() {
+      @Override
       public void widgetSelected(SelectionEvent event) {
         ((TypeTableSorter) tableViewer.getSorter()).doSort(TypeEvalTableConst.COLUMN_TYPE_NAME);
         tableViewer.refresh();
@@ -267,6 +267,7 @@ public class TestViewPage extends Page implements IPageBookViewPage {
     tc = new TableColumn(table, SWT.LEFT);
     tc.setText("TP");
     tc.addSelectionListener(new SelectionAdapter() {
+      @Override
       public void widgetSelected(SelectionEvent event) {
         ((TypeTableSorter) tableViewer.getSorter())
                 .doSort(TypeEvalTableConst.COLUMN_TRUE_POSITIVES);
@@ -277,6 +278,7 @@ public class TestViewPage extends Page implements IPageBookViewPage {
     tc = new TableColumn(table, SWT.LEFT);
     tc.setText("FP");
     tc.addSelectionListener(new SelectionAdapter() {
+      @Override
       public void widgetSelected(SelectionEvent event) {
         ((TypeTableSorter) tableViewer.getSorter())
                 .doSort(TypeEvalTableConst.COLUMN_FALSE_POSITIVES);
@@ -287,6 +289,7 @@ public class TestViewPage extends Page implements IPageBookViewPage {
     tc = new TableColumn(table, SWT.LEFT);
     tc.setText("FN");
     tc.addSelectionListener(new SelectionAdapter() {
+      @Override
       public void widgetSelected(SelectionEvent event) {
         ((TypeTableSorter) tableViewer.getSorter())
                 .doSort(TypeEvalTableConst.COLUMN_FALSE_NEGATIVES);
@@ -297,6 +300,7 @@ public class TestViewPage extends Page implements IPageBookViewPage {
     tc = new TableColumn(table, SWT.LEFT);
     tc.setText("Prec.");
     tc.addSelectionListener(new SelectionAdapter() {
+      @Override
       public void widgetSelected(SelectionEvent event) {
         ((TypeTableSorter) tableViewer.getSorter()).doSort(TypeEvalTableConst.COLUMN_PRECISION);
         tableViewer.refresh();
@@ -306,6 +310,7 @@ public class TestViewPage extends Page implements IPageBookViewPage {
     tc = new TableColumn(table, SWT.LEFT);
     tc.setText("Recall");
     tc.addSelectionListener(new SelectionAdapter() {
+      @Override
       public void widgetSelected(SelectionEvent event) {
         ((TypeTableSorter) tableViewer.getSorter()).doSort(TypeEvalTableConst.COLUMN_RECALL);
         tableViewer.refresh();
@@ -315,6 +320,7 @@ public class TestViewPage extends Page implements IPageBookViewPage {
     tc = new TableColumn(table, SWT.LEFT);
     tc.setText("F1");
     tc.addSelectionListener(new SelectionAdapter() {
+      @Override
       public void widgetSelected(SelectionEvent event) {
         ((TypeTableSorter) tableViewer.getSorter()).doSort(TypeEvalTableConst.COLUMN_F1);
         tableViewer.refresh();
@@ -422,23 +428,27 @@ public class TestViewPage extends Page implements IPageBookViewPage {
   }
 
   public void nextState() {
-    listviewer.setInput((ArrayList<TestCasData>) caretaker.getNextState());
+    listviewer.setInput(caretaker.getNextState());
     listviewer.refresh();
   }
 
+  @Override
   public Control getControl() {
     return overlay;
   }
 
+  @Override
   public void setActionBars(IActionBars actionBars) {
 
   }
 
+  @Override
   public void dispose() {
     overlay.dispose();
     labelProvider.dispose();
   }
 
+  @Override
   public void setFocus() {
     overlay.setFocus();
   }

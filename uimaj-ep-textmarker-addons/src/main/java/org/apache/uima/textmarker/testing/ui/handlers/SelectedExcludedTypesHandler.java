@@ -50,17 +50,14 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class SelectedExcludedTypesHandler implements IHandler {
 
-  @Override
   public void addHandlerListener(IHandlerListener handlerListener) {
 
   }
 
-  @Override
   public void dispose() {
 
   }
 
-  @Override
   public Object execute(ExecutionEvent event) throws ExecutionException {
     TestPageBookView debugView = (TestPageBookView) HandlerUtil.getActivePart(event);
     TestViewPage activePage = (TestViewPage) debugView.getCurrentPage();
@@ -98,12 +95,10 @@ public class SelectedExcludedTypesHandler implements IHandler {
     return null;
   }
 
-  @Override
   public boolean isEnabled() {
     return true;
   }
 
-  @Override
   public boolean isHandled() {
     return true;
   }
@@ -113,7 +108,6 @@ public class SelectedExcludedTypesHandler implements IHandler {
             new Status(IStatus.ERROR, "-1", "File not found!"));
   }
 
-  @Override
   public void removeHandlerListener(IHandlerListener handlerListener) {
 
   }

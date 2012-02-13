@@ -87,6 +87,7 @@ public class InfoPanel extends Composite {
     fMLabel = createLabel("F1 :", null, "0", testInfoComposite);
   }
 
+  @Override
   public void dispose() {
     super.dispose();
     fErrorIcon.dispose();

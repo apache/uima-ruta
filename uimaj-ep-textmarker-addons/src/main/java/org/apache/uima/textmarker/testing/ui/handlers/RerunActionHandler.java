@@ -155,7 +155,7 @@ public class RerunActionHandler implements IHandler {
           }
 
           for (Iterator<CAS> iterator = testCas.getViewIterator(); iterator.hasNext();) {
-            CAS each = (CAS) iterator.next();
+            CAS each = iterator.next();
             String viewName = each.getViewName();
             try {
               CAS view = runCas.getView(viewName);
@@ -208,7 +208,6 @@ public class RerunActionHandler implements IHandler {
           EvalDataProcessor.calculateEvaluatData(td, resultCas);
 
           debugView.getDefaultPage().getControl().getDisplay().asyncExec(new Runnable() {
-            @Override
             public void run() {
               debugPage.getViewer().refresh();
             }
@@ -245,17 +244,14 @@ public class RerunActionHandler implements IHandler {
     }
   }
 
-  @Override
   public void addHandlerListener(IHandlerListener handlerListener) {
 
   }
 
-  @Override
   public void dispose() {
 
   }
 
-  @Override
   public Object execute(ExecutionEvent event) throws ExecutionException {
 
     TestPageBookView debugView = (TestPageBookView) HandlerUtil.getActivePart(event);
@@ -293,17 +289,14 @@ public class RerunActionHandler implements IHandler {
     }
   }
 
-  @Override
   public boolean isEnabled() {
     return true;
   }
 
-  @Override
   public boolean isHandled() {
     return true;
   }
 
-  @Override
   public void removeHandlerListener(IHandlerListener handlerListener) {
 
   }

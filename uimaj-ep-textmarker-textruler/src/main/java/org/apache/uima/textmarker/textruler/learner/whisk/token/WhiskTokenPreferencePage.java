@@ -100,7 +100,6 @@ public class WhiskTokenPreferencePage extends PreferencePage implements IWorkben
     return top;
   }
 
-  @Override
   public void init(IWorkbench workbench) {
   }
 

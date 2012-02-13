@@ -100,7 +100,6 @@ public class NaiveLP2PreferencePage extends PreferencePage implements IWorkbench
     return top;
   }
 
-  @Override
   public void init(IWorkbench workbench) {
   }
 

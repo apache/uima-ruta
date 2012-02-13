@@ -37,7 +37,6 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class ExportTabelHandler extends AbstractHandler {
 
-  @Override
   public Object execute(ExecutionEvent event) throws ExecutionException {
     TestPageBookView debugView = (TestPageBookView) HandlerUtil.getActivePart(event);
     TestViewPage debugPage = (TestViewPage) debugView.getCurrentPage();

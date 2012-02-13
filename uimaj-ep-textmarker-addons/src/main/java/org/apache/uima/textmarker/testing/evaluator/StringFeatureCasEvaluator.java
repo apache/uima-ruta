@@ -38,7 +38,6 @@ import org.apache.uima.textmarker.UIMAConstants;
 import org.apache.uima.textmarker.engine.TextMarkerEngine;
 
 public class StringFeatureCasEvaluator implements ICasEvaluator {
-  @Override
   public CAS evaluate(CAS test, CAS run, Collection<String> excludedTypes)
           throws CASRuntimeException, CASException {
     Type falsePositiveType = run.getTypeSystem().getType(ICasEvaluator.FALSE_POSITIVE);
