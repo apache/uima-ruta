@@ -28,7 +28,6 @@ public class TextMarkerPreferenceInitializer extends AbstractPreferenceInitializ
   public TextMarkerPreferenceInitializer() {
   }
 
-  @Override
   public void initializeDefaultPreferences() {
     IPreferenceStore store = TextMarkerIdePlugin.getDefault().getPreferenceStore();
 //    TaskTagUtils.initializeDefaultValues(store);

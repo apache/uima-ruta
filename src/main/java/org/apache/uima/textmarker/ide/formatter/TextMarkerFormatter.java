@@ -48,7 +48,6 @@ public class TextMarkerFormatter extends AbstractScriptFormatter {
     private boolean gotProblems = false;
 
 
-    @Override
     public void reportProblem(IProblem problem) {
       setProblems(true);
     }

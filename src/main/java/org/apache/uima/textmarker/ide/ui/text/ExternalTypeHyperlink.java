@@ -49,22 +49,18 @@ public class ExternalTypeHyperlink implements IHyperlink {
     this.textEditor = textEditor;
   }
 
-  @Override
   public IRegion getHyperlinkRegion() {
     return region;
   }
 
-  @Override
   public String getHyperlinkText() {
     return nodeText + " in " + tsString;
   }
 
-  @Override
   public String getTypeLabel() {
     return DLTKEditorMessages.ModelElementHyperlink_typeLabel;
   }
 
-  @Override
   public void open() {
     IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
     try {

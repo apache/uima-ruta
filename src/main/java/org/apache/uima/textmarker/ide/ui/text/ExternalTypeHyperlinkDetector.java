@@ -66,7 +66,6 @@ public class ExternalTypeHyperlinkDetector implements IHyperlinkDetector {
     fTextEditor = editor;
   }
 
-  @Override
   public IHyperlink[] detectHyperlinks(ITextViewer textViewer, IRegion region,
           boolean canShowMultipleHyperlinks) {
     if (region == null || !(fTextEditor instanceof ScriptEditor))

@@ -29,7 +29,6 @@ public class TextMarkerConsolePreferenceInitializer extends AbstractPreferenceIn
   public TextMarkerConsolePreferenceInitializer() {
   }
 
-  @Override
   public void initializeDefaultPreferences() {
     IPreferenceStore store = TextMarkerIdePlugin.getDefault().getPreferenceStore();
     store.setDefault(TextMarkerConsoleConstants.PREF_NEW_PROMPT,

@@ -317,7 +317,6 @@ public class TextMarkerCheckBuilder implements IBuildParticipant, IBuildParticip
     return false;
   }
 
-  @Override
   public void prepare(IBuildChange buildChange, IBuildState buildState) throws CoreException {
     
   }

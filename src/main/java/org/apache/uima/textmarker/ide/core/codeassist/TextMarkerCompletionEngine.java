@@ -99,7 +99,6 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
     return TextMarkerParseUtils.processTypeName(type, token);
   }
 
-  @Override
   public void complete(IModuleSource module, int position, int i) {
     this.sourceModule =  module;
     this.actualCompletionPosition = position;

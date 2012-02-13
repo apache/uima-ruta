@@ -205,14 +205,6 @@ under the License.
             class="org.apache.uima.textmarker.ide.ui.TextMarkerUIPreferenceInitializer">
       </initializer>
    </extension>
- <extension
-       point="org.eclipse.dltk.core.interpreterContainerExtension">
-    <interpreterContainerExtension
-          class="org.apache.uima.textmarker.ide.core.packages.TextMarkerPackagesInterpreterContainerExtension"
-          nature="org.apache.uima.textmarker.ide.nature"
-          priority="0">
-    </interpreterContainerExtension>
- </extension>
    <extension
          point="org.eclipse.dltk.core.buildpathContainerInitializer">
       <buildpathContainerInitializer

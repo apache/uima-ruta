@@ -20,16 +20,15 @@
 package org.apache.uima.textmarker.ide.debug;
 
 import org.apache.uima.textmarker.ide.TextMarkerIdePlugin;
-import org.eclipse.core.runtime.Preferences;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.dltk.debug.core.DLTKDebugPreferenceConstants;
+import org.eclipse.jface.preference.IPreferenceStore;
 
 public class TextMarkerDebugPreferenceInitializer extends AbstractPreferenceInitializer {
 
-  @Override
   public void initializeDefaultPreferences() {
-    Preferences store = TextMarkerIdePlugin.getDefault().getPluginPreferences();
-
+//    Preferences store = TextMarkerIdePlugin.getDefault().getPluginPreferences();
+    IPreferenceStore store = TextMarkerIdePlugin.getDefault().getPreferenceStore();
     store.setDefault(TextMarkerDebugConstants.DEBUGGING_ENGINE_ID_KEY, "");
 
     store.setDefault(DLTKDebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE, false);
