@@ -17,20 +17,14 @@
 	<description>Provides the UIMA TextMarker engine to other Eclipse 
     plugins for their use</description>
 	<dependencies>
+		<!-- <dependency> <groupId>org.antlr</groupId> <artifactId>antlr-runtime</artifactId> 
+			<version>3.4</version> <scope>compile</scope> </dependency> -->
 		<dependency>
 			<groupId>org.apache.uima</groupId>
 			<artifactId>uimaj-textmarker</artifactId>
 			<version>${project.parent.version}</version>
 			<scope>compile</scope>
 		</dependency>
-		<dependency>
-      <groupId>org.antlr</groupId>
-      <artifactId>antlr-runtime</artifactId>
-      <version>3.4</version>
-    <scope>compile</scope>
-    </dependency>
-		<!-- <dependency> <groupId>org.antlr</groupId> <artifactId>antlr-runtime</artifactId> 
-			<version>3.4</version> <scope>compile</scope> </dependency> -->
 	</dependencies>
 	<scm>
 		<url>http://svn.apache.org/viewvc/uima/sandbox/trunk/uimaj-ep-textmarker-engine</url>
@@ -52,7 +46,6 @@
 							<configuration>
 								<excludes>
 									<exclude>release.properties</exclude> <!-- release generated artifact -->
-									<exclude>src/test/resources/ManualTests/*</exclude> <!-- test data -->
 									<exclude>marker-file-identifying-*</exclude>
 								</excludes>
 							</configuration>
@@ -72,22 +65,53 @@
 						<configuration>
 							<instructions>
 							  <_nouses>true</_nouses>
-								<Export-Package>
-									org.apache.uima.textmarker.*,
-									org.antlr.runtime.*
-								</Export-Package>
+							  <_exportcontents>org.apache.uima.textmarker,
+									org.apache.uima.textmarker.action,
+									org.apache.uima.textmarker.condition,
+									org.apache.uima.textmarker.constraint,
+									org.apache.uima.textmarker.engine,
+									org.apache.uima.textmarker.expression,
+									org.apache.uima.textmarker.expression.bool,
+									org.apache.uima.textmarker.expression.list,
+									org.apache.uima.textmarker.expression.number,
+									org.apache.uima.textmarker.expression.resource,
+									org.apache.uima.textmarker.expression.string,
+									org.apache.uima.textmarker.expression.type,
+									org.apache.uima.textmarker.extensions,
+									org.apache.uima.textmarker.resource,
+									org.apache.uima.textmarker.rule,
+									org.apache.uima.textmarker.rule.quantifier,
+									org.apache.uima.textmarker.seed,
+									org.apache.uima.textmarker.type,
+									org.apache.uima.textmarker.utils,
+									org.apache.uima.textmarker.verbalize,
+									org.apache.uima.textmarker.visitor,
+									org.antlr.runtime.debug,
+									org.antlr.runtime.misc,
+									org.antlr.runtime.tree,
+									org.antlr.stringtemplate,
+									org.antlr.stringtemplate.language,
+									org.antlr.stringtemplate.misc,
+							  </_exportcontents>
 								<Require-Bundle>
-									org.apache.uima.runtime,
-									org.junit4;bundle-version="4.8.1";resolution:=optional
 								</Require-Bundle>
-								<Import-Package>
-								</Import-Package>
-								<!-- <Embed-Dependency>*,antlr-runtime-3.4.jar;scope=compile;inline=true</Embed-Dependency> -->
+								 <Import-Package>org.apache.log4j;resolution:=optional,*
+                </Import-Package>
 								<Embed-Dependency>*;scope=compile;inline=true</Embed-Dependency>
+								<!-- 
+								<Embed-Dependency>*,antlr-runtime-3.4.jar;scope=compile;inline=true</Embed-Dependency> 
+								<Embed-Dependency>*;scope=compile;inline=true</Embed-Dependency>
+								-->
+								<!-- 
+								<Embed-Transitive>true</Embed-Transitive>
+								<Bundle-ClassPath>.,{maven-dependencies}</Bundle-ClassPath>
+								-->
 								<Bundle-SymbolicName>org.apache.uima.textmarker.engine;singleton:=true</Bundle-SymbolicName>
 								<Bundle-RequiredExecutionEnvironment>J2SE-1.5</Bundle-RequiredExecutionEnvironment>
 								<Eclipse-ExtensibleAPI>true</Eclipse-ExtensibleAPI>
-								<!-- <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy> -->
+								<!-- 
+								<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
+								 -->
 								<Eclipse-BuddyPolicy>registered</Eclipse-BuddyPolicy>
 								<Eclipse-RegisterBuddy>org.apache.uima.runtime</Eclipse-RegisterBuddy>
 							</instructions>
@@ -106,7 +130,6 @@
 						</goals>
 						<configuration>
 							<outputDirectory>${project.build.outputDirectory}</outputDirectory>
-							<!-- <excludes>org/apache/uima/*.*</excludes> <includes>org/apache/uima/textmarker/**,org/antlr/**,antlr/**,org/apache/commons/**</includes> -->
 						</configuration>
 					</execution>
 				</executions>
