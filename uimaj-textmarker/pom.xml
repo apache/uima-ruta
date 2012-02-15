@@ -71,4 +71,82 @@
     <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/trunk/uimaj-textmarker</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/trunk/uimaj-textmarker</developerConnection>
   </scm>
+    <build>
+    <finalName>uima-textmarker</finalName>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.rat</groupId>
+          <artifactId>apache-rat-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>default-cli</id>
+              <configuration>
+                <excludes>
+                  <exclude>release.properties</exclude> <!-- release generated artifact -->
+                  <exclude>src/test/resources/*.*</exclude> <!-- test data -->
+                  <exclude>src/test/resources/data/moby.txt</exclude>
+                </excludes>              
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>         
+      </plugins>
+    </pluginManagement>
+    
+    <plugins>
+        
+      <!-- filter the template for the version java code
+           to insert the version from properties -->
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>setVersions</id>
+            <goals><goal>copy-resources</goal></goals>
+            <phase>generate-sources</phase>
+            <configuration>
+              <outputDirectory>${project.build.directory}/generated-sources/releaseVersion</outputDirectory>
+              <resources>
+                <resource>
+                  <filtering>true</filtering>
+                  <directory>src/main/versionJava</directory>
+                </resource>
+              </resources>
+              <delimiters>
+                <delimiter>${*}</delimiter>
+              </delimiters>
+              <useDefaultDelimiters>false</useDefaultDelimiters>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <!-- add the generated sources to the compile sources -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.5</version>
+        <executions>
+          <execution>
+            <id>addVersionSrc</id>
+            <goals><goal>add-source</goal></goals>
+            <configuration>
+              <sources>
+                <source>${project.build.directory}/generated-sources/releaseVersion</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <argLine>-Xmx650M</argLine>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
