@@ -16,12 +16,14 @@
 	<url>${uimaWebsiteUrl}</url>
 	<description>Provides the UIMA TextMarker development environment for Eclipse</description>
 	<dependencies>
-		<dependency>
-			<groupId>org.antlr</groupId>
-			<artifactId>antlr-runtime</artifactId>
-			<version>3.4</version>
-			<scope>compile</scope>
-		</dependency>
+	<!-- 
+	  <dependency>
+      <groupId>org.antlr</groupId>
+      <artifactId>antlr-runtime</artifactId>
+      <version>3.4</version>
+      <scope>compile</scope>
+    </dependency>
+	 -->
 		<dependency>
 			<groupId>org.eclipse.dltk</groupId>
 			<artifactId>org.eclipse.dltk.ui</artifactId>
@@ -198,8 +200,9 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.uima</groupId>
-			<artifactId>uimaj-ep-textmarker-engine</artifactId>
+			<artifactId>uimaj-textmarker</artifactId>
 			<version>2.4.1-SNAPSHOT</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 	<scm>
@@ -216,6 +219,7 @@
 				<directory>.</directory>
 				<includes>
 					<include>plugin.xml</include>
+					<include>plugin.properties</include>
 					<include>icons/**/*.*</include>
 				</includes>
 			</resource>
@@ -234,7 +238,6 @@
 							<configuration>
 								<excludes>
 									<exclude>release.properties</exclude> <!-- release generated artifact -->
-									<exclude>src/test/resources/ManualTests/*</exclude> <!-- test data -->
 									<exclude>marker-file-identifying-*</exclude>
 								</excludes>
 							</configuration>
@@ -257,22 +260,15 @@
 								<Bundle-Activator>org.apache.uima.textmarker.ide.TextMarkerIdePlugin</Bundle-Activator>
 								<Bundle-RequiredExecutionEnvironment>J2SE-1.5</Bundle-RequiredExecutionEnvironment>
 								<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
+								<_nouses>true</_nouses>
 								<Export-Package>
 									org.apache.uima.textmarker.ide.*
 								</Export-Package>
-								<!--
-								<_nouses>true</_nouses>
-								<_exportcontents>
-                  org.apache.uima.textmarker.ide,
-                  antlr,
-                  org.antlr.runtime
-                </_exportcontents>
-								-->
-								<Require-Bundle>org.apache.uima.textmarker.engine,
+								<Require-Bundle>
+								  org.apache.uima.textmarker.engine,
 									org.eclipse.core.runtime,
 									org.eclipse.core.resources,
 									org.eclipse.ui,
-									org.apache.uima.runtime,
 									org.eclipse.dltk.launching;bundle-version="[3.0.0,4.0.0)",
 									org.eclipse.dltk.core;bundle-version="[3.0.0,4.0.0)",
 									org.eclipse.dltk.validators.core;bundle-version="[3.0.0,4.0.0)",
@@ -294,14 +290,17 @@
 									org.eclipse.jdt.core;bundle-version="3.5.0",
 									org.eclipse.jdt.debug.ui;bundle-version="3.5.0",
 									org.eclipse.jdt.launching;bundle-version="3.5.0",
-									org.eclipse.core.variables
+									org.eclipse.core.variables,
 									org.junit4;bundle-version="4.5.0";resolution:=optional
 								</Require-Bundle>
 								<!-- 
-								<Embed-Dependency>*;scope=compile;inline=true</Embed-Dependency>
-								 --> 
+								<Bundle-ClassPath>.,antlr-runtime-3.4.jar,stringtemplate-3.2.1.jar</Bundle-ClassPath>
+								 -->
 								<Import-Package>
-								  org.antlr.runtime
+								  !org.eclipse.core.runtime,
+								  !org.antlr.runtime,
+								  !org.antlr.stringtemplate,
+								  *
 								</Import-Package>
 								<Bundle-Localization>plugin</Bundle-Localization> 								
 							</instructions>
@@ -309,23 +308,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- 
-      <plugin>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>unpackDependentJars</id>
-            <goals>
-              <goal>unpack-dependencies</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.outputDirectory}</outputDirectory>
-              <includes>org/antlr/**</includes>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-			 -->
 		</plugins>
 	</build>
 
