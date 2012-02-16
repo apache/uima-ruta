@@ -51,7 +51,7 @@ Bundle-Vendor: The Apache Software Foundation
 Project-Title: Apache UIMA
 Bundle-Version: 2.4.1.SNAPSHOT
 Build-Jdk: 1.6.0_23
-Bnd-LastModified: 1329306159801
+Bnd-LastModified: 1329393266523
 Bundle-ManifestVersion: 2
 Bundle-Description: Provides additional views for the CAS Editor
 Bundle-DocURL: http://www.apache.org/

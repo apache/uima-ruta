@@ -7,17 +7,22 @@ Export-Package: org.apache.uima.textmarker,org.apache.uima.textmarker.
  n.number,org.apache.uima.textmarker.expression.resource,org.apache.ui
  ma.textmarker.expression.string,org.apache.uima.textmarker.expression
  .type,org.apache.uima.textmarker.extensions,org.apache.uima.textmarke
- r.resource,org.apache.uima.textmarker.rule,org.apache.uima.textmarker
- .rule.quantifier,org.apache.uima.textmarker.seed,org.apache.uima.text
- marker.type,org.apache.uima.textmarker.utils,org.apache.uima.textmark
- er.verbalize,org.apache.uima.textmarker.visitor,org.antlr.runtime.deb
- ug,org.antlr.runtime.misc,org.antlr.runtime.tree,org.antlr.stringtemp
- late,org.antlr.stringtemplate.language,org.antlr.stringtemplate.misc
+ r.parser,org.apache.uima.textmarker.resource,org.apache.uima.textmark
+ er.rule,org.apache.uima.textmarker.rule.quantifier,org.apache.uima.te
+ xtmarker.seed,org.apache.uima.textmarker.type,org.apache.uima.textmar
+ ker.utils,org.apache.uima.textmarker.verbalize,org.apache.uima.textma
+ rker.visitor,org.antlr.runtime,org.antlr.runtime.debug,org.antlr.runt
+ ime.misc,org.antlr.runtime.tree,org.antlr.stringtemplate,org.antlr.st
+ ringtemplate.language,org.antlr.stringtemplate.misc,antlr,antlr.debug
+ .misc,antlr.debug,antlr.actions.csharp,antlr.actions.java,antlr.colle
+ ctions.impl,antlr.actions.python,antlr.actions.cpp,antlr.preprocessor
+ ,antlr.build,antlr.collections,antlr.ASdebug
 Implementation-Title: Apache UIMA Eclipse: uimaj-ep-textmarker-engine
 Built-By: pkluegl
 Tool: Bnd-1.15.0
 Implementation-License: http://www.apache.org/licenses/LICENSE-2.0.txt
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Require-Bundle: org.apache.uima.runtime
 Implementation-Vendor: The Apache Software Foundation
 Implementation-Vendor-Id: org.apache.uima
 Eclipse-BuddyPolicy: registered
@@ -33,19 +38,11 @@ Bundle-Vendor: The Apache Software Foundation
 Project-Title: Apache UIMA
 Bundle-Version: 2.4.1.SNAPSHOT
 Build-Jdk: 1.6.0_23
-Bnd-LastModified: 1329245029631
+Bnd-LastModified: 1329392862008
 Bundle-ManifestVersion: 2
 Bundle-Description: Provides the UIMA TextMarker engine to other Eclip
  se     plugins for their use
 Bundle-DocURL: http://www.apache.org/
-Import-Package: javax.imageio,javax.naming,javax.swing,javax.swing.bor
- der,javax.swing.event,javax.swing.filechooser,javax.swing.plaf,javax.
- swing.table,javax.swing.text,javax.swing.text.html,javax.swing.tree,j
- avax.swing.undo,javax.xml.parsers,javax.xml.transform,javax.xml.trans
- form.dom,javax.xml.transform.sax,javax.xml.transform.stream,org.antlr
- .runtime.misc,org.apache.log4j;resolution:=optional,org.apache.uima.t
- extmarker.expression.number,org.apache.uima.textmarker.expression.res
- ource,org.w3c.dom,org.xml.sax,org.xml.sax.ext,org.xml.sax.helpers
 Embed-Dependency: *;scope=compile;inline=true
 Eclipse-RegisterBuddy: org.apache.uima.runtime
 

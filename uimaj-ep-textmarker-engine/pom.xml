@@ -78,6 +78,7 @@
 									org.apache.uima.textmarker.expression.string,
 									org.apache.uima.textmarker.expression.type,
 									org.apache.uima.textmarker.extensions,
+									org.apache.uima.textmarker.parser,
 									org.apache.uima.textmarker.resource,
 									org.apache.uima.textmarker.rule,
 									org.apache.uima.textmarker.rule.quantifier,
@@ -86,25 +87,33 @@
 									org.apache.uima.textmarker.utils,
 									org.apache.uima.textmarker.verbalize,
 									org.apache.uima.textmarker.visitor,
+									org.antlr.runtime,
 									org.antlr.runtime.debug,
 									org.antlr.runtime.misc,
 									org.antlr.runtime.tree,
 									org.antlr.stringtemplate,
 									org.antlr.stringtemplate.language,
-									org.antlr.stringtemplate.misc,
+									org.antlr.stringtemplate.misc,		
+									antlr,
+									antlr.*			
 							  </_exportcontents>
 								<Require-Bundle>
+								org.apache.uima.runtime
 								</Require-Bundle>
-								 <Import-Package>org.apache.log4j;resolution:=optional,*
+								<Import-Package>
                 </Import-Package>
+                <!-- 
 								<Embed-Dependency>*;scope=compile;inline=true</Embed-Dependency>
+                 -->
+								<Embed-Dependency>*;scope=compile;inline=true</Embed-Dependency>
+								
 								<!-- 
 								<Embed-Dependency>*,antlr-runtime-3.4.jar;scope=compile;inline=true</Embed-Dependency> 
 								<Embed-Dependency>*;scope=compile;inline=true</Embed-Dependency>
 								-->
 								<!-- 
 								<Embed-Transitive>true</Embed-Transitive>
-								<Bundle-ClassPath>.,{maven-dependencies}</Bundle-ClassPath>
+								<Bundle-ClassPath>.,target/org.apache.uima.textmarker.engine_2.4.1.SNAPSHOT.jar</Bundle-ClassPath>
 								-->
 								<Bundle-SymbolicName>org.apache.uima.textmarker.engine;singleton:=true</Bundle-SymbolicName>
 								<Bundle-RequiredExecutionEnvironment>J2SE-1.5</Bundle-RequiredExecutionEnvironment>
@@ -130,6 +139,7 @@
 						</goals>
 						<configuration>
 							<outputDirectory>${project.build.outputDirectory}</outputDirectory>
+						  <excludeArtifactIds>uimaj-core,uimaj-tools,uimaj-document-annotation,uimaj-adapter-vinci,jVinci,uimaj-cpe</excludeArtifactIds>
 						</configuration>
 					</execution>
 				</executions>

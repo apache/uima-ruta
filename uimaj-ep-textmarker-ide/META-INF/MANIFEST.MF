@@ -24,32 +24,28 @@ Export-Package: org.apache.uima.textmarker.ide.core.search,org.apache.
  s,org.apache.uima.textmarker.ide.core.builder,org.apache.uima.textmar
  ker.ide.ui.console,org.apache.uima.textmarker.ide.debugger,org.apache
  .uima.textmarker.ide.validator
-Ignore-Package: org.eclipse.core.runtime,org.antlr.runtime
 Bundle-ActivationPolicy: lazy
 Implementation-Title: Apache UIMA Eclipse: uimaj-ep-textmarker-ide
 Built-By: pkluegl
 Tool: Bnd-1.15.0
 Implementation-License: http://www.apache.org/licenses/LICENSE-2.0.txt
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Require-Bundle: org.apache.uima.textmarker.engine,org.eclipse.core.run
- time,org.eclipse.core.resources,org.eclipse.ui,org.eclipse.dltk.launc
- hing;bundle-version="[3.0.0,4.0.0)",org.eclipse.dltk.core;bundle-vers
- ion="[3.0.0,4.0.0)",org.eclipse.dltk.validators.core;bundle-version="
- [3.0.0,4.0.0)",org.eclipse.dltk.console;bundle-version="[3.0.0,4.0.0)
- ",org.eclipse.dltk.console.ui;bundle-version="[3.0.0,4.0.0)",org.ecli
- pse.dltk;bundle-version="[3.0.0,4.0.0)",org.eclipse.dltk.debug;bundle
- -version="[3.0.0,4.0.0)",org.eclipse.dltk.debug.ui;bundle-version="[3
- .0.0,4.0.0)",org.eclipse.dltk.formatter;bundle-version="[3.0.0,4.0.0)
- ",org.eclipse.dltk.testing;bundle-version="[3.0.0,4.0.0)",org.eclipse
- .dltk.ui;bundle-version="[3.0.0,4.0.0)",org.eclipse.dltk.validators.u
- i;bundle-version="[3.0.0,4.0.0)",org.eclipse.jface.text;bundle-versio
- n="3.5.0",org.eclipse.ui.editors;bundle-version="3.5.0",org.eclipse.u
- i.ide;bundle-version="3.5.0",org.eclipse.search;bundle-version="3.5.0
- ",org.eclipse.debug.ui;bundle-version="3.5.0",org.eclipse.ui.console;
- bundle-version="3.5.0",org.eclipse.jdt.core;bundle-version="3.5.0",or
- g.eclipse.jdt.debug.ui;bundle-version="3.5.0",org.eclipse.jdt.launchi
- ng;bundle-version="3.5.0",org.eclipse.core.variables,org.junit4;bundl
- e-version="4.5.0";resolution:=optional
+Require-Bundle: org.apache.uima.runtime,org.apache.uima.textmarker.eng
+ ine,org.eclipse.core.runtime,org.eclipse.core.resources,org.eclipse.u
+ i,org.eclipse.dltk.launching;bundle-version="[3.0.0,4.0.0)",org.eclip
+ se.dltk.core;bundle-version="[3.0.0,4.0.0)",org.eclipse.dltk.validato
+ rs.core;bundle-version="[3.0.0,4.0.0)",org.eclipse.dltk.console;bundl
+ e-version="[3.0.0,4.0.0)",org.eclipse.dltk.console.ui;bundle-version=
+ "[3.0.0,4.0.0)",org.eclipse.dltk;bundle-version="[3.0.0,4.0.0)",org.e
+ clipse.dltk.debug;bundle-version="[3.0.0,4.0.0)",org.eclipse.dltk.deb
+ ug.ui;bundle-version="[3.0.0,4.0.0)",org.eclipse.dltk.formatter;bundl
+ e-version="[3.0.0,4.0.0)",org.eclipse.dltk.testing;bundle-version="[3
+ .0.0,4.0.0)",org.eclipse.dltk.ui;bundle-version="[3.0.0,4.0.0)",org.e
+ clipse.dltk.validators.ui;bundle-version="[3.0.0,4.0.0)",org.eclipse.
+ jface.text,org.eclipse.ui.editors,org.eclipse.ui.ide,org.eclipse.sear
+ ch,org.eclipse.debug.ui,org.eclipse.ui.console,org.eclipse.jdt.core,o
+ rg.eclipse.jdt.debug.ui,org.eclipse.core.variables,org.eclipse.jdt.la
+ unching
 Implementation-Vendor: The Apache Software Foundation
 Implementation-Vendor-Id: org.apache.uima
 Bundle-Activator: org.apache.uima.textmarker.ide.TextMarkerIdePlugin
@@ -63,76 +59,11 @@ Implementation-Url: http://uima.apache.org
 Build-Date: ${maven.build.timestamp}
 Bundle-Vendor: The Apache Software Foundation
 Project-Title: Apache UIMA
-Build-Jdk: 1.6.0_23
 Bundle-Version: 2.4.1.SNAPSHOT
-Bnd-LastModified: 1329306131285
+Build-Jdk: 1.6.0_23
+Bnd-LastModified: 1329393264531
 Bundle-ManifestVersion: 2
 Bundle-Description: Provides the UIMA TextMarker development environme
  nt for Eclipse
-Import-Package: javax.xml.parsers,javax.xml.transform,javax.xml.transf
- orm.dom,javax.xml.transform.stream,org.apache.uima,org.apache.uima.an
- alysis_engine,org.apache.uima.analysis_engine.metadata,org.apache.uim
- a.cas,org.apache.uima.cas.impl,org.apache.uima.pear.util,org.apache.u
- ima.resource,org.apache.uima.resource.impl,org.apache.uima.resource.m
- etadata,org.apache.uima.resource.metadata.impl,org.apache.uima.textma
- rker.engine,org.apache.uima.textmarker.extensions,org.apache.uima.tex
- tmarker.parser,org.apache.uima.util,org.eclipse.core.filebuffers,org.
- eclipse.core.resources,org.eclipse.core.runtime.preferences;version="
- [3.3,4)",org.eclipse.core.variables,org.eclipse.debug.core,org.eclips
- e.debug.core.model,org.eclipse.debug.core.sourcelookup,org.eclipse.de
- bug.internal.ui,org.eclipse.debug.internal.ui.launchConfigurations,or
- g.eclipse.debug.ui,org.eclipse.debug.ui.actions,org.eclipse.dltk.ast,
- org.eclipse.dltk.ast.declarations,org.eclipse.dltk.ast.expressions,or
- g.eclipse.dltk.ast.parser,org.eclipse.dltk.ast.references,org.eclipse
- .dltk.ast.statements,org.eclipse.dltk.codeassist,org.eclipse.dltk.cod
- eassist.complete,org.eclipse.dltk.compiler,org.eclipse.dltk.compiler.
- env,org.eclipse.dltk.compiler.env.lookup,org.eclipse.dltk.compiler.pr
- oblem,org.eclipse.dltk.compiler.task,org.eclipse.dltk.console,org.ecl
- ipse.dltk.console.ui,org.eclipse.dltk.core,org.eclipse.dltk.core.buil
- der,org.eclipse.dltk.core.environment,org.eclipse.dltk.core.search,or
- g.eclipse.dltk.core.search.matching,org.eclipse.dltk.corext.documenta
- tion,org.eclipse.dltk.debug.core,org.eclipse.dltk.debug.core.model,or
- g.eclipse.dltk.debug.ui,org.eclipse.dltk.debug.ui.actions,org.eclipse
- .dltk.debug.ui.breakpoints,org.eclipse.dltk.debug.ui.handlers,org.ecl
- ipse.dltk.debug.ui.launchConfigurations,org.eclipse.dltk.debug.ui.mes
- sages,org.eclipse.dltk.debug.ui.preferences,org.eclipse.dltk.formatte
- r,org.eclipse.dltk.internal.core,org.eclipse.dltk.internal.core.searc
- h.matching,org.eclipse.dltk.internal.corext.util,org.eclipse.dltk.int
- ernal.debug.core.model,org.eclipse.dltk.internal.debug.ui,org.eclipse
- .dltk.internal.debug.ui.interpreters,org.eclipse.dltk.internal.debug.
- ui.launcher,org.eclipse.dltk.internal.launching,org.eclipse.dltk.inte
- rnal.testing.util,org.eclipse.dltk.internal.ui.actions,org.eclipse.dl
- tk.internal.ui.editor,org.eclipse.dltk.internal.ui.text,org.eclipse.d
- ltk.internal.ui.typehierarchy,org.eclipse.dltk.internal.ui.util,org.e
- clipse.dltk.internal.ui.wizards.buildpath,org.eclipse.dltk.launching,
- org.eclipse.dltk.testing,org.eclipse.dltk.testing.model,org.eclipse.d
- ltk.ui,org.eclipse.dltk.ui.actions,org.eclipse.dltk.ui.dialogs,org.ec
- lipse.dltk.ui.documentation,org.eclipse.dltk.ui.editor,org.eclipse.dl
- tk.ui.editor.highlighting,org.eclipse.dltk.ui.formatter,org.eclipse.d
- ltk.ui.infoviews,org.eclipse.dltk.ui.preferences,org.eclipse.dltk.ui.
- search,org.eclipse.dltk.ui.templates,org.eclipse.dltk.ui.text,org.ecl
- ipse.dltk.ui.text.completion,org.eclipse.dltk.ui.text.folding,org.ecl
- ipse.dltk.ui.util,org.eclipse.dltk.ui.viewsupport,org.eclipse.dltk.ui
- .wizards,org.eclipse.dltk.utils,org.eclipse.jdt.core,org.eclipse.jdt.
- internal.debug.ui.launcher,org.eclipse.jdt.launching,org.eclipse.jfac
- e.action,org.eclipse.jface.dialogs,org.eclipse.jface.internal.text.ht
- ml,org.eclipse.jface.operation,org.eclipse.jface.preference,org.eclip
- se.jface.resource,org.eclipse.jface.text,org.eclipse.jface.text.conte
- ntassist,org.eclipse.jface.text.formatter,org.eclipse.jface.text.hype
- rlink,org.eclipse.jface.text.information,org.eclipse.jface.text.prese
- ntation,org.eclipse.jface.text.quickassist,org.eclipse.jface.text.rul
- es,org.eclipse.jface.text.source,org.eclipse.jface.text.source.projec
- tion,org.eclipse.jface.text.templates,org.eclipse.jface.util,org.ecli
- pse.jface.viewers,org.eclipse.jface.wizard,org.eclipse.osgi.util;vers
- ion="[1.1,2)",org.eclipse.search.ui,org.eclipse.search2.internal.ui.t
- ext,org.eclipse.swt.custom,org.eclipse.swt.events,org.eclipse.swt.gra
- phics,org.eclipse.swt.layout,org.eclipse.swt.widgets,org.eclipse.text
- .edits,org.eclipse.ui,org.eclipse.ui.actions,org.eclipse.ui.console,o
- rg.eclipse.ui.dialogs,org.eclipse.ui.editors.text,org.eclipse.ui.help
- ,org.eclipse.ui.ide,org.eclipse.ui.model,org.eclipse.ui.part,org.ecli
- pse.ui.plugin,org.eclipse.ui.preferences,org.eclipse.ui.texteditor;te
- xteditor=split,org.eclipse.ui.views.navigator,org.eclipse.ui.wizards.
- newresource,org.osgi.framework;version="[1.6,2)",org.w3c.dom,org.xml.
- sax,org.xml.sax.helpers
 Bundle-DocURL: http://www.apache.org/
 
