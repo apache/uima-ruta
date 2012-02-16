@@ -64,6 +64,12 @@
       <artifactId>uimaj-tools</artifactId>
       <version>${project.parent.version}</version>
       <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimaj-test-util</artifactId>
+      <version>${project.parent.version}</version>
+      <scope>test</scope>
     </dependency>     
   </dependencies>
   <scm>

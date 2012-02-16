@@ -116,12 +116,14 @@ public class TextMarkerRuleElement extends AbstractRuleElement {
     if (quantifier.continueMatch(after, annotation, this, ruleMatch, containerMatch, stream, crowd)) {
       boolean stopMatching = false;
       AnnotationFS eachAnchor = annotation;
+      AnnotationFS lastAnchor = annotation;
       ComposedRuleElementMatch extendedContainerMatch = containerMatch;
       RuleMatch extendedMatch = ruleMatch;
       extendedMatch.update(extendedContainerMatch);
       while (!stopMatching) {
         Collection<AnnotationFS> nextAnnotations = getNextAnnotations(after, eachAnchor, stream);
         if (nextAnnotations.size() == 1) {
+          lastAnchor = eachAnchor;
           eachAnchor = nextAnnotations.iterator().next();
           doMatch(eachAnchor, extendedMatch, extendedContainerMatch, false, stream, crowd);
           if (this.equals(entryPoint)) {
@@ -138,12 +140,12 @@ public class TextMarkerRuleElement extends AbstractRuleElement {
             }
           } else {
             stopMatching = true;
-            stepbackMatch(after, eachAnchor, extendedMatch, ruleApply, extendedContainerMatch,
+            stepbackMatch(after, lastAnchor, extendedMatch, ruleApply, extendedContainerMatch,
                     sideStepOrigin, stream, crowd, entryPoint);
           }
         } else {
           stopMatching = true;
-          continueMatch(after, eachAnchor, extendedMatch, ruleApply, extendedContainerMatch,
+          continueMatch(after, lastAnchor, extendedMatch, ruleApply, extendedContainerMatch,
                   sideStepOrigin, entryPoint, stream, crowd);
         }
       }
