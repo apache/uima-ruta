@@ -19,6 +19,8 @@
 
 package org.apache.uima.textmarker;
 
+import static org.junit.Assert.assertEquals;
+
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
@@ -26,7 +28,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.junit.Test;
 
-public class LongGreedyTest {
+public class RuleInferenceTest2 {
 
   @Test
   public void test() {
@@ -34,8 +36,8 @@ public class LongGreedyTest {
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
     CAS cas = null;
     try {
-//      cas = TextMarkerTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
-//              + ".txt", 50);
+      cas = TextMarkerTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
+              + ".txt", 50);
     } catch (Exception e) {
       e.printStackTrace();
       assert (false);
@@ -44,12 +46,20 @@ public class LongGreedyTest {
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
 
-//    t = TextMarkerTestUtils.getTestType(cas, 1);
-//    ai = cas.getAnnotationIndex(t);
-//    assertEquals(1, ai.size());
-//    iterator = ai.iterator();
-//    String coveredText = iterator.next().getCoveredText();
-//    assertEquals(64998, coveredText.length());
+    t = TextMarkerTestUtils.getTestType(cas, 2);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(8, ai.size());
+    iterator = ai.iterator();
+    assertEquals("References", iterator.next().getCoveredText());
+    assertEquals("Bergmark, D. (2000). Automatic extraction of reference linking information from online docu-", iterator.next().getCoveredText());
+    assertEquals("ments. Technical Report CSTR2000-1821, Cornell Digital Library Research Group.", iterator.next().getCoveredText());
+    assertEquals("Bergmark, D., Phempoonpanich, P., and Zhao, S. (2001). Scraping the ACM digital library.", iterator.next().getCoveredText());
+    assertEquals("SIGIR Forum, 35(2):1–7.", iterator.next().getCoveredText());
+    assertEquals("Berkowitz, E. and Elkhadiri, M. R. (2004). Creation of a style independent intelligent au-", iterator.next().getCoveredText());
+    assertEquals("tonomous citation indexer to support academic research. In Proceedings of the the Fifteenth", iterator.next().getCoveredText());
+    assertEquals("Midwest Artificial Intelligence and Cognitive Science conference MAICS 2004, pages 68–73.", iterator.next().getCoveredText());
+
+   
 
     if (cas != null) {
       cas.release();

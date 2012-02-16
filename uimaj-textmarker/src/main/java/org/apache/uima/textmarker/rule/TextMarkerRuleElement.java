@@ -128,7 +128,7 @@ public class TextMarkerRuleElement extends AbstractRuleElement {
             return;
           }
           if (extendedMatch.matched()) {
-            if (quantifier.continueMatch(after, annotation, this, extendedMatch,
+            if (quantifier.continueMatch(after, eachAnchor, this, extendedMatch,
                     extendedContainerMatch, stream, crowd)) {
               // continue in while loop
             } else {
@@ -138,7 +138,7 @@ public class TextMarkerRuleElement extends AbstractRuleElement {
             }
           } else {
             stopMatching = true;
-            stepbackMatch(after, annotation, extendedMatch, ruleApply, extendedContainerMatch,
+            stepbackMatch(after, eachAnchor, extendedMatch, ruleApply, extendedContainerMatch,
                     sideStepOrigin, stream, crowd, entryPoint);
           }
         } else {
