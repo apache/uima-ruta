@@ -164,7 +164,6 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
 
   public void addAnnotation(AnnotationFS annotation, boolean update) {
     Type type = annotation.getType();
-    TypeSystem typeSystem = cas.getTypeSystem();
     Type parent = type;
     boolean modified = checkSpan(annotation);
     if (modified) {
@@ -172,11 +171,8 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     }
     TextMarkerBasic beginAnchor = getBeginAnchor(annotation.getBegin());
     TextMarkerBasic endAnchor = getEndAnchor(annotation.getEnd());
-    while (parent != null) {
-      beginAnchor.addBegin(annotation, parent);
-      endAnchor.addEnd(annotation, parent);
-      parent = typeSystem.getParent(parent);
-    }
+    beginAnchor.addBegin(annotation, parent);
+    endAnchor.addEnd(annotation, parent);
     Collection<TextMarkerBasic> basicAnnotationsInWindow = getAllBasicsInWindow(annotation);
     for (TextMarkerBasic basic : basicAnnotationsInWindow) {
       basic.addPartOf(type);
@@ -226,7 +222,6 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public void removeAnnotation(AnnotationFS annotation, Type type) {
-    TypeSystem typeSystem = cas.getTypeSystem();
     Collection<TextMarkerBasic> basicAnnotationsInWindow = getAllBasicsInWindow(annotation);
     for (TextMarkerBasic basic : basicAnnotationsInWindow) {
       basic.removePartOf(type);
@@ -234,11 +229,8 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     Type parent = type;
     TextMarkerBasic beginAnchor = getBeginAnchor(annotation.getBegin());
     TextMarkerBasic endAnchor = getEndAnchor(annotation.getEnd());
-    while (parent != null) {
-      beginAnchor.removeBegin(annotation, parent);
-      endAnchor.removeEnd(annotation, parent);
-      parent = typeSystem.getParent(parent);
-    }
+    beginAnchor.removeBegin(annotation, parent);
+    endAnchor.removeEnd(annotation, parent);
     if (!(annotation instanceof TextMarkerBasic)) {
       cas.removeFsFromIndexes(annotation);
     }
@@ -417,6 +409,11 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
   public Collection<TextMarkerBasic> getAllBasicsInWindow(AnnotationFS windowAnnotation) {
 
     TextMarkerBasic beginAnchor = getBeginAnchor(windowAnnotation.getBegin());
+    if (beginAnchor.getEnd() == windowAnnotation.getEnd()) {
+      Collection<TextMarkerBasic> result = new ArrayList<TextMarkerBasic>(1);
+      result.add(beginAnchor);
+      return result;
+    }
     TextMarkerBasic endAnchor = getEndAnchor(windowAnnotation.getEnd());
     NavigableSet<TextMarkerBasic> subSet = basics.subSet(beginAnchor, true, endAnchor, true);
     return subSet;
@@ -424,13 +421,16 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     // if (windowAnnotation instanceof TextMarkerBasic) {
     // result.add((TextMarkerBasic) windowAnnotation);
     // return result;
-    // } else if (windowAnnotation.getBegin() <= documentAnnotation.getBegin()
+    // } else if (windowAnnotation.getBegin() <=
+    // documentAnnotation.getBegin()
     // && windowAnnotation.getEnd() >= documentAnnotation.getEnd()) {
     // return basics;
     // }
-    // TextMarkerFrame frame = new TextMarkerFrame(getJCas(), windowAnnotation.getBegin(),
+    // TextMarkerFrame frame = new TextMarkerFrame(getJCas(),
+    // windowAnnotation.getBegin(),
     // windowAnnotation.getEnd());
-    // FSIterator<AnnotationFS> iterator = cas.getAnnotationIndex(basicType).subiterator(frame);
+    // FSIterator<AnnotationFS> iterator =
+    // cas.getAnnotationIndex(basicType).subiterator(frame);
     // while (iterator.isValid()) {
     // result.add((TextMarkerBasic) iterator.get());
     // iterator.moveToNext();
@@ -543,17 +543,22 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     // System.out.println();
     // }
     // if (getNextBasic(lastAnnotation) != null
-    // && getNextBasic(lastAnnotation).getBegin() == lastAnnotation.getBegin()) {
+    // && getNextBasic(lastAnnotation).getBegin() ==
+    // lastAnnotation.getBegin()) {
     // System.out.println();
     // }
     TextMarkerBasic nextBasic = getNextBasic(lastAnnotation);
     // TextMarkerBasic nextBasic2 = getNextBasic2(lastAnnotation);
     // if (nextBasic != nextBasic2) {
-    // String string = nextBasic == null ? "null" : nextBasic.getCoveredText();
-    // String string2 = nextBasic == null ? "null" : (nextBasic.getBegin() + "");
-    // System.out.println("nextBasic.getBegin() != nextBasic2.getBegin() " + string + " "
+    // String string = nextBasic == null ? "null" :
+    // nextBasic.getCoveredText();
+    // String string2 = nextBasic == null ? "null" : (nextBasic.getBegin() +
+    // "");
+    // System.out.println("nextBasic.getBegin() != nextBasic2.getBegin() " +
+    // string + " "
     // + nextBasic2.getCoveredText());
-    // System.out.println(lastAnnotation.getBegin() + "=" + string2 + "=" + nextBasic2.getBegin());
+    // System.out.println(lastAnnotation.getBegin() + "=" + string2 + "=" +
+    // nextBasic2.getBegin());
     // }
     return nextBasic;
   }
@@ -562,7 +567,8 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     TextMarkerBasic pointer = pointerMap.get(previous.getEnd());
     if (pointer == null) {
       // FIXME: hotfix for ML stuff
-      // pointer = new TextMarkerFrame(getJCas(), previous.getEnd()-1, previous.getEnd());
+      // pointer = new TextMarkerFrame(getJCas(), previous.getEnd()-1,
+      // previous.getEnd());
       pointer = (TextMarkerBasic) cas.createAnnotation(basicType, previous.getEnd() - 1,
               previous.getEnd());
       pointerMap.put(previous.getEnd(), pointer);
@@ -571,7 +577,8 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     if (currentIt.isValid()) {
       TextMarkerBasic basic = (TextMarkerBasic) currentIt.get();
       if (basic.getBegin() == previous.getBegin()) {
-        // if (basic.getBegin() >= previous.getBegin() || basic.getEnd() <= previous.getEnd()) {
+        // if (basic.getBegin() >= previous.getBegin() || basic.getEnd()
+        // <= previous.getEnd()) {
         currentIt.moveToNext();
         if (currentIt.isValid()) {
           return (TextMarkerBasic) currentIt.get();

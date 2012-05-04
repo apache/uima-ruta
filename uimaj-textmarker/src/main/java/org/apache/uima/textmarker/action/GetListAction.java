@@ -66,6 +66,7 @@ public class GetListAction extends AbstractTextMarkerAction {
 
       TextMarkerBasic firstBasic = stream.getFirstBasicInWindow(matched);
       Collection<Set<AnnotationFS>> values = firstBasic.getBeginMap().values();
+      // TODO right now, this only works for types that are present and not for their parent types...
       if (TYPES_AT_BEGIN.equals(op)) {
         for (Set<AnnotationFS> set : values) {
           for (AnnotationFS annotationFS : set) {

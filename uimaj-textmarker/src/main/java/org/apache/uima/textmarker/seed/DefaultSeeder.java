@@ -44,7 +44,7 @@ public class DefaultSeeder implements TextMarkerAnnotationSeeder {
     } catch (CASException e1) {
     }
     // do not apply seeding if there are already annotations of this seed type
-    if (jCas == null || size != 0) {
+    if (jCas == null || size != 0 || text == null) {
       return result;
     }
     BufferedReader reader = new BufferedReader(new StringReader(text));
