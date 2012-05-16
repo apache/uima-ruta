@@ -74,7 +74,7 @@ public class MarkTableAction extends AbstractTextMarkerAction {
       map.put(each.getStringValue(block), featureMap.get(each).getIntegerValue(block));
     }
     TextMarkerWordList wordList = table.getWordList(index);
-    Collection<AnnotationFS> found = wordList.find(stream, false, 0, new char[] {}, 0);
+    Collection<AnnotationFS> found = wordList.find(stream, true, 0, new char[] {}, 0);
     for (AnnotationFS annotationFS : found) {
       List<String> rowWhere = table.getRowWhere(index - 1, annotationFS.getCoveredText());
       FeatureStructure newFS = stream.getCas().createFS(type);

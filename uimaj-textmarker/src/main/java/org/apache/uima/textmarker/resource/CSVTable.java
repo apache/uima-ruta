@@ -87,7 +87,7 @@ public class CSVTable implements TextMarkerTable {
     List<String> columnData = getColumnData(column);
     int i = 0;
     for (String string : columnData) {
-      if (string.equals(value)) {
+      if (string.toLowerCase().equals(value.toLowerCase())) {
         return tableData.get(i);
       }
       i++;
