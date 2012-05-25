@@ -239,11 +239,6 @@ public class RuleMatch {
     this.rootMatch = rootMatch;
   }
 
-  public Map<RuleElement, List<RuleElementMatch>> getMatchInfos() {
-    assert (false);
-    return null;
-  }
-
   public List<List<RuleElementMatch>> getMatchInfo(RuleElement element) {
     return getMatchInfo(rootMatch, element);
   }

@@ -42,18 +42,20 @@ public class TransferAction extends TypeSensitiveAction {
   @Override
   public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
-    List<RuleElementMatch> list = match.getMatchInfos().get(element);
+    List<List<RuleElementMatch>> list = match.getMatchInfo(element);
     CAS cas = stream.getCas();
     Type t = type.getType(element.getParent());
-    for (RuleElementMatch each : list) {
-      List<AnnotationFS> matched = each.getTextsMatched();
-      for (AnnotationFS annotationFS : matched) {
-        FeatureStructure createFS = cas.createFS(t);
-        copyFeatures(annotationFS, createFS, cas);
-        if (createFS instanceof AnnotationFS) {
-          stream.addAnnotation((AnnotationFS) createFS);
+    for (List<RuleElementMatch> eachList : list) {
+      for (RuleElementMatch each : eachList) {
+        List<AnnotationFS> matched = each.getTextsMatched();
+        for (AnnotationFS annotationFS : matched) {
+          FeatureStructure createFS = cas.createFS(t);
+          copyFeatures(annotationFS, createFS, cas);
+          if (createFS instanceof AnnotationFS) {
+            stream.addAnnotation((AnnotationFS) createFS);
+          }
+          cas.addFsToIndexes(createFS);
         }
-        cas.addFsToIndexes(createFS);
       }
     }
 
