@@ -1197,19 +1197,30 @@ actionCreate returns [TextMarkerAction action = null]
 
 actionMarkTable returns [TextMarkerAction action = null]
 @init {
-    List left = new ArrayList();
-    List right = new ArrayList();
+    List<Expression> left = new ArrayList<Expression>();
+    List<Expression> right = new ArrayList<Expression>();
 }
     :
     name = MARKTABLE LPAREN 
     structure = typeExpression COMMA 
     index = numberExpression COMMA
     table = wordTableExpression 
-    (COMMA 
-    fname = stringExpression ASSIGN_EQUAL obj1 = numberExpression {left.add(fname); right.add(obj1);} 
-    (COMMA fname = stringExpression ASSIGN_EQUAL obj1 = numberExpression {left.add(fname);right.add(obj1);})*
-    )? 
-    {action = ActionFactory.createStructureAction(name, structure, index, table, left, right);}
+   
+    (COMMA key=stringExpression ASSIGN_EQUAL value = numberExpression)=>(COMMA key = stringExpression {left.add(key);} ASSIGN_EQUAL value = numberExpression{right.add(value);} )+
+    (COMMA ignoreCase = booleanExpression)=>(COMMA ignoreCase = booleanExpression 
+    COMMA ignoreLength = numberExpression 
+    COMMA ignoreChar = stringExpression
+    COMMA maxIgnoreChar = numberExpression)?
+    
+    {
+    List<Expression> args = new ArrayList<Expression>();
+    args.add(index);
+    args.add(table);
+    	args.add(ignoreCase);
+	args.add(ignoreLength);
+	args.add(ignoreChar);
+    	args.add(maxIgnoreChar);
+    action = ActionFactory.createStructureAction(name, args, left, right, structure);}
     RPAREN
     ;
 
@@ -1539,14 +1550,14 @@ List<Expression> right = new ArrayList<Expression>();
     //TODO cost parameter
     
     {
-    List args = new ArrayList();
+    List<Expression> args = new ArrayList<Expression>();
     	args.add(ignoreCase);
 	args.add(ignoreLength);
 	args.add(edit);
 	args.add(distance);
 	args.add(ignoreChar);
     
-    action = ActionFactory.createStructureAction(name, list, args, left, right);}
+    action = ActionFactory.createStructureAction(name, args, left, right, list);}
     RPAREN
     ;   
 
