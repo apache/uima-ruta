@@ -1162,11 +1162,15 @@ actionMarkTable returns [AbstractTextMarkerAction action = null]
     structure = typeExpression COMMA 
     index = numberExpression COMMA
     table = wordTableExpression 
-    (COMMA    
-    fname = stringExpression ASSIGN_EQUAL obj1 = numberExpression {map.put(fname,obj1);} 
-    (COMMA fname = stringExpression ASSIGN_EQUAL obj1 = numberExpression {map.put(fname,obj1);})*
-    )? RPAREN
-    {action = ActionFactory.createMarkTableAction(structure, index, table, map,$blockDeclaration::env);}
+    (COMMA key=stringExpression ASSIGN_EQUAL value = numberExpression)=>(COMMA key = stringExpression ASSIGN_EQUAL value = numberExpression{map.put(key,value);} )+
+    (COMMA ignoreCase = booleanExpression)=>(COMMA ignoreCase = booleanExpression 
+    COMMA ignoreLength = numberExpression 
+    COMMA ignoreChar = stringExpression
+    COMMA maxIgnoreChar = numberExpression)?
+    RPAREN
+
+
+    {action = ActionFactory.createMarkTableAction(structure, index, table, map, ignoreCase, ignoreLength, ignoreChar, maxIgnoreChar,$blockDeclaration::env);}
     ;
  
 actionGather returns [AbstractTextMarkerAction action = null]

@@ -61,7 +61,7 @@ public class CSVTable implements TextMarkerTable {
   public TextMarkerWordList getWordList(int index) {
     TextMarkerWordList list = columnWordLists.get(index);
     if (list == null) {
-      if (index > 0 && index < tableData.get(0).size()) {
+      if (index > 0 && index <= tableData.get(0).size()) {
         list = new TreeWordList(getColumnData(index - 1));
         columnWordLists.put(index, list);
       }

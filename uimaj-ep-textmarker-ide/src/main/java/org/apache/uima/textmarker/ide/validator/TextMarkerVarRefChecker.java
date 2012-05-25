@@ -221,8 +221,11 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
         if (s instanceof TextMarkerStructureAction) {
           TextMarkerStructureAction sa = (TextMarkerStructureAction) s;
           Expression struct = sa.getStructure();
-          String structure = currentFile.getSource().substring(struct.sourceStart(),
-                  struct.sourceEnd());
+          String structure = null;
+          if (struct != null) {
+            structure = currentFile.getSource().substring(struct.sourceStart(),
+                    struct.sourceEnd());
+          }
           Map<Expression, Expression> assignments = sa.getAssignments();
           // hotfix... correct name in ast
           String action = currentFile.getSource().substring(sa.getNameStart(), sa.getNameEnd());
@@ -282,7 +285,7 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
 
     private boolean findFeature(String structure, String feat) {
       boolean featureFound = false;
-      if (description == null) {
+      if (description == null || structure == null) {
         return featureFound;
       }
       TypeDescription[] descriptions = description.getTypes();

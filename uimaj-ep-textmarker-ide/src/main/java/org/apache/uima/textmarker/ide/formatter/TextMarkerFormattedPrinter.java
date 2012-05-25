@@ -452,11 +452,13 @@ public class TextMarkerFormattedPrinter extends ASTVisitor {
   private void printStructureAction(TextMarkerAction a) {
     TextMarkerStructureAction tmca = (TextMarkerStructureAction) a;
     // structure
-    append(tmca.getStructure());
+    if (tmca.getStructure() != null) {
+      append(tmca.getStructure());
+    }
     append(COMMA);
     append(" ");
     // number expressions
-    List<Expression> indices = tmca.getIndices();
+    List<Expression> indices = tmca.getExpressions();
     if (indices != null) {
       traverseAstNodes(indices);
     }
@@ -515,12 +517,13 @@ public class TextMarkerFormattedPrinter extends ASTVisitor {
       append(" ");
     }
     // structure
-
-    append(tmca.getStructure());
+    if (tmca.getStructure() != null) {
+      append(tmca.getStructure());
+    }
     append(COMMA);
     append(" ");
     // number expressions
-    List<Expression> indices = tmca.getIndices();
+    List<Expression> indices = tmca.getExpressions();
     if (indices != null) {
       traverseAstNodes(indices);
     }

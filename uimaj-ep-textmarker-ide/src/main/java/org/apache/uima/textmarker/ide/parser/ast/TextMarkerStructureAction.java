@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
@@ -32,24 +33,23 @@ public class TextMarkerStructureAction extends TextMarkerAction {
 
   private Map<Expression, Expression> assignments;
 
-  public TextMarkerStructureAction(int start, int end, List<Expression> indexExprs, int kind,
+  public TextMarkerStructureAction(int start, int end, List<Expression> exprs, int kind,
           String name, int nameStart, int nameEnd, Map<Expression, Expression> assignments,
           Expression structure) {
-    super(start, end, indexExprs, kind, name, nameStart, nameEnd);
-    this.structure = structure;
+    super(start, end, exprs, kind, name, nameStart, nameEnd);
     this.assignments = assignments;
+    this.structure = structure;
   }
 
   @Override
   public void traverse(ASTVisitor visitor) throws Exception {
     if (visitor.visit(this)) {
-      structure.traverse(visitor);
       for (Expression e : super.exprs) {
         e.traverse(visitor);
       }
-      Iterator it = assignments.entrySet().iterator();
+      Iterator<Entry<Expression, Expression>> it = assignments.entrySet().iterator();
       while (it.hasNext()) {
-        Map.Entry pairs = (Map.Entry) it.next();
+        Map.Entry<Expression, Expression> pairs = it.next();
         if (pairs.getKey() == null || pairs.getValue() == null) {
           break;
         }
@@ -60,9 +60,8 @@ public class TextMarkerStructureAction extends TextMarkerAction {
   }
 
   @Override
-  public List getChilds() {
-    List l = new ArrayList<Expression>();
-    l.add(structure);
+  public List<Expression> getChilds() {
+    List<Expression> l = new ArrayList<Expression>();
     l.addAll(super.getChilds());
     l.addAll(assignments.keySet());
     l.addAll(assignments.values());
@@ -77,7 +76,7 @@ public class TextMarkerStructureAction extends TextMarkerAction {
     return structure;
   }
 
-  public List<Expression> getIndices() {
+  public List<Expression> getExpressions() {
     return super.exprs;
   }
 }

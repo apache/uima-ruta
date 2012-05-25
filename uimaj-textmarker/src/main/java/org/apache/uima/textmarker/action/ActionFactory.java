@@ -175,8 +175,8 @@ public class ActionFactory {
 
   public static AbstractTextMarkerAction createMarkTableAction(TypeExpression structure,
           NumberExpression index, WordTableExpression table,
-          Map<StringExpression, NumberExpression> map, TextMarkerBlock env) {
-    return new MarkTableAction(structure, index, table, map);
+          Map<StringExpression, NumberExpression> map, BooleanExpression ignoreCase, NumberExpression ignoreLength, StringExpression ignoreChar, NumberExpression maxIgnoreChar, TextMarkerBlock env) {
+    return new MarkTableAction(structure, index, table, map, ignoreCase, ignoreLength, ignoreChar, maxIgnoreChar);
   }
 
   public static AbstractTextMarkerAction createMergeAction(BooleanExpression union, Token target,

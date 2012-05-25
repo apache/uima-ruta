@@ -91,32 +91,12 @@ public class ActionFactory extends AbstractFactory {
   }
 
   public static TextMarkerAction createStructureAction(Token type, Expression structure,
-          List indexes, List<Expression> left, List<Expression> right) {
-    int bounds[] = getBounds(type);
-    int nameStart = bounds[0];
-    int nameEnd = bounds[1];
-    List<Expression> numExprs = new ArrayList<Expression>();
-    Map<Expression, Expression> assignments = new LinkedHashMap<Expression, Expression>();
-    filterNullObjsAndSetBounds(indexes, bounds, numExprs);
-    if (left != null && right != null) {
-      Iterator<Expression> keysIt = left.iterator();
-      Iterator<Expression> valsIt = right.iterator();
-      Expression val = null;
-      while (keysIt.hasNext()) {
-        Expression key = keysIt.next();
-        if (!valsIt.hasNext()) {
-          break;
-        }
-        val = valsIt.next();
-        assignments.put(key, val);
-      }
-      if (val != null) {
-        bounds[1] = val.sourceEnd();
-      }
+          List<Expression> indexes, List<Expression> left, List<Expression> right) {
+    List<Expression> args = new ArrayList<Expression>();
+    if (indexes != null) {
+      args.addAll(indexes);
     }
-    return new TextMarkerStructureAction(bounds[0], bounds[1], numExprs,
-            ExpressionConstants.USER_EXPRESSION_START + type.getType(), type.getText(), nameStart,
-            nameEnd, assignments, structure);
+    return createStructureAction(type, args, left, right, structure);
   }
 
   /**
@@ -168,6 +148,7 @@ public class ActionFactory extends AbstractFactory {
     List<Expression> indexes = new ArrayList<Expression>();
     indexes.add(table);
     indexes.add(index);
+    indexes.add(structure);
     filterNullObjsAndSetBounds(indexes, bounds, numExprs);
     if (left != null && right != null) {
       Iterator<Expression> keysIt = left.iterator();
@@ -218,4 +199,34 @@ public class ActionFactory extends AbstractFactory {
     }
     return createAction(name, exprs);
   }
+
+  public static TextMarkerAction createStructureAction(Token name, List<Expression> args,
+          List<Expression> left, List<Expression> right, Expression structure) {
+    int bounds[] = getBounds(name);
+    int nameStart = bounds[0];
+    int nameEnd = bounds[1];
+    List<Expression> numExprs = new ArrayList<Expression>();
+    Map<Expression, Expression> assignments = new LinkedHashMap<Expression, Expression>();
+    filterNullObjsAndSetBounds(args, bounds, numExprs);
+    if (left != null && right != null) {
+      Iterator<Expression> keysIt = left.iterator();
+      Iterator<Expression> valsIt = right.iterator();
+      Expression val = null;
+      while (keysIt.hasNext()) {
+        Expression key = keysIt.next();
+        if (!valsIt.hasNext()) {
+          break;
+        }
+        val = valsIt.next();
+        assignments.put(key, val);
+      }
+      if (val != null) {
+        bounds[1] = val.sourceEnd();
+      }
+    }
+    return new TextMarkerStructureAction(bounds[0], bounds[1], numExprs,
+            ExpressionConstants.USER_EXPRESSION_START + name.getType(), name.getText(), nameStart,
+            nameEnd, assignments, structure);
+  }
+
 }
