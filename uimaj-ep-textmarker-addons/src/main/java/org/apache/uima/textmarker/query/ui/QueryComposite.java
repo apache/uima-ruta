@@ -296,7 +296,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite {
               if (element instanceof QueryResult) {
                 QueryResult data = (QueryResult) element;
                 if (data.getFile() != null) {
-                  openInCEV(data.getFile());
+                  openInCasEditor(data.getFile());
                 }
               }
             }
@@ -381,7 +381,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite {
     }
   }
 
-  protected void openInCEV(File file) {
+  protected void openInCasEditor(File file) {
     if (file == null) {
       return;
     }
@@ -389,7 +389,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite {
     try {
       IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
       IFile ifile = getIFile(absolutePath);
-      page.openEditor(new FileEditorInput(ifile), "org.apache.uima.cev.editor.CEVViewer");
+      page.openEditor(new FileEditorInput(ifile), "org.apache.uima.caseditor.editor");
     } catch (PartInitException e) {
       e.printStackTrace();
     }
