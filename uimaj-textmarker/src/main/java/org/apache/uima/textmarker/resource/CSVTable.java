@@ -20,6 +20,7 @@
 package org.apache.uima.textmarker.resource;
 
 import java.io.FileInputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -46,7 +47,7 @@ public class CSVTable implements TextMarkerTable {
 
   private void buildTable(String location) throws Exception {
     FileInputStream in = new FileInputStream(location);
-    Scanner sc = new Scanner(in);
+    Scanner sc = new Scanner(in, Charset.forName("UTF-8").name());
     sc.useDelimiter("\\n");
     tableData = new ArrayList<List<String>>();
     while (sc.hasNext()) {
@@ -74,6 +75,8 @@ public class CSVTable implements TextMarkerTable {
     for (List<String> each : tableData) {
       if (each.size() > i) {
         result.add(each.get(i));
+      } else {
+        result.add("");
       }
     }
     return result;
