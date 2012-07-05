@@ -1205,12 +1205,14 @@ actionMarkTable returns [TextMarkerAction action = null]
     structure = typeExpression COMMA 
     index = numberExpression COMMA
     table = wordTableExpression 
-   
-    (COMMA key=stringExpression ASSIGN_EQUAL value = numberExpression)=>(COMMA key = stringExpression {left.add(key);} ASSIGN_EQUAL value = numberExpression{right.add(value);} )+
-    (COMMA ignoreCase = booleanExpression)=>(COMMA ignoreCase = booleanExpression 
+    COMMA
+    ( ignoreCase = booleanExpression 
     COMMA ignoreLength = numberExpression 
     COMMA ignoreChar = stringExpression
-    COMMA maxIgnoreChar = numberExpression)?
+    COMMA maxIgnoreChar = numberExpression COMMA)?
+     key = stringExpression {left.add(key);} ASSIGN_EQUAL value = numberExpression{right.add(value);}
+    (COMMA key = stringExpression {left.add(key);} ASSIGN_EQUAL value = numberExpression{right.add(value);} )*
+    
     
     {
     List<Expression> args = new ArrayList<Expression>();
