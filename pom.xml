@@ -16,95 +16,101 @@
 	<url>${uimaWebsiteUrl}</url>
 	<description>Provides the UIMA TextMarker development environment for Eclipse</description>
 	<dependencies>
-	<!-- 
-	  <dependency>
-      <groupId>org.antlr</groupId>
-      <artifactId>antlr-runtime</artifactId>
-      <version>3.4</version>
-      <scope>compile</scope>
-    </dependency>
-	 -->
+		<!-- <dependency> <groupId>org.antlr</groupId> <artifactId>antlr-runtime</artifactId> 
+			<version>3.4</version> <scope>compile</scope> </dependency> -->
 		<dependency>
 			<groupId>org.eclipse.dltk</groupId>
-			<artifactId>org.eclipse.dltk.ui</artifactId>
+			<artifactId>core</artifactId>
+			<version>[3.0.1,4.0.0)</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.dltk</groupId>
+			<artifactId>ui</artifactId>
+			<version>[3.0.1,4.0.0)</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.dltk</groupId>
+			<artifactId>launching</artifactId>
+			<version>[3.0.0,4.0.0)</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.dltk.validators</groupId>
+			<artifactId>core</artifactId>
+			<version>[3.0.0,4.0.0)</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.dltk.validators</groupId>
+			<artifactId>ui</artifactId>
 			<version>[3.0.0,4.0.0)</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.dltk</groupId>
-			<artifactId>org.eclipse.dltk.launching</artifactId>
+			<artifactId>console</artifactId>
+			<version>[3.0.0,4.0.0)</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.dltk.console</groupId>
+			<artifactId>ui</artifactId>
 			<version>[3.0.0,4.0.0)</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.dltk</groupId>
-			<artifactId>org.eclipse.dltk.validators.core</artifactId>
+			<artifactId>debug</artifactId>
+			<version>[3.0.1,4.0.0)</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.dltk.debug</groupId>
+			<artifactId>ui</artifactId>
 			<version>[3.0.0,4.0.0)</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.dltk</groupId>
-			<artifactId>org.eclipse.dltk.validators.ui</artifactId>
+			<artifactId>formatter</artifactId>
 			<version>[3.0.0,4.0.0)</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.dltk</groupId>
-			<artifactId>org.eclipse.dltk.console</artifactId>
-			<version>[3.0.0,4.0.0)</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.dltk</groupId>
-			<artifactId>org.eclipse.dltk.console.ui</artifactId>
-			<version>[3.0.0,4.0.0)</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.dltk</groupId>
-			<artifactId>org.eclipse.dltk.debug</artifactId>
-			<version>[3.0.0,4.0.0)</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.dltk</groupId>
-			<artifactId>org.eclipse.dltk.debug.ui</artifactId>
-			<version>[3.0.0,4.0.0)</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.dltk</groupId>
-			<artifactId>org.eclipse.dltk.formatter</artifactId>
-			<version>[3.0.0,4.0.0)</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.dltk</groupId>
-			<artifactId>org.eclipse.dltk.testing</artifactId>
+			<artifactId>testing</artifactId>
 			<version>[3.0.0,4.0.0)</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.core</groupId>
-			<artifactId>org.eclipse.core.runtime</artifactId>
+			<artifactId>runtime</artifactId>
 			<version>[3.3.0,4.0.0)</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.core</groupId>
-			<artifactId>org.eclipse.core.resources</artifactId>
+			<artifactId>jobs</artifactId>
 			<version>[3.3.0,4.0.0)</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.search</groupId>
-			<artifactId>org.eclipse.search</artifactId>
+			<groupId>org.eclipse.core</groupId>
+			<artifactId>resources</artifactId>
+			<version>[3.3.0,4.0.0)</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>search</artifactId>
 			<version>[3.2.0,4.0.0)</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.ui</groupId>
-			<artifactId>org.eclipse.ui</artifactId>
+			<groupId>org.eclipse</groupId>
+			<artifactId>ui</artifactId>
 			<version>[3.3.0,4.0.0)</version>
 			<scope>provided</scope>
 		</dependency>
@@ -116,92 +122,86 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.ui</groupId>
-			<artifactId>org.eclipse.ui.ide</artifactId>
+			<artifactId>ide</artifactId>
 			<version>[3.3.0,4.0.0)</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.ui</groupId>
-			<artifactId>org.eclipse.ui.views</artifactId>
+			<artifactId>views</artifactId>
 			<version>[3.3.0,4.0.0)</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.ui</groupId>
-			<artifactId>org.eclipse.ui.console</artifactId>
+			<artifactId>console</artifactId>
 			<version>[3.2.0,4.0.0)</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.ui</groupId>
-			<artifactId>org.eclipse.ui.workbench.texteditor</artifactId>
+			<groupId>org.eclipse.ui.workbench</groupId>
+			<artifactId>texteditor</artifactId>
 			<version>[3.3.0,4.0.0)</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jface</groupId>
-			<artifactId>org.eclipse.jface.text</artifactId>
+			<artifactId>text</artifactId>
 			<version>[3.3.0,4.0.0)</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.core</groupId>
-			<artifactId>org.eclipse.core.variables</artifactId>
+			<artifactId>variables</artifactId>
 			<version>[3.2.0,4.0.0)</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jdt</groupId>
-			<artifactId>org.eclipse.jdt.launching</artifactId>
+			<artifactId>launching</artifactId>
 			<version>[3.3.0,4.0.0)</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jdt</groupId>
-			<artifactId>org.eclipse.jdt.core</artifactId>
+			<artifactId>core</artifactId>
 			<version>[3.3.0,4.0.0)</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.jdt</groupId>
-			<artifactId>org.eclipse.jdt.debug.ui</artifactId>
+			<groupId>org.eclipse.jdt.debug</groupId>
+			<artifactId>ui</artifactId>
 			<version>[3.2.0,4.0.0)</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.core</groupId>
-			<artifactId>org.eclipse.core.contenttype</artifactId>
+			<artifactId>contenttype</artifactId>
 			<version>[3.4.0,4.0.0)</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.equinox</groupId>
-			<artifactId>org.eclipse.equinox.preferences</artifactId>
+			<artifactId>preferences</artifactId>
 			<version>[3.3.0,4.0.0)</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.dltk</groupId>
-			<artifactId>org.eclipse.dltk.core</artifactId>
-			<version>[3.0.0,4.0.0)</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.eclipse.equinox</groupId>
-			<artifactId>org.eclipse.equinox.app</artifactId>
-			<version>[1.1.0,2.0.0)</version>
+			<artifactId>app</artifactId>
+			<version>[1.3.0,2.0.0)</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.emf</groupId>
-			<artifactId>org.eclipse.emf.ecore.xmi</artifactId>
+			<groupId>org.eclipse.emf.ecore</groupId>
+			<artifactId>xmi</artifactId>
 			<version>[2.7.0,3.0.0)</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.uima</groupId>
 			<artifactId>uimaj-textmarker</artifactId>
-			<version>2.4.1-SNAPSHOT</version>
+			<version>${project.parent.version}</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
@@ -265,8 +265,8 @@
 									org.apache.uima.textmarker.ide.*
 								</Export-Package>
 								<Require-Bundle>
-								  org.apache.uima.runtime,
-								  org.apache.uima.textmarker.engine,
+									org.apache.uima.runtime,
+									org.apache.uima.textmarker.engine,
 									org.eclipse.core.runtime,
 									org.eclipse.core.resources,
 									org.eclipse.ui,
@@ -293,16 +293,12 @@
 									org.eclipse.core.variables,
 									org.eclipse.jdt.launching
 								</Require-Bundle>
-								<!-- 
-								<Bundle-ClassPath>.,antlr-runtime-3.4.jar,stringtemplate-3.2.1.jar</Bundle-ClassPath>
-								  !org.eclipse.core.runtime,
-								  !org.antlr.runtime,
-								  !org.antlr.stringtemplate,
-								  *
-								 -->
+								<!-- <Bundle-ClassPath>.,antlr-runtime-3.4.jar,stringtemplate-3.2.1.jar</Bundle-ClassPath> 
+									!org.eclipse.core.runtime, !org.antlr.runtime, !org.antlr.stringtemplate, 
+									* -->
 								<Import-Package>
 								</Import-Package>
-								<Bundle-Localization>plugin</Bundle-Localization> 								
+								<Bundle-Localization>plugin</Bundle-Localization>
 							</instructions>
 						</configuration>
 					</execution>
