@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
@@ -28,7 +29,7 @@ public class TextMarkerBasic extends Annotation {
 
   private boolean lowMemoryProfile = true;
 
-  private Set<Type> partOf = new HashSet<Type>(INITIAL_CAPACITY);
+  private Map<String, Integer> partOf = new TreeMap<String, Integer>();
 
   private final Map<Type, Set<AnnotationFS>> beginMap = new HashMap<Type, Set<AnnotationFS>>(
           INITIAL_CAPACITY);
@@ -45,15 +46,53 @@ public class TextMarkerBasic extends Annotation {
   }
 
   public void addPartOf(Type type) {
-    partOf.add(type);
+    Integer count = partOf.get(type.getName());
+    if (count == null) {
+      count = 0;
+    }
+    count++;
+    partOf.put(type.getName(), count);
+    if (!lowMemoryProfile) {
+      TypeSystem typeSystem = getCAS().getTypeSystem();
+      Type parent = typeSystem.getParent(type);
+      if (parent != null) {
+        addPartOf(parent);
+      }
+    }
   }
 
   public void removePartOf(Type type) {
-    partOf.remove(type);
+    Integer count = partOf.get(type.getName());
+    if (count != null && count > 0) {
+      count--;
+      partOf.put(type.getName(), count);
+    }
+    if (!lowMemoryProfile) {
+      TypeSystem typeSystem = getCAS().getTypeSystem();
+      Type parent = typeSystem.getParent(type);
+      if (parent != null) {
+        removePartOf(parent);
+      }
+    }
   }
 
   public boolean isPartOf(Type type) {
-    return partOf.contains(type);
+    Integer count = partOf.get(type.getName());
+    if (count != null && count > 0) {
+      return true;
+    }
+    if (lowMemoryProfile) {
+      List<Type> subsumedTypes = getCAS().getTypeSystem().getProperlySubsumedTypes(type);
+      for (Type each : subsumedTypes) {
+        Integer parentCount = partOf.get(each.getName());
+        if (parentCount != null && parentCount > 0) {
+          return true;
+        }
+      }
+
+    }
+    return false;
+
   }
 
   public Set<AnnotationFS> getBeginAnchors(Type type) {

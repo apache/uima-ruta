@@ -25,6 +25,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -50,11 +53,11 @@ public class TextMarkerTestUtils {
           throws URISyntaxException, IOException, InvalidXMLException,
           ResourceInitializationException, AnalysisEngineProcessException,
           ResourceConfigurationException {
-    return process(ruleFileName, textFileName, amount, false);
+    return process(ruleFileName, textFileName, amount, false, null);
   }
 
   public static CAS process(String ruleFileName, String textFileName, int amount,
-          boolean dynamicAnchoring) throws URISyntaxException, IOException, InvalidXMLException,
+          boolean dynamicAnchoring, Map<String,String> complexTypes) throws URISyntaxException, IOException, InvalidXMLException,
           ResourceInitializationException, AnalysisEngineProcessException,
           ResourceConfigurationException {
     URL resource = TextMarkerTestUtils.class.getClassLoader().getResource(ruleFileName);
@@ -71,6 +74,13 @@ public class TextMarkerTestUtils {
       basicTypeSystem.addType(TYPE + i, "Type for Testing", "uima.tcas.Annotation");
     }
 
+    if(complexTypes!= null) {
+      Set<Entry<String,String>> entrySet = complexTypes.entrySet();
+      for (Entry<String, String> entry : entrySet) {
+        basicTypeSystem.addType(entry.getKey(), "Type for Testing", entry.getValue());
+      }
+    }
+    
     Collection<TypeSystemDescription> tsds = new ArrayList<TypeSystemDescription>();
     tsds.add(basicTypeSystem);
     TypeSystemDescription mergeTypeSystems = CasCreationUtils.mergeTypeSystems(tsds);
