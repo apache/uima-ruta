@@ -49,11 +49,15 @@ public class CurrentCountCondition extends TypeSentiveCondition {
   public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
           TextMarkerStream stream, InferenceCrowd crowd) {
     int count = 0;
-    Iterator<?> it = stream.getJCas().getAnnotationIndex(type.getType(element.getParent()))
+    Iterator<AnnotationFS> it = stream.getCas().getAnnotationIndex(type.getType(element.getParent()))
             .iterator();
     while (it.hasNext()) {
-      it.next();
-      count++;
+      AnnotationFS next = it.next();
+      if(next.getBegin() < annotation.getBegin()) {
+        count++;
+      } else {
+        break;
+      }
     }
     if (var != null) {
       element.getParent().getEnvironment().setVariableValue(var, count);
