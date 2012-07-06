@@ -20,7 +20,9 @@
 package org.apache.uima.textmarker.engine;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -30,6 +32,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.antlr.runtime.ANTLRFileStream;
+import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
@@ -116,7 +119,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
   public static final String RELOAD_SCRIPT = "reloadScript";
 
   public static final String LOW_MEMORY_PROFILE = "lowMemoryProfile";
-  
+
   private String[] seeders;
 
   private Boolean createDebugInfo;
@@ -170,7 +173,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
   private Boolean lowMemoryProfile;
 
   private boolean initialized = false;
-  
+
   private List<Type> seedTypes;
 
   @Override
@@ -202,7 +205,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     dynamicAnchoring = (Boolean) aContext.getConfigParameterValue(DYNAMIC_ANCHORING);
     reloadScript = (Boolean) aContext.getConfigParameterValue(RELOAD_SCRIPT);
     lowMemoryProfile = (Boolean) aContext.getConfigParameterValue(LOW_MEMORY_PROFILE);
-    
+
     removeBasics = removeBasics == null ? false : removeBasics;
     createDebugInfo = createDebugInfo == null ? false : createDebugInfo;
     createDebugOnlyFor = createDebugOnlyFor == null ? new String[0] : createDebugOnlyFor;
@@ -215,7 +218,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     dynamicAnchoring = dynamicAnchoring == null ? false : dynamicAnchoring;
     reloadScript = reloadScript == null ? false : reloadScript;
     lowMemoryProfile = lowMemoryProfile == null ? false : lowMemoryProfile;
-    
+
     this.context = aContext;
 
     factory = new TextMarkerExternalFactory();
@@ -385,7 +388,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     Type basicType = typeSystem.getType(BASIC_TYPE);
     seedTypes = seedAnnotations(cas);
     TextMarkerStream stream = new TextMarkerStream(cas, basicType, filter, lowMemoryProfile);
-    
+
     stream.initalizeBasics();
     return stream;
   }
@@ -418,26 +421,75 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
   }
 
   private void initializeScript() throws AnalysisEngineProcessException {
-    String scriptLocation = locate(mainScript, scriptPaths, ".tm");
-    if (scriptLocation == null) {
-      // if someone loads an empty analysis engine and then reconfigures it
+    if(mainScript == null) {
       return;
     }
-    try {
-      script = loadScript(scriptLocation, null);
-    } catch (Exception e) {
-      throw new AnalysisEngineProcessException(e);
+    String scriptLocation = locate(mainScript, scriptPaths, ".tm");
+    if (scriptLocation == null) {
+      try {
+        String mainScriptPath = mainScript.replaceAll("\\.", "/") + ".tm";
+        script = loadScriptIS(mainScriptPath, null);
+      } catch (IOException e) {
+        throw new AnalysisEngineProcessException(new FileNotFoundException("Script [" + mainScript
+                + "] cannot be found at [" + collectionToString(scriptPaths)
+                + "] with extension .tm"));
+      } catch (RecognitionException e) {
+        throw new AnalysisEngineProcessException(new FileNotFoundException("Script [" + mainScript
+                + "] cannot be found at [" + collectionToString(scriptPaths)
+                + "] with extension .tm"));
+      }
+    } else {
+      try {
+        script = loadScript(scriptLocation, null);
+      } catch (Exception e) {
+        throw new AnalysisEngineProcessException(e);
+      }
     }
+
     Map<String, TextMarkerModule> additionalScripts = new HashMap<String, TextMarkerModule>();
     Map<String, AnalysisEngine> additionalEngines = new HashMap<String, AnalysisEngine>();
 
     if (additionalEngineLocations != null) {
       for (String eachEngineLocation : additionalEngineLocations) {
+        AnalysisEngine eachEngine;
         String location = locate(eachEngineLocation, descriptorPaths, ".xml");
+        if (location == null) {
+          String locationIS = locateIS(eachEngineLocation, descriptorPaths, ".xml");
+          try {
+            eachEngine = engineLoader.loadEngineIS(locationIS);
+          } catch (InvalidXMLException e) {
+            throw new AnalysisEngineProcessException(new FileNotFoundException("Engine at ["
+                    + eachEngineLocation + "] cannot be found in ["
+                    + collectionToString(descriptorPaths)
+                    + "] with extension .xml (from mainScript=" + mainScript + " in "
+                    + collectionToString(scriptPaths)));
+          } catch (ResourceInitializationException e) {
+            throw new AnalysisEngineProcessException(new FileNotFoundException("Engine at ["
+                    + eachEngineLocation + "] cannot be found in ["
+                    + collectionToString(descriptorPaths)
+                    + "] with extension .xml (from mainScript=" + mainScript + " in "
+                    + collectionToString(scriptPaths)));
+          } catch (IOException e) {
+            throw new AnalysisEngineProcessException(new FileNotFoundException("Engine at ["
+                    + eachEngineLocation + "] cannot be found in ["
+                    + collectionToString(descriptorPaths)
+                    + "] with extension .xml (from mainScript=" + mainScript + " in "
+                    + collectionToString(scriptPaths)));
+          }
+        } else {
+          try {
+            eachEngine = engineLoader.loadEngine(location);
+          } catch (Exception e) {
+            throw new AnalysisEngineProcessException(e);
+          }
+        }
         try {
-          AnalysisEngine eachEngine = engineLoader.loadEngine(location);
-          configureEngine(eachEngine);
           additionalEngines.put(eachEngineLocation, eachEngine);
+          String[] eachEngineLocationPartArray = eachEngineLocation.split("\\.");
+          if (eachEngineLocationPartArray.length > 1) {
+            String shortEachEngineLocation = eachEngineLocationPartArray[eachEngineLocationPartArray.length - 1];
+            additionalEngines.put(shortEachEngineLocation, eachEngine);
+          }
         } catch (Exception e) {
           throw new AnalysisEngineProcessException(e);
         }
@@ -449,6 +501,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
         recursiveLoadScript(add, additionalScripts, additionalEngines);
       }
     }
+
     for (TextMarkerModule each : additionalScripts.values()) {
       each.setScriptDependencies(additionalScripts);
     }
@@ -459,6 +512,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     }
     script.setEngineDependencies(additionalEngines);
   }
+
 
   private void configureEngine(AnalysisEngine engine) throws ResourceConfigurationException {
     ConfigurationParameterDeclarations configurationParameterDeclarations = engine
@@ -511,6 +565,10 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     return locate(name, paths, suffix, true);
   }
 
+  public static String locateIS(String name, String[] paths, String suffix) {
+    return locateIS(name, paths, suffix, true);
+  }
+
   public static String locate(String name, String[] paths, String suffix, boolean mustExist) {
     if (name == null || paths == null) {
       return null;
@@ -523,6 +581,14 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
       }
     }
     return null;
+  }
+
+  public static String locateIS(String name, String[] paths, String suffix, boolean mustExist) {
+    if (name == null) {
+      return null;
+    }
+    name = name.replaceAll("[.]", "/");
+    return name + suffix;
   }
 
   private void recursiveLoadScript(String toLoad, Map<String, TextMarkerModule> additionalScripts,
@@ -601,6 +667,23 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     return script;
   }
 
+  private TextMarkerModule loadScriptIS(String scriptLocation,
+          TypeSystemDescription localTSD) throws IOException, RecognitionException {
+    InputStream scriptInputStream = getClass().getClassLoader().getResourceAsStream(scriptLocation);
+    CharStream st = new ANTLRInputStream(scriptInputStream, scriptEncoding);
+    TextMarkerLexer lexer = new TextMarkerLexer(st);
+    CommonTokenStream tokens = new CommonTokenStream(lexer);
+    TextMarkerParser parser = new TextMarkerParser(tokens);
+    parser.setLocalTSD(localTSD);
+    parser.setExternalFactory(factory);
+    parser.setResourcePaths(resourcePaths);
+    String name = scriptLocation;
+    int lastIndexOf = name.lastIndexOf(".tm");
+    name = name.substring(0, lastIndexOf);
+    TextMarkerModule script = parser.file_input(name);
+    return script;
+  }
+
   public TextMarkerExternalFactory getFactory() {
     return factory;
   }
@@ -608,5 +691,17 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
   public TextMarkerEngineLoader getEngineLoader() {
     return engineLoader;
   }
+  private String collectionToString(Collection collection) {
+    StringBuilder collectionSB = new StringBuilder();
+    collectionSB.append("{");
+    for (Object element : collection) {
+      collectionSB.append("[").append(element.toString()).append("]");
+    }
+    collectionSB.append("}");
+    return collectionSB.toString();
+  }
 
+  private String collectionToString(Object[] collection) {
+    return collectionToString(Arrays.asList(collection));
+  }
 }

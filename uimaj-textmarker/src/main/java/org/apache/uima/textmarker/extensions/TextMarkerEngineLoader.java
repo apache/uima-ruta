@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.extensions;
 
@@ -51,13 +51,36 @@ public class TextMarkerEngineLoader extends DefaultEngineLoader {
     return result;
   }
 
+  public AnalysisEngine loadEngineIS(String location) throws InvalidXMLException,
+          ResourceInitializationException, IOException {
+    String name = getEngineNameIS(location);
+    AnalysisEngine result = null;
+    IEngineLoader engineLoader = loaders.get(name);
+    if (engineLoader != null) {
+      result = engineLoader.loadEngine(location);
+    } else {
+      result = loadEngineMyselfIS(location);
+    }
+    return result;
+  }
+
   public void addLoader(String engine, IEngineLoader loader) {
     loaders.put(engine, loader);
   }
 
   private String getEngineName(String location) {
-    File file = new File(location);
+    File file;
+    try {
+      file = new File(location);
+    } catch (java.lang.NullPointerException e) {
+      throw new java.lang.NullPointerException("File[" + location + "] cannot be opened.");
+    }
     location = file.getName();
+    String[] split = location.split("[.]");
+    return split[split.length - 2];
+  }
+
+  private String getEngineNameIS(String location) {
     String[] split = location.split("[.]");
     return split[split.length - 2];
   }
