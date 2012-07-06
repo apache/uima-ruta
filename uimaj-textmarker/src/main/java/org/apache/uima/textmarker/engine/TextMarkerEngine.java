@@ -115,6 +115,8 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
 
   public static final String RELOAD_SCRIPT = "reloadScript";
 
+  public static final String LOW_MEMORY_PROFILE = "lowMemoryProfile";
+  
   private String[] seeders;
 
   private Boolean createDebugInfo;
@@ -165,8 +167,10 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
 
   private Boolean reloadScript;
 
-  private boolean initialized = false;
+  private Boolean lowMemoryProfile;
 
+  private boolean initialized = false;
+  
   private List<Type> seedTypes;
 
   @Override
@@ -197,7 +201,8 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     defaultFilteredTypes = (String[]) aContext.getConfigParameterValue(DEFAULT_FILTERED_TYPES);
     dynamicAnchoring = (Boolean) aContext.getConfigParameterValue(DYNAMIC_ANCHORING);
     reloadScript = (Boolean) aContext.getConfigParameterValue(RELOAD_SCRIPT);
-
+    lowMemoryProfile = (Boolean) aContext.getConfigParameterValue(LOW_MEMORY_PROFILE);
+    
     removeBasics = removeBasics == null ? false : removeBasics;
     createDebugInfo = createDebugInfo == null ? false : createDebugInfo;
     createDebugOnlyFor = createDebugOnlyFor == null ? new String[0] : createDebugOnlyFor;
@@ -209,7 +214,8 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     defaultFilteredTypes = defaultFilteredTypes == null ? new String[0] : defaultFilteredTypes;
     dynamicAnchoring = dynamicAnchoring == null ? false : dynamicAnchoring;
     reloadScript = reloadScript == null ? false : reloadScript;
-
+    lowMemoryProfile = lowMemoryProfile == null ? false : lowMemoryProfile;
+    
     this.context = aContext;
 
     factory = new TextMarkerExternalFactory();
@@ -378,7 +384,8 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     FilterManager filter = new FilterManager(filterTypes, cas);
     Type basicType = typeSystem.getType(BASIC_TYPE);
     seedTypes = seedAnnotations(cas);
-    TextMarkerStream stream = new TextMarkerStream(cas, basicType, filter);
+    TextMarkerStream stream = new TextMarkerStream(cas, basicType, filter, lowMemoryProfile);
+    
     stream.initalizeBasics();
     return stream;
   }

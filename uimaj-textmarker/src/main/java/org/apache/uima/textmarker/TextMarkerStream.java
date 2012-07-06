@@ -78,12 +78,15 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
 
   private double anchoringFactor;
 
+  private boolean lowMemoryProfile;
+
   protected TextMarkerStream(CAS cas, FSIterator<AnnotationFS> current, Type basicType,
-          FilterManager filter) {
+          FilterManager filter, boolean lowMemoryProfile) {
     super();
     this.cas = cas;
     this.filter = filter;
     this.basicType = basicType;
+    this.lowMemoryProfile = lowMemoryProfile;
     AnnotationFS additionalWindow = filter.getWindowAnnotation();
     updateIterators(cas, basicType, filter, additionalWindow);
     // really an if? sub it of basic should fix this
@@ -127,8 +130,8 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     currentIt = filter.createFilteredIterator(cas, basicType);
   }
 
-  public TextMarkerStream(CAS cas, Type basicType, FilterManager filter) {
-    this(cas, null, basicType, filter);
+  public TextMarkerStream(CAS cas, Type basicType, FilterManager filter, boolean lowMemoryProfile) {
+    this(cas, null, basicType, filter, lowMemoryProfile);
   }
 
   public void initalizeBasics() {
@@ -144,6 +147,7 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
         Integer first = anchors.pollFirst();
         Integer second = anchors.first();
         TextMarkerBasic newTMB = new TextMarkerBasic(getJCas(), first, second);
+        newTMB.setLowMemoryProfile(lowMemoryProfile);
         beginAnchors.put(first, newTMB);
         endAnchors.put(second, newTMB);
         basics.add(newTMB);
@@ -252,12 +256,12 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     FilterManager filterManager = new FilterManager(filter.getDefaultFilterTypes(),
             filter.getCurrentFilterTypes(), filter.getCurrentRetainTypes(), windowAnnotation,
             windowType, cas);
-    TextMarkerStream stream = new TextMarkerStream(cas, basicIt, basicType, filterManager);
+    TextMarkerStream stream = new TextMarkerStream(cas, basicIt, basicType, filterManager, lowMemoryProfile);
     return stream;
   }
 
   public FSIterator<AnnotationFS> copy() {
-    return new TextMarkerStream(cas, currentIt.copy(), basicType, filter);
+    return new TextMarkerStream(cas, currentIt.copy(), basicType, filter, lowMemoryProfile);
   }
 
   public AnnotationFS get() throws NoSuchElementException {
@@ -605,7 +609,7 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
 
   public TextMarkerStream getCompleteStream() {
     FilterManager defaultFilter = new FilterManager(filter.getDefaultFilterTypes(), getCas());
-    return new TextMarkerStream(getCas(), basicIt, basicType, defaultFilter);
+    return new TextMarkerStream(getCas(), basicIt, basicType, defaultFilter, lowMemoryProfile);
   }
 
   public int getHistogram(Type type) {
