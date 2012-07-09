@@ -37,6 +37,7 @@ import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.textmarker.engine.TextMarkerEngine;
 import org.apache.uima.textmarker.ide.TextMarkerIdePlugin;
 import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
+import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.XMLInputSource;
 import org.apache.uima.util.XMLSerializer;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -225,7 +226,7 @@ public abstract class AbstractApplyScriptHandlerJob extends Job {
 
   private static String getText(String each) {
     try {
-      return org.apache.uima.pear.util.FileUtil.loadTextFile(new File(each), "UTF-8");
+      return FileUtils.file2String(new File(each), "UTF-8");
     } catch (IOException e) {
       DLTKCore.error(e.getMessage(), e);
     }
