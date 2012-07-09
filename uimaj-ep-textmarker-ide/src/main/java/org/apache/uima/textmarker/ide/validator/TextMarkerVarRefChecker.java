@@ -202,16 +202,15 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
       // check assign types
       if (s instanceof TextMarkerAction) {
         TextMarkerAction tma = (TextMarkerAction) s;
-        
-        String actionName = currentFile.getSource().substring(tma.getNameStart(),
-                tma.getNameEnd());
+
+        String actionName = currentFile.getSource().substring(tma.getNameStart(), tma.getNameEnd());
         String[] keywords = TextMarkerKeywordsManager.getKeywords(ITextMarkerKeywords.ACTION);
         List<String> asList = Arrays.asList(keywords);
-        if(!"".equals(actionName) && !asList.contains(actionName)) {
+        if (!"".equals(actionName) && !"-".equals(actionName) && !asList.contains(actionName)) {
           IProblem problem = problemFactory.createUnknownActionProblem(tma);
           rep.reportProblem(problem);
         }
-        
+
         if (tma.getKind() == TMActionConstants.A_ASSIGN) {
           List<?> childs = tma.getChilds();
           try {
@@ -236,8 +235,7 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
           Expression struct = sa.getStructure();
           String structure = null;
           if (struct != null) {
-            structure = currentFile.getSource().substring(struct.sourceStart(),
-                    struct.sourceEnd());
+            structure = currentFile.getSource().substring(struct.sourceStart(), struct.sourceEnd());
           }
           Map<Expression, Expression> assignments = sa.getAssignments();
           // hotfix... correct name in ast
@@ -263,11 +261,12 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
                 cond.getNameEnd());
         String[] keywords = TextMarkerKeywordsManager.getKeywords(ITextMarkerKeywords.CONDITION);
         List<String> asList = Arrays.asList(keywords);
-        if(!"".equals(conditionName) && !asList.contains(conditionName)) {
+        if (!"".equals(conditionName) && !"-".equals(conditionName)
+                && !asList.contains(conditionName)) {
           IProblem problem = problemFactory.createUnknownConditionProblem(cond);
           rep.reportProblem(problem);
         }
-        
+
         if (conditionName.equals("FEATURE")) {
           if (matchedType != null) {
             List<?> args = cond.getChilds();
