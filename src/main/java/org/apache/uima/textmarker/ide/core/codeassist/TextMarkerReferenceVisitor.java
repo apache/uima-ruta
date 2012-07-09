@@ -23,6 +23,7 @@ import org.apache.uima.textmarker.ide.parser.ast.ComponentDeclaration;
 import org.apache.uima.textmarker.ide.parser.ast.ComponentReference;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerAction;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerCondition;
+import org.apache.uima.textmarker.ide.parser.ast.TextMarkerExpression;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerVariableReference;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
@@ -57,9 +58,18 @@ public class TextMarkerReferenceVisitor extends ASTVisitor {
     } else if (s instanceof TextMarkerAction && ((TextMarkerAction) s).getNameStart() <= start
             && start <= ((TextMarkerAction) s).getNameEnd()) {
       result = s;
+    } else if (s instanceof TextMarkerAction && ((TextMarkerAction) s).getNameStart()-1 == start
+            && start == ((TextMarkerAction) s).getNameEnd()-1) {
+      result = s;
     } else if (s instanceof TextMarkerCondition
             && ((TextMarkerCondition) s).getNameStart() <= start
             && start <= ((TextMarkerCondition) s).getNameEnd()) {
+      result = s;
+    } else if (s instanceof TextMarkerCondition
+            && ((TextMarkerCondition) s).getNameStart()-1 == start
+            && start == ((TextMarkerCondition) s).getNameEnd()-1) {
+      result = s;
+    } else if(s instanceof TextMarkerExpression && s.sourceStart() == start && s.sourceEnd() == start) {
       result = s;
     }
     return super.visit(s);

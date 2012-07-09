@@ -22,6 +22,8 @@ package org.apache.uima.textmarker.ide.validator;
 import java.util.List;
 
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerAbstractDeclaration;
+import org.apache.uima.textmarker.ide.parser.ast.TextMarkerAction;
+import org.apache.uima.textmarker.ide.parser.ast.TextMarkerCondition;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerFeatureDeclaration;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerVariableReference;
 import org.eclipse.dltk.ast.ASTListNode;
@@ -80,7 +82,8 @@ public class TextMarkerCheckerProblemFactory {
             getLine(node), severity);
   }
 
-  public IProblem createDuplicateShortName(TextMarkerAbstractDeclaration var, ProblemSeverity severity) {
+  public IProblem createDuplicateShortName(TextMarkerAbstractDeclaration var,
+          ProblemSeverity severity) {
     return new TextMarkerCheckerDefaultProblem(this.fileName, "The type " + var.getName()
             + " conflicts with other types with same short name, but different namespace.", var,
             getLine(var), severity);
@@ -159,4 +162,15 @@ public class TextMarkerCheckerProblemFactory {
             + "\" is final and cannot be used as a parent type.";
     return new TextMarkerCheckerDefaultProblem(this.fileName, message, parent, getLine(parent));
   }
+
+  public IProblem createUnknownConditionProblem(TextMarkerCondition cond) {
+    String message = "error: Condition \"" + cond.getName() + "\" is not defined.";
+    return new TextMarkerCheckerDefaultProblem(this.fileName, message, cond, getLine(cond));
+  }
+
+  public IProblem createUnknownActionProblem(TextMarkerAction action) {
+    String message = "error: Action \"" + action.getName() + "\" is not defined.";
+    return new TextMarkerCheckerDefaultProblem(this.fileName, message, action, getLine(action));
+  }
+
 }

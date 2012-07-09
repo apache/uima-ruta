@@ -113,6 +113,22 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
     return new TextMarkerExpression(e.sourceStart(), e.sourceEnd(), e, TMTypeConstants.TM_TYPE_AT);
   }
 
+  public static Expression createEmptyTypeExpression(Token token) {
+    int bounds[] = getBounds(token);
+    return new TextMarkerVariableReference(bounds[0], bounds[0], "", TMTypeConstants.TM_TYPE_AT);
+  }
+  public static Expression createEmptyStringExpression(Token token) {
+    int bounds[] = getBounds(token);
+    return new TextMarkerVariableReference(bounds[0], bounds[0], "", TMTypeConstants.TM_TYPE_S);
+  }
+  public static Expression createEmptyNumberExpression(Token token) {
+    int bounds[] = getBounds(token);
+    return new TextMarkerVariableReference(bounds[0], bounds[0], "", TMTypeConstants.TM_TYPE_N);
+  }
+  public static Expression createEmptyBooleanExpression(Token token) {
+    int bounds[] = getBounds(token);
+    return new TextMarkerVariableReference(bounds[0], bounds[0], "", TMTypeConstants.TM_TYPE_B);
+  }
   // public static Expression createSimpleTypeExpression(Token at, TextMarkerBlock env) {
   // int bounds[] = getBounds(at);
   // return new TextMarkerSimpleTypeExpression(bounds[0], bounds[1], at.getText());
@@ -324,5 +340,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
     list.add(0, var);
     return createStringExpression(list);
   }
+
+  
 
 }

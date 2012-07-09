@@ -602,9 +602,23 @@ ruleElementComposed returns [ComposedRuleElement re = null]
 	;
 
 ruleElementType returns [TextMarkerRuleElement re = null] 
-    :
+@init{
+List<TextMarkerCondition> dummyConds = new ArrayList<TextMarkerCondition>();
+}
+  :
     (typeExpression)=>idRef=typeExpression quantifier = quantifierPart? 
-        (LCURLY c = conditions? (THEN a = actions)? end = RCURLY)?
+        (LCURLY 
+        {
+        
+        dummyConds.add(ConditionFactory.createEmptyCondition(input.LT(1)));
+        } 
+        c = conditions? 
+        {
+        if(c==null) {
+        	c = dummyConds;
+        }
+        }
+        (THEN a = actions)? end = RCURLY)?
         {
         // TODO handle quantifierPart.
         re = ScriptFactory.createRuleElement(idRef,quantifier,c,a,end);}
@@ -614,7 +628,11 @@ ruleElementType returns [TextMarkerRuleElement re = null]
 ruleElementLiteral returns [TextMarkerRuleElement re = null] 
     :
     (simpleStringExpression)=>idRef=simpleStringExpression quantifier = quantifierPart? 
-        (LCURLY c = conditions? (THEN a = actions)? end = RCURLY)?
+        (LCURLY 
+
+        c = conditions? 
+        (THEN a = actions)? 
+        end = RCURLY)?
         {
         // TODO handle quantifierPart.
         re = ScriptFactory.createRuleElement(idRef,quantifier,c,a,end);}
@@ -622,8 +640,11 @@ ruleElementLiteral returns [TextMarkerRuleElement re = null]
     ;
     
 conditions returns [List<TextMarkerCondition> conds = new ArrayList<TextMarkerCondition>()]
+@init {
+conds.add(ConditionFactory.createEmptyCondition(input.LT(1)));
+}
     :
-    c = condition {conds.add(c);} (COMMA c = condition {conds.add(c);} )*
+    c = condition {conds.remove(0);conds.add(c);} (COMMA c = condition {conds.add(c);} )*
     ;
 
   
@@ -760,6 +781,9 @@ simpleTypeListExpression returns [Expression expr = null]
 	;	
 	
 typeExpression returns [Expression expr = null]
+@init {
+expr = ExpressionFactory.createEmptyTypeExpression(input.LT(1));
+}
 	:
 	tf = typeFunction {expr = tf;}
 	| st = simpleTypeExpression 
@@ -823,6 +847,9 @@ quantifierPart returns [List<Expression> exprs = new ArrayList<Expression>()]
 	
 	
 condition returns [TextMarkerCondition result = null]
+@init {
+result = ConditionFactory.createEmptyCondition(input.LT(1));
+}
 	:
 	(
 	c = conditionAnd
@@ -853,20 +880,20 @@ condition returns [TextMarkerCondition result = null]
 	| c = conditionPartOfNeq
 	| c = conditionSize
 	| (c = externalCondition)=> c = externalCondition
-	//| c = variableCondition
+	| c = variableCondition
 	) {result = c;}
 	;
 	
 //TODO added rule
-//variableCondition returns [TextMarkerCondition condition = null]
-//	:		
-//	// also create condition for auto-completion
-//	//{isVariableOfType(input.LT(1).getText(), "CONDITION")}? 
-//	id = Identifier
-//	{
-//		condition = ConditionFactory.createCondition(id);
-//	}
-//	;	
+variableCondition returns [TextMarkerCondition condition = null]
+	:		
+	// also create condition for auto-completion
+	//{isVariableOfType(input.LT(1).getText(), "CONDITION")}? 
+	id = Identifier
+	{
+		condition = ConditionFactory.createCondition(id);
+	}
+	;	
 	
 	
 externalCondition returns [TextMarkerCondition condition = null]
@@ -1109,6 +1136,9 @@ conditionSize returns [TextMarkerCondition cond = null]
 
 	
 action returns [TextMarkerAction result = null]
+@init {
+result = ActionFactory.createEmptyAction(input.LT(1));
+}
 	:
 	(
 	a = actionColor
@@ -1147,20 +1177,20 @@ action returns [TextMarkerAction result = null]
 	| a = actionConfigure
 	| a = actionDynamicAnchoring
 	| (a = externalAction)=> a = externalAction
-	//| a = variableAction
+	| a = variableAction
 	) {result = a;}
 	;
 
 
-//variableAction returns [TextMarkerAction action = null]
-//	:
-//	// also create an dummy action for auto-completion
-//	//{isVariableOfType(input.LT(1).getText(), "ACTION")}?
-//	 id = Identifier
-//	{
-//		action = ActionFactory.createAction(id);
-//	}
-//	;
+variableAction returns [TextMarkerAction action = null]
+	:
+	// also create an dummy action for auto-completion
+	//{isVariableOfType(input.LT(1).getText(), "ACTION")}?
+	 id = Identifier
+	{
+		action = ActionFactory.createAction(id);
+	}
+	;
 	
 externalAction returns [TextMarkerAction action = null]
 	:
@@ -1777,6 +1807,9 @@ wordTableExpression returns [Expression expr = null]
 
 //seems OK
 numberExpression returns [Expression expr = null]
+@init {
+expr = ExpressionFactory.createEmptyNumberExpression(input.LT(1));
+}
 	:
 	e = additiveExpression
 	{if(e!=null) expr = ExpressionFactory.createNumberExpression(e);}
@@ -1853,8 +1886,12 @@ numberVariable returns [Expression expr = null]
 	
 //OK - interface to flag stringExpressions?
 stringExpression returns [Expression expr = null]
-@init {List<Expression> exprList = new ArrayList<Expression>();}
+@init {
+List<Expression> exprList = new ArrayList<Expression>();
+{expr = ExpressionFactory.createEmptyStringExpression(input.LT(1));}
+}
 	:
+	
 	e = stringFunction {expr = e;} 
 	|
 	strExpr1 = simpleStringExpression {if (strExpr1!=null) exprList.add(strExpr1);}
@@ -1906,6 +1943,9 @@ simpleStringExpression returns [Expression expr = null]
 
 //OK - interface to flag booleanExpressions?
 booleanExpression returns [Expression expr = null]
+@init{
+expr = ExpressionFactory.createEmptyBooleanExpression(input.LT(1));
+}
 	:
 	bcE = composedBooleanExpression {expr = bcE;}
 	| sbE = simpleBooleanExpression {expr = sbE;}
