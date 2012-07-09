@@ -66,6 +66,12 @@ public class ActionFactory extends AbstractFactory {
     return createAction(type, listOfExpressions);
   }
 
+  public static TextMarkerAction createEmptyAction(Token token) {
+    int bounds[] = getBounds(token);
+    return new TextMarkerAction(bounds[0], bounds[0], new ArrayList<Expression>(),
+            TMConditionConstants.CONSTANT_OFFSET, "", bounds[0], bounds[0]);
+  }
+  
   public static TextMarkerAction createAction(Token type, Map<Expression, Expression> map,
           Expression... exprsArray) {
     List<Expression> listOfExpressions = new ArrayList<Expression>();

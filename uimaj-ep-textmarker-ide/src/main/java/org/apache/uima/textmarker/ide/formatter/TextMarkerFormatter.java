@@ -90,8 +90,8 @@ public class TextMarkerFormatter extends AbstractScriptFormatter {
     if (!reporter.gotProblems()) {
 
       BitSet bs = new BitSet();
-      bs.add(TextMarkerParser.LINE_COMMENT);
-      bs.add(TextMarkerParser.COMMENT);
+      bs.add(org.apache.uima.textmarker.parser.TextMarkerParser.LINE_COMMENT);
+      bs.add(org.apache.uima.textmarker.parser.TextMarkerParser.COMMENT);
       List<CommonToken> comments = tokenStream.getTokens(0, tokenStream.size(), bs);
 
       final String output = format(input, (ModuleDeclaration)md, comments, indent);

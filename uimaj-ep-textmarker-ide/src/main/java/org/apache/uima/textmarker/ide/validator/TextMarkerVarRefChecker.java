@@ -34,6 +34,9 @@ import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.metadata.FeatureDescription;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.apache.uima.textmarker.ide.core.ITextMarkerKeywords;
+import org.apache.uima.textmarker.ide.core.TextMarkerKeywords;
+import org.apache.uima.textmarker.ide.core.TextMarkerKeywordsManager;
 import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
 import org.apache.uima.textmarker.ide.parser.ast.TMActionConstants;
 import org.apache.uima.textmarker.ide.parser.ast.TMTypeConstants;
@@ -199,6 +202,16 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
       // check assign types
       if (s instanceof TextMarkerAction) {
         TextMarkerAction tma = (TextMarkerAction) s;
+        
+        String actionName = currentFile.getSource().substring(tma.getNameStart(),
+                tma.getNameEnd());
+        String[] keywords = TextMarkerKeywordsManager.getKeywords(ITextMarkerKeywords.ACTION);
+        List<String> asList = Arrays.asList(keywords);
+        if(!"".equals(actionName) && !asList.contains(actionName)) {
+          IProblem problem = problemFactory.createUnknownActionProblem(tma);
+          rep.reportProblem(problem);
+        }
+        
         if (tma.getKind() == TMActionConstants.A_ASSIGN) {
           List<?> childs = tma.getChilds();
           try {
@@ -248,6 +261,13 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
         TextMarkerCondition cond = (TextMarkerCondition) s;
         String conditionName = currentFile.getSource().substring(cond.getNameStart(),
                 cond.getNameEnd());
+        String[] keywords = TextMarkerKeywordsManager.getKeywords(ITextMarkerKeywords.CONDITION);
+        List<String> asList = Arrays.asList(keywords);
+        if(!"".equals(conditionName) && !asList.contains(conditionName)) {
+          IProblem problem = problemFactory.createUnknownConditionProblem(cond);
+          rep.reportProblem(problem);
+        }
+        
         if (conditionName.equals("FEATURE")) {
           if (matchedType != null) {
             List<?> args = cond.getChilds();
