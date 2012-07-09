@@ -26,6 +26,7 @@ import org.antlr.runtime.Token;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
 import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
+import org.apache.uima.textmarker.expression.TextMarkerExpression;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.string.StringExpression;
 import org.apache.uima.textmarker.expression.type.SimpleTypeExpression;
@@ -34,7 +35,7 @@ import org.apache.uima.textmarker.rule.ComposedRuleElement;
 import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleElementContainer;
 import org.apache.uima.textmarker.rule.RuleElementIsolator;
-import org.apache.uima.textmarker.rule.TextMarkerDisjunctiveTypeMatcher;
+import org.apache.uima.textmarker.rule.TextMarkerDisjunctiveMatcher;
 import org.apache.uima.textmarker.rule.TextMarkerLiteralMatcher;
 import org.apache.uima.textmarker.rule.TextMarkerRule;
 import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
@@ -114,16 +115,15 @@ public class TextMarkerScriptFactory {
           RuleElementQuantifier quantifier, List<AbstractTextMarkerCondition> conditions,
           List<AbstractTextMarkerAction> actions, RuleElementContainer container,
           TextMarkerBlock parent) {
-
     TextMarkerTypeMatcher matcher = new TextMarkerTypeMatcher(typeExpression);
     return new TextMarkerRuleElement(matcher, quantifier, conditions, actions, container, parent);
   }
 
-  public TextMarkerRuleElement createRuleElement(List<TypeExpression> typeExprs,
+  public TextMarkerRuleElement createRuleElement(List<TextMarkerExpression> exprs,
           RuleElementQuantifier quantifier, List<AbstractTextMarkerCondition> conditions,
           List<AbstractTextMarkerAction> actions, RuleElementContainer container,
           TextMarkerBlock parent) {
-    TextMarkerDisjunctiveTypeMatcher matcher = new TextMarkerDisjunctiveTypeMatcher(typeExprs);
+    TextMarkerDisjunctiveMatcher matcher = new TextMarkerDisjunctiveMatcher(exprs);
     return new TextMarkerRuleElement(matcher, quantifier, conditions, actions, container, parent);
   }
 

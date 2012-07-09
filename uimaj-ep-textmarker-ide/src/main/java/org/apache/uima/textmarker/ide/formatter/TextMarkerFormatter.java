@@ -78,7 +78,7 @@ public class TextMarkerFormatter extends AbstractScriptFormatter {
     String input = source;
     // TODO implement useful format for code snippets
     // final String input = source.substring(offset, offset + length);
-    if (input == "") {
+    if (input.equals("")) {
       return null;
     }
     TextMarkerSourceParser tmsp = new TextMarkerSourceParser();

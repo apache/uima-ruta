@@ -522,15 +522,20 @@ ruleElement[RuleElementContainer container] returns [RuleElement re = null]
 
 ruleElementDisjunctive [RuleElementContainer container] returns [TextMarkerRuleElement re = null]
 @init{
-	List<TypeExpression> typeExprs = new ArrayList<TypeExpression>();
+	List<TextMarkerExpression> exprs = new ArrayList<TextMarkerExpression>();
 }
     :
     LPAREN
-    (typeExpression VBAR)=>type1 = typeExpression {typeExprs.add(type1);} 
-    VBAR type2 = typeExpression{typeExprs.add(type2);} 
-    (VBAR type3 = typeExpression{typeExprs.add(type3);})?
+    ((typeExpression | simpleStringExpression) VBAR)=>  (e11 =typeExpression | e12 =simpleStringExpression) 
+    {if(e11 != null) exprs.add(e11);if(e12 != null) exprs.add(e12);} 
+    VBAR (e21 =typeExpression | e22 =simpleStringExpression) 
+    {if(e21 != null) exprs.add(e21);if(e22 != null) exprs.add(e22);} 
+    (
+    VBAR  (e31 =typeExpression | e32 =simpleStringExpression) 
+    {if(e31 != null) exprs.add(e31);if(e32 != null) exprs.add(e32);} 
+    )*
     RPAREN
-     { re = factory.createRuleElement(typeExprs, null, null, null, container, $blockDeclaration::env);}   
+     { re = factory.createRuleElement(exprs, null, null, null, container, $blockDeclaration::env);}   
     
      q = quantifierPart? 
         (LCURLY c = conditions? (THEN a = actions)? RCURLY)?

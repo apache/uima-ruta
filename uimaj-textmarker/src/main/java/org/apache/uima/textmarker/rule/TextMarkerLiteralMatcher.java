@@ -72,18 +72,32 @@ public class TextMarkerLiteralMatcher implements TextMarkerMatcher {
     return Integer.MAX_VALUE;
   }
 
-  public List<AnnotationFS> getAnnotationsAfter(TextMarkerRuleElement ruleElement,
+  public Collection<AnnotationFS> getAnnotationsAfter(TextMarkerRuleElement ruleElement,
           AnnotationFS annotation, TextMarkerStream stream, TextMarkerBlock parent) {
-    return null;
+    return getNextAnnotations(false, annotation, stream, parent);
   }
 
   public Collection<AnnotationFS> getAnnotationsBefore(TextMarkerRuleElement ruleElement,
           AnnotationFS annotation, TextMarkerStream stream, TextMarkerBlock parent) {
-    return null;
+    return getNextAnnotations(true, annotation, stream, parent);
+  }
+
+  private Collection<AnnotationFS> getNextAnnotations(boolean before, AnnotationFS annotation, TextMarkerStream stream,
+          TextMarkerBlock parent) {
+    List<AnnotationFS> result = new ArrayList<AnnotationFS>(1);
+    TextMarkerBasic basicNextTo = stream.getBasicNextTo(before, annotation);
+    if(basicNextTo == null) { 
+      return result;
+    }
+    String stringValue = expression.getStringValue(parent);
+    if(stringValue.equals(basicNextTo.getCoveredText())) {
+      result.add(basicNextTo);
+    }
+    return result;
   }
 
   public List<Type> getTypes(TextMarkerBlock parent, TextMarkerStream stream) {
-    return null;
+    return new ArrayList<Type>();
   }
 
 }

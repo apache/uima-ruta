@@ -27,10 +27,11 @@ import org.apache.uima.textmarker.TextMarkerElement;
 import org.apache.uima.textmarker.TextMarkerStatement;
 import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
 import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
+import org.apache.uima.textmarker.expression.TextMarkerExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.rule.ComposedRuleElement;
 import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.TextMarkerDisjunctiveTypeMatcher;
+import org.apache.uima.textmarker.rule.TextMarkerDisjunctiveMatcher;
 import org.apache.uima.textmarker.rule.TextMarkerMatcher;
 import org.apache.uima.textmarker.rule.TextMarkerRule;
 import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
@@ -147,11 +148,11 @@ public class ScriptVerbalizer {
   public String verbalizeMatcher(TextMarkerRuleElement tmre) {
     StringBuilder result = new StringBuilder();
     TextMarkerMatcher matcher = tmre.getMatcher();
-    if (matcher instanceof TextMarkerDisjunctiveTypeMatcher) {
-      TextMarkerDisjunctiveTypeMatcher dmatcher = (TextMarkerDisjunctiveTypeMatcher) matcher;
-      List<TypeExpression> expressions = dmatcher.getExpressions();
+    if (matcher instanceof TextMarkerDisjunctiveMatcher) {
+      TextMarkerDisjunctiveMatcher dmatcher = (TextMarkerDisjunctiveMatcher) matcher;
+      List<TextMarkerExpression> expressions = dmatcher.getExpressions();
       result.append("(");
-      for (TypeExpression each : expressions) {
+      for (TextMarkerExpression each : expressions) {
         if (expressions.indexOf(each) != 0) {
           result.append(" | ");
         }

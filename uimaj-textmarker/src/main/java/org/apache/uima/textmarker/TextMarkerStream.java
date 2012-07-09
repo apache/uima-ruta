@@ -442,6 +442,26 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     // return result;
   }
 
+  public TextMarkerBasic getBasicNextTo(boolean before, AnnotationFS annotation) {
+    if(before) {
+      TextMarkerBasic pointer = beginAnchors.get(annotation.getBegin());
+      moveTo(pointer);
+      moveToPrevious();
+      if(isValid()) {
+        return (TextMarkerBasic)get();
+      }
+    } else {
+      TextMarkerBasic pointer = endAnchors.get(annotation.getEnd());
+      moveTo(pointer);
+      moveToNext();
+      if(isValid()) {
+        return (TextMarkerBasic)get();
+      }
+    }
+    return null;
+  }
+  
+  
   public List<TextMarkerBasic> getBasicsInWindow(AnnotationFS windowAnnotation) {
     List<TextMarkerBasic> result = new ArrayList<TextMarkerBasic>();
     if (windowAnnotation instanceof TextMarkerBasic) {
