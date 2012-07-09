@@ -592,9 +592,14 @@ ruleElementComposed returns [ComposedRuleElement re = null]
 	:
 	LPAREN
 	 
-	((ruleElementType VBAR)=> re1 = ruleElementType {disjunctive = true; res = new ArrayList<Expression>(); res.add(re1);} 
-	VBAR re2 = ruleElementType {res.add(re2);}
-	(VBAR re3 = ruleElementType {res.add(re3);})*
+	(((ruleElementType | ruleElementLiteral) VBAR)=>  (re11 =ruleElementType| re12 = ruleElementLiteral) 
+	{disjunctive = true; res = new ArrayList<Expression>(); if(re11!=null) res.add(re11);if(re12!=null) res.add(re12);} 
+	VBAR (re21 = ruleElementType| re22 = ruleElementLiteral) 
+	{ if(re21!=null) res.add(re21);if(re22!=null) res.add(re22);}
+	(
+	VBAR (re31 = ruleElementType| re32 = ruleElementLiteral) 
+	{ if(re31!=null) res.add(re31);if(re32!=null) res.add(re32);}
+	)*
 	 |(ruleElements)=>res = ruleElements)
 	
 	RPAREN q = quantifierPart? (LCURLY c = conditions? (THEN a = actions)? RCURLY)?
