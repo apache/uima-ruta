@@ -31,7 +31,7 @@
 	<packaging>pom</packaging>
 	<version>4</version>
   
-	<name>Apache UIMAhe UIMA Eclipse: ${project.artifactId}</name>
+	<name>Apache UIMA Eclipse: ${project.artifactId}</name>
   <description>The UIMA TextMarker Eclipse update site</description>
   <url>${uimaWebsiteUrl}</url>
 
@@ -59,7 +59,7 @@
     <uimaScmRoot>uimaj</uimaScmRoot>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
     <eclipseUpdateSite>${project.build.directory}/eclipse-update-site</eclipseUpdateSite>
-    <item-maven-release-version>2.4.1.SNAPSHOT</item-maven-release-version>
+    <item-maven-release-version>2.4.1-SNAPSHOT</item-maven-release-version>
     <item-eclipse-release-version>2.4.1.SNAPSHOT</item-eclipse-release-version>
   </properties>
 
@@ -133,12 +133,6 @@
                   <artifactId>uimaj-ep-textmarker-ide</artifactId>
                   <version>${item-maven-release-version}</version>
                   <destFileName>org.apache.uima.textmarker.ide_${item-eclipse-release-version}.jar</destFileName>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.uima</groupId>
-                  <artifactId>uimaj-ep-textmarker-textruler</artifactId>
-                  <version>${item-maven-release-version}</version>
-                  <destFileName>org.apache.uima.textmarker.textruler_${item-eclipse-release-version}.jar</destFileName>
                 </artifactItem>
               </artifactItems>
               <outputDirectory>${project.build.directory}/work/plugins</outputDirectory>

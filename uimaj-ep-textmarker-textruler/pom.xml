@@ -14,18 +14,14 @@
 	</properties>
 	<name>Apache UIMA Eclipse: ${project.artifactId}</name>
 	<url>${uimaWebsiteUrl}</url>
-	<description>Provides additional views for the CAS Editor</description>
-	<scm>
-		<url>http://svn.apache.org/viewvc/uima/sandbox/trunk/uimaj-ep-textmarker-textruler</url>
-		<connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/trunk/uimaj-ep-textmarker-textruler</connection>
-		<developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/trunk/uimaj-ep-textmarker-textruler</developerConnection>
-	</scm>
+	<description>Provides the TextRuler framework with implementations of rule learners</description>
 	<dependencies>
-		<dependency>
-			<groupId>org.apache.uima</groupId>
-			<artifactId>uimaj-ep-textmarker-engine</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimaj-textmarker</artifactId>
+      <version>${project.parent.version}</version>
+      <scope>compile</scope>
+    </dependency>
 		<dependency>
 			<groupId>org.apache.uima</groupId>
 			<artifactId>uimaj-ep-textmarker-ide</artifactId>
@@ -59,13 +55,13 @@
     <dependency>
       <groupId>org.eclipse.dltk</groupId>
       <artifactId>core</artifactId>
-      <version>[3.0.0,4.0.0)</version>
+      <version>[3.0.1,4.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.dltk</groupId>
       <artifactId>ui</artifactId>
-      <version>[3.0.0,4.0.0)</version>
+      <version>[3.0.1,4.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -101,7 +97,7 @@
     <dependency>
       <groupId>org.eclipse.dltk</groupId>
       <artifactId>debug</artifactId>
-      <version>[3.0.0,4.0.0)</version>
+      <version>[3.0.1,4.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -129,6 +125,11 @@
       <scope>provided</scope>
     </dependency>
 	</dependencies>
+	 <scm>
+    <url>http://svn.apache.org/viewvc/uima/sandbox/trunk/uimaj-ep-textmarker-textruler</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/trunk/uimaj-ep-textmarker-textruler</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/trunk/uimaj-ep-textmarker-textruler</developerConnection>
+  </scm>
 	<build>
 		<!-- don't use artifactId as first part of finalName, follow instead the 
 			eclipse convention -->
@@ -156,7 +157,6 @@
 							<configuration>
 								<excludes>
 									<exclude>release.properties</exclude> <!-- release generated artifact -->
-									<exclude>src/test/resources/ManualTests/*</exclude> <!-- test data -->
 									<exclude>marker-file-identifying-*</exclude>
 								</excludes>
 							</configuration>

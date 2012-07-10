@@ -87,11 +87,6 @@ under the License.
          version="2.4.1.SNAPSHOT"
          unpack="false"/>
 
-   <plugin
-         id="org.apache.uima.textmarker.textruler"
-         download-size="0"
-         install-size="0"
-         version="2.4.1.SNAPSHOT"
-         unpack="false"/>
+   
 
 </feature>
