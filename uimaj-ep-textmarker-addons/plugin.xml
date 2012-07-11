@@ -311,7 +311,7 @@ under the License.
    </extension>   <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            locationURI="popup:org.eclipse.ui.popup.any">
+            locationURI="popup:org.eclipse.dltk.ui.ScriptExplorer?after=additions">
          <menu
                icon="icons/tm_obj.png"
                id="org.apache.uima.textmarker.utils.popup.submenu"
@@ -331,6 +331,14 @@ under the License.
                tooltip="Apply current TextMarker script on folder and keep basics">
             <visibleWhen
                   checkEnabled="true">
+               <and>
+                  <with
+                        variable="activeEditorId">
+                     <equals
+                           value="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor">
+                     </equals>
+                  </with>
+               </and>
             </visibleWhen>
          </command>
       </menuContribution>
@@ -347,6 +355,14 @@ under the License.
                tooltip="Apply current TextMarker script on folder">
             <visibleWhen
                   checkEnabled="true">
+               <and>
+                  <with
+                        variable="activeEditorId">
+                     <equals
+                           value="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor">
+                     </equals>
+                  </with>
+               </and>
             </visibleWhen>
          </command>
       </menuContribution>
@@ -363,6 +379,14 @@ under the License.
                tooltip="Apply current TextMarker script on folder">
             <visibleWhen
                   checkEnabled="true">
+               <and>
+                  <with
+                        variable="activeEditorId">
+                     <equals
+                           value="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor">
+                     </equals>
+                  </with>
+               </and>
             </visibleWhen>
          </command>
       </menuContribution>
@@ -437,17 +461,13 @@ under the License.
       </definition>
       <definition
             id="org.apache.uima.textmarker.utils.apply.script.definition">
-         <with
-               variable="selection">
-            <and>
-               <with
-                     variable="activeEditorId">
-                  <equals
-                        value="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor">
-                  </equals>
-               </with>
-            </and>
-         </with>
+         <adapt
+               type="org.eclipse.core.resources.IResource">
+            <test
+                  property="org.eclipse.core.resources.extension"
+                  value="tm">
+            </test>
+         </adapt>
       </definition>
    </extension>   <extension
          point="org.eclipse.ui.bindings">
