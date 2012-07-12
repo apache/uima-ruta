@@ -28,9 +28,11 @@ import org.apache.uima.textmarker.ide.TextMarkerIdePlugin;
 import org.apache.uima.textmarker.ide.core.TextMarkerLanguageToolkit;
 import org.apache.uima.textmarker.ide.core.codeassist.TextMarkerReferenceDeclarationVisitor;
 import org.apache.uima.textmarker.ide.core.codeassist.TextMarkerReferenceVisitor;
+import org.apache.uima.textmarker.ide.core.codeassist.TextMarkerRuleIdVisitor;
 import org.apache.uima.textmarker.ide.core.codeassist.TextMarkerSelectionParser;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerAction;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerCondition;
+import org.apache.uima.textmarker.ide.parser.ast.TextMarkerRule;
 import org.apache.uima.textmarker.ide.ui.TextMarkerPartitions;
 import org.apache.uima.textmarker.ide.ui.TextMarkerPreferenceConstants;
 import org.apache.uima.textmarker.ide.ui.actions.TextMarkerGenerateActionGroup;
@@ -419,6 +421,34 @@ public class TextMarkerEditor extends ScriptEditor {
 
   }
 
+  public void highlightElement(int id) {
+    if (myAnnotations != null && !myAnnotations.isEmpty()) {
+      removeAnnotations(myAnnotations.keySet());
+    }
+    
+    TextMarkerSelectionParser parser = new TextMarkerSelectionParser();
+    ISourceModule unit = (ISourceModule) getInputModelElement();
+    ModuleDeclaration parsed = parser.parse(unit);
+    TextMarkerRuleIdVisitor visitor = new TextMarkerRuleIdVisitor(id);
+    try {
+      parsed.traverse(visitor);
+    } catch (Exception e) {
+    }
+    TextMarkerRule rule = visitor.getResult();
+    myAnnotations = new HashMap<Annotation, Position>();
+    if(rule != null) {
+      Annotation annotation = new Annotation(SearchPlugin.SEARCH_ANNOTATION_TYPE, true, null);
+      int sourceStart = rule.sourceStart();
+      int sourceEnd = rule.sourceEnd();
+      Position position = new Position(sourceStart, sourceEnd - sourceStart);
+      getSourceViewer().revealRange(sourceStart, sourceEnd - sourceStart);
+      myAnnotations.put(annotation, position);
+    }
+    addAnnotations(myAnnotations);
+  }
+
+  
+  
   private void removeAnnotations(Collection<Annotation> annotations) {
     IAnnotationModel model = getDocumentProvider().getAnnotationModel(getEditorInput());
     for (Annotation annotation : annotations) {
@@ -523,4 +553,5 @@ public class TextMarkerEditor extends ScriptEditor {
     super.configureSourceViewerDecorationSupport(support);
   }
 
+  
 }

@@ -42,15 +42,13 @@ public class ExplainPerspective implements IPerspectiveFactory {
 
   public static final String RULE_LIST = "org.apache.uima.textmarker.explain.rulelist";
 
+  public static final String CREATED_BY = "org.apache.uima.caseditor.browser";
+
+  public static final String TYPE_BROWSER = "org.apache.uima.caseditor.browser";
+
+  public static final String SELECTION_VIEW = "org.apache.uima.caseditor.selection";
+  
   public static final String QUERY = "org.apache.uima.textmarker.query.ui.ScriptQueryView";
-
-  public static final String PALETTE_VIEW = "org.apache.uima.cev.views.palette";
-
-  public static final String TYPE_BROWSER = "org.apache.uima.cev.views.typeBrowser";
-
-  public static final String SELECTION_VIEW = "org.apache.uima.cev.views.selection";
-
-  public static final String ANNOTATION_EDITOR = "org.apache.uima.cev.views.editor";
 
   public static final String SCRIPT_EXPLORER = "org.eclipse.dltk.ui.ScriptExplorer";
 
@@ -85,10 +83,9 @@ public class ExplainPerspective implements IPerspectiveFactory {
     layout.addShowViewShortcut(IProgressConstants.PROGRESS_VIEW_ID);
 
     layout.addShowViewShortcut(SCRIPT_EXPLORER);
-    layout.addShowViewShortcut(PALETTE_VIEW);
     layout.addShowViewShortcut(TYPE_BROWSER);
     layout.addShowViewShortcut(SELECTION_VIEW);
-    layout.addShowViewShortcut(ANNOTATION_EDITOR);
+    layout.addShowViewShortcut(CREATED_BY);
     layout.addShowViewShortcut(QUERY);
 
   }
@@ -101,11 +98,14 @@ public class ExplainPerspective implements IPerspectiveFactory {
     rightFolder.addView(APPLIED_RULES);
     rightFolder.addView(SELECTION_RULES);
     rightFolder.addView(RULE_LIST);
-
+    rightFolder.addView(TYPE_BROWSER);
+    rightFolder.addView(SELECTION_VIEW);
+    
     IFolderLayout ruleFolder = layout.createFolder("ruleFolder", IPageLayout.BOTTOM, (float) 0.6,
             "rightFolder");
     ruleFolder.addView(RULE_ELEMENTS);
-
+    ruleFolder.addView(CREATED_BY);
+    
     IFolderLayout navigationFolder = layout.createFolder("left", IPageLayout.LEFT, (float) 0.2,
             editorArea);
     navigationFolder.addView(SCRIPT_EXPLORER);

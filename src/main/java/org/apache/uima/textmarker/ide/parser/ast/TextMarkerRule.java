@@ -25,11 +25,18 @@ import org.eclipse.dltk.ast.expressions.Expression;
 
 public class TextMarkerRule extends TextMarkerStatement {
 
-  public TextMarkerRule(List<Expression> expressions) {
+  private final int id;
+
+  public TextMarkerRule(List<Expression> expressions, int id) {
     super(expressions);
+    this.id = id;
   }
 
   public String toString() {
     return this.getClass().getSimpleName() + " : " + super.toString();
+  }
+
+  public int getId() {
+    return id;
   }
 }

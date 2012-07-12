@@ -675,8 +675,8 @@ public class TextMarkerFormattedPrinter extends ASTVisitor {
       append(b.getName());
       append(") ");
       this.inBlockDeclaration = true;
-      if (b.getRuleElement() != null) {
-        b.getRuleElement().traverse(this);
+      if (b.getRule() != null) {
+        b.getRule().traverse(this);
       }
       this.inBlockDeclaration = false;
       append(" {");

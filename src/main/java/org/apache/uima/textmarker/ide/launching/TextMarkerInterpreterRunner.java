@@ -218,6 +218,7 @@ public class TextMarkerInterpreterRunner extends AbstractInterpreterRunner imple
         ae.setConfigParameterValue(TextMarkerEngine.CREATE_MATCH_DEBUG_INFO, true);
         ae.setConfigParameterValue(TextMarkerEngine.CREATE_PROFILING_INFO, true);
         ae.setConfigParameterValue(TextMarkerEngine.CREATE_STATISTIC_INFO, true);
+        ae.setConfigParameterValue(TextMarkerEngine.CREATE_CREATED_BY_INFO, true);
         ae.reconfigure();
       }
     } catch (Exception e) {
