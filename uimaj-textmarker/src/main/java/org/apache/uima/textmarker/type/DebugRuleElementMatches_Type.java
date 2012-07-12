@@ -14,7 +14,7 @@ import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
 
 /** 
- * Updated by JCasGen Wed Jan 11 14:42:26 CET 2012
+ * Updated by JCasGen Thu Jul 12 10:42:33 CEST 2012
  * @generated */
 public class DebugRuleElementMatches_Type extends TOP_Type {
   /** @generated */

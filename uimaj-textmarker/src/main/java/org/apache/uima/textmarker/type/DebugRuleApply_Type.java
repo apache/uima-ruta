@@ -13,7 +13,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
 
 /** 
- * Updated by JCasGen Wed Jan 11 14:42:26 CET 2012
+ * Updated by JCasGen Thu Jul 12 10:42:33 CEST 2012
  * @generated */
 public class DebugRuleApply_Type extends DebugScriptApply_Type {
   /** @generated */
@@ -112,6 +112,42 @@ public class DebugRuleApply_Type extends DebugScriptApply_Type {
     ll_cas.ll_setRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_rules), i, v);
   }
  
+ 
+  /** @generated */
+  final Feature casFeat_id;
+  /** @generated */
+  final int     casFeatCode_id;
+  /** @generated */ 
+  public int getId(int addr) {
+        if (featOkTst && casFeat_id == null)
+      jcas.throwFeatMissing("id", "org.apache.uima.textmarker.type.DebugRuleApply");
+    return ll_cas.ll_getIntValue(addr, casFeatCode_id);
+  }
+  /** @generated */    
+  public void setId(int addr, int v) {
+        if (featOkTst && casFeat_id == null)
+      jcas.throwFeatMissing("id", "org.apache.uima.textmarker.type.DebugRuleApply");
+    ll_cas.ll_setIntValue(addr, casFeatCode_id, v);}
+    
+  
+ 
+  /** @generated */
+  final Feature casFeat_script;
+  /** @generated */
+  final int     casFeatCode_script;
+  /** @generated */ 
+  public String getScript(int addr) {
+        if (featOkTst && casFeat_script == null)
+      jcas.throwFeatMissing("script", "org.apache.uima.textmarker.type.DebugRuleApply");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_script);
+  }
+  /** @generated */    
+  public void setScript(int addr, String v) {
+        if (featOkTst && casFeat_script == null)
+      jcas.throwFeatMissing("script", "org.apache.uima.textmarker.type.DebugRuleApply");
+    ll_cas.ll_setStringValue(addr, casFeatCode_script, v);}
+    
+  
 
 
 
@@ -132,6 +168,14 @@ public class DebugRuleApply_Type extends DebugScriptApply_Type {
  
     casFeat_rules = jcas.getRequiredFeatureDE(casType, "rules", "uima.cas.FSArray", featOkTst);
     casFeatCode_rules  = (null == casFeat_rules) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_rules).getCode();
+
+ 
+    casFeat_id = jcas.getRequiredFeatureDE(casType, "id", "uima.cas.Integer", featOkTst);
+    casFeatCode_id  = (null == casFeat_id) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_id).getCode();
+
+ 
+    casFeat_script = jcas.getRequiredFeatureDE(casType, "script", "uima.cas.String", featOkTst);
+    casFeatCode_script  = (null == casFeat_script) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_script).getCode();
 
   }
 }

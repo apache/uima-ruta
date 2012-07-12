@@ -23,9 +23,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.ScriptApply;
 import org.apache.uima.textmarker.TextMarkerElement;
 import org.apache.uima.textmarker.TextMarkerStream;
+import org.apache.uima.textmarker.rule.RuleMatch;
 
 
 public class TimeProfilerVisitor implements TextMarkerInferenceVisitor {
@@ -53,6 +55,9 @@ public class TimeProfilerVisitor implements TextMarkerInferenceVisitor {
 
   public Map<TextMarkerElement, Long> getTimeInfo() {
     return timeInfo;
+  }
+
+  public void annotationAdded(AnnotationFS annotation, RuleMatch creator) {
   }
 
 }

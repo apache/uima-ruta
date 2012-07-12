@@ -10,8 +10,8 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 /** 
- * Updated by JCasGen Wed Jan 11 14:42:26 CET 2012
- * XML source: D:/work/workspace-uima3/uimaj-ep-textmarker-engine/src/main/java/org/apache/uima/textmarker/engine/BasicTypeSystem.xml
+ * Updated by JCasGen Thu Jul 12 10:42:33 CEST 2012
+ * XML source: D:/work/workspace-uima6/uimaj-textmarker/src/main/java/org/apache/uima/textmarker/engine/InternalTypeSystem.xml
  * @generated */
 public class DebugRuleApply extends DebugScriptApply {
   /** @generated
@@ -27,7 +27,7 @@ public class DebugRuleApply extends DebugScriptApply {
  
   /** Never called.  Disable default constructor
    * @generated */
-  protected DebugRuleApply() {}
+  protected DebugRuleApply() {/* intentionally empty block */}
     
   /** Internal - constructor used by generator 
    * @generated */
@@ -126,6 +126,42 @@ public class DebugRuleApply extends DebugScriptApply {
       jcasType.jcas.throwFeatMissing("rules", "org.apache.uima.textmarker.type.DebugRuleApply");
     jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((DebugRuleApply_Type)jcasType).casFeatCode_rules), i);
     jcasType.ll_cas.ll_setRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((DebugRuleApply_Type)jcasType).casFeatCode_rules), i, jcasType.ll_cas.ll_getFSRef(v));}
+   
+    
+  //*--------------*
+  //* Feature: id
+
+  /** getter for id - gets 
+   * @generated */
+  public int getId() {
+    if (DebugRuleApply_Type.featOkTst && ((DebugRuleApply_Type)jcasType).casFeat_id == null)
+      jcasType.jcas.throwFeatMissing("id", "org.apache.uima.textmarker.type.DebugRuleApply");
+    return jcasType.ll_cas.ll_getIntValue(addr, ((DebugRuleApply_Type)jcasType).casFeatCode_id);}
+    
+  /** setter for id - sets  
+   * @generated */
+  public void setId(int v) {
+    if (DebugRuleApply_Type.featOkTst && ((DebugRuleApply_Type)jcasType).casFeat_id == null)
+      jcasType.jcas.throwFeatMissing("id", "org.apache.uima.textmarker.type.DebugRuleApply");
+    jcasType.ll_cas.ll_setIntValue(addr, ((DebugRuleApply_Type)jcasType).casFeatCode_id, v);}    
+   
+    
+  //*--------------*
+  //* Feature: script
+
+  /** getter for script - gets 
+   * @generated */
+  public String getScript() {
+    if (DebugRuleApply_Type.featOkTst && ((DebugRuleApply_Type)jcasType).casFeat_script == null)
+      jcasType.jcas.throwFeatMissing("script", "org.apache.uima.textmarker.type.DebugRuleApply");
+    return jcasType.ll_cas.ll_getStringValue(addr, ((DebugRuleApply_Type)jcasType).casFeatCode_script);}
+    
+  /** setter for script - sets  
+   * @generated */
+  public void setScript(String v) {
+    if (DebugRuleApply_Type.featOkTst && ((DebugRuleApply_Type)jcasType).casFeat_script == null)
+      jcasType.jcas.throwFeatMissing("script", "org.apache.uima.textmarker.type.DebugRuleApply");
+    jcasType.ll_cas.ll_setStringValue(addr, ((DebugRuleApply_Type)jcasType).casFeatCode_script, v);}    
   }
 
     

@@ -45,8 +45,11 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.textmarker.rule.RuleElementMatch;
+import org.apache.uima.textmarker.rule.RuleMatch;
 import org.apache.uima.textmarker.type.TextMarkerAnnotation;
 import org.apache.uima.textmarker.type.TextMarkerBasic;
+import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.hamcrest.CoreMatchers;
 
 public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
 
@@ -80,13 +83,16 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
 
   private boolean lowMemoryProfile;
 
+  private InferenceCrowd crowd;
+
   protected TextMarkerStream(CAS cas, FSIterator<AnnotationFS> current, Type basicType,
-          FilterManager filter, boolean lowMemoryProfile) {
+          FilterManager filter, boolean lowMemoryProfile, InferenceCrowd crowd) {
     super();
     this.cas = cas;
     this.filter = filter;
     this.basicType = basicType;
     this.lowMemoryProfile = lowMemoryProfile;
+    this.crowd = crowd;
     AnnotationFS additionalWindow = filter.getWindowAnnotation();
     updateIterators(cas, basicType, filter, additionalWindow);
     // really an if? sub it of basic should fix this
@@ -130,8 +136,8 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     currentIt = filter.createFilteredIterator(cas, basicType);
   }
 
-  public TextMarkerStream(CAS cas, Type basicType, FilterManager filter, boolean lowMemoryProfile) {
-    this(cas, null, basicType, filter, lowMemoryProfile);
+  public TextMarkerStream(CAS cas, Type basicType, FilterManager filter, boolean lowMemoryProfile, InferenceCrowd crowd) {
+    this(cas, null, basicType, filter, lowMemoryProfile, crowd);
   }
 
   public void initalizeBasics() {
@@ -156,17 +162,17 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     }
     for (AnnotationFS a : annotationIndex) {
       if (!a.getType().equals(basicType)) {
-        addAnnotation(a, false);
+        addAnnotation(a, false, null);
       }
     }
     updateIterators(documentAnnotation);
   }
 
-  public void addAnnotation(AnnotationFS annotation) {
-    addAnnotation(annotation, false);
+  public void addAnnotation(AnnotationFS annotation, RuleMatch creator) {
+    addAnnotation(annotation, false, creator);
   }
 
-  public void addAnnotation(AnnotationFS annotation, boolean update) {
+  public void addAnnotation(AnnotationFS annotation, boolean update, RuleMatch creator) {
     Type type = annotation.getType();
     Type parent = type;
     boolean modified = checkSpan(annotation);
@@ -181,6 +187,7 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     for (TextMarkerBasic basic : basicAnnotationsInWindow) {
       basic.addPartOf(type);
     }
+    crowd.annotationAdded(annotation, creator);
   }
 
   private boolean checkSpan(AnnotationFS annotation) {
@@ -256,12 +263,12 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     FilterManager filterManager = new FilterManager(filter.getDefaultFilterTypes(),
             filter.getCurrentFilterTypes(), filter.getCurrentRetainTypes(), windowAnnotation,
             windowType, cas);
-    TextMarkerStream stream = new TextMarkerStream(cas, basicIt, basicType, filterManager, lowMemoryProfile);
+    TextMarkerStream stream = new TextMarkerStream(cas, basicIt, basicType, filterManager, lowMemoryProfile, crowd);
     return stream;
   }
 
   public FSIterator<AnnotationFS> copy() {
-    return new TextMarkerStream(cas, currentIt.copy(), basicType, filter, lowMemoryProfile);
+    return new TextMarkerStream(cas, currentIt.copy(), basicType, filter, lowMemoryProfile, crowd);
   }
 
   public AnnotationFS get() throws NoSuchElementException {
@@ -629,7 +636,7 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
 
   public TextMarkerStream getCompleteStream() {
     FilterManager defaultFilter = new FilterManager(filter.getDefaultFilterTypes(), getCas());
-    return new TextMarkerStream(getCas(), basicIt, basicType, defaultFilter, lowMemoryProfile);
+    return new TextMarkerStream(getCas(), basicIt, basicType, defaultFilter, lowMemoryProfile, crowd);
   }
 
   public int getHistogram(Type type) {

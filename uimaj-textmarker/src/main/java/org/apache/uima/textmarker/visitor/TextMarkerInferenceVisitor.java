@@ -21,9 +21,11 @@ package org.apache.uima.textmarker.visitor;
 
 import java.util.List;
 
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.ScriptApply;
 import org.apache.uima.textmarker.TextMarkerElement;
 import org.apache.uima.textmarker.TextMarkerStream;
+import org.apache.uima.textmarker.rule.RuleMatch;
 
 
 public interface TextMarkerInferenceVisitor {
@@ -34,4 +36,6 @@ public interface TextMarkerInferenceVisitor {
 
   void finished(TextMarkerStream stream, List<TextMarkerInferenceVisitor> visitors);
 
+  void annotationAdded(AnnotationFS annotation, RuleMatch creator);
+  
 }

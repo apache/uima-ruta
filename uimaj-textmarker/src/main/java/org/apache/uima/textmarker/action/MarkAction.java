@@ -55,7 +55,7 @@ public class MarkAction extends AbstractMarkAction {
         return;
       }
       if (score == null) {
-        createAnnotation(matchedAnnotation, element, stream);
+        createAnnotation(matchedAnnotation, element, stream, match);
       } else {
         double deltaScore = score.getDoubleValue(element.getParent());
         updateHeuristicAnnotation(match, element, stream, matchedAnnotation, deltaScore);
@@ -81,7 +81,7 @@ public class MarkAction extends AbstractMarkAction {
     if (annotationsInWindow.isEmpty()) {
       heuristicAnnotation.addToIndexes();
       newAnnotation.addToIndexes();
-      stream.addAnnotation(newAnnotation);
+      stream.addAnnotation(newAnnotation, match);
     } else {
       TextMarkerAnnotation tma = stream.getCorrectTMA(annotationsInWindow, heuristicAnnotation);
       if (tma != null) {
@@ -92,7 +92,7 @@ public class MarkAction extends AbstractMarkAction {
       } else {
         heuristicAnnotation.addToIndexes();
         newAnnotation.addToIndexes();
-        stream.addAnnotation(newAnnotation);
+        stream.addAnnotation(newAnnotation, match);
       }
     }
 

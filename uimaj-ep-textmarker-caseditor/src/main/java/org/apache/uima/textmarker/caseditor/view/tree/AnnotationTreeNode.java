@@ -19,9 +19,11 @@
 
 package org.apache.uima.textmarker.caseditor.view.tree;
 
+import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.eclipse.core.runtime.IAdaptable;
 
-public class AnnotationTreeNode extends FSTreeNode implements IAnnotationNode {
+public class AnnotationTreeNode extends FSTreeNode implements IAnnotationNode, IAdaptable {
 
   public AnnotationTreeNode(AnnotationFS annotation) {
     super(annotation);
@@ -44,7 +46,7 @@ public class AnnotationTreeNode extends FSTreeNode implements IAnnotationNode {
 
     if (FSTreeNode.class.equals(adapter)) {
       return this;
-    } else if (AnnotationFS.class.equals(adapter)) {
+    } else if (AnnotationFS.class.equals(adapter) || FeatureStructure.class.equals(adapter)) {
       return fs;
 
     }

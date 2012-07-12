@@ -554,6 +554,14 @@ under the License.
             id="org.apache.uima.textmarker.explain.rulelist"
             name="Rule List">
       </view>
+      <view
+            category="org.apache.uima.textmarker.ide.ui"
+            class="org.apache.uima.textmarker.explain.createdBy.CreatedByView"
+            icon="icons/font_add.png"
+            id="org.apache.uima.textmarker.explain.createdBy"
+            name="Created By"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.apache.uima.caseditor.ide.searchstrategy">

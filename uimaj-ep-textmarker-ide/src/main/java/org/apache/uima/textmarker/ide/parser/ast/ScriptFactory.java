@@ -19,6 +19,7 @@
 
 package org.apache.uima.textmarker.ide.parser.ast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.antlr.runtime.Token;
@@ -29,13 +30,26 @@ import org.eclipse.dltk.ast.statements.Statement;
 
 public class ScriptFactory extends AbstractFactory {
 
-  public static TextMarkerRule createRule(List<Expression> elements) {
-    return new TextMarkerRule(elements);
+  private int idCounter;
+
+  public TextMarkerRule createRule(TextMarkerRuleElement element) {
+    List<Expression> elements = new ArrayList<Expression>();
+    elements.add(element);
+    return createRule(elements, null);
   }
 
-  public static ComposedRuleElement createComposedRuleElement(List<Expression> res,
-          List<Expression> q, List<TextMarkerCondition> c, List<TextMarkerAction> a,
-          boolean disjunctive, TextMarkerBlock env) {
+  public TextMarkerRule createRule(List<Expression> elements, Token s) {
+    TextMarkerRule rule = new TextMarkerRule(elements, idCounter++);
+    if (s != null) {
+      int[] bounds = getBounds(s);
+      rule.setEnd(bounds[1]);
+    }
+    return rule;
+  }
+
+  public ComposedRuleElement createComposedRuleElement(List<Expression> res, List<Expression> q,
+          List<TextMarkerCondition> c, List<TextMarkerAction> a, boolean disjunctive,
+          TextMarkerBlock env, Token... tokens) {
     int bounds[] = getSurroundingBounds((ASTNode) null, res);
     // taking care of null statements - errors should have been recognized
     // in parser
@@ -57,10 +71,20 @@ public class ScriptFactory extends AbstractFactory {
       bounds[1] = Math.max(bounds[1], a.get(a.size() - 1).sourceEnd());
     }
 
+    if (tokens != null && tokens.length > 0) {
+      bounds[0] = Math.min(bounds[0], getBounds(tokens[0])[0]);
+    }
+    if (tokens != null && tokens.length == 2 && tokens[1] != null) {
+      bounds[1] = Math.max(bounds[1], getBounds(tokens[1])[1]);
+    }
+    if (tokens != null && tokens.length == 3 && tokens[2] != null) {
+      bounds[1] = Math.max(bounds[1], getBounds(tokens[2])[1]);
+    }
+
     return new ComposedRuleElement(bounds[0], bounds[1], res, q, c, a, disjunctive);
   }
 
-  public static TextMarkerRuleElement createRuleElement(Expression head,
+  public TextMarkerRuleElement createRuleElement(Expression head,
           List<Expression> quantifierPartExpressions, List<TextMarkerCondition> conditions,
           List<TextMarkerAction> actions, Token end) {
     int bounds[] = getSurroundingBounds(head, conditions, actions);
@@ -94,10 +118,10 @@ public class ScriptFactory extends AbstractFactory {
    * @param packageString
    * @return
    */
-  public static TextMarkerScriptBlock createScriptBlock(int declStart, int declEnd, int nameStart,
+  public TextMarkerScriptBlock createScriptBlock(int declStart, int declEnd, int nameStart,
           int nameEnd, String string, List<TextMarkerRuleElement> res, Block block,
           String packageString) {
-    // UNUSED parameter res unused
+    createRule(new ArrayList<Expression>(), null);
     return new TextMarkerScriptBlock(string, packageString, nameStart, nameEnd, declStart, declEnd);
   }
 
@@ -110,8 +134,7 @@ public class ScriptFactory extends AbstractFactory {
    * @param textMarkerBlock
    * @return
    */
-  public static TextMarkerBlock createScriptBlock(Token id, Token type,
-          TextMarkerBlock textMarkerBlock) {
+  public TextMarkerBlock createScriptBlock(Token id, Token type, TextMarkerBlock textMarkerBlock) {
     int[] bounds = getBounds(type, id);
     int[] nameBounds = getBounds(id);
     if (textMarkerBlock == null) {
@@ -125,7 +148,7 @@ public class ScriptFactory extends AbstractFactory {
     }
   }
 
-  public static void finalizeScriptBlock(TextMarkerBlock block, Token rc, TextMarkerRuleElement re,
+  public void finalizeScriptBlock(TextMarkerBlock block, Token rc, TextMarkerRule rule,
           List<Statement> body) {
     // taking care of null statements - errors should have been recognized
     // in parser
@@ -138,14 +161,14 @@ public class ScriptFactory extends AbstractFactory {
     }
     Block inner = new Block(innerStart, innerEnd, body);
     block.acceptBody(inner, false);
-    block.setRuleElement(re);
-    block.setEnd(rc != null ? getBounds(rc)[1] : re.sourceEnd());
+    block.setRule(rule);
+    block.setEnd(rc != null ? getBounds(rc)[1] : rule.sourceEnd());
   }
 
   /**
    * @param body
    */
-  private static void filterNullObjects(List<?> body) {
+  private void filterNullObjects(List<?> body) {
     if (body == null) {
       return;
     }

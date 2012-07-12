@@ -47,7 +47,7 @@ public class ExpandAction extends MarkAction {
         if (matchedAnnotation.getBegin() >= annotationFS.getBegin()
                 && matchedAnnotation.getEnd() <= annotationFS.getEnd()) {
           stream.removeAnnotation(annotationFS, annotationFS.getType());
-          createAnnotation(matchedAnnotation, element, stream);
+          createAnnotation(matchedAnnotation, element, stream, match);
         }
       }
     }

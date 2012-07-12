@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.BlockApply;
 import org.apache.uima.textmarker.ScriptApply;
 import org.apache.uima.textmarker.TextMarkerBlock;
@@ -33,6 +34,7 @@ import org.apache.uima.textmarker.TextMarkerModule;
 import org.apache.uima.textmarker.TextMarkerStatement;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.rule.RuleApply;
+import org.apache.uima.textmarker.rule.RuleMatch;
 import org.apache.uima.textmarker.rule.TextMarkerRule;
 import org.apache.uima.textmarker.type.DebugScriptApply;
 import org.apache.uima.textmarker.verbalize.TextMarkerVerbalizer;
@@ -182,6 +184,10 @@ public class DebugInfoCollectorVisitor implements TextMarkerInferenceVisitor {
       }
     }
     return null;
+  }
+
+  public void annotationAdded(AnnotationFS annotation, RuleMatch creator) {
+    
   }
 
 }

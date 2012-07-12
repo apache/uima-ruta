@@ -27,6 +27,7 @@ import java.util.Map;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.DoubleArray;
 import org.apache.uima.jcas.cas.IntegerArray;
@@ -36,6 +37,7 @@ import org.apache.uima.textmarker.TextMarkerElement;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
 import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
+import org.apache.uima.textmarker.rule.RuleMatch;
 import org.apache.uima.textmarker.type.Statistics;
 import org.apache.uima.textmarker.utils.UIMAUtils;
 import org.apache.uima.textmarker.verbalize.TextMarkerVerbalizer;
@@ -194,6 +196,9 @@ public class StatisticsVisitor implements TextMarkerInferenceVisitor {
 
   public Map<String, Integer> getActionAmount() {
     return actionAmount;
+  }
+
+  public void annotationAdded(AnnotationFS annotation, RuleMatch creator) {
   }
 
 }

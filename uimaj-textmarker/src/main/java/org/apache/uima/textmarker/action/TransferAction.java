@@ -52,7 +52,7 @@ public class TransferAction extends TypeSensitiveAction {
           FeatureStructure createFS = cas.createFS(t);
           copyFeatures(annotationFS, createFS, cas);
           if (createFS instanceof AnnotationFS) {
-            stream.addAnnotation((AnnotationFS) createFS);
+            stream.addAnnotation((AnnotationFS) createFS, match);
           }
           cas.addFsToIndexes(createFS);
         }

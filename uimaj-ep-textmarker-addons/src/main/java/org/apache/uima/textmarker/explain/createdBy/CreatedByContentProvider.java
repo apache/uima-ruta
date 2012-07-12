@@ -17,26 +17,35 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.ide.parser.ast;
+package org.apache.uima.textmarker.explain.createdBy;
 
-import java.util.List;
+import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.Viewer;
 
-import org.eclipse.dltk.ast.expressions.Expression;
+public class CreatedByContentProvider implements ITreeContentProvider {
 
-public class TextMarkerRule extends TextMarkerStatement {
+  public void dispose() {
 
-  private final int id;
-
-  public TextMarkerRule(List<Expression> expressions, int id) {
-    super(expressions);
-    this.id = id;
   }
 
-  public String toString() {
-    return this.getClass().getSimpleName() + " : " + super.toString();
+  public void inputChanged(Viewer arg0, Object arg1, Object arg2) {
+
   }
 
-  public int getId() {
-    return id;
+  public Object[] getChildren(Object arg0) {
+    return new Object[0];
   }
+
+  public Object[] getElements(Object arg0) {
+    return new Object[]{arg0};
+  }
+
+  public Object getParent(Object arg0) {
+    return null;
+  }
+
+  public boolean hasChildren(Object arg0) {
+    return false;
+  }
+
 }

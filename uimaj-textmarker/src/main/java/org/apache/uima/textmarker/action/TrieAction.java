@@ -90,7 +90,7 @@ public class TrieAction extends AbstractTextMarkerAction {
 
     if (found != null) {
       for (AnnotationFS annotation : found) {
-        stream.addAnnotation(annotation);
+        stream.addAnnotation(annotation, match);
         stream.getCas().addFsToIndexes(annotation);
       }
     }

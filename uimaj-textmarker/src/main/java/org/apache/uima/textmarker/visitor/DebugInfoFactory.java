@@ -40,6 +40,7 @@ import org.apache.uima.textmarker.rule.RuleApply;
 import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleElementMatch;
 import org.apache.uima.textmarker.rule.RuleMatch;
+import org.apache.uima.textmarker.rule.TextMarkerRule;
 import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.type.DebugBlockApply;
 import org.apache.uima.textmarker.type.DebugEvaluatedCondition;
@@ -179,6 +180,8 @@ public class DebugInfoFactory {
     dra.setElement(verbalizer.verbalize(ruleApply.getElement()));
     dra.setApplied(ruleApply.getApplied());
     dra.setTried(ruleApply.getTried());
+    dra.setId(((TextMarkerRule)ruleApply.getElement()).getId());
+    dra.setScript(ruleApply.getElement().getParent().getScript().getRootBlock().getNamespace());
     dra.setBegin(begin);
     dra.setEnd(end);
     if (timeInfo != null) {

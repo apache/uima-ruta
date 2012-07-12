@@ -11,7 +11,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
 
 /** 
- * Updated by JCasGen Wed Jan 11 14:42:26 CET 2012
+ * Updated by JCasGen Thu Jul 12 10:42:33 CEST 2012
  * @generated */
 public class DebugMatchedRuleMatch_Type extends DebugRuleMatch_Type {
   /** @generated */

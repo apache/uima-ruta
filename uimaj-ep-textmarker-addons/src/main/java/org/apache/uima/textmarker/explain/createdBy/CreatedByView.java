@@ -17,26 +17,29 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.ide.parser.ast;
+package org.apache.uima.textmarker.explain.createdBy;
 
-import java.util.List;
+import org.apache.uima.caseditor.editor.AnnotationEditor;
+import org.apache.uima.caseditor.editor.CasEditorView;
+import org.apache.uima.caseditor.editor.ICasEditor;
+import org.eclipse.ui.part.IPageBookViewPage;
 
-import org.eclipse.dltk.ast.expressions.Expression;
+public class CreatedByView extends CasEditorView {
 
-public class TextMarkerRule extends TextMarkerStatement {
+  public static final String ID = "org.apache.uima.textmarker.explain.createdBy";
 
-  private final int id;
-
-  public TextMarkerRule(List<Expression> expressions, int id) {
-    super(expressions);
-    this.id = id;
+  public CreatedByView() {
+    super("The instance view is currently not available.");
   }
 
-  public String toString() {
-    return this.getClass().getSimpleName() + " : " + super.toString();
+  @Override
+  protected IPageBookViewPage doCreatePage(ICasEditor editor) {
+    IPageBookViewPage result = null;
+    if (editor.getDocument() != null && editor instanceof AnnotationEditor) {
+      CreatedByViewPage page = new CreatedByViewPage((AnnotationEditor) editor);
+      result = page;
+    }
+    return result;
   }
 
-  public int getId() {
-    return id;
-  }
 }

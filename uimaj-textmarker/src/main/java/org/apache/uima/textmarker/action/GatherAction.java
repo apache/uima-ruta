@@ -81,7 +81,7 @@ public class GatherAction extends AbstractStructureAction {
         Annotation a = (Annotation) newFS;
         a.setBegin(matchedAnnotation.getBegin());
         a.setEnd(matchedAnnotation.getEnd());
-        stream.addAnnotation(a);
+        stream.addAnnotation(a, match);
       }
       TOP newStructure = null;
       if (newFS instanceof TOP) {

@@ -10,8 +10,8 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 /** 
- * Updated by JCasGen Wed Jan 11 14:42:26 CET 2012
- * XML source: D:/work/workspace-uima3/uimaj-ep-textmarker-engine/src/main/java/org/apache/uima/textmarker/engine/BasicTypeSystem.xml
+ * Updated by JCasGen Thu Jul 12 10:42:33 CEST 2012
+ * XML source: D:/work/workspace-uima6/uimaj-textmarker/src/main/java/org/apache/uima/textmarker/engine/InternalTypeSystem.xml
  * @generated */
 public class DebugBlockApply extends DebugRuleApply {
   /** @generated
@@ -27,7 +27,7 @@ public class DebugBlockApply extends DebugRuleApply {
  
   /** Never called.  Disable default constructor
    * @generated */
-  protected DebugBlockApply() {}
+  protected DebugBlockApply() {/* intentionally empty block */}
     
   /** Internal - constructor used by generator 
    * @generated */

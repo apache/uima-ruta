@@ -52,7 +52,7 @@ import org.apache.uima.textmarker.rule.quantifier.StarReluctant;
 
 public class TextMarkerScriptFactory {
 
-  private static int idCounter = 0;
+  private int idCounter = 0;
 
   public TextMarkerScriptFactory() {
     super();
@@ -107,7 +107,6 @@ public class TextMarkerScriptFactory {
   }
 
   public TextMarkerRule createRule(List<RuleElement> elements, TextMarkerBlock parent) {
-    // System.out.println("Rule: " + idCounter);
     return new TextMarkerRule(elements, parent, idCounter++);
   }
 

@@ -11,7 +11,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
 
 /** 
- * Updated by JCasGen Wed Jan 11 14:42:26 CET 2012
+ * Updated by JCasGen Thu Jul 12 10:42:34 CEST 2012
  * @generated */
 public class TruePositive_Type extends EvalAnnotation_Type {
   /** @generated */

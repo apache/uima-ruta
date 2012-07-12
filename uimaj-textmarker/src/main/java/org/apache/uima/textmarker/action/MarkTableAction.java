@@ -101,7 +101,7 @@ public class MarkTableAction extends AbstractTextMarkerAction {
         Annotation a = (Annotation) newFS;
         a.setBegin(annotationFS.getBegin());
         a.setEnd(annotationFS.getEnd());
-        stream.addAnnotation(a);
+        stream.addAnnotation(a, match);
       }
       TOP newStructure = null;
       if (newFS instanceof TOP) {

@@ -203,7 +203,7 @@ public class CallAction extends AbstractTextMarkerAction {
         FSIterator<AnnotationFS> iterator = newCAS.getAnnotationIndex(type).iterator();
         while (iterator.isValid()) {
           AnnotationFS each = iterator.get();
-          transform(each, new2oldBegin, new2oldEnd, fsToAdd, stream);
+          transform(each, new2oldBegin, new2oldEnd, fsToAdd, stream, match);
           iterator.moveToNext();
         }
       }
@@ -212,7 +212,7 @@ public class CallAction extends AbstractTextMarkerAction {
 
   private void transform(FeatureStructure each, Map<Integer, Integer> new2oldBegin,
           Map<Integer, Integer> new2oldEnd, Collection<AnnotationFS> fsToAdd,
-          TextMarkerStream stream) {
+          TextMarkerStream stream, RuleMatch match) {
     CAS cas = stream.getCas();
     Type newType = cas.getTypeSystem().getType(each.getType().getName());
     if (newType != null && !fsToAdd.contains(each)
@@ -221,10 +221,10 @@ public class CallAction extends AbstractTextMarkerAction {
 
       FeatureStructure newFS = null;
       if (each instanceof AnnotationFS) {
-        newFS = transformAnnotation((AnnotationFS) each, newType, new2oldBegin, new2oldEnd, stream);
+        newFS = transformAnnotation((AnnotationFS) each, newType, new2oldBegin, new2oldEnd, stream, match);
       } else {
         newFS = cas.createFS(newType);
-        fillFeatures(each, newFS, newFS.getType(), new2oldBegin, new2oldEnd, stream);
+        fillFeatures(each, newFS, newFS.getType(), new2oldBegin, new2oldEnd, stream, match);
       }
       cas.addFsToIndexes(newFS);
     }
@@ -232,12 +232,12 @@ public class CallAction extends AbstractTextMarkerAction {
 
   private FeatureStructure transformAnnotation(AnnotationFS annotation, Type newType,
           Map<Integer, Integer> new2oldBegin, Map<Integer, Integer> new2oldEnd,
-          TextMarkerStream stream) {
+          TextMarkerStream stream, RuleMatch match) {
     CAS cas = stream.getCas();
     Integer beginOld = annotation.getBegin();
     Integer endOld = annotation.getEnd();
     FeatureStructure newFS = cas.createFS(newType);
-    fillFeatures(annotation, newFS, newType, new2oldBegin, new2oldEnd, stream);
+    fillFeatures(annotation, newFS, newType, new2oldBegin, new2oldEnd, stream, match);
 
     Integer beginNew = new2oldBegin.get(beginOld);
     Integer endNew = new2oldEnd.get(endOld);
@@ -271,27 +271,27 @@ public class CallAction extends AbstractTextMarkerAction {
       Annotation newA = (Annotation) newFS;
       newA.setBegin(beginNew);
       newA.setEnd(endNew);
-      stream.addAnnotation(newA);
+      stream.addAnnotation(newA, match);
     }
     return newFS;
   }
 
   private void fillFeatures(FeatureStructure oldFS, FeatureStructure newFS, Type newType,
           Map<Integer, Integer> new2oldBegin, Map<Integer, Integer> new2oldEnd,
-          TextMarkerStream stream) {
+          TextMarkerStream stream, RuleMatch match) {
     for (Object obj : newType.getFeatures()) {
       Feature feature = (Feature) obj;
       String sn = feature.getShortName();
       if (!"sofa".equals(sn) && !"begin".equals(sn) && !"end".equals(sn)) {
         Feature oldFeature = oldFS.getType().getFeatureByBaseName(sn);
-        fillFeature(oldFS, oldFeature, newFS, feature, new2oldBegin, new2oldEnd, stream);
+        fillFeature(oldFS, oldFeature, newFS, feature, new2oldBegin, new2oldEnd, stream, match);
       }
     }
   }
 
   private void fillFeature(FeatureStructure oldFS, Feature oldFeature, FeatureStructure newFS,
           Feature feature, Map<Integer, Integer> new2oldBegin, Map<Integer, Integer> new2oldEnd,
-          TextMarkerStream stream) {
+          TextMarkerStream stream, RuleMatch match) {
     CAS cas = stream.getCas();
     Type oldRange = oldFeature.getRange();
     if (oldRange.isPrimitive()) {
@@ -318,10 +318,10 @@ public class CallAction extends AbstractTextMarkerAction {
       }
       if (newFeatureFS instanceof AnnotationFS) {
         transformAnnotation((AnnotationFS) newFeatureFS, newFeatureFS.getType(), new2oldBegin,
-                new2oldEnd, stream);
+                new2oldEnd, stream, match);
       } else {
         fillFeatures(oldFeatureFS, newFeatureFS, newFeatureFS.getType(), new2oldBegin, new2oldEnd,
-                stream);
+                stream, match);
       }
     }
   }

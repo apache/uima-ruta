@@ -98,7 +98,7 @@ public class ExecAction extends CallAction {
             cas.removeFsFromIndexes(each);
             stream.removeAnnotation(entry.getKey(), each.getType());
             cas.addFsToIndexes(each);
-            stream.addAnnotation(each);
+            stream.addAnnotation(each, match);
           }
         }
       }

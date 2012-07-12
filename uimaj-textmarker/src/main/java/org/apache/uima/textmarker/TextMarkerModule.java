@@ -126,4 +126,8 @@ public class TextMarkerModule extends TextMarkerElement {
     return engines;
   }
 
+  public TextMarkerBlock getRootBlock() {
+    return rootBlock;
+  }
+
 }

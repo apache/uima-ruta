@@ -66,6 +66,7 @@ import org.apache.uima.textmarker.parser.TextMarkerLexer;
 import org.apache.uima.textmarker.parser.TextMarkerParser;
 import org.apache.uima.textmarker.seed.TextMarkerAnnotationSeeder;
 import org.apache.uima.textmarker.verbalize.TextMarkerVerbalizer;
+import org.apache.uima.textmarker.visitor.CreatedByVisitor;
 import org.apache.uima.textmarker.visitor.DebugInfoCollectorVisitor;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 import org.apache.uima.textmarker.visitor.StatisticsVisitor;
@@ -105,6 +106,8 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
   public static final String CREATE_PROFILING_INFO = "profile";
 
   public static final String CREATE_STATISTIC_INFO = "statistics";
+
+  public static final String CREATE_CREATED_BY_INFO = "createdBy";
 
   public static final String CREATE_MATCH_DEBUG_INFO = "debugWithMatches";
 
@@ -172,6 +175,8 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
 
   private Boolean lowMemoryProfile;
 
+  private Boolean createCreatedByInfo;
+
   private boolean initialized = false;
 
   private List<Type> seedTypes;
@@ -197,6 +202,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     createDebugOnlyFor = (String[]) aContext.getConfigParameterValue(CREATE_DEBUG_INFO_ONLY_FOR);
     createProfilingInfo = (Boolean) aContext.getConfigParameterValue(CREATE_PROFILING_INFO);
     createStatisticInfo = (Boolean) aContext.getConfigParameterValue(CREATE_STATISTIC_INFO);
+    createCreatedByInfo = (Boolean) aContext.getConfigParameterValue(CREATE_CREATED_BY_INFO);
     withMatches = (Boolean) aContext.getConfigParameterValue(CREATE_MATCH_DEBUG_INFO);
 
     resourcePaths = (String[]) aContext.getConfigParameterValue(RESOURCE_PATHS);
@@ -211,6 +217,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     createDebugOnlyFor = createDebugOnlyFor == null ? new String[0] : createDebugOnlyFor;
     createProfilingInfo = createProfilingInfo == null ? false : createProfilingInfo;
     createStatisticInfo = createStatisticInfo == null ? false : createStatisticInfo;
+    createCreatedByInfo = createCreatedByInfo == null ? false : createCreatedByInfo;
     withMatches = withMatches == null ? true : withMatches;
 
     scriptEncoding = scriptEncoding == null ? "UTF-8" : scriptEncoding;
@@ -254,9 +261,9 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
       initializeTypes(script, cas);
       initialized = true;
     }
-    TextMarkerStream stream = initializeStream(cas);
-    stream.setDynamicAnchoring(dynamicAnchoring);
     InferenceCrowd crowd = initializeCrowd();
+    TextMarkerStream stream = initializeStream(cas, crowd);
+    stream.setDynamicAnchoring(dynamicAnchoring);
     try {
       script.apply(stream, crowd);
     } catch (Throwable e) {
@@ -372,10 +379,13 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     if (createStatisticInfo) {
       visitors.add(new StatisticsVisitor(verbalizer));
     }
+    if (createCreatedByInfo) {
+      visitors.add(new CreatedByVisitor(verbalizer));
+    }
     return new InferenceCrowd(visitors);
   }
 
-  private TextMarkerStream initializeStream(CAS cas) throws AnalysisEngineProcessException {
+  private TextMarkerStream initializeStream(CAS cas, InferenceCrowd crowd) throws AnalysisEngineProcessException {
     Collection<Type> filterTypes = new ArrayList<Type>();
     TypeSystem typeSystem = cas.getTypeSystem();
     for (String each : defaultFilteredTypes) {
@@ -387,7 +397,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     FilterManager filter = new FilterManager(filterTypes, cas);
     Type basicType = typeSystem.getType(BASIC_TYPE);
     seedTypes = seedAnnotations(cas);
-    TextMarkerStream stream = new TextMarkerStream(cas, basicType, filter, lowMemoryProfile);
+    TextMarkerStream stream = new TextMarkerStream(cas, basicType, filter, lowMemoryProfile, crowd);
 
     stream.initalizeBasics();
     return stream;
@@ -421,7 +431,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
   }
 
   private void initializeScript() throws AnalysisEngineProcessException {
-    if(mainScript == null) {
+    if (mainScript == null) {
       return;
     }
     String scriptLocation = locate(mainScript, scriptPaths, ".tm");
@@ -512,7 +522,6 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     }
     script.setEngineDependencies(additionalEngines);
   }
-
 
   private void configureEngine(AnalysisEngine engine) throws ResourceConfigurationException {
     ConfigurationParameterDeclarations configurationParameterDeclarations = engine
@@ -667,8 +676,8 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     return script;
   }
 
-  private TextMarkerModule loadScriptIS(String scriptLocation,
-          TypeSystemDescription localTSD) throws IOException, RecognitionException {
+  private TextMarkerModule loadScriptIS(String scriptLocation, TypeSystemDescription localTSD)
+          throws IOException, RecognitionException {
     InputStream scriptInputStream = getClass().getClassLoader().getResourceAsStream(scriptLocation);
     CharStream st = new ANTLRInputStream(scriptInputStream, scriptEncoding);
     TextMarkerLexer lexer = new TextMarkerLexer(st);
@@ -691,6 +700,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
   public TextMarkerEngineLoader getEngineLoader() {
     return engineLoader;
   }
+
   private String collectionToString(Collection collection) {
     StringBuilder collectionSB = new StringBuilder();
     collectionSB.append("{");

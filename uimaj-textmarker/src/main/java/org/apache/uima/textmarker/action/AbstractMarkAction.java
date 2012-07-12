@@ -29,6 +29,7 @@ import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.rule.RuleElement;
+import org.apache.uima.textmarker.rule.RuleMatch;
 import org.apache.uima.textmarker.type.TextMarkerBasic;
 
 public abstract class AbstractMarkAction extends TypeSensitiveAction {
@@ -38,13 +39,13 @@ public abstract class AbstractMarkAction extends TypeSensitiveAction {
   }
 
   protected void createAnnotation(AnnotationFS matchedAnnotation, RuleElement element,
-          TextMarkerStream stream) {
+          TextMarkerStream stream, RuleMatch match) {
     TextMarkerBasic first = stream.getFirstBasicInWindow(matchedAnnotation);
-    createAnnotation(first, element, stream, matchedAnnotation);
+    createAnnotation(first, element, stream, matchedAnnotation, match);
   }
 
   protected Annotation createAnnotation(TextMarkerBasic anchor, RuleElement element,
-          TextMarkerStream stream, AnnotationFS matchedAnnotation) {
+          TextMarkerStream stream, AnnotationFS matchedAnnotation, RuleMatch match) {
     Type t = type.getType(element.getParent());
     AnnotationFS newAnnotationFS = stream.getCas().createAnnotation(t,
             matchedAnnotation.getBegin(), matchedAnnotation.getEnd());
@@ -55,7 +56,7 @@ public abstract class AbstractMarkAction extends TypeSensitiveAction {
     } else {
       return null;
     }
-    stream.addAnnotation(newAnnotation);
+    stream.addAnnotation(newAnnotation, match);
     return newAnnotation;
   }
 

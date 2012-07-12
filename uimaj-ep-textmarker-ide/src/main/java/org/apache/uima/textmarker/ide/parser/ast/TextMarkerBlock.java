@@ -27,7 +27,7 @@ import org.eclipse.dltk.ast.statements.Statement;
 
 public class TextMarkerBlock extends MethodDeclaration {
 
-  private TextMarkerRuleElement ruleElement;
+  private TextMarkerRule rule;
 
   private String namespace;
 
@@ -47,8 +47,8 @@ public class TextMarkerBlock extends MethodDeclaration {
   @Override
   public void traverse(ASTVisitor visitor) throws Exception {
     if (visitor.visit(this)) {
-      if (ruleElement != null) {
-        ruleElement.traverse(visitor);
+      if (rule != null) {
+        rule.traverse(visitor);
       }
       traverseChildNodes(visitor);
       visitor.endvisit(this);
@@ -59,15 +59,15 @@ public class TextMarkerBlock extends MethodDeclaration {
    * @param ruleElement
    *          the ruleElement to set
    */
-  public void setRuleElement(TextMarkerRuleElement ruleElement) {
-    this.ruleElement = ruleElement;
+  public void setRule(TextMarkerRule rule) {
+    this.rule = rule;
   }
 
   /**
    * @return the ruleElement
    */
-  public TextMarkerRuleElement getRuleElement() {
-    return ruleElement;
+  public TextMarkerRule getRule() {
+    return rule;
   }
 
   public String toString() {

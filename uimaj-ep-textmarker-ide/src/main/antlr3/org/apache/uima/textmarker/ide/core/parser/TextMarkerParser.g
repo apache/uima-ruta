@@ -94,6 +94,7 @@ import org.apache.uima.textmarker.ide.parser.ast.TextMarkerPackageDeclaration;
 	private String module;
 	private String packageString;
 	
+	private ScriptFactory scriptFactory = new ScriptFactory();
 	
 	public List<String> getVariables() {
 		return vars;
@@ -236,7 +237,7 @@ List<Statement> stmts = new ArrayList<Statement>();
 	{
 	String packageName = "org.apache.uima.tm";
 	if(p != null) {packageName = p.getName();}
-	rootBlock = ScriptFactory.createScriptBlock(0,0,0,0,module, null, null, packageName);
+	rootBlock = scriptFactory.createScriptBlock(0,0,0,0,module, null, null, packageName);
 	stmts.add(p);
 	this.module = module;
 	if(p != null) {
@@ -523,7 +524,7 @@ scope {
 	TextMarkerBlock env;
 	}	
 @init{
-TextMarkerRuleElement re = null;
+TextMarkerRule rule = null;
 level++;
 }
 @after {
@@ -535,37 +536,40 @@ level--;
 	LPAREN
 	id = Identifier {addVariable(id.getText(), declareToken.getText());}
 	{
-		block = ScriptFactory.createScriptBlock(id, declareToken, $blockDeclaration[level - 1]::env);
+		block = scriptFactory.createScriptBlock(id, declareToken, $blockDeclaration[level - 1]::env);
 		$blockDeclaration::env = block;
 	}
 	RPAREN
-	re1 = ruleElementWithCA {re = re1;}
-	{ScriptFactory.finalizeScriptBlock(block, rc, re, body);}
+	re1 = ruleElementWithCA
+	{
+	rule = scriptFactory.createRule(re1);
+	scriptFactory.finalizeScriptBlock(block, rc, rule, body);}
 	LCURLY body = statements rc = RCURLY
-	{ScriptFactory.finalizeScriptBlock(block, rc, re, body);}
+	{scriptFactory.finalizeScriptBlock(block, rc, rule, body);}
 	;
 
 	
 ruleElementWithCA returns [TextMarkerRuleElement re = null] 
     :
-    idRef=typeExpression quantifier = quantifierPart? {re = ScriptFactory.createRuleElement(idRef,quantifier,c,a, end);}
+    idRef=typeExpression quantifier = quantifierPart? {re = scriptFactory.createRuleElement(idRef,quantifier,c,a, end);}
         LCURLY c = conditions? (THEN a = actions)? end = RCURLY
-        {re = ScriptFactory.createRuleElement(idRef,quantifier,c,a, end);}
+        {re = scriptFactory.createRuleElement(idRef,quantifier,c,a, end);}
     ;
 
 	
 ruleElementWithoutCA returns [TextMarkerRuleElement re = null] 
     :
     idRef=typeExpression quantifier = quantifierPart? 
-             {re = ScriptFactory.createRuleElement(idRef,quantifier,null,null, null);}
+             {re = scriptFactory.createRuleElement(idRef,quantifier,null,null, null);}
 
     ;
 		
 simpleStatement returns [TextMarkerRule stmt = null]
 	: 
 	elements=ruleElements 
-		{stmt = ScriptFactory.createRule(elements);}
-		SEMI 
+		s = SEMI 
+		{stmt = scriptFactory.createRule(elements, s);}
+		
 	;
 
 ruleElements returns [List<Expression> elements = new ArrayList<Expression>()]
@@ -590,7 +594,7 @@ ruleElementComposed returns [ComposedRuleElement re = null]
 	boolean disjunctive = false;
 }
 	:
-	LPAREN
+	ft = LPAREN
 	 
 	(((ruleElementType | ruleElementLiteral) VBAR)=>  (re11 =ruleElementType| re12 = ruleElementLiteral) 
 	{disjunctive = true; res = new ArrayList<Expression>(); if(re11!=null) res.add(re11);if(re12!=null) res.add(re12);} 
@@ -602,8 +606,8 @@ ruleElementComposed returns [ComposedRuleElement re = null]
 	)*
 	 |(ruleElements)=>res = ruleElements)
 	
-	RPAREN q = quantifierPart? (LCURLY c = conditions? (THEN a = actions)? RCURLY)?
-	{re = ScriptFactory.createComposedRuleElement(res, q, c, a, disjunctive,$blockDeclaration::env);}
+	lt1 = RPAREN q = quantifierPart? (LCURLY c = conditions? (THEN a = actions)? lt2 = RCURLY)?
+	{re = scriptFactory.createComposedRuleElement(res, q, c, a, disjunctive,$blockDeclaration::env, ft, lt1, lt2);}
 	;
 
 ruleElementType returns [TextMarkerRuleElement re = null] 
@@ -626,7 +630,7 @@ List<TextMarkerCondition> dummyConds = new ArrayList<TextMarkerCondition>();
         (THEN a = actions)? end = RCURLY)?
         {
         // TODO handle quantifierPart.
-        re = ScriptFactory.createRuleElement(idRef,quantifier,c,a,end);}
+        re = scriptFactory.createRuleElement(idRef,quantifier,c,a,end);}
         //start, end, "", cp, ap, "", $blockDeclaration::env);}
     ;
 
@@ -640,7 +644,7 @@ ruleElementLiteral returns [TextMarkerRuleElement re = null]
         end = RCURLY)?
         {
         // TODO handle quantifierPart.
-        re = ScriptFactory.createRuleElement(idRef,quantifier,c,a,end);}
+        re = scriptFactory.createRuleElement(idRef,quantifier,c,a,end);}
         //start, end, "", cp, ap, "", $blockDeclaration::env);}
     ;
     

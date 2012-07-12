@@ -349,7 +349,7 @@ public class TestViewPage extends Page implements IPageBookViewPage {
       try {
         file.refreshLocal(IResource.DEPTH_ZERO, new NullProgressMonitor());
       } catch (CoreException e) {
-        e.printStackTrace();
+        TextMarkerAddonsPlugin.error(e);
       }
     }
     try {
@@ -358,7 +358,7 @@ public class TestViewPage extends Page implements IPageBookViewPage {
       page.showView(FalsePositiveView.ID);
       page.showView(FalseNegativeView.ID);
     } catch (PartInitException e) {
-      e.printStackTrace();
+      TextMarkerAddonsPlugin.error(e);
     }
   }
 
