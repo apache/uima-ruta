@@ -42,7 +42,7 @@ public class ExplainPerspective implements IPerspectiveFactory {
 
   public static final String RULE_LIST = "org.apache.uima.textmarker.explain.rulelist";
 
-  public static final String CREATED_BY = "org.apache.uima.caseditor.browser";
+  public static final String CREATED_BY = "org.apache.uima.textmarker.explain.createdBy";
 
   public static final String TYPE_BROWSER = "org.apache.uima.caseditor.browser";
 
