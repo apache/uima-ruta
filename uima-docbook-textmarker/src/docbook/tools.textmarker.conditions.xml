@@ -1,0 +1,1148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
+<!ENTITY imgroot "images/tools/tools.textmarker/" >
+<!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
+%uimaents;
+]>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
+  license agreements. See the NOTICE file distributed with this work for additional 
+  information regarding copyright ownership. The ASF licenses this file to 
+  you under the Apache License, Version 2.0 (the "License"); you may not use 
+  this file except in compliance with the License. You may obtain a copy of 
+  the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+  by applicable law or agreed to in writing, software distributed under the 
+  License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+  OF ANY KIND, either express or implied. See the License for the specific 
+  language governing permissions and limitations under the License. -->
+
+<section id="ugr.tools.tm.language.conditions">
+	<title>Conditions</title>
+
+	<section id="ugr.tools.tm.language.conditions.after">
+		<title>AFTER</title>
+		<para>
+			The AFTER condition evaluates true if the matched annotation
+			starts
+			after the beginning of an arbitrary annotation of the passed
+			type.
+			If a list of types is passed, this has to be true for at least
+			one
+			of them.
+		</para>
+		<section>
+			<title>
+				<emphasis role="bold">Definition:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[AFTER(Type|TypeListExpression)]]></programlisting>
+			</para>
+		</section>
+		<section>
+			<title>
+				<emphasis role="bold">Example:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              CW{AFTER(SW)};
+            ]]></programlisting>
+			</para>
+			<para>
+				Here, the rule matches on a capitalized word if there is any
+				small
+				written word previously.
+			</para>
+		</section>
+	</section>
+
+	<section id="ugr.tools.tm.language.conditions.and">
+		<title>AND</title>
+		<para>
+			The AND condition is a composed condition and evaluates true if
+			all
+			contained conditions evaluate true.
+		</para>
+		<section>
+			<title>
+				<emphasis role="bold">Definition:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              AND(Condition1,...,ConditionN) 
+            ]]></programlisting>
+			</para>
+		</section>
+		<section>
+			<title>
+				<emphasis role="bold">Example:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              Paragraph{AND(PARTOF(Headline),CONTAINS(Keyword))->MARK(ImportantHeadline)};
+            ]]></programlisting>
+			</para>
+			<para>
+				In this example a Paragraph is annotated with an
+				ImportantHeadline
+				annotation if it is part of a Headline and
+				contains
+				a Keyword
+				annotation.
+			</para>
+		</section>
+	</section>
+
+	<section id="ugr.tools.tm.language.conditions.before">
+		<title>BEFORE</title>
+		<para>
+			The BEFORE condition evaluates true if the matched annotation
+			starts
+			before the beginning of an arbitrary annotation of the passed
+			type.
+			If a list of types is passed, this has to be true for at least
+			one
+			of them.
+		</para>
+		<section>
+			<title>
+				<emphasis role="bold">Definition:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              BEFORE(Type|TypeListExpression) 
+            ]]></programlisting>
+			</para>
+		</section>
+		<section>
+			<title>
+				<emphasis role="bold">Example:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              CW{BEFORE(SW)};
+            ]]></programlisting>
+			</para>
+			<para>
+				Here, the rule matches on a capitalized word if there is any
+				small
+				written word afterwards.
+			</para>
+		</section>
+	</section>
+
+	<section id="ugr.tools.tm.language.conditions.contains">
+		<title>CONTAINS</title>
+		<para>
+			The CONTAINS condition evaluates true on a matched annotation
+			if
+			the
+			frequency of the passed type lies within an optionally passed
+			interval. The limits of the passed interval are per default
+			interpreted as absolut numeral values. By passing a further boolean
+			parameter set to true the limits are interpreted as percental
+			values.
+			If no interval parameters are passed at all the condition
+			checks
+			whether the matched annotation contains at least one
+			occurence of the
+			passed type.
+		</para>
+		<section>
+			<title>
+				<emphasis role="bold">Definition:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              CONTAINS(Type(,NumberExpression,NumberExpression(,BooleanExpression)?)?)
+            ]]></programlisting>
+			</para>
+		</section>
+		<section>
+			<title>
+				<emphasis role="bold">Example:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[Paragraph{CONTAINS(Keyword)->MARK(KeywordParagraph)};]]></programlisting>
+			</para>
+			<para>
+				A Pararaph is annotated with a KeywordParagraph annotation if
+				it
+				contains a
+				Keyword annotation.
+			</para>
+			<para>
+				<programlisting><![CDATA[Paragraph{CONTAINS(Keyword,2,4)->MARK(KeywordParagraph)};]]></programlisting>
+			</para>
+			<para>
+				A Pararaph is annotated with a KeywordParagraph annotation if
+				it
+				contains
+				between two and four Keyword annotations.
+			</para>
+			<para>
+				<programlisting><![CDATA[Paragraph{CONTAINS(Keyword,50,100,true)->MARK(KeywordParagraph)};]]></programlisting>
+			</para>
+			<para>
+				A Pararaph is annotated with a KeywordParagraph annotation if it
+				contains between 50% and 100% Keyword annotations. This is
+				calculated based on the tokens of the Paragraph. If the Paragraph
+				contains six basic annatotions (see
+				<xref linkend='ugr.tools.tm.language.seeding' />
+				), two of them are part of one Keyword annotation and one basic
+				annotation is also annotated with a Keyword annotation, then the
+				percantage of the contained Keywords is 50%.
+			</para>
+		</section>
+	</section>
+
+	<section id="ugr.tools.tm.language.conditions.contextcount">
+		<title>CONTEXTCOUNT</title>
+		<para>
+			The CONTEXTCOUNT condition numbers all occurences of the
+			matched
+			type
+			within the context of a passed type's annotation
+			consecutively,
+			thus
+			assigning an index to each occurence.
+			Additionally it stores the
+			index of the matched annotation in a
+			numerical variable if one is
+			passed. The condition evaluates true if
+			the index of the matched
+			annotation is within a passed interval. If
+			no interval is passed,
+			the
+			condition always evaluates true.
+		</para>
+		<section>
+			<title>
+				<emphasis role="bold">Definition:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[ 
+              CONTEXTCOUNT(Type(,NumberExpression,NumberExpression)?(,Variable)?)
+            ]]></programlisting>
+			</para>
+		</section>
+		<section>
+			<title>
+				<emphasis role="bold">Example:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              Keyword{CONTEXTCOUNT(Paragraph,2,3,var)->MARK(SecondOrThirdKeywordInParagraph)};
+            ]]></programlisting>
+			</para>
+			<para>
+				Here, the position of the matched Keyword annotation within a
+				Paragraph
+				annotation is calculated and stored in the variable 'var'.
+				If the
+				counted value lies within the interval [2,3] the matched
+				Keyword is
+				annotated with the SecondOrThirdKeywordInParagraph
+				annotation.
+			</para>
+		</section>
+	</section>
+
+	<section id="ugr.tools.tm.language.conditions.count">
+		<title>COUNT</title>
+		<para>
+			The COUNT condition can be used in two different ways. In the
+			first case (see first definition), it counts the number of
+			annotations of the
+			passed type within the window of the matched
+			annotation and stores
+			the amount in a numerical
+			variable if such a
+			variable is passed. The
+			condition
+			evaluates true
+			if the counted amount
+			is within a specified
+			interval.
+			If no interval
+			is passed, the condition
+			always evaluates
+			true.
+			In the second case (see second definition), it
+			counts the number of occurences of the passed VariableExpression
+			(second
+			parameter) within the passed list (first parameter) and
+			stores
+			the amount in a numerical
+			variable if such a
+			variable is passed.
+			Again
+			the
+			condition
+			evaluates true
+			if the counted amount
+			is within a
+			specified
+			interval.
+			If no interval
+			is passed, the condition
+			always
+			evaluates
+			true.
+		</para>
+		<section>
+			<title>
+				<emphasis role="bold">Definition:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[ 
+              COUNT(Type(,NumberExpression,NumberExpression)?(,NumberVariable)?)
+            ]]></programlisting>
+			</para>
+			<para>
+				<programlisting><![CDATA[ 
+              COUNT(ListExpression,VariableExpression(,NumberExpression,NumberExpression)?(,NumberVariable)?)
+            ]]></programlisting>
+			</para>
+		</section>
+		<section>
+			<title>
+				<emphasis role="bold">Example:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              Paragraph{COUNT(Keyword,1,10,var)->MARK(KeywordParagraph)};
+            ]]></programlisting>
+			</para>
+			<para>
+				Here, the amount of Keyword annotations within a Paragraph is
+				calculated
+				and stored in the variable 'var'. If one to ten Keywords
+				were
+				counted, the Paragraph is marked with a KeywordParagraph
+				annotation.
+			</para>
+			<para>
+				<programlisting><![CDATA[
+              Paragraph{COUNT(list,"author",5,7,var)};
+            ]]></programlisting>
+			</para>
+			<para>
+				Here, the number of occurrences of STRING "author" within the
+				STRINGLIST 'list' is
+				counted and stored in the variable 'var'. If
+				"author" occurs five to seven times within 'list',
+				the condition
+				evaluates true.
+			</para>
+		</section>
+	</section>
+
+	<section id="ugr.tools.tm.language.conditions.currentcount">
+		<title>CURRENTCOUNT</title>
+		<para>
+			The CURRENTCOUNT condition numbers all occurences of the
+			matched
+			type
+			within the whole document consecutively, thus assigning
+			an index
+			to
+			each occurence. Additionally it stores the index of the
+			matched
+			annotation in a numerical variable if one is passed. The
+			condition
+			evaluates true if the index of the matched annotation is
+			within a
+			specified interval. If no interval is passed, the condition
+			always
+			evaluates true.
+		</para>
+		<section>
+			<title>
+				<emphasis role="bold">Definition:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[ 
+              CURRENTCOUNT(Type(,NumberExpression,NumberExpression)?(,Variable)?)
+            ]]></programlisting>
+			</para>
+		</section>
+		<section>
+			<title>
+				<emphasis role="bold">Example:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              Paragraph{CURRENTCOUNT(Keyword,3,3,var)->MARK(ParagraphWithThirdKeyword)};
+            ]]></programlisting>
+			</para>
+			<para>
+				Here, the Paragraph which contains the third Keyword of the
+				whole
+				document is annotated with the ParagraphWithThirdKeyword
+				annotation. The index is stored in the variable 'var'.
+			</para>
+		</section>
+	</section>
+
+	<section id="ugr.tools.tm.language.conditions.endswith">
+		<title>ENDSWITH</title>
+		<para>
+			The ENDSWITH condition evaluates true if an annotation of the
+			given
+			type ends exactly at the same position as the matched
+			annotation. If
+			a list of types is passed, this has to be true for at
+			least one of
+			them.
+		</para>
+		<section>
+			<title>
+				<emphasis role="bold">Definition:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[ 
+              ENDSWITH(Type|TypeListExpression) 
+            ]]></programlisting>
+			</para>
+		</section>
+		<section>
+			<title>
+				<emphasis role="bold">Example:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              Paragraph{ENDSWITH(SW)};
+            ]]></programlisting>
+			</para>
+			<para>
+				Here, the rule matches on a Paragraph annotation if it ends
+				with a small
+				written word.
+			</para>
+		</section>
+	</section>
+
+	<section id="ugr.tools.tm.language.conditions.feature">
+		<title>FEATURE</title>
+		<para>
+			The FEATURE condition compares a feature of the matched
+			annotation with
+			the second argument.
+		</para>
+		<section>
+			<title>
+				<emphasis role="bold">Definition:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[ 
+              FEATURE(StringExpression,Expression) 
+            ]]></programlisting>
+			</para>
+		</section>
+		<section>
+			<title>
+				<emphasis role="bold">Example:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              Document{FEATURE("language",targetLanguage)}
+            ]]></programlisting>
+			</para>
+			<para>
+				This rule matches if the feature named 'language' of the
+				document
+				annotation equals the value of the variable
+				'targetLanguage'.
+			</para>
+		</section>
+	</section>
+
+	<section id="ugr.tools.tm.language.conditions.if">
+		<title>IF</title>
+		<para>
+			The IF condition evaluates true if the contained boolean
+			expression
+			does.
+		</para>
+		<section>
+			<title>
+				<emphasis role="bold">Definition:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[ 
+              IF(BooleanExpression) 
+            ]]></programlisting>
+			</para>
+		</section>
+		<section>
+			<title>
+				<emphasis role="bold">Example:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              Paragraph{IF(keywordAmount > 5)->MARK(KeywordParagraph)};
+            ]]></programlisting>
+			</para>
+			<para>
+				A Paragraph annotation is annotated with a KeywordParagraph
+				annotation if the value of the variable 'keywordAmount' is greater
+				than five.
+			</para>
+		</section>
+	</section>
+
+	<section id="ugr.tools.tm.language.conditions.inlist">
+		<title>INLIST</title>
+		<para>
+			The INLIST condition is fulfilled if the matched annotation is
+			listed
+			in a given word or string list. The (relative) edit distance
+			is
+			currently disabled.
+			<!-- ATTENTION: it seems the edit distance is still disabled? what does 
+				this mean? -->
+		</para>
+		<section>
+			<title>
+				<emphasis role="bold">Definition:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[ 
+              INLIST(WordList(,NumberExpression,(BooleanExpression)?)?) 
+            ]]></programlisting>
+			</para>
+			<para>
+				<programlisting><![CDATA[ 
+              INLIST(StringList(,NumberExpression,(BooleanExpression)?)?) 
+            ]]></programlisting>
+			</para>
+		</section>
+		<section>
+			<title>
+				<emphasis role="bold">Example:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              Keyword{INLIST(specialKeywords.txt)->MARK(SpecialKeyword)};
+            ]]></programlisting>
+			</para>
+			<para>
+				A Keyword is annotated with the type SpecialKeyword if the
+				text
+				of
+				the Keyword annotation is listed in the word list
+				'specialKeywords.txt'.
+			</para>
+		</section>
+	</section>
+
+	<section id="ugr.tools.tm.language.conditions.is">
+		<title>IS</title>
+		<para>
+			The IS condition evaluates true if there is an annotation of
+			the
+			given
+			type with the same beginning and ending offsets as the
+			matched
+			annotation. If a list of types is given, the condition
+			evaluates
+			true
+			if at least one of them fulfills the former condition.
+		</para>
+		<section>
+			<title>
+				<emphasis role="bold">Definition:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[ 
+              IS(Type|TypeListExpression) 
+            ]]></programlisting>
+			</para>
+		</section>
+		<section>
+			<title>
+				<emphasis role="bold">Example:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              Author{IS(Englishman)->MARK(EnglishAuthor)};
+            ]]></programlisting>
+			</para>
+			<para>
+				If an Author annotation is also annotated with an Englishman
+				annotation, it is annotated with an EnglishAuthor annotation.
+			</para>
+		</section>
+	</section>
+
+	<section id="ugr.tools.tm.language.conditions.last">
+		<title>LAST</title>
+		<para>
+			The LAST condition evaluates true if the type of the last token
+			within
+			the window of the matched annotation is of the given type.
+		</para>
+		<section>
+			<title>
+				<emphasis role="bold">Definition:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[ 
+              LAST(TypeExpression) 
+            ]]></programlisting>
+			</para>
+		</section>
+		<section>
+			<title>
+				<emphasis role="bold">Example:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              Document{LAST(CW)};
+            ]]></programlisting>
+			</para>
+			<para>
+				This rule fires if the last token of the document is a
+				capitalized
+				word.
+			</para>
+		</section>
+	</section>
+
+	<section id="ugr.tools.tm.language.conditions.mofn">
+		<title>MOFN</title>
+		<para>
+			The MOFN condition is a composed condition. It evaluates true
+			if
+			the
+			number of containing conditions evaluating true is within a
+			given
+			interval.
+		</para>
+		<section>
+			<title>
+				<emphasis role="bold">Definition:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[   
+              MOFN(NumberExpression,NumberExpression,Condition1,...,ConditionN) 
+            ]]></programlisting>
+			</para>
+		</section>
+		<section>
+			<title>
+				<emphasis role="bold">Example:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[ 
+              Paragraph{MOFN(1,1,PARTOF(Headline),CONTAINS(Keyword))->MARK(HeadlineXORKeywords)};
+            ]]></programlisting>
+			</para>
+			<para>
+				A Paragraph is marked as a HeadlineXORKeywords if the matched
+				text
+				is either part of a Headline annotation or contains Keyword
+				annotations.
+			</para>
+		</section>
+	</section>
+
+	<section id="ugr.tools.tm.language.conditions.near">
+		<title>NEAR</title>
+		<para>
+			The NEAR condition is fulfilled if the distance of the matched
+			annotation to an annotation of the given type is within a given
+			interval. The direction is defined by a boolean parameter, whose
+			default value is true, therefore searching forward. By default this
+			condition works on an unfiltered index. An optional fifth boolean
+			parameter can be set to true to get the condition being evaluated on
+			a filtered index.
+		</para>
+		<section>
+			<title>
+				<emphasis role="bold">Definition:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              NEAR(TypeExpression,NumberExpression,NumberExpression(,BooleanExpression(,BooleanExpression)?)?) 
+            ]]></programlisting>
+			</para>
+		</section>
+		<section>
+			<title>
+				<emphasis role="bold">Example:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[ 
+              Paragraph{NEAR(Headline,0,10,false)->MARK(NoHeadline)};
+            ]]></programlisting>
+			</para>
+			<para>
+				A Paragraph that starts at most ten tokens after a Headline
+				annotation is annotated with the NoHeadline annotation.
+			</para>
+		</section>
+	</section>
+
+	<section id="ugr.tools.tm.language.conditions.not">
+		<title>NOT</title>
+		<para>
+			The NOT condition negates the result of its contained
+			condition.
+		</para>
+		<section>
+			<title>
+				<emphasis role="bold">Definition:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              "-"Condition
+            ]]></programlisting>
+			</para>
+		</section>
+		<section>
+			<title>
+				<emphasis role="bold">Example:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              Paragraph{-PARTOF(Headline)->MARK(Headline)};
+            ]]></programlisting>
+			</para>
+			<para>
+				A Paragraph that is not part of a Headline annotation so far
+				is
+				annotated with a Headline annotation.
+			</para>
+		</section>
+	</section>
+
+	<section id="ugr.tools.tm.language.conditions.or">
+		<title>OR</title>
+		<para>
+			The OR Condition is a composed condition and evaluates true if
+			at least
+			one contained condition is evaluated true.
+		</para>
+		<section>
+			<title>
+				<emphasis role="bold">Definition:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              OR(Condition1,...,ConditionN)
+            ]]></programlisting>
+			</para>
+		</section>
+		<section>
+			<title>
+				<emphasis role="bold">Example:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[ 
+              Paragraph{OR(PARTOF(Headline),CONTAINS(Keyword))->MARK(ImportantParagraph)};
+            ]]></programlisting>
+			</para>
+			<para>
+				In this example a Paragraph is annotated with the
+				ImportantParagraph
+				annotation if it is a Headline or contains
+				Keyword
+				annotations.
+			</para>
+		</section>
+	</section>
+
+	<section id="ugr.tools.tm.language.conditions.parse">
+		<title>PARSE</title>
+		<para>
+			The PARSE condition is fulfilled if the text covered by the
+			matched
+			annotation can be transformed into a value of the given
+			variable's
+			type. If this is possible, the parsed value is
+			additionally
+			assigned
+			to the passed variable.
+		</para>
+		<section>
+			<title>
+				<emphasis role="bold">Definition:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              PARSE(variable)
+            ]]></programlisting>
+			</para>
+		</section>
+		<section>
+			<title>
+				<emphasis role="bold">Example:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              NUM{PARSE(var)};
+            ]]></programlisting>
+			</para>
+			<para>
+				If the variable 'var' is of an appropriate numeric type, the
+				value of
+				NUM is parsed and subsequently stored in 'var'.
+			</para>
+		</section>
+	</section>
+
+	<section id="ugr.tools.tm.language.conditions.partof">
+		<title>PARTOF</title>
+		<para>
+			The PARTOF condition is fulfilled if the matched annotation is
+			part of
+			an annotation of the given type. However it is not necessary
+			that
+			the matched annotation is smaller than the annotation of the
+			given
+			type. Use the (much slower) PARTOFNEQ condition instead if this
+			is
+			needed. If a type list is given, the condition evaluates true if
+			the
+			former described condition for a single type is fulfilled for at
+			least one of the types in the list.
+		</para>
+		<section>
+			<title>
+				<emphasis role="bold">Definition:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              PARTOF(Type|TypeListExpression)
+            ]]></programlisting>
+			</para>
+		</section>
+		<section>
+			<title>
+				<emphasis role="bold">Example:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              Paragraph{PARTOF(Headline) -> MARK(ImportantParagraph)};
+            ]]></programlisting>
+			</para>
+			<para>
+				A Paragraph is an ImportantParagraph if the matched text is
+				part of
+				a Headline annotation.
+			</para>
+		</section>
+	</section>
+
+	<section id="ugr.tools.tm.language.conditions.partofneq">
+		<title>PARTOFNEQ</title>
+		<para>
+			The PARTOFNEQ condition is fulfilled if the matched annotation
+			is part
+			of (smaller than and inside of) an annotation of the given
+			type. If
+			also annotations of the same size should be acceptable, use
+			the
+			PARTOF condition. If a type list is given, the condition
+			evaluates
+			true if the former described condition is fulfilled for at
+			least one
+			of the types in the list.
+		</para>
+		<section>
+			<title>
+				<emphasis role="bold">Definition:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              PARTOFNEQ(Type|TypeListExpression)
+            ]]></programlisting>
+			</para>
+		</section>
+		<section>
+			<title>
+				<emphasis role="bold">Example:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              W{PARTOFNEQ(Headline) -> MARK(ImportantWord)};
+            ]]></programlisting>
+			</para>
+			<para>
+				A word is an ImportantWord if it is part of a headline.
+			</para>
+		</section>
+	</section>
+
+	<section id="ugr.tools.tm.language.conditions.position">
+		<title>POSITION</title>
+		<para>
+			The POSITION condition is fulfilled if the matched type is the
+			k-th
+			occurence of this type within the window of an annotation of the
+			passed type, whereby k is defined by the value of the passed
+			NumberExpression.
+		</para>
+		<section>
+			<title>
+				<emphasis role="bold">Definition:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              POSITION(Type,NumberExpression)
+            ]]></programlisting>
+			</para>
+		</section>
+		<section>
+			<title>
+				<emphasis role="bold">Example:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              Keyword{POSITION(Paragraph,2)->MARK(SecondKeyword)};
+            ]]></programlisting>
+			</para>
+			<para>
+				The second Keyword in a Paragraph is annotated with the type
+				SecondKeyword.
+			</para>
+		</section>
+	</section>
+
+	<section id="ugr.tools.tm.language.conditions.regexp">
+		<title>REGEXP</title>
+		<para>
+			The REGEXP condition is fulfilled if the given pattern matches on
+			the
+			matched annotation. For more details on the syntax of regular
+			expressions, have a look at the
+			<ulink
+				url="http://docs.oracle.com/javase/1.4.2/docs/api/java/util/regex/Pattern.html">Java API</ulink>
+			. By default the REGEXP condition is case-sensitive. To change this
+			add an optional boolean parameter set to true.
+		</para>
+		<section>
+			<title>
+				<emphasis role="bold">Definition:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              REGEXP(StringExpression(,BooleanExpression)?)
+            ]]></programlisting>
+			</para>
+		</section>
+		<section>
+			<title>
+				<emphasis role="bold">Example:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              Keyword{REGEXP("..")->MARK(SmallKeyword)};
+            ]]></programlisting>
+			</para>
+			<para>
+				A Keyword that only consists of two chars is annotated with a
+				SmallKeyword annotation.
+			</para>
+		</section>
+	</section>
+
+	<section id="ugr.tools.tm.language.conditions.score">
+		<title>SCORE</title>
+		<para>
+			The SCORE condition evaluates the heuristic score of the
+			matched
+			annotation. This score is set or changed by the MARK action.
+			The
+			condition is fulfilled if the score of the matched annotation is
+			in
+			a
+			given interval. Optionally the score can be stored in a
+			variable.
+		</para>
+		<section>
+			<title>
+				<emphasis role="bold">Definition:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              SCORE(NumberExpression,NumberExpression(,Variable)?)
+            ]]></programlisting>
+			</para>
+		</section>
+		<section>
+			<title>
+				<emphasis role="bold">Example:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              MaybeHeadline{SCORE(40,100)->MARK(Headline)};
+            ]]></programlisting>
+			</para>
+			<para>
+				A annotation of the type MaybeHeadline is annotated with
+				Headline if
+				its score is between 40 and 100.
+			</para>
+		</section>
+	</section>
+
+	<section id="ugr.tools.tm.language.conditions.size">
+		<title>SIZE</title>
+		<para>
+			The SIZE contition counts the number of elements in the given
+			list. By
+			default this condition always evaluates true. If an interval
+			is
+			passed, it evaluates true if the counted number of list elements
+			is
+			within the interval. The counted number can be stored in an
+			optionally passed numeral variable.
+		</para>
+		<section>
+			<title>
+				<emphasis role="bold">Definition:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[SIZE(ListExpression(,NumberExpression,NumberExpression)?(,Variable)?)
+            ]]></programlisting>
+			</para>
+		</section>
+		<section>
+			<title>
+				<emphasis role="bold">Example:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              Document{SIZE(list,4,10,var)};
+            ]]></programlisting>
+			</para>
+			<para>
+				This rule fires if the given list contains between 4 and 10
+				elements.
+				Additionally, the exact amount is stored in the variable
+				var.
+			</para>
+		</section>
+	</section>
+
+	<section id="ugr.tools.tm.language.conditions.startswith">
+		<title>STARTSWITH</title>
+		<para>
+			The STARTSWITH condition evaluates true if an annotation of the
+			given
+			type starts exactly at the same position as the matched
+			annotation.
+			If a type list is given, the condition evaluates true if
+			the former
+			is true for at least one of the given types in the list.
+		</para>
+		<section>
+			<title>
+				<emphasis role="bold">Definition:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              STARTSWITH(Type|TypeListExpression)
+            ]]></programlisting>
+			</para>
+		</section>
+		<section>
+			<title>
+				<emphasis role="bold">Example:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              Paragraph{STARTSWITH(SW)};
+            ]]></programlisting>
+			</para>
+			<para>
+				Here, the rule matches on a Paragraph annotation if it starts
+				with small
+				written word.
+			</para>
+		</section>
+	</section>
+
+	<section id="ugr.tools.tm.language.conditions.totalcount">
+		<title>TOTALCOUNT</title>
+		<para>
+			The TOTALCOUNT condition counts the annotations of the passed
+			type
+			within the whole document and stores the amount in an optionally
+			passed numerical variable. The condition evaluates true if the
+			amount
+			is within the passed interval. If no interval is passed, the
+			condition always evaluates true.
+		</para>
+		<section>
+			<title>
+				<emphasis role="bold">Definition:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[           
+              TOTALCOUNT(Type(,NumberExpression,NumberExpression(,Variable)?)?)
+            ]]></programlisting>
+			</para>
+		</section>
+		<section>
+			<title>
+				<emphasis role="bold">Example:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+              Paragraph{TOTALCOUNT(Keyword,1,10,var)->MARK(KeywordParagraph)};
+            ]]></programlisting>
+			</para>
+			<para>
+				Here, the amount of Keyword annotations within the whole
+				document is
+				calculated and stored in the variable 'var'. If one to
+				ten Keywords
+				were counted, the Paragraph is marked with a
+				KeywordParagraph
+				annotation.
+			</para>
+		</section>
+	</section>
+
+	<section id="ugr.tools.tm.language.conditions.vote">
+		<title>VOTE</title>
+		<para>
+			The VOTE condition counts the annotations of the given two
+			types
+			within
+			the window of the matched annotation and evaluates true
+			if it
+			found
+			more annotations of the first type.
+		</para>
+		<section>
+			<title>
+				<emphasis role="bold">Definition:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[           
+              VOTE(TypeExpression,TypeExpression)
+            ]]></programlisting>
+			</para>
+		</section>
+		<section>
+			<title>
+				<emphasis role="bold">Example:</emphasis>
+			</title>
+			<para>
+				<programlisting><![CDATA[
+            Paragraph{VOTE(FirstName,LastName)};
+            ]]></programlisting>
+			</para>
+			<para>
+				Here, this rule fires if a paragraph contains more firstnames
+				than
+				lastnames.
+			</para>
+		</section>
+	</section>
+
+</section>

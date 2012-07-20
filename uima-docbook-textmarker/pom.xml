@@ -18,6 +18,6 @@
   </scm>
   <properties>
   	<uimaScmProject>${project.artifactId}</uimaScmProject>
-  	<bookNameRoot>proxy-book</bookNameRoot>
+  	<bookNameRoot>tools.textmarker.book</bookNameRoot>
   </properties>
 </project>

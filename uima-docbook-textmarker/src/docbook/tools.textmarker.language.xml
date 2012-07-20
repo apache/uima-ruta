@@ -1,0 +1,626 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
+<!ENTITY imgroot "images/tools/tools.textmarker/" >
+<!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
+%uimaents;
+]>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
+	license agreements. See the NOTICE file distributed with this work for additional 
+	information regarding copyright ownership. The ASF licenses this file to 
+	you under the Apache License, Version 2.0 (the "License"); you may not use 
+	this file except in compliance with the License. You may obtain a copy of 
+	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+	by applicable law or agreed to in writing, software distributed under the 
+	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+	OF ANY KIND, either express or implied. See the License for the specific 
+	language governing permissions and limitations under the License. -->
+
+<chapter id="ugr.tools.tm.language.language">
+	<title>TextMarker Language</title>
+	<para>
+
+	</para>
+
+	<section id="ugr.tools.tm.language.seeding">
+		<title>Basic Annotations and tokens</title>
+		<para>
+			The TextMarker system uses a JFlex lexer to initially create a
+			seed of
+			basic, token annotations.
+		</para>
+	</section>
+	<section id="ugr.tools.tm.language.syntax">
+		<title>Syntax</title>
+		<para>
+			Structure
+			<programlisting><![CDATA[
+            script                 -> packageDeclaration globalStatements statements
+            packageDeclaration     -> "PACKAGE" DottedIdentifier ";"
+            globalStatments        -> globalStatment*   
+            globalStatment         -> ("TYPESYSTEM" | "SCRIPT" | "ENGINE") DottedIdentifier ";"
+            statements             -> statement*
+            statement              -> typeDeclaration | resourceDeclaration | variableDeclaration 
+                                      | blockDeclaration | simpleStatement
+            ]]></programlisting>
+
+			Declarations
+			<programlisting><![CDATA[
+				typeDeclaration -> "DECLARE" (AnnotationType)? Identifier ("," Identifier )*
+				| "DECLARE" AnnotationType Identifier ( "(" featureDeclaration ")" )?
+				featureDeclaration -> ( (AnnotationType | "STRING" | "INT" |
+				"DOUBLE" | "BOOLEAN") Identifier)+
+				resourceDeclaration -> ("WORDLIST" Identifier = listExpression | "WORDTABLE" Identifier
+				= tableExpression) ";"
+				variableDeclaration -> ("TYPE" | "STRING" | "INT" | "DOUBLE" | "BOOLEAN") Identifier
+				";"
+				]]>
+			</programlisting>
+			More information about Declarations.
+
+			Statements
+			<programlisting><![CDATA[
+            blockDeclaration       -> "BLOCK" "(" Identifier ")" ruleElementWithType "{" statements "}"
+            simpleStatement        -> ruleElements ";"
+            ruleElements           -> ( ruleElementWithLiteral  | ruleElementWithType )+
+            ruleElementWithLiteral -> simpleStringExpression quantifierPart? conditionActionPart?
+            ruleElementWithType    -> typeExpression quantifierPart? conditionActionPart?
+            quantifierPart         -> "*" | "*?" | "+" | "+?" | "?" | "??" 
+                                      | "[" numberExpression "," numberExpression "]"
+                                      | "[" numberExpression "," numberExpression "]?"
+                                      
+            conditionActionPart    -> "{" (condition ( "," condition )*)? ( "->" (action( "," action)*))? "}"        
+            condition              -> ConditionName ("(" argument ("," argument)* ")")?
+            action                 -> ActionName ("(" argument ("," argument)* ")")?
+            ]]></programlisting>
+			More information about Quantifiers,
+			Conditions, Actions and Blocks.
+			The ruleElementWithType of a BLOCK declaration must have opening
+			and
+			closing curly brackets (e.g., BLOCK(name) Document{} {...})
+
+			Expressions
+			<programlisting><![CDATA[
+            argument                   -> typeExpression | numberExpression | stringExpression | booleanExpression
+            typeExpression             -> AnnotationType | TypeVariable
+            numberExpression           -> additiveExpression
+            additiveExpression         -> multiplicativeExpression
+            multiplicativeExpression   -> simpleNumberExpression ( ( "*" | "/" | "%" ) simpleNumberExpression )*
+                                          | ( "EXP" | "LOGN" | "SIN" | "COS" | "TAN" ) numberExpressionInPar
+            numberExpressionInPar      -> "(" additiveExpression ")"
+            simpleNumberExpression     -> "-"? ( DecimalLiteral | FloatingPointLiteral | NumberVariable)
+                                          | numberExpressionInPar      
+            stringExpression           -> simpleStringExpression ( "+" simpleSEOrNE )*                   
+            simpleStringExpression     -> StringLiteral | StringVariable
+            simpleSEOrNE               -> simpleStringExpression | numberExpressionInPar
+            booleanExpression          -> booleanNumberExpression | BooleanVariable | BooleanLiteral
+            booleanNumberExpression    -> "(" numberExpression ( "<" | "<=" | ">" | ">=" | "==" | "!=" ) numberExpression ")"
+            listExpression             -> Identifier | ResourceLiteral
+            tableExpression            -> Identifier | ResourceLiteral
+            ]]></programlisting>
+			More information about Expressions. A ResourceLiteral
+			is something
+			like 'folder/file.txt' (yes, with single quotes).
+		</para>
+	</section>
+	<section id="ugr.tools.tm.language.inference">
+		<title>Syntax</title>
+		<para>
+			The inference relies on a complete, disjunctive partition of the
+			document. A basic (minimal) annotation for each element of the
+			partition is assigned to a type of a hierarchy. These basic
+			annotations are enriched for performance reasons with information
+			about annotations that start at the same offset or overlap with the
+			basic annotation. Normally, a scanner creates a basic annotation for
+			each token, punctuation or whitespace, but can also be replaced with
+			a different annotation seeding strategy. Unlike other rule-based
+			information extraction language, the rules are executed in an
+			imperative way. Experience has shown that the dependencies between
+			rules, e.g., the same annotation types in the action and in the
+			condition of a different rule, often form tree-like and not
+			graph-like structures. Therefore, the sequencing and imperative
+			processing did not cause disadvantages, but instead obvious
+			advantages, e.g., the improved understandability of large rule sets.
+			The following algorithm summarizes the rule inference:
+			<programlisting><![CDATA[
+collect all basic annotations that fulfill the first matching condition
+  for all collected basic annotations do
+    for all rule elements of current rule do
+    if quantifier wants to match then
+      match the conditions of the rule element on the current basic annotation
+      determine the next basic annotation after the current match
+      if quantifier wants to continue then
+        if there is a next basic annotation then
+          continue with the current rule element and the next basic annotation
+        else if rule element did not match then
+          reset the next basic annotation to the current one
+      set the current basic annotation to the next one
+      if some rule elements did not match then
+        stop and continue with the next collected basic annotation
+      else if there is no current basic annotation and the quantifier wants to continue then
+        set the current basic annotation to the previous one
+  if all rule elements matched then
+    execute the actions of all rule elements
+]]></programlisting>
+			The rule elements can of course match on all kinds of annotations.
+			Therefore the determination of the next basic annotation returns the
+			first basic annotation after the last basic annotation of the
+			complete, matched annotation.
+
+		</para>
+	</section>
+	<section id="ugr.tools.tm.language.declarations">
+		<title>Declarations</title>
+		<para>
+
+			There are three different kinds declaration in the TextMarker
+			system:
+			Declarations of types with optional feature definitions of
+			that type,
+			declaration of variables and declarations for importing
+			external
+			resources, scripts of UIMA components.
+		</para>
+		<section id="ugr.tools.tm.language.declarations.type">
+			<title>Type</title>
+			<para>
+				Type declarations define new kinds of annotations types and
+				optionally its features.
+
+				Examples:
+				<programlisting><![CDATA[
+            DECLARE SimpleType1, SimpleType2; // <- two new types with the parent type "Annotation"
+            DECLARE ParentType NewType (SomeType feature1, INT feature2); // <- defines a new type "NewType" 
+                // with parent type "ParentType" and two features
+            ]]></programlisting>
+
+				If the parent type is not defined in the same namepace, then the
+				complete namespace has to be used, e.g., DECLARE
+				my.other.package.Parent NewType;
+			</para>
+		</section>
+		<section id="ugr.tools.tm.language.declarations.variable">
+			<title>Variable</title>
+			<para>
+				Variable declarations define new variables. There are five kinds of
+				variables:
+				* Type variable: A variable that represents an annotation
+				type.
+				* Integer variable: A variable that represents a integer.
+				*
+				Double variable: A variable that represents a floating-point
+				number.
+				* String variable: A variable that represents a string.
+				*
+				Boolean
+				variable: A variable that represents a boolean.
+
+				Examples:
+				<programlisting><![CDATA[
+                TYPE newTypeVariable;
+                INT newIntegerVariable;
+                DOUBLE newDoubleVariable;
+                STRING newStringVariable;
+                BOOLEAN newBooleanVariable;
+                ]]></programlisting>
+
+			</para>
+		</section>
+		<section id="ugr.tools.tm.language.declarations.ressource">
+			<title>Resources</title>
+			<para>
+
+				There are two kinds of resource declaration, that make external
+				resources available in hte TextMarker system:
+				* List: A list
+				represents a normal text file with an entry per line
+				or a compiled
+				tree of a word list.
+				* Table: A table represents comma separated
+				file.
+
+				Examples:
+				<programlisting><![CDATA[
+                LIST Name = 'someWordList.txt';
+                TABLE Name = 'someTable.csv';
+                ]]></programlisting>
+
+			</para>
+		</section>
+		<section id="ugr.tools.tm.language.declarations.scripts">
+			<title>Scripts</title>
+			<para>
+
+				Additional scripts can be imported and reused with the CALL action.
+				The types of the imported rules are then also available, so that it
+				is not neccessary to import the Type System of the additional rule
+				script.
+
+				Examples:
+				<programlisting><![CDATA[
+                SCRIPT my.package.AnotherScript; // <- "AnotherScript.tm" in the "my.package" package
+                Document{->CALL(AnotherScript)}; // <- rule executes "AnotherScript.tm"
+                ]]></programlisting>
+
+			</para>
+		</section>
+		<section id="ugr.tools.tm.language.declarations.components">
+			<title>Components</title>
+			<para>
+
+				There are two kind of UIMA components that can be imported in a
+				TextMarker script:
+				* Type System: includes the types defined in an
+				external type system.
+				* Analysis Engine: makes an external analysis
+				engine available. The
+				type system needed for the analysis engine has
+				to be imported
+				seperately. Please mind the filtering setting when
+				calling an
+				external analysis engine.
+
+				Examples:
+				<programlisting><![CDATA[
+                ENINGE my.package.ExternalEngine; // <- "ExternalEngine.xml" in the 
+                    // "my.package" package (in the descriptor folder)
+                TYPESYSTEM my.package.ExternalTypeSystem; // <- "ExternalTypeSystem.xml" 
+                    // in the "my.package" package (in the descriptor folder)
+                Document{->RETAINTYPE(SPACE,BREAK),CALL(ExternalEngine)}; 
+                    // calls ExternalEngine, but retains white spaces
+                ]]></programlisting>
+
+			</para>
+		</section>
+	</section>
+	<section id="ugr.tools.tm.language.quantifier">
+		<title>Quantifiers</title>
+		<para>
+		</para>
+		<section id="ugr.tools.tm.language.quantifier.sg">
+			<title>* Star Greedy</title>
+			<para>
+				The Star Greedy quantifier matches on any amount of annotations and
+				evaluates always true. Please mind, that a rule element with a Star
+				Greedy quantifier needs to match on different annotations than the
+				next rule element.
+
+				Examples:
+				<programlisting><![CDATA[
+                Input:    small Big Big Big small
+                Rule:     CW*
+                Matched:  Big Big Big  
+                Matched:  Big Big 
+                Matched:  Big
+                ]]></programlisting>
+
+			</para>
+		</section>
+		<section id="ugr.tools.tm.language.quantifier.sr">
+			<title>*? Star Reluctant</title>
+			<para>
+				The Star Reluctant quantifier matches on any amount of annotations
+				and evaluates always true, but stops to match on new annotations,
+				when the next rule element matches and evaluates true on this
+				annotation.
+
+				Examples:
+				<programlisting><![CDATA[
+                Input:    123 456 small small Big 
+                Rule:     W*? CW
+                Matched:  small small Big
+                Matched:  small Big
+                Matched:  Big
+                ]]></programlisting>
+
+			</para>
+		</section>
+		<section id="ugr.tools.tm.language.quantifier.pg">
+			<title>+ Plus Greedy</title>
+			<para>
+				The Plus Greedy quantifier needs to match on at least one
+				annotation. Please mind, that a rule element after a rule element
+				with a Plus Greedy quantifier matches and evaluates on different
+				conditions.
+
+				Examples:
+
+				<programlisting><![CDATA[
+                Input:    123 456 small small Big 
+                Rule:     SW+ 
+                Matched:  small small
+                Matched:  small 
+                ]]></programlisting>
+
+			</para>
+		</section>
+		<section id="ugr.tools.tm.language.quantifier.pr">
+			<title>+? Plus Reluctant</title>
+			<para>
+				The Plus Reluctant quantifier has to match on at least one
+				annotation in order to evaluate true, but stops when the next rule
+				element is able to match on this annotation.
+
+				Examples:
+				<programlisting><![CDATA[
+                Input:    123 456 small small Big 
+                Rule:     W+? CW
+                Matched:  small small Big
+                ]]></programlisting>
+
+			</para>
+		</section>
+		<section id="ugr.tools.tm.language.quantifier.qg">
+			<title>? Question Greedy</title>
+			<para>
+				The Question Greedy quantifier matches optionally on an annotation
+				and therefore always evaluates true.
+
+				Examples:
+				<programlisting><![CDATA[
+                Input:    123 456 small Big small Big 
+                Rule:     SW CW? SW
+                Matched:  small Big small
+                ]]></programlisting>
+
+			</para>
+		</section>
+		<section id="ugr.tools.tm.language.quantifier.qr">
+			<title>?? Question Reluctant</title>
+			<para>
+				The Question Reluctant quantifier matches optionally on an
+				annotation if the next rule element can not match on the same
+				annotation and therefore always evaluates true.
+
+				Examples:
+				<programlisting><![CDATA[
+                Input:    123 456 small Big small Big 
+                Rule:     SW CW?? SW
+                Matched:  small Big small
+                ]]></programlisting>
+
+			</para>
+		</section>
+		<section id="ugr.tools.tm.language.quantifier.mmg">
+			<title>[x,y] Min Max Greedy</title>
+			<para>
+				The Min Max Greedy quantifier has to match at least x and at most y
+				annotations of its rule element to elaluate true.
+
+				Examples:
+				<programlisting><![CDATA[
+                Input:    123 456 small Big small Big 
+                Rule:     SW CW[1,2] SW
+                Matched:  small Big small
+                ]]></programlisting>
+
+			</para>
+		</section>
+		<section id="ugr.tools.tm.language.quantifier.mmr">
+			<title>[x,y]? Min Max Reluctant</title>
+			<para>
+				The Min Max Greedy quantifier has to match at least x and at most y
+				annotations of its rule element to elaluate true, but stops to
+				match
+				on additional annotations if the next rule element is able to
+				match
+				on this annotation.
+
+				Examples:
+				<programlisting><![CDATA[
+                Input:    123 456 small Big Big Big small Big 
+                Rule:     SW CW[2,100]? SW
+                Matched:  small Big Big Big small
+                ]]></programlisting>
+			</para>
+		</section>
+	</section>
+
+	
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.textmarker.conditions.xml"/>
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.textmarker.actions.xml"/>
+	
+	<section id="ugr.tools.tm.language.expressions">
+		<title>Expressions</title>
+		<para>
+		</para>
+		<section id="ugr.tools.tm.language.expressions.type">
+			<title>Type Expressions</title>
+			<para>
+			</para>
+		</section>
+		<section id="ugr.tools.tm.language.expressions.numer">
+			<title>Number Expressions</title>
+			<para>
+			</para>
+		</section>
+		<section id="ugr.tools.tm.language.expressions.string">
+			<title>String Expressions</title>
+			<para>
+			</para>
+		</section>
+		<section id="ugr.tools.tm.language.expressions.boolean">
+			<title>Boolean Expressions</title>
+			<para>
+			</para>
+		</section>
+	</section>
+	<section id="ugr.tools.tm.language.filtering">
+		<title>Robust extraction using filtering</title>
+		<para>
+			Rule based or pattern based information extraction systems often
+			suffer from unimportant fill words, additional whitespace and
+			unexpected markup. The TextMarker System enables the knowledge
+			engineer to filter and to hide all possible combinations of
+			predefined and new types of annotations. Additionally, it can
+			differentiate between every kind of HTML markup and XML tags. The
+			visibility of tokens and annotations is modified by the actions of
+			rule elements and can be conditioned using the complete
+			expressiveness of the language. Therefore the TextMarker system
+			supports a robust approach to information extraction and simplifies
+			the creation of new rules since the knowledge engineer can focus on
+			important textual features. If no rule action changed the
+			configuration of the filtering settings, then the default filtering
+			configuration ignores whitespaces and markup. Using the default
+			setting, the following rule matches all four types of input in this
+			example:
+			<programlisting><![CDATA[
+"Dr" PERIOD CW CW
+]]></programlisting>
+			<programlisting><![CDATA[
+Dr. Peter Steinmetz
+Dr . Peter      Steinmetz
+Dr. <b><i>Peter</i> Steinmetz</b>
+Dr.PeterSteinmetz
+]]></programlisting>
+		</para>
+	</section>
+	<section id="ugr.tools.tm.language.blocks">
+		<title>Blocks</title>
+		<para>
+			Blocks combine some more complex control structures in the
+			TextMarker
+			language: conditioned statement, loops and procedures.
+
+
+			The
+			rule
+			element
+			in the definition of a block has to define a
+			condition/action
+			part,
+			even if that part is empty (LCURLY and
+			RCULRY).
+
+
+			A block can use
+			normal
+			conditions to condition the execution
+			of its
+			containing rules.
+
+			Examples:
+
+			<programlisting><![CDATA[
+DECLARE Month;
+
+BLOCK(EnglishDates) Document{FEATURE("language", "en")} {
+    Document{->MARKFAST(Month,'englishMonthNames.txt')};
+    //...
+}
+
+BLOCK(GermanDates) Document{FEATURE("language", "de")} {
+    Document{->MARKFAST(Month,'germanMonthNames.txt')};
+    //...
+}
+]]></programlisting>
+
+
+			A block can be used to execute the containing rule on a sequence of
+			similar text passages.
+
+			Examples:
+			<programlisting><![CDATA[
+BLOCK(Paragraphs) Paragraphs{} { // <- limit the local view on the document: defines a local document
+    // This rule will be executed for each Paragraph that can be found in the current document.
+    Document{CONTAINS(Keyword)->MARK(SpecialParagraph)}; 
+    // Here, Document represents not the complete input document, but each Paragraph defined by the block statement.
+}
+]]></programlisting>
+		</para>
+	</section>
+	<section id="ugr.tools.tm.language.score">
+		<title>Heuristic extraction using scoring rules</title>
+		<para>
+			Diagnostic scores are a well known and successfully applied
+			knowledge
+			formalization pattern for diagnostic problems. Single known
+			findings
+			valuate a possible solution by adding or subtracting points
+			on an
+			account of that solution. If the sum exceeds a given threshold,
+			then
+			the solution is derived. One of the advantages of this pattern
+			is the
+			robustness against missing or false findings, since a high
+			number of
+			findings is used to derive a solution.
+
+			The TextMarker system
+			tries to
+			transfer this diagnostic problem
+			solution
+			strategy to the
+			information
+			extraction problem. In addition to a
+			normal creation of a
+			new
+			annotation, a MARK action can add positive
+			or negative scoring
+			points
+			to the text fragments matched by the rule
+			elements. If the
+			amount of
+			points exceeds the defined threshold for
+			the respective
+			type, then a
+			new annotation will be created. Further,
+			the current
+			value of heuristic
+			points of a possible annotation can
+			be
+			evaluated by
+			the SCORE condition.
+			In the following, the heuristic
+			extraction using
+			scoring rules is
+			demonstrated by a short example:
+
+			<programlisting><![CDATA[
+            Paragraph{CONTAINS(W,1,5)->MARKSCORE(5,Headline)};
+            Paragraph{CONTAINS(W,6,10)->MARKSCORE(2,Headline)};
+            Paragraph{CONTAINS(Emph,80,100,true)->MARKSCORE(7,Headline)};
+            Paragraph{CONTAINS(Emph,30,80,true)->MARKSCORE(3,Headline)};
+            Paragraph{CONTAINS(CW,50,100,true)->MARKSCORE(7,Headline)};
+            Paragraph{CONTAINS(W,0,0)->MARKSCORE(-50,Headline)};
+            Headline{SCORE(10)->MARK(Realhl)};
+            Headline{SCORE(5,10)->LOG("Maybe a headline")};
+                ]]></programlisting>
+
+
+			In the first part of this rule set, annotations of the type
+			paragraph
+			receive scoring points for a headline annotation, if they
+			fulfill
+			certain CONTAINS conditions. The first condition, for
+			example,
+			evaluates to true, if the paragraph contains one word up to
+			five
+			words, whereas the fourth conditions is fulfilled, if the
+			paragraph
+			contains thirty up to eighty percent of emph annotations.
+			The last
+			two
+			rules finally execute their actions, if the score of a
+			headline
+			annotation exceeds ten points, or lies in the interval of
+			five and
+			ten
+			points, respectively.
+		</para>
+	</section>
+	<section id="ugr.tools.tm.language.modification">
+		<title>Modification</title>
+		<para>
+			There are different actions that can modify the input document,
+			like DEL,
+			COLOR and REPLACE. But the input document itself can not be
+			modified
+			directly. A seperate engine, the Modifier.xml, has to be
+			called in
+			order to create another cas view with the name "modified".
+			In that
+			document all modifications are executed.
+		</para>
+	</section>
+</chapter>

@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
+<!ENTITY imgroot "images/tools/tools.textmarker/" >
+<!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
+%uimaents;
+]>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<chapter id="ugr.tools.tm.introduction">
+    <title>TextMarker</title>
+    <para>The TextMarker system is an open source tool
+        for the development
+        of rule-based information extraction applications.
+        The development
+        environment is based on the DLTK framework. It
+        supports the knowledge
+        engineer with a full-featured rule editor,
+        components for the
+        explanation of the rule inference and a build
+        process for generic UIMA
+        Analysis Engines and Type Systems.
+        Therefore TextMarker components can
+        be easily created and combined
+        with other UIMA components in different
+        information extraction
+        pipelines rather flexibly.
+
+        TextMarker applies a
+        specialized rule representation language for the effective
+        knowledge
+        formalization:
+        The rules of the TextMarker language are composed of a
+        list of rule
+        elements that themselves consists of four parts: The
+        mandatory
+        matching condition establishes a connection to the input
+        document by
+        referring to an already existing concept, respectively
+        annotation.
+        The
+        optional quantifier defines the usage of the matching
+        condition
+        similar to regular expressions. Then, additional conditions
+        add
+        constraints to the matched text fragment and additional actions
+        determine the consequences of the rule. Therefore, TextMarker rules
+        match on a pattern of given annotations and, if the additional
+        conditions evaluate true, then they execute their actions, e.g.
+        create
+        a new annotation. If no initial annotations exist, for example,
+        created by another component, a scanner is used to seed simple token
+        annotations contained in a taxonomy.
+
+        The TextMarker system provides
+        unique functionality that is usually not
+        found in similar systems. The
+        actions are able to modify the document
+        either by replacing or
+        deleting text fragments or by filtering the
+        view on the document. In
+        this case, the rules ignore some
+        annotations,
+        e.g. HTML markup, or are
+        executed only on the remaining text passages.
+        The knowledge engineer
+        is able to add heuristic knowledge by using
+        scoring rules.
+        Additionally, several language elements common to
+        scripting languages
+        like conditioned statements, loops, procedures,
+        recursion, variables
+        and expressions increase the expressiveness of
+        the language. Rules are
+        able to directly invoke external rule sets or
+        arbitrary UIMA Analysis
+        Engines and foreign libraries can be
+        integrated with the extension
+        mechanism for new language elements.
+
+    </para>
+    <section id="ugr.tools.tm.introduction.metaphor">
+        <title>Introduction</title>
+        <para>
+            In manual information extraction humans often apply a strategy
+            according to a highlighter metaphor: First relevant headlines are
+            considered and classified according to their content by coloring
+            them
+            with different highlighters. The paragraphs of the annotated
+            headlines
+            are then considered further. Relevant text fragments or
+            single words
+            in the context of that headline can then be colored. In
+            this way, a
+            top-down analysis and extraction strategy is implemented.
+            Necessary
+            additional information can then be added that either refers
+            to other
+            text segments or contains valuable domain specific
+            information.
+            Finally the colored text can be easily analyzed
+            concerning the
+            relevant information.
+
+            The TextMarker system (textmarker
+            is a common german word for a
+            highlighter) tries to imitate this
+            manual extraction method by
+            formalizing the appropriate actions using
+            matching rules: The rules
+            mark sequences of words, extract text
+            segments or modify the input
+            document depending on textual
+            features.The default input for the
+            TextMarker system is
+            semi-structured text, but it can also process
+            structured or free
+            text. Technically, HTML is often the input
+            format,
+            since most word
+            processing documents can be converted to HTML.
+            Additionally, the
+            TextMarker systems offers the possibility to
+            create
+            a modified output
+            document.
+        </para>
+    </section>
+    <section id="ugr.tools.tm.introduction.concepts">
+        <title>Core Concepts</title>
+        <para>
+            As a first step in the extraction process the TextMarker system uses
+            a
+            tokenizer (scanner) to tokenize the input document and to create a
+            stream of basic symbols. The types and valid annotations of the
+            possible tokens are predefined by a taxonomy of annotation types.
+            Annotations simply refer to a section of the input document and
+            assign a type or concept to the respective text fragment. The figure
+            on the right shows an excerpt of a basic annotation taxonomy: CW
+            describes all tokens, for example, that contains a single word
+            starting with a capital letter, MARKUP corresponds to HTML or XML
+            tags, and PM refers to all kinds of punctuations marks. Take a look
+            at [basic annotations|BasicAnnotationList] for a complete list of
+            initial annotations.
+
+
+            <screenshot>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata scale="80" format="PNG" fileref="&imgroot;symboltaxo.png" />
+                    </imageobject>
+                    <textobject>
+                        <phrase>Part of a taxonomy for basic annotation types.</phrase>
+                    </textobject>
+                </mediaobject>
+            </screenshot>
+
+            By using (and extending) the taxonomy, the knowledge engineer is
+            able
+            to choose the most adequate types and concepts when defining new
+            matching rules, i.e., TextMarker rules for matching a text fragment
+            given by a set of symbols to an annotation. If the capitalization of
+            a word, for example, is of no importance, then the annotation type W
+            that describes words of any kind can be used. The initial scanner
+            creates a set of basic annotations that may be used by the matching
+            rules of the TextMarker language. However, most information
+            extraction applications require domain specific concepts and
+            annotations. Therefore, the knowledge engineer is able to extend the
+            set of annotations, and to define new annotation types tuned to the
+            requirements of the given domain. These types can be flexibly
+            integrated in the taxonomy of annotation types.
+
+            One of the goals in
+            developing a new information extraction language
+            was
+            to maintain an
+            easily readable syntax while still providing a
+            scalable
+            expressiveness of the language. Basically, the TextMarker
+            language
+            contains expressions for the definition of new annotation
+            types and
+            for defining new matching rules. The rules are defined by a
+            list of
+            rule elements.
+            Each rule element contains at least a basic matching
+            condition referring
+            to text fragments or already specified
+            annotations. Additionally a
+            list of conditions and actions may be
+            specified for a rule element.
+            Whereas the conditions describe
+            necessary attributes of the matched
+            text fragment, the actions point
+            to operations and assignments on
+            the
+            current fragments. These actions
+            will then only be executed if all
+            basic conditions matched on a text
+            fragment or the annotation and the
+            related conditions are fulfilled.
+        </para>
+    </section>
+    <section id="ugr.tools.tm.introduction.examples">
+        <title>Examples</title>
+        <para>
+            The usage of the language and its readability can be demonstrated by
+            simple examples:
+
+            <programlisting><![CDATA[
+                CW{INLIST('animals.txt') -> MARK(Animal)};
+                Animal "and" Animal{-> MARK(Animalpair, 1, 2, 3)};
+    ]]></programlisting>
+
+            The first rule looks at all capitalized words that are listed in an
+            external document animals.txt and creates a new annotation of the
+            type
+            animal using the boundaries of the matched word. The second rule
+            searches for an annotation of the type animal followed by the
+            literal
+            and and a second animal annotation. Then it will create a new
+            annotation animalpair covering the text segment that matched the
+            three
+            rule elements (the digit parameters refer to the number of
+            matched
+            rule element).
+
+            <programlisting><![CDATA[
+                Document{-> MARKFAST(Firstname, 'firstnames.txt')};
+                Firstname CW{-> MARK(Lastname)};
+                Paragraph{VOTE(Firstname, Lastname) -> LOG("Found more Firstnames than Lastnames")};
+    ]]></programlisting>
+
+            In this example, the first rule annotates all words that occur in
+            the
+            external document firstnames.txt with the type firstname. The
+            second
+            rule creates a lastname annotation for all capitalized word
+            that
+            follow a firstname annotation. The last rule finally processes
+            all
+            paragraph} annotations. If the VOTE condition counts more
+            firstname
+            than lastname annotations, then the rule writes a log entry
+            with a
+            predefined message.
+
+
+            <programlisting><![CDATA[
+                ANY+{PARTOF(Paragraph), CONTAINS(Delete, 50, 100, true) -> MARK(Delete)};
+                Firstname{-> MARK(Delete,1 , 2)} Lastname;
+                Delete{-> DEL};
+            ]]></programlisting>
+
+            Here, the first rule looks for sequences of any kind of tokens
+            except
+            markup and creates one annotation of the type delete for each
+            sequence, if the tokens are part of a paragraph annotation and
+            contains together already more than 50% of delete annoations. The +
+            signs indicate this greedy processing. The second rule annotates
+            first
+            names followed by last names with the type delete and the third
+            rule
+            simply deletes all text segments that are associated with that
+            delete
+            annotation.
+
+        </para>
+    </section>
+    <section id="ugr.tools.tm.introduction.features">
+        <title>Special Features</title>
+        <para>
+            The TextMarker language features some special characteristics
+            that are
+            usually not found in other rule-based information extraction
+            systems
+            or even shift it towards scripting languages. The possibility
+            of
+            creating new annotation types and integrating them into the
+            taxonomy
+            facilitates an even more modular development of information
+            extraction systems.
+
+            Read more about robust extraction using
+            filtering, complex control
+            structures and heuristic extraction using
+            scoring rules.
+        </para>
+    </section>
+    <section id="ugr.tools.tm.introduction.getstarted">
+        <title>Get started</title>
+        <para>
+            This section page gives you a short, technical introduction on
+            how to
+            get
+            started with TextMarker system and mostly just links the
+            information
+            of the other wiki pages. Some knowledge about the usage
+            of Eclipse and
+            central concepts of UIMA are useful. TextMarker
+            consists of the
+            TextMarker rule language (and of course the rule
+            inference) and the
+            TextMarker workbench. Additionally, the CEV plugin
+            is used to edit
+            and
+            visualize annotated text. The TextRuler system
+            with implementations of
+            well known rule learning methods and
+            development extension with
+            support for test-driven development are
+            already integrated.
+        </para>
+        <section id="ugr.tools.tm.introduction.getstarted.running">
+            <title>Up and running</title>
+            <para>
+                First of all, install the Workbench and read the introduction
+                and its
+                examples. In order to verify if the Workbench is correctly
+                installed,
+                take a look at Help-About Eclipse-Installation Details
+                and compare
+                the installed plugins with the plugins you copied into
+                the plugins
+                folder of your Eclipse application. Normally most of the
+                plugins do
+                not cause any troubles, but the CEV does because of the
+                XPCom and
+                XULRunner dependencies. You should at least get the XPCom
+                plugin up
+                and running. However, you cannot use the additional HTML
+                functionality without the XULRunner plugin. If the plugins of the
+                installation guide do not work properly and a google search for a
+                suiteable plugin is not successful, then write a mail to the user
+                list and we will try to solve the problem. If all plugins are
+                correctly installed, then start the Eclipse application and switch
+                to
+                the TextMarker perspective (Window-Open Perspective-Other...)
+            </para>
+        </section>
+        <section id="ugr.tools.tm.introduction.getstarted.example">
+            <title>Learn by example</title>
+            <para>
+                Having a running Workbench download the example project and
+                import/copy
+                this TextMarker project into your workspace. The project
+                contains
+                some simple rules for extraction the author, title and year
+                of
+                reference strings. Next, take a look at the project structure and
+                the
+                syntax and compare it with the example project and its contents.
+                Open
+                the Main.tm TextMarker script in the folder
+                script/de.uniwue.example
+                and press the Run button in the Eclipse
+                toolbar. The docments in
+                the
+                input folder will then be processed by
+                the Main.tm file and the
+                result of the information extraction task
+                is placed in the output
+                folder. As you can see, there are four
+                files: an xmiCAS for each
+                input file and a HTML file (the
+                modifed/colored result). Open one of
+                the .xmi files with the CAS
+                Editor plugin (-popup menu-Open with) and
+                select some checkboxes in
+                the Annotation Browser view.
+            </para>
+        </section>
+        <section id="ugr.tools.tm.introduction.getstarted.doit">
+            <title>Do it yourself</title>
+            <para>
+                Try to write some rules yourself. Read the description of the
+                available
+                language constructs, e.g., conditions and actions and use
+                the
+                explanation component in order to take a closer look at the rule
+                inference. Then finally, read the rest of this document.
+            </para>
+        </section>
+    </section>
+</chapter>
