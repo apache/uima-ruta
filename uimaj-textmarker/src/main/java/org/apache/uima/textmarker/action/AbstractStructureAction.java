@@ -65,10 +65,7 @@ public abstract class AbstractStructureAction extends AbstractTextMarkerAction {
       Object valueObject = map.get(shortFName);
       Type range = targetFeature.getRange();
       if (valueObject != null) {
-        if (valueObject instanceof StringExpression && range.getName().equals(UIMAConstants.TYPE_STRING)) {
-          structure.setStringValue(targetFeature,
-                  ((StringExpression) valueObject).getStringValue(element.getParent()));
-        } else if (valueObject instanceof TypeExpression
+        if (valueObject instanceof TypeExpression
                 && range.getName().equals(UIMAConstants.TYPE_STRING)) {
           TypeExpression type = (TypeExpression) valueObject;
           List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(matchedAnnotation,
@@ -77,25 +74,30 @@ public abstract class AbstractStructureAction extends AbstractTextMarkerAction {
             AnnotationFS annotation = annotationsInWindow.get(0);
             structure.setStringValue(targetFeature, annotation.getCoveredText());
           }
+        } else if (valueObject instanceof StringExpression
+                && range.getName().equals(UIMAConstants.TYPE_STRING)) {
+          structure.setStringValue(targetFeature,
+                  ((StringExpression) valueObject).getStringValue(element.getParent()));
+
         } else if (valueObject instanceof NumberExpression) {
-          if(range.getName().equals(UIMAConstants.TYPE_INTEGER)) {
+          if (range.getName().equals(UIMAConstants.TYPE_INTEGER)) {
             structure.setIntValue(targetFeature,
                     ((NumberExpression) valueObject).getIntegerValue(element.getParent()));
-          } else if(range.getName().equals(UIMAConstants.TYPE_DOUBLE)) {
+          } else if (range.getName().equals(UIMAConstants.TYPE_DOUBLE)) {
             structure.setDoubleValue(targetFeature,
                     ((NumberExpression) valueObject).getDoubleValue(element.getParent()));
-          } else if(range.getName().equals(UIMAConstants.TYPE_FLOAT)) {
+          } else if (range.getName().equals(UIMAConstants.TYPE_FLOAT)) {
             structure.setFloatValue(targetFeature,
                     ((NumberExpression) valueObject).getFloatValue(element.getParent()));
-          } else if(range.getName().equals(UIMAConstants.TYPE_BYTE)) {
-            structure.setByteValue(targetFeature, (byte)
-                    ((NumberExpression) valueObject).getIntegerValue(element.getParent()));
-          } else if(range.getName().equals(UIMAConstants.TYPE_SHORT)) {
-            structure.setShortValue(targetFeature, (short)
-                    ((NumberExpression) valueObject).getIntegerValue(element.getParent()));
-          } else if(range.getName().equals(UIMAConstants.TYPE_LONG)) {
-            structure.setLongValue(targetFeature, (long)
-                    ((NumberExpression) valueObject).getIntegerValue(element.getParent()));
+          } else if (range.getName().equals(UIMAConstants.TYPE_BYTE)) {
+            structure.setByteValue(targetFeature,
+                    (byte) ((NumberExpression) valueObject).getIntegerValue(element.getParent()));
+          } else if (range.getName().equals(UIMAConstants.TYPE_SHORT)) {
+            structure.setShortValue(targetFeature,
+                    (short) ((NumberExpression) valueObject).getIntegerValue(element.getParent()));
+          } else if (range.getName().equals(UIMAConstants.TYPE_LONG)) {
+            structure.setLongValue(targetFeature,
+                    (long) ((NumberExpression) valueObject).getIntegerValue(element.getParent()));
           }
         } else if (valueObject instanceof BooleanExpression
                 && range.getName().equals(UIMAConstants.TYPE_BOOLEAN)) {
