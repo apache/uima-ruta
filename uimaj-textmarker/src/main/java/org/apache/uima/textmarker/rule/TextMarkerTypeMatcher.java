@@ -85,6 +85,9 @@ public class TextMarkerTypeMatcher implements TextMarkerMatcher {
   public Collection<AnnotationFS> getAnnotationsAfter(TextMarkerRuleElement ruleElement,
           AnnotationFS annotation, TextMarkerStream stream, TextMarkerBlock parent) {
     TextMarkerBasic lastBasic = stream.getEndAnchor(annotation.getEnd());
+    if(lastBasic== null) {
+      return Collections.emptyList();
+    }
     stream.moveTo(lastBasic);
     stream.moveToNext();
     if (stream.isValid()) {
@@ -110,6 +113,9 @@ public class TextMarkerTypeMatcher implements TextMarkerMatcher {
   public Collection<AnnotationFS> getAnnotationsBefore(TextMarkerRuleElement ruleElement,
           AnnotationFS annotation, TextMarkerStream stream, TextMarkerBlock parent) {
     TextMarkerBasic firstBasic = stream.getBeginAnchor(annotation.getBegin());
+    if(firstBasic== null) {
+      return Collections.emptyList();
+    }
     stream.moveTo(firstBasic);
     stream.moveToPrevious();
     if (stream.isValid()) {

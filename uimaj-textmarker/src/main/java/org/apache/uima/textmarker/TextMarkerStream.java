@@ -37,7 +37,6 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.FSMatchConstraint;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
-import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.impl.FSIteratorImplBase;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
@@ -49,7 +48,6 @@ import org.apache.uima.textmarker.rule.RuleMatch;
 import org.apache.uima.textmarker.type.TextMarkerAnnotation;
 import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
-import org.hamcrest.CoreMatchers;
 
 public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
 

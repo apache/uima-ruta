@@ -67,16 +67,14 @@ public class AnnotationWriter extends JCasAnnotator_ImplBase {
     Type targetType = cas.getTypeSystem().getType(type);
     FSIterator<AnnotationFS> iterator = cas.getAnnotationIndex(targetType).iterator();
 
-    String newDocument = "";
+    StringBuilder newDocument = new StringBuilder();
     while (iterator.isValid()) {
       AnnotationFS fs = iterator.get();
-      newDocument += fs.getCoveredText() + "\n\n";
+      newDocument.append(fs.getCoveredText());
+      newDocument.append("\n");
       iterator.moveToNext();
     }
-    newDocument = newDocument.trim();
-    if ("".equals(newDocument)) {
-      newDocument = cas.getDocumentText();
-    }
+
 
     Type sdiType = cas.getTypeSystem().getType(TextMarkerEngine.SOURCE_DOCUMENT_INFORMATION);
 
@@ -98,7 +96,7 @@ public class AnnotationWriter extends JCasAnnotator_ImplBase {
 
     }
     try {
-      FileUtils.saveString2File(newDocument, file, encoding);
+      FileUtils.saveString2File(newDocument.toString(), file, encoding);
     } catch (IOException e) {
       throw new AnalysisEngineProcessException(e);
     }
