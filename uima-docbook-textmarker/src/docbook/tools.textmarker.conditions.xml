@@ -726,8 +726,11 @@
 		<title>REGEXP</title>
 		<para>
 			The REGEXP condition is fulfilled if the given pattern matches on the
-			matched annotation. For more details on the syntax of regular
-			expressions, have a look at the
+			matched annotation. However, if a string variable is given as the first
+      argument, then the pattern is evaluated on the value of the variable.
+      For more details on the syntax of regular
+      expressions, have a look at
+      the
 			<ulink
 				url="http://docs.oracle.com/javase/1.4.2/docs/api/java/util/regex/Pattern.html">Java API</ulink>
 			. By default the REGEXP condition is case-sensitive. To change this
@@ -738,7 +741,7 @@
 				<emphasis role="bold">Definition:</emphasis>
 			</title>
 			<para>
-				<programlisting><![CDATA[REGEXP(StringExpression(,BooleanExpression)?)]]></programlisting>
+				<programlisting><![CDATA[REGEXP((StringVariable,)? StringExpression(,BooleanExpression)?)]]></programlisting>
 			</para>
 		</section>
 		<section>

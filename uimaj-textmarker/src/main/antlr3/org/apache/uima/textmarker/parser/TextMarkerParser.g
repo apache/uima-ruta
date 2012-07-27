@@ -1005,8 +1005,8 @@ conditionPosition returns [AbstractTextMarkerCondition cond = null]
     ;
 conditionRegExp returns [AbstractTextMarkerCondition cond = null]
     :
-    REGEXP LPAREN pattern = stringExpression (COMMA caseSensitive = booleanExpression)? RPAREN
-    {cond = ConditionFactory.createConditionRegExp(pattern, caseSensitive, $blockDeclaration::env);}    
+    REGEXP LPAREN (v = variable COMMA)? pattern = stringExpression (COMMA caseSensitive = booleanExpression)? RPAREN
+    {cond = ConditionFactory.createConditionRegExp(v, pattern, caseSensitive, $blockDeclaration::env);}    
     ;
 
 conditionScore returns [AbstractTextMarkerCondition cond = null]

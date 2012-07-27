@@ -1060,8 +1060,8 @@ conditionPosition returns [TextMarkerCondition cond = null]
     ;
 conditionRegExp returns [TextMarkerCondition cond = null]
     :
-    name = REGEXP LPAREN pattern = stringExpression (COMMA caseSensitive = booleanExpression)? 
-    {cond = ConditionFactory.createCondition(name, pattern, caseSensitive);}   
+    name = REGEXP LPAREN (v = variable COMMA)? pattern = stringExpression (COMMA caseSensitive = booleanExpression)? 
+    {cond = ConditionFactory.createCondition(name, v, pattern, caseSensitive);}   
     RPAREN 
     ;
     

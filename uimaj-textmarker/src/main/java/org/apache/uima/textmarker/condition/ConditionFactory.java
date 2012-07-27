@@ -131,6 +131,11 @@ public class ConditionFactory {
     return new RegExpCondition(patternExpr, ignoreCase);
   }
 
+  public static AbstractTextMarkerCondition createConditionRegExp(Token var, StringExpression patternExpr,
+          BooleanExpression ignoreCase, TextMarkerBlock parent) {
+    return new RegExpCondition(var == null ? null : var.getText(), patternExpr, ignoreCase);
+  }
+  
   public static AbstractTextMarkerCondition createConditionScore(NumberExpression min,
           NumberExpression max, Token var, TextMarkerBlock parent) {
     String varString = null;
