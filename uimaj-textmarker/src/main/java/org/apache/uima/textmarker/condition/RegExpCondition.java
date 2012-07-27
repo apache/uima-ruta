@@ -23,6 +23,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.textmarker.TextMarkerEnvironment;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.bool.BooleanExpression;
 import org.apache.uima.textmarker.expression.bool.SimpleBooleanExpression;
@@ -36,30 +37,54 @@ public class RegExpCondition extends TerminalTextMarkerCondition {
 
   private BooleanExpression ignoreCase;
 
+  private String variable;
+
   public RegExpCondition(StringExpression pattern, BooleanExpression ignoreCase) {
     super();
     this.pattern = pattern;
     this.ignoreCase = ignoreCase == null ? new SimpleBooleanExpression(false) : ignoreCase;
   }
 
+  public RegExpCondition(String variable, StringExpression pattern, BooleanExpression ignoreCase) {
+    this(pattern, ignoreCase);
+    this.variable = variable;
+  }
+
   @Override
   public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
           TextMarkerStream stream, InferenceCrowd crowd) {
-    String coveredText = annotation.getCoveredText();
+    Matcher matcher = null;
     boolean ignore = ignoreCase == null ? false : ignoreCase.getBooleanValue(element.getParent());
-    Pattern regularExpPattern = null;
     String stringValue = pattern.getStringValue(element.getParent());
-    if (ignore) {
-      regularExpPattern = Pattern.compile(stringValue, Pattern.CASE_INSENSITIVE);
+    if (variable == null) {
+      String coveredText = annotation.getCoveredText();
+      Pattern regularExpPattern = null;
+      if (ignore) {
+        regularExpPattern = Pattern.compile(stringValue, Pattern.CASE_INSENSITIVE);
+      } else {
+        regularExpPattern = Pattern.compile(stringValue);
+      }
+      matcher = regularExpPattern.matcher(coveredText);
     } else {
-      regularExpPattern = Pattern.compile(stringValue);
+      TextMarkerEnvironment environment = element.getParent().getEnvironment();
+      String variableValue = environment.getVariableValue(variable, String.class);
+      Pattern regularExpPattern = null;
+      if (ignore) {
+        regularExpPattern = Pattern.compile(stringValue, Pattern.CASE_INSENSITIVE);
+      } else {
+        regularExpPattern = Pattern.compile(stringValue);
+      }
+      matcher = regularExpPattern.matcher(variableValue);
     }
-    Matcher macther = regularExpPattern.matcher(coveredText);
-    boolean matches = macther.matches();
+    boolean matches = matcher.matches();
     return new EvaluatedCondition(this, matches);
   }
 
   public StringExpression getPattern() {
+    return pattern;
+  }
+  
+  public StringExpression getVariable() {
     return pattern;
   }
 }
