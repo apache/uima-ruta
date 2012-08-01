@@ -62,7 +62,6 @@ public class TextMarkerTypeMatcher implements TextMarkerMatcher {
                       .getFirstBasicOfAll().beginsWith(type))) {
         // TODO what about dynamic windowing?
         result.add(stream.getDocumentAnnotation());
-
       } else {
         stream.moveToFirst();
         while (stream.isValid()) {
@@ -72,7 +71,11 @@ public class TextMarkerTypeMatcher implements TextMarkerMatcher {
           for (Type eachType : allTypes) {
             Collection<AnnotationFS> beginAnchors = nextBasic.getBeginAnchors(eachType);
             if (beginAnchors != null) {
-              result.addAll(beginAnchors);
+              for (AnnotationFS afs : beginAnchors) {
+                if (afs.getEnd() <= stream.getDocumentAnnotation().getEnd()) {
+                  result.add(afs);
+                }
+              }
             }
           }
           stream.moveToNext();
@@ -85,7 +88,7 @@ public class TextMarkerTypeMatcher implements TextMarkerMatcher {
   public Collection<AnnotationFS> getAnnotationsAfter(TextMarkerRuleElement ruleElement,
           AnnotationFS annotation, TextMarkerStream stream, TextMarkerBlock parent) {
     TextMarkerBasic lastBasic = stream.getEndAnchor(annotation.getEnd());
-    if(lastBasic== null) {
+    if (lastBasic == null) {
       return Collections.emptyList();
     }
     stream.moveTo(lastBasic);
@@ -101,7 +104,11 @@ public class TextMarkerTypeMatcher implements TextMarkerMatcher {
         for (Type eachType : types) {
           Collection<AnnotationFS> beginAnchors = nextBasic.getBeginAnchors(eachType);
           if (beginAnchors != null) {
-            anchors.addAll(beginAnchors);
+            for (AnnotationFS afs : beginAnchors) {
+              if (afs.getEnd() <= stream.getDocumentAnnotation().getEnd()) {
+                anchors.add(afs);
+              }
+            }
           }
         }
       }
@@ -113,7 +120,7 @@ public class TextMarkerTypeMatcher implements TextMarkerMatcher {
   public Collection<AnnotationFS> getAnnotationsBefore(TextMarkerRuleElement ruleElement,
           AnnotationFS annotation, TextMarkerStream stream, TextMarkerBlock parent) {
     TextMarkerBasic firstBasic = stream.getBeginAnchor(annotation.getBegin());
-    if(firstBasic== null) {
+    if (firstBasic == null) {
       return Collections.emptyList();
     }
     stream.moveTo(firstBasic);
@@ -128,7 +135,11 @@ public class TextMarkerTypeMatcher implements TextMarkerMatcher {
         for (Type eachType : types) {
           Collection<AnnotationFS> endAnchors = nextBasic.getEndAnchors(eachType);
           if (endAnchors != null) {
-            anchors.addAll(endAnchors);
+            for (AnnotationFS afs : endAnchors) {
+              if (afs.getBegin() >= stream.getDocumentAnnotation().getBegin()) {
+                anchors.add(afs);
+              }
+            }
           }
         }
       }
