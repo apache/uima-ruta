@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.verbalize;
 
@@ -50,7 +50,6 @@ import org.apache.uima.textmarker.action.TrieAction;
 import org.apache.uima.textmarker.action.UnmarkAction;
 import org.apache.uima.textmarker.expression.TextMarkerExpression;
 import org.apache.uima.textmarker.expression.string.StringExpression;
-
 
 public class ActionVerbalizer {
 
@@ -247,8 +246,15 @@ public class ActionVerbalizer {
       }
     } else if (action instanceof MarkFastAction) {
       MarkFastAction a = (MarkFastAction) action;
-      return "MARKFAST(" + verbalizer.verbalize(a.getType()) + ","
-              + verbalizer.verbalize(a.getList()) + ")";
+      String list = "";
+      if (a.getList() != null) {
+        list = verbalizer.verbalize(a.getList());
+      } else if (a.getStringList() != null) {
+        list = verbalizer.verbalize(a.getStringList());
+      }
+      return "MARKFAST(" + verbalizer.verbalize(a.getType()) + "," + list + ","
+              + verbalizer.verbalize(a.getIgnore()) + ","
+              + verbalizer.verbalize(a.getIgnoreLength()) + ")";
     } else if (action instanceof MarkLastAction) {
       MarkLastAction a = (MarkLastAction) action;
       return "MARKLAST(" + verbalizer.verbalize(a.getType()) + ")";

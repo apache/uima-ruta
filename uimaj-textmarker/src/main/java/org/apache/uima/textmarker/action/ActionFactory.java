@@ -28,6 +28,7 @@ import org.apache.uima.textmarker.TextMarkerBlock;
 import org.apache.uima.textmarker.expression.TextMarkerExpression;
 import org.apache.uima.textmarker.expression.bool.BooleanExpression;
 import org.apache.uima.textmarker.expression.list.ListExpression;
+import org.apache.uima.textmarker.expression.list.StringListExpression;
 import org.apache.uima.textmarker.expression.list.TypeListExpression;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.resource.WordListExpression;
@@ -56,6 +57,14 @@ public class ActionFactory {
     return new MarkFastAction(type, list, ignore, ignoreLength);
   }
 
+  
+  public static AbstractTextMarkerAction createMarkFastAction(TypeExpression type,
+          StringListExpression list, BooleanExpression ignore, NumberExpression ignoreLength,
+          TextMarkerBlock env) {
+    return new MarkFastAction(type, list, ignore, ignoreLength);
+  }
+  
+  
   public static AbstractTextMarkerAction createMarkLastAction(TypeExpression type,
           TextMarkerBlock parent) {
     return new MarkLastAction(type);
@@ -231,5 +240,7 @@ public class ActionFactory {
           NumberExpression penalty, NumberExpression factor, TextMarkerBlock env) {
     return new DynamicAnchoringAction(active, penalty, factor);
   }
+
+
 
 }

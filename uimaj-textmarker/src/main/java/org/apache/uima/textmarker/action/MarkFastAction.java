@@ -26,6 +26,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.bool.BooleanExpression;
 import org.apache.uima.textmarker.expression.bool.SimpleBooleanExpression;
+import org.apache.uima.textmarker.expression.list.StringListExpression;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.number.SimpleNumberExpression;
 import org.apache.uima.textmarker.expression.resource.WordListExpression;
@@ -41,6 +42,8 @@ public class MarkFastAction extends AbstractMarkAction {
 
   private WordListExpression list;
 
+  private StringListExpression stringList;
+
   private BooleanExpression ignore;
 
   private NumberExpression ignoreLength;
@@ -54,13 +57,27 @@ public class MarkFastAction extends AbstractMarkAction {
             : ignoreLength;
   }
 
+  public MarkFastAction(TypeExpression type, StringListExpression list, BooleanExpression ignore,
+          NumberExpression ignoreLength) {
+    super(type);
+    this.stringList = list;
+    this.ignore = ignore == null ? new SimpleBooleanExpression(false) : ignore;
+    this.ignoreLength = ignoreLength == null ? new SimpleNumberExpression(Integer.valueOf(0))
+            : ignoreLength;
+  }
+
   @Override
   public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
     List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element, stream);
     for (AnnotationFS annotationFS : matchedAnnotationsOf) {
       TextMarkerStream windowStream = stream.getWindowStream(annotationFS, annotationFS.getType());
-      TextMarkerWordList wl = list.getList(element.getParent());
+      TextMarkerWordList wl = null;
+      if (list != null) {
+        list.getList(element.getParent());
+      } else if (stringList != null) {
+        wl = new TreeWordList(stringList.getList(element.getParent()));
+      }
       if (wl instanceof TreeWordList) {
         Collection<AnnotationFS> found = wl.find(windowStream,
                 ignore.getBooleanValue(element.getParent()),
@@ -77,8 +94,15 @@ public class MarkFastAction extends AbstractMarkAction {
     return list;
   }
 
-  public BooleanExpression isIgnore() {
+  public StringListExpression getStringList() {
+    return stringList;
+  }
+
+  public BooleanExpression getIgnore() {
     return ignore;
   }
 
+  public NumberExpression getIgnoreLength() {
+    return ignoreLength;
+  }
 }

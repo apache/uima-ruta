@@ -625,7 +625,8 @@
 			only relevant if the ignore-case value is set to true. For more
 			information on lists see
 			<xref linkend='ugr.tools.tm.language.declarations.ressource' />
-			.
+			. Additionally to external word lists, string lists variables can be
+			used.
 		</para>
 		<section>
 			<title>
@@ -634,6 +635,8 @@
 			<para>
 				<programlisting><![CDATA[MARKFAST(TypeExpression,ListExpression(,BooleanExpression
 				  (,NumberExpression)?)?)]]></programlisting>
+				<programlisting><![CDATA[MARKFAST(TypeExpression,StringListExpression(,BooleanExpression
+          (,NumberExpression)?)?)]]></programlisting>
 			</para>
 		</section>
 		<section>

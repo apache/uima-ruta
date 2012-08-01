@@ -1394,10 +1394,13 @@ List<Expression> list = new ArrayList<Expression>();
     ;
 
 actionMarkFast returns [TextMarkerAction action = null]
+@init {
+ Expression list = null;
+}
     :   
     name = MARKFAST LPAREN type = typeExpression 
     {action = ActionFactory.createAction(name, type, list, ignore, numExpr);}
-    COMMA list = wordListExpression 
+    COMMA (list1 = wordListExpression | list2 = stringListExpression) {list = list1 == null ? list2 : list1;}
     {action = ActionFactory.createAction(name, type, list, ignore, numExpr);}
     (COMMA ignore = booleanExpression (COMMA numExpr = numberExpression)?)? 
     {action = ActionFactory.createAction(name, type, list, ignore, numExpr);} // TODO handle list

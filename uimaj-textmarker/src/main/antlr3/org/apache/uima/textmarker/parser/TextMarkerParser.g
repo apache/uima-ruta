@@ -1302,8 +1302,14 @@ List<NumberExpression> list = new ArrayList<NumberExpression>();
 
 actionMarkFast returns [AbstractTextMarkerAction action = null]
     :   
-    MARKFAST LPAREN type = typeExpression COMMA list = wordListExpression (COMMA ignore = booleanExpression (COMMA ignoreLength = numberExpression)?)? RPAREN
-    {action = ActionFactory.createMarkFastAction(type, list, ignore, ignoreLength, $blockDeclaration::env);}
+    MARKFAST LPAREN type = typeExpression COMMA (list1 = wordListExpression | list2 = stringListExpression) 
+    (COMMA ignore = booleanExpression (COMMA ignoreLength = numberExpression)?)? RPAREN
+    {if(list1 != null) {
+     action = ActionFactory.createMarkFastAction(type, list1, ignore, ignoreLength, $blockDeclaration::env);
+    } else {
+     action = ActionFactory.createMarkFastAction(type, list2, ignore, ignoreLength, $blockDeclaration::env);
+    }
+    }
     ;
 
 actionMarkLast returns [AbstractTextMarkerAction action = null]
