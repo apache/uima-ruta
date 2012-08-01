@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.ide.ui.documentation;
 
@@ -58,7 +58,6 @@ public abstract class AbstractLanguageElementDocumentationProvider implements
   }
 
   public Reader getInfo(IMember element, boolean lookIntoParents, boolean lookIntoExternal) {
-    // TODO Auto-generated method stub
     return null;
   }
 
