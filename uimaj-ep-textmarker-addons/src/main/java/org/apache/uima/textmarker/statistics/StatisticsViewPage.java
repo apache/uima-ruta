@@ -34,6 +34,7 @@ import org.apache.uima.caseditor.editor.ICasDocument;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
@@ -46,10 +47,12 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.Page;
 
 public class StatisticsViewPage extends Page implements IDoubleClickListener,
-        ISelectionChangedListener {
+        ISelectionChangedListener, ISelectionListener {
 
   private static final String TYPE = "org.apache.uima.textmarker.type.Statistics";
 
@@ -103,6 +106,9 @@ public class StatisticsViewPage extends Page implements IDoubleClickListener,
     createViewer(parent);
     CAS cas = document.getCAS();
     Type type = cas.getTypeSystem().getType(TYPE);
+    
+    getSite().setSelectionProvider(viewer);
+    getSite().getPage().addSelectionListener(this);
     if (type != null) {
       FSIterator<FeatureStructure> allIndexedFS = cas.getIndexRepository().getAllIndexedFS(type);
       if (allIndexedFS.isValid()) {
@@ -189,6 +195,11 @@ public class StatisticsViewPage extends Page implements IDoubleClickListener,
 
   public void selectionChanged(SelectionChangedEvent event) {
 
+  }
+
+  public void selectionChanged(IWorkbenchPart arg0, ISelection arg1) {
+    // TODO Auto-generated method stub
+    
   }
 
 }

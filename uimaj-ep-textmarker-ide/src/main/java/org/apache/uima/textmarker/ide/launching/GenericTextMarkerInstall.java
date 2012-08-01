@@ -15,40 +15,40 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.ide.launching;
 
-import java.io.DataInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
+import org.apache.uima.textmarker.ide.TextMarkerIdePlugin;
 import org.apache.uima.textmarker.ide.core.TextMarkerNature;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.dltk.launching.AbstractInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
 import org.eclipse.dltk.launching.IInterpreterRunner;
 
-
 public class GenericTextMarkerInstall extends AbstractInterpreterInstall {
 
   @Override
   public String getBuiltinModuleContent(String name) {
     InputStream stream = GenericTextMarkerInstall.class.getResourceAsStream("builtins.tm");
-    DataInputStream st = new DataInputStream(stream);
+    if (stream == null) {
+      return "PACKAGE org.apache.uima.tm;\n";
+    }
+    BufferedReader br = new BufferedReader(new InputStreamReader(stream));
     StringBuffer buf = new StringBuffer();
     try {
-      while (st.available() >= 0) {
-        String line = st.readLine();
-        if (line == null)
-          break;
+      String line = null;
+      while ((line = br.readLine()) != null) {
         buf.append(line);
         buf.append('\n');
       }
-
     } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      TextMarkerIdePlugin.error(e);
     }
     return buf.toString();
   }

@@ -57,14 +57,18 @@ public class TextMarkerTestUtils {
   }
 
   public static CAS process(String ruleFileName, String textFileName, int amount,
-          boolean dynamicAnchoring, Map<String,String> complexTypes) throws URISyntaxException, IOException, InvalidXMLException,
-          ResourceInitializationException, AnalysisEngineProcessException,
-          ResourceConfigurationException {
+          boolean dynamicAnchoring, Map<String, String> complexTypes) throws URISyntaxException,
+          IOException, InvalidXMLException, ResourceInitializationException,
+          AnalysisEngineProcessException, ResourceConfigurationException {
     URL resource = TextMarkerTestUtils.class.getClassLoader().getResource(ruleFileName);
     File ruleFile = new File(resource.toURI());
     resource = TextMarkerTestUtils.class.getClassLoader().getResource(textFileName);
     File textFile = new File(resource.toURI());
-    URL url = TextMarkerEngine.class.getResource("BasicEngine.xml");
+    URL url = TextMarkerEngine.class.getClassLoader().getResource("BasicEngine.xml");
+    if (url == null) {
+      url = TextMarkerTestUtils.class.getClassLoader().getResource(
+              "org/apache/uima/textmarker/TestEngine.xml");
+    }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
     AnalysisEngineDescription aed = (AnalysisEngineDescription) specifier;
@@ -74,13 +78,13 @@ public class TextMarkerTestUtils {
       basicTypeSystem.addType(TYPE + i, "Type for Testing", "uima.tcas.Annotation");
     }
 
-    if(complexTypes!= null) {
-      Set<Entry<String,String>> entrySet = complexTypes.entrySet();
+    if (complexTypes != null) {
+      Set<Entry<String, String>> entrySet = complexTypes.entrySet();
       for (Entry<String, String> entry : entrySet) {
         basicTypeSystem.addType(entry.getKey(), "Type for Testing", entry.getValue());
       }
     }
-    
+
     Collection<TypeSystemDescription> tsds = new ArrayList<TypeSystemDescription>();
     tsds.add(basicTypeSystem);
     TypeSystemDescription mergeTypeSystems = CasCreationUtils.mergeTypeSystems(tsds);
