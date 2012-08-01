@@ -1054,8 +1054,12 @@ conditionPartOfNeq returns [TextMarkerCondition cond = null]
 
 conditionPosition returns [TextMarkerCondition cond = null]
     :   
-    name = POSITION LPAREN type = typeExpression COMMA pos = numberExpression 
-    {cond = ConditionFactory.createCondition(name, type, pos);}
+    name = POSITION LPAREN type = typeExpression 
+    {cond = ConditionFactory.createCondition(name, type, pos, rel);}
+    COMMA pos = numberExpression 
+    {cond = ConditionFactory.createCondition(name, type, pos, rel);}
+    (COMMA rel = booleanExpression)? 
+    {cond = ConditionFactory.createCondition(name, type, pos, rel);}
     RPAREN
     ;
 conditionRegExp returns [TextMarkerCondition cond = null]
