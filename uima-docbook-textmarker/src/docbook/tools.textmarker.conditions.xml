@@ -698,14 +698,15 @@
 			The POSITION condition is fulfilled if the matched type is the
 			k-th occurence of this type within the window of an annotation of the
 			passed type, whereby k is defined by the value of the passed
-			NumberExpression.
+			NumberExpression. If the additional boolean paramter is set to false,
+			then k count the occurences of of the minimal annotations.
 		</para>
 		<section>
 			<title>
 				<emphasis role="bold">Definition:</emphasis>
 			</title>
 			<para>
-				<programlisting><![CDATA[POSITION(Type,NumberExpression)]]></programlisting>
+				<programlisting><![CDATA[POSITION(Type,NumberExpression(,BooleanExpression)?)]]></programlisting>
 			</para>
 		</section>
 		<section>
@@ -719,6 +720,15 @@
 				The second Keyword in a Paragraph is annotated with the type
 				SecondKeyword.
 			</para>
+			<para>
+				<programlisting><![CDATA[Keyword{POSITION(Paragraph,2,false)->MARK(SecondKeyword)};]]></programlisting>
+			</para>
+			<para>
+				A Keyword in a Paragraph is annotated with the type
+				SecondKeyword, if it starts at the same offset as the second
+				(visible) TextMarkerBasic annotation, which normally corresponds to
+				the tokens.
+			</para>
 		</section>
 	</section>
 
@@ -726,11 +736,14 @@
 		<title>REGEXP</title>
 		<para>
 			The REGEXP condition is fulfilled if the given pattern matches on the
-			matched annotation. However, if a string variable is given as the first
-      argument, then the pattern is evaluated on the value of the variable.
-      For more details on the syntax of regular
-      expressions, have a look at
-      the
+			matched annotation. However, if a string variable is given as the
+			first
+			argument, then the pattern is evaluated on the value of the
+			variable.
+			For more details on the syntax of regular
+			expressions, have a
+			look at
+			the
 			<ulink
 				url="http://docs.oracle.com/javase/1.4.2/docs/api/java/util/regex/Pattern.html">Java API</ulink>
 			. By default the REGEXP condition is case-sensitive. To change this
@@ -892,7 +905,8 @@
 		<para>
 			The VOTE condition counts the annotations of the given two types
 			within the window of the matched annotation and evaluates true
-			if it found more annotations of the first type.
+			if it
+			found more annotations of the first type.
 		</para>
 		<section>
 			<title>

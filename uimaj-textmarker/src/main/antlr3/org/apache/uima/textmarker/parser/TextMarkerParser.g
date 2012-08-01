@@ -1000,8 +1000,8 @@ conditionPartOfNeq returns [AbstractTextMarkerCondition cond = null]
 
 conditionPosition returns [AbstractTextMarkerCondition cond = null]
     :   
-    POSITION LPAREN type = typeExpression COMMA pos = numberExpression RPAREN
-    {cond = ConditionFactory.createConditionPosition(type, pos, $blockDeclaration::env);}
+    POSITION LPAREN type = typeExpression COMMA pos = numberExpression (COMMA rel = booleanExpression)? RPAREN
+    {cond = ConditionFactory.createConditionPosition(type, pos, rel, $blockDeclaration::env);}
     ;
 conditionRegExp returns [AbstractTextMarkerCondition cond = null]
     :

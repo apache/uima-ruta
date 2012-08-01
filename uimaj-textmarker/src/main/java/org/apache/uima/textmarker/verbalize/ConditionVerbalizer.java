@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.verbalize;
 
@@ -52,7 +52,6 @@ import org.apache.uima.textmarker.condition.TotalCountCondition;
 import org.apache.uima.textmarker.condition.VoteCondition;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.number.SimpleNumberExpression;
-
 
 public class ConditionVerbalizer {
 
@@ -321,8 +320,12 @@ public class ConditionVerbalizer {
       return "PARTOFNEQ(" + verbalizer.verbalize(c.getType()) + ")";
     } else if (condition instanceof PositionCondition) {
       PositionCondition c = (PositionCondition) condition;
+      String relative = "";
+      if (c.getRelative() != null) {
+        relative = "," + verbalizer.verbalize(c.getRelative());
+      }
       return "POSITION(" + verbalizer.verbalize(c.getType()) + ","
-              + verbalizer.verbalize(c.getPosition()) + ")";
+              + verbalizer.verbalize(c.getPosition()) + relative + ")";
     } else if (condition instanceof RegExpCondition) {
       RegExpCondition c = (RegExpCondition) condition;
       return "REGEXP(" + verbalizer.verbalize(c.getPattern()) + ")";

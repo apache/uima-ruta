@@ -122,8 +122,8 @@ public class ConditionFactory {
   }
 
   public static AbstractTextMarkerCondition createConditionPosition(TypeExpression typeExpr,
-          NumberExpression pos, TextMarkerBlock parent) {
-    return new PositionCondition(typeExpr, pos);
+          NumberExpression pos, BooleanExpression rel, TextMarkerBlock parent) {
+    return new PositionCondition(typeExpr, pos, rel);
   }
 
   public static AbstractTextMarkerCondition createConditionRegExp(StringExpression patternExpr,

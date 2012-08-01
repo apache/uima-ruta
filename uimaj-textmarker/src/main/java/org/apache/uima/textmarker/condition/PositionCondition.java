@@ -19,16 +19,20 @@
 
 package org.apache.uima.textmarker.condition;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerStream;
+import org.apache.uima.textmarker.action.MatchedTextAction;
+import org.apache.uima.textmarker.expression.bool.BooleanExpression;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.rule.EvaluatedCondition;
 import org.apache.uima.textmarker.rule.RuleElement;
+import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
@@ -36,13 +40,13 @@ public class PositionCondition extends TypeSentiveCondition {
 
   private final NumberExpression position;
 
-  public NumberExpression getPosition() {
-    return position;
-  }
+  private final BooleanExpression relative;
 
-  public PositionCondition(TypeExpression type, NumberExpression position) {
+  public PositionCondition(TypeExpression type, NumberExpression position,
+          BooleanExpression relative) {
     super(type);
     this.position = position;
+    this.relative = relative;
   }
 
   @Override
@@ -56,7 +60,10 @@ public class PositionCondition extends TypeSentiveCondition {
       return new EvaluatedCondition(this, false);
     }
 
-    FSIterator<AnnotationFS> iterator = stream.getCas().getAnnotationIndex(t).iterator(beginAnchor);
+    boolean relatively = relative == null ? true : relative.getBooleanValue(element.getParent());
+
+    FSIterator<AnnotationFS> iterator = stream.getCas().getAnnotationIndex(t)
+            .iterator(beginAnchor);
     if (!iterator.isValid()) {
       iterator.moveToNext();
     }
@@ -73,25 +80,69 @@ public class PositionCondition extends TypeSentiveCondition {
       }
       iterator.moveToPrevious();
     }
-
+    
+    
+    List<Type> targetTypes = new ArrayList<Type>();
+    if(element instanceof TextMarkerRuleElement) {
+      TextMarkerRuleElement re = (TextMarkerRuleElement) element;
+      targetTypes.addAll(re.getMatcher().getTypes(element.getParent(), stream));
+    } else {
+      targetTypes.add(annotation.getType());
+    }
+    
     if (window == null) {
       return new EvaluatedCondition(this, false);
     }
+    int integerValue = position.getIntegerValue(element.getParent());
+    if (relatively) {
+      int counter = 0;
+      List<TextMarkerBasic> inWindow = stream.getBasicsInWindow(window);
+      for (TextMarkerBasic each : inWindow) {
+        if(beginsWith(each, targetTypes)) {
+          counter++;
+          if(counter == integerValue) {
+            if(each.getBegin() == beginAnchor.getBegin()) {
+              return new EvaluatedCondition(this, true);
+            } else {
+              return new EvaluatedCondition(this, false);
+            }
+          } else if(counter > integerValue) {
+            return new EvaluatedCondition(this, false);
+          }
+        }
+      }
+      return new EvaluatedCondition(this, false);
+    } else {
+      int counter = 0;
+      List<TextMarkerBasic> inWindow = stream.getBasicsInWindow(window);
+      for (TextMarkerBasic each : inWindow) {
+        counter++;
+        boolean beginsWith = beginsWith(each, targetTypes);
+        if (each.getBegin() == beginAnchor.getBegin() && beginsWith && counter == integerValue) {
+          return new EvaluatedCondition(this, true);
+        } else if (counter > integerValue) {
+          return new EvaluatedCondition(this, false);
+        }
+      }
+      return new EvaluatedCondition(this, false);
+    }
+  }
 
-    int counter = 0;
-    List<TextMarkerBasic> inWindow = stream.getBasicsInWindow(window);
-    for (TextMarkerBasic each : inWindow) {
-      counter++;
-      boolean beginsWith = each.beginsWith(annotation.getType());
-      int integerValue = position.getIntegerValue(element.getParent());
-      if (each.getBegin() == beginAnchor.getBegin() && beginsWith && counter == integerValue) {
-        return new EvaluatedCondition(this, true);
-      } else if (counter > integerValue) {
-        return new EvaluatedCondition(this, false);
+  private boolean beginsWith(TextMarkerBasic each, List<Type> targetTypes) {
+    for (Type type : targetTypes) {
+      if(each.beginsWith(type)) {
+        return true;
       }
     }
+    return false;
+  }
 
-    return new EvaluatedCondition(this, false);
+  public NumberExpression getPosition() {
+    return position;
+  }
+
+  public BooleanExpression getRelative() {
+    return relative;
   }
 
 }
