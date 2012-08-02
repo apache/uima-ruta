@@ -95,8 +95,7 @@ public class TextMarkerTypeMatcher implements TextMarkerMatcher {
     stream.moveToNext();
     if (stream.isValid()) {
       TextMarkerBasic nextBasic = (TextMarkerBasic) stream.get();
-      List<Type> reTypes = ruleElement.getMatcher().getTypes(parent, stream);
-
+      List<Type> reTypes = getTypes(parent, stream);
       Collection<AnnotationFS> anchors = new TreeSet<AnnotationFS>(new AnnotationComparator());
       for (Type eachMatchType : reTypes) {
         List<Type> types = stream.getCas().getTypeSystem().getProperlySubsumedTypes(eachMatchType);
@@ -127,7 +126,7 @@ public class TextMarkerTypeMatcher implements TextMarkerMatcher {
     stream.moveToPrevious();
     if (stream.isValid()) {
       TextMarkerBasic nextBasic = (TextMarkerBasic) stream.get();
-      List<Type> reTypes = ruleElement.getMatcher().getTypes(parent, stream);
+      List<Type> reTypes = getTypes(parent, stream);
       Collection<AnnotationFS> anchors = new TreeSet<AnnotationFS>(new AnnotationComparator());
       for (Type eachMatchType : reTypes) {
         List<Type> types = stream.getCas().getTypeSystem().getProperlySubsumedTypes(eachMatchType);

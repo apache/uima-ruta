@@ -112,5 +112,9 @@ public class TextMarkerDisjunctiveMatcher implements TextMarkerMatcher {
     return expressions;
   }
 
+  public String toString() {
+    return matchers.toString();
+  }
+  
  
 }
