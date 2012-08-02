@@ -38,17 +38,17 @@ public class AnonymousWordList implements TextMarkerWordList {
   }
 
   public boolean contains(String s, boolean ignoreCase, int size, char[] ignoreChars,
-          int maxIgnoreChars) {
+          int maxIgnoreChars, boolean ignoreWS) {
     return list.contains(s);
   }
 
   public boolean containsFragment(String s, boolean ignoreCase, int size, char[] ignoreChars,
-          int maxIgnoreChars) {
-    return contains(s, ignoreCase, size, ignoreChars, maxIgnoreChars);
+          int maxIgnoreChars, boolean ignoreWS) {
+    return contains(s, ignoreCase, size, ignoreChars, maxIgnoreChars, ignoreWS);
   }
 
   public List<AnnotationFS> find(TextMarkerStream stream, boolean ignoreCase, int size,
-          char[] ignoreToken, int maxIgnoredTokens) {
+          char[] ignoreToken, int maxIgnoredTokens, boolean ignoreWS) {
     List<AnnotationFS> result = new ArrayList<AnnotationFS>();
     for (String each : list) {
       stream.moveToFirst();

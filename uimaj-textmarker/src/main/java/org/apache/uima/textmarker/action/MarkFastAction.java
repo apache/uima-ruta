@@ -48,22 +48,26 @@ public class MarkFastAction extends AbstractMarkAction {
 
   private NumberExpression ignoreLength;
 
+  private BooleanExpression ignoreWS;
+
   public MarkFastAction(TypeExpression type, WordListExpression list, BooleanExpression ignore,
-          NumberExpression ignoreLength) {
+          NumberExpression ignoreLength, BooleanExpression ignoreWS) {
     super(type);
     this.list = list;
     this.ignore = ignore == null ? new SimpleBooleanExpression(false) : ignore;
     this.ignoreLength = ignoreLength == null ? new SimpleNumberExpression(Integer.valueOf(0))
             : ignoreLength;
+    this.ignoreWS = ignoreWS == null ? new SimpleBooleanExpression(true) : ignoreWS;
   }
 
   public MarkFastAction(TypeExpression type, StringListExpression list, BooleanExpression ignore,
-          NumberExpression ignoreLength) {
+          NumberExpression ignoreLength, BooleanExpression ignoreWS) {
     super(type);
     this.stringList = list;
     this.ignore = ignore == null ? new SimpleBooleanExpression(false) : ignore;
     this.ignoreLength = ignoreLength == null ? new SimpleNumberExpression(Integer.valueOf(0))
             : ignoreLength;
+    this.ignoreWS = ignoreWS == null ? new SimpleBooleanExpression(true) : ignoreWS;
   }
 
   @Override
@@ -74,14 +78,15 @@ public class MarkFastAction extends AbstractMarkAction {
       TextMarkerStream windowStream = stream.getWindowStream(annotationFS, annotationFS.getType());
       TextMarkerWordList wl = null;
       if (list != null) {
-        list.getList(element.getParent());
+        wl = list.getList(element.getParent());
       } else if (stringList != null) {
         wl = new TreeWordList(stringList.getList(element.getParent()));
       }
       if (wl instanceof TreeWordList) {
         Collection<AnnotationFS> found = wl.find(windowStream,
                 ignore.getBooleanValue(element.getParent()),
-                ignoreLength.getIntegerValue(element.getParent()), null, 0);
+                ignoreLength.getIntegerValue(element.getParent()), null, 0,
+                ignoreWS.getBooleanValue(element.getParent()));
         for (AnnotationFS annotation : found) {
           TextMarkerBasic anchor = windowStream.getFirstBasicInWindow(annotation);
           createAnnotation(anchor, element, windowStream, annotation, match);
@@ -105,4 +110,9 @@ public class MarkFastAction extends AbstractMarkAction {
   public NumberExpression getIgnoreLength() {
     return ignoreLength;
   }
+
+  public BooleanExpression getIgnoreWS() {
+    return ignoreWS;
+  }
+
 }

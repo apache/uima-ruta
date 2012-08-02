@@ -64,7 +64,7 @@ public class InListCondition extends TerminalTextMarkerCondition {
     String coveredText = annotation.getCoveredText();
     if (stringList == null) {
       TextMarkerWordList wordList = listExpr.getList(element.getParent());
-      return new EvaluatedCondition(this, wordList.contains(coveredText, false, 0, null, 0));
+      return new EvaluatedCondition(this, wordList.contains(coveredText, false, 0, null, 0, true));
     }
     List<String> sList = stringList.getList(element.getParent());
     boolean contains = sList.contains(coveredText);

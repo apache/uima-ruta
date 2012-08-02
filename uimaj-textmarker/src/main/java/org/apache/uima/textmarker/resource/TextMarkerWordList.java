@@ -29,10 +29,10 @@ import org.apache.uima.textmarker.TextMarkerStream;
 public interface TextMarkerWordList {
 
   boolean contains(String string, boolean ignoreCase, int size, char[] ignoreChars,
-          int maxIgnoreChars);
+          int maxIgnoreChars, boolean ignoreWS);
 
   boolean containsFragment(String string, boolean ignoreCase, int size, char[] ignoreChars,
-          int maxIgnoreChars);
+          int maxIgnoreChars, boolean ignoreWS);
 
   Collection<String> contains(String string, boolean ignoreCase, int ignoreLength, boolean edit,
           double distance, String ignoreToken);
@@ -41,7 +41,7 @@ public interface TextMarkerWordList {
           boolean edit, double distance, String ignoreToken);
 
   Collection<AnnotationFS> find(TextMarkerStream stream, boolean ignoreCase, int size,
-          char[] ignoreToken, int maxIgnoredTokens);
+          char[] ignoreToken, int maxIgnoredTokens, boolean ingoreWS);
 
   Collection<AnnotationFS> find(TextMarkerStream stream, Map<String, Type> typeMap,
           boolean ignoreCase, int ignoreLength, boolean edit, double distance, String ignoreToken);

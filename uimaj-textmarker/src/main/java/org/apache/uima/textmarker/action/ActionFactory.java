@@ -53,24 +53,20 @@ public class ActionFactory {
 
   public static AbstractTextMarkerAction createMarkFastAction(TypeExpression type,
           WordListExpression list, BooleanExpression ignore, NumberExpression ignoreLength,
-          TextMarkerBlock parent) {
-    return new MarkFastAction(type, list, ignore, ignoreLength);
+          BooleanExpression ignoreWS, TextMarkerBlock parent) {
+    return new MarkFastAction(type, list, ignore, ignoreLength, ignoreWS);
   }
 
-  
   public static AbstractTextMarkerAction createMarkFastAction(TypeExpression type,
           StringListExpression list, BooleanExpression ignore, NumberExpression ignoreLength,
-          TextMarkerBlock env) {
-    return new MarkFastAction(type, list, ignore, ignoreLength);
+          BooleanExpression ignoreWS, TextMarkerBlock env) {
+    return new MarkFastAction(type, list, ignore, ignoreLength, ignoreWS);
   }
-  
-  
+
   public static AbstractTextMarkerAction createMarkLastAction(TypeExpression type,
           TextMarkerBlock parent) {
     return new MarkLastAction(type);
   }
-
- 
 
   public static AbstractTextMarkerAction createRetainTypeAction(List<TypeExpression> types,
           TextMarkerBlock parent) {
@@ -135,7 +131,6 @@ public class ActionFactory {
     return new FilterTypeAction(types);
   }
 
- 
   public static AbstractTextMarkerAction createSetFeatureAction(StringExpression f, Object v,
           TextMarkerBlock parent) {
     if (v instanceof NumberExpression) {
@@ -184,8 +179,11 @@ public class ActionFactory {
 
   public static AbstractTextMarkerAction createMarkTableAction(TypeExpression structure,
           NumberExpression index, WordTableExpression table,
-          Map<StringExpression, NumberExpression> map, BooleanExpression ignoreCase, NumberExpression ignoreLength, StringExpression ignoreChar, NumberExpression maxIgnoreChar, TextMarkerBlock env) {
-    return new MarkTableAction(structure, index, table, map, ignoreCase, ignoreLength, ignoreChar, maxIgnoreChar);
+          Map<StringExpression, NumberExpression> map, BooleanExpression ignoreCase,
+          NumberExpression ignoreLength, StringExpression ignoreChar,
+          NumberExpression maxIgnoreChar, TextMarkerBlock env) {
+    return new MarkTableAction(structure, index, table, map, ignoreCase, ignoreLength, ignoreChar,
+            maxIgnoreChar);
   }
 
   public static AbstractTextMarkerAction createMergeAction(BooleanExpression union, Token target,
@@ -240,7 +238,5 @@ public class ActionFactory {
           NumberExpression penalty, NumberExpression factor, TextMarkerBlock env) {
     return new DynamicAnchoringAction(active, penalty, factor);
   }
-
-
 
 }

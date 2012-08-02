@@ -254,7 +254,8 @@ public class ActionVerbalizer {
       }
       return "MARKFAST(" + verbalizer.verbalize(a.getType()) + "," + list + ","
               + verbalizer.verbalize(a.getIgnore()) + ","
-              + verbalizer.verbalize(a.getIgnoreLength()) + ")";
+              + verbalizer.verbalize(a.getIgnoreLength()) + ","
+              + verbalizer.verbalize(a.getIgnoreWS()) + ")";
     } else if (action instanceof MarkLastAction) {
       MarkLastAction a = (MarkLastAction) action;
       return "MARKLAST(" + verbalizer.verbalize(a.getType()) + ")";

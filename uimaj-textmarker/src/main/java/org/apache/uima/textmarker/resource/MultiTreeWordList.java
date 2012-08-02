@@ -371,7 +371,7 @@ public class MultiTreeWordList implements TextMarkerWordList {
    * @return True, if the TreeWordList contains the string s, false otherwise.
    */
   public boolean contains(String s, boolean ignoreCase) {
-    return contains(s, ignoreCase, 0, new char[] {}, 0);
+    return contains(s, ignoreCase, 0, new char[] {}, 0, true);
   }
 
   /**
@@ -390,7 +390,7 @@ public class MultiTreeWordList implements TextMarkerWordList {
    * @return true, if TreeWordList contains the string, false otherwise.
    */
   public boolean contains(String s, boolean ignoreCase, int size, char[] ignoreChars,
-          int maxIgnoreChars) {
+          int maxIgnoreChars, boolean ignoreWS) {
 
     EditDistanceCostMap edm = new EditDistanceCostMap();
 
@@ -417,7 +417,7 @@ public class MultiTreeWordList implements TextMarkerWordList {
    * @return true, if TreeWordList contains a prefix of the string, false otherwise.
    */
   public boolean containsFragment(String s, boolean ignoreCase, int size, char[] ignoreChars,
-          int maxIgnoreChars) {
+          int maxIgnoreChars, boolean ignoreWS) {
     MultiTextNode pointer = root;
     return recursiveContains(pointer, s, 0, ignoreCase && s.length() > size, true, ignoreChars,
             maxIgnoreChars);
@@ -638,7 +638,7 @@ public class MultiTreeWordList implements TextMarkerWordList {
   }
 
   public List<AnnotationFS> find(TextMarkerStream stream, boolean ignoreCase, int size,
-          char[] ignoreChars, int maxIgnoredChars) {
+          char[] ignoreChars, int maxIgnoredChars, boolean ignoreWS) {
     assert false;
     return new ArrayList<AnnotationFS>();
   }

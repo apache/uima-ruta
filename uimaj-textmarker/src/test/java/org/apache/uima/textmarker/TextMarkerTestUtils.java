@@ -53,17 +53,23 @@ public class TextMarkerTestUtils {
           throws URISyntaxException, IOException, InvalidXMLException,
           ResourceInitializationException, AnalysisEngineProcessException,
           ResourceConfigurationException {
-    return process(ruleFileName, textFileName, amount, false, null);
+    return process(ruleFileName, textFileName, amount, false, null, null);
   }
 
   public static CAS process(String ruleFileName, String textFileName, int amount,
-          boolean dynamicAnchoring, Map<String, String> complexTypes) throws URISyntaxException,
-          IOException, InvalidXMLException, ResourceInitializationException,
-          AnalysisEngineProcessException, ResourceConfigurationException {
-    URL resource = TextMarkerTestUtils.class.getClassLoader().getResource(ruleFileName);
-    File ruleFile = new File(resource.toURI());
-    resource = TextMarkerTestUtils.class.getClassLoader().getResource(textFileName);
-    File textFile = new File(resource.toURI());
+          boolean dynamicAnchoring, Map<String, String> complexTypes, String resourceDirName)
+          throws URISyntaxException, IOException, InvalidXMLException,
+          ResourceInitializationException, AnalysisEngineProcessException,
+          ResourceConfigurationException {
+    URL ruleURL = TextMarkerTestUtils.class.getClassLoader().getResource(ruleFileName);
+    File ruleFile = new File(ruleURL.toURI());
+    URL textURL = TextMarkerTestUtils.class.getClassLoader().getResource(textFileName);
+    File textFile = new File(textURL.toURI());
+    File resourceFile = null;
+    if (resourceDirName != null) {
+      URL resourceURL = TextMarkerTestUtils.class.getClassLoader().getResource(resourceDirName);
+      resourceFile = new File(resourceURL.toURI());
+    }
     URL url = TextMarkerEngine.class.getClassLoader().getResource("BasicEngine.xml");
     if (url == null) {
       url = TextMarkerTestUtils.class.getClassLoader().getResource(
@@ -99,6 +105,11 @@ public class TextMarkerTestUtils {
     }
     ae.setConfigParameterValue(TextMarkerEngine.MAIN_SCRIPT, name);
     ae.setConfigParameterValue(TextMarkerEngine.DYNAMIC_ANCHORING, dynamicAnchoring);
+    if (resourceFile != null) {
+      ae.setConfigParameterValue(TextMarkerEngine.RESOURCE_PATHS,
+              new String[] { resourceFile.getPath() });
+    }
+
     ae.reconfigure();
     CAS cas = ae.newCAS();
     cas.setDocumentText(FileUtils.file2String(textFile, "UTF-8"));

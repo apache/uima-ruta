@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.resource;
 
@@ -76,4 +76,9 @@ public class TextNode {
   public Map<Character, TextNode> getChildren() {
     return this.children;
   }
+
+  public String toString() {
+    return value + (isWordEnd ? "+" : "");
+  }
+
 }

@@ -32,21 +32,18 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.textmarker.TextMarkerTestUtils;
 import org.junit.Test;
 
-public class PartOfTest {
+public class MarkFastTest {
 
   @Test
   public void test() {
     String name = this.getClass().getSimpleName();
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
-    Map<String,String> complexTypes = new TreeMap<String, String>();
-    complexTypes.put("org.apache.uima.WithInitial", "uima.tcas.Annotation");
-    complexTypes.put("org.apache.uima.Initial", "uima.tcas.Annotation");
-    complexTypes.put("org.apache.uima.WithInitialEnd", "org.apache.uima.WithInitial");
+
     
     CAS cas = null;
     try {
       cas = TextMarkerTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
-              + ".txt", 50, false, complexTypes);
+              + ".txt", 50, false, null, namespace + "/");
     } catch (Exception e) {
       e.printStackTrace();
       assert (false);
@@ -57,20 +54,30 @@ public class PartOfTest {
 
     t = TextMarkerTestUtils.getTestType(cas, 1);
     ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
+    assertEquals(3, ai.size());
     iterator = ai.iterator();
-    assertEquals("Vitamine", iterator.next().getCoveredText());
-    assertEquals("A", iterator.next().getCoveredText());
+    assertEquals("1 0 0", iterator.next().getCoveredText());
+    assertEquals("100", iterator.next().getCoveredText());
+    assertEquals("2 0 0", iterator.next().getCoveredText());
  
     t = TextMarkerTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("A", iterator.next().getCoveredText());
+    assertEquals(0, ai.size());
  
     t = TextMarkerTestUtils.getTestType(cas, 3);
     ai = cas.getAnnotationIndex(t);
-    assertEquals(0, ai.size());
+    assertEquals(3, ai.size());
+    iterator = ai.iterator();
+    assertEquals("1 0 0", iterator.next().getCoveredText());
+    assertEquals("100", iterator.next().getCoveredText());
+    assertEquals("2 0 0", iterator.next().getCoveredText());
 
+    t = TextMarkerTestUtils.getTestType(cas, 4);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(2, ai.size());
+    iterator = ai.iterator();
+    assertEquals("1 0 0", iterator.next().getCoveredText());
+    assertEquals("2 0 0", iterator.next().getCoveredText());
+    
   }
 }

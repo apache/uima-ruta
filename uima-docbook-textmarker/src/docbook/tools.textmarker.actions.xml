@@ -622,7 +622,9 @@
 			optional. It defines if the MARKFAST action should ignore the case,
 			whereby its default value is false. The optional fourth parameter
 			specifies a character threshold for the ignorence of the case. It is
-			only relevant if the ignore-case value is set to true. For more
+			only relevant if the ignore-case value is set to true. The last
+			parameter is set to true by default and specifies whether whitespaces
+			in the entries of the dictionary should be ignored. For more
 			information on lists see
 			<xref linkend='ugr.tools.tm.language.declarations.ressource' />
 			. Additionally to external word lists, string lists variables can be
@@ -634,9 +636,9 @@
 			</title>
 			<para>
 				<programlisting><![CDATA[MARKFAST(TypeExpression,ListExpression(,BooleanExpression
-				  (,NumberExpression)?)?)]]></programlisting>
+				  (,NumberExpression,(BooleanExpression)?)?)?)]]></programlisting>
 				<programlisting><![CDATA[MARKFAST(TypeExpression,StringListExpression(,BooleanExpression
-          (,NumberExpression)?)?)]]></programlisting>
+          (,NumberExpression,(BooleanExpression)?)?)?)]]></programlisting>
 			</para>
 		</section>
 		<section>

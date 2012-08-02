@@ -39,6 +39,7 @@ import javax.xml.parsers.SAXParserFactory;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.collection.base_cpm.SkipCasException;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.type.TextMarkerBasic;
@@ -138,8 +139,6 @@ public class TreeWordList implements TextMarkerWordList {
     // Create Nodes from all chars of the strings besides the last one
     TextNode pointer = root;
     for (Character each : s.toCharArray()) {
-      if (Character.isWhitespace(each))
-        continue;
       TextNode childNode = pointer.getChildNode(each);
       if (childNode == null) {
         childNode = new TextNode(each, false);
@@ -154,21 +153,21 @@ public class TreeWordList implements TextMarkerWordList {
    * Checks if TreeWordList contains String s
    */
   public boolean contains(String s, boolean ignoreCase, int size, char[] ignoreChars,
-          int maxIgnoreChars) {
+          int maxIgnoreChars, boolean ignoreWS) {
     TextNode pointer = root;
     return recursiveContains(pointer, s, 0, ignoreCase && s.length() > size, false, ignoreChars,
-            maxIgnoreChars);
+            maxIgnoreChars, ignoreWS);
   }
 
   public boolean containsFragment(String s, boolean ignoreCase, int size, char[] ignoreChars,
-          int maxIgnoreChars) {
+          int maxIgnoreChars, boolean ignoreWS) {
     TextNode pointer = root;
     return recursiveContains(pointer, s, 0, ignoreCase && s.length() > size, true, ignoreChars,
-            maxIgnoreChars);
+            maxIgnoreChars, ignoreWS);
   }
 
   private boolean recursiveContains(TextNode pointer, String text, int index, boolean ignoreCase,
-          boolean fragment, char[] ignoreChars, int maxIgnoreChars) {
+          boolean fragment, char[] ignoreChars, int maxIgnoreChars, boolean ignoreWS) {
     if (pointer == null) {
       return false;
     }
@@ -191,29 +190,51 @@ public class TreeWordList implements TextMarkerWordList {
     if (ignoreCase) {
       TextNode childNodeL = pointer.getChildNode(Character.toLowerCase(charAt));
       TextNode childNodeU = pointer.getChildNode(Character.toUpperCase(charAt));
+      if (childNodeL == null && ignoreWS) {
+        childNodeL = skipWS(pointer, charAt);
+      }
+      if (childNodeU == null && ignoreWS) {
+        childNodeU = skipWS(pointer, charAt);
+      }
       if (charAtIgnored && childNodeL == null && childNodeU == null) {
         return recursiveContains(pointer, text, next, ignoreCase, fragment, ignoreChars,
-                maxIgnoreChars);
+                maxIgnoreChars, ignoreWS);
       } else {
         return recursiveContains(childNodeL, text, next, ignoreCase, fragment, ignoreChars,
-                maxIgnoreChars)
+                maxIgnoreChars, ignoreWS)
                 | recursiveContains(childNodeU, text, next, ignoreCase, fragment, ignoreChars,
-                        maxIgnoreChars);
+                        maxIgnoreChars, ignoreWS);
       }
     } else {
       TextNode childNode = pointer.getChildNode(charAt);
+      if (childNode == null && ignoreWS) {
+        childNode = skipWS(pointer, charAt);
+      }
       if (charAtIgnored && childNode == null) {
         return recursiveContains(pointer, text, next, ignoreCase, fragment, ignoreChars,
-                maxIgnoreChars);
+                maxIgnoreChars, ignoreWS);
       } else {
         return recursiveContains(childNode, text, next, ignoreCase, fragment, ignoreChars,
-                maxIgnoreChars);
+                maxIgnoreChars, ignoreWS);
       }
     }
   }
 
+  private TextNode skipWS(TextNode pointer, char charAt) {
+    TextNode childNode = pointer.getChildNode(' ');
+    if (childNode != null) {
+      TextNode node = childNode.getChildNode(charAt);
+      if (node == null) {
+        return skipWS(childNode, charAt);
+      } else {
+        return node;
+      }
+    }
+    return null;
+  }
+
   public List<AnnotationFS> find(TextMarkerStream stream, boolean ignoreCase, int size,
-          char[] ignoreChars, int maxIgnoredChars) {
+          char[] ignoreChars, int maxIgnoredChars, boolean ignoreWS) {
     ArrayList<AnnotationFS> results = new ArrayList<AnnotationFS>();
     stream.moveToFirst();
     FSIterator<AnnotationFS> streamPointer = stream.copy();
@@ -228,11 +249,13 @@ public class TreeWordList implements TextMarkerWordList {
       // String lastCandidate = candidate.toString();
       Annotation interResult = null;
       while (streamPointer.isValid()) {
-        if (containsFragment(candidate.toString(), ignoreCase, size, ignoreChars, maxIgnoredChars)) {
+        if (containsFragment(candidate.toString(), ignoreCase, size, ignoreChars, maxIgnoredChars,
+                ignoreWS)) {
           streamPointer.moveToNext();
           if (streamPointer.isValid()) {
             TextMarkerBasic next = (TextMarkerBasic) streamPointer.get();
-            if (contains(candidate.toString(), ignoreCase, size, ignoreChars, maxIgnoredChars)) {
+            if (contains(candidate.toString(), ignoreCase, size, ignoreChars, maxIgnoredChars,
+                    ignoreWS)) {
               interResult = new Annotation(stream.getJCas(), basicsToAdd.get(0).getBegin(),
                       basicsToAdd.get(basicsToAdd.size() - 1).getEnd());
             }
@@ -241,12 +264,12 @@ public class TreeWordList implements TextMarkerWordList {
             basicsToAdd.add(next);
           } else {
             tryToCreateAnnotation(stream, ignoreCase, size, results, basicsToAdd,
-                    candidate.toString(), interResult, ignoreChars, maxIgnoredChars);
+                    candidate.toString(), interResult, ignoreChars, maxIgnoredChars, ignoreWS);
           }
         } else {
           basicsToAdd.remove(basicsToAdd.size() - 1);
           tryToCreateAnnotation(stream, ignoreCase, size, results, basicsToAdd,
-                  candidate.toString(), interResult, ignoreChars, maxIgnoredChars);
+                  candidate.toString(), interResult, ignoreChars, maxIgnoredChars, ignoreWS);
           break;
         }
 
@@ -256,15 +279,16 @@ public class TreeWordList implements TextMarkerWordList {
     return results;
   }
 
-  public List<AnnotationFS> find(TextMarkerStream stream, boolean ignoreCase, int size) {
-    return find(stream, ignoreCase, size, null, 0);
+  public List<AnnotationFS> find(TextMarkerStream stream, boolean ignoreCase, int size,
+          boolean ignoreWS) {
+    return find(stream, ignoreCase, size, null, 0, ignoreWS);
   }
 
   private void tryToCreateAnnotation(TextMarkerStream stream, boolean ignoreCase, int size,
           ArrayList<AnnotationFS> results, List<TextMarkerBasic> basicsToAdd, String lastCandidate,
-          Annotation interResult, char[] ignoreChars, int maxIgnoredChars) {
+          Annotation interResult, char[] ignoreChars, int maxIgnoredChars, boolean ignoreWS) {
     if (basicsToAdd.size() >= 1
-            && contains(lastCandidate, ignoreCase, size, ignoreChars, maxIgnoredChars)) {
+            && contains(lastCandidate, ignoreCase, size, ignoreChars, maxIgnoredChars, ignoreWS)) {
 
       results.add(new Annotation(stream.getJCas(), basicsToAdd.get(0).getBegin(), basicsToAdd.get(
               basicsToAdd.size() - 1).getEnd()));

@@ -93,7 +93,7 @@ public class MarkTableAction extends AbstractTextMarkerAction {
     int maxIgnoreCharValue = maxIgnoreChar != null ? maxIgnoreChar.getIntegerValue(element.getParent()) : 0;
     
     TextMarkerWordList wordList = table.getWordList(index);
-    Collection<AnnotationFS> found = wordList.find(stream, ignoreCaseValue, ignoreLengthValue, ignoreCharValue.toCharArray(), maxIgnoreCharValue);
+    Collection<AnnotationFS> found = wordList.find(stream, ignoreCaseValue, ignoreLengthValue, ignoreCharValue.toCharArray(), maxIgnoreCharValue, true);
     for (AnnotationFS annotationFS : found) {
       List<String> rowWhere = table.getRowWhere(index - 1, annotationFS.getCoveredText());
       FeatureStructure newFS = stream.getCas().createFS(type);
