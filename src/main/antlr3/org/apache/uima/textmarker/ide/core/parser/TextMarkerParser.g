@@ -1402,8 +1402,8 @@ actionMarkFast returns [TextMarkerAction action = null]
     {action = ActionFactory.createAction(name, type, list, ignore, numExpr);}
     COMMA (list1 = wordListExpression | list2 = stringListExpression) {list = list1 == null ? list2 : list1;}
     {action = ActionFactory.createAction(name, type, list, ignore, numExpr);}
-    (COMMA ignore = booleanExpression (COMMA numExpr = numberExpression)?)? 
-    {action = ActionFactory.createAction(name, type, list, ignore, numExpr);} // TODO handle list
+    (COMMA ignore = booleanExpression (COMMA numExpr = numberExpression (COMMA ignoreWS = booleanExpression)?)?)? 
+    {action = ActionFactory.createAction(name, type, list, ignore, numExpr, ignoreWS);} // TODO handle list
     RPAREN
     ;
 
