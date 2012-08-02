@@ -41,7 +41,8 @@ public class QuestionGreedy implements RuleElementQuantifier {
       return Collections.emptyList();
     }
     for (RuleElementMatch match : matches) {
-      result &= match.matched() || match.getTextsMatched().isEmpty();
+      result &= match.matched()
+              || (!(match instanceof ComposedRuleElementMatch) && match.getTextsMatched().isEmpty());
     }
     if (!result) {
       matches.remove(0);
