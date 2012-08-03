@@ -99,7 +99,7 @@ public class RuleMatch {
   public List<AnnotationFS> getMatchedAnnotations(TextMarkerStream stream, List<Integer> indexes,
           RuleElementContainer container) {
     List<AnnotationFS> result = new ArrayList<AnnotationFS>();
-
+    indexes = extendIndexes(indexes);
     if (container == null) {
       container = rule.getRoot();
     }
@@ -168,6 +168,23 @@ public class RuleMatch {
         annotation.setEnd(end);
         result.add(annotation);
       }
+    }
+    return result;
+  }
+
+  public static List<Integer> extendIndexes(List<Integer> indexes) {
+    if(indexes == null || indexes.size() <=1) {
+      return indexes;
+    }
+    List<Integer> result = new ArrayList<Integer>();
+    int pointer = indexes.get(0);
+    for (Integer each : indexes) {
+      while(pointer < each-1) {
+        pointer++;
+        result.add(pointer);
+      }
+      result.add(each);
+      pointer = each;
     }
     return result;
   }
