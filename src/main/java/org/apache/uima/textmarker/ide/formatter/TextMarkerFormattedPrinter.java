@@ -281,6 +281,8 @@ public class TextMarkerFormattedPrinter extends ASTVisitor {
         }
         commentLineSince = 0;
       }
+    } else if(inBlockDeclaration || s instanceof CommonToken){
+      appendNewLine();
     }
     lastStatements.put(indentLevel, s);
   }
@@ -768,9 +770,9 @@ public class TextMarkerFormattedPrinter extends ASTVisitor {
    */
   private int appendComments(int start) {
     while (currentComment != null && currentComment.getStartIndex() < start) {
-      String text = currentComment.getText();
+      String text = currentComment.getText().trim();
       fillNewLines(currentComment);
-      append(" " + text);
+      append("" + text);
       currentComment = iterator.hasNext() ? iterator.next() : null;
       commentLineSince++;
     }
