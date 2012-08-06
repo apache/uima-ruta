@@ -187,7 +187,9 @@ public class TextMarkerFormattedPrinter extends ASTVisitor {
     }
     if (s instanceof TextMarkerRule) {
       // traverse into container TextMarkerRule to format RuleElements
-      appendNewLine();
+      if(!inBlockDeclaration) {
+        appendNewLine();
+      }
       // Rules always just consists of RuleElements: whitespace separation
       if (s.sourceEnd() - s.sourceStart() > 2 * maxLineLength) {
         inLargeRule = 1;
@@ -196,7 +198,9 @@ public class TextMarkerFormattedPrinter extends ASTVisitor {
       TextMarkerRule rule = (TextMarkerRule) s;
       List<Expression> expressions = rule.getExpressions();
       traverseAstNodes(expressions, "");
-      appendStatementEnd();
+      if(!inBlockDeclaration) {
+        appendStatementEnd();
+      }
       if (inLargeRule > 0) {
         indentLevel--;
         inLargeRule = 0;
