@@ -19,6 +19,7 @@
 
 package org.apache.uima.textmarker.ide.core.builder;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +37,8 @@ import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
 
 public class TextMarkerProjectUtils {
+
+  private static final String CDE_DATA_PATH = "CDEdataPath";
 
   public static IPath getEngineDescriptorPath(IPath scriptPath, IProject project) {
     String elementName = getModuleName(scriptPath);
@@ -154,14 +157,31 @@ public class TextMarkerProjectUtils {
     return result;
   }
 
-  public static void setProjectDataPath(IProject project, IFolder folder) throws CoreException {
-//    TODO: what about referenced projects?
-    project.setPersistentProperty(new QualifiedName("", "CDEdataPath"), folder.getLocation()
-            .toPortableString());
+  public static void addProjectDataPath(IProject project, IFolder folder) throws CoreException {
+    String dataPath = project.getPersistentProperty((new QualifiedName("", CDE_DATA_PATH)));
+    if (dataPath == null) {
+      dataPath = "";
+    }
+    String addon = folder.getLocation().toPortableString();
+    if (!dataPath.isEmpty()) {
+      dataPath += File.pathSeparator;
+    }
+    dataPath += addon;
+    project.setPersistentProperty(new QualifiedName("", CDE_DATA_PATH), dataPath);
   }
-  
-  
-  
+
+  public static void removeProjectDataPath(IProject project, IFolder folder) throws CoreException {
+    String dataPath = project.getPersistentProperty((new QualifiedName("", CDE_DATA_PATH)));
+    if (dataPath == null) {
+      return;
+    }
+    String path = folder.getLocation().toPortableString();
+    if (!dataPath.isEmpty()) {
+      dataPath.replaceAll(path, "");
+      dataPath.replaceAll(File.pathSeparator + File.pathSeparator, "");
+    }
+    project.setPersistentProperty(new QualifiedName("", CDE_DATA_PATH), dataPath);
+  }
 
   public static String getDefaultInputLocation() {
     return "input";
