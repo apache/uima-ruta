@@ -132,8 +132,8 @@ super.finishPage(monitor);
     BuildpathsBlock.flush(buildpathEntries, fSecondPage.getScriptProject(), monitor);
     copyDescriptors(descFolder);
 
-    TextMarkerProjectUtils.setProjectDataPath(project, descFolder);
-
+    TextMarkerProjectUtils.addProjectDataPath(project, descFolder);
+    
     descFolder.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 
   }
