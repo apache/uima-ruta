@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.textmarker.textruler.TextRulerPlugin;
 
 /**
  * 
@@ -60,7 +61,7 @@ public class GlobalCASSource {
         inUsage.add(newCas);
         return newCas;
       } catch (Exception e) {
-        e.printStackTrace();
+        TextRulerPlugin.error(e);
         return null;
       }
     }

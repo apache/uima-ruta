@@ -21,6 +21,7 @@ package org.apache.uima.textmarker.textruler.core;
 
 import java.io.File;
 
+import org.apache.uima.textmarker.textruler.TextRulerPlugin;
 import org.apache.uima.util.FileUtils;
 
 /**
@@ -88,7 +89,7 @@ public abstract class TextRulerRule {
     try {
       FileUtils.saveString2File(str, file);
     } catch (Exception e) {
-      e.printStackTrace();
+      TextRulerPlugin.error(e);
     }
   }
 

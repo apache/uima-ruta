@@ -31,6 +31,7 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.textmarker.textruler.TextRulerPlugin;
 import org.apache.uima.textmarker.textruler.core.TextRulerAnnotation;
 import org.apache.uima.textmarker.textruler.core.TextRulerBasicLearner;
 import org.apache.uima.textmarker.textruler.core.TextRulerExample;
@@ -43,6 +44,7 @@ import org.apache.uima.textmarker.textruler.core.TextRulerTarget;
 import org.apache.uima.textmarker.textruler.core.TextRulerTarget.MLTargetType;
 import org.apache.uima.textmarker.textruler.core.TextRulerToolkit;
 import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerDelegate;
+import org.apache.uima.textmarker.textruler.extension.TextRulerLearner.TextRulerLearnerState;
 import org.apache.uima.util.FileUtils;
 
 public abstract class BasicLP2 extends TextRulerBasicLearner {
@@ -285,7 +287,7 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
       // resultString += "NUM{REGEXP(\"12\")} ALL{->MARKONCE(stimeSTART)};";
       FileUtils.saveString2File(resultString, file);
     } catch (IOException e) {
-      // TODO send text to ui
+      TextRulerPlugin.error(e);
     }
 
     // correct left start
@@ -298,8 +300,6 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
     // try {
     // FileUtils.saveString2File(resultString, file);
     // } catch (IOException e) {
-    // // TODO Auto-generated catch block
-    // e.printStackTrace();
     // }
 
     // correct right start
@@ -316,7 +316,7 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
   protected abstract void induceRulesFromExample(TextRulerExample e, int roundNumber);
 
   protected void addToFinalContextRulesPool(LP2Rule rule) {
-    if (TextRulerToolkit.DEBUG && false)
+    if (TextRulerToolkit.DEBUG )
       TextRulerToolkit.appendStringToFile(tempDirectory() + "ctxpool.tm", rule.getRuleString()
               + "\n");
 
@@ -324,7 +324,7 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
       contextRulesPool.add(rule);
       // TextRulerToolkit.log("CONTEXT RULE: "+rule.getRuleString()+" ; "+rule.getCoveringStatistics());
     } else {
-      if (TextRulerToolkit.DEBUG && false) {
+      if (TextRulerToolkit.DEBUG) {
         TextRulerToolkit.appendStringToFile(tempDirectory() + "ctxpool.tm", "\tDUPLICATE\n");
       }
     }
@@ -540,7 +540,7 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
       }
       testCAS.reset();
     } catch (Exception e) {
-      e.printStackTrace();
+      TextRulerPlugin.error(e);
       return false;
     }
 
@@ -554,8 +554,9 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
 
   @Override
   protected boolean checkForMandatoryTypes() {
-    if (!super.checkForMandatoryTypes())
+    if (!super.checkForMandatoryTypes()) {
       return false;
+    }
 
     CAS someCas = getTestCAS();
     TypeSystem ts = someCas.getTypeSystem();
@@ -568,12 +569,26 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
     list.add(new TextRulerTarget(slotNames[0], MLTargetType.SINGLE_RIGHT_BOUNDARY, this)
             .getSingleSlotTypeName());
 
-    // TODO add correction types here!
+    boolean result = true;
+    List<String> missingTypes = new ArrayList<String>();
     for (String s : list) {
-      if (ts.getType(s) == null)
-        return false;
+      if (ts.getType(s) == null) {
+        missingTypes.add(s);
+        result = false;
+      }
     }
-    return true;
+    String missingString = "";
+    for (String string : missingTypes) {
+      missingString += string + ", ";
+    }
+    if (!missingString.isEmpty()) {
+      missingString = missingString.substring(0, missingString.length() - 2);
+    }
+    if (!result) {
+      sendStatusUpdateToDelegate("Error: Some Slot- or Helper-Types were not found in TypeSystem: "
+              + missingString, TextRulerLearnerState.ML_ERROR, false);
+    }
+    return result;
   }
 
 }

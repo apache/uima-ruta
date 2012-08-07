@@ -19,6 +19,8 @@
 
 package org.apache.uima.textmarker.textruler;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -74,4 +76,14 @@ public class TextRulerPlugin extends AbstractUIPlugin {
   public static ImageDescriptor getImageDescriptor(String path) {
     return imageDescriptorFromPlugin(PLUGIN_ID, path);
   }
+  
+  public static void error(String message, Throwable t) {
+    plugin.getLog().log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.OK, message, t));
+  }
+
+  public static void error(Throwable t) {
+    error(t.getMessage(), t);
+  }
+  
+  
 }

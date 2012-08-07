@@ -24,6 +24,7 @@ import java.io.FilenameFilter;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.textmarker.textruler.TextRulerPlugin;
 import org.apache.uima.textmarker.textruler.core.GlobalCASSource;
 import org.apache.uima.textmarker.textruler.core.TextRulerToolkit;
 import org.eclipse.core.runtime.Path;
@@ -74,7 +75,7 @@ public class TextRulerPreprocessor {
       // ae.setConfigParameterValue(TextMarkerEngine.USE_SCANNER, true);
       // ae.reconfigure();
     } catch (Exception e) {
-      e.printStackTrace();
+      TextRulerPlugin.error(e);
       return null;
     }
 
@@ -94,7 +95,7 @@ public class TextRulerPreprocessor {
         TextRulerToolkit.log(" OK");
         TextRulerToolkit.writeCAStoXMIFile(cas, outputFolder + "/processed_" + file.getName());
       } catch (Exception e) {
-        e.printStackTrace();
+        TextRulerPlugin.error(e);
         TextRulerToolkit.log(" ERROR!");
       }
       cas.reset();

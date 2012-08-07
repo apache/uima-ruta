@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.uima.textmarker.textruler.TextRulerPlugin;
 import org.apache.uima.textmarker.textruler.core.TextRulerToolkit;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -143,7 +144,7 @@ public class TextRulerController {
       File outputFolder = new File(outFolder);
       outputFolder.mkdir();
     } catch (IOException e) {
-      e.printStackTrace();
+      TextRulerPlugin.error(e);
       return false;
     }
 
@@ -214,7 +215,7 @@ public class TextRulerController {
           learners.add(new TextRulerLearnerController(element.getAttribute("id"), element
                   .getAttribute("name"), factory));
         } catch (CoreException e) {
-          e.printStackTrace();
+          TextRulerPlugin.error(e);
         }
       }
     }

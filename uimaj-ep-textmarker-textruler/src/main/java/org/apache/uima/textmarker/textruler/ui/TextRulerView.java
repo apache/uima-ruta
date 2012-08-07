@@ -23,6 +23,7 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.uima.textmarker.textruler.TextRulerPlugin;
 import org.apache.uima.textmarker.textruler.extension.TextRulerController;
 import org.apache.uima.textmarker.textruler.extension.TextRulerControllerDelegate;
 import org.apache.uima.textmarker.textruler.extension.TextRulerLearner.TextRulerLearnerState;
@@ -145,7 +146,7 @@ public class TextRulerView extends ViewPart implements TextRulerControllerDelega
                             IWorkbenchPage.VIEW_CREATE);
             ((TextRulerResultsView) view).setViewTitle(c.getName() + " - Results");
           } catch (PartInitException e) {
-            e.printStackTrace();
+            TextRulerPlugin.error(e);
           }
         } else {
           ((TextRulerResultsView) resultView).setViewTitle(c.getName() + " - Results");

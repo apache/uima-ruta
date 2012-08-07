@@ -34,6 +34,7 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.textmarker.engine.TextMarkerEngine;
+import org.apache.uima.textmarker.textruler.TextRulerPlugin;
 import org.apache.uima.textmarker.textruler.core.TextRulerTarget.MLTargetType;
 import org.apache.uima.textmarker.textruler.extension.TextRulerLearner;
 import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerDelegate;
@@ -119,14 +120,15 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
       IPath path = new Path(tempRulesFileName);
       ae.setConfigParameterValue(TextMarkerEngine.MAIN_SCRIPT, path.removeFileExtension()
               .lastSegment());
-      ae.setConfigParameterValue(TextMarkerEngine.SCRIPT_PATHS, new String[] { path
-              .removeLastSegments(1).toPortableString() });
-      // ae.setConfigParameterValue(TextMarkerEngine.SEEDERS, new String[] {""});
+      String portableString = path.removeLastSegments(1).toPortableString();
+      ae.setConfigParameterValue(TextMarkerEngine.SCRIPT_PATHS, new String[] { portableString });
       ae.setConfigParameterValue(TextMarkerEngine.ADDITIONAL_SCRIPTS, new String[0]);
+      ae.setConfigParameterValue(TextMarkerEngine.RELOAD_SCRIPT, true);
+
       try {
         ae.reconfigure();
       } catch (ResourceConfigurationException e) {
-        e.printStackTrace();
+        TextRulerPlugin.error(e);
         return null;
       }
     }
@@ -152,8 +154,10 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     if (!missingString.isEmpty()) {
       missingString = missingString.substring(0, missingString.length() - 2);
     }
-    sendStatusUpdateToDelegate("Error: Some Slot- or Helper-Types were not found in TypeSystem: "
-            + missingString, TextRulerLearnerState.ML_ERROR, false);
+    if (!result) {
+      sendStatusUpdateToDelegate("Error: Some Slot- or Helper-Types were not found in TypeSystem: "
+              + missingString, TextRulerLearnerState.ML_ERROR, false);
+    }
     return result;
   }
 
@@ -181,7 +185,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
           try {
             doRun();
           } catch (Exception e) {
-            e.printStackTrace();
+            TextRulerPlugin.error(e);
             sendStatusUpdateToDelegate("Aborted due to exception!", TextRulerLearnerState.ML_ERROR,
                     true);
           }
@@ -191,7 +195,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
               File file = new File(tempDirectory() + "results.tm");
               FileUtils.saveString2File(getResultString(), file);
             } catch (Exception e) {
-              e.printStackTrace();
+              TextRulerPlugin.error(e);
             }
           }
           cleanUp();
@@ -298,7 +302,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
       compareOriginalDocumentWithTestCAS(doc, testCas, rule.getTarget(), c,
               collectNegativeCoveredInstancesWhenTesting());
     } catch (Exception e) {
-      e.printStackTrace();
+      TextRulerPlugin.error(e);
     }
   }
 
@@ -323,7 +327,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     try {
       FileUtils.saveString2File(script, new File(tempRulesFileName));
     } catch (IOException e) {
-      e.printStackTrace();
+      TextRulerPlugin.error(e);
     }
     AnalysisEngine analysisEngine = getAnalysisEngine();
     CAS testCAS = getTestCAS();
@@ -331,7 +335,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     try {
       analysisEngine.process(testCAS);
     } catch (AnalysisEngineProcessException e) {
-      e.printStackTrace();
+      TextRulerPlugin.error(e);
     }
     return testCAS;
   }
@@ -454,7 +458,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
       try {
         algTestCAS = GlobalCASSource.allocCAS(ae);
       } catch (Exception e) {
-        e.printStackTrace();
+        TextRulerPlugin.error(e);
         return null;
       }
 

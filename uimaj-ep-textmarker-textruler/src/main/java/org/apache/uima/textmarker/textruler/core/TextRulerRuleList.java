@@ -22,6 +22,7 @@ package org.apache.uima.textmarker.textruler.core;
 import java.io.File;
 import java.util.ArrayList;
 
+import org.apache.uima.textmarker.textruler.TextRulerPlugin;
 import org.apache.uima.util.FileUtils;
 
 /**
@@ -39,7 +40,7 @@ public class TextRulerRuleList extends ArrayList<TextRulerRule> {
     try {
       FileUtils.saveString2File(getTMFileString(fileHeader), file);
     } catch (Exception e) {
-      e.printStackTrace();
+      TextRulerPlugin.error(e);
     }
   }
 

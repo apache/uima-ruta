@@ -30,6 +30,7 @@ import java.util.List;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.apache.uima.textmarker.textruler.TextRulerPlugin;
 import org.apache.uima.textmarker.textruler.core.TextRulerToolkit;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
@@ -118,9 +119,9 @@ public class AddRemoveList extends Composite {
       }
       Collections.sort(types);
     } catch (InvalidXMLException e) {
-      e.printStackTrace();
+      TextRulerPlugin.error(e);
     } catch (IOException e) {
-      e.printStackTrace();
+      TextRulerPlugin.error(e);
     }
   }
 

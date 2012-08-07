@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.textmarker.textruler.TextRulerPlugin;
 import org.apache.uima.textmarker.textruler.core.TextRulerToolkit;
 import org.apache.uima.textmarker.textruler.tools.F1Scorer.Score;
 import org.apache.uima.util.FileUtils;
@@ -83,7 +84,7 @@ public class BatchRuleScorer {
     try {
       FileUtils.saveString2File(str, new File(resultsFile));
     } catch (IOException e) {
-      e.printStackTrace();
+      TextRulerPlugin.error(e);
     }
   }
 

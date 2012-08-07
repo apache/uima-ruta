@@ -27,6 +27,7 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.textmarker.textruler.TextRulerPlugin;
 import org.apache.uima.textmarker.textruler.core.TextRulerToolkit;
 import org.apache.uima.util.FileUtils;
 import org.eclipse.core.runtime.Path;
@@ -58,7 +59,7 @@ public class SGMLToXMIConverter {
           annotations++;
         }
       } catch (Exception e) {
-        e.printStackTrace();
+        TextRulerPlugin.error(e);
       }
       textBuf.delete(indexTagBegin, indexTagEnd + 1);
     }
@@ -92,7 +93,7 @@ public class SGMLToXMIConverter {
         TextRulerToolkit.writeCAStoXMIFile(theCas, outFolder + f.getName() + ".xmi");
         TextRulerToolkit.log("Saved to " + outFolder + f.getName() + ".xmi");
       } catch (Exception e) {
-        e.printStackTrace();
+        TextRulerPlugin.error(e);
       }
     }
 

@@ -28,6 +28,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.textmarker.engine.TextMarkerEngine;
+import org.apache.uima.textmarker.textruler.TextRulerPlugin;
 import org.apache.uima.textmarker.textruler.core.TextRulerToolkit;
 import org.apache.uima.util.FileUtils;
 import org.eclipse.core.runtime.IPath;
@@ -64,11 +65,11 @@ public class BatchRuleEvaluator {
               .lastSegment());
       ae.setConfigParameterValue(TextMarkerEngine.SCRIPT_PATHS, new String[] { path
               .removeLastSegments(1).toPortableString() });
-      // ae.setConfigParameterValue(TextMarkerEngine.SEEDERS, new String[] {});
+      ae.setConfigParameterValue(TextMarkerEngine.RELOAD_SCRIPT, true);
       try {
         ae.reconfigure();
       } catch (ResourceConfigurationException e) {
-        e.printStackTrace();
+        TextRulerPlugin.error(e);
         return null;
       }
     }
@@ -137,8 +138,7 @@ public class BatchRuleEvaluator {
     try {
       FileUtils.copyFile(new File(rulesFile), new File(tempDir));
     } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      TextRulerPlugin.error(e);
       return;
     }
 
@@ -161,7 +161,7 @@ public class BatchRuleEvaluator {
       try {
         ae.process(sharedCAS);
       } catch (AnalysisEngineProcessException e) {
-        e.printStackTrace();
+        TextRulerPlugin.error(e);
         return;
       }
       TextRulerToolkit.writeCAStoXMIFile(

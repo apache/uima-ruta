@@ -497,7 +497,7 @@ public class TextRulerViewComposite extends org.eclipse.swt.widgets.Composite {
 
       this.layout();
     } catch (Exception e) {
-      e.printStackTrace();
+      TextRulerPlugin.error(e);
     }
 
     DropTarget dt = new DropTarget(inputDirectoryText, DND.DROP_DEFAULT | DND.DROP_MOVE);

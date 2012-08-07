@@ -122,7 +122,7 @@ public class TextRulerToolkit {
       ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
       result = UIMAFramework.produceAnalysisEngine(specifier);
     } catch (Exception e) {
-      e.printStackTrace();
+      TextRulerPlugin.error(e);
       result = null;
     }
     return result;
@@ -135,7 +135,7 @@ public class TextRulerToolkit {
       ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
       result = UIMAFramework.produceAnalysisEngine(specifier);
     } catch (Exception e) {
-      e.printStackTrace();
+      TextRulerPlugin.error(e);
       result = null;
     }
     return result;
@@ -159,13 +159,13 @@ public class TextRulerToolkit {
       XmiCasDeserializer.deserialize(inputStream, resultCas, true);
       return resultCas;
     } catch (Exception e) {
-      e.printStackTrace();
+      TextRulerPlugin.error(e);
     } finally {
       try {
         if (inputStream != null)
           inputStream.close();
       } catch (Exception e) {
-        e.printStackTrace();
+        TextRulerPlugin.error(e);
       }
     }
     return null;
@@ -185,13 +185,13 @@ public class TextRulerToolkit {
       XMLSerializer xmlSer = new XMLSerializer(out, false);
       ser.serialize(aCas, xmlSer.getContentHandler());
     } catch (Exception e) {
-      e.printStackTrace();
+      TextRulerPlugin.error(e);
     } finally {
       if (out != null) {
         try {
           out.close();
         } catch (Exception e) {
-          e.printStackTrace();
+          TextRulerPlugin.error(e);
         }
 
       }
@@ -257,7 +257,7 @@ public class TextRulerToolkit {
       }
 
     } catch (Exception e) {
-      e.printStackTrace();
+      TextRulerPlugin.error(e);
     }
     return result;
   }
@@ -562,7 +562,7 @@ public class TextRulerToolkit {
       output.append(str);
       output.close();
     } catch (IOException e) {
-      e.printStackTrace();
+      TextRulerPlugin.error(e);
     }
   }
 

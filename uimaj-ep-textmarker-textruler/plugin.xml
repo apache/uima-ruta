@@ -115,6 +115,9 @@ under the License.
                id="MLTestCommand"
                label="Test"
                style="push">
+               <visibleWhen
+                  checkEnabled="false">
+            </visibleWhen>
          </command>
       </menuContribution>
    </extension>

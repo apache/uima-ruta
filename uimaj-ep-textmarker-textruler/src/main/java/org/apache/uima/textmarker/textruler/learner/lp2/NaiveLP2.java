@@ -30,6 +30,7 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.textmarker.textruler.TextRulerPlugin;
 import org.apache.uima.textmarker.textruler.core.TextRulerAnnotation;
 import org.apache.uima.textmarker.textruler.core.TextRulerExample;
 import org.apache.uima.textmarker.textruler.core.TextRulerRule;
@@ -112,7 +113,7 @@ public class NaiveLP2 extends BasicLP2 {
       try {
         FileUtils.saveString2File(str.toString(), file);
       } catch (Exception ex) {
-        ex.printStackTrace();
+        TextRulerPlugin.error(ex);
       }
     }
 
