@@ -35,7 +35,6 @@ import org.apache.uima.textmarker.ide.parser.ast.TextMarkerCondition;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerRule;
 import org.apache.uima.textmarker.ide.ui.TextMarkerPartitions;
 import org.apache.uima.textmarker.ide.ui.TextMarkerPreferenceConstants;
-import org.apache.uima.textmarker.ide.ui.actions.TextMarkerGenerateActionGroup;
 import org.apache.uima.textmarker.ide.ui.text.TextMarkerPairMatcher;
 import org.apache.uima.textmarker.ide.ui.text.folding.TextMarkerFoldingStructureProvider;
 import org.eclipse.core.filebuffers.IDocumentSetupParticipant;
@@ -77,8 +76,6 @@ import org.eclipse.search2.internal.ui.text.Highlighter;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.actions.ActionGroup;
-import org.eclipse.ui.texteditor.ITextEditorActionConstants;
 import org.eclipse.ui.texteditor.IUpdate;
 import org.eclipse.ui.texteditor.SourceViewerDecorationSupport;
 import org.eclipse.ui.texteditor.TextOperationAction;
@@ -220,47 +217,6 @@ public class TextMarkerEditor extends ScriptEditor {
     markAsSelectionDependentAction("Format", true); //$NON-NLS-1$
     // PlatformUI.getWorkbench().getHelpSystem().setHelp(action,
     // IJavaHelpContextIds.FORMAT_ACTION);
-
-    ActionGroup generateActions = new TextMarkerGenerateActionGroup(this,
-            ITextEditorActionConstants.GROUP_EDIT);
-//    getActionGroup().addGroup(generateActions);
-//    fContextMenuGroup.addGroup(generateActions);
-    // commented 090326->
-    // action = new FormatElementAction();
-    // action
-    // .setActionDefinitionId(IScriptEditorActionDefinitionIds.QUICK_FORMAT);
-    //		setAction("QuickFormat", action); //$NON-NLS-1$
-    //		markAsStateDependentAction("QuickFormat", true); //$NON-NLS-1$ <-
-
-    // action = new AddBlockCommentAction(DLTKEditorMessages
-    //				.getBundleForConstructedKeys(), "AddBlockComment.", this); //$NON-NLS-1$
-    // action
-    // .setActionDefinitionId(IScriptEditorActionDefinitionIds.ADD_BLOCK_COMMENT);
-    //		setAction("AddBlockComment", action); //$NON-NLS-1$
-    //		markAsStateDependentAction("AddBlockComment", true); //$NON-NLS-1$
-    //		markAsSelectionDependentAction("AddBlockComment", true); //$NON-NLS-1$
-    // // PlatformUI.getWorkbench().getHelpSystem().setHelp(action,
-    // // IDLTKJavaHelpContextIds.ADD_BLOCK_COMMENT_ACTION);
-    //
-    // action = new RemoveBlockCommentAction(DLTKEditorMessages
-    //				.getBundleForConstructedKeys(), "RemoveBlockComment.", this); //$NON-NLS-1$
-    // action
-    // .setActionDefinitionId(IScriptEditorActionDefinitionIds.REMOVE_BLOCK_COMMENT);
-    //		setAction("RemoveBlockComment", action); //$NON-NLS-1$
-    //		markAsStateDependentAction("RemoveBlockComment", true); //$NON-NLS-1$
-    //		markAsSelectionDependentAction("RemoveBlockComment", true); //$NON-NLS-1$
-    // PlatformUI.getWorkbench().getHelpSystem().setHelp(action,
-    // IJavaHelpContextIds.REMOVE_BLOCK_COMMENT_ACTION);
-
-    // action = new IndentAction(DLTKEditorMessages
-    //				.getBundleForConstructedKeys(), "Indent.", this, false); //$NON-NLS-1$
-    // action.setActionDefinitionId(IScriptEditorActionDefinitionIds.INDENT);
-    //		setAction("Indent", action); //$NON-NLS-1$
-    //		markAsStateDependentAction("Indent", true); //$NON-NLS-1$
-    //		markAsSelectionDependentAction("Indent", true); //$NON-NLS-1$
-    // // PlatformUI.getWorkbench().getHelpSystem().setHelp(action,
-    // // IJavaHelpContextIds.INDENT_ACTION);
-
   }
 
   final static String[] properties = new String[] {
@@ -425,7 +381,7 @@ public class TextMarkerEditor extends ScriptEditor {
     if (myAnnotations != null && !myAnnotations.isEmpty()) {
       removeAnnotations(myAnnotations.keySet());
     }
-    
+
     TextMarkerSelectionParser parser = new TextMarkerSelectionParser();
     ISourceModule unit = (ISourceModule) getInputModelElement();
     ModuleDeclaration parsed = parser.parse(unit);
@@ -436,7 +392,7 @@ public class TextMarkerEditor extends ScriptEditor {
     }
     TextMarkerRule rule = visitor.getResult();
     myAnnotations = new HashMap<Annotation, Position>();
-    if(rule != null) {
+    if (rule != null) {
       Annotation annotation = new Annotation(SearchPlugin.SEARCH_ANNOTATION_TYPE, true, null);
       int sourceStart = rule.sourceStart();
       int sourceEnd = rule.sourceEnd();
@@ -447,8 +403,6 @@ public class TextMarkerEditor extends ScriptEditor {
     addAnnotations(myAnnotations);
   }
 
-  
-  
   private void removeAnnotations(Collection<Annotation> annotations) {
     IAnnotationModel model = getDocumentProvider().getAnnotationModel(getEditorInput());
     for (Annotation annotation : annotations) {
@@ -553,5 +507,4 @@ public class TextMarkerEditor extends ScriptEditor {
     super.configureSourceViewerDecorationSupport(support);
   }
 
-  
 }
