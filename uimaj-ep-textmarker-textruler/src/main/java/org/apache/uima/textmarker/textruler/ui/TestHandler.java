@@ -26,32 +26,26 @@ import org.eclipse.core.commands.IHandlerListener;
 
 public class TestHandler implements IHandler {
 
-  @Override
   public void addHandlerListener(IHandlerListener arg0) {
 
   }
 
-  @Override
   public void dispose() {
 
   }
 
-  @Override
   public Object execute(ExecutionEvent arg0) throws ExecutionException {
     return null;
   }
 
-  @Override
   public boolean isEnabled() {
     return false;
   }
 
-  @Override
   public boolean isHandled() {
     return false;
   }
 
-  @Override
   public void removeHandlerListener(IHandlerListener arg0) {
 
   }
