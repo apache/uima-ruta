@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.ide.ui.text;
 
@@ -36,7 +36,6 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITypedRegion;
 import org.eclipse.jface.text.TextUtilities;
 import org.eclipse.jface.text.rules.FastPartitioner;
-
 
 public class TextMarkerAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
   // TODO
@@ -467,8 +466,8 @@ public class TextMarkerAutoEditStrategy extends DefaultIndentLineAutoEditStrateg
     }
 
     // first check, if we not inside string, if yes, jump to start
-    ITypedRegion region = TextUtilities.getPartition(d, fPartitioning, d
-            .getLineOffset(lastNonEmptyLine), true);
+    ITypedRegion region = TextUtilities.getPartition(d, fPartitioning,
+            d.getLineOffset(lastNonEmptyLine), true);
     if (region.getType() == TextMarkerPartitions.TM_STRING) {
       lastNonEmptyLine = d.getLineOfOffset(region.getOffset());
     }
@@ -794,10 +793,6 @@ public class TextMarkerAutoEditStrategy extends DefaultIndentLineAutoEditStrateg
    * @param c
    */
   private void smartPaste(IDocument d, DocumentCommand c) {
-    /*
-     * We are creating temp document, inserting text as is, and then sequentially calling
-     * calcLineIndent for each new line.
-     */
     try {
       String content = d.get(0, c.offset) + c.text;
       Document temp = new Document(content);
@@ -815,26 +810,23 @@ public class TextMarkerAutoEditStrategy extends DefaultIndentLineAutoEditStrateg
           line++;
         offset = temp.getLineOffset(line);
       } catch (BadLocationException e) {
-        // ok, we are inserting only one string...
         offset = temp.getLength();
       }
       while (offset < temp.getLength()) {
-        // calculate indentation of this line
         String resultIndent = calcLineIndent(temp, line, false, temp.getLineOffset(line));
-        // change current line offset
         String currentIndent = getLineIndent(temp, line);
-        // String dbg = temp.get ();
         if (resultIndent == null) {
           resultIndent = commonIndent + currentIndent;
-          if (getPhysicalLength(resultIndent) > getPhysicalLength(lastIndent))
-            resultIndent = lastIndent;
+          // TODO commented to retain indent of pasted blocks
+          // if (getPhysicalLength(resultIndent) > getPhysicalLength(lastIndent))
+          // resultIndent = lastIndent;
         }
         temp.replace(offset, currentIndent.length(), resultIndent);
         String currentLine = getDocumentLine(temp, line);
-        if (currentLine.trim().length() > 0 && (!currentLine.trim().startsWith("#")))
+        if (currentLine.trim().length() > 0 && (!currentLine.trim().startsWith("//"))) {
           lastIndent = resultIndent;
+        }
 
-        // dbg = temp.get ();
         if (temp.getLineOffset(line) + temp.getLineLength(line) == temp.getLength())
           break;
         line++;
