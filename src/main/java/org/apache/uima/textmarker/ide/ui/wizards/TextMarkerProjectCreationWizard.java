@@ -51,7 +51,6 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 
 public class TextMarkerProjectCreationWizard extends ProjectWizard {
 
- 
   public static final String ID_WIZARD = "org.apache.uima.textmarker.ide.ui.wizards.TextMarkerProjectWizard"; //$NON-NLS-1$
 
   private ProjectWizardFirstPage fFirstPage;
@@ -66,7 +65,6 @@ public class TextMarkerProjectCreationWizard extends ProjectWizard {
     setWindowTitle(TextMarkerWizardMessages.ProjectCreationWizard_title);
   }
 
-  
   @Override
   public void addPages() {
     super.addPages();
@@ -81,7 +79,7 @@ public class TextMarkerProjectCreationWizard extends ProjectWizard {
 
   @Override
   protected void finishPage(IProgressMonitor monitor) throws InterruptedException, CoreException {
-super.finishPage(monitor);
+    super.finishPage(monitor);
     createProject(monitor);
   }
 
@@ -133,7 +131,7 @@ super.finishPage(monitor);
     copyDescriptors(descFolder);
 
     TextMarkerProjectUtils.addProjectDataPath(project, descFolder);
-    
+
     descFolder.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 
   }
@@ -184,6 +182,16 @@ super.finishPage(monitor);
       }
       in = TextMarkerEngine.class.getResourceAsStream("SourceDocumentInformation.xml");
       out = new FileOutputStream(new File(utilsDir, "SourceDocumentInformation.xml"));
+      if (in != null && out != null) {
+        copy(in, out);
+      }
+      in = TextMarkerEngine.class.getResourceAsStream("PlainTextAnnotator.xml");
+      out = new FileOutputStream(new File(utilsDir, "PlainTextAnnotator.xml"));
+      if (in != null && out != null) {
+        copy(in, out);
+      }
+      in = TextMarkerEngine.class.getResourceAsStream("PlainTextTypeSystem.xml");
+      out = new FileOutputStream(new File(utilsDir, "PlainTextTypeSystem.xml"));
       if (in != null && out != null) {
         copy(in, out);
       }
