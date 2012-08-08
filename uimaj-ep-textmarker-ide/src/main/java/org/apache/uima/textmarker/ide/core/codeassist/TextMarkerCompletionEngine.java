@@ -137,8 +137,9 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
           int type = ((TextMarkerVariableReference) node).getType();
           doCompletionOnVarRef(module, parsed, startPart, type,
                   ((TextMarkerVariableReference) node).getName());
-          // TODO: only if first rule element
-          // doCompletionOnDeclaration(module, startPart);
+          if(TextMarkerParseUtils.isAtLineStart(node, content)) {
+            doCompletionOnDeclaration(module, startPart);
+          }
         } else if (node instanceof ComponentDeclaration) {
           doCompletionOnComponentDeclaration(module, parsed, startPart,
                   ((ComponentDeclaration) node).getType(), startPart);
