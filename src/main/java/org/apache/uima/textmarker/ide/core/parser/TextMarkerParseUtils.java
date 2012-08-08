@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.ide.core.parser;
 
@@ -34,8 +34,29 @@ import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 
-
 public class TextMarkerParseUtils {
+
+  public static boolean isAtLineStart(ASTNode node, String content) {
+    boolean blockStart = false;
+    int sourceStart = node.sourceStart();
+    while (sourceStart >= 0) {
+      sourceStart--;
+      char c = content.charAt(sourceStart);
+      if (Character.isWhitespace(c)) {
+        continue;
+      }
+      if (c == '\n' || c == '\r' || c == ';') {
+        return true;
+      } else if (c == '{') {
+        blockStart = true;
+      } else if (c == '}' && blockStart) {
+       return true;
+      } else {
+        return false;
+      }
+    }
+    return false;
+  }
 
   public static int endLineOrSymbol(int from, String content) {
     int pos = 0;
@@ -117,38 +138,31 @@ public class TextMarkerParseUtils {
   }
 
   public static String[] returnVariable(Statement node) {
-    // TODO Auto-generated method stub
     return null;
   }
 
   public static SimpleReference extractVariableFromString(int sourceStart, int sourceEnd, int i,
           String name) {
-    // TODO Auto-generated method stub
     return null;
   }
 
   public static SimpleReference extractVariableFromString(StringLiteral completionNode, int pos) {
-    // TODO Auto-generated method stub
     return null;
   }
 
   public static ASTNode getScopeParent(ModuleDeclaration module, Expression s) {
-    // TODO Auto-generated method stub
     return null;
   }
 
   public static String processFieldName(IField field, String token) {
-    // TODO Auto-generated method stub
     return null;
   }
 
   public static String processMethodName(IMethod method, String token) {
-    // TODO Auto-generated method stub
     return null;
   }
 
   public static String processTypeName(IType method, String token) {
-    // TODO Auto-generated method stub
     return null;
   }
 
