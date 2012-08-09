@@ -21,9 +21,6 @@ package org.apache.uima.textmarker.condition;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Map;
-import java.util.TreeMap;
-
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;

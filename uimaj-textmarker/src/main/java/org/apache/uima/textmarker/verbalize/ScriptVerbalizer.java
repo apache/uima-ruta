@@ -28,7 +28,6 @@ import org.apache.uima.textmarker.TextMarkerStatement;
 import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
 import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
 import org.apache.uima.textmarker.expression.TextMarkerExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.rule.ComposedRuleElement;
 import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.TextMarkerDisjunctiveMatcher;

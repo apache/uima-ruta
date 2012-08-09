@@ -39,7 +39,6 @@ import javax.xml.parsers.SAXParserFactory;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.collection.base_cpm.SkipCasException;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.type.TextMarkerBasic;

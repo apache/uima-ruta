@@ -21,6 +21,7 @@ package org.apache.uima.textmarker;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -180,7 +181,9 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     TextMarkerBasic beginAnchor = getBeginAnchor(annotation.getBegin());
     TextMarkerBasic endAnchor = getEndAnchor(annotation.getEnd());
     beginAnchor.addBegin(annotation, parent);
-    endAnchor.addEnd(annotation, parent);
+    if(endAnchor!= null) {
+      endAnchor.addEnd(annotation, parent);
+    }
     Collection<TextMarkerBasic> basicAnnotationsInWindow = getAllBasicsInWindow(annotation);
     for (TextMarkerBasic basic : basicAnnotationsInWindow) {
       basic.addPartOf(type);
@@ -416,7 +419,9 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public Collection<TextMarkerBasic> getAllBasicsInWindow(AnnotationFS windowAnnotation) {
-
+    if(windowAnnotation.getBegin() >= windowAnnotation.getEnd()) {
+      return Collections.emptySet();
+    }
     TextMarkerBasic beginAnchor = getBeginAnchor(windowAnnotation.getBegin());
     if (beginAnchor.getEnd() == windowAnnotation.getEnd()) {
       Collection<TextMarkerBasic> result = new ArrayList<TextMarkerBasic>(1);

@@ -47,6 +47,11 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.htmlparser</groupId>
+			<artifactId>htmlparser</artifactId>
+			<version>1.6</version>
+		</dependency>
+		<dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
 			<version>3.2.1</version>
@@ -90,11 +95,11 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
-    <resources>
-      <resource>
-        <directory>src\main\resources</directory>
-      </resource>
-    </resources>
+		<resources>
+			<resource>
+				<directory>src\main\resources</directory>
+			</resource>
+		</resources>
 		<plugins>
 			<!-- generate java code for antlr grammars -->
 			<plugin>
@@ -130,7 +135,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>

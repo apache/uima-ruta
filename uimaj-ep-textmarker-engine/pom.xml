@@ -139,7 +139,7 @@
 						</goals>
 						<configuration>
 							<outputDirectory>${project.build.outputDirectory}</outputDirectory>
-						  <excludeArtifactIds>uimaj-core,uimaj-tools,uimaj-document-annotation,uimaj-adapter-vinci,jVinci,uimaj-cpe</excludeArtifactIds>
+						  <excludeArtifactIds>uimaj-core,uimaj-tools,uimaj-document-annotation,uimaj-adapter-vinci,jVinci,uimaj-cpe,tools</excludeArtifactIds>
 						</configuration>
 					</execution>
 				</executions>

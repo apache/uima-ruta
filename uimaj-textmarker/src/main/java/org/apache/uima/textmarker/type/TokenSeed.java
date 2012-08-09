@@ -3,10 +3,9 @@
 /* First created by JCasGen Wed Jan 11 14:42:22 CET 2012 */
 package org.apache.uima.textmarker.type;
 
-import org.apache.uima.jcas.JCas; 
+import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
-
 import org.apache.uima.jcas.tcas.Annotation;
 
 

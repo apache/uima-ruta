@@ -20,6 +20,7 @@
 package org.apache.uima.textmarker.ide.ui.wizards;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -137,83 +138,36 @@ public class TextMarkerProjectCreationWizard extends ProjectWizard {
   }
 
   private void copyDescriptors(IFolder descFolder) {
+    File descDir = descFolder.getLocation().toFile();
+    File utilsDir = new File(descFolder.getLocation().toFile(), "utils/");
+    copy(descDir, "BasicTypeSystem.xml");
+    copy(descDir, "BasicEngine.xml");
+    copy(descDir, "InternalTypeSystem.xml");
+    
+    copy(utilsDir, "Modifier.xml");
+    copy(utilsDir, "AnnotationWriter.xml");
+    copy(utilsDir, "StyleMapCreator.xml");
+    copy(utilsDir, "XMIWriter.xml");
+    copy(utilsDir, "SourceDocumentInformation.xml");
+    copy(utilsDir, "PlainTextAnnotator.xml");
+    copy(utilsDir, "PlainTextTypeSystem.xml");
+    copy(utilsDir, "HtmlAnnotator.xml");
+    copy(utilsDir, "HtmlTypeSystem.xml");
+  }
+
+  private void copy(File dir, String fileName) {
     InputStream in = null;
     OutputStream out = null;
+    in = TextMarkerEngine.class.getResourceAsStream(fileName);
     try {
-      in = TextMarkerEngine.class.getResourceAsStream("BasicTypeSystem.xml");
-      out = new FileOutputStream(new File(descFolder.getLocation().toFile(), "BasicTypeSystem.xml"));
-      if (in != null && out != null) {
-        copy(in, out);
-      }
-
-      in = TextMarkerEngine.class.getResourceAsStream("BasicEngine.xml");
-      out = new FileOutputStream(new File(descFolder.getLocation().toFile(), "BasicEngine.xml"));
-      if (in != null && out != null) {
-        copy(in, out);
-      }
-
-      in = TextMarkerEngine.class.getResourceAsStream("InternalTypeSystem.xml");
-      out = new FileOutputStream(new File(descFolder.getLocation().toFile(),
-              "InternalTypeSystem.xml"));
-      if (in != null && out != null) {
-        copy(in, out);
-      }
-
-      File utilsDir = new File(descFolder.getLocation().toFile(), "utils/");
-      in = TextMarkerEngine.class.getResourceAsStream("Modifier.xml");
-      out = new FileOutputStream(new File(utilsDir, "Modifier.xml"));
-      if (in != null && out != null) {
-        copy(in, out);
-      }
-      in = TextMarkerEngine.class.getResourceAsStream("AnnotationWriter.xml");
-      out = new FileOutputStream(new File(utilsDir, "AnnotationWriter.xml"));
-      if (in != null && out != null) {
-        copy(in, out);
-      }
-      in = TextMarkerEngine.class.getResourceAsStream("StyleMapCreator.xml");
-      out = new FileOutputStream(new File(utilsDir, "StyleMapCreator.xml"));
-      if (in != null && out != null) {
-        copy(in, out);
-      }
-      in = TextMarkerEngine.class.getResourceAsStream("XMIWriter.xml");
-      out = new FileOutputStream(new File(utilsDir, "XMIWriter.xml"));
-      if (in != null && out != null) {
-        copy(in, out);
-      }
-      in = TextMarkerEngine.class.getResourceAsStream("SourceDocumentInformation.xml");
-      out = new FileOutputStream(new File(utilsDir, "SourceDocumentInformation.xml"));
-      if (in != null && out != null) {
-        copy(in, out);
-      }
-      in = TextMarkerEngine.class.getResourceAsStream("PlainTextAnnotator.xml");
-      out = new FileOutputStream(new File(utilsDir, "PlainTextAnnotator.xml"));
-      if (in != null && out != null) {
-        copy(in, out);
-      }
-      in = TextMarkerEngine.class.getResourceAsStream("PlainTextTypeSystem.xml");
-      out = new FileOutputStream(new File(utilsDir, "PlainTextTypeSystem.xml"));
-      if (in != null && out != null) {
-        copy(in, out);
-      }
-
-    } catch (Exception e) {
-      e.printStackTrace();
-    } finally {
-      if (in != null) {
-        try {
-          in.close();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      }
-      if (out != null) {
-        try {
-          out.close();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      }
+      out = new FileOutputStream(new File(dir, fileName));
+    } catch (FileNotFoundException e) {
+      System.err.println(e);
     }
+    if (in != null && out != null) {
+      copy(in, out);
+    }
+
   }
 
   static void copy(InputStream fis, OutputStream fos) {
@@ -224,18 +178,20 @@ public class TextMarkerProjectCreationWizard extends ProjectWizard {
     } catch (IOException e) {
       System.err.println(e);
     } finally {
-      if (fis != null)
+      if (fis != null) {
         try {
           fis.close();
         } catch (IOException e) {
-          e.printStackTrace();
+          System.err.println(e);
         }
-      if (fos != null)
+      }
+      if (fos != null) {
         try {
           fos.close();
         } catch (IOException e) {
-          e.printStackTrace();
+          System.err.println(e);
         }
+      }
     }
   }
 
