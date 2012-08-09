@@ -31,7 +31,7 @@ public class TextMarkerKeywords implements ITextMarkerKeywords {
       "BLOCK", "RULES", "BOOLEANLIST", "INTLIST", "DOUBLELIST", "FLOATLIST","STRINGLIST",
       "TYPELIST" };
 
-  private static String[] action = { "DEL", "CALL", "MARK", "MARKSCORE", "COLOR", "LOG", "TAG",
+  private static String[] action = { "DEL", "CALL", "MARK", "MARKSCORE", "COLOR", "LOG",
       "REPLACE", "FILLOBJECT", "RETAINTYPE", "SETFEATURE", "ASSIGN", "PUTINLIST",
       "ATTRIBUTE", "MARKFAST", "FILTERTYPE", "CREATE", "FILL", "MARKTABLE",
       "UNMARK", "TRANSFER", "MARKONCE", "TRIE", "GATHER", "EXEC", "MARKLAST", "ADD", "REMOVE",
