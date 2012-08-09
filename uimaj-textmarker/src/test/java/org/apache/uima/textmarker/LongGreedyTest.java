@@ -19,6 +19,7 @@
 
 package org.apache.uima.textmarker;
 
+import static org.junit.Assert.assertEquals;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
@@ -50,7 +51,7 @@ public class LongGreedyTest {
 //    iterator = ai.iterator();
 //    String coveredText = iterator.next().getCoveredText();
 //    assertEquals(64998, coveredText.length());
-
+    
     if (cas != null) {
       cas.release();
     }

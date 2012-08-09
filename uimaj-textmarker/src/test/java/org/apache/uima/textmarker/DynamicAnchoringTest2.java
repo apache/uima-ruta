@@ -37,7 +37,7 @@ public class DynamicAnchoringTest2 {
     CAS cas = null;
     try {
       cas = TextMarkerTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
-              + ".txt", 50, true,  null, null);
+              + ".txt", 50, true, false, null, null);
     } catch (Exception e) {
       e.printStackTrace();
       assert (false);

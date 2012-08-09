@@ -122,6 +122,8 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
   public static final String RELOAD_SCRIPT = "reloadScript";
 
   public static final String LOW_MEMORY_PROFILE = "lowMemoryProfile";
+  
+  public static final String SIMPLE_GREEDY_FOR_COMPOSED = "simpleGreedyForComposed";
 
   private String[] seeders;
 
@@ -175,6 +177,8 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
 
   private Boolean lowMemoryProfile;
 
+  private Boolean simpleGreedyForComposed;
+  
   private Boolean createCreatedByInfo;
 
   private boolean initialized = false;
@@ -211,6 +215,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     dynamicAnchoring = (Boolean) aContext.getConfigParameterValue(DYNAMIC_ANCHORING);
     reloadScript = (Boolean) aContext.getConfigParameterValue(RELOAD_SCRIPT);
     lowMemoryProfile = (Boolean) aContext.getConfigParameterValue(LOW_MEMORY_PROFILE);
+    simpleGreedyForComposed = (Boolean) aContext.getConfigParameterValue(SIMPLE_GREEDY_FOR_COMPOSED);
 
     removeBasics = removeBasics == null ? false : removeBasics;
     createDebugInfo = createDebugInfo == null ? false : createDebugInfo;
@@ -225,6 +230,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     dynamicAnchoring = dynamicAnchoring == null ? false : dynamicAnchoring;
     reloadScript = reloadScript == null ? false : reloadScript;
     lowMemoryProfile = lowMemoryProfile == null ? false : lowMemoryProfile;
+    simpleGreedyForComposed = simpleGreedyForComposed == null ? false : simpleGreedyForComposed;
 
     this.context = aContext;
 
@@ -397,7 +403,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     FilterManager filter = new FilterManager(filterTypes, cas);
     Type basicType = typeSystem.getType(BASIC_TYPE);
     seedTypes = seedAnnotations(cas);
-    TextMarkerStream stream = new TextMarkerStream(cas, basicType, filter, lowMemoryProfile, crowd);
+    TextMarkerStream stream = new TextMarkerStream(cas, basicType, filter, lowMemoryProfile, simpleGreedyForComposed, crowd);
 
     stream.initalizeBasics();
     return stream;

@@ -84,18 +84,45 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
           RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
           TextMarkerRuleElement sideStepOrigin, RuleElement entryPoint, TextMarkerStream stream,
           InferenceCrowd crowd) {
-    // TODO minimize recursion call for greedy rule elements
-    RuleElement nextElement = getNextElement(after, this);
-    if (nextElement != null) {
-      ComposedRuleElementMatch composedMatch = createComposedMatch(ruleMatch, containerMatch);
-      nextElement.continueMatch(after, annotation, ruleMatch, ruleApply, composedMatch,
-              sideStepOrigin, entryPoint, stream, crowd);
+    if (!stream.isSimpleGreedyForComposed()) {
+      continueMatch(after, annotation, ruleMatch, ruleApply, containerMatch, sideStepOrigin,
+              entryPoint, stream, crowd);
     } else {
-      fallback(after, false, annotation, ruleMatch, ruleApply, containerMatch, sideStepOrigin,
+      // HOTFIX
+      boolean stopMatching = false;
+      boolean failed = false;
+      AnnotationFS nextAnnotation = annotation;
+      while (!stopMatching) {
+        RuleElement nextElement = getNextElement(after, this);
+        if (nextElement != null) {
+          ComposedRuleElementMatch composedMatch = createComposedMatch(ruleMatch, containerMatch);
+          nextElement.continueMatch(after, nextAnnotation, ruleMatch, ruleApply, composedMatch,
+                  sideStepOrigin, this, stream, crowd);
+          ComposedRuleElementMatch parentContainerMatch = containerMatch.getContainerMatch();
+          List<RuleElementMatch> match = getMatch(ruleMatch, parentContainerMatch);
+          int lenghtBefore = match.size();
+          List<RuleElementMatch> evaluateMatches = quantifier.evaluateMatches(match, parent, crowd);
+          ruleMatch.setMatched(ruleMatch.matched() && evaluateMatches != null);
+          if (evaluateMatches.size() != lenghtBefore) {
+            failed = true;
+            stopMatching = true;
+          }
+          if (!quantifier.continueMatch(after, nextAnnotation, this, ruleMatch, containerMatch,
+                  stream, crowd)) {
+            stopMatching = true;
+          }
+          List<AnnotationFS> textsMatched = evaluateMatches.get(evaluateMatches.size() - 1)
+                  .getTextsMatched();
+          nextAnnotation = textsMatched.get(textsMatched.size() - 1);
+        } else {
+          stopMatching = true;
+        }
+      }
+      fallback(after, failed, nextAnnotation, ruleMatch, ruleApply, containerMatch, sideStepOrigin,
               entryPoint, stream, crowd);
     }
   }
-  
+
   public void fallbackContinue(boolean after, boolean failed, AnnotationFS annotation,
           RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
           TextMarkerRuleElement sideStepOrigin, RuleElement entryPoint, TextMarkerStream stream,
@@ -108,7 +135,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     if (container == null) {
       fallback(after, failed, annotation, ruleMatch, ruleApply, containerMatch, sideStepOrigin,
               entryPoint, stream, crowd);
-    } else {
+    } else if (entryPoint == null) {
       ComposedRuleElementMatch parentContainerMatch = containerMatch.getContainerMatch();
       RuleElement nextElement = container.getNextElement(after, this);
       List<RuleElementMatch> match = getMatch(ruleMatch, parentContainerMatch);
@@ -151,6 +178,9 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     // TODO both directions!
     List<AnnotationFS> textsMatched = evaluateMatches.get(evaluateMatches.size() - 1)
             .getTextsMatched();
+    if (textsMatched.isEmpty()) {
+      return null;
+    }
     AnnotationFS backtrackedAnnotation = textsMatched.get(textsMatched.size() - 1);
     return backtrackedAnnotation;
   }
@@ -165,7 +195,6 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       parentElement.fallbackContinue(after, failed, annotation, ruleMatch, ruleApply,
               containerMatch, sideStepOrigin, entryPoint, stream, crowd);
     } else if (sideStepOrigin != null) {
-      // System.out.println("SIDESTEP: " + sideStepOrigin);
       sideStepOrigin.continueSideStep(after, ruleMatch, ruleApply, containerMatch, entryPoint,
               stream, crowd);
     } else {

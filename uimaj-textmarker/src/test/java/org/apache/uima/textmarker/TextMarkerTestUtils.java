@@ -53,11 +53,11 @@ public class TextMarkerTestUtils {
           throws URISyntaxException, IOException, InvalidXMLException,
           ResourceInitializationException, AnalysisEngineProcessException,
           ResourceConfigurationException {
-    return process(ruleFileName, textFileName, amount, false, null, null);
+    return process(ruleFileName, textFileName, amount, false, false, null, null);
   }
 
   public static CAS process(String ruleFileName, String textFileName, int amount,
-          boolean dynamicAnchoring, Map<String, String> complexTypes, String resourceDirName)
+          boolean dynamicAnchoring, boolean simpleGreedyForComposed, Map<String, String> complexTypes, String resourceDirName)
           throws URISyntaxException, IOException, InvalidXMLException,
           ResourceInitializationException, AnalysisEngineProcessException,
           ResourceConfigurationException {
@@ -105,6 +105,7 @@ public class TextMarkerTestUtils {
     }
     ae.setConfigParameterValue(TextMarkerEngine.MAIN_SCRIPT, name);
     ae.setConfigParameterValue(TextMarkerEngine.DYNAMIC_ANCHORING, dynamicAnchoring);
+    ae.setConfigParameterValue(TextMarkerEngine.SIMPLE_GREEDY_FOR_COMPOSED, simpleGreedyForComposed);
     if (resourceFile != null) {
       ae.setConfigParameterValue(TextMarkerEngine.RESOURCE_PATHS,
               new String[] { resourceFile.getPath() });

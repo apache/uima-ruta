@@ -162,7 +162,7 @@ public class TextMarkerRuleElement extends AbstractRuleElement {
     RuleElement nextRuleElement = getContainer().getNextElement(after, this);
     if (nextRuleElement != null) {
       nextRuleElement.continueMatch(after, eachAnchor, extendedMatch, ruleApply,
-              extendedContainerMatch, sideStepOrigin, null, stream, crowd);
+              extendedContainerMatch, sideStepOrigin, entryPoint, stream, crowd);
     } else if (getContainer() instanceof ComposedRuleElement) {
       ComposedRuleElement composed = (ComposedRuleElement) getContainer();
       composed.fallbackContinue(after, failed, eachAnchor, extendedMatch, ruleApply,
@@ -236,7 +236,7 @@ public class TextMarkerRuleElement extends AbstractRuleElement {
         containerMatch.addInnerMatch(this, failedMatch);
         ComposedRuleElement composed = (ComposedRuleElement) getContainer();
         composed.fallbackContinue(after, true, annotation, ruleMatch, ruleApply, containerMatch,
-                sideStepOrigin, null, stream, crowd);
+                sideStepOrigin, entryPoint, stream, crowd);
       }
     } else {
       List<RuleElementMatch> evaluateMatches = quantifier.evaluateMatches(matchInfo, parent, crowd);

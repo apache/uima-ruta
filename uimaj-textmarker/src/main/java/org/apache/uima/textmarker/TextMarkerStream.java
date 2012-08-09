@@ -82,15 +82,19 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
 
   private boolean lowMemoryProfile;
 
+  private boolean simpleGreedyForComposed;
+
   private InferenceCrowd crowd;
 
+
   protected TextMarkerStream(CAS cas, FSIterator<AnnotationFS> current, Type basicType,
-          FilterManager filter, boolean lowMemoryProfile, InferenceCrowd crowd) {
+          FilterManager filter, boolean lowMemoryProfile, boolean simpleGreedyForComposed, InferenceCrowd crowd) {
     super();
     this.cas = cas;
     this.filter = filter;
     this.basicType = basicType;
     this.lowMemoryProfile = lowMemoryProfile;
+    this.simpleGreedyForComposed = simpleGreedyForComposed;
     this.crowd = crowd;
     AnnotationFS additionalWindow = filter.getWindowAnnotation();
     updateIterators(cas, basicType, filter, additionalWindow);
@@ -135,8 +139,8 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     currentIt = filter.createFilteredIterator(cas, basicType);
   }
 
-  public TextMarkerStream(CAS cas, Type basicType, FilterManager filter, boolean lowMemoryProfile, InferenceCrowd crowd) {
-    this(cas, null, basicType, filter, lowMemoryProfile, crowd);
+  public TextMarkerStream(CAS cas, Type basicType, FilterManager filter, boolean lowMemoryProfile, boolean simpleGreedyForComposed, InferenceCrowd crowd) {
+    this(cas, null, basicType, filter, lowMemoryProfile, simpleGreedyForComposed, crowd);
   }
 
   public void initalizeBasics() {
@@ -264,12 +268,12 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     FilterManager filterManager = new FilterManager(filter.getDefaultFilterTypes(),
             filter.getCurrentFilterTypes(), filter.getCurrentRetainTypes(), windowAnnotation,
             windowType, cas);
-    TextMarkerStream stream = new TextMarkerStream(cas, basicIt, basicType, filterManager, lowMemoryProfile, crowd);
+    TextMarkerStream stream = new TextMarkerStream(cas, basicIt, basicType, filterManager, lowMemoryProfile,simpleGreedyForComposed, crowd);
     return stream;
   }
 
   public FSIterator<AnnotationFS> copy() {
-    return new TextMarkerStream(cas, currentIt.copy(), basicType, filter, lowMemoryProfile, crowd);
+    return new TextMarkerStream(cas, currentIt.copy(), basicType, filter, lowMemoryProfile,simpleGreedyForComposed, crowd);
   }
 
   public AnnotationFS get() throws NoSuchElementException {
@@ -639,7 +643,7 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
 
   public TextMarkerStream getCompleteStream() {
     FilterManager defaultFilter = new FilterManager(filter.getDefaultFilterTypes(), getCas());
-    return new TextMarkerStream(getCas(), basicIt, basicType, defaultFilter, lowMemoryProfile, crowd);
+    return new TextMarkerStream(getCas(), basicIt, basicType, defaultFilter, lowMemoryProfile,simpleGreedyForComposed, crowd);
   }
 
   public int getHistogram(Type type) {
@@ -676,6 +680,14 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
 
   public void setAnchoringFactor(double anchoringFactor) {
     this.anchoringFactor = anchoringFactor;
+  }
+
+  public boolean isSimpleGreedyForComposed() {
+       return simpleGreedyForComposed;
+  }
+
+  public void setSimpleGreedyForComposed(boolean simpleGreedyForComposed) {
+    this.simpleGreedyForComposed = simpleGreedyForComposed;
   }
 
 }
