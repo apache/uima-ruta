@@ -86,7 +86,12 @@ under the License.
          install-size="0"
          version="${parsedVersion.osgiVersion}"
          unpack="false"/>
-
+   <plugin
+         id="org.apache.uima.textmarker.textruler"
+         download-size="0"
+         install-size="0"
+         version="${parsedVersion.osgiVersion}"
+         unpack="false"/>
    
 
 </feature>
