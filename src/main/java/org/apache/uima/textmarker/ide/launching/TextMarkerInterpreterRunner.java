@@ -257,6 +257,9 @@ public class TextMarkerInterpreterRunner extends AbstractInterpreterRunner imple
         if (cas != null) {
           cas.release();
         }
+        if (ae != null) {
+          ae.destroy();
+        }
         clearConsoleLink(handler);
         String message = e.getMessage();
         DLTKCore.error(message, e);
@@ -270,7 +273,9 @@ public class TextMarkerInterpreterRunner extends AbstractInterpreterRunner imple
     if (cas != null) {
       cas.release();
     }
-
+    if (ae != null) {
+      ae.destroy();
+    }
     IFolder folder = proj.getProject().getFolder(TextMarkerProjectUtils.getDefaultOutputLocation());
     folder.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
     clearConsoleLink(handler);

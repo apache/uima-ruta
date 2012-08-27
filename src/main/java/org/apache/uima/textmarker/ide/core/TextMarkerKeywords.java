@@ -24,7 +24,7 @@ public class TextMarkerKeywords implements ITextMarkerKeywords {
   private static String[] condition = { "CONTAINS", "IF", "INLIST", "PARTOF",
       "TOTALCOUNT", "CURRENTCOUNT", "CONTEXTCOUNT", "LAST", "VOTE", "COUNT", "NEAR", "REGEXP",
       "POSITION", "SCORE", "ISLISTEMPTY", "MOFN", "AND", "OR", "FEATURE", "PARSE", "IS", "BEFORE",
-      "AFTER", "STARTSWITH", "ENDSWITH", "PARTOFNEQ", "SIZE" };
+      "AFTER", "STARTSWITH", "ENDSWITH", "PARTOFNEQ", "SIZE", "NOT" };
 
   private static String[] declaration = { "WORDLIST", "DECLARE", "BOOLEAN", "PACKAGE", "TYPE",
       "TYPESYSTEM", "INT", "DOUBLE", "FLOAT", "STRING", "SCRIPT", "WORDTABLE", "ENGINE", 
