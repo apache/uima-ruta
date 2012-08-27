@@ -31,9 +31,9 @@ public class AnnotationComparator implements Comparator<AnnotationFS> {
     } else if (o1.getBegin() > o2.getBegin()) {
       return 1;
     } else if (o1.getEnd() > o2.getEnd()) {
-      return 1;
-    } else if (o1.getEnd() < o2.getEnd()) {
       return -1;
+    } else if (o1.getEnd() < o2.getEnd()) {
+      return 1;
     } else {
       return o1.getType().getName().compareTo(o2.getType().getName());
     }

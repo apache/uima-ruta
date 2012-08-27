@@ -42,6 +42,7 @@ import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
 import org.apache.uima.textmarker.engine.TextMarkerEngine;
 import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
 import org.apache.uima.util.CasCreationUtils;
@@ -192,8 +193,15 @@ public class QueryActionHandler implements IHandler {
 
         monitor.worked(1);
 
-        if (monitor.isCanceled())
+        if (monitor.isCanceled()) {
+          if (ae != null) {
+            ae.destroy();
+          }
+          if(cas != null) {
+            cas.release();
+          }
           return Status.CANCEL_STATUS;
+        }
 
         File dir = new File(dataLocation);
         List<File> inputFiles = getFiles(dir, recursive);
@@ -203,8 +211,15 @@ public class QueryActionHandler implements IHandler {
 
           monitor.setTaskName("Query in " + each.getName() + "...");
 
-          if (monitor.isCanceled())
+          if (monitor.isCanceled()) {
+            if (ae != null) {
+              ae.destroy();
+            }
+            if(cas != null) {
+              cas.release();
+            }
             return Status.CANCEL_STATUS;
+          }
 
           cas.reset();
           if (each.getName().endsWith("xmi")) {
@@ -229,8 +244,15 @@ public class QueryActionHandler implements IHandler {
           FSIterator<AnnotationFS> iterator = cas.getAnnotationIndex(blockApplyType).iterator();
           boolean foundOne = false;
           while (iterator.isValid()) {
-            if (monitor.isCanceled())
+            if (monitor.isCanceled()) {
+              if (ae != null) {
+                ae.destroy();
+              }
+              if(cas != null) {
+                cas.release();
+              }
               return Status.CANCEL_STATUS;
+            }
             AnnotationFS fs = iterator.get();
             int find = findRuleMatches(result, fs, each, queryComposite, matchedType,
                     ruleApplyType, blockApplyType, innerApplyFeature, ruleApplyFeature);
@@ -255,9 +277,10 @@ public class QueryActionHandler implements IHandler {
           monitor.worked(1);
         }
         cas.release();
+        ae.destroy();
         monitor.done();
       } catch (Exception e) {
-        e.printStackTrace();
+        TextMarkerAddonsPlugin.error(e);
       }
 
       return Status.OK_STATUS;

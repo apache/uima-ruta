@@ -19,6 +19,7 @@
 
 package org.apache.uima.textmarker.testing.ui.handlers;
 
+import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
 import org.apache.uima.textmarker.testing.ui.views.TestViewPage;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -34,12 +35,10 @@ public class RunTestHandler implements IHandler {
   private IResource resource;
 
   public void addHandlerListener(IHandlerListener handlerListener) {
-    // TODO Auto-generated method stub
 
   }
 
   public void dispose() {
-    // TODO Auto-generated method stub
 
   }
 
@@ -55,8 +54,7 @@ public class RunTestHandler implements IHandler {
               .showView("org.apache.uima.textmarker.testing.annotationTest");
       view.setResource(r);
     } catch (PartInitException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      TextMarkerAddonsPlugin.error(e);
     }
 
     /*
@@ -89,17 +87,14 @@ public class RunTestHandler implements IHandler {
   }
 
   public boolean isEnabled() {
-    // TODO Auto-generated method stub
     return true;
   }
 
   public boolean isHandled() {
-    // TODO Auto-generated method stub
     return true;
   }
 
   public void removeHandlerListener(IHandlerListener handlerListener) {
-    // TODO Auto-generated method stub
 
   }
 

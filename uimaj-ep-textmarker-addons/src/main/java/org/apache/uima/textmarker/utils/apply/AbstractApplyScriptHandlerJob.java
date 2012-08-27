@@ -175,6 +175,9 @@ public abstract class AbstractApplyScriptHandlerJob extends Job {
       if (cas != null) {
         cas.release();
       }
+      if (ae != null) {
+        ae.destroy();
+      }
     }
 
     monitor.done();

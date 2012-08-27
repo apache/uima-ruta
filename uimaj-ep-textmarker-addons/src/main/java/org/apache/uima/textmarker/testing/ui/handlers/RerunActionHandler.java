@@ -162,6 +162,7 @@ public class RerunActionHandler implements IHandler {
               view.setDocumentText(each.getDocumentText());
 
             } catch (Exception e) {
+              TextMarkerAddonsPlugin.error(e);
             }
           }
 
@@ -216,6 +217,9 @@ public class RerunActionHandler implements IHandler {
           r.getProject().getFolder(path2Result)
                   .refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
           runCas.release();
+          testCas.release();
+          resultCas.release();
+          ae.destroy();
           if (monitor.isCanceled())
             return Status.CANCEL_STATUS;
         }
