@@ -328,8 +328,7 @@ public class QueryActionHandler implements IHandler {
                   ruleApplyType, blockApplyType, innerApplyFeature, ruleApplyFeature);
         }
       } else if (fs.getType().equals(matchedType)) {
-        String text = fs.getCoveredText();
-        result.add(new QueryResult(text, file));
+        result.add(new QueryResult(fs.getBegin(), fs.getEnd(), fs.getCoveredText(), file));
         ret += 1;
 
       }

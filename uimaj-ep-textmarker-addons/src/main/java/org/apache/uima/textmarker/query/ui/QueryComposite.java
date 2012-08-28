@@ -23,6 +23,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.apache.uima.caseditor.editor.AnnotationEditor;
 import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
 import org.apache.uima.textmarker.ide.core.TextMarkerLanguageToolkit;
 import org.eclipse.core.resources.IFile;
@@ -41,7 +42,10 @@ import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -67,6 +71,8 @@ import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -74,7 +80,8 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-public class QueryComposite extends org.eclipse.swt.widgets.Composite {
+public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
+        ISelectionChangedListener {
   protected ScriptSourceViewer viewer;
 
   private HashMap<String, Image> images;
@@ -101,7 +108,6 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite {
 
   public QueryComposite(Composite parent, int style) {
     super(parent, style);
-
     // initImages();
     initGUI();
 
@@ -285,6 +291,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite {
       resultViewer = new TableViewer(composite2, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
       resultViewer.setLabelProvider(new QueryResultLabelProvider());
       resultViewer.setContentProvider(new QueryResultContentProvider());
+      resultViewer.addSelectionChangedListener(this);
       resultViewer.addDoubleClickListener(new IDoubleClickListener() {
         public void doubleClick(DoubleClickEvent event) {
           Object obj = event.getSelection();
@@ -296,7 +303,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite {
               if (element instanceof QueryResult) {
                 QueryResult data = (QueryResult) element;
                 if (data.getFile() != null) {
-                  openInCasEditor(data.getFile());
+                  openInCasEditor(data.getFile(), data.getBegin(), data.getEnd());
                 }
               }
             }
@@ -381,7 +388,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite {
     }
   }
 
-  protected void openInCasEditor(File file) {
+  protected void openInCasEditor(File file, int begin, int end) {
     if (file == null) {
       return;
     }
@@ -389,9 +396,11 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite {
     try {
       IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
       IFile ifile = getIFile(absolutePath);
-      page.openEditor(new FileEditorInput(ifile), "org.apache.uima.caseditor.editor");
+      AnnotationEditor editor = (AnnotationEditor) page.openEditor(new FileEditorInput(ifile),
+              "org.apache.uima.caseditor.editor");
+      editor.selectAndReveal(begin, end - begin);
     } catch (PartInitException e) {
-      e.printStackTrace();
+      TextMarkerAddonsPlugin.error(e);
     }
   }
 
@@ -485,6 +494,28 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite {
 
   public TableViewer getResultViewer() {
     return resultViewer;
+  }
+
+  public void selectionChanged(SelectionChangedEvent event) {
+    if (event.getSelectionProvider().equals(resultViewer)) {
+      StructuredSelection selection = (StructuredSelection) event.getSelection();
+      QueryResult data = (QueryResult) selection.getFirstElement();
+      IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+      IEditorPart activeEditor = page.getActiveEditor();
+      if (activeEditor instanceof AnnotationEditor) {
+        AnnotationEditor ae = (AnnotationEditor) activeEditor;
+        IEditorInput editorInput = ae.getEditorInput();
+        if (editorInput instanceof FileEditorInput) {
+          FileEditorInput fei = (FileEditorInput) editorInput;
+          IFile file = fei.getFile();
+          if (file.getLocationURI().equals(data.getFile().toURI())) {
+            int begin = data.getBegin();
+            int end = data.getEnd();
+            ae.selectAndReveal(begin, end - begin);
+          }
+        }
+      }
+    }
   }
 
 }

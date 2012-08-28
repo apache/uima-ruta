@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.query.ui;
 
@@ -23,17 +23,19 @@ import java.io.File;
 
 public class QueryResult {
 
-  private String text;
+  private final int begin;
 
-  private File file;
+  private final int end;
 
-  public QueryResult(String text, File file) {
+  private final File file;
+
+  private final String text;
+
+  public QueryResult(int begin, int end, String text, File file) {
     super();
-    this.setText(text);
-    this.setFile(file);
-  }
-
-  public void setFile(File file) {
+    this.begin = begin;
+    this.end = end;
+    this.text = text;
     this.file = file;
   }
 
@@ -41,8 +43,12 @@ public class QueryResult {
     return file;
   }
 
-  public void setText(String text) {
-    this.text = text;
+  public int getEnd() {
+    return end;
+  }
+
+  public int getBegin() {
+    return begin;
   }
 
   public String getText() {
