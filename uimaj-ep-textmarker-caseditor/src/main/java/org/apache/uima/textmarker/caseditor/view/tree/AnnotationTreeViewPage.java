@@ -83,7 +83,9 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
         String annotation = annotationStyle.getAnnotation();
         updateIcon(annotation);
       }
-      treeView.refresh();
+      if(!treeView.isBusy()) {
+        treeView.refresh();
+      }
     }
 
   }
