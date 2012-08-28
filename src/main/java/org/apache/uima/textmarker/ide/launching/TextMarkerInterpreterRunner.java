@@ -186,6 +186,16 @@ public class TextMarkerInterpreterRunner extends AbstractInterpreterRunner imple
     File inputDir = inputDirPath.makeAbsolute().toFile();
     File outputDir = outputDirPath.makeAbsolute().toFile();
 
+    if(!inputDir.exists()) {
+      inputDir.mkdirs();
+      IFolder folder = proj.getProject().getFolder(TextMarkerProjectUtils.getDefaultInputLocation());
+      folder.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+    }
+    if(!outputDir.exists()) {
+      outputDir.mkdirs();
+      IFolder folder = proj.getProject().getFolder(TextMarkerProjectUtils.getDefaultOutputLocation());
+      folder.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+    }
     List<File> inputFiles = getFiles(inputDir, false);
 
     int ticks = (inputFiles.size() * 2) + 1;
@@ -266,9 +276,6 @@ public class TextMarkerInterpreterRunner extends AbstractInterpreterRunner imple
         throw new CoreException(new Status(IStatus.ERROR, TextMarkerIdePlugin.PLUGIN_ID,
                 ScriptLaunchConfigurationConstants.ERR_INTERNAL_ERROR, message, e));
       }
-    }
-    if (outputDir.listFiles().length == 1) {
-      // show it...?
     }
     if (cas != null) {
       cas.release();
