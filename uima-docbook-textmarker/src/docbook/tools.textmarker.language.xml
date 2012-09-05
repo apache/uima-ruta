@@ -5,16 +5,24 @@
 <!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
 %uimaents;
 ]>
-<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
-	license agreements. See the NOTICE file distributed with this work for additional 
-	information regarding copyright ownership. The ASF licenses this file to 
-	you under the Apache License, Version 2.0 (the "License"); you may not use 
-	this file except in compliance with the License. You may obtain a copy of 
-	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
-	by applicable law or agreed to in writing, software distributed under the 
-	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
-	OF ANY KIND, either express or implied. See the License for the specific 
-	language governing permissions and limitations under the License. -->
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
 
 <chapter id="ugr.tools.tm.language.language">
 	<title>TextMarker Language</title>
@@ -149,302 +157,20 @@ collect all basic annotations that fulfill the first matching condition
 
 		</para>
 	</section>
-	<section id="ugr.tools.tm.language.declarations">
-		<title>Declarations</title>
-		<para>
 
-			There are three different kinds declaration in the TextMarker
-			system:
-			Declarations of types with optional feature definitions of
-			that type,
-			declaration of variables and declarations for importing
-			external
-			resources, scripts of UIMA components.
-		</para>
-		<section id="ugr.tools.tm.language.declarations.type">
-			<title>Type</title>
-			<para>
-				Type declarations define new kinds of annotations types and
-				optionally its features.
 
-				Examples:
-				<programlisting><![CDATA[
-            DECLARE SimpleType1, SimpleType2; // <- two new types with the parent type "Annotation"
-            DECLARE ParentType NewType (SomeType feature1, INT feature2); // <- defines a new type "NewType" 
-                // with parent type "ParentType" and two features
-            ]]></programlisting>
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+		href=".\language\tools.textmarker.language.quantifier.xml" />
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+		href=".\language\tools.textmarker.language.declarations.xml" />
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+		href=".\language\tools.textmarker.language.conditions.xml" />
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+		href=".\language\tools.textmarker.language.actions.xml" />
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+		href=".\language\tools.textmarker.language.expressions.xml" />
 
-				If the parent type is not defined in the same namepace, then the
-				complete namespace has to be used, e.g., DECLARE
-				my.other.package.Parent NewType;
-			</para>
-		</section>
-		<section id="ugr.tools.tm.language.declarations.variable">
-			<title>Variable</title>
-			<para>
-				Variable declarations define new variables. There are five kinds of
-				variables:
-				* Type variable: A variable that represents an annotation
-				type.
-				* Integer variable: A variable that represents a integer.
-				*
-				Double variable: A variable that represents a floating-point
-				number.
-				* String variable: A variable that represents a string.
-				*
-				Boolean
-				variable: A variable that represents a boolean.
 
-				Examples:
-				<programlisting><![CDATA[
-                TYPE newTypeVariable;
-                INT newIntegerVariable;
-                DOUBLE newDoubleVariable;
-                STRING newStringVariable;
-                BOOLEAN newBooleanVariable;
-                ]]></programlisting>
-
-			</para>
-		</section>
-		<section id="ugr.tools.tm.language.declarations.ressource">
-			<title>Resources</title>
-			<para>
-
-				There are two kinds of resource declaration, that make external
-				resources available in hte TextMarker system:
-				* List: A list
-				represents a normal text file with an entry per line
-				or a compiled
-				tree of a word list.
-				* Table: A table represents comma separated
-				file.
-
-				Examples:
-				<programlisting><![CDATA[
-                LIST Name = 'someWordList.txt';
-                TABLE Name = 'someTable.csv';
-                ]]></programlisting>
-
-			</para>
-		</section>
-		<section id="ugr.tools.tm.language.declarations.scripts">
-			<title>Scripts</title>
-			<para>
-
-				Additional scripts can be imported and reused with the CALL action.
-				The types of the imported rules are then also available, so that it
-				is not neccessary to import the Type System of the additional rule
-				script.
-
-				Examples:
-				<programlisting><![CDATA[
-                SCRIPT my.package.AnotherScript; // <- "AnotherScript.tm" in the "my.package" package
-                Document{->CALL(AnotherScript)}; // <- rule executes "AnotherScript.tm"
-                ]]></programlisting>
-
-			</para>
-		</section>
-		<section id="ugr.tools.tm.language.declarations.components">
-			<title>Components</title>
-			<para>
-
-				There are two kind of UIMA components that can be imported in a
-				TextMarker script:
-				* Type System: includes the types defined in an
-				external type system.
-				* Analysis Engine: makes an external analysis
-				engine available. The
-				type system needed for the analysis engine has
-				to be imported
-				seperately. Please mind the filtering setting when
-				calling an
-				external analysis engine.
-
-				Examples:
-				<programlisting><![CDATA[
-                ENINGE my.package.ExternalEngine; // <- "ExternalEngine.xml" in the 
-                    // "my.package" package (in the descriptor folder)
-                TYPESYSTEM my.package.ExternalTypeSystem; // <- "ExternalTypeSystem.xml" 
-                    // in the "my.package" package (in the descriptor folder)
-                Document{->RETAINTYPE(SPACE,BREAK),CALL(ExternalEngine)}; 
-                    // calls ExternalEngine, but retains white spaces
-                ]]></programlisting>
-
-			</para>
-		</section>
-	</section>
-	<section id="ugr.tools.tm.language.quantifier">
-		<title>Quantifiers</title>
-		<para>
-		</para>
-		<section id="ugr.tools.tm.language.quantifier.sg">
-			<title>* Star Greedy</title>
-			<para>
-				The Star Greedy quantifier matches on any amount of annotations and
-				evaluates always true. Please mind, that a rule element with a Star
-				Greedy quantifier needs to match on different annotations than the
-				next rule element.
-
-				Examples:
-				<programlisting><![CDATA[
-                Input:    small Big Big Big small
-                Rule:     CW*
-                Matched:  Big Big Big  
-                Matched:  Big Big 
-                Matched:  Big
-                ]]></programlisting>
-
-			</para>
-		</section>
-		<section id="ugr.tools.tm.language.quantifier.sr">
-			<title>*? Star Reluctant</title>
-			<para>
-				The Star Reluctant quantifier matches on any amount of annotations
-				and evaluates always true, but stops to match on new annotations,
-				when the next rule element matches and evaluates true on this
-				annotation.
-
-				Examples:
-				<programlisting><![CDATA[
-                Input:    123 456 small small Big 
-                Rule:     W*? CW
-                Matched:  small small Big
-                Matched:  small Big
-                Matched:  Big
-                ]]></programlisting>
-
-			</para>
-		</section>
-		<section id="ugr.tools.tm.language.quantifier.pg">
-			<title>+ Plus Greedy</title>
-			<para>
-				The Plus Greedy quantifier needs to match on at least one
-				annotation. Please mind, that a rule element after a rule element
-				with a Plus Greedy quantifier matches and evaluates on different
-				conditions.
-
-				Examples:
-
-				<programlisting><![CDATA[
-                Input:    123 456 small small Big 
-                Rule:     SW+ 
-                Matched:  small small
-                Matched:  small 
-                ]]></programlisting>
-
-			</para>
-		</section>
-		<section id="ugr.tools.tm.language.quantifier.pr">
-			<title>+? Plus Reluctant</title>
-			<para>
-				The Plus Reluctant quantifier has to match on at least one
-				annotation in order to evaluate true, but stops when the next rule
-				element is able to match on this annotation.
-
-				Examples:
-				<programlisting><![CDATA[
-                Input:    123 456 small small Big 
-                Rule:     W+? CW
-                Matched:  small small Big
-                ]]></programlisting>
-
-			</para>
-		</section>
-		<section id="ugr.tools.tm.language.quantifier.qg">
-			<title>? Question Greedy</title>
-			<para>
-				The Question Greedy quantifier matches optionally on an annotation
-				and therefore always evaluates true.
-
-				Examples:
-				<programlisting><![CDATA[
-                Input:    123 456 small Big small Big 
-                Rule:     SW CW? SW
-                Matched:  small Big small
-                ]]></programlisting>
-
-			</para>
-		</section>
-		<section id="ugr.tools.tm.language.quantifier.qr">
-			<title>?? Question Reluctant</title>
-			<para>
-				The Question Reluctant quantifier matches optionally on an
-				annotation if the next rule element can not match on the same
-				annotation and therefore always evaluates true.
-
-				Examples:
-				<programlisting><![CDATA[
-                Input:    123 456 small Big small Big 
-                Rule:     SW CW?? SW
-                Matched:  small Big small
-                ]]></programlisting>
-
-			</para>
-		</section>
-		<section id="ugr.tools.tm.language.quantifier.mmg">
-			<title>[x,y] Min Max Greedy</title>
-			<para>
-				The Min Max Greedy quantifier has to match at least x and at most y
-				annotations of its rule element to elaluate true.
-
-				Examples:
-				<programlisting><![CDATA[
-                Input:    123 456 small Big small Big 
-                Rule:     SW CW[1,2] SW
-                Matched:  small Big small
-                ]]></programlisting>
-
-			</para>
-		</section>
-		<section id="ugr.tools.tm.language.quantifier.mmr">
-			<title>[x,y]? Min Max Reluctant</title>
-			<para>
-				The Min Max Greedy quantifier has to match at least x and at most y
-				annotations of its rule element to elaluate true, but stops to
-				match
-				on additional annotations if the next rule element is able to
-				match
-				on this annotation.
-
-				Examples:
-				<programlisting><![CDATA[
-                Input:    123 456 small Big Big Big small Big 
-                Rule:     SW CW[2,100]? SW
-                Matched:  small Big Big Big small
-                ]]></programlisting>
-			</para>
-		</section>
-	</section>
-
-	
-	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.textmarker.conditions.xml"/>
-	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.textmarker.actions.xml"/>
-	
-	<section id="ugr.tools.tm.language.expressions">
-		<title>Expressions</title>
-		<para>
-		</para>
-		<section id="ugr.tools.tm.language.expressions.type">
-			<title>Type Expressions</title>
-			<para>
-			</para>
-		</section>
-		<section id="ugr.tools.tm.language.expressions.numer">
-			<title>Number Expressions</title>
-			<para>
-			</para>
-		</section>
-		<section id="ugr.tools.tm.language.expressions.string">
-			<title>String Expressions</title>
-			<para>
-			</para>
-		</section>
-		<section id="ugr.tools.tm.language.expressions.boolean">
-			<title>Boolean Expressions</title>
-			<para>
-			</para>
-		</section>
-	</section>
 	<section id="ugr.tools.tm.language.filtering">
 		<title>Robust extraction using filtering</title>
 		<para>

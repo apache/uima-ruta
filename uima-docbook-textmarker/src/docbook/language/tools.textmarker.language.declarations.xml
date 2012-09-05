@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
+<!ENTITY imgroot "images/tools/tools.textmarker/" >
+<!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
+%uimaents;
+]>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
+	license agreements. See the NOTICE file distributed with this work for additional 
+	information regarding copyright ownership. The ASF licenses this file to 
+	you under the Apache License, Version 2.0 (the "License"); you may not use 
+	this file except in compliance with the License. You may obtain a copy of 
+	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+	by applicable law or agreed to in writing, software distributed under the 
+	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+	OF ANY KIND, either express or implied. See the License for the specific 
+	language governing permissions and limitations under the License. -->
+
+<section id="ugr.tools.tm.language.declarations">
+	<title>Declarations</title>
+	<para>
+		There are three different kinds of declarations in the
+		TextMarker
+		system:
+		Declarations of types with optional feature
+		definitions,
+		declarations of variables and declarations for importing
+		external
+		resources, further TextMarker scripts and UIMA components
+		such as type
+		systems and analysis engines.
+	</para>
+	<section id="ugr.tools.tm.language.declarations.type">
+		<title>Type</title>
+		<para>
+			Type declarations define new kinds of annotation types and
+			optionally
+			its features.
+			<section>
+				<title>
+					<emphasis role="bold">Definition:</emphasis>
+				</title>
+				<para>
+					<programlisting><![CDATA[typeDeclaration    -> "DECLARE" (AnnotationType)? 
+					     Identifier ("," Identifier )*
+					  | "DECLARE" AnnotationType Identifier ( "(" featureDeclaration ")" )?
+featureDeclaration -> ( (AnnotationType | "STRING" | "INT" | "DOUBLE" | 
+					  "BOOLEAN") Identifier)+]]></programlisting>
+				</para>
+			</section>
+			<section>
+				<title>
+					<emphasis role="bold">Example:</emphasis>
+				</title>
+				<para>
+					<programlisting><![CDATA[DECLARE SimpleType1, SimpleType2; // <- two new types with the parent 
+                                  // type "Annotation"
+DECLARE ParentType NewType (SomeType feature1, INT feature2); // <- defines 
+      // a new type "NewType" with parent type "ParentType" and two features]]></programlisting>
+				</para>
+				<para>
+					Attention: Types with features need
+					a parent type in its
+					declaration. If no
+					special parent type is
+					requested, just use type
+					Annotation as
+					default parent
+					type.
+				</para>
+			</section>
+		</para>
+	</section>
+	<section id="ugr.tools.tm.language.declarations.variable">
+		<title>Variable</title>
+		<para>
+			Variable declarations define new variables. There are 12 kinds of
+			variables:
+			<itemizedlist mark='opencircle'>
+				<listitem>
+					<para>
+						Type variable: A variable that represents an annotation
+						type.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Type list variable: A variable that represents a list of
+						annotation
+						types.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Integer variable: A variable that represents a integer.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Integer list variable: A variable that represents a list of
+						integers.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Float variable: A variable that represents a
+						floating-point
+						number.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Float list variable: A variable that represents a list of
+						floating-point numbers in single precision.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Double variable: A variable that represents a
+						floating-point
+						number.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Double list variable: A variable that represents a list
+						of
+						floating-point numbers in double precision.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						String variable: A variable that represents a string.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						String list: A variable that represents a list of strings.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Boolean
+						variable: A variable that represents a boolean.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Boolean list variable: A variable that represents a list of
+						booleans.
+					</para>
+				</listitem>
+			</itemizedlist>
+			<section>
+				<title>
+					<emphasis role="bold">Example:</emphasis>
+				</title>
+				<para>
+					<programlisting><![CDATA[TYPE newTypeVariable;
+TYPELIST newTypeList;
+INT newIntegerVariable;
+INTLIST newIntList;
+FLOAT newFloatVariable;
+FLOATLIST newFloatList;
+DOUBLE newDoubleVariable;
+DOUBLELIST newDoubleList;
+STRING newStringVariable;
+STRINGLIST newStringList;
+BOOLEAN newBooleanVariable;
+BOOLEANLIST newBooleanList;]]></programlisting>
+				</para>
+			</section>
+		</para>
+	</section>
+	<section id="ugr.tools.tm.language.declarations.ressource">
+		<title>Resources</title>
+		<para>
+			There are two kinds of resource declaration, that make external
+			resources available in the TextMarker system:
+			<itemizedlist mark='opencircle'>
+				<listitem>
+					<para>
+						List: A list
+						represents a normal text file with an entry per
+						line
+						or a compiled
+						tree of a word list.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Table: A table represents comma separated
+						file.
+					</para>
+				</listitem>
+			</itemizedlist>
+			<section>
+				<title>
+					<emphasis role="bold">Example:</emphasis>
+				</title>
+				<para>
+					<programlisting><![CDATA[WORDLIST listName = 'someWordList.txt';
+WORDTABLE tableName = 'someTable.csv';]]></programlisting>
+				</para>
+			</section>
+		</para>
+	</section>
+	<section id="ugr.tools.tm.language.declarations.scripts">
+		<title>Scripts</title>
+		<para>
+			Additional scripts can be imported and reused with the CALL action.
+			The types of the imported rules are then also available, so that it
+			is
+			not necessary to import the Type System of the additional rule
+			script.
+			<section>
+				<title>
+					<emphasis role="bold">Example:</emphasis>
+				</title>
+				<para>
+					<programlisting><![CDATA[SCRIPT my.package.AnotherScript; // "AnotherScript.tm" in the "my.package" 
+								 //package
+Document{->CALL(AnotherScript)}; // <- rule executes "AnotherScript.tm"]]></programlisting>
+				</para>
+			</section>
+		</para>
+	</section>
+	<section id="ugr.tools.tm.language.declarations.components">
+		<title>Components</title>
+		<para>
+			There are two kind of UIMA components that can be imported in a
+			TextMarker script:
+			<itemizedlist mark='opencircle'>
+				<listitem>
+					<para>
+						Type System: includes the types defined in an
+						external type
+						system.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Analysis Engine: makes an external analysis
+						engine available.
+						The
+						type system needed for the analysis engine has
+						to be imported
+						seperately. Please mind the filtering setting when
+						calling an
+						external analysis engine.
+					</para>
+				</listitem>
+			</itemizedlist>
+			<section>
+				<title>
+					<emphasis role="bold">Example:</emphasis>
+				</title>
+				<para>
+					<programlisting><![CDATA[ENINGE my.package.ExternalEngine; // <- "ExternalEngine.xml" in the 
+ // "my.package" package (in the descriptor folder)
+TYPESYSTEM my.package.ExternalTypeSystem; // <- "ExternalTypeSystem.xml" 
+ // in the "my.package" package (in the descriptor folder)
+Document{->RETAINTYPE(SPACE,BREAK),CALL(ExternalEngine)}; 
+ // calls ExternalEngine, but retains white spaces]]></programlisting>
+				</para>
+			</section>
+		</para>
+	</section>
+</section>

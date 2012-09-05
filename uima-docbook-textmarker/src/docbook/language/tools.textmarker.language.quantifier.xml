@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
+<!ENTITY imgroot "images/tools/tools.textmarker/" >
+<!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
+%uimaents;
+]>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
+	license agreements. See the NOTICE file distributed with this work for additional 
+	information regarding copyright ownership. The ASF licenses this file to 
+	you under the Apache License, Version 2.0 (the "License"); you may not use 
+	this file except in compliance with the License. You may obtain a copy of 
+	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+	by applicable law or agreed to in writing, software distributed under the 
+	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+	OF ANY KIND, either express or implied. See the License for the specific 
+	language governing permissions and limitations under the License. -->
+
+<section id="ugr.tools.tm.language.quantifier">
+	<title>Quantifiers</title>
+	<para>
+	</para>
+	<section id="ugr.tools.tm.language.quantifier.sg">
+		<title>* Star Greedy</title>
+		<para>
+			The Star Greedy quantifier matches on any amount of annotations and
+			evaluates always true. Please mind, that a rule element with a Star
+			Greedy quantifier needs to match on different annotations than the
+			next rule element.
+
+			Examples:
+			<programlisting><![CDATA[Input:    small Big Big Big small
+                Rule:     CW*
+                Matched:  Big Big Big  
+                Matched:  Big Big 
+                Matched:  Big]]></programlisting>
+		</para>
+	</section>
+	<section id="ugr.tools.tm.language.quantifier.sr">
+		<title>*? Star Reluctant</title>
+		<para>
+			The Star Reluctant quantifier matches on any amount of annotations
+			and evaluates always true, but stops to match on new annotations,
+			when the next rule element matches and evaluates true on this
+			annotation.
+
+			Examples:
+			<programlisting><![CDATA[Input:    123 456 small small Big 
+                Rule:     W*? CW
+                Matched:  small small Big
+                Matched:  small Big
+                Matched:  Big]]></programlisting>
+		</para>
+	</section>
+	<section id="ugr.tools.tm.language.quantifier.pg">
+		<title>+ Plus Greedy</title>
+		<para>
+			The Plus Greedy quantifier needs to match on at least one
+			annotation.
+			Please mind, that a rule element after a rule element
+			with a Plus
+			Greedy quantifier matches and evaluates on different
+			conditions.
+
+			Examples:
+
+			<programlisting><![CDATA[Input:    123 456 small small Big 
+                Rule:     SW+ 
+                Matched:  small small
+                Matched:  small]]></programlisting>
+		</para>
+	</section>
+	<section id="ugr.tools.tm.language.quantifier.pr">
+		<title>+? Plus Reluctant</title>
+		<para>
+			The Plus Reluctant quantifier has to match on at least one
+			annotation
+			in order to evaluate true, but stops when the next rule
+			element is
+			able to match on this annotation.
+
+			Examples:
+			<programlisting><![CDATA[Input:    123 456 small small Big 
+                Rule:     W+? CW
+                Matched:  small small Big]]></programlisting>
+		</para>
+	</section>
+	<section id="ugr.tools.tm.language.quantifier.qg">
+		<title>? Question Greedy</title>
+		<para>
+			The Question Greedy quantifier matches optionally on an annotation
+			and therefore always evaluates true.
+
+			Examples:
+			<programlisting><![CDATA[Input:    123 456 small Big small Big 
+                Rule:     SW CW? SW
+                Matched:  small Big small]]></programlisting>
+		</para>
+	</section>
+	<section id="ugr.tools.tm.language.quantifier.qr">
+		<title>?? Question Reluctant</title>
+		<para>
+			The Question Reluctant quantifier matches optionally on an
+			annotation
+			if the next rule element can not match on the same
+			annotation and
+			therefore always evaluates true.
+
+			Examples:
+			<programlisting><![CDATA[Input:    123 456 small Big small Big 
+                Rule:     SW CW?? SW
+                Matched:  small Big small]]></programlisting>
+		</para>
+	</section>
+	<section id="ugr.tools.tm.language.quantifier.mmg">
+		<title>[x,y] Min Max Greedy</title>
+		<para>
+			The Min Max Greedy quantifier has to match at least x and at most y
+			annotations of its rule element to evaluate true.
+
+			Examples:
+			<programlisting><![CDATA[Input:    123 456 small Big small Big 
+                Rule:     SW CW[1,2] SW
+                Matched:  small Big small]]></programlisting>
+		</para>
+	</section>
+	<section id="ugr.tools.tm.language.quantifier.mmr">
+		<title>[x,y]? Min Max Reluctant</title>
+		<para>
+			The Min Max Greedy quantifier has to match at least x and at most y
+			annotations of its rule element to evaluate true, but stops to
+			match
+			on additional annotations if the next rule element is able to
+			match
+			on
+			this annotation.
+
+			Examples:
+			<programlisting><![CDATA[Input:    123 456 small Big Big Big small Big 
+                Rule:     SW CW[2,100]? SW
+                Matched:  small Big Big Big small]]></programlisting>
+		</para>
+	</section>
+</section>
