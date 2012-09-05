@@ -421,8 +421,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
 
   private String getTypeSystemString(String fileString) {
     File file = new File(fileString);
-    // TODO
-
+    // TODO which type system?
     return "org.apache.uima.CompleteTypeSystemTypeSystem";
   }
 

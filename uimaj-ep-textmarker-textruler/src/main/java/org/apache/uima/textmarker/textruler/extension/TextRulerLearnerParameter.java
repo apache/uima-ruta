@@ -31,7 +31,7 @@ package org.apache.uima.textmarker.textruler.extension;
 public class TextRulerLearnerParameter {
 
   public enum MLAlgorithmParamType {
-    ML_STRING_PARAM, ML_BOOL_PARAM, ML_INT_PARAM, ML_FLOAT_PARAM, ML_SELECT_PARAM
+    ML_STRING_PARAM, ML_BOOL_PARAM, ML_INT_PARAM, ML_FLOAT_PARAM, ML_SELECT_PARAM, ML_DOUBLE_PARAM
   };
 
   public static class MLParameterSelectValue {
