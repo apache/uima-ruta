@@ -23,7 +23,7 @@ public class TextMarkerActionDocumentationProvider extends
         AbstractLanguageElementDocumentationProvider {
 
   public TextMarkerActionDocumentationProvider() {
-    super("ActionDocumentation.txt");
+    super("Actions.html");
   }
 
 }
