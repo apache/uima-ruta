@@ -95,7 +95,9 @@
 									org.antlr.stringtemplate.language,
 									org.antlr.stringtemplate.misc,		
 									antlr,
-									antlr.*			
+									antlr.*,
+									org.htmlparser,
+									org.htmlparser.*	
 							  </_exportcontents>
 								<Require-Bundle>
 								org.apache.uima.runtime

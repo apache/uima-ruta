@@ -1,0 +1,908 @@
+  <div class="section" title="2.6.1.&nbsp;AFTER"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.conditions.after">2.6.1.&nbsp;AFTER</h3></div></div></div>
+    
+    <p>
+      The AFTER condition evaluates true if the matched annotation
+      starts after the beginning of an arbitrary annotation of the passed
+      type. If a list of types is passed, this has to be true for at least
+      one of them.
+    </p>
+    <div class="section" title="2.6.1.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e203">2.6.1.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">AFTER(Type|TypeListExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.6.1.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e208">2.6.1.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">CW{AFTER(SW)};</pre><p>
+      </p>
+      <p>
+        Here, the rule matches on a capitalized word if there is any
+        small written word previously.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.6.2.&nbsp;AND"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.conditions.and">2.6.2.&nbsp;AND</h3></div></div></div>
+    
+    <p>
+      The AND condition is a composed condition and evaluates true if
+      all contained conditions evaluate true.
+    </p>
+    <div class="section" title="2.6.2.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e217">2.6.2.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">AND(Condition1,...,ConditionN)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.6.2.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e222">2.6.2.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Paragraph{AND(PARTOF(Headline),CONTAINS(Keyword))
+          -&gt;MARK(ImportantHeadline)};</pre><p>
+      </p>
+      <p>
+        In this example a Paragraph is annotated with an
+        ImportantHeadline annotation if it is part of a Headline and
+        contains a Keyword annotation.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.6.3.&nbsp;BEFORE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.conditions.before">2.6.3.&nbsp;BEFORE</h3></div></div></div>
+    
+    <p>
+      The BEFORE condition evaluates true if the matched annotation
+      starts before the beginning of an arbitrary annotation of the passed
+      type. If a list of types is passed, this has to be true for at least
+      one of them.
+    </p>
+    <div class="section" title="2.6.3.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e231">2.6.3.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">BEFORE(Type|TypeListExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.6.3.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e236">2.6.3.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">CW{BEFORE(SW)};</pre><p>
+      </p>
+      <p>
+        Here, the rule matches on a capitalized word if there is any
+        small written word afterwards.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.6.4.&nbsp;CONTAINS"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.conditions.contains">2.6.4.&nbsp;CONTAINS</h3></div></div></div>
+    
+    <p>
+      The CONTAINS condition evaluates true on a matched annotation
+      if
+      the frequency of the passed type lies within an optionally passed
+      interval. The limits of the passed interval are per default
+      interpreted as absolute numeral values. By passing a further boolean
+      parameter set to true the limits are interpreted as percental
+      values.
+      If no interval parameters are passed at all the condition
+      checks
+      whether the matched annotation contains at least one
+      occurrence of the
+      passed type.
+    </p>
+    <div class="section" title="2.6.4.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e245">2.6.4.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">CONTAINS(Type(,NumberExpression,NumberExpression(,BooleanExpression)?)?)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.6.4.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e250">2.6.4.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Paragraph{CONTAINS(Keyword)-&gt;MARK(KeywordParagraph)};</pre><p>
+      </p>
+      <p>
+        A Paragraph is annotated with a KeywordParagraph annotation if
+        it contains a Keyword annotation.
+      </p>
+      <p>
+        </p><pre class="programlisting">Paragraph{CONTAINS(Keyword,2,4)-&gt;MARK(KeywordParagraph)};</pre><p>
+      </p>
+      <p>
+        A Paragraph is annotated with a KeywordParagraph annotation if
+        it contains between two and four Keyword annotations.
+      </p>
+      <p>
+        </p><pre class="programlisting">Paragraph{CONTAINS(Keyword,50,100,true)-&gt;MARK(KeywordParagraph)};</pre><p>
+      </p>
+      <p>
+        A Paragraph is annotated with a KeywordParagraph annotation if it
+        contains between 50% and 100% Keyword annotations. This is
+        calculated based on the tokens of the Paragraph. If the Paragraph
+        contains six basic annotations (see
+        <a class="xref" href="#ugr.tools.tm.language.seeding" title="2.1.&nbsp;Basic Annotations and tokens">Section&nbsp;2.1, &#8220;Basic Annotations and tokens&#8221;</a>
+        ), two of them are part of one Keyword annotation and one basic
+        annotation is also annotated with a Keyword annotation, then the
+        percentage of the contained Keywords is 50%.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.6.5.&nbsp;CONTEXTCOUNT"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.conditions.contextcount">2.6.5.&nbsp;CONTEXTCOUNT</h3></div></div></div>
+    
+    <p>
+      The CONTEXTCOUNT condition numbers all occurrences of the
+      matched type within the context of a passed type's annotation
+      consecutively, thus assigning an index to each occurrence.
+      Additionally it stores the index of the matched annotation in a
+      numerical variable if one is passed. The condition evaluates true if
+      the index of the matched annotation is within a passed interval. If
+      no interval is passed, the condition always evaluates true.
+    </p>
+    <div class="section" title="2.6.5.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e266">2.6.5.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">CONTEXTCOUNT(Type(,NumberExpression,NumberExpression)?(,Variable)?)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.6.5.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e271">2.6.5.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Keyword{CONTEXTCOUNT(Paragraph,2,3,var)
+          -&gt;MARK(SecondOrThirdKeywordInParagraph)};</pre><p>
+      </p>
+      <p>
+        Here, the position of the matched Keyword annotation within a
+        Paragraph annotation is calculated and stored in the variable 'var'.
+        If the counted value lies within the interval [2,3] the matched
+        Keyword is annotated with the SecondOrThirdKeywordInParagraph
+        annotation.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.6.6.&nbsp;COUNT"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.conditions.count">2.6.6.&nbsp;COUNT</h3></div></div></div>
+    
+    <p>
+      The COUNT condition can be used in two different ways. In the
+      first case (see first definition), it counts the number of
+      annotations of the passed type within the window of the matched
+      annotation and stores the amount in a numerical variable if such a
+      variable is passed. The condition evaluates true if the counted
+      amount is within a specified interval. If no interval is passed, the
+      condition always evaluates true. In the second case (see second
+      definition), it counts the number of occurrences of the passed
+      VariableExpression (second parameter) within the passed list (first
+      parameter) and stores the amount in a numerical variable if such a
+      variable is passed. Again the condition evaluates true if the counted
+      amount is within a specified interval. If no interval is passed, the
+      condition always evaluates true.
+    </p>
+    <div class="section" title="2.6.6.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e280">2.6.6.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">COUNT(Type(,NumberExpression,NumberExpression)?(,NumberVariable)?)</pre><p>
+      </p>
+      <p>
+        </p><pre class="programlisting">COUNT(ListExpression,VariableExpression
+          (,NumberExpression,NumberExpression)?(,NumberVariable)?)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.6.6.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e287">2.6.6.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Paragraph{COUNT(Keyword,1,10,var)-&gt;MARK(KeywordParagraph)};</pre><p>
+      </p>
+      <p>
+        Here, the amount of Keyword annotations within a Paragraph is
+        calculated and stored in the variable 'var'. If one to ten Keywords
+        were counted, the Paragraph is marked with a KeywordParagraph
+        annotation.
+      </p>
+      <p>
+        </p><pre class="programlisting">Paragraph{COUNT(list,"author",5,7,var)};</pre><p>
+      </p>
+      <p>
+        Here, the number of occurrences of STRING "author" within the
+        STRINGLIST 'list' is counted and stored in the variable 'var'. If
+        "author" occurs five to seven times within 'list', the condition
+        evaluates true.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.6.7.&nbsp;CURRENTCOUNT"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.conditions.currentcount">2.6.7.&nbsp;CURRENTCOUNT</h3></div></div></div>
+    
+    <p>
+      The CURRENTCOUNT condition numbers all occurences of the matched
+      type within the whole document consecutively, thus assigning an index
+      to each occurence. Additionally it stores the index of the matched
+      annotation in a numerical variable if one is passed. The condition
+      evaluates true if the index of the matched annotation is within a
+      specified interval. If no interval is passed, the condition always
+      evaluates true.
+    </p>
+    <div class="section" title="2.6.7.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e299">2.6.7.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">CURRENTCOUNT(Type(,NumberExpression,NumberExpression)?(,Variable)?)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.6.7.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e304">2.6.7.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Paragraph{CURRENTCOUNT(Keyword,3,3,var)-&gt;MARK(ParagraphWithThirdKeyword)};</pre><p>
+      </p>
+      <p>
+        Here, the Paragraph which contains the third Keyword of the
+        whole document is annotated with the ParagraphWithThirdKeyword
+        annotation. The index is stored in the variable 'var'.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.6.8.&nbsp;ENDSWITH"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.conditions.endswith">2.6.8.&nbsp;ENDSWITH</h3></div></div></div>
+    
+    <p>
+      The ENDSWITH condition evaluates true if an annotation of the
+      given type ends exactly at the same position as the matched
+      annotation. If a list of types is passed, this has to be true for at
+      least one of them.
+    </p>
+    <div class="section" title="2.6.8.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e313">2.6.8.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">ENDSWITH(Type|TypeListExpression) </pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.6.8.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e318">2.6.8.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Paragraph{ENDSWITH(SW)};</pre><p>
+      </p>
+      <p>
+        Here, the rule matches on a Paragraph annotation if it ends
+        with a small written word.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.6.9.&nbsp;FEATURE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.conditions.feature">2.6.9.&nbsp;FEATURE</h3></div></div></div>
+    
+    <p>
+      The FEATURE condition compares a feature of the matched
+      annotation with the second argument.
+    </p>
+    <div class="section" title="2.6.9.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e327">2.6.9.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">FEATURE(StringExpression,Expression) </pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.6.9.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e332">2.6.9.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{FEATURE("language",targetLanguage)}</pre><p>
+      </p>
+      <p>
+        This rule matches if the feature named 'language' of the
+        document annotation equals the value of the variable
+        'targetLanguage'.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.6.10.&nbsp;IF"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.conditions.if">2.6.10.&nbsp;IF</h3></div></div></div>
+    
+    <p>
+      The IF condition evaluates true if the contained boolean
+      expression does.
+    </p>
+    <div class="section" title="2.6.10.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e341">2.6.10.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">IF(BooleanExpression) </pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.6.10.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e346">2.6.10.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Paragraph{IF(keywordAmount &gt; 5)-&gt;MARK(KeywordParagraph)};</pre><p>
+      </p>
+      <p>
+        A Paragraph annotation is annotated with a KeywordParagraph
+        annotation if the value of the variable 'keywordAmount' is greater
+        than five.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.6.11.&nbsp;INLIST"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.conditions.inlist">2.6.11.&nbsp;INLIST</h3></div></div></div>
+    
+    <p>
+      The INLIST condition is fulfilled if the matched annotation is listed
+      in a given word or string list. The (relative) edit distance
+      is
+      currently disabled.
+      
+    </p>
+    <div class="section" title="2.6.11.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e355">2.6.11.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">INLIST(WordList(,NumberExpression,(BooleanExpression)?)?) </pre><p>
+      </p>
+      <p>
+        </p><pre class="programlisting">INLIST(StringList(,NumberExpression,(BooleanExpression)?)?) </pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.6.11.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e362">2.6.11.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Keyword{INLIST(specialKeywords.txt)-&gt;MARK(SpecialKeyword)};</pre><p>
+      </p>
+      <p>
+        A Keyword is annotated with the type SpecialKeyword if the text
+        of the Keyword annotation is listed in the word list
+        'specialKeywords.txt'.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.6.12.&nbsp;IS"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.conditions.is">2.6.12.&nbsp;IS</h3></div></div></div>
+    
+    <p>
+      The IS condition evaluates true if there is an annotation of the
+      given type with the same beginning and ending offsets as the
+      matched
+      annotation. If a list of types is given, the condition
+      evaluates true
+      if at least one of them fulfills the former condition.
+    </p>
+    <div class="section" title="2.6.12.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e371">2.6.12.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">IS(Type|TypeListExpression) </pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.6.12.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e376">2.6.12.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Author{IS(Englishman)-&gt;MARK(EnglishAuthor)};</pre><p>
+      </p>
+      <p>
+        If an Author annotation is also annotated with an Englishman
+        annotation, it is annotated with an EnglishAuthor annotation.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.6.13.&nbsp;LAST"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.conditions.last">2.6.13.&nbsp;LAST</h3></div></div></div>
+    
+    <p>
+      The LAST condition evaluates true if the type of the last token
+      within the window of the matched annotation is of the given type.
+    </p>
+    <div class="section" title="2.6.13.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e385">2.6.13.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">LAST(TypeExpression) </pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.6.13.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e390">2.6.13.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{LAST(CW)};</pre><p>
+      </p>
+      <p>
+        This rule fires if the last token of the document is a
+        capitalized word.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.6.14.&nbsp;MOFN"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.conditions.mofn">2.6.14.&nbsp;MOFN</h3></div></div></div>
+    
+    <p>
+      The MOFN condition is a composed condition. It evaluates true if
+      the number of containing conditions evaluating true is within a given
+      interval.
+    </p>
+    <div class="section" title="2.6.14.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e399">2.6.14.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">MOFN(NumberExpression,NumberExpression,Condition1,...,ConditionN) </pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.6.14.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e404">2.6.14.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Paragraph{MOFN(1,1,PARTOF(Headline),CONTAINS(Keyword))
+          -&gt;MARK(HeadlineXORKeywords)};</pre><p>
+      </p>
+      <p>
+        A Paragraph is marked as a HeadlineXORKeywords if the matched
+        text is either part of a Headline annotation or contains Keyword
+        annotations.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.6.15.&nbsp;NEAR"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.conditions.near">2.6.15.&nbsp;NEAR</h3></div></div></div>
+    
+    <p>
+      The NEAR condition is fulfilled if the distance of the matched
+      annotation to an annotation of the given type is within a given
+      interval. The direction is defined by a boolean parameter, whose
+      default value is true, therefore searching forward. By default this
+      condition works on an unfiltered index. An optional fifth boolean
+      parameter can be set to true to get the condition being evaluated on
+      a filtered index.
+    </p>
+    <div class="section" title="2.6.15.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e413">2.6.15.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">NEAR(TypeExpression,NumberExpression,NumberExpression
+          (,BooleanExpression(,BooleanExpression)?)?) </pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.6.15.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e418">2.6.15.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Paragraph{NEAR(Headline,0,10,false)-&gt;MARK(NoHeadline)};</pre><p>
+      </p>
+      <p>
+        A Paragraph that starts at most ten tokens after a Headline
+        annotation is annotated with the NoHeadline annotation.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.6.16.&nbsp;NOT"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.conditions.not">2.6.16.&nbsp;NOT</h3></div></div></div>
+    
+    <p>
+      The NOT condition negates the result of its contained
+      condition.
+    </p>
+    <div class="section" title="2.6.16.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e427">2.6.16.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">"-"Condition</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.6.16.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e432">2.6.16.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Paragraph{-PARTOF(Headline)-&gt;MARK(Headline)};</pre><p>
+      </p>
+      <p>
+        A Paragraph that is not part of a Headline annotation so far is
+        annotated with a Headline annotation.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.6.17.&nbsp;OR"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.conditions.or">2.6.17.&nbsp;OR</h3></div></div></div>
+    
+    <p>
+      The OR Condition is a composed condition and evaluates true if
+      at least one contained condition is evaluated true.
+    </p>
+    <div class="section" title="2.6.17.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e441">2.6.17.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">OR(Condition1,...,ConditionN)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.6.17.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e446">2.6.17.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Paragraph{OR(PARTOF(Headline),CONTAINS(Keyword))-&gt;MARK(ImportantParagraph)};</pre><p>
+      </p>
+      <p>
+        In this example a Paragraph is annotated with the
+        ImportantParagraph annotation if it is a Headline or contains
+        Keyword annotations.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.6.18.&nbsp;PARSE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.conditions.parse">2.6.18.&nbsp;PARSE</h3></div></div></div>
+    
+    <p>
+      The PARSE condition is fulfilled if the text covered by the
+      matched annotation can be transformed into a value of the given
+      variable's type. If this is possible, the parsed value is
+      additionally assigned to the passed variable.
+    </p>
+    <div class="section" title="2.6.18.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e455">2.6.18.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">PARSE(variable)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.6.18.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e460">2.6.18.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">NUM{PARSE(var)};</pre><p>
+      </p>
+      <p>
+        If the variable 'var' is of an appropriate numeric type, the
+        value of NUM is parsed and subsequently stored in 'var'.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.6.19.&nbsp;PARTOF"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.conditions.partof">2.6.19.&nbsp;PARTOF</h3></div></div></div>
+    
+    <p>
+      The PARTOF condition is fulfilled if the matched annotation is
+      part of an annotation of the given type. However it is not necessary
+      that the matched annotation is smaller than the annotation of the
+      given type. Use the (much slower) PARTOFNEQ condition instead if this
+      is needed. If a type list is given, the condition evaluates true if
+      the former described condition for a single type is fulfilled for at
+      least one of the types in the list.
+    </p>
+    <div class="section" title="2.6.19.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e469">2.6.19.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">PARTOF(Type|TypeListExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.6.19.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e474">2.6.19.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Paragraph{PARTOF(Headline) -&gt; MARK(ImportantParagraph)};</pre><p>
+      </p>
+      <p>
+        A Paragraph is an ImportantParagraph if the matched text is
+        part of a Headline annotation.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.6.20.&nbsp;PARTOFNEQ"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.conditions.partofneq">2.6.20.&nbsp;PARTOFNEQ</h3></div></div></div>
+    
+    <p>
+      The PARTOFNEQ condition is fulfilled if the matched annotation
+      is part of (smaller than and inside of) an annotation of the given
+      type. If also annotations of the same size should be acceptable, use
+      the PARTOF condition. If a type list is given, the condition
+      evaluates true if the former described condition is fulfilled for at
+      least one of the types in the list.
+    </p>
+    <div class="section" title="2.6.20.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e483">2.6.20.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">PARTOFNEQ(Type|TypeListExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.6.20.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e488">2.6.20.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">W{PARTOFNEQ(Headline) -&gt; MARK(ImportantWord)};</pre><p>
+      </p>
+      <p>
+        A word is an ImportantWord if it is part of a headline.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.6.21.&nbsp;POSITION"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.conditions.position">2.6.21.&nbsp;POSITION</h3></div></div></div>
+    
+    <p>
+      The POSITION condition is fulfilled if the matched type is the
+      k-th occurence of this type within the window of an annotation of the
+      passed type, whereby k is defined by the value of the passed
+      NumberExpression. If the additional boolean paramter is set to false,
+      then k count the occurences of of the minimal annotations.
+    </p>
+    <div class="section" title="2.6.21.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e497">2.6.21.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">POSITION(Type,NumberExpression(,BooleanExpression)?)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.6.21.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e502">2.6.21.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Keyword{POSITION(Paragraph,2)-&gt;MARK(SecondKeyword)};</pre><p>
+      </p>
+      <p>
+        The second Keyword in a Paragraph is annotated with the type
+        SecondKeyword.
+      </p>
+      <p>
+        </p><pre class="programlisting">Keyword{POSITION(Paragraph,2,false)-&gt;MARK(SecondKeyword)};</pre><p>
+      </p>
+      <p>
+        A Keyword in a Paragraph is annotated with the type
+        SecondKeyword, if it starts at the same offset as the second
+        (visible) TextMarkerBasic annotation, which normally corresponds to
+        the tokens.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.6.22.&nbsp;REGEXP"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.conditions.regexp">2.6.22.&nbsp;REGEXP</h3></div></div></div>
+    
+    <p>
+      The REGEXP condition is fulfilled if the given pattern matches on the
+      matched annotation. However, if a string variable is given as the
+      first
+      argument, then the pattern is evaluated on the value of the
+      variable.
+      For more details on the syntax of regular
+      expressions, have a
+      look at
+      the
+      <a class="ulink" href="http://docs.oracle.com/javase/1.4.2/docs/api/java/util/regex/Pattern.html" target="_top">Java API</a>
+      . By default the REGEXP condition is case-sensitive. To change this
+      add an optional boolean parameter set to true.
+    </p>
+    <div class="section" title="2.6.22.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e515">2.6.22.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">REGEXP((StringVariable,)? StringExpression(,BooleanExpression)?)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.6.22.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e520">2.6.22.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Keyword{REGEXP("..")-&gt;MARK(SmallKeyword)};</pre><p>
+      </p>
+      <p>
+        A Keyword that only consists of two chars is annotated with a
+        SmallKeyword annotation.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.6.23.&nbsp;SCORE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.conditions.score">2.6.23.&nbsp;SCORE</h3></div></div></div>
+    
+    <p>
+      The SCORE condition evaluates the heuristic score of the matched
+      annotation. This score is set or changed by the MARK action.
+      The
+      condition is fulfilled if the score of the matched annotation is
+      in a
+      given interval. Optionally the score can be stored in a
+      variable.
+    </p>
+    <div class="section" title="2.6.23.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e529">2.6.23.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">SCORE(NumberExpression,NumberExpression(,Variable)?)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.6.23.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e534">2.6.23.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">MaybeHeadline{SCORE(40,100)-&gt;MARK(Headline)};</pre><p>
+      </p>
+      <p>
+        A annotation of the type MaybeHeadline is annotated with
+        Headline if its score is between 40 and 100.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.6.24.&nbsp;SIZE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.conditions.size">2.6.24.&nbsp;SIZE</h3></div></div></div>
+    
+    <p>
+      The SIZE contition counts the number of elements in the given
+      list. By default this condition always evaluates true. If an interval
+      is passed, it evaluates true if the counted number of list elements
+      is within the interval. The counted number can be stored in an
+      optionally passed numeral variable.
+    </p>
+    <div class="section" title="2.6.24.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e543">2.6.24.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">SIZE(ListExpression(,NumberExpression,NumberExpression)?(,Variable)?)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.6.24.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e548">2.6.24.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{SIZE(list,4,10,var)};</pre><p>
+      </p>
+      <p>
+        This rule fires if the given list contains between 4 and 10
+        elements. Additionally, the exact amount is stored in the variable
+        var.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.6.25.&nbsp;STARTSWITH"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.conditions.startswith">2.6.25.&nbsp;STARTSWITH</h3></div></div></div>
+    
+    <p>
+      The STARTSWITH condition evaluates true if an annotation of the
+      given type starts exactly at the same position as the matched
+      annotation. If a type list is given, the condition evaluates true if
+      the former is true for at least one of the given types in the list.
+    </p>
+    <div class="section" title="2.6.25.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e557">2.6.25.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">STARTSWITH(Type|TypeListExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.6.25.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e562">2.6.25.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Paragraph{STARTSWITH(SW)};</pre><p>
+      </p>
+      <p>
+        Here, the rule matches on a Paragraph annotation if it starts
+        with small written word.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.6.26.&nbsp;TOTALCOUNT"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.conditions.totalcount">2.6.26.&nbsp;TOTALCOUNT</h3></div></div></div>
+    
+    <p>
+      The TOTALCOUNT condition counts the annotations of the passed
+      type within the whole document and stores the amount in an optionally
+      passed numerical variable. The condition evaluates true if the
+      amount
+      is within the passed interval. If no interval is passed, the
+      condition always evaluates true.
+    </p>
+    <div class="section" title="2.6.26.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e571">2.6.26.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">TOTALCOUNT(Type(,NumberExpression,NumberExpression(,Variable)?)?)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.6.26.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e576">2.6.26.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Paragraph{TOTALCOUNT(Keyword,1,10,var)-&gt;MARK(KeywordParagraph)};</pre><p>
+      </p>
+      <p>
+        Here, the amount of Keyword annotations within the whole
+        document is calculated and stored in the variable 'var'. If one to
+        ten Keywords were counted, the Paragraph is marked with a
+        KeywordParagraph annotation.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.6.27.&nbsp;VOTE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.conditions.vote">2.6.27.&nbsp;VOTE</h3></div></div></div>
+    
+    <p>
+      The VOTE condition counts the annotations of the given two types
+      within the window of the matched annotation and evaluates true
+      if it
+      found more annotations of the first type.
+    </p>
+    <div class="section" title="2.6.27.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e585">2.6.27.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">VOTE(TypeExpression,TypeExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.6.27.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e590">2.6.27.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Paragraph{VOTE(FirstName,LastName)};</pre><p>
+      </p>
+      <p>
+        Here, this rule fires if a paragraph contains more firstnames
+        than lastnames.
+      </p>
+    </div>
+  </div>

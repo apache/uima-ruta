@@ -27,11 +27,12 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import org.apache.uima.textmarker.ide.TextMarkerIdePlugin;
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.ui.documentation.IScriptDocumentationProvider;
+import org.htmlparser.Parser;
+import org.htmlparser.util.NodeList;
 
 public abstract class AbstractLanguageElementDocumentationProvider implements
         IScriptDocumentationProvider {
@@ -74,29 +75,17 @@ public abstract class AbstractLanguageElementDocumentationProvider implements
       sb.append(line + "\n");
     }
 
-    String string = sb.toString();
-    string = string.replaceAll("\\[\\{TableOfContents\\}\\]", "");
-    String[] split = string.split("[-][-][-][-]");
+    String document = sb.toString();
 
-    Pattern compile = Pattern.compile("!! __([A-Z]+)__");
-    for (String each : split) {
-      String docu = each.trim();
-      Matcher matcher = compile.matcher(each);
-      String group = null;
-      if (matcher.find()) {
-        group = matcher.group(1);
-        docu = docu.replaceAll("!! __" + group + "__", "<h1>" + group + "</h1>");
-      }
-      docu = docu.replaceAll("__Definition__", "<h2>Definition</h2>");
-      docu = docu.replaceAll("__Example__", "<h2>Example</h2>");
-      docu = docu.replaceAll("%%prettify", "");
-      docu = docu.replaceAll("/%", "");
-      docu = docu.replaceAll("\\{\\{\\{", "<code>");
-      docu = docu.replaceAll("\\}\\}\\}", "</code>");
-
-      if (group != null) {
-        map.put(group, docu);
-      }
+    try {
+      Parser parser = new Parser(document);
+      NodeList list = parser.parse(null);
+      HtmlDocumentationVisitor visitor = new HtmlDocumentationVisitor(document);
+      list.visitAllNodesWith(visitor);
+      map.putAll(visitor.getMap());
+    } catch (Exception e) {
+      TextMarkerIdePlugin.error(e);
     }
+
   }
 }

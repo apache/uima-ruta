@@ -23,7 +23,7 @@ public class TextMarkerConditionDocumentationProvider extends
         AbstractLanguageElementDocumentationProvider {
 
   public TextMarkerConditionDocumentationProvider() {
-    super("ConditionDocumentation.txt");
+    super("Conditions.html");
   }
 
 }
