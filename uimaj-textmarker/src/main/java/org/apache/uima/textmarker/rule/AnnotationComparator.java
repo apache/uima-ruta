@@ -23,8 +23,17 @@ import java.util.Comparator;
 
 import org.apache.uima.cas.text.AnnotationFS;
 
+/**
+ * Comparator for annotations following mostly the default order.
+ * 
+ */
 public class AnnotationComparator implements Comparator<AnnotationFS> {
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+   */
   public int compare(AnnotationFS o1, AnnotationFS o2) {
     if (o1.getBegin() < o2.getBegin()) {
       return -1;
@@ -35,7 +44,17 @@ public class AnnotationComparator implements Comparator<AnnotationFS> {
     } else if (o1.getEnd() < o2.getEnd()) {
       return 1;
     } else {
-      return o1.getType().getName().compareTo(o2.getType().getName());
+      boolean equals = o1.equals(o2);
+      if (equals) {
+        return 0;
+      } else {
+        int compareTo = o1.getType().getName().compareTo(o2.getType().getName());
+        if (compareTo == 0) {
+          return 1;
+        } else {
+          return compareTo;
+        }
+      }
     }
 
   }
