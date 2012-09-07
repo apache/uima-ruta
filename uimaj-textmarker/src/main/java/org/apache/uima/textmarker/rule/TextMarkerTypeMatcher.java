@@ -51,7 +51,6 @@ public class TextMarkerTypeMatcher implements TextMarkerMatcher {
   public Collection<AnnotationFS> getMatchingAnnotations(TextMarkerStream stream,
           TextMarkerBlock parent) {
     // TODO what about the matching direction?
-    // TODO this comparator can ignore some annotations?! same offset same type
     Collection<AnnotationFS> result = new TreeSet<AnnotationFS>(comparator);
     List<Type> types = getTypes(parent, stream);
     for (Type type : types) {
@@ -96,7 +95,7 @@ public class TextMarkerTypeMatcher implements TextMarkerMatcher {
     if (stream.isValid()) {
       TextMarkerBasic nextBasic = (TextMarkerBasic) stream.get();
       List<Type> reTypes = getTypes(parent, stream);
-      Collection<AnnotationFS> anchors = new TreeSet<AnnotationFS>(new AnnotationComparator());
+      Collection<AnnotationFS> anchors = new TreeSet<AnnotationFS>(comparator);
       for (Type eachMatchType : reTypes) {
         List<Type> types = stream.getCas().getTypeSystem().getProperlySubsumedTypes(eachMatchType);
         types.add(eachMatchType);
@@ -127,7 +126,7 @@ public class TextMarkerTypeMatcher implements TextMarkerMatcher {
     if (stream.isValid()) {
       TextMarkerBasic nextBasic = (TextMarkerBasic) stream.get();
       List<Type> reTypes = getTypes(parent, stream);
-      Collection<AnnotationFS> anchors = new TreeSet<AnnotationFS>(new AnnotationComparator());
+      Collection<AnnotationFS> anchors = new TreeSet<AnnotationFS>(comparator);
       for (Type eachMatchType : reTypes) {
         List<Type> types = stream.getCas().getTypeSystem().getProperlySubsumedTypes(eachMatchType);
         types.add(eachMatchType);
