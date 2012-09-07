@@ -493,13 +493,13 @@ under the License.
             commandId="org.apache.uima.textmarker.utils.twl.command"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M1+L">
+            sequence="M1+J">
       </key>
       <key
             commandId="org.apache.uima.textmarker.utils.mtwl.command"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M1+M2+L">
+            sequence="M1+M2+J">
       </key>
    </extension>
    <extension
