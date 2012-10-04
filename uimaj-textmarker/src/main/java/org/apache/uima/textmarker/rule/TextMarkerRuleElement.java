@@ -244,6 +244,8 @@ public class TextMarkerRuleElement extends AbstractRuleElement {
       if (ruleMatch.matched()) {
         continueMatchSomewhereElse(after, true, annotation, ruleMatch, ruleApply, containerMatch,
                 sideStepOrigin, null, stream, crowd);
+      } else {
+        doneMatching(ruleMatch, ruleApply, stream, crowd);
       }
     }
   }
