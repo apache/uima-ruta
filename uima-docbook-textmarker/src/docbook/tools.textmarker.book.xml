@@ -30,4 +30,7 @@ under the License.
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.textmarker.language.xml"/>
   
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.textmarker.workbench.xml"/>
+  
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.textmarker.others.xml"/>
+  
 </book>

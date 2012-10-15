@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
+<!ENTITY imgroot "images/tools/tools.textmarker/" >
+<!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
+%uimaents;
+]>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. 
+  See the NOTICE file distributed with this work for additional information regarding copyright ownership. 
+  The ASF licenses this file to you under the Apache License, Version 2.0 (the "License"); you may not 
+  use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 
+  Unless required by applicable law or agreed to in writing, software distributed under the License is 
+  distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+  See the License for the specific language governing permissions and limitations under the License. -->
+
+<chapter id="ugr.tools.tm.others">
+
+  <section id="ugr.tools.tm.dictionaries">
+    <title>Dictionariers</title>
+    <para>
+      The TextMarker system suports currently the usage of dictionaries in four different ways. The
+      files are always encoded with UTF-8. The generated analysis engines provide a parameter
+      "resourceLocation" that specifies the folder that contains the external dictionary files. The
+      paramter is initially set to the resource folder of the current TextMarker project. In order
+      to use a different folder, change for example set value of the paramter and rebuild all
+      TextMarker rule files in the project in order to update all analysis engines. The algorithm
+      for the detection of the entires of a dictionary:
+      <programlisting><![CDATA[
+for all basic annotations of the matched annotation do
+  set current candidate to current basic
+  loop
+    if the dictionary contains current candidate then
+      remember candidate
+    else if an entry of the dictionary starts with the current candidate then
+      add next basic annotation to the current candidate
+      continue loop
+    else
+      stop loop
+]]></programlisting>
+      Word List (.txt) Word lists are simple text files that contain a term or string in each line.
+      The strings may include white spaces and are sperated by a line break. Usage: Content of a
+      file named FirstNames.txt (located in the resource folder of a TextMarker project):
+      <programlisting><![CDATA[
+Peter
+Jochen
+Joachim
+Martin
+]]></programlisting>
+      Examplary rules:
+      <programlisting><![CDATA[
+LIST FirstNameList = 'FirstNames.txt';
+DECLARE FirstName;
+Document{-> MARKFAST(FirstName, FirstNameList)};
+]]></programlisting>
+      In this example, all first names in the given text file are annotated in the input document
+      with the type FirstName. Tree Word List (.twl) A tree word list is a compiled word list
+      similar to a trie. A .twl file is an XML-file that contains a tree-like structure with a node
+      for each character. The nodes themselves refer to child nodes that represent all characters
+      that succeed the caracter of the parent node. For single word entries, this is resulting in a
+      complexity of O(m*log(n)) instead of a complexity of O(m*n) (simple .txt file), whereas m is
+      the amount of basic annotations in the document and n is the amount of entries in the
+      dictionary. Usage: A .twl file are generated using the popup menu. Select one or more .txt
+      files (or a folder containing .txt files), click the right mouse button and choose ''Convert
+      to TWL''. Then, one or more .twl files are generated with the according file name. Examplary
+      rules:
+      <programlisting><![CDATA[
+LIST FirstNameList = 'FirstNames.twl';
+DECLARE FirstName;
+Document{-> MARKFAST(FirstName, FirstNameList)};
+]]></programlisting>
+      In this example, all first names in the given text file are again annotated in the input
+      document with the type FirstName. Multi Tree Word List (.mtwl) A multi tree word list is
+      generated using multiple .txt files and contains special nodes: Its nodes provide additional
+      information about the original file. The .mtwl files are useful, if several different
+      dictionaries are used in a TextMarker file. For five dictionaries, for example, also five
+      MARKFAST rules are necessary. Therefore the matched text is searched five times and the
+      complexity is 5 * O(m*log(n)). Using a .mtwl file reduces the complexity to about
+      O(m*log(5*n)). Usage: A .mtwl file is generated using the popup menu. Select one or more .txt
+      files (or a folder containing .txt files), click the right mouse button and choose ''Convert
+      to MTWL''. A .mtwl file named "generated.mtwl" is then generated that contains the word lists
+      of all selected .txt files. Renaming the .mtwl file is recommended. If there are for example
+      two or more word lists with the name "FirstNames.txt", "Companies.txt" and so on given and the
+      generated .mtwl file is renamed to "Dictionary.mtwl", then the following rule annotates all
+      companies and first names in the complete document. Examplary rules:
+      <programlisting><![CDATA[
+LIST Dictionary = 'Dictionary.mtwl';
+DECLARE FirstName, Company;
+Document{-> TRIE("FirstNames.txt" = FirstName, "Companies.txt" = Company, Dictionary, false, 0, false, 0, "")};
+]]></programlisting>
+      Table (.csv) The TextMarker system also supports .csv files, respectively tables. Usage:
+      Content of a file named TestTable.csv (located in the resource folder of a TextMarker
+      project):
+      <programlisting><![CDATA[
+Peter;P;
+Jochen;J;
+Joba;J;
+]]></programlisting>
+      Examplary rules:
+      <programlisting><![CDATA[
+PACKAGE de.uniwue.tm;
+TABLE TestTable = 'TestTable.csv';
+DECLARE Annotation Struct (STRING first);
+Document{-> MARKTABLE(Struct, 1, TestTable, "first" = 2)};
+]]></programlisting>
+      In this example, the document is searched for all occurences of the entries of the first
+      column of the given table, an annotation of the type Struct is created and its feature "first"
+      is filled with the entry of the second column. For the input document with the content "Peter"
+      the result is a single annotation of the type Struct and with P assigned to its features
+      "first".
+    </para>
+  </section>
+  <section id="ugr.tools.tm.parameters">
+    <title>Parameters</title>
+    <para>
+      <itemizedlist>
+        <listitem>
+          <para>mainScript (String): This is the TextMarker script that will be loaded and executed
+            by the generated engine. The string is referencing the name of the file without file
+            extension but with its complete namespace, e.g., my.package.Main.
+          </para>
+        </listitem>
+        <listitem>
+          <para>scriptPaths (Multiple Strings): The given strings specify the folders that contain
+            TextMarker script files, the main script file and the additional script files in
+            particular. Currently, there is only one folder supported in the TextMarker workbench
+            (script).
+          </para>
+        </listitem>
+        <listitem>
+          <para>enginePaths (Multiple Strings): The given strings specify the folders that contain
+            additional analysis engines that are called from within a script file. Currently, there
+            is only one folder supported in the TextMarker workbench (descriptor).
+          </para>
+        </listitem>
+        <listitem>
+          <para>resourcePaths (Multiple Strings): The given strings specify the folders that contain
+            the word lists and dictionaries. Currently, there is only one folder supported in the
+            TextMarker workbench (resources).
+          </para>
+        </listitem>
+        <listitem>
+          <para>additionalScripts (Multiple Strings): This parameter contains a list of all known
+            script files references with their complete namespace, e.g., my.package.AnotherOne.
+          </para>
+        </listitem>
+        <listitem>
+          <para>additionalEngines (Multiple Strings): This parameter contains a list of all known
+            analysis engines.
+          </para>
+        </listitem>
+        <listitem>
+          <para>additionalEngineLoaders (Multiple Strings): This parameter contains the class names
+            of the implementations that help to load more complex analysis engines.
+          </para>
+        </listitem>
+        <listitem>
+          <para>scriptEncoding (String): The encoding of the script files. Not yet supported, please
+            use UTF-8.
+          </para>
+        </listitem>
+        <listitem>
+          <para>defaultFilteredTypes (Multiple Strings): The complete names of the types that are
+            filtered by default.
+          </para>
+        </listitem>
+        <listitem>
+          <para>defaultFilteredMarkups (Multiple Strings): The names of the markups that are
+            filtered by default.
+          </para>
+        </listitem>
+        <listitem>
+          <para>seeders (Multiple Strings):
+          </para>
+        </listitem>
+        <listitem>
+          <para>useBasics (String):
+          </para>
+        </listitem>
+        <listitem>
+          <para>removeBasics (Boolean):
+          </para>
+        </listitem>
+        <listitem>
+          <para>debug (Boolean):
+          </para>
+        </listitem>
+        <listitem>
+          <para>profile (Boolean):
+          </para>
+        </listitem>
+        <listitem>
+          <para>debugWithMatches (Boolean):
+          </para>
+        </listitem>
+        <listitem>
+          <para>statistics (Boolean):
+          </para>
+        </listitem>
+        <listitem>
+          <para>debugOnlyFor (Multiple Strings):
+          </para>
+        </listitem>
+        <listitem>
+          <para>style (Boolean):
+          </para>
+        </listitem>
+        <listitem>
+          <para>styleMapLocation (String):
+          </para>
+        </listitem>
+      </itemizedlist>
+    </para>
+  </section>
+
+</chapter>

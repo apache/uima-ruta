@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
+<!ENTITY imgroot "images/tools/tm/workbench/" >
+<!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
+%uimaents;
+]>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. 
+  See the NOTICE file distributed with this work for additional information regarding copyright ownership. 
+  The ASF licenses this file to you under the Apache License, Version 2.0 (the "License"); you may not 
+  use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 
+  Unless required by applicable law or agreed to in writing, software distributed under the License is 
+  distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+  See the License for the specific language governing permissions and limitations under the License. -->
+
+<section id="section.ugr.tools.tm.workbench.install">
+  <title>Installation</title>
+  <para>
+    Do the installation of the TextMarker workbench as follows:
+    <orderedlist numeration="arabic">
+      <listitem>
+        <para>
+          Download, install and start an Eclipse instance in version 3.7. Eclipse can be obtained
+          from the
+          <ulink url="http://www.eclipse.org/downloads/packages/release/indigo/sr2">eclipse.org</ulink>
+          download site.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          Add the Apache UIMA update site (
+          <ulink url="http://www.apache.org/dist/uima/eclipse-update-site/">http://www.apache.org/dist/uima/eclipse-update-site/</ulink>
+          ) and the TextMarker update site
+          (
+          <ulink url="http://ki.informatik.uni-wuerzburg.de/~pkluegl/updatesite/">http://ki.informatik.uni-wuerzburg.de/~pkluegl/updatesite/</ulink>
+          ) to the available
+          software sites in your Eclipse installation. Click
+          <quote>Help &rarr;
+            Install New Software &rarr;
+            Add...
+          </quote>
+          and add each site.
+        </para>
+      </listitem>
+      <listitem>
+        <para> Select the TextMarker update site at "Work with", unselect "Group items by
+          category"
+          and select "Contact all update sites during install to find required software"
+        </para>
+      </listitem>
+      <listitem>
+        <para> Select the TextMarker feature and continue the dialog. The CEV feature is already
+          contained in the TextMarker feature. Eclipse will automatically install the Apache UIMA
+          (version 2.4.1) plugins and the DLTK Core Framework (version 3.0) plugins.
+        </para>
+      </listitem>
+    </orderedlist>
+  </para>
+  <para>
+    After the successful installation, switch to the TextMarker perspective. To get an overview
+    see
+    <xref linkend='section.ugr.tools.tm.workbench.overview' />
+    You can also download the TextMarker plugin from
+    <ulink url="https://sourceforge.net/projects/textmarker/">TextMarker porject on SourceForge.net</ulink>] and install the plugin
+    manually.
+  </para>
+</section>

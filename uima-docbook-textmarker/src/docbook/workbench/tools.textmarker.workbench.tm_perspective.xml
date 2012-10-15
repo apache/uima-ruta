@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
+<!ENTITY imgroot "images/tools/tm/workbench/" >
+<!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
+%uimaents;
+]>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
+	license agreements. See the NOTICE file distributed with this work for additional 
+	information regarding copyright ownership. The ASF licenses this file to 
+	you under the Apache License, Version 2.0 (the "License"); you may not use 
+	this file except in compliance with the License. You may obtain a copy of 
+	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+	by applicable law or agreed to in writing, software distributed under the 
+	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+	OF ANY KIND, either express or implied. See the License for the specific 
+	language governing permissions and limitations under the License. -->
+
+<section id="section.ugr.tools.tm.workbench.tm_perspective">
+	<title>TextMarker Perspective</title>
+	<para>
+		The TextMarker perspective is the main view to manage TextMarker
+		projects. There are several views associated with the TextMarker
+		perspective: Annotation Test, Annotation Browser, Selection,
+		TextRuler, TextMarker Query. Since Annotation Test, TextRuler and
+		TextMarker Query have a stand-alone functionality they are explained
+		in separate sections.
+	</para>
+
+	<para>
+		To make it possible to reproduce all of the examples used below,
+		switch to the TextMarker Explain perspective within your Eclipse
+		workbench.
+		Import the TextMarker example project and open the main
+		TextMarker script file 'Main.tm'. Now press the 'Run' button (green
+		arrow)and wait for the end of execution. Open the resulting xmiCAS
+		file
+		'Test1.txt.xmi', which you can find in the output folder.
+	</para>
+
+	<section
+		id="section.ugr.tools.tm.workbench.tm_perspective.annotation_browser">
+		<title>Annotation Browser</title>
+		<para>
+			The Annotation Browser can be used to view the annotations
+			created by the execution of a TextMarker project. If an xmiCAS file
+			is opened and active in the editor, the related annotations are shown
+			in this view.
+		</para>
+		<para>
+			The result of the execution of the TextMarker example project is
+			shown in
+			<xref
+				linkend='figure.ugr.tools.tm.workbench.tm_perspective.annotation_browser' />
+			.
+		</para>
+		<para>
+			<figure
+				id="figure.ugr.tools.tm.workbench.tm_perspective.annotation_browser">
+				<title> Annotation Browser view
+				</title>
+				<mediaobject>
+					<imageobject role="html">
+						<imagedata width="300px" format="PNG" align="center"
+							fileref="&imgroot;tm/annotation_browser.png" />
+					</imageobject>
+					<imageobject role="fo">
+						<imagedata width="3.0in" format="PNG" align="center"
+							fileref="&imgroot;tm/annotation_browser.png" />
+					</imageobject>
+					<textobject>
+						<phrase>
+							Annotation Browser view.
+						</phrase>
+					</textobject>
+				</mediaobject>
+			</figure>
+		</para>
+		<para>
+			Moreover, this view has two possible filters. Using the
+			<quote>Only types with...</quote>
+			-filter lead to a list containing only those types that contain
+			the
+			entered text. The
+			<quote>Only annotations with...</quote>
+			-filter leads to an analog list.
+		</para>
+	</section>
+
+	<section id="section.ugr.tools.tm.workbench.tm_perspective.selection">
+		<title>Selection</title>
+		<para>
+			The Selection view is very similar to the Annotation Browser
+			view, but only shows annotations that affect a specific text passage.
+			To get such a list, click on any position in the opened xmiCAS
+			document or select a certain text passage.
+		</para>
+		<para>
+			E.g., if you select the text passage
+			<literal>2008</literal>
+			, the Selection view will be generated as shown in
+			<xref
+				linkend='figure.ugr.tools.tm.workbench.tm_perspective.annotation_browser' />
+			.
+		</para>
+		<para>
+			<figure id="figure.ugr.tools.tm.workbench.tm_perspective.selection">
+				<title> Selection view
+				</title>
+				<mediaobject>
+					<imageobject role="html">
+						<imagedata width="560px" format="PNG" align="center"
+							fileref="&imgroot;tm/selection.png" />
+					</imageobject>
+					<imageobject role="fo">
+						<imagedata width="5.5in" format="PNG" align="center"
+							fileref="&imgroot;tm/selection.png" />
+					</imageobject>
+					<textobject>
+						<phrase>
+							Selection view.
+						</phrase>
+					</textobject>
+				</mediaobject>
+			</figure>
+		</para>
+		<para>
+			The Selection view has the same filtering possibilities as
+			described in Annotation Browser view.
+		</para>
+	</section>
+
+</section>

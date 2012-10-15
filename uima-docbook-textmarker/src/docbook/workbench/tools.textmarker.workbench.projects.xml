@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
+<!ENTITY imgroot "images/tools/tm/workbench/" >
+<!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
+%uimaents;
+]>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
+	license agreements. See the NOTICE file distributed with this work for additional 
+	information regarding copyright ownership. The ASF licenses this file to 
+	you under the Apache License, Version 2.0 (the "License"); you may not use 
+	this file except in compliance with the License. You may obtain a copy of 
+	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+	by applicable law or agreed to in writing, software distributed under the 
+	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+	OF ANY KIND, either express or implied. See the License for the specific 
+	language governing permissions and limitations under the License. -->
+
+
+<section id="section.ugr.tools.tm.workbench.projects">
+	<title>TextMarker Projects</title>
+	<para>
+		TextMarker projects used within the TextMarker workbench need to have
+		a certain folder
+		structure. The parts of this folder structure are
+		explained in
+		<xref linkend='table.ugr.tools.tm.workbench.create_project.folder_strucutre' />
+		. To create a TextMarker project it is recommended to use the provided
+		wizard, explained in
+		<xref linkend='section.ugr.tools.tm.workbench.projects.create_projects' />
+		. If this wizard is used, the required folder structure is
+		automatically created.
+	</para>
+
+	<para>
+		<table id="table.ugr.tools.tm.workbench.create_project.folder_strucutre"
+			frame="all">
+			<title>Project folder structure</title>
+			<tgroup cols="2" colsep="1" rowsep="1">
+				<colspec colname="c1" colwidth="1*" />
+				<colspec colname="c2" colwidth="4*" />
+				<thead>
+					<row>
+						<entry align="center">Folder</entry>
+						<entry align="center">Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>script</entry>
+						<entry>
+							Source folder for TextMarker scripts and packages.
+						</entry>
+					</row>
+					<row>
+						<entry>descriptor</entry>
+						<entry>
+							Build folder for UIMA components. Analysis engines and type
+							systems
+							are created automatically from the related script files.
+						</entry>
+					</row>
+					<row>
+						<entry>input</entry>
+						<entry>
+							Folder that contains the files that will be processed when
+							launching a
+							TextMarker script. Such input files could be plain
+							text,
+							HTML, xmiCAS files or others.
+						</entry>
+					</row>
+					<row>
+						<entry>output</entry>
+						<entry>
+							Folder that contains the resulting xmiCAS files. One xmiCAS
+							file is generated for each associated document in the input
+							folder.
+						</entry>
+					</row>
+					<row>
+						<entry>resources</entry>
+						<entry>
+							Default folder for word lists, dictionaries and tables.
+						</entry>
+					</row>
+					<row>
+						<entry>test</entry>
+						<entry>
+							Folder for test-driven development.
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</para>
+	<para>
+		<xref linkend='figure.ugr.tools.tm.workbench.projects.test_project' />
+		shows a project, newly created with the wizard.
+
+		<figure id="figure.ugr.tools.tm.workbench.projects.test_project">
+			<title>A newly created TextMarker project</title>
+			<mediaobject>
+				<imageobject role="html">
+					<imagedata width="300px" format="PNG" align="center"
+						fileref="&imgroot;projects/test_project.PNG" />
+				</imageobject>
+				<imageobject role="fo">
+					<imagedata width="3.5in" format="PNG" align="center"
+						fileref="&imgroot;projects/test_project.PNG" />
+				</imageobject>
+				<textobject>
+					<phrase>
+						A newly created TextMarker project.
+					</phrase>
+				</textobject>
+			</mediaobject>
+		</figure>
+	</para>
+
+	<section id="section.ugr.tools.tm.workbench.projects.create_projects">
+		<title>TextMarker create project wizard</title>
+		<para>
+			To create a new TextMarker project switch to TextMarker perspective
+			and click
+			<quote>File &rarr; New &rarr; TextMarker Project</quote>
+			. This opens the corresponding wizard.
+		</para>
+
+		<para>
+			<xref
+				linkend='figure.ugr.tools.tm.workbench.projects.create_projects.wizard1' />
+			shows the start page of the wizard.
+			<figure
+				id="figure.ugr.tools.tm.workbench.projects.create_projects.wizard1">
+				<title>Wizard start page</title>
+				<mediaobject>
+					<imageobject role="html">
+						<imagedata width="450px" format="PNG" align="center"
+							fileref="&imgroot;projects/wizard1.PNG" />
+					</imageobject>
+					<imageobject role="fo">
+						<imagedata width="4.5in" format="PNG" align="center"
+							fileref="&imgroot;projects/wizard1.PNG" />
+					</imageobject>
+					<textobject>
+						<phrase>
+							Wizard start page.
+						</phrase>
+					</textobject>
+				</mediaobject>
+			</figure>
+		</para>
+		<para>
+			To create a simple TextMarker project just enter a project name for
+			your project and click
+			<quote>Finish</quote>
+			. This will create all you need to start.
+		</para>
+		<para>
+			Other possible settings on this page are the desired location of
+			the project,
+			the interpreter to use and the working set you wish to
+			work on, all of them really self-explaining.
+		</para>
+		<para>
+			On the second page of the wizard you can mainly configure the
+			needed build path. This is necessary if you like to use external
+			source
+			folders or if the project to create will be dependent on other
+			projects or if external libraries have to be found. Add the desired
+			configuration in the related tab.
+		</para>
+		<para>
+			<xref
+				linkend='figure.ugr.tools.tm.workbench.projects.create_projects.wizard2' />
+			shows the second page of the wizard.
+			<figure
+				id="figure.ugr.tools.tm.workbench.projects.create_projects.wizard2">
+				<title>Wizard second page</title>
+				<mediaobject>
+					<imageobject role="html">
+						<imagedata width="450px" format="PNG" align="center"
+							fileref="&imgroot;projects/wizard2.PNG" />
+					</imageobject>
+					<imageobject role="fo">
+						<imagedata width="4.5in" format="PNG" align="center"
+							fileref="&imgroot;projects/wizard2.PNG" />
+					</imageobject>
+					<textobject>
+						<phrase>
+							Wizard second page.
+						</phrase>
+					</textobject>
+				</mediaobject>
+			</figure>
+		</para>
+
+	</section>
+
+</section>

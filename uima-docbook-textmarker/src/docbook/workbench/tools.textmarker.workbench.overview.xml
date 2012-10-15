@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
+<!ENTITY imgroot "images/tools/tm/workbench/" >
+<!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
+%uimaents;
+]>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. 
+  See the NOTICE file distributed with this work for additional information regarding copyright ownership. 
+  The ASF licenses this file to you under the Apache License, Version 2.0 (the "License"); you may not 
+  use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 
+  Unless required by applicable law or agreed to in writing, software distributed under the License is 
+  distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+  See the License for the specific language governing permissions and limitations under the License. -->
+
+<section id="section.ugr.tools.tm.workbench.overview">
+  <title>TextMarker Workbench Overview</title>
+  <para>
+    The TextMarker workbench provides two main perspectives.
+    <orderedlist numeration="arabic">
+      <listitem>
+        <para>
+          The
+          <quote>TextMarker perspective</quote>
+          which provides the main functionality for working on TextMarker projects. See
+          <xref linkend='section.ugr.tools.tm.workbench.tm_perspective' />
+          for detailed information.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          The
+          <quote>Explain perspective</quote>
+          which provides functionality primarily used to explain how a set of written rules
+          behaved
+          on a number of input documents. See
+          <xref linkend='section.ugr.tools.tm.workbench.explain_perspective' />
+          .
+        </para>
+      </listitem>
+    </orderedlist>
+  </para>
+  <para>
+    The following image shows the TextMarker perspective.
+    <figure id="figure.ugr.tools.tm.workbench.overview.tm_perspective">
+      <title> The TextMarker perspective.
+      </title>
+      <mediaobject>
+        <imageobject role="html">
+          <imagedata width="576px" format="PNG" align="center"
+            fileref="&imgroot;overview/screenshot_tm_perspective_.png" />
+        </imageobject>
+        <imageobject role="fo">
+          <imagedata width="5.5in" format="PNG" align="center"
+            fileref="&imgroot;overview/screenshot_tm_perspective_.png" />
+        </imageobject>
+        <textobject>
+          <phrase>
+            The TextMarker perspective.
+          </phrase>
+        </textobject>
+      </mediaobject>
+    </figure>
+    As you can see, the TextMarker perspective provides an editor for editing documents, e.g.
+    TextMarker scripts, and several views for different other tasks. The Script Explorer for
+    example
+    helps to manage your TextMarker projects.
+  </para>
+  <para>
+    The following
+    <xref linkend='table.ugr.tools.tm.workbench.overview.views' />
+    lists all available TextMarker views:
+    <table id="table.ugr.tools.tm.workbench.overview.views" frame="all">
+      <title>TextMarker views</title>
+      <tgroup cols="2" colsep="1" rowsep="1">
+        <colspec colname="c1" colwidth="1*" />
+        <colspec colname="c2" colwidth="1*" />
+        <thead>
+          <row>
+            <entry align="center">View</entry>
+            <entry align="center">Detailed description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>Annotation Test</entry>
+            <entry>
+              See
+              <xref linkend='ugr.tools.tm.testing' />
+            </entry>
+          </row>
+          <row>
+            <entry>Applied Rules</entry>
+            <entry>
+              See
+              <xref linkend='section.ugr.tools.tm.workbench.explain_perspective.applied_rules' />
+            </entry>
+          </row>
+          <row>
+            <entry>Covering Rules</entry>
+            <entry>
+              See
+              <xref linkend='section.ugr.tools.tm.workbench.explain_perspective.covering_rules' />
+            </entry>
+          </row>
+          <row>
+            <entry>Created By</entry>
+            <entry>
+              See
+              <xref linkend='section.ugr.tools.tm.workbench.explain_perspective.created_by' />
+            </entry>
+          </row>
+          <row>
+            <entry>Failed Rules</entry>
+            <entry>
+              See
+              <xref linkend='section.ugr.tools.tm.workbench.explain_perspective.matched_and_failed_rules' />
+            </entry>
+          </row>
+          <row>
+            <entry>False Negative</entry>
+            <entry>
+              See
+              <xref linkend='ugr.tools.tm.testing' />
+            </entry>
+          </row>
+          <row>
+            <entry>False Positive</entry>
+            <entry>
+              See
+              <xref linkend='ugr.tools.tm.testing' />
+            </entry>
+          </row>
+          <row>
+            <entry>Matched Rules</entry>
+            <entry>
+              See
+              <xref linkend='figure.ugr.tools.tm.workbench.explain_perspective.matched_and_failed_rules' />
+            </entry>
+          </row>
+          <row>
+            <entry>Rule Elements</entry>
+            <entry>
+              See
+              <xref linkend='section.ugr.tools.tm.workbench.explain_perspective.rule_elements' />
+            </entry>
+          </row>
+          <row>
+            <entry>Rule List</entry>
+            <entry>
+              See
+              <xref linkend='section.ugr.tools.tm.workbench.explain_perspective.rule_list' />
+            </entry>
+          </row>
+          <row>
+            <entry>Statistics</entry>
+            <entry>
+              See
+              <xref linkend='section.ugr.tools.tm.workbench.explain_perspective.statistics' />
+            </entry>
+          </row>
+          <row>
+            <entry>TextMarker Documentation</entry>
+            <entry>
+              ---
+            </entry>
+          </row>
+          <row>
+            <entry>TextMarker Query</entry>
+            <entry>
+              See
+              <xref linkend='section.ugr.tools.tm.workbench.tm_query' />
+            </entry>
+          </row>
+          <row>
+            <entry>TextRuler</entry>
+            <entry>
+              See
+              <xref linkend='section.ugr.tools.tm.workbench.textruler' />
+            </entry>
+          </row>
+          <row>
+            <entry>TextRuler Results</entry>
+            <entry>
+              See
+              <xref linkend='section.ugr.tools.tm.workbench.textruler' />
+            </entry>
+          </row>
+          <row>
+            <entry>True Positive</entry>
+            <entry>
+              See
+              <xref linkend='ugr.tools.tm.testing' />
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </para>
+  <para>
+    The following
+    <xref linkend='table.ugr.tools.tm.workbench.overview.wizards' />
+    lists all TextMarker wizards:
+    <table id="table.ugr.tools.tm.workbench.overview.wizards" frame="all">
+      <title>TextMarker wizards</title>
+      <tgroup cols="2" colsep="1" rowsep="1">
+        <colspec colname="c1" colwidth="1*" />
+        <colspec colname="c2" colwidth="1*" />
+        <thead>
+          <row>
+            <entry align="center">Wizard</entry>
+            <entry align="center">Detailed description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>Create TextMarker project</entry>
+            <entry>
+              See
+              <xref linkend='section.ugr.tools.tm.workbench.projects.create_projects' />
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </para>
+</section>

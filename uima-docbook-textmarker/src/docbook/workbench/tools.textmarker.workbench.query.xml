@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
+<!ENTITY imgroot "images/tools/tm/workbench/" >
+<!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
+%uimaents;
+]>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
+	license agreements. See the NOTICE file distributed with this work for additional 
+	information regarding copyright ownership. The ASF licenses this file to 
+	you under the Apache License, Version 2.0 (the "License"); you may not use 
+	this file except in compliance with the License. You may obtain a copy of 
+	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+	by applicable law or agreed to in writing, software distributed under the 
+	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+	OF ANY KIND, either express or implied. See the License for the specific 
+	language governing permissions and limitations under the License. -->
+
+<section id="section.ugr.tools.tm.workbench.tm_query">
+	<title>Query View</title>
+	<para>
+		With the Query View the TextMarker language can be used to write
+		queries on a set of
+		documents. A query is simply a set of TextMarker
+		rules. Each query returns a list of all text
+		passages the query
+		applies to. For example, if you have a set of annotated documents
+		containing a
+		number of Author annotations, you could use the Query
+		View to get a list of all the author names
+		associated with these
+		annotations.
+	</para>
+	<para>
+		<figure id="figure.ugr.tools.tm.workbench.tm_query.query_view">
+			<title>
+				The Query View.
+				<emphasis role="bold">(1)</emphasis>
+				Start Button;
+				<emphasis role="bold">(2)</emphasis>
+				Export Button
+			</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="80" format="PNG"
+						fileref="&imgroot;query/query_numbers_tm2.png" />
+				</imageobject>
+				<textobject>
+					<phrase>Query View</phrase>
+				</textobject>
+			</mediaobject>
+		</figure>
+	</para>
+	<para>
+		Use the Query view as follows:
+		<orderedlist numeration="arabic">
+			<listitem>
+				<para>
+					The field
+					<quote>Query Data</quote>
+					specifies the folder containing the
+					documents on which the
+					query should be executed. You can
+					either
+					click on the button next to the field to specify
+					the folder by
+					browsing through the
+					file system, or you can drag and drop a
+					folder directly
+					into the field. If the checkbox is
+					activated, all
+					subfolders are included.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					The field
+					<quote>Type System</quote>
+					has to contain a type system or a
+					TextMarker script that
+					specifies all types that are used
+					in
+					the
+					query. You can either click on the button next to
+					the field to
+					specify the type system
+					by browsing through the file system, or
+					you can drag
+					and drop a type system directly into
+					the field.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					The query in form of one or more TextMarker rules is
+					specified in
+					the
+					text field in the
+					middle of the view. The
+					screenshot shows ...
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					After pressing the start button the query is started. The
+					results are subsequently
+					displayed in the bottom text field.
+				</para>
+			</listitem>
+		</orderedlist>
+	</para>
+	<para>
+		The resulting list consists of all text passages the query
+		applied to. Above the text
+		field,
+		information about the entire number of
+		matches and the
+		number of different documents
+		the query
+		applied to is given. Each item in
+		the list
+		shows both the matched text passage and
+		in brackets the
+		document related to the text
+		passage. By double-clicking on one
+		of
+		the listed
+		items, the related
+		document is opened in the editor and the matched text passage is
+		selected. If the related
+		document is already open you can jump to another matched text
+		passage within the the same
+		document with just one click on the listed item. Of course
+		this text passage is then selected. By
+		clicking on the export button a list of
+		all matched
+		text passaged
+		is showed in a
+		separate window.
+		For further usage, e.g. as a list
+		of authors in
+		another TextMarker
+		project, copy the content of
+		this
+		window to another text
+		file.
+	</para>
+</section>
