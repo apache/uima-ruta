@@ -19,18 +19,22 @@
 
 package org.apache.uima.textmarker.caseditor.view.tree;
 
+import java.util.List;
+
 import org.apache.uima.cas.FeatureStructure;
+import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.eclipse.core.runtime.IAdaptable;
 
 public class AnnotationTreeNode extends FSTreeNode implements IAnnotationNode, IAdaptable {
 
-  public AnnotationTreeNode(AnnotationFS annotation) {
-    super(annotation);
-  }
 
   public AnnotationTreeNode(ITreeNode parent, AnnotationFS annotation) {
     super(parent, annotation);
+  }
+  
+  public AnnotationTreeNode(ITreeNode parent, AnnotationFS annotation, List<Type> parentTypes) {
+    super(parent, annotation, parentTypes);
   }
 
   public AnnotationFS getAnnotation() {

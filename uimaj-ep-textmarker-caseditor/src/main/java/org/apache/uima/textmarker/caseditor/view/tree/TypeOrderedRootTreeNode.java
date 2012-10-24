@@ -19,6 +19,7 @@
 
 package org.apache.uima.textmarker.caseditor.view.tree;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -72,7 +73,7 @@ public class TypeOrderedRootTreeNode extends AbstractTreeNode implements IRootTr
 
   private FSTreeNode createFSNode(ITreeNode parent, FeatureStructure fs) {
     if (fs instanceof AnnotationFS) {
-      return new AnnotationTreeNode(parent, (AnnotationFS) fs);
+      return new AnnotationTreeNode(parent, (AnnotationFS) fs, new ArrayList<Type>());
     }
     return new FSTreeNode(parent, fs);
   }
