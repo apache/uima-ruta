@@ -86,7 +86,7 @@
             <entry>Annotation Test</entry>
             <entry>
               See
-              <xref linkend='ugr.tools.tm.testing' />
+              <xref linkend='section.ugr.tools.tm.workbench.testing.usage' />
             </entry>
           </row>
           <row>
@@ -121,14 +121,14 @@
             <entry>False Negative</entry>
             <entry>
               See
-              <xref linkend='ugr.tools.tm.testing' />
+              <xref linkend='section.ugr.tools.tm.workbench.testing.usage' />
             </entry>
           </row>
           <row>
             <entry>False Positive</entry>
             <entry>
               See
-              <xref linkend='ugr.tools.tm.testing' />
+              <xref linkend='section.ugr.tools.tm.workbench.testing.usage' />
             </entry>
           </row>
           <row>
@@ -190,7 +190,7 @@
             <entry>True Positive</entry>
             <entry>
               See
-              <xref linkend='ugr.tools.tm.testing' />
+              <xref linkend='section.ugr.tools.tm.workbench.testing.usage' />
             </entry>
           </row>
         </tbody>
