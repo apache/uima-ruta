@@ -95,9 +95,7 @@ public class ExecAction extends CallAction {
         Set<Entry<TextMarkerBasic, Collection<AnnotationFS>>> entrySet = map.entrySet();
         for (Entry<TextMarkerBasic, Collection<AnnotationFS>> entry : entrySet) {
           for (AnnotationFS each : entry.getValue()) {
-            cas.removeFsFromIndexes(each);
-            stream.removeAnnotation(entry.getKey(), each.getType());
-            cas.addFsToIndexes(each);
+            stream.removeAnnotation(each);
             stream.addAnnotation(each, match);
           }
         }

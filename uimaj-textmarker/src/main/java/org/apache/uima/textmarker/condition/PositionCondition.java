@@ -55,14 +55,14 @@ public class PositionCondition extends TypeSentiveCondition {
 
     TextMarkerBasic beginAnchor = stream.getBeginAnchor(annotation.getBegin());
     TextMarkerBasic endAnchor = stream.getEndAnchor(annotation.getEnd());
-    if (!beginAnchor.isPartOf(t) || !endAnchor.isPartOf(t)) {
+    if (beginAnchor == null || endAnchor == null || !beginAnchor.isPartOf(t)
+            || !endAnchor.isPartOf(t)) {
       return new EvaluatedCondition(this, false);
     }
 
     boolean relatively = relative == null ? true : relative.getBooleanValue(element.getParent());
 
-    FSIterator<AnnotationFS> iterator = stream.getCas().getAnnotationIndex(t)
-            .iterator(beginAnchor);
+    FSIterator<AnnotationFS> iterator = stream.getCas().getAnnotationIndex(t).iterator(beginAnchor);
     if (!iterator.isValid()) {
       iterator.moveToNext();
     }
@@ -79,16 +79,15 @@ public class PositionCondition extends TypeSentiveCondition {
       }
       iterator.moveToPrevious();
     }
-    
-    
+
     List<Type> targetTypes = new ArrayList<Type>();
-    if(element instanceof TextMarkerRuleElement) {
+    if (element instanceof TextMarkerRuleElement) {
       TextMarkerRuleElement re = (TextMarkerRuleElement) element;
       targetTypes.addAll(re.getMatcher().getTypes(element.getParent(), stream));
     } else {
       targetTypes.add(annotation.getType());
     }
-    
+
     if (window == null) {
       return new EvaluatedCondition(this, false);
     }
@@ -97,15 +96,15 @@ public class PositionCondition extends TypeSentiveCondition {
       int counter = 0;
       List<TextMarkerBasic> inWindow = stream.getBasicsInWindow(window);
       for (TextMarkerBasic each : inWindow) {
-        if(beginsWith(each, targetTypes)) {
+        if (beginsWith(each, targetTypes)) {
           counter++;
-          if(counter == integerValue) {
-            if(each.getBegin() == beginAnchor.getBegin()) {
+          if (counter == integerValue) {
+            if (each.getBegin() == beginAnchor.getBegin()) {
               return new EvaluatedCondition(this, true);
             } else {
               return new EvaluatedCondition(this, false);
             }
-          } else if(counter > integerValue) {
+          } else if (counter > integerValue) {
             return new EvaluatedCondition(this, false);
           }
         }
@@ -129,7 +128,7 @@ public class PositionCondition extends TypeSentiveCondition {
 
   private boolean beginsWith(TextMarkerBasic each, List<Type> targetTypes) {
     for (Type type : targetTypes) {
-      if(each.beginsWith(type)) {
+      if (each.beginsWith(type)) {
         return true;
       }
     }
