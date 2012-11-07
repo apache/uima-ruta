@@ -81,18 +81,15 @@ under the License.
       to start within the TextMarker perspective. There, the Annotation Test view is open by
       default. The True Positive, False Positive and False Negative views have to be opened
       manually:
-      <quote>Window &rarr; Show View &rarr; True Positive/False Positive/False Negative </quote>
+      <quote>Window -> Show View -> True Positive/False Positive/False Negative </quote>.
     </para>
     <para> To explain the usage of the TextMarker testing environment the TextMarker example project
-      is again used. Therefore, open this project. </para>
-    <para>
+      is again used. Therefore, open this project. 
       Firstly one has to select a script for testing: TextMarker will always test the script, that
       is currently open and active in the script editor. So open the
       <quote>Main.tm</quote>
       script file of the TextMarker example project.
-    </para>
-    <para>
-      <xref linkend='figure.ugr.tools.tm.workbench.testing.annotation_test_initial_view' />
+      The next <link linkend='figure.ugr.tools.tm.workbench.testing.annotation_test_initial_view'>figure</link>.
       shows the Annotation Test view after doing this.
     </para>
     <para>
@@ -280,15 +277,21 @@ under the License.
     <para>
       Result Files: When running a test, the evaluator will create a new result xmiCAS file and will
       add new true positive, false positive and false negative annotations. By clicking on a file in
-      the test-file list, you can open the corresponding result xmiCAS file in the TextMarker script
-      editor. While displaying the result xmiCAS file in the script editor, the True Positive, False
+      the test-file list, you can open the corresponding result xmiCAS file in the CAS
+      Editor. While displaying the result xmiCAS file in the CAS Editor, the True Positive, False
       Positive and False Negative views allow easy navigation through the new tp, fp and fn
       annotations. The corresponding annotations are displayed in a hierarchic tree structure. This
       allows an easy tracing of the results inside the testing document. Clicking on one of the
-      annotations in a result view, will highlight the annotation in the CAS Editor. Opening
+      annotations in those views, will highlight the annotation in the CAS Editor. Opening
       <quote>test1.result.xmi</quote>
       in the TextMarker example project, changes the True Positive view as shown in
-      <xref linkend='figure.ugr.tools.tm.workbench.testing.true_positive' />
+      <xref linkend='figure.ugr.tools.tm.workbench.testing.true_positive' />.
+      Notice that the type system, which will used by the CAS Editor to open the evaluated file, 
+      can only be resolved for the tested script, if the test files are located in the associated
+      folder structure, that is the folder with the name of the script. If the files are located 
+      in the temp folder, for example by adding the files to the list of test cases by drag and drop,
+      then other strategies to find the correct type system will be applied. For TextMarker projects, 
+      for example, this will be the type system of the last launched script in this project. 
     </para>
     <para>
       <figure id="figure.ugr.tools.tm.workbench.testing.true_positive">
