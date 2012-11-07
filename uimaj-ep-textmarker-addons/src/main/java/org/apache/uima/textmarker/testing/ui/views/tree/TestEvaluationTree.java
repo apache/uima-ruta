@@ -25,6 +25,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
 import org.apache.uima.textmarker.caseditor.view.tree.AnnotationTreeNode;
 import org.apache.uima.textmarker.caseditor.view.tree.ITreeNode;
 import org.apache.uima.textmarker.caseditor.view.tree.TypeTreeNode;
@@ -49,7 +50,6 @@ public class TestEvaluationTree {
     // Creating RootNode and children that function as root nodes
     // for the FalsePositive /FalseNegative subtrees
     root = new TypeTreeNode(null, cas.getAnnotationType());
-    boolean containsEvalInfos = false;
 
     TypeTreeNode fproot = new TypeTreeNode(root, falsePositiveType);
     TypeTreeNode fnroot = new TypeTreeNode(root, falseNegativeType);
@@ -61,11 +61,9 @@ public class TestEvaluationTree {
     addEvalNodes(cas, falseNegativeType, fnroot);
     addEvalNodes(cas, truePositiveType, tproot);
 
-    // if (containsEvalInfos) {
     root.addChild(fproot);
     root.addChild(fnroot);
     root.addChild(tproot);
-    // }
   }
 
   private void addEvalNodes(CAS cas, Type falsePositiveType, TypeTreeNode fproot) {
@@ -82,7 +80,12 @@ public class TestEvaluationTree {
           fproot.addChild(parentTypeNode);
         }
         AnnotationTreeNode newNode = new AnnotationTreeNode(parentTypeNode, a);
-        parentTypeNode.addChild(newNode);
+        if (parentTypeNode != null) {
+          parentTypeNode.addChild(newNode);
+        } else {
+          TextMarkerAddonsPlugin.error(new IllegalArgumentException(
+                  "Trying to display unknown type for " + a));
+        }
       }
       iter.moveToNext();
     }

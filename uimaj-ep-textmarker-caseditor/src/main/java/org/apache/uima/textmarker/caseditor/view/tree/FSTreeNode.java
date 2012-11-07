@@ -19,6 +19,7 @@
 
 package org.apache.uima.textmarker.caseditor.view.tree;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class FSTreeNode extends AbstractTreeNode implements IAdaptable {
   protected FeatureStructure fs;
 
   public FSTreeNode(ITreeNode parent, FeatureStructure annotation) {
-    this(parent, annotation, null);
+    this(parent, annotation, new ArrayList<Type>());
   }
 
   public FSTreeNode(ITreeNode parent, FeatureStructure annotation, List<Type> parentTypes) {
@@ -92,19 +93,17 @@ public class FSTreeNode extends AbstractTreeNode implements IAdaptable {
       }
     } else if (f.getRange() instanceof Type) {
       FeatureStructure featureValue = featureStructure.getFeatureValue(f);
-      if (featureValue instanceof AnnotationFS
-              && expandable(featureValue.getType(), parentTypes)) {
+      if (featureValue instanceof AnnotationFS && expandable(featureValue.getType(), parentTypes)) {
         parent.addChild(new AnnotationTreeNode(this, ((AnnotationFS) featureValue), parentTypes));
       }
     }
   }
 
-  
   private boolean expandable(Type type, List<Type> parentTypes) {
     int frequency = Collections.frequency(parentTypes, type);
     return frequency < 5;
   }
-  
+
   public Object getAdapter(Class adapter) {
 
     if (FSTreeNode.class.equals(adapter)) {

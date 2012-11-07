@@ -49,6 +49,9 @@ public class TestingSearchStrategy implements ITypeSystemSearchStrategy {
     IPath relativeTo = location.makeRelativeTo(testFolder.getLocation());
     IPath segments = relativeTo.removeLastSegments(2);
     String scriptName = segments.lastSegment();
+    if(scriptName == null) {
+      return null;
+    }
     scriptName += "TypeSystem.xml";
     segments = segments.removeLastSegments(1);
     IFolder descPackageFolder = null;
