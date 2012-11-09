@@ -1551,11 +1551,32 @@ actionDynamicAnchoring returns [TextMarkerAction action = null]
 
 //unknown
 actionUnmark returns [TextMarkerAction action = null]
+@init {
+List<Expression> list = new ArrayList<Expression>();
+}
     :
     name = UNMARK LPAREN f = typeExpression
     {action = ActionFactory.createAction(name, f);}
+    
+    (COMMA 
+    (
+  	(b = booleanExpression) => b = booleanExpression
+  	{action = ActionFactory.createAction(name, f, b);}
+  	|
+  	(
+  	index = numberExpression {list.add(index);} 
+  	{action = ActionFactory.createAction(name, f, list);}
+  	(COMMA index = numberExpression {list.add(index);})*
+  	{action = ActionFactory.createAction(name, f, list);}
+  	)
+    )
+      
+    )?
+    {action = ActionFactory.createAction(name, f , b, list);}
      RPAREN
     ;
+
+
 
 actionUnmarkAll returns [TextMarkerAction action = null]
     :
