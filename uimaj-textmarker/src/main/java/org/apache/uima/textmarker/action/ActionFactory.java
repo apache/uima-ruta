@@ -143,8 +143,8 @@ public class ActionFactory {
     return null;
   }
 
-  public static AbstractTextMarkerAction createUnmarkAction(TypeExpression f, TextMarkerBlock env) {
-    return new UnmarkAction(f);
+  public static AbstractTextMarkerAction createUnmarkAction(TypeExpression f, List<NumberExpression> list, BooleanExpression b, TextMarkerBlock env) {
+    return new UnmarkAction(f, list, b);
   }
 
   public static AbstractTextMarkerAction createUnmarkAllAction(TypeExpression f,

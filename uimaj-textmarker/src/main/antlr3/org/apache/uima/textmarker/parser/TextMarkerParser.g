@@ -1429,9 +1429,28 @@ actionDynamicAnchoring returns [AbstractTextMarkerAction action = null]
 
 
 actionUnmark returns [AbstractTextMarkerAction action = null]
+@init {
+List<NumberExpression> list = new ArrayList<NumberExpression>();
+}
     :
-    name = UNMARK LPAREN f = typeExpression RPAREN
-    {action = ActionFactory.createUnmarkAction(f,$blockDeclaration::env);}
+    name = UNMARK LPAREN 
+    
+    f = typeExpression 
+
+    (COMMA 
+    (
+  	(b = booleanExpression)=> b = booleanExpression
+  	|
+  	(
+  	index = numberExpression {list.add(index);} 
+  	(COMMA index = numberExpression {list.add(index);})*
+  	)
+    )
+      
+    )?
+
+     RPAREN
+    {action = ActionFactory.createUnmarkAction(f, list, b,$blockDeclaration::env);}
     ;
 
 

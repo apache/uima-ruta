@@ -289,7 +289,17 @@ public class ActionVerbalizer {
               + ")";
     } else if (action instanceof UnmarkAction) {
       UnmarkAction a = (UnmarkAction) action;
-      return "UNMARK(" + verbalizer.verbalize(a.getType()) + ")";
+      if (a.getAllAnchor() == null) {
+        if (a.getList() == null) {
+          return "UNMARK(" + verbalizer.verbalize(a.getType()) + ")";
+        } else {
+          return "UNMARK(" + verbalizer.verbalize(a.getType()) + ","
+                  + verbalizer.verbalizeExpressionList(a.getList()) + ")";
+        }
+      } else {
+        return "UNMARK(" + verbalizer.verbalize(a.getType()) + ","
+                + verbalizer.verbalize(a.getAllAnchor()) + ")";
+      }
     } else if (action instanceof TransferAction) {
       TransferAction a = (TransferAction) action;
       return "TRANSFER(" + verbalizer.verbalize(a.getType()) + ")";

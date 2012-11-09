@@ -1082,7 +1082,10 @@
 		<title>UNMARK</title>
 		<para>
 			The UNMARK action removes the annotation of the given type
-			overlapping the matched annotation.
+			overlapping the matched annotation. There are two additional configurations: If additional
+			indexes are given, then the span of the specified rule elements are applied, similar the the MARK action.
+			If instead a boolean is given as an additional argument, then all annoations of the given type are removed
+			that start at the macthed position.
 		</para>
 		<section>
 			<title>
@@ -1090,6 +1093,8 @@
 			</title>
 			<para>
 				<programlisting><![CDATA[UNMARK(TypeExpression)]]></programlisting>
+				<programlisting><![CDATA[UNMARK(TypeExpression (,NumberExpression)*)]]></programlisting>
+				<programlisting><![CDATA[UNMARK(TypeExpression, BooleanExpression)]]></programlisting>
 			</para>
 		</section>
 		<section>
@@ -1101,6 +1106,18 @@
 			</para>
 			<para>
 				Here, the headline annotation is removed.
+			</para>
+			<para>
+				<programlisting><![CDATA[CW ANY+? QUESTION{->UNMARK(Headline,1,3)};]]></programlisting>
+			</para>
+			<para>
+				Here, all headline annotations are removed that start with a capitalized word and end with a question mark.
+			</para>
+			<para>
+				<programlisting><![CDATA[CW{->UNMARK(Headline,true)};]]></programlisting>
+			</para>
+			<para>
+				Here, all headline annotations are removed that start with a capitalized word.
 			</para>
 		</section>
 	</section>
@@ -1130,6 +1147,7 @@
 			<para>
 				Here, all annotations but headlines are removed.
 			</para>
+			
 		</section>
 	</section>
 
