@@ -44,11 +44,8 @@ public class ExpandAction extends MarkAction {
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
       List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element, stream);
       for (AnnotationFS annotationFS : matchedAnnotationsOf) {
-        if (matchedAnnotation.getBegin() >= annotationFS.getBegin()
-                && matchedAnnotation.getEnd() <= annotationFS.getEnd()) {
-          stream.removeAnnotation(annotationFS, annotationFS.getType());
-          createAnnotation(matchedAnnotation, element, stream, match);
-        }
+        stream.removeAnnotation(annotationFS, annotationFS.getType());
+        createAnnotation(matchedAnnotation, element, stream, match);
       }
     }
   }

@@ -29,36 +29,23 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.caseditor.editor.AnnotationEditor;
 import org.apache.uima.caseditor.editor.FeatureStructureSelection;
 import org.apache.uima.caseditor.editor.ICasDocument;
-import org.apache.uima.caseditor.editor.ICasDocumentListener;
 import org.apache.uima.caseditor.editor.ICasEditorInputListener;
 import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
 import org.apache.uima.textmarker.engine.TextMarkerEngine;
-import org.apache.uima.textmarker.explain.ExplainConstants;
 import org.apache.uima.textmarker.explain.ExplainUtils;
-import org.apache.uima.textmarker.explain.apply.ApplyView;
-import org.apache.uima.textmarker.explain.rulelist.RuleListView;
-import org.apache.uima.textmarker.explain.selection.ExplainSelectionView;
-import org.apache.uima.textmarker.explain.tree.ExplainTree;
 import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
-import org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor;
-import org.apache.uima.textmarker.testing.ui.views.fn.FalseNegativeView;
-import org.apache.uima.textmarker.testing.ui.views.fp.FalsePositiveView;
-import org.apache.uima.textmarker.testing.ui.views.tp.TruePositiveView;
 import org.apache.uima.textmarker.visitor.CreatedByVisitor;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IScriptProject;
@@ -75,17 +62,14 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ISelectionListener;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 
-public class CreatedByViewPage extends Page implements ISelectionListener, ICasEditorInputListener, IDoubleClickListener {
+public class CreatedByViewPage extends Page implements ISelectionListener, ICasEditorInputListener,
+        IDoubleClickListener {
 
   public static final String TM_RULE = "TMRule";
 
@@ -159,7 +143,7 @@ public class CreatedByViewPage extends Page implements ISelectionListener, ICasE
 
   public void doubleClick(DoubleClickEvent event) {
     ISelection selection = event.getSelection();
-    if(!selection.isEmpty() && selection instanceof TreeSelection) {
+    if (!selection.isEmpty() && selection instanceof TreeSelection) {
       TreeSelection s = (TreeSelection) selection;
       FeatureStructure fs = (FeatureStructure) s.getFirstElement();
       Type t = fs.getType();
@@ -168,7 +152,7 @@ public class CreatedByViewPage extends Page implements ISelectionListener, ICasE
       int id = fs.getIntValue(featureId);
       String script = fs.getStringValue(featureScript);
       IEditorInput editorInput = editor.getEditorInput();
-      if(editorInput instanceof FileEditorInput) {
+      if (editorInput instanceof FileEditorInput) {
         FileEditorInput fei = (FileEditorInput) editorInput;
         IPath path = fei.getPath();
         IWorkspace workspace = ResourcesPlugin.getWorkspace();
@@ -181,8 +165,13 @@ public class CreatedByViewPage extends Page implements ISelectionListener, ICasE
           allScriptFolders = TextMarkerProjectUtils.getAllScriptFolders(scriptProject);
           List<String> folders = TextMarkerProjectUtils.getFolderLocations(allScriptFolders);
           String locate = TextMarkerEngine.locate(script, folders.toArray(new String[0]), ".tm");
-          IPath locatedPath = new Path(locate);
-          ExplainUtils.openInTextMarkerEditor(locatedPath, id);
+          if (locate != null) {
+            IPath locatedPath = new Path(locate);
+            ExplainUtils.openInTextMarkerEditor(locatedPath, id);
+          } else {
+            TextMarkerAddonsPlugin.error(new IllegalArgumentException("Not able to locate script: "
+                    + script));
+          }
         } catch (CoreException e) {
           TextMarkerAddonsPlugin.error(e);
         }
@@ -190,9 +179,6 @@ public class CreatedByViewPage extends Page implements ISelectionListener, ICasE
     }
   }
 
-  
-
-  
   @Override
   public void dispose() {
     super.dispose();

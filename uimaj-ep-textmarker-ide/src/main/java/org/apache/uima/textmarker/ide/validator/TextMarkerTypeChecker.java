@@ -151,10 +151,8 @@ public class TextMarkerTypeChecker implements IBuildParticipant, IBuildParticipa
 
       try {
         this.description = getTypeSystemOfScript();
-      } catch (InvalidXMLException e) {
-        e.printStackTrace();
-      } catch (IOException e) {
-        e.printStackTrace();
+      } catch (Exception e) {
+        TextMarkerIdePlugin.error(e);
       }
       Preferences store = TextMarkerIdePlugin.getDefault().getPluginPreferences();
       reportWarningOnShortNames = !store
@@ -244,8 +242,8 @@ public class TextMarkerTypeChecker implements IBuildParticipant, IBuildParticipa
 
           for (TextMarkerFeatureDeclaration each : features) {
             String type = each.getType();
-            if (type.equals("INT") || type.equals("STRING") || type.equals("DOUBLE")|| type.equals("FLOAT")
-                    || type.equals("BOOLEAN")) {
+            if (type.equals("INT") || type.equals("STRING") || type.equals("DOUBLE")
+                    || type.equals("FLOAT") || type.equals("BOOLEAN")) {
               continue;
             }
             if (!shortTypes.contains(type) && !completeTypes.contains(type)
@@ -281,8 +279,7 @@ public class TextMarkerTypeChecker implements IBuildParticipant, IBuildParticipa
                       importedTypes);
               if (!checkDuplicateShortNames.isEmpty()) {
                 rep.reportProblem(problemFactory.createDuplicateShortNameInImported(sRef,
-                        localPath, checkDuplicateShortNames,
-                        ProblemSeverity.WARNING));
+                        localPath, checkDuplicateShortNames, ProblemSeverity.WARNING));
               }
             }
             completeTypes.addAll(importedTypes);
@@ -314,8 +311,7 @@ public class TextMarkerTypeChecker implements IBuildParticipant, IBuildParticipa
                       importedTypes);
               if (!checkDuplicateShortNames.isEmpty()) {
                 rep.reportProblem(problemFactory.createDuplicateShortNameInImported(sRef,
-                        localpath, checkDuplicateShortNames,
-                        ProblemSeverity.WARNING));
+                        localpath, checkDuplicateShortNames, ProblemSeverity.WARNING));
               }
             }
             completeTypes.addAll(importedTypes);
