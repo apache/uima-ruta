@@ -198,409 +198,583 @@ under the License.
     </section>
   </section>
   <section id="ugr.tools.tm.ae">
-    <title>TextMarker Analysis Engine</title>
-    <para> Description of TextMarker and other Analysis Engines</para>
-    <section id="ugr.tools.tm.ae.parameter">
-      <title>Configuration Parameters</title>
+    <title>UIMA Analysis Engines</title>
+    <para>This section gives an overview of the UIMA Analysis Engines shipped with TextMarker. The most 
+      important one is <quote>TextMarkerEngine</quote>, a generic analysis engine, which is able to interpret 
+      and execute script files. The other analysis engines provide support for some additional functionality or
+      add certain types of annotations.
+    </para>
+    <section id="ugr.tools.tm.ae.basic">
+      <title>TextMarker Engine</title>
       <para>
-        The configuration parameters of the TextMarker analysis engines can be separated into three
-        different groups: parameters for the setup of the environment (
-        <link linkend='ugr.tools.tm.ae.parameter.mainScript'> mainScript</link>
-        to
-        <link linkend='ugr.tools.tm.ae.parameter.additionalExtensions'> additionalExtensions</link>
-        ), parameters that change the behavior of the analysis engine (
-        <link linkend='ugr.tools.tm.ae.parameter.reloadScript'> reloadScript</link>
-        to
-        <link linkend='ugr.tools.tm.ae.parameter.simpleGreedyForComposed'> simpleGreedyForComposed</link>
-        ) and parameters for creating additional information how the rules were executed (
-        <link linkend='ugr.tools.tm.ae.parameter.debug'> debug</link>
-        to
-        <link linkend='ugr.tools.tm.ae.parameter.createdBy'> createdBy</link>
-        ). First, a short overview of the configuration parameters is given in
-        <xref linkend='table.ugr.tools.tm.ae.parameter' />
-        . Then all parameters are described in detail with examples.
-        <table id="table.ugr.tools.tm.ae.parameter" frame="all">
-          <title>Configuration parameters of the TextMarker Analysis Engine   </title>
-          <tgroup cols="3" colsep="1" rowsep="1">
-            <colspec colname="c1" colwidth="1.2*" />
-            <colspec colname="c2" colwidth="2*" />
-            <colspec colname="c3" colwidth="0.8*" />
-            <thead>
-              <row>
-                <entry align="center">Name</entry>
-                <entry align="center">Short description</entry>
-                <entry align="center">Type</entry>
-              </row>
-            </thead>
-            <tbody>
-              <row>
-                <entry>
-                  <link linkend='ugr.tools.tm.ae.parameter.mainScript'>mainScript</link>
-                </entry>
-                <entry>Name with complete namespace of the script which will be interpreted and
-                  executed by the analysis engine.
-                </entry>
-                <entry>Single String</entry>
-              </row>
-              <row>
-                <entry>
-                  <link linkend='ugr.tools.tm.ae.parameter.scriptEncoding'>scriptEncoding</link>
-                </entry>
-                <entry>Encoding of all TextMarker script files.</entry>
-                <entry>Single String</entry>
-              </row>
-              <row>
-                <entry>
-                  <link linkend='ugr.tools.tm.ae.parameter.scriptPaths'>scriptPaths</link>
-                </entry>
-                <entry>List of absolute locations, which contain the neccessary script files like
-                  the main script.
-                </entry>
-                <entry>Multi String</entry>
-              </row>
-              <row>
-                <entry>
-                  <link linkend='ugr.tools.tm.ae.parameter.descriptorPaths'>descriptorPaths</link>
-                </entry>
-                <entry>List of absolute locations, which contain the neccessary descriptor files
-                  like type systems.
-                </entry>
-                <entry>Multi String</entry>
-              </row>
-              <row>
-                <entry>
-                  <link linkend='ugr.tools.tm.ae.parameter.resourcePaths'>resourcePaths</link>
-                </entry>
-                <entry>List of absolute locations, which contain the neccessary resource files like
-                  word lists.
-                </entry>
-                <entry>Multi String</entry>
-              </row>
-              <row>
-                <entry>
-                  <link linkend='ugr.tools.tm.ae.parameter.additionalScripts'>additionalScripts</link>
-                </entry>
-                <entry>List of names with complete namespace of additional scripts, which can be
-                  referred to.
-                </entry>
-                <entry>Multi String</entry>
-              </row>
-              <row>
-                <entry>
-                  <link linkend='ugr.tools.tm.ae.parameter.additionalEngines'>additionalEngines</link>
-                </entry>
-                <entry>List of names with complete namespace of additional analysis engines, which
-                  can be called by TextMarker rules.
-                </entry>
-                <entry>Multi String</entry>
-              </row>
-              <row>
-                <entry>
-                  <link linkend='ugr.tools.tm.ae.parameter.additionalEngineLoaders'>additionalEngineLoaders</link>
-                </entry>
-                <entry>List of class names of implementations that are able to perform additional
-                  task when loading external analysis engines.
-                </entry>
-                <entry>Multi String</entry>
-              </row>
-              <row>
-                <entry>
-                  <link linkend='ugr.tools.tm.ae.parameter.additionalExtensions'>additionalExtensions</link>
-                </entry>
-                <entry>List of factory classes for additional extensions of the TextMarker language
-                  like proprietary conditions.
-                </entry>
-                <entry>Multi String</entry>
-              </row>
-              <row>
-                <entry>
-                  <link linkend='ugr.tools.tm.ae.parameter.reloadScript'>reloadScript</link>
-                </entry>
-                <entry>Option to initialize the rule script each time the analysis engine processes
-                  a CAS.
-                </entry>
-                <entry>Single Boolean</entry>
-              </row>
-              <row>
-                <entry>
-                  <link linkend='ugr.tools.tm.ae.parameter.seeders'>seeders</link>
-                </entry>
-                <entry>List of class names that provide additional annoations before the rules are
-                  executed.
-                </entry>
-                <entry>Multi String</entry>
-              </row>
-              <row>
-                <entry>
-                  <link linkend='ugr.tools.tm.ae.parameter.defaultFilteredTypes'>defaultFilteredTypes</link>
-                </entry>
-                <entry>List of complete type names of annoations that are invisible by default.
-                </entry>
-                <entry>Multi String</entry>
-              </row>
-              <row>
-                <entry>
-                  <link linkend='ugr.tools.tm.ae.parameter.removeBasics'>removeBasics</link>
-                </entry>
-                <entry>Option to remove all inference annoations after execution of the rule script.
-                </entry>
-                <entry>Single Boolean</entry>
-              </row>
-              <row>
-                <entry>
-                  <link linkend='ugr.tools.tm.ae.parameter.dynamicAnchoring'>dynamicAnchoring</link>
-                </entry>
-                <entry>Option to allow rule matches to start at any rule element.</entry>
-                <entry>Single Boolean</entry>
-              </row>
-              <row>
-                <entry>
-                  <link linkend='ugr.tools.tm.ae.parameter.lowMemoryProfile'>lowMemoryProfile</link>
-                </entry>
-                <entry>Option to decrease the memory consumption when processing a large CAS.
-                </entry>
-                <entry>Single Boolean</entry>
-              </row>
-              <row>
-                <entry>
-                  <link linkend='ugr.tools.tm.ae.parameter.simpleGreedyForComposed'>simpleGreedyForComposed</link>
-                </entry>
-                <entry>Option to activate a different inferencer for composed rule elements.</entry>
-                <entry>Single Boolean</entry>
-              </row>
-              <row>
-                <entry>
-                  <link linkend='ugr.tools.tm.ae.parameter.debug'>debug</link>
-                </entry>
-                <entry>Option to add debug information to the CAS.</entry>
-                <entry>Single Boolean</entry>
-              </row>
-              <row>
-                <entry>
-                  <link linkend='ugr.tools.tm.ae.parameter.debugWithMatches'>debugWithMatches</link>
-                </entry>
-                <entry>Option to add information about the rule matches to the CAS.</entry>
-                <entry>Single Boolean</entry>
-              </row>
-              <row>
-                <entry>
-                  <link linkend='ugr.tools.tm.ae.parameter.debugOnlyFor'>debugOnlyFor</link>
-                </entry>
-                <entry>List of rule ids. If provided, then debug information is only created for
-                  those rules.
-                </entry>
-                <entry>Multi String</entry>
-              </row>
-              <row>
-                <entry>
-                  <link linkend='ugr.tools.tm.ae.parameter.profile'>profile</link>
-                </entry>
-                <entry>Option to add profile information to the CAS.</entry>
-                <entry>Single Boolean</entry>
-              </row>
-              <row>
-                <entry>
-                  <link linkend='ugr.tools.tm.ae.parameter.statistics'>statistics</link>
-                </entry>
-                <entry>Option to add statistics of conditions and actions to the CAS.</entry>
-                <entry>Single Boolean</entry>
-              </row>
-              <row>
-                <entry>
-                  <link linkend='ugr.tools.tm.ae.parameter.createdBy'>createdBy</link>
-                </entry>
-                <entry>Option to add additional information, which rule created a annotation.
-                </entry>
-                <entry>Single Boolean</entry>
-              </row>
-
-            </tbody>
-          </tgroup>
-        </table>
+         This generic Analysis Engine is the most important one for the TextMarker language since it 
+         responsible for applying the TextMarker rules on a CAS. Its functionality is configured by the configuration parameters, 
+         which, for example, specify the rule file that should be executed. In the TextMarker IDE, a basic template named <quote>BasicEngine.xml</quote>
+         is given in the descriptor folder of a TextMarker project and correctly configured descriptors typically named <quote>MyScriptEngine.xml</quote>
+         are generated in the descriptor folder corresponding to the package namespace of the script file.
+         The available configuration parameters of the TextMarker Analysis Engine are described in the following.   
       </para>
-      <section id="ugr.tools.tm.ae.parameter.mainScript">
-        <title>mainScript</title>
+      <section id="ugr.tools.tm.ae.basic.parameter">
+        <title>Configuration Parameters</title>
         <para>
-          This parameter specifies the rule file that will be executed by the analysis engine and is
-          therefore one of the most important ones. The extact name of the script is given by the complete namespace of the file, which correspond to its location
-          relative to the given parameter <link linkend='ugr.tools.tm.ae.parameter.scriptPaths'>scriptPaths</link>.
-          The single names of packages (or folders) are separated by periods. An exemplary value for this parameter could be "org.apache.uima.Main", 
-          whereas "Main" specifies the file containing the rules and "org.apache.uima" its package.
-          In this case, the analysis engine loads the script file "Main.tm", which is located in the folder structure "org/apache/uima/".
-          This parameter has no default value and ha sto be provided, although it is not specified as mandatory.
+          The configuration parameters of the TextMarker Analysis Engine can be separated into three
+          different groups: parameters for the setup of the environment (<link linkend='ugr.tools.tm.ae.basic.parameter.mainScript'>mainScript</link>
+          to <link linkend='ugr.tools.tm.ae.basic.parameter.additionalExtensions'>additionalExtensions</link>), 
+          parameters that change the behavior of the analysis engine (<link linkend='ugr.tools.tm.ae.basic.parameter.reloadScript'>reloadScript</link>
+          to <link linkend='ugr.tools.tm.ae.basic.parameter.simpleGreedyForComposed'>simpleGreedyForComposed</link>) 
+          and parameters for creating additional information how the rules were executed 
+          (<link linkend='ugr.tools.tm.ae.basic.parameter.debug'>debug</link>
+          to <link linkend='ugr.tools.tm.ae.basic.parameter.createdBy'>createdBy</link>). First, a short overview of the configuration parameters is given in
+          <xref linkend='table.ugr.tools.tm.ae.parameter' />. Then all parameters are described in detail with examples.
+          <table id="table.ugr.tools.tm.ae.parameter" frame="all">
+            <title>Configuration parameters of the TextMarker Analysis Engine   </title>
+            <tgroup cols="3" colsep="1" rowsep="1">
+              <colspec colname="c1" colwidth="1.2*" />
+              <colspec colname="c2" colwidth="2*" />
+              <colspec colname="c3" colwidth="0.8*" />
+              <thead>
+                <row>
+                  <entry align="center">Name</entry>
+                  <entry align="center">Short description</entry>
+                  <entry align="center">Type</entry>
+                </row>
+              </thead>
+              <tbody>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.tm.ae.basic.parameter.mainScript'>mainScript</link>
+                  </entry>
+                  <entry>Name with complete namespace of the script which will be interpreted and
+                    executed by the analysis engine.
+                  </entry>
+                  <entry>Single String</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.tm.ae.basic.parameter.scriptEncoding'>scriptEncoding</link>
+                  </entry>
+                  <entry>Encoding of all TextMarker script files.</entry>
+                  <entry>Single String</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.tm.ae.basic.parameter.scriptPaths'>scriptPaths</link>
+                  </entry>
+                  <entry>List of absolute locations, which contain the neccessary script files like
+                    the main script.
+                  </entry>
+                  <entry>Multi String</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.tm.ae.basic.parameter.descriptorPaths'>descriptorPaths</link>
+                  </entry>
+                  <entry>List of absolute locations, which contain the neccessary descriptor files
+                    like type systems.
+                  </entry>
+                  <entry>Multi String</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.tm.ae.basic.parameter.resourcePaths'>resourcePaths</link>
+                  </entry>
+                  <entry>List of absolute locations, which contain the neccessary resource files like
+                    word lists.
+                  </entry>
+                  <entry>Multi String</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.tm.ae.basic.parameter.additionalScripts'>additionalScripts</link>
+                  </entry>
+                  <entry>List of names with complete namespace of additional scripts, which can be
+                    referred to.
+                  </entry>
+                  <entry>Multi String</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.tm.ae.basic.parameter.additionalEngines'>additionalEngines</link>
+                  </entry>
+                  <entry>List of names with complete namespace of additional analysis engines, which
+                    can be called by TextMarker rules.
+                  </entry>
+                  <entry>Multi String</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.tm.ae.basic.parameter.additionalEngineLoaders'>additionalEngineLoaders</link>
+                  </entry>
+                  <entry>List of class names of implementations that are able to perform additional
+                    task when loading external analysis engines.
+                  </entry>
+                  <entry>Multi String</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.tm.ae.basic.parameter.additionalExtensions'>additionalExtensions</link>
+                  </entry>
+                  <entry>List of factory classes for additional extensions of the TextMarker language
+                    like proprietary conditions.
+                  </entry>
+                  <entry>Multi String</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.tm.ae.basic.parameter.reloadScript'>reloadScript</link>
+                  </entry>
+                  <entry>Option to initialize the rule script each time the analysis engine processes
+                    a CAS.
+                  </entry>
+                  <entry>Single Boolean</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.tm.ae.basic.parameter.seeders'>seeders</link>
+                  </entry>
+                  <entry>List of class names that provide additional annoations before the rules are
+                    executed.
+                  </entry>
+                  <entry>Multi String</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.tm.ae.basic.parameter.defaultFilteredTypes'>defaultFilteredTypes</link>
+                  </entry>
+                  <entry>List of complete type names of annoations that are invisible by default.
+                  </entry>
+                  <entry>Multi String</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.tm.ae.basic.parameter.removeBasics'>removeBasics</link>
+                  </entry>
+                  <entry>Option to remove all inference annoations after execution of the rule script.
+                  </entry>
+                  <entry>Single Boolean</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.tm.ae.basic.parameter.dynamicAnchoring'>dynamicAnchoring</link>
+                  </entry>
+                  <entry>Option to allow rule matches to start at any rule element.</entry>
+                  <entry>Single Boolean</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.tm.ae.basic.parameter.lowMemoryProfile'>lowMemoryProfile</link>
+                  </entry>
+                  <entry>Option to decrease the memory consumption when processing a large CAS.
+                  </entry>
+                  <entry>Single Boolean</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.tm.ae.basic.parameter.simpleGreedyForComposed'>simpleGreedyForComposed</link>
+                  </entry>
+                  <entry>Option to activate a different inferencer for composed rule elements.</entry>
+                  <entry>Single Boolean</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.tm.ae.basic.parameter.debug'>debug</link>
+                  </entry>
+                  <entry>Option to add debug information to the CAS.</entry>
+                  <entry>Single Boolean</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.tm.ae.basic.parameter.debugWithMatches'>debugWithMatches</link>
+                  </entry>
+                  <entry>Option to add information about the rule matches to the CAS.</entry>
+                  <entry>Single Boolean</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.tm.ae.basic.parameter.debugOnlyFor'>debugOnlyFor</link>
+                  </entry>
+                  <entry>List of rule ids. If provided, then debug information is only created for
+                    those rules.
+                  </entry>
+                  <entry>Multi String</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.tm.ae.basic.parameter.profile'>profile</link>
+                  </entry>
+                  <entry>Option to add profile information to the CAS.</entry>
+                  <entry>Single Boolean</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.tm.ae.basic.parameter.statistics'>statistics</link>
+                  </entry>
+                  <entry>Option to add statistics of conditions and actions to the CAS.</entry>
+                  <entry>Single Boolean</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.tm.ae.basic.parameter.createdBy'>createdBy</link>
+                  </entry>
+                  <entry>Option to add additional information, which rule created a annotation.
+                  </entry>
+                  <entry>Single Boolean</entry>
+                </row>
+  
+              </tbody>
+            </tgroup>
+          </table>
         </para>
+        <section id="ugr.tools.tm.ae.basic.parameter.mainScript">
+          <title>mainScript</title>
+          <para>
+            This parameter specifies the rule file that will be executed by the analysis engine and is
+            therefore one of the most important ones. The extact name of the script is given by the complete namespace of the file, which correspond to its location
+            relative to the given parameter <link linkend='ugr.tools.tm.ae.basic.parameter.scriptPaths'>scriptPaths</link>.
+            The single names of packages (or folders) are separated by periods. An exemplary value for this parameter could be "org.apache.uima.Main", 
+            whereas "Main" specifies the file containing the rules and "org.apache.uima" its package.
+            In this case, the analysis engine loads the script file "Main.tm", which is located in the folder structure "org/apache/uima/".
+            This parameter has no default value and ha sto be provided, although it is not specified as mandatory.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.basic.parameter.scriptEncoding">
+          <title>scriptEncoding</title>
+          <para>
+            This parameter specifies the encoding of the rule files. Its default value is "UTF-8".
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.basic.parameter.scriptPaths">
+          <title>scriptPaths</title>
+          <para>
+            The parameter scriptPaths refers to a list of String values, which specify the possible locations of script files. 
+            The given locations are absolute paths. A typical value for this parameter is for example "C:/TextMarker/MyProject/script/".
+            If the parameter <link linkend='ugr.tools.tm.ae.basic.parameter.mainScript'>mainScript</link> is set to org.apache.uima.Main, 
+            then the absolute path of the script file has to be "C:/TextMarker/MyProject/script/org/apache/uima/Main.tm". 
+            This parameter can contain multiple values, as the main script can refer to multiple projects similar to a class path in Java.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.basic.parameter.descriptorPaths">
+          <title>descriptorPaths</title>
+          <para>
+            This parameter specifies the possible locations for descriptors like analysis engines or type systems, similar to the parameter
+            <link linkend='ugr.tools.tm.ae.basic.parameter.scriptPaths'>scriptPaths</link> for the script files. A typical value for this parameter 
+            is for example "C:/TextMarker/MyProject/descriptor/".
+            The relative values of the parameter <link linkend='ugr.tools.tm.ae.basic.parameter.additionalEngines'>additionalEngines</link> are
+            resolved to these absolute locations.
+            This parameter can contain multiple values, as the main script can refer to multiple projects similar to a class path in Java.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.basic.parameter.resourcePaths">
+          <title>resourcePaths</title>
+          <para>
+            This parameter specifies the possible locations of additional resources like word lists or CSV tables. The string values have to contain absolute
+            locations, for example, "C:/TextMarker/MyProject/resources/".
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.basic.parameter.additionalScripts">
+          <title>additionalScripts</title>
+          <para>
+            The parameter additionalScripts is defined as a list of string values and contains script files, 
+            which are additionally loaded by the analysis engine. These script files are specified by their 
+            complete namespace, exactly like the value of the parameter <link linkend='ugr.tools.tm.ae.basic.parameter.mainScript'>mainScript</link> 
+            and can be refered to by language elements, e.g., by executing the containing rules. An exemplary 
+            value of this parameter is "org.apache.uima.SecondaryScript". In this example, the main script could import 
+            this script file by the declaration "SCRIPT org.apache.uima.SecondaryScript;" and then could execute it with the rule 
+            "Document{-> CALL(SecondaryScript)};". 
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.basic.parameter.additionalEngines">
+          <title>additionalEngines</title>
+          <para>
+            This parameter contains a list of additional analysis engines, which can be executed by the TextMarker rules. The single values
+            are given by the name of the analysis engine with their complete namespace and have to be located relative to one value of the parameter
+            <link linkend='ugr.tools.tm.ae.basic.parameter.descriptorPaths'>descriptorPaths</link>, the location, where the analysis engine searches for the descriptor file.
+            An exmaple for one value of the parameter is "utils.HtmlAnnotator", which points to the descriptor "HtmlAnnotator.xml" in the folder "utils".
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.basic.parameter.additionalEngineLoaders">
+          <title>additionalEngineLoaders</title>
+          <para>
+            The parameter "additionalEngineLoaders" specifies are list of optional implementations of the interface 
+            "org.apache.uima.textmarker.extensions.IEngineLoader", which can be used to application-specific configurations of
+            additional analysis engines.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.basic.parameter.additionalExtensions">
+          <title>additionalExtensions</title>
+          <para>
+            This parameter specifies optional extensions of the TextMarker language. The elements of the string list must implement the interface 
+            "org.apache.uima.textmarker.extensions.ITextMarkerExtension". With those extensions, application-specific conditions and actions can be
+            added to the set of provided ones.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.basic.parameter.reloadScript">
+          <title>reloadScript</title>
+          <para>
+            This boolean parameter indicates wether the script or resource files should be reloaded when processing a cas. The default value is set to false. 
+            In this case, the script files are loaded when the analysis engine is initialized. If script files or resource files are extended, e.g., a dictionary is filled
+            yet when a collection of documents are processed, then the parameter is need to be set to true in order to include the changes.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.basic.parameter.seeders">
+          <title>seeders</title>
+          <para>
+            This list of string values refer to implementations of the interface "org.apache.uima.textmarker.seed.TextMarkerAnnotationSeeder", 
+            which can be used to automatically add annotations to the CAS. The default value of the parameter is a single seeder, namely "org.apache.uima.textmarker.seed.DefaultSeeder"
+            that adds annotations for token classes like CW, MARKUP or SEMICOLON. Remember that additional annoations can also be added with 
+            an additional engine that is executed by a TextMarker rule.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.basic.parameter.defaultFilteredTypes">
+          <title>defaultFilteredTypes</title>
+          <para>
+            This parameter specifies a list of types, which are filtered by default when executing a script file. Using the default values of this parameter,
+            whitespaces, line breaks and markup elements are not visible to TextMarker rules. The visibility of annoations and therefore the covered text can be changed
+            using the actions <link linkend='ugr.tools.tm.language.actions.filtertype'>FILTERTYPE</link> and 
+            <link linkend='ugr.tools.tm.language.actions.retaintype'>RETAINTYPE</link>.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.basic.parameter.removeBasics">
+          <title>removeBasics</title>
+          <para>
+            This parameter specifies whether the inference annoations created by the analysis engine should be removed after processing the CAS.
+            The default value is set to false.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.basic.parameter.dynamicAnchoring">
+          <title>dynamicAnchoring</title>
+          <para>
+            If this parameter is set to true, then the TextMarker rules are not forced to start to match with the first rule element. 
+            Rather the rule element referring to the most rare type is chosen. Therefore, this option can be utilized to optimize the performance.
+            Please mind that the matching result can vary in some cases when greedy rule elements are applied.
+            The default value is set to false.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.basic.parameter.lowMemoryProfile">
+          <title>lowMemoryProfile</title>
+          <para>
+            This parameter specifies whether the memory consumption should be reduced. This parameter should be set to true for 
+            very large CAS documents (e.g., > 500k tokens), but it also reduces the performance. The default value is set to false.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.basic.parameter.simpleGreedyForComposed">
+          <title>simpleGreedyForComposed</title>
+          <para>
+            This parameter specifies whether a different inference strategy for composed rule elements should be applied. This option is only neccessary, 
+            if the composed rule element is expected to match very often, e.g., a rule element like (ANY ANY).
+            The default value of this parameter is set to false.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.basic.parameter.debug">
+          <title>debug</title>
+          <para>
+            If this parameter is set to true, then additional information about the execution of a rule script is added to the CAS.
+            The actual information is specified by the following parameters.
+            The default value of this parameter is set to false.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.basic.parameter.debugWithMatches">
+          <title>debugWithMatches</title>
+          <para>
+            This parameter specificies whether the match information (covered text) of the rules should be stored in the CAS.
+            The default value of this parameter is set to false.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.basic.parameter.debugOnlyFor">
+          <title>debugOnlyFor</title>
+          <para>
+            This parameter specifies a list of rule ids that enumeratethe rule for which debug information should be created. 
+            No specific ids are given by default.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.basic.parameter.profile">
+          <title>profile</title>
+          <para>
+            If this parameter is set to true, then additional information about the runtime of applied rules is added to the CAS.
+            The default value of this parameter is set to false.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.basic.parameter.statistics">
+          <title>statistics</title>
+          <para>
+            If this parameter is set to true, then additional information about the runtime of TextMarker lanuage elements like conditions and actions
+            is added to the CAS.
+            The default value of this parameter is set to false.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.basic.parameter.createdBy">
+          <title>createdBy</title>
+          <para>
+            If this parameter is set to true, then additional information is added to the CAS about what annotation was created by which rule.
+            The default value of this parameter is set to false.
+          </para>
+        </section>
       </section>
-      <section id="ugr.tools.tm.ae.parameter.scriptEncoding">
-        <title>scriptEncoding</title>
+    </section>
+    <section id="ugr.tools.tm.ae.annotationwriter">
+      <title>Annotation Writer</title>
+      <para>
+        This Analysis Engine can be utilized to write the covered text of annotions in a text file whereas each cover text is put into a new line.
+        If the Analyis engine, for example, is configured for the type uima.example.Person, then all the cover texts of all person annotions are stored
+        in a text file, one person in each line.
+        A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a TextMarker project.
+      </para>
+      <section id="ugr.tools.tm.ae.annotationwriter.parameter">
+        <title>Configuration Parameters</title>
         <para>
-          This parameter specifies the encoding of the rule files. Its default value is "UTF-8".
         </para>
+        <section id="ugr.tools.tm.ae.annotationwriter.parameter.output">
+          <title>Output</title>
+          <para>
+            This string parameter specifies the absolute path of the resulting file named <quote>output.txt</quote>. However, if an annotation of the 
+            type <quote>org.apache.uima.examples.SourceDocumentInformation</quote> is given, then the value of this parameter is interpreted to be relative
+            to the URI stored in the annotation and the name of the file will be adapted to the name of the source file. The TextMarker IDE automatically adds
+            the SourceDocumentInformation annotation when the user launches a script file. The default value of this parameter is <quote>/../output/</quote>.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.annotationwriter.parameter.encoding">
+          <title>Encoding</title>
+          <para>
+           This string parameter specifies the encoding of the resulting file. The default value of this parameter is <quote>UTF-8</quote>.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.annotationwriter.parameter.type">
+          <title>Type</title>
+          <para>
+            Only the covered text of annotations of the type specified with this parameter are stored in the resulting file.
+            The default value of this parameter is <quote>uima.tcas.DocumentAnnotation</quote>, which will store the complete document in a new file.
+          </para>
+        </section>
       </section>
-      <section id="ugr.tools.tm.ae.parameter.scriptPaths">
-        <title>scriptPaths</title>
+    </section>
+    <section id="ugr.tools.tm.ae.plaintext">
+      <title>Plain Text Annotator</title>
+      <para>
+        This Analysis Engines adds annotations for lines and paragraphs.
+        A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a TextMarker project. There are no configuration parameters
+      </para>
+    </section>
+    <section id="ugr.tools.tm.ae.modifier">
+      <title>Modifier</title>
+      <para>
+        The Modifier Analysis Engine can be used to create an additional view <quote>modified</quote>, which contains all textual modifications and HTML highlightings that
+        were specified by the executed rules. Therefore, this Analysis Engine can be applied, e.g., 
+        for anonymization where all annatotions of persons are replaced by the string <quote>Person</quote>. 
+        Furthermore, the content of the new view can optionally be stored in a new HMTL file.
+        A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a TextMarker project.
+      </para>
+      <section id="ugr.tools.tm.ae.modifier.parameter">
+        <title>Configuration Parameters</title>
         <para>
-          The parameter scriptPaths refers to a list of String values, which specify the possible locations of script files. 
-          The given locations are absolute paths. A typical value for this parameter is for example "C:/TextMarker/MyProject/script/".
-          If the parameter <link linkend='ugr.tools.tm.ae.parameter.mainScript'>mainScript</link> is set to org.apache.uima.Main, 
-          then the absolute path of the script file has to be "C:/TextMarker/MyProject/script/org/apache/uima/Main.tm". 
-          This parameter can contain multiple values, as the main script can refer to multiple projects similar to a class path in Java.
         </para>
+        <section id="ugr.tools.tm.ae.modifier.parameter.styleMap">
+          <title>styleMap</title>
+          <para>
+            This string parameter specifies the name of the style map file created by the Style Map Creator Analysis Engine, which stores the colors for
+            additional highlightings in the modified view.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.modifier.parameter.descriptorPaths">
+          <title>descriptorPaths</title>
+          <para>
+            This parameter can contain multiple string values and specifies the absolute paths where the style map fgile can be found.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.modifier.parameter.outputLocation">
+          <title>outputLocation</title>
+          <para>
+            This string parameter specifies the absolute path of the resulting file named <quote>output.modified.html</quote>. However, if an annotation of the 
+            type <quote>org.apache.uima.examples.SourceDocumentInformation</quote> is given, then the value of this parameter is interpreted to be relative
+            to the URI stored in the annotation and the name of the file will be adapted to the name of the source file. The TextMarker IDE automatically adds
+            the SourceDocumentInformation annotation when the user launches a script file. The default value of this parameter is <quote>/../</quote>.
+          </para>
+        </section>
       </section>
-      <section id="ugr.tools.tm.ae.parameter.descriptorPaths">
-        <title>descriptorPaths</title>
+    </section>
+    <section id="ugr.tools.tm.ae.html">
+      <title>HMTL Annotator</title>
+      <para>
+        This Analysis Engine provides support for HTML files by adding annoations for the HTML elements. Using the default values, the HTML Annoatator creates annotations
+        for each HTML element spanning the content of the element, whereas the most common elements are represented by own types. 
+        The document <quote><![CDATA[This text is <b>bold</b>.]]></quote>, for example, would be annotated with an annotation of the type 
+        <quote>org.apache.uima.textmarker.type.html.B</quote> for the word <quote>bold</quote>. The HTML annotator can be configured 
+        in order to include the start and end element in the created annotations. Additionally, the Analysis Engine is also able to strip the HTML element, 
+        but retraining the HTML annotations. Thereby, an HTML document can be converted to a plain text document, which contains the annotations about the HTML layout.
+        A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a TextMarker project.
+      </para>
+      <section id="ugr.tools.tm.ae.html.parameter">
+        <title>Configuration Parameters</title>
         <para>
-          This parameter specifies the possible locations for descriptors like analysis engines or type systems, similar to the parameter
-          <link linkend='ugr.tools.tm.ae.parameter.scriptPaths'>scriptPaths</link> for the script files. A typical value for this parameter 
-          is for example "C:/TextMarker/MyProject/descriptor/".
-          The relative values of the parameter <link linkend='ugr.tools.tm.ae.parameter.additionalEngines'>additionalEngines</link> are
-          resolved to these absolute locations.
-          This parameter can contain multiple values, as the main script can refer to multiple projects similar to a class path in Java.
         </para>
+        <section id="ugr.tools.tm.ae.html.parameter.plainTextOutput">
+          <title>plainTextOutput</title>
+          <para>
+            This parameter specifies whether a new document without the HTML elements should be created. The default value is <quote>false</quote>.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.html.parameter.outputViewName">
+          <title>outputViewName</title>
+          <para>
+            This parameter specifies in which view the optional new document without HTML element should be stored.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.html.parameter.onlyContent">
+          <title>onlyContent</title>
+          <para>
+            This parameter specifies whether created annotations should cover only the content of the HTML elements or also their start and end element. 
+            The default value is <quote>true</quote>
+          </para>
+        </section>
       </section>
-      <section id="ugr.tools.tm.ae.parameter.resourcePaths">
-        <title>resourcePaths</title>
+    </section>
+    <section id="ugr.tools.tm.ae.stylemap">
+      <title>Style Map Creator</title>
+      <para>
+        This Analysis Engine can be utilized to create style map information, which is need by the Modifier Analysis Engine in order to create
+        highlightings for some annaotions.
+        Style map information can be created using the <link linkend='ugr.tools.tm.language.actions.color'>COLOR</link> action.
+        A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a TextMarker project.
+      </para>
+      <section id="ugr.tools.tm.ae.stylemap.parameter">
+        <title>Configuration Parameters</title>
         <para>
-          This parameter specifies the possible locations of additional resources like word lists or CSV tables. The string values have to contain absolute
-          locations, for example, "C:/TextMarker/MyProject/resources/".
         </para>
+        <section id="ugr.tools.tm.ae.stylemap.parameter.styleMap">
+          <title>styleMap</title>
+          <para>
+            This string parameter specifies the name of the style map file created by the Style Map Creator Analysis Engine, which stores the colors for
+            additional highlightings in the modified view.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.stylemap.parameter.descriptorPaths">
+          <title>descriptorPaths</title>
+          <para>
+            This parameter can contain multiple string values and specifies the absolute paths where the style map fgile can be found.
+          </para>
+        </section>
       </section>
-      <section id="ugr.tools.tm.ae.parameter.additionalScripts">
-        <title>additionalScripts</title>
-        <para>
-          The parameter additionalScripts is defined as a list of string values and contains script files, 
-          which are additionally loaded by the analysis engine. These script files are specified by their 
-          complete namespace, exactly like the value of the parameter <link linkend='ugr.tools.tm.ae.parameter.mainScript'>mainScript</link> 
-          and can be refered to by language elements, e.g., by executing the containing rules. An exemplary 
-          value of this parameter is "org.apache.uima.SecondaryScript". In this example, the main script could import 
-          this script file by the declaration "SCRIPT org.apache.uima.SecondaryScript;" and then could execute it with the rule 
-          "Document{-> CALL(SecondaryScript)};". 
-        </para>
-      </section>
-      <section id="ugr.tools.tm.ae.parameter.additionalEngines">
-        <title>additionalEngines</title>
-        <para>
-          This parameter contains a list of additional analysis engines, which can be executed by the TextMarker rules. The single values
-          are given by the name of the analysis engine with their complete namespace and have to be located relative to one value of the parameter
-          <link linkend='ugr.tools.tm.ae.parameter.descriptorPaths'>descriptorPaths</link>, the location, where the analysis engine searches for the descriptor file.
-          An exmaple for one value of the parameter is "utils.HtmlAnnotator", which points to the descriptor "HtmlAnnotator.xml" in the folder "utils".
-        </para>
-      </section>
-      <section id="ugr.tools.tm.ae.parameter.additionalEngineLoaders">
-        <title>additionalEngineLoaders</title>
-        <para>
-          The parameter "additionalEngineLoaders" specifies are list of optional implementations of the interface 
-          "org.apache.uima.textmarker.extensions.IEngineLoader", which can be used to application-specific configurations of
-          additional analysis engines.
-        </para>
-      </section>
-      <section id="ugr.tools.tm.ae.parameter.additionalExtensions">
-        <title>additionalExtensions</title>
-        <para>
-          This parameter specifies optional extensions of the TextMarker language. The elements of the string list must implement the interface 
-          "org.apache.uima.textmarker.extensions.ITextMarkerExtension". With those extensions, application-specific conditions and actions can be
-          added to the set of provided ones.
-        </para>
-      </section>
-      <section id="ugr.tools.tm.ae.parameter.reloadScript">
-        <title>reloadScript</title>
-        <para>
-          This boolean parameter indicates wether the script or resource files should be reloaded when processing a cas. The default value is set to false. 
-          In this case, the script files are loaded when the analysis engine is initialized. If script files or resource files are extended, e.g., a dictionary is filled
-          yet when a collection of documents are processed, then the parameter is need to be set to true in order to include the changes.
-        </para>
-      </section>
-      <section id="ugr.tools.tm.ae.parameter.seeders">
-        <title>seeders</title>
-        <para>
-          This list of string values refer to implementations of the interface "org.apache.uima.textmarker.seed.TextMarkerAnnotationSeeder", 
-          which can be used to automatically add annotations to the CAS. The default value of the parameter is a single seeder, namely "org.apache.uima.textmarker.seed.DefaultSeeder"
-          that adds annotations for token classes like CW, MARKUP or SEMICOLON. Remember that additional annoations can also be added with 
-          an additional engine that is executed by a TextMarker rule.
-        </para>
-      </section>
-      <section id="ugr.tools.tm.ae.parameter.defaultFilteredTypes">
-        <title>defaultFilteredTypes</title>
-        <para>
-          This parameter specifies a list of types, which are filtered by default when executing a script file. Using the default values of this parameter,
-          whitespaces, line breaks and markup elements are not visible to TextMarker rules. The visibility of annoations and therefore the covered text can be changed
-          using the actions <link linkend='ugr.tools.tm.language.actions.filtertype'>FILTERTYPE</link> and 
-          <link linkend='ugr.tools.tm.language.actions.retaintype'>RETAINTYPE</link>.
-        </para>
-      </section>
-      <section id="ugr.tools.tm.ae.parameter.removeBasics">
-        <title>removeBasics</title>
-        <para>
-          This parameter specifies whether the inference annoations created by the analysis engine should be removed after processing the CAS.
-          The default value is set to false.
-        </para>
-      </section>
-      <section id="ugr.tools.tm.ae.parameter.dynamicAnchoring">
-        <title>dynamicAnchoring</title>
-        <para>
-          If this parameter is set to true, then the TextMarker rules are not forced to start to match with the first rule element. 
-          Rather the rule element referring to the most rare type is chosen. Therefore, this option can be utilized to optimize the performance.
-          Please mind that the matching result can vary in some cases when greedy rule elements are applied.
-          The default value is set to false.
-        </para>
-      </section>
-      <section id="ugr.tools.tm.ae.parameter.lowMemoryProfile">
-        <title>lowMemoryProfile</title>
-        <para>
-          This parameter specifies whether the memory consumption should be reduced. This parameter should be set to true for 
-          very large CAS documents (e.g., > 500k tokens), but it also reduces the performance. The default value is set to false.
-        </para>
-      </section>
-      <section id="ugr.tools.tm.ae.parameter.simpleGreedyForComposed">
-        <title>simpleGreedyForComposed</title>
-          This parameter specifies whether a different inference strategy for composed rule elements should be applied. This option is only neccessary, 
-          if the composed rule element is expected to match very often, e.g., a rule element like (ANY ANY).
-          The default value of this parameter is set to false.
+    </section>
+    <section id="ugr.tools.tm.ae.xmi">
+      <title>XMI Writer</title>
+      <para>
+        This Analysis Engine is able to serialize the processed CAS to an XMI file. One use case for the XMI Writer is, for example, a rule-based sorted,
+        which stores the processed XMI files in different folder, dependent on the execution of the rules, e.g., wether a pattern of annoations occurs or not.
+        A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a TextMarker project.
+      </para>
+      <section id="ugr.tools.tm.ae.xmi.parameter">
+        <title>Configuration Parameters</title>
         <para>
         </para>
-      </section>
-      <section id="ugr.tools.tm.ae.parameter.debug">
-        <title>debug</title>
-        <para>
-          If this parameter is set to true, then additional information about the execution of a rule script is added to the CAS.
-          The actual information is specified by the following parameters.
-          The default value of this parameter is set to false.
-        </para>
-      </section>
-      <section id="ugr.tools.tm.ae.parameter.debugWithMatches">
-        <title>debugWithMatches</title>
-        <para>
-          This parameter specificies whether the match information (covered text) of the rules should be stored in the CAS.
-          The default value of this parameter is set to false.
-        </para>
-      </section>
-      <section id="ugr.tools.tm.ae.parameter.debugOnlyFor">
-        <title>debugOnlyFor</title>
-        <para>
-          This parameter specifies a list of rule ids that enumeratethe rule for which debug information should be created. 
-          No specific ids are given by default.
-        </para>
-      </section>
-      <section id="ugr.tools.tm.ae.parameter.profile">
-        <title>profile</title>
-        <para>
-          If this parameter is set to true, then additional information about the runtime of applied rules is added to the CAS.
-          The default value of this parameter is set to false.
-        </para>
-      </section>
-      <section id="ugr.tools.tm.ae.parameter.statistics">
-        <title>statistics</title>
-        <para>
-          If this parameter is set to true, then additional information about the runtime of TextMarker lanuage elements like conditions and actions
-          is added to the CAS.
-          The default value of this parameter is set to false.
-        </para>
-      </section>
-      <section id="ugr.tools.tm.ae.parameter.createdBy">
-        <title>createdBy</title>
-        <para>
-          If this parameter is set to true, then additional information is added to the CAS about what annotation was created by which rule.
-          The default value of this parameter is set to false.
-        </para>
+        <section id="ugr.tools.tm.ae.xmi.parameter.output">
+          <title>Output</title>
+          <para>
+            This string parameter specifies the absolute path of the resulting file named <quote>output.xmi</quote>. However, if an annotation of the 
+            type <quote>org.apache.uima.examples.SourceDocumentInformation</quote> is given, then the value of this parameter is interpreted to be relative
+            to the URI stored in the annotation and the name of the file will be adapted to the name of the source file. The TextMarker IDE automatically adds
+            the SourceDocumentInformation annotation when the user launches a script file.
+            The default value is <quote>/../output/</quote>
+          </para>
+        </section>
       </section>
     </section>
   </section>
