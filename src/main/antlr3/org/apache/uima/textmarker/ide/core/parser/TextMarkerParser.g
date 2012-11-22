@@ -1186,7 +1186,7 @@ result = ActionFactory.createEmptyAction(input.LT(1));
 	| a = actionGetList
 	| a = actionMatchedText
 	| a = actionClear
-	| a = actionExpand
+	| a = actionShift
 	| a = actionConfigure
 	| a = actionDynamicAnchoring
 	| (a = externalAction)=> a = externalAction
@@ -1350,12 +1350,12 @@ List<Expression> list = new ArrayList<Expression>();
      RPAREN
     ;
 
-actionExpand returns [TextMarkerAction action = null]
+actionShift returns [TextMarkerAction action = null]
 @init {
 List<Expression> list = new ArrayList<Expression>();
 }
     :   
-    name = EXPAND LPAREN 
+    name = SHIFT LPAREN 
     type = typeExpression
     {list.add(type);}
     (
