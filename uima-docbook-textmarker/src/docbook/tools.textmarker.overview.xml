@@ -174,6 +174,63 @@ Document{-> RETAINTYPE, FILTERTYPE};]]></programlisting>
          are generated in the descriptor folder corresponding to the package namespace of the script file.
          The available configuration parameters of the TextMarker Analysis Engine are described in the following.   
       </para>
+      <section id="ugr.tools.tm.ae.basic.apply">
+      <title>Apply TextMarker Analysis Engine in plain Java</title>
+        <para>
+          Let's assume that you wrote the TextMarker rules using the TextMarker Workbench, which already creates correctly configured descriptors.
+          In this case, you can simply use the following java code to apply the TextMarker script.
+        </para>
+          <programlisting><![CDATA[File specFile = new File("pathToMyWorkspace/MyProject/descriptor/"+
+    "my/package/MyScriptEngine.xml");
+XMLInputSource in = new XMLInputSource(specFile);
+ResourceSpecifier specifier = UIMAFramework.getXMLParser().
+    parseResourceSpecifier(in);
+// for import by name... set the datapath in the ResourceManager
+AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
+CAS cas = ae.newCAS();
+cas.setDocumentText("This is my document.");
+ae.process(cas);]]></programlisting>
+      <note><para>
+        The TextMarker Analysis Engine utilizes type priorities. If the CAS object is 
+        not created using the TextMarker Analysis Engine descriptor, but other means, then please 
+        provide the necessary type priorities for a valid execution of the TextMarker rules.
+      </para></note>
+      <para>
+        If the TextMarker script was written, for example, with a common text editor and no configured descriptors are yet available, 
+        then the following java code can be used, which, however, is only applicable for executing single script files that do not import 
+        additional components or scripts. In that case the other parameters, e.g., <quote>additionalScripts</quote>, need to be configured correctly.
+      </para>
+      <programlisting><![CDATA[URL aedesc = TextMarkerEngine.class.getResource("BasicEngine.xml");
+XMLInputSource inae = new XMLInputSource(aedesc);
+ResourceSpecifier specifier = UIMAFramework.getXMLParser().
+    parseResourceSpecifier(inae);
+ResourceManager resMgr = UIMAFramework.newDefaultResourceManager();
+AnalysisEngineDescription aed = (AnalysisEngineDescription) specifier;
+TypeSystemDescription basicTypeSystem = aed.getAnalysisEngineMetaData().
+    getTypeSystem();
+
+Collection<TypeSystemDescription> tsds = 
+    new ArrayList<TypeSystemDescription>();
+tsds.add(basicTypeSystem);
+// add some other type system descriptors that are needed by your script file   
+TypeSystemDescription mergeTypeSystems = CasCreationUtils.
+    mergeTypeSystems(tsds);
+aed.getAnalysisEngineMetaData().setTypeSystem(mergeTypeSystems);
+aed.resolveImports(resMgr);
+        
+AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed, resMgr, null);
+File scriptFile = new File("path/to/file/MyScript.tm");
+ae.setConfigParameterValue(TextMarkerEngine.SCRIPT_PATHS, 
+    new String[] { scriptFile.getParent().getAbsolutePath() });
+String name = scriptFile.getName().substring(0, 
+    scriptFile.getName().length() - 3);
+ae.setConfigParameterValue(TextMarkerEngine.MAIN_SCRIPT, name);
+ae.reconfigure();
+CAS cas = ae.newCAS();
+cas.setDocumentText("This is my document.");
+ae.process(cas);]]></programlisting>
+      
+      </section>
       <section id="ugr.tools.tm.ae.basic.parameter">
         <title>Configuration Parameters</title>
         <para>
