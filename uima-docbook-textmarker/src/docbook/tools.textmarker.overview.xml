@@ -93,7 +93,7 @@ Paragraph{CONTAINS(Bold, 90, 100, true),
     
     <programlisting><![CDATA[Headline{-CONTAINS(W) -> UNMARK(Headline)};]]></programlisting>
     
-    <programlisting><![CDATA[]]>Headline{-> EXPAND(Headline, 1, 2)} COLON;</programlisting>
+    <programlisting><![CDATA[]]>Headline{-> SHIFT(Headline, 1, 2)} COLON;</programlisting>
     
     <programlisting><![CDATA[DECLARE Month, Year, Date;
 ANY{INLIST(MonthsList) -> MARK(Month), MARK(Date,1,3)}

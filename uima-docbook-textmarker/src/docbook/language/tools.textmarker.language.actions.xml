@@ -310,11 +310,10 @@
 			</para>
 			<para>
 				Here, an analysis engine for named entity recognition is
-				executed once on the complete document
+				executed once on the complete document.
 			</para>
 		</section>
 	</section>
-
 	<section id="ugr.tools.tm.language.actions.fill">
 		<title>FILL</title>
 		<para>
@@ -1009,6 +1008,34 @@
 			</para>
 		</section>
 	</section>
+
+    <section id="ugr.tools.tm.language.actions.shift">
+      <title>SHIFT</title>
+      <para>
+        The SHIFT action can be used to change the offsets of an annotation. The optional number expression,
+        which point the the rule elements of the rule, specify the new offsets of the annotation.
+      </para>
+      <section>
+        <title>
+          <emphasis role="bold">Definition:</emphasis>
+        </title>
+        <para>
+          <programlisting><![CDATA[SHIFT(TypeExpression(,NumberExpression)*)]]></programlisting>
+        </para>
+      </section>
+      <section>
+        <title>
+          <emphasis role="bold">Example:</emphasis>
+        </title>
+        <para>
+          <programlisting><![CDATA[Author{-> SHIFT(Author,1,2)} PM;]]></programlisting>
+        </para>
+        <para>
+          In this example, an annotation of the type <quote>Author</quote> is expanded 
+          in order to cover the following punctation mark.
+        </para>
+      </section>
+    </section>
 
 	<section id="ugr.tools.tm.language.actions.transfer">
 		<title>TRANSFER</title>
