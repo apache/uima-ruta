@@ -240,8 +240,8 @@ TRANSFER
 	;
 
 
-EXPAND 	
-	:	'EXPAND'	 
+SHIFT 	
+	:	'SHIFT'	 
 	;
 
 DYNAMICANCHORING 	

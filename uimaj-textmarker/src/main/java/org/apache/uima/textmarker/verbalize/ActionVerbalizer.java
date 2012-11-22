@@ -28,7 +28,7 @@ import org.apache.uima.textmarker.action.CallAction;
 import org.apache.uima.textmarker.action.ColorAction;
 import org.apache.uima.textmarker.action.CreateAction;
 import org.apache.uima.textmarker.action.DelAction;
-import org.apache.uima.textmarker.action.ExpandAction;
+import org.apache.uima.textmarker.action.ShiftAction;
 import org.apache.uima.textmarker.action.FillAction;
 import org.apache.uima.textmarker.action.FilterTypeAction;
 import org.apache.uima.textmarker.action.GatherAction;
@@ -81,8 +81,8 @@ public class ActionVerbalizer {
       return "LOG";
     } else if (action instanceof MarkOnceAction) {
       return "MARKONCE";
-    } else if (action instanceof ExpandAction) {
-      return "EXPAND";
+    } else if (action instanceof ShiftAction) {
+      return "SHIFT";
     } else if (action instanceof MarkAction) {
       MarkAction a = (MarkAction) action;
       if (a.getScore() != null) {
@@ -218,13 +218,13 @@ public class ActionVerbalizer {
         string = "," + verbalizer.verbalizeExpressionList(a.getList());
       }
       return "MARKONCE(" + verbalizer.verbalize(a.getType()) + string + ")";
-    } else if (action instanceof ExpandAction) {
-      ExpandAction a = (ExpandAction) action;
+    } else if (action instanceof ShiftAction) {
+      ShiftAction a = (ShiftAction) action;
       String string = "";
       if (a.getList() != null && !a.getList().isEmpty()) {
         string = "," + verbalizer.verbalizeExpressionList(a.getList());
       }
-      return "EXPAND(" + verbalizer.verbalize(a.getType()) + string + ")";
+      return "SHIFT(" + verbalizer.verbalize(a.getType()) + string + ")";
     } else if (action instanceof MarkAction) {
       MarkAction a = (MarkAction) action;
       if (a.getScore() != null) {

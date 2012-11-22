@@ -29,9 +29,9 @@ import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
-public class ExpandAction extends MarkAction {
+public class ShiftAction extends MarkAction {
 
-  public ExpandAction(TypeExpression type, List<NumberExpression> list) {
+  public ShiftAction(TypeExpression type, List<NumberExpression> list) {
     super(type, null, list);
   }
 

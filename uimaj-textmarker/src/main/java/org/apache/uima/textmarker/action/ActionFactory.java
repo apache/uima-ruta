@@ -229,9 +229,9 @@ public class ActionFactory {
     return new ClearAction(var == null ? null : var.getText());
   }
 
-  public static AbstractTextMarkerAction createExpandAction(TypeExpression type,
+  public static AbstractTextMarkerAction createShiftAction(TypeExpression type,
           List<NumberExpression> list, TextMarkerBlock env) {
-    return new ExpandAction(type, list);
+    return new ShiftAction(type, list);
   }
 
   public static AbstractTextMarkerAction createDynamicAnchoringAction(BooleanExpression active,

@@ -1112,7 +1112,7 @@ action  returns [AbstractTextMarkerAction result = null]
 	| a = actionGetList
 	| a = actionMatchedText
 	| a = actionClear
-	| a = actionExpand
+	| a = actionShift
 	| a = actionConfigure
 	| a = actionDynamicAnchoring 
 	| (a = externalAction)=> a = externalAction
@@ -1252,12 +1252,12 @@ List<NumberExpression> list = new ArrayList<NumberExpression>();
     {action = ActionFactory.createMarkAction(null, type, list, $blockDeclaration::env);}
     ;
 
-actionExpand returns [AbstractTextMarkerAction action = null]
+actionShift returns [AbstractTextMarkerAction action = null]
 @init {
 List<NumberExpression> list = new ArrayList<NumberExpression>();
 }
     :   
-    EXPAND LPAREN 
+    SHIFT LPAREN 
     type = typeExpression
     (
         COMMA (index = numberExpression) => index = numberExpression
@@ -1265,7 +1265,7 @@ List<NumberExpression> list = new ArrayList<NumberExpression>();
     )*
      RPAREN
     
-    {action = ActionFactory.createExpandAction(type, list,$blockDeclaration::env);}
+    {action = ActionFactory.createShiftAction(type, list,$blockDeclaration::env);}
     ;
 
 
