@@ -370,9 +370,9 @@ BLOCK(ForEach) Sentence{} {
       However, more important, the TextMarker language provides a concept of visibilty of the annotations. By default, all annotations of the types 
       <quote>SPACE</quote>, <quote>NBSP</quote>, <quote>BREAK</quote> and <quote>MARKUP</quote> (whitespace and XML elements) are filtered and not visible 
       and by that also their covered text. The rule elements skip all positions of the
-      document where those annotation occur. Therefore, the rule in the last example matches on all examples. Without the default filtering settings, 
-      with all annotations set to visible, the rule matches only on the document <quote>ApacheUIMA</quote> since it it the only one that contains two word annoations without
-      any whitesapce between them. 
+      document where those annotations occur. Therefore, the rule in the last example matches on all examples. Without the default filtering settings, 
+      with all annotations set to visible, the rule matches only on the document <quote>ApacheUIMA</quote> since it is the only one that contains two word annotations without
+      any whitespace between them. 
     </para>
     
     <para>
@@ -388,12 +388,12 @@ Sentence;
 Document{-> RETAINTYPE, FILTERTYPE};]]></programlisting>
 
     <para>
-      The first rule simply matches on sentences that no not start with filtered types. Sentences that start with whitespace or markup, 
-      for exmaple, are not considered. 
+      The first rule simply matches on sentences that starts not with any filtered type. Sentences that start with whitespace or markup, 
+      for example, are not considered. 
       The next rule retains all text that is covered by annotations of the type <quote>SPACE</quote> meaning 
-      that the rule elements are now sensible to whitespaces. Therefore, the following rule will match on sentecnes that start with whitespace.
+      that the rule elements are now sensible to whitespaces. Therefore, the following rule will match on sentences that start with whitespaces.
       The third rule now filters the type <quote>CW</quote> with the consequence that all capitalized words are invisible.
-      If the following rule now wants to match on sentences, hten this is only possible for Sentence annotations that do not start with a capitalized word.
+      If the following rule now wants to match on sentences, then this is only possible for Sentence annotations that do not start with a capitalized word.
       The last rule finally resets the filtering setting to the default configured in the TextMarker Analysis Engine.
     </para>
     
@@ -401,7 +401,7 @@ Document{-> RETAINTYPE, FILTERTYPE};]]></programlisting>
       The next exmaple gives a showcase for importing external Analysis Engines and for modifying the documents by creating a new view names <quote>modified</quote>.
       Additional Analysis Engines can be imported with the keyword <quote>ENGINE</quote> followed by the name of the descriptor. These imported Analysis Engines can be 
       executed with the actions <quote>CALL</quote> or <quote>EXEC</quote>. If the executed Analysis Engine adds, removes or modifies annotations, then their types need 
-      to be mentioned when calling the descriptor, or else those annoations will not be correctly processed by the following TextMarker rules.
+      to be mentioned when calling the descriptor, or else those annotations will not be correctly processed by the following TextMarker rules.
     </para>
 
     <programlisting><![CDATA[ENGINE utils.Modifier;
