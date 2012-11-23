@@ -19,18 +19,20 @@
 <section id="ugr.tools.tm.language.expressions">
 	<title>Expressions</title>
 	<para>
-		TexMarker provides four different kinds of expressions. These are
+		TexMarker provides five different kinds of expressions. These are
 		type expressions, number expressions, string expressions and
-		boolean
-		expressions.
+		boolean expressions and list expressions.
 	</para>
 	<section>
 		<title>
 			<emphasis role="bold">Definition:</emphasis>
 		</title>
 		<para>
-			<programlisting><![CDATA[textmarkerExpression  ->   typeExpression | numberExpression | 
-                           stringExpression | booleanExpression]]></programlisting>
+<programlisting><![CDATA[
+TextmarkerExpression  ->   TypeExpression | NumberExpression | 
+                           StringExpression | BooleanExpression
+                           | ListExpression
+]]></programlisting>
 		</para>
 	</section>
 
@@ -56,7 +58,9 @@
 					<emphasis role="bold">Definition:</emphasis>
 				</title>
 				<para>
-					<programlisting><![CDATA[typeExpression       ->  AnnotationType | TypeVariable]]></programlisting>
+<programlisting><![CDATA[
+TypeExpression       ->  AnnotationType | TypeVariable
+]]></programlisting>
 				</para>
 			</section>
 			<section>
@@ -86,16 +90,17 @@ Document{->ASSIGN(typeVar, Author)};]]></programlisting>
 					<emphasis role="bold">Definition:</emphasis>
 				</title>
 				<para>
-					<programlisting><![CDATA[numberExpression         -> additiveExpression
-additiveExpression       -> multiplicativeExpression ( ( "+" | "-" ) 
-                            multiplicativeExpression )*
-multiplicativeExpression -> simpleNumberExpression ( ( "*" | "/" | "%" ) 
-                            simpleNumberExpression )*
+					<programlisting><![CDATA[
+NumberExpression         -> AdditiveExpression
+AdditiveExpression       -> MultiplicativeExpression ( ( "+" | "-" ) 
+                            MultiplicativeExpression )*
+MultiplicativeExpression -> SimpleNumberExpression ( ( "*" | "/" | "%" ) 
+                            SimpleNumberExpression )*
                             | ( "EXP" | "LOGN" | "SIN" | "COS" | "TAN" ) 
-                            "(" numberExpression ")"
-simpleNumberExpression   -> "-"? ( DecimalLiteral | FloatingPointLiteral 
-                            | NumberVariable) | "(" numberExpression ")"
-DecimalLiteral        -> ('0' | '1'..'9' digit*) IntegerTypeSuffix?
+                            "(" NumberExpression ")"
+SimpleNumberExpression   -> "-"? ( DecimalLiteral | FloatingPointLiteral 
+                            | NumberVariable) | "(" NumberExpression ")"
+DecimalLiteral        -> ('0' | '1'..'9' Digit*) IntegerTypeSuffix?
 IntegerTypeSuffix     ->  ('l'|'L')
 FloatingPointLiteral  -> Digit+ '.' Digit* Exponent? FloatTypeSuffix?
                          |   '.' Digit+ Exponent? FloatTypeSuffix?
@@ -151,8 +156,8 @@ Document{->ASSIGN(intVar1, 12 * intVar1 - SIN(intVar2))};]]></programlisting>
 					<emphasis role="bold">Definition:</emphasis>
 				</title>
 				<para>
-					<programlisting><![CDATA[stringExpression 	-> 	simpleStringExpression
-simpleStringExpression	->	StringLiteral | StringVariable]]></programlisting>
+					<programlisting><![CDATA[StringExpression 	-> 	SimpleStringExpression
+SimpleStringExpression	->	StringLiteral | StringVariable]]></programlisting>
 				</para>
 			</section>
 			<section>
@@ -181,17 +186,17 @@ Document{->ASSIGN(strVar, "strLiteral")}; // "strLiteral" is a string
 					<emphasis role="bold">Definition:</emphasis>
 				</title>
 				<para>
-					<programlisting><![CDATA[booleanExpression          ->  composedBooleanExpression 
-                               | simpleBooleanExpression
-composedBooleanExpression  ->  booleanCompare | booleanTypeExpression 
-                               | booleanNumberExpression | booleanFunction
-simpleBooleanExpression	   ->  BooleanLiteral | BooleanVariable
-booleanCompare           ->  simpleBooleanExpression ( "==" | "!=" ) 
-                               booleanExpression
-booleanTypeExpression    ->  typeExpression ( "==" | "!=" ) typeExpression
-booleanNumberExpression  ->  "(" numberExpression ( "<" | "<=" | ">" 
-                               | ">=" | "==" | "!=" ) numberExpression ")"
-booleanFunction	  ->	XOR "(" booleanExpression "," booleanExpression ")"
+					<programlisting><![CDATA[BooleanExpression          ->  ComposedBooleanExpression 
+                               | SimpleBooleanExpression
+ComposedBooleanExpression  ->  BooleanCompare | BooleanTypeExpression 
+                               | BooleanNumberExpression | BooleanFunction
+SimpleBooleanExpression	   ->  BooleanLiteral | BooleanVariable
+BooleanCompare           ->  SimpleBooleanExpression ( "==" | "!=" ) 
+                               BooleanExpression
+BooleanTypeExpression    ->  TypeExpression ( "==" | "!=" ) TypeExpression
+BooleanNumberExpression  ->  "(" NumberExpression ( "<" | "<=" | ">" 
+                               | ">=" | "==" | "!=" ) NumberExpression ")"
+BooleanFunction	  ->	XOR "(" BooleanExpression "," BooleanExpression ")"
 BooleanLiteral    ->  "true" | "false"]]></programlisting>
 				</para>
 				<para>
@@ -256,6 +261,40 @@ BooleanLiteral    ->  "true" | "false"]]></programlisting>
 					boolean number
 					expression on the left side of the complex number
 					expression.
+				</para>
+			</section>
+		</para>
+	</section>
+	
+
+<section id="ugr.tools.tm.language.expressions.lists">
+		<title>List Expressions</title>
+		<para>
+			List expression are a rather simple kind of expression.
+			<section>
+				<title>
+					<emphasis role="bold">Definition:</emphasis>
+				</title>
+				<para>
+<programlisting><![CDATA[
+ListExpression  ->   WordListExpression | WordTableExpression |
+                     TypeListExpression | NumberListExpression |
+                     StringListExpression | BooleanListExpression
+WordListExpression     ->  RessourceLiteral | WordListVariable
+WordTableExpression    ->  RessourceLiteral | WordTableVariable
+TypeListExpression     ->  TypeListVariable
+NumberListExpression   ->  IntListVariable | FloatListVariable 
+                           | DoubleListVariable
+StringListExpression   ->  StringListVariable
+BooleanListExpression  ->  BooleanListVariable
+]]></programlisting>
+		A ResourceLiteral is something
+		like 'folder/file.txt' (Attention: Use single quotes).
+				</para>
+				<para>
+					List variables are defined in
+					<xref linkend='ugr.tools.tm.language.declarations.variable' />
+					.
 				</para>
 			</section>
 		</para>

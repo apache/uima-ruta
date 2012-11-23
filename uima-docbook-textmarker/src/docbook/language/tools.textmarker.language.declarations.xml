@@ -38,18 +38,6 @@
 			its features.
 			<section>
 				<title>
-					<emphasis role="bold">Definition:</emphasis>
-				</title>
-				<para>
-					<programlisting><![CDATA[typeDeclaration    -> "DECLARE" (AnnotationType)? 
-					     Identifier ("," Identifier )*
-					  | "DECLARE" AnnotationType Identifier ( "(" featureDeclaration ")" )?
-featureDeclaration -> ( (AnnotationType | "STRING" | "INT" | "DOUBLE" | 
-					  "BOOLEAN") Identifier)+]]></programlisting>
-				</para>
-			</section>
-			<section>
-				<title>
 					<emphasis role="bold">Example:</emphasis>
 				</title>
 				<para>
