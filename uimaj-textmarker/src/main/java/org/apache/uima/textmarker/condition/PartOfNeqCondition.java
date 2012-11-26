@@ -67,8 +67,10 @@ public class PartOfNeqCondition extends TypeSentiveCondition {
     while (stream.isValid()) {
       TextMarkerBasic each = (TextMarkerBasic) stream.get();
       Set<AnnotationFS> set = each.getBeginAnchors(t);
-
-      // TODO refactor!
+      if(set == null)  {
+        stream.moveToPrevious();
+        continue;
+      }
       for (AnnotationFS afs : set) {
         if (afs != null
                 && afs.getType().equals(t)
