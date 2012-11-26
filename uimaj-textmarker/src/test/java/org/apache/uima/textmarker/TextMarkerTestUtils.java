@@ -53,11 +53,21 @@ public class TextMarkerTestUtils {
           throws URISyntaxException, IOException, InvalidXMLException,
           ResourceInitializationException, AnalysisEngineProcessException,
           ResourceConfigurationException {
-    return process(ruleFileName, textFileName, amount, false, false, null, null);
+    return process(ruleFileName, textFileName, amount, false, false, null, null, null);
   }
 
   public static CAS process(String ruleFileName, String textFileName, int amount,
-          boolean dynamicAnchoring, boolean simpleGreedyForComposed, Map<String, String> complexTypes, String resourceDirName)
+          boolean dynamicAnchoring, boolean simpleGreedyForComposed,
+          Map<String, String> complexTypes, String resourceDirName) throws URISyntaxException,
+          IOException, InvalidXMLException, ResourceInitializationException,
+          AnalysisEngineProcessException, ResourceConfigurationException {
+    return process(ruleFileName, textFileName, amount, dynamicAnchoring, simpleGreedyForComposed,
+            complexTypes, resourceDirName, null);
+  }
+
+  public static CAS process(String ruleFileName, String textFileName, int amount,
+          boolean dynamicAnchoring, boolean simpleGreedyForComposed,
+          Map<String, String> complexTypes, String resourceDirName, CAS cas)
           throws URISyntaxException, IOException, InvalidXMLException,
           ResourceInitializationException, AnalysisEngineProcessException,
           ResourceConfigurationException {
@@ -112,8 +122,10 @@ public class TextMarkerTestUtils {
     }
 
     ae.reconfigure();
-    CAS cas = ae.newCAS();
-    cas.setDocumentText(FileUtils.file2String(textFile, "UTF-8"));
+    if(cas == null) {
+      cas = ae.newCAS();
+      cas.setDocumentText(FileUtils.file2String(textFile, "UTF-8"));
+    }
     ae.process(cas);
     return cas;
   }

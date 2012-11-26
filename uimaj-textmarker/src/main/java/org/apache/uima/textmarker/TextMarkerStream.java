@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -147,9 +148,13 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
   public void initalizeBasics() {
     AnnotationIndex<AnnotationFS> basicIndex = cas.getAnnotationIndex(basicType);
     AnnotationIndex<AnnotationFS> annotationIndex = cas.getAnnotationIndex();
+    final List<AnnotationFS> allAnnotations = new LinkedList<AnnotationFS>();
+    for (AnnotationFS a : annotationIndex) {
+      allAnnotations.add(a);
+    }
     if (basicIndex.size() == 0) {
       TreeSet<Integer> anchors = new TreeSet<Integer>();
-      for (AnnotationFS a : annotationIndex) {
+      for (AnnotationFS a : allAnnotations) {
         anchors.add(a.getBegin());
         anchors.add(a.getEnd());
       }
@@ -164,19 +169,15 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
         cas.addFsToIndexes(newTMB);
       }
     }
-    for (AnnotationFS a : annotationIndex) {
+    for (AnnotationFS a : allAnnotations) {
       if (!a.getType().equals(basicType)) {
-        addAnnotation(a, false, null);
+        addAnnotation(a, null);
       }
     }
     updateIterators(documentAnnotation);
   }
 
   public void addAnnotation(AnnotationFS annotation, RuleMatch creator) {
-    addAnnotation(annotation, false, creator);
-  }
-
-  public void addAnnotation(AnnotationFS annotation, boolean update, RuleMatch creator) {
     Type type = annotation.getType();
     boolean modified = checkSpan(annotation);
     if (modified) {
@@ -218,13 +219,26 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     Entry<Integer, TextMarkerBasic> floorEntry = endAnchors.floorEntry(anchor);
     Entry<Integer, TextMarkerBasic> ceilingEntry = endAnchors.ceilingEntry(anchor);
     if (floorEntry != null && ceilingEntry != null) {
+      TextMarkerBasic toSplit = null;
       TextMarkerBasic floor = floorEntry.getValue();
       TextMarkerBasic ceiling = ceilingEntry.getValue();
-      cas.removeFsFromIndexes(floor);
-      floor.setEnd(anchor);
-      AnnotationFS createAnnotation = cas.createAnnotation(basicType, anchor, ceiling.getBegin());
-      cas.addFsToIndexes(floor);
-      cas.addFsToIndexes(createAnnotation);
+      if (floor.getEnd() > anchor) {
+        toSplit = floor;
+      } else {
+        toSplit = ceiling;
+      }
+      int newEnd = toSplit.getEnd();
+      cas.removeFsFromIndexes(toSplit);
+      toSplit.setEnd(anchor);
+      TextMarkerBasic newTMB = new TextMarkerBasic(getJCas(), anchor, newEnd);
+      cas.addFsToIndexes(toSplit);
+      cas.addFsToIndexes(newTMB);
+      beginAnchors.put(floor.getBegin(), floor);
+      beginAnchors.put(newTMB.getBegin(), newTMB);
+      beginAnchors.put(ceiling.getBegin(), ceiling);
+      endAnchors.put(floor.getEnd(), floor);
+      endAnchors.put(newTMB.getEnd(), newTMB);
+      endAnchors.put(ceiling.getEnd(), ceiling);
       return true;
     } else {
       // TODO this should never happen! test it and remove the assert!

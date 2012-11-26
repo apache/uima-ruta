@@ -56,7 +56,7 @@ public class StartsWithCondition extends TypeSentiveCondition {
       for (Type t : types) {
         result |= check(annotation, t, stream);
         if (result == true) {
-          break;
+          return new EvaluatedCondition(this, result);
         }
       }
     }
