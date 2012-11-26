@@ -317,7 +317,11 @@ public class ConditionVerbalizer {
       }
     } else if (condition instanceof PartOfNeqCondition) {
       PartOfNeqCondition c = (PartOfNeqCondition) condition;
-      return "PARTOFNEQ(" + verbalizer.verbalize(c.getType()) + ")";
+      if (c.getType() == null) {
+        return "PARTOFNEQ(" + verbalizer.verbalize(c.getList()) + ")";
+      } else {
+        return "PARTOFNEQ(" + verbalizer.verbalize(c.getType()) + ")";
+      }
     } else if (condition instanceof PositionCondition) {
       PositionCondition c = (PositionCondition) condition;
       String relative = "";
@@ -379,27 +383,52 @@ public class ConditionVerbalizer {
     } else if (condition instanceof IsCondition) {
       IsCondition c = (IsCondition) condition;
       String name = "IS(";
-      String type = verbalizer.verbalize(c.getType());
+      String type = "";
+      if(c.getType()!= null) {
+        type = verbalizer.verbalize(c.getType());
+      } else {
+        type = verbalizer.verbalize(c.getList());
+      }
       return name + type + ")";
     } else if (condition instanceof BeforeCondition) {
       BeforeCondition c = (BeforeCondition) condition;
       String name = "BEFORE(";
-      String type = verbalizer.verbalize(c.getType());
+      String type = "";
+      if(c.getType()!= null) {
+        type = verbalizer.verbalize(c.getType());
+      } else {
+        type = verbalizer.verbalize(c.getList());
+      }
       return name + type + ")";
     } else if (condition instanceof AfterCondition) {
       AfterCondition c = (AfterCondition) condition;
       String name = "AFTER(";
-      String type = verbalizer.verbalize(c.getType());
+      String type = "";
+      if(c.getType()!= null) {
+        type = verbalizer.verbalize(c.getType());
+      } else {
+        type = verbalizer.verbalize(c.getList());
+      }
       return name + type + ")";
     } else if (condition instanceof StartsWithCondition) {
       StartsWithCondition c = (StartsWithCondition) condition;
       String name = "STARTSWITH(";
-      String type = verbalizer.verbalize(c.getType());
-      return name + type + ")";
+      String arg = "";
+      if(c.getType() != null) {
+        arg =  verbalizer.verbalize(c.getType());
+      } else {
+        arg = verbalizer.verbalize(c.getList());
+      }
+      return name + arg + ")";
     } else if (condition instanceof EndsWithCondition) {
       EndsWithCondition c = (EndsWithCondition) condition;
       String name = "ENDSWITH(";
-      String type = verbalizer.verbalize(c.getType());
+      String type = "";
+      if(c.getType()!= null) {
+        type = verbalizer.verbalize(c.getType());
+      } else {
+        type = verbalizer.verbalize(c.getList());
+      }
       return name + type + ")";
     } else if (condition instanceof SizeCondition) {
       SizeCondition c = (SizeCondition) condition;
