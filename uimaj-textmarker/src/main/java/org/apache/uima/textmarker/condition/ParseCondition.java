@@ -57,7 +57,7 @@ public class ParseCondition extends AbstractTextMarkerCondition {
         env.setVariableValue(var, text);
         return new EvaluatedCondition(this, true);
       } else if (Boolean.class.equals(type)) {
-        env.setVariableValue(var, !"".equals(text));
+        env.setVariableValue(var, Boolean.valueOf(text));
         return new EvaluatedCondition(this, true);
       } else if (Type.class.equals(type)) {
         Type value = stream.getCas().getTypeSystem().getType(text);
