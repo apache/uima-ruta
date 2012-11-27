@@ -573,8 +573,12 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public TextMarkerBasic getFirstBasicOfAll() {
+    if (basics.isEmpty()) {
+      return null;
+    }
     return basics.first();
   }
+
 
   public Type getDocumentAnnotationType() {
     return documentAnnotationType;
