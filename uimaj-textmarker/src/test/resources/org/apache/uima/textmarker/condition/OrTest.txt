@@ -1,0 +1,4 @@
+The OR Test:
+
+Use the OR condition to annotate something that has to meet
+at least one out of many conditions.

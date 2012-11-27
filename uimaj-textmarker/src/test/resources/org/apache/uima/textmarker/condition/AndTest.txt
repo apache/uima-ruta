@@ -1,0 +1,4 @@
+This is a malformed text.
+some sentences do not start with a capital word.
+But others have many of them.
+Like this one that is written to test the AND Condition of TextMarker.

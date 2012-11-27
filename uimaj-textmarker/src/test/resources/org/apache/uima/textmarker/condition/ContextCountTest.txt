@@ -1,0 +1,3 @@
+A single sentence.
+And here is another one.
+Testing the CONTEXTCOUNT condition of TextMarker.
