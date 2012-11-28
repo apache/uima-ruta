@@ -60,17 +60,15 @@ public class ParseTest {
     
     t = TextMarkerTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
+    assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals("2,1", iterator.next().getCoveredText());
-    assertEquals("2.3", iterator.next().getCoveredText());
     
     t = TextMarkerTestUtils.getTestType(cas, 3);
     ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
+    assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals("true", iterator.next().getCoveredText());
-    assertEquals("false", iterator.next().getCoveredText());
     
     t = TextMarkerTestUtils.getTestType(cas, 4);
     ai = cas.getAnnotationIndex(t);
