@@ -85,22 +85,7 @@ SPACE=[ \t]
                 return t;
     }
     
-    \<[/][A-Za-z][A-Za-z0-9]*[^>]*> {
-                MARKUP t = new MARKUP(cas);
-                t.setBegin(yychar);
-                t.setEnd(yychar + yytext().length());
-                
-                return t;
-    }
-                    
-    \<[A-Za-z][A-Za-z0-9]*[^>]*> {
-                MARKUP t = new MARKUP(cas);
-                t.setBegin(yychar);
-                t.setEnd(yychar + yytext().length());
-                
-                return t;
-    }
-                
+                                       
     \xA0|&nbsp;|&NBSP; {
                 NBSP t = new NBSP(cas);
                 t.setBegin(yychar);

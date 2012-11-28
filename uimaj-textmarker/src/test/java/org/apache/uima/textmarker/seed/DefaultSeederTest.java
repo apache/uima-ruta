@@ -58,8 +58,9 @@ public class DefaultSeederTest {
     Type type = seeder.seed(text, cas);
     assertEquals("org.apache.uima.textmarker.type.TokenSeed", type.getName());
     AnnotationIndex<AnnotationFS> annotationIndex = cas.getAnnotationIndex(type);
-    assertEquals(26, annotationIndex.size());
+    assertEquals(40, annotationIndex.size());
     FSIterator<AnnotationFS> iterator = annotationIndex.iterator();
+
     assertEquals("CW", iterator.next().getType().getShortName());
     assertEquals("SPACE", iterator.next().getType().getShortName());
     assertEquals("SW", iterator.next().getType().getShortName());
@@ -79,6 +80,7 @@ public class DefaultSeederTest {
     assertEquals("SPACE", iterator.next().getType().getShortName());
     assertEquals("SPECIAL", iterator.next().getType().getShortName());
     assertEquals("SW", iterator.next().getType().getShortName());
+    assertEquals("SPACE", iterator.next().getType().getShortName());
     assertEquals("EXCLAMATION", iterator.next().getType().getShortName());
     assertEquals("QUESTION", iterator.next().getType().getShortName());
     assertEquals("PERIOD", iterator.next().getType().getShortName());
@@ -100,4 +102,6 @@ public class DefaultSeederTest {
     assertEquals("MARKUP", iterator.next().getType().getShortName());
     assertEquals("BREAK", iterator.next().getType().getShortName());
   }
+  
+  
 }
