@@ -177,6 +177,13 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     updateIterators(documentAnnotation);
   }
 
+  public void addAnnotation(AnnotationFS annotation, boolean addToIndex, RuleMatch creator) {
+    if(addToIndex) {
+        cas.addFsToIndexes(annotation);
+    }
+    addAnnotation(annotation, creator);
+  } 
+  
   public void addAnnotation(AnnotationFS annotation, RuleMatch creator) {
     Type type = annotation.getType();
     boolean modified = checkSpan(annotation);

@@ -96,7 +96,7 @@ public class ExecAction extends CallAction {
         for (Entry<TextMarkerBasic, Collection<AnnotationFS>> entry : entrySet) {
           for (AnnotationFS each : entry.getValue()) {
             stream.removeAnnotation(each);
-            stream.addAnnotation(each, match);
+            stream.addAnnotation(each, true, match); 
           }
         }
       }
