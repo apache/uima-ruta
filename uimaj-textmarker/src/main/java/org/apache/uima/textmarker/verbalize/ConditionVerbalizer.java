@@ -194,7 +194,7 @@ public class ConditionVerbalizer {
         return name + type + min + max + var + ")";
       } else {
         String name = "COUNT(";
-        String list = verbalizer.verbalize(c.getList());
+        String list = verbalizer.verbalize(c.getArgList());
         String arg = verbalizer.verbalize(c.getArg());
         NumberExpression minE = c.getMin();
         String min = verbalizeMin(minE, Integer.MIN_VALUE);

@@ -64,10 +64,8 @@ public class CountTest {
     
     t = TextMarkerTestUtils.getTestType(cas, 3);
     ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
+    assertEquals(1, ai.size());
     iterator = ai.iterator();
-    assertEquals("A single sentence", iterator.next().getCoveredText());
-    assertEquals("And here is another one", iterator.next().getCoveredText());
     assertEquals("Testing the COUNT condition of TextMarker", iterator.next().getCoveredText());
     
   }

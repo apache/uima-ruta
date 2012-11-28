@@ -117,6 +117,9 @@ public class CountCondition extends TypeSentiveCondition {
           count++;
         }
       }
+      if (var != null) {
+        element.getParent().getEnvironment().setVariableValue(var, count);
+      }
       boolean value = count >= min.getIntegerValue(element.getParent())
               && count <= max.getIntegerValue(element.getParent());
       return new EvaluatedCondition(this, value);
