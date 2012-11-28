@@ -19,8 +19,11 @@
 
 package org.apache.uima.textmarker.condition;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
@@ -50,32 +53,56 @@ public class ContextCountCondition extends TypeSentiveCondition {
   @Override
   public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
           TextMarkerStream stream, InferenceCrowd crowd) {
-    List<TextMarkerBasic> annotationsInWindow = null;
-    if (stream.getDocumentAnnotation().getType().equals(type.getType(element.getParent()))) {
-      annotationsInWindow = stream.getBasicsInWindow(stream.getDocumentAnnotation());
-    } else {
-      annotationsInWindow = stream.getAnnotationsOverlappingWindow(annotation);
+    Type contextType = type.getType(element.getParent());
+    stream.moveToFirst();
+    List<AnnotationFS> visibleContexts = new ArrayList<AnnotationFS>();
+    while (stream.isValid()) {
+      TextMarkerBasic each = (TextMarkerBasic) stream.get();
+      if (each.beginsWith(contextType)) {
+        visibleContexts.addAll(each.getBeginAnchors(contextType));
+      }
+      stream.moveToNext();
     }
-    int counter = 0;
-    int count = 0;
-    for (TextMarkerBasic eachBasic : annotationsInWindow) {
-      if (eachBasic.beginsWith(annotation.getType())
-              || stream.getCas().getTypeSystem()
-                      .subsumes(annotation.getType(), eachBasic.getType())) {
-        counter++;
-        if (eachBasic.equals(annotation)) {
-          count = counter;
-          break;
-        }
+    List<AnnotationFS> overlappingContexts = new ArrayList<AnnotationFS>();
+    for (AnnotationFS eachContext : visibleContexts) {
+      if (eachContext.getBegin() <= annotation.getBegin()
+              && eachContext.getEnd() >= annotation.getEnd()) {
+        overlappingContexts.add(eachContext);
       }
     }
 
-    if (var != null) {
-      element.getParent().getEnvironment().setVariableValue(var, count);
+    boolean result = false;
+    for (AnnotationFS eachContext : overlappingContexts) {
+      int index = 0;
+      int counter = 0;
+      List<TextMarkerBasic> basicsInWindow = stream.getBasicsInWindow(eachContext);
+      for (TextMarkerBasic eachBasic : basicsInWindow) {
+        Set<AnnotationFS> beginAnchors = eachBasic.getBeginAnchors(annotation.getType());
+        if (beginAnchors != null) {
+          for (AnnotationFS each : beginAnchors) {
+            counter++;
+            if (each.getBegin() == annotation.getBegin()
+                    && each.getEnd() == annotation.getEnd()
+                    && (each.getType().equals(annotation.getType()) || stream.getCas()
+                            .getTypeSystem().subsumes(annotation.getType(), each.getType()))) {
+              index = counter;
+            }
+          }
+        }
+      }
+
+      if (var != null) {
+        element.getParent().getEnvironment().setVariableValue(var, index);
+      }
+      boolean value = index >= min.getIntegerValue(element.getParent())
+              && index <= max.getIntegerValue(element.getParent());
+      result |= value;
+      if (result) {
+        break;
+      }
     }
-    boolean value = count >= min.getIntegerValue(element.getParent())
-            && count <= max.getIntegerValue(element.getParent());
-    return new EvaluatedCondition(this, value);
+
+    return new EvaluatedCondition(this, result);
   }
 
   public NumberExpression getMin() {

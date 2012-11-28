@@ -58,11 +58,12 @@ public class ContextCountTest {
     
     t = TextMarkerTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
+    assertEquals(4, ai.size());
     iterator = ai.iterator();
     assertEquals("A", iterator.next().getCoveredText());
     assertEquals("And", iterator.next().getCoveredText());
     assertEquals("Testing", iterator.next().getCoveredText());
+    assertEquals("Text", iterator.next().getCoveredText());
     
     t = TextMarkerTestUtils.getTestType(cas, 3);
     ai = cas.getAnnotationIndex(t);
@@ -71,6 +72,6 @@ public class ContextCountTest {
     assertEquals("A single sentence." +
             "And here is another one." +
             "Testing the CONTEXTCOUNT condition of TextMarker.",
-            iterator.next().getCoveredText());
+            iterator.next().getCoveredText().replaceAll("[\n\r]", ""));
   }
 }
