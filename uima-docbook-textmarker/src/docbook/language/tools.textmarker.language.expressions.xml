@@ -6,91 +6,91 @@
 %uimaents;
 ]>
 <!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
-	license agreements. See the NOTICE file distributed with this work for additional 
-	information regarding copyright ownership. The ASF licenses this file to 
-	you under the Apache License, Version 2.0 (the "License"); you may not use 
-	this file except in compliance with the License. You may obtain a copy of 
-	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
-	by applicable law or agreed to in writing, software distributed under the 
-	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
-	OF ANY KIND, either express or implied. See the License for the specific 
-	language governing permissions and limitations under the License. -->
+  license agreements. See the NOTICE file distributed with this work for additional 
+  information regarding copyright ownership. The ASF licenses this file to 
+  you under the Apache License, Version 2.0 (the "License"); you may not use 
+  this file except in compliance with the License. You may obtain a copy of 
+  the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+  by applicable law or agreed to in writing, software distributed under the 
+  License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+  OF ANY KIND, either express or implied. See the License for the specific 
+  language governing permissions and limitations under the License. -->
 
 <section id="ugr.tools.tm.language.expressions">
-	<title>Expressions</title>
-	<para>
-		TexMarker provides five different kinds of expressions. These are
-		type expressions, number expressions, string expressions and
-		boolean expressions and list expressions.
-	</para>
-	<section>
-		<title>
-			<emphasis role="bold">Definition:</emphasis>
-		</title>
-		<para>
+  <title>Expressions</title>
+  <para>
+    TexMarker provides five different kinds of expressions. These are
+    type expressions, number expressions, string expressions and
+    boolean expressions and list expressions.
+  </para>
+  <section>
+    <title>
+      <emphasis role="bold">Definition:</emphasis>
+    </title>
+    <para>
 <programlisting><![CDATA[
 TextmarkerExpression  ->   TypeExpression | NumberExpression | 
                            StringExpression | BooleanExpression
                            | ListExpression
 ]]></programlisting>
-		</para>
-	</section>
+    </para>
+  </section>
 
-	<section id="ugr.tools.tm.language.expressions.type">
-		<title>Type Expressions</title>
-		<para>
-			TextMarker provides two kinds of type expressions.
-			<orderedlist numeration="arabic">
-				<listitem>
-					Declared annotation types (see
-					<xref linkend='ugr.tools.tm.language.declarations.type' />
-					).
-				</listitem>
-				<listitem>
-					Type variables
-					(see
-					<xref linkend='ugr.tools.tm.language.declarations.variable' />
-					)
-				</listitem>
-			</orderedlist>
-			<section>
-				<title>
-					<emphasis role="bold">Definition:</emphasis>
-				</title>
-				<para>
+  <section id="ugr.tools.tm.language.expressions.type">
+    <title>Type Expressions</title>
+    <para>
+      TextMarker provides two kinds of type expressions.
+      <orderedlist numeration="arabic">
+        <listitem>
+          Declared annotation types (see
+          <xref linkend='ugr.tools.tm.language.declarations.type' />
+          ).
+        </listitem>
+        <listitem>
+          Type variables
+          (see
+          <xref linkend='ugr.tools.tm.language.declarations.variable' />
+          )
+        </listitem>
+      </orderedlist>
+      <section>
+        <title>
+          <emphasis role="bold">Definition:</emphasis>
+        </title>
+        <para>
 <programlisting><![CDATA[
 TypeExpression       ->  AnnotationType | TypeVariable
 ]]></programlisting>
-				</para>
-			</section>
-			<section>
-				<title>
-					<emphasis role="bold">Example:</emphasis>
-				</title>
-				<para>
-					<programlisting><![CDATA[DECLARE Author;	// Author defines a type, therefore it is a type expression
-TYPE typeVar;	// type variable typeVar is a type expression 
+        </para>
+      </section>
+      <section>
+        <title>
+          <emphasis role="bold">Example:</emphasis>
+        </title>
+        <para>
+          <programlisting><![CDATA[DECLARE Author;  // Author defines a type, therefore it is a type expression
+TYPE typeVar;  // type variable typeVar is a type expression 
 Document{->ASSIGN(typeVar, Author)};]]></programlisting>
-				</para>
-			</section>
-		</para>
-	</section>
+        </para>
+      </section>
+    </para>
+  </section>
 
-	<section id="ugr.tools.tm.language.expressions.number">
-		<title>Number Expressions</title>
-		<para>
-			TextMarker provides several possibilities to define number
-			expressions. As expected, every number expression evaluates to a
-			number. TextMarker supports integer and floating-point numbers. A
-			floating-point number can be in single or in double precision. To get
-			a complete overview, have a look at the following syntax definition
-			of number expressions.
-			<section>
-				<title>
-					<emphasis role="bold">Definition:</emphasis>
-				</title>
-				<para>
-					<programlisting><![CDATA[
+  <section id="ugr.tools.tm.language.expressions.number">
+    <title>Number Expressions</title>
+    <para>
+      TextMarker provides several possibilities to define number
+      expressions. As expected, every number expression evaluates to a
+      number. TextMarker supports integer and floating-point numbers. A
+      floating-point number can be in single or in double precision. To get
+      a complete overview, have a look at the following syntax definition
+      of number expressions.
+      <section>
+        <title>
+          <emphasis role="bold">Definition:</emphasis>
+        </title>
+        <para>
+          <programlisting><![CDATA[
 NumberExpression         -> AdditiveExpression
 AdditiveExpression       -> MultiplicativeExpression ( ( "+" | "-" ) 
                             MultiplicativeExpression )*
@@ -106,176 +106,176 @@ FloatingPointLiteral  -> Digit+ '.' Digit* Exponent? FloatTypeSuffix?
                          |   '.' Digit+ Exponent? FloatTypeSuffix?
                          |   Digit+ Exponent FloatTypeSuffix?
                          |   Digit+ Exponent? FloatTypeSuffix
-FloatTypeSuffix	      ->	('f'|'F'|'d'|'D')
+FloatTypeSuffix        ->  ('f'|'F'|'d'|'D')
 Exponent              -> ('e'|'E') ('+'|'-')? Digit+
 Digit                 -> ('0'..'9') ]]></programlisting>
-				</para>
-			</section>
-			<para>
-				For more information on number variables, see
-				<xref linkend='ugr.tools.tm.language.declarations.variable' />
-				.
-			</para>
-			<section>
-				<title>
-					<emphasis role="bold">Examples:</emphasis>
-				</title>
-				<para>
-					<programlisting><![CDATA[98 		// a integer number literal
-104L 	// a integer number literal
-170.02 	// a floating-point number literal
+        </para>
+      </section>
+      <para>
+        For more information on number variables, see
+        <xref linkend='ugr.tools.tm.language.declarations.variable' />
+        .
+      </para>
+      <section>
+        <title>
+          <emphasis role="bold">Examples:</emphasis>
+        </title>
+        <para>
+          <programlisting><![CDATA[98     // a integer number literal
+104L   // a integer number literal
+170.02   // a floating-point number literal
 1.0845D // a floating-point number literal in double precision]]></programlisting>
-				</para>
-				<para>
-					<programlisting><![CDATA[INT intVar1;
+        </para>
+        <para>
+          <programlisting><![CDATA[INT intVar1;
 INT intVar2;
 ...
 Document{->ASSIGN(intVar1, 12 * intVar1 - SIN(intVar2))};]]></programlisting>
-				</para>
-			</section>
-		</para>
-	</section>
+        </para>
+      </section>
+    </para>
+  </section>
 
-	<section id="ugr.tools.tm.language.expressions.string">
-		<title>String Expressions</title>
-		<para>
-			There are two kinds of string expressions in TextMarker.
-			<orderedlist numeration="arabic">
-				<listitem>
-					String literals: String literals are defined by any sequence of
-					characters within quotation marks.
-				</listitem>
-				<listitem>
-					String variables (see
-					<xref linkend='ugr.tools.tm.language.declarations.variable' />
-					)
-				</listitem>
-			</orderedlist>
-			<section>
-				<title>
-					<emphasis role="bold">Definition:</emphasis>
-				</title>
-				<para>
-					<programlisting><![CDATA[StringExpression 	-> 	SimpleStringExpression
-SimpleStringExpression	->	StringLiteral | StringVariable]]></programlisting>
-				</para>
-			</section>
-			<section>
-				<title>
-					<emphasis role="bold">Example:</emphasis>
-				</title>
-				<para>
-					<programlisting><![CDATA[STRING strVar; // strVar is a string expression
+  <section id="ugr.tools.tm.language.expressions.string">
+    <title>String Expressions</title>
+    <para>
+      There are two kinds of string expressions in TextMarker.
+      <orderedlist numeration="arabic">
+        <listitem>
+          String literals: String literals are defined by any sequence of
+          characters within quotation marks.
+        </listitem>
+        <listitem>
+          String variables (see
+          <xref linkend='ugr.tools.tm.language.declarations.variable' />
+          )
+        </listitem>
+      </orderedlist>
+      <section>
+        <title>
+          <emphasis role="bold">Definition:</emphasis>
+        </title>
+        <para>
+          <programlisting><![CDATA[StringExpression   ->   SimpleStringExpression
+SimpleStringExpression  ->  StringLiteral | StringVariable]]></programlisting>
+        </para>
+      </section>
+      <section>
+        <title>
+          <emphasis role="bold">Example:</emphasis>
+        </title>
+        <para>
+          <programlisting><![CDATA[STRING strVar; // strVar is a string expression
 Document{->ASSIGN(strVar, "strLiteral")}; // "strLiteral" is a string 
                // expression]]></programlisting>
-				</para>
-			</section>
-		</para>
-	</section>
+        </para>
+      </section>
+    </para>
+  </section>
 
-	<section id="ugr.tools.tm.language.expressions.boolean">
-		<title>Boolean Expressions</title>
-		<para>
-			TextMarker provides several possibilities to define boolean
-			expressions. As expected, every boolean expression evaluates to
-			either
-			true or false. To get a complete overview, have a look at the
-			following syntax definition of boolean expressions.
-			<section>
-				<title>
-					<emphasis role="bold">Definition:</emphasis>
-				</title>
-				<para>
-					<programlisting><![CDATA[BooleanExpression          ->  ComposedBooleanExpression 
+  <section id="ugr.tools.tm.language.expressions.boolean">
+    <title>Boolean Expressions</title>
+    <para>
+      TextMarker provides several possibilities to define boolean
+      expressions. As expected, every boolean expression evaluates to
+      either
+      true or false. To get a complete overview, have a look at the
+      following syntax definition of boolean expressions.
+      <section>
+        <title>
+          <emphasis role="bold">Definition:</emphasis>
+        </title>
+        <para>
+          <programlisting><![CDATA[BooleanExpression          ->  ComposedBooleanExpression 
                                | SimpleBooleanExpression
 ComposedBooleanExpression  ->  BooleanCompare | BooleanTypeExpression 
                                | BooleanNumberExpression | BooleanFunction
-SimpleBooleanExpression	   ->  BooleanLiteral | BooleanVariable
+SimpleBooleanExpression     ->  BooleanLiteral | BooleanVariable
 BooleanCompare           ->  SimpleBooleanExpression ( "==" | "!=" ) 
                                BooleanExpression
 BooleanTypeExpression    ->  TypeExpression ( "==" | "!=" ) TypeExpression
 BooleanNumberExpression  ->  "(" NumberExpression ( "<" | "<=" | ">" 
                                | ">=" | "==" | "!=" ) NumberExpression ")"
-BooleanFunction	  ->	XOR "(" BooleanExpression "," BooleanExpression ")"
+BooleanFunction    ->  XOR "(" BooleanExpression "," BooleanExpression ")"
 BooleanLiteral    ->  "true" | "false"]]></programlisting>
-				</para>
-				<para>
-					Boolean variables are defined in
-					<xref linkend='ugr.tools.tm.language.declarations.variable' />
-					.
-				</para>
-			</section>
-			<section>
-				<title>
-					<emphasis role="bold">Examples:</emphasis>
-				</title>
-				<para>
-					<programlisting><![CDATA[Document{->ASSIGN(boolVar, false)};]]></programlisting>
-				</para>
-				<para>
-					The boolean literal 'false' is assigned to boolean variable
-					boolVar.
-				</para>
-				<para>
-					<programlisting><![CDATA[Document{->ASSIGN(boolVar, typeVar == Author)};]]></programlisting>
-				</para>
-				<para>
-					If type variable typeVar represents annotation type Author,
-					the
-					boolean
-					type expression evaluates to true, otherwise it evaluates
-					to
-					false. The result is assigned to boolean variable boolVar.
-				</para>
-				<para>
-					<programlisting><![CDATA[Document{->ASSIGN(boolVar, (intVar == 10))};]]></programlisting>
-				</para>
-				<para>
-					This rule shows a boolean number expression. If the value in
-					variable intVar is equal to 10, the boolean number expression
-					evaluates to true, otherwise it evaluates to
-					false. The result is
-					assigned to boolean variable boolVar. The brackets
-					surrounding the number expression are necessary.
-				</para>
-				<para>
-					<programlisting><![CDATA[Document{->ASSIGN(booleanVar1, booleanVar2 == (10 > intVar))};]]></programlisting>
-				</para>
-				<para>
-					This rule shows a more complex boolean expression. If the
-					value
-					in
-					variable intVar is equal to 10, the boolean number
-					expression
-					evaluates to true, otherwise it evaluates to
-					false. The
-					result of
-					this
-					evaluation is compared to booleanVar2. The end result
-					is
-					assigned to
-					boolean variable boolVar1. Realize that the syntax
-					definition defines
-					exactly this order. It is not possible to have
-					the
-					boolean number
-					expression on the left side of the complex number
-					expression.
-				</para>
-			</section>
-		</para>
-	</section>
-	
+        </para>
+        <para>
+          Boolean variables are defined in
+          <xref linkend='ugr.tools.tm.language.declarations.variable' />
+          .
+        </para>
+      </section>
+      <section>
+        <title>
+          <emphasis role="bold">Examples:</emphasis>
+        </title>
+        <para>
+          <programlisting><![CDATA[Document{->ASSIGN(boolVar, false)};]]></programlisting>
+        </para>
+        <para>
+          The boolean literal 'false' is assigned to boolean variable
+          boolVar.
+        </para>
+        <para>
+          <programlisting><![CDATA[Document{->ASSIGN(boolVar, typeVar == Author)};]]></programlisting>
+        </para>
+        <para>
+          If type variable typeVar represents annotation type Author,
+          the
+          boolean
+          type expression evaluates to true, otherwise it evaluates
+          to
+          false. The result is assigned to boolean variable boolVar.
+        </para>
+        <para>
+          <programlisting><![CDATA[Document{->ASSIGN(boolVar, (intVar == 10))};]]></programlisting>
+        </para>
+        <para>
+          This rule shows a boolean number expression. If the value in
+          variable intVar is equal to 10, the boolean number expression
+          evaluates to true, otherwise it evaluates to
+          false. The result is
+          assigned to boolean variable boolVar. The brackets
+          surrounding the number expression are necessary.
+        </para>
+        <para>
+          <programlisting><![CDATA[Document{->ASSIGN(booleanVar1, booleanVar2 == (10 > intVar))};]]></programlisting>
+        </para>
+        <para>
+          This rule shows a more complex boolean expression. If the
+          value
+          in
+          variable intVar is equal to 10, the boolean number
+          expression
+          evaluates to true, otherwise it evaluates to
+          false. The
+          result of
+          this
+          evaluation is compared to booleanVar2. The end result
+          is
+          assigned to
+          boolean variable boolVar1. Realize that the syntax
+          definition defines
+          exactly this order. It is not possible to have
+          the
+          boolean number
+          expression on the left side of the complex number
+          expression.
+        </para>
+      </section>
+    </para>
+  </section>
+  
 
 <section id="ugr.tools.tm.language.expressions.lists">
-		<title>List Expressions</title>
-		<para>
-			List expression are a rather simple kind of expression.
-			<section>
-				<title>
-					<emphasis role="bold">Definition:</emphasis>
-				</title>
-				<para>
+    <title>List Expressions</title>
+    <para>
+      List expression are a rather simple kind of expression.
+      <section>
+        <title>
+          <emphasis role="bold">Definition:</emphasis>
+        </title>
+        <para>
 <programlisting><![CDATA[
 ListExpression  ->   WordListExpression | WordTableExpression |
                      TypeListExpression | NumberListExpression |
@@ -288,15 +288,15 @@ NumberListExpression   ->  IntListVariable | FloatListVariable
 StringListExpression   ->  StringListVariable
 BooleanListExpression  ->  BooleanListVariable
 ]]></programlisting>
-		A ResourceLiteral is something
-		like 'folder/file.txt' (Attention: Use single quotes).
-				</para>
-				<para>
-					List variables are defined in
-					<xref linkend='ugr.tools.tm.language.declarations.variable' />
-					.
-				</para>
-			</section>
-		</para>
-	</section>
+    A ResourceLiteral is something
+    like 'folder/file.txt' (Attention: Use single quotes).
+        </para>
+        <para>
+          List variables are defined in
+          <xref linkend='ugr.tools.tm.language.declarations.variable' />
+          .
+        </para>
+      </section>
+    </para>
+  </section>
 </section>

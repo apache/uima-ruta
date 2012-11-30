@@ -6,234 +6,234 @@
 %uimaents;
 ]>
 <!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
-	license agreements. See the NOTICE file distributed with this work for additional 
-	information regarding copyright ownership. The ASF licenses this file to 
-	you under the Apache License, Version 2.0 (the "License"); you may not use 
-	this file except in compliance with the License. You may obtain a copy of 
-	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
-	by applicable law or agreed to in writing, software distributed under the 
-	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
-	OF ANY KIND, either express or implied. See the License for the specific 
-	language governing permissions and limitations under the License. -->
+  license agreements. See the NOTICE file distributed with this work for additional 
+  information regarding copyright ownership. The ASF licenses this file to 
+  you under the Apache License, Version 2.0 (the "License"); you may not use 
+  this file except in compliance with the License. You may obtain a copy of 
+  the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+  by applicable law or agreed to in writing, software distributed under the 
+  License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+  OF ANY KIND, either express or implied. See the License for the specific 
+  language governing permissions and limitations under the License. -->
 
 <section id="ugr.tools.tm.language.seeding">
-	<title>Basic annotations and tokens</title>
-	<para>
-		The TextMarker system uses a JFlex lexer to initially create a
-		seed of
-		basic token annotations. These tokens build a hierarchy
-		which is shown
-		in
-		<xref linkend='figure.ugr.tools.tm.language.seeding.basic_token' />
-		. The
-		<quote>ALL</quote>
-		(green) annotation is the root of the hierarchy. ALL and the red
-		marked annotation types are abstract. This means that they are not
-		actually
-		created by the lexer. An overview of these abstract types can
-		be found in
-		<xref linkend='table.ugr.tools.tm.language.seeding.basic_token.abstract' />
-		. The leafs of the hierarchy (blue) are created by the lexer. Each
-		leaf is
-		an own type but also inherits the types of the abstract
-		annotation types further up in the hierarchy. The leaf types are
-		described in
-		more detail in
-		<xref linkend='table.ugr.tools.tm.language.seeding.basic_token.created' />
-		Each text unit within an input
-		document belongs to exactly one of these
-		annotation types.
-	</para>
-	<para>
-		<figure id="figure.ugr.tools.tm.language.seeding.basic_token">
-			<title>Basic token hierarchy
-			</title>
-			<mediaobject>
-				<imageobject role="html">
-					<imagedata width="576px" format="PNG" align="center"
-						fileref="&imgroot;basic_token/basic_token.png" />
-				</imageobject>
-				<imageobject role="fo">
-					<imagedata width="5.5in" format="PNG" align="center"
-						fileref="&imgroot;basic_token/basic_token.png" />
-				</imageobject>
-				<textobject>
-					<phrase>
-						Basic token hierarchy.
-					</phrase>
-				</textobject>
-			</mediaobject>
-		</figure>
-	</para>
-	<para>
-		<table id="table.ugr.tools.tm.language.seeding.basic_token.abstract"
-			frame="all">
-			<title>Abstract annotations</title>
-			<tgroup cols="3" colsep="1" rowsep="1">
-				<colspec colname="c1" colwidth="1*" />
-				<colspec colname="c2" colwidth="1*" />
-				<colspec colname="c3" colwidth="3*" />
-				<thead>
-					<row>
-						<entry align="center">Annotation</entry>
-						<entry align="center">Parent</entry>
-						<entry align="center">Description</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry>ALL</entry>
-						<entry>-</entry>
-						<entry>parent type of all tokens</entry>
-					</row>
-					<row>
-						<entry>ANY</entry>
-						<entry>ALL</entry>
-						<entry>all token but markup</entry>
-					</row>
-					<row>
-						<entry>W</entry>
-						<entry>ANY</entry>
-						<entry>all kinds of words</entry>
-					</row>
-					<row>
-						<entry>PM</entry>
-						<entry>ANY</entry>
-						<entry>all kinds of punctuation marks</entry>
-					</row>
-					<row>
-						<entry>WS</entry>
-						<entry>ANY</entry>
-						<entry>all kinds of white spaces</entry>
-					</row>
-					<row>
-						<entry>SENTENCEEND</entry>
-						<entry>PM</entry>
-						<entry>all kinds of punctuation marks that indicate the end of a
-							sentence
-						</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-	</para>
-	<para>
-		<table id="table.ugr.tools.tm.language.seeding.basic_token.created"
-			frame="all">
-			<title>Annotations created by lexer</title>
-			<tgroup cols="4" colsep="1" rowsep="1">
-				<colspec colname="c1" colwidth="1*" />
-				<colspec colname="c2" colwidth="1*" />
-				<colspec colname="c3" colwidth="1*" />
-				<colspec colname="c4" colwidth="1*" />
+  <title>Basic annotations and tokens</title>
+  <para>
+    The TextMarker system uses a JFlex lexer to initially create a
+    seed of
+    basic token annotations. These tokens build a hierarchy
+    which is shown
+    in
+    <xref linkend='figure.ugr.tools.tm.language.seeding.basic_token' />
+    . The
+    <quote>ALL</quote>
+    (green) annotation is the root of the hierarchy. ALL and the red
+    marked annotation types are abstract. This means that they are not
+    actually
+    created by the lexer. An overview of these abstract types can
+    be found in
+    <xref linkend='table.ugr.tools.tm.language.seeding.basic_token.abstract' />
+    . The leafs of the hierarchy (blue) are created by the lexer. Each
+    leaf is
+    an own type but also inherits the types of the abstract
+    annotation types further up in the hierarchy. The leaf types are
+    described in
+    more detail in
+    <xref linkend='table.ugr.tools.tm.language.seeding.basic_token.created' />
+    Each text unit within an input
+    document belongs to exactly one of these
+    annotation types.
+  </para>
+  <para>
+    <figure id="figure.ugr.tools.tm.language.seeding.basic_token">
+      <title>Basic token hierarchy
+      </title>
+      <mediaobject>
+        <imageobject role="html">
+          <imagedata width="576px" format="PNG" align="center"
+            fileref="&imgroot;basic_token/basic_token.png" />
+        </imageobject>
+        <imageobject role="fo">
+          <imagedata width="5.5in" format="PNG" align="center"
+            fileref="&imgroot;basic_token/basic_token.png" />
+        </imageobject>
+        <textobject>
+          <phrase>
+            Basic token hierarchy.
+          </phrase>
+        </textobject>
+      </mediaobject>
+    </figure>
+  </para>
+  <para>
+    <table id="table.ugr.tools.tm.language.seeding.basic_token.abstract"
+      frame="all">
+      <title>Abstract annotations</title>
+      <tgroup cols="3" colsep="1" rowsep="1">
+        <colspec colname="c1" colwidth="1*" />
+        <colspec colname="c2" colwidth="1*" />
+        <colspec colname="c3" colwidth="3*" />
+        <thead>
+          <row>
+            <entry align="center">Annotation</entry>
+            <entry align="center">Parent</entry>
+            <entry align="center">Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>ALL</entry>
+            <entry>-</entry>
+            <entry>parent type of all tokens</entry>
+          </row>
+          <row>
+            <entry>ANY</entry>
+            <entry>ALL</entry>
+            <entry>all token but markup</entry>
+          </row>
+          <row>
+            <entry>W</entry>
+            <entry>ANY</entry>
+            <entry>all kinds of words</entry>
+          </row>
+          <row>
+            <entry>PM</entry>
+            <entry>ANY</entry>
+            <entry>all kinds of punctuation marks</entry>
+          </row>
+          <row>
+            <entry>WS</entry>
+            <entry>ANY</entry>
+            <entry>all kinds of white spaces</entry>
+          </row>
+          <row>
+            <entry>SENTENCEEND</entry>
+            <entry>PM</entry>
+            <entry>all kinds of punctuation marks that indicate the end of a
+              sentence
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </para>
+  <para>
+    <table id="table.ugr.tools.tm.language.seeding.basic_token.created"
+      frame="all">
+      <title>Annotations created by lexer</title>
+      <tgroup cols="4" colsep="1" rowsep="1">
+        <colspec colname="c1" colwidth="1*" />
+        <colspec colname="c2" colwidth="1*" />
+        <colspec colname="c3" colwidth="1*" />
+        <colspec colname="c4" colwidth="1*" />
 
-				<thead>
-					<row>
-						<entry align="center">Annotation</entry>
-						<entry align="center">Parent</entry>
-						<entry align="center">Description</entry>
-						<entry align="center">Example</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry>MARKUP</entry>
-						<entry>ALL</entry>
-						<entry>HTML and XML elements</entry>
-						<entry><![CDATA[<p class="Headline">]]></entry>
-					</row>
-					<row>
-						<entry>NBSP</entry>
-						<entry>ANY</entry>
-						<entry>non breaking space</entry>
-						<entry><![CDATA[&nbsp;]]></entry>
-					</row>
-					<row>
-						<entry>AMP</entry>
-						<entry>ANY</entry>
-						<entry>ampersant expression</entry>
-						<entry><![CDATA[ä]]></entry>
-					</row>
-					<row>
-						<entry>BREAK</entry>
-						<entry>WS</entry>
-						<entry>line break</entry>
-						<entry><![CDATA[\n]]></entry>
-					</row>
-					<row>
-						<entry>SPACE</entry>
-						<entry>WS</entry>
-						<entry>spaces</entry>
-						<entry><![CDATA[" "]]></entry>
-					</row>
-					<row>
-						<entry>COLON</entry>
-						<entry>PM</entry>
-						<entry>colon</entry>
-						<entry><![CDATA[:]]></entry>
-					</row>
-					<row>
-						<entry>COMMA</entry>
-						<entry>PM</entry>
-						<entry>comma</entry>
-						<entry><![CDATA[,]]></entry>
-					</row>
-					<row>
-						<entry>PERIOD</entry>
-						<entry>SENTENCEEND</entry>
-						<entry>period</entry>
-						<entry><![CDATA[.]]></entry>
-					</row>
-					<row>
-						<entry>EXCLAMATION</entry>
-						<entry>SENTENCEEND</entry>
-						<entry>exclamation mark</entry>
-						<entry><![CDATA[!]]></entry>
-					</row>
-					<row>
-						<entry>SEMICOLON</entry>
-						<entry>PM</entry>
-						<entry>semicolon</entry>
-						<entry><![CDATA[;]]></entry>
-					</row>
-					<row>
-						<entry>QUESTION</entry>
-						<entry>SENTENCEEND</entry>
-						<entry>question mark</entry>
-						<entry><![CDATA[?]]></entry>
-					</row>
-					<row>
-						<entry>SW</entry>
-						<entry>W</entry>
-						<entry>lower case work</entry>
-						<entry><![CDATA[annotation]]></entry>
-					</row>
-					<row>
-						<entry>CW</entry>
-						<entry>W</entry>
-						<entry>work starting with one capitalized letter</entry>
-						<entry><![CDATA[Annotation]]></entry>
-					</row>
-					<row>
-						<entry>CAP</entry>
-						<entry>W</entry>
-						<entry>word only containing capitalized letters</entry>
-						<entry><![CDATA[ANNOTATION]]></entry>
-					</row>
-					<row>
-						<entry>NUM</entry>
-						<entry>ANY</entry>
-						<entry>sequence of digits</entry>
-						<entry><![CDATA[0123]]></entry>
-					</row>
-					<row>
-						<entry>SPECIAL</entry>
-						<entry>ANY</entry>
-						<entry>all other tokens and symbols</entry>
-						<entry><![CDATA[/]]></entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-	</para>
+        <thead>
+          <row>
+            <entry align="center">Annotation</entry>
+            <entry align="center">Parent</entry>
+            <entry align="center">Description</entry>
+            <entry align="center">Example</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>MARKUP</entry>
+            <entry>ALL</entry>
+            <entry>HTML and XML elements</entry>
+            <entry><![CDATA[<p class="Headline">]]></entry>
+          </row>
+          <row>
+            <entry>NBSP</entry>
+            <entry>ANY</entry>
+            <entry>non breaking space</entry>
+            <entry><![CDATA[&nbsp;]]></entry>
+          </row>
+          <row>
+            <entry>AMP</entry>
+            <entry>ANY</entry>
+            <entry>ampersant expression</entry>
+            <entry><![CDATA[ä]]></entry>
+          </row>
+          <row>
+            <entry>BREAK</entry>
+            <entry>WS</entry>
+            <entry>line break</entry>
+            <entry><![CDATA[\n]]></entry>
+          </row>
+          <row>
+            <entry>SPACE</entry>
+            <entry>WS</entry>
+            <entry>spaces</entry>
+            <entry><![CDATA[" "]]></entry>
+          </row>
+          <row>
+            <entry>COLON</entry>
+            <entry>PM</entry>
+            <entry>colon</entry>
+            <entry><![CDATA[:]]></entry>
+          </row>
+          <row>
+            <entry>COMMA</entry>
+            <entry>PM</entry>
+            <entry>comma</entry>
+            <entry><![CDATA[,]]></entry>
+          </row>
+          <row>
+            <entry>PERIOD</entry>
+            <entry>SENTENCEEND</entry>
+            <entry>period</entry>
+            <entry><![CDATA[.]]></entry>
+          </row>
+          <row>
+            <entry>EXCLAMATION</entry>
+            <entry>SENTENCEEND</entry>
+            <entry>exclamation mark</entry>
+            <entry><![CDATA[!]]></entry>
+          </row>
+          <row>
+            <entry>SEMICOLON</entry>
+            <entry>PM</entry>
+            <entry>semicolon</entry>
+            <entry><![CDATA[;]]></entry>
+          </row>
+          <row>
+            <entry>QUESTION</entry>
+            <entry>SENTENCEEND</entry>
+            <entry>question mark</entry>
+            <entry><![CDATA[?]]></entry>
+          </row>
+          <row>
+            <entry>SW</entry>
+            <entry>W</entry>
+            <entry>lower case work</entry>
+            <entry><![CDATA[annotation]]></entry>
+          </row>
+          <row>
+            <entry>CW</entry>
+            <entry>W</entry>
+            <entry>work starting with one capitalized letter</entry>
+            <entry><![CDATA[Annotation]]></entry>
+          </row>
+          <row>
+            <entry>CAP</entry>
+            <entry>W</entry>
+            <entry>word only containing capitalized letters</entry>
+            <entry><![CDATA[ANNOTATION]]></entry>
+          </row>
+          <row>
+            <entry>NUM</entry>
+            <entry>ANY</entry>
+            <entry>sequence of digits</entry>
+            <entry><![CDATA[0123]]></entry>
+          </row>
+          <row>
+            <entry>SPECIAL</entry>
+            <entry>ANY</entry>
+            <entry>all other tokens and symbols</entry>
+            <entry><![CDATA[/]]></entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </para>
 </section>

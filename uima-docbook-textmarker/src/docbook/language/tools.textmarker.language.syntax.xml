@@ -6,27 +6,27 @@
 %uimaents;
 ]>
 <!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
-	license agreements. See the NOTICE file distributed with this work for additional 
-	information regarding copyright ownership. The ASF licenses this file to 
-	you under the Apache License, Version 2.0 (the "License"); you may not use 
-	this file except in compliance with the License. You may obtain a copy of 
-	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
-	by applicable law or agreed to in writing, software distributed under the 
-	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
-	OF ANY KIND, either express or implied. See the License for the specific 
-	language governing permissions and limitations under the License. -->
+  license agreements. See the NOTICE file distributed with this work for additional 
+  information regarding copyright ownership. The ASF licenses this file to 
+  you under the Apache License, Version 2.0 (the "License"); you may not use 
+  this file except in compliance with the License. You may obtain a copy of 
+  the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+  by applicable law or agreed to in writing, software distributed under the 
+  License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+  OF ANY KIND, either express or implied. See the License for the specific 
+  language governing permissions and limitations under the License. -->
 
 <section id="ugr.tools.tm.language.syntax">
-	<title>Syntax</title>
-	<para>
-		TextMarker defines its own language for writing rules and rule
-		scripts. This section gives a formal overview of its syntax.
-	</para>
-	<para>
-		Structure: The overall structure of a TextMarker
-		script is defined by
-		the following syntax.
-		<programlisting><![CDATA[Script              -> PackageDeclaration GlobalStatements Statements
+  <title>Syntax</title>
+  <para>
+    TextMarker defines its own language for writing rules and rule
+    scripts. This section gives a formal overview of its syntax.
+  </para>
+  <para>
+    Structure: The overall structure of a TextMarker
+    script is defined by
+    the following syntax.
+    <programlisting><![CDATA[Script              -> PackageDeclaration GlobalStatements Statements
 PackageDeclaration  -> "PACKAGE" DottedIdentifier ";"
 GlobalStatments     -> GlobalStatement*   
 GlobalStatment      -> ("TYPESYSTEM" | "SCRIPT" | "ENGINE") 
@@ -35,12 +35,12 @@ Statements          -> Statement*
 Statement           -> Declaration | VariableDeclaration | BlockDeclaration
                        | AutomataDeclaration | SimpleStatement ";"
 ]]></programlisting>
-		Comments are excluded from the syntax definition. Comments start with
-		"//" and always go to the end of the line.
-	</para>
-	<para>
-		Example beginning of a TextMarker file:
-		<programlisting><![CDATA[PACKAGE de.uniwue.example;
+    Comments are excluded from the syntax definition. Comments start with
+    "//" and always go to the end of the line.
+  </para>
+  <para>
+    Example beginning of a TextMarker file:
+    <programlisting><![CDATA[PACKAGE de.uniwue.example;
 
 // import the types of this type system 
 // (located in the descriptor folder -> de.uniwue.example folder)
@@ -51,8 +51,8 @@ SCRIPT de.uniwue.example.Title;
 SCRIPT de.uniwue.example.Year;
 ]]></programlisting>
 
-		Syntax of declarations:
-		<programlisting><![CDATA[Declaration  ->  "DECLARE" (AnnotationType)? Identifier ("," Identifier )*
+    Syntax of declarations:
+    <programlisting><![CDATA[Declaration  ->  "DECLARE" (AnnotationType)? Identifier ("," Identifier )*
                  | "DECLARE" AnnotationType Identifier ( "(" 
                  FeatureDeclaration ")" )?
 FeatureDeclaration  -> ( (AnnotationType | "STRING" | "INT" | "FLOAT"
@@ -86,8 +86,8 @@ AutomataDeclaration    -> "RULES" "(" Identifier ")" RuleElementWithCA
                                                          "{" Statements "}"
 ]]></programlisting>
 
-		Syntax of statements and rule elements
-		<programlisting><![CDATA[SimpleStatement        -> RuleElements ";"
+    Syntax of statements and rule elements
+    <programlisting><![CDATA[SimpleStatement        -> RuleElements ";"
 RuleElements           -> RuleElement+
 RuleElement            -> RuleElementType | RuleElementLiteral 
                           | RuleElementComposed | RuleElementDisjunctive
@@ -108,19 +108,19 @@ QuantifierPart         -> "*" | "*?" | "+" | "+?" | "?" | "??"
 Conditions             -> Condition ( "," Condition )*
 Actions                -> "->" Action ( "," Action)*
 ]]></programlisting>
-		Since each condition and each action has its own syntax, conditions
-		and actions are described in their own section. (For conditions see
-		<xref linkend='ugr.tools.tm.language.conditions' />
-		, for actions see
-		<xref linkend='ugr.tools.tm.language.actions' />
-		The syntax of expressions is explained in
-		<xref linkend='ugr.tools.tm.language.expressions' />
-	</para>
-	<para>
-		Identifier
-		<programlisting><![CDATA[DottedIdentifier    ->  Identifier ("." Identifier)*
+    Since each condition and each action has its own syntax, conditions
+    and actions are described in their own section. (For conditions see
+    <xref linkend='ugr.tools.tm.language.conditions' />
+    , for actions see
+    <xref linkend='ugr.tools.tm.language.actions' />
+    The syntax of expressions is explained in
+    <xref linkend='ugr.tools.tm.language.expressions' />
+  </para>
+  <para>
+    Identifier
+    <programlisting><![CDATA[DottedIdentifier    ->  Identifier ("." Identifier)*
 DottedIdentifier2   ->  Identifier (("."|"-") Identifier)*
 Identifier          ->  letter (letter|digit)*
 ]]></programlisting>
-	</para>
+  </para>
 </section>

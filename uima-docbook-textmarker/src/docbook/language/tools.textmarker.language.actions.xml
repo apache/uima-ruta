@@ -6,1008 +6,1008 @@
 %uimaents;
 ]>
 <!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
-	license agreements. See the NOTICE file distributed with this work for additional 
-	information regarding copyright ownership. The ASF licenses this file to 
-	you under the Apache License, Version 2.0 (the "License"); you may not use 
-	this file except in compliance with the License. You may obtain a copy of 
-	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
-	by applicable law or agreed to in writing, software distributed under the 
-	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
-	OF ANY KIND, either express or implied. See the License for the specific 
-	language governing permissions and limitations under the License. -->
+  license agreements. See the NOTICE file distributed with this work for additional 
+  information regarding copyright ownership. The ASF licenses this file to 
+  you under the Apache License, Version 2.0 (the "License"); you may not use 
+  this file except in compliance with the License. You may obtain a copy of 
+  the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+  by applicable law or agreed to in writing, software distributed under the 
+  License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+  OF ANY KIND, either express or implied. See the License for the specific 
+  language governing permissions and limitations under the License. -->
 
 <section id="ugr.tools.tm.language.actions">
-	<title>Actions</title>
+  <title>Actions</title>
 
-	<section id="ugr.tools.tm.language.actions.add">
-		<title>ADD</title>
-		<para>
-			The ADD action adds all the elements of the passed
-			TextMarkerExpressions to a given list. For example this expressions
-			could be a string, an integer variable or a list itself. For a
-			complete overview on Textmarker expressions see
-			<xref linkend='ugr.tools.tm.language.expressions' />
-			.
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[ADD(ListVariable,(TextMarkerExpression)+)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[Document{->ADD(list, var)};]]></programlisting>
-			</para>
-			<para>
-				In this example, the variable 'var' is added to the list
-				'list'.
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.add">
+    <title>ADD</title>
+    <para>
+      The ADD action adds all the elements of the passed
+      TextMarkerExpressions to a given list. For example this expressions
+      could be a string, an integer variable or a list itself. For a
+      complete overview on Textmarker expressions see
+      <xref linkend='ugr.tools.tm.language.expressions' />
+      .
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[ADD(ListVariable,(TextMarkerExpression)+)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Document{->ADD(list, var)};]]></programlisting>
+      </para>
+      <para>
+        In this example, the variable 'var' is added to the list
+        'list'.
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.assign">
-		<title>ASSIGN</title>
-		<para>
-			The ASSIGN action assigns the value of the passed expression to
-			a variable of the same type.
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[ASSIGN(BooleanVariable,BooleanExpression)]]></programlisting>
-			</para>
-			<para>
-				<programlisting><![CDATA[ASSIGN(NumberVariable,NumberExpression)]]></programlisting>
-			</para>
-			<para>
-				<programlisting><![CDATA[ASSIGN(StringVariable,StringExpression)]]></programlisting>
-			</para>
-			<para>
-				<programlisting><![CDATA[ASSIGN(TypeVariable,TypeExpression)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[Document{->ASSIGN(amount, (amount/2))};]]></programlisting>
-			</para>
-			<para>
-				In this example, the value of the variable 'amount' is halved.
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.assign">
+    <title>ASSIGN</title>
+    <para>
+      The ASSIGN action assigns the value of the passed expression to
+      a variable of the same type.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[ASSIGN(BooleanVariable,BooleanExpression)]]></programlisting>
+      </para>
+      <para>
+        <programlisting><![CDATA[ASSIGN(NumberVariable,NumberExpression)]]></programlisting>
+      </para>
+      <para>
+        <programlisting><![CDATA[ASSIGN(StringVariable,StringExpression)]]></programlisting>
+      </para>
+      <para>
+        <programlisting><![CDATA[ASSIGN(TypeVariable,TypeExpression)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Document{->ASSIGN(amount, (amount/2))};]]></programlisting>
+      </para>
+      <para>
+        In this example, the value of the variable 'amount' is halved.
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.call">
-		<title>CALL</title>
-		<para>
-			The CALL action initiates the execution of a different script
-			file or script block. Currently only complete script files are
-			supported.
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[CALL(DifferentFile)]]></programlisting>
-			</para>
-			<para>
-				<programlisting><![CDATA[CALL(Block)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[Document{->CALL(NamedEntities)};]]></programlisting>
-			</para>
-			<para>
-				Here, a script 'NamedEntities' for named entity recognition is
-				executed.
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.call">
+    <title>CALL</title>
+    <para>
+      The CALL action initiates the execution of a different script
+      file or script block. Currently only complete script files are
+      supported.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[CALL(DifferentFile)]]></programlisting>
+      </para>
+      <para>
+        <programlisting><![CDATA[CALL(Block)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Document{->CALL(NamedEntities)};]]></programlisting>
+      </para>
+      <para>
+        Here, a script 'NamedEntities' for named entity recognition is
+        executed.
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.clear">
-		<title>CLEAR</title>
-		<para>
-			The CLEAR action removes all elements of the given list.
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[CLEAR(ListVariable)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[Document{->CLEAR(SomeList)};]]></programlisting>
-			</para>
-			<para>
-				This rule clears the list 'SomeList'.
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.clear">
+    <title>CLEAR</title>
+    <para>
+      The CLEAR action removes all elements of the given list.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[CLEAR(ListVariable)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Document{->CLEAR(SomeList)};]]></programlisting>
+      </para>
+      <para>
+        This rule clears the list 'SomeList'.
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.color">
-		<title>COLOR</title>
-		<para>
-			The COLOR action sets the color of an annotation type in the
-			modified view if the rule is fired. The background color is passed as
-			the second parameter. The font color can be changed by passing a
-			further color as third parameter. By default annotations are not
-			automatically selected when opening the modified view. This can be
-			changed for the matched annotations by passing true as fourth
-			parameter. By default The supported colors are: black, silver, gray,
-			white, maroon, red, purple, fuchsia, green, lime, olive, yellow,
-			navy, blue, aqua, lightblue, lightgreen, orange, pink, salmon, cyan,
-			violet, tan, brown, white, mediumpurple.
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[COLOR(TypeExpression,StringExpression(, StringExpression
-				  (, BooleanExpression)?)?)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[Document{->COLOR(Headline, "red", "green", true)};]]></programlisting>
-			</para>
-			<para>
-				This rule colors all Headline annotations in the modified view.
-				Thereby background color is set to red, font color is set to green
-				and all 'Headline' annotations are selected when opening the
-				modified view.
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.color">
+    <title>COLOR</title>
+    <para>
+      The COLOR action sets the color of an annotation type in the
+      modified view if the rule is fired. The background color is passed as
+      the second parameter. The font color can be changed by passing a
+      further color as third parameter. By default annotations are not
+      automatically selected when opening the modified view. This can be
+      changed for the matched annotations by passing true as fourth
+      parameter. By default The supported colors are: black, silver, gray,
+      white, maroon, red, purple, fuchsia, green, lime, olive, yellow,
+      navy, blue, aqua, lightblue, lightgreen, orange, pink, salmon, cyan,
+      violet, tan, brown, white, mediumpurple.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[COLOR(TypeExpression,StringExpression(, StringExpression
+          (, BooleanExpression)?)?)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Document{->COLOR(Headline, "red", "green", true)};]]></programlisting>
+      </para>
+      <para>
+        This rule colors all Headline annotations in the modified view.
+        Thereby background color is set to red, font color is set to green
+        and all 'Headline' annotations are selected when opening the
+        modified view.
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.configure">
-		<title>CONFIGURE</title>
-		<para>
-			The CONFIGURE action can be used to configure the analysis
-			engine of the given namespace (first parameter). The parameters that
-			should be configured with corresponding values are passed as
-			name-value
-			pairs.
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[CONFIGURE(StringExpression(,StringExpression = Expression)+)]]></programlisting>
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.configure">
+    <title>CONFIGURE</title>
+    <para>
+      The CONFIGURE action can be used to configure the analysis
+      engine of the given namespace (first parameter). The parameters that
+      should be configured with corresponding values are passed as
+      name-value
+      pairs.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[CONFIGURE(StringExpression(,StringExpression = Expression)+)]]></programlisting>
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.create">
-		<title>CREATE</title>
-		<para>
-			The CREATE action is similar to the MARK action. It also
-			annotates the matched text fragments with a type annotation, but
-			additionally assigns values to a choosen subset of the type's feature
-			elements.
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[CREATE(TypeExpression(,NumberExpression)*(,StringExpression = Expression)+)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[Paragraph{COUNT(ANY,0,10000,cnt)->CREATE(Headline,"size" = cnt)};]]></programlisting>
-			</para>
-			<para>
-				This rule counts the number of tokens of type ANY in a
-				Paragraph annotation and assigns the counted value to the int
-				variable 'cnt'. If the counted number is between 0 and 10000, a
-				Headline annotation is created for this Paragraph. Moreover the
-				feature named 'size' of Headline is set to the value of 'cnt'.
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.create">
+    <title>CREATE</title>
+    <para>
+      The CREATE action is similar to the MARK action. It also
+      annotates the matched text fragments with a type annotation, but
+      additionally assigns values to a choosen subset of the type's feature
+      elements.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[CREATE(TypeExpression(,NumberExpression)*(,StringExpression = Expression)+)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Paragraph{COUNT(ANY,0,10000,cnt)->CREATE(Headline,"size" = cnt)};]]></programlisting>
+      </para>
+      <para>
+        This rule counts the number of tokens of type ANY in a
+        Paragraph annotation and assigns the counted value to the int
+        variable 'cnt'. If the counted number is between 0 and 10000, a
+        Headline annotation is created for this Paragraph. Moreover the
+        feature named 'size' of Headline is set to the value of 'cnt'.
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.del">
-		<title>DEL</title>
-		<para>
-			The DEL action deletes the matched text fragments in the
-			modified
-			view.
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[DEL]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[Name{->DEL};]]></programlisting>
-			</para>
-			<para>
-				This rule deletes all text fragments that are annotated with a
-				Name annotation.
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.del">
+    <title>DEL</title>
+    <para>
+      The DEL action deletes the matched text fragments in the
+      modified
+      view.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[DEL]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Name{->DEL};]]></programlisting>
+      </para>
+      <para>
+        This rule deletes all text fragments that are annotated with a
+        Name annotation.
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.dynamicanchoring">
-		<title>DYNAMICANCHORING</title>
-		<para>
-			The DYNAMICANCHORING action turns dynamic anchoring on or off
-			(first parameter) and assigns the anchoring parameters penalty
-			(sceond parameter) and factor (third parameter).
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[DYNAMICANCHORING(BooleanExpression(,NumberExpression(,NumberExpression)?)?)]]></programlisting>
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.dynamicanchoring">
+    <title>DYNAMICANCHORING</title>
+    <para>
+      The DYNAMICANCHORING action turns dynamic anchoring on or off
+      (first parameter) and assigns the anchoring parameters penalty
+      (sceond parameter) and factor (third parameter).
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[DYNAMICANCHORING(BooleanExpression(,NumberExpression(,NumberExpression)?)?)]]></programlisting>
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.exec">
-		<title>EXEC</title>
-		<para>
-			The EXEC action initiates the execution of a different script
-			file or analysis engine on the complete input document independent of
-			the matched text and the current filtering settings. If the argument
-			refers to another script file, a new view on the document is created:
-			the complete text of the original CAS and with the default filtering
-			settings of the TextMarker analysis engine.
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[EXEC(DifferentFile)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[ENGINE NamedEntities;
+  <section id="ugr.tools.tm.language.actions.exec">
+    <title>EXEC</title>
+    <para>
+      The EXEC action initiates the execution of a different script
+      file or analysis engine on the complete input document independent of
+      the matched text and the current filtering settings. If the argument
+      refers to another script file, a new view on the document is created:
+      the complete text of the original CAS and with the default filtering
+      settings of the TextMarker analysis engine.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[EXEC(DifferentFile)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[ENGINE NamedEntities;
               Document{->EXEC(NamedEntities)};]]></programlisting>
-			</para>
-			<para>
-				Here, an analysis engine for named entity recognition is
-				executed once on the complete document.
-			</para>
-		</section>
-	</section>
-	<section id="ugr.tools.tm.language.actions.fill">
-		<title>FILL</title>
-		<para>
-			The FILL action fills a choosen subset of the given type's
-			feature elements.
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[FILL(TypeExpression(,StringExpression = Expression)+)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[Headline{COUNT(ANY,0,10000,tokenCount)
-				  ->FILL(Headline,"size" = tokenCount)};]]></programlisting>
-			</para>
-			<para>
-				Here, the number of tokens within an Headline annotation is
-				counted an stored in variable 'tokenCount'. If the number of tokens
-				is within the interval [0;10000], the FILL action fills the
-				Headline's feature 'size' with the value of 'tokenCount'.
-			</para>
-		</section>
-	</section>
+      </para>
+      <para>
+        Here, an analysis engine for named entity recognition is
+        executed once on the complete document.
+      </para>
+    </section>
+  </section>
+  <section id="ugr.tools.tm.language.actions.fill">
+    <title>FILL</title>
+    <para>
+      The FILL action fills a choosen subset of the given type's
+      feature elements.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[FILL(TypeExpression(,StringExpression = Expression)+)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Headline{COUNT(ANY,0,10000,tokenCount)
+          ->FILL(Headline,"size" = tokenCount)};]]></programlisting>
+      </para>
+      <para>
+        Here, the number of tokens within an Headline annotation is
+        counted an stored in variable 'tokenCount'. If the number of tokens
+        is within the interval [0;10000], the FILL action fills the
+        Headline's feature 'size' with the value of 'tokenCount'.
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.filtertype">
-		<title>FILTERTYPE</title>
-		<para>
-			This action filters the given types of annotations. They are now
-			ignored by rules. For more informations on how rules work see
-			<xref linkend='ugr.tools.tm.language.inference' />
-			. Expressions are not yet supported. This action is complementary to
-			RETAINTYPE (see
-			<xref linkend='ugr.tools.tm.language.actions.retaintype' />
-			).
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[FILTERTYPE((TypeExpression(,TypeExpression)*))?]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[Document{->FILTERTYPE(SW)};]]></programlisting>
-			</para>
-			<para>
-				This rule filters all small written words in the input
-				document. This means they are further ignored by any rules.
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.filtertype">
+    <title>FILTERTYPE</title>
+    <para>
+      This action filters the given types of annotations. They are now
+      ignored by rules. For more informations on how rules work see
+      <xref linkend='ugr.tools.tm.language.inference' />
+      . Expressions are not yet supported. This action is complementary to
+      RETAINTYPE (see
+      <xref linkend='ugr.tools.tm.language.actions.retaintype' />
+      ).
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[FILTERTYPE((TypeExpression(,TypeExpression)*))?]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Document{->FILTERTYPE(SW)};]]></programlisting>
+      </para>
+      <para>
+        This rule filters all small written words in the input
+        document. This means they are further ignored by any rules.
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.gather">
-		<title>GATHER</title>
-		<para>
-			This action creates a complex structure, a annotation with
-			features. The optionally passed indexes (NumberExpressions after the
-			TypeExpression) can be used to create an annotation that spanns the
-			matched information of several rule elements. The features are
-			collected using the indexes of the rule elements of the complete
-			rule.
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[GATHER(TypeExpression(,NumberExpression)*
-				  (,StringExpression = NumberExpression)+)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[DECLARE Annotation A;
+  <section id="ugr.tools.tm.language.actions.gather">
+    <title>GATHER</title>
+    <para>
+      This action creates a complex structure, a annotation with
+      features. The optionally passed indexes (NumberExpressions after the
+      TypeExpression) can be used to create an annotation that spanns the
+      matched information of several rule elements. The features are
+      collected using the indexes of the rule elements of the complete
+      rule.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[GATHER(TypeExpression(,NumberExpression)*
+          (,StringExpression = NumberExpression)+)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[DECLARE Annotation A;
         DECLARE Annotation B;
         DECLARE Annotation C(Annotation a, Annotation b);
         W{REGEXP("A")->MARK(A)};
         W{REGEXP("B")->MARK(B)};
         A B{-> GATHER(C, 1, 2, "a" = 1, "b" = 2)};]]></programlisting>
-			</para>
-			<para>
-				Two annotations A and B are declared and annotated. The last
-				rule creates an annotation C spanning the elements A (index 1 since
-				it is the first rule element) and B (index 2) with its features 'a'
-				set to annotation A (again index 1) and 'b' set to annotation B
-				(again index 2).
-			</para>
-		</section>
-	</section>
+      </para>
+      <para>
+        Two annotations A and B are declared and annotated. The last
+        rule creates an annotation C spanning the elements A (index 1 since
+        it is the first rule element) and B (index 2) with its features 'a'
+        set to annotation A (again index 1) and 'b' set to annotation B
+        (again index 2).
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.get">
-		<title>GET</title>
-		<para>
-			The GET action retrieves an element of the given list dependent on a
-			given strategy.
-			<table frame='all'>
-				<title>Currently supported strategies</title>
-				<tgroup cols='2' align='left' colsep='0.5' rowsep='0.5'>
-					<thead>
-						<row>
-							<entry>Strategy</entry>
-							<entry>Functionality</entry>
-						</row>
-					</thead>
-					<tbody>
-						<row>
-							<entry>dominant</entry>
-							<entry>finds the most occuring element</entry>
-						</row>
-					</tbody>
-				</tgroup>
-			</table>
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[GET(ListExpression, Variable, StringExpression)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[Document{->GET(list, var, "dominant")};]]></programlisting>
-			</para>
-			<para>
-				In this example, the element of the list 'list' that occurs
-				most is stored in the variable 'var'.
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.get">
+    <title>GET</title>
+    <para>
+      The GET action retrieves an element of the given list dependent on a
+      given strategy.
+      <table frame='all'>
+        <title>Currently supported strategies</title>
+        <tgroup cols='2' align='left' colsep='0.5' rowsep='0.5'>
+          <thead>
+            <row>
+              <entry>Strategy</entry>
+              <entry>Functionality</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>dominant</entry>
+              <entry>finds the most occuring element</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[GET(ListExpression, Variable, StringExpression)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Document{->GET(list, var, "dominant")};]]></programlisting>
+      </para>
+      <para>
+        In this example, the element of the list 'list' that occurs
+        most is stored in the variable 'var'.
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.getfeature">
-		<title>GETFEATURE</title>
-		<para>
-			The GETFEATURE action stores the value of the matched
-			annotation's feature (first paramter) in the given variable (second
-			parameter).
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[GETFEATURE(StringExpression, Variable)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[Document{->GETFEATURE("language", stringVar)};]]></programlisting>
-			</para>
-			<para>
-				In this example, variable 'stringVar' will contain the value of
-				the feature 'language'.
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.getfeature">
+    <title>GETFEATURE</title>
+    <para>
+      The GETFEATURE action stores the value of the matched
+      annotation's feature (first paramter) in the given variable (second
+      parameter).
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[GETFEATURE(StringExpression, Variable)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Document{->GETFEATURE("language", stringVar)};]]></programlisting>
+      </para>
+      <para>
+        In this example, variable 'stringVar' will contain the value of
+        the feature 'language'.
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.getlist">
-		<title>GETLIST</title>
-		<para>
-			This action retrieves a list of types dependent on a given strategy.
-			<table frame='all'>
-				<title>Currently supported strategies</title>
-				<tgroup cols='2' align='left' colsep='0.5' rowsep='0.5'>
-					<thead>
-						<row>
-							<entry>Strategy</entry>
-							<entry>Functionality</entry>
-						</row>
-					</thead>
-					<tbody>
-						<row>
-							<entry>Types</entry>
-							<entry>get all types within the matched annotation</entry>
-						</row>
-						<row>
-							<entry>Types:End</entry>
-							<entry>get all types that end at the same offset as the matched
-								annotation
-							</entry>
-						</row>
-						<row>
-							<entry>Types:Begin</entry>
-							<entry>get all types that start at the same offset as the
-								matched
-								annotation
-							</entry>
-						</row>
-					</tbody>
-				</tgroup>
-			</table>
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[GETLIST(ListVariable, StringExpression)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[Document{->GETLIST(list, "Types")};]]></programlisting>
-			</para>
-			<para>
-				Here, a list of all types within the document is created and
-				assigned to list variable 'list'.
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.getlist">
+    <title>GETLIST</title>
+    <para>
+      This action retrieves a list of types dependent on a given strategy.
+      <table frame='all'>
+        <title>Currently supported strategies</title>
+        <tgroup cols='2' align='left' colsep='0.5' rowsep='0.5'>
+          <thead>
+            <row>
+              <entry>Strategy</entry>
+              <entry>Functionality</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Types</entry>
+              <entry>get all types within the matched annotation</entry>
+            </row>
+            <row>
+              <entry>Types:End</entry>
+              <entry>get all types that end at the same offset as the matched
+                annotation
+              </entry>
+            </row>
+            <row>
+              <entry>Types:Begin</entry>
+              <entry>get all types that start at the same offset as the
+                matched
+                annotation
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[GETLIST(ListVariable, StringExpression)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Document{->GETLIST(list, "Types")};]]></programlisting>
+      </para>
+      <para>
+        Here, a list of all types within the document is created and
+        assigned to list variable 'list'.
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.log">
-		<title>LOG</title>
-		<para>
-			The LOG action simply writes a log message.
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[LOG(StringExpression)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[Document{->LOG("processed")};]]></programlisting>
-			</para>
-			<para>
-				This rule writes a log message with the string "processed".
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.log">
+    <title>LOG</title>
+    <para>
+      The LOG action simply writes a log message.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[LOG(StringExpression)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Document{->LOG("processed")};]]></programlisting>
+      </para>
+      <para>
+        This rule writes a log message with the string "processed".
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.mark">
-		<title>MARK</title>
-		<para>
-			The MARK action is the most important action in the TextMarker
-			system. It creates a new annotation of the given type. The optionally
-			passed indexes (NumberExpressions after the TypeExpression) can be
-			used to create an annotation that spanns the matched information of
-			several rule elements.
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[MARK(TypeExpression(,NumberExpression)*)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[Freeline Paragraph{->MARK(ParagraphAfterFreeline,1,2)};]]></programlisting>
-			</para>
-			<para>
-				This rule matches on a free line followed by a Paragraph
-				annotation and annotates both in a single ParagraphAfterFreeline
-				annotation. The two numerical expressions at the end of the mark
-				action state that the matched text of the first and the second rule
-				elements are joined to create the boundaries of the new annotation.
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.mark">
+    <title>MARK</title>
+    <para>
+      The MARK action is the most important action in the TextMarker
+      system. It creates a new annotation of the given type. The optionally
+      passed indexes (NumberExpressions after the TypeExpression) can be
+      used to create an annotation that spanns the matched information of
+      several rule elements.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[MARK(TypeExpression(,NumberExpression)*)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Freeline Paragraph{->MARK(ParagraphAfterFreeline,1,2)};]]></programlisting>
+      </para>
+      <para>
+        This rule matches on a free line followed by a Paragraph
+        annotation and annotates both in a single ParagraphAfterFreeline
+        annotation. The two numerical expressions at the end of the mark
+        action state that the matched text of the first and the second rule
+        elements are joined to create the boundaries of the new annotation.
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.markfast">
-		<title>MARKFAST</title>
-		<para>
-			The MARKFAST action creates annotations of the given type (first
-			parameter) if an element of the passed list (second parameter) occurs
-			within the window of the matched annotation. Thereby the created
-			annotation doesn't cover the whole matched annotation. Instead it
-			only covers the text of the found occurence. The third parameter is
-			optional. It defines if the MARKFAST action should ignore the case,
-			whereby its default value is false. The optional fourth parameter
-			specifies a character threshold for the ignorence of the case. It is
-			only relevant if the ignore-case value is set to true. The last
-			parameter is set to true by default and specifies whether whitespaces
-			in the entries of the dictionary should be ignored. For more
-			information on lists see
-			<xref linkend='ugr.tools.tm.language.declarations.ressource' />
-			. Additionally to external word lists, string lists variables can be
-			used.
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[MARKFAST(TypeExpression,ListExpression(,BooleanExpression
-				  (,NumberExpression,(BooleanExpression)?)?)?)]]></programlisting>
-				<programlisting><![CDATA[MARKFAST(TypeExpression,StringListExpression(,BooleanExpression
+  <section id="ugr.tools.tm.language.actions.markfast">
+    <title>MARKFAST</title>
+    <para>
+      The MARKFAST action creates annotations of the given type (first
+      parameter) if an element of the passed list (second parameter) occurs
+      within the window of the matched annotation. Thereby the created
+      annotation doesn't cover the whole matched annotation. Instead it
+      only covers the text of the found occurence. The third parameter is
+      optional. It defines if the MARKFAST action should ignore the case,
+      whereby its default value is false. The optional fourth parameter
+      specifies a character threshold for the ignorence of the case. It is
+      only relevant if the ignore-case value is set to true. The last
+      parameter is set to true by default and specifies whether whitespaces
+      in the entries of the dictionary should be ignored. For more
+      information on lists see
+      <xref linkend='ugr.tools.tm.language.declarations.ressource' />
+      . Additionally to external word lists, string lists variables can be
+      used.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[MARKFAST(TypeExpression,ListExpression(,BooleanExpression
           (,NumberExpression,(BooleanExpression)?)?)?)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[WORDLIST FirstNameList = 'FirstNames.txt';
+        <programlisting><![CDATA[MARKFAST(TypeExpression,StringListExpression(,BooleanExpression
+          (,NumberExpression,(BooleanExpression)?)?)?)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[WORDLIST FirstNameList = 'FirstNames.txt';
         DECLARE FirstName;
         Document{-> MARKFAST(FirstName, FirstNameList, true, 2)};]]></programlisting>
-			</para>
-			<para>
-				This rule annotates all first names listed in the list
-				'FirstNameList' within the document and ignores the case if the
-				length of the word
-				is greater than 2.
-			</para>
-		</section>
-	</section>
+      </para>
+      <para>
+        This rule annotates all first names listed in the list
+        'FirstNameList' within the document and ignores the case if the
+        length of the word
+        is greater than 2.
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.marklast">
-		<title>MARKLAST</title>
-		<para>
-			The MARKLAST action annotates the last token of the matched
-			annotation with the given type.
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[MARKLAST(TypeExpression)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[Document{->MARKLAST(Last)};]]></programlisting>
-			</para>
-			<para>
-				This rule annotates the last token of the document with the
-				annotation Last.
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.marklast">
+    <title>MARKLAST</title>
+    <para>
+      The MARKLAST action annotates the last token of the matched
+      annotation with the given type.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[MARKLAST(TypeExpression)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Document{->MARKLAST(Last)};]]></programlisting>
+      </para>
+      <para>
+        This rule annotates the last token of the document with the
+        annotation Last.
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.markonce">
-		<title>MARKONCE</title>
-		<para>
-			The MARKONCE action has the same functionality as the MARK
-			action, but creates a new annotation only if it does not yet exist.
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[MARKONCE(NumberExpression,TypeExpression(,NumberExpression)*)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[Freeline Paragraph{->MARKONCE(ParagraphAfterFreeline,1,2)};]]></programlisting>
-			</para>
-			<para>
-				This rule matches on a free line followed by a Paragraph and
-				annotates both in a single ParagraphAfterFreeline annotation if it
-				is not already annotated with ParagraphAfterFreeline annotation. The
-				two numerical expressions at the end of the MARKONCE action state
-				that the matched text of the first and the second rule elements are
-				joined to create the boundaries of the new annotation.
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.markonce">
+    <title>MARKONCE</title>
+    <para>
+      The MARKONCE action has the same functionality as the MARK
+      action, but creates a new annotation only if it does not yet exist.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[MARKONCE(NumberExpression,TypeExpression(,NumberExpression)*)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Freeline Paragraph{->MARKONCE(ParagraphAfterFreeline,1,2)};]]></programlisting>
+      </para>
+      <para>
+        This rule matches on a free line followed by a Paragraph and
+        annotates both in a single ParagraphAfterFreeline annotation if it
+        is not already annotated with ParagraphAfterFreeline annotation. The
+        two numerical expressions at the end of the MARKONCE action state
+        that the matched text of the first and the second rule elements are
+        joined to create the boundaries of the new annotation.
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.markscore">
-		<title>MARKSCORE</title>
-		<para>
-			The MARKSCORE action is similar to the MARK action. It also creates a
-			new annotation of the given type, but only if it does not yet exist.
-			The optionally passed indexes (parameters after the TypeExpression)
-			can be used to create an annotation that spanns the matched
-			information of several rule elements. Additionally a score value
-			(first parameter) is added to the heuristic score value of the
-			annotation. For more information on heuristic scores see
-			<xref linkend='ugr.tools.tm.language.score' />
-			.
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[MARKSCORE(NumberExpression,TypeExpression(,NumberExpression)*)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[Freeline Paragraph{->MARKSCORE(10,ParagraphAfterFreeline,1,2)};]]></programlisting>
-			</para>
-			<para>
-				This rule matches on a free line followed by a paragraph and
-				annotates both in a single ParagraphAfterFreeline annotation. The
-				two number expressions at the end of the mark action indicate that
-				the matched text of the first and the second rule elements are
-				joined to create the boundaries of the new annotation. Additionally
-				the score '10' is added to the heuristic threshold of this
-				annotation.
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.markscore">
+    <title>MARKSCORE</title>
+    <para>
+      The MARKSCORE action is similar to the MARK action. It also creates a
+      new annotation of the given type, but only if it does not yet exist.
+      The optionally passed indexes (parameters after the TypeExpression)
+      can be used to create an annotation that spanns the matched
+      information of several rule elements. Additionally a score value
+      (first parameter) is added to the heuristic score value of the
+      annotation. For more information on heuristic scores see
+      <xref linkend='ugr.tools.tm.language.score' />
+      .
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[MARKSCORE(NumberExpression,TypeExpression(,NumberExpression)*)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Freeline Paragraph{->MARKSCORE(10,ParagraphAfterFreeline,1,2)};]]></programlisting>
+      </para>
+      <para>
+        This rule matches on a free line followed by a paragraph and
+        annotates both in a single ParagraphAfterFreeline annotation. The
+        two number expressions at the end of the mark action indicate that
+        the matched text of the first and the second rule elements are
+        joined to create the boundaries of the new annotation. Additionally
+        the score '10' is added to the heuristic threshold of this
+        annotation.
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.marktable">
-		<title>MARKTABLE</title>
-		<para>
-			The MARKTABLE action creates annotations of the given type (first
-			parameter) if an element of the given column (second parameter) of a
-			passed table (third parameter) occures within the window of the
-			matched annotation. Thereby the created annotation doesn't cover the
-			whole matched annotation. Instead it only covers the text of the
-			found occurence. Optionally the MARKTABLE action is able to assign
-			entries of the given table to features of the created annotation.
-			For
-			more information on tables see
-			<xref linkend='ugr.tools.tm.language.declarations.ressource' />
-			. Additionally several configuration parameters are possible. (See
-			example.)
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[MARKTABLE(TypeExpression, NumberExpression, TableExpression 
-				  (,BooleanExpression, NumberExpression, StringExpression, NumberExpression)? 
-				  (,StringExpression = NumberExpression)+)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[WORDTABLE TestTable = 'TestTable.csv';
+  <section id="ugr.tools.tm.language.actions.marktable">
+    <title>MARKTABLE</title>
+    <para>
+      The MARKTABLE action creates annotations of the given type (first
+      parameter) if an element of the given column (second parameter) of a
+      passed table (third parameter) occures within the window of the
+      matched annotation. Thereby the created annotation doesn't cover the
+      whole matched annotation. Instead it only covers the text of the
+      found occurence. Optionally the MARKTABLE action is able to assign
+      entries of the given table to features of the created annotation.
+      For
+      more information on tables see
+      <xref linkend='ugr.tools.tm.language.declarations.ressource' />
+      . Additionally several configuration parameters are possible. (See
+      example.)
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[MARKTABLE(TypeExpression, NumberExpression, TableExpression 
+          (,BooleanExpression, NumberExpression, StringExpression, NumberExpression)? 
+          (,StringExpression = NumberExpression)+)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[WORDTABLE TestTable = 'TestTable.csv';
         DECLARE Annotation Struct(STRING first);
         Document{-> MARKTABLE(Struct, 1, TestTable, true, 4, ".,-", 2, "first" = 2)};]]></programlisting>
-			</para>
-			<para>
-				In this example, the whole document is searched for all
-				occurences of the entries of the first column of the given table
-				'TestTable'. For each occurence an annotation of the type Struct is
-				created and its feature 'first' is filled with the entry of the
-				second column. Moreover the case of the word is ignored if the
-				length of the word exceeds 4. Additionally the chars '.', ',' and
-				'-' are ignored, but at maximum two of them.
-			</para>
-		</section>
-	</section>
+      </para>
+      <para>
+        In this example, the whole document is searched for all
+        occurences of the entries of the first column of the given table
+        'TestTable'. For each occurence an annotation of the type Struct is
+        created and its feature 'first' is filled with the entry of the
+        second column. Moreover the case of the word is ignored if the
+        length of the word exceeds 4. Additionally the chars '.', ',' and
+        '-' are ignored, but at maximum two of them.
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.matchedtext">
-		<title>MATCHEDTEXT</title>
-		<para>
-			The MATCHEDTEXT action saves the text of the matched annotation
-			in a passed String variable. The optionally passed indexes can be
-			used to match the text of several rule elements.
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[MATCHEDTEXT(StringVariable(,NumberExpression)*)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[Headline Paragraph{->MATCHEDTEXT(stringVariable,1,2)};]]></programlisting>
-			</para>
-			<para>
-				The text covered by the Headline (rule elment 1) and the
-				Paragraph (rule elment 2) annotation is saved in variable
-				'stringVariable'.
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.matchedtext">
+    <title>MATCHEDTEXT</title>
+    <para>
+      The MATCHEDTEXT action saves the text of the matched annotation
+      in a passed String variable. The optionally passed indexes can be
+      used to match the text of several rule elements.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[MATCHEDTEXT(StringVariable(,NumberExpression)*)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Headline Paragraph{->MATCHEDTEXT(stringVariable,1,2)};]]></programlisting>
+      </para>
+      <para>
+        The text covered by the Headline (rule elment 1) and the
+        Paragraph (rule elment 2) annotation is saved in variable
+        'stringVariable'.
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.merge">
-		<title>MERGE</title>
-		<para>
-			The MERGE action merges a number of given lists. The first
-			parameter defines if the merge is done as intersection (false) or as
-			union (true). The second parameter is the list variable that will
-			contain the result.
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[MERGE(BooleanExpression, ListVariable, ListExpression, (ListExpression)+)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[Document{->MERGE(false, listVar, list1, list2, list3)};]]></programlisting>
-			</para>
-			<para>
-				The elements that occur in all three lists will be placed in
-				the list 'listVar'.
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.merge">
+    <title>MERGE</title>
+    <para>
+      The MERGE action merges a number of given lists. The first
+      parameter defines if the merge is done as intersection (false) or as
+      union (true). The second parameter is the list variable that will
+      contain the result.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[MERGE(BooleanExpression, ListVariable, ListExpression, (ListExpression)+)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Document{->MERGE(false, listVar, list1, list2, list3)};]]></programlisting>
+      </para>
+      <para>
+        The elements that occur in all three lists will be placed in
+        the list 'listVar'.
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.remove">
-		<title>REMOVE</title>
-		<para>
-			The REMOVE action removes lists or single values from a given
-			list
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[REMOVE(ListVariable,(Argument)+)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[Document{->REMOVE(list, var)};]]></programlisting>
-			</para>
-			<para>
-				In this example, the variable 'var' is removed from the list
-				'list'.
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.remove">
+    <title>REMOVE</title>
+    <para>
+      The REMOVE action removes lists or single values from a given
+      list
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[REMOVE(ListVariable,(Argument)+)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Document{->REMOVE(list, var)};]]></programlisting>
+      </para>
+      <para>
+        In this example, the variable 'var' is removed from the list
+        'list'.
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.removeduplicate">
-		<title>REMOVEDUPLICATE</title>
-		<para>
-			This action removes all duplicates within a given list.
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[REMOVEDUPLICATE(ListVariable)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[Document{->REMOVEDUPLICATE(list)};]]></programlisting>
-			</para>
-			<para>
-				Here, all duplicates in list 'list' are removed.
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.removeduplicate">
+    <title>REMOVEDUPLICATE</title>
+    <para>
+      This action removes all duplicates within a given list.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[REMOVEDUPLICATE(ListVariable)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Document{->REMOVEDUPLICATE(list)};]]></programlisting>
+      </para>
+      <para>
+        Here, all duplicates in list 'list' are removed.
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.replace">
-		<title>REPLACE</title>
-		<para>
-			The REPLACE action replaces the text of all matched annotations with
-			the given StringExpression. It remembers the modification for the
-			matched annotations and shows them in the modified view (see
-			<xref linkend='ugr.tools.tm.views.browser' />
-			).
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[REPLACE(StringExpression)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[FirstName{->REPLACE("first name")};]]></programlisting>
-			</para>
-			<para>
-				This rule replaces all first names with the string 'first
-				name'.
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.replace">
+    <title>REPLACE</title>
+    <para>
+      The REPLACE action replaces the text of all matched annotations with
+      the given StringExpression. It remembers the modification for the
+      matched annotations and shows them in the modified view (see
+      <xref linkend='ugr.tools.tm.views.browser' />
+      ).
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[REPLACE(StringExpression)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[FirstName{->REPLACE("first name")};]]></programlisting>
+      </para>
+      <para>
+        This rule replaces all first names with the string 'first
+        name'.
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.retaintype">
-		<title>RETAINTYPE</title>
-		<para>
-			The RETAINTYPE action retains the given types. This means that they
-			are now not ignored by rules. This action is complementary to
-			FILTERTYPE (see
-			<xref linkend='ugr.tools.tm.language.actions.filtertype' />
-			).
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[RETAINTYPE((TypeExpression(,TypeExpression)*))?]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[Document{->RETAINTYPE(SPACE)};]]></programlisting>
-			</para>
-			<para>
-				All spaces are retained and can be matched by rules.
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.retaintype">
+    <title>RETAINTYPE</title>
+    <para>
+      The RETAINTYPE action retains the given types. This means that they
+      are now not ignored by rules. This action is complementary to
+      FILTERTYPE (see
+      <xref linkend='ugr.tools.tm.language.actions.filtertype' />
+      ).
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[RETAINTYPE((TypeExpression(,TypeExpression)*))?]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Document{->RETAINTYPE(SPACE)};]]></programlisting>
+      </para>
+      <para>
+        All spaces are retained and can be matched by rules.
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.setfeature">
-		<title>SETFEATURE</title>
-		<para>
-			The SETFEATURE action sets the value of a feature of the
-			matched
-			complex structure.
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[SETFEATURE(StringExpression,Expression)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[Document{->SETFEATURE("language","en")};]]></programlisting>
-			</para>
-			<para>
-				Here, the feature 'language' of the input document is set to
-				English.
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.setfeature">
+    <title>SETFEATURE</title>
+    <para>
+      The SETFEATURE action sets the value of a feature of the
+      matched
+      complex structure.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[SETFEATURE(StringExpression,Expression)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Document{->SETFEATURE("language","en")};]]></programlisting>
+      </para>
+      <para>
+        Here, the feature 'language' of the input document is set to
+        English.
+      </para>
+    </section>
+  </section>
 
     <section id="ugr.tools.tm.language.actions.shift">
       <title>SHIFT</title>
@@ -1037,145 +1037,145 @@
       </section>
     </section>
 
-	<section id="ugr.tools.tm.language.actions.transfer">
-		<title>TRANSFER</title>
-		<para>
-			The TRANSFER action creates a new feature structure and adds all
-			compatible features of the matched annotation.
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[TRANSFER(TypeExpression)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[Document{->TRANSFER(LanguageStorage)};]]></programlisting>
-			</para>
-			<para>
-				Here, a new feature structure LanguageStorage is created and
-				the compatible features of the Document annotation are copied. E.g.,
-				if LanguageStorage defined a feature named 'language', then the
-				feature value of the Document annotation is copied.
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.transfer">
+    <title>TRANSFER</title>
+    <para>
+      The TRANSFER action creates a new feature structure and adds all
+      compatible features of the matched annotation.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[TRANSFER(TypeExpression)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Document{->TRANSFER(LanguageStorage)};]]></programlisting>
+      </para>
+      <para>
+        Here, a new feature structure LanguageStorage is created and
+        the compatible features of the Document annotation are copied. E.g.,
+        if LanguageStorage defined a feature named 'language', then the
+        feature value of the Document annotation is copied.
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.trie">
-		<title>TRIE</title>
-		<para>
-			The TRIE action uses an external multi tree word list to
-			annotate the matched annotation and provides several configuration
-			parameters.
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[TRIE((String = Type)+,ListExpression,BooleanExpression,NumberExpression,
-				  BooleanExpression,NumberExpression,StringExpression)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[Document{->TRIE("FirstNames.txt" = FirstName, "Companies.txt" = Company, 
-				  'Dictionary.mtwl', true, 4, false, 0, ".,-/")};]]></programlisting>
-			</para>
-			<para>
-				Here, the dictionary 'Dictionary.mtwl' that contains word lists
-				for first names and companies is used to annotate the document. The
-				words previously contained in the file 'FirstNames.txt' are
-				annotated with the type FirstName and the words in the file
-				'Companies.txt' with the type Company. The case of the word is
-				ignored if the length of the word exceeds 4. The edit distance is
-				deactivated. The cost of an edit operation can currently not be
-				configured by an argument. The last argument additionally defines
-				several chars that will be ignored.
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.trie">
+    <title>TRIE</title>
+    <para>
+      The TRIE action uses an external multi tree word list to
+      annotate the matched annotation and provides several configuration
+      parameters.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[TRIE((String = Type)+,ListExpression,BooleanExpression,NumberExpression,
+          BooleanExpression,NumberExpression,StringExpression)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Document{->TRIE("FirstNames.txt" = FirstName, "Companies.txt" = Company, 
+          'Dictionary.mtwl', true, 4, false, 0, ".,-/")};]]></programlisting>
+      </para>
+      <para>
+        Here, the dictionary 'Dictionary.mtwl' that contains word lists
+        for first names and companies is used to annotate the document. The
+        words previously contained in the file 'FirstNames.txt' are
+        annotated with the type FirstName and the words in the file
+        'Companies.txt' with the type Company. The case of the word is
+        ignored if the length of the word exceeds 4. The edit distance is
+        deactivated. The cost of an edit operation can currently not be
+        configured by an argument. The last argument additionally defines
+        several chars that will be ignored.
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.unmark">
-		<title>UNMARK</title>
-		<para>
-			The UNMARK action removes the annotation of the given type
-			overlapping the matched annotation. There are two additional configurations: If additional
-			indexes are given, then the span of the specified rule elements are applied, similar the the MARK action.
-			If instead a boolean is given as an additional argument, then all annoations of the given type are removed
-			that start at the macthed position.
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[UNMARK(TypeExpression)]]></programlisting>
-				<programlisting><![CDATA[UNMARK(TypeExpression (,NumberExpression)*)]]></programlisting>
-				<programlisting><![CDATA[UNMARK(TypeExpression, BooleanExpression)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[Headline{->UNMARK(Headline)};]]></programlisting>
-			</para>
-			<para>
-				Here, the headline annotation is removed.
-			</para>
-			<para>
-				<programlisting><![CDATA[CW ANY+? QUESTION{->UNMARK(Headline,1,3)};]]></programlisting>
-			</para>
-			<para>
-				Here, all headline annotations are removed that start with a capitalized word and end with a question mark.
-			</para>
-			<para>
-				<programlisting><![CDATA[CW{->UNMARK(Headline,true)};]]></programlisting>
-			</para>
-			<para>
-				Here, all headline annotations are removed that start with a capitalized word.
-			</para>
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.unmark">
+    <title>UNMARK</title>
+    <para>
+      The UNMARK action removes the annotation of the given type
+      overlapping the matched annotation. There are two additional configurations: If additional
+      indexes are given, then the span of the specified rule elements are applied, similar the the MARK action.
+      If instead a boolean is given as an additional argument, then all annoations of the given type are removed
+      that start at the macthed position.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[UNMARK(TypeExpression)]]></programlisting>
+        <programlisting><![CDATA[UNMARK(TypeExpression (,NumberExpression)*)]]></programlisting>
+        <programlisting><![CDATA[UNMARK(TypeExpression, BooleanExpression)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Headline{->UNMARK(Headline)};]]></programlisting>
+      </para>
+      <para>
+        Here, the headline annotation is removed.
+      </para>
+      <para>
+        <programlisting><![CDATA[CW ANY+? QUESTION{->UNMARK(Headline,1,3)};]]></programlisting>
+      </para>
+      <para>
+        Here, all headline annotations are removed that start with a capitalized word and end with a question mark.
+      </para>
+      <para>
+        <programlisting><![CDATA[CW{->UNMARK(Headline,true)};]]></programlisting>
+      </para>
+      <para>
+        Here, all headline annotations are removed that start with a capitalized word.
+      </para>
+    </section>
+  </section>
 
-	<section id="ugr.tools.tm.language.actions.unmarkall">
-		<title>UNMARKALL</title>
-		<para>
-			The UNMARKALL action removes all the annotations of the given
-			type and all of its descendants overlapping the matched annotation,
-			except the annotation is of at least one type in the passed list.
-		</para>
-		<section>
-			<title>
-				<emphasis role="bold">Definition:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[UNMARKALL(TypeExpression, TypeListExpression)]]></programlisting>
-			</para>
-		</section>
-		<section>
-			<title>
-				<emphasis role="bold">Example:</emphasis>
-			</title>
-			<para>
-				<programlisting><![CDATA[Annotation{->UNMARKALL(Annotation, {Headline})};]]></programlisting>
-			</para>
-			<para>
-				Here, all annotations but headlines are removed.
-			</para>
-			
-		</section>
-	</section>
+  <section id="ugr.tools.tm.language.actions.unmarkall">
+    <title>UNMARKALL</title>
+    <para>
+      The UNMARKALL action removes all the annotations of the given
+      type and all of its descendants overlapping the matched annotation,
+      except the annotation is of at least one type in the passed list.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[UNMARKALL(TypeExpression, TypeListExpression)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Annotation{->UNMARKALL(Annotation, {Headline})};]]></programlisting>
+      </para>
+      <para>
+        Here, all annotations but headlines are removed.
+      </para>
+      
+    </section>
+  </section>
 
 </section>
