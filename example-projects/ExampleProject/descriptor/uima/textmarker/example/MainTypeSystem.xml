@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+    <name>uima.textmarker.example.MainTypeSystem</name>
+    <imports>
+        <import location="../../../BasicTypeSystem.xml"/>
+        <import location="../../../types/BibtexTypeSystem.xml"/>
+        <import location="TitleTypeSystem.xml"/>
+        <import location="YearTypeSystem.xml"/>
+        <import location="AuthorTypeSystem.xml"/>
+    </imports>
+</typeSystemDescription>

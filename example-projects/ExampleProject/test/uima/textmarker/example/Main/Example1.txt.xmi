@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmlns:Author="http:///de/uniwue/example/Author.ecore" xmlns:cas="http:///uima/cas.ecore" xmlns:type="http:///org/apache/uima/textmarker/type.ecore" xmlns:xmi="http://www.omg.org/XMI" xmlns:example="http:///uima/textmarker/example.ecore" xmlns:tcas="http:///uima/tcas.ecore" xmlns:Title="http:///de/uniwue/example/Title.ecore" xmi:version="2.0">
+    <cas:NULL xmi:id="0"/>
+    <cas:Sofa xmi:id="1" sofaNum="1" sofaID="_InitialView" mimeType="text" sofaString="Ogren, P.V., Wetzler, P.G., Bethard, S.: ClearTK: A UIMA Toolkit for Statistical Natural Language Processing. In: UIMA for NLP workshop at LREC 08. (2008)&#13;&#10;"/>
+    <example:Year xmi:id="634" sofa="1" begin="148" end="154"/>
+    <example:Author xmi:id="698" sofa="1" begin="0" end="40"/>
+    <example:Title xmi:id="706" sofa="1" begin="41" end="109"/>
+    <example:Bibtex xmi:id="710" sofa="1" begin="0" end="156" author="698" title="706" year="634"/>
+    <cas:View sofa="1" members="634 698 706 710"/>
+</xmi:XMI>

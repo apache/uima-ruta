@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+    <name>uima.textmarker.example.TitleTypeSystem</name>
+    <imports>
+        <import location="../../../BasicTypeSystem.xml"/>
+        <import location="../../../types/BibtexTypeSystem.xml"/>
+    </imports>
+    <types>
+        <typeDescription>
+            <name>uima.textmarker.example.Title.TitleStopper</name>
+            <description>Type defined in uima.textmarker.example.Title</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+    </types>
+</typeSystemDescription>
