@@ -31,35 +31,62 @@ under the License.
   <section id="ugr.tools.tm.overview.intro">
     <title>What is TextMarker?</title>
     <para>
-      - rule-based script language
-      - imperative execution
-      - rapid prototyping
-      - intuitive and flexible, fast developement
-      - extensive tooling support, writing rules is tedious, needs support
-      - all about UIMA, AE, TypeSystem... 
+      Apache UIMA&#8482; TextMarker is a rule-based script language supported by Eclipse-based tooling.
+      The language is designed to enable rapid development of text processing applications within UIMA 
+      and a special focus lies on the intuitive and flexible domain specific language for defining 
+      patterns of annotations. Writing rules for information extraction or other text processing 
+      applications is a tedious process. The Eclipse-based tooling for TextMarker, called the TextMarker Workbench,
+      was created to support the user and to facilitate every step when writing TextMarker rules.
+      The TextMarker rule language and the TextMarker Workbench integrate both smoothly with Apache UIMA.
     </para>
   </section>
   
   <section id="ugr.tools.tm.overview.gettingstarted">
     <title>Getting started</title>
     <para>
-      - know about the core concepts of UIMA, this documentation assumes that the reader knows about that, CAS, Feature Structure, Annotation, Type, Analysis Engine, Type System,...
-      - recommended way to learn textmarker? how to read this documentation?
-      - installation of the IDE
-      - download the examples and play around
-      - read about the core concepts of TextMarker and take a look at the language examples
-      - read the chapter about language for a precise description of the language, rather a reference book
-      - workbench chapter for documentation of eclipse-based tooling
-      - example project in SVN
+      This section gives a short roadmap how to read the documentation and gives some recommendations how to 
+      start developing TextMarker-based applications. This documentation assumes that the user knows about 
+      the core concepts of Apache UIMA. Knowledge about the meaning and usage of at least the terms <quote>CAS</quote>, 
+      <quote>Feature Structure</quote>, <quote>Annotation</quote>, <quote>Type</quote>, <quote>Type System</quote> 
+      and <quote>Analysis Engine</quote> is required. Please refer to the documentation of Apache UIMA for an introduction.
     </para>
+    <para>  
+      Unexperienced users that want to learn about TextMarker can start with the next two sections: 
+      <xref linkend="ugr.tools.tm.overview.coreconcepts"/>
+      gives a short overview about the core ideas and features of the TextMarker language and Workbench. 
+      This section introduces the main concepts of the TextMarker language. It explains how TextMarker rules 
+      are composed and applied, and discusses the advantages of the TextMarker system.
+      The following <xref linkend="ugr.tools.tm.overview.examples"/> approaches the TextMarker language using a different
+      perspective. Here, the language is introduced only with examples. The first example starts with explaining how a simple rule
+      looks like, and each following example extends the syntax or semantics of the TextMarker language. 
+      After the consultation of these two sections, the reader should know enough to start writing her first TextMarker-based application.
+    </para>  
+    <para>
+      The TextMarker Workbench was created to support the user and to facilitate the development process. It is strongly recommended to 
+      use this Eclipse-based IDE since it, for example, automatically configures the component descriptors and provides editing support like
+      syntax checking. <xref linkend="section.ugr.tools.tm.workbench.install"/> describes how the TextMarker Workbench is installed.
+      TextMarker rules can of course also be applied on CAS without using the TextMarker Workbench. 
+      <xref linkend="ugr.tools.tm.ae.basic.apply"/> contains examples how to execute TextMarker rules in plain java.
+      A good way to get started with TextMarker is to play around with an exemplary TextMarker project, e.g., 
+      <uri>https://svn.apache.org/repos/asf/uima/sandbox/trunk/TextMarker/example-projects/ExampleProject</uri>. This TextMarker project 
+      contains some simple rules for processing citation metadata.
+    </para>  
+    <para>    
+      <xref linkend="ugr.tools.tm.language.language"/> and <xref linkend="ugr.tools.tm.workbench"/> provide 
+      more detailed descriptions and can be referred to in order to gain knowledge about specific parts 
+      of the TextMarker language or the TextMarker workbench.    
+    </para>  
   </section>
   
   <section id="ugr.tools.tm.overview.coreconcepts">
     <title>Core Concepts</title>
     <para>
       - what does it look like? rule composition
+            In contrast to similar rule-based systems, TextMarker rules are executed
+      in an imperative manner: the rules are applied in the order they occur in a TextMarker script file.
       - imperative execution, advantages and disadvantages
       - depth first matching
+      - projects , scripts files
       - distinctive language elements for some tasks, one action or condition for one task
       - where to start with matching? annotations in CAS, default annotation seeding 
       - work with annotations, just spam them
