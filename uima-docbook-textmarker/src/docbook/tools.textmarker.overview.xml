@@ -74,13 +74,27 @@ under the License.
     <para>    
       <xref linkend="ugr.tools.tm.language.language"/> and <xref linkend="ugr.tools.tm.workbench"/> provide 
       more detailed descriptions and can be referred to in order to gain knowledge about specific parts 
-      of the TextMarker language or the TextMarker workbench.    
+      of the TextMarker language or the TextMarker Workbench.    
     </para>  
   </section>
   
   <section id="ugr.tools.tm.overview.coreconcepts">
     <title>Core Concepts</title>
     <para>
+      The TextMarker language is an imperative rule language extended with scripting elements. A TextMarker rule defines a
+      pattern of annotations with additional conditions. If this pattern applies, then the actions of the rule are performed 
+      on the matched annotations. A rule is composed of a sequence of rule elements and a rule element essentially consist of four parts: 
+      A matching condition, an optional quantifier, a list of conditions and a list of actions.
+      The matching condition is typically a type of an annotation by which the rule element matches on the covered text of one of those annotations.
+      The quantifier specifies, if it is necessary that the rule element successfully matches and how often the rule element my match.
+      The list of conditions specify additional constraints that the matched text or annotations needs to fulfill. The list of action define
+      the consequences of the rule and often create new annotations or modify existing annotations. 
+      They are only applied if all rule element of the rule successfully matched.
+    </para>
+    <para>
+      Rule cannot be applied on text...
+      TextMarker scripts
+    
       - what does it look like? rule composition
             In contrast to similar rule-based systems, TextMarker rules are executed
       in an imperative manner: the rules are applied in the order they occur in a TextMarker script file.
