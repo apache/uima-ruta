@@ -26,8 +26,7 @@
 		Structure: The overall structure of a TextMarker
 		script is defined by
 		the following syntax.
-		<programlisting><![CDATA[
-Script              -> PackageDeclaration GlobalStatements Statements
+		<programlisting><![CDATA[Script              -> PackageDeclaration GlobalStatements Statements
 PackageDeclaration  -> "PACKAGE" DottedIdentifier ";"
 GlobalStatments     -> GlobalStatement*   
 GlobalStatment      -> ("TYPESYSTEM" | "SCRIPT" | "ENGINE") 
@@ -41,8 +40,7 @@ Statement           -> Declaration | VariableDeclaration | BlockDeclaration
 	</para>
 	<para>
 		Example beginning of a TextMarker file:
-		<programlisting><![CDATA[
-PACKAGE de.uniwue.example;
+		<programlisting><![CDATA[PACKAGE de.uniwue.example;
 
 // import the types of this type system 
 // (located in the descriptor folder -> de.uniwue.example folder)
@@ -54,8 +52,7 @@ SCRIPT de.uniwue.example.Year;
 ]]></programlisting>
 
 		Syntax of declarations:
-		<programlisting><![CDATA[
-Declaration  ->  "DECLARE" (AnnotationType)? Identifier ("," Identifier )*
+		<programlisting><![CDATA[Declaration  ->  "DECLARE" (AnnotationType)? Identifier ("," Identifier )*
                  | "DECLARE" AnnotationType Identifier ( "(" 
                  FeatureDeclaration ")" )?
 FeatureDeclaration  -> ( (AnnotationType | "STRING" | "INT" | "FLOAT"
@@ -83,19 +80,20 @@ BasicAnnotationType ->  ('COLON'| 'SW' | 'MARKUP' | 'PERIOD' | 'CW'| 'NUM'
                         | 'EXCLAMATION' | 'SEMICOLON' | 'NBSP'| 'AMP' | '_' 
                         | 'SENTENCEEND' | 'W' | 'PM' | 'ANY' | 'ALL' 
                         | 'SPACE' | 'BREAK') 
-BlockDeclaration       -> "BLOCK" "(" Identifier ")" RuleElementType 
+BlockDeclaration       -> "BLOCK" "(" Identifier ")" RuleElementWithCA 
                                                          "{" Statements "}"
-AutomataDeclaration    -> "RULES" "(" Identifier ")" RuleElementType 
+AutomataDeclaration    -> "RULES" "(" Identifier ")" RuleElementWithCA 
                                                          "{" Statements "}"
 ]]></programlisting>
 
 		Syntax of statements and rule elements
-		<programlisting><![CDATA[
-SimpleStatement        -> RuleElements ";"
+		<programlisting><![CDATA[SimpleStatement        -> RuleElements ";"
 RuleElements           -> RuleElement+
 RuleElement            -> RuleElementType | RuleElementLiteral 
                           | RuleElementComposed | RuleElementDisjunctive
 RuleElementType        ->  TypeExpression QuantifierPart? 
+                                           ("{" Conditions?  Actions? "}")?
+RuleElementWithCA      ->  TypeExpression QuantifierPart? 
                                               "{" Conditions?  Actions? "}"
 RuleElementLiteral     ->  SimpleStringExpression QuantifierPart? 
                                               "{" Conditions?  Actions? "}"
@@ -120,8 +118,7 @@ Actions                -> "->" Action ( "," Action)*
 	</para>
 	<para>
 		Identifier
-		<programlisting><![CDATA[
-DottedIdentifier    ->  Identifier ("." Identifier)*
+		<programlisting><![CDATA[DottedIdentifier    ->  Identifier ("." Identifier)*
 DottedIdentifier2   ->  Identifier (("."|"-") Identifier)*
 Identifier          ->  letter (letter|digit)*
 ]]></programlisting>

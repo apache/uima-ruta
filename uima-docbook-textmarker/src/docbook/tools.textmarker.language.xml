@@ -1,239 +1,194 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
-<!ENTITY imgroot "images/tools/tools.textmarker/" >
+<!ENTITY imgroot "images/tools/tm/language/" >
 <!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
 %uimaents;
 ]>
 <!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
-	license agreements. See the NOTICE file distributed with this work for additional 
-	information regarding copyright ownership. The ASF licenses this file to 
-	you under the Apache License, Version 2.0 (the "License"); you may not use 
-	this file except in compliance with the License. You may obtain a copy of 
-	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
-	by applicable law or agreed to in writing, software distributed under the 
-	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
-	OF ANY KIND, either express or implied. See the License for the specific 
-	language governing permissions and limitations under the License. -->
+  license agreements. See the NOTICE file distributed with this work for additional 
+  information regarding copyright ownership. The ASF licenses this file to 
+  you under the Apache License, Version 2.0 (the "License"); you may not use 
+  this file except in compliance with the License. You may obtain a copy of 
+  the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+  by applicable law or agreed to in writing, software distributed under the 
+  License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+  OF ANY KIND, either express or implied. See the License for the specific 
+  language governing permissions and limitations under the License. -->
 
 <chapter id="ugr.tools.tm.language.language">
-	<title>TextMarker Language</title>
-	<para>
-		This chapter provides a complete description of the TextMarker
-		language.
-	</para>
+  <title>TextMarker Language</title>
+  <para>
+    This chapter provides a complete description of the TextMarker
+    language.
+  </para>
 
-	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-		href=".\language\tools.textmarker.language.syntax.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+    href=".\language\tools.textmarker.language.syntax.xml" />
 
-	<section id="ugr.tools.tm.language.inference">
-		<title>Inference</title>
-		<para>
-			The inference relies on a complete, disjunctive partition of the
-			document. A basic (minimal) annotation for each element of the
-			partition is assigned to a type of a hierarchy. These basic
-			annotations are enriched for performance reasons with information
-			about annotations that start at the same offset or overlap with the
-			basic annotation. Normally, a scanner creates a basic annotation for
-			each token, punctuation or whitespace, but can also be replaced with
-			a different annotation seeding strategy. Unlike other rule-based
-			information extraction language, the rules are executed in an
-			imperative way. Experience has shown that the dependencies between
-			rules, e.g., the same annotation types in the action and in the
-			condition of a different rule, often form tree-like and not
-			graph-like structures. Therefore, the sequencing and imperative
-			processing did not cause disadvantages, but instead obvious
-			advantages, e.g., the improved understandability of large rule sets.
-			The following algorithm summarizes the rule inference:
-			<programlisting><![CDATA[
-collect all basic annotations that fulfill the first matching condition
-  for all collected basic annotations do
-    for all rule elements of current rule do
-    if quantifier wants to match then
-      match the conditions of the rule element on the current basic annotation
-      determine the next basic annotation after the current match
-      if quantifier wants to continue then
-        if there is a next basic annotation then
-          continue with the current rule element and the next basic annotation
-        else if rule element did not match then
-          reset the next basic annotation to the current one
-      set the current basic annotation to the next one
-      if some rule elements did not match then
-        stop and continue with the next collected basic annotation
-      else if there is no current basic annotation and the quantifier wants to continue then
-        set the current basic annotation to the previous one
-  if all rule elements matched then
-    execute the actions of all rule elements
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+    href=".\language\tools.textmarker.language.basic_annotations.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+    href=".\language\tools.textmarker.language.quantifier.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+    href=".\language\tools.textmarker.language.declarations.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+    href=".\language\tools.textmarker.language.expressions.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+    href=".\language\tools.textmarker.language.conditions.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+    href=".\language\tools.textmarker.language.actions.xml" />
+
+
+  <section id="ugr.tools.tm.language.filtering">
+    <title>Robust extraction using filtering</title>
+    <para>
+      Rule based or pattern based information extraction systems often
+      suffer from unimportant fill words, additional whitespace and
+      unexpected markup. The TextMarker System enables the knowledge
+      engineer to filter and to hide all possible combinations of
+      predefined and new types of annotations. The
+      visibility of tokens and
+      annotations is modified by the actions of
+      rule elements and can be
+      conditioned using the complete
+      expressiveness of the language.
+      Therefore the TextMarker system
+      supports a robust approach to
+      information extraction and simplifies
+      the creation of new rules since
+      the knowledge engineer can focus on
+      important textual features. If no
+      rule action changed the
+      configuration of the filtering settings, then
+      the default filtering
+      configuration ignores whitespaces and markup.
+      Look at the following rule:
+      <programlisting><![CDATA["Dr" PERIOD CW CW
 ]]></programlisting>
-			The rule elements can of course match on all kinds of annotations.
-			Therefore the determination of the next basic annotation returns the
-			first basic annotation after the last basic annotation of the
-			complete, matched annotation.
-
-		</para>
-	</section>
-
-
-	<section id="ugr.tools.tm.language.seeding">
-		<title>Basic annotations and tokens</title>
-		<para>
-			The TextMarker system uses a JFlex lexer to initially create a
-			seed of
-			basic token annotations. These tokens build a hierarchy
-			which is shown
-			in
-			<xref linkend='figure.ugr.tools.tm.language.seeding.basic_token' />
-			.
-		</para>
-		<para>
-			<figure id="figure.ugr.tools.tm.language.seeding.basic_token">
-				<title>Basic token hierarchy
-				</title>
-				<mediaobject>
-					<imageobject role="html">
-						<imagedata width="576px" format="PNG" align="center"
-							fileref="&imgroot;overview/screenshot_tm_perspective_.png" />
-					</imageobject>
-					<imageobject role="fo">
-						<imagedata width="5.5in" format="PNG" align="center"
-							fileref="&imgroot;overview/screenshot_tm_perspective_.png" />
-					</imageobject>
-					<textobject>
-						<phrase>
-							Basic token hierarchy.
-						</phrase>
-					</textobject>
-				</mediaobject>
-			</figure>
-		</para>
-		<para>
-			<table id="table.ugr.tools.tm.language.seeding.basic_token.abstract"
-				frame="all">
-				<title>Abstract annotations</title>
-				<tgroup cols="5" colsep="1" rowsep="1">
-					<colspec colname="c1" colwidth="1*" />
-					<colspec colname="c2" colwidth="1*" />
-					<colspec colname="c3" colwidth="1*" />
-					<thead>
-						<row>
-							<entry align="center">Token</entry>
-							<entry align="center">Parent</entry>
-							<entry align="center">Description</entry>
-						</row>
-					</thead>
-					<tbody>
-						<row>
-							<entry></entry>
-							<entry></entry>
-							<entry></entry>
-						</row>
-					</tbody>
-				</tgroup>
-			</table>
-		</para>
-		<para>
-			<table id="table.ugr.tools.tm.language.seeding.basic_token.created"
-				frame="all">
-				<title>Annotations created by lexer</title>
-				<tgroup cols="5" colsep="1" rowsep="1">
-					<colspec colname="c1" colwidth="1*" />
-					<colspec colname="c2" colwidth="1*" />
-					<colspec colname="c3" colwidth="1*" />
-					<colspec colname="c4" colwidth="1*" />
-					<colspec colname="c5" colwidth="1*" />
-					<thead>
-						<row>
-							<entry align="center">Token</entry>
-							<entry align="center">Parent</entry>
-							<entry align="center">Description</entry>
-							<entry align="center">JFlex expression</entry>
-							<entry align="center">Example</entry>
-						</row>
-					</thead>
-					<tbody>
-						<row>
-							<entry></entry>
-							<entry></entry>
-							<entry></entry>
-							<entry></entry>
-							<entry></entry>
-						</row>
-					</tbody>
-				</tgroup>
-			</table>
-		</para>
-	</section>
-
-	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-		href=".\language\tools.textmarker.language.quantifier.xml" />
-	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-		href=".\language\tools.textmarker.language.declarations.xml" />
-	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-		href=".\language\tools.textmarker.language.expressions.xml" />
-	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-		href=".\language\tools.textmarker.language.conditions.xml" />
-	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-		href=".\language\tools.textmarker.language.actions.xml" />
-
-
-	<section id="ugr.tools.tm.language.filtering">
-		<title>Robust extraction using filtering</title>
-		<para>
-			Rule based or pattern based information extraction systems often
-			suffer from unimportant fill words, additional whitespace and
-			unexpected markup. The TextMarker System enables the knowledge
-			engineer to filter and to hide all possible combinations of
-			predefined and new types of annotations. Additionally, it can
-			differentiate between every kind of HTML markup and XML tags. The
-			visibility of tokens and annotations is modified by the actions of
-			rule elements and can be conditioned using the complete
-			expressiveness of the language. Therefore the TextMarker system
-			supports a robust approach to information extraction and simplifies
-			the creation of new rules since the knowledge engineer can focus on
-			important textual features. If no rule action changed the
-			configuration of the filtering settings, then the default filtering
-			configuration ignores whitespaces and markup. Using the default
-			setting, the following rule matches all four types of input in this
-			example:
-			<programlisting><![CDATA[
+      Using the default
+      setting, this rule matches on all four lines
+      of this
+      input document:
+      <programlisting><![CDATA[Dr. Joachim Baumeister
+Dr . Joachim      Baumeister
+Dr. <b><i>Joachim</i> Baumeister</b>
+Dr.JoachimBaumeister
+]]></programlisting>
+    </para>
+    <para>
+      To change the default setting use the
+      <quote>FILTERTYPE</quote>
+      or
+      <quote>RETAINTYPE</quote>
+      action. For example if markups should no longer be ignored, try the
+      following example on the above input document:
+      <programlisting><![CDATA[Document{->RETAINTYPE(MARKUP)};
 "Dr" PERIOD CW CW
 ]]></programlisting>
-			<programlisting><![CDATA[
-Dr. Peter Steinmetz
-Dr . Peter      Steinmetz
-Dr. <b><i>Peter</i> Steinmetz</b>
-Dr.PeterSteinmetz
+      You will see, that the third line of the previous input example will
+      no longer be matched.
+    </para>
+    <para>
+      To filter types try the following on the input document:
+      <programlisting><![CDATA[Document{->FILTERTYPE(PERIOD)};
+"Dr" CW CW
 ]]></programlisting>
-		</para>
-	</section>
-	<section id="ugr.tools.tm.language.blocks">
-		<title>Blocks</title>
-		<para>
-			Blocks combine some more complex control structures in the
-			TextMarker
-			language: conditioned statement, loops and procedures.
-
-
-			The
-			rule
-			element
-			in the definition of a block has to define a
-			condition/action
-			part,
-			even if that part is empty (LCURLY and
-			RCULRY).
-
-
-			A block can use
-			normal
-			conditions to condition the execution
-			of its
-			containing rules.
-
-			Examples:
-
-			<programlisting><![CDATA[
-DECLARE Month;
+      Since periods are ignored now, the rule will match on all four lines
+      of the example.
+    </para>
+    <para>
+      Notice that using a filtered annotation type within a
+      rule, prevents
+      this rule from being executed. Try the following:
+      <programlisting><![CDATA[Document{->FILTERTYPE(PERIOD)};
+"Dr" PERIOD CW CW
+]]></programlisting>
+      You will see that this matches on no line of the input document since
+      the second rule uses the filtered type PERIOD and is therefore not
+      executed.
+    </para>
+  </section>
+  <section id="ugr.tools.tm.language.blocks">
+    <title>Blocks</title>
+    <para>
+      Blocks combine some more complex control structures in the
+      TextMarker
+      language:
+      <orderedlist numeration="arabic">
+        <listitem>
+          <para>
+            Conditioned statements
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <quote>Foreach</quote>
+            -Loops
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Procedures
+          </para>
+        </listitem>
+      </orderedlist>
+    </para>
+    <para>
+      Declaration of a block:
+      <programlisting><![CDATA[BlockDeclaration       -> "BLOCK" "(" Identifier ")" RuleElementWithCA
+                                                       "{" Statements "}"
+RuleElementWithCA      ->  TypeExpression QuantifierPart? 
+                                              "{" Conditions?  Actions? "}"
+]]></programlisting>
+      A block declaration always starts with the keyword
+      <quote>BLOCK</quote>
+      , followed by the identifier of the block within brackets. The
+      <quote>RuleElementType</quote>
+      -element
+      is a TextMarker rule that consists of exactly one rule
+      element. The
+      rule element has to be a declared annotation type.
+      <note>
+        <para>
+          The
+          rule element in the definition of a block has to define
+          a
+          condition/action part, even if that part is empty (LCURLY and
+          RCULRY).
+        </para>
+      </note>
+    </para>
+    <para>
+      Through the rule element a new local document is defined, whose
+      scope
+      is the related block. So if you use
+      <literal>Document</literal>
+      within a block, this always refers to the locally limited document.
+      <programlisting><![CDATA[BLOCK(ForEach) Paragraph{} {
+    Document{COUNT(CW)}; // Here "Document" is limited to a Paragraph;
+               // therefore the rule only counts the CW annotations
+               // within the Paragraph
+}
+]]></programlisting>
+    </para>
+    <para>
+      A block is always executed when the TextMarker interpreter
+      reaches its
+      declaration. But a block may also be called from another
+      position of
+      the script. See
+      <xref linkend='ugr.tools.tm.language.blocks.procedure' />
+    </para>
+    <section id="ugr.tools.tm.language.blocks.condition">
+      <title>Conditioned statements</title>
+      <para>
+        A block can use common TextMarker conditions to condition the
+        execution of its containing rules.
+      </para>
+      <para>
+        Examples:
+        <programlisting><![CDATA[DECLARE Month;
 
 BLOCK(EnglishDates) Document{FEATURE("language", "en")} {
     Document{->MARKFAST(Month,'englishMonthNames.txt')};
@@ -245,113 +200,203 @@ BLOCK(GermanDates) Document{FEATURE("language", "de")} {
     //...
 }
 ]]></programlisting>
-
-
-			A block can be used to execute the containing rule on a sequence of
-			similar text passages.
-
-			Examples:
-			<programlisting><![CDATA[
-BLOCK(Paragraphs) Paragraphs{} { // <- limit the local view on the document: defines a local document
-    // This rule will be executed for each Paragraph that can be found in the current document.
-    Document{CONTAINS(Keyword)->MARK(SpecialParagraph)}; 
-    // Here, Document represents not the complete input document, but each Paragraph defined by the block statement.
+        The example is explained in detail in
+        <xref linkend='ugr.tools.tm.overview.examples' />
+        .
+      </para>
+    </section>
+    <section id="ugr.tools.tm.language.blocks.foreach">
+      <title>
+        <quote>Foreach</quote>
+        -Loops
+      </title>
+      <para>
+        A block can be used to execute the containing rules on a sequence of
+        similar text passages, therefore representing a
+        <quote>foreach</quote>
+        like loop.
+      </para>
+      <para>
+        Examples:
+        <programlisting><![CDATA[DECLARE SentenceWithNoLeadingNP;
+BLOCK(ForEach) Sentence{} {
+    Document{-STARTSWITH(NP) -> MARK(SentenceWithNoLeadingNP)};
 }
 ]]></programlisting>
-		</para>
-	</section>
-	<section id="ugr.tools.tm.language.score">
-		<title>Heuristic extraction using scoring rules</title>
-		<para>
-			Diagnostic scores are a well known and successfully applied
-			knowledge
-			formalization pattern for diagnostic problems. Single known
-			findings
-			valuate a possible solution by adding or subtracting points
-			on an
-			account of that solution. If the sum exceeds a given threshold,
-			then
-			the solution is derived. One of the advantages of this pattern
-			is the
-			robustness against missing or false findings, since a high
-			number of
-			findings is used to derive a solution.
+        The example is explained in detail in
+        <xref linkend='ugr.tools.tm.overview.examples' />
+        .
+      </para>
+      <para>
+        This construction is especially useful, if you have a set of rules
+        which has to be executed continously on the same part of an input
+        document. Lets assume you have already annotated your document with
+        Paragraph annotations. Now you want to count the number of words
+        within each paragraph and if the number of words is bigger than 500
+        annotate it as BigParagraph. Therefore you wrote the following
+        rules:
+        <programlisting><![CDATA[DECLARE BigParagraph;
+INT numberOfWords;
+Paragraph{COUNT(W,numberOfWords)};
+Paragraph{IF(numberOfWords > 500) -> MARK(BigParagraph)};
+]]></programlisting>
+        This will not work. The reason is that the rule which counts the
+        number of words within a Paragraph is executed on all Paragraphs
+        before the last rule which marks the Paragraph as BigParagraph is
+        even executed once. Therefore when reaching the last rule in this
+        example, the variable
+        <literal>numberOfWords</literal>
+        holds the
+        number of words of the last Paragraph in the input
+        document,
+        thus annotating all Paragraphs either as BigParagraph or
+        not.
+      </para>
+      <para>
+        To solve this, use a block to tie the
+        execution of this rules
+        together for each Paragraph:
+        <programlisting><![CDATA[DECLARE BigParagraph;
+INT numberOfWords;
+BLOCK(IsBig) Paragraph{} {
+  Document{COUNT(W,numberOfWords)};
+  Document{IF(numberOfWords > 500) -> MARK(BigParagraph)};
+}
+]]></programlisting>
+        Since the scope of the Document is limited to a Paragraph within
+        the
+        block, the rule which counts the words is only executed once
+        before
+        the second rule decides if the Paragraph is a BigParagraph.
+        Of course
+        this is done for every Paragraph in the whole document.
+      </para>
+    </section>
+    <section id="ugr.tools.tm.language.blocks.procedure">
+      <title>Procedures</title>
+      <para>
+        Blocks can be used to introduce procedures into TextMarker language.
+        To do this declare a block as before. Lets assume you want to
+        simulate a procedure
+        <programlisting><![CDATA[public int countAmountOfTypesInDocument(Type type){
+    int amount = 0;
+    for(Token token : Document) {
+      if(token.isType(type)){
+        amount++;
+      }
+    }
+    return amount;
+} 
 
-			The TextMarker system
-			tries to
-			transfer this diagnostic problem
-			solution
-			strategy to the
-			information
-			extraction problem. In addition to a
-			normal creation of a
-			new
-			annotation, a MARK action can add positive
-			or negative scoring
-			points
-			to the text fragments matched by the rule
-			elements. If the
-			amount of
-			points exceeds the defined threshold for
-			the respective
-			type, then a
-			new annotation will be created. Further,
-			the current
-			value of heuristic
-			points of a possible annotation can
-			be
-			evaluated by
-			the SCORE condition.
-			In the following, the heuristic
-			extraction using
-			scoring rules is
-			demonstrated by a short example:
+public static void main() {
+  int amount = countAmountOfTypesInDocument(Paragraph));
+}            
+]]></programlisting>
+        which counts the number of the passed type wihtin the document and
+        gives back the counted number. This can be done in the following
+        way:
+        <programlisting><![CDATA[BOOLEAN executeProcedure = false;
+TYPE type;
+INT amount;
 
-			<programlisting><![CDATA[
-            Paragraph{CONTAINS(W,1,5)->MARKSCORE(5,Headline)};
-            Paragraph{CONTAINS(W,6,10)->MARKSCORE(2,Headline)};
-            Paragraph{CONTAINS(Emph,80,100,true)->MARKSCORE(7,Headline)};
-            Paragraph{CONTAINS(Emph,30,80,true)->MARKSCORE(3,Headline)};
-            Paragraph{CONTAINS(CW,50,100,true)->MARKSCORE(7,Headline)};
-            Paragraph{CONTAINS(W,0,0)->MARKSCORE(-50,Headline)};
-            Headline{SCORE(10)->MARK(Realhl)};
-            Headline{SCORE(5,10)->LOG("Maybe a headline")};
-                ]]></programlisting>
+BLOCK(countNumberOfTypesInDocument) Document{IF(executeProcedure)} {
+    Document{COUNT(type, amount)};
+}
+
+Document{->ASSIGN(executeProcedure, true)};
+Document{->ASSIGN(type, Paragraph)};
+Document{->CALL(MyScript.countNumberOfTypesInDocument)};
+]]></programlisting>
+        The boolean variable
+        <literal>executeProcedure</literal>
+        is used to prohibit the execution of the block when the interpreter
+        first reaches the block since this is no procedure call. The block can be called 
+                by referring to it with its name, preceded by the name of the script the 
+                block is defined in. In this exmaple, the script is called MyScript.tm.
+      </para>
+    </section>
+
+  </section>
+  <section id="ugr.tools.tm.language.score">
+    <title>Heuristic extraction using scoring rules</title>
+    <para>
+      Diagnostic scores are a well known and successfully applied
+      knowledge formalization pattern for diagnostic problems. Single known
+      findings valuate a possible solution by adding or subtracting points
+      on an account of that solution. If the sum exceeds a given threshold,
+      then the solution is derived. One of the advantages of this pattern
+      is the robustness against missing or false findings, since a high
+      number of findings is used to derive a solution.
+
+      The TextMarker system tries to transfer this diagnostic problem
+      solution strategy to the
+      information  extraction problem. In addition to a
+      normal creation of a new annotation, a MARKSCORE action can add positive
+      or negative scoring  points to the text fragments matched by the rule
+      elements. The current value of heuristic points of an annotation can
+      be evaluated by  the SCORE condition, which can be used in an additional rule to create another annotation.
+      In the following, the heuristic  extraction using
+      scoring rules is demonstrated by a short example:
+
+      <programlisting><![CDATA[Paragraph{CONTAINS(W,1,5)->MARKSCORE(5,Headline)};
+Paragraph{CONTAINS(W,6,10)->MARKSCORE(2,Headline)};
+Paragraph{CONTAINS(Emph,80,100,true)->MARKSCORE(7,Headline)};
+Paragraph{CONTAINS(Emph,30,80,true)->MARKSCORE(3,Headline)};
+Paragraph{CONTAINS(CW,50,100,true)->MARKSCORE(7,Headline)};
+Paragraph{CONTAINS(W,0,0)->MARKSCORE(-50,Headline)};
+Headline{SCORE(10)->MARK(Realhl)};
+Headline{SCORE(5,10)->LOG("Maybe a headline")};]]></programlisting>
 
 
-			In the first part of this rule set, annotations of the type
-			paragraph
-			receive scoring points for a headline annotation, if they
-			fulfill
-			certain CONTAINS conditions. The first condition, for
-			example,
-			evaluates to true, if the paragraph contains one word up to
-			five
-			words, whereas the fourth conditions is fulfilled, if the
-			paragraph
-			contains thirty up to eighty percent of emph annotations.
-			The last
-			two
-			rules finally execute their actions, if the score of a
-			headline
-			annotation exceeds ten points, or lies in the interval of
-			five and
-			ten
-			points, respectively.
-		</para>
-	</section>
-	<section id="ugr.tools.tm.language.modification">
-		<title>Modification</title>
-		<para>
-			There are different actions that can modify the input document,
-			like DEL,
-			COLOR and REPLACE. But the input document itself can not be
-			modified
-			directly. A seperate engine, the Modifier.xml, has to be
-			called in
-			order to create another cas view with the name "modified".
-			In that
-			document all modifications are executed.
-		</para>
-	</section>
+      In the first part of this rule set, annotations of the type
+      paragraph receive scoring points for a headline annotation, if they
+      fulfill  certain CONTAINS conditions. The first condition, for
+      example, evaluates to true, if the paragraph contains one word up to
+      five words, whereas the fourth conditions is fulfilled, if the
+      paragraph contains thirty up to eighty percent of emph annotations.
+      The last two rules finally execute their actions, if the score of a
+      headline annotation exceeds ten points, or lies in the interval of
+      five and ten  points, respectively.
+    </para>
+  </section>
+  <section id="ugr.tools.tm.language.modification">
+    <title>Modification</title>
+    <para>
+      There are different actions that can modify the input document,
+      like DEL,
+      COLOR and REPLACE. But the input document itself can not be
+      modified
+      directly. A separate engine, the Modifier.xml, has to be
+      called in
+      order to create another cas view with the name "modified".
+      In that
+      document all modifications are executed.
+    </para>
+    <para>
+      The following example shows how to import and call the Modifier.xml
+      engine.
+      The example is explained in detail in
+      <xref linkend='ugr.tools.tm.overview.examples' />
+      .
+    </para>
+    <programlisting><![CDATA[ENGINE utils.Modifier;
+Date{-> DEL};
+MoneyAmount{-> REPLACE("<MoneyAmount/>")};
+Document{-> COLOR(Headline, "green")};
+Document{-> EXEC(Modifier)};
+]]></programlisting>
+
+    <para>
+      To get to the modified view of an input document
+      <quote>file1.txt</quote>
+      open the output document
+      <quote>file1.txt.xmi</quote>
+      .
+      In editor do right-click and choose
+      <quote>CAS Views &rarr;
+        modified
+      </quote>
+      .
+    </para>
+  </section>
 </chapter>

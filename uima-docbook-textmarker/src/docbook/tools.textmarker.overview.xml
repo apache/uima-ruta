@@ -33,6 +33,8 @@ under the License.
     <para>
       - rule-based script language
       - imperative execution
+      - rapid prototyping
+      - intuitive and flexible, fast developement
       - extensive tooling support, writing rules is tedious, needs support
       - all about UIMA, AE, TypeSystem... 
     </para>
@@ -48,6 +50,7 @@ under the License.
       - read about the core concepts of TextMarker and take a look at the language examples
       - read the chapter about language for a precise description of the language, rather a reference book
       - workbench chapter for documentation of eclipse-based tooling
+      - example project in SVN
     </para>
   </section>
   
@@ -77,20 +80,20 @@ under the License.
       annotations added by the default seeding of the TextMarker Analysis Engine. There meaning is explained along with the examples. 
     </para>
     <note><para>
-      The examples in this section are not valid script files as they missing at least a package declaration. 
+      The examples in this section are not valid script files as they are missing at least a package declaration. 
       In order to obtain a valid script file, please ensure that all used types are imported or declared and 
       that a package declaration like <quote>PACKAGE uima.textmarker.example;</quote> is added in the first line of the script.
     </para></note>
     <para>
-      The first example consists of a declaration of a type followed by a simple rule. Type declaration always start with the keyword 
+      The first example consists of a declaration of a type followed by a simple rule. Type declaration always starts with the keyword 
       <quote>DECLARE</quote> followed by the short name of the new type. The namespace of the type is equal to the package declaration of the script file.
       There is also the possibility to create more complex types with features or specific parent types, but this will be neglected for now.
       In the example, a simple annotation type with the short name <quote>Animal</quote> is defined.
       After the declaration of the type, a rule with one rule element is given. 
-      TextMarker rules in general  can consist of a sequence of rule elements. Simple rule elements themselves consist of four parts: A matching condition,
+      TextMarker rules in general can consist of a sequence of rule elements. Simple rule elements themselves consist of four parts: A matching condition,
       an optional quantifier, an optional list of conditions and an optional list of actions. The rule element in the 
       following example has a matching condition <quote>W</quote>, an annotation type standing for normal words. 
-      Statements like declarations and rule always end with a semicolon. 
+      Statements like declarations and rules always end with a semicolon. 
     </para>
     
     <programlisting><![CDATA[DECLARE Animal;
@@ -98,7 +101,7 @@ W{REGEXP("dog") -> MARK(Animal)};]]></programlisting>
 
     <para>
       The rule element also contains one condition and one action, both surrounded by curly parentheses. In order to distinguish conditions from actions,
-      they are separated by the <quote>-></quote>. The condition <quote>REGEXP("dog")</quote> indicated that the matched 
+      they are separated by the <quote>-></quote>. The condition <quote>REGEXP("dog")</quote> indicates that the matched 
       word must match the regular expression <quote>dog</quote>. If the matching condition and the additional regular expression are fulfilled, then the action
       is executed, which creates a new annotation of the type <quote>Animal</quote> with the same offsets as the matched token.
       The default seeder does actually not add annotations of the type <quote>W</quote>, but annotations of the types <quote>SW</quote> and 
