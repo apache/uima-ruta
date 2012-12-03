@@ -86,28 +86,58 @@ under the License.
       on the matched annotations. A rule is composed of a sequence of rule elements and a rule element essentially consist of four parts: 
       A matching condition, an optional quantifier, a list of conditions and a list of actions.
       The matching condition is typically a type of an annotation by which the rule element matches on the covered text of one of those annotations.
-      The quantifier specifies, if it is necessary that the rule element successfully matches and how often the rule element my match.
-      The list of conditions specify additional constraints that the matched text or annotations needs to fulfill. The list of action define
+      The quantifier specifies, whether it is necessary that the rule element successfully matches and how often the rule element may match.
+      The list of conditions specify additional constraints that the matched text or annotations need to fulfill. The list of actions defines
       the consequences of the rule and often create new annotations or modify existing annotations. 
-      They are only applied if all rule element of the rule successfully matched.
+      They are only applied if all rule elements of the rule have successfully matched. Examples for TextMarker rules can be found in 
+      <xref linkend="ugr.tools.tm.overview.examples"/>.
     </para>
     <para>
-      Rule cannot be applied on text...
-      TextMarker scripts
-    
-      - what does it look like? rule composition
-            In contrast to similar rule-based systems, TextMarker rules are executed
-      in an imperative manner: the rules are applied in the order they occur in a TextMarker script file.
-      - imperative execution, advantages and disadvantages
-      - depth first matching
-      - projects , scripts files
-      - distinctive language elements for some tasks, one action or condition for one task
-      - where to start with matching? annotations in CAS, default annotation seeding 
-      - work with annotations, just spam them
-      - different approach to get to the final annotation, bottom-up, top-down, transformation-based
-      - scripting elements, strict rule-based approach sometimes inconvenient
-      - seamless integration with other uima components
-      - special features: scoring rules, filtering, modification
+      When TextMarker rule are applied on a document, respectively on a CAS, then they are always grouped in a script file. However, a TextMarker
+      script file contains not only rules, but also other statements. First of all, each script file starts with a package declaration followed by
+      a list of optional imports. Then, common statements like rules, type declarations or blocks build the body and functionality of a script.
+      <xref linkend="ugr.tools.tm.ae.basic.apply"/> gives an example, how TextMarker scripts can be applied in plain Java.
+      TextMarker script files are naturally organized in TextMarker projects, which is a concept of the TextMarker Workbench. 
+      The structure of a TextMarker project is described in <xref linkend="section.ugr.tools.tm.workbench.projects"/>
+    </para>
+    <para>
+      The inference of TextMarker rules, that is the approach how the rules are applied, can be described as imperative, depth-first matching.
+      In contrast to similar rule-based systems, TextMarker rules are applied in the order they are defined in the script.
+      The imperative execution of the matching rules may have disadvantages, but also many advantages like an increased rate of development or 
+      an easier explanation. The second main property of the TextMarker inference is the depth-first matching. When a rule matches on a pattern of annotations, then
+      an alternative is always tracked until it has matched or failed before the next alternative is considered. Therefore, the behavior of a rule may change, if 
+      it has already matched on a early alternative and thus performed an action, which influences some constraints of the rule.
+      Examples, how TextMarker rules are applied, are given in <xref linkend="ugr.tools.tm.overview.examples"/>.
+    </para>
+    <para>
+      The TextMarker language provides the possibility to approach an annotation problem in different ways. Let us distinguish 
+      some approaches as an example.
+      It is common in the TextMarker language to create many annotations of different types. These annotations are probably not the targeted annotation of the domain,
+      but can be helpful to incrementally approximate that interesting annotation. This enables the user to work <quote>bottom-up</quote> and <quote>top-down</quote>.
+      In the former approach, the rules add incrementally more complex annotations using simple ones until the target annotation could be created.
+      In the latter approach, the rules get more and more specific while partitioning the document in smaller segments, which result in the targeted annotation in the end.
+      By using many <quote>helper</quote>-annotations the engineering task becomes easier and more comprehensive.
+      The TextMarker language provides distinctive language elements for different tasks. There are, for example, actions 
+      that are able to create new annotations, actions that are able to remove annotations and actions that are able to modify the
+      offsets of an annotation. This enables - amongst other things - an transformation-based approach. The user starts by creating general rules that are able to
+      annotate most of the interesting text fragments. However, these rule are then not becoming more complex by adding more conditions for situations where they fail.
+      Here, additional rules are defined that correct the mistakes of the general rules, e.g., by deleting false positive annotations.
+      <xref linkend="ugr.tools.tm.overview.examples"/> provides some examples how TextMarker rule can be engineered.
+    </para>
+    <para>
+      Manually writing rules is a tedious and error-prone process. The <link linkend="ugr.tools.tm.workbench">TextMarker Workbench</link>
+      was developed for facilitate writing rules by providing as much tooling support as possible. This includes, for example, syntax checking and auto completion, which
+      make the development less error-prone. The user can annotate documents and use these documents as unit tests for test-driven development or 
+      quality maintenance. Sometimes, it is necessary to debug the rules because they did not match as expected. For this use case, the explanation perspective provides views
+      that explain every detail of the matching process. Finally, the TextMarker language can also be used by the tooling, for example, by the <quote>Query</quote> view.
+      Here, the user can use TextMarker rules as query statements in order to investigate annotated documents.
+    </para>
+    <para>
+      TextMarker smoothly integrates with Apache UIMA. First of all, the TextMarker rules are applied using a generic Analysis Engine and thus TextMarker scripts can 
+      easily added to Apache UIMA pipelines. TextMarker also provides the functionality to import and use other UIMA components like Analysis Engines and Type Systems.
+      TextMarker rules can refer to every type defined in an imported type system and the TextMarker Workbench generates a type system descriptor file containing all 
+      type that were defined in a script file. Any Analysis Engine can be executed by rules as long as their implementation is available in the classpath. Therefore,
+      functionality outsourced in an arbitrary Analysis Engine can be added and used within TextMarker.
     </para>
   </section>
   

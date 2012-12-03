@@ -286,7 +286,7 @@ under the License.
       <quote>test1.result.xmi</quote>
       in the TextMarker example project, changes the True Positive view as shown in
       <xref linkend='figure.ugr.tools.tm.workbench.testing.true_positive' />.
-      Notice that the type system, which will used by the CAS Editor to open the evaluated file, 
+      Notice that the type system, which will be used by the CAS Editor to open the evaluated file, 
       can only be resolved for the tested script, if the test files are located in the associated
       folder structure, that is the folder with the name of the script. If the files are located 
       in the temp folder, for example by adding the files to the list of test cases by drag and drop,
