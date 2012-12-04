@@ -79,7 +79,7 @@ public abstract class TextRulerRule {
     needsCompile = flag;
   }
 
-  protected String getRulesFileContent() {
+  public String getRulesFileContent() {
     return algorithm.getTMFileHeaderString() + getRuleString() + "\n";
   }
 

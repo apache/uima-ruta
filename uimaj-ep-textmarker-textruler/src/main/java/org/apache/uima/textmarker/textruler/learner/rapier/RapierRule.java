@@ -304,7 +304,7 @@ public class RapierRule extends TextRulerSingleSlotRule {
   }
 
   @Override
-  protected String getRulesFileContent() {
+  public String getRulesFileContent() {
     String theString;
     if (hasListItemAtBorder()) {
       ArrayList<RapierRule> rules = createAllTestRules();
