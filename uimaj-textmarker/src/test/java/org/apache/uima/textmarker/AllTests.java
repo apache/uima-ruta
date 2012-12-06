@@ -30,7 +30,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({ DynamicAnchoringTest.class, DynamicAnchoringTest2.class, FilteringTest.class,
     LiteralStringMatchTest.class, LongGreedyTest.class, OutOfWindowTest.class,
-    QuantifierTest1.class, QuantifierTest2.class, RuleInferenceTest.class,
+    QuantifierTest1.class, QuantifierTest2.class, QuantifierTest3.class, RuleInferenceTest.class,
     RuleInferenceTest2.class, RuleInferenceTest3.class, AllActionsTest.class,
     AllConditionsTest.class, CurrentCountTest.class,
     PartOfTest.class, PositionTest.class, DefaultSeederTest.class })

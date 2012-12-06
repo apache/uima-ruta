@@ -110,9 +110,9 @@ public class MinMaxReluctant implements RuleElementQuantifier {
     nextElement.continueMatch(after, annotation, extendedMatch, null, extendedContainerMatch, null,
             nextElement, stream, crowd);
     List<RuleElementMatch> nextList = extendedContainerMatch.getInnerMatches().get(nextElement);
-    boolean nextMatched = (nextList == null || nextList.isEmpty());
+    boolean nextMatched = (nextList != null && !nextList.isEmpty());
 
-    return matchedSize < maxValue
+    return (matchedSize < maxValue && matchedSize >= minValue && !nextMatched)
             || (!lastMatch.matched() && matchedSize >= minValue && matchedSize <= maxValue && !nextMatched);
   }
 
