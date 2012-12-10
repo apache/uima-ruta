@@ -28,11 +28,9 @@
       <emphasis role="bold">Definition:</emphasis>
     </title>
     <para>
-<programlisting><![CDATA[
-TextmarkerExpression  ->   TypeExpression | NumberExpression | 
+<programlisting><![CDATA[TextmarkerExpression  ->   TypeExpression | NumberExpression | 
                            StringExpression | BooleanExpression
-                           | ListExpression
-]]></programlisting>
+                           | ListExpression]]></programlisting>
     </para>
   </section>
 
@@ -58,9 +56,7 @@ TextmarkerExpression  ->   TypeExpression | NumberExpression |
           <emphasis role="bold">Definition:</emphasis>
         </title>
         <para>
-<programlisting><![CDATA[
-TypeExpression       ->  AnnotationType | TypeVariable
-]]></programlisting>
+<programlisting><![CDATA[TypeExpression       ->  AnnotationType | TypeVariable]]></programlisting>
         </para>
       </section>
       <section>
@@ -90,8 +86,7 @@ Document{->ASSIGN(typeVar, Author)};]]></programlisting>
           <emphasis role="bold">Definition:</emphasis>
         </title>
         <para>
-          <programlisting><![CDATA[
-NumberExpression         -> AdditiveExpression
+          <programlisting><![CDATA[NumberExpression         -> AdditiveExpression
 AdditiveExpression       -> MultiplicativeExpression ( ( "+" | "-" ) 
                             MultiplicativeExpression )*
 MultiplicativeExpression -> SimpleNumberExpression ( ( "*" | "/" | "%" ) 
@@ -122,9 +117,9 @@ Digit                 -> ('0'..'9') ]]></programlisting>
         </title>
         <para>
           <programlisting><![CDATA[98     // a integer number literal
-104L   // a integer number literal
+104   // a integer number literal
 170.02   // a floating-point number literal
-1.0845D // a floating-point number literal in double precision]]></programlisting>
+1.0845 // a floating-point number literal]]></programlisting>
         </para>
         <para>
           <programlisting><![CDATA[INT intVar1;
@@ -276,8 +271,7 @@ BooleanLiteral    ->  "true" | "false"]]></programlisting>
           <emphasis role="bold">Definition:</emphasis>
         </title>
         <para>
-<programlisting><![CDATA[
-ListExpression  ->   WordListExpression | WordTableExpression |
+<programlisting><![CDATA[ListExpression  ->   WordListExpression | WordTableExpression |
                      TypeListExpression | NumberListExpression |
                      StringListExpression | BooleanListExpression
 WordListExpression     ->  RessourceLiteral | WordListVariable
@@ -293,8 +287,7 @@ BooleanListExpression  ->  BooleanListVariable
         </para>
         <para>
           List variables are defined in
-          <xref linkend='ugr.tools.tm.language.declarations.variable' />
-          .
+          <xref linkend='ugr.tools.tm.language.declarations.variable' />.
         </para>
       </section>
     </para>

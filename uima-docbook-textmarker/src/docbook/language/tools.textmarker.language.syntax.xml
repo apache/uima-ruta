@@ -32,23 +32,22 @@ GlobalStatments     -> GlobalStatement*
 GlobalStatment      -> ("TYPESYSTEM" | "SCRIPT" | "ENGINE") 
                        DottedIdentifier2 ";"
 Statements          -> Statement*
-Statement           -> Declaration | VariableDeclaration | BlockDeclaration
-                       | AutomataDeclaration | SimpleStatement ";"
-]]></programlisting>
+Statement           -> Declaration | VariableDeclaration 
+                        | BlockDeclaration | SimpleStatement ";"]]></programlisting>
     Comments are excluded from the syntax definition. Comments start with
     "//" and always go to the end of the line.
   </para>
   <para>
     Example beginning of a TextMarker file:
-    <programlisting><![CDATA[PACKAGE de.uniwue.example;
+    <programlisting><![CDATA[PACKAGE uima.textmarker.example;
 
 // import the types of this type system 
-// (located in the descriptor folder -> de.uniwue.example folder)
+// (located in the descriptor folder -> types folder)
 TYPESYSTEM types.BibtexTypeSystem;
 
-SCRIPT de.uniwue.example.Author;
-SCRIPT de.uniwue.example.Title;
-SCRIPT de.uniwue.example.Year;
+SCRIPT uima.textmarker.example.Author;
+SCRIPT uima.textmarker.example.Title;
+SCRIPT uima.textmarker.example.Year;
 ]]></programlisting>
 
     Syntax of declarations:
@@ -58,53 +57,50 @@ SCRIPT de.uniwue.example.Year;
 FeatureDeclaration  -> ( (AnnotationType | "STRING" | "INT" | "FLOAT"
                        "DOUBLE" | "BOOLEAN") Identifier) )+
 VariableDeclaration -> (("TYPE" Identifier ("," Identifier)* 
-                                                     ("=" AnnotationType)?) 
-                       | ("STRING" Identifier ("," Identifier)* 
-                                                   ("=" StringExpression)?) 
-                       | (("INT" | "DOUBLE" | "FLOAT") Identifier 
-                                 ("," Identifier)* ("=" NumberExpression)?) 
-                       | ("BOOLEAN" Identifier ("," Identifier)* 
-                                                  ("=" BooleanExpression)?)
-                       | ("WORDLIST" Identifier ("=" WordListExpression)?) 
-                       | ("WORDTABLE" Identifier ("=" WordTableExpression)?)
-                       | ("TYPELIST" Identifier ("=" TypeListExpression)?) 
-                       | ("STRINGLIST" Identifier 
-                                               ("=" StringListExpression)?) 
-                       | (("INTLIST" | "DOUBLELIST" | "FLOATLIST") 
-                                    Identifier ("=" NumberListExpression)?) 
-                       | ("BOOLEANLIST" Identifier 
-                                             ("=" BooleanListExpression)?))
+                                                   ("=" AnnotationType)?) 
+                     | ("STRING" Identifier ("," Identifier)* 
+                                                 ("=" StringExpression)?) 
+                     | (("INT" | "DOUBLE" | "FLOAT") Identifier 
+                               ("," Identifier)* ("=" NumberExpression)?) 
+                     | ("BOOLEAN" Identifier ("," Identifier)* 
+                                                ("=" BooleanExpression)?)
+                     | ("WORDLIST" Identifier ("=" WordListExpression)?) 
+                     | ("WORDTABLE" Identifier ("=" WordTableExpression)?)
+                     | ("TYPELIST" Identifier ("=" TypeListExpression)?) 
+                     | ("STRINGLIST" Identifier 
+                                             ("=" StringListExpression)?) 
+                     | (("INTLIST" | "DOUBLELIST" | "FLOATLIST") 
+                                  Identifier ("=" NumberListExpression)?) 
+                     | ("BOOLEANLIST" Identifier 
+                                           ("=" BooleanListExpression)?))
 AnnotationType      ->  BasicAnnotationType | declaredAnnotationType
 BasicAnnotationType ->  ('COLON'| 'SW' | 'MARKUP' | 'PERIOD' | 'CW'| 'NUM' 
-                        | 'QUESTION' | 'SPECIAL' | 'CAP' | 'COMMA' 
-                        | 'EXCLAMATION' | 'SEMICOLON' | 'NBSP'| 'AMP' | '_' 
-                        | 'SENTENCEEND' | 'W' | 'PM' | 'ANY' | 'ALL' 
-                        | 'SPACE' | 'BREAK') 
+                      | 'QUESTION' | 'SPECIAL' | 'CAP' | 'COMMA' 
+                      | 'EXCLAMATION' | 'SEMICOLON' | 'NBSP'| 'AMP' | '_' 
+                      | 'SENTENCEEND' | 'W' | 'PM' | 'ANY' | 'ALL' 
+                      | 'SPACE' | 'BREAK') 
 BlockDeclaration       -> "BLOCK" "(" Identifier ")" RuleElementWithCA 
-                                                         "{" Statements "}"
-AutomataDeclaration    -> "RULES" "(" Identifier ")" RuleElementWithCA 
-                                                         "{" Statements "}"
-]]></programlisting>
+                                                       "{" Statements "}"]]></programlisting>
 
     Syntax of statements and rule elements
     <programlisting><![CDATA[SimpleStatement        -> RuleElements ";"
 RuleElements           -> RuleElement+
 RuleElement            -> RuleElementType | RuleElementLiteral 
-                          | RuleElementComposed | RuleElementDisjunctive
+                        | RuleElementComposed | RuleElementDisjunctive
 RuleElementType        ->  TypeExpression QuantifierPart? 
-                                           ("{" Conditions?  Actions? "}")?
+                                         ("{" Conditions?  Actions? "}")?
 RuleElementWithCA      ->  TypeExpression QuantifierPart? 
-                                              "{" Conditions?  Actions? "}"
+                                            "{" Conditions?  Actions? "}"
 RuleElementLiteral     ->  SimpleStringExpression QuantifierPart? 
-                                              "{" Conditions?  Actions? "}"
+                                            "{" Conditions?  Actions? "}"
 RuleElementComposed    -> "(" RuleElements ")" QuantifierPart? 
-                                              "{" Conditions?  Actions? "}"
+                                            "{" Conditions?  Actions? "}"
 RuleElementDisjunctive -> "(" (TypeExpression | SimpleStringExpression) 
-                          ("|" (TypeExpression | SimpleStringExpression) )+ 
-                           ")" QuantifierPart? "{" Conditions?  Actions? }"
+                        ("|" (TypeExpression | SimpleStringExpression) )+ 
+                         ")" QuantifierPart? "{" Conditions?  Actions? }"
 QuantifierPart         -> "*" | "*?" | "+" | "+?" | "?" | "??" 
-                          | "[" NumberExpression "," NumberExpression "]"
-                          | "[" NumberExpression "," NumberExpression "]?"       
+                        | "[" NumberExpression "," NumberExpression "]"
+                        | "[" NumberExpression "," NumberExpression "]?"       
 Conditions             -> Condition ( "," Condition )*
 Actions                -> "->" Action ( "," Action)*
 ]]></programlisting>

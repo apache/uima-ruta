@@ -26,8 +26,7 @@
       TextMarkerExpressions to a given list. For example this expressions
       could be a string, an integer variable or a list itself. For a
       complete overview on Textmarker expressions see
-      <xref linkend='ugr.tools.tm.language.expressions' />
-      .
+      <xref linkend='ugr.tools.tm.language.expressions' />.
     </para>
     <section>
       <title>
@@ -403,11 +402,11 @@
       </title>
       <para>
         <programlisting><![CDATA[DECLARE Annotation A;
-        DECLARE Annotation B;
-        DECLARE Annotation C(Annotation a, Annotation b);
-        W{REGEXP("A")->MARK(A)};
-        W{REGEXP("B")->MARK(B)};
-        A B{-> GATHER(C, 1, 2, "a" = 1, "b" = 2)};]]></programlisting>
+DECLARE Annotation B;
+DECLARE Annotation C(Annotation a, Annotation b);
+W{REGEXP("A")->MARK(A)};
+W{REGEXP("B")->MARK(B)};
+A B{-> GATHER(C, 1, 2, "a" = 1, "b" = 2)};]]></programlisting>
       </para>
       <para>
         Two annotations A and B are declared and annotated. The last
@@ -646,8 +645,8 @@
       </title>
       <para>
         <programlisting><![CDATA[WORDLIST FirstNameList = 'FirstNames.txt';
-        DECLARE FirstName;
-        Document{-> MARKFAST(FirstName, FirstNameList, true, 2)};]]></programlisting>
+DECLARE FirstName;
+Document{-> MARKFAST(FirstName, FirstNameList, true, 2)};]]></programlisting>
       </para>
       <para>
         This rule annotates all first names listed in the list
@@ -770,9 +769,7 @@
       entries of the given table to features of the created annotation.
       For
       more information on tables see
-      <xref linkend='ugr.tools.tm.language.declarations.ressource' />
-      . Additionally several configuration parameters are possible. (See
-      example.)
+      <xref linkend='ugr.tools.tm.language.declarations.ressource' />. Additionally several configuration parameters are possible. (See example.)
     </para>
     <section>
       <title>
@@ -780,7 +777,8 @@
       </title>
       <para>
         <programlisting><![CDATA[MARKTABLE(TypeExpression, NumberExpression, TableExpression 
-          (,BooleanExpression, NumberExpression, StringExpression, NumberExpression)? 
+          (,BooleanExpression, NumberExpression, 
+          StringExpression, NumberExpression)? 
           (,StringExpression = NumberExpression)+)]]></programlisting>
       </para>
     </section>
@@ -790,8 +788,9 @@
       </title>
       <para>
         <programlisting><![CDATA[WORDTABLE TestTable = 'TestTable.csv';
-        DECLARE Annotation Struct(STRING first);
-        Document{-> MARKTABLE(Struct, 1, TestTable, true, 4, ".,-", 2, "first" = 2)};]]></programlisting>
+DECLARE Annotation Struct(STRING first);
+Document{-> MARKTABLE(Struct, 1, TestTable, 
+    true, 4, ".,-", 2, "first" = 2)};]]></programlisting>
       </para>
       <para>
         In this example, the whole document is searched for all
@@ -925,8 +924,7 @@
       The REPLACE action replaces the text of all matched annotations with
       the given StringExpression. It remembers the modification for the
       matched annotations and shows them in the modified view (see
-      <xref linkend='ugr.tools.tm.views.browser' />
-      ).
+      <xref linkend='ugr.tools.tm.language.modification' />).
     </para>
     <section>
       <title>

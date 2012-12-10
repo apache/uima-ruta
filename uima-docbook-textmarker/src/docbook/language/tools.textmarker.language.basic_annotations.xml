@@ -20,28 +20,16 @@
   <title>Basic annotations and tokens</title>
   <para>
     The TextMarker system uses a JFlex lexer to initially create a
-    seed of
-    basic token annotations. These tokens build a hierarchy
-    which is shown
-    in
-    <xref linkend='figure.ugr.tools.tm.language.seeding.basic_token' />
-    . The
-    <quote>ALL</quote>
-    (green) annotation is the root of the hierarchy. ALL and the red
+    seed of basic token annotations. These tokens build a hierarchy
+    which is shown in <xref linkend='figure.ugr.tools.tm.language.seeding.basic_token' />. The
+    <quote>ALL</quote> (green) annotation is the root of the hierarchy. ALL and the red
     marked annotation types are abstract. This means that they are not
-    actually
-    created by the lexer. An overview of these abstract types can
-    be found in
-    <xref linkend='table.ugr.tools.tm.language.seeding.basic_token.abstract' />
-    . The leafs of the hierarchy (blue) are created by the lexer. Each
-    leaf is
-    an own type but also inherits the types of the abstract
+    actually created by the lexer. An overview of these abstract types can
+    be found in <xref linkend='table.ugr.tools.tm.language.seeding.basic_token.abstract' />. The leafs of the hierarchy (blue) are created by the lexer. Each
+    leaf is an own type but also inherits the types of the abstract
     annotation types further up in the hierarchy. The leaf types are
-    described in
-    more detail in
-    <xref linkend='table.ugr.tools.tm.language.seeding.basic_token.created' />
-    Each text unit within an input
-    document belongs to exactly one of these
+    described in more detail in <xref linkend='table.ugr.tools.tm.language.seeding.basic_token.created' />
+    Each text unit within an input document belongs to exactly one of these
     annotation types.
   </para>
   <para>

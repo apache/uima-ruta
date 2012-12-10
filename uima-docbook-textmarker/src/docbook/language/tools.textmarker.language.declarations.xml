@@ -19,23 +19,17 @@
 <section id="ugr.tools.tm.language.declarations">
   <title>Declarations</title>
   <para>
-    There are three different kinds of declarations in the
-    TextMarker
-    system:
-    Declarations of types with optional feature
-    definitions,
+    There are three different kinds of declarations in the TextMarker system:
+    Declarations of types with optional feature definitions,
     declarations of variables and declarations for importing
-    external
-    resources, further TextMarker scripts and UIMA components
-    such as type
-    systems and analysis engines.
+    external resources, further TextMarker scripts and UIMA components
+    such as type systems and analysis engines.
   </para>
   <section id="ugr.tools.tm.language.declarations.type">
     <title>Type</title>
     <para>
       Type declarations define new kinds of annotation types and
-      optionally
-      its features.
+      optionally its features.
       <section>
         <title>
           <emphasis role="bold">Example:</emphasis>
@@ -43,8 +37,8 @@
         <para>
           <programlisting><![CDATA[DECLARE SimpleType1, SimpleType2; // <- two new types with the parent 
                                   // type "Annotation"
-DECLARE ParentType NewType (SomeType feature1, INT feature2); // <- defines 
-      // a new type "NewType" with parent type "ParentType" and two features]]></programlisting>
+DECLARE ParentType NewType (SomeType feature1, INT feature2); 
+  // a new type "NewType" with parent type "ParentType" and two features]]></programlisting>
         </para>
         <para>
           Attention: Types with features need

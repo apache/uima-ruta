@@ -30,10 +30,10 @@
 
       Examples:
       <programlisting><![CDATA[Input:    small Big Big Big small
-                Rule:     CW*
-                Matched:  Big Big Big  
-                Matched:  Big Big 
-                Matched:  Big]]></programlisting>
+Rule:     CW*
+Matched:  Big Big Big  
+Matched:  Big Big 
+Matched:  Big]]></programlisting>
     </para>
   </section>
   <section id="ugr.tools.tm.language.quantifier.sr">
@@ -46,10 +46,10 @@
 
       Examples:
       <programlisting><![CDATA[Input:    123 456 small small Big 
-                Rule:     W*? CW
-                Matched:  small small Big
-                Matched:  small Big
-                Matched:  Big]]></programlisting>
+Rule:     W*? CW
+Matched:  small small Big
+Matched:  small Big
+Matched:  Big]]></programlisting>
     </para>
   </section>
   <section id="ugr.tools.tm.language.quantifier.pg">
@@ -65,9 +65,9 @@
       Examples:
 
       <programlisting><![CDATA[Input:    123 456 small small Big 
-                Rule:     SW+ 
-                Matched:  small small
-                Matched:  small]]></programlisting>
+Rule:     SW+ 
+Matched:  small small
+Matched:  small]]></programlisting>
     </para>
   </section>
   <section id="ugr.tools.tm.language.quantifier.pr">
@@ -81,8 +81,8 @@
 
       Examples:
       <programlisting><![CDATA[Input:    123 456 small small Big 
-                Rule:     W+? CW
-                Matched:  small small Big]]></programlisting>
+Rule:     W+? CW
+Matched:  small small Big]]></programlisting>
     </para>
   </section>
   <section id="ugr.tools.tm.language.quantifier.qg">
@@ -93,8 +93,8 @@
 
       Examples:
       <programlisting><![CDATA[Input:    123 456 small Big small Big 
-                Rule:     SW CW? SW
-                Matched:  small Big small]]></programlisting>
+Rule:     SW CW? SW
+Matched:  small Big small]]></programlisting>
     </para>
   </section>
   <section id="ugr.tools.tm.language.quantifier.qr">
@@ -108,8 +108,8 @@
 
       Examples:
       <programlisting><![CDATA[Input:    123 456 small Big small Big 
-                Rule:     SW CW?? SW
-                Matched:  small Big small]]></programlisting>
+Rule:     SW CW?? SW
+Matched:  small Big small]]></programlisting>
     </para>
   </section>
   <section id="ugr.tools.tm.language.quantifier.mmg">
@@ -120,8 +120,8 @@
 
       Examples:
       <programlisting><![CDATA[Input:    123 456 small Big small Big 
-                Rule:     SW CW[1,2] SW
-                Matched:  small Big small]]></programlisting>
+Rule:     SW CW[1,2] SW
+Matched:  small Big small]]></programlisting>
     </para>
   </section>
   <section id="ugr.tools.tm.language.quantifier.mmr">
@@ -137,8 +137,8 @@
 
       Examples:
       <programlisting><![CDATA[Input:    123 456 small Big Big Big small Big 
-                Rule:     SW CW[2,100]? SW
-                Matched:  small Big Big Big small]]></programlisting>
+Rule:     SW CW[2,100]? SW
+Matched:  small Big Big Big small]]></programlisting>
     </para>
   </section>
 </section>

@@ -550,13 +550,15 @@ TypeSystemDescription basicTypeSystem = aed.getAnalysisEngineMetaData().
 Collection<TypeSystemDescription> tsds = 
     new ArrayList<TypeSystemDescription>();
 tsds.add(basicTypeSystem);
-// add some other type system descriptors that are needed by your script file   
+// add some other type system descriptors 
+// that are needed by your script file   
 TypeSystemDescription mergeTypeSystems = CasCreationUtils.
     mergeTypeSystems(tsds);
 aed.getAnalysisEngineMetaData().setTypeSystem(mergeTypeSystems);
 aed.resolveImports(resMgr);
         
-AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed, resMgr, null);
+AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed, 
+    resMgr, null);
 File scriptFile = new File("path/to/file/MyScript.tm");
 ae.setConfigParameterValue(TextMarkerEngine.SCRIPT_PATHS, 
     new String[] { scriptFile.getParent().getAbsolutePath() });
@@ -829,11 +831,9 @@ ae.process(cas);]]></programlisting>
         <section id="ugr.tools.tm.ae.basic.parameter.additionalScripts">
           <title>additionalScripts</title>
           <para>
-            The parameter additionalScripts is defined as a list of string values and contains script files, 
-            which are additionally loaded by the analysis engine. These script files are specified by their 
+            The parameter additionalScripts is defined as a list of string values and contains script files, which are additionally loaded by the analysis engine. These script files are specified by their 
             complete namespace, exactly like the value of the parameter <link linkend='ugr.tools.tm.ae.basic.parameter.mainScript'>mainScript</link> 
-            and can be refered to by language elements, e.g., by executing the containing rules. An exemplary 
-            value of this parameter is "org.apache.uima.SecondaryScript". In this example, the main script could import 
+            and can be refered to by language elements, e.g., by executing the containing rules. An exemplary value of this parameter is "org.apache.uima.SecondaryScript". In this example, the main script could import 
             this script file by the declaration "SCRIPT org.apache.uima.SecondaryScript;" and then could execute it with the rule 
             "Document{-> CALL(SecondaryScript)};". 
           </para>
