@@ -5,16 +5,24 @@
 <!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
 %uimaents;
 ]>
-<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
-  license agreements. See the NOTICE file distributed with this work for additional 
-  information regarding copyright ownership. The ASF licenses this file to 
-  you under the Apache License, Version 2.0 (the "License"); you may not use 
-  this file except in compliance with the License. You may obtain a copy of 
-  the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
-  by applicable law or agreed to in writing, software distributed under the 
-  License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
-  OF ANY KIND, either express or implied. See the License for the specific 
-  language governing permissions and limitations under the License. -->
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
 
 <chapter id="ugr.tools.tm.language.language">
   <title>TextMarker Language</title>
@@ -81,31 +89,30 @@ Dr.JoachimBaumeister
       <quote>FILTERTYPE</quote>
       or
       <quote>RETAINTYPE</quote>
-      action. For example if markups should no longer be ignored, try the
-      following example on the above input document:
+      action. For example if markups should no longer be ignored, try
+      the following example on the above input document:
       <programlisting><![CDATA[Document{->RETAINTYPE(MARKUP)};
 "Dr" PERIOD CW CW
 ]]></programlisting>
-      You will see, that the third line of the previous input example will
-      no longer be matched.
+      You will see that the third line of the previous input example
+      will  no longer be matched.
     </para>
     <para>
       To filter types try the following on the input document:
       <programlisting><![CDATA[Document{->FILTERTYPE(PERIOD)};
 "Dr" CW CW
 ]]></programlisting>
-      Since periods are ignored now, the rule will match on all four lines
-      of the example.
+      Since periods are ignored now, the rule will match on all four
+      lines of the example.
     </para>
     <para>
       Notice that using a filtered annotation type within a
-      rule, prevents
-      this rule from being executed. Try the following:
+      rule, prevents this rule from being executed. Try the following:
       <programlisting><![CDATA[Document{->FILTERTYPE(PERIOD)};
 "Dr" PERIOD CW CW
 ]]></programlisting>
-      You will see that this matches on no line of the input document since
-      the second rule uses the filtered type PERIOD and is therefore not
+      You will see that this matches on no line of the input document
+      since the second rule uses the filtered type PERIOD and is therefore not
       executed.
     </para>
   </section>
@@ -164,7 +171,8 @@ RuleElementWithCA      ->  TypeExpression QuantifierPart?
       scope
       is the related block. So if you use
       <literal>Document</literal>
-      within a block, this always refers to the locally limited document.
+      within a block, this always refers to the locally limited
+      document.
       <programlisting><![CDATA[BLOCK(ForEach) Paragraph{} {
     Document{COUNT(CW)}; // Here "Document" is limited to a Paragraph;
                // therefore the rule only counts the CW annotations
@@ -211,7 +219,8 @@ BLOCK(GermanDates) Document{FEATURE("language", "de")} {
         -Loops
       </title>
       <para>
-        A block can be used to execute the containing rules on a sequence of
+        A block can be used to execute the containing rules on a
+        sequence of
         similar text passages, therefore representing a
         <quote>foreach</quote>
         like loop.
@@ -228,9 +237,11 @@ BLOCK(ForEach) Sentence{} {
         .
       </para>
       <para>
-        This construction is especially useful, if you have a set of rules
+        This construction is especially useful, if you have a set of
+        rules
         which has to be executed continously on the same part of an input
-        document. Lets assume you have already annotated your document with
+        document. Lets assume you have already annotated your document
+        with
         Paragraph annotations. Now you want to count the number of words
         within each paragraph and if the number of words is bigger than 500
         annotate it as BigParagraph. Therefore you wrote the following
@@ -242,7 +253,8 @@ Paragraph{IF(numberOfWords > 500) -> MARK(BigParagraph)};
 ]]></programlisting>
         This will not work. The reason is that the rule which counts the
         number of words within a Paragraph is executed on all Paragraphs
-        before the last rule which marks the Paragraph as BigParagraph is
+        before the last rule which marks the Paragraph as BigParagraph
+        is
         even executed once. Therefore when reaching the last rule in this
         example, the variable
         <literal>numberOfWords</literal>
@@ -275,7 +287,8 @@ BLOCK(IsBig) Paragraph{} {
     <section id="ugr.tools.tm.language.blocks.procedure">
       <title>Procedures</title>
       <para>
-        Blocks can be used to introduce procedures into TextMarker language.
+        Blocks can be used to introduce procedures into TextMarker
+        language.
         To do this declare a block as before. Lets assume you want to
         simulate a procedure
         <programlisting><![CDATA[public int countAmountOfTypesInDocument(Type type){
@@ -292,7 +305,8 @@ public static void main() {
   int amount = countAmountOfTypesInDocument(Paragraph));
 }            
 ]]></programlisting>
-        which counts the number of the passed type wihtin the document and
+        which counts the number of the passed type wihtin the document
+        and
         gives back the counted number. This can be done in the following
         way:
         <programlisting><![CDATA[BOOLEAN executeProcedure = false;
@@ -309,10 +323,15 @@ Document{->CALL(MyScript.countNumberOfTypesInDocument)};
 ]]></programlisting>
         The boolean variable
         <literal>executeProcedure</literal>
-        is used to prohibit the execution of the block when the interpreter
-        first reaches the block since this is no procedure call. The block can be called 
-                by referring to it with its name, preceded by the name of the script the 
-                block is defined in. In this exmaple, the script is called MyScript.tm.
+        is used to prohibit the execution of the block when the
+        interpreter
+        first reaches the block since this is no procedure call. The block
+        can be called
+        by referring to it with its name, preceded by the name
+        of the script
+        the
+        block is defined in. In this exmaple, the script is
+        called MyScript.tm.
       </para>
     </section>
 
@@ -321,21 +340,35 @@ Document{->CALL(MyScript.countNumberOfTypesInDocument)};
     <title>Heuristic extraction using scoring rules</title>
     <para>
       Diagnostic scores are a well known and successfully applied
-      knowledge formalization pattern for diagnostic problems. Single known
-      findings valuate a possible solution by adding or subtracting points
-      on an account of that solution. If the sum exceeds a given threshold,
-      then the solution is derived. One of the advantages of this pattern
-      is the robustness against missing or false findings, since a high
-      number of findings is used to derive a solution.
+      knowledge
+      formalization pattern for diagnostic problems. Single known
+      findings
+      valuate a possible solution by adding or subtracting points
+      on an
+      account of that solution. If the sum exceeds a given threshold,
+      then
+      the solution is derived. One of the advantages of this pattern
+      is the
+      robustness against missing or false findings, since a high
+      number of
+      findings is used to derive a solution.
 
-      The TextMarker system tries to transfer this diagnostic problem
+      The TextMarker system tries to
+      transfer this diagnostic problem
       solution strategy to the
-      information  extraction problem. In addition to a
-      normal creation of a new annotation, a MARKSCORE action can add positive
-      or negative scoring  points to the text fragments matched by the rule
-      elements. The current value of heuristic points of an annotation can
-      be evaluated by  the SCORE condition, which can be used in an additional rule to create another annotation.
-      In the following, the heuristic  extraction using
+      information
+      extraction problem. In addition to a
+      normal creation of a new
+      annotation, a MARKSCORE action can add positive
+      or negative scoring
+      points to the text fragments matched by the rule
+      elements. The current
+      value of heuristic points of an annotation can
+      be evaluated by the
+      SCORE condition, which can be used in an
+      additional rule to create
+      another annotation.
+      In the following, the heuristic extraction using
       scoring rules is demonstrated by a short example:
 
       <programlisting><![CDATA[Paragraph{CONTAINS(W,1,5)->MARKSCORE(5,Headline)};
@@ -349,14 +382,22 @@ Headline{SCORE(5,10)->LOG("Maybe a headline")};]]></programlisting>
 
 
       In the first part of this rule set, annotations of the type
-      paragraph receive scoring points for a headline annotation, if they
-      fulfill  certain CONTAINS conditions. The first condition, for
-      example, evaluates to true, if the paragraph contains one word up to
-      five words, whereas the fourth conditions is fulfilled, if the
-      paragraph contains thirty up to eighty percent of emph annotations.
-      The last two rules finally execute their actions, if the score of a
-      headline annotation exceeds ten points, or lies in the interval of
-      five and ten  points, respectively.
+      paragraph
+      receive scoring points for a headline annotation, if they
+      fulfill
+      certain CONTAINS conditions. The first condition, for
+      example,
+      evaluates to true, if the paragraph contains one word up to
+      five
+      words, whereas the fourth conditions is fulfilled, if the
+      paragraph
+      contains thirty up to eighty percent of emph annotations.
+      The last two
+      rules finally execute their actions, if the score of a
+      headline
+      annotation exceeds ten points, or lies in the interval of
+      five and ten
+      points, respectively.
     </para>
   </section>
   <section id="ugr.tools.tm.language.modification">
@@ -373,7 +414,8 @@ Headline{SCORE(5,10)->LOG("Maybe a headline")};]]></programlisting>
       document all modifications are executed.
     </para>
     <para>
-      The following example shows how to import and call the Modifier.xml
+      The following example shows how to import and call the
+      Modifier.xml
       engine.
       The example is explained in detail in
       <xref linkend='ugr.tools.tm.overview.examples' />
@@ -398,5 +440,138 @@ Document{-> EXEC(Modifier)};
       </quote>
       .
     </para>
+  </section>
+
+  <section id="ugr.tools.tm.language.external_resources">
+    <title>External resources</title>
+    <para>
+      Imagine you have a set of documents containing lots of different
+      first names. (As example we use a short list, containing the first
+      names
+      <quote>Frank</quote>
+      ,
+      <quote>Peter</quote>
+      ,
+      <quote>Jochen</quote>
+      and
+      <quote>Martin</quote>
+      .)
+      If you would like to annotate all of them with a
+      <quote>FirstName</quote>
+      annotation you could write a script using the rule
+      <literal>("Frank" | "Peter" | "Jochen" |
+        "Martin"){->MARK(FirstName)};</literal>.
+      This does exactly what you want. But in fact it is not very handy.
+      If you like to add new first names to the list of recognized first
+      names you have to change the rule itself every time. Moreover writing
+      rules with possibly hundreds of first names
+      is not really practically realizable and definitely not efficient if you have
+      the list of first names already as a simple text file. Using this text file directly
+      would much reduce the effort.
+    </para>
+    <para>
+      Therefore TextMarker provides two kinds of external resources to
+      solve such tasks more easily: WORDLISTs and WORDTABLEs.
+    </para>
+    <section>
+      <title>WORDLISTs</title>
+      <para>
+        A WORDLIST is simply a list of text items. There are three
+        different possibilities of how to provide a WORDLIST to the TextMarker system.
+      </para>
+      <para>
+        The first possibility is the use of simple text files, which
+        contain exactly one list item per line. For example, a list "FirstNames.txt"
+        of first names could look like this:
+        <programlisting><![CDATA[Frank
+Peter
+Jochen
+Martin
+]]></programlisting>
+        First names within a document containing any number of these
+        listed
+        names, could be annotated
+        by using
+        <literal>Document{->MARKFAST(FistName, "FirstNames.txt")};</literal>, assuming
+        an already declared type FirstName. To make this rule
+        recognizing more first names just add
+        them to the external list.
+        You could also use a WORLIST variable to do the same thing like this:
+        <programlisting><![CDATA[WORDLIST FirstNameList = "FirstNames.txt";
+DECLARE FirstName;
+Document{->MARKFAST(FistName, FirstNameList)};
+]]></programlisting>
+      </para>
+      <para>
+        Another possibility to provide WORDLISTs is the use of compiled
+        <quote>tree word list</quote>
+        s. The file ending for this is <quote>.twl</quote>
+        A tree word list is similar to a trie. It is a XML-file that contains
+        a tree-like structure with a node for each character. The nodes
+        themselves refer to child nodes that represent all characters that
+        succeed the character of the parent node. For single word entries the
+        resulting complexity is O(m*log(n)) instead of O(m*n) for simple text
+        files. Here m is the amount of basic annotations in the document and
+        n is the amount of entries in the dictionary. To generate a tree word
+        list, see <xref linkend='section.ugr.tools.tm.workbench.create_dictionaries' />.
+        A tree word list is used in the same way as simple word lists,
+        for example <literal>Document{->MARKFAST(FistName, "FirstNames.twl")};</literal>.
+      </para>
+      <para>
+        A third kind of usable WORDLISTs are <quote>multi tree word list</quote>s.
+        The file ending for this is <quote>.mtwl</quote>. It is generated from
+        several ordinary WORDLISTs given as simple text files. It contains special
+        nodes that provide additional information about the original file. These
+        kind of WORDLIST is useful, if several fifferent WORDLISTs are used within
+        a TextMarker script. Using five different lists results in five rules using
+        the MARKFAST action. The documents to annotate are thus searched five
+        times resulting in a complexity of 5*O(m*log(n)) With a multi tree
+        word list this can be reduced to about O(m*log(5*n)). To
+        generate a multi tree word list, see
+        <xref linkend='section.ugr.tools.tm.workbench.create_dictionaries' />
+        To use a multi tree word list TextMarker provides the action
+        TRIE. If for example two word lists
+        <quote>FirstNames.txt</quote>
+        and
+        <quote>LastNames.txt</quote>
+        have been merged in the multi tree word list
+        <quote>Names.mtwl</quote>, then the following rule annotates all
+        first names and last names in the whole document:
+        <programlisting><![CDATA[WORDLIST Names = "Names.mtwl";
+Declare FirstName, LastName;
+Document{->TRIE("FirstNames.txt" = FistName, "LastNames.txt" = LastName, 
+                                          Names, false, 0, false, 0, "")};]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>WORDTABLEs</title>
+      <para>
+        WORDLISTS have been used to annotate all occurrences of any list
+        item in a document with a certain type. Imagine now that each annotation
+        has features that should be filled with values dependent on the list item
+        that matched. This can be achieved with WORDTABLEs. For example, lets
+        assume we want to annotate all US presidents within a document.
+        Moreover each annotation should contain the party of the president as well as the
+        year of his inauguration. Therefore we use an annotation type
+        <literal>DECLARE Annotation PresidentOfUSA(STRING party, INT
+          yearOfInauguration)</literal>. To achieve this, it is recommended to use WORDTABLEs.
+      </para>
+      <para>
+        A WORDTABLE is simply a comma-separated file (.csv). For our
+        example such a file, named
+        <quote>presidentsOfUSA.csv</quote>
+        could look like this:
+        <programlisting><![CDATA[Bill Clinton; democrats; 1993
+George W. Bush; republicans; 2001
+Barack Obama; democrats; 2009
+]]></programlisting>
+        To annotate our documents we could use the following set of
+        rules:
+        <programlisting><![CDATA[WORDTABLE presidentsOfUSA = "presidentsOfUSA.csv";
+DECLARE Annotation PresidentOfUSA(STRING party, INT yearOfInauguration);
+Document{->MARKTABLE(PresidentOfUSA, 1, "party" = 2, 
+											 "yearOfInauguration" = 3)};]]></programlisting>
+      </para>
+    </section>
   </section>
 </chapter>

@@ -22,18 +22,21 @@ software distributed under the License is distributed on an
 KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
--->
+-->e. -->
 <section id="section.ugr.tools.tm.workbench.install">
   <title>Installation</title>
   <para>
+
     Do the installation of the TextMarker workbench as follows:
     <orderedlist numeration="arabic">
       <listitem>
         <para>
-          Download, install and start an Eclipse instance in version 3.7.
+          Download, install and start an Eclipse instance in version
+          3.7.
           Eclipse can be obtained
           from the
-          <ulink url="http://www.eclipse.org/downloads/packages/release/indigo/sr2">eclipse.org</ulink>
+          <ulink
+            url="http://www.eclipse.org/downloads/packages/release/indigo/sr2">eclipse.org</ulink>
           download site.
         </para>
       </listitem>
@@ -42,42 +45,124 @@ under the License.
           Add the Apache UIMA update site (
           <ulink url="http://www.apache.org/dist/uima/eclipse-update-site/">http://www.apache.org/dist/uima/eclipse-update-site/
           </ulink>
-          ) and the TextMarker update site
-          (
-          TODO
           ) to the available
           software sites in your Eclipse installation.
-          Click
+          To do
+          so, click
           <quote>Help &rarr;
-            Install New Software &rarr;
-            Add...
+            Install New Software
           </quote>
-          and add each site.
-        </para>
-      </listitem>
-      <listitem>
-        <para> Select the TextMarker update site at "Work with" and select
-          "Contact all update sites during install to find required software"
+          and add each site. This opens the install wizard which can be
+          seen
+          in
+          <xref linkend='figure.ugr.tools.tm.workbench.install.update' />
         </para>
       </listitem>
       <listitem>
         <para>
-          Select the
-          <quote>Apache UIMA TextMarker Eclipse tooling
-            and runtime support
+          Enter the TextMarker update site in field
+          <quote>Work with:</quote>
+          and press
+          <quote>Enter</quote>
+          .
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          The
+          <quote>Apache UIMA TextMarker
+            Eclipse tooling and runtime support
           </quote>
-          feature and continue the dialog. Eclipse will
-          automatically install the required
-          Apache UIMA (version 2.4.1) plugins and
-          the DLTK Core Framework (version 3.0) plugins.
+          feature will be displayed. Select
+          it by clicking into the related checkbox.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          Also select
+          <quote>Contact all update
+            sites during install to find required software
+          </quote>
+          and click on
+          <quote>
+            Next
+          </quote>
+          .
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          On the next page click
+          <quote>Next</quote>
+          again. Now, the license
+          agreement site is diplayed. To install TextMarker read the license and
+          choose
+          <quote>I accept the ...</quote>
+          if you agree to it. If you agreed,
+          click on
+          <quote>Finish</quote>
         </para>
       </listitem>
     </orderedlist>
   </para>
   <para>
-    After the successful installation, switch to the TextMarker
+    <figure id="figure.ugr.tools.tm.workbench.install.update">
+      <title> Eclipse update site
+      </title>
+      <mediaobject>
+        <imageobject role="html">
+          <imagedata width="300px" format="PNG" align="center"
+            fileref="&imgroot;install/update.png" />
+        </imageobject>
+        <imageobject role="fo">
+          <imagedata width="5.0in" format="PNG" align="center"
+            fileref="&imgroot;install/update.png" />
+        </imageobject>
+        <textobject>
+          <phrase>
+            Eclipse update site.
+          </phrase>
+        </textobject>
+      </mediaobject>
+    </figure>
+  </para>
+  <para>
+    Now, TextMarker is going to be installed.
+    After the successful
+    installation, switch to the TextMarker
     perspective. To get an overview
     see
-    <xref linkend='section.ugr.tools.tm.workbench.overview' />.
+    <xref linkend='section.ugr.tools.tm.workbench.overview' />
+    .
+  </para>
+  <para>
+    Several times within this chapter we use a TextMarker example
+    project
+    to illustrate the use of the TextMarker workbench.
+    The example project
+    can be downloaded per
+    <emphasis>svn</emphasis>
+    from
+    <ulink
+      url="https://svn.apache.org/repos/asf/uima/sandbox/trunk/TextMarker/example-projects/">https://svn.apache.org/repos/asf/uima/sandbox/trunk/TextMarker/example-projects/
+    </ulink>
+    .
+  </para>
+  <para>
+    To import this project into the workbench do
+    <quote>File &rarr;
+      Import...
+    </quote>
+    . Select
+    <quote>Existing Projects into Workspace</quote>
+    under
+    <quote>General</quote>
+    . Select the
+    <quote>ExampleProject</quote>
+    directory
+    in your file system as root directory and click on
+    <quote>Finish</quote>
+    . The
+    example project is now available in your workspace.
   </para>
 </section>

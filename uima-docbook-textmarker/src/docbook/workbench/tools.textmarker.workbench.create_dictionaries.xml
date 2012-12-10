@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
+<!ENTITY imgroot "images/tools/tm/workbench/" >
+<!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
+%uimaents;
+]>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<section id="section.ugr.tools.tm.workbench.create_dictionaries">
+  <title>Creation of Tree Word Lists</title>
+  <para>
+    Tree word lists are external resources which can be used
+    to annotate
+    all occurrences of list items in a document
+    with a given annotation
+    type very fast. For more details
+    on their use, see
+    <xref linkend='ugr.tools.tm.language.external_resources' />
+    . Since simple tree and multi tree word lists have to be compiled
+    the
+    TextMarker workbench provides an easy way to compile
+    them from ordinary
+    text files. These text files have to
+    containing one item per line, for
+    example like in the
+    following list of first names:
+    <programlisting><![CDATA[Frank
+Peter
+Jochen
+Martin
+]]></programlisting>
+  </para>
+  <para>
+    To compile a simple tree word list from a text file,
+    right-click on the text file in TextMarker script
+    explorer. You get the menu seen in
+    <xref linkend='figure.ugr.tools.tm.workbench.create_dictionaries_1' />
+    .
+
+    <figure id="figure.ugr.tools.tm.workbench.create_dictionaries_1">
+      <title> The views Matched Rules and Failed Rules
+      </title>
+      <mediaobject>
+        <imageobject role="html">
+          <imagedata width="250px" format="PNG" align="center"
+            fileref="&imgroot;create_tree_lists/create_tree_lists.png" />
+        </imageobject>
+        <imageobject role="fo">
+          <imagedata width="3.5in" format="PNG" align="center"
+            fileref="&imgroot;create_tree_lists/create_tree_lists.png" />
+        </imageobject>
+        <textobject>
+          <phrase>
+            The Rule Elements view.
+          </phrase>
+        </textobject>
+      </mediaobject>
+    </figure>
+  </para>
+  <para>
+    When hovering over TextMarker item you can choose
+    <quote>Convert to TWL</quote>
+    .
+    Click on it and a tree word list with the same name as the origin
+    file is
+    generated in the same folder.
+  </para>
+  <para>
+    You can also generate several tree word lists at once. To do so,
+    just select
+    multiple files and then right-click and do the same as for a single
+    list. You will get one tree word list for every selected file.
+  </para>
+  <para>
+    To generate a multi tree work list, select all files which should be
+    generated
+    into the multi tree word list. Again right-click and select
+    <quote>Convert to Multi TWL</quote>
+    under item TextMarker. A multi tree word list
+    named
+    <quote>generated.mtwl</quote>
+    will be created.
+  </para>
+
+</section>

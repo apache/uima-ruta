@@ -5,25 +5,36 @@
 <!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
 %uimaents;
 ]>
-<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. 
-  See the NOTICE file distributed with this work for additional information regarding copyright ownership. 
-  The ASF licenses this file to you under the Apache License, Version 2.0 (the "License"); you may not 
-  use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 
-  Unless required by applicable law or agreed to in writing, software distributed under the License is 
-  distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-  See the License for the specific language governing permissions and limitations under the License. -->
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
   
 <chapter id="ugr.tools.tm.workbench">
   <title>TextMarker Workbench</title>
-  <para> The TextMarker workbench, which is made available as an Eclipse- plugin, offers a powerful
-    environment for creating and working on TextMarker projects. It provides two main perspectives
-    and several views to develop, run, debug, test and evaluate TextMarker rules in a comfortable
-    way, supporting many of the known Eclipse features e.g. auto-completion. Moreover it makes the
-    creation of dictionaries like tree word lists easy and supports machine learning methods which
-    can be used within a knowledge engineering process. The following chapter starts with the
-    installation of the workbench, followed by a description of all its features.
+  <para>
+  The TextMarker workbench, which is made available as an Eclipse-
+  plugin, offers a powerful environment for creating and working on TextMarker projects. It provides two main
+  perspectives and several views to develop, run, debug, test and evaluate TextMarker
+  rules in a comfortable way, supporting many of the known Eclipse features e.g. auto-completion.
+  Moreover it makes the creation of dictionaries like tree word lists easy and supports machine
+  learning methods which can be used within a knowledge engineering process. The following chapter
+  starts with the installation of the workbench, followed by a description of all its features.
   </para>
-
 
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href=".\workbench\tools.textmarker.workbench.install.xml" />
 
@@ -40,5 +51,7 @@
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href=".\workbench\tools.textmarker.workbench.testing.xml" />
   
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href=".\workbench\tools.textmarker.workbench.textruler.xml" />
+  
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href=".\workbench\tools.textmarker.workbench.create_dictionaries.xml" />
  
 </chapter>
