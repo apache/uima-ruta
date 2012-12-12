@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker;
 
@@ -23,6 +23,7 @@ import org.apache.uima.textmarker.condition.CurrentCountTest;
 import org.apache.uima.textmarker.condition.PartOfTest;
 import org.apache.uima.textmarker.condition.PositionTest;
 import org.apache.uima.textmarker.seed.DefaultSeederTest;
+import org.apache.uima.textmarker.verbalizer.ConditionVerbalizerTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -32,8 +33,8 @@ import org.junit.runners.Suite.SuiteClasses;
     LiteralStringMatchTest.class, LongGreedyTest.class, OutOfWindowTest.class,
     QuantifierTest1.class, QuantifierTest2.class, QuantifierTest3.class, RuleInferenceTest.class,
     RuleInferenceTest2.class, RuleInferenceTest3.class, AllActionsTest.class,
-    AllConditionsTest.class, CurrentCountTest.class,
-    PartOfTest.class, PositionTest.class, DefaultSeederTest.class })
+    AllConditionsTest.class, CurrentCountTest.class, PartOfTest.class, PositionTest.class,
+    DefaultSeederTest.class, ConditionVerbalizerTest.class })
 public class AllTests {
 
 }

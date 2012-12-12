@@ -35,7 +35,7 @@ import org.apache.uima.textmarker.visitor.InferenceCrowd;
 public class RegExpCondition extends TerminalTextMarkerCondition {
   private final StringExpression pattern;
 
-  private BooleanExpression ignoreCase;
+  private final BooleanExpression ignoreCase;
 
   private String variable;
 
@@ -84,7 +84,12 @@ public class RegExpCondition extends TerminalTextMarkerCondition {
     return pattern;
   }
   
-  public StringExpression getVariable() {
-    return pattern;
+  public String getVariable() {
+    return variable;
   }
+
+  public BooleanExpression getIgnoreCase() {
+    return ignoreCase;
+  }
+
 }

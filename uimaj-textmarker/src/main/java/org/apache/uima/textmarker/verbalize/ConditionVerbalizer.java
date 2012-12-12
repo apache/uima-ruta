@@ -50,8 +50,10 @@ import org.apache.uima.textmarker.condition.SizeCondition;
 import org.apache.uima.textmarker.condition.StartsWithCondition;
 import org.apache.uima.textmarker.condition.TotalCountCondition;
 import org.apache.uima.textmarker.condition.VoteCondition;
+import org.apache.uima.textmarker.expression.list.ListExpression;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.number.SimpleNumberExpression;
+import org.apache.uima.textmarker.expression.string.StringExpression;
 
 public class ConditionVerbalizer {
 
@@ -140,152 +142,149 @@ public class ConditionVerbalizer {
   }
 
   public String verbalize(AbstractTextMarkerCondition condition) {
+    String name = verbalizeName(condition) + "(";
     if (condition instanceof AndCondition) {
       AndCondition c = (AndCondition) condition;
       List<AbstractTextMarkerCondition> conditions = c.getConditions();
       StringBuilder sb = new StringBuilder();
-      sb.append("AND(");
+      sb.append(name);
       Iterator<AbstractTextMarkerCondition> it = conditions.iterator();
       while (it.hasNext()) {
         AbstractTextMarkerCondition each = (AbstractTextMarkerCondition) it.next();
         sb.append(verbalize(each));
         if (it.hasNext()) {
-          sb.append(",");
+          sb.append(", ");
         }
       }
       sb.append(")");
       return sb.toString();
     } else if (condition instanceof ContainsCondition) {
       ContainsCondition c = (ContainsCondition) condition;
-      String name = "CONTAINS(";
       NumberExpression minE = c.getMin();
       String min = verbalizeMin(minE, 1);
       NumberExpression maxE = c.getMax();
       String max = verbalizeMax(maxE, Integer.MAX_VALUE);
       String percent = verbalizer.verbalize(c.getPercent());
-      percent = !percent.equals("false") ? "," + percent : "";
+      percent = !percent.equals("false") ? ", " + percent : "";
       if (c.getType() != null) {
         String type = verbalizer.verbalize(c.getType());
         return name + type + min + max + percent + ")";
       } else {
-        return name + verbalizer.verbalize(c.getArgList()) + "," + verbalizer.verbalize(c.getArg())
-                + min + max + percent + ")";
+        return name + verbalizer.verbalize(c.getArgList()) + ", "
+                + verbalizer.verbalize(c.getArg()) + min + max + percent + ")";
       }
     } else if (condition instanceof ContextCountCondition) {
       ContextCountCondition c = (ContextCountCondition) condition;
-      String name = "CONTEXTCOUNT(";
       String type = verbalizer.verbalize(c.getType());
       NumberExpression minE = c.getMin();
       String min = verbalizeMin(minE, Integer.MIN_VALUE);
       NumberExpression maxE = c.getMax();
       String max = verbalizeMax(maxE, Integer.MAX_VALUE);
-      String var = c.getVar() == null ? "" : "," + c.getVar();
+      String var = c.getVar() == null ? "" : ", " + c.getVar();
       return name + type + min + max + var + ")";
     } else if (condition instanceof CountCondition) {
       CountCondition c = (CountCondition) condition;
       if (c.getArg() == null) {
-        String name = "COUNT(";
         String type = verbalizer.verbalize(c.getType());
         NumberExpression minE = c.getMin();
         String min = verbalizeMin(minE, Integer.MIN_VALUE);
         NumberExpression maxE = c.getMax();
         String max = verbalizeMax(maxE, Integer.MAX_VALUE);
-        String var = c.getVar() == null ? "" : "," + c.getVar();
+        String var = c.getVar() == null ? "" : ", " + c.getVar();
         return name + type + min + max + var + ")";
       } else {
-        String name = "COUNT(";
         String list = verbalizer.verbalize(c.getArgList());
         String arg = verbalizer.verbalize(c.getArg());
         NumberExpression minE = c.getMin();
         String min = verbalizeMin(minE, Integer.MIN_VALUE);
         NumberExpression maxE = c.getMax();
         String max = verbalizeMax(maxE, Integer.MAX_VALUE);
-        String var = c.getVar() == null ? "" : "," + c.getVar();
-        return name + list + "," + arg + min + max + var + ")";
+        String var = c.getVar() == null ? "" : ", " + c.getVar();
+        return name + list + ", " + arg + min + max + var + ")";
       }
     } else if (condition instanceof CurrentCountCondition) {
       CurrentCountCondition c = (CurrentCountCondition) condition;
-      String name = "CURRENTCOUNT(";
       String type = verbalizer.verbalize(c.getType());
       NumberExpression minE = c.getMin();
       String min = verbalizeMin(minE, Integer.MIN_VALUE);
       NumberExpression maxE = c.getMax();
       String max = verbalizeMax(maxE, Integer.MAX_VALUE);
-      String var = c.getVar() == null ? "" : "," + c.getVar();
+      String var = c.getVar() == null ? "" : ", " + c.getVar();
       return name + type + min + max + var + ")";
     } else if (condition instanceof IfCondition) {
       IfCondition c = (IfCondition) condition;
-      return "IF(" + verbalizer.verbalize(c.getExpression()) + ")";
+      return name + verbalizer.verbalize(c.getExpression()) + ")";
     } else if (condition instanceof InListCondition) {
       InListCondition c = (InListCondition) condition;
-      String name = "INLIST";
       String list = "";
       if (c.getListExpression() != null) {
         list = verbalizer.verbalize(c.getListExpression());
       } else {
         list = verbalizer.verbalize(c.getStringList());
-        list = "[" + list + "]";
       }
       NumberExpression distE = c.getDistance();
       String dist = "";
       String rel = "";
       if (distE != null) {
-        dist = "," + verbalizer.verbalize(distE);
+        dist = ", " + verbalizer.verbalize(distE);
       }
       if (c.getRelative() != null) {
-        rel = "," + verbalizer.verbalize(c.getRelative());
+        rel = ", " + verbalizer.verbalize(c.getRelative());
       }
-      return name + "(" + list + dist + rel + ")";
+      return name + list + dist + rel + ")";
     } else if (condition instanceof LastCondition) {
       LastCondition c = (LastCondition) condition;
-      return "LAST(" + verbalizer.verbalize(c.getType()) + ")";
+      return name + verbalizer.verbalize(c.getType()) + ")";
     } else if (condition instanceof MOfNCondition) {
       MOfNCondition c = (MOfNCondition) condition;
       StringBuilder sb = new StringBuilder();
-      sb.append("MOFN(");
+      sb.append(name);
 
       NumberExpression minE = c.getMin();
       String min = verbalizeMin(minE, Integer.MIN_VALUE);
       NumberExpression maxE = c.getMax();
       String max = verbalizeMax(maxE, Integer.MAX_VALUE);
-      sb.append(min.substring(1, min.length()));
+      sb.append(min.substring(2, min.length()));
       sb.append(max);
       List<AbstractTextMarkerCondition> conditions = c.getConditions();
       if (!conditions.isEmpty()) {
-        sb.append(",");
+        sb.append(", ");
       }
       Iterator<AbstractTextMarkerCondition> it = conditions.iterator();
       while (it.hasNext()) {
         AbstractTextMarkerCondition each = (AbstractTextMarkerCondition) it.next();
         sb.append(verbalize(each));
         if (it.hasNext()) {
-          sb.append(",");
+          sb.append(", ");
         }
       }
       sb.append(")");
       return sb.toString();
     } else if (condition instanceof NearCondition) {
       NearCondition c = (NearCondition) condition;
-      String name = "NEAR(";
       String type = verbalizer.verbalize(c.getType());
       String var = verbalizer.verbalize(c.getForward());
       NumberExpression minE = c.getMin();
       String min = verbalizeMin(minE, Integer.MIN_VALUE);
       NumberExpression maxE = c.getMax();
       String max = verbalizeMax(maxE, Integer.MAX_VALUE);
-      return name + type + min + max + "," + var + ")";
+      String filtered = verbalizer.verbalize(c.getFiltered());
+      if (!"".equals(filtered)) {
+        filtered = ", " + filtered;
+      }
+      return name + type + min + max + ", " + var + filtered + ")";
     } else if (condition instanceof NotCondition) {
       NotCondition c = (NotCondition) condition;
       List<AbstractTextMarkerCondition> conditions = c.getConditions();
       if (conditions.size() != 1) {
         StringBuilder sb = new StringBuilder();
-        sb.append("NOT(");
+        sb.append(name);
         Iterator<AbstractTextMarkerCondition> it = conditions.iterator();
         while (it.hasNext()) {
           AbstractTextMarkerCondition each = (AbstractTextMarkerCondition) it.next();
           sb.append(verbalize(each));
           if (it.hasNext()) {
-            sb.append(",");
+            sb.append(", ");
           }
         }
         sb.append(")");
@@ -297,13 +296,13 @@ public class ConditionVerbalizer {
       OrCondition c = (OrCondition) condition;
       List<AbstractTextMarkerCondition> conditions = c.getConditions();
       StringBuilder sb = new StringBuilder();
-      sb.append("OR(");
+      sb.append(name);
       Iterator<AbstractTextMarkerCondition> it = conditions.iterator();
       while (it.hasNext()) {
         AbstractTextMarkerCondition each = (AbstractTextMarkerCondition) it.next();
         sb.append(verbalize(each));
         if (it.hasNext()) {
-          sb.append(",");
+          sb.append(", ");
         }
       }
       sb.append(")");
@@ -311,80 +310,77 @@ public class ConditionVerbalizer {
     } else if (condition instanceof PartOfCondition) {
       PartOfCondition c = (PartOfCondition) condition;
       if (c.getType() == null) {
-        return "PARTOF(" + verbalizer.verbalize(c.getList()) + ")";
+        return name + verbalizer.verbalize(c.getList()) + ")";
       } else {
-        return "PARTOF(" + verbalizer.verbalize(c.getType()) + ")";
+        return name + verbalizer.verbalize(c.getType()) + ")";
       }
     } else if (condition instanceof PartOfNeqCondition) {
       PartOfNeqCondition c = (PartOfNeqCondition) condition;
       if (c.getType() == null) {
-        return "PARTOFNEQ(" + verbalizer.verbalize(c.getList()) + ")";
+        return name + verbalizer.verbalize(c.getList()) + ")";
       } else {
-        return "PARTOFNEQ(" + verbalizer.verbalize(c.getType()) + ")";
+        return name + verbalizer.verbalize(c.getType()) + ")";
       }
     } else if (condition instanceof PositionCondition) {
       PositionCondition c = (PositionCondition) condition;
       String relative = "";
       if (c.getRelative() != null) {
-        relative = "," + verbalizer.verbalize(c.getRelative());
+        relative = ", " + verbalizer.verbalize(c.getRelative());
       }
-      return "POSITION(" + verbalizer.verbalize(c.getType()) + ","
+      return name + verbalizer.verbalize(c.getType()) + ", "
               + verbalizer.verbalize(c.getPosition()) + relative + ")";
     } else if (condition instanceof RegExpCondition) {
       RegExpCondition c = (RegExpCondition) condition;
-      return "REGEXP(" + verbalizer.verbalize(c.getPattern()) + ")";
+      String variable = c.getVariable();
+      String ic = verbalizer.verbalize(c.getIgnoreCase());
+      if (variable == null) {
+        return name + verbalizer.verbalize(c.getPattern()) + ", " + ic + ")";
+      } else {
+        return name + variable + ", " + verbalizer.verbalize(c.getPattern()) + ", " + ic + ")";
+      }
     } else if (condition instanceof ScoreCondition) {
       ScoreCondition c = (ScoreCondition) condition;
-      String name = "SCORE(";
       // String type = verbalizer.verbalize(c.getType());
       NumberExpression minE = c.getMin();
       String min = verbalizeMin(minE, Integer.MIN_VALUE);
       NumberExpression maxE = c.getMax();
       String max = verbalizeMax(maxE, Integer.MAX_VALUE);
-      String var = c.getVar() == null ? "" : "," + c.getVar();
-      return name + min.replaceFirst("[,]", "") + max + var + ")";
+      String var = c.getVar() == null ? "" : ", " + c.getVar();
+      return name + min.substring(2) + max + var + ")";
     } else if (condition instanceof TotalCountCondition) {
       TotalCountCondition c = (TotalCountCondition) condition;
-      String name = "TOTALCOUNT(";
       String type = verbalizer.verbalize(c.getType());
       NumberExpression minE = c.getMin();
       String min = verbalizeMin(minE, Integer.MIN_VALUE);
       NumberExpression maxE = c.getMax();
       String max = verbalizeMax(maxE, Integer.MAX_VALUE);
-      String var = c.getVar() == null ? "" : "," + c.getVar();
+      String var = c.getVar() == null ? "" : ", " + c.getVar();
       return name + type + min + max + var + ")";
     } else if (condition instanceof VoteCondition) {
       VoteCondition c = (VoteCondition) condition;
-      String name = "VOTE(";
       String type1 = verbalizer.verbalize(c.getType1());
       String type2 = verbalizer.verbalize(c.getType2());
-      return name + type1 + "," + type2 + ")";
+      return name + type1 + ", " + type2 + ")";
     } else if (condition instanceof FeatureCondition) {
       FeatureCondition c = (FeatureCondition) condition;
       String e1 = verbalizer.verbalize(c.getFeatureStringExpression());
-      String name = "";
       String e2 = "";
       if (c.getBooleanExpr() != null) {
-        name = "FEATURE(";
         e2 = verbalizer.verbalize(c.getBooleanExpr());
       } else if (c.getNumberExpr() != null) {
-        name = "FEATURE(";
         e2 = verbalizer.verbalize(c.getNumberExpr());
       } else if (c.getStringExpr() != null) {
-        name = "FEATURE(";
         e2 = verbalizer.verbalize(c.getStringExpr());
       }
-      return name + e1 + "," + e2 + ")";
+      return name + e1 + ", " + e2 + ")";
     } else if (condition instanceof ParseCondition) {
       ParseCondition c = (ParseCondition) condition;
-      String name = "PARSE(";
       String var = c.getVar();
       return name + var + ")";
     } else if (condition instanceof IsCondition) {
       IsCondition c = (IsCondition) condition;
-      String name = "IS(";
       String type = "";
-      if(c.getType()!= null) {
+      if (c.getType() != null) {
         type = verbalizer.verbalize(c.getType());
       } else {
         type = verbalizer.verbalize(c.getList());
@@ -392,9 +388,8 @@ public class ConditionVerbalizer {
       return name + type + ")";
     } else if (condition instanceof BeforeCondition) {
       BeforeCondition c = (BeforeCondition) condition;
-      String name = "BEFORE(";
       String type = "";
-      if(c.getType()!= null) {
+      if (c.getType() != null) {
         type = verbalizer.verbalize(c.getType());
       } else {
         type = verbalizer.verbalize(c.getList());
@@ -402,9 +397,8 @@ public class ConditionVerbalizer {
       return name + type + ")";
     } else if (condition instanceof AfterCondition) {
       AfterCondition c = (AfterCondition) condition;
-      String name = "AFTER(";
       String type = "";
-      if(c.getType()!= null) {
+      if (c.getType() != null) {
         type = verbalizer.verbalize(c.getType());
       } else {
         type = verbalizer.verbalize(c.getList());
@@ -412,19 +406,17 @@ public class ConditionVerbalizer {
       return name + type + ")";
     } else if (condition instanceof StartsWithCondition) {
       StartsWithCondition c = (StartsWithCondition) condition;
-      String name = "STARTSWITH(";
       String arg = "";
-      if(c.getType() != null) {
-        arg =  verbalizer.verbalize(c.getType());
+      if (c.getType() != null) {
+        arg = verbalizer.verbalize(c.getType());
       } else {
         arg = verbalizer.verbalize(c.getList());
       }
       return name + arg + ")";
     } else if (condition instanceof EndsWithCondition) {
       EndsWithCondition c = (EndsWithCondition) condition;
-      String name = "ENDSWITH(";
       String type = "";
-      if(c.getType()!= null) {
+      if (c.getType() != null) {
         type = verbalizer.verbalize(c.getType());
       } else {
         type = verbalizer.verbalize(c.getList());
@@ -432,13 +424,18 @@ public class ConditionVerbalizer {
       return name + type + ")";
     } else if (condition instanceof SizeCondition) {
       SizeCondition c = (SizeCondition) condition;
-      String name = "SIZE(";
       NumberExpression minE = c.getMinExpr();
       String min = verbalizeMin(minE, Integer.MIN_VALUE);
       NumberExpression maxE = c.getMaxExpr();
       String max = verbalizeMax(maxE, Integer.MAX_VALUE);
-      String var = c.getVarExpr() == null ? "" : "," + c.getVarExpr();
-      return name + min + max + var + ")";
+      String var = c.getVarExpr() == null ? "" : ", " + c.getVarExpr();
+      ListExpression<?> listExpr = c.getListExpr();
+      if(listExpr == null) {
+        return name + min + max + var + ")";
+      } else {
+        String l = verbalizer.verbalize(listExpr);
+        return name + l + min + max + var + ")";
+      } 
     }
 
     return condition.getClass().getSimpleName();
@@ -448,7 +445,7 @@ public class ConditionVerbalizer {
     String max = "";
     if (!(maxE instanceof SimpleNumberExpression && ((SimpleNumberExpression) maxE).getNumber()
             .equals(def))) {
-      max = "," + verbalizer.verbalize(maxE);
+      max = ", " + verbalizer.verbalize(maxE);
     }
     return max;
   }
@@ -457,7 +454,7 @@ public class ConditionVerbalizer {
     String min = "";
     if (!(minE instanceof SimpleNumberExpression && ((SimpleNumberExpression) minE).getNumber()
             .equals(def))) {
-      min = "," + verbalizer.verbalize(minE);
+      min = ", " + verbalizer.verbalize(minE);
     }
     return min;
   }
