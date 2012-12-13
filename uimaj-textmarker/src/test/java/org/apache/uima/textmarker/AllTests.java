@@ -22,6 +22,7 @@ package org.apache.uima.textmarker;
 import org.apache.uima.textmarker.condition.CurrentCountTest;
 import org.apache.uima.textmarker.condition.PartOfTest;
 import org.apache.uima.textmarker.condition.PositionTest;
+import org.apache.uima.textmarker.engine.HtmlAnnotatorTest;
 import org.apache.uima.textmarker.seed.DefaultSeederTest;
 import org.apache.uima.textmarker.verbalizer.ActionVerbalizerTest;
 import org.apache.uima.textmarker.verbalizer.ConditionVerbalizerTest;
@@ -37,7 +38,7 @@ import org.junit.runners.Suite.SuiteClasses;
     RuleInferenceTest2.class, RuleInferenceTest3.class, AllActionsTest.class,
     AllConditionsTest.class, CurrentCountTest.class, PartOfTest.class, PositionTest.class,
     DefaultSeederTest.class, ConditionVerbalizerTest.class, ActionVerbalizerTest.class,
-    ExpressionVerbalizerTest.class })
+    ExpressionVerbalizerTest.class, HtmlAnnotatorTest.class })
 public class AllTests {
 
 }
