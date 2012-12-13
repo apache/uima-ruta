@@ -23,7 +23,9 @@ import org.apache.uima.textmarker.condition.CurrentCountTest;
 import org.apache.uima.textmarker.condition.PartOfTest;
 import org.apache.uima.textmarker.condition.PositionTest;
 import org.apache.uima.textmarker.seed.DefaultSeederTest;
+import org.apache.uima.textmarker.verbalizer.ActionVerbalizerTest;
 import org.apache.uima.textmarker.verbalizer.ConditionVerbalizerTest;
+import org.apache.uima.textmarker.verbalizer.ExpressionVerbalizerTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -34,7 +36,8 @@ import org.junit.runners.Suite.SuiteClasses;
     QuantifierTest1.class, QuantifierTest2.class, QuantifierTest3.class, RuleInferenceTest.class,
     RuleInferenceTest2.class, RuleInferenceTest3.class, AllActionsTest.class,
     AllConditionsTest.class, CurrentCountTest.class, PartOfTest.class, PositionTest.class,
-    DefaultSeederTest.class, ConditionVerbalizerTest.class })
+    DefaultSeederTest.class, ConditionVerbalizerTest.class, ActionVerbalizerTest.class,
+    ExpressionVerbalizerTest.class })
 public class AllTests {
 
 }

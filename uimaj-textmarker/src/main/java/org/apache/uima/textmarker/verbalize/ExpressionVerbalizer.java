@@ -147,7 +147,7 @@ public class ExpressionVerbalizer {
       }
       StringBuilder result = new StringBuilder(verbalize(ne));
       for (int i = 0; i < e.getOperators().size(); i++) {
-        result.append(e.getOperators().get(i));
+        result.append(" " + e.getOperators().get(i) + " ");
         if (e.getExpressions().size() > i + 1) {
           result.append(verbalize(e.getExpressions().get(i + 1)));
         }
@@ -162,11 +162,11 @@ public class ExpressionVerbalizer {
       return "";
     } else if (expression instanceof BooleanNumberExpression) {
       BooleanNumberExpression e = (BooleanNumberExpression) expression;
-      return verbalize(e.getFristExpression()) + e.getOperator()
+      return verbalize(e.getFristExpression()) + " " + e.getOperator() + " "
               + verbalize(e.getSecondExpression());
     } else if (expression instanceof BooleanTypeExpression) {
       BooleanTypeExpression e = (BooleanTypeExpression) expression;
-      return verbalize(e.getFristExpression()) + e.getOperator()
+      return verbalize(e.getFristExpression()) + " " + e.getOperator() + " "
               + verbalize(e.getSecondExpression());
     } else if (expression instanceof ReferenceBooleanExpression) {
       ReferenceBooleanExpression e = (ReferenceBooleanExpression) expression;
@@ -206,7 +206,7 @@ public class ExpressionVerbalizer {
         StringExpression each = it.next();
         sb.append(verbalize(each));
         if (it.hasNext()) {
-          sb.append("+");
+          sb.append(" + ");
         }
       }
       return sb.toString();
