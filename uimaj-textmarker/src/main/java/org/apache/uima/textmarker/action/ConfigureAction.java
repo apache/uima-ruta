@@ -47,9 +47,9 @@ import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class ConfigureAction extends AbstractTextMarkerAction {
 
-  private String namespace;
+  private final String namespace;
 
-  private Map<StringExpression, TextMarkerExpression> parameterMap;
+  private final Map<StringExpression, TextMarkerExpression> parameterMap;
 
   public ConfigureAction(String ns, Map<StringExpression, TextMarkerExpression> map) {
     super();
@@ -153,6 +153,14 @@ public class ConfigureAction extends AbstractTextMarkerAction {
     } catch (ResourceConfigurationException e) {
       e.printStackTrace();
     }
+  }
+
+  public String getNamespace() {
+    return namespace;
+  }
+
+  public Map<StringExpression, TextMarkerExpression> getParameterMap() {
+    return parameterMap;
   }
 
 }

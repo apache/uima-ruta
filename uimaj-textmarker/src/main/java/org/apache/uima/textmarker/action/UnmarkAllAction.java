@@ -36,7 +36,7 @@ import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class UnmarkAllAction extends TypeSensitiveAction {
 
-  private TypeListExpression list;
+  private final TypeListExpression list;
 
   public UnmarkAllAction(TypeExpression type, TypeListExpression list) {
     super(type);
@@ -74,6 +74,10 @@ public class UnmarkAllAction extends TypeSensitiveAction {
         }
       }
     }
+  }
+
+  public TypeListExpression getList() {
+    return list;
   }
 
 }

@@ -26,7 +26,7 @@ import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class ClearAction extends AbstractTextMarkerAction {
 
-  private String list;
+  private final String list;
 
   public ClearAction(String list) {
     super();
@@ -37,6 +37,10 @@ public class ClearAction extends AbstractTextMarkerAction {
   public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
     element.getParent().getEnvironment().setVariableValue(list, null);
+  }
+
+  public String getList() {
+    return list;
   }
 
 }

@@ -97,4 +97,13 @@ public class GetListAction extends AbstractTextMarkerAction {
     }
     element.getParent().getEnvironment().setVariableValue(var, list);
   }
+
+  public String getVar() {
+    return var;
+  }
+
+  public StringExpression getOpExpr() {
+    return opExpr;
+  }
+
 }

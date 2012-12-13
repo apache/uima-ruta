@@ -53,7 +53,7 @@ public class MarkTableAction extends AbstractTextMarkerAction {
   private final Map<StringExpression, NumberExpression> featureMap;
 
   private final NumberExpression indexExpr;
-  
+
   private final BooleanExpression ignoreCase;
 
   private final NumberExpression ignoreLength;
@@ -63,7 +63,9 @@ public class MarkTableAction extends AbstractTextMarkerAction {
   private final NumberExpression maxIgnoreChar;
 
   public MarkTableAction(TypeExpression typeExpr, NumberExpression indexExpr,
-          WordTableExpression tableExpr, Map<StringExpression, NumberExpression> featureMap, BooleanExpression ignoreCase, NumberExpression ignoreLength, StringExpression ignoreChar, NumberExpression maxIgnoreChar) {
+          WordTableExpression tableExpr, Map<StringExpression, NumberExpression> featureMap,
+          BooleanExpression ignoreCase, NumberExpression ignoreLength, StringExpression ignoreChar,
+          NumberExpression maxIgnoreChar) {
     super();
     this.typeExpr = typeExpr;
     this.indexExpr = indexExpr;
@@ -86,14 +88,19 @@ public class MarkTableAction extends AbstractTextMarkerAction {
     for (StringExpression each : featureMap.keySet()) {
       map.put(each.getStringValue(block), featureMap.get(each).getIntegerValue(block));
     }
-    
-    boolean ignoreCaseValue = ignoreCase != null ? ignoreCase.getBooleanValue(element.getParent()) : false;
-    int ignoreLengthValue = ignoreLength != null ? ignoreLength.getIntegerValue(element.getParent()) : 0;
-    String ignoreCharValue = ignoreChar != null ? ignoreChar.getStringValue(element.getParent()) : "";
-    int maxIgnoreCharValue = maxIgnoreChar != null ? maxIgnoreChar.getIntegerValue(element.getParent()) : 0;
-    
+
+    boolean ignoreCaseValue = ignoreCase != null ? ignoreCase.getBooleanValue(element.getParent())
+            : false;
+    int ignoreLengthValue = ignoreLength != null ? ignoreLength
+            .getIntegerValue(element.getParent()) : 0;
+    String ignoreCharValue = ignoreChar != null ? ignoreChar.getStringValue(element.getParent())
+            : "";
+    int maxIgnoreCharValue = maxIgnoreChar != null ? maxIgnoreChar.getIntegerValue(element
+            .getParent()) : 0;
+
     TextMarkerWordList wordList = table.getWordList(index);
-    Collection<AnnotationFS> found = wordList.find(stream, ignoreCaseValue, ignoreLengthValue, ignoreCharValue.toCharArray(), maxIgnoreCharValue, true);
+    Collection<AnnotationFS> found = wordList.find(stream, ignoreCaseValue, ignoreLengthValue,
+            ignoreCharValue.toCharArray(), maxIgnoreCharValue, true);
     for (AnnotationFS annotationFS : found) {
       List<String> rowWhere = table.getRowWhere(index - 1, annotationFS.getCoveredText());
       FeatureStructure newFS = stream.getCas().createFS(type);
@@ -151,5 +158,37 @@ public class MarkTableAction extends AbstractTextMarkerAction {
       }
 
     }
+  }
+
+  public TypeExpression getTypeExpr() {
+    return typeExpr;
+  }
+
+  public WordTableExpression getTableExpr() {
+    return tableExpr;
+  }
+
+  public Map<StringExpression, NumberExpression> getFeatureMap() {
+    return featureMap;
+  }
+
+  public NumberExpression getIndexExpr() {
+    return indexExpr;
+  }
+
+  public BooleanExpression getIgnoreCase() {
+    return ignoreCase;
+  }
+
+  public NumberExpression getIgnoreLength() {
+    return ignoreLength;
+  }
+
+  public StringExpression getIgnoreChar() {
+    return ignoreChar;
+  }
+
+  public NumberExpression getMaxIgnoreChar() {
+    return maxIgnoreChar;
   }
 }

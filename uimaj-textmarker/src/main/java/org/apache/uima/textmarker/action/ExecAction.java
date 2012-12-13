@@ -101,6 +101,10 @@ public class ExecAction extends CallAction {
         }
       }
     }
-    System.out.println();
   }
+
+  public TypeListExpression getTypeList() {
+    return typeList;
+  }
+
 }
