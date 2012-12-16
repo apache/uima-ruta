@@ -241,7 +241,7 @@
     <typeDescription>
       <name>org.apache.uima.textmarker.type.html.REMARK</name>
       <description></description>
-      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
       <features>
         <featureDescription>
           <name>comment</name>

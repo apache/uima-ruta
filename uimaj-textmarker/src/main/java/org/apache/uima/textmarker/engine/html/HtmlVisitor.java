@@ -94,11 +94,7 @@ public class HtmlVisitor extends NodeVisitor {
   }
 
   public void tag2annotation(Tag tag, String name, CAS cas) {
-    String typeName = HtmlAnnotator.NAMESPACE + name;
-    Type type = cas.getTypeSystem().getType(typeName);
-    if (type == null) {
-      type = cas.getTypeSystem().getType(HtmlAnnotator.NAMESPACE + "TAG");
-    }
+    Type type = getType(name, cas);
     if (name.equals("STYLE")) {
       tag.setEndPosition(tag.getEndTag().getStartPosition());
     }
@@ -124,9 +120,9 @@ public class HtmlVisitor extends NodeVisitor {
       if (i < j) {
         i = j;
       }
-      
+
     }
-    
+
     if (onlyContent) {
       begin = getOffset(tag.getEndPosition());
       end = i;
@@ -148,26 +144,22 @@ public class HtmlVisitor extends NodeVisitor {
 
     StringArray attributeName;
     StringArray attributeValue;
-    try {
-      int size = tag.getAttributesEx().size() - 1;
-      attributeName = new StringArray(cas.getJCas(), size);
-      attributeValue = new StringArray(cas.getJCas(), size);
-      for (int j = 0; j < size; j++) {
-        Attribute attribute = (Attribute) tag.getAttributesEx().elementAt(j + 1);
-        attributeName.set(j, attribute.getName());
-        attributeValue.set(j, attribute.getValue());
-      }
-      if (i <= tag.getEndPosition()) {
-        AnnotationDelta annotationDelta = new AnnotationDelta(annotation, delta, attributeName,
-                attributeValue, name, stripHtml);
-        annotationList.add(annotationDelta);
-      } else {
-        AnnotationDelta annotationDelta = new AnnotationDelta(annotation, delta, attributeName,
-                attributeValue, name, stripHtml);
-        annotations.add(annotationDelta);
-      }
-    } catch (CASException e) {
-      e.printStackTrace();
+    int size = tag.getAttributesEx().size() - 1;
+    attributeName = new StringArray(jcas, size);
+    attributeValue = new StringArray(jcas, size);
+    for (int j = 0; j < size; j++) {
+      Attribute attribute = (Attribute) tag.getAttributesEx().elementAt(j + 1);
+      attributeName.set(j, attribute.getName());
+      attributeValue.set(j, attribute.getValue());
+    }
+    if (i <= tag.getEndPosition()) {
+      AnnotationDelta annotationDelta = new AnnotationDelta(annotation, delta, attributeName,
+              attributeValue, name, stripHtml);
+      annotationList.add(annotationDelta);
+    } else {
+      AnnotationDelta annotationDelta = new AnnotationDelta(annotation, delta, attributeName,
+              attributeValue, name, stripHtml);
+      annotations.add(annotationDelta);
     }
   }
 
@@ -185,11 +177,7 @@ public class HtmlVisitor extends NodeVisitor {
   }
 
   public void head2annotation(Tag tag, String name, CAS cas) {
-    String typeName = HtmlAnnotator.NAMESPACE + name;
-    Type type = cas.getTypeSystem().getType(typeName);
-    if (type == null) {
-      type = cas.getTypeSystem().getType(HtmlAnnotator.NAMESPACE + "TAG");
-    }
+    Type type = getType(name, cas);
     AnnotationFS annotation = cas.createAnnotation(type, 0, 0);
     for (int k = 0; k < tag.getAttributesEx().size(); k++) {
       String test = tag.getAttributesEx().elementAt(k).toString();
@@ -215,6 +203,15 @@ public class HtmlVisitor extends NodeVisitor {
             attributeValue, name, stripHtml);
     annotationList.add(annotationDelta);
 
+  }
+
+  private Type getType(String name, CAS cas) {
+    String typeName = HtmlAnnotator.NAMESPACE + name;
+    Type type = cas.getTypeSystem().getType(typeName);
+    if (type == null) {
+      type = cas.getTypeSystem().getType(HtmlAnnotator.NAMESPACE + "TAG");
+    }
+    return type;
   }
 
   public void node2annotation(Remark node) {
