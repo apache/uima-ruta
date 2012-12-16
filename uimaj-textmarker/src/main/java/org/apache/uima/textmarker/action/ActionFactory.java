@@ -239,4 +239,9 @@ public class ActionFactory {
     return new DynamicAnchoringAction(active, penalty, factor);
   }
 
+  public static AbstractTextMarkerAction createTrimAction(List<TypeExpression> types,
+          TypeListExpression typeList, TextMarkerBlock env) {
+    return new TrimAction(types, typeList);
+  }
+
 }

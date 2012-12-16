@@ -44,7 +44,7 @@ public class MarkLastAction extends AbstractMarkAction {
       List<TextMarkerBasic> list = stream.getBasicsInWindow(matchedAnnotation);
       if (!list.isEmpty()) {
         TextMarkerBasic last = list.get(list.size() - 1);
-        createAnnotation(last, element, stream, last, match);
+        createAnnotation(last, element, stream, match);
       }
 
     }

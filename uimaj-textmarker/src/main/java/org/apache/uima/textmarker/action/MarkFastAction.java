@@ -88,8 +88,7 @@ public class MarkFastAction extends AbstractMarkAction {
                 ignoreLength.getIntegerValue(element.getParent()), null, 0,
                 ignoreWS.getBooleanValue(element.getParent()));
         for (AnnotationFS annotation : found) {
-          TextMarkerBasic anchor = windowStream.getFirstBasicInWindow(annotation);
-          createAnnotation(anchor, element, windowStream, annotation, match);
+          createAnnotation(annotation, element, windowStream, match);
         }
       }
     }

@@ -1114,7 +1114,8 @@ action  returns [AbstractTextMarkerAction result = null]
 	| a = actionClear
 	| a = actionShift
 	| a = actionConfigure
-	| a = actionDynamicAnchoring 
+	| a = actionDynamicAnchoring
+	| a = actionTrim 
 	| (a = externalAction)=> a = externalAction
 //	| a = variableAction
 	) {result = a;}
@@ -1426,6 +1427,23 @@ actionDynamicAnchoring returns [AbstractTextMarkerAction action = null]
     {action = ActionFactory.createDynamicAnchoringAction(active, penalty, factor, $blockDeclaration::env);}
     RPAREN
     ;
+
+actionTrim returns [AbstractTextMarkerAction action = null]
+@init {
+  List<TypeExpression> types = new ArrayList<TypeExpression>();
+}
+    :
+    name = TRIM LPAREN 
+    (
+    typeList = typeListExpression
+    |
+    t1 = typeExpression {types.add(t1);} (COMMA t2 = typeExpression {types.add(t2);})*
+    )
+    
+    {action = ActionFactory.createTrimAction(types, typeList, $blockDeclaration::env);}
+    RPAREN
+    ;
+
 
 
 actionUnmark returns [AbstractTextMarkerAction action = null]

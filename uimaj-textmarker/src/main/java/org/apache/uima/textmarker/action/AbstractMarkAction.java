@@ -38,14 +38,8 @@ public abstract class AbstractMarkAction extends TypeSensitiveAction {
     super(type);
   }
 
-  protected void createAnnotation(AnnotationFS matchedAnnotation, RuleElement element,
+  protected Annotation createAnnotation(AnnotationFS matchedAnnotation, RuleElement element,
           TextMarkerStream stream, RuleMatch match) {
-    TextMarkerBasic first = stream.getFirstBasicInWindow(matchedAnnotation);
-    createAnnotation(first, element, stream, matchedAnnotation, match);
-  }
-
-  protected Annotation createAnnotation(TextMarkerBasic anchor, RuleElement element,
-          TextMarkerStream stream, AnnotationFS matchedAnnotation, RuleMatch match) {
     Type t = type.getType(element.getParent());
     AnnotationFS newAnnotationFS = stream.getCas().createAnnotation(t,
             matchedAnnotation.getBegin(), matchedAnnotation.getEnd());

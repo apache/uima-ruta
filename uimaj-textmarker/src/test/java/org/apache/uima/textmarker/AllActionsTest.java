@@ -20,12 +20,13 @@
 package org.apache.uima.textmarker;
 
 import org.apache.uima.textmarker.action.MarkFastTest;
+import org.apache.uima.textmarker.action.TrimTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ MarkFastTest.class })
+@SuiteClasses({ MarkFastTest.class, TrimTest.class })
 public class AllActionsTest {
 
 }
