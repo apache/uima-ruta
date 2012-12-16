@@ -1189,6 +1189,7 @@ result = ActionFactory.createEmptyAction(input.LT(1));
 	| a = actionShift
 	| a = actionConfigure
 	| a = actionDynamicAnchoring
+	| a = actionTrim
 	| (a = externalAction)=> a = externalAction
 	| a = variableAction
 	) {result = a;}
@@ -1546,6 +1547,22 @@ actionDynamicAnchoring returns [TextMarkerAction action = null]
     {action = ActionFactory.createAction(name, active, penalty);}
     (COMMA factor = numberExpression)?)? 
     {action = ActionFactory.createAction(name, active, penalty, factor);}
+    RPAREN
+    ;
+
+actionTrim returns [TextMarkerAction action = null]
+@init {
+List<Expression> list = new ArrayList<Expression>();
+}
+    :
+    name = TRIM LPAREN
+    {action = ActionFactory.createAction(name, list);}
+    (
+    t1 = typeExpression {list.add(t1); action = ActionFactory.createAction(name, list);} 
+    (COMMA t2 = typeExpression {list.add(t1); action = ActionFactory.createAction(name, list);})*
+    |
+    tl = typeListExpression {action = ActionFactory.createAction(name, tl);}
+    )
     RPAREN
     ;
 

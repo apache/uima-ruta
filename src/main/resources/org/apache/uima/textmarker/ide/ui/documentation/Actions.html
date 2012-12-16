@@ -1,959 +1,957 @@
+  
+  <div class="section" title="2.7.1.&nbsp;ADD"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.add">2.7.1.&nbsp;ADD</h3></div></div></div>
+    
+    <p>
+      The ADD action adds all the elements of the passed
+      TextMarkerExpressions to a given list. For example this expressions
+      could be a string, an integer variable or a list itself. For a
+      complete overview on Textmarker expressions see
+      <a class="xref" href="#ugr.tools.tm.language.expressions" title="2.5.&nbsp;Expressions">Section&nbsp;2.5, &#8220;Expressions&#8221;</a>.
+    </p>
+    <div class="section" title="2.7.1.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1341">2.7.1.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">ADD(ListVariable,(TextMarkerExpression)+)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.1.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1346">2.7.1.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;ADD(list, var)};</pre><p>
+      </p>
+      <p>
+        In this example, the variable 'var' is added to the list
+        'list'.
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.1.&nbsp;ADD"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.add">2.7.1.&nbsp;ADD</h3></div></div></div>
-		
-		<p>
-			The ADD action adds all the elements of the passed
-			TextMarkerExpressions to a given list. For example this expressions
-			could be a string, an integer variable or a list itself. For a
-			complete overview on Textmarker expressions see
-			<a class="xref" href="#ugr.tools.tm.language.expressions" title="2.8.&nbsp;Expressions">Section&nbsp;2.8, &#8220;Expressions&#8221;</a>
-			.
-		</p>
-		<div class="section" title="2.7.1.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e909">2.7.1.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">ADD(ListVariable,(TextMarkerExpression)+)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.1.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e914">2.7.1.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">Document{-&gt;ADD(list, var)};</pre><p>
-			</p>
-			<p>
-				In this example, the variable 'var' is added to the list
-				'list'.
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.2.&nbsp;ASSIGN"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.assign">2.7.2.&nbsp;ASSIGN</h3></div></div></div>
+    
+    <p>
+      The ASSIGN action assigns the value of the passed expression to
+      a variable of the same type.
+    </p>
+    <div class="section" title="2.7.2.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1355">2.7.2.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">ASSIGN(BooleanVariable,BooleanExpression)</pre><p>
+      </p>
+      <p>
+        </p><pre class="programlisting">ASSIGN(NumberVariable,NumberExpression)</pre><p>
+      </p>
+      <p>
+        </p><pre class="programlisting">ASSIGN(StringVariable,StringExpression)</pre><p>
+      </p>
+      <p>
+        </p><pre class="programlisting">ASSIGN(TypeVariable,TypeExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.2.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1366">2.7.2.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;ASSIGN(amount, (amount/2))};</pre><p>
+      </p>
+      <p>
+        In this example, the value of the variable 'amount' is halved.
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.2.&nbsp;ASSIGN"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.assign">2.7.2.&nbsp;ASSIGN</h3></div></div></div>
-		
-		<p>
-			The ASSIGN action assigns the value of the passed expression to
-			a variable of the same type.
-		</p>
-		<div class="section" title="2.7.2.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e923">2.7.2.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">ASSIGN(BooleanVariable,BooleanExpression)</pre><p>
-			</p>
-			<p>
-				</p><pre class="programlisting">ASSIGN(NumberVariable,NumberExpression)</pre><p>
-			</p>
-			<p>
-				</p><pre class="programlisting">ASSIGN(StringVariable,StringExpression)</pre><p>
-			</p>
-			<p>
-				</p><pre class="programlisting">ASSIGN(TypeVariable,TypeExpression)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.2.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e934">2.7.2.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">Document{-&gt;ASSIGN(amount, (amount/2))};</pre><p>
-			</p>
-			<p>
-				In this example, the value of the variable 'amount' is halved.
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.3.&nbsp;CALL"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.call">2.7.3.&nbsp;CALL</h3></div></div></div>
+    
+    <p>
+      The CALL action initiates the execution of a different script
+      file or script block. Currently only complete script files are
+      supported.
+    </p>
+    <div class="section" title="2.7.3.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1375">2.7.3.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">CALL(DifferentFile)</pre><p>
+      </p>
+      <p>
+        </p><pre class="programlisting">CALL(Block)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.3.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1382">2.7.3.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;CALL(NamedEntities)};</pre><p>
+      </p>
+      <p>
+        Here, a script 'NamedEntities' for named entity recognition is
+        executed.
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.3.&nbsp;CALL"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.call">2.7.3.&nbsp;CALL</h3></div></div></div>
-		
-		<p>
-			The CALL action initiates the execution of a different script
-			file or script block. Currently only complete script files are
-			supported.
-		</p>
-		<div class="section" title="2.7.3.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e943">2.7.3.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">CALL(DifferentFile)</pre><p>
-			</p>
-			<p>
-				</p><pre class="programlisting">CALL(Block)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.3.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e950">2.7.3.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">Document{-&gt;CALL(NamedEntities)};</pre><p>
-			</p>
-			<p>
-				Here, a script 'NamedEntities' for named entity recognition is
-				executed.
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.4.&nbsp;CLEAR"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.clear">2.7.4.&nbsp;CLEAR</h3></div></div></div>
+    
+    <p>
+      The CLEAR action removes all elements of the given list.
+    </p>
+    <div class="section" title="2.7.4.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1391">2.7.4.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">CLEAR(ListVariable)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.4.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1396">2.7.4.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;CLEAR(SomeList)};</pre><p>
+      </p>
+      <p>
+        This rule clears the list 'SomeList'.
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.4.&nbsp;CLEAR"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.clear">2.7.4.&nbsp;CLEAR</h3></div></div></div>
-		
-		<p>
-			The CLEAR action removes all elements of the given list.
-		</p>
-		<div class="section" title="2.7.4.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e959">2.7.4.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">CLEAR(ListVariable)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.4.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e964">2.7.4.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">Document{-&gt;CLEAR(SomeList)};</pre><p>
-			</p>
-			<p>
-				This rule clears the list 'SomeList'.
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.5.&nbsp;COLOR"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.color">2.7.5.&nbsp;COLOR</h3></div></div></div>
+    
+    <p>
+      The COLOR action sets the color of an annotation type in the
+      modified view if the rule is fired. The background color is passed as
+      the second parameter. The font color can be changed by passing a
+      further color as third parameter. By default annotations are not
+      automatically selected when opening the modified view. This can be
+      changed for the matched annotations by passing true as fourth
+      parameter. By default The supported colors are: black, silver, gray,
+      white, maroon, red, purple, fuchsia, green, lime, olive, yellow,
+      navy, blue, aqua, lightblue, lightgreen, orange, pink, salmon, cyan,
+      violet, tan, brown, white, mediumpurple.
+    </p>
+    <div class="section" title="2.7.5.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1405">2.7.5.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">COLOR(TypeExpression,StringExpression(, StringExpression
+          (, BooleanExpression)?)?)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.5.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1410">2.7.5.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;COLOR(Headline, "red", "green", true)};</pre><p>
+      </p>
+      <p>
+        This rule colors all Headline annotations in the modified view.
+        Thereby background color is set to red, font color is set to green
+        and all 'Headline' annotations are selected when opening the
+        modified view.
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.5.&nbsp;COLOR"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.color">2.7.5.&nbsp;COLOR</h3></div></div></div>
-		
-		<p>
-			The COLOR action sets the color of an annotation type in the
-			modified view if the rule is fired. The background color is passed as
-			the second parameter. The font color can be changed by passing a
-			further color as third parameter. By default annotations are not
-			automatically selected when opening the modified view. This can be
-			changed for the matched annotations by passing true as fourth
-			parameter. By default The supported colors are: black, silver, gray,
-			white, maroon, red, purple, fuchsia, green, lime, olive, yellow,
-			navy, blue, aqua, lightblue, lightgreen, orange, pink, salmon, cyan,
-			violet, tan, brown, white, mediumpurple.
-		</p>
-		<div class="section" title="2.7.5.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e973">2.7.5.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">COLOR(TypeExpression,StringExpression(, StringExpression
-				  (, BooleanExpression)?)?)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.5.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e978">2.7.5.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">Document{-&gt;COLOR(Headline, "red", "green", true)};</pre><p>
-			</p>
-			<p>
-				This rule colors all Headline annotations in the modified view.
-				Thereby background color is set to red, font color is set to green
-				and all 'Headline' annotations are selected when opening the
-				modified view.
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.6.&nbsp;CONFIGURE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.configure">2.7.6.&nbsp;CONFIGURE</h3></div></div></div>
+    
+    <p>
+      The CONFIGURE action can be used to configure the analysis
+      engine of the given namespace (first parameter). The parameters that
+      should be configured with corresponding values are passed as
+      name-value
+      pairs.
+    </p>
+    <div class="section" title="2.7.6.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1419">2.7.6.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">CONFIGURE(StringExpression(,StringExpression = Expression)+)</pre><p>
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.6.&nbsp;CONFIGURE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.configure">2.7.6.&nbsp;CONFIGURE</h3></div></div></div>
-		
-		<p>
-			The CONFIGURE action can be used to configure the analysis
-			engine of the given namespace (first parameter). The parameters that
-			should be configured with corresponding values are passed as
-			name-value
-			pairs.
-		</p>
-		<div class="section" title="2.7.6.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e987">2.7.6.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">CONFIGURE(StringExpression(,StringExpression = Expression)+)</pre><p>
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.7.&nbsp;CREATE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.create">2.7.7.&nbsp;CREATE</h3></div></div></div>
+    
+    <p>
+      The CREATE action is similar to the MARK action. It also
+      annotates the matched text fragments with a type annotation, but
+      additionally assigns values to a choosen subset of the type's feature
+      elements.
+    </p>
+    <div class="section" title="2.7.7.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1427">2.7.7.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">CREATE(TypeExpression(,NumberExpression)*(,StringExpression = Expression)+)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.7.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1432">2.7.7.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Paragraph{COUNT(ANY,0,10000,cnt)-&gt;CREATE(Headline,"size" = cnt)};</pre><p>
+      </p>
+      <p>
+        This rule counts the number of tokens of type ANY in a
+        Paragraph annotation and assigns the counted value to the int
+        variable 'cnt'. If the counted number is between 0 and 10000, a
+        Headline annotation is created for this Paragraph. Moreover the
+        feature named 'size' of Headline is set to the value of 'cnt'.
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.7.&nbsp;CREATE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.create">2.7.7.&nbsp;CREATE</h3></div></div></div>
-		
-		<p>
-			The CREATE action is similar to the MARK action. It also
-			annotates the matched text fragments with a type annotation, but
-			additionally assigns values to a choosen subset of the type's feature
-			elements.
-		</p>
-		<div class="section" title="2.7.7.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e995">2.7.7.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">CREATE(TypeExpression(,NumberExpression)*(,StringExpression = Expression)+)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.7.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1000">2.7.7.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">Paragraph{COUNT(ANY,0,10000,cnt)-&gt;CREATE(Headline,"size" = cnt)};</pre><p>
-			</p>
-			<p>
-				This rule counts the number of tokens of type ANY in a
-				Paragraph annotation and assigns the counted value to the int
-				variable 'cnt'. If the counted number is between 0 and 10000, a
-				Headline annotation is created for this Paragraph. Moreover the
-				feature named 'size' of Headline is set to the value of 'cnt'.
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.8.&nbsp;DEL"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.del">2.7.8.&nbsp;DEL</h3></div></div></div>
+    
+    <p>
+      The DEL action deletes the matched text fragments in the
+      modified
+      view.
+    </p>
+    <div class="section" title="2.7.8.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1441">2.7.8.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">DEL</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.8.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1446">2.7.8.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Name{-&gt;DEL};</pre><p>
+      </p>
+      <p>
+        This rule deletes all text fragments that are annotated with a
+        Name annotation.
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.8.&nbsp;DEL"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.del">2.7.8.&nbsp;DEL</h3></div></div></div>
-		
-		<p>
-			The DEL action deletes the matched text fragments in the
-			modified
-			view.
-		</p>
-		<div class="section" title="2.7.8.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1009">2.7.8.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">DEL</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.8.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1014">2.7.8.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">Name{-&gt;DEL};</pre><p>
-			</p>
-			<p>
-				This rule deletes all text fragments that are annotated with a
-				Name annotation.
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.9.&nbsp;DYNAMICANCHORING"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.dynamicanchoring">2.7.9.&nbsp;DYNAMICANCHORING</h3></div></div></div>
+    
+    <p>
+      The DYNAMICANCHORING action turns dynamic anchoring on or off
+      (first parameter) and assigns the anchoring parameters penalty
+      (sceond parameter) and factor (third parameter).
+    </p>
+    <div class="section" title="2.7.9.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1455">2.7.9.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">DYNAMICANCHORING(BooleanExpression(,NumberExpression(,NumberExpression)?)?)</pre><p>
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.9.&nbsp;DYNAMICANCHORING"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.dynamicanchoring">2.7.9.&nbsp;DYNAMICANCHORING</h3></div></div></div>
-		
-		<p>
-			The DYNAMICANCHORING action turns dynamic anchoring on or off
-			(first parameter) and assigns the anchoring parameters penalty
-			(sceond parameter) and factor (third parameter).
-		</p>
-		<div class="section" title="2.7.9.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1023">2.7.9.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">DYNAMICANCHORING(BooleanExpression(,NumberExpression(,NumberExpression)?)?)</pre><p>
-			</p>
-		</div>
-	</div>
-
-	<div class="section" title="2.7.10.&nbsp;EXEC"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.exec">2.7.10.&nbsp;EXEC</h3></div></div></div>
-		
-		<p>
-			The EXEC action initiates the execution of a different script
-			file or analysis engine on the complete input document independent of
-			the matched text and the current filtering settings. If the argument
-			refers to another script file, a new view on the document is created:
-			the complete text of the original CAS and with the default filtering
-			settings of the TextMarker analysis engine.
-		</p>
-		<div class="section" title="2.7.10.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1031">2.7.10.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">EXEC(DifferentFile)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.10.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1036">2.7.10.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">ENGINE NamedEntities;
+  <div class="section" title="2.7.10.&nbsp;EXEC"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.exec">2.7.10.&nbsp;EXEC</h3></div></div></div>
+    
+    <p>
+      The EXEC action initiates the execution of a different script
+      file or analysis engine on the complete input document independent of
+      the matched text and the current filtering settings. If the argument
+      refers to another script file, a new view on the document is created:
+      the complete text of the original CAS and with the default filtering
+      settings of the TextMarker analysis engine.
+    </p>
+    <div class="section" title="2.7.10.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1463">2.7.10.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">EXEC(DifferentFile)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.10.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1468">2.7.10.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">ENGINE NamedEntities;
               Document{-&gt;EXEC(NamedEntities)};</pre><p>
-			</p>
-			<p>
-				Here, an analysis engine for named entity recognition is
-				executed once on the complete document.
-			</p>
-		</div>
-	</div>
-	<div class="section" title="2.7.11.&nbsp;FILL"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.fill">2.7.11.&nbsp;FILL</h3></div></div></div>
-		
-		<p>
-			The FILL action fills a choosen subset of the given type's
-			feature elements.
-		</p>
-		<div class="section" title="2.7.11.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1045">2.7.11.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">FILL(TypeExpression(,StringExpression = Expression)+)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.11.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1050">2.7.11.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">Headline{COUNT(ANY,0,10000,tokenCount)
-				  -&gt;FILL(Headline,"size" = tokenCount)};</pre><p>
-			</p>
-			<p>
-				Here, the number of tokens within an Headline annotation is
-				counted an stored in variable 'tokenCount'. If the number of tokens
-				is within the interval [0;10000], the FILL action fills the
-				Headline's feature 'size' with the value of 'tokenCount'.
-			</p>
-		</div>
-	</div>
+      </p>
+      <p>
+        Here, an analysis engine for named entity recognition is
+        executed once on the complete document.
+      </p>
+    </div>
+  </div>
+  <div class="section" title="2.7.11.&nbsp;FILL"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.fill">2.7.11.&nbsp;FILL</h3></div></div></div>
+    
+    <p>
+      The FILL action fills a choosen subset of the given type's
+      feature elements.
+    </p>
+    <div class="section" title="2.7.11.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1477">2.7.11.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">FILL(TypeExpression(,StringExpression = Expression)+)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.11.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1482">2.7.11.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Headline{COUNT(ANY,0,10000,tokenCount)
+          -&gt;FILL(Headline,"size" = tokenCount)};</pre><p>
+      </p>
+      <p>
+        Here, the number of tokens within an Headline annotation is
+        counted an stored in variable 'tokenCount'. If the number of tokens
+        is within the interval [0;10000], the FILL action fills the
+        Headline's feature 'size' with the value of 'tokenCount'.
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.12.&nbsp;FILTERTYPE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.filtertype">2.7.12.&nbsp;FILTERTYPE</h3></div></div></div>
-		
-		<p>
-			This action filters the given types of annotations. They are now
-			ignored by rules. For more informations on how rules work see
-			<a class="xref" href="#ugr.tools.tm.language.inference" title="2.3.&nbsp;Syntax">Section&nbsp;2.3, &#8220;Syntax&#8221;</a>
-			. Expressions are not yet supported. This action is complementary to
-			RETAINTYPE (see
-			<a class="xref" href="#ugr.tools.tm.language.actions.retaintype" title="2.7.29.&nbsp;RETAINTYPE">Section&nbsp;2.7.29, &#8220;RETAINTYPE&#8221;</a>
-			).
-		</p>
-		<div class="section" title="2.7.12.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1061">2.7.12.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">FILTERTYPE((TypeExpression(,TypeExpression)*))?</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.12.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1066">2.7.12.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">Document{-&gt;FILTERTYPE(SW)};</pre><p>
-			</p>
-			<p>
-				This rule filters all small written words in the input
-				document. This means they are further ignored by any rules.
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.12.&nbsp;FILTERTYPE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.filtertype">2.7.12.&nbsp;FILTERTYPE</h3></div></div></div>
+    
+    <p>
+      This action filters the given types of annotations. They are now
+      ignored by rules. For more informations on how rules work see
+      <a class="xref" href="#">???</a>
+      . Expressions are not yet supported. This action is complementary to
+      RETAINTYPE (see
+      <a class="xref" href="#ugr.tools.tm.language.actions.retaintype" title="2.7.29.&nbsp;RETAINTYPE">Section&nbsp;2.7.29, &#8220;RETAINTYPE&#8221;</a>
+      ).
+    </p>
+    <div class="section" title="2.7.12.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1493">2.7.12.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">FILTERTYPE((TypeExpression(,TypeExpression)*))?</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.12.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1498">2.7.12.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;FILTERTYPE(SW)};</pre><p>
+      </p>
+      <p>
+        This rule filters all small written words in the input
+        document. This means they are further ignored by any rules.
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.13.&nbsp;GATHER"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.gather">2.7.13.&nbsp;GATHER</h3></div></div></div>
-		
-		<p>
-			This action creates a complex structure, a annotation with
-			features. The optionally passed indexes (NumberExpressions after the
-			TypeExpression) can be used to create an annotation that spanns the
-			matched information of several rule elements. The features are
-			collected using the indexes of the rule elements of the complete
-			rule.
-		</p>
-		<div class="section" title="2.7.13.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1075">2.7.13.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">GATHER(TypeExpression(,NumberExpression)*
-				  (,StringExpression = NumberExpression)+)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.13.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1080">2.7.13.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">DECLARE Annotation A;
-        DECLARE Annotation B;
-        DECLARE Annotation C(Annotation a, Annotation b);
-        W{REGEXP("A")-&gt;MARK(A)};
-        W{REGEXP("B")-&gt;MARK(B)};
-        A B{-&gt; GATHER(C, 1, 2, "a" = 1, "b" = 2)};</pre><p>
-			</p>
-			<p>
-				Two annotations A and B are declared and annotated. The last
-				rule creates an annotation C spanning the elements A (index 1 since
-				it is the first rule element) and B (index 2) with its features 'a'
-				set to annotation A (again index 1) and 'b' set to annotation B
-				(again index 2).
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.13.&nbsp;GATHER"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.gather">2.7.13.&nbsp;GATHER</h3></div></div></div>
+    
+    <p>
+      This action creates a complex structure, a annotation with
+      features. The optionally passed indexes (NumberExpressions after the
+      TypeExpression) can be used to create an annotation that spanns the
+      matched information of several rule elements. The features are
+      collected using the indexes of the rule elements of the complete
+      rule.
+    </p>
+    <div class="section" title="2.7.13.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1507">2.7.13.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">GATHER(TypeExpression(,NumberExpression)*
+          (,StringExpression = NumberExpression)+)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.13.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1512">2.7.13.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">DECLARE Annotation A;
+DECLARE Annotation B;
+DECLARE Annotation C(Annotation a, Annotation b);
+W{REGEXP("A")-&gt;MARK(A)};
+W{REGEXP("B")-&gt;MARK(B)};
+A B{-&gt; GATHER(C, 1, 2, "a" = 1, "b" = 2)};</pre><p>
+      </p>
+      <p>
+        Two annotations A and B are declared and annotated. The last
+        rule creates an annotation C spanning the elements A (index 1 since
+        it is the first rule element) and B (index 2) with its features 'a'
+        set to annotation A (again index 1) and 'b' set to annotation B
+        (again index 2).
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.14.&nbsp;GET"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.get">2.7.14.&nbsp;GET</h3></div></div></div>
-		
-		<p>
-			The GET action retrieves an element of the given list dependent on a
-			given strategy.
-			</p><div class="table"><a name="d5e1089"></a><p class="title"><b>Table&nbsp;2.1.&nbsp;Currently supported strategies</b></p><div class="table-contents">
-				
-				<table summary="Currently supported strategies" style="border-collapse: collapse;border-top: 0.5pt solid black; border-bottom: 0.5pt solid black; border-left: 0.5pt solid black; border-right: 0.5pt solid black; "><colgroup><col><col></colgroup><thead><tr><th style="border-right: 0.5pt solid black; border-bottom: 0.5pt solid black; " align="left">Strategy</th><th style="border-bottom: 0.5pt solid black; " align="left">Functionality</th></tr></thead><tbody><tr><td style="border-right: 0.5pt solid black; " align="left">dominant</td><td style="" align="left">finds the most occuring element</td></tr></tbody></table>
-			</div></div><p><br class="table-break">
-		</p>
-		<div class="section" title="2.7.14.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1100">2.7.14.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">GET(ListExpression, Variable, StringExpression)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.14.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1105">2.7.14.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">Document{-&gt;GET(list, var, "dominant")};</pre><p>
-			</p>
-			<p>
-				In this example, the element of the list 'list' that occurs
-				most is stored in the variable 'var'.
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.14.&nbsp;GET"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.get">2.7.14.&nbsp;GET</h3></div></div></div>
+    
+    <p>
+      The GET action retrieves an element of the given list dependent on a
+      given strategy.
+      </p><div class="table"><a name="d5e1521"></a><p class="title"><b>Table&nbsp;2.3.&nbsp;Currently supported strategies</b></p><div class="table-contents">
+        
+        <table summary="Currently supported strategies" style="border-collapse: collapse;border-top: 0.5pt solid black; border-bottom: 0.5pt solid black; border-left: 0.5pt solid black; border-right: 0.5pt solid black; "><colgroup><col><col></colgroup><thead><tr><th style="border-right: 0.5pt solid black; border-bottom: 0.5pt solid black; " align="left">Strategy</th><th style="border-bottom: 0.5pt solid black; " align="left">Functionality</th></tr></thead><tbody><tr><td style="border-right: 0.5pt solid black; " align="left">dominant</td><td style="" align="left">finds the most occuring element</td></tr></tbody></table>
+      </div></div><p><br class="table-break">
+    </p>
+    <div class="section" title="2.7.14.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1532">2.7.14.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">GET(ListExpression, Variable, StringExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.14.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1537">2.7.14.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;GET(list, var, "dominant")};</pre><p>
+      </p>
+      <p>
+        In this example, the element of the list 'list' that occurs
+        most is stored in the variable 'var'.
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.15.&nbsp;GETFEATURE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.getfeature">2.7.15.&nbsp;GETFEATURE</h3></div></div></div>
-		
-		<p>
-			The GETFEATURE action stores the value of the matched
-			annotation's feature (first paramter) in the given variable (second
-			parameter).
-		</p>
-		<div class="section" title="2.7.15.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1114">2.7.15.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">GETFEATURE(StringExpression, Variable)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.15.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1119">2.7.15.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">Document{-&gt;GETFEATURE("language", stringVar)};</pre><p>
-			</p>
-			<p>
-				In this example, variable 'stringVar' will contain the value of
-				the feature 'language'.
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.15.&nbsp;GETFEATURE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.getfeature">2.7.15.&nbsp;GETFEATURE</h3></div></div></div>
+    
+    <p>
+      The GETFEATURE action stores the value of the matched
+      annotation's feature (first paramter) in the given variable (second
+      parameter).
+    </p>
+    <div class="section" title="2.7.15.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1546">2.7.15.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">GETFEATURE(StringExpression, Variable)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.15.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1551">2.7.15.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;GETFEATURE("language", stringVar)};</pre><p>
+      </p>
+      <p>
+        In this example, variable 'stringVar' will contain the value of
+        the feature 'language'.
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.16.&nbsp;GETLIST"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.getlist">2.7.16.&nbsp;GETLIST</h3></div></div></div>
-		
-		<p>
-			This action retrieves a list of types dependent on a given strategy.
-			</p><div class="table"><a name="d5e1128"></a><p class="title"><b>Table&nbsp;2.2.&nbsp;Currently supported strategies</b></p><div class="table-contents">
-				
-				<table summary="Currently supported strategies" style="border-collapse: collapse;border-top: 0.5pt solid black; border-bottom: 0.5pt solid black; border-left: 0.5pt solid black; border-right: 0.5pt solid black; "><colgroup><col><col></colgroup><thead><tr><th style="border-right: 0.5pt solid black; border-bottom: 0.5pt solid black; " align="left">Strategy</th><th style="border-bottom: 0.5pt solid black; " align="left">Functionality</th></tr></thead><tbody><tr><td style="border-right: 0.5pt solid black; border-bottom: 0.5pt solid black; " align="left">Types</td><td style="border-bottom: 0.5pt solid black; " align="left">get all types within the matched annotation</td></tr><tr><td style="border-right: 0.5pt solid black; border-bottom: 0.5pt solid black; " align="left">Types:End</td><td style="border-bottom: 0.5pt solid black; " align="left">get all types that end at the same offset as the matched
-								annotation
-							</td></tr><tr><td style="border-right: 0.5pt solid black; " align="left">Types:Begin</td><td style="" align="left">get all types that start at the same offset as the
-								matched
-								annotation
-							</td></tr></tbody></table>
-			</div></div><p><br class="table-break">
-		</p>
-		<div class="section" title="2.7.16.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1145">2.7.16.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">GETLIST(ListVariable, StringExpression)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.16.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1150">2.7.16.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">Document{-&gt;GETLIST(list, "Types")};</pre><p>
-			</p>
-			<p>
-				Here, a list of all types within the document is created and
-				assigned to list variable 'list'.
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.16.&nbsp;GETLIST"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.getlist">2.7.16.&nbsp;GETLIST</h3></div></div></div>
+    
+    <p>
+      This action retrieves a list of types dependent on a given strategy.
+      </p><div class="table"><a name="d5e1560"></a><p class="title"><b>Table&nbsp;2.4.&nbsp;Currently supported strategies</b></p><div class="table-contents">
+        
+        <table summary="Currently supported strategies" style="border-collapse: collapse;border-top: 0.5pt solid black; border-bottom: 0.5pt solid black; border-left: 0.5pt solid black; border-right: 0.5pt solid black; "><colgroup><col><col></colgroup><thead><tr><th style="border-right: 0.5pt solid black; border-bottom: 0.5pt solid black; " align="left">Strategy</th><th style="border-bottom: 0.5pt solid black; " align="left">Functionality</th></tr></thead><tbody><tr><td style="border-right: 0.5pt solid black; border-bottom: 0.5pt solid black; " align="left">Types</td><td style="border-bottom: 0.5pt solid black; " align="left">get all types within the matched annotation</td></tr><tr><td style="border-right: 0.5pt solid black; border-bottom: 0.5pt solid black; " align="left">Types:End</td><td style="border-bottom: 0.5pt solid black; " align="left">get all types that end at the same offset as the matched
+                annotation
+              </td></tr><tr><td style="border-right: 0.5pt solid black; " align="left">Types:Begin</td><td style="" align="left">get all types that start at the same offset as the
+                matched
+                annotation
+              </td></tr></tbody></table>
+      </div></div><p><br class="table-break">
+    </p>
+    <div class="section" title="2.7.16.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1577">2.7.16.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">GETLIST(ListVariable, StringExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.16.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1582">2.7.16.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;GETLIST(list, "Types")};</pre><p>
+      </p>
+      <p>
+        Here, a list of all types within the document is created and
+        assigned to list variable 'list'.
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.17.&nbsp;LOG"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.log">2.7.17.&nbsp;LOG</h3></div></div></div>
-		
-		<p>
-			The LOG action simply writes a log message.
-		</p>
-		<div class="section" title="2.7.17.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1159">2.7.17.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">LOG(StringExpression)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.17.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1164">2.7.17.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">Document{-&gt;LOG("processed")};</pre><p>
-			</p>
-			<p>
-				This rule writes a log message with the string "processed".
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.17.&nbsp;LOG"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.log">2.7.17.&nbsp;LOG</h3></div></div></div>
+    
+    <p>
+      The LOG action simply writes a log message.
+    </p>
+    <div class="section" title="2.7.17.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1591">2.7.17.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">LOG(StringExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.17.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1596">2.7.17.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;LOG("processed")};</pre><p>
+      </p>
+      <p>
+        This rule writes a log message with the string "processed".
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.18.&nbsp;MARK"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.mark">2.7.18.&nbsp;MARK</h3></div></div></div>
-		
-		<p>
-			The MARK action is the most important action in the TextMarker
-			system. It creates a new annotation of the given type. The optionally
-			passed indexes (NumberExpressions after the TypeExpression) can be
-			used to create an annotation that spanns the matched information of
-			several rule elements.
-		</p>
-		<div class="section" title="2.7.18.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1173">2.7.18.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">MARK(TypeExpression(,NumberExpression)*)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.18.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1178">2.7.18.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">Freeline Paragraph{-&gt;MARK(ParagraphAfterFreeline,1,2)};</pre><p>
-			</p>
-			<p>
-				This rule matches on a free line followed by a Paragraph
-				annotation and annotates both in a single ParagraphAfterFreeline
-				annotation. The two numerical expressions at the end of the mark
-				action state that the matched text of the first and the second rule
-				elements are joined to create the boundaries of the new annotation.
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.18.&nbsp;MARK"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.mark">2.7.18.&nbsp;MARK</h3></div></div></div>
+    
+    <p>
+      The MARK action is the most important action in the TextMarker
+      system. It creates a new annotation of the given type. The optionally
+      passed indexes (NumberExpressions after the TypeExpression) can be
+      used to create an annotation that spanns the matched information of
+      several rule elements.
+    </p>
+    <div class="section" title="2.7.18.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1605">2.7.18.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">MARK(TypeExpression(,NumberExpression)*)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.18.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1610">2.7.18.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Freeline Paragraph{-&gt;MARK(ParagraphAfterFreeline,1,2)};</pre><p>
+      </p>
+      <p>
+        This rule matches on a free line followed by a Paragraph
+        annotation and annotates both in a single ParagraphAfterFreeline
+        annotation. The two numerical expressions at the end of the mark
+        action state that the matched text of the first and the second rule
+        elements are joined to create the boundaries of the new annotation.
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.19.&nbsp;MARKFAST"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.markfast">2.7.19.&nbsp;MARKFAST</h3></div></div></div>
-		
-		<p>
-			The MARKFAST action creates annotations of the given type (first
-			parameter) if an element of the passed list (second parameter) occurs
-			within the window of the matched annotation. Thereby the created
-			annotation doesn't cover the whole matched annotation. Instead it
-			only covers the text of the found occurence. The third parameter is
-			optional. It defines if the MARKFAST action should ignore the case,
-			whereby its default value is false. The optional fourth parameter
-			specifies a character threshold for the ignorence of the case. It is
-			only relevant if the ignore-case value is set to true. The last
-			parameter is set to true by default and specifies whether whitespaces
-			in the entries of the dictionary should be ignored. For more
-			information on lists see
-			<a class="xref" href="#ugr.tools.tm.language.declarations.ressource" title="2.5.3.&nbsp;Resources">Section&nbsp;2.5.3, &#8220;Resources&#8221;</a>
-			. Additionally to external word lists, string lists variables can be
-			used.
-		</p>
-		<div class="section" title="2.7.19.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1188">2.7.19.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">MARKFAST(TypeExpression,ListExpression(,BooleanExpression
-				  (,NumberExpression,(BooleanExpression)?)?)?)</pre><p>
-				</p><pre class="programlisting">MARKFAST(TypeExpression,StringListExpression(,BooleanExpression
+  <div class="section" title="2.7.19.&nbsp;MARKFAST"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.markfast">2.7.19.&nbsp;MARKFAST</h3></div></div></div>
+    
+    <p>
+      The MARKFAST action creates annotations of the given type (first
+      parameter) if an element of the passed list (second parameter) occurs
+      within the window of the matched annotation. Thereby the created
+      annotation doesn't cover the whole matched annotation. Instead it
+      only covers the text of the found occurence. The third parameter is
+      optional. It defines if the MARKFAST action should ignore the case,
+      whereby its default value is false. The optional fourth parameter
+      specifies a character threshold for the ignorence of the case. It is
+      only relevant if the ignore-case value is set to true. The last
+      parameter is set to true by default and specifies whether whitespaces
+      in the entries of the dictionary should be ignored. For more
+      information on lists see
+      <a class="xref" href="#ugr.tools.tm.language.declarations.ressource" title="2.4.3.&nbsp;Resources">Section&nbsp;2.4.3, &#8220;Resources&#8221;</a>
+      . Additionally to external word lists, string lists variables can be
+      used.
+    </p>
+    <div class="section" title="2.7.19.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1620">2.7.19.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">MARKFAST(TypeExpression,ListExpression(,BooleanExpression
           (,NumberExpression,(BooleanExpression)?)?)?)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.19.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1194">2.7.19.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">WORDLIST FirstNameList = 'FirstNames.txt';
-        DECLARE FirstName;
-        Document{-&gt; MARKFAST(FirstName, FirstNameList, true, 2)};</pre><p>
-			</p>
-			<p>
-				This rule annotates all first names listed in the list
-				'FirstNameList' within the document and ignores the case if the
-				length of the word
-				is greater than 2.
-			</p>
-		</div>
-	</div>
+        </p><pre class="programlisting">MARKFAST(TypeExpression,StringListExpression(,BooleanExpression
+          (,NumberExpression,(BooleanExpression)?)?)?)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.19.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1626">2.7.19.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">WORDLIST FirstNameList = 'FirstNames.txt';
+DECLARE FirstName;
+Document{-&gt; MARKFAST(FirstName, FirstNameList, true, 2)};</pre><p>
+      </p>
+      <p>
+        This rule annotates all first names listed in the list
+        'FirstNameList' within the document and ignores the case if the
+        length of the word
+        is greater than 2.
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.20.&nbsp;MARKLAST"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.marklast">2.7.20.&nbsp;MARKLAST</h3></div></div></div>
-		
-		<p>
-			The MARKLAST action annotates the last token of the matched
-			annotation with the given type.
-		</p>
-		<div class="section" title="2.7.20.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1203">2.7.20.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">MARKLAST(TypeExpression)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.20.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1208">2.7.20.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">Document{-&gt;MARKLAST(Last)};</pre><p>
-			</p>
-			<p>
-				This rule annotates the last token of the document with the
-				annotation Last.
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.20.&nbsp;MARKLAST"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.marklast">2.7.20.&nbsp;MARKLAST</h3></div></div></div>
+    
+    <p>
+      The MARKLAST action annotates the last token of the matched
+      annotation with the given type.
+    </p>
+    <div class="section" title="2.7.20.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1635">2.7.20.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">MARKLAST(TypeExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.20.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1640">2.7.20.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;MARKLAST(Last)};</pre><p>
+      </p>
+      <p>
+        This rule annotates the last token of the document with the
+        annotation Last.
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.21.&nbsp;MARKONCE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.markonce">2.7.21.&nbsp;MARKONCE</h3></div></div></div>
-		
-		<p>
-			The MARKONCE action has the same functionality as the MARK
-			action, but creates a new annotation only if it does not yet exist.
-		</p>
-		<div class="section" title="2.7.21.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1217">2.7.21.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">MARKONCE(NumberExpression,TypeExpression(,NumberExpression)*)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.21.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1222">2.7.21.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">Freeline Paragraph{-&gt;MARKONCE(ParagraphAfterFreeline,1,2)};</pre><p>
-			</p>
-			<p>
-				This rule matches on a free line followed by a Paragraph and
-				annotates both in a single ParagraphAfterFreeline annotation if it
-				is not already annotated with ParagraphAfterFreeline annotation. The
-				two numerical expressions at the end of the MARKONCE action state
-				that the matched text of the first and the second rule elements are
-				joined to create the boundaries of the new annotation.
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.21.&nbsp;MARKONCE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.markonce">2.7.21.&nbsp;MARKONCE</h3></div></div></div>
+    
+    <p>
+      The MARKONCE action has the same functionality as the MARK
+      action, but creates a new annotation only if it does not yet exist.
+    </p>
+    <div class="section" title="2.7.21.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1649">2.7.21.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">MARKONCE(NumberExpression,TypeExpression(,NumberExpression)*)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.21.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1654">2.7.21.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Freeline Paragraph{-&gt;MARKONCE(ParagraphAfterFreeline,1,2)};</pre><p>
+      </p>
+      <p>
+        This rule matches on a free line followed by a Paragraph and
+        annotates both in a single ParagraphAfterFreeline annotation if it
+        is not already annotated with ParagraphAfterFreeline annotation. The
+        two numerical expressions at the end of the MARKONCE action state
+        that the matched text of the first and the second rule elements are
+        joined to create the boundaries of the new annotation.
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.22.&nbsp;MARKSCORE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.markscore">2.7.22.&nbsp;MARKSCORE</h3></div></div></div>
-		
-		<p>
-			The MARKSCORE action is similar to the MARK action. It also creates a
-			new annotation of the given type, but only if it does not yet exist.
-			The optionally passed indexes (parameters after the TypeExpression)
-			can be used to create an annotation that spanns the matched
-			information of several rule elements. Additionally a score value
-			(first parameter) is added to the heuristic score value of the
-			annotation. For more information on heuristic scores see
-			<a class="xref" href="#ugr.tools.tm.language.score" title="2.11.&nbsp;Heuristic extraction using scoring rules">Section&nbsp;2.11, &#8220;Heuristic extraction using scoring rules&#8221;</a>
-			.
-		</p>
-		<div class="section" title="2.7.22.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1232">2.7.22.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">MARKSCORE(NumberExpression,TypeExpression(,NumberExpression)*)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.22.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1237">2.7.22.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">Freeline Paragraph{-&gt;MARKSCORE(10,ParagraphAfterFreeline,1,2)};</pre><p>
-			</p>
-			<p>
-				This rule matches on a free line followed by a paragraph and
-				annotates both in a single ParagraphAfterFreeline annotation. The
-				two number expressions at the end of the mark action indicate that
-				the matched text of the first and the second rule elements are
-				joined to create the boundaries of the new annotation. Additionally
-				the score '10' is added to the heuristic threshold of this
-				annotation.
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.22.&nbsp;MARKSCORE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.markscore">2.7.22.&nbsp;MARKSCORE</h3></div></div></div>
+    
+    <p>
+      The MARKSCORE action is similar to the MARK action. It also creates a
+      new annotation of the given type, but only if it does not yet exist.
+      The optionally passed indexes (parameters after the TypeExpression)
+      can be used to create an annotation that spanns the matched
+      information of several rule elements. Additionally a score value
+      (first parameter) is added to the heuristic score value of the
+      annotation. For more information on heuristic scores see
+      <a class="xref" href="#ugr.tools.tm.language.score" title="2.10.&nbsp;Heuristic extraction using scoring rules">Section&nbsp;2.10, &#8220;Heuristic extraction using scoring rules&#8221;</a>
+      .
+    </p>
+    <div class="section" title="2.7.22.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1664">2.7.22.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">MARKSCORE(NumberExpression,TypeExpression(,NumberExpression)*)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.22.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1669">2.7.22.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Freeline Paragraph{-&gt;MARKSCORE(10,ParagraphAfterFreeline,1,2)};</pre><p>
+      </p>
+      <p>
+        This rule matches on a free line followed by a paragraph and
+        annotates both in a single ParagraphAfterFreeline annotation. The
+        two number expressions at the end of the mark action indicate that
+        the matched text of the first and the second rule elements are
+        joined to create the boundaries of the new annotation. Additionally
+        the score '10' is added to the heuristic threshold of this
+        annotation.
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.23.&nbsp;MARKTABLE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.marktable">2.7.23.&nbsp;MARKTABLE</h3></div></div></div>
-		
-		<p>
-			The MARKTABLE action creates annotations of the given type (first
-			parameter) if an element of the given column (second parameter) of a
-			passed table (third parameter) occures within the window of the
-			matched annotation. Thereby the created annotation doesn't cover the
-			whole matched annotation. Instead it only covers the text of the
-			found occurence. Optionally the MARKTABLE action is able to assign
-			entries of the given table to features of the created annotation.
-			For
-			more information on tables see
-			<a class="xref" href="#ugr.tools.tm.language.declarations.ressource" title="2.5.3.&nbsp;Resources">Section&nbsp;2.5.3, &#8220;Resources&#8221;</a>
-			. Additionally several configuration parameters are possible. (See
-			example.)
-		</p>
-		<div class="section" title="2.7.23.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1247">2.7.23.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">MARKTABLE(TypeExpression, NumberExpression, TableExpression 
-				  (,BooleanExpression, NumberExpression, StringExpression, NumberExpression)? 
-				  (,StringExpression = NumberExpression)+)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.23.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1252">2.7.23.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">WORDTABLE TestTable = 'TestTable.csv';
-        DECLARE Annotation Struct(STRING first);
-        Document{-&gt; MARKTABLE(Struct, 1, TestTable, true, 4, ".,-", 2, "first" = 2)};</pre><p>
-			</p>
-			<p>
-				In this example, the whole document is searched for all
-				occurences of the entries of the first column of the given table
-				'TestTable'. For each occurence an annotation of the type Struct is
-				created and its feature 'first' is filled with the entry of the
-				second column. Moreover the case of the word is ignored if the
-				length of the word exceeds 4. Additionally the chars '.', ',' and
-				'-' are ignored, but at maximum two of them.
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.23.&nbsp;MARKTABLE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.marktable">2.7.23.&nbsp;MARKTABLE</h3></div></div></div>
+    
+    <p>
+      The MARKTABLE action creates annotations of the given type (first
+      parameter) if an element of the given column (second parameter) of a
+      passed table (third parameter) occures within the window of the
+      matched annotation. Thereby the created annotation doesn't cover the
+      whole matched annotation. Instead it only covers the text of the
+      found occurence. Optionally the MARKTABLE action is able to assign
+      entries of the given table to features of the created annotation.
+      For
+      more information on tables see
+      <a class="xref" href="#ugr.tools.tm.language.declarations.ressource" title="2.4.3.&nbsp;Resources">Section&nbsp;2.4.3, &#8220;Resources&#8221;</a>. Additionally several configuration parameters are possible. (See example.)
+    </p>
+    <div class="section" title="2.7.23.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1679">2.7.23.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">MARKTABLE(TypeExpression, NumberExpression, TableExpression 
+          (,BooleanExpression, NumberExpression, 
+          StringExpression, NumberExpression)? 
+          (,StringExpression = NumberExpression)+)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.23.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1684">2.7.23.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">WORDTABLE TestTable = 'TestTable.csv';
+DECLARE Annotation Struct(STRING first);
+Document{-&gt; MARKTABLE(Struct, 1, TestTable, 
+    true, 4, ".,-", 2, "first" = 2)};</pre><p>
+      </p>
+      <p>
+        In this example, the whole document is searched for all
+        occurences of the entries of the first column of the given table
+        'TestTable'. For each occurence an annotation of the type Struct is
+        created and its feature 'first' is filled with the entry of the
+        second column. Moreover the case of the word is ignored if the
+        length of the word exceeds 4. Additionally the chars '.', ',' and
+        '-' are ignored, but at maximum two of them.
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.24.&nbsp;MATCHEDTEXT"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.matchedtext">2.7.24.&nbsp;MATCHEDTEXT</h3></div></div></div>
-		
-		<p>
-			The MATCHEDTEXT action saves the text of the matched annotation
-			in a passed String variable. The optionally passed indexes can be
-			used to match the text of several rule elements.
-		</p>
-		<div class="section" title="2.7.24.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1261">2.7.24.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">MATCHEDTEXT(StringVariable(,NumberExpression)*)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.24.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1266">2.7.24.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">Headline Paragraph{-&gt;MATCHEDTEXT(stringVariable,1,2)};</pre><p>
-			</p>
-			<p>
-				The text covered by the Headline (rule elment 1) and the
-				Paragraph (rule elment 2) annotation is saved in variable
-				'stringVariable'.
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.24.&nbsp;MATCHEDTEXT"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.matchedtext">2.7.24.&nbsp;MATCHEDTEXT</h3></div></div></div>
+    
+    <p>
+      The MATCHEDTEXT action saves the text of the matched annotation
+      in a passed String variable. The optionally passed indexes can be
+      used to match the text of several rule elements.
+    </p>
+    <div class="section" title="2.7.24.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1693">2.7.24.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">MATCHEDTEXT(StringVariable(,NumberExpression)*)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.24.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1698">2.7.24.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Headline Paragraph{-&gt;MATCHEDTEXT(stringVariable,1,2)};</pre><p>
+      </p>
+      <p>
+        The text covered by the Headline (rule elment 1) and the
+        Paragraph (rule elment 2) annotation is saved in variable
+        'stringVariable'.
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.25.&nbsp;MERGE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.merge">2.7.25.&nbsp;MERGE</h3></div></div></div>
-		
-		<p>
-			The MERGE action merges a number of given lists. The first
-			parameter defines if the merge is done as intersection (false) or as
-			union (true). The second parameter is the list variable that will
-			contain the result.
-		</p>
-		<div class="section" title="2.7.25.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1275">2.7.25.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">MERGE(BooleanExpression, ListVariable, ListExpression, (ListExpression)+)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.25.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1280">2.7.25.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">Document{-&gt;MERGE(false, listVar, list1, list2, list3)};</pre><p>
-			</p>
-			<p>
-				The elements that occur in all three lists will be placed in
-				the list 'listVar'.
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.25.&nbsp;MERGE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.merge">2.7.25.&nbsp;MERGE</h3></div></div></div>
+    
+    <p>
+      The MERGE action merges a number of given lists. The first
+      parameter defines if the merge is done as intersection (false) or as
+      union (true). The second parameter is the list variable that will
+      contain the result.
+    </p>
+    <div class="section" title="2.7.25.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1707">2.7.25.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">MERGE(BooleanExpression, ListVariable, ListExpression, (ListExpression)+)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.25.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1712">2.7.25.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;MERGE(false, listVar, list1, list2, list3)};</pre><p>
+      </p>
+      <p>
+        The elements that occur in all three lists will be placed in
+        the list 'listVar'.
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.26.&nbsp;REMOVE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.remove">2.7.26.&nbsp;REMOVE</h3></div></div></div>
-		
-		<p>
-			The REMOVE action removes lists or single values from a given
-			list
-		</p>
-		<div class="section" title="2.7.26.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1289">2.7.26.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">REMOVE(ListVariable,(Argument)+)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.26.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1294">2.7.26.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">Document{-&gt;REMOVE(list, var)};</pre><p>
-			</p>
-			<p>
-				In this example, the variable 'var' is removed from the list
-				'list'.
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.26.&nbsp;REMOVE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.remove">2.7.26.&nbsp;REMOVE</h3></div></div></div>
+    
+    <p>
+      The REMOVE action removes lists or single values from a given
+      list
+    </p>
+    <div class="section" title="2.7.26.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1721">2.7.26.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">REMOVE(ListVariable,(Argument)+)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.26.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1726">2.7.26.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;REMOVE(list, var)};</pre><p>
+      </p>
+      <p>
+        In this example, the variable 'var' is removed from the list
+        'list'.
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.27.&nbsp;REMOVEDUPLICATE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.removeduplicate">2.7.27.&nbsp;REMOVEDUPLICATE</h3></div></div></div>
-		
-		<p>
-			This action removes all duplicates within a given list.
-		</p>
-		<div class="section" title="2.7.27.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1303">2.7.27.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">REMOVEDUPLICATE(ListVariable)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.27.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1308">2.7.27.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">Document{-&gt;REMOVEDUPLICATE(list)};</pre><p>
-			</p>
-			<p>
-				Here, all duplicates in list 'list' are removed.
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.27.&nbsp;REMOVEDUPLICATE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.removeduplicate">2.7.27.&nbsp;REMOVEDUPLICATE</h3></div></div></div>
+    
+    <p>
+      This action removes all duplicates within a given list.
+    </p>
+    <div class="section" title="2.7.27.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1735">2.7.27.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">REMOVEDUPLICATE(ListVariable)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.27.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1740">2.7.27.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;REMOVEDUPLICATE(list)};</pre><p>
+      </p>
+      <p>
+        Here, all duplicates in list 'list' are removed.
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.28.&nbsp;REPLACE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.replace">2.7.28.&nbsp;REPLACE</h3></div></div></div>
-		
-		<p>
-			The REPLACE action replaces the text of all matched annotations with
-			the given StringExpression. It remembers the modification for the
-			matched annotations and shows them in the modified view (see
-			<a class="xref" href="#">???</a>
-			).
-		</p>
-		<div class="section" title="2.7.28.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1318">2.7.28.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">REPLACE(StringExpression)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.28.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1323">2.7.28.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">FirstName{-&gt;REPLACE("first name")};</pre><p>
-			</p>
-			<p>
-				This rule replaces all first names with the string 'first
-				name'.
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.28.&nbsp;REPLACE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.replace">2.7.28.&nbsp;REPLACE</h3></div></div></div>
+    
+    <p>
+      The REPLACE action replaces the text of all matched annotations with
+      the given StringExpression. It remembers the modification for the
+      matched annotations and shows them in the modified view (see
+      <a class="xref" href="#ugr.tools.tm.language.modification" title="2.11.&nbsp;Modification">Section&nbsp;2.11, &#8220;Modification&#8221;</a>).
+    </p>
+    <div class="section" title="2.7.28.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1750">2.7.28.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">REPLACE(StringExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.28.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1755">2.7.28.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">FirstName{-&gt;REPLACE("first name")};</pre><p>
+      </p>
+      <p>
+        This rule replaces all first names with the string 'first
+        name'.
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.29.&nbsp;RETAINTYPE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.retaintype">2.7.29.&nbsp;RETAINTYPE</h3></div></div></div>
-		
-		<p>
-			The RETAINTYPE action retains the given types. This means that they
-			are now not ignored by rules. This action is complementary to
-			FILTERTYPE (see
-			<a class="xref" href="#ugr.tools.tm.language.actions.filtertype" title="2.7.12.&nbsp;FILTERTYPE">Section&nbsp;2.7.12, &#8220;FILTERTYPE&#8221;</a>
-			).
-		</p>
-		<div class="section" title="2.7.29.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1333">2.7.29.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">RETAINTYPE((TypeExpression(,TypeExpression)*))?</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.29.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1338">2.7.29.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">Document{-&gt;RETAINTYPE(SPACE)};</pre><p>
-			</p>
-			<p>
-				All spaces are retained and can be matched by rules.
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.29.&nbsp;RETAINTYPE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.retaintype">2.7.29.&nbsp;RETAINTYPE</h3></div></div></div>
+    
+    <p>
+      The RETAINTYPE action retains the given types. This means that they
+      are now not ignored by rules. This action is complementary to
+      FILTERTYPE (see
+      <a class="xref" href="#ugr.tools.tm.language.actions.filtertype" title="2.7.12.&nbsp;FILTERTYPE">Section&nbsp;2.7.12, &#8220;FILTERTYPE&#8221;</a>
+      ).
+    </p>
+    <div class="section" title="2.7.29.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1765">2.7.29.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">RETAINTYPE((TypeExpression(,TypeExpression)*))?</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.29.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1770">2.7.29.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;RETAINTYPE(SPACE)};</pre><p>
+      </p>
+      <p>
+        All spaces are retained and can be matched by rules.
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.30.&nbsp;SETFEATURE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.setfeature">2.7.30.&nbsp;SETFEATURE</h3></div></div></div>
-		
-		<p>
-			The SETFEATURE action sets the value of a feature of the
-			matched
-			complex structure.
-		</p>
-		<div class="section" title="2.7.30.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1347">2.7.30.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">SETFEATURE(StringExpression,Expression)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.30.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1352">2.7.30.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">Document{-&gt;SETFEATURE("language","en")};</pre><p>
-			</p>
-			<p>
-				Here, the feature 'language' of the input document is set to
-				English.
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.30.&nbsp;SETFEATURE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.setfeature">2.7.30.&nbsp;SETFEATURE</h3></div></div></div>
+    
+    <p>
+      The SETFEATURE action sets the value of a feature of the
+      matched
+      complex structure.
+    </p>
+    <div class="section" title="2.7.30.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1779">2.7.30.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">SETFEATURE(StringExpression,Expression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.30.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1784">2.7.30.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;SETFEATURE("language","en")};</pre><p>
+      </p>
+      <p>
+        Here, the feature 'language' of the input document is set to
+        English.
+      </p>
+    </div>
+  </div>
 
     <div class="section" title="2.7.31.&nbsp;SHIFT"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.shift">2.7.31.&nbsp;SHIFT</h3></div></div></div>
       
@@ -961,7 +959,7 @@
         The SHIFT action can be used to change the offsets of an annotation. The optional number expression,
         which point the the rule elements of the rule, specify the new offsets of the annotation.
       </p>
-      <div class="section" title="2.7.31.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1361">2.7.31.1.&nbsp;
+      <div class="section" title="2.7.31.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1793">2.7.31.1.&nbsp;
           <span class="bold"><strong>Definition:</strong></span>
         </h4></div></div></div>
         
@@ -969,7 +967,7 @@
           </p><pre class="programlisting">SHIFT(TypeExpression(,NumberExpression)*)</pre><p>
         </p>
       </div>
-      <div class="section" title="2.7.31.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1366">2.7.31.2.&nbsp;
+      <div class="section" title="2.7.31.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1798">2.7.31.2.&nbsp;
           <span class="bold"><strong>Example:</strong></span>
         </h4></div></div></div>
         
@@ -983,143 +981,172 @@
       </div>
     </div>
 
-	<div class="section" title="2.7.32.&nbsp;TRANSFER"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.transfer">2.7.32.&nbsp;TRANSFER</h3></div></div></div>
-		
-		<p>
-			The TRANSFER action creates a new feature structure and adds all
-			compatible features of the matched annotation.
-		</p>
-		<div class="section" title="2.7.32.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1376">2.7.32.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">TRANSFER(TypeExpression)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.32.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1381">2.7.32.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">Document{-&gt;TRANSFER(LanguageStorage)};</pre><p>
-			</p>
-			<p>
-				Here, a new feature structure LanguageStorage is created and
-				the compatible features of the Document annotation are copied. E.g.,
-				if LanguageStorage defined a feature named 'language', then the
-				feature value of the Document annotation is copied.
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.32.&nbsp;TRANSFER"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.transfer">2.7.32.&nbsp;TRANSFER</h3></div></div></div>
+    
+    <p>
+      The TRANSFER action creates a new feature structure and adds all
+      compatible features of the matched annotation.
+    </p>
+    <div class="section" title="2.7.32.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1808">2.7.32.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">TRANSFER(TypeExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.32.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1813">2.7.32.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;TRANSFER(LanguageStorage)};</pre><p>
+      </p>
+      <p>
+        Here, a new feature structure LanguageStorage is created and
+        the compatible features of the Document annotation are copied. E.g.,
+        if LanguageStorage defined a feature named 'language', then the
+        feature value of the Document annotation is copied.
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.33.&nbsp;TRIE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.trie">2.7.33.&nbsp;TRIE</h3></div></div></div>
-		
-		<p>
-			The TRIE action uses an external multi tree word list to
-			annotate the matched annotation and provides several configuration
-			parameters.
-		</p>
-		<div class="section" title="2.7.33.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1390">2.7.33.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">TRIE((String = Type)+,ListExpression,BooleanExpression,NumberExpression,
-				  BooleanExpression,NumberExpression,StringExpression)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.33.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1395">2.7.33.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">Document{-&gt;TRIE("FirstNames.txt" = FirstName, "Companies.txt" = Company, 
-				  'Dictionary.mtwl', true, 4, false, 0, ".,-/")};</pre><p>
-			</p>
-			<p>
-				Here, the dictionary 'Dictionary.mtwl' that contains word lists
-				for first names and companies is used to annotate the document. The
-				words previously contained in the file 'FirstNames.txt' are
-				annotated with the type FirstName and the words in the file
-				'Companies.txt' with the type Company. The case of the word is
-				ignored if the length of the word exceeds 4. The edit distance is
-				deactivated. The cost of an edit operation can currently not be
-				configured by an argument. The last argument additionally defines
-				several chars that will be ignored.
-			</p>
-		</div>
-	</div>
+  <div class="section" title="2.7.33.&nbsp;TRIE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.trie">2.7.33.&nbsp;TRIE</h3></div></div></div>
+    
+    <p>
+      The TRIE action uses an external multi tree word list to
+      annotate the matched annotation and provides several configuration
+      parameters.
+    </p>
+    <div class="section" title="2.7.33.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1822">2.7.33.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">TRIE((String = Type)+,ListExpression,BooleanExpression,NumberExpression,
+          BooleanExpression,NumberExpression,StringExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.33.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1827">2.7.33.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;TRIE("FirstNames.txt" = FirstName, "Companies.txt" = Company, 
+          'Dictionary.mtwl', true, 4, false, 0, ".,-/")};</pre><p>
+      </p>
+      <p>
+        Here, the dictionary 'Dictionary.mtwl' that contains word lists
+        for first names and companies is used to annotate the document. The
+        words previously contained in the file 'FirstNames.txt' are
+        annotated with the type FirstName and the words in the file
+        'Companies.txt' with the type Company. The case of the word is
+        ignored if the length of the word exceeds 4. The edit distance is
+        deactivated. The cost of an edit operation can currently not be
+        configured by an argument. The last argument additionally defines
+        several chars that will be ignored.
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.34.&nbsp;UNMARK"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.unmark">2.7.34.&nbsp;UNMARK</h3></div></div></div>
-		
-		<p>
-			The UNMARK action removes the annotation of the given type
-			overlapping the matched annotation. There are two additional configurations: If additional
-			indexes are given, then the span of the specified rule elements are applied, similar the the MARK action.
-			If instead a boolean is given as an additional argument, then all annoations of the given type are removed
-			that start at the macthed position.
-		</p>
-		<div class="section" title="2.7.34.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1404">2.7.34.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">UNMARK(TypeExpression)</pre><p>
-				</p><pre class="programlisting">UNMARK(TypeExpression (,NumberExpression)*)</pre><p>
-				</p><pre class="programlisting">UNMARK(TypeExpression, BooleanExpression)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.34.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1411">2.7.34.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">Headline{-&gt;UNMARK(Headline)};</pre><p>
-			</p>
-			<p>
-				Here, the headline annotation is removed.
-			</p>
-			<p>
-				</p><pre class="programlisting">CW ANY+? QUESTION{-&gt;UNMARK(Headline,1,3)};</pre><p>
-			</p>
-			<p>
-				Here, all headline annotations are removed that start with a capitalized word and end with a question mark.
-			</p>
-			<p>
-				</p><pre class="programlisting">CW{-&gt;UNMARK(Headline,true)};</pre><p>
-			</p>
-			<p>
-				Here, all headline annotations are removed that start with a capitalized word.
-			</p>
-		</div>
-	</div>
+<div class="section" title="2.7.34.&nbsp;TRIM"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.trim">2.7.34.&nbsp;TRIM</h3></div></div></div>
+    
+    <p>
+      The TRIM action changes the offsets on the matched annotations by removing annotations, whose
+      types are specified by the given parameters.
+    </p>
+    <div class="section" title="2.7.34.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1836">2.7.34.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">TRIE(TypeExpression ( , TypeExpression)*)</pre><p>
+        </p><pre class="programlisting">TRIE(TypeListExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.34.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1842">2.7.34.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Keyword{-&gt; TRIM(SPACE)};</pre><p>
+      </p>
+      <p>
+        This rule removes all spaces in at the beginning and at the end of Keyword annotations and
+        thus changes the offsets of the matched annoations.
+      </p>
+    </div>
+  </div>
 
-	<div class="section" title="2.7.35.&nbsp;UNMARKALL"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.unmarkall">2.7.35.&nbsp;UNMARKALL</h3></div></div></div>
-		
-		<p>
-			The UNMARKALL action removes all the annotations of the given
-			type and all of its descendants overlapping the matched annotation,
-			except the annotation is of at least one type in the passed list.
-		</p>
-		<div class="section" title="2.7.35.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1426">2.7.35.1.&nbsp;
-				<span class="bold"><strong>Definition:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">UNMARKALL(TypeExpression, TypeListExpression)</pre><p>
-			</p>
-		</div>
-		<div class="section" title="2.7.35.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1431">2.7.35.2.&nbsp;
-				<span class="bold"><strong>Example:</strong></span>
-			</h4></div></div></div>
-			
-			<p>
-				</p><pre class="programlisting">Annotation{-&gt;UNMARKALL(Annotation, {Headline})};</pre><p>
-			</p>
-			<p>
-				Here, all annotations but headlines are removed.
-			</p>
-			
-		</div>
-	</div>
+  <div class="section" title="2.7.35.&nbsp;UNMARK"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.unmark">2.7.35.&nbsp;UNMARK</h3></div></div></div>
+    
+    <p>
+      The UNMARK action removes the annotation of the given type
+      overlapping the matched annotation. There are two additional configurations: If additional
+      indexes are given, then the span of the specified rule elements are applied, similar the the MARK action.
+      If instead a boolean is given as an additional argument, then all annoations of the given type are removed
+      that start at the macthed position.
+    </p>
+    <div class="section" title="2.7.35.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1851">2.7.35.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">UNMARK(TypeExpression)</pre><p>
+        </p><pre class="programlisting">UNMARK(TypeExpression (,NumberExpression)*)</pre><p>
+        </p><pre class="programlisting">UNMARK(TypeExpression, BooleanExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.35.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1858">2.7.35.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Headline{-&gt;UNMARK(Headline)};</pre><p>
+      </p>
+      <p>
+        Here, the headline annotation is removed.
+      </p>
+      <p>
+        </p><pre class="programlisting">CW ANY+? QUESTION{-&gt;UNMARK(Headline,1,3)};</pre><p>
+      </p>
+      <p>
+        Here, all headline annotations are removed that start with a capitalized word and end with a question mark.
+      </p>
+      <p>
+        </p><pre class="programlisting">CW{-&gt;UNMARK(Headline,true)};</pre><p>
+      </p>
+      <p>
+        Here, all headline annotations are removed that start with a capitalized word.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.7.36.&nbsp;UNMARKALL"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.unmarkall">2.7.36.&nbsp;UNMARKALL</h3></div></div></div>
+    
+    <p>
+      The UNMARKALL action removes all the annotations of the given
+      type and all of its descendants overlapping the matched annotation,
+      except the annotation is of at least one type in the passed list.
+    </p>
+    <div class="section" title="2.7.36.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1873">2.7.36.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">UNMARKALL(TypeExpression, TypeListExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.7.36.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1878">2.7.36.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Annotation{-&gt;UNMARKALL(Annotation, {Headline})};</pre><p>
+      </p>
+      <p>
+        Here, all annotations but headlines are removed.
+      </p>
+      
+    </div>
+  </div>
