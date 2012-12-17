@@ -27,7 +27,7 @@
     <artifactId>uimaj-textmarker-parent</artifactId>
     <version>2.4.1-SNAPSHOT</version>
   </parent>
-  <name>Apache UIMA SDK Documentation - TextMarker</name>
+  <name>Apache UIMA TextMarker Documentation</name>
   <url>${uimaWebsiteUrl}</url>
   <scm>
   	<url>http://svn.apache.org/viewvc/uima/sandbox/trunk/TextMarker/uima-docbook-textmarker</url>
