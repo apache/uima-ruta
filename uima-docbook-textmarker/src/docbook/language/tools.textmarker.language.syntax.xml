@@ -51,56 +51,56 @@ SCRIPT uima.textmarker.example.Year;
 ]]></programlisting>
 
     Syntax of declarations:
-    <programlisting><![CDATA[Declaration  ->  "DECLARE" (AnnotationType)? Identifier ("," Identifier )*
-                 | "DECLARE" AnnotationType Identifier ( "(" 
-                 FeatureDeclaration ")" )?
+    <programlisting><![CDATA[Declaration -> "DECLARE" (AnnotationType)? Identifier ("," Identifier )*
+               | "DECLARE" AnnotationType Identifier ( "("
+               FeatureDeclaration ")" )?
 FeatureDeclaration  -> ( (AnnotationType | "STRING" | "INT" | "FLOAT"
                        "DOUBLE" | "BOOLEAN") Identifier) )+
-VariableDeclaration -> (("TYPE" Identifier ("," Identifier)* 
-                                                   ("=" AnnotationType)?) 
-                     | ("STRING" Identifier ("," Identifier)* 
-                                                 ("=" StringExpression)?) 
-                     | (("INT" | "DOUBLE" | "FLOAT") Identifier 
-                               ("," Identifier)* ("=" NumberExpression)?) 
-                     | ("BOOLEAN" Identifier ("," Identifier)* 
+VariableDeclaration -> (("TYPE" Identifier ("," Identifier)*
+                                                   ("=" AnnotationType)?)
+                     | ("STRING" Identifier ("," Identifier)*
+                                                 ("=" StringExpression)?)
+                     | (("INT" | "DOUBLE" | "FLOAT") Identifier
+                               ("," Identifier)* ("=" NumberExpression)?)
+                     | ("BOOLEAN" Identifier ("," Identifier)*
                                                 ("=" BooleanExpression)?)
-                     | ("WORDLIST" Identifier ("=" WordListExpression)?) 
+                     | ("WORDLIST" Identifier ("=" WordListExpression)?)
                      | ("WORDTABLE" Identifier ("=" WordTableExpression)?)
-                     | ("TYPELIST" Identifier ("=" TypeListExpression)?) 
-                     | ("STRINGLIST" Identifier 
-                                             ("=" StringListExpression)?) 
-                     | (("INTLIST" | "DOUBLELIST" | "FLOATLIST") 
-                                  Identifier ("=" NumberListExpression)?) 
-                     | ("BOOLEANLIST" Identifier 
+                     | ("TYPELIST" Identifier ("=" TypeListExpression)?)
+                     | ("STRINGLIST" Identifier
+                                             ("=" StringListExpression)?)
+                     | (("INTLIST" | "DOUBLELIST" | "FLOATLIST")
+                                  Identifier ("=" NumberListExpression)?)
+                     | ("BOOLEANLIST" Identifier
                                            ("=" BooleanListExpression)?))
 AnnotationType      ->  BasicAnnotationType | declaredAnnotationType
-BasicAnnotationType ->  ('COLON'| 'SW' | 'MARKUP' | 'PERIOD' | 'CW'| 'NUM' 
-                      | 'QUESTION' | 'SPECIAL' | 'CAP' | 'COMMA' 
-                      | 'EXCLAMATION' | 'SEMICOLON' | 'NBSP'| 'AMP' | '_' 
-                      | 'SENTENCEEND' | 'W' | 'PM' | 'ANY' | 'ALL' 
-                      | 'SPACE' | 'BREAK') 
-BlockDeclaration       -> "BLOCK" "(" Identifier ")" RuleElementWithCA 
+BasicAnnotationType ->  ('COLON'| 'SW' | 'MARKUP' | 'PERIOD' | 'CW'| 'NUM'
+                      | 'QUESTION' | 'SPECIAL' | 'CAP' | 'COMMA'
+                      | 'EXCLAMATION' | 'SEMICOLON' | 'NBSP'| 'AMP' | '_'
+                      | 'SENTENCEEND' | 'W' | 'PM' | 'ANY' | 'ALL'
+                      | 'SPACE' | 'BREAK')
+BlockDeclaration    -> "BLOCK" "(" Identifier ")" RuleElementWithCA
                                                        "{" Statements "}"]]></programlisting>
 
     Syntax of statements and rule elements
     <programlisting><![CDATA[SimpleStatement        -> RuleElements ";"
 RuleElements           -> RuleElement+
-RuleElement            -> RuleElementType | RuleElementLiteral 
+RuleElement            -> RuleElementType | RuleElementLiteral
                         | RuleElementComposed | RuleElementDisjunctive
-RuleElementType        ->  TypeExpression QuantifierPart? 
+RuleElementType        ->  TypeExpression QuantifierPart?
                                          ("{" Conditions?  Actions? "}")?
-RuleElementWithCA      ->  TypeExpression QuantifierPart? 
+RuleElementWithCA      ->  TypeExpression QuantifierPart?
                                             "{" Conditions?  Actions? "}"
-RuleElementLiteral     ->  SimpleStringExpression QuantifierPart? 
+RuleElementLiteral     ->  SimpleStringExpression QuantifierPart?
                                             "{" Conditions?  Actions? "}"
-RuleElementComposed    -> "(" RuleElements ")" QuantifierPart? 
+RuleElementComposed    -> "(" RuleElements ")" QuantifierPart?
                                             "{" Conditions?  Actions? "}"
-RuleElementDisjunctive -> "(" (TypeExpression | SimpleStringExpression) 
-                        ("|" (TypeExpression | SimpleStringExpression) )+ 
+RuleElementDisjunctive -> "(" (TypeExpression | SimpleStringExpression)
+                        ("|" (TypeExpression | SimpleStringExpression) )+
                          ")" QuantifierPart? "{" Conditions?  Actions? }"
-QuantifierPart         -> "*" | "*?" | "+" | "+?" | "?" | "??" 
+QuantifierPart         -> "*" | "*?" | "+" | "+?" | "?" | "??"
                         | "[" NumberExpression "," NumberExpression "]"
-                        | "[" NumberExpression "," NumberExpression "]?"       
+                        | "[" NumberExpression "," NumberExpression "]?"
 Conditions             -> Condition ( "," Condition )*
 Actions                -> "->" Action ( "," Action)*
 ]]></programlisting>

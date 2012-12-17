@@ -34,16 +34,19 @@ under the License.
   </para>
   <para>
     <figure id="figure.ugr.tools.tm.workbench.tm_query.query_view">
-      <title>
-        The Query View.
+      <title>The Query View.
         <emphasis role="bold">(1)</emphasis>
         Start Button;
         <emphasis role="bold">(2)</emphasis>
-        Export Button
-      </title>
+        Export Button</title>
       <mediaobject>
-        <imageobject>
-          <imagedata scale="80" format="PNG" fileref="&imgroot;query/query_example2_number.png" />
+        <imageobject role="html">
+          <imagedata width="576px" format="PNG" align="center"
+            fileref="&imgroot;query/query_example2_number.png" />
+        </imageobject>
+        <imageobject role="fo">
+          <imagedata width="3.0in" format="PNG" align="center"
+            fileref="&imgroot;query/query_example2_number.png" />
         </imageobject>
         <textobject>
           <phrase>Query View</phrase>

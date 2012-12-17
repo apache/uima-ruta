@@ -205,7 +205,20 @@ under the License.
         <emphasis role="bold">Definition:</emphasis>
       </title>
       <para>
-        <programlisting><![CDATA[CONFIGURE(StringExpression(,StringExpression = Expression)+)]]></programlisting>
+        <programlisting><![CDATA[CONFIGURE(AnalysisEngine(,StringExpression = Expression)+)]]></programlisting>
+      </para>
+    </section>
+     <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[ENGINE utils.HtmlAnnotator;
+Document{->CONFIGURE(HtmlAnnotator, "onlyContent" = false)};]]></programlisting>
+      </para>
+      <para>
+        The former rule changes the value of configuration parameter <quote>onlyContent</quote>
+        to false and reconfigure the analysis engine.
       </para>
     </section>
   </section>
@@ -223,7 +236,8 @@ under the License.
         <emphasis role="bold">Definition:</emphasis>
       </title>
       <para>
-        <programlisting><![CDATA[CREATE(TypeExpression(,NumberExpression)*(,StringExpression = Expression)+)]]></programlisting>
+        <programlisting><![CDATA[CREATE(TypeExpression(,NumberExpression)*
+                         (,StringExpression = Expression)+)]]></programlisting>
       </para>
     </section>
     <section>
@@ -284,7 +298,19 @@ under the License.
         <emphasis role="bold">Definition:</emphasis>
       </title>
       <para>
-        <programlisting><![CDATA[DYNAMICANCHORING(BooleanExpression(,NumberExpression(,NumberExpression)?)?)]]></programlisting>
+        <programlisting><![CDATA[DYNAMICANCHORING(BooleanExpression
+                             (,NumberExpression(,NumberExpression)?)?)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Document{->DYNAMICANCHORING(true)};]]></programlisting>
+      </para>
+      <para>
+        The above example turns dynamic anchoring on.
       </para>
     </section>
   </section>
@@ -313,7 +339,7 @@ under the License.
       </title>
       <para>
         <programlisting><![CDATA[ENGINE NamedEntities;
-              Document{->EXEC(NamedEntities)};]]></programlisting>
+Document{->EXEC(NamedEntities)};]]></programlisting>
       </para>
       <para>
         Here, an analysis engine for named entity recognition is

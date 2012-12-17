@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
-<!ENTITY imgroot "images/tools/tools.textmarker/" >
+<!ENTITY imgroot "images/tools/tm/workbench/" >
 <!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
 %uimaents;
 ]>
@@ -53,5 +53,55 @@ under the License.
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href=".\workbench\tools.textmarker.workbench.textruler.xml" />
   
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href=".\workbench\tools.textmarker.workbench.create_dictionaries.xml" />
+  
+  <section id="ugr.tools.tm.workbench.apply">
+    <title>Apply a TextMarker script on a folder</title>
+    <para>
+      The TextMarker Workbench makes it possible to apply a TextMarker script on any folder of the workspace. 
+      Select a folder in the script explorer, right-click to open the context menu and select the menu entry TextMarker.
+      There are three option to apply a TextMarker script on the files of the selected folder, 
+      cf. <xref linkend='figure.ugr.tools.tm.workbench.apply' />.
+    </para>
+    <para>
+      <orderedlist numeration="arabic">
+        <listitem>
+          <emphasis role="bold">Quick TextMarker</emphasis> applies the TextMarker script that is currently opened and focused
+          in the TextMarker editor on all suitable files in the selected folder. File of the type <quote>xmi</quote> will be adapted 
+          and a new xmi-file will be created for other files like txt-files.
+        </listitem>
+        <listitem>
+          <emphasis role="bold">Quick TextMarker (remove basics)</emphasis> is very similar to the previous menu entry,
+           but removes the annotations of the type <quote>TextMarkerBasic</quote> after processing a CAS.
+        </listitem>
+        <listitem>
+          <emphasis role="bold">Quick TextMarker (no xmi)</emphasis> applies the TextMarker script, but does not change
+           or create an xmi-file. This menu entry can, for example, be used in combination with an imported XMIWriter Analysis Engine, which 
+           stores the result of the script in a different folder depending on the execution of the rules.
+        </listitem>
+      </orderedlist>
+    </para>
+    <para>
+    <figure id="figure.ugr.tools.tm.workbench.apply">
+      <title>Remove TextMarker basics
+      </title>
+      <mediaobject>
+        <imageobject role="html">
+          <imagedata width="250px" format="PNG" align="center"
+            fileref="&imgroot;apply/apply.png" />
+        </imageobject>
+        <imageobject role="fo">
+          <imagedata width="3.5in" format="PNG" align="center"
+            fileref="&imgroot;apply/apply.png" />
+        </imageobject>
+        <textobject>
+          <phrase>
+            Apply a TextMarker script directly on a folder.
+          </phrase>
+        </textobject>
+      </mediaobject>
+    </figure>
+    </para>
+    
+  </section>
  
 </chapter>

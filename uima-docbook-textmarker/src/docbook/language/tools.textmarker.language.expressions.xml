@@ -19,21 +19,16 @@
 <section id="ugr.tools.tm.language.expressions">
   <title>Expressions</title>
   <para>
-    TexMarker provides five different kinds of expressions. These are
+    TextMarker provides five different kinds of expressions. These are
     type expressions, number expressions, string expressions and
     boolean expressions and list expressions.
   </para>
-  <section>
-    <title>
-      <emphasis role="bold">Definition:</emphasis>
-    </title>
-    <para>
+  <para>
+  <emphasis role="bold">Definition:</emphasis>
 <programlisting><![CDATA[TextmarkerExpression  ->   TypeExpression | NumberExpression | 
                            StringExpression | BooleanExpression
                            | ListExpression]]></programlisting>
-    </para>
-  </section>
-
+  </para>
   <section id="ugr.tools.tm.language.expressions.type">
     <title>Type Expressions</title>
     <para>
@@ -56,7 +51,7 @@
           <emphasis role="bold">Definition:</emphasis>
         </title>
         <para>
-<programlisting><![CDATA[TypeExpression       ->  AnnotationType | TypeVariable]]></programlisting>
+<programlisting><![CDATA[TypeExpression  ->  AnnotationType | TypeVariable]]></programlisting>
         </para>
       </section>
       <section>
@@ -64,8 +59,9 @@
           <emphasis role="bold">Example:</emphasis>
         </title>
         <para>
-          <programlisting><![CDATA[DECLARE Author;  // Author defines a type, therefore it is a type expression
-TYPE typeVar;  // type variable typeVar is a type expression 
+          <programlisting><![CDATA[DECLARE Author;  // Author defines a type, therefore it is 
+                 // a type expression
+TYPE typeVar;    // type variable typeVar is a type expression 
 Document{->ASSIGN(typeVar, Author)};]]></programlisting>
         </para>
       </section>
@@ -101,7 +97,7 @@ FloatingPointLiteral  -> Digit+ '.' Digit* Exponent? FloatTypeSuffix?
                          |   '.' Digit+ Exponent? FloatTypeSuffix?
                          |   Digit+ Exponent FloatTypeSuffix?
                          |   Digit+ Exponent? FloatTypeSuffix
-FloatTypeSuffix        ->  ('f'|'F'|'d'|'D')
+FloatTypeSuffix       ->  ('f'|'F'|'d'|'D')
 Exponent              -> ('e'|'E') ('+'|'-')? Digit+
 Digit                 -> ('0'..'9') ]]></programlisting>
         </para>
@@ -162,7 +158,7 @@ SimpleStringExpression  ->  StringLiteral | StringVariable]]></programlisting>
         <para>
           <programlisting><![CDATA[STRING strVar; // strVar is a string expression
 Document{->ASSIGN(strVar, "strLiteral")}; // "strLiteral" is a string 
-               // expression]]></programlisting>
+                                          // expression]]></programlisting>
         </para>
       </section>
     </para>
@@ -191,7 +187,7 @@ BooleanCompare           ->  SimpleBooleanExpression ( "==" | "!=" )
 BooleanTypeExpression    ->  TypeExpression ( "==" | "!=" ) TypeExpression
 BooleanNumberExpression  ->  "(" NumberExpression ( "<" | "<=" | ">" 
                                | ">=" | "==" | "!=" ) NumberExpression ")"
-BooleanFunction    ->  XOR "(" BooleanExpression "," BooleanExpression ")"
+BooleanFunction   ->  XOR "(" BooleanExpression "," BooleanExpression ")"
 BooleanLiteral    ->  "true" | "false"]]></programlisting>
         </para>
         <para>

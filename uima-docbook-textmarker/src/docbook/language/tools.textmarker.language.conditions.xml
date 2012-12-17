@@ -588,7 +588,8 @@
         <emphasis role="bold">Example:</emphasis>
       </title>
       <para>
-        <programlisting><![CDATA[Paragraph{OR(PARTOF(Headline),CONTAINS(Keyword))->MARK(ImportantParagraph)};]]></programlisting>
+        <programlisting><![CDATA[Paragraph{OR(PARTOF(Headline),CONTAINS(Keyword))
+                                           ->MARK(ImportantParagraph)};]]></programlisting>
       </para>
       <para>
         In this example a Paragraph is annotated with the

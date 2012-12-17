@@ -143,11 +143,10 @@ Dr.JoachimBaumeister
     </para>
     <para>
       Declaration of a block:
-      <programlisting><![CDATA[BlockDeclaration       -> "BLOCK" "(" Identifier ")" RuleElementWithCA
-                                                       "{" Statements "}"
-RuleElementWithCA      ->  TypeExpression QuantifierPart? 
-                                              "{" Conditions?  Actions? "}"
-]]></programlisting>
+      <programlisting><![CDATA[BlockDeclaration   -> "BLOCK" "(" Identifier ")" RuleElementWithCA
+                                            "{" Statements "}"
+RuleElementWithCA      ->  TypeExpression QuantifierPart?
+                                            "{" Conditions?  Actions? "}"]]></programlisting>
       A block declaration always starts with the keyword
       <quote>BLOCK</quote>
       , followed by the identifier of the block within brackets. The

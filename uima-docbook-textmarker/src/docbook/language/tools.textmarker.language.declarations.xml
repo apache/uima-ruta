@@ -200,8 +200,8 @@ WORDTABLE tableName = 'someTable.csv';]]></programlisting>
           <emphasis role="bold">Example:</emphasis>
         </title>
         <para>
-          <programlisting><![CDATA[SCRIPT my.package.AnotherScript; // "AnotherScript.tm" in the "my.package" 
-                 //package
+          <programlisting><![CDATA[SCRIPT my.package.AnotherScript; // "AnotherScript.tm" in the  
+                     //package "my.package"
 Document{->CALL(AnotherScript)}; // <- rule executes "AnotherScript.tm"]]></programlisting>
         </para>
       </section>
