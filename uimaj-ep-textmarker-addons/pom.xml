@@ -24,9 +24,8 @@
   <version>2.4.1-SNAPSHOT</version>
   <parent>
     <groupId>org.apache.uima</groupId>
-    <artifactId>uimaj-parent</artifactId>
+    <artifactId>uimaj-textmarker-parent</artifactId>
     <version>2.4.1-SNAPSHOT</version>
-    <relativePath>../uimaj-parent/pom.xml</relativePath>
   </parent>
   <properties>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
