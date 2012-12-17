@@ -20,7 +20,7 @@
 <feature
       id="org.apache.uima.textmarker.feature"
       label="TextMarker"
-      version="2.4.1.SNAPSHOT"
+      version="2.0.0.SNAPSHOT"
       provider-name="Apache Software Foundation">
 
    <description url="http://uima.apache.org">
@@ -63,34 +63,34 @@ under the License.
          id="org.apache.uima.textmarker.addons"
          download-size="0"
          install-size="0"
-         version="2.4.1.SNAPSHOT"
+         version="2.0.0.SNAPSHOT"
          unpack="false"/>
 
    <plugin
          id="org.apache.uima.textmarker.caseditor"
          download-size="0"
          install-size="0"
-         version="2.4.1.SNAPSHOT"
+         version="2.0.0.SNAPSHOT"
          unpack="false"/>
 
    <plugin
          id="org.apache.uima.textmarker.engine"
          download-size="0"
          install-size="0"
-         version="2.4.1.SNAPSHOT"
+         version="2.0.0.SNAPSHOT"
          unpack="false"/>
 
    <plugin
          id="org.apache.uima.textmarker.ide"
          download-size="0"
          install-size="0"
-         version="2.4.1.SNAPSHOT"
+         version="2.0.0.SNAPSHOT"
          unpack="false"/>
    <plugin
          id="org.apache.uima.textmarker.textruler"
          download-size="0"
          install-size="0"
-         version="2.4.1.SNAPSHOT"
+         version="2.0.0.SNAPSHOT"
          unpack="false"/>
    
 

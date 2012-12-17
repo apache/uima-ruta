@@ -29,7 +29,7 @@
   
 	<artifactId>uimaj-textmarker-eclipse-update-site</artifactId>
 	<packaging>pom</packaging>
-	<version>4</version>
+	<version>3</version>
   
 	<name>Apache UIMA Eclipse: ${project.artifactId}</name>
   <description>The UIMA TextMarker Eclipse update site</description>
@@ -59,8 +59,8 @@
     <uimaScmRoot>uimaj</uimaScmRoot>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
     <eclipseUpdateSite>${project.build.directory}/eclipse-update-site</eclipseUpdateSite>
-    <item-maven-release-version>2.4.1-SNAPSHOT</item-maven-release-version>
-    <item-eclipse-release-version>2.4.1.SNAPSHOT</item-eclipse-release-version>
+    <item-maven-release-version>2.0.0-SNAPSHOT</item-maven-release-version>
+    <item-eclipse-release-version>2.0.0.SNAPSHOT</item-eclipse-release-version>
   </properties>
 
   <!-- don't use dependency mechanism - use dependency:copy

@@ -22,11 +22,11 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>uimaj-textmarker</artifactId>
-  <version>2.4.1-SNAPSHOT</version>
+  <version>2.0.0-SNAPSHOT</version>
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>uimaj-textmarker-parent</artifactId>
-    <version>2.4.1-SNAPSHOT</version>
+    <version>2.0.0-SNAPSHOT</version>
   </parent>
   <properties>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
@@ -38,7 +38,7 @@
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-core</artifactId>
-      <version>${project.parent.version}</version>
+      <version>${uimaVersion}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -67,13 +67,13 @@
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-tools</artifactId>
-      <version>${project.parent.version}</version>
+      <version>${uimaVersion}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-test-util</artifactId>
-      <version>${project.parent.version}</version>
+      <version>${uimaVersion}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

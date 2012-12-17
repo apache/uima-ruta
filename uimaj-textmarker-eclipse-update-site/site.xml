@@ -23,7 +23,7 @@
    <description url="http://www.apache.org/dist/uima/eclipse-update-site">
       Eclipse update site for Apache UIMA TextMarker.
    </description>
-   <feature url="features/org.apache.uima.textmarker.feature_2.4.1.SNAPSHOT.jar" id="org.apache.uima.textmarker.feature" version="2.4.1.SNAPSHOT">
+   <feature url="features/org.apache.uima.textmarker.feature_2.0.0.SNAPSHOT.jar" id="org.apache.uima.textmarker.feature" version="2.0.0.SNAPSHOT">
       <category name="uima-textmarker"/>
    </feature>
    <category-def name="uima-textmarker" label="Apache UIMA TextMarker Eclipse tooling and runtime support"/>
