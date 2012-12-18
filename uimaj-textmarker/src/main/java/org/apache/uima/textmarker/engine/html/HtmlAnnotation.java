@@ -22,7 +22,7 @@ package org.apache.uima.textmarker.engine.html;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.cas.StringArray;
 
-public class AnnotationDelta {
+public class HtmlAnnotation {
   private AnnotationFS annotation;
 
   private int delta;
@@ -35,7 +35,7 @@ public class AnnotationDelta {
 
   private boolean stripHtml;
 
-  public AnnotationDelta(AnnotationFS annotation, int delta, StringArray attributeName,
+  public HtmlAnnotation(AnnotationFS annotation, int delta, StringArray attributeName,
           StringArray attributeValue, String name, boolean stripHtml) {
     this.annotation = annotation;
     this.delta = delta;

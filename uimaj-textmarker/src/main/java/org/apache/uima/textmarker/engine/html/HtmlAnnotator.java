@@ -69,8 +69,8 @@ public class HtmlAnnotator extends JCasAnnotator_ImplBase {
 
     String documentText = cas.getDocumentText();
     String plainTextDocument = documentText;
-    List<AnnotationDelta> annotationList = new ArrayList<AnnotationDelta>();
-    List<Remarks> remarks = new ArrayList<Remarks>();
+    List<HtmlAnnotation> annotationList = new ArrayList<HtmlAnnotation>();
+    List<HtmlRemark> remarks = new ArrayList<HtmlRemark>();
 
     try {
       Parser parser = new Parser(documentText);
@@ -95,17 +95,19 @@ public class HtmlAnnotator extends JCasAnnotator_ImplBase {
     }
 
     for (int k = 0; k < remarks.size(); k++) {
-      Remarks remark = remarks.get(k);
+      HtmlRemark remark = remarks.get(k);
       AnnotationFS annotation;
       Type type = outCas.getTypeSystem().getType(NAMESPACE + "REMARK");
-      annotation = outCas.createAnnotation(type, remark.getPosition(), remark.getPosition());
+      int begin = remark.getAnnotation().getBegin();
+      int end = remark.getAnnotation().getEnd() - remark.getDelta();
+      annotation = outCas.createAnnotation(type, begin, end);
       annotation.setFeatureValueFromString(annotation.getType().getFeatureByBaseName("comment"),
               remark.getComment());
       outCas.addFsToIndexes(annotation);
     }
     for (int i = 0; i < annotationList.size(); i++) {
       AnnotationFS annotation;
-      AnnotationDelta annoDelta = annotationList.get(i);
+      HtmlAnnotation annoDelta = annotationList.get(i);
       int begin = annoDelta.getAnnotation().getBegin();
       int end = annoDelta.getAnnotation().getEnd() - annoDelta.getDelta();
 

@@ -41,11 +41,11 @@ public class HtmlVisitor extends NodeVisitor {
 
   private boolean body = false;
 
-  private List<AnnotationDelta> annotationList = new ArrayList<AnnotationDelta>();
+  private List<HtmlAnnotation> annotationList = new ArrayList<HtmlAnnotation>();
 
-  private List<AnnotationDelta> annotations = new ArrayList<AnnotationDelta>();
+  private List<HtmlAnnotation> annotations = new ArrayList<HtmlAnnotation>();
 
-  private List<Remarks> remarks = new ArrayList<Remarks>();
+  private List<HtmlRemark> remarks = new ArrayList<HtmlRemark>();
 
   private String plainTextDocument;
 
@@ -95,6 +95,9 @@ public class HtmlVisitor extends NodeVisitor {
 
   public void tag2annotation(Tag tag, String name, CAS cas) {
     Type type = getType(name, cas);
+    if(name.endsWith("/")) {
+      name = name.substring(0, name.length()-1);
+    }
     if (name.equals("STYLE")) {
       tag.setEndPosition(tag.getEndTag().getStartPosition());
     }
@@ -109,6 +112,7 @@ public class HtmlVisitor extends NodeVisitor {
     } else {
       // TODO fix this
       i = tag.getEndPosition();
+      tag.toString();
       String startTag = "<" + tag.getRawTagName();
       String endTag = "</" + tag.getRawTagName() + ">";
       int j = i - 1;
@@ -153,11 +157,11 @@ public class HtmlVisitor extends NodeVisitor {
       attributeValue.set(j, attribute.getValue());
     }
     if (i <= tag.getEndPosition()) {
-      AnnotationDelta annotationDelta = new AnnotationDelta(annotation, delta, attributeName,
+      HtmlAnnotation annotationDelta = new HtmlAnnotation(annotation, delta, attributeName,
               attributeValue, name, stripHtml);
       annotationList.add(annotationDelta);
     } else {
-      AnnotationDelta annotationDelta = new AnnotationDelta(annotation, delta, attributeName,
+      HtmlAnnotation annotationDelta = new HtmlAnnotation(annotation, delta, attributeName,
               attributeValue, name, stripHtml);
       annotations.add(annotationDelta);
     }
@@ -178,7 +182,40 @@ public class HtmlVisitor extends NodeVisitor {
 
   public void head2annotation(Tag tag, String name, CAS cas) {
     Type type = getType(name, cas);
-    AnnotationFS annotation = cas.createAnnotation(type, 0, 0);
+    if (name.equals("STYLE")) {
+      tag.setEndPosition(tag.getEndTag().getStartPosition());
+    }
+    int begin = getOffset(tag.getStartPosition());
+
+    delta += tag.getEndPosition() - tag.getStartPosition();
+    int i;
+    int end = tag.getEndPosition();
+    if (tag.getEndTag() != null) {
+      i = tag.getEndTag().getStartPosition();
+      end = tag.getEndTag().getEndPosition();
+    } else {
+      // TODO fix this
+      i = tag.getEndPosition();
+      String startTag = "<" + tag.getRawTagName();
+      String endTag = "</" + tag.getRawTagName() + ">";
+      int j = i - 1;
+      int k = i - 2;
+      while (k < j && k > -1) {
+        k = cas.getDocumentText().indexOf(startTag, k + 1);
+        j = cas.getDocumentText().indexOf(endTag, j + 1);
+      }
+      if (i < j) {
+        i = j;
+      }
+
+    }
+
+    if (onlyContent) {
+      begin = getOffset(tag.getEndPosition());
+      end = i;
+    }
+    
+    AnnotationFS annotation = cas.createAnnotation(type, begin, end);
     for (int k = 0; k < tag.getAttributesEx().size(); k++) {
       String test = tag.getAttributesEx().elementAt(k).toString();
       if (test.startsWith(" ") | test.startsWith("/")) {
@@ -199,7 +236,7 @@ public class HtmlVisitor extends NodeVisitor {
       attributeName.set(j, attribute.getName());
       attributeValue.set(j, attribute.getValue());
     }
-    AnnotationDelta annotationDelta = new AnnotationDelta(annotation, 0, attributeName,
+    HtmlAnnotation annotationDelta = new HtmlAnnotation(annotation, 0, attributeName,
             attributeValue, name, stripHtml);
     annotationList.add(annotationDelta);
 
@@ -214,27 +251,45 @@ public class HtmlVisitor extends NodeVisitor {
     return type;
   }
 
-  public void node2annotation(Remark node) {
-    int position = node.getStartPosition();
-    if (stripHtml) {
-      position -= delta;
+  public void node2annotation(Remark tag) {
+    Type type = getType("REMARK", cas);
+    int begin = getOffset(tag.getStartPosition());
+
+    delta += tag.getEndPosition() - tag.getStartPosition();
+    int end = tag.getEndPosition();
+
+    if (onlyContent) {
+      begin = getOffset(tag.getEndPosition());
     }
-    String comment = node.getText();
-    Remarks remark = new Remarks(comment, position);
+    AnnotationFS annotation = cas.createAnnotation(type, begin, end);
+    HtmlRemark remark = new HtmlRemark(annotation, 0, stripHtml);
+    String comment = tag.getText();
+    remark.setComment(comment);
     remarks.add(remark);
-    delta += node.getEndPosition() - node.getStartPosition();
   }
 
-  public void headNode2annotation(Remark node) {
-    String comment = node.getText();
-    Remarks remark = new Remarks(comment, 0);
+  public void headNode2annotation(Remark tag) {
+    Type type = getType("REMARK", cas);
+    int begin = getOffset(tag.getStartPosition());
+
+    delta += tag.getEndPosition() - tag.getStartPosition();
+    int end = tag.getEndPosition();
+    if (onlyContent) {
+      begin = getOffset(tag.getEndPosition());
+    }
+    
+    AnnotationFS annotation = cas.createAnnotation(type, begin, end);
+    
+    HtmlRemark remark = new HtmlRemark(annotation, 0, stripHtml);
+    String comment = tag.getText();
+    remark.setComment(comment);
     remarks.add(remark);
   }
 
   public void endTag(Tag endtag) {
     int size = annotations.size();
     if (size > 0) {
-      AnnotationDelta annotationDelta = annotations.get(size - 1);
+      HtmlAnnotation annotationDelta = annotations.get(size - 1);
       String test = endtag.getRawTagName().toUpperCase().substring(1);
 
       if (annotationDelta
@@ -254,11 +309,11 @@ public class HtmlVisitor extends NodeVisitor {
     return plainTextDocument;
   }
 
-  public List<AnnotationDelta> getAnnotationList() {
+  public List<HtmlAnnotation> getAnnotationList() {
     return annotationList;
   }
 
-  public List<Remarks> getRemarks() {
+  public List<HtmlRemark> getRemarks() {
     return remarks;
   }
 

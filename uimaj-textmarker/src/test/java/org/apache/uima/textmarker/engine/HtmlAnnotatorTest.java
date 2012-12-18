@@ -69,7 +69,15 @@ public class HtmlAnnotatorTest {
     cas.reset();
     cas.setDocumentText(html);
     ae.process(cas);
+    
+    
+    
     ai = cas.getAnnotationIndex(tagType);
+//    for (AnnotationFS each : ai) {
+//      System.out.println(each.getCoveredText().replaceAll("[\n\r]", ""));
+//    }
+    
+    
     iterator = ai.iterator();
 //    assertEquals(7, ai.size());
 //    AnnotationFS a = iterator.next();
@@ -89,7 +97,7 @@ public class HtmlAnnotatorTest {
 //    assertEquals(41, a.getBegin());
 //    assertEquals(118, a.getEnd());
 //    a = iterator.next();
-//    assertEquals("BR", a.getType().getShortName());
+//    assertEquals("TAG", a.getType().getShortName());
 //    assertEquals(64, a.getBegin());
 //    assertEquals(69, a.getEnd());
 //    a = iterator.next();
@@ -97,7 +105,7 @@ public class HtmlAnnotatorTest {
 //    assertEquals(78, a.getBegin());
 //    assertEquals(89, a.getEnd());
 //    a = iterator.next();
-//    assertEquals("BR", a.getType().getShortName());
+//    assertEquals("TAG", a.getType().getShortName());
 //    assertEquals(91, a.getBegin());
 //    assertEquals(96, a.getEnd());
 

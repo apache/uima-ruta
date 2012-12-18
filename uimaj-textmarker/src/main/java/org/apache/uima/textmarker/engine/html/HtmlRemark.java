@@ -19,21 +19,28 @@
 
 package org.apache.uima.textmarker.engine.html;
 
-public class Remarks {
-	private String comment;
-	private int position;
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.jcas.cas.StringArray;
+
+public class HtmlRemark extends HtmlAnnotation {
+  
+  private String comment;
+
+  public HtmlRemark(AnnotationFS annotation, int delta, StringArray attributeName,
+          StringArray attributeValue, String name, boolean stripHtml) {
+    super(annotation, delta, attributeName, attributeValue, name, stripHtml);
+  }
 	
-	public Remarks(String comment, int position){
-		this.comment = comment;
-		this.position = position;
-	}
-	
-	public String getComment() {
+	public HtmlRemark(AnnotationFS annotation, int delta, boolean stripHtml) {
+	  super(annotation, delta, null, null, "REMARK", stripHtml);
+  }
+
+  public String getComment() {
 		return comment;
 	}
-	
-	public int getPosition() {
-		return position;
-	}
+
+  public void setComment(String comment) {
+    this.comment = comment;
+  }
 
 }
