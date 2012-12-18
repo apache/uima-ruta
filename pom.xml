@@ -106,6 +106,16 @@
       </releases>
     </repository>    
     
+    <!-- 
+    Temporary repository that contains osgi bundles like DLTK 3.0. 
+    Added to ease building the TextMarker Eclipse plugins that depend on bundles, 
+    which are not provided by public maven repositories. 
+     -->
+    <repository>
+      <id>ukp-osgi-releases</id>
+      <url>https://zoidberg.ukp.informatik.tu-darmstadt.de/artifactory/public-ext-osgi-releases-local</url>
+    </repository>
+    
   </repositories>
   
   <pluginRepositories>
