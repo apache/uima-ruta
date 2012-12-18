@@ -45,13 +45,13 @@
        element, and just changing the following two properties -->  
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/uimaj/trunk/uimaj-textmarker-eclipse-update-site
+      scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/TextMarker/trunk/uimaj-textmarker-eclipse-update-site
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/uimaj/trunk/uimaj-textmarker-eclipse-update-site
+      scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/TextMarker/trunk/uimaj-textmarker-eclipse-update-site
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/uimaj/trunk/uimaj-textmarker-eclipse-update-site
+      http://svn.apache.org/viewvc/uima/sandbox/TextMarker/trunk/uimaj-textmarker-eclipse-update-site
     </url>
   </scm>
   

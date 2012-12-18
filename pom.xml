@@ -47,9 +47,9 @@
        Keeping this a bit factored allows cutting/pasting the <scm>
        element, and just changing the following two properties -->
   <scm>
-    <url>http://svn.apache.org/viewvc/uima/sandbox/trunk/TextMarker</url>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/trunk/TextMarker</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/trunk/TextMarker</developerConnection>
+    <url>http://svn.apache.org/viewvc/uima/sandbox/TextMarker/trunk</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/TextMarker/trunk</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/TextMarker/trunk</developerConnection>
   </scm>
 
   <!-- The repositories and pluginRepositories section is duplicated from

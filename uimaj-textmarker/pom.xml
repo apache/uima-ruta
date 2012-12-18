@@ -78,9 +78,9 @@
     </dependency>
   </dependencies>
   <scm>
-    <url>http://svn.apache.org/viewvc/uima/sandbox/trunk/uimaj-textmarker</url>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/trunk/uimaj-textmarker</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/trunk/uimaj-textmarker</developerConnection>
+    <url>http://svn.apache.org/viewvc/uima/sandbox/TextMarker/trunk/uimaj-textmarker</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/TextMarker/trunk/uimaj-textmarker</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/TextMarker/trunk/uimaj-textmarker</developerConnection>
   </scm>
   <build>
     <finalName>uima-textmarker</finalName>

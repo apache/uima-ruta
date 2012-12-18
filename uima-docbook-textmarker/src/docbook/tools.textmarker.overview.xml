@@ -68,7 +68,7 @@ under the License.
       TextMarker rules can of course also be applied on CAS without using the TextMarker Workbench. 
       <xref linkend="ugr.tools.tm.ae.basic.apply"/> contains examples how to execute TextMarker rules in plain java.
       A good way to get started with TextMarker is to play around with an exemplary TextMarker project, e.g., 
-      <uri>https://svn.apache.org/repos/asf/uima/sandbox/trunk/TextMarker/example-projects/ExampleProject</uri>. This TextMarker project 
+      <uri>https://svn.apache.org/repos/asf/uima/sandbox/TextMarker/trunk/example-projects/ExampleProject</uri>. This TextMarker project 
       contains some simple rules for processing citation metadata.
     </para>  
     <para>    
