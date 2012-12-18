@@ -225,9 +225,9 @@
     </dependency>
   </dependencies>
   <scm>
-    <url>http://svn.apache.org/viewvc/uima/sandbox/trunk/uimaj-ep-textmarker-ide</url>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/trunk/uimaj-ep-textmarker-ide</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/trunk/uimaj-ep-textmarker-ide</developerConnection>
+    <url>http://svn.apache.org/viewvc/uima/sandbox/TextMarker/trunk/uimaj-ep-textmarker-ide</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/TextMarker/trunk/uimaj-ep-textmarker-ide</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/TextMarker/trunk/uimaj-ep-textmarker-ide</developerConnection>
   </scm>
   <build>
     <!-- don't use artifactId as first part of finalName, follow instead the eclipse convention -->
