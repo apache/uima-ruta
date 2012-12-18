@@ -113,7 +113,7 @@
      -->
     <repository>
       <id>ukp-osgi-releases</id>
-      <url>https://zoidberg.ukp.informatik.tu-darmstadt.de/artifactory/public-ext-osgi-releases-local</url>
+      <url>http://zoidberg.ukp.informatik.tu-darmstadt.de/artifactory/public-ext-osgi-releases-local</url>
     </repository>
     
   </repositories>
