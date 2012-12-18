@@ -36,23 +36,23 @@ under the License.
   starts with the installation of the workbench, followed by a description of all its features.
   </para>
 
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href=".\workbench\tools.textmarker.workbench.install.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.textmarker.workbench.install.xml" />
 
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href=".\workbench\tools.textmarker.workbench.overview.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.textmarker.workbench.overview.xml" />
 
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href=".\workbench\tools.textmarker.workbench.projects.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.textmarker.workbench.projects.xml" />
 
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href=".\workbench\tools.textmarker.workbench.tm_perspective.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.textmarker.workbench.tm_perspective.xml" />
   
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href=".\workbench\tools.textmarker.workbench.explain_perspective.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.textmarker.workbench.explain_perspective.xml" />
   
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href=".\workbench\tools.textmarker.workbench.query.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.textmarker.workbench.query.xml" />
   
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href=".\workbench\tools.textmarker.workbench.testing.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.textmarker.workbench.testing.xml" />
   
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href=".\workbench\tools.textmarker.workbench.textruler.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.textmarker.workbench.textruler.xml" />
   
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href=".\workbench\tools.textmarker.workbench.create_dictionaries.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.textmarker.workbench.create_dictionaries.xml" />
   
   <section id="ugr.tools.tm.workbench.apply">
     <title>Apply a TextMarker script on a folder</title>

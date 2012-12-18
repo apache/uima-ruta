@@ -32,20 +32,20 @@ under the License.
   </para>
 
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href=".\language\tools.textmarker.language.syntax.xml" />
+    href="tools.textmarker.language.syntax.xml" />
 
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href=".\language\tools.textmarker.language.basic_annotations.xml" />
+    href="tools.textmarker.language.basic_annotations.xml" />
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href=".\language\tools.textmarker.language.quantifier.xml" />
+    href="tools.textmarker.language.quantifier.xml" />
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href=".\language\tools.textmarker.language.declarations.xml" />
+    href="tools.textmarker.language.declarations.xml" />
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href=".\language\tools.textmarker.language.expressions.xml" />
+    href="tools.textmarker.language.expressions.xml" />
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href=".\language\tools.textmarker.language.conditions.xml" />
+    href="tools.textmarker.language.conditions.xml" />
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href=".\language\tools.textmarker.language.actions.xml" />
+    href="tools.textmarker.language.actions.xml" />
 
 
   <section id="ugr.tools.tm.language.filtering">
