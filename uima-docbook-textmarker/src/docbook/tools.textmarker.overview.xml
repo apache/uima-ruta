@@ -414,7 +414,7 @@ BLOCK(English) Document{FEATURE("language", "de")} {
     </para>
 
     <para>
-      The rule element of the block definition can also refer to other annaotion types than <quote>Document</quote>. While the last example implemented something similar 
+      The rule element of the block definition can also refer to other annotation types than <quote>Document</quote>. While the last example implemented something similar 
       to an if-statement, the next example provides a show case for something similar to a for-each-statement.
     </para>
 
@@ -1019,7 +1019,7 @@ ae.process(cas);]]></programlisting>
       <para>
         The Modifier Analysis Engine can be used to create an additional view <quote>modified</quote>, which contains all textual modifications and HTML highlightings that
         were specified by the executed rules. Therefore, this Analysis Engine can be applied, e.g., 
-        for anonymization where all annatotions of persons are replaced by the string <quote>Person</quote>. 
+        for anonymization where all annotations of persons are replaced by the string <quote>Person</quote>. 
         Furthermore, the content of the new view can optionally be stored in a new HTML file.
         A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a TextMarker project.
       </para>

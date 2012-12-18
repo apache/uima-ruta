@@ -291,7 +291,7 @@ Document{->CONFIGURE(HtmlAnnotator, "onlyContent" = false)};]]></programlisting>
     <para>
       The DYNAMICANCHORING action turns dynamic anchoring on or off
       (first parameter) and assigns the anchoring parameters penalty
-      (sceond parameter) and factor (third parameter).
+      (second parameter) and factor (third parameter).
     </para>
     <section>
       <title>
@@ -310,7 +310,7 @@ Document{->CONFIGURE(HtmlAnnotator, "onlyContent" = false)};]]></programlisting>
         <programlisting><![CDATA[Document{->DYNAMICANCHORING(true)};]]></programlisting>
       </para>
       <para>
-        The above example turns dynamic anchoring on.
+        The above example activates dynamic anchoring.
       </para>
     </section>
   </section>
@@ -383,11 +383,8 @@ Document{->EXEC(NamedEntities)};]]></programlisting>
     <para>
       This action filters the given types of annotations. They are now
       ignored by rules. For more informations on how rules work see
-      <xref linkend='ugr.tools.tm.language.inference' />
-      . Expressions are not yet supported. This action is complementary to
-      RETAINTYPE (see
-      <xref linkend='ugr.tools.tm.language.actions.retaintype' />
-      ).
+      <xref linkend='ugr.tools.tm.language.inference' />. Expressions are not yet supported. 
+      This action is related to RETAINTYPE (see <xref linkend='ugr.tools.tm.language.actions.retaintype' />).
     </para>
     <section>
       <title>
@@ -986,10 +983,8 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
     <title>RETAINTYPE</title>
     <para>
       The RETAINTYPE action retains the given types. This means that they
-      are now not ignored by rules. This action is complementary to
-      FILTERTYPE (see
-      <xref linkend='ugr.tools.tm.language.actions.filtertype' />
-      ).
+      are now not ignored by rules. This action is related to
+      FILTERTYPE (see <xref linkend='ugr.tools.tm.language.actions.filtertype' />).
     </para>
     <section>
       <title>
@@ -1161,7 +1156,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
       </para>
       <para>
         This rule removes all spaces in at the beginning and at the end of Keyword annotations and
-        thus changes the offsets of the matched annoations.
+        thus changes the offsets of the matched annotations.
       </para>
     </section>
   </section>
@@ -1172,7 +1167,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
       The UNMARK action removes the annotation of the given type
       overlapping the matched annotation. There are two additional configurations: If additional
       indexes are given, then the span of the specified rule elements are applied, similar the the MARK action.
-      If instead a boolean is given as an additional argument, then all annoations of the given type are removed
+      If instead a boolean is given as an additional argument, then all annotations of the given type are removed
       that start at the macthed position.
     </para>
     <section>
