@@ -22,20 +22,16 @@ package org.apache.uima.textmarker.engine;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.resource.ResourceSpecifier;
-import org.apache.uima.textmarker.TextMarkerTestUtils;
-import org.apache.uima.textmarker.engine.html.HtmlAnnotator;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.XMLInputSource;
 import org.junit.Test;
@@ -62,55 +58,44 @@ public class HtmlAnnotatorTest {
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
 
-    ae.setConfigParameterValue("plainTextOutput", false);
-    ae.setConfigParameterValue("outputViewName", "");
     ae.setConfigParameterValue("onlyContent", false);
     ae.reconfigure();
     cas.reset();
     cas.setDocumentText(html);
     ae.process(cas);
-    
-    
-    
     ai = cas.getAnnotationIndex(tagType);
-//    for (AnnotationFS each : ai) {
-//      System.out.println(each.getCoveredText().replaceAll("[\n\r]", ""));
-//    }
-    
-    
     iterator = ai.iterator();
-//    assertEquals(7, ai.size());
-//    AnnotationFS a = iterator.next();
-//    assertEquals("HTML", a.getType().getShortName());
-//    assertEquals(0, a.getBegin());
-//    assertEquals(127, a.getEnd());
-//    a = iterator.next();
-//    assertEquals("HEAD", a.getType().getShortName());
-//    assertEquals(8, a.getBegin());
-//    assertEquals(39, a.getEnd());
-//    a = iterator.next();
-//    assertEquals("REMARK", a.getType().getShortName());
-//    assertEquals(16, a.getBegin());
-//    assertEquals(30, a.getEnd());
-//    a = iterator.next();
-//    assertEquals("BODY", a.getType().getShortName());
-//    assertEquals(41, a.getBegin());
-//    assertEquals(118, a.getEnd());
-//    a = iterator.next();
-//    assertEquals("TAG", a.getType().getShortName());
-//    assertEquals(64, a.getBegin());
-//    assertEquals(69, a.getEnd());
-//    a = iterator.next();
-//    assertEquals("B", a.getType().getShortName());
-//    assertEquals(78, a.getBegin());
-//    assertEquals(89, a.getEnd());
-//    a = iterator.next();
-//    assertEquals("TAG", a.getType().getShortName());
-//    assertEquals(91, a.getBegin());
-//    assertEquals(96, a.getEnd());
+    assertEquals(7, ai.size());
+    AnnotationFS a = iterator.next();
+    assertEquals("HTML", a.getType().getShortName());
+    assertEquals(0, a.getBegin());
+    assertEquals(127, a.getEnd());
+    a = iterator.next();
+    assertEquals("HEAD", a.getType().getShortName());
+    assertEquals(8, a.getBegin());
+    assertEquals(39, a.getEnd());
+    a = iterator.next();
+    assertEquals("REMARK", a.getType().getShortName());
+    assertEquals(16, a.getBegin());
+    assertEquals(30, a.getEnd());
+    a = iterator.next();
+    assertEquals("BODY", a.getType().getShortName());
+    assertEquals(41, a.getBegin());
+    assertEquals(118, a.getEnd());
+    a = iterator.next();
+    assertEquals("BR", a.getType().getShortName());
+    assertEquals(64, a.getBegin());
+    assertEquals(69, a.getEnd());
+    a = iterator.next();
+    assertEquals("B", a.getType().getShortName());
+    assertEquals(78, a.getBegin());
+    assertEquals(89, a.getEnd());
+    a = iterator.next();
+    assertEquals("BR", a.getType().getShortName());
+    assertEquals(91, a.getBegin());
+    assertEquals(96, a.getEnd());
 
-    ae.setConfigParameterValue("plainTextOutput", false);
-    ae.setConfigParameterValue("outputViewName", "");
+    
     ae.setConfigParameterValue("onlyContent", true);
     ae.reconfigure();
     cas.reset();
@@ -118,25 +103,22 @@ public class HtmlAnnotatorTest {
     ae.process(cas);
     ai = cas.getAnnotationIndex(tagType);
     iterator = ai.iterator();
-//    assertEquals(7, ai.size());
-//    a = iterator.next();
-    
-
-    ae.setConfigParameterValue("plainTextOutput", true);
-    ae.setConfigParameterValue("outputViewName", "plain");
-    ae.setConfigParameterValue("onlyContent", false);
-    ae.reconfigure();
-    cas.reset();
-    cas.setDocumentText(html);
-    ae.process(cas);
-
-    ae.setConfigParameterValue("plainTextOutput", false);
-    ae.setConfigParameterValue("outputViewName", "plain");
-    ae.setConfigParameterValue("onlyContent", true);
-    ae.reconfigure();
-    cas.reset();
-    cas.setDocumentText(html);
-    ae.process(cas);
-
+    assertEquals(4, ai.size());
+    a = iterator.next();
+    assertEquals("HTML", a.getType().getShortName());
+    assertEquals(6, a.getBegin());
+    assertEquals(120, a.getEnd());
+    a = iterator.next();
+    assertEquals("HEAD", a.getType().getShortName());
+    assertEquals(14, a.getBegin());
+    assertEquals(32, a.getEnd());
+    a = iterator.next();
+    assertEquals("BODY", a.getType().getShortName());
+    assertEquals(47, a.getBegin());
+    assertEquals(111, a.getEnd());
+    a = iterator.next();
+    assertEquals("B", a.getType().getShortName());
+    assertEquals(81, a.getBegin());
+    assertEquals(85, a.getEnd());
   }
 }

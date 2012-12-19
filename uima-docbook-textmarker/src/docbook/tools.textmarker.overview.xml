@@ -1058,26 +1058,13 @@ ae.process(cas);]]></programlisting>
         for each HTML element spanning the content of the element, whereas the most common elements are represented by own types. 
         The document <quote><![CDATA[This text is <b>bold</b>.]]></quote>, for example, would be annotated with an annotation of the type 
         <quote>org.apache.uima.textmarker.type.html.B</quote> for the word <quote>bold</quote>. The HTML annotator can be configured 
-        in order to include the start and end element in the created annotations. Additionally, the Analysis Engine is also able to strip the HTML element, 
-        but retraining the HTML annotations. Thereby, an HTML document can be converted to a plain text document, which contains the annotations about the HTML layout.
+        in order to include the start and end element in the created annotations. 
         A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a TextMarker project.
       </para>
       <section id="ugr.tools.tm.ae.html.parameter">
         <title>Configuration Parameters</title>
         <para>
         </para>
-        <section id="ugr.tools.tm.ae.html.parameter.plainTextOutput">
-          <title>plainTextOutput</title>
-          <para>
-            This parameter specifies whether a new document without the HTML elements should be created. The default value is <quote>false</quote>.
-          </para>
-        </section>
-        <section id="ugr.tools.tm.ae.html.parameter.outputViewName">
-          <title>outputViewName</title>
-          <para>
-            This parameter specifies in which view the optional new document without HTML element should be stored.
-          </para>
-        </section>
         <section id="ugr.tools.tm.ae.html.parameter.onlyContent">
           <title>onlyContent</title>
           <para>
