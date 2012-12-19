@@ -68,5 +68,7 @@ public class EndsWithTest {
     iterator = ai.iterator();
     assertEquals("A single sentence!", iterator.next().getCoveredText());
     assertEquals("Testing the ENDSWITH condition of TextMarker.", iterator.next().getCoveredText());
+ 
+    cas.release();
   }
 }

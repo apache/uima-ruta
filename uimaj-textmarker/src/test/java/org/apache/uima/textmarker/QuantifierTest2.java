@@ -76,5 +76,6 @@ public class QuantifierTest2 {
     ai = cas.getAnnotationIndex(t);
     assertEquals(0, ai.size());
 
+    cas.release();
   }
 }

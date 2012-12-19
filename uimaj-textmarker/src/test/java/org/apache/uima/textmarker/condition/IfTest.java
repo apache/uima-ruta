@@ -63,5 +63,7 @@ public class IfTest {
     assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals("Will this text be annotated?", iterator.next().getCoveredText());
+ 
+    cas.release();
   }
 }

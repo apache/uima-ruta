@@ -69,5 +69,7 @@ public class PartOfNEQTest {
     iterator = ai.iterator();
     assertEquals("Vitamine", iterator.next().getCoveredText());
     assertEquals("A", iterator.next().getCoveredText());
+    
+    cas.release();
   }
 }

@@ -101,6 +101,8 @@ public class DefaultSeederTest {
     assertEquals("MARKUP", iterator.next().getType().getShortName());
     assertEquals("MARKUP", iterator.next().getType().getShortName());
     assertEquals("BREAK", iterator.next().getType().getShortName());
+    
+    cas.release();
   }
   
   

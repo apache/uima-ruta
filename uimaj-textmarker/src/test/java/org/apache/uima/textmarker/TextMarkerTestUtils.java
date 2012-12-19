@@ -127,6 +127,8 @@ public class TextMarkerTestUtils {
       cas.setDocumentText(FileUtils.file2String(textFile, "UTF-8"));
     }
     ae.process(cas);
+    
+    ae.destroy();
     return cas;
   }
 

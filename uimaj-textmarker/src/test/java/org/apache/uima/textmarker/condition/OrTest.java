@@ -70,5 +70,7 @@ public class OrTest {
     assertEquals("OR", iterator.next().getCoveredText());
     assertEquals("Test", iterator.next().getCoveredText());
     assertEquals("OR", iterator.next().getCoveredText());
+    
+    cas.release();
   }
 }

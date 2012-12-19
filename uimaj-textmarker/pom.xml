@@ -99,8 +99,7 @@
                   <exclude>src/test/resources/org/apache/uima/textmarker/action/*.tm</exclude> <!-- test data -->
                   <exclude>src/test/resources/org/apache/uima/textmarker/*.txt</exclude> <!-- test data -->
                   <exclude>src/test/resources/org/apache/uima/textmarker/*.tm</exclude> <!-- test data -->
-                  <exclude>src/test/resources/org/apache/uima/textmarker/action/*.txt</exclude> <!-- test data -->
-                  <exclude>src/test/resources/org/apache/uima/textmarker/action/*.tm</exclude> <!-- test data -->
+                  <exclude>src/test/resources/org/apache/uima/textmarker/action/*.*</exclude> <!-- test data -->
                   <exclude>src/test/resources/org/apache/uima/textmarker/condition/*.txt</exclude> <!-- test data -->
                   <exclude>src/test/resources/org/apache/uima/textmarker/condition/*.tm</exclude> <!-- test data -->
                   <exclude>src/test/resources/org/apache/uima/textmarker/seed/*.txt</exclude> <!-- test data -->

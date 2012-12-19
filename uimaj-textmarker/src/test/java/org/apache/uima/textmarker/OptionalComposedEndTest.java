@@ -69,5 +69,6 @@ public class OptionalComposedEndTest {
     assertEquals("20", iterator.next().getCoveredText());
     assertEquals("20,20", iterator.next().getCoveredText());
     
+    cas.release();
   }
 }

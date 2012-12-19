@@ -69,5 +69,7 @@ public class SizeTest {
     assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals("SIZE", iterator.next().getCoveredText());
+    
+    cas.release();
   }
 }

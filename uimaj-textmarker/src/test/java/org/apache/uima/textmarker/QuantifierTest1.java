@@ -170,5 +170,6 @@ public class QuantifierTest1 {
     assertEquals("A B C", iterator.next().getCoveredText());
     assertEquals("A B B C", iterator.next().getCoveredText());
 
+    cas.release();
   }
 }

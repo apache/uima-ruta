@@ -120,5 +120,7 @@ public class HtmlAnnotatorTest {
     assertEquals("B", a.getType().getShortName());
     assertEquals(81, a.getBegin());
     assertEquals(85, a.getEnd());
+    
+    cas.release();
   }
 }

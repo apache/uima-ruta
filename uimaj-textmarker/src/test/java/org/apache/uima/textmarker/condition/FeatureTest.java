@@ -61,5 +61,6 @@ public class FeatureTest {
     iterator = ai.iterator();
     assertEquals("You can test this with the FEATURE condition.", iterator.next().getCoveredText());
     
+    cas.release();
   }
 }

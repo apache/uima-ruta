@@ -95,5 +95,7 @@ public class AfterTest {
     assertEquals("on", iterator.next().getCoveredText());
     assertEquals("is", iterator.next().getCoveredText());
     assertEquals("marked", iterator.next().getCoveredText());
+    
+    cas.release();
   }
 }

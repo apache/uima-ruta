@@ -67,5 +67,7 @@ public class MOfNTest {
     iterator = ai.iterator();
     assertEquals("Condition", iterator.next().getCoveredText());
     assertEquals("MOFN", iterator.next().getCoveredText());
+    
+    cas.release();
   }
 }

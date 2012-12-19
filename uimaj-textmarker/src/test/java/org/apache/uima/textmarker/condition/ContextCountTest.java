@@ -73,5 +73,7 @@ public class ContextCountTest {
             "And here is another one." +
             "Testing the CONTEXTCOUNT condition of TextMarker.",
             iterator.next().getCoveredText().replaceAll("[\n\r]", ""));
+    
+    cas.release();
   }
 }

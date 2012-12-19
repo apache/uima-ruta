@@ -59,5 +59,7 @@ public class OutOfWindowTest {
     iterator = ai.iterator();
     assertEquals("Jochen, Flo", iterator.next().getCoveredText());
 
+    
+    cas.release();
   }
 }

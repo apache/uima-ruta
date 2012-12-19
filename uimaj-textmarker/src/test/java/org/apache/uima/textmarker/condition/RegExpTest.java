@@ -71,5 +71,7 @@ public class RegExpTest {
     t = TextMarkerTestUtils.getTestType(cas, 4);
     ai = cas.getAnnotationIndex(t);
     assertEquals(0, ai.size());
+    
+    cas.release();
   }
 }

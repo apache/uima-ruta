@@ -68,5 +68,6 @@ public class CountTest {
     iterator = ai.iterator();
     assertEquals("Testing the COUNT condition of TextMarker", iterator.next().getCoveredText());
     
+    cas.release();    
   }
 }

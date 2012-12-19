@@ -15,18 +15,26 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker;
 
 import org.apache.uima.textmarker.action.MarkFastTest;
+import org.apache.uima.textmarker.action.ReplaceTest;
+import org.apache.uima.textmarker.action.RetainTypeTest;
+import org.apache.uima.textmarker.action.SetFeatureTest;
+import org.apache.uima.textmarker.action.ShiftTest;
+import org.apache.uima.textmarker.action.TransferTest;
 import org.apache.uima.textmarker.action.TrimTest;
+import org.apache.uima.textmarker.action.UnmarkAllTest;
+import org.apache.uima.textmarker.action.UnmarkTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ MarkFastTest.class, TrimTest.class })
+@SuiteClasses({ MarkFastTest.class, ReplaceTest.class, RetainTypeTest.class, SetFeatureTest.class,
+    ShiftTest.class, TransferTest.class, TrimTest.class, UnmarkTest.class, UnmarkAllTest.class })
 public class AllActionsTest {
 
 }

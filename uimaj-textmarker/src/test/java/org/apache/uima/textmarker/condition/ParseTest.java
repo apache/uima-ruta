@@ -79,5 +79,7 @@ public class ParseTest {
     assertEquals("The Number 42", iterator.next().getCoveredText());
     assertEquals("The Double d = 2,1", iterator.next().getCoveredText());
     assertEquals("Another Double that is 2.3", iterator.next().getCoveredText());
+    
+    cas.release();
   }
 }

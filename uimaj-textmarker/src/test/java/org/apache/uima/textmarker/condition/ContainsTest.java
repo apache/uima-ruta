@@ -78,5 +78,7 @@ public class ContainsTest {
     assertEquals("Testing the CONTAINS condition of TextMarker", iterator.next().getCoveredText());
     
     //TODO CONTAINS with TextMarkerExpression?
+    
+    cas.release();
   }
 }

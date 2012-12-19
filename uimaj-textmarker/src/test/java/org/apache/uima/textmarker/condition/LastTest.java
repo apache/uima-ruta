@@ -61,5 +61,7 @@ public class LastTest {
     assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals("This we can test with the LAST condition!", iterator.next().getCoveredText());
+  
+    cas.release();
   }
 }

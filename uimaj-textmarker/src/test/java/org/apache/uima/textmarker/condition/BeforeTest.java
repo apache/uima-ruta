@@ -72,5 +72,7 @@ public class BeforeTest {
             iterator.next().getCoveredText());
     assertEquals("you need the BEFORE condition of TextMarker",
             iterator.next().getCoveredText());
+    
+    cas.release();
   }
 }

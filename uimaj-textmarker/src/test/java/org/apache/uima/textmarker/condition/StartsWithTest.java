@@ -69,5 +69,7 @@ public class StartsWithTest {
     assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals("This text starts with \"This\".", iterator.next().getCoveredText());
+    
+    cas.release();
   }
 }

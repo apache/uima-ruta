@@ -66,5 +66,6 @@ public class TrimTest {
     assertEquals(1, ai.size());
     assertEquals("some text", iterator.next().getCoveredText());
     
+    cas.release();
   }
 }

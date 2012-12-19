@@ -65,5 +65,7 @@ public class TotalCountTest {
     iterator = ai.iterator();
     assertEquals("To count the number of annotations within a given annotation," +
             " use the TOTALCOUNT condition.", iterator.next().getCoveredText());
+    
+    cas.release();
   }
 }

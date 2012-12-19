@@ -60,5 +60,7 @@ public class InListTest {
     assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals("INLIST", iterator.next().getCoveredText());
+    
+    cas.release();
   }
 }

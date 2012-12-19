@@ -72,5 +72,7 @@ public class IsTest {
     assertEquals(",", iterator.next().getCoveredText());
     assertEquals(".", iterator.next().getCoveredText());
     assertEquals(".", iterator.next().getCoveredText());
+    
+    cas.release();
   }
 }

@@ -75,5 +75,6 @@ public class MarkFastTest {
     assertEquals("1 0 0", iterator.next().getCoveredText());
     assertEquals("2 0 0", iterator.next().getCoveredText());
 
+    cas.release();
   }
 }

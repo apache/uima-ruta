@@ -77,5 +77,7 @@ public class NearTest {
     assertEquals("condition", iterator.next().getCoveredText());
     assertEquals("evaluates", iterator.next().getCoveredText());
     assertEquals("true", iterator.next().getCoveredText());
+    
+    cas.release();
   }
 }

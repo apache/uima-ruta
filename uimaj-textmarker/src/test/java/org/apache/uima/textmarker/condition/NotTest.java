@@ -61,5 +61,7 @@ public class NotTest {
     iterator = ai.iterator();
     assertEquals("NOT", iterator.next().getCoveredText());
     assertEquals("Condition", iterator.next().getCoveredText());
+    
+    cas.release();
   }
 }

@@ -65,5 +65,7 @@ public class CurrentCountTest {
     assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals("Flo", iterator.next().getCoveredText());
+    
+    cas.release();
   }
 }

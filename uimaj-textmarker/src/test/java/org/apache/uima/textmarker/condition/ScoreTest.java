@@ -72,5 +72,7 @@ public class ScoreTest {
     assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals("Score", iterator.next().getCoveredText());
+    
+    cas.release();
   }
 }

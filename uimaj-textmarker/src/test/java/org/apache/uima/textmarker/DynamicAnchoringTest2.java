@@ -64,5 +64,7 @@ public class DynamicAnchoringTest2 {
     iterator = ai.iterator();
     assertEquals("A b A", iterator.next().getCoveredText());
 
+    cas.release();
+    
   }
 }

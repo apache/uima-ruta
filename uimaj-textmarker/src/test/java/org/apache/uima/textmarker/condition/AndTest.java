@@ -85,5 +85,7 @@ public class AndTest {
     assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals("some", iterator.next().getCoveredText());
+    
+    cas.release();
   }
 }
