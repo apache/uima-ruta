@@ -50,14 +50,14 @@ public class GetAction extends AbstractTextMarkerAction {
   public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
     String op = opExpr.getStringValue(element.getParent());
-    List<TextMarkerExpression> list = listExpr.getList(element.getParent());
+    List<?> list = listExpr.getList(element.getParent());
     if ("dominant".equals(op)) {
       element.getParent().getEnvironment()
               .setVariableValue(var, getDominant(list, element.getParent()));
     }
   }
 
-  private Object getDominant(List<TextMarkerExpression> list, TextMarkerBlock parent) {
+  private Object getDominant(List<?> list, TextMarkerBlock parent) {
     List<Object> objs = new ArrayList<Object>();
     List<Integer> counts = new ArrayList<Integer>();
     for (Object each : list) {

@@ -38,7 +38,7 @@ import org.junit.runners.Suite.SuiteClasses;
     RuleInferenceTest2.class, RuleInferenceTest3.class, AllActionsTest.class,
     AllConditionsTest.class, CurrentCountTest.class, PartOfTest.class, PositionTest.class,
     DefaultSeederTest.class, ConditionVerbalizerTest.class, ActionVerbalizerTest.class,
-    ExpressionVerbalizerTest.class, HtmlAnnotatorTest.class })
+    ExpressionVerbalizerTest.class, HtmlAnnotatorTest.class, EmptyDocumentTest.class })
 public class AllTests {
 
 }
