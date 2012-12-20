@@ -399,14 +399,6 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
 
   public List<AnnotationFS> getAnnotationsInWindow2(AnnotationFS windowAnnotation, Type type) {
     List<AnnotationFS> result = new ArrayList<AnnotationFS>();
-    // if (windowAnnotation instanceof TextMarkerBasic) {
-    // TextMarkerBasic basic = (TextMarkerBasic) windowAnnotation;
-    // AnnotationFS a = basic.getType(type.getName());
-    // if (a != null) {
-    // result.add(a);
-    // }
-    // return result;
-    // }
     windowAnnotation = cas.createAnnotation(type, windowAnnotation.getBegin(),
             windowAnnotation.getEnd() + 1);
     FSIterator<AnnotationFS> completeIt = getCas().getAnnotationIndex(type).iterator();

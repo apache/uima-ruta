@@ -21,6 +21,7 @@ package org.apache.uima.textmarker.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -64,33 +65,35 @@ public class GetListAction extends AbstractTextMarkerAction {
             element.getContainer());
     for (AnnotationFS matched : matchedAnnotations) {
 
-      TextMarkerBasic firstBasic = stream.getFirstBasicInWindow(matched);
-      Collection<Set<AnnotationFS>> values = firstBasic.getBeginMap().values();
-      // TODO right now, this only works for types that are present and not for their parent types...
       if (TYPES_AT_BEGIN.equals(op)) {
+        TextMarkerBasic beginAnchor = stream.getBeginAnchor(matched.getBegin());
+        Collection<Set<AnnotationFS>> values = beginAnchor.getBeginMap().values();
+        Set<AnnotationFS> aset = new HashSet<AnnotationFS>();
         for (Set<AnnotationFS> set : values) {
-          for (AnnotationFS annotationFS : set) {
-            list.add(annotationFS.getType());
-          }
+          aset.addAll(set);
         }
-      } else {
+        for (AnnotationFS annotationFS : aset) {
+          list.add(annotationFS.getType());
+        }
+      } else if (TYPES_AT_END.equals(op)) {
+        TextMarkerBasic endAnchor = stream.getEndAnchor(matched.getEnd());
+        Collection<Set<AnnotationFS>> values = endAnchor.getEndMap().values();
+        Set<AnnotationFS> aset = new HashSet<AnnotationFS>();
+        for (Set<AnnotationFS> set : values) {
+          aset.addAll(set);
+        }
+        for (AnnotationFS annotationFS : aset) {
+          list.add(annotationFS.getType());
+        }
+      } else if (TYPES.equals(op)) {
         Type annotationType = stream.getCas().getAnnotationType();
-        if (TYPES_AT_END.equals(op)) {
-          List<AnnotationFS> inWindow = stream.getAnnotationsInWindow(matched, annotationType);
-          for (AnnotationFS each : inWindow) {
-            if (each.getEnd() == matched.getEnd()) {
-              list.add(each.getType());
-            }
+        List<AnnotationFS> inWindow = stream.getAnnotationsInWindow(matched, annotationType);
+        for (AnnotationFS each : inWindow) {
+          if (each.getBegin() == matched.getBegin() && each.getEnd() == matched.getEnd()) {
+            list.add(each.getType());
           }
-        } else if (TYPES.equals(op)) {
-          List<AnnotationFS> inWindow = stream.getAnnotationsInWindow(matched, annotationType);
-          for (AnnotationFS each : inWindow) {
-            if (each.getBegin() == matched.getBegin() && each.getEnd() == matched.getEnd()) {
-              list.add(each.getType());
-            }
-            if (each.getBegin() > matched.getBegin() || each.getEnd() < matched.getEnd()) {
-              break;
-            }
+          if (each.getBegin() > matched.getBegin() || each.getEnd() < matched.getEnd()) {
+            break;
           }
         }
       }

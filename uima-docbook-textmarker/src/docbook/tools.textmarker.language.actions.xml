@@ -129,7 +129,8 @@ under the License.
   <section id="ugr.tools.tm.language.actions.clear">
     <title>CLEAR</title>
     <para>
-      The CLEAR action removes all elements of the given list.
+      The CLEAR action removes all elements of the given list. If the list was initialized as it was declared, 
+      then it is reseted to its initial value.
     </para>
     <section>
       <title>
@@ -382,8 +383,7 @@ Document{->EXEC(NamedEntities)};]]></programlisting>
     <title>FILTERTYPE</title>
     <para>
       This action filters the given types of annotations. They are now
-      ignored by rules. For more informations on how rules work see
-      <xref linkend='ugr.tools.tm.language.inference' />. Expressions are not yet supported. 
+      ignored by rules. Expressions are not yet supported. 
       This action is related to RETAINTYPE (see <xref linkend='ugr.tools.tm.language.actions.retaintype' />).
     </para>
     <section>
