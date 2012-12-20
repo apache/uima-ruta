@@ -32,12 +32,14 @@ import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class MergeAction extends AbstractTextMarkerAction {
 
+  @SuppressWarnings("rawtypes")
   private List<ListExpression> lists;
 
   private BooleanExpression unionExpr;
 
   private String target;
 
+  @SuppressWarnings("rawtypes")
   public MergeAction(BooleanExpression union, String target, List<ListExpression> list) {
     super();
     this.unionExpr = union;
@@ -45,7 +47,7 @@ public class MergeAction extends AbstractTextMarkerAction {
     this.lists = list;
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
@@ -58,11 +60,13 @@ public class MergeAction extends AbstractTextMarkerAction {
     } else {
       List<Object> lastList = null;
       for (int i = 1; i < lists.size(); i++) {
+        List l2 = lists
+                .get(i).getList(element.getParent());
         if (lastList != null) {
-          lastList = ListUtils.intersection(lastList, lists.get(i).getList(element.getParent()));
+          lastList = ListUtils.intersection(lastList, l2);
         } else {
-          lastList = ListUtils.intersection(lists.get(i - 1).getList(element.getParent()), lists
-                  .get(i).getList(element.getParent()));
+          List l1 = lists.get(i - 1).getList(element.getParent());
+          lastList = ListUtils.intersection(l1, l2);
         }
       }
       list = lastList;
@@ -76,6 +80,7 @@ public class MergeAction extends AbstractTextMarkerAction {
     return unionExpr;
   }
 
+  @SuppressWarnings("rawtypes")
   public List<ListExpression> getLists() {
     return lists;
   }

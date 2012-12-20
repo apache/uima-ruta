@@ -1,0 +1,3 @@
+Peter Kluegl: TextMarker
+Marshall Schor: UIMA
+Joern Kottmann: CAS Editor

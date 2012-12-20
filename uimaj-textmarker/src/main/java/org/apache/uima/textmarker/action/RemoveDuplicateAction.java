@@ -20,11 +20,16 @@
 package org.apache.uima.textmarker.action;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
+import org.apache.uima.textmarker.TextMarkerStatement;
 import org.apache.uima.textmarker.TextMarkerStream;
+import org.apache.uima.textmarker.expression.bool.BooleanExpression;
+import org.apache.uima.textmarker.expression.number.NumberExpression;
+import org.apache.uima.textmarker.expression.string.StringExpression;
+import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
@@ -42,13 +47,35 @@ public class RemoveDuplicateAction extends AbstractTextMarkerAction {
     return var;
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "rawtypes" })
   @Override
   public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
-    List list = element.getParent().getEnvironment().getVariableValue(var, List.class);
-    Set<Object> set = new HashSet<Object>(list);
-    element.getParent().getEnvironment().setVariableValue(var, new ArrayList<Object>(set));
+    List list = element.getParent().getEnvironment().getVariableValue(var, List.class);   
+    Collection<Object> values = new HashSet<Object>();
+    List<Object> result = new ArrayList<Object>();
+    for (Object each : list) {
+      Object obj = getValue(each,element.getParent());
+      if(!values.contains(obj)){
+        result.add(each);
+        values.add(obj);
+      }
+    }
+    
+    element.getParent().getEnvironment().setVariableValue(var, result);
 
+  }
+
+  private Object getValue(Object obj, TextMarkerStatement parent) {
+    if(obj instanceof NumberExpression) {
+      return ((NumberExpression)obj).getDoubleValue(parent);
+    } else if(obj instanceof BooleanExpression) {
+      return ((BooleanExpression)obj).getBooleanValue(parent);
+    } else if(obj instanceof TypeExpression) {
+      return ((TypeExpression)obj).getType(parent);
+    } else if(obj instanceof StringExpression) {
+      return ((StringExpression)obj).getStringValue(parent);
+    }
+    return null;
   }
 }

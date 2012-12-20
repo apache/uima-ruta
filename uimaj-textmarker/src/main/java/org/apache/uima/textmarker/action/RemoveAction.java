@@ -19,11 +19,17 @@
 
 package org.apache.uima.textmarker.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.uima.textmarker.TextMarkerStatement;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.TextMarkerExpression;
+import org.apache.uima.textmarker.expression.bool.BooleanExpression;
 import org.apache.uima.textmarker.expression.list.ListExpression;
+import org.apache.uima.textmarker.expression.number.NumberExpression;
+import org.apache.uima.textmarker.expression.string.StringExpression;
+import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
@@ -48,19 +54,51 @@ public class RemoveAction extends AbstractTextMarkerAction {
     return elements;
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "rawtypes" })
   @Override
   public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
-    List list = element.getParent().getEnvironment().getVariableValue(var, List.class);
-    for (TextMarkerExpression each : elements) {
-      if (each instanceof ListExpression) {
-        ListExpression l = (ListExpression) each;
-        list.removeAll(l.getList(element.getParent()));
-      } else {
-        list.remove(each);
+    TextMarkerStatement parent = element.getParent();
+    List list = parent.getEnvironment().getVariableValue(var, List.class);
+    List<Object> toRemove = new ArrayList<Object>();
+    for (Object entry : list) {
+      Object value1 = getValue(entry, parent);
+      for (TextMarkerExpression arg : elements) {
+        if(arg instanceof ListExpression) {
+          ListExpression l = (ListExpression) arg;
+          List list2 = l.getList(parent);
+          for (Object object : list2) {
+            Object value2 = getValue(object, parent);
+            if(value1.equals(value2)) {
+              toRemove.add(entry);
+            }
+          }
+        } else {
+          Object value2 = getValue(arg, parent);
+          if(value1.equals(value2)) {
+            toRemove.add(entry);
+          }
+        }
       }
     }
+    for (Object object : toRemove) {
+      list.remove(object);
+    }
+    parent.getEnvironment().setVariableValue(var, list);
   }
 
+  private Object getValue(Object obj, TextMarkerStatement parent) {
+    if(obj instanceof NumberExpression) {
+      return ((NumberExpression)obj).getDoubleValue(parent);
+    } else if(obj instanceof BooleanExpression) {
+      return ((BooleanExpression)obj).getBooleanValue(parent);
+    } else if(obj instanceof TypeExpression) {
+      return ((TypeExpression)obj).getType(parent);
+    } else if(obj instanceof StringExpression) {
+      return ((StringExpression)obj).getStringValue(parent);
+    }
+    return null;
+  }
+  
+  
 }

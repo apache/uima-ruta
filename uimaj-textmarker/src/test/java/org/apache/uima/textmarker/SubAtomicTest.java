@@ -66,7 +66,7 @@ public class SubAtomicTest {
     
     try {
       cas = TextMarkerTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
-              + ".txt", 50, false, false, complexTypes, null, cas);
+              + ".txt", 50, false, false, complexTypes, null, null, cas);
     } catch (Exception e) {
       e.printStackTrace();
       assert (false);

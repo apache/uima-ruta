@@ -25,6 +25,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -38,6 +39,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
+import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.textmarker.engine.TextMarkerEngine;
 import org.apache.uima.util.CasCreationUtils;
@@ -47,13 +49,28 @@ import org.apache.uima.util.XMLInputSource;
 
 public class TextMarkerTestUtils {
 
+  public static class TestFeature {
+    public String name;
+
+    public String description;
+
+    public String range;
+
+    public TestFeature(String name, String description, String range) {
+      super();
+      this.name = name;
+      this.description = description;
+      this.range = range;
+    }
+  }
+
   private static final String TYPE = "org.apache.uima.T";
 
   public static CAS process(String ruleFileName, String textFileName, int amount)
           throws URISyntaxException, IOException, InvalidXMLException,
           ResourceInitializationException, AnalysisEngineProcessException,
           ResourceConfigurationException {
-    return process(ruleFileName, textFileName, amount, false, false, null, null, null);
+    return process(ruleFileName, textFileName, amount, false, false, null, null, null, null);
   }
 
   public static CAS process(String ruleFileName, String textFileName, int amount,
@@ -62,14 +79,24 @@ public class TextMarkerTestUtils {
           IOException, InvalidXMLException, ResourceInitializationException,
           AnalysisEngineProcessException, ResourceConfigurationException {
     return process(ruleFileName, textFileName, amount, dynamicAnchoring, simpleGreedyForComposed,
-            complexTypes, resourceDirName, null);
+            complexTypes, null, resourceDirName, null);
   }
 
   public static CAS process(String ruleFileName, String textFileName, int amount,
           boolean dynamicAnchoring, boolean simpleGreedyForComposed,
-          Map<String, String> complexTypes, String resourceDirName, CAS cas)
-          throws URISyntaxException, IOException, InvalidXMLException,
+          Map<String, String> complexTypes, Map<String, List<TestFeature>> features,
+          String resourceDirName) throws URISyntaxException, IOException, InvalidXMLException,
           ResourceInitializationException, AnalysisEngineProcessException,
+          ResourceConfigurationException {
+    return process(ruleFileName, textFileName, amount, dynamicAnchoring, simpleGreedyForComposed,
+            complexTypes, features, resourceDirName, null);
+  }
+
+  public static CAS process(String ruleFileName, String textFileName, int amount,
+          boolean dynamicAnchoring, boolean simpleGreedyForComposed,
+          Map<String, String> complexTypes, Map<String, List<TestFeature>> features,
+          String resourceDirName, CAS cas) throws URISyntaxException, IOException,
+          InvalidXMLException, ResourceInitializationException, AnalysisEngineProcessException,
           ResourceConfigurationException {
     URL ruleURL = TextMarkerTestUtils.class.getClassLoader().getResource(ruleFileName);
     File ruleFile = new File(ruleURL.toURI());
@@ -97,7 +124,15 @@ public class TextMarkerTestUtils {
     if (complexTypes != null) {
       Set<Entry<String, String>> entrySet = complexTypes.entrySet();
       for (Entry<String, String> entry : entrySet) {
-        basicTypeSystem.addType(entry.getKey(), "Type for Testing", entry.getValue());
+        String name = entry.getKey();
+        TypeDescription addType = basicTypeSystem.addType(name, "Type for Testing",
+                entry.getValue());
+        if (features != null) {
+          List<TestFeature> list = features.get(name);
+          for (TestFeature f : list) {
+            addType.addFeature(f.name, f.description, f.range);
+          }
+        }
       }
     }
 
@@ -122,12 +157,12 @@ public class TextMarkerTestUtils {
     }
 
     ae.reconfigure();
-    if(cas == null) {
+    if (cas == null) {
       cas = ae.newCAS();
       cas.setDocumentText(FileUtils.file2String(textFile, "UTF-8"));
     }
     ae.process(cas);
-    
+
     ae.destroy();
     return cas;
   }
