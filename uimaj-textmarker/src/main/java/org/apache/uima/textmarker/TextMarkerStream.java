@@ -22,10 +22,8 @@ package org.apache.uima.textmarker;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NavigableSet;
 import java.util.NoSuchElementException;
@@ -45,7 +43,6 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
-import org.apache.uima.textmarker.rule.RuleElementMatch;
 import org.apache.uima.textmarker.rule.RuleMatch;
 import org.apache.uima.textmarker.type.TextMarkerAnnotation;
 import org.apache.uima.textmarker.type.TextMarkerBasic;
@@ -72,8 +69,6 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
   private TreeMap<Integer, TextMarkerBasic> endAnchors;
 
   private FilterManager filter;
-
-  private Map<Integer, TextMarkerBasic> pointerMap = new HashMap<Integer, TextMarkerBasic>();
 
   private boolean dynamicAnchoring;
 
@@ -158,15 +153,25 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
         anchors.add(a.getBegin());
         anchors.add(a.getEnd());
       }
-      while (anchors.size() >= 2) {
+      if (anchors.size() == 1) {
         Integer first = anchors.pollFirst();
-        Integer second = anchors.first();
-        TextMarkerBasic newTMB = new TextMarkerBasic(getJCas(), first, second);
+        TextMarkerBasic newTMB = new TextMarkerBasic(getJCas(), first, first);
         newTMB.setLowMemoryProfile(lowMemoryProfile);
         beginAnchors.put(first, newTMB);
-        endAnchors.put(second, newTMB);
+        endAnchors.put(first, newTMB);
         basics.add(newTMB);
         cas.addFsToIndexes(newTMB);
+      } else {
+        while (anchors.size() >= 2) {
+          Integer first = anchors.pollFirst();
+          Integer second = anchors.first();
+          TextMarkerBasic newTMB = new TextMarkerBasic(getJCas(), first, second);
+          newTMB.setLowMemoryProfile(lowMemoryProfile);
+          beginAnchors.put(first, newTMB);
+          endAnchors.put(second, newTMB);
+          basics.add(newTMB);
+          cas.addFsToIndexes(newTMB);
+        }
       }
     }
     for (AnnotationFS a : allAnnotations) {
@@ -178,12 +183,12 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public void addAnnotation(AnnotationFS annotation, boolean addToIndex, RuleMatch creator) {
-    if(addToIndex) {
-        cas.addFsToIndexes(annotation);
+    if (addToIndex) {
+      cas.addFsToIndexes(annotation);
     }
     addAnnotation(annotation, creator);
-  } 
-  
+  }
+
   public void addAnnotation(AnnotationFS annotation, RuleMatch creator) {
     Type type = annotation.getType();
     boolean modified = checkSpan(annotation);
@@ -585,7 +590,6 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     }
     return basics.first();
   }
-
 
   public Type getDocumentAnnotationType() {
     return documentAnnotationType;
