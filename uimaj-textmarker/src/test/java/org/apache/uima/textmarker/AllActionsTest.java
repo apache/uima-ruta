@@ -57,7 +57,7 @@ import org.junit.runners.Suite.SuiteClasses;
     MarkTest.class, MatchedTextTest.class, MergeTest.class, RemoveDuplicateTest.class,
     RemoveTest.class, ReplaceTest.class, RetainTypeTest.class, SetFeatureTest.class,
     ShiftTest.class, TransferTest.class, TrieTest.class, TrimTest.class, UnmarkAllTest.class,
-    UnmarkTest.class, })
+    UnmarkTest.class })
 public class AllActionsTest {
 
 }

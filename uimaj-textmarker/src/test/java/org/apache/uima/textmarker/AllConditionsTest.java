@@ -33,7 +33,7 @@ import org.junit.runners.Suite.SuiteClasses;
   NotTest.class, OrTest.class, ParseTest.class,
   PartOfNEQTest.class, PartOfTest.class, PositionTest.class,
   RegExpTest.class, ScoreTest.class, SizeTest.class,
-  StartsWithTest.class, TotalCountTest.class, VoteTest.class,})
+  StartsWithTest.class, TotalCountTest.class, VoteTest.class })
 public class AllConditionsTest {
 
 }
