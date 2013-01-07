@@ -26,10 +26,11 @@
     such as type systems and analysis engines.
   </para>
   <section id="ugr.tools.tm.language.declarations.type">
-    <title>Type</title>
+    <title>Types</title>
     <para>
       Type declarations define new kinds of annotation types and
-      optionally its features.
+      optionally their features.
+    </para>
       <section>
         <title>
           <emphasis role="bold">Example:</emphasis>
@@ -41,20 +42,15 @@ DECLARE ParentType NewType (SomeType feature1, INT feature2);
   // a new type "NewType" with parent type "ParentType" and two features]]></programlisting>
         </para>
         <para>
-          Attention: Types with features need
-          a parent type in its
-          declaration. If no
-          special parent type is
-          requested, just use type
-          Annotation as
-          default parent
-          type.
+          Attention: Types with features need a parent type in their
+          declarations. If no special parent type is
+          requested, just use type Annotation as
+          default parent type.
         </para>
       </section>
-    </para>
   </section>
   <section id="ugr.tools.tm.language.declarations.variable">
-    <title>Variable</title>
+    <title>Variables</title>
     <para>
       Variable declarations define new variables. There are 12 kinds of
       variables:
@@ -74,7 +70,7 @@ DECLARE ParentType NewType (SomeType feature1, INT feature2);
         </listitem>
         <listitem>
           <para>
-            Integer variable: A variable that represents a integer.
+            Integer variable: A variable that represents an integer.
           </para>
         </listitem>
         <listitem>
@@ -133,6 +129,7 @@ DECLARE ParentType NewType (SomeType feature1, INT feature2);
           </para>
         </listitem>
       </itemizedlist>
+    </para>
       <section>
         <title>
           <emphasis role="bold">Example:</emphasis>
@@ -152,12 +149,11 @@ BOOLEAN newBooleanVariable;
 BOOLEANLIST newBooleanList;]]></programlisting>
         </para>
       </section>
-    </para>
   </section>
   <section id="ugr.tools.tm.language.declarations.ressource">
     <title>Resources</title>
     <para>
-      There are two kinds of resource declaration, that make external
+      There are two kinds of resource declarations that make external
       resources available in the TextMarker system:
       <itemizedlist mark='opencircle'>
         <listitem>
@@ -171,11 +167,12 @@ BOOLEANLIST newBooleanList;]]></programlisting>
         </listitem>
         <listitem>
           <para>
-            Table: A table represents comma separated
+            Table: A table represents a comma separated
             file.
           </para>
         </listitem>
       </itemizedlist>
+    </para>
       <section>
         <title>
           <emphasis role="bold">Example:</emphasis>
@@ -185,16 +182,15 @@ BOOLEANLIST newBooleanList;]]></programlisting>
 WORDTABLE tableName = 'someTable.csv';]]></programlisting>
         </para>
       </section>
-    </para>
   </section>
   <section id="ugr.tools.tm.language.declarations.scripts">
     <title>Scripts</title>
     <para>
       Additional scripts can be imported and reused with the CALL action.
-      The types of the imported rules are then also available, so that it
-      is
-      not necessary to import the Type System of the additional rule
+      The types of the imported rules are also available so that it
+      is not necessary to import the Type System of the additional rule
       script.
+    </para>
       <section>
         <title>
           <emphasis role="bold">Example:</emphasis>
@@ -205,12 +201,11 @@ WORDTABLE tableName = 'someTable.csv';]]></programlisting>
 Document{->CALL(AnotherScript)}; // <- rule executes "AnotherScript.tm"]]></programlisting>
         </para>
       </section>
-    </para>
   </section>
   <section id="ugr.tools.tm.language.declarations.components">
     <title>Components</title>
     <para>
-      There are two kind of UIMA components that can be imported in a
+      There are two kinds of UIMA components that can be imported in a
       TextMarker script:
       <itemizedlist mark='opencircle'>
         <listitem>
@@ -233,6 +228,7 @@ Document{->CALL(AnotherScript)}; // <- rule executes "AnotherScript.tm"]]></prog
           </para>
         </listitem>
       </itemizedlist>
+    </para>
       <section>
         <title>
           <emphasis role="bold">Example:</emphasis>
@@ -246,6 +242,5 @@ Document{->RETAINTYPE(SPACE,BREAK),CALL(ExternalEngine)};
  // calls ExternalEngine, but retains white spaces]]></programlisting>
         </para>
       </section>
-    </para>
   </section>
 </section>

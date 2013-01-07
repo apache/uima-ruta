@@ -31,8 +31,8 @@ under the License.
     <title>ADD</title>
     <para>
       The ADD action adds all the elements of the passed
-      TextMarkerExpressions to a given list. For example this expressions
-      could be a string, an integer variable or a list itself. For a
+      TextMarkerExpressions to a given list. For example, this expressions
+      could be a string, an integer variable or a list. For a
       complete overview on Textmarker expressions see
       <xref linkend='ugr.tools.tm.language.expressions' />.
     </para>
@@ -89,7 +89,7 @@ under the License.
         <programlisting><![CDATA[Document{->ASSIGN(amount, (amount/2))};]]></programlisting>
       </para>
       <para>
-        In this example, the value of the variable 'amount' is halved.
+        In this example, the value of the variable 'amount' is divided in half.
       </para>
     </section>
   </section>
@@ -98,7 +98,7 @@ under the License.
     <title>CALL</title>
     <para>
       The CALL action initiates the execution of a different script
-      file or script block. Currently only complete script files are
+      file or script block. Currently, only complete script files are
       supported.
     </para>
     <section>
@@ -130,7 +130,7 @@ under the License.
     <title>CLEAR</title>
     <para>
       The CLEAR action removes all elements of the given list. If the list was initialized as it was declared, 
-      then it is reseted to its initial value.
+      then it is reset to its initial value.
     </para>
     <section>
       <title>
@@ -157,15 +157,12 @@ under the License.
     <title>COLOR</title>
     <para>
       The COLOR action sets the color of an annotation type in the
-      modified view if the rule is fired. The background color is passed as
+      modified view, if the rule has fired. The background color is passed as
       the second parameter. The font color can be changed by passing a
-      further color as third parameter. By default annotations are not
-      automatically selected when opening the modified view. This can be
-      changed for the matched annotations by passing true as fourth
-      parameter. By default The supported colors are: black, silver, gray,
+      further color as a third parameter. The supported colors are: black, silver, gray,
       white, maroon, red, purple, fuchsia, green, lime, olive, yellow,
       navy, blue, aqua, lightblue, lightgreen, orange, pink, salmon, cyan,
-      violet, tan, brown, white, mediumpurple.
+      violet, tan, brown, white and mediumpurple.
     </para>
     <section>
       <title>
@@ -185,7 +182,7 @@ under the License.
       </para>
       <para>
         This rule colors all Headline annotations in the modified view.
-        Thereby background color is set to red, font color is set to green
+        Thereby, the background color is set to red, font color is set to green
         and all 'Headline' annotations are selected when opening the
         modified view.
       </para>
@@ -252,7 +249,7 @@ Document{->CONFIGURE(HtmlAnnotator, "onlyContent" = false)};]]></programlisting>
         This rule counts the number of tokens of type ANY in a
         Paragraph annotation and assigns the counted value to the int
         variable 'cnt'. If the counted number is between 0 and 10000, a
-        Headline annotation is created for this Paragraph. Moreover the
+        Headline annotation is created for this Paragraph. Moreover, the
         feature named 'size' of Headline is set to the value of 'cnt'.
       </para>
     </section>
@@ -311,7 +308,7 @@ Document{->CONFIGURE(HtmlAnnotator, "onlyContent" = false)};]]></programlisting>
         <programlisting><![CDATA[Document{->DYNAMICANCHORING(true)};]]></programlisting>
       </para>
       <para>
-        The above example activates dynamic anchoring.
+        The above mentioned example activates dynamic anchoring.
       </para>
     </section>
   </section>
@@ -320,10 +317,10 @@ Document{->CONFIGURE(HtmlAnnotator, "onlyContent" = false)};]]></programlisting>
     <title>EXEC</title>
     <para>
       The EXEC action initiates the execution of a different script
-      file or analysis engine on the complete input document independent of
+      file or analysis engine on the complete input document, independent from
       the matched text and the current filtering settings. If the argument
       refers to another script file, a new view on the document is created:
-      the complete text of the original CAS and with the default filtering
+      the complete text of the original CAS with the default filtering
       settings of the TextMarker analysis engine.
     </para>
     <section>
@@ -372,7 +369,7 @@ Document{->EXEC(NamedEntities)};]]></programlisting>
       </para>
       <para>
         Here, the number of tokens within an Headline annotation is
-        counted an stored in variable 'tokenCount'. If the number of tokens
+        counted and stored in variable 'tokenCount'. If the number of tokens
         is within the interval [0;10000], the FILL action fills the
         Headline's feature 'size' with the value of 'tokenCount'.
       </para>
@@ -403,7 +400,7 @@ Document{->EXEC(NamedEntities)};]]></programlisting>
       </para>
       <para>
         This rule filters all small written words in the input
-        document. This means they are further ignored by any rules.
+        document. They are further ignored by every rule.
       </para>
     </section>
   </section>
@@ -411,7 +408,7 @@ Document{->EXEC(NamedEntities)};]]></programlisting>
   <section id="ugr.tools.tm.language.actions.gather">
     <title>GATHER</title>
     <para>
-      This action creates a complex structure, a annotation with
+      This action creates a complex structure: an annotation with
       features. The optionally passed indexes (NumberExpressions after the
       TypeExpression) can be used to create an annotation that spanns the
       matched information of several rule elements. The features are
@@ -583,7 +580,7 @@ A B{-> GATHER(C, 1, 2, "a" = 1, "b" = 2)};]]></programlisting>
   <section id="ugr.tools.tm.language.actions.log">
     <title>LOG</title>
     <para>
-      The LOG action simply writes a log message.
+      The LOG action writes a log message.
     </para>
     <section>
       <title>
@@ -644,19 +641,19 @@ A B{-> GATHER(C, 1, 2, "a" = 1, "b" = 2)};]]></programlisting>
     <title>MARKFAST</title>
     <para>
       The MARKFAST action creates annotations of the given type (first
-      parameter) if an element of the passed list (second parameter) occurs
-      within the window of the matched annotation. Thereby the created
-      annotation doesn't cover the whole matched annotation. Instead it
+      parameter), if an element of the passed list (second parameter) occurs
+      within the window of the matched annotation. Thereby, the created
+      annotation does not cover the whole matched annotation. Instead, it
       only covers the text of the found occurence. The third parameter is
-      optional. It defines if the MARKFAST action should ignore the case,
+      optional. It defines, whether the MARKFAST action should ignore the case,
       whereby its default value is false. The optional fourth parameter
       specifies a character threshold for the ignorence of the case. It is
-      only relevant if the ignore-case value is set to true. The last
+      only relevant, if the ignore-case value is set to true. The last
       parameter is set to true by default and specifies whether whitespaces
       in the entries of the dictionary should be ignored. For more
       information on lists see
-      <xref linkend='ugr.tools.tm.language.declarations.ressource' />
-      . Additionally to external word lists, string lists variables can be
+      <xref linkend='ugr.tools.tm.language.declarations.ressource' />. 
+      Additionally to external word lists, string lists variables can be
       used.
     </para>
     <section>
@@ -681,7 +678,7 @@ Document{-> MARKFAST(FirstName, FirstNameList, true, 2)};]]></programlisting>
       </para>
       <para>
         This rule annotates all first names listed in the list
-        'FirstNameList' within the document and ignores the case if the
+        'FirstNameList' within the document and ignores the case, if the
         length of the word
         is greater than 2.
       </para>
@@ -720,7 +717,7 @@ Document{-> MARKFAST(FirstName, FirstNameList, true, 2)};]]></programlisting>
     <title>MARKONCE</title>
     <para>
       The MARKONCE action has the same functionality as the MARK
-      action, but creates a new annotation only if it does not yet exist.
+      action, but creates a new annotation only, if it is not yet existing.
     </para>
     <section>
       <title>
@@ -739,7 +736,7 @@ Document{-> MARKFAST(FirstName, FirstNameList, true, 2)};]]></programlisting>
       </para>
       <para>
         This rule matches on a free line followed by a Paragraph and
-        annotates both in a single ParagraphAfterFreeline annotation if it
+        annotates both in a single ParagraphAfterFreeline annotation, if it
         is not already annotated with ParagraphAfterFreeline annotation. The
         two numerical expressions at the end of the MARKONCE action state
         that the matched text of the first and the second rule elements are
@@ -752,10 +749,10 @@ Document{-> MARKFAST(FirstName, FirstNameList, true, 2)};]]></programlisting>
     <title>MARKSCORE</title>
     <para>
       The MARKSCORE action is similar to the MARK action. It also creates a
-      new annotation of the given type, but only if it does not yet exist.
+      new annotation of the given type, but only if it is not yet existing.
       The optionally passed indexes (parameters after the TypeExpression)
       can be used to create an annotation that spanns the matched
-      information of several rule elements. Additionally a score value
+      information of several rule elements. Additionally, a score value
       (first parameter) is added to the heuristic score value of the
       annotation. For more information on heuristic scores see
       <xref linkend='ugr.tools.tm.language.score' />
@@ -781,7 +778,7 @@ Document{-> MARKFAST(FirstName, FirstNameList, true, 2)};]]></programlisting>
         annotates both in a single ParagraphAfterFreeline annotation. The
         two number expressions at the end of the mark action indicate that
         the matched text of the first and the second rule elements are
-        joined to create the boundaries of the new annotation. Additionally
+        joined to create the boundaries of the new annotation. Additionally,
         the score '10' is added to the heuristic threshold of this
         annotation.
       </para>
@@ -792,15 +789,15 @@ Document{-> MARKFAST(FirstName, FirstNameList, true, 2)};]]></programlisting>
     <title>MARKTABLE</title>
     <para>
       The MARKTABLE action creates annotations of the given type (first
-      parameter) if an element of the given column (second parameter) of a
+      parameter), if an element of the given column (second parameter) of a
       passed table (third parameter) occures within the window of the
-      matched annotation. Thereby the created annotation doesn't cover the
-      whole matched annotation. Instead it only covers the text of the
+      matched annotation. Thereby, the created annotation does not cover the
+      whole matched annotation. Instead, it only covers the text of the
       found occurence. Optionally the MARKTABLE action is able to assign
       entries of the given table to features of the created annotation.
       For
       more information on tables see
-      <xref linkend='ugr.tools.tm.language.declarations.ressource' />. Additionally several configuration parameters are possible. (See example.)
+      <xref linkend='ugr.tools.tm.language.declarations.ressource' />. Additionally, several configuration parameters are possible. (See example.)
     </para>
     <section>
       <title>
@@ -826,11 +823,11 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
       <para>
         In this example, the whole document is searched for all
         occurences of the entries of the first column of the given table
-        'TestTable'. For each occurence an annotation of the type Struct is
+        'TestTable'. For each occurence, an annotation of the type Struct is
         created and its feature 'first' is filled with the entry of the
-        second column. Moreover the case of the word is ignored if the
-        length of the word exceeds 4. Additionally the chars '.', ',' and
-        '-' are ignored, but at maximum two of them.
+        second column. Moreover, the case of the word is ignored if the
+        length of the word exceeds 4. Additionally, the chars '.', ',' and
+        '-' are ignored, but maximally two of them.
       </para>
     </section>
   </section>
@@ -869,7 +866,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
     <title>MERGE</title>
     <para>
       The MERGE action merges a number of given lists. The first
-      parameter defines if the merge is done as intersection (false) or as
+      parameter defines, if the merge is done as intersection (false) or as
       union (true). The second parameter is the list variable that will
       contain the result.
     </para>
@@ -899,7 +896,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
     <title>REMOVE</title>
     <para>
       The REMOVE action removes lists or single values from a given
-      list
+      list.
     </para>
     <section>
       <title>
@@ -944,7 +941,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
         <programlisting><![CDATA[Document{->REMOVEDUPLICATE(list)};]]></programlisting>
       </para>
       <para>
-        Here, all duplicates in list 'list' are removed.
+        Here, all duplicates within the list 'list' are removed.
       </para>
     </section>
   </section>
@@ -1002,7 +999,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
         <programlisting><![CDATA[Document{->RETAINTYPE(SPACE)};]]></programlisting>
       </para>
       <para>
-        All spaces are retained and can be matched by rules.
+        Here, all spaces are retained and can be matched by rules.
       </para>
     </section>
   </section>
@@ -1040,7 +1037,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
       <title>SHIFT</title>
       <para>
         The SHIFT action can be used to change the offsets of an annotation. The optional number expression,
-        which point the the rule elements of the rule, specify the new offsets of the annotation.
+        which points the the rule elements of the rule, specify the new offsets of the annotation.
       </para>
       <section>
         <title>
@@ -1086,7 +1083,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
         <programlisting><![CDATA[Document{->TRANSFER(LanguageStorage)};]]></programlisting>
       </para>
       <para>
-        Here, a new feature structure LanguageStorage is created and
+        Here, a new feature structure <quote>LanguageStorage</quote> is created and
         the compatible features of the Document annotation are copied. E.g.,
         if LanguageStorage defined a feature named 'language', then the
         feature value of the Document annotation is copied.
@@ -1124,7 +1121,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
         words previously contained in the file 'FirstNames.txt' are
         annotated with the type FirstName and the words in the file
         'Companies.txt' with the type Company. The case of the word is
-        ignored if the length of the word exceeds 4. The edit distance is
+        ignored, if the length of the word exceeds 4. The edit distance is
         deactivated. The cost of an edit operation can currently not be
         configured by an argument. The last argument additionally defines
         several chars that will be ignored.
@@ -1155,7 +1152,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
         <programlisting><![CDATA[Keyword{-> TRIM(SPACE)};]]></programlisting>
       </para>
       <para>
-        This rule removes all spaces in at the beginning and at the end of Keyword annotations and
+        This rule removes all spaces at the beginning and at the end of Keyword annotations and
         thus changes the offsets of the matched annotations.
       </para>
     </section>
@@ -1168,7 +1165,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
       overlapping the matched annotation. There are two additional configurations: If additional
       indexes are given, then the span of the specified rule elements are applied, similar the the MARK action.
       If instead a boolean is given as an additional argument, then all annotations of the given type are removed
-      that start at the macthed position.
+      that start at the matched position.
     </para>
     <section>
       <title>
@@ -1188,19 +1185,19 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
         <programlisting><![CDATA[Headline{->UNMARK(Headline)};]]></programlisting>
       </para>
       <para>
-        Here, the headline annotation is removed.
+        Here, the Headline annotation is removed.
       </para>
       <para>
         <programlisting><![CDATA[CW ANY+? QUESTION{->UNMARK(Headline,1,3)};]]></programlisting>
       </para>
       <para>
-        Here, all headline annotations are removed that start with a capitalized word and end with a question mark.
+        Here, all Headline annotations are removed that start with a capitalized word and end with a question mark.
       </para>
       <para>
         <programlisting><![CDATA[CW{->UNMARK(Headline,true)};]]></programlisting>
       </para>
       <para>
-        Here, all headline annotations are removed that start with a capitalized word.
+        Here, all Headline annotations are removed that start with a capitalized word.
       </para>
     </section>
   </section>
@@ -1228,7 +1225,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
         <programlisting><![CDATA[Annotation{->UNMARKALL(Annotation, {Headline})};]]></programlisting>
       </para>
       <para>
-        Here, all annotations but headlines are removed.
+        Here, all annotations except from headlines are removed.
       </para>
       
     </section>

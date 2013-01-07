@@ -24,8 +24,8 @@
     <title>* Star Greedy</title>
     <para>
       The Star Greedy quantifier matches on any amount of annotations and
-      evaluates always true. Please mind, that a rule element with a Star
-      Greedy quantifier needs to match on different annotations than the
+      evaluates always true. Please mind that a rule element with a Star
+      Greedy quantifier needs to match on different annotations as the
       next rule element.
 
       Examples:
@@ -57,7 +57,7 @@ Matched:  Big]]></programlisting>
     <para>
       The Plus Greedy quantifier needs to match on at least one
       annotation.
-      Please mind, that a rule element after a rule element
+      Please mind that a rule element after a rule element
       with a Plus
       Greedy quantifier matches and evaluates on different
       conditions.
@@ -101,8 +101,8 @@ Matched:  small Big small]]></programlisting>
     <title>?? Question Reluctant</title>
     <para>
       The Question Reluctant quantifier matches optionally on an
-      annotation
-      if the next rule element can not match on the same
+      annotation,
+      if the next rule element does not match on the same
       annotation and
       therefore always evaluates true.
 
@@ -129,11 +129,8 @@ Matched:  small Big small]]></programlisting>
     <para>
       The Min Max Greedy quantifier has to match at least x and at most y
       annotations of its rule element to evaluate true, but stops to
-      match
-      on additional annotations if the next rule element is able to
-      match
-      on
-      this annotation.
+      match on additional annotations, if the next rule element is able to
+      match on this annotation.
 
       Examples:
       <programlisting><![CDATA[Input:    123 456 small Big Big Big small Big 

@@ -20,7 +20,7 @@
   <title>Expressions</title>
   <para>
     TextMarker provides five different kinds of expressions. These are
-    type expressions, number expressions, string expressions and
+    type expressions, number expressions, string expressions,
     boolean expressions and list expressions.
   </para>
   <para>
@@ -43,7 +43,7 @@
           Type variables
           (see
           <xref linkend='ugr.tools.tm.language.declarations.variable' />
-          )
+          ).
         </listitem>
       </orderedlist>
       <section>
@@ -211,7 +211,7 @@ BooleanLiteral    ->  "true" | "false"]]></programlisting>
           <programlisting><![CDATA[Document{->ASSIGN(boolVar, typeVar == Author)};]]></programlisting>
         </para>
         <para>
-          If type variable typeVar represents annotation type Author,
+          If the type variable typeVar represents annotation type Author,
           the
           boolean
           type expression evaluates to true, otherwise it evaluates

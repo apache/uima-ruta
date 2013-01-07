@@ -82,7 +82,7 @@ BasicAnnotationType ->  ('COLON'| 'SW' | 'MARKUP' | 'PERIOD' | 'CW'| 'NUM'
 BlockDeclaration    -> "BLOCK" "(" Identifier ")" RuleElementWithCA
                                                        "{" Statements "}"]]></programlisting>
 
-    Syntax of statements and rule elements
+    Syntax of statements and rule elements:
     <programlisting><![CDATA[SimpleStatement        -> RuleElements ";"
 RuleElements           -> RuleElement+
 RuleElement            -> RuleElementType | RuleElementLiteral
@@ -105,15 +105,15 @@ Conditions             -> Condition ( "," Condition )*
 Actions                -> "->" Action ( "," Action)*
 ]]></programlisting>
     Since each condition and each action has its own syntax, conditions
-    and actions are described in their own section. (For conditions see
+    and actions are described in their own section. For conditions see
     <xref linkend='ugr.tools.tm.language.conditions' />
     , for actions see
-    <xref linkend='ugr.tools.tm.language.actions' />
+    <xref linkend='ugr.tools.tm.language.actions' />.
     The syntax of expressions is explained in
-    <xref linkend='ugr.tools.tm.language.expressions' />
+    <xref linkend='ugr.tools.tm.language.expressions' />.
   </para>
   <para>
-    Identifier
+    Identifier:
     <programlisting><![CDATA[DottedIdentifier    ->  Identifier ("." Identifier)*
 DottedIdentifier2   ->  Identifier (("."|"-") Identifier)*
 Identifier          ->  letter (letter|digit)*

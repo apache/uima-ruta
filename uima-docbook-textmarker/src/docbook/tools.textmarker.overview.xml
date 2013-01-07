@@ -32,12 +32,12 @@ under the License.
     <title>What is TextMarker?</title>
     <para>
       Apache UIMA&#8482; TextMarker is a rule-based script language supported by Eclipse-based tooling.
-      The language is designed to enable rapid development of text processing applications within UIMA 
-      and a special focus lies on the intuitive and flexible domain specific language for defining 
+      The language is designed to enable rapid development of text processing applications within UIMA. 
+      A special focus lies on the intuitive and flexible domain specific language for defining 
       patterns of annotations. Writing rules for information extraction or other text processing 
       applications is a tedious process. The Eclipse-based tooling for TextMarker, called the TextMarker Workbench,
-      was created to support the user and to facilitate every step when writing TextMarker rules.
-      The TextMarker rule language and the TextMarker Workbench integrate both smoothly with Apache UIMA.
+      was created to support the user and to facilitate every step when writing TextMarker rules. Both the 
+      TextMarker rule language and the TextMarker Workbench integrate smoothly with Apache UIMA.
     </para>
   </section>
   
@@ -45,27 +45,28 @@ under the License.
     <title>Getting started</title>
     <para>
       This section gives a short roadmap how to read the documentation and gives some recommendations how to 
-      start developing TextMarker-based applications. This documentation assumes that the user knows about 
-      the core concepts of Apache UIMA. Knowledge about the meaning and usage of at least the terms <quote>CAS</quote>, 
+      start developing TextMarker-based applications. This documentation assumes that the reader knows about 
+      the core concepts of Apache UIMA. Knowledge of the meaning and usage of the terms <quote>CAS</quote>, 
       <quote>Feature Structure</quote>, <quote>Annotation</quote>, <quote>Type</quote>, <quote>Type System</quote> 
       and <quote>Analysis Engine</quote> is required. Please refer to the documentation of Apache UIMA for an introduction.
     </para>
     <para>  
       Unexperienced users that want to learn about TextMarker can start with the next two sections: 
       <xref linkend="ugr.tools.tm.overview.coreconcepts"/>
-      gives a short overview about the core ideas and features of the TextMarker language and Workbench. 
+      gives a short overview of the core ideas and features of the TextMarker language and Workbench. 
       This section introduces the main concepts of the TextMarker language. It explains how TextMarker rules 
       are composed and applied, and discusses the advantages of the TextMarker system.
       The following <xref linkend="ugr.tools.tm.overview.examples"/> approaches the TextMarker language using a different
-      perspective. Here, the language is introduced only with examples. The first example starts with explaining how a simple rule
+      perspective. Here, the language is introduced by examples. The first example starts with explaining how a simple rule
       looks like, and each following example extends the syntax or semantics of the TextMarker language. 
-      After the consultation of these two sections, the reader should know enough to start writing her first TextMarker-based application.
+      After the consultation of these two sections, the reader is expected to have gained enough 
+      knowledge to start writing her first TextMarker-based application.
     </para>  
     <para>
       The TextMarker Workbench was created to support the user and to facilitate the development process. It is strongly recommended to 
       use this Eclipse-based IDE since it, for example, automatically configures the component descriptors and provides editing support like
       syntax checking. <xref linkend="section.ugr.tools.tm.workbench.install"/> describes how the TextMarker Workbench is installed.
-      TextMarker rules can of course also be applied on CAS without using the TextMarker Workbench. 
+      TextMarker rules can also be applied on CAS without using the TextMarker Workbench. 
       <xref linkend="ugr.tools.tm.ae.basic.apply"/> contains examples how to execute TextMarker rules in plain java.
       A good way to get started with TextMarker is to play around with an exemplary TextMarker project, e.g., 
       <uri>https://svn.apache.org/repos/asf/uima/sandbox/TextMarker/trunk/example-projects/ExampleProject</uri>. This TextMarker project 
@@ -73,7 +74,7 @@ under the License.
     </para>  
     <para>    
       <xref linkend="ugr.tools.tm.language.language"/> and <xref linkend="ugr.tools.tm.workbench"/> provide 
-      more detailed descriptions and can be referred to in order to gain knowledge about specific parts 
+      more detailed descriptions and can be referred to in order to gain knowledge of specific parts 
       of the TextMarker language or the TextMarker Workbench.    
     </para>  
   </section>
@@ -87,55 +88,55 @@ under the License.
       A matching condition, an optional quantifier, a list of conditions and a list of actions.
       The matching condition is typically a type of an annotation by which the rule element matches on the covered text of one of those annotations.
       The quantifier specifies, whether it is necessary that the rule element successfully matches and how often the rule element may match.
-      The list of conditions specify additional constraints that the matched text or annotations need to fulfill. The list of actions defines
-      the consequences of the rule and often create new annotations or modify existing annotations. 
+      The list of conditions specifies additional constraints that the matched text or annotations need to fulfill. The list of actions defines
+      the consequences of the rule and often creates new annotations or modifies existing annotations. 
       They are only applied if all rule elements of the rule have successfully matched. Examples for TextMarker rules can be found in 
       <xref linkend="ugr.tools.tm.overview.examples"/>.
     </para>
     <para>
       When TextMarker rules are applied on a document, respectively on a CAS, then they are always grouped in a script file. However, a TextMarker
-      script file contains not only rules, but also other statements. First of all, each script file starts with a package declaration followed by
+      script file does not only contain rules, but also other statements. First of all, each script file starts with a package declaration followed by
       a list of optional imports. Then, common statements like rules, type declarations or blocks build the body and functionality of a script.
       <xref linkend="ugr.tools.tm.ae.basic.apply"/> gives an example, how TextMarker scripts can be applied in plain Java.
       TextMarker script files are naturally organized in TextMarker projects, which is a concept of the TextMarker Workbench. 
       The structure of a TextMarker project is described in <xref linkend="section.ugr.tools.tm.workbench.projects"/>
     </para>
     <para>
-      The inference of TextMarker rules, that is the approach how the rules are applied, can be described as imperative, depth-first matching.
+      The inference of TextMarker rules, that is the approach how the rules are applied, can be described as imperative depth-first matching.
       In contrast to similar rule-based systems, TextMarker rules are applied in the order they are defined in the script.
       The imperative execution of the matching rules may have disadvantages, but also many advantages like an increased rate of development or 
       an easier explanation. The second main property of the TextMarker inference is the depth-first matching. When a rule matches on a pattern of annotations, then
-      an alternative is always tracked until it has matched or failed before the next alternative is considered. Therefore, the behavior of a rule may change, if 
-      it has already matched on a early alternative and thus performed an action, which influences some constraints of the rule.
+      an alternative is always tracked until it has matched or failed before the next alternative is considered. The behavior of a rule may change, if 
+      it has already matched on an early alternative and thus has performed an action, which influences some constraints of the rule.
       Examples, how TextMarker rules are applied, are given in <xref linkend="ugr.tools.tm.overview.examples"/>.
     </para>
     <para>
       The TextMarker language provides the possibility to approach an annotation problem in different ways. Let us distinguish 
       some approaches as an example.
       It is common in the TextMarker language to create many annotations of different types. These annotations are probably not the targeted annotation of the domain,
-      but can be helpful to incrementally approximate that interesting annotation. This enables the user to work <quote>bottom-up</quote> and <quote>top-down</quote>.
-      In the former approach, the rules add incrementally more complex annotations using simple ones until the target annotation could be created.
-      In the latter approach, the rules get more and more specific while partitioning the document in smaller segments, which result in the targeted annotation in the end.
-      By using many <quote>helper</quote>-annotations the engineering task becomes easier and more comprehensive.
+      but can be helpful to incrementally approximate the annotation of interest. This enables the user to work <quote>bottom-up</quote> and <quote>top-down</quote>.
+      In the former approach, the rules add incrementally more complex annotations using simple ones until the target annotation can be created.
+      In the latter approach, the rules get more specific while partitioning the document in smaller segments, which result in the targeted annotation, eventually.
+      By using many <quote>helper</quote>-annotations, the engineering task becomes easier and more comprehensive.
       The TextMarker language provides distinctive language elements for different tasks. There are, for example, actions 
       that are able to create new annotations, actions that are able to remove annotations and actions that are able to modify the
-      offsets of an annotation. This enables - amongst other things - an transformation-based approach. The user starts by creating general rules that are able to
-      annotate most of the interesting text fragments. Then, instead of making these rules more complex by adding more conditions for situations where they fail,
+      offsets of annotations. This enables, amongst other things, a transformation-based approach. The user starts by creating general rules that are able to
+      annotate most of the text fragments of interest. Then, instead of making these rules more complex by adding more conditions for situations where they fail,
       additional rules are defined that correct the mistakes of the general rules, e.g., by deleting false positive annotations.
       <xref linkend="ugr.tools.tm.overview.examples"/> provides some examples how TextMarker rules can be engineered.
     </para>
     <para>
-      Manually writing rules is a tedious and error-prone process. The <link linkend="ugr.tools.tm.workbench">TextMarker Workbench</link>
-      was developed for facilitate writing rules by providing as much tooling support as possible. This includes, for example, syntax checking and auto completion, which
+      To write rules manually is a tedious and error-prone process. The <link linkend="ugr.tools.tm.workbench">TextMarker Workbench</link>
+      was developed to facilitate writing rules by providing as much tooling support as possible. This includes, for example, syntax checking and auto completion, which
       make the development less error-prone. The user can annotate documents and use these documents as unit tests for test-driven development or 
-      quality maintenance. Sometimes, it is necessary to debug the rules because they did not match as expected. For this use case, the explanation perspective provides views
+      quality maintenance. Sometimes, it is necessary to debug the rules because they do not match as expected. In this case, the explanation perspective provides views
       that explain every detail of the matching process. Finally, the TextMarker language can also be used by the tooling, for example, by the <quote>Query</quote> view.
-      Here, the user can use TextMarker rules as query statements in order to investigate annotated documents.
+      Here, TextMarker rules can be used as query statements in order to investigate annotated documents.
     </para>
     <para>
       TextMarker smoothly integrates with Apache UIMA. First of all, the TextMarker rules are applied using a generic Analysis Engine and thus TextMarker scripts can 
-      easily added to Apache UIMA pipelines. TextMarker also provides the functionality to import and use other UIMA components like Analysis Engines and Type Systems.
-      TextMarker rules can refer to every type defined in an imported type system and the TextMarker Workbench generates a type system descriptor file containing all 
+      easily be added to Apache UIMA pipelines. TextMarker also provides the functionality to import and use other UIMA components like Analysis Engines and Type Systems.
+      TextMarker rules can refer to every type defined in an imported type system, and the TextMarker Workbench generates a type system descriptor file containing all 
       types that were defined in a script file. Any Analysis Engine can be executed by rules as long as their implementation is available in the classpath. Therefore,
       functionality outsourced in an arbitrary Analysis Engine can be added and used within TextMarker.
     </para>
@@ -144,11 +145,11 @@ under the License.
   <section id="ugr.tools.tm.overview.examples">
     <title>Learning by Example</title>
     <para>
-      This section gives a short introduction to the TextMarker language by explaining the rule syntax 
+      This section gives an introduction to the TextMarker language by explaining the rule syntax 
       and inference with some simplified examples. It is recommended to use the TextMarker Workbench to write TextMarker rules
-      in order to gain the advantages like syntax checking. A short description how to install the TextMarker Workbench 
+      in order to gain advantages like syntax checking. A short description how to install the TextMarker Workbench 
       is given <link linkend="section.ugr.tools.tm.workbench.install">here</link>. The following examples make use of the 
-      annotations added by the default seeding of the TextMarker Analysis Engine. There meaning is explained along with the examples. 
+      annotations added by the default seeding of the TextMarker Analysis Engine. Their meaning is explained along with the examples. 
     </para>
     <note><para>
       The examples in this section are not valid script files as they are missing at least a package declaration. 
@@ -156,7 +157,7 @@ under the License.
       that a package declaration like <quote>PACKAGE uima.textmarker.example;</quote> is added in the first line of the script.
     </para></note>
     <para>
-      The first example consists of a declaration of a type followed by a simple rule. Type declaration always starts with the keyword 
+      The first example consists of a declaration of a type followed by a simple rule. Type declarations always start with the keyword 
       <quote>DECLARE</quote> followed by the short name of the new type. The namespace of the type is equal to the package declaration of the script file.
       There is also the possibility to create more complex types with features or specific parent types, but this will be neglected for now.
       In the example, a simple annotation type with the short name <quote>Animal</quote> is defined.
@@ -171,7 +172,7 @@ under the License.
 W{REGEXP("dog") -> MARK(Animal)};]]></programlisting>
 
     <para>
-      The rule element also contains one condition and one action, both surrounded by curly parentheses. In order to distinguish conditions from actions,
+      The rule element also contains one condition and one action, both surrounded by curly parentheses. In order to distinguish conditions from actions
       they are separated by <quote>-></quote>. The condition <quote>REGEXP("dog")</quote> indicates that the matched 
       word must match the regular expression <quote>dog</quote>. If the matching condition and the additional regular expression are fulfilled, then the action
       is executed, which creates a new annotation of the type <quote>Animal</quote> with the same offsets as the matched token.
@@ -180,7 +181,7 @@ W{REGEXP("dog") -> MARK(Animal)};]]></programlisting>
     </para>
 
     <para>
-      Since it is tedious to create Animal annotation by matching on different regular expression, we apply an external dictionary in the next example.
+      Since it is tedious to create Animal annotations by matching on different regular expression, we apply an external dictionary in the next example.
       The first line defines a word list named <quote>AnimalsList</quote>, which is located in the resource folder (the file <quote>Animals.txt</quote> 
       contains one animal name in each line). After the declaration of the type, a rule uses this word list to find all occurrences of animals
       in the complete document.
@@ -193,13 +194,13 @@ Document{-> MARKFAST(Animal, AnimalsList)};
     
     <para>
       The matching condition of the rule element refers to the complete document, or more specific to the annotation of the type 
-      <quote>DocumentAnnotation</quote> which covers the whole document.
-      The action <quote>MARKFAST</quote> of this rule element then creates an annotation of the type <quote>Animal</quote> for each found
+      <quote>DocumentAnnotation</quote>, which covers the whole document.
+      The action <quote>MARKFAST</quote> of this rule element creates an annotation of the type <quote>Animal</quote> for each found
       entry of the dictionary <quote>AnimalsList</quote>.
     </para>
     
     <para>
-      The next example introduces rules with more than one rule element, whereby one of them is a composed rule element. The goal of the following rule tries to
+      The next example introduces rules with more than one rule element, whereby one of them is a composed rule element. The following rule tries to
       annotate occurrences of animals separated by commas, e.g., <quote>dog, cat, bird</quote>. 
     </para>
     
@@ -207,25 +208,25 @@ Document{-> MARKFAST(Animal, AnimalsList)};
 (Animal COMMA)+{-> MARK(AnimalEnum,1,2)} Animal;]]></programlisting>
     
     <para>
-      The rule consists of two rule elements, <quote>(Animal COMMA)+{-> MARK(AnimalEnum,1,2)}</quote> being the first rule element and 
-      <quote>Animal</quote> the second one. Lets take a closer look at the first rule element. This rule element is actually composed of two normal rule elements, 
-      that are <quote>Animal</quote> and <quote>COMMA</quote>, and contains a greedy quantifier and one action. Therefore, this rule element matches on 
-      one Animal annotation and a following comma. This is repeated until one of the inner rule elements do not match anymore. Then, there has to be
+      The rule consists of two rule elements, with <quote>(Animal COMMA)+{-> MARK(AnimalEnum,1,2)}</quote> being the first rule element and 
+      <quote>Animal</quote> the second one. Let us take a closer look at the first rule element. This rule element is actually composed of two normal rule elements, 
+      that are <quote>Animal</quote> and <quote>COMMA</quote>, and contains a greedy quantifier and one action. This rule element, therefore, matches on 
+      one Animal annotation and a following comma. This is repeated until one of the inner rule elements does not match anymore. Then, there has to be
       another Animal annotation afterwards, specified by the second rule element of the rule. In this case, the rule matches and its action is executed:
       The MARK action creates a new annotation of the type <quote>AnimalEnum</quote>. However, in contrast to the previous examples, this action also
-      contains two number. Those numbers refer to the rule elements, that should be used to calculate the span of the created annotation. The numbers 
+      contains two numbers. These numbers refer to the rule elements that should be used to calculate the span of the created annotation. The numbers 
       <quote>1, 2</quote> state that the new annotation should start with the first rule element, the composed one, and should end with the second rule element.
     </para>
 
     <para>
-      Lets make the composed rule element a bit more complex. The following rule also matches on lists of animals, which are
-      separated by semicolon. Therefore, a disjunctive rule element is added, indicated by the symbol <quote>|</quote>, which matches on
+      Let us make the composed rule element more complex. The following rule also matches on lists of animals, which are
+      separated by semicolon. A disjunctive rule element is therefore added, indicated by the symbol <quote>|</quote>, which matches on
       annotations of the type <quote>COMMA</quote> or <quote>SEMICOLON</quote>.
     </para>
     <programlisting><![CDATA[(Animal (COMMA | SEMICOLON))+{-> MARK(AnimalEnum,1,2)} Animal;]]></programlisting>
 
     <para>
-      Rule elements can of course contain more then one condition. The rule in the next example tries to identify headlines, which are bold, 
+      Rule elements can contain more then one condition. The rule in the next example tries to identify headlines, which are bold, 
       underlined and end with a colon.
     </para>
 
@@ -238,16 +239,16 @@ Paragraph{CONTAINS(Bold, 90, 100, true),
       The matching condition of this rule element is given with the type <quote>Paragraph</quote>, thus the rule takes a look at all Paragraph annotations.
       The rule matches only if the three conditions, separated by commas, are fulfilled. The first condition <quote>CONTAINS(Bold, 90, 100, true)</quote> states that
       90%-100% of the matched paragraph annotation should also be annotated with annotations of the type <quote>Bold</quote>. The boolean parameter <quote>true</quote>
-      indicates that amount of Bold annotations should be calculated relatively to the matched annotation. Therefore, the two numbers <quote>90,100</quote> are interpreted as
+      indicates that amount of Bold annotations should be calculated relatively to the matched annotation. The two numbers <quote>90,100</quote> are, therefore, interpreted as
       percent amounts. The exact calculation of the coverage is dependent on the tokenization of the document and is neglected for now. The second condition 
       <quote>CONTAINS(Underlined, 90, 100, true)</quote> consequently states that the paragraph should also contain at least 90% of annotations of the type <quote>underlined</quote>.
       The third condition <quote>ENDSWITH(COLON)</quote> finally forces the Paragraph annotation to end with a colon. It is only fulfilled, if there is an annotation of the type
-      <quote>COLON</quote>, whose end offset is equal to the end offset of the matched Paragraph annotation.
+      <quote>COLON</quote>, which has an end offset equal to the end offset of the matched Paragraph annotation.
     </para>
     
     <para>
-      The readability and maintenance of rules does not increase if more and more conditions are added.
-      One of the strengths of the TextMarker language is that it provides always different approaches to solve an annotation task. The next two examples 
+      The readability and maintenance of rules does not increase, if more conditions are added.
+      One of the strengths of the TextMarker language is that it provides different approaches to solve an annotation task. The next two examples 
       introduce actions for transformation-based rules.  
     </para>
     
@@ -255,7 +256,7 @@ Paragraph{CONTAINS(Bold, 90, 100, true),
     
     <para>
       This rule consists of one condition and one action. The condition <quote>-CONTAINS(W)</quote> is negated (indicated by the character <quote>-</quote>), 
-      and is therefore only fulfilled if there are no annotations of the type <quote>W</quote> within the bound of the matched Headline annotation.
+      and is therefore only fulfilled, if there are no annotations of the type <quote>W</quote> within the bound of the matched Headline annotation.
       The action <quote>UNMARK(Headline)</quote> removes the matched Headline annotation. Put into simple words, headlines that contain no words at all are not headlines.
     </para>
     
@@ -266,12 +267,12 @@ Paragraph{CONTAINS(Bold, 90, 100, true),
     <programlisting><![CDATA[]]>Headline{-> SHIFT(Headline, 1, 2)} COLON;</programlisting>
     
     <para>
-      Here, the action <quote>SHIFT(Headline, 1, 2)</quote> expands the matched Headline annotation to the next colon if that Headline annotation
+      Here, the action <quote>SHIFT(Headline, 1, 2)</quote> expands the matched Headline annotation to the next colon, if that Headline annotation
       is followed by a COLON annotation.
     </para>
     
     <para>
-      TextMarker rules can of course contain arbitrary conditions and actions, which is illustrated by the next example.
+      TextMarker rules can contain arbitrary conditions and actions, which is illustrated by the next example.
     </para>
     
     <programlisting><![CDATA[DECLARE Month, Year, Date;
@@ -279,9 +280,9 @@ ANY{INLIST(MonthsList) -> MARK(Month), MARK(Date,1,3)}
     PERIOD? NUM{REGEXP(".{2,4}") -> MARK(Year))};]]></programlisting>
 
     <para>
-      This rule consists of three rule elements. The first one matches on any token, whose covered token occurs in a word lists named <quote>MonthsList</quote>.
+      This rule consists of three rule elements. The first one matches on every token, which has a covered text that occurs in a word lists named <quote>MonthsList</quote>.
       The second rule element is optional and does not need to be fulfilled, which is indicated by the quantifier <quote>?</quote>. The last rule element matches
-      on numbers that fulfill the regular expression <quote>REGEXP(".{2,4}"</quote> and are therefore at least two characters to a maximum of four character long.
+      on numbers that fulfill the regular expression <quote>REGEXP(".{2,4}"</quote> and are therefore at least two characters to a maximum of four characters long.
       If this rule successfully matches on a text passage, then its three actions are executed: An annotation of the type <quote>Month</quote> is created for the first rule element,
       an annotation of the type <quote>Year</quote> is created for the last rule element and an annotation of the type <quote>Date</quote> 
       is created for the span of all three rule elements. If the word list contains the correct entries, then this rule matches on strings like 
@@ -289,7 +290,7 @@ ANY{INLIST(MonthsList) -> MARK(Month), MARK(Date,1,3)}
     </para>
 
     <para>
-      After introducing the composition of rule elements, the default matching strategy is examined. The two rules in the next example just create an annotation
+      After introducing the composition of rule elements, the default matching strategy is examined. The two rules in the next example create an annotation
       for a sequence of arbitrary tokens with the only difference of one condition.
     </para>
 
@@ -299,8 +300,8 @@ ANY+{-PARTOF(Text2) -> MARK(Text2)};]]></programlisting>
 
     <para>
       The first rule matches on each occurrence of an arbitrary token and continues this until the end of the document is reached. 
-      This is of course caused by the greedy quantifier <quote>+</quote>. Note that this rule considers each occurrence of an token and is therefore
-      executed for each token resulting many overlapping annotations. Let this behavior be illustrated with an example:
+      This is caused by the greedy quantifier <quote>+</quote>. Note that this rule considers each occurrence of a token and is therefore
+      executed for each token resulting many overlapping annotations. This behavior ie illustrated with an example:
       When applied on the document <quote>Peter works for Frank</quote>, the rule creates four annotations with the covered texts 
       <quote>Peter works for Frank</quote>, <quote>works for Frank</quote>, <quote>for Frank</quote> and <quote>Frank</quote>.
       The rule first tries to match on the token <quote>Peter</quote> and continues its matching. Then, it tries to match on the token <quote>works</quote> and
@@ -317,7 +318,7 @@ ANY+{-PARTOF(Text2) -> MARK(Text2)};]]></programlisting>
     
     <para>
       TextMarker rules can not only be used to create or modify annotations, but also to create features for annotations. The next example defines 
-      and assigns a relation about employment, by storing the given annotations as feature values.
+      and assigns a relation of employment, by storing the given annotations as feature values.
     </para>
     
     <programlisting><![CDATA[DECLARE Annotation EmplRelation 
@@ -330,11 +331,11 @@ Sentence{CONTAINS(EmploymentIndicator) -> CREATE(EmplRelation,
       This annotation has two features: 
       One feature with the name <quote>employeeRef</quote> of the type <quote>Employee</quote> and 
       one feature with the name <quote>employerRef</quote> of the type <quote>Employer</quote>.
-      The second statement of this example, that is a simple rule, creates one annotation of the type <quote>EmplRelation</quote> for
-      each Sentence annotation that contains at least one annotation of the type EmploymentIndicator. Additionally to creating an annotation,
+      The second statement of this example, which is a simple rule, creates one annotation of the type <quote>EmplRelation</quote> for
+      each Sentence annotation that contains at least one annotation of the type <quote>EmploymentIndicator</quote>. Additionally to creating an annotation,
       the CREATE action also assigns an annotation of the <quote>Employee</quote>, which needs to be located within the span of the matched sentence, 
       to the feature <quote>employeeRef</quote> and an Employer annotation to the feature <quote>employerRef</quote>. The annotations mentioned in this 
-      example need of course to be present in advance.
+      example need to be present in advance.
     </para>
 
     <para>
@@ -351,23 +352,23 @@ NUM{PARSE(moneyAmount)} SPECIAL{REGEXP("€") -> MATCHEDTEXT(moneyCurrency),
 
     <para>
       First, a new annotation with the name <quote>MoneyAmount</quote> and two features is defined, one string feature and one integer feature.
-      Then two TextMarker variables are declared, one integer variable and one string variable. The rule matches on a number, whose value is stored 
+      Then, two TextMarker variables are declared, one integer variable and one string variable. The rule matches on a number, whose value is stored 
       in the variable <quote>moneyAmount</quote>, followed by a special token that needs to be equal to the string <quote>€</quote>. Then,
       the covered text of the special annotation is stored in the string variable <quote>moneyCurrency</quote> and annotation of the
       type <quote>MoneyAmount</quote> spanning over both rule elements is created. Additionally, the variables are assigned as feature values.
     </para>
 
     <para>
-      TextMarker script files with many rules can quickly get confusing. Therefore, TextMarker allows to import other script files in order to increase
-      the modularity of a project or to create rule libraries. The next example imports the rules together with all known types of another script file
-       and calls that script file.
+      TextMarker script files with many rules can quickly confuse the reader. The TextMarker language, therefore, allows to import other script files in order to increase
+      the modularity of a project or to create rule libraries. The next example imports the rules together with all known types of another script file 
+      and executes that script file.
     </para>
 
     <programlisting><![CDATA[SCRIPT uima.textmarker.example.SecondaryScript;
 Document{-> CALL(SecondaryScript)};]]></programlisting>
 
     <para>
-      The script file with the name <quote>SecondaryScript.tm</quote> located in the package <quote>uima/textmarker/example</quote> is imported and executed
+      The script file with the name <quote>SecondaryScript.tm</quote>, which is located in the package <quote>uima/textmarker/example</quote>, is imported and executed
       by the CALL action on the complete document. The script needs to be located in the folder specified by the parameter 
       <link linkend="ugr.tools.tm.ae.basic.parameter.scriptPaths">scriptPaths</link>. It is also possible to import script files of other TextMarker projects, e.g.,
       by adapting the configuration parameters of the TextMarker Analysis Engine or 
@@ -390,10 +391,10 @@ Person{PARTOF(Organization) -> UNMARK(Person)};
 
 
     <para>
-      It is sometimes easier to express some functionality with control structures known by programming languages rather than to engineer all functionality 
-      only with matching rules. The TextMarker language provides the BLOCK element for some of those use cases. 
+      It is sometimes easier to express functionality with control structures known by programming languages rather than to engineer all functionality 
+      only with matching rules. The TextMarker language provides the BLOCK element for some of these use cases. 
       The TextMarker BLOCK element starts with the keyword <quote>BLOCK</quote> followed by its name in parentheses. The name of a block has two purposes:
-      On the one hand, its easier to distinguish the block if they have different names, e.g., in the 
+      On the one hand, it is easier to distinguish the block, if they have different names, e.g., in the 
       <link linkend="section.ugr.tools.tm.workbench.explain_perspective">explain perspective</link> of the TextMarker Workbench. On the other hand,
       the name can be used to execute this block using the CALL action. Hereby, it is possible to access only specific sets of rules of other script files, 
       or to implement a recursive call of rules. After the name of the block, a single rule element is given, which has curly parentheses, 
@@ -408,9 +409,9 @@ BLOCK(English) Document{FEATURE("language", "de")} {
 }]]></programlisting>
 
     <para>
-      This example contains two simpler BLOCK statements. The rules defined with the block are only executed if the condition in the head of the block is fulfilled.
-      Therefore, the rules of the first block are only considered if the feature <quote>language</quote> of the document annotation has the value <quote>en</quote>.
-      Following this, the rules of the second block are only considered for german documents.
+      This example contains two simpler BLOCK statements. The rules defined with the block are only executed, if the condition in the head of the block is fulfilled.
+      The rules of the first block are only considered if the feature <quote>language</quote> of the document annotation has the value <quote>en</quote>.
+      Following this, the rules of the second block are only considered for German documents.
     </para>
 
     <para>
@@ -428,29 +429,29 @@ BLOCK(ForEach) Sentence{} {
       Here, the rule in the block statement is performed for each occurence of an annotation of the type <quote>Sentence</quote>. 
       The rule within the block matches on the complete document, which is the current sentence in the context of the block statement. 
       As a consequence, this example creates an annotation of the type <quote>SentenceWithNoLeadingNP</quote> for each sentence 
-      that does not start with an NP annotation.
+      that does not start with a NP annotation.
     </para>
 
     <para>
-      Lets take a closer look on what exactly the TextMarker rules match. The following rule matches on a word followed by another word:
+      Let us take a closer look on what exactly the TextMarker rules match. The following rule matches on a word followed by another word:
     </para>
     <programlisting><![CDATA[W W;]]></programlisting>
     
     <para>
-      To be more precise, this rule matches on all documents like <quote>Apache UIMA</quote>, <quote>   Apache     UIMA   </quote>, <quote>ApacheUIMA</quote>,
-      <quote><![CDATA[Apache <b>UIMA</b>]]></quote>. There are two main reasons for this: First of all, this depends on how the available annotations are defined. The default seeder
-      for the inital annotations creates an annotation for all characters until a upper case character occurs. Thus, the string <quote>ApacheUIMA</quote> consists of 
+      To be more precise, this rule matches on all documents like <quote>Apache UIMA</quote>, <quote>Apache     UIMA</quote>, <quote>ApacheUIMA</quote>,
+      <quote><![CDATA[Apache <b>UIMA</b>]]></quote>. There are two main reasons for this: First of all, it depends on how the available annotations are defined. The default seeder
+      for the inital annotations creates an annotation for all characters until an upper case character occurs. Thus, the string <quote>ApacheUIMA</quote> consists of 
       two tokens.
       However, more important, the TextMarker language provides a concept of visibility of the annotations. By default, all annotations of the types 
       <quote>SPACE</quote>, <quote>NBSP</quote>, <quote>BREAK</quote> and <quote>MARKUP</quote> (whitespace and XML elements) are filtered and not visible. This holds of course for
-      their covered text too. The rule elements skip all positions of the
-      document where those annotations occur. Therefore, the rule in the last example matches on all examples. Without the default filtering settings, 
+      their covered text, too. The rule elements skip all positions of the
+      document where those annotations occur. The rule in the last example matches on all examples. Without the default filtering settings, 
       with all annotations set to visible, the rule matches only on the document <quote>ApacheUIMA</quote> since it is the only one that contains two word annotations without
       any whitespace between them. 
     </para>
     
     <para>
-      The filtering setting can also be modified by the TextMarker rules themselves. The next example provides some rules that extend and limit 
+      The filtering setting can also be modified by the TextMarker rules themselves. The next example provides rules that extend and limit 
       the amount of visible text of the document.
     </para>
     
@@ -462,20 +463,20 @@ Sentence;
 Document{-> RETAINTYPE, FILTERTYPE};]]></programlisting>
 
     <para>
-      The first rule simply matches on sentences that starts not with any filtered type. Sentences that start with whitespace or markup, 
+      The first rule matches on sentences, which do not start with any filtered type. Sentences that start with whitespace or markup, 
       for example, are not considered. 
       The next rule retains all text that is covered by annotations of the type <quote>SPACE</quote> meaning 
-      that the rule elements are now sensible to whitespaces. Therefore, the following rule will match on sentences that start with whitespaces.
+      that the rule elements are now sensible to whitespaces. The following rule will, therefore, match on sentences that start with whitespaces.
       The third rule now filters the type <quote>CW</quote> with the consequence that all capitalized words are invisible.
       If the following rule now wants to match on sentences, then this is only possible for Sentence annotations that do not start with a capitalized word.
       The last rule finally resets the filtering setting to the default configuration in the TextMarker Analysis Engine.
     </para>
     
     <para>
-      The next exmaple gives a showcase for importing external Analysis Engines and for modifying the documents by creating a new view named <quote>modified</quote>.
+      The next exmaple gives a showcase for importing external Analysis Engines and for modifying the documents by creating a new view called <quote>modified</quote>.
       Additional Analysis Engines can be imported with the keyword <quote>ENGINE</quote> followed by the name of the descriptor. These imported Analysis Engines can be 
       executed with the actions <quote>CALL</quote> or <quote>EXEC</quote>. If the executed Analysis Engine adds, removes or modifies annotations, then their types need 
-      to be mentioned when calling the descriptor, or else those annotations will not be correctly processed by the following TextMarker rules.
+      to be mentioned when calling the descriptor, or else these annotations will not be correctly processed by the following TextMarker rules.
     </para>
 
     <programlisting><![CDATA[ENGINE utils.Modifier;
@@ -487,7 +488,7 @@ Document{-> EXEC(Modifier)};
 
   <para>
     In this example, we first import an Analysis Engine defined by the descriptor <quote>Modifier.xml</quote> located in the folder <quote>utils</quote>. 
-    The descriptor needs, of course, be located in the folder specified by the parameter <link linkend="ugr.tools.tm.ae.basic.parameter.descriptorPaths">descriptorPaths</link>.
+    The descriptor needs to be located in the folder specified by the parameter <link linkend="ugr.tools.tm.ae.basic.parameter.descriptorPaths">descriptorPaths</link>.
     The first rule deletes all text covered by annotations of the type <quote>DEL</quote>. The second rule replaces the text of all annotations of the type <quote>MoneyAmount</quote> 
     with the string <quote><![CDATA[<MoneyAmount/>]]></quote>. The third rule remembers to set the background color of text in Headline annotation to green. The last rule
     finally performs all of these changes in an additonal view called <quote>modified</quote>.
@@ -515,8 +516,8 @@ Document{-> EXEC(Modifier)};
       <section id="ugr.tools.tm.ae.basic.apply">
       <title>Apply TextMarker Analysis Engine in plain Java</title>
         <para>
-          Let's assume that you wrote the TextMarker rules using the TextMarker Workbench, which already creates correctly configured descriptors.
-          In this case, you can simply use the following java code to apply the TextMarker script.
+          Let us assume that the reader wrote the TextMarker rules using the TextMarker Workbench, which already creates correctly configured descriptors.
+          In this case, the following java code can be used to apply the TextMarker script.
         </para>
           <programlisting><![CDATA[File specFile = new File("pathToMyWorkspace/MyProject/descriptor/"+
     "my/package/MyScriptEngine.xml");
@@ -536,7 +537,7 @@ ae.process(cas);]]></programlisting>
       <para>
         If the TextMarker script was written, for example, with a common text editor and no configured descriptors are yet available, 
         then the following java code can be used, which, however, is only applicable for executing single script files that do not import 
-        additional components or scripts. In that case the other parameters, e.g., <quote>additionalScripts</quote>, need to be configured correctly.
+        additional components or scripts. In this case the other parameters, e.g., <quote>additionalScripts</quote>, need to be configured correctly.
       </para>
       <programlisting><![CDATA[URL aedesc = TextMarkerEngine.class.getResource("BasicEngine.xml");
 XMLInputSource inae = new XMLInputSource(aedesc);
@@ -574,7 +575,7 @@ ae.process(cas);]]></programlisting>
       <section id="ugr.tools.tm.ae.basic.parameter">
         <title>Configuration Parameters</title>
         <para>
-          The configuration parameters of the TextMarker Analysis Engine can be separated into three
+          The configuration parameters of the TextMarker Analysis Engine can be subdivided into three
           different groups: parameters for the setup of the environment (<link linkend='ugr.tools.tm.ae.basic.parameter.mainScript'>mainScript</link>
           to <link linkend='ugr.tools.tm.ae.basic.parameter.additionalExtensions'>additionalExtensions</link>), 
           parameters that change the behavior of the analysis engine (<link linkend='ugr.tools.tm.ae.basic.parameter.reloadScript'>reloadScript</link>
@@ -582,7 +583,7 @@ ae.process(cas);]]></programlisting>
           and parameters for creating additional information how the rules were executed 
           (<link linkend='ugr.tools.tm.ae.basic.parameter.debug'>debug</link>
           to <link linkend='ugr.tools.tm.ae.basic.parameter.createdBy'>createdBy</link>). First, a short overview of the configuration parameters is given in
-          <xref linkend='table.ugr.tools.tm.ae.parameter' />. Then all parameters are described in detail with examples.
+          <xref linkend='table.ugr.tools.tm.ae.parameter' />. Afterwards, all parameters are described in detail with examples.
         </para>
         <para>
           To change the value of any configuration parameter within a TextMarker script, the CONFIGURE action (see <xref linkend='ugr.tools.tm.language.actions.configure' />)
@@ -790,8 +791,8 @@ ae.process(cas);]]></programlisting>
         <section id="ugr.tools.tm.ae.basic.parameter.mainScript">
           <title>mainScript</title>
           <para>
-            This parameter specifies the rule file that will be executed by the analysis engine and is
-            therefore one of the most important ones. The extact name of the script is given by the complete namespace of the file, which corresponds to its location
+            This parameter specifies the rule file that will be executed by the analysis engine and is,
+            therefore, one of the most important ones. The extact name of the script is given by the complete namespace of the file, which corresponds to its location
             relative to the given parameter <link linkend='ugr.tools.tm.ae.basic.parameter.scriptPaths'>scriptPaths</link>.
             The single names of packages (or folders) are separated by periods. An exemplary value for this parameter could be "org.apache.uima.Main", 
             whereas "Main" specifies the file containing the rules and "org.apache.uima" its package.
@@ -809,7 +810,7 @@ ae.process(cas);]]></programlisting>
           <title>scriptPaths</title>
           <para>
             The parameter scriptPaths refers to a list of String values, which specify the possible locations of script files. 
-            The given locations are absolute paths. A typical value for this parameter is for example "C:/TextMarker/MyProject/script/".
+            The given locations are absolute paths. A typical value for this parameter is, for example, "C:/TextMarker/MyProject/script/".
             If the parameter <link linkend='ugr.tools.tm.ae.basic.parameter.mainScript'>mainScript</link> is set to org.apache.uima.Main, 
             then the absolute path of the script file has to be "C:/TextMarker/MyProject/script/org/apache/uima/Main.tm". 
             This parameter can contain multiple values, as the main script can refer to multiple projects similar to a class path in Java.
@@ -848,7 +849,7 @@ ae.process(cas);]]></programlisting>
           <para>
             This parameter contains a list of additional analysis engines, which can be executed by the TextMarker rules. The single values
             are given by the name of the analysis engine with their complete namespace and have to be located relative to one value of the parameter
-            <link linkend='ugr.tools.tm.ae.basic.parameter.descriptorPaths'>descriptorPaths</link>, the location, where the analysis engine searches for the descriptor file.
+            <link linkend='ugr.tools.tm.ae.basic.parameter.descriptorPaths'>descriptorPaths</link>, the location where the analysis engine searches for the descriptor file.
             An exmaple for one value of the parameter is "utils.HtmlAnnotator", which points to the descriptor "HtmlAnnotator.xml" in the folder "utils".
           </para>
         </section>
@@ -863,8 +864,8 @@ ae.process(cas);]]></programlisting>
         <section id="ugr.tools.tm.ae.basic.parameter.additionalExtensions">
           <title>additionalExtensions</title>
           <para>
-            This parameter specifies optional extensions of the TextMarker language. The elements of the string list must implement the interface 
-            "org.apache.uima.textmarker.extensions.ITextMarkerExtension". With those extensions, application-specific conditions and actions can be
+            This parameter specifies optional extensions of the TextMarker language. The elements of the string list have to implement the interface 
+            "org.apache.uima.textmarker.extensions.ITextMarkerExtension". With these extensions, application-specific conditions and actions can be
             added to the set of provided ones.
           </para>
         </section>
@@ -889,7 +890,7 @@ ae.process(cas);]]></programlisting>
           <title>defaultFilteredTypes</title>
           <para>
             This parameter specifies a list of types, which are filtered by default when executing a script file. Using the default values of this parameter,
-            whitespaces, line breaks and markup elements are not visible to TextMarker rules. The visibility of annotations and therefore the covered text can be changed
+            whitespaces, line breaks and markup elements are not visible to TextMarker rules. The visibility of annotations and, therefore, the covered text can be changed
             using the actions <link linkend='ugr.tools.tm.language.actions.filtertype'>FILTERTYPE</link> and 
             <link linkend='ugr.tools.tm.language.actions.retaintype'>RETAINTYPE</link>.
           </para>
@@ -905,7 +906,7 @@ ae.process(cas);]]></programlisting>
           <title>dynamicAnchoring</title>
           <para>
             If this parameter is set to true, then the TextMarker rules are not forced to start to match with the first rule element. 
-            Rather the rule element referring to the most rare type is chosen. Therefore, this option can be utilized to optimize the performance.
+            Rather, the rule element referring to the most rare type is chosen. This option can be utilized to optimize the performance.
             Please mind that the matching result can vary in some cases when greedy rule elements are applied.
             The default value is set to false.
           </para>
@@ -920,8 +921,8 @@ ae.process(cas);]]></programlisting>
         <section id="ugr.tools.tm.ae.basic.parameter.simpleGreedyForComposed">
           <title>simpleGreedyForComposed</title>
           <para>
-            This parameter specifies whether a different inference strategy for composed rule elements should be applied. This option is only neccessary, 
-            if the composed rule element is expected to match very often, e.g., a rule element like (ANY ANY).
+            This parameter specifies whether a different inference strategy for composed rule elements should be applied. This option is only neccessary 
+            when the composed rule element is expected to match very often, e.g., a rule element like (ANY ANY).
             The default value of this parameter is set to false.
           </para>
         </section>
@@ -965,7 +966,7 @@ ae.process(cas);]]></programlisting>
         <section id="ugr.tools.tm.ae.basic.parameter.createdBy">
           <title>createdBy</title>
           <para>
-            If this parameter is set to true, then additional information is added to the CAS about what annotation was created by which rule.
+            If this parameter is set to true, then additional information about what annotation was created by which rule is added to the CAS.
             The default value of this parameter is set to false.
           </para>
         </section>
@@ -974,8 +975,8 @@ ae.process(cas);]]></programlisting>
     <section id="ugr.tools.tm.ae.annotationwriter">
       <title>Annotation Writer</title>
       <para>
-        This Analysis Engine can be utilized to write the covered text of annotions in a text file whereas each covered text is put into a new line.
-        If the Analyis engine, for example, is configured for the type uima.example.Person, then all the covered texts of all person annotions are stored
+        This Analysis Engine can be utilized to write the covered text of annotations in a text file, whereas each covered text is put into a new line.
+        If the Analyis engine, for example, is configured for the type <quote>uima.example.Person</quote>, then all covered texts of all Person annotations are stored
         in a text file, one person in each line.
         A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a TextMarker project.
       </para>
@@ -1011,14 +1012,14 @@ ae.process(cas);]]></programlisting>
       <title>Plain Text Annotator</title>
       <para>
         This Analysis Engines adds annotations for lines and paragraphs.
-        A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a TextMarker project. There are no configuration parameters
+        A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a TextMarker project. There are no configuration parameters.
       </para>
     </section>
     <section id="ugr.tools.tm.ae.modifier">
       <title>Modifier</title>
       <para>
         The Modifier Analysis Engine can be used to create an additional view <quote>modified</quote>, which contains all textual modifications and HTML highlightings that
-        were specified by the executed rules. Therefore, this Analysis Engine can be applied, e.g., 
+        were specified by the executed rules. This Analysis Engine can be applied, e.g., 
         for anonymization where all annotations of persons are replaced by the string <quote>Person</quote>. 
         Furthermore, the content of the new view can optionally be stored in a new HTML file.
         A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a TextMarker project.
@@ -1058,7 +1059,7 @@ ae.process(cas);]]></programlisting>
         for each HTML element spanning the content of the element, whereas the most common elements are represented by own types. 
         The document <quote><![CDATA[This text is <b>bold</b>.]]></quote>, for example, would be annotated with an annotation of the type 
         <quote>org.apache.uima.textmarker.type.html.B</quote> for the word <quote>bold</quote>. The HTML annotator can be configured 
-        in order to include the start and end element in the created annotations. 
+        in order to include the start and end elements in the created annotations. 
         A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a TextMarker project.
       </para>
       <section id="ugr.tools.tm.ae.html.parameter">
@@ -1068,8 +1069,8 @@ ae.process(cas);]]></programlisting>
         <section id="ugr.tools.tm.ae.html.parameter.onlyContent">
           <title>onlyContent</title>
           <para>
-            This parameter specifies whether created annotations should cover only the content of the HTML elements or also their start and end element. 
-            The default value is <quote>true</quote>
+            This parameter specifies whether created annotations should cover only the content of the HTML elements or also their start and end elements. 
+            The default value is <quote>true</quote>.
           </para>
         </section>
       </section>
@@ -1096,7 +1097,7 @@ ae.process(cas);]]></programlisting>
         <section id="ugr.tools.tm.ae.stylemap.parameter.descriptorPaths">
           <title>descriptorPaths</title>
           <para>
-            This parameter can contain multiple string values and specifies the absolute paths where the style map fgile can be found.
+            This parameter can contain multiple string values and specifies the absolute paths where the style map can be found.
           </para>
         </section>
       </section>

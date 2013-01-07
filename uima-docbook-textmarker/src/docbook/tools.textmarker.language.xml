@@ -72,7 +72,7 @@ under the License.
       the default filtering
       configuration ignores whitespaces and markup.
       Look at the following rule:
-      <programlisting><![CDATA["Dr" PERIOD CW CW
+      <programlisting><![CDATA["Dr" PERIOD CW CW;
 ]]></programlisting>
       Using the default
       setting, this rule matches on all four lines
@@ -85,31 +85,31 @@ Dr.JoachimBaumeister
 ]]></programlisting>
     </para>
     <para>
-      To change the default setting use the
+      To change the default setting, use the
       <quote>FILTERTYPE</quote>
       or
       <quote>RETAINTYPE</quote>
       action. For example if markups should no longer be ignored, try
-      the following example on the above input document:
+      the following example on the above mentioned input document:
       <programlisting><![CDATA[Document{->RETAINTYPE(MARKUP)};
-"Dr" PERIOD CW CW
+"Dr" PERIOD CW CW;
 ]]></programlisting>
       You will see that the third line of the previous input example
       will  no longer be matched.
     </para>
     <para>
-      To filter types try the following on the input document:
+      To filter types, try the following rules on the input document:
       <programlisting><![CDATA[Document{->FILTERTYPE(PERIOD)};
-"Dr" CW CW
+"Dr" CW CW;
 ]]></programlisting>
-      Since periods are ignored now, the rule will match on all four
+      Since periods are ignored here, the rule will match on all four
       lines of the example.
     </para>
     <para>
       Notice that using a filtered annotation type within a
-      rule, prevents this rule from being executed. Try the following:
+      rule prevents this rule from being executed. Try the following:
       <programlisting><![CDATA[Document{->FILTERTYPE(PERIOD)};
-"Dr" PERIOD CW CW
+"Dr" PERIOD CW CW;
 ]]></programlisting>
       You will see that this matches on no line of the input document
       since the second rule uses the filtered type PERIOD and is therefore not
@@ -237,34 +237,34 @@ BLOCK(ForEach) Sentence{} {
       </para>
       <para>
         This construction is especially useful, if you have a set of
-        rules
+        rules,
         which has to be executed continously on the same part of an input
-        document. Lets assume you have already annotated your document
+        document. Let us assume that you have already annotated your document
         with
         Paragraph annotations. Now you want to count the number of words
-        within each paragraph and if the number of words is bigger than 500
-        annotate it as BigParagraph. Therefore you wrote the following
+        within each paragraph and, if the number of words exceeds 500,
+        annotate it as BigParagraph. Therefore, you wrote the following
         rules:
         <programlisting><![CDATA[DECLARE BigParagraph;
 INT numberOfWords;
 Paragraph{COUNT(W,numberOfWords)};
 Paragraph{IF(numberOfWords > 500) -> MARK(BigParagraph)};
 ]]></programlisting>
-        This will not work. The reason is that the rule which counts the
+        This will not work. The reason for this is that the rule, which counts the
         number of words within a Paragraph is executed on all Paragraphs
         before the last rule which marks the Paragraph as BigParagraph
         is
-        even executed once. Therefore when reaching the last rule in this
+        even executed once. When reaching the last rule in this
         example, the variable
         <literal>numberOfWords</literal>
         holds the
         number of words of the last Paragraph in the input
         document,
-        thus annotating all Paragraphs either as BigParagraph or
+        thus, annotating all Paragraphs either as BigParagraph or
         not.
       </para>
       <para>
-        To solve this, use a block to tie the
+        To solve this problem, use a block to tie the
         execution of this rules
         together for each Paragraph:
         <programlisting><![CDATA[DECLARE BigParagraph;
@@ -276,19 +276,19 @@ BLOCK(IsBig) Paragraph{} {
 ]]></programlisting>
         Since the scope of the Document is limited to a Paragraph within
         the
-        block, the rule which counts the words is only executed once
+        block, the rule, which counts the words is only executed once
         before
-        the second rule decides if the Paragraph is a BigParagraph.
-        Of course
+        the second rule decides, if the Paragraph is a BigParagraph.
+        Of course,
         this is done for every Paragraph in the whole document.
       </para>
     </section>
     <section id="ugr.tools.tm.language.blocks.procedure">
       <title>Procedures</title>
       <para>
-        Blocks can be used to introduce procedures into TextMarker
-        language.
-        To do this declare a block as before. Lets assume you want to
+        Blocks can be used to introduce procedures to the TextMarker
+        scripts.
+        To do this, declare a block as before. Let us assume, you want to
         simulate a procedure
         <programlisting><![CDATA[public int countAmountOfTypesInDocument(Type type){
     int amount = 0;
@@ -304,9 +304,9 @@ public static void main() {
   int amount = countAmountOfTypesInDocument(Paragraph));
 }            
 ]]></programlisting>
-        which counts the number of the passed type wihtin the document
+        which counts the number of the passed type within the document
         and
-        gives back the counted number. This can be done in the following
+        returns the counted number. This can be done in the following
         way:
         <programlisting><![CDATA[BOOLEAN executeProcedure = false;
 TYPE type;
@@ -395,7 +395,7 @@ Headline{SCORE(5,10)->LOG("Maybe a headline")};]]></programlisting>
       rules finally execute their actions, if the score of a
       headline
       annotation exceeds ten points, or lies in the interval of
-      five and ten
+      five to ten
       points, respectively.
     </para>
   </section>
@@ -404,13 +404,13 @@ Headline{SCORE(5,10)->LOG("Maybe a headline")};]]></programlisting>
     <para>
       There are different actions that can modify the input document,
       like DEL,
-      COLOR and REPLACE. But the input document itself can not be
+      COLOR and REPLACE. However, the input document itself can not be
       modified
       directly. A separate engine, the Modifier.xml, has to be
       called in
-      order to create another cas view with the name "modified".
+      order to create another CAS view with the name "modified".
       In that
-      document all modifications are executed.
+      document, all modifications are executed.
     </para>
     <para>
       The following example shows how to import and call the
@@ -427,25 +427,13 @@ Document{-> COLOR(Headline, "green")};
 Document{-> EXEC(Modifier)};
 ]]></programlisting>
 
-    <para>
-      To get to the modified view of an input document
-      <quote>file1.txt</quote>
-      open the output document
-      <quote>file1.txt.xmi</quote>
-      .
-      In editor do right-click and choose
-      <quote>CAS Views &rarr;
-        modified
-      </quote>
-      .
-    </para>
   </section>
 
   <section id="ugr.tools.tm.language.external_resources">
     <title>External resources</title>
     <para>
-      Imagine you have a set of documents containing lots of different
-      first names. (As example we use a short list, containing the first
+      Imagine you have a set of documents containing many different
+      first names. (as example we use a short list, containing the first
       names
       <quote>Frank</quote>
       ,
@@ -454,28 +442,28 @@ Document{-> EXEC(Modifier)};
       <quote>Jochen</quote>
       and
       <quote>Martin</quote>
-      .)
-      If you would like to annotate all of them with a
+      )
+      If you like to annotate all of them with a
       <quote>FirstName</quote>
-      annotation you could write a script using the rule
+      annotation, then you could write a script using the rule
       <literal>("Frank" | "Peter" | "Jochen" |
         "Martin"){->MARK(FirstName)};</literal>.
-      This does exactly what you want. But in fact it is not very handy.
+      This does exactly what you want, but not very handy.
       If you like to add new first names to the list of recognized first
-      names you have to change the rule itself every time. Moreover writing
+      names you have to change the rule itself every time. Moreover, writing
       rules with possibly hundreds of first names
-      is not really practically realizable and definitely not efficient if you have
+      is not really practically realizable and definitely not efficient, if you have
       the list of first names already as a simple text file. Using this text file directly
-      would much reduce the effort.
+      would reduce the effort.
     </para>
     <para>
-      Therefore TextMarker provides two kinds of external resources to
+      TextMarker provides, therefore, two kinds of external resources to
       solve such tasks more easily: WORDLISTs and WORDTABLEs.
     </para>
     <section>
       <title>WORDLISTs</title>
       <para>
-        A WORDLIST is simply a list of text items. There are three
+        A WORDLIST is a list of text items. There are three
         different possibilities of how to provide a WORDLIST to the TextMarker system.
       </para>
       <para>
@@ -493,9 +481,9 @@ Martin
         by using
         <literal>Document{->MARKFAST(FistName, "FirstNames.txt")};</literal>, assuming
         an already declared type FirstName. To make this rule
-        recognizing more first names just add
+        recognizing more first names, add
         them to the external list.
-        You could also use a WORLIST variable to do the same thing like this:
+        You could also use a WORLIST variable to do the same thing as follows:
         <programlisting><![CDATA[WORDLIST FirstNameList = "FirstNames.txt";
 DECLARE FirstName;
 Document{->MARKFAST(FistName, FirstNameList)};
@@ -548,7 +536,7 @@ Document{->TRIE("FirstNames.txt" = FistName, "LastNames.txt" = LastName,
         WORDLISTS have been used to annotate all occurrences of any list
         item in a document with a certain type. Imagine now that each annotation
         has features that should be filled with values dependent on the list item
-        that matched. This can be achieved with WORDTABLEs. For example, lets
+        that matched. This can be achieved with WORDTABLEs. For example, let us
         assume we want to annotate all US presidents within a document.
         Moreover each annotation should contain the party of the president as well as the
         year of his inauguration. Therefore we use an annotation type
