@@ -104,19 +104,19 @@
     <dependency>
       <groupId>org.eclipse.dltk</groupId>
       <artifactId>core</artifactId>
-      <version>[3.0.0,4.0.0)</version>
+      <version>[3.0.1,4.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.dltk</groupId>
       <artifactId>ui</artifactId>
-      <version>[3.0.0,4.0.0)</version>
+      <version>[3.0.1,4.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.dltk</groupId>
       <artifactId>debug</artifactId>
-      <version>[3.0.0,4.0.0)</version>
+      <version>[3.0.1,4.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
