@@ -31,46 +31,31 @@ under the License.
     <orderedlist numeration="arabic">
       <listitem>
         <para>
-          Download, install and start an Eclipse instance in version
-          3.7.
-          Eclipse can be obtained
-          from the
-          <ulink
-            url="http://www.eclipse.org/downloads/packages/release/indigo/sr2">eclipse.org</ulink>
-          download site.
+          Download, install and start an Eclipse 3.7., which can be obtained
+          from the <ulink url="http://www.eclipse.org/downloads/packages/release/indigo/sr2">eclipse.org</ulink> download site.
         </para>
       </listitem>
       <listitem>
         <para>
           Add the Apache UIMA update site (
           <ulink url="http://www.apache.org/dist/uima/eclipse-update-site/">http://www.apache.org/dist/uima/eclipse-update-site/
-          </ulink>
-          ) to the available
+          </ulink>) to the available
           software sites in your Eclipse installation.
-          To do
-          so, click
-          <quote>Help &rarr;
-            Install New Software
-          </quote>
-          and add each site. This opens the install wizard which can be
-          seen
-          in
-          <xref linkend='figure.ugr.tools.tm.workbench.install.update' />
+          Click on <quote>Help &rarr; Install New Software</quote>. This opens the install wizard, which can be
+          seen in <xref linkend='figure.ugr.tools.tm.workbench.install.update' />
         </para>
       </listitem>
       <listitem>
         <para>
-          Enter the TextMarker update site in field
+          Select or enter the TextMarker update site (<ulink url="http://www.apache.org/dist/uima/eclipse-update-site/">http://www.apache.org/dist/uima/eclipse-update-site/
+          </ulink>)in field
           <quote>Work with:</quote>
-          and press
-          <quote>Enter</quote>
-          .
+          and press <quote>Enter</quote>.
         </para>
       </listitem>
       <listitem>
         <para>
-          The
-          <quote>Apache UIMA TextMarker
+          The <quote>Apache UIMA TextMarker
             Eclipse tooling and runtime support
           </quote>
           feature will be displayed. Select
@@ -84,23 +69,18 @@ under the License.
             sites during install to find required software
           </quote>
           and click on
-          <quote>
-            Next
-          </quote>
-          .
+          <quote>Next</quote>.
         </para>
       </listitem>
       <listitem>
         <para>
-          On the next page click
-          <quote>Next</quote>
+          On the next page, click <quote>Next</quote>
           again. Now, the license
           agreement site is diplayed. To install TextMarker read the license and
           choose
           <quote>I accept the ...</quote>
-          if you agree to it. If you agreed,
-          click on
-          <quote>Finish</quote>
+          if you agree to it. Then,
+          click on <quote>Finish</quote>
         </para>
       </listitem>
     </orderedlist>
@@ -130,10 +110,8 @@ under the License.
     Now, TextMarker is going to be installed.
     After the successful
     installation, switch to the TextMarker
-    perspective. To get an overview
-    see
-    <xref linkend='section.ugr.tools.tm.workbench.overview' />
-    .
+    perspective. To get an overview, see
+    <xref linkend='section.ugr.tools.tm.workbench.overview' />.
   </para>
   <para>
     Several times within this chapter we use a TextMarker example

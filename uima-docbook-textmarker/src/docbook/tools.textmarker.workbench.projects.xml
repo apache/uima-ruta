@@ -21,14 +21,11 @@
   <title>TextMarker Projects</title>
   <para>
     TextMarker projects used within the TextMarker workbench need to have
-    a certain folder
-    structure. The parts of this folder structure are
+    a certain folder structure. The parts of this folder structure are
     explained in
-    <xref linkend='table.ugr.tools.tm.workbench.create_project.folder_strucutre' />
-    . To create a TextMarker project it is recommended to use the provided
+    <xref linkend='table.ugr.tools.tm.workbench.create_project.folder_strucutre' />. To create a TextMarker project it is recommended to use the provided
     wizard, explained in
-    <xref linkend='section.ugr.tools.tm.workbench.projects.create_projects' />
-    . If this wizard is used, the required folder structure is
+    <xref linkend='section.ugr.tools.tm.workbench.projects.create_projects' />. If this wizard is used, the required folder structure is
     automatically created.
   </para>
 
@@ -67,7 +64,7 @@
               launching a
               TextMarker script. Such input files could be plain
               text,
-              HTML, xmiCAS files or others.
+              HTML or xmiCAS files.
             </entry>
           </row>
           <row>
@@ -121,10 +118,8 @@
   <section id="section.ugr.tools.tm.workbench.projects.create_projects">
     <title>TextMarker create project wizard</title>
     <para>
-      To create a new TextMarker project switch to TextMarker perspective
-      and click
-      <quote>File &rarr; New &rarr; TextMarker Project</quote>
-      . This opens the corresponding wizard.
+      To create a new TextMarker project, switch to TextMarker perspective
+      and click <quote>File &rarr; New &rarr; TextMarker Project</quote>. This opens the corresponding wizard.
     </para>
 
     <para>
@@ -152,24 +147,26 @@
       </figure>
     </para>
     <para>
-      To create a simple TextMarker project just enter a project name for
+      To create a simple TextMarker project, enter a project name for
       your project and click
-      <quote>Finish</quote>. This will create all you need to start.
+      <quote>Finish</quote>. This will create everything you need to start.
     </para>
     <para>
       Other possible settings on this page are the desired location of
       the project,
       the interpreter to use and the working set you wish to
-      work on, all of them really self-explaining.
+      work on, all of them are self-explaining.
     </para>
+    <!-- 
     <para>
-      On the second page of the wizard you can mainly configure the
+      On the second page of the wizard, you can mainly configure the
       needed build path. This is necessary if you like to use external
       source
       folders or if the project to create will be dependent on other
       projects or if external libraries have to be found. Add the desired
       configuration in the related tab.
     </para>
+     -->
     <para>
       <xref
         linkend='figure.ugr.tools.tm.workbench.projects.create_projects.wizard2' />

@@ -21,8 +21,7 @@
       <listitem>
         <para>
           The
-          <quote>TextMarker perspective</quote>
-          which provides the main functionality for working on TextMarker projects. See
+          <quote>TextMarker perspective</quote>, which provides the main functionality for working on TextMarker projects. See
           <xref linkend='section.ugr.tools.tm.workbench.tm_perspective' />
           for detailed information.
         </para>
@@ -30,12 +29,9 @@
       <listitem>
         <para>
           The
-          <quote>Explain perspective</quote>
-          which provides functionality primarily used to explain how a set of written rules
-          behaved
-          on a number of input documents. See
-          <xref linkend='section.ugr.tools.tm.workbench.explain_perspective' />
-          .
+          <quote>Explain perspective</quote>, which provides functionality primarily used to explain how a set of rules
+          are executed on input documents. See
+          <xref linkend='section.ugr.tools.tm.workbench.explain_perspective' />.
         </para>
       </listitem>
     </orderedlist>
@@ -61,10 +57,9 @@
         </textobject>
       </mediaobject>
     </figure>
-    As you can see, the TextMarker perspective provides an editor for editing documents, e.g.
-    TextMarker scripts, and several views for different other tasks. The Script Explorer for
-    example
-    helps to manage your TextMarker projects.
+    As you can see, the TextMarker perspective provides an editor for editing documents, e.g.,
+    TextMarker scripts, and several views for different other tasks. The Script Explorer, for
+    example, helps to manage your TextMarker projects.
   </para>
   <para>
     The following

@@ -26,7 +26,7 @@ under the License.
 
 <section id="section.ugr.tools.tm.workbench.tm_query">
   <title>Query View</title>
-  <para> With the Query View the TextMarker language can be used to write queries on a set of
+  <para> With the Query View, the TextMarker language can be used to write queries on a set of
     documents. A query is simply a set of TextMarker rules. Each query returns a list of all text
     passages the query applies to. For example, if you have a set of annotated documents containing
     a number of Author annotations, you could use the Query View to get a list of all the author
@@ -63,7 +63,7 @@ under the License.
           <quote>Query Data</quote>
           specifies the folder containing the documents on which the query should be executed. You
           can either click on the button next to the field to specify the folder by browsing through
-          the file system, or you can drag and drop a folder directly into the field. If the
+          the file system or you can drag and drop a folder directly into the field. If the
           checkbox is activated, all subfolders are included.
         </para>
       </listitem>
@@ -73,7 +73,7 @@ under the License.
           <quote>Type System</quote>
           has to contain a type system or a TextMarker script that specifies all types that are used
           in the query. You can either click on the button next to the field to specify the type
-          system by browsing through the file system, or you can drag and drop a type system
+          system by browsing through the file system or you can drag and drop a type system
           directly into the field.
         </para>
       </listitem>
@@ -82,7 +82,7 @@ under the License.
           the middle of the view.</para>
       </listitem>
       <listitem>
-        <para> After pressing the start button the query is started. The results are subsequently
+        <para> After pressing the start button, the query is started. The results are subsequently
           displayed in the bottom text field.</para>
       </listitem>
     </orderedlist>
@@ -93,8 +93,8 @@ under the License.
     brackets the document related to the text passage. By double-clicking on one of the listed
     items, the related document is opened in the editor and the matched text passage is selected. If
     the related document is already open you can jump to another matched text passage within the the
-    same document with just one click on the listed item. Of course this text passage is then
-    selected. By clicking on the export button a list of all matched text passaged is showed in a
+    same document with one click on the listed item. Of course, this text passage is selected. 
+    By clicking on the export button, a list of all matched text passaged is showed in a
     separate window. For further usage, e.g. as a list of authors in another TextMarker project,
     copy the content of this window to another text file.
   </para>

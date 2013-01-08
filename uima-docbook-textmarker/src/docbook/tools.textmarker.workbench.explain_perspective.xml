@@ -20,44 +20,24 @@
   <title>Explain Perspective</title>
   <para>
     Writing new rules is laborious, especially if the newly written
-    rules do not
-    behave as
-    expected. The TextMarker system is able to
-    protocol the application of each
-    single rule and
-    block in order to
+    rules do not behave as expected. The TextMarker system is able to
+    record the application of each single rule and block in order to
     provide an explanation of the rule inference and a
-    minimal debugging
-    functionality. The information about the application of the rules
-    itself is stored
-    in the resulting
-    xmiCAS output file if the parameters
-    of the executed engine are
-    configured correctly. The simplest way to
-    generate these explanation information
-    is to click on the common
-    'Debug' button (looks like a green bug)
-    while having the TextMarker
-    script file, you want to debug, active in
-    your editor. The current
-    TextMarker file will then be executed on the text files in the input
-    directory and xmiCAS are
-    created in the output directory containing the
-    additional UIMA
-    feature structures describing the
-    rule inference. To
-    show the newly created execution information, you can either open the
-    Explain
-    perspective or open the necessary views separately and arrange
-    them as you like. There are eight
-    views that display information about
-    the execution of
-    the rules: Applied Rules, Covering Rules, Created By,
+    minimal debugging functionality. The information about the application of the rules
+    itself is stored in the resulting xmiCAS output file, if the parameters
+    of the executed engine are configured correctly. The simplest way to
+    generate these explanation information is to click on the common 'Debug' button (looks like a green bug)
+    while having the TextMarker script file you want to debug active in
+    your editor. The current TextMarker file will then be executed on the text files in the input
+    directory and xmiCAS are created in the output directory containing the
+    additional UIMA feature structures describing the
+    rule inference. To show the newly created execution information, you can either open the
+    Explain perspective or open the necessary views separately and arrange
+    them as you like. There are eight views that display information about
+    the execution of the rules: Applied Rules, Covering Rules, Created By,
     Failed Rules, Matched Rules, Rule Elements, Rule List
-    and Statistics.
-    All of theses views are further explained in detail, using the
-    TextMarker example project
-    for examples.
+    and Statistics. All of theses views are further explained in detail, using the
+    TextMarker example project for examples.
   </para>
 
   <para>
@@ -79,20 +59,13 @@
       rules that tried to apply to the input documents.
     </para>
     <para>
-      The structure is as
-      follows: if BLOCK constructs were used in the
-      executed TextMarker
-      file, the rules contained in that block will be
-      represented as child
-      node in the tree of the view. Each TextMarker
-      file is itself a BLOCK
-      construct named after the file. Therefore the
-      root node of the view
-      is always a BLOCK containing the rules of the
-      executed TextMarker
-      script. Additionally, if a rule calls a different
-      TextMarker file,
-      then the root block of that file is the child of the
+      The structure is as follows: if BLOCK constructs were used in the
+      executed TextMarker file, the rules contained in that block will be
+      represented as child node in the tree of the view. Each TextMarker
+      file is a BLOCK construct itself and named after the file. The
+      root node of the view is, therefore, always a BLOCK containing the rules of the
+      executed TextMarker script. Additionally, if a rule calls a different
+      TextMarker file, then the root block of that file is the child of the
       calling rule.
     </para>
     <para>
@@ -135,29 +108,24 @@
     <para>
       Besides the hierarchy, the view shows how often a rule tried to match
       in total and how often it succeeded. This is shown in brackets at the
-      beginning of each rule entry. E.g., the Applied Rules view tells us
+      beginning of each rule entry. The Applied Rules view tells us
       that the rule
       <literal>NUM{REGEXP("19..|20..") -> MARK(Year)};</literal>
       within script 'Year.tm' tried to match twice but only succeeded once.
     </para>
     <para>
-      After this information the rule itself is given. Notice that
-      each rule
-      is given with all the parameters it has been executed.
-      E.g., have a
-      look at rule entry
+      After this information, the rule itself is given. Notice that
+      each rule is given with all the parameters it has been executed.
+      Have a look at rule entry
       <literal>[1/1]Document{->MARKFAST(FirstName,FirstNameList,false,0,true)}
-      </literal>
-      within BLOCK Author. The rule obviously has been executed with five
+      </literal> within BLOCK Author. The rule obviously has been executed with five
       parameters. If you double-click on this rule, you will get to the
       rule in the script file 'Author.tm'. It shows the rule as follows:
-      <literal>Document{-> MARKFAST(FirstName, FirstNameList)};
-      </literal>
-      . This means the last three parameters have been default values used
+      <literal>Document{-> MARKFAST(FirstName, FirstNameList)};</literal>. This means the last three parameters have been default values used
       to execute the rule.
     </para>
     <para>
-      Additionally some profiling information, giving details about
+      Additionally, some profiling information, giving details about
       the absolute time and the percentage of total execution time the rule
       needed, is added at the end of each rule entry.
     </para>
@@ -178,15 +146,12 @@
       the instances on which the rule tried but failed to match.
     </para>
     <para>
-      E.g. select rule
-      <literal>[2/3]Name{-PARTOF(NameListPart)} NameLinker[1,2]{->
-        MARK(NameListPart,1,2)}
-      </literal>
-      within BLOCK Author.
+      Select rule <literal>[2/3]Name{-PARTOF(NameListPart)} NameLinker[1,2]{->
+        MARK(NameListPart,1,2)};</literal> within BLOCK Author.
       <xref
         linkend='figure.ugr.tools.tm.workbench.explain_perspective.matched_and_failed_rules' />
       shows the text passages this rule tried to match on. One did not
-      succeed. Therefore it is displayed within the Failed Rules view. Two
+      succeed. It is displayed within the Failed Rules view. Two
       succeeded and are shown in the Matched Rules view.
     </para>
     <para>
@@ -224,40 +189,29 @@
     <title>Rule Elements</title>
     <para>
       If you select one of the listed instances in the Matched or
-      Failed Rules view,
-      then the Rule Elements view contains a listing
-      of
-      the rule elements and their
-      conditions belonging to the related rule
+      Failed Rules view, then the Rule Elements view contains a listing
+      of the rule elements and their conditions belonging to the related rule
       used on the specific text passage. There is detailed
-      information
-      available on what text
-      passage each rule element did or
-      did not match
-      and which condition did
-      or did not evaluate true.
+      information available on what text passage each rule element did or
+      did not match and which condition did or did not evaluate true.
     </para>
     <para>
       Within the Rule Elements view, each rule element generates its
-      own explanation hierarchy. On the root level the rule element itself
+      own explanation hierarchy. On the root level, the rule element itself
       is given. An apostrophe at the beginning of the rule element
       indicates that this rule was the anchor for the rule execution. On
-      the next level the text passage on which the rule element tried to
-      match on is given. The last level then explains why the rule element
-      did or did not match. The first entry on this level tells if the text
+      the next level, the text passage on which the rule element tried to
+      match on is given. The last level explains, why the rule element
+      did or did not match. The first entry on this level tells, if the text
       passage is of the requested annotation type. If it is, a green hook
-      is shown in front of the requested type. Otherwise a red cross is
+      is shown in front of the requested type. Otherwise, a red cross is
       shown. In the following the rule conditions and their evaluation on
       the given text passage are shown.
     </para>
     <para>
       In the previous example, select the listed instance
-      <literal>Bethard, S.</literal>
-      . The Rule Elements view then shows the related explanation displayed
-      in
-      <xref
-        linkend='figure.ugr.tools.tm.workbench.explain_perspective.rule_elements' />
-      .
+      <literal>Bethard, S.</literal>. The Rule Elements view shows the related explanation displayed
+      in <xref linkend='figure.ugr.tools.tm.workbench.explain_perspective.rule_elements' />.
     </para>
     <para>
       The following image shows the TextMarker Rule Elements view.
@@ -283,17 +237,11 @@
       </figure>
     </para>
     <para>
-      As you can see, the first rule element
-      <literal>Name{-PARTOF(NameListPart)}</literal>
-      matched on the text passage
-      <literal>Bethard, S.</literal>
-      since it is firstly annotated with an
-      <quote>Name</quote>
-      annotation and secondly it is not part of an annotation
-      <quote>NameListPart</quote>
-      . But as this first text passage is not followed by a
-      <quote>NameLinker</quote>
-      annotation the whole rule fails.
+      As you can see, the first rule element <literal>Name{-PARTOF(NameListPart)}</literal>
+      matched on the text passage <literal>Bethard, S.</literal>
+      since it is firstly annotated with a <quote>Name</quote> annotation and secondly it is not part of an annotation
+      <quote>NameListPart</quote>. However, as this first text passage is not followed by a
+      <quote>NameLinker</quote> annotation the whole rule fails.
     </para>
   </section>
 
@@ -303,14 +251,12 @@
     <para>
       This views is very similar to the Applied Rules view, but
       displays only rules and blocks under a given selection. If the user
-      clicks on any position in the xmiCAS document, an Covering Rules view
+      clicks on any position in the xmiCAS document, a Covering Rules view
       is generated containing only rule elements that affect that position
       in the document. The Matched Rules,
       Failed Rules and Rule Elements
-      views
-      then only contain match
-      information
-      of that position.
+      views only contain match
+      information of that position.
     </para>
   </section>
 
@@ -320,9 +266,9 @@
       This views is very similar to the Applied Rules view and the
       Covering Rules view, but displays only rules and NO blocks under a
       given selection. If the user clicks on any position in the xmiCAS
-      document, a list of rules, that matched or tried to match on that
-      position in the document, is generated within the Rule List view. The
-      Matched Rules, Failed Rules and Rule Elements views then only contain
+      document, a list of rules that matched or tried to match on that
+      position in the document is generated within the Rule List view. The
+      Matched Rules, Failed Rules and Rule Elements views only contain
       match information of that position. Additionally, this view provides
       a text field for filtering the rules. Only those rules remain that
       contain the entered text.
@@ -334,22 +280,18 @@
     <title>Created By</title>
     <para>
       The Created By view tells you which rule created a specific
-      annotation. To get this information just select an annotation in the
-      Annotation Browser. After doing this the Created By view shows the
+      annotation. To get this information, select an annotation in the
+      Annotation Browser. After doing this, the Created By view shows the
       related information.
     </para>
     <para>
       To see how this works, use the example project and go to the
       Annotation view. Select the
       <quote>d.u.e.Year</quote>
-      annotation
-      <quote>(2008)</quote>
-      . The Created By view displays the information, seen in
-      <xref linkend='figure.ugr.tools.tm.workbench.explain_perspective.created_by' />
-      . You can double-click on the shown rule to jump to the related
-      document
-      <quote>Year.tm</quote>
-      .
+      annotation <quote>(2008)</quote>. The Created By view displays the information, shown in
+      <xref linkend='figure.ugr.tools.tm.workbench.explain_perspective.created_by' />. 
+      You can double-click on the shown rule to jump to the related
+      document <quote>Year.tm</quote>.
     </para>
     <para>
       The following image shows the TextMarker Created By view.

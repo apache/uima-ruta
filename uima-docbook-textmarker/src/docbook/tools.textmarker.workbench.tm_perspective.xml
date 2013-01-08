@@ -22,8 +22,8 @@
     The TextMarker perspective is the main view to manage TextMarker
     projects. There are several views associated with the TextMarker
     perspective: Annotation Test, Annotation Browser, Selection,
-    TextRuler, TextMarker Query. Since Annotation Test, TextRuler and
-    TextMarker Query have a stand-alone functionality they are explained
+    TextRuler and TextMarker Query. Since Annotation Test, TextRuler and
+    TextMarker Query have a stand-alone functionality. They are explained
     in separate sections.
   </para>
 
@@ -33,9 +33,8 @@
     workbench.
     Import the TextMarker example project and open the main
     TextMarker script file 'Main.tm'. Now press the 'Run' button (green
-    arrow)and wait for the end of execution. Open the resulting xmiCAS
-    file
-    'Test1.txt.xmi', which you can find in the output folder.
+    arrow) and wait for the end of execution. Open the resulting xmiCAS
+    file 'Test1.txt.xmi', which you can find in the output folder.
   </para>
 
   <section
@@ -49,10 +48,7 @@
     </para>
     <para>
       The result of the execution of the TextMarker example project is
-      shown in
-      <xref
-        linkend='figure.ugr.tools.tm.workbench.tm_perspective.annotation_browser' />
-      .
+      shown in <xref linkend='figure.ugr.tools.tm.workbench.tm_perspective.annotation_browser' />.
     </para>
     <para>
       <figure
@@ -96,12 +92,9 @@
       document or select a certain text passage.
     </para>
     <para>
-      E.g., if you select the text passage
-      <literal>2008</literal>
-      , the Selection view will be generated as shown in
-      <xref
-        linkend='figure.ugr.tools.tm.workbench.tm_perspective.annotation_browser' />
-      .
+      If you select the text passage
+      <literal>2008</literal>, the Selection view will be generated as shown in
+      <xref linkend='figure.ugr.tools.tm.workbench.tm_perspective.annotation_browser' />.
     </para>
     <para>
       <figure id="figure.ugr.tools.tm.workbench.tm_perspective.selection">

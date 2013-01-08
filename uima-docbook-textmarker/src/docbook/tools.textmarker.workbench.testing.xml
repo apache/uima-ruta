@@ -26,7 +26,7 @@ under the License.
 
 <section id="section.ugr.tools.tm.workbench.testing">
   <title>Testing</title>
-  <para> The TextMarker workbench comes bundled with its own testing environment, that allows you to
+  <para> The TextMarker workbench comes bundled with its own testing environment that allows you to
     test and evaluate TextMarker scripts. It provides full back-end testing capabilities and allows
     you to examine test results in detail.
   </para>
@@ -44,16 +44,13 @@ under the License.
   <para>
     <xref linkend='figure.ugr.tools.tm.workbench.testing.script_explorer' />
     shows the script explorer. Every TextMarker project contains a folder called
-    <quote>test</quote>
-    . This folder is the default location for the test-files. In the folder each script file has its
+    <quote>test</quote>. This folder is the default location for the test-files. In the folder each script file has its
     own subfolder with a relative path equal to the scripts package path in the
-    <quote>script</quote>
-    folder. This folder contains the test files. In every scripts test folder you will also find a
+    <quote>script</quote> folder. This folder contains the test files. In every scripts test folder, you will also find a
     result folder where the results of the tests are saved. If you like to use test files from
     another location in the file system, the results will be saved in the
-    <quote>temp</quote>
-    subfolder of the projects test folder. All files in the temp folder will be deleted, once
-    eclipse is closed.
+    <quote>temp</quote> subfolder of the project's test folder. All files in the temp folder will be deleted once
+    Eclipse is closed.
   </para>
   <para>
     <figure id="figure.ugr.tools.tm.workbench.testing.script_explorer">
@@ -77,16 +74,16 @@ under the License.
     <title>Usage</title>
     <para> This section describes the general proceeding when using the testing environment. </para>
     <para>
-      Currently the testing environment has no own perspective associated to it. It is recommended
+      Currently, the testing environment has no own perspective associated to it. It is recommended
       to start within the TextMarker perspective. There, the Annotation Test view is open by
       default. The True Positive, False Positive and False Negative views have to be opened
       manually:
       <quote>Window -> Show View -> True Positive/False Positive/False Negative </quote>.
     </para>
-    <para> To explain the usage of the TextMarker testing environment the TextMarker example project
-      is again used. Therefore, open this project. 
-      Firstly one has to select a script for testing: TextMarker will always test the script, that
-      is currently open and active in the script editor. So open the
+    <para> To explain the usage of the TextMarker testing environment, the TextMarker example project
+      is used again. Open this project. 
+      Firstly, one has to select a script for testing: TextMarker will always test the script, that
+      is currently open and active in the script editor. So, open the
       <quote>Main.tm</quote>
       script file of the TextMarker example project.
       The next <link linkend='figure.ugr.tools.tm.workbench.testing.annotation_test_initial_view'>figure</link>.
@@ -137,24 +134,23 @@ under the License.
         </mediaobject>
       </figure>
     </para>
-    <para> All control elements, that are needed for the interaction with the testing environment,
-      are located here. At the right top, there is the buttons bar (label (1)-(6)). At the left top
+    <para> All control elements that are needed for the interaction with the testing environment
+      are located here. At the top right, there is the buttons bar (label (1)-(6)). At the top left
       of the view (label (7)) the name of the script that is going to be tested is shown. It is
-      always same to the script active in the editor. Below this (label (10)) the test list is
-      located. This list contains the different files to be tested. Right next to name of the script
-      file (label (8)) you get select the desired view. Right to this (label (9)) you get statistics
+      always equal to the script active in the editor. Below this (label (10)), the test list is
+      located. This list contains the different files for testing. Right next to the name of the script
+      file (label (8)) you can select the desired view. Right to this (label (9)) you get statistics
       over all ran tests: the number of all true positives (TP), false positives (FP) and false
-      negatives (FN). In the field bellow (label (11)), you will find a table with statistic
-      information for a single selected test file. To change this view select a file in the test
+      negatives (FN). In the field below (label (11)), you will find a table with statistic
+      information for a single selected test file. To change this view, select a file in the test
       list field. The table shows a total TP, FP and FN information, as well as precision, recall
       and f1-score for every type as well as for the whole file. </para>
     <para>
-      Next you have to add test files to your project. A test file is a previously annotated xmiCAS
+      Next, you have to add test files to your project. A test file is a previously annotated xmiCAS
       file that can be used as a golden standard for the test. You can use any xmiCAS file. The
-      TextMarker example project already contains such test files. Therefore these files are listed
+      TextMarker example project already contains such test files. These files are listed
       in the Annotation Test view. Try do delete these files by selecting them and clicking on
-      <literal>Del</literal>
-      . Add these files again by simply dragging them from the Script Explorer into the test file
+      <literal>Del</literal>. Add these files again by simply dragging them from the Script Explorer into the test file
       list. A different way to add test-files is to use the
       <quote>Load all test files from selected folder</quote>
       button (green plus). It can be used to add all xmiCAS files from a selected folder.
@@ -166,32 +162,24 @@ under the License.
       perspective delivered with the UIMA workbench.
     </para>
     <para>
-      Selecting a CAS View to test: TextMarker supports different views, that allow you to operate
-      on different levels in a document. The
-      <quote>InitialView</quote>
-      is selected as default, however you can also switch the evaluation to another view by typing
-      the views name into the list or selecting the view you wish to use from the list.
-    </para>
-    <para>
-      Selecting the evaluator: The testing environment supports different evaluators that allow a
+      The testing environment supports different evaluators that allow a
       sophisticated analysis of the behavior of a TextMarker script. The evaluator can be chosen in
       the testing environment's preference page. The preference page can be opened either through
       the menu or by clicking on the
       <quote>Select evaluator</quote>
       button (blue gear wheels) in the testing view's toolbar. Clicking the button will open a
       filtered version of the TextMarker preference page. The default evaluator is the "Exact CAS
-      Evaluator" which compares the offsets of the annotations between the test file and the file
+      Evaluator", which compares the offsets of the annotations between the test file and the file
       annotated by the tested script. To get an overview of all available evaluators, see
       <xref linkend='section.ugr.tools.tm.workbench.testing.evaluators' />
     </para>
     <para>
-      This preference page (see
-      <xref linkend='figure.ugr.tools.tm.workbench.testing.preference' />
-      ) offers a few options that will modify the plug-ins general behavior. For example the
+      This preference page (see <xref linkend='figure.ugr.tools.tm.workbench.testing.preference' />) 
+      offers a few options that will modify the plug-ins general behavior. For example, the
       preloading of previously collected result data can be turned off. An important option in the
       preference page is the evaluator you can select. On default the "exact evaluator" is selected,
       which compares the offsets of the annotations, that are contained in the file produced by the
-      selected script, with the annotations in the test file. Other evaluators will compare
+      selected script with the annotations in the test file. Other evaluators will compare
       annotations in a different way.
     </para>
     <para>
@@ -211,12 +199,11 @@ under the License.
       </figure>
     </para>
     <para>
-      Excluding Types: During a test-run it might be convenient to disable testing for specific
+      During a test-run it might be convenient to disable testing for specific
       types like punctuation or tags. The
       <quote>Select excluded types</quote>
-      button (white exclamation in a red disk) will open a dialog (see
-      <xref linkend='figure.ugr.tools.tm.workbench.testing.excluded_types' />
-      ) where all types can be selected that should not be considered in the test.
+      button (white exclamation in a red disk) will open a dialog (see <xref linkend='figure.ugr.tools.tm.workbench.testing.excluded_types' />) 
+      where all types can be selected that should not be considered in the test.
     </para>
     <para>
       <figure id="figure.ugr.tools.tm.workbench.testing.excluded_types">
@@ -237,7 +224,7 @@ under the License.
       </figure>
     </para>
     <para>
-      Running the test: A test-run can be started by clicking on the start button. Do this for the
+      A test-run can be started by clicking on the start button. Do this for the
       TextMarker example project.
       <xref linkend='figure.ugr.tools.tm.workbench.testing.annotation_test_test_run' />
       shows the results.
@@ -260,10 +247,10 @@ under the License.
         </mediaobject>
       </figure>
     </para>
-    <para> Result Overview: The testing main view displays some information, on how well the script
-      did, after every test run. It will display an overall number of true positive, false positive
+    <para>The testing main view displays some information on how well the script
+      did after every test run. It will display an overall number of true positive, false positive
       and false negatives annotations of all result files as well as an overall f1-score.
-      Furthermore a table will be displayed that contains the overall statistics of the selected
+      Furthermore, a table will be displayed that contains the overall statistics of the selected
       test file as well as statistics for every single type in the test file. The information
       displayed are true positives, false positives, false negatives, precision, recall and
       f1-measure. </para>
@@ -275,22 +262,22 @@ under the License.
       copied and easily imported into other applications.
     </para>
     <para>
-      Result Files: When running a test, the evaluator will create a new result xmiCAS file and will
+      When running a test, the evaluator will create a new result xmiCAS file and will
       add new true positive, false positive and false negative annotations. By clicking on a file in
       the test-file list, you can open the corresponding result xmiCAS file in the CAS
       Editor. While displaying the result xmiCAS file in the CAS Editor, the True Positive, False
       Positive and False Negative views allow easy navigation through the new tp, fp and fn
       annotations. The corresponding annotations are displayed in a hierarchic tree structure. This
-      allows an easy tracing of the results inside the testing document. Clicking on one of the
-      annotations in those views, will highlight the annotation in the CAS Editor. Opening
+      allows an easy tracing of the results within the testing document. Clicking on one of the
+      annotations in those views will highlight the annotation in the CAS Editor. Opening
       <quote>test1.result.xmi</quote>
-      in the TextMarker example project, changes the True Positive view as shown in
+      in the TextMarker example project changes the True Positive view as shown in
       <xref linkend='figure.ugr.tools.tm.workbench.testing.true_positive' />.
       Notice that the type system, which will be used by the CAS Editor to open the evaluated file, 
       can only be resolved for the tested script, if the test files are located in the associated
-      folder structure, that is the folder with the name of the script. If the files are located 
+      folder structure that is the folder with the name of the script. If the files are located 
       in the temp folder, for example by adding the files to the list of test cases by drag and drop,
-      then other strategies to find the correct type system will be applied. For TextMarker projects, 
+      other strategies to find the correct type system will be applied. For TextMarker projects, 
       for example, this will be the type system of the last launched script in this project. 
     </para>
     <para>
@@ -317,41 +304,41 @@ under the License.
     <para> When testing a CAS file, the system compared the offsets of the annotations of a
       previously annotated gold standard file with the offsets of the annotations of the result file
       the script produced. Responsible for comparing annotations in the two CAS files are
-      evaluators. These evaluators have different methods and strategies, for comparing the
-      annotations, implemented. Also a extension point is provided that allows easy implementation
+      evaluators. These evaluators have different methods and strategies implemented for comparing the
+      annotations. Also, an extension point is provided that allows easy implementation
       of new evaluators. </para>
     <para> Exact Match Evaluator: The Exact Match Evaluator compares the offsets of the annotations
-      in the result and the golden standard file. Any difference will be marked with either an false
+      in the result and the golden standard file. Any difference will be marked with either a false
       positive or false negative annotations. </para>
     <para> Partial Match Evaluator: The Partial Match Evaluator compares the offsets of the
       annotations in the result and golden standard file. It will allow differences in the beginning
-      or the end of an annotation. For example "corresponding" and "corresponding " will not be
+      or the end of an annotation. For example, "corresponding" and "corresponding " will not be
       annotated as an error. </para>
     <para> Core Match Evaluator: The Core Match Evaluator accepts annotations that share a core
-      expression. In this context a core expression is at least four digits long and starts with a
-      capitalized letter. For example the two annotations "L404-123-421" and "L404-321-412" would be
-      considered a true positive match, because of "L404" is considered a core expression that is
+      expression. In this context, a core expression is at least four digits long and starts with a
+      capitalized letter. For example, the two annotations "L404-123-421" and "L404-321-412" would be
+      considered a true positive match, because "L404" is considered a core expression that is
       contained in both annotations. </para>
     <para> Word Accuracy Evaluator: Compares the labels of all words/numbers in an annotation,
       whereas the label equals the type of the annotation. This has the consequence, for example,
       that each word or number that is not part of the annotation is counted as a single false
-      negative. For example we have the sentence: "Christmas is on the 24.12 every year." The script
+      negative. For example in the sentence: "Christmas is on the 24.12 every year." The script
       labels "Christmas is on the 12" as a single sentence, while the test file labels the sentence
-      correctly with a single sentence annotation. While for example the Exact CAS Evaluator while
-      only assign a single False Negative annotation, Word Accuracy Evaluator will mark every word
-      or number as a single False Negative. </para>
+      correctly with a single sentence annotation. While, for example, the Exact CAS Evaluator is
+      only assigning a single False Negative annotation, Word Accuracy Evaluator will mark every word
+      or number as a single false negative. </para>
     <para> Template Only Evaluator: This Evaluator compares the offsets of the annotations and the
-      features, that have been created by the script. For example the text "Alan Mathison Turing" is
+      features, that have been created by the script. For example, the text "Alan Mathison Turing" is
       marked with the author annotation and "author" contains 2 features: "FirstName" and
       "LastName". If the script now creates an author annotation with only one feature, the
       annotation will be marked as a false positive. </para>
     <para> Template on Word Level Evaluator: The Template On Word Evaluator compares the offsets of
-      the annotations. In addition it also compares the features and feature structures and the
-      values stored in the features. For example the annotation "author" might have features like
-      "FirstName" and "LastName" The authors name is "Alan Mathison Turing" and the script correctly
+      the annotations. In addition, it also compares the features and feature structures and the
+      values stored in the features. For example, the annotation "author" might have features like
+      "FirstName" and "LastName". The authors name is "Alan Mathison Turing" and the script correctly
       assigns the author annotation. The feature assigned by the script are "Firstname : Alan",
-      "LastName : Mathison", while the correct feature values would be "FirstName Alan", "LastName
-      Turing". In this case the Template Only Evaluator will mark an annotation as a false positive,
+      "LastName : Mathison", while the correct feature values are "FirstName Alan" and "LastName
+      Turing". In this case, the Template Only Evaluator will mark an annotation as a false positive,
       since the feature values differ. </para>
   </section>
 </section>
