@@ -105,6 +105,7 @@
                   <exclude>src/test/resources/org/apache/uima/textmarker/seed/*.txt</exclude> <!-- test data -->
                   <exclude>src/test/resources/org/apache/uima/textmarker/seed/*.tm</exclude> <!-- test data -->
                   <exclude>src/test/resources/org/apache/uima/textmarker/engine/*.html</exclude> <!-- test data -->
+                  <exclude>issuesFixed/**</exclude> <!-- generated -->
                 </excludes>
               </configuration>
             </execution>

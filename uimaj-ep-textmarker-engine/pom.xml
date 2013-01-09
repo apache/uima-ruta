@@ -65,6 +65,7 @@
                 <excludes>
                   <exclude>release.properties</exclude> <!-- release generated artifact -->
                   <exclude>marker-file-identifying-*</exclude>
+                  <exclude>issuesFixed/**</exclude>
                 </excludes>
               </configuration>
             </execution>

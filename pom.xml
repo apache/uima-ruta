@@ -135,6 +135,29 @@
     <pluginManagement>
       <plugins>
         <plugin>
+          <!-- run Release Audit Tool (RAT) -->
+          <groupId>org.apache.rat</groupId>
+          <artifactId>apache-rat-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>default-cli</id>
+              <configuration>
+                <excludes>
+                  <exclude>target/**</exclude>
+                  <exclude>example-projects/**</exclude>
+                  <exclude>README*</exclude>
+                  <exclude>RELEASE_NOTES*</exclude>
+                  <exclude>issuesFixed/**</exclude>
+                  <exclude>src/main/resources/docbook-shared/titlepage/*.xsl</exclude>
+                  <exclude>marker-file-identifying-*</exclude>
+                  <exclude>DEPENDENCIES</exclude>
+                </excludes>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-changes-plugin</artifactId>
           <version>2.8</version>
@@ -205,6 +228,7 @@
               <skip>true</skip>
             </configuration>
           </plugin>
+          <!-- 
           <plugin>
             <artifactId>maven-antrun-plugin</artifactId>
             <executions>
@@ -225,6 +249,7 @@
               </execution>
             </executions>
           </plugin>
+           -->
           <!-- Run jira report -->
           <!-- depends on having -DjiraVersion set -->
           <plugin>

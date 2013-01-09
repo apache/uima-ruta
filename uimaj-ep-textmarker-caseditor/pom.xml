@@ -122,6 +122,7 @@
                   <exclude>release.properties</exclude> <!-- release generated artifact -->
                   <exclude>src/test/resources/ManualTests/*</exclude> <!-- test data -->
                   <exclude>marker-file-identifying-*</exclude>
+                  <exclude>issuesFixed/**</exclude>
                 </excludes>
               </configuration>
             </execution>

@@ -264,6 +264,7 @@
                   <exclude>src/main/resources/org/apache/uima/textmarker/ide/launching/*.tm</exclude> <!-- preview file -->
                   <exclude>src/main/resources/org/apache/uima/textmarker/ide/ui/documentation/*.html</exclude> <!-- hover documentation -->
                   <exclude>src/main/resources/org/apache/uima/textmarker/ide/ui/preferences/*.txt</exclude> <!-- preview file -->
+                  <exclude>issuesFixed/**</exclude>
                 </excludes>
               </configuration>
             </execution>
