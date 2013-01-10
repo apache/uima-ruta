@@ -19,6 +19,7 @@
 
 package org.apache.uima.textmarker.explain.createdBy;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
@@ -53,7 +54,7 @@ public class CreatedByLabelProvider extends LabelProvider implements ILabelProvi
       String rule = fs.getStringValue(featureRule);
       String script = fs.getStringValue(featureScript);
       String result = rule ;
-      if(!"".equals(script)){
+      if(!StringUtils.isEmpty(script)){
         result += " (in " + script + ")";
       }
       return result;

@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.textmarker.ide.TextMarkerIdePlugin;
 import org.apache.uima.textmarker.ide.ui.TextMarkerPreferenceConstants;
 import org.eclipse.core.runtime.IPath;
@@ -88,7 +89,7 @@ public class TextMarkerPagesDocumentationProvider implements IScriptDocumentatio
             .getString(TextMarkerPreferenceConstants.DOC_TM_PAGES_LOCATIONS);
 
     try {
-      if (value != null && !value.equals("")) {
+      if (!StringUtils.isEmpty(value)) {
         // value = "<Pages></Pages>";
         this.folders = TextMarkerPageFolder.readXML(value);
       }

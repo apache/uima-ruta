@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
@@ -151,7 +152,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     for (String string : missingTypes) {
       missingString += string + ", ";
     }
-    if (!"".equals(missingString)) {
+    if (!StringUtils.isEmpty(missingString)) {
       missingString = missingString.substring(0, missingString.length() - 2);
     }
     if (!result) {

@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.CASRuntimeException;
@@ -332,7 +333,7 @@ public class FeatureCasEvaluator implements ICasEvaluator {
 
         String featureValue2 = a2.getFeatureValueAsString(eachFeature2);
 
-        if ((featureValue2 == null || "".equals(featureValue2.trim())) && (featureValue1 == null)) {
+        if ((StringUtils.isBlank(featureValue2)) && (featureValue1 == null)) {
 
           // nothing to do
 

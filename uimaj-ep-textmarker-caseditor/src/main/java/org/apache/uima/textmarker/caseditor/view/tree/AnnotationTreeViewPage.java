@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
@@ -471,9 +472,9 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     for (AnnotationFS annotationFS : annotationIndex) {
       boolean offsetConstraint = pos == -1
               || (annotationFS.getBegin() <= pos && annotationFS.getEnd() >= pos);
-      boolean typeConstraint = manualTypeFilter == null || "".equals(manualTypeFilter)
+      boolean typeConstraint = StringUtils.isEmpty(manualTypeFilter)
               || annotationFS.getType().getName().indexOf(manualTypeFilter) != -1;
-      boolean textConstraint = manualTextFilter == null || "".equals(manualTextFilter)
+      boolean textConstraint = StringUtils.isEmpty(manualTextFilter)
               || annotationFS.getCoveredText().indexOf(manualTextFilter) != -1;
       if (offsetConstraint && typeConstraint && textConstraint) {
         root.insertFS(annotationFS);

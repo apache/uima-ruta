@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
@@ -581,7 +582,7 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
     for (String string : missingTypes) {
       missingString += string + ", ";
     }
-    if (!"".equals(missingString)) {
+    if (!StringUtils.isEmpty(missingString)) {
       missingString = missingString.substring(0, missingString.length() - 2);
     }
     if (!result) {

@@ -22,6 +22,7 @@ package org.apache.uima.textmarker.explain.rulelist;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.caseditor.editor.AnnotationEditor;
@@ -105,7 +106,7 @@ public class RuleListViewPage extends ApplyViewPage implements Listener {
         Feature f = ruleType.getFeatureByBaseName(ExplainConstants.ELEMENT);
         if (f != null) {
           String v = ran.getFeatureStructure().getStringValue(f);
-          if (manualFilter != null && !"".equals(manualFilter) && v.indexOf(manualFilter) == -1) {
+          if (!StringUtils.isEmpty(manualFilter) && v.indexOf(manualFilter) == -1) {
             root.removeChild(ran);
           }
         }

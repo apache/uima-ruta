@@ -28,6 +28,7 @@ import java.util.Map;
 import org.antlr.runtime.BitSet;
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.CommonTokenStream;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.textmarker.ide.core.parser.TextMarkerParser;
 import org.apache.uima.textmarker.ide.core.parser.TextMarkerSourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
@@ -78,7 +79,7 @@ public class TextMarkerFormatter extends AbstractScriptFormatter {
     String input = source;
     // TODO implement useful format for code snippets
     // final String input = source.substring(offset, offset + length);
-    if (input.equals("")) {
+    if (StringUtils.isEmpty(input)) {
       return null;
     }
     TextMarkerSourceParser tmsp = new TextMarkerSourceParser();

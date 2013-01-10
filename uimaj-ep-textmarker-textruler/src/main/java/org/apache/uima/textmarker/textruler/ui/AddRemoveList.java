@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
@@ -100,7 +101,7 @@ public class AddRemoveList extends Composite {
     types.clear();
     String preFilePath = TextRulerViewComposite.getScriptPath();
     File preFile = new File(preFilePath);
-    if (preFile.exists() == false || preFilePath.equals("")) {
+    if (preFile.exists() == false || StringUtils.isEmpty(preFilePath)) {
       printErrorDialog("The preprocessing file was not found!");
       error = true;
       return;
@@ -385,7 +386,7 @@ public class AddRemoveList extends Composite {
         }
         i++;
       }
-      if (!isAlreadyAdded && !filter.trim().equals(""))
+      if (!isAlreadyAdded && !StringUtils.isBlank(filter))
         listViewer.add(filter);
     }
     listViewer.setAllChecked(true);

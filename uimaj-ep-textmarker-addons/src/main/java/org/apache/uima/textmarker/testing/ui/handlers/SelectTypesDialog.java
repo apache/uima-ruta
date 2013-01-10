@@ -23,6 +23,7 @@ import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.textmarker.testing.ui.views.TestViewPage;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -219,9 +220,9 @@ public class SelectTypesDialog extends Dialog implements Listener {
     aTypeName = aTypeName.toLowerCase();
     for (String type : types) {
       String candidateTypeName = type.toLowerCase();
-      if (aTypeName.trim().equals("") || candidateTypeName.indexOf(aTypeName) != -1) {
+      if (StringUtils.isBlank(aTypeName) || candidateTypeName.indexOf(aTypeName) != -1) {
 
-        if (topEntry.equals("")) {
+        if (StringUtils.isEmpty(topEntry)) {
           topEntry = type;
         }
         TableItem item = new TableItem(matchingTypesUI, SWT.NULL);

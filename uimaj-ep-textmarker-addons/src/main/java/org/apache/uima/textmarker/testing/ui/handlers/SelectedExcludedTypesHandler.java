@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
@@ -65,7 +66,7 @@ public class SelectedExcludedTypesHandler implements IHandler {
     IPath location = resource.getLocation();
     String preFilePath = location.toPortableString();
     File preFile = new File(preFilePath);
-    if (preFile.exists() == false || preFilePath.equals("")) {
+    if (preFile.exists() == false || StringUtils.isEmpty(preFilePath)) {
       printErrorDialog("The preprocessing file was not found!");
       return null;
     }

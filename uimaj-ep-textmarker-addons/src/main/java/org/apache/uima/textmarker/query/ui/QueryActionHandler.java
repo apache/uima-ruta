@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
@@ -150,7 +151,7 @@ public class QueryActionHandler implements IHandler {
         AnalysisEngineDescription aed = (AnalysisEngineDescription) specifier;
         TypeSystemDescription basicTypeSystem = aed.getAnalysisEngineMetaData().getTypeSystem();
 
-        if (!typeSystemLocation.equals("")) {
+        if (!StringUtils.isEmpty(typeSystemLocation)) {
           // TODO check on valid input and extend for scr
           String tsLocation = typeSystemLocation;
           Collection<TypeSystemDescription> tsds = new ArrayList<TypeSystemDescription>();

@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.metadata.FeatureDescription;
@@ -206,7 +207,7 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
         String actionName = currentFile.getSource().substring(tma.getNameStart(), tma.getNameEnd());
         String[] keywords = TextMarkerKeywordsManager.getKeywords(ITextMarkerKeywords.ACTION);
         List<String> asList = Arrays.asList(keywords);
-        if (!"".equals(actionName) && !"-".equals(actionName) && !asList.contains(actionName)) {
+        if (!StringUtils.isEmpty(actionName) && !"-".equals(actionName) && !asList.contains(actionName)) {
           IProblem problem = problemFactory.createUnknownActionProblem(tma);
           rep.reportProblem(problem);
         }
@@ -261,7 +262,7 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
                 cond.getNameEnd());
         String[] keywords = TextMarkerKeywordsManager.getKeywords(ITextMarkerKeywords.CONDITION);
         List<String> asList = Arrays.asList(keywords);
-        if (!"".equals(conditionName) && !"-".equals(conditionName)
+        if (!StringUtils.isEmpty(conditionName) && !"-".equals(conditionName)
                 && !asList.contains(conditionName)) {
           IProblem problem = problemFactory.createUnknownConditionProblem(cond);
           rep.reportProblem(problem);

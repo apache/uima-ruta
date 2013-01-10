@@ -149,6 +149,11 @@
       <version>[3.3.0,4.0.0)</version>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.1</version>
+    </dependency>
   </dependencies>
   <scm>
     <url>http://svn.apache.org/viewvc/uima/sandbox/TextMarker/trunk/uimaj-ep-textmarker-addons</url>

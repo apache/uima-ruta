@@ -19,6 +19,7 @@
 
 package org.apache.uima.textmarker.ide.ui.preferences;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.textmarker.ide.TextMarkerIdePlugin;
 import org.apache.uima.textmarker.ide.ui.console.TextMarkerConsoleConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -114,10 +115,10 @@ public class TextMarkerConsolePreferences extends PreferencePage implements
   }
 
   protected void validateValues() {
-    if ("".equals(newPrompt.getText())) {
+    if (StringUtils.isEmpty(newPrompt.getText())) {
       setErrorMessage("Empty prompt");
       setValid(false);
-    } else if ("".equals(appendPrompt.getText())) {
+    } else if (StringUtils.isEmpty(appendPrompt.getText())) {
       setErrorMessage("Empty prompt");
       setValid(false);
     } else {
