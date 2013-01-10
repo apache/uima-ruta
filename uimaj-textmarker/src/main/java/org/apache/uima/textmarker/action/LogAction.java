@@ -30,7 +30,7 @@ import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class LogAction extends AbstractTextMarkerAction {
 
-  public static final String LOGGER_NAME = Logger.GLOBAL_LOGGER_NAME;
+  public static final String LOGGER_NAME = Logger.global.getName();
 
   private final StringExpression text;
 

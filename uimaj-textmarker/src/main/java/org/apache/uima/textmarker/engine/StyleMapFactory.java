@@ -35,6 +35,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
@@ -136,7 +137,7 @@ public class StyleMapFactory {
       result.append("<label>");
       String label = e.getLabel();
       if (label != null) {
-        if ((label != null) && !label.equals(""))
+        if (!StringUtils.isEmpty(label))
           result.append(label);
         else
           result.append(e.getAnnotationTypeName());

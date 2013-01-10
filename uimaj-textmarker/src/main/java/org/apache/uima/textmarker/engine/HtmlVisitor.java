@@ -96,10 +96,13 @@ public class HtmlVisitor extends NodeVisitor {
 
   public void visitEndTag(Tag tag) {
     String name = getName(tag);
-    Iterator<AnnotationFS> descendingIterator = annotationStack.descendingIterator();
     AnnotationFS found = null;
-    while (descendingIterator.hasNext()) {
-      AnnotationFS each = (AnnotationFS) descendingIterator.next();
+    for (int i = annotationStack.size() - 1; i >= 0; i--) {
+      AnnotationFS each = (AnnotationFS) annotationStack.get(i);
+      // // Java 6:
+      // Iterator<AnnotationFS> descendingIterator = annotationStack.descendingIterator();
+      // while (descendingIterator.hasNext()) {
+      // AnnotationFS each = (AnnotationFS) descendingIterator.next();
       Feature nameFeature = each.getType().getFeatureByBaseName("name");
       String eachName = each.getStringValue(nameFeature);
       if (name.equals(eachName)) {
@@ -180,6 +183,5 @@ public class HtmlVisitor extends NodeVisitor {
   public LinkedList<AnnotationFS> getAnnotationStack() {
     return annotationStack;
   }
-
 
 }
