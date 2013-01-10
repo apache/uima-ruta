@@ -163,7 +163,7 @@ public class TextMarkerProjectUtils {
       dataPath = "";
     }
     String addon = folder.getLocation().toPortableString();
-    if (!dataPath.isEmpty()) {
+    if (!"".equals(dataPath)) {
       dataPath += File.pathSeparator;
     }
     dataPath += addon;
@@ -176,7 +176,7 @@ public class TextMarkerProjectUtils {
       return;
     }
     String path = folder.getLocation().toPortableString();
-    if (!dataPath.isEmpty()) {
+    if (!"".equals(dataPath)) {
       dataPath.replaceAll(path, "");
       dataPath.replaceAll(File.pathSeparator + File.pathSeparator, "");
     }
