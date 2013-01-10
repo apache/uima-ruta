@@ -23,6 +23,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.textmarker.ide.TextMarkerIdePlugin;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -163,7 +164,7 @@ public class TextMarkerProjectUtils {
       dataPath = "";
     }
     String addon = folder.getLocation().toPortableString();
-    if (!"".equals(dataPath)) {
+    if (!StringUtils.isEmpty(dataPath)) {
       dataPath += File.pathSeparator;
     }
     dataPath += addon;
@@ -176,7 +177,7 @@ public class TextMarkerProjectUtils {
       return;
     }
     String path = folder.getLocation().toPortableString();
-    if (!"".equals(dataPath)) {
+    if (!StringUtils.isEmpty(dataPath)) {
       dataPath.replaceAll(path, "");
       dataPath.replaceAll(File.pathSeparator + File.pathSeparator, "");
     }

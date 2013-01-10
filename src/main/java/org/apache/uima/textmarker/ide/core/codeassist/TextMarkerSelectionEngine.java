@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
@@ -178,7 +179,7 @@ public class TextMarkerSelectionEngine extends ScriptSelectionEngine {
       int li = head.lastIndexOf('.');
       if (li > 0) {
         String frontPart = head.substring(0, li);
-        if (tail.equals("")) {
+        if (StringUtils.isEmpty(tail)) {
           tail = head.substring(li + 1);
         }
         if (scripts.containsKey(frontPart)) {

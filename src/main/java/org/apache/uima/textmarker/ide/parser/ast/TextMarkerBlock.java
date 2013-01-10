@@ -21,6 +21,7 @@ package org.apache.uima.textmarker.ide.parser.ast;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.statements.Statement;
@@ -34,7 +35,7 @@ public class TextMarkerBlock extends MethodDeclaration {
   public TextMarkerBlock(String name, String namespace, int nameStart, int nameEnd, int declStart,
           int declEnd) {
     super(name, nameStart, nameEnd, declStart, declEnd);
-    this.namespace = namespace == null || namespace.equals("") ? name : namespace + "." + name;
+    this.namespace = StringUtils.isEmpty(namespace) ? name : namespace + "." + name;
   }
 
   public void setElements(List<Statement> body) {
