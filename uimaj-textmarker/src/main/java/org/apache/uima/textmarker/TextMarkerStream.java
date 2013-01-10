@@ -24,9 +24,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.NavigableSet;
 import java.util.NoSuchElementException;
+import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -154,7 +153,10 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
         anchors.add(a.getEnd());
       }
       if (anchors.size() == 1) {
-        Integer first = anchors.pollFirst();
+        // for Java 6:
+        // Integer first = anchors.pollFirst();
+        Integer first = anchors.first();
+        anchors.remove(first);
         TextMarkerBasic newTMB = new TextMarkerBasic(getJCas(), first, first);
         newTMB.setLowMemoryProfile(lowMemoryProfile);
         beginAnchors.put(first, newTMB);
@@ -163,7 +165,10 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
         cas.addFsToIndexes(newTMB);
       } else {
         while (anchors.size() >= 2) {
-          Integer first = anchors.pollFirst();
+          // for Java 6:
+          // Integer first = anchors.pollFirst();
+          Integer first = anchors.first();
+          anchors.remove(first);
           Integer second = anchors.first();
           TextMarkerBasic newTMB = new TextMarkerBasic(getJCas(), first, second);
           newTMB.setLowMemoryProfile(lowMemoryProfile);
@@ -228,12 +233,16 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   private boolean checkAnchor(int anchor) {
-    Entry<Integer, TextMarkerBasic> floorEntry = endAnchors.floorEntry(anchor);
-    Entry<Integer, TextMarkerBasic> ceilingEntry = endAnchors.ceilingEntry(anchor);
-    if (floorEntry != null && ceilingEntry != null) {
+    // was for Java 6:
+    // Entry<Integer, TextMarkerBasic> floorEntry = endAnchors.floorEntry(anchor);
+    // Entry<Integer, TextMarkerBasic> ceilingEntry = endAnchors.ceilingEntry(anchor);
+    // if (floorEntry != null && ceilingEntry != null) {
+    // TextMarkerBasic floor = floorEntry.getValue();
+    // TextMarkerBasic ceiling = ceilingEntry.getValue();
+    TextMarkerBasic floor = getFloor(endAnchors, anchor);
+    TextMarkerBasic ceiling = getCeiling(endAnchors, anchor);
+    if (floor != null && ceiling != null) {
       TextMarkerBasic toSplit = null;
-      TextMarkerBasic floor = floorEntry.getValue();
-      TextMarkerBasic ceiling = ceilingEntry.getValue();
       if (floor.getEnd() > anchor) {
         toSplit = floor;
       } else {
@@ -257,6 +266,28 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
       assert (false);
     }
     return false;
+  }
+
+  private TextMarkerBasic getCeiling(TreeMap<Integer, TextMarkerBasic> anchors, int anchor) {
+    TextMarkerBasic basic = anchors.get(anchor);
+    if (basic != null) {
+      return basic;
+    } else if (anchor <= anchors.lastKey()) {
+      anchor++;
+      return getCeiling(anchors, anchor);
+    }
+    return null;
+  }
+
+  private TextMarkerBasic getFloor(TreeMap<Integer, TextMarkerBasic> anchors, int anchor) {
+    TextMarkerBasic basic = anchors.get(anchor);
+    if (basic != null) {
+      return basic;
+    } else if (anchor >= 0) {
+      anchor--;
+      return getFloor(anchors, anchor);
+    }
+    return null;
   }
 
   public void removeAnnotation(AnnotationFS annotationFS) {
@@ -452,8 +483,21 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
       result.add(beginAnchor);
       return result;
     }
-    TextMarkerBasic endAnchor = getEndAnchor(windowAnnotation.getEnd());
-    NavigableSet<TextMarkerBasic> subSet = basics.subSet(beginAnchor, true, endAnchor, true);
+    // was Java 6:
+    // TextMarkerBasic endAnchor = getEndAnchor(windowAnnotation.getEnd());
+    // NavigableSet<TextMarkerBasic> subSet = basics.subSet(beginAnchor, true, endAnchor, true);
+
+    SortedSet<TextMarkerBasic> subSet = null;
+    if (windowAnnotation.getEnd() == cas.getDocumentAnnotation().getEnd()
+            && windowAnnotation.getBegin() == 0) {
+      subSet = basics;
+    } else if (windowAnnotation.getEnd() == cas.getDocumentAnnotation().getEnd()) {
+      subSet = basics.tailSet(beginAnchor);
+    } else {
+      TextMarkerBasic endAnchor1 = getCeiling(endAnchors, windowAnnotation.getEnd() + 1);
+      subSet = basics.subSet(beginAnchor, endAnchor1);
+    }
+
     return subSet;
     // List<TextMarkerBasic> result = new ArrayList<TextMarkerBasic>();
     // if (windowAnnotation instanceof TextMarkerBasic) {
