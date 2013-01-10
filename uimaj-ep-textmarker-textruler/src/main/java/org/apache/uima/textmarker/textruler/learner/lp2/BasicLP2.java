@@ -581,7 +581,7 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
     for (String string : missingTypes) {
       missingString += string + ", ";
     }
-    if (!missingString.isEmpty()) {
+    if (!"".equals(missingString)) {
       missingString = missingString.substring(0, missingString.length() - 2);
     }
     if (!result) {

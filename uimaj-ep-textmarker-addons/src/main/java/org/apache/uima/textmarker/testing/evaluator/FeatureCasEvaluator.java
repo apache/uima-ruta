@@ -332,7 +332,7 @@ public class FeatureCasEvaluator implements ICasEvaluator {
 
         String featureValue2 = a2.getFeatureValueAsString(eachFeature2);
 
-        if ((featureValue2 == null || featureValue2.trim().isEmpty()) && (featureValue1 == null)) {
+        if ((featureValue2 == null || "".equals(featureValue2.trim())) && (featureValue1 == null)) {
 
           // nothing to do
 
