@@ -24,18 +24,18 @@ specific language governing permissions and limitations
 under the License.
 -->
 <chapter id="ugr.tools.tm.overview">
-  <title>TextMarker Overview</title>
+  <title>Apache UIMA TextMarker Overview</title>
   <para>
    
   </para>
   <section id="ugr.tools.tm.overview.intro">
-    <title>What is TextMarker?</title>
+    <title>What is Apache UIMA TextMarker?</title>
     <para>
       Apache UIMA&#8482; TextMarker is a rule-based script language supported by Eclipse-based tooling.
       The language is designed to enable rapid development of text processing applications within UIMA. 
       A special focus lies on the intuitive and flexible domain specific language for defining 
       patterns of annotations. Writing rules for information extraction or other text processing 
-      applications is a tedious process. The Eclipse-based tooling for TextMarker, called the TextMarker Workbench,
+      applications is a tedious process. The Eclipse-based tooling for TextMarker, called the Apache UIMA TextMarker Workbench,
       was created to support the user and to facilitate every step when writing TextMarker rules. Both the 
       TextMarker rule language and the TextMarker Workbench integrate smoothly with Apache UIMA.
     </para>

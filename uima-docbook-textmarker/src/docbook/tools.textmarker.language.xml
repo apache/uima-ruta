@@ -25,9 +25,9 @@ under the License.
 -->
 
 <chapter id="ugr.tools.tm.language.language">
-  <title>TextMarker Language</title>
+  <title>Apache UIMA TextMarker Language</title>
   <para>
-    This chapter provides a complete description of the TextMarker
+    This chapter provides a complete description of the Apache UIMA TextMarker
     language.
   </para>
 

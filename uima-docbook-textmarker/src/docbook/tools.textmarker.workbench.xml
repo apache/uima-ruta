@@ -25,9 +25,9 @@ under the License.
 -->
   
 <chapter id="ugr.tools.tm.workbench">
-  <title>TextMarker Workbench</title>
+  <title>Apache UIMA TextMarker Workbench</title>
   <para>
-  The TextMarker workbench, which is made available as an Eclipse-plugin, offers a powerful environment for creating and working on TextMarker projects. It provides two main
+  The Apache UIMA TextMarker Workbench, which is made available as an Eclipse-plugin, offers a powerful environment for creating and working on TextMarker projects. It provides two main
   perspectives and several views to develop, run, debug, test and evaluate TextMarker
   rules in a comfortable way, supporting many of the known Eclipse features, e.g., auto-completion.
   Moreover, it makes the creation of dictionaries like tree word lists easy and supports machine
