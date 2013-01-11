@@ -31,7 +31,7 @@
 	<packaging>pom</packaging>
 	<version>3</version>
   
-	<name>Apache UIMA Eclipse: ${project.artifactId}</name>
+	<name>Apache UIMA TextMarker Eclipse: ${project.artifactId}</name>
   <description>The UIMA TextMarker Eclipse update site</description>
   <url>${uimaWebsiteUrl}</url>
 

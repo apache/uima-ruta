@@ -31,7 +31,7 @@
   <properties>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
   </properties>
-  <name>Apache UIMA Eclipse: ${project.artifactId}</name>
+  <name>Apache UIMA TextMarker Eclipse: ${project.artifactId}</name>
   <url>${uimaWebsiteUrl}</url>
   <description>Provides the UIMA TextMarker engine to other Eclipse 
     plugins for their use</description>
