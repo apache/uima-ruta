@@ -141,7 +141,8 @@
                   antlr,
                   antlr.*,
                   org.htmlparser,
-                  org.htmlparser.*
+                  org.htmlparser.*,
+                  org.apache.commons.lang3.*
                 </_exportcontents>
                 <Require-Bundle>
                   org.apache.uima.runtime
