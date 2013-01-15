@@ -1,6 +1,7 @@
 /* First created by JCasGen Wed Apr 16 17:01:16 CEST 2008 */
 package org.apache.uima.textmarker.type;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -108,7 +109,11 @@ public class TextMarkerBasic extends Annotation {
       }
       return result;
     } else {
-      return set;
+      if(set == null) {
+        return Collections.emptySet();
+      } else {
+        return set;
+      }
     }
   }
 
@@ -128,7 +133,11 @@ public class TextMarkerBasic extends Annotation {
       }
       return result;
     } else {
-      return set;
+      if(set == null) {
+        return Collections.emptySet();
+      } else {
+        return set;
+      }
     }
   }
 
