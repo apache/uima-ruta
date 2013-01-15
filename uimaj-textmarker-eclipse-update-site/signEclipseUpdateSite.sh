@@ -20,7 +20,7 @@
 # Bourne shell syntax, this should hopefully run on pretty much anything.
 
 usage() {
-  echo "Usage: cd to the uimaj-eclipse-update-site project, then ./signEclipseUpdateSite.sh"
+  echo "Usage: cd to this project's project directory, then ./signEclipseUpdateSite.sh"
 }
 
 if [ "$1" = "-help" ]
@@ -29,19 +29,11 @@ then
   exit 1
 fi
 
-# Create PGP signatures
-for i in target/eclipse-update-site/features/org.apache.uima.*.jar; do gpg --output $i.asc --detach-sig --armor $i; done
-for i in  target/eclipse-update-site/plugins/org.apache.uima.*.jar;  do gpg --output $i.asc --detach-sig --armor $i; done
-for i in  target/eclipse-update-site/plugins/org.apache.uima.*.pack.gz;  do gpg --output $i.asc --detach-sig --armor $i; done
-gpg --output target/eclipse-update-site/digest.zip.asc --detach-sig --armor target/eclipse-update-site/digest.zip
-
-
-# Create MD5 checksums
-for i in target/eclipse-update-site/features/org.apache.uima.*.jar; do md5sum --binary $i > $i.md5; done
-for i in  target/eclipse-update-site/plugins/org.apache.uima.*.jar;  do md5sum --binary $i > $i.md5; done
-md5sum --binary target/eclipse-update-site/digest.zip > target/eclipse-update-site/digest.zip.md5
-
-# Create SHA1 checksums
-for i in target/eclipse-update-site/features/org.apache.uima.*.jar; do sha1sum --binary $i > $i.sha1; done
-for i in  target/eclipse-update-site/plugins/org.apache.uima.*.jar;  do sha1sum --binary $i > $i.sha1; done
-sha1sum --binary target/eclipse-update-site/digest.zip > target/eclipse-update-site/digest.zip.sha1
+# Create PGP signatures, MD5, and SHA1 checksums on all jars
+for i in $(find ./target/eclipse-update-site -name '*.jar') 
+  do 
+    rm -f $i.asc 
+    gpg --output $i.asc --detach-sig --armor $i
+    md5sum --binary $i > $i.md5
+    sha1sum --binary $i > $i.sha1
+  done

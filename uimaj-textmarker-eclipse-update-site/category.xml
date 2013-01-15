@@ -17,14 +17,14 @@
    specific language governing permissions and limitations
    under the License.    
 -->
-<site
-      mirrorsURL="http://uima.apache.org/mirrors-support/uima-eclipse-update--xml.cgi"
-      digestURL="/">
-   <description url="http://www.apache.org/dist/uima/eclipse-update-site">
-      Eclipse update site for Apache UIMA TextMarker.
-   </description>
+
+<site>
    <feature url="features/org.apache.uima.textmarker.feature_2.0.0.SNAPSHOT.jar" id="org.apache.uima.textmarker.feature" version="2.0.0.SNAPSHOT">
       <category name="uima-textmarker"/>
    </feature>
-   <category-def name="uima-textmarker" label="Apache UIMA TextMarker Eclipse tooling and runtime support"/>
+   <category-def name="uima-textmarker" label="Apache UIMA TextMarker Workbench">
+      <description>
+         Apache UIMA Eclipse tooling and runtime support
+      </description>
+   </category-def>
 </site>

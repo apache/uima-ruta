@@ -21,21 +21,19 @@
 # Bourne shell syntax, this should hopefully run on pretty much anything.
 
 usage() {
-  echo "Usage: cd to eclipseUpdateSite, then verifySigsEclipseUpdateSite.sh )"
+  echo "Usage: cd to this project's project directory, then ./verifySigsEclipseUpdateSite.sh"
 }
 
-# Verify PGP signatures
-for i in target/eclipse-update-site/features/org.apache.uima.*.jar; do gpg --verify $i.asc; done
-for i in target/eclipse-update-site/plugins/org.apache.uima.*.jar;  do gpg --verify $i.asc; done
-gpg --verify target/eclipse-update-site/digest.zip.asc
+if [ "$1" = "-help" ]
+then
+  usage
+  exit 1
+fi
 
-# Verify MD5 checksums
-for i in target/eclipse-update-site/features/org.apache.uima.*.jar; do md5sum --check $i.md5; done
-for i in target/eclipse-update-site/plugins/org.apache.uima.*.jar;  do md5sum --check $i.md5; done
-md5sum --check target/eclipse-update-site/digest.zip.md5
-
-# Verify SHA1 checksums
-for i in target/eclipse-update-site/features/org.apache.uima.*.jar; do sha1sum --check $i.sha1; done
-for i in target/eclipse-update-site/plugins/org.apache.uima.*.jar;  do sha1sum --check $i.sha1; done
-md5sum --check target/eclipse-update-site/digest.zip.md5
-
+# Verify PGP signatures, MD5 and SHA1 checksums on all jars
+for i in $(find ./target/eclipse-update-site -name '*.jar') 
+  do 
+    gpg --verify $i.asc
+    md5sum --check $i.md5
+    sha1sum --check $i.sha1
+  done
