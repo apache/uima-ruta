@@ -24,7 +24,7 @@
    </feature>
    <category-def name="uima-textmarker" label="Apache UIMA TextMarker Workbench">
       <description>
-         Apache UIMA Eclipse tooling and runtime support
+         Apache UIMA TextMarker Workbench
       </description>
    </category-def>
 </site>
