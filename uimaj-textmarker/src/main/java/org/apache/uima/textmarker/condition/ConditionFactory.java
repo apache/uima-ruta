@@ -164,10 +164,10 @@ public class ConditionFactory {
           TextMarkerBlock parent) {
     if (v instanceof NumberExpression) {
       return new FeatureCondition(se, (NumberExpression) v);
-    } else if (v instanceof StringExpression) {
-      return new FeatureCondition(se, (StringExpression) v);
     } else if (v instanceof BooleanExpression) {
       return new FeatureCondition(se, (BooleanExpression) v);
+    } else if (v instanceof StringExpression) {
+      return new FeatureCondition(se, (StringExpression) v);
     }
     return null;
   }

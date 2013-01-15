@@ -21,12 +21,18 @@ package org.apache.uima.textmarker.condition;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.textmarker.TextMarkerTestUtils;
+import org.apache.uima.textmarker.TextMarkerTestUtils.TestFeature;
 import org.junit.Test;
 
 public class FeatureTest {
@@ -36,10 +42,26 @@ public class FeatureTest {
     String name = this.getClass().getSimpleName();
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
     
+    Map<String, String> complexTypes = new TreeMap<String, String>();
+    String typeName = "org.apache.uima.FS";
+    complexTypes.put(typeName, "uima.tcas.Annotation");
+    
+    Map<String, List<TestFeature>> features = new TreeMap<String, List<TestFeature>>();
+    List<TestFeature> list = new ArrayList<TextMarkerTestUtils.TestFeature>();
+    features.put(typeName, list);
+    String fn1 = "string";
+    list.add(new TestFeature(fn1, "", "uima.cas.String"));
+    String fn2 = "double";
+    list.add(new TestFeature(fn2, "", "uima.cas.Double"));
+    String fn3 = "int";
+    list.add(new TestFeature(fn3, "", "uima.cas.Integer"));
+    String fn4 = "boolean";
+    list.add(new TestFeature(fn4, "", "uima.cas.Boolean"));
+    
     CAS cas = null;
     try {
       cas = TextMarkerTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
-              + ".txt", 50);
+              + ".txt", 50, false, false, complexTypes, features, namespace + "/");
     } catch (Exception e) {
       e.printStackTrace();
       assert (false);
@@ -52,14 +74,29 @@ public class FeatureTest {
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
-    assertEquals("What features do these sentences have?\r\n" +
-            "You can test this with the FEATURE condition.", iterator.next().getCoveredText());
+    assertEquals("Testing FEATURE condition.", iterator.next().getCoveredText());
     
     t = TextMarkerTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
-    assertEquals("You can test this with the FEATURE condition.", iterator.next().getCoveredText());
+    assertEquals("Testing FEATURE condition.", iterator.next().getCoveredText());
+    
+    t = TextMarkerTestUtils.getTestType(cas, 3);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    assertEquals("Testing FEATURE condition.", iterator.next().getCoveredText());
+    
+    t = TextMarkerTestUtils.getTestType(cas, 4);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    assertEquals("Testing FEATURE condition.", iterator.next().getCoveredText());
+    
+    t = TextMarkerTestUtils.getTestType(cas, 5);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(0, ai.size());
     
     cas.release();
   }
