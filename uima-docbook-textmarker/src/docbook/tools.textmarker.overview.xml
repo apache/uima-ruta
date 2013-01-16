@@ -1018,7 +1018,7 @@ ae.process(cas);]]></programlisting>
     <section id="ugr.tools.tm.ae.modifier">
       <title>Modifier</title>
       <para>
-        The Modifier Analysis Engine can be used to create an additional view <quote>modified</quote>, which contains all textual modifications and HTML highlightings that
+        The Modifier Analysis Engine can be used to create an additional view, which contains all textual modifications and HTML highlightings that
         were specified by the executed rules. This Analysis Engine can be applied, e.g., 
         for anonymization where all annotations of persons are replaced by the string <quote>Person</quote>. 
         Furthermore, the content of the new view can optionally be stored in a new HTML file.
@@ -1044,10 +1044,18 @@ ae.process(cas);]]></programlisting>
         <section id="ugr.tools.tm.ae.modifier.parameter.outputLocation">
           <title>outputLocation</title>
           <para>
-            This string parameter specifies the absolute path of the resulting file named <quote>output.modified.html</quote>. However, if an annotation of the 
+            This optional string parameter specifies the absolute path of the resulting file named <quote>output.modified.html</quote>. However, if an annotation of the 
             type <quote>org.apache.uima.examples.SourceDocumentInformation</quote> is given, then the value of this parameter is interpreted to be relative
             to the URI stored in the annotation and the name of the file will be adapted to the name of the source file. The TextMarker IDE automatically adds
-            the SourceDocumentInformation annotation when the user launches a script file. The default value of this parameter is <quote>/../</quote>.
+            the SourceDocumentInformation annotation when the user launches a script file. The default value of this parameter is empty. 
+            In this case no additional html file will be created.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.modifier.parameter.outputView">
+          <title>outputView</title>
+          <para>
+            This string parameter specifies the name of the view, which will contain the modified document. A view of this name must not yet exist.
+            The default value of this parameter is <quote>modified</quote>.
           </para>
         </section>
       </section>

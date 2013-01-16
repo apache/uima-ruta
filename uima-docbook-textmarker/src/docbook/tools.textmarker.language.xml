@@ -403,22 +403,15 @@ Headline{SCORE(5,10)->LOG("Maybe a headline")};]]></programlisting>
     <title>Modification</title>
     <para>
       There are different actions that can modify the input document,
-      like DEL,
-      COLOR and REPLACE. However, the input document itself can not be
-      modified
-      directly. A separate engine, the Modifier.xml, has to be
-      called in
-      order to create another CAS view with the name "modified".
-      In that
-      document, all modifications are executed.
+      like DEL, COLOR and REPLACE. However, the input document itself can not be
+      modified directly. A separate engine, the Modifier.xml, has to be
+      called in order to create another CAS view with the (default) name "modified".
+      In that document, all modifications are executed.
     </para>
     <para>
       The following example shows how to import and call the
-      Modifier.xml
-      engine.
-      The example is explained in detail in
-      <xref linkend='ugr.tools.tm.overview.examples' />
-      .
+      Modifier.xml engine. The example is explained in detail in
+      <xref linkend='ugr.tools.tm.overview.examples' />.
     </para>
     <programlisting><![CDATA[ENGINE utils.Modifier;
 Date{-> DEL};

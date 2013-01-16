@@ -42,7 +42,13 @@
       </configurationParameter>
       <configurationParameter>
         <name>outputLocation</name>
-        <description>Location of the modified document in HTML</description>
+        <description></description>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>outputView</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
@@ -50,9 +56,9 @@
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>outputLocation</name>
+        <name>outputView</name>
         <value>
-          <string>/../</string>
+          <string>modified</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

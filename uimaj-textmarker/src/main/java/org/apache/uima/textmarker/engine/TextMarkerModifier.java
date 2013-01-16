@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -44,32 +45,32 @@ import org.apache.uima.tools.stylemap.StyleMapEntry;
 import org.apache.uima.util.FileUtils;
 
 public class TextMarkerModifier extends JCasAnnotator_ImplBase {
-  public static final String MODIFIED_SOFA = "modified";
+  public static final String DEFAULT_MODIFIED_VIEW = "modified";
 
-  private static final String OUTPUT_LOCATION = "outputLocation";
+  public static final String OUTPUT_LOCATION = "outputLocation";
+
+  public static final String OUTPUT_VIEW = "outputView";
 
   private StyleMapFactory styleMapFactory;
 
   private String styleMapLocation;
 
-  private UimaContext context;
-
   private String[] descriptorPaths;
 
   private String outputLocation;
 
+  private String modifiedViewName;
+
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
-    if (aContext == null && context != null) {
-      aContext = context;
-    }
     styleMapLocation = (String) aContext.getConfigParameterValue(StyleMapCreator.STYLE_MAP);
     descriptorPaths = (String[]) aContext
             .getConfigParameterValue(TextMarkerEngine.DESCRIPTOR_PATHS);
     outputLocation = (String) aContext.getConfigParameterValue(TextMarkerModifier.OUTPUT_LOCATION);
     styleMapFactory = new StyleMapFactory();
-    this.context = aContext;
+    modifiedViewName = (String) aContext.getConfigParameterValue(TextMarkerModifier.OUTPUT_VIEW);
+    modifiedViewName = StringUtils.isBlank(modifiedViewName) ? DEFAULT_MODIFIED_VIEW : modifiedViewName;
   }
 
   @Override
@@ -83,7 +84,7 @@ public class TextMarkerModifier extends JCasAnnotator_ImplBase {
       Iterator<?> viewIterator = cas.getViewIterator();
       while (viewIterator.hasNext()) {
         JCas each = (JCas) viewIterator.next();
-        if (each.getViewName().equals(MODIFIED_SOFA)) {
+        if (each.getViewName().equals(modifiedViewName)) {
           modifiedView = each;
           break;
         }
@@ -91,12 +92,12 @@ public class TextMarkerModifier extends JCasAnnotator_ImplBase {
 
       if (modifiedView == null) {
         try {
-          modifiedView = cas.createView(MODIFIED_SOFA);
+          modifiedView = cas.createView(modifiedViewName);
         } catch (Exception e) {
-          modifiedView = cas.getView(MODIFIED_SOFA);
+          modifiedView = cas.getView(modifiedViewName);
         }
       } else {
-        modifiedView = cas.getView(MODIFIED_SOFA);
+        modifiedView = cas.getView(modifiedViewName);
       }
       String locate = TextMarkerEngine.locate(styleMapLocation, descriptorPaths, ".xml", true);
       try {
@@ -108,11 +109,13 @@ public class TextMarkerModifier extends JCasAnnotator_ImplBase {
 
       String documentText = modifiedView.getDocumentText();
       if (documentText != null) {
-        try {
-          File outputFile = getOutputFile(cas.getCas());
-          FileUtils.saveString2File(documentText, outputFile);
-        } catch (IOException e) {
-          throw new AnalysisEngineProcessException(e);
+        File outputFile = getOutputFile(cas.getCas());
+        if (outputFile != null) {
+          try {
+            FileUtils.saveString2File(documentText, outputFile);
+          } catch (IOException e) {
+            throw new AnalysisEngineProcessException(e);
+          }
         }
       }
 
@@ -123,8 +126,11 @@ public class TextMarkerModifier extends JCasAnnotator_ImplBase {
   }
 
   private File getOutputFile(CAS cas) {
-    Type sdiType = cas.getTypeSystem().getType(TextMarkerEngine.SOURCE_DOCUMENT_INFORMATION);
+    if (StringUtils.isBlank(outputLocation)) {
+      return null;
+    }
 
+    Type sdiType = cas.getTypeSystem().getType(TextMarkerEngine.SOURCE_DOCUMENT_INFORMATION);
     String filename = "output.modified.html";
     File file = new File(outputLocation, filename);
     if (sdiType != null) {

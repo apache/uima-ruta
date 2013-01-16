@@ -64,7 +64,7 @@ public class TextMarkerTestUtils {
     }
   }
 
-  private static final String TYPE = "org.apache.uima.T";
+  public static final String TYPE = "org.apache.uima.T";
 
   public static CAS process(String ruleFileName, String textFileName, int amount)
           throws URISyntaxException, IOException, InvalidXMLException,
