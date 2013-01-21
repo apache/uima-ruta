@@ -240,8 +240,11 @@ public class TextMarkerInterpreterRunner extends AbstractInterpreterRunner imple
     }
     mon.worked(1);
     for (File each : inputFiles) {
-
+      
       mon.setTaskName("Processing " + each.getName());
+      if(mon.isCanceled()) {
+        break;
+      }
       try {
         if (cas == null) {
           cas = ae.newCAS();
@@ -253,12 +256,22 @@ public class TextMarkerInterpreterRunner extends AbstractInterpreterRunner imple
         } else {
           cas.setDocumentText(getText(each));
         }
+        
+        if(mon.isCanceled()) {
+          break;
+        }
+        
         TextMarkerEngine.removeSourceDocumentInformation(cas);
         TextMarkerEngine.addSourceDocumentInformation(cas, each);
 
         ae.process(cas);
 
         mon.worked(1);
+        
+        if(mon.isCanceled()) {
+          break;
+        }
+        
         File outputFile = new File(outputDir, each.getName() + ".xmi");
         mon.setTaskName("Saving " + outputFile.getName());
         writeXmi(cas, outputFile);
