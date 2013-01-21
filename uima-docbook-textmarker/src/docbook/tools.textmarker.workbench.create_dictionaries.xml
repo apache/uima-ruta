@@ -70,11 +70,9 @@ Martin
   </para>
   <para>
     When hovering over TextMarker item you can choose
-    <quote>Convert to TWL</quote>
-    .
+    <quote>Convert to TWL</quote>.
     Click on it and a tree word list with the same name as the original
-    file is
-    generated in the same folder.
+    file is generated in the same folder.
   </para>
   <para>
     You can also generate several tree word lists at once. To do so,
