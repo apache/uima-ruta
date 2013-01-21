@@ -77,6 +77,7 @@ Document{->ASSIGN(typeVar, Author)};]]></programlisting>
       floating-point number can be in single or in double precision. To get
       a complete overview, have a look at the following syntax definition
       of number expressions.
+      </para>
       <section>
         <title>
           <emphasis role="bold">Definition:</emphasis>
@@ -124,31 +125,37 @@ INT intVar2;
 Document{->ASSIGN(intVar1, 12 * intVar1 - SIN(intVar2))};]]></programlisting>
         </para>
       </section>
-    </para>
   </section>
 
   <section id="ugr.tools.tm.language.expressions.string">
     <title>String Expressions</title>
     <para>
       There are two kinds of string expressions in TextMarker.
+       
       <orderedlist numeration="arabic">
         <listitem>
+         <para>
           String literals: String literals are defined by any sequence of
           characters within quotation marks.
+           </para>
         </listitem>
         <listitem>
+         <para>
           String variables (see
           <xref linkend='ugr.tools.tm.language.declarations.variable' />
           )
+         </para>
         </listitem>
       </orderedlist>
+      </para>
       <section>
         <title>
           <emphasis role="bold">Definition:</emphasis>
         </title>
         <para>
           <programlisting><![CDATA[StringExpression   ->   SimpleStringExpression
-SimpleStringExpression  ->  StringLiteral | StringVariable]]></programlisting>
+SimpleStringExpression  ->  StringLiteral ("+" StringExpression)* 
+                            | StringVariable]]></programlisting>
         </para>
       </section>
       <section>
@@ -156,12 +163,11 @@ SimpleStringExpression  ->  StringLiteral | StringVariable]]></programlisting>
           <emphasis role="bold">Example:</emphasis>
         </title>
         <para>
-          <programlisting><![CDATA[STRING strVar; // strVar is a string expression
-Document{->ASSIGN(strVar, "strLiteral")}; // "strLiteral" is a string 
-                                          // expression]]></programlisting>
+          <programlisting><![CDATA[STRING strVar; // define string variable
+// add prefix "strLiteral" to variable strVar
+Document{->ASSIGN(strVar, "strLiteral" + strVar)};]]></programlisting>
         </para>
       </section>
-    </para>
   </section>
 
   <section id="ugr.tools.tm.language.expressions.boolean">
@@ -172,6 +178,7 @@ Document{->ASSIGN(strVar, "strLiteral")}; // "strLiteral" is a string
       either
       true or false. To get a complete overview, have a look at the
       following syntax definition of boolean expressions.
+      </para>
       <section>
         <title>
           <emphasis role="bold">Definition:</emphasis>
@@ -254,7 +261,6 @@ BooleanLiteral    ->  "true" | "false"]]></programlisting>
           expression.
         </para>
       </section>
-    </para>
   </section>
   
 
@@ -262,6 +268,7 @@ BooleanLiteral    ->  "true" | "false"]]></programlisting>
     <title>List Expressions</title>
     <para>
       List expression are a rather simple kind of expression.
+      </para>
       <section>
         <title>
           <emphasis role="bold">Definition:</emphasis>
@@ -286,6 +293,5 @@ BooleanListExpression  ->  BooleanListVariable
           <xref linkend='ugr.tools.tm.language.declarations.variable' />.
         </para>
       </section>
-    </para>
   </section>
 </section>
