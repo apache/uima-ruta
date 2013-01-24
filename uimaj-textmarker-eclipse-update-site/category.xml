@@ -19,12 +19,12 @@
 -->
 
 <site>
-   <feature url="features/org.apache.uima.textmarker.feature_2.0.0.SNAPSHOT.jar" id="org.apache.uima.textmarker.feature" version="2.0.0.SNAPSHOT">
+   <feature url="features/org.apache.uima.textmarker.feature_2.0.0.jar" id="org.apache.uima.textmarker.feature" version="2.0.0">
       <category name="uima-textmarker"/>
    </feature>
-   <category-def name="uima-textmarker" label="Apache UIMA TextMarker Workbench">
+   <category-def name="uima-textmarker" label="Apache UIMA TextMarker">
       <description>
-         Apache UIMA TextMarker Workbench
+         Apache UIMA TextMarker
       </description>
    </category-def>
 </site>

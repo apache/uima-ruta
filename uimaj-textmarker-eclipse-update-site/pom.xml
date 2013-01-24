@@ -51,8 +51,8 @@
     <uimaScmRoot>uimaj</uimaScmRoot>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
     <eclipseUpdateSite>${project.build.directory}/eclipse-update-site</eclipseUpdateSite>
-    <item-maven-release-version>2.0.0-SNAPSHOT</item-maven-release-version>
-    <item-eclipse-release-version>2.0.0.SNAPSHOT</item-eclipse-release-version>
+    <item-maven-release-version>2.0.0</item-maven-release-version>
+    <item-eclipse-release-version>2.0.0</item-eclipse-release-version>
   </properties>
   <!-- don't use dependency mechanism - use dependency:copy
        because we need to get multiple versions for the
@@ -192,7 +192,7 @@
                   <arg line="-application org.eclipse.equinox.p2.publisher.CategoryPublisher" />
                   <arg line="-metadataRepository file://${eclipseUpdateSite}" />
                   <arg line="-categoryDefinition file://${basedir}/category.xml" />
-                  <arg line="-categoryQualifier apache-uima" />
+                  <arg line="-categoryQualifier apache-uima-textmarker" />
                   <arg line="-compress"/>
                 </java>
                 
