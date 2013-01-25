@@ -21,6 +21,7 @@ package org.apache.uima.textmarker.ide.ui.text;
 
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.textmarker.ide.ui.TextMarkerPartitions;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.ui.CodeFormatterConstants;
@@ -804,6 +805,11 @@ public class TextMarkerAutoEditStrategy extends DefaultIndentLineAutoEditStrateg
       String lastIndent = getLineIndent(temp, line);
       int firstLineOffset = temp.getLineOffset(line);
       String commonIndent = temp.get(firstLineOffset, c.offset - firstLineOffset);
+      if(StringUtils.isNotBlank(commonIndent)) {
+    	  // do not copy non whitespace content as indent
+    	  commonIndent = commonIndent.replaceAll(".", " ");
+    	  // if only withspaces count as indent then trim the end and use the delta as indent
+      }
       line++;
       try {
         while (getDocumentLine(temp, line).trim().length() == 0)
