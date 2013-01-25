@@ -20,6 +20,24 @@ For more details, please see http://uima.apache.org/building-uima.html
 
 -------------------------------------
 
+[UIMA-2528] Open CAS Editor blocks eclipse start
+
+If Eclipse is closed while an opened CAS Editor is focused, then problems may occur 
+when Eclipse is started with the same workspace.
+
+There is a workaround: 
+- remove either the plugin org.apache.uima.textmarker.ide or
+  the plugin org.apache.uima.caseditor from the plugins folder of your Eclipse installation
+- start Eclipse
+- close the CAS Editor
+- close Eclipse
+- add the missing plugin again to the plugins folder
+- start Eclipse
+- reset perspectives
+
+
+-------------------------------------
+
 If you use the uimaFIT JCasGenPomFriendly in Maven and want to use TextMarker 
 as a standalone annotator you have to exclude the generated TextMarker basic 
 type files from the build, e.g., by adding:
