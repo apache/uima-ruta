@@ -280,10 +280,17 @@ BooleanLiteral    ->  "true" | "false"]]></programlisting>
 WordListExpression     ->  RessourceLiteral | WordListVariable
 WordTableExpression    ->  RessourceLiteral | WordTableVariable
 TypeListExpression     ->  TypeListVariable
+                           | "{" TypeExpression ("," TypeExpression)* "}"
 NumberListExpression   ->  IntListVariable | FloatListVariable 
                            | DoubleListVariable
+                           | "{" NumberExpression 
+                              ("," NumberExpression)* "}"
 StringListExpression   ->  StringListVariable
+                           | "{" StringExpression 
+                              ("," StringExpression)* "}"
 BooleanListExpression  ->  BooleanListVariable
+                           | "{" BooleanExpression 
+                              ("," BooleanExpression)* "}"
 ]]></programlisting>
     A ResourceLiteral is something
     like 'folder/file.txt' (Attention: Use single quotes).
