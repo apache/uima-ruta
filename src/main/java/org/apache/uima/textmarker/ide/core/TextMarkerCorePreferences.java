@@ -25,4 +25,6 @@ public class TextMarkerCorePreferences {
   public static final String BUILDER_IMPORT_BY_NAME = "BuilderImportByName";
 
   public static final String BUILDER_IGNORE_DUPLICATE_SHORTNAMES = "BuilderErrorOnDuplicateShortnames";
+  
+  public static final String PROJECT_CLEAR_OUTPUT = "ProjectClearOutput";
 }
