@@ -39,6 +39,7 @@ import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.textmarker.action.LogAction;
 import org.apache.uima.textmarker.engine.TextMarkerEngine;
 import org.apache.uima.textmarker.ide.TextMarkerIdePlugin;
+import org.apache.uima.textmarker.ide.core.TextMarkerCorePreferences;
 import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
 import org.apache.uima.util.XMLInputSource;
 import org.apache.uima.util.XMLSerializer;
@@ -62,6 +63,7 @@ import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.VMRunnerConfiguration;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleManager;
@@ -191,11 +193,22 @@ public class TextMarkerInterpreterRunner extends AbstractInterpreterRunner imple
       IFolder folder = proj.getProject().getFolder(TextMarkerProjectUtils.getDefaultInputLocation());
       folder.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
     }
-    if(!outputDir.exists()) {
+    IFolder outputFolder = proj.getProject().getFolder(TextMarkerProjectUtils.getDefaultOutputLocation());
+	if(!outputDir.exists()) {
       outputDir.mkdirs();
-      IFolder folder = proj.getProject().getFolder(TextMarkerProjectUtils.getDefaultOutputLocation());
-      folder.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+      outputFolder.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
     }
+    
+    IPreferenceStore store = TextMarkerIdePlugin.getDefault().getPreferenceStore();
+    boolean clearOutput = store.getBoolean(TextMarkerCorePreferences.PROJECT_CLEAR_OUTPUT);
+    if(clearOutput) {
+    	List<File> outputFiles = getFiles(outputDir, false);
+    	for (File file : outputFiles) {
+			file.delete();
+		}
+    	outputFolder.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+    }
+    
     List<File> inputFiles = getFiles(inputDir, false);
 
     int ticks = (inputFiles.size() * 2) + 1;
@@ -296,7 +309,7 @@ public class TextMarkerInterpreterRunner extends AbstractInterpreterRunner imple
     if (ae != null) {
       ae.destroy();
     }
-    IFolder folder = proj.getProject().getFolder(TextMarkerProjectUtils.getDefaultOutputLocation());
+    IFolder folder = outputFolder;
     folder.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
     clearConsoleLink(handler);
     mon.done();

@@ -73,4 +73,6 @@ public class TextMarkerPreferencesMessages extends NLS {
   public static String BuilderImportByName;
 
   public static String BuilderIgnoreDuplicateShortnames;
+  
+  public static String ProjectClearOutput;
 }

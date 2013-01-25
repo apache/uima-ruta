@@ -34,6 +34,7 @@ public class TextMarkerPreferenceInitializer extends AbstractPreferenceInitializ
     store.setDefault(TextMarkerCorePreferences.BUILDER_IMPORT_BY_NAME, false);
     store.setDefault(TextMarkerCorePreferences.BUILDER_RESOLVE_IMPORTS, false);
     store.setDefault(TextMarkerCorePreferences.BUILDER_IGNORE_DUPLICATE_SHORTNAMES, false);
+    store.setDefault(TextMarkerCorePreferences.PROJECT_CLEAR_OUTPUT, false);
   }
 
 }

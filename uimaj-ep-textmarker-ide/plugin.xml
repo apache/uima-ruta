@@ -572,6 +572,12 @@ under the License.
            id="org.apache.uima.textmarker.ide.preferences.formatter"
            name="Formatter">
      </page>
+     <page
+           category="org.apache.uima.textmarker.ide.preferences"
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerProjectPreferencePage"
+           id="org.apache.uima.textmarker.ide.preferences.project"
+           name="Project Management">
+     </page>
   </extension>
 
   <extension point="org.eclipse.ui.propertyPages">
