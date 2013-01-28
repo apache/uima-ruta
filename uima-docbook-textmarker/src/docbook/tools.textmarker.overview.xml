@@ -301,7 +301,7 @@ ANY+{-PARTOF(Text2) -> MARK(Text2)};]]></programlisting>
     <para>
       The first rule matches on each occurrence of an arbitrary token and continues this until the end of the document is reached. 
       This is caused by the greedy quantifier <quote>+</quote>. Note that this rule considers each occurrence of a token and is therefore
-      executed for each token resulting many overlapping annotations. This behavior ie illustrated with an example:
+      executed for each token resulting many overlapping annotations. This behavior is illustrated with an example:
       When applied on the document <quote>Peter works for Frank</quote>, the rule creates four annotations with the covered texts 
       <quote>Peter works for Frank</quote>, <quote>works for Frank</quote>, <quote>for Frank</quote> and <quote>Frank</quote>.
       The rule first tries to match on the token <quote>Peter</quote> and continues its matching. Then, it tries to match on the token <quote>works</quote> and
@@ -312,7 +312,7 @@ ANY+{-PARTOF(Text2) -> MARK(Text2)};]]></programlisting>
       condition <quote>-PARTOF(Text2)</quote>. The PARTOF condition is fulfilled, if the matched annotation is located within an annotation of the given type, or
       put in simple words, if the matched annotation is part of an annotation of the type <quote>Text2</quote>. When applied on the 
       document <quote>Peter works for Frank</quote>, the rule matches on the first token <quote>Peter</quote>, continues its match and 
-      creates an annotations of the type <quote>Text2</quote> for the complete document. Then it tries to match on the second token <quote>works</quote>, but fails, 
+      creates an annotation of the type <quote>Text2</quote> for the complete document. Then it tries to match on the second token <quote>works</quote>, but fails, 
       because this token is already part of an Text2 annotation.
     </para>
     
@@ -351,7 +351,7 @@ NUM{PARSE(moneyAmount)} SPECIAL{REGEXP("€") -> MATCHEDTEXT(moneyCurrency),
         "currency" = moneyCurrency)};]]></programlisting>
 
     <para>
-      First, a new annotation with the name <quote>MoneyAmount</quote> and two features is defined, one string feature and one integer feature.
+      First, a new annotation with the name <quote>MoneyAmount</quote> and two features are defined, one string feature and one integer feature.
       Then, two TextMarker variables are declared, one integer variable and one string variable. The rule matches on a number, whose value is stored 
       in the variable <quote>moneyAmount</quote>, followed by a special token that needs to be equal to the string <quote>€</quote>. Then,
       the covered text of the special annotation is stored in the string variable <quote>moneyCurrency</quote> and annotation of the
@@ -404,12 +404,12 @@ Person{PARTOF(Organization) -> UNMARK(Person)};
     <programlisting><![CDATA[BLOCK(English) Document{FEATURE("language", "en")} {
     // rules for english documents
 }
-BLOCK(English) Document{FEATURE("language", "de")} {
+BLOCK(German) Document{FEATURE("language", "de")} {
     // rules for german documents
 }]]></programlisting>
 
     <para>
-      This example contains two simpler BLOCK statements. The rules defined with the block are only executed, if the condition in the head of the block is fulfilled.
+      This example contains two simple BLOCK statements. The rules defined within the block are only executed, if the condition in the head of the block is fulfilled.
       The rules of the first block are only considered if the feature <quote>language</quote> of the document annotation has the value <quote>en</quote>.
       Following this, the rules of the second block are only considered for German documents.
     </para>
