@@ -23,6 +23,16 @@
   <description>The common parent pom for Apache UIMA TextMarker</description>
   <url>${uimaWebsiteUrl}</url>
   <properties>
+    <uniWueNoticeText>Portions of TextMarker were originally developed by
+the Universität Würzburg.
+Copyright (c) 2006, 2011 Universität Würzburg.
+    </uniWueNoticeText>
+  	<postNoticeText>${uniWueNoticeText}
+
+This product contains icons developed by the Mark James 
+(http://www.famfamfam.com/lab/icons/silk/), licensed under the 
+Creative Commons Attribution 2.5 License.
+  	</postNoticeText>
     <jiraVersion>12323872</jiraVersion>
     <uimaVersion>2.4.0</uimaVersion>
   </properties>
@@ -212,6 +222,32 @@
         </plugin>
       </plugins>
     </pluginManagement>
+     <plugins>
+				<plugin>
+					<artifactId>maven-resources-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>copy customized bin LICENSE file</id>
+							<phase>prepare-package</phase>
+							<goals>
+								<goal>copy-resources</goal>
+							</goals>
+							<configuration>
+								<outputDirectory>${project.build.directory}/classes/META-INF</outputDirectory>
+								<resources>
+									<resource>
+										<directory>src/main/readme_bin</directory>
+										<includes>
+											<include>LICENSE</include>
+										</includes>
+										<filtering>true</filtering>
+									</resource>
+								</resources>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
   </build>
   <profiles>
     <profile>

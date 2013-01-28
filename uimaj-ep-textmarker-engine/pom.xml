@@ -28,6 +28,13 @@
     <version>2.0.0-SNAPSHOT</version>
   </parent>
   <properties>
+    <postNoticeText>${uniWueNoticeText}
+
+This product contains ANTLR libraries (http://www.antlr.org/), 
+licensed under the BSD License.
+
+This product contains htmlparser libraries (http://htmlparser.sourceforge.net/), 
+licensed under the Common Public License.</postNoticeText>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
   </properties>
   <name>Apache UIMA TextMarker Eclipse: ${project.artifactId}</name>

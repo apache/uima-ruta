@@ -158,7 +158,10 @@
         </includes>
       </resource>
       <resource>
-        <directory>src\main\resources</directory>
+        <directory>src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>src/main/readme_src</directory>
       </resource>
     </resources>
     <pluginManagement>

@@ -29,6 +29,7 @@
   </parent>
   <properties>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
+    <postNoticeText>${uniWueNoticeText}</postNoticeText>
   </properties>
   <url>${uimaWebsiteUrl}</url>
   <description>The core implementation of the TextMarker rule engine.</description>
