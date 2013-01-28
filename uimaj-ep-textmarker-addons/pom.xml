@@ -20,11 +20,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>uimaj-ep-textmarker-addons</artifactId>
-  <version>2.0.0</version>
+  <version>2.0.1-SNAPSHOT</version>
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>uimaj-textmarker-parent</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.1-SNAPSHOT</version>
   </parent>
   <properties>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
@@ -155,9 +155,9 @@
     </dependency>
   </dependencies>
   <scm>
-    <url>http://svn.apache.org/viewvc/uima/sandbox/TextMarker/tags/uimaj-textmarker-parent-2.0.0-rc2/uimaj-ep-textmarker-addons</url>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/TextMarker/tags/uimaj-textmarker-parent-2.0.0-rc2/uimaj-ep-textmarker-addons</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/TextMarker/tags/uimaj-textmarker-parent-2.0.0-rc2/uimaj-ep-textmarker-addons</developerConnection>
+    <url>http://svn.apache.org/viewvc/uima/sandbox/TextMarker/trunk/uimaj-ep-textmarker-addons</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/TextMarker/trunk/uimaj-ep-textmarker-addons</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/TextMarker/trunk/uimaj-ep-textmarker-addons</developerConnection>
   </scm>
   <build>
     <!-- don't use artifactId as first part of finalName, follow instead the eclipse convention -->
