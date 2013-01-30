@@ -487,7 +487,7 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     // TextMarkerBasic endAnchor = getEndAnchor(windowAnnotation.getEnd());
     // NavigableSet<TextMarkerBasic> subSet = basics.subSet(beginAnchor, true, endAnchor, true);
 
-    SortedSet<TextMarkerBasic> subSet = null;
+    Collection<TextMarkerBasic> subSet = null;
     if (windowAnnotation.getEnd() == cas.getDocumentAnnotation().getEnd()
             && windowAnnotation.getBegin() == 0) {
       subSet = basics;
@@ -495,29 +495,19 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
       subSet = basics.tailSet(beginAnchor);
     } else {
       TextMarkerBasic endAnchor1 = getCeiling(endAnchors, windowAnnotation.getEnd() + 1);
-      subSet = basics.subSet(beginAnchor, endAnchor1);
+      if (endAnchor1 != null) {
+        subSet = basics.subSet(beginAnchor, endAnchor1);
+      } else {
+        // hotfix for limited window stream with a window on the complete document
+        subSet = new LinkedList<TextMarkerBasic>();
+        TextMarkerBasic floor = getFloor(endAnchors, windowAnnotation.getEnd());
+        Collection<TextMarkerBasic> subSetHead = basics.subSet(beginAnchor, floor);
+        TextMarkerBasic endAnchorTail = endAnchors.get(windowAnnotation.getEnd());
+        subSet.addAll(subSetHead);
+        subSet.add(endAnchorTail);
+      }
     }
-
     return subSet;
-    // List<TextMarkerBasic> result = new ArrayList<TextMarkerBasic>();
-    // if (windowAnnotation instanceof TextMarkerBasic) {
-    // result.add((TextMarkerBasic) windowAnnotation);
-    // return result;
-    // } else if (windowAnnotation.getBegin() <=
-    // documentAnnotation.getBegin()
-    // && windowAnnotation.getEnd() >= documentAnnotation.getEnd()) {
-    // return basics;
-    // }
-    // TextMarkerFrame frame = new TextMarkerFrame(getJCas(),
-    // windowAnnotation.getBegin(),
-    // windowAnnotation.getEnd());
-    // FSIterator<AnnotationFS> iterator =
-    // cas.getAnnotationIndex(basicType).subiterator(frame);
-    // while (iterator.isValid()) {
-    // result.add((TextMarkerBasic) iterator.get());
-    // iterator.moveToNext();
-    // }
-    // return result;
   }
 
   public TextMarkerBasic getBasicNextTo(boolean before, AnnotationFS annotation) {
