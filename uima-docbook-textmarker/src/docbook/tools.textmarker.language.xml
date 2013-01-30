@@ -56,18 +56,30 @@ under the License.
       unexpected markup. The TextMarker System enables the knowledge
       engineer to filter and to hide all possible combinations of
       predefined and new types of annotations. The
-      visibility of tokens and
-      annotations is modified by the actions of
-      rule elements and can be
-      conditioned using the complete
+      visibility of tokens and annotations is modified by the actions of
+      rule elements and can be conditioned using the complete
       expressiveness of the language.
       Therefore the TextMarker system
       supports a robust approach to
       information extraction and simplifies
       the creation of new rules since
       the knowledge engineer can focus on
-      important textual features. If no
-      rule action changed the
+      important textual features. 
+    </para>
+    <note>    
+      <para>
+        The visibility of types is calculated using three lists: 
+        A list <quote>default</quote> for the initially filtered types, 
+        which is specified in the configuration parameters of the analysis engine, the list <quote>filtered</quote>, which is 
+        specified by the FILTERTYPE action, and the list <quote>retained</quote>, which is specified by the RETAINTYPE action.
+        For determining the actual visibility of types, list <quote>filtered</quote> is added to list <quote>default</quote> 
+        and then all elements of list <quote>retained</quote> are removed. The annotations of the types in the resulting list are not visible.
+        Please note that the actions FILTERTYPE and RETAINTYPE replace all elements of the respective lists and that RETAINTYPE 
+        overrides FILTERTYPE.
+      </para>
+    </note>
+    <para>
+      If no rule action changed the
       configuration of the filtering settings, then
       the default filtering
       configuration ignores whitespaces and markup.
@@ -115,6 +127,7 @@ Dr.JoachimBaumeister
       since the second rule uses the filtered type PERIOD and is therefore not
       executed.
     </para>
+    
   </section>
   <section id="ugr.tools.tm.language.blocks">
     <title>Blocks</title>

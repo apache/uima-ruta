@@ -383,6 +383,18 @@ Document{->EXEC(NamedEntities)};]]></programlisting>
       ignored by rules. Expressions are not yet supported. 
       This action is related to RETAINTYPE (see <xref linkend='ugr.tools.tm.language.actions.retaintype' />).
     </para>
+    <note>    
+      <para>
+        The visibility of types is calculated using three lists: 
+        A list <quote>default</quote> for the initially filtered types, 
+        which is specified in the configuration parameters of the analysis engine, the list <quote>filtered</quote>, which is 
+        specified by the FILTERTYPE action, and the list <quote>retained</quote>, which is specified by the RETAINTYPE action.
+        For determining the actual visibility of types, list <quote>filtered</quote> is added to list <quote>default</quote> 
+        and then all elements of list <quote>retained</quote> are removed. The annotations of the types in the resulting list are not visible.
+        Please note that the actions FILTERTYPE and RETAINTYPE replace all elements of the respective lists and that RETAINTYPE 
+        overrides FILTERTYPE.
+      </para>
+    </note>
     <section>
       <title>
         <emphasis role="bold">Definition:</emphasis>
@@ -401,6 +413,12 @@ Document{->EXEC(NamedEntities)};]]></programlisting>
       <para>
         This rule filters all small written words in the input
         document. They are further ignored by every rule.
+      </para>
+      <para>
+        <programlisting><![CDATA[Document{->FILTERTYPE};]]></programlisting>
+      </para>
+      <para>
+        Here, the the action (without parentheses) specifies that no additional types should be filtered.
       </para>
     </section>
   </section>
@@ -983,6 +1001,18 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
       are now not ignored by rules. This action is related to
       FILTERTYPE (see <xref linkend='ugr.tools.tm.language.actions.filtertype' />).
     </para>
+    <note>    
+      <para>
+        The visibility of types is calculated using three lists: 
+        A list <quote>default</quote> for the initially filtered types, 
+        which is specified in the configuration parameters of the analysis engine, the list <quote>filtered</quote>, which is 
+        specified by the FILTERTYPE action, and the list <quote>retained</quote>, which is specified by the RETAINTYPE action.
+        For determining the actual visibility of types, list <quote>filtered</quote> is added to list <quote>default</quote> 
+        and then all elements of list <quote>retained</quote> are removed. The annotations of the types in the resulting list are not visible.
+        Please note that the actions FILTERTYPE and RETAINTYPE replace all elements of the respective lists and that RETAINTYPE 
+        overrides FILTERTYPE.
+      </para>
+    </note>
     <section>
       <title>
         <emphasis role="bold">Definition:</emphasis>
@@ -1000,6 +1030,12 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
       </para>
       <para>
         Here, all spaces are retained and can be matched by rules.
+      </para>
+      <para>
+        <programlisting><![CDATA[Document{->RETAINTYPE};]]></programlisting>
+      </para>
+      <para>
+        Here, the the action (without parentheses) specifies that no types should be retained.
       </para>
     </section>
   </section>
