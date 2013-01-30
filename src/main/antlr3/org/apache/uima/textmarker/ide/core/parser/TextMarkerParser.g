@@ -847,9 +847,13 @@ quantifierPart returns [List<Expression> exprs = new ArrayList<Expression>()]
 	 s = STAR q = QUESTION? {exprs.add(ExpressionFactory.createQuantifierLiteralExpression(s,q));}
 	| p = PLUS q = QUESTION? {exprs.add(ExpressionFactory.createQuantifierLiteralExpression(p,q));}
 	| q1 = QUESTION q = QUESTION? {exprs.add(ExpressionFactory.createQuantifierLiteralExpression(q1,q));}
-	| (LBRACK min = numberExpression (COMMA (max = numberExpression)?)? RBRACK q = QUESTION?
-		 {if(min!=null) {exprs.add(min);}
+	| (b1 = LBRACK min = numberExpression (COMMA (max = numberExpression)?)? b2 = RBRACK q = QUESTION?
+		 {
+		  //if(b1!=null) {exprs.add(b1);}
+		  if(min!=null) {exprs.add(min);}
 		  if(max!=null) {exprs.add(max);}
+		  //if(b2!=null) {exprs.add(b2);}
+		  if(q!=null) {exprs.add(ExpressionFactory.createQuantifierLiteralExpression(q, null));}
 		 }
 	   )
 	;

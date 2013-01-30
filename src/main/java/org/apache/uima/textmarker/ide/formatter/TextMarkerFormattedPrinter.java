@@ -41,6 +41,7 @@ import org.apache.uima.textmarker.ide.parser.ast.TextMarkerFeatureDeclaration;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerListExpression;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerLogAction;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerPackageDeclaration;
+import org.apache.uima.textmarker.ide.parser.ast.TextMarkerQuantifierLiteralExpression;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerRule;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerRuleElement;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerStringExpression;
@@ -187,7 +188,7 @@ public class TextMarkerFormattedPrinter extends ASTVisitor {
     }
     if (s instanceof TextMarkerRule) {
       // traverse into container TextMarkerRule to format RuleElements
-      if(!inBlockDeclaration) {
+      if (!inBlockDeclaration) {
         appendNewLine();
       }
       // Rules always just consists of RuleElements: whitespace separation
@@ -198,7 +199,7 @@ public class TextMarkerFormattedPrinter extends ASTVisitor {
       TextMarkerRule rule = (TextMarkerRule) s;
       List<Expression> expressions = rule.getExpressions();
       traverseAstNodes(expressions, "");
-      if(!inBlockDeclaration) {
+      if (!inBlockDeclaration) {
         appendStatementEnd();
       }
       if (inLargeRule > 0) {
@@ -281,7 +282,7 @@ public class TextMarkerFormattedPrinter extends ASTVisitor {
         }
         commentLineSince = 0;
       }
-    } else if(inBlockDeclaration || s instanceof CommonToken){
+    } else if (inBlockDeclaration || s instanceof CommonToken) {
       appendNewLine();
     }
     lastStatements.put(indentLevel, s);
@@ -575,17 +576,35 @@ public class TextMarkerFormattedPrinter extends ASTVisitor {
     // print Quantifiers
     List<? extends ASTNode> quantifierExpressions = ruleEl.getQuantifierExpressions();
     if (quantifierExpressions != null && !quantifierExpressions.isEmpty()) {
-      if (quantifierExpressions.size() > 1) {
-        append(BRACK_OPEN);
-        for (ASTNode expression : quantifierExpressions) {
-          append(expression);
-          if (quantifierExpressions.indexOf(expression) < quantifierExpressions.size() - 1) {
-            append(COMMA);
-          }
+      if (quantifierExpressions.size() == 1) {
+        ASTNode astNode = quantifierExpressions.get(0);
+        if (astNode instanceof TextMarkerQuantifierLiteralExpression) {
+          append(astNode);
+        } else {
+          append(BRACK_OPEN);
+          append(astNode);
+          append(BRACK_CLOSE);
         }
-        append(BRACK_CLOSE);
-      } else if (quantifierExpressions.size() == 1) {
+      } else if (quantifierExpressions.size() == 2) {
+        if (quantifierExpressions.get(1) instanceof TextMarkerQuantifierLiteralExpression) {
+          append(BRACK_OPEN);
+          append(quantifierExpressions.get(0));
+          append(BRACK_CLOSE);
+          append(quantifierExpressions.get(1));
+        } else {
+          append(BRACK_OPEN);
+          append(quantifierExpressions.get(0));
+          append(COMMA + " ");
+          append(quantifierExpressions.get(1));
+          append(BRACK_CLOSE);
+        }
+      } else if (quantifierExpressions.size() == 3) {
+        append(BRACK_OPEN);
         append(quantifierExpressions.get(0));
+        append(COMMA + " ");
+        append(quantifierExpressions.get(1));
+        append(BRACK_CLOSE);
+        append(quantifierExpressions.get(2));
       }
     }
     if (!inBlockDeclaration && conditions == null && actions == null) {
