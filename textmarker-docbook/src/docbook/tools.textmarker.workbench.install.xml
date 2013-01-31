@@ -113,6 +113,12 @@ under the License.
     perspective. To get an overview, see
     <xref linkend='section.ugr.tools.tm.workbench.overview' />.
   </para>
+  <note>
+    <para>
+      It is sometimes necessary to increase to available PermGenSpace by adding 
+      <quote>-XX:PermSize=64M -XX:MaxPermSize=228M</quote> to the config.ini file of your Eclipse installation.
+    </para>
+  </note>
   <para>
     Several times within this chapter we use a TextMarker example
     project
