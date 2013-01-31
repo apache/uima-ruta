@@ -952,7 +952,7 @@ under the License.
            class="org.apache.uima.textmarker.ide.ui.ExplainPerspective"
            icon="icons/explain.png"
            id="org.apache.uima.textmarker.ide.ui.explainPerspective"
-           name="Explain">
+           name="TextMarker Explain">
      </perspective>
   </extension>
   <extension
