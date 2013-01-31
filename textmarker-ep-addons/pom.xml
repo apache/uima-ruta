@@ -31,7 +31,7 @@
   </properties>
   <name>Apache UIMA TextMarker Eclipse: ${project.artifactId}</name>
   <url>${uimaWebsiteUrl}</url>
-  <description>Provides addons for the UIMA TextMarker development environment in Eclipse</description>
+  <description>Provides addons for the UIMA TextMarker Workbench in Eclipse</description>
   <dependencies>
     <dependency>
       <groupId>org.apache.uima</groupId>
@@ -40,7 +40,7 @@
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
-      <artifactId>uimaj-ep-textmarker-caseditor</artifactId>
+      <artifactId>textmarker-ep-caseditor</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
     <dependency>
@@ -50,12 +50,12 @@
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
-      <artifactId>uimaj-ep-textmarker-engine</artifactId>
+      <artifactId>textmarker-ep-engine</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
-      <artifactId>uimaj-ep-textmarker-ide</artifactId>
+      <artifactId>textmarker-ep-ide</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
     <dependency>
@@ -155,9 +155,9 @@
     </dependency>
   </dependencies>
   <scm>
-    <url>http://svn.apache.org/viewvc/uima/sandbox/TextMarker/trunk/uimaj-ep-textmarker-addons</url>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/TextMarker/trunk/uimaj-ep-textmarker-addons</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/TextMarker/trunk/uimaj-ep-textmarker-addons</developerConnection>
+    <url>http://svn.apache.org/viewvc/uima/sandbox/textmarker/trunk/textmarker-ep-addons</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk/textmarker-ep-addons</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk/textmarker-ep-addons</developerConnection>
   </scm>
   <build>
     <!-- don't use artifactId as first part of finalName, follow instead the eclipse convention -->

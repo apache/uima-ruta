@@ -48,9 +48,9 @@ Creative Commons Attribution 2.5 License.
     elements from the chain of parent poms, if this is omitted. Keeping this a bit factored allows cutting/pasting 
     the <scm> element, and just changing the following two properties -->
   <scm>
-    <url>http://svn.apache.org/viewvc/uima/sandbox/TextMarker/trunk</url>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/TextMarker/trunk</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/TextMarker/trunk</developerConnection>
+    <url>http://svn.apache.org/viewvc/uima/sandbox/textmarker/trunk</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk</developerConnection>
   </scm>
 
   <!-- The repositories and pluginRepositories section is duplicated from the parent pom one, and adds 
@@ -129,16 +129,16 @@ Creative Commons Attribution 2.5 License.
   </pluginRepositories>
 
   <modules>
-    <module>uimaj-textmarker</module>
+    <module>textmarker-core</module>
 
-    <module>uimaj-ep-textmarker-engine</module>
-    <module>uimaj-ep-textmarker-ide</module>
-    <module>uimaj-ep-textmarker-caseditor</module>
-    <module>uimaj-ep-textmarker-addons</module>
-    <module>uimaj-ep-textmarker-textruler</module>
+    <module>textmarker-ep-engine</module>
+    <module>textmarker-ep-ide</module>
+    <module>textmarker-ep-caseditor</module>
+    <module>textmarker-ep-addons</module>
+    <module>textmarker-ep-textruler</module>
 
-    <module>uima-docbook-textmarker</module>
-    <module>uimaj-textmarker-eclipse-feature</module>
+    <module>textmarker-docbook</module>
+    <module>textmarker-eclipse-feature</module>
   </modules>
   <build>
     <pluginManagement>

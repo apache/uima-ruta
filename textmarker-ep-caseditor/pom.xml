@@ -33,9 +33,9 @@
   <url>${uimaWebsiteUrl}</url>
   <description>Provides additional views for the CAS Editor</description>
   <scm>
-    <url>http://svn.apache.org/viewvc/uima/sandbox/TextMarker/trunk/uimaj-ep-textmarker-caseditor</url>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/TextMarker/trunk/uimaj-ep-textmarker-caseditor</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/TextMarker/trunk/uimaj-ep-textmarker-caseditor</developerConnection>
+    <url>http://svn.apache.org/viewvc/uima/sandbox/textmarker/trunk/textmarker-ep-caseditor</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk/textmarker-ep-caseditor</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk/textmarker-ep-caseditor</developerConnection>
   </scm>
   <dependencies>
     <dependency>

@@ -37,13 +37,13 @@
 
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/TextMarker/trunk/uimaj-textmarker-eclipse-update-site
+      scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk/textmarker-eclipse-update-site
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/TextMarker/trunk/uimaj-textmarker-eclipse-update-site
+      scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk/textmarker-eclipse-update-site
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/sandbox/TextMarker/trunk/uimaj-textmarker-eclipse-update-site
+      http://svn.apache.org/viewvc/uima/sandbox/textmarker/trunk/textmarker-eclipse-update-site
     </url>
   </scm>
   
@@ -77,31 +77,31 @@
               <artifactItems>
                 <artifactItem>
                   <groupId>org.apache.uima</groupId>
-                  <artifactId>uimaj-ep-textmarker-addons</artifactId>
+                  <artifactId>textmarker-ep-addons</artifactId>
                   <version>${item-maven-release-version}</version>
                   <destFileName>org.apache.uima.textmarker.addons_${item-eclipse-release-version}.jar</destFileName>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.uima</groupId>
-                  <artifactId>uimaj-ep-textmarker-caseditor</artifactId>
+                  <artifactId>textmarker-ep-caseditor</artifactId>
                   <version>${item-maven-release-version}</version>
                   <destFileName>org.apache.uima.textmarker.caseditor_${item-eclipse-release-version}.jar</destFileName>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.uima</groupId>
-                  <artifactId>uimaj-ep-textmarker-engine</artifactId>
+                  <artifactId>textmarker-ep-engine</artifactId>
                   <version>${item-maven-release-version}</version>
                   <destFileName>org.apache.uima.textmarker.engine_${item-eclipse-release-version}.jar</destFileName>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.uima</groupId>
-                  <artifactId>uimaj-ep-textmarker-ide</artifactId>
+                  <artifactId>textmarker-ep-ide</artifactId>
                   <version>${item-maven-release-version}</version>
                   <destFileName>org.apache.uima.textmarker.ide_${item-eclipse-release-version}.jar</destFileName>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.uima</groupId>
-                  <artifactId>uimaj-ep-textmarker-textruler</artifactId>
+                  <artifactId>textmarker-ep-textruler</artifactId>
                   <version>${item-maven-release-version}</version>
                   <destFileName>org.apache.uima.textmarker.textruler_${item-eclipse-release-version}.jar</destFileName>
                 </artifactItem>
@@ -121,7 +121,7 @@
               <artifactItems>
                 <artifactItem>
                   <groupId>org.apache.uima</groupId>
-                  <artifactId>uimaj-textmarker-eclipse-feature</artifactId>
+                  <artifactId>textmarker-eclipse-feature</artifactId>
                   <version>${item-maven-release-version}</version>
                   <destFileName>org.apache.uima.textmarker.feature_${item-eclipse-release-version}.jar</destFileName>
                 </artifactItem>
