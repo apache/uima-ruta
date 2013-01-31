@@ -47,8 +47,6 @@ type files from the build, e.g., by adding:
     <artifactId>maven-compiler-plugin</artifactId>
     <version>3.0</version>
     <configuration>
-        <source>1.6</source>
-        <target>1.6</target>
          <excludes>
              <exclude>org/apache/uima/textmarker/type/*.java</exclude>
          </excludes>
