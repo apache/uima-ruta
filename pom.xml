@@ -269,6 +269,27 @@ Creative Commons Attribution 2.5 License.
               </execution>
             </executions>
           </plugin>
+           <plugin>
+		        <artifactId>maven-antrun-plugin</artifactId>
+		        <inherited>false</inherited>
+		        <executions>
+		          <execution>
+		            <id>ExtendSourceRelease</id>
+		            <phase>package</phase>
+		            <configuration>
+		              <target>
+		                <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
+									    <zipfileset dir="${basedir}/example-projects/ExampleProject/" 
+									      includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/ExampleProject/"/>
+									  </zip>
+		              </target>
+		            </configuration>
+		            <goals>
+		              <goal>run</goal>
+		            </goals>
+		          </execution>
+		        </executions>
+		      </plugin>
         </plugins>
       </build>
     </profile>
