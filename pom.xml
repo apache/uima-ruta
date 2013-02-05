@@ -11,8 +11,9 @@
 
   <parent>
     <groupId>org.apache.uima</groupId>
-    <artifactId>parent-pom</artifactId>
-    <version>3</version>
+    <artifactId>textmarker-parent</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+    <relativePath>textmarker-parent/pom.xml</relativePath>
   </parent>
 
   <groupId>org.apache.uima</groupId>
@@ -20,21 +21,10 @@
   <packaging>pom</packaging>
   <version>2.0.0-SNAPSHOT</version>
   <name>Apache UIMA TextMarker: ${project.artifactId}</name>
-  <description>The common parent pom for Apache UIMA TextMarker</description>
+  <description>The top project for Apache UIMA TextMarker</description>
   <url>${uimaWebsiteUrl}</url>
   <properties>
-    <uniWueNoticeText>Portions of TextMarker were originally developed by
-the Universität Würzburg.
-Copyright (c) 2006, 2011 Universität Würzburg.
-    </uniWueNoticeText>
-  	<postNoticeText>${uniWueNoticeText}
-
-This product contains icons developed by the Mark James 
-(http://www.famfamfam.com/lab/icons/silk/), licensed under the 
-Creative Commons Attribution 2.5 License.
-  	</postNoticeText>
     <jiraVersion>12323872</jiraVersion>
-    <uimaVersion>2.4.0</uimaVersion>
   </properties>
 
   <!-- override pom setting in the build project. JIRA 5.1 needs different URL -->
@@ -53,80 +43,7 @@ Creative Commons Attribution 2.5 License.
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk</developerConnection>
   </scm>
 
-  <!-- The repositories and pluginRepositories section is duplicated from the parent pom one, and adds 
-    the Apache Snapshot Nexus repository where UIMA snapshots are deployed. This is needed if for instance, 
-    a project depends on some new SNAPSHOT level of a build tool, where the users hasn't checked out the 
-    build tooling. This allows maven to find the snapshots when looking for the parent of this pom -->
-  <repositories>
-    <repository>
-      <id>eclipsePlugins</id>
-      <name>Eclipse components</name>
-      <layout>default</layout>
-      <url>http://repo1.maven.org/eclipse</url>
 
-      <releases>
-        <updatePolicy>never</updatePolicy>
-        <checksumPolicy>fail</checksumPolicy>
-      </releases>
-
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-
-    <!-- modify central repository access: Turn on checksum checking -->
-    <repository>
-      <id>central</id>
-      <name>Maven Repository Switchboard</name>
-      <layout>default</layout>
-      <url>http://repo1.maven.org/maven2</url>
-
-      <releases>
-        <enabled>true</enabled>
-        <checksumPolicy>fail</checksumPolicy>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-
-    </repository>
-
-    <repository>
-      <id>apache.snapshots</id>
-      <name>Apache Snapshot Repository</name>
-      <url>http://repository.apache.org/snapshots</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-
-    <!-- Temporary repository that contains osgi bundles like DLTK 3.0. Added to ease building the TextMarker 
-      Eclipse plugins that depend on bundles, which are not provided by public maven repositories. -->
-    <repository>
-      <id>ukp-osgi-releases</id>
-      <url>http://zoidberg.ukp.informatik.tu-darmstadt.de/artifactory/public-ext-osgi-releases-local</url>
-    </repository>
-
-  </repositories>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>apache.snapshots.plugins</id>
-      <name>Apache Snapshot Repository - Maven plugins</name>
-      <url>http://repository.apache.org/snapshots</url>
-      <layout>default</layout>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-        <checksumPolicy>fail</checksumPolicy>
-        <updatePolicy>never</updatePolicy>
-      </snapshots>
-    </pluginRepository>
-  </pluginRepositories>
 
   <modules>
     <module>textmarker-core</module>
@@ -192,62 +109,8 @@ Creative Commons Attribution 2.5 License.
             </execution>
           </executions>
         </plugin>
-
-
-        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence 
-          on the Maven build itself. -->
-        <plugin>
-          <groupId>org.eclipse.m2e</groupId>
-          <artifactId>lifecycle-mapping</artifactId>
-          <version>1.0.0</version>
-          <configuration>
-            <lifecycleMappingMetadata>
-              <pluginExecutions>
-                <pluginExecution>
-                  <pluginExecutionFilter>
-                    <groupId>org.apache.uima</groupId>
-                    <artifactId>uima-build-helper-maven-plugin</artifactId>
-                    <versionRange>[2,)</versionRange>
-                    <goals>
-                      <goal>parse-date-time</goal>
-                    </goals>
-                  </pluginExecutionFilter>
-                  <action>
-                    <ignore />
-                  </action>
-                </pluginExecution>
-              </pluginExecutions>
-            </lifecycleMappingMetadata>
-          </configuration>
-        </plugin>
       </plugins>
     </pluginManagement>
-     <plugins>
-				<plugin>
-					<artifactId>maven-resources-plugin</artifactId>
-					<executions>
-						<execution>
-							<id>copy customized bin LICENSE file</id>
-							<phase>prepare-package</phase>
-							<goals>
-								<goal>copy-resources</goal>
-							</goals>
-							<configuration>
-								<outputDirectory>${project.build.directory}/classes/META-INF</outputDirectory>
-								<resources>
-									<resource>
-										<directory>src/main/readme_bin</directory>
-										<includes>
-											<include>LICENSE</include>
-										</includes>
-										<filtering>true</filtering>
-									</resource>
-								</resources>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-			</plugins>
   </build>
   <profiles>
     <profile>
