@@ -47,7 +47,7 @@ under the License.
       </listitem>
       <listitem>
         <para>
-          Select or enter the TextMarker update site (<ulink url="http://www.apache.org/dist/uima/eclipse-update-site/">http://www.apache.org/dist/uima/eclipse-update-site/
+          Select or enter the Apache UIMA update site (<ulink url="http://www.apache.org/dist/uima/eclipse-update-site/">http://www.apache.org/dist/uima/eclipse-update-site/
           </ulink>)in field
           <quote>Work with:</quote>
           and press <quote>Enter</quote>.
@@ -55,11 +55,8 @@ under the License.
       </listitem>
       <listitem>
         <para>
-          The <quote>Apache UIMA TextMarker
-            Eclipse tooling and runtime support
-          </quote>
-          feature will be displayed. Select
-          it by clicking into the related checkbox.
+          Select <quote>Apche UIMA TextMarker</quote> and (if not yet installed) <quote>Apache UIMA Eclipse tooling and runtime support</quote>
+          by clicking into the related checkbox.
         </para>
       </listitem>
       <listitem>
@@ -76,7 +73,7 @@ under the License.
         <para>
           On the next page, click <quote>Next</quote>
           again. Now, the license
-          agreement site is diplayed. To install TextMarker read the license and
+          agreement site is diplayed. To install UIMA TextMarker read the license and
           choose
           <quote>I accept the ...</quote>
           if you agree to it. Then,
