@@ -46,6 +46,7 @@
 
 
   <modules>
+    <module>textmarker-parent</module>
     <module>textmarker-core</module>
 
     <module>textmarker-ep-engine</module>
