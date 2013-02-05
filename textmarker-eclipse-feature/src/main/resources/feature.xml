@@ -35,13 +35,12 @@ and NOTICE files
    <license url="%licenseURL">
       %license
    </license>
-   
+
    <url>
       <discovery label="UIMA Eclipse Plugins update site" url="http://www.apache.org/dist/uima/eclipse-update-site/"/>
    </url>
 
    <requires>
-      <import feature="org.apache.uima.runtime" version="2.4"/>
       <import feature="org.apache.uima.tools" version="2.4"/>
       <import feature="org.eclipse.dltk.core" version="3.0.0"/>
    </requires>
