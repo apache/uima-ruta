@@ -20,6 +20,10 @@ For more details, please see http://uima.apache.org/building-uima.html
 
 -------------------------------------
 
+The UIMA TextMarker Workbench is currently only available for Eclipse 3.7.
+
+-------------------------------------
+
 [UIMA-2528] Open CAS Editor blocks eclipse start
 
 If Eclipse is closed while an opened CAS Editor is focused, then problems may occur 
