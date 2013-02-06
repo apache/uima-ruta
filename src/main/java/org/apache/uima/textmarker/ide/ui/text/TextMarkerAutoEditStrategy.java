@@ -807,8 +807,9 @@ public class TextMarkerAutoEditStrategy extends DefaultIndentLineAutoEditStrateg
       String commonIndent = temp.get(firstLineOffset, c.offset - firstLineOffset);
       if(StringUtils.isNotBlank(commonIndent)) {
     	  // do not copy non whitespace content as indent
-    	  commonIndent = commonIndent.replaceAll(".", " ");
-    	  // if only withspaces count as indent then trim the end and use the delta as indent
+        // and only use leading white spaces
+        String notWSContent = commonIndent.replaceAll("^\\s+", "");
+        commonIndent = StringUtils.removeEnd(commonIndent, notWSContent);
       }
       line++;
       try {
