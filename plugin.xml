@@ -212,7 +212,7 @@ under the License.
             id="org.apache.uima.textmarker.ide.core.PACKAGES">
       </buildpathContainerInitializer>
    </extension>
-<extension
+   <extension
     point="org.eclipse.dltk.core.buildParticipant">
       <buildParticipant
             class="org.eclipse.dltk.core.builder.ParserBuildParticipantFactory"
@@ -230,15 +230,15 @@ under the License.
       </requires>
     </buildParticipant>
     <buildParticipant
-          class="org.apache.uima.textmarker.ide.validator.CheckValidator"
-          id="org.apache.uima.textmarker.ide.validator.Checker"
-          name="TextMarker Validator"
-          nature="org.apache.uima.textmarker.ide.nature">
-    </buildParticipant>
-    <buildParticipant
           class="org.apache.uima.textmarker.ide.core.builder.TextMarkerBuilder"
           id="org.apache.uima.textmarker.ide.core.builder"
           name="TextMarker Descriptor Bulider"
+          nature="org.apache.uima.textmarker.ide.nature">
+    </buildParticipant>
+    <buildParticipant
+          class="org.apache.uima.textmarker.ide.validator.CheckValidator"
+          id="org.apache.uima.textmarker.ide.validator.Checker"
+          name="TextMarker Validator"
           nature="org.apache.uima.textmarker.ide.nature">
     </buildParticipant>
   </extension>
