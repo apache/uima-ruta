@@ -20,11 +20,16 @@
 package org.apache.uima.textmarker.action;
 
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
+import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
+import org.apache.uima.textmarker.rule.AnnotationComparator;
 import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
@@ -38,15 +43,28 @@ public class ShiftAction extends MarkAction {
   @Override
   public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
           InferenceCrowd crowd) {
+    Type targetType = type.getType(element.getParent());
     List<Integer> indexList = getIndexList(element, list);
-    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(stream, indexList,
+    List<AnnotationFS> destinationAnnotationSpans = match.getMatchedAnnotations(stream, indexList,
             element.getContainer());
-    for (AnnotationFS matchedAnnotation : matchedAnnotations) {
-      List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element, stream);
-      for (AnnotationFS annotationFS : matchedAnnotationsOf) {
-        stream.removeAnnotation(annotationFS, annotationFS.getType());
-        createAnnotation(matchedAnnotation, element, stream, match);
+    List<AnnotationFS> annotationsMatchedByRuleElementofAction = match.getMatchedAnnotationsOf(element, stream);
+    int size = Math.min(annotationsMatchedByRuleElementofAction.size(), destinationAnnotationSpans.size());
+    for (int i = 0; i < size; i++) {
+      AnnotationFS eachMatched = annotationsMatchedByRuleElementofAction.get(i);
+      AnnotationFS eachDestination = destinationAnnotationSpans.get(i);
+      Set<AnnotationFS> allAnchoredAnnotations = new TreeSet<AnnotationFS>(new AnnotationComparator());
+      Set<AnnotationFS> beginAnchors = stream.getBeginAnchor(eachMatched.getBegin()).getBeginAnchors(targetType);
+      Set<AnnotationFS> endAnchors = stream.getEndAnchor(eachMatched.getEnd()).getEndAnchors(targetType);
+      allAnchoredAnnotations.addAll(beginAnchors);
+      allAnchoredAnnotations.addAll(endAnchors);
+      for (AnnotationFS eachAnchored : allAnchoredAnnotations) {
+        Annotation a = (Annotation) eachAnchored;
+        stream.removeAnnotation(a);
+        a.setBegin(eachDestination.getBegin());
+        a.setEnd(eachDestination.getEnd());
+        stream.addAnnotation(a, true, match);
       }
     }
   }
+
 }

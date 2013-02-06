@@ -41,6 +41,7 @@ import org.apache.uima.textmarker.action.ReplaceTest;
 import org.apache.uima.textmarker.action.RetainTypeTest;
 import org.apache.uima.textmarker.action.SetFeatureTest;
 import org.apache.uima.textmarker.action.ShiftTest;
+import org.apache.uima.textmarker.action.ShiftTest2;
 import org.apache.uima.textmarker.action.TransferTest;
 import org.apache.uima.textmarker.action.TrieTest;
 import org.apache.uima.textmarker.action.TrimTest;
@@ -56,7 +57,7 @@ import org.junit.runners.Suite.SuiteClasses;
     MarkLastTest.class, MarkOnceTest.class, MarkScoreTest.class, MarkTableTest.class,
     MarkTest.class, MatchedTextTest.class, MergeTest.class, RemoveDuplicateTest.class,
     RemoveTest.class, ReplaceTest.class, RetainTypeTest.class, SetFeatureTest.class,
-    ShiftTest.class, TransferTest.class, TrieTest.class, TrimTest.class, UnmarkAllTest.class,
+    ShiftTest.class, ShiftTest2.class, TransferTest.class, TrieTest.class, TrimTest.class, UnmarkAllTest.class,
     UnmarkTest.class })
 public class AllActionsTest {
 
