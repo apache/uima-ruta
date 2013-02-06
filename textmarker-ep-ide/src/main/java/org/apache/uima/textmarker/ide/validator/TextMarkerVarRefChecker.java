@@ -211,7 +211,19 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
           IProblem problem = problemFactory.createUnknownActionProblem(tma);
           rep.reportProblem(problem);
         }
-
+        
+        if (tma.getName().equals("GETFEATURE") || tma.getName().equals("SETFEATURE")) {
+          List<?> childs = tma.getChilds();
+          TextMarkerStringExpression stringExpr = (TextMarkerStringExpression) childs.get(0);
+          String feat = stringExpr.toString();
+          feat = getFeatureName(stringExpr, feat);
+          boolean featureFound = findFeature(matchedType, feat);
+          if (!featureFound) {
+            IProblem problem = problemFactory.createUnknownFeatureProblem(stringExpr, matchedType);
+            rep.reportProblem(problem);
+          }
+        }
+        
         if (tma.getKind() == TMActionConstants.A_ASSIGN) {
           List<?> childs = tma.getChilds();
           try {
@@ -249,7 +261,7 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
               feat = getFeatureName(each, feat);
               boolean featureFound = findFeature(structure, feat);
               if (!featureFound) {
-                IProblem problem = problemFactory.createUnknownFeatureProblem(each);
+                IProblem problem = problemFactory.createUnknownFeatureProblem(each, structure);
                 rep.reportProblem(problem);
               }
             }
@@ -276,7 +288,7 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
             feat = getFeatureName(se, feat);
             boolean featureFound = findFeature(matchedType, feat);
             if (!featureFound) {
-              IProblem problem = problemFactory.createUnknownFeatureProblem(se);
+              IProblem problem = problemFactory.createUnknownFeatureProblem(se, matchedType);
               rep.reportProblem(problem);
             }
           }
@@ -304,10 +316,13 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
     }
 
     private boolean findFeature(String structure, String feat) {
-      boolean featureFound = false;
-      if (description == null || structure == null) {
-        return featureFound;
+      if (description == null) {
+        return true;
       }
+      if(structure == null) {
+        return false;
+      }
+      boolean featureFound = false;
       TypeDescription[] descriptions = description.getTypes();
       Map<String, TypeDescription> typeMap = new HashMap<String, TypeDescription>();
       for (TypeDescription typeDescription : descriptions) {
@@ -316,7 +331,7 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
       }
       for (TypeDescription typeDescription : descriptions) {
         String typeName = typeDescription.getName();
-        if (typeName.endsWith(structure)) {
+        if (typeName.endsWith(structure) || (typeName.equals("uima.tcas.DocumentAnnotation") && structure.equals("Document"))) {
           Collection<FeatureDescription> allFeatures = getAllDeclaredFeatures(typeDescription,
                   typeMap);
           for (FeatureDescription featureDescription : allFeatures) {

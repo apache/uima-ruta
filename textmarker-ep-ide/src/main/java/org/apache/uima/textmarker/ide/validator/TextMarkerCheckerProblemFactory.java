@@ -136,7 +136,7 @@ public class TextMarkerCheckerProblemFactory {
     return new TextMarkerCheckerDefaultProblem(this.fileName, message, var, getLine(var));
   }
 
-  public IProblem createUnknownFeatureProblem(Expression var) {
+  public IProblem createUnknownFeatureProblem(Expression var, String matchedType) {
     // TODO refactor and find better solution
     String feat = var.toString();
     List childs = var.getChilds();
@@ -154,6 +154,9 @@ public class TextMarkerCheckerProblemFactory {
       }
     }
     String message = "error: Feature \"" + feat + "\" is not defined.";
+    if(matchedType != null) {
+      message = "error: Feature \"" + feat + "\" is not defined for type \""+matchedType+"\".";
+    }
     return new TextMarkerCheckerDefaultProblem(this.fileName, message, var, getLine(var));
   }
 
