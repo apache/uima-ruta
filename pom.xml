@@ -12,14 +12,14 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>textmarker-parent</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.1-SNAPSHOT</version>
     <relativePath>textmarker-parent/pom.xml</relativePath>
   </parent>
 
   <groupId>org.apache.uima</groupId>
   <artifactId>textmarker</artifactId>
   <packaging>pom</packaging>
-  <version>2.0.0</version>
+  <version>2.0.1-SNAPSHOT</version>
   <name>Apache UIMA TextMarker: ${project.artifactId}</name>
   <description>The top project for Apache UIMA TextMarker</description>
   <url>${uimaWebsiteUrl}</url>
@@ -39,9 +39,9 @@
     elements from the chain of parent poms, if this is omitted. Keeping this a bit factored allows cutting/pasting 
     the <scm> element, and just changing the following two properties -->
   <scm>
-    <url>http://svn.apache.org/viewvc/uima/sandbox/textmarker/tags/textmarker-2.0.0-rc5</url>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/textmarker/tags/textmarker-2.0.0-rc5</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/textmarker/tags/textmarker-2.0.0-rc5</developerConnection>
+    <url>http://svn.apache.org/viewvc/uima/sandbox/textmarker/trunk</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk</developerConnection>
   </scm>
 
   <!-- dependencies used during assembly -->
