@@ -20,10 +20,12 @@
 package org.apache.uima.textmarker.utils.twl;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
 import org.apache.uima.textmarker.resource.MultiTreeWordList;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -80,7 +82,13 @@ public class MultiTWLConverterHandler implements IHandler {
         }
         monitor.beginTask("Compiling generated.mtwl...", 1);
         if (!paths.isEmpty()) {
-          MultiTreeWordList trie = new MultiTreeWordList(paths.toArray(new String[0]));
+          MultiTreeWordList trie;
+          try {
+            trie = new MultiTreeWordList(paths.toArray(new String[0]));
+          } catch (IOException e) {
+            TextMarkerAddonsPlugin.error(e);
+            return Status.CANCEL_STATUS;
+          }
 
           IPath parent = first.getLocation().removeLastSegments(1);
           IPath newPath = parent.append("generated.mtwl");
@@ -92,8 +100,8 @@ public class MultiTWLConverterHandler implements IHandler {
 
           IWorkspaceRoot myWorkspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
           IContainer container = myWorkspaceRoot.getContainerForLocation(parent);
-          final String localPath = container.getProjectRelativePath() + "/" + container.getName()
-                  + "/" + "generated.mtwl";
+          // final String localPath = container.getProjectRelativePath() + "/" + container.getName()
+          // + "/" + "generated.mtwl";
           try {
             container.getParent().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
           } catch (CoreException e) {

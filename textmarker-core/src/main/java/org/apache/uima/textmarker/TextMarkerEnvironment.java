@@ -20,6 +20,8 @@
 package org.apache.uima.textmarker;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -201,18 +203,42 @@ public class TextMarkerEnvironment {
     TextMarkerWordList result = wordLists.get(list);
     if (result == null) {
       boolean found = false;
-      for (String eachPath : resourcePaths) {
-        File file = new File(eachPath, list);
-        if (!file.exists()) {
-          continue;
+      if (resourcePaths != null) {
+        for (String eachPath : resourcePaths) {
+          File file = new File(eachPath, list);
+          if (!file.exists()) {
+            continue;
+          }
+          found = true;
+          try {
+            if (file.getName().endsWith("mtwl")) {
+              wordLists.put(list, new MultiTreeWordList(file.getAbsolutePath()));
+            } else {
+              wordLists.put(list, new TreeWordList(file.getAbsolutePath()));
+            }
+          } catch (IOException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
+                    "Error reading word list", e);
+            found = false;
+          }
+          break;
         }
-        found = true;
-        if (file.getName().endsWith("mtwl")) {
-          wordLists.put(list, new MultiTreeWordList(file.getAbsolutePath()));
-        } else {
-          wordLists.put(list, new TreeWordList(file.getAbsolutePath()));
+      }
+      if (!found) {
+        InputStream stream = ClassLoader.getSystemResourceAsStream(list);
+        if (stream != null) {
+          found = true;
+          try {
+            if (list.endsWith(".mtwl"))
+              wordLists.put(list, new MultiTreeWordList(stream, list));
+            else
+              wordLists.put(list, new TreeWordList(stream, list));
+          } catch (IOException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
+                    "Error reading word list from classpath", e);
+            found = false;
+          }
         }
-        break;
       }
       if (!found) {
         Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Can't find " + list + "!");
@@ -253,7 +279,7 @@ public class TextMarkerEnvironment {
   private Object getInitialValue(String name, Class<?> type) {
     Object init = initializedVariables.get(name);
     if (init != null) {
-      if(init instanceof List) {
+      if (init instanceof List) {
         ArrayList<Object> list = new ArrayList<Object>();
         list.addAll((Collection<? extends Object>) init);
         return list;
@@ -407,7 +433,7 @@ public class TextMarkerEnvironment {
   @SuppressWarnings("unchecked")
   public void setInitialVariableValue(String var, Object value) {
     if (ownsVariable(var)) {
-      if(value instanceof List) {
+      if (value instanceof List) {
         List<Object> initValue = new ArrayList<Object>();
         initValue.addAll((Collection<? extends Object>) value);
         initializedVariables.put(var, initValue);

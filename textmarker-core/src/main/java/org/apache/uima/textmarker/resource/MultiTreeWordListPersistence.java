@@ -22,6 +22,7 @@ package org.apache.uima.textmarker.resource;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -40,17 +41,16 @@ public class MultiTreeWordListPersistence {
    * 
    * Reads the XML-File with the specified path and creates a TreeWordList.
    * 
-   * @param path
-   *          The location of the XML-File.
+   * @param stream
+   *          The open XML-File containing the TreeWordList. This method will close the stream.
    */
-  public void readMTWL(MultiTextNode root, String path) {
-    readMTWL(root, path, "UTF-8");
+  public void readMTWL(MultiTextNode root, String path) throws IOException {
+    readMTWL(root, new FileInputStream(path), "UTF-8");
   }
 
-  public void readMTWL(MultiTextNode root, String path, String encoding) {
+  public void readMTWL(MultiTextNode root, InputStream stream, String encoding) throws IOException {
     try {
-      FileInputStream input = new FileInputStream(path);
-      InputStreamReader stream = new InputStreamReader(input, encoding);
+      InputStreamReader streamReader = new InputStreamReader(stream, encoding);
       TrieXMLEventHandler handler = new TrieXMLEventHandler(root);
       SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
       SAXParser saxParser = saxParserFactory.newSAXParser();
@@ -59,9 +59,7 @@ public class MultiTreeWordListPersistence {
       // XMLReader reader = XMLReaderFactory.createXMLReader();
       reader.setContentHandler(handler);
       reader.setErrorHandler(handler);
-      reader.parse(new InputSource(stream));
-    } catch (IOException e) {
-      e.printStackTrace();
+      reader.parse(new InputSource(streamReader));
     } catch (SAXException e) {
       e.printStackTrace();
     } catch (ParserConfigurationException e) {

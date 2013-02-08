@@ -24,6 +24,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -65,14 +66,35 @@ public class TreeWordList implements TextMarkerWordList {
    * @param filename
    *          path of the file to create a TextWordList from
    */
-  public TreeWordList(String pathname) {
+  public TreeWordList(String pathname) throws IOException {
     if (pathname.endsWith(".twl")) {
-      readXML(pathname, "UTF-8");
+      File f = new File(pathname);
+      FileInputStream fstream = new FileInputStream(f);
+      readXML(fstream, "UTF-8");
     }
     if (pathname.endsWith(".txt")) {
-      buildNewTree(pathname);
+      // reading the file
+      File f = new File(pathname);
+      FileInputStream fstream = new FileInputStream(f);
+      buildNewTree(fstream);
     }
     this.name = new File(pathname).getName();
+  }
+
+  /**
+   * Constructs a TreeWordList from an open stream with a given name
+   * 
+   * @param stream
+   *          path of the file to create a TextWordList from
+   */
+  public TreeWordList(InputStream stream, String name) throws IOException {
+    if (name.endsWith(".twl")) {
+      readXML(stream, "UTF-8");
+    }
+    if (name.endsWith(".txt")) {
+      buildNewTree(stream);
+    }
+    this.name = new File(name).getName();
   }
 
   public TreeWordList(List<String> data) {
@@ -90,33 +112,23 @@ public class TreeWordList implements TextMarkerWordList {
   /**
    * Creates a new Tree in the existing treeWordList from a file with path pathname
    * 
-   * @param pathname
-   *          Absolut path of the file containing the word for the treeWordList
+   * @param stream
+   *          Open InputStream containing the word for the treeWordList, this method will close the stream.
    */
-  public void buildNewTree(String pathname) {
-    try {
-      // reading the file
-      File f = new File(pathname);
-      FileInputStream fstream = new FileInputStream(f);
-      Scanner scan = new Scanner(fstream, "UTF-8");
+  public void buildNewTree(InputStream stream) throws IOException {
+      Scanner scan = new Scanner(stream, "UTF-8");
       // creating a new tree
       this.root = new TextNode();
       while (scan.hasNextLine()) {
         String s = scan.nextLine().trim();
-
+    
         if (s.endsWith("=")) {
           s = s.substring(0, s.length() - 1);
           s = s.trim();
         }
         addWord(s);
       }
-      fstream.close();
-
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+      scan.close();
   }
 
   /**
@@ -296,10 +308,9 @@ public class TreeWordList implements TextMarkerWordList {
     }
   }
 
-  public void readXML(String path, String encoding) {
+  public void readXML(InputStream stream, String encoding) throws IOException {
     try {
-      FileInputStream input = new FileInputStream(path);
-      InputStreamReader stream = new InputStreamReader(input, encoding);
+      InputStreamReader streamReader = new InputStreamReader(stream, encoding);
       this.root = new TextNode();
       XMLEventHandler handler = new XMLEventHandler(root);
       SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -308,7 +319,7 @@ public class TreeWordList implements TextMarkerWordList {
       // XMLReader reader = XMLReaderFactory.createXMLReader();
       reader.setContentHandler(handler);
       reader.setErrorHandler(handler);
-      reader.parse(new InputSource(stream));
+      reader.parse(new InputSource(streamReader));
     } catch (SAXParseException spe) {
       StringBuffer sb = new StringBuffer(spe.toString());
       sb.append("\n  Line number: " + spe.getLineNumber());
@@ -319,8 +330,6 @@ public class TreeWordList implements TextMarkerWordList {
     } catch (SAXException se) {
       System.out.println("loadDOM threw " + se);
       se.printStackTrace(System.out);
-    } catch (IOException e) {
-      e.printStackTrace();
     } catch (ParserConfigurationException e) {
       e.printStackTrace();
     }

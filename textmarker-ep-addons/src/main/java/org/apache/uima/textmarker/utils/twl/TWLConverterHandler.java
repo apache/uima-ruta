@@ -19,10 +19,12 @@
 
 package org.apache.uima.textmarker.utils.twl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
 import org.apache.uima.textmarker.resource.TreeWordList;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -60,7 +62,7 @@ public class TWLConverterHandler implements IHandler {
       if (HandlerUtil.getCurrentSelection(event) instanceof IStructuredSelection) {
         StructuredSelection selection = (StructuredSelection) HandlerUtil
                 .getCurrentSelection(event);
-        Iterator<Object> iter = selection.iterator();
+        Iterator<?> iter = selection.iterator();
         while (iter.hasNext()) {
           Object object = iter.next();
           if (object instanceof IFile) {
@@ -73,7 +75,13 @@ public class TWLConverterHandler implements IHandler {
       for (IFile file : files) {
         monitor.setTaskName("Compiling " + file.getLocation().lastSegment() + "...");
         String path = file.getRawLocation().toString();
-        TreeWordList list = new TreeWordList(path);
+        TreeWordList list;
+        try {
+          list = new TreeWordList(path);
+        } catch (IOException e) {
+          TextMarkerAddonsPlugin.error(e);
+          return Status.CANCEL_STATUS;
+        }
         String exportPath = path.substring(0, path.length() - 3) + "twl";
         list.createXMLFile(exportPath, "UTF-8");
         IWorkspaceRoot myWorkspaceRoot = ResourcesPlugin.getWorkspace().getRoot();

@@ -22,8 +22,8 @@ package org.apache.uima.textmarker.resource;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -62,7 +62,7 @@ public class MultiTreeWordList implements TextMarkerWordList {
   /**
    * Default constructor.
    */
-  public MultiTreeWordList() {
+  public MultiTreeWordList() throws IOException {
     this(new String[] {});
   }
 
@@ -72,32 +72,26 @@ public class MultiTreeWordList implements TextMarkerWordList {
    * @param pathname
    *          the pathname of the used file.
    */
-  public MultiTreeWordList(String pathname) {
+  public MultiTreeWordList(String pathname) throws IOException {
+    this(new String[] { pathname });
+  }
 
+  /**
+   * Constructor from an open stream. This method will close the stream.
+   * 
+   * @param stream
+   *          the stream to read the file from.
+   * @param name
+   *          associated name
+   */
+  public MultiTreeWordList(InputStream stream, String name) throws IOException {
     this.root = new MultiTextNode();
     this.costMap = new EditDistanceCostMap();
-    File directory = new File(pathname);
 
-    if (!directory.isDirectory()) {
-      if (directory.getName().endsWith(".txt")) {
-        buildNewTree(directory.getAbsolutePath());
-      }
-      if (directory.getName().endsWith(".mtwl")) {
-        persistence.readMTWL(root, directory.getAbsolutePath());
-      }
-      return;
-    }
-
-    File[] listFiles = directory.listFiles();
-
-    for (File data : listFiles) {
-      if (data.getName().endsWith(".txt")) {
-        buildNewTree(data.getAbsolutePath());
-      }
-      if (data.getName().endsWith(".mtwl")) {
-        persistence.readMTWL(root, data.getAbsolutePath());
-      }
-    }
+    if (name.endsWith(".mtwl"))
+      persistence.readMTWL(root, stream, ENCODING);
+    if (name.endsWith(".txt"))
+      buildNewTree(stream, name);
   }
 
   /**
@@ -106,18 +100,31 @@ public class MultiTreeWordList implements TextMarkerWordList {
    * @param filename
    *          path of the file to create a TextWordList from
    */
-  public MultiTreeWordList(String[] pathnames) {
-
+  public MultiTreeWordList(String[] pathnames) throws IOException {
     this.root = new MultiTextNode();
     this.costMap = new EditDistanceCostMap();
 
     for (String pathname : pathnames) {
+      File directory = new File(pathname);
 
-      if (pathname.endsWith(".mtwl")) {
-        persistence.readMTWL(root, pathname);
-      }
-      if (pathname.endsWith(".txt")) {
-        buildNewTree(pathname);
+      if (!directory.isDirectory()) {
+        if (directory.getName().endsWith(".txt")) {
+          buildNewTree(new FileInputStream(pathname), directory.getName());
+        }
+        if (directory.getName().endsWith(".mtwl")) {
+          persistence.readMTWL(root, directory.getAbsolutePath());
+        }
+      } else {
+        File[] listFiles = directory.listFiles();
+
+        for (File data : listFiles) {
+          if (data.getName().endsWith(".txt")) {
+            buildNewTree(new FileInputStream(data.getAbsolutePath()), data.getName());
+          }
+          if (data.getName().endsWith(".mtwl")) {
+            persistence.readMTWL(root, data.getAbsolutePath());
+          }
+        }
       }
     }
   }
@@ -125,27 +132,20 @@ public class MultiTreeWordList implements TextMarkerWordList {
   /**
    * Creates a new Tree in the existing treeWordList from a file with path pathname
    * 
-   * @param pathname
-   *          Absolut path of the file containing the word for the treeWordList
+   * @param stream
+   *          Input stream for the file containing the words for the treeWordList
+   * @param name
+   *          Associated name for the file
    */
-  public void buildNewTree(String pathname) {
+  public void buildNewTree(InputStream stream, String name) throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(stream, ENCODING));
+    String s = null;
 
-    try {
-      File f = new File(pathname);
-      FileInputStream fstream = new FileInputStream(f);
-      BufferedReader br = new BufferedReader(new InputStreamReader(fstream, ENCODING));
-      String s = null;
-
-      while ((s = br.readLine()) != null) {
-        addWord(s.trim(), f.getName());
-      }
-      fstream.close();
-      br.close();
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
+    while ((s = br.readLine()) != null) {
+      addWord(s.trim(), name);
     }
+    stream.close();
+    br.close();
   }
 
   /**
