@@ -129,7 +129,12 @@ public class TextMarkerRuleElement extends AbstractRuleElement {
           break;
         }
         Collection<AnnotationFS> nextAnnotations = getNextAnnotations(after, eachAnchor, stream);
-        if (nextAnnotations.size() == 1) {
+        if(nextAnnotations.size() == 0) {
+          stopMatching = true;
+          stepbackMatch(after, eachAnchor, extendedMatch, ruleApply, extendedContainerMatch,
+                  sideStepOrigin, stream, crowd, entryPoint);
+        } else 
+          if (nextAnnotations.size() == 1) {
           lastAnchor = eachAnchor;
           eachAnchor = nextAnnotations.iterator().next();
           doMatch(eachAnchor, extendedMatch, extendedContainerMatch, false, stream, crowd);

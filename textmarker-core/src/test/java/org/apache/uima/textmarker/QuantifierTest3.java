@@ -61,6 +61,16 @@ public class QuantifierTest3 {
     ai = cas.getAnnotationIndex(t);
     assertEquals(0, ai.size());
 
+    t = TextMarkerTestUtils.getTestType(cas, 4);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    assertEquals("Big Big Big", iterator.next().getCoveredText());
+    
+    t = TextMarkerTestUtils.getTestType(cas, 5);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(0, ai.size());
+    
     cas.release();
   }
 }
