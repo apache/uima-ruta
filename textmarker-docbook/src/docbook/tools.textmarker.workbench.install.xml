@@ -31,7 +31,7 @@ under the License.
     <orderedlist numeration="arabic">
       <listitem>
         <para>
-          Download, install and start an Eclipse 3.7., which can be obtained
+          Download, install and start Eclipse 3.7., 3.8 or 4.2. Eclipse 3.7 can, for example, can be obtained
           from the <ulink url="http://www.eclipse.org/downloads/packages/release/indigo/sr2">eclipse.org</ulink> download site.
         </para>
       </listitem>

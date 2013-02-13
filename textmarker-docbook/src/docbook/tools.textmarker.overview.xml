@@ -133,11 +133,6 @@ under the License.
       that explain every detail of the matching process. Finally, the TextMarker language can also be used by the tooling, for example, by the <quote>Query</quote> view.
       Here, TextMarker rules can be used as query statements in order to investigate annotated documents.
     </para>
-      <note>
-        <para>
-          The UIMA TextMarker Workbench is currently only available for Eclipse 3.7.
-        </para>
-      </note>
     <para>
       TextMarker smoothly integrates with Apache UIMA. First of all, the TextMarker rules are applied using a generic Analysis Engine and thus TextMarker scripts can 
       easily be added to Apache UIMA pipelines. TextMarker also provides the functionality to import and use other UIMA components like Analysis Engines and Type Systems.
