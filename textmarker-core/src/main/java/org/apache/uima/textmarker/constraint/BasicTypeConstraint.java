@@ -56,9 +56,15 @@ public class BasicTypeConstraint implements FSTypeConstraint {
   }
 
   public boolean match(FeatureStructure fs) {
-    boolean matched = constraint.match(fs);
-    if (matched)
-      return true;
+    if (fs instanceof TextMarkerBasic) {
+      TextMarkerBasic tmb = (TextMarkerBasic) fs;
+      if(tmb.getBeginMap().isEmpty() && tmb.getEndMap().isEmpty()) {
+        return true;
+      }
+    }
+    if(constraint.match(fs)) {
+        return true;
+    }
     boolean result = false;
     if (fs instanceof TextMarkerBasic) {
       TextMarkerBasic tmb = (TextMarkerBasic) fs;

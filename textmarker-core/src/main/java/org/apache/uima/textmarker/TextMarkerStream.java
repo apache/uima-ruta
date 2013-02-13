@@ -181,7 +181,7 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     }
     for (AnnotationFS a : allAnnotations) {
       if (!a.getType().equals(basicType)) {
-        addAnnotation(a, null);
+        addAnnotation(a, false, false, null);
       }
     }
     updateIterators(documentAnnotation);
@@ -195,9 +195,13 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public void addAnnotation(AnnotationFS annotation, RuleMatch creator) {
+    addAnnotation(annotation, false, true, creator);
+  }
+  
+  public void addAnnotation(AnnotationFS annotation, boolean addToIndex, boolean updateInternal, RuleMatch creator) {
     Type type = annotation.getType();
     boolean modified = checkSpan(annotation);
-    if (modified) {
+    if (modified && updateInternal) {
       updateIterators(filter.getWindowAnnotation());
     }
     TextMarkerBasic beginAnchor = getBeginAnchor(annotation.getBegin());
