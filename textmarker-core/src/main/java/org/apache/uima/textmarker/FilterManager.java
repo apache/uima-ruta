@@ -136,6 +136,22 @@ public class FilterManager {
     currentFilterTypes = list;
   }
 
+  public void addFilterTypes(List<Type> types) {
+    currentFilterTypes.addAll(types);
+  }
+
+  public void addRetainTypes(List<Type> types) {
+    currentRetainTypes.addAll(types);
+  }
+
+  public void removeFilterTypes(List<Type> types) {
+    currentFilterTypes.removeAll(types);
+  }
+
+  public void removeRetainTypes(List<Type> types) {
+    currentRetainTypes.removeAll(types);
+  }
+  
   public Collection<Type> getDefaultFilterTypes() {
     return defaultFilterTypes;
   }
@@ -173,5 +189,7 @@ public class FilterManager {
       return iterator;
     }
   }
+
+  
 
 }

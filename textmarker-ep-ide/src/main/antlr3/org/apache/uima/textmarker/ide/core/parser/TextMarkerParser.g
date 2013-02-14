@@ -1194,6 +1194,10 @@ result = ActionFactory.createEmptyAction(input.LT(1));
 	| a = actionConfigure
 	| a = actionDynamicAnchoring
 	| a = actionTrim
+	| a = actionAddFilterType
+	| a = actionAddRetainType
+	| a = actionRemoveFilterType
+	| a = actionRemoveRetainType
 	| (a = externalAction)=> a = externalAction
 	| a = variableAction
 	) {result = a;}
@@ -1454,6 +1458,59 @@ List<Expression> list = new ArrayList<Expression>();
     RPAREN)?
     {action = ActionFactory.createAction(name, list);}
     ;       
+
+actionAddFilterType returns [TextMarkerAction action = null]
+@init {
+List<Expression> list = new ArrayList<Expression>();
+}
+    :   
+    name = ADDFILTERTYPE (LPAREN id = typeExpression {list.add(id);} 
+    {action = ActionFactory.createAction(name, list);}
+    (COMMA id = typeExpression {list.add(id);})* 
+    {action = ActionFactory.createAction(name, list);}
+    RPAREN)
+    {action = ActionFactory.createAction(name, list);}
+    ;   
+
+actionAddRetainType returns [TextMarkerAction action = null]
+@init {
+List<Expression> list = new ArrayList<Expression>();
+}
+    :   
+    name = ADDRETAINTYPE (LPAREN id = typeExpression {list.add(id);} 
+    {action = ActionFactory.createAction(name, list);}
+    (COMMA id = typeExpression {list.add(id);})* 
+    {action = ActionFactory.createAction(name, list);}
+    RPAREN)
+    {action = ActionFactory.createAction(name, list);}
+    ;   
+
+
+actionRemoveFilterType returns [TextMarkerAction action = null]
+@init {
+List<Expression> list = new ArrayList<Expression>();
+}
+    :   
+    name = REMOVEFILTERTYPE (LPAREN id = typeExpression {list.add(id);} 
+    {action = ActionFactory.createAction(name, list);}
+    (COMMA id = typeExpression {list.add(id);})* 
+    {action = ActionFactory.createAction(name, list);}
+    RPAREN)
+    {action = ActionFactory.createAction(name, list);}
+    ;   
+
+actionRemoveRetainType returns [TextMarkerAction action = null]
+@init {
+List<Expression> list = new ArrayList<Expression>();
+}
+    :   
+    name = REMOVERETAINTYPE (LPAREN id = typeExpression {list.add(id);} 
+    {action = ActionFactory.createAction(name, list);}
+    (COMMA id = typeExpression {list.add(id);})* 
+    {action = ActionFactory.createAction(name, list);}
+    RPAREN)
+    {action = ActionFactory.createAction(name, list);}
+    ; 
 
 actionCall returns [TextMarkerAction action = null]
 @init {

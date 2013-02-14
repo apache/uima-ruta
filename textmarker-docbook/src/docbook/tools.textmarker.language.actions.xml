@@ -57,7 +57,62 @@ under the License.
       </para>
     </section>
   </section>
-
+  
+  <section id="ugr.tools.tm.language.actions.addfiltertype">
+    <title>ADDFILTERTYPE</title>
+    <para>
+      The ADDFILTERTYPE action adds its arguments to the list of filtered types, 
+      which restrict the visibility of the rules.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[ADDFILTERTYPE(TypeExpression(,TypeExpression)*)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Document{->ADDFILTERTYPE(CW)};]]></programlisting>
+      </para>
+      <para>
+        After applying this rule, capitalized words are invisible additionally to the previously filtered types.
+      </para>
+    </section>
+  </section>
+  
+    <section id="ugr.tools.tm.language.actions.addretaintype">
+    <title>ADDRETAINTYPE</title>
+    <para>
+      The ADDFILTERTYPE action adds its arguments to the list of retained types, 
+      which extend the visibility of the rules.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[ADDRETAINTYPE(TypeExpression(,TypeExpression)*)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Document{->ADDRETAINTYPE(MARKUP)};]]></programlisting>
+      </para>
+      <para>
+        After applying this rule, markup is visible additionally to the previously retained types.
+      </para>
+    </section>
+  </section>
+  
+  
   <section id="ugr.tools.tm.language.actions.assign">
     <title>ASSIGN</title>
     <para>
@@ -963,6 +1018,61 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
       </para>
     </section>
   </section>
+
+  <section id="ugr.tools.tm.language.actions.removefiltertype">
+    <title>REMOVEFILTERTYPE</title>
+    <para>
+      The REMOVEFILTERTYPE action removes its arguments from the list of filtered types, 
+      which restrict the visibility of the rules.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[REMOVEFILTERTYPE(TypeExpression(,TypeExpression)*)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Document{->REMOVEFILTERTYPE(W)};]]></programlisting>
+      </para>
+      <para>
+        After applying this rule, words are possibly visible again depending on the current filtering settings.
+      </para>
+    </section>
+  </section>
+  
+    <section id="ugr.tools.tm.language.actions.removeretaintype">
+    <title>REMOVERETAINTYPE</title>
+    <para>
+      The REMOVEFILTERTYPE action removes its arguments from the list of retained types, 
+      which extend the visibility of the rules.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[REMOVERETAINTYPE(TypeExpression(,TypeExpression)*)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Document{->REMOVERETAINTYPE(W)};]]></programlisting>
+      </para>
+      <para>
+        After applying this rule, words are possibly not visible anymore depending on the current filtering settings.
+      </para>
+    </section>
+  </section>
+
 
   <section id="ugr.tools.tm.language.actions.replace">
     <title>REPLACE</title>

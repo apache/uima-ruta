@@ -600,15 +600,34 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
 
   public void retainTypes(List<Type> list) {
     filter.retainTypes(list);
-    FSMatchConstraint defaultConstraint = filter.getDefaultConstraint();
-    currentIt = cas.createFilteredIterator(basicIt, defaultConstraint);
+    currentIt = filter.createFilteredIterator(cas, basicType);
   }
 
   public void filterTypes(List<Type> list) {
     filter.filterTypes(list);
-    FSMatchConstraint defaultConstraint = filter.getDefaultConstraint();
-    currentIt = cas.createFilteredIterator(basicIt, defaultConstraint);
+    currentIt = filter.createFilteredIterator(cas, basicType);
   }
+  
+  public void addFilterTypes(List<Type> types) {
+    filter.addFilterTypes(types);
+    currentIt = filter.createFilteredIterator(cas, basicType);
+  }
+
+  public void addRetainTypes(List<Type> types) {
+    filter.addRetainTypes(types);
+    currentIt = filter.createFilteredIterator(cas, basicType);
+  }
+
+  public void removeFilterTypes(List<Type> types) {
+    filter.removeFilterTypes(types);
+    currentIt = filter.createFilteredIterator(cas, basicType);
+  }
+
+  public void removeRetainTypes(List<Type> types) {
+    filter.removeRetainTypes(types);
+    currentIt = filter.createFilteredIterator(cas, basicType);
+  }
+  
 
   public FilterManager getFilter() {
     return filter;
@@ -685,5 +704,7 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
   public void setSimpleGreedyForComposed(boolean simpleGreedyForComposed) {
     this.simpleGreedyForComposed = simpleGreedyForComposed;
   }
+
+  
 
 }

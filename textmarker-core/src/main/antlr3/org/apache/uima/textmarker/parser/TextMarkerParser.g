@@ -6,7 +6,6 @@ options {
 }
 
 
-
 @parser::header {
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -1116,6 +1115,10 @@ action  returns [AbstractTextMarkerAction result = null]
 	| a = actionConfigure
 	| a = actionDynamicAnchoring
 	| a = actionTrim 
+	| a = actionAddRetainType
+	| a = actionRemoveRetainType
+	| a = actionAddFilterType
+	| a = actionRemoveFilterType
 	| (a = externalAction)=> a = externalAction
 //	| a = variableAction
 	) {result = a;}
@@ -1571,6 +1574,41 @@ actionClear returns [AbstractTextMarkerAction action = null]
     {action = ActionFactory.createClearAction(var, $blockDeclaration::env);}
     ;
 
+actionAddRetainType returns [AbstractTextMarkerAction action = null]
+@init {
+List<TypeExpression> list = new ArrayList<TypeExpression>();
+}
+    :
+    ADDRETAINTYPE (LPAREN id = typeExpression {list.add(id);} (COMMA id = typeExpression {list.add(id);})* RPAREN)
+    {action = ActionFactory.createAddRetainTypeAction(list,$blockDeclaration::env);}
+    ;     
+
+actionRemoveRetainType returns [AbstractTextMarkerAction action = null]
+@init {
+List<TypeExpression> list = new ArrayList<TypeExpression>();
+}
+    :
+    REMOVERETAINTYPE (LPAREN id = typeExpression {list.add(id);} (COMMA id = typeExpression {list.add(id);})* RPAREN)
+    {action = ActionFactory.createRemoveRetainTypeAction(list,$blockDeclaration::env);}
+    ;   
+
+actionAddFilterType returns [AbstractTextMarkerAction action = null]
+@init {
+List<TypeExpression> list = new ArrayList<TypeExpression>();
+}
+    :
+    ADDFILTERTYPE (LPAREN id = typeExpression {list.add(id);} (COMMA id = typeExpression {list.add(id);})* RPAREN)
+    {action = ActionFactory.createAddFilterTypeAction(list,$blockDeclaration::env);}
+    ;   
+
+actionRemoveFilterType returns [AbstractTextMarkerAction action = null]
+@init {
+List<TypeExpression> list = new ArrayList<TypeExpression>();
+}
+    :
+    REMOVEFILTERTYPE (LPAREN id = typeExpression {list.add(id);} (COMMA id = typeExpression {list.add(id);})* RPAREN)
+    {action = ActionFactory.createRemoveFilterTypeAction(list,$blockDeclaration::env);}
+    ;     
 
 varArgumentList returns [List args = new ArrayList()]
 	:

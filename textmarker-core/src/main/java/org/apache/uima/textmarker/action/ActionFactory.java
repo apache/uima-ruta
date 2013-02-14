@@ -131,6 +131,26 @@ public class ActionFactory {
     return new FilterTypeAction(types);
   }
 
+  public static AbstractTextMarkerAction createAddRetainTypeAction(List<TypeExpression> types,
+          TextMarkerBlock env) {
+    return new AddRetainTypeAction(types);
+  }
+  
+  public static AbstractTextMarkerAction createRemoveRetainTypeAction(List<TypeExpression> types,
+          TextMarkerBlock env) {
+    return new RemoveRetainTypeAction(types);
+  }
+  
+  public static AbstractTextMarkerAction createAddFilterTypeAction(List<TypeExpression> types,
+          TextMarkerBlock env) {
+    return new AddFilterTypeAction(types);
+  }
+  
+  public static AbstractTextMarkerAction createRemoveFilterTypeAction(List<TypeExpression> types,
+          TextMarkerBlock env) {
+    return new RemoveFilterTypeAction(types);
+  }
+  
   public static AbstractTextMarkerAction createSetFeatureAction(StringExpression f, Object v,
           TextMarkerBlock parent) {
     if (v instanceof NumberExpression) {
@@ -243,5 +263,7 @@ public class ActionFactory {
           TypeListExpression typeList, TextMarkerBlock env) {
     return new TrimAction(types, typeList);
   }
+
+  
 
 }

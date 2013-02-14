@@ -19,6 +19,8 @@
 
 package org.apache.uima.textmarker;
 
+import org.apache.uima.textmarker.action.AddFilterTypeTest;
+import org.apache.uima.textmarker.action.AddRetainTypeTest;
 import org.apache.uima.textmarker.action.ClearTest;
 import org.apache.uima.textmarker.action.CreateTest;
 import org.apache.uima.textmarker.action.FillTest;
@@ -36,6 +38,8 @@ import org.apache.uima.textmarker.action.MarkTest;
 import org.apache.uima.textmarker.action.MatchedTextTest;
 import org.apache.uima.textmarker.action.MergeTest;
 import org.apache.uima.textmarker.action.RemoveDuplicateTest;
+import org.apache.uima.textmarker.action.RemoveFilterTypeTest;
+import org.apache.uima.textmarker.action.RemoveRetainTypeTest;
 import org.apache.uima.textmarker.action.RemoveTest;
 import org.apache.uima.textmarker.action.ReplaceTest;
 import org.apache.uima.textmarker.action.RetainTypeTest;
@@ -52,13 +56,14 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ ClearTest.class, CreateTest.class, FillTest.class, FilterTypeTest.class,
-    GatherTest.class, GetFeatureTest.class, GetListTest.class, GetTest.class, MarkFastTest.class,
-    MarkLastTest.class, MarkOnceTest.class, MarkScoreTest.class, MarkTableTest.class,
-    MarkTest.class, MatchedTextTest.class, MergeTest.class, RemoveDuplicateTest.class,
-    RemoveTest.class, ReplaceTest.class, RetainTypeTest.class, SetFeatureTest.class,
-    ShiftTest.class, ShiftTest2.class, TransferTest.class, TrieTest.class, TrimTest.class, UnmarkAllTest.class,
-    UnmarkTest.class })
+@SuiteClasses({ AddFilterTypeTest.class, AddRetainTypeTest.class, ClearTest.class,
+    CreateTest.class, FillTest.class, FilterTypeTest.class, GatherTest.class, GetFeatureTest.class,
+    GetListTest.class, GetTest.class, MarkFastTest.class, MarkLastTest.class, MarkOnceTest.class,
+    MarkScoreTest.class, MarkTableTest.class, MarkTest.class, MatchedTextTest.class,
+    MergeTest.class, RemoveDuplicateTest.class, RemoveFilterTypeTest.class,
+    RemoveRetainTypeTest.class, RemoveTest.class, ReplaceTest.class, RetainTypeTest.class,
+    SetFeatureTest.class, ShiftTest.class, ShiftTest2.class, TransferTest.class, TrieTest.class,
+    TrimTest.class, UnmarkAllTest.class, UnmarkTest.class })
 public class AllActionsTest {
 
 }
