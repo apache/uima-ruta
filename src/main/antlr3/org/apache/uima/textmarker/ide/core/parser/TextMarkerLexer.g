@@ -30,7 +30,7 @@ tokens {
  * under the License.
 */
 
-	package org.apache.uima.textmarker.parser;
+package org.apache.uima.textmarker.ide.core.parser;
 }
 
 @lexer::members {
