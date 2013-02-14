@@ -30,7 +30,7 @@ tokens {
  * under the License.
 */
 
-	package org.apache.uima.textmarker.ide.core.parser;
+	package org.apache.uima.textmarker.parser;
 }
 
 @lexer::members {
@@ -273,7 +273,21 @@ ENDSWITH
 	:	'ENDSWITH'	 
 	;
 
+ADDRETAINTYPE
+  : 'ADDRETAINTYPE'
+  ;
 
+REMOVERETAINTYPE
+  : 'REMOVERETAINTYPE'
+  ;
+
+ADDFILTERTYPE
+  : 'ADDFILTERTYPE'
+  ;
+
+REMOVEFILTERTYPE
+  : 'REMOVEFILTERTYPE'
+  ;
 
 NOT
 	:	'NOT'
