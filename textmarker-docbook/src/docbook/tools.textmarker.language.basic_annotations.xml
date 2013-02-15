@@ -133,13 +133,13 @@
             <entry>NBSP</entry>
             <entry>ANY</entry>
             <entry>non breaking space</entry>
-            <entry><![CDATA[&nbsp;]]></entry>
+            <entry><![CDATA[" "]]></entry>
           </row>
           <row>
             <entry>AMP</entry>
             <entry>ANY</entry>
-            <entry>ampersant expression</entry>
-            <entry><![CDATA[ä]]></entry>
+            <entry>ampersand expression</entry>
+            <entry><![CDATA[&amp;]]></entry>
           </row>
           <row>
             <entry>BREAK</entry>

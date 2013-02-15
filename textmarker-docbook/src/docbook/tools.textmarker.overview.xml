@@ -473,7 +473,7 @@ Document{-> RETAINTYPE, FILTERTYPE};]]></programlisting>
     </para>
     
     <para>
-      The next exmaple gives a showcase for importing external Analysis Engines and for modifying the documents by creating a new view called <quote>modified</quote>.
+      The next example gives a showcase for importing external Analysis Engines and for modifying the documents by creating a new view called <quote>modified</quote>.
       Additional Analysis Engines can be imported with the keyword <quote>ENGINE</quote> followed by the name of the descriptor. These imported Analysis Engines can be 
       executed with the actions <quote>CALL</quote> or <quote>EXEC</quote>. If the executed Analysis Engine adds, removes or modifies annotations, then their types need 
       to be mentioned when calling the descriptor, or else these annotations will not be correctly processed by the following TextMarker rules.
@@ -489,9 +489,10 @@ Document{-> EXEC(Modifier)};
   <para>
     In this example, we first import an Analysis Engine defined by the descriptor <quote>Modifier.xml</quote> located in the folder <quote>utils</quote>. 
     The descriptor needs to be located in the folder specified by the parameter <link linkend="ugr.tools.tm.ae.basic.parameter.descriptorPaths">descriptorPaths</link>.
-    The first rule deletes all text covered by annotations of the type <quote>DEL</quote>. The second rule replaces the text of all annotations of the type <quote>MoneyAmount</quote> 
+    The first rule deletes all text covered by annotations of the type <quote>Date</quote>. The second rule replaces the text of all annotations of the type <quote>MoneyAmount</quote> 
     with the string <quote><![CDATA[<MoneyAmount/>]]></quote>. The third rule remembers to set the background color of text in Headline annotation to green. The last rule
-    finally performs all of these changes in an additonal view called <quote>modified</quote>.
+    finally performs all of these changes in an additonal view called <quote>modified</quote>, which is specified in the configuration parameters of the analysis engine.
+    <xref linkend="ugr.tools.tm.ae.modifier"/> and <xref linkend="ugr.tools.tm.language.modification"/> provide a more detailed description.
   </para>
 
   </section>
@@ -625,7 +626,7 @@ ae.process(cas);]]></programlisting>
                   <entry>
                     <link linkend='ugr.tools.tm.ae.basic.parameter.scriptPaths'>scriptPaths</link>
                   </entry>
-                  <entry>List of absolute locations, which contain the neccessary script files like
+                  <entry>List of absolute locations, which contain the necessary script files like
                     the main script.
                   </entry>
                   <entry>Multi String</entry>
@@ -634,7 +635,7 @@ ae.process(cas);]]></programlisting>
                   <entry>
                     <link linkend='ugr.tools.tm.ae.basic.parameter.descriptorPaths'>descriptorPaths</link>
                   </entry>
-                  <entry>List of absolute locations, which contain the neccessary descriptor files
+                  <entry>List of absolute locations, which contain the necessary descriptor files
                     like type systems.
                   </entry>
                   <entry>Multi String</entry>
@@ -643,7 +644,7 @@ ae.process(cas);]]></programlisting>
                   <entry>
                     <link linkend='ugr.tools.tm.ae.basic.parameter.resourcePaths'>resourcePaths</link>
                   </entry>
-                  <entry>List of absolute locations, which contain the neccessary resource files like
+                  <entry>List of absolute locations, which contain the necessary resource files like
                     word lists.
                   </entry>
                   <entry>Multi String</entry>
@@ -792,7 +793,7 @@ ae.process(cas);]]></programlisting>
           <title>mainScript</title>
           <para>
             This parameter specifies the rule file that will be executed by the analysis engine and is,
-            therefore, one of the most important ones. The extact name of the script is given by the complete namespace of the file, which corresponds to its location
+            therefore, one of the most important ones. The exact name of the script is given by the complete namespace of the file, which corresponds to its location
             relative to the given parameter <link linkend='ugr.tools.tm.ae.basic.parameter.scriptPaths'>scriptPaths</link>.
             The single names of packages (or folders) are separated by periods. An exemplary value for this parameter could be "org.apache.uima.Main", 
             whereas "Main" specifies the file containing the rules and "org.apache.uima" its package.
@@ -850,7 +851,7 @@ ae.process(cas);]]></programlisting>
             This parameter contains a list of additional analysis engines, which can be executed by the TextMarker rules. The single values
             are given by the name of the analysis engine with their complete namespace and have to be located relative to one value of the parameter
             <link linkend='ugr.tools.tm.ae.basic.parameter.descriptorPaths'>descriptorPaths</link>, the location where the analysis engine searches for the descriptor file.
-            An exmaple for one value of the parameter is "utils.HtmlAnnotator", which points to the descriptor "HtmlAnnotator.xml" in the folder "utils".
+            An example for one value of the parameter is "utils.HtmlAnnotator", which points to the descriptor "HtmlAnnotator.xml" in the folder "utils".
           </para>
         </section>
         <section id="ugr.tools.tm.ae.basic.parameter.additionalEngineLoaders">
@@ -921,7 +922,7 @@ ae.process(cas);]]></programlisting>
         <section id="ugr.tools.tm.ae.basic.parameter.simpleGreedyForComposed">
           <title>simpleGreedyForComposed</title>
           <para>
-            This parameter specifies whether a different inference strategy for composed rule elements should be applied. This option is only neccessary 
+            This parameter specifies whether a different inference strategy for composed rule elements should be applied. This option is only necessary 
             when the composed rule element is expected to match very often, e.g., a rule element like (ANY ANY).
             The default value of this parameter is set to false.
           </para>

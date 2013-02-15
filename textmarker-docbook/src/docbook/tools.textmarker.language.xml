@@ -161,20 +161,14 @@ Dr.JoachimBaumeister
 RuleElementWithCA      ->  TypeExpression QuantifierPart?
                                             "{" Conditions?  Actions? "}"]]></programlisting>
       A block declaration always starts with the keyword
-      <quote>BLOCK</quote>
-      , followed by the identifier of the block within brackets. The
-      <quote>RuleElementType</quote>
-      -element
+      <quote>BLOCK</quote>, followed by the identifier of the block within parentheses. The
+      <quote>RuleElementType</quote>-element
       is a TextMarker rule that consists of exactly one rule
-      element. The
-      rule element has to be a declared annotation type.
+      element. The rule element has to be a declared annotation type.
       <note>
         <para>
-          The
-          rule element in the definition of a block has to define
-          a
-          condition/action part, even if that part is empty (LCURLY and
-          RCULRY).
+          The rule element in the definition of a block has to define
+          a condition/action part, even if that part is empty (<quote>{}<quote/>).
         </para>
       </note>
     </para>
@@ -342,7 +336,7 @@ Document{->CALL(MyScript.countNumberOfTypesInDocument)};
         by referring to it with its name, preceded by the name
         of the script
         the
-        block is defined in. In this exmaple, the script is
+        block is defined in. In this example, the script is
         called MyScript.tm.
       </para>
     </section>
@@ -539,19 +533,19 @@ Document{->TRIE("FirstNames.txt" = FistName, "LastNames.txt" = LastName,
     <section>
       <title>WORDTABLEs</title>
       <para>
-        WORDLISTS have been used to annotate all occurrences of any list
+        WORDLISTs have been used to annotate all occurrences of any list
         item in a document with a certain type. Imagine now that each annotation
         has features that should be filled with values dependent on the list item
-        that matched. This can be achieved with WORDTABLEs. For example, let us
+        that matched. This can be achieved with WORDTABLEs. Let us, for example,
         assume we want to annotate all US presidents within a document.
-        Moreover each annotation should contain the party of the president as well as the
+        Moreover, each annotation should contain the party of the president as well as the
         year of his inauguration. Therefore we use an annotation type
         <literal>DECLARE Annotation PresidentOfUSA(STRING party, INT
           yearOfInauguration)</literal>. To achieve this, it is recommended to use WORDTABLEs.
       </para>
       <para>
-        A WORDTABLE is simply a comma-separated file (.csv). For our
-        example such a file, named
+        A WORDTABLE is simply a comma-separated file (.csv), which actually uses semicolons for separation of the entries. 
+        For our example, such a file named
         <quote>presidentsOfUSA.csv</quote>
         could look like this:
         <programlisting><![CDATA[Bill Clinton; democrats; 1993

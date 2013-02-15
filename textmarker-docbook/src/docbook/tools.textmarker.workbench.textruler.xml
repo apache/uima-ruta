@@ -152,7 +152,7 @@ under the License.
               <entry>All</entry>
               <entry>Single, Boundary</entry>
               <entry>Prototype</entry>
-              <entry>2</entry>
+              <entry>1</entry>
             </row>
             <row>
               <entry>RAPIER</entry>
@@ -160,7 +160,7 @@ under the License.
               <entry>Semi</entry>
               <entry>Single</entry>
               <entry>Experimental</entry>
-              <entry>3</entry>
+              <entry>2</entry>
             </row>
             <row>
               <entry>WHISK</entry>
@@ -168,7 +168,7 @@ under the License.
               <entry>All</entry>
               <entry>Multi</entry>
               <entry>Prototype</entry>
-              <entry>4</entry>
+              <entry>3</entry>
             </row>
             <row>
               <entry>WIEN</entry>
@@ -176,7 +176,7 @@ under the License.
               <entry>Struct</entry>
               <entry>Multi, Rows</entry>
               <entry>Prototype</entry>
-              <entry>5</entry>
+              <entry>4</entry>
             </row>
           </tbody>
         </tgroup>

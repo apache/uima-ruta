@@ -51,6 +51,10 @@ Matched:  small small Big
 Matched:  small Big
 Matched:  Big]]></programlisting>
     </para>
+    <para>
+     The last match <quote>Big</quote> can be problematic using different types 
+     if the rule starts matching with the first rule element.
+    </para>
   </section>
   <section id="ugr.tools.tm.language.quantifier.pg">
     <title>+ Plus Greedy</title>
@@ -82,7 +86,8 @@ Matched:  small]]></programlisting>
       Examples:
       <programlisting><![CDATA[Input:    123 456 small small Big 
 Rule:     W+? CW
-Matched:  small small Big]]></programlisting>
+Matched:  small small Big
+Matched:  small Big]]></programlisting>
     </para>
   </section>
   <section id="ugr.tools.tm.language.quantifier.qg">
