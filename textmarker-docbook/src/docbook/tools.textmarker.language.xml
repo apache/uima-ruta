@@ -168,7 +168,7 @@ RuleElementWithCA      ->  TypeExpression QuantifierPart?
       <note>
         <para>
           The rule element in the definition of a block has to define
-          a condition/action part, even if that part is empty (<quote>{}<quote/>).
+          a condition/action part, even if that part is empty (<quote>{}</quote>).
         </para>
       </note>
     </para>
