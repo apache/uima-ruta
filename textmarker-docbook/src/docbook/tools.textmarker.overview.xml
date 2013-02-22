@@ -1062,7 +1062,7 @@ ae.process(cas);]]></programlisting>
       </section>
     </section>
     <section id="ugr.tools.tm.ae.html">
-      <title>HMTL Annotator</title>
+      <title>HTML Annotator</title>
       <para>
         This Analysis Engine provides support for HTML files by adding annotations for the HTML elements. Using the default values, the HTML Annotator creates annotations
         for each HTML element spanning the content of the element, whereas the most common elements are represented by own types. 
@@ -1084,7 +1084,84 @@ ae.process(cas);]]></programlisting>
         </section>
       </section>
     </section>
-    <section id="ugr.tools.tm.ae.stylemap">
+    <section id="ugr.tools.tm.ae.htmlconverter">
+      <title>HTML Converter</title>
+      <para>
+        This Analysis Engine is able to convert html content from a source view into a plain string representation stored in an output view. 
+        Especially, the Analysis Engine transfers annotations under consideration of the changed document text and annotation offsets in the new view. 
+        The copy process also sets features, however, features of type annotation are currently not supported. 
+        Note that if an annotation would have the same start and end positions in the new view, i.e., 
+        if it would be mapped to an annotation of length 0, it is not moved to the new view.
+        
+        The HTML Converter also supports heuristic and explicit conversion patterns which default to html4 decoding, 
+        e.g., "<![CDATA[&nbsp;]]>", "<![CDATA[&lt;]]>", etc. Concepts like tables or lists are not supported.
+        
+        Note that in general it is suggested to run an html cleaner before any further processing to avoid problems with malformed html. 
+        
+        A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a TextMarker project.
+      </para>
+      <section id="ugr.tools.tm.ae.htmlconverter.parameter">
+        <title>Configuration Parameters</title>
+        <para>
+        </para>
+        <section id="ugr.tools.tm.ae.htmlconverter.parameter.outputView">
+          <title>outputView</title>
+          <para>
+            This string parameter specifies the name of the new view. 
+            The default value is <quote>plaintext</quote>.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.htmlconverter.parameter.inputView">
+          <title>inputView</title>
+          <para>
+            This string parameter can optionally be set to specify the name of the input view.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.htmlconverter.parameter.newlineInducingTags">
+          <title>newlineInducingTags</title>
+          <para>
+            This string array parameter sets the names of the html tags that create linebreaks in the output view.
+            The default is <quote>br, p, div, ul, ol, dl, li, h1, ..., h6, blockquote</quote>.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.htmlconverter.parameter.replaceLinebreaks">
+          <title>replaceLinebreaks</title>
+          <para>
+            This boolean parameter determines if linebreaks inside the text nodes are kept or removed.
+            The default behaviour is <quote>true</quote>.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.htmlconverter.parameter.conversionPolicy">
+          <title>conversionPolicy</title>
+          <para>
+            This string parameter determines the conversion policy used, either "heuristic", "explicit", or "none". 
+            When the value is "explicit", the parameters <quote>conversionPatterns</quote> and optionally <quote>conversionReplacements</quote> are considered.
+            The "heuristic" conversion policy uses simple regular expressions to decode html4 entities such as "<![CDATA[&nbsp;]]>".
+            The default behaviour is "heuristic".
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.htmlconverter.parameter.conversionPatterns">
+          <title>conversionPatterns</title>
+          <para>
+            This string array parameter can be used to apply custom conversions.
+            It defaults to a list of commonly used codes, e.g., <![CDATA[&nbsp;]]>, 
+            which are converted using html 4 entity unescaping. 
+            However, explicit conversion strings can also be passed via the parameter <quote>conversionReplacements</quote>.
+            Remember to enable explicit conversion via <quote>conversionPolicy</quote> first.
+          </para>
+        </section>
+        <section id="ugr.tools.tm.ae.htmlconverter.parameter.conversionReplacements">
+          <title>conversionReplacements</title>
+          <para>
+            This string array parameter corresponds to <quote>conversionPatterns</quote> 
+            such that <quote>conversionPatterns[i]</quote> will be replaced by <quote>conversionReplacements[i]</quote>; 
+            replacements should be shorter than the source pattern.
+            Per default, the replacement strings are computed using Html4 decoding.
+            Remember to enable explicit conversion via <quote>conversionPolicy</quote> first.
+          </para>
+        </section>
+      </section>
+    </section><section id="ugr.tools.tm.ae.stylemap">
       <title>Style Map Creator</title>
       <para>
         This Analysis Engine can be utilized to create style map information, which is needed by the Modifier Analysis Engine in order to create
@@ -1134,5 +1211,6 @@ ae.process(cas);]]></programlisting>
         </section>
       </section>
     </section>
+    
   </section>
 </chapter>

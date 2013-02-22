@@ -23,6 +23,7 @@ import org.apache.uima.textmarker.condition.CurrentCountTest;
 import org.apache.uima.textmarker.condition.PartOfTest;
 import org.apache.uima.textmarker.condition.PositionTest;
 import org.apache.uima.textmarker.engine.HtmlAnnotatorTest;
+import org.apache.uima.textmarker.engine.HtmlConverterTest;
 import org.apache.uima.textmarker.engine.TextMarkerModifierTest;
 import org.apache.uima.textmarker.seed.DefaultSeederTest;
 import org.apache.uima.textmarker.verbalizer.ActionVerbalizerTest;
@@ -40,7 +41,7 @@ import org.junit.runners.Suite.SuiteClasses;
     AllActionsTest.class, AllConditionsTest.class, CurrentCountTest.class, PartOfTest.class,
     PositionTest.class, DefaultSeederTest.class, ConditionVerbalizerTest.class,
     ActionVerbalizerTest.class, ExpressionVerbalizerTest.class, HtmlAnnotatorTest.class,
-    EmptyDocumentTest.class, TextMarkerModifierTest.class })
+    HtmlConverterTest.class, EmptyDocumentTest.class, TextMarkerModifierTest.class })
 public class AllTests {
 
 }

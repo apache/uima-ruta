@@ -153,6 +153,7 @@ public class TextMarkerProjectCreationWizard extends ProjectWizard {
     copy(utilsDir, "PlainTextTypeSystem.xml");
     copy(utilsDir, "HtmlAnnotator.xml");
     copy(utilsDir, "HtmlTypeSystem.xml");
+    copy(utilsDir, "HtmlConverter.xml");
   }
 
   private void copy(File dir, String fileName) {
