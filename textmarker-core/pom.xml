@@ -89,7 +89,6 @@
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk/textmarker-core</developerConnection>
   </scm>
   <build>
-    <finalName>uima-textmarker</finalName>
     <pluginManagement>
       <plugins>
         <plugin>
