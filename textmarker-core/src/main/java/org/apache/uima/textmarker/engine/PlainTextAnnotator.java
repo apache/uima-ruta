@@ -67,11 +67,12 @@ public class PlainTextAnnotator extends JCasAnnotator_ImplBase {
         boolean emptyLine = "".equals(eachLine);
         int offsetAfterLine = offsetTillNow + eachLine.length();
         int nlLength = 1;
-        String substring = documentText.substring(offsetAfterLine, offsetAfterLine + 2);
-        if (substring.equals("\r\n")) {
-          nlLength = 2;
+        if (documentText.length() >= offsetAfterLine + 2) {
+          String substring = documentText.substring(offsetAfterLine, offsetAfterLine + 2);
+          if (substring.equals("\r\n")) {
+            nlLength = 2;
+          }
         }
-
         if (lastWasEmpty && !wsLine) {
           paragraphBegin = offsetTillNow;
         }
@@ -92,7 +93,7 @@ public class PlainTextAnnotator extends JCasAnnotator_ImplBase {
           AnnotationFS newParaFS = cas.createAnnotation(paragraphType, paragraphBegin, lastLineEnd);
           cas.addFsToIndexes(newParaFS);
         }
-        if(wsLine) {
+        if (wsLine) {
           lastWasEmpty = true;
         }
         offsetTillNow = offsetTillNow + eachLine.length() + nlLength;

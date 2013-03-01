@@ -285,7 +285,8 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
         result.addAll(collectTypeSystems(folder2, newPrefix));
       } else if (iResource instanceof IFile) {
         IFile file = (IFile) iResource;
-        if (file.getFileExtension().equals("xml")) {
+        String fileExtension = file.getFileExtension();
+        if (fileExtension != null && fileExtension.equals("xml")) {
           File f = new File(file.getLocation().toPortableString());
           if (f.exists()) {
             try {
