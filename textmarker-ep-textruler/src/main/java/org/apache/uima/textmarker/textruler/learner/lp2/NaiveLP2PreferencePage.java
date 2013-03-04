@@ -42,7 +42,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 public class NaiveLP2PreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
-  public static String ID = "org.apache.uima.textmarker.textruler.algorithmPages";
+  public static String ID = "org.apache.uima.textmarker.textruler.preference.lp2naive";
 
   private TextRulerLearnerController algorithmController;
 

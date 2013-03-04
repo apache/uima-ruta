@@ -38,7 +38,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class RapierPreferencePage extends FieldEditorPreferencePage implements
         IWorkbenchPreferencePage {
 
-  public static String ID = "org.apache.uima.textmarker.textruler.algorithmPages";
+  public static String ID = "org.apache.uima.textmarker.textruler.preference.rapier";
 
   private TextRulerLearnerController algorithmController;
 

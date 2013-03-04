@@ -46,6 +46,7 @@ import org.apache.uima.cas.impl.XmiCasDeserializer;
 import org.apache.uima.cas.impl.XmiCasSerializer;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.resource.ResourceSpecifier;
+import org.apache.uima.textmarker.engine.TextMarkerEngine;
 import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
 import org.apache.uima.textmarker.textruler.TextRulerPlugin;
 import org.apache.uima.textmarker.textruler.core.TextRulerTarget.MLTargetType;
@@ -301,6 +302,7 @@ public class TextRulerToolkit {
     Type tmRootType = ts.getType(TM_ALL_TYPE_NAME);
     Set<String> allFilters = new HashSet<String>();
     allFilters.add("uima.tcas.DocumentAnnotation");
+    allFilters.add(TextMarkerEngine.BASIC_TYPE);
     if (filterSet != null)
       allFilters.addAll(filterSet);
     for (; it.isValid(); it.moveToNext()) {
@@ -350,6 +352,7 @@ public class TextRulerToolkit {
   public static synchronized Set<String> getFilterSetWithSlotNames(String[] slotNames,
           Set<String> otherFilters) {
     Set<String> result = new HashSet<String>(otherFilters);
+    result.add(TextMarkerEngine.BASIC_TYPE);
     if (slotNames != null)
       for (String s : slotNames)
         result.add(s);

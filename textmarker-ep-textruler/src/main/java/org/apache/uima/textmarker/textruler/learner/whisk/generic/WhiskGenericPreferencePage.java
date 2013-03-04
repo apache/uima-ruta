@@ -42,7 +42,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 public class WhiskGenericPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
-  public static String ID = "org.apache.uima.textmarker.textruler.algorithmPages";
+  public static String ID = "org.apache.uima.textmarker.textruler.preference.whisk.generic";
 
   private TextRulerLearnerController algorithmController;
 

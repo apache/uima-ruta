@@ -148,13 +148,13 @@ under the License.
       <page
             category="org.apache.uima.textmarker.textruler"
             class="org.apache.uima.textmarker.textruler.learner.lp2.NaiveLP2PreferencePage"
-            id="org.apache.uima.textmarker.textruler.lp2naive"
+            id="org.apache.uima.textmarker.textruler.preference.lp2naive"
             name="LP2 (naive)">
       </page>
       <page
             category="org.apache.uima.textmarker.textruler"
             class="org.apache.uima.textmarker.textruler.learner.lp2.OptimizedLP2PreferencePage"
-            id="org.apache.uima.textmarker.textruler.lp2opt"
+            id="org.apache.uima.textmarker.textruler.preference.lp2opt"
             name="LP2 (optimized)">
       </page>
    </extension>
@@ -184,13 +184,13 @@ under the License.
       <page
             category="org.apache.uima.textmarker.textruler"
             class="org.apache.uima.textmarker.textruler.learner.whisk.generic.WhiskGenericPreferencePage"
-            id="org.apache.uima.textmarker.textruler.whisk.generic"
+            id="org.apache.uima.textmarker.textruler.preference.whisk.generic"
             name="Whisk (generic)">
       </page>
       <page
             category="org.apache.uima.textmarker.textruler"
             class="org.apache.uima.textmarker.textruler.learner.whisk.token.WhiskTokenPreferencePage"
-            id="org.apache.uima.textmarker.textruler.whisk.token"
+            id="org.apache.uima.textmarker.textruler.preference.whisk.token"
             name="Whisk (token)">
       </page>
    </extension>
@@ -207,8 +207,14 @@ under the License.
       <page
             category="org.apache.uima.textmarker.textruler"
             class="org.apache.uima.textmarker.textruler.learner.rapier.RapierPreferencePage"
-            id="org.apache.uima.textmarker.textruler.rapier"
+            id="org.apache.uima.textmarker.textruler.preference.rapier"
             name="Rapier">
       </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.apache.uima.textmarker.textruler.preferences.TextRulerPreferenceInitializer">
+      </initializer>
    </extension>
 </plugin>
