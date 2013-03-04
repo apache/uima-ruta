@@ -453,7 +453,8 @@ public class OptimizedLP2 extends BasicLP2 {
     // tag of the current learning process: (opening/closing tags)
 
     LP2RuleItem ctxItem = new LP2RuleItem();
-    MLLP2ContextConstraint ctxConstraint = new MLLP2ContextConstraint(slotMaximumTokenCount,
+    MLLP2ContextConstraint ctxConstraint = new MLLP2ContextConstraint(
+            slotMaximumTokenCountMap.get(aStartRule.getTarget().getSingleSlotRawTypeName()),
             aStartRule);
     ctxItem.setContextConstraint(ctxConstraint);
     LP2Rule ctxStartRule = new LP2Rule(this, aStartRule.getTarget());

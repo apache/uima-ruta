@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.textruler.learner.lp2;
 
@@ -76,15 +76,16 @@ public class NaiveLP2 extends BasicLP2 {
     // testRuleOnDocumentSet(newRule, exampleDocuments);
     //
     // checkAndHandleNewRule(newRule);
-    //			
+    //
     // if (TextRulerToolkit.DEBUG)
     // test.add(newRule);
     // }
     // new cache and testCAS optimized rule testing:
 
-    sendStatusUpdateToDelegate("Round " + roundNumber + " - Testing " + (genRules.size())
-            + "generalizations... - uncovered examples: "
-            + (examples.size() - coveredExamples.size() + " / " + examples.size()),
+    sendStatusUpdateToDelegate(
+            "Round " + roundNumber + " - Testing " + (genRules.size())
+                    + "generalizations... - uncovered examples: "
+                    + (examples.size() - coveredExamples.size() + " / " + examples.size()),
             TextRulerLearnerState.ML_RUNNING, false);
     testRulesOnDocumentSet(new ArrayList<TextRulerRule>(genRules), exampleDocuments);
 
@@ -126,9 +127,8 @@ public class NaiveLP2 extends BasicLP2 {
     boolean isBestRule = !(tooFewPositives || tooManyErrors);
 
     if (TextRulerToolkit.DEBUG && SAVE_DEBUG_INFO_IN_TEMPFOLDER)
-      TextRulerToolkit.appendStringToFile(tempDirectory() + "bestcandidates.tm", rule
-              .getRuleString()
-              + "\n");
+      TextRulerToolkit.appendStringToFile(tempDirectory() + "bestcandidates.tm",
+              rule.getRuleString() + "\n");
 
     if (isBestRule) {
       currentBestRules.add(rule);
@@ -148,14 +148,15 @@ public class NaiveLP2 extends BasicLP2 {
         rule = rule.copy();
         LP2RuleItem item = rule.getMarkingRuleItem();
         // TextRulerToolkit.log("CONTEXTUAL RULE CANDIDATE: "+rule.getRuleString()+"  ;  "+rule.getCoveringStatistics());
-        item.setContextConstraint(new MLLP2ContextConstraint(slotMaximumTokenCount, rule));
+        item.setContextConstraint(new MLLP2ContextConstraint(slotMaximumTokenCountMap.get(rule
+                .getTarget().getSingleSlotRawTypeName()), rule));
         rule.setIsContextualRule(true);
 
         rule.setNeedsCompile(true);
 
         if (TextRulerToolkit.DEBUG && SAVE_DEBUG_INFO_IN_TEMPFOLDER)
-          TextRulerToolkit.appendStringToFile(tempDirectory() + "ctxcandidates.tm", rule
-                  .getRuleString());
+          TextRulerToolkit.appendStringToFile(tempDirectory() + "ctxcandidates.tm",
+                  rule.getRuleString());
 
         testRuleOnDocumentSet(rule, exampleDocuments); // not very
         // fast... but
@@ -210,11 +211,11 @@ public class NaiveLP2 extends BasicLP2 {
             .getBegin() : exampleAnnotation.getEnd();
 
     List<AnnotationFS> leftContext = TextRulerToolkit.getAnnotationsBeforePosition(docCas,
-            thePosition, windowSize, TextRulerToolkit.getFilterSetWithSlotNames(slotNames,
-                    filterSet), tokensRootType);
+            thePosition, windowSize,
+            TextRulerToolkit.getFilterSetWithSlotNames(slotNames, filterSet), tokensRootType);
     List<AnnotationFS> rightContext = TextRulerToolkit.getAnnotationsAfterPosition(docCas,
-            thePosition, windowSize, TextRulerToolkit.getFilterSetWithSlotNames(slotNames,
-                    filterSet), tokensRootType);
+            thePosition, windowSize,
+            TextRulerToolkit.getFilterSetWithSlotNames(slotNames, filterSet), tokensRootType);
 
     // the left context has to be reversed since we get the arrayList from
     // the slot's point of view!

@@ -20,12 +20,12 @@
 package org.apache.uima.textmarker.textruler.learner.lp2;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.CAS;
@@ -45,7 +45,6 @@ import org.apache.uima.textmarker.textruler.core.TextRulerTarget;
 import org.apache.uima.textmarker.textruler.core.TextRulerTarget.MLTargetType;
 import org.apache.uima.textmarker.textruler.core.TextRulerToolkit;
 import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerDelegate;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearner.TextRulerLearnerState;
 import org.apache.uima.util.FileUtils;
 
 public abstract class BasicLP2 extends TextRulerBasicLearner {
@@ -90,23 +89,23 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
 
   protected Set<TextRulerExample> coveredExamples;
 
-  protected int slotMaximumTokenCount = 0;
+  protected Map<String, Integer> slotMaximumTokenCountMap = new TreeMap<String, Integer>();
 
   protected LP2CurrentBestRulesQueue currentBestRules;
 
   protected LP2CurrentBestRulesQueue currentContextualRules;
 
-  protected TextRulerRuleList bestRulesPool;
+  protected Map<String, TextRulerRuleList> bestRulesPoolMap = new TreeMap<String, TextRulerRuleList>();
 
-  protected TextRulerRuleList contextRulesPool;
+  protected Map<String, TextRulerRuleList> contextRulesPoolMap = new TreeMap<String, TextRulerRuleList>();
 
-  protected String leftBoundaryBestRulesString = null;
+  protected Map<String, String> leftBoundaryBestRulesMap = new TreeMap<String, String>();
 
-  protected String rightBoundaryBestRulesString = null;
+  protected Map<String, String> rightBoundaryBestRulesMap = new TreeMap<String, String>();
 
-  protected String leftBoundaryContextualRulesString = null;
+  protected Map<String, String> leftBoundaryContextualRulesMap = new TreeMap<String, String>();
 
-  protected String rightBoundaryContextualRulesString = null;
+  protected Map<String, String> rightBoundaryContextualRulesMap = new TreeMap<String, String>();
 
   public BasicLP2(String inputDir, String prePropTMFile, String tmpDir, String[] slotNames,
           Set<String> filterSet, TextRulerLearnerDelegate delegate) {
@@ -134,8 +133,12 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
 
     if (shouldAbort())
       return null;
-    bestRulesPool = new TextRulerRuleList();
-    contextRulesPool = new TextRulerRuleList();
+    TextRulerRuleList bestRulesPool = new TextRulerRuleList();
+    TextRulerRuleList contextRulesPool = new TextRulerRuleList();
+    String slotName = target.getSingleSlotRawTypeName();
+    bestRulesPoolMap.put(slotName, bestRulesPool);
+    contextRulesPoolMap.put(slotName, contextRulesPool);
+
     coveredExamples = new HashSet<TextRulerExample>();
     int roundNumber = 0;
     for (TextRulerExample e : examples)
@@ -183,8 +186,6 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
     if (contextualRules != null)
       for (TextRulerRule r : contextRulesPool)
         contextualRules.add(r);
-    bestRulesPool = null;
-    contextRulesPool = null;
     return result;
   }
 
@@ -212,8 +213,8 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
     coveredExamples = null;
     currentBestRules = null;
     currentContextualRules = null;
-    bestRulesPool = null;
-    contextRulesPool = null;
+    bestRulesPoolMap.clear();
+    contextRulesPoolMap.clear();
   }
 
   @Override
@@ -241,7 +242,7 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
             TextRulerToolkit.getFilterSetWithSlotNames(slotNames, filterSet));
     if (shouldAbort())
       return;
-    slotMaximumTokenCount = histogram.size() - 1; // -1 since the
+    slotMaximumTokenCountMap.put(slotName, histogram.size() - 1); // -1 since the
     // zero-histogram point
     // also needs a place!
 
@@ -253,8 +254,8 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
     // best
     // rules
     if (bestRules != null) {
-      leftBoundaryBestRulesString = bestRules.getRulesString("");
-      leftBoundaryContextualRulesString = ctxRules.getRulesString("\t");
+      leftBoundaryBestRulesMap.put(slotName, bestRules.getRulesString(""));
+      leftBoundaryContextualRulesMap.put(slotName, ctxRules.getRulesString("\t"));
       bestRules.clear(); // free som memory/references
     }
     if (shouldAbort())
@@ -266,30 +267,12 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
     // boundary best
     // rules
     if (bestRules != null) {
-      rightBoundaryBestRulesString = bestRules.getRulesString("");
-      rightBoundaryContextualRulesString = ctxRules.getRulesString("\t");
+      rightBoundaryBestRulesMap.put(slotName, bestRules.getRulesString(""));
+      rightBoundaryContextualRulesMap.put(slotName, ctxRules.getRulesString("\t"));
     }
 
     // TODO add correction rule learn stuff
     // testTaggingRulesAndCreateCorrectionRulesExamples(null, STANDARD_MAX_CONTEXTUAL_RULES_COUNT)
-
-    File file = new File(tempDirectory() + "rules.tm");
-    String resultString;
-    try {
-
-      // = getResultString();
-      // System.out.println(resultString);
-      // resultString =
-      // resultString.replaceAll("NUM[{]REGEXP[(]\"12\"[)][-][>]MARKONCE[(]stimeSTART[)][}];",
-      // "NUM{REGEXP(\"12\")} ALL{->MARKONCE(stimeSTART)};");
-      // System.out.println(resultString);
-
-      resultString = "PACKAGE org.apache.uima.ml;\n\nDocument{->FILTERTYPE(SPACE, BREAK, NBSP, MARKUP)};\n";
-      // resultString += "NUM{REGEXP(\"12\")} ALL{->MARKONCE(stimeSTART)};";
-      FileUtils.saveString2File(resultString, file);
-    } catch (IOException e) {
-      TextRulerPlugin.error(e);
-    }
 
     // correct left start
     TextRulerTarget lsTarget = new TextRulerTarget(slotName, MLTargetType.SINGLE_LEFT_CORRECTION,
@@ -317,12 +300,12 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
   protected abstract void induceRulesFromExample(TextRulerExample e, int roundNumber);
 
   protected void addToFinalContextRulesPool(LP2Rule rule) {
-    if (TextRulerToolkit.DEBUG )
+    if (TextRulerToolkit.DEBUG)
       TextRulerToolkit.appendStringToFile(tempDirectory() + "ctxpool.tm", rule.getRuleString()
               + "\n");
-
-    if (!contextRulesPool.contains(rule)) {
-      contextRulesPool.add(rule);
+    String slotName = rule.getTarget().getSingleSlotRawTypeName();
+    if (!contextRulesPoolMap.get(slotName).contains(rule)) {
+      contextRulesPoolMap.get(slotName).add(rule);
       // TextRulerToolkit.log("CONTEXT RULE: "+rule.getRuleString()+" ; "+rule.getCoveringStatistics());
     } else {
       if (TextRulerToolkit.DEBUG) {
@@ -336,14 +319,15 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
     if (TextRulerToolkit.DEBUG && false)
       TextRulerToolkit.appendStringToFile(tempDirectory() + "bestpool.tm", rule.getRuleString()
               + "\n");
-
-    if (!bestRulesPool.contains(rule)) {
-      bestRulesPool.add(rule);
+    String slotName = rule.getTarget().getSingleSlotRawTypeName();
+    if (!bestRulesPoolMap.get(slotName).contains(rule)) {
+      bestRulesPoolMap.get(slotName).add(rule);
       // TextRulerToolkit.log("BEST RULE: "+rule.getRuleString());
       // add all covered positives to covering set
       coveredExamples.addAll(rule.getCoveringStatistics().getCoveredPositiveExamples());
       if (TextRulerToolkit.DEBUG)
-        bestRulesPool.saveToRulesFile(getIntermediateRulesFileName(), getTMFileHeaderString());
+        bestRulesPoolMap.get(slotName).saveToRulesFile(getIntermediateRulesFileName(),
+                getTMFileHeaderString());
     } else {
       if (TextRulerToolkit.DEBUG && false) {
         TextRulerToolkit.log("KANN SOWAS PASSIEREN ??");
@@ -354,55 +338,82 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
   }
 
   public String getResultString() {
-    String result = getTMFileHeaderString();
-    result += "// LEFT BOUNDARY RULES:\n";
-    if (leftBoundaryBestRulesString != null) {
-      result += leftBoundaryBestRulesString;
-      result += "\n// RIGHT BOUNDARY RULES:\n";
-      if (rightBoundaryBestRulesString != null)
-        result += rightBoundaryBestRulesString;
-      else if (bestRulesPool != null)
-        result += bestRulesPool.getRulesString("");
+    StringBuilder sb = new StringBuilder();
+    String header = getTMFileHeaderString();
+    sb.append(header);
 
-      result += "\nBLOCK(contextualRules) Document{}\n" + "{\n"
-              + "\tDocument{->ASSIGN(redoContextualRules, false)}; // reset flag\n";
-      result += "\n\t// LEFT BOUNDARY CONTEXTUAL RULES:\n";
-      result += leftBoundaryContextualRulesString;
+    for (String eachSlot : slotNames) {
 
-      result += "\n\t// RIGHT BOUNDARY CONTEXTUAL RULES:\n";
-      if (rightBoundaryBestRulesString != null)
-        result += rightBoundaryContextualRulesString;
-      else if (contextRulesPool != null)
-        result += contextRulesPool.getRulesString("\t");
+      String leftBoundaryBestRulesString = leftBoundaryBestRulesMap.get(eachSlot);
+      String rightBoundaryBestRulesString = rightBoundaryBestRulesMap.get(eachSlot);
+      String leftBoundaryContextualRulesString = leftBoundaryContextualRulesMap.get(eachSlot);
+      String rightBoundaryContextualRulesString = rightBoundaryContextualRulesMap.get(eachSlot);
+      TextRulerRuleList bestRulesPool = bestRulesPoolMap.get(eachSlot);
+      TextRulerRuleList contextRulesPool = contextRulesPoolMap.get(eachSlot);
 
-      result += "\n\tDocument{IF(redoContextualRules)->CALL(thisFile.contextualRules)};\n}\n";
-    } else if (bestRulesPool != null) {
-      result += bestRulesPool.getRulesString("");
-      result += "\n\t// LEFT BOUNDARY CONTEXTUAL RULES:\n";
-      if (contextRulesPool != null)
-        result += contextRulesPool.getRulesString("");
+      sb.append("\n// Slot: " + TextRulerToolkit.getTypeShortName(eachSlot) + "\n");
+      sb.append("// LEFT BOUNDARY RULES:\n");
+      if (leftBoundaryBestRulesString != null) {
+        sb.append(leftBoundaryBestRulesString);
+        sb.append("\n// RIGHT BOUNDARY RULES:\n");
+        if (rightBoundaryBestRulesString != null)
+          sb.append(rightBoundaryBestRulesString);
+        else if (bestRulesPool != null)
+          sb.append(bestRulesPool.getRulesString(""));
+
+        sb.append("\nBLOCK(contextualRules_" + TextRulerToolkit.getTypeShortName(eachSlot)
+                + ") Document{} {\n"
+                + "\tDocument{->ASSIGN(redoContextualRules, false)}; // reset flag\n");
+        sb.append("\n\t// LEFT BOUNDARY CONTEXTUAL RULES:\n");
+        sb.append(leftBoundaryContextualRulesString);
+
+        sb.append("\n\t// RIGHT BOUNDARY CONTEXTUAL RULES:\n");
+        if (rightBoundaryBestRulesString != null)
+          sb.append(rightBoundaryContextualRulesString);
+        else if (contextRulesPool != null)
+          sb.append(contextRulesPool.getRulesString("\t"));
+
+        sb.append("\n\t//Document{IF(redoContextualRules)->CALL(thisFile.contextualRules_"
+                + TextRulerToolkit.getTypeShortName(eachSlot) + ")};\n}\n");
+      } else if (bestRulesPool != null) {
+        sb.append(bestRulesPool.getRulesString(""));
+        sb.append("\n\t// LEFT BOUNDARY CONTEXTUAL RULES:\n");
+        if (contextRulesPool != null)
+          sb.append(contextRulesPool.getRulesString(""));
+      }
     }
-    String leftBoundary = TextRulerToolkit.getTypeShortName((new TextRulerTarget(slotNames[0],
-            MLTargetType.SINGLE_LEFT_BOUNDARY, this)).getSingleSlotTypeName());
-    String rightBoundary = TextRulerToolkit.getTypeShortName((new TextRulerTarget(slotNames[0],
-            MLTargetType.SINGLE_RIGHT_BOUNDARY, this)).getSingleSlotTypeName());
-    String slotMarkName = TextRulerToolkit.getTypeShortName(slotNames[0]);
-    int maxInnerLength = (slotMaximumTokenCount * 3) - 2;
-    result += "\n//slot-building rules:\n";
-    result += leftBoundary + "{IS(" + rightBoundary + ")->UNMARK(" + leftBoundary + "), UNMARK("
-            + rightBoundary + "), MARKONCE(" + slotMarkName + ")};\n";
-    result += leftBoundary + "{->UNMARK(" + leftBoundary + ")} ";
-    if (maxInnerLength > 0) {
-      result += "ANY[0, " + maxInnerLength + "]? ";
-      result += rightBoundary + "{->UNMARK(" + rightBoundary + "), MARKONCE(" + slotMarkName
-              + ", 1, 3)};\n";
-    } else
-      result += rightBoundary + "{->UNMARK(" + rightBoundary + "), MARKONCE(" + slotMarkName
-              + ", 1, 2)};\n";
 
-    result += "\n//cleaning up:\n" + leftBoundary + "{->UNMARK(" + leftBoundary + ")};\n"
-            + rightBoundary + "{->UNMARK(" + rightBoundary + ")};\n";
-    return result;
+    for (String eachSlot : slotNames) {
+      String leftBoundary = TextRulerToolkit.getTypeShortName((new TextRulerTarget(eachSlot,
+              MLTargetType.SINGLE_LEFT_BOUNDARY, this)).getSingleSlotTypeName());
+      String rightBoundary = TextRulerToolkit.getTypeShortName((new TextRulerTarget(eachSlot,
+              MLTargetType.SINGLE_RIGHT_BOUNDARY, this)).getSingleSlotTypeName());
+      String slotMarkName = TextRulerToolkit.getTypeShortName(eachSlot);
+      int maxInnerLength = (getMaxTokens(eachSlot) * 3) - 2;
+      sb.append("\n//slot-building rules:\n");
+      sb.append(leftBoundary + "{IS(" + rightBoundary + ")->UNMARK(" + leftBoundary + "), UNMARK("
+              + rightBoundary + "), MARKONCE(" + slotMarkName + ")};\n");
+      sb.append(leftBoundary + "{->UNMARK(" + leftBoundary + ")} ");
+      if (maxInnerLength > 0) {
+        sb.append("ANY[0, " + maxInnerLength + "]? ");
+        sb.append(rightBoundary + "{->UNMARK(" + rightBoundary + "), MARKONCE(" + slotMarkName
+                + ", 1, 3)};\n");
+      } else
+        sb.append(rightBoundary + "{->UNMARK(" + rightBoundary + "), MARKONCE(" + slotMarkName
+                + ", 1, 2)};\n");
+
+      sb.append("\n//cleaning up:\n" + leftBoundary + "{->UNMARK(" + leftBoundary + ")};\n"
+              + rightBoundary + "{->UNMARK(" + rightBoundary + ")};\n");
+    }
+
+    return sb.toString();
+  }
+
+  private Integer getMaxTokens(String slot) {
+    if(slotMaximumTokenCountMap.get(slot) == null) {
+      return 0;
+    }
+    return slotMaximumTokenCountMap.get(slot);
   }
 
   public void setParameters(Map<String, Object> params) {
@@ -564,11 +575,12 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
     // check if all helper types are present:
     List<String> list = new ArrayList<String>();
 
-    // only the first slot is important for now...
-    list.add(new TextRulerTarget(slotNames[0], MLTargetType.SINGLE_LEFT_BOUNDARY, this)
-            .getSingleSlotTypeName());
-    list.add(new TextRulerTarget(slotNames[0], MLTargetType.SINGLE_RIGHT_BOUNDARY, this)
-            .getSingleSlotTypeName());
+    for (String eachSlot : slotNames) {
+      list.add(new TextRulerTarget(eachSlot, MLTargetType.SINGLE_LEFT_BOUNDARY, this)
+              .getSingleSlotTypeName());
+      list.add(new TextRulerTarget(eachSlot, MLTargetType.SINGLE_RIGHT_BOUNDARY, this)
+              .getSingleSlotTypeName());
+    }
 
     boolean result = true;
     List<String> missingTypes = new ArrayList<String>();
