@@ -24,7 +24,7 @@
   <description>The top project for Apache UIMA TextMarker</description>
   <url>${uimaWebsiteUrl}</url>
   <properties>
-    <jiraVersion>12323872</jiraVersion>
+    <jiraVersion>12324120</jiraVersion>
     <assembly.attach>false</assembly.attach>
   </properties>
 
