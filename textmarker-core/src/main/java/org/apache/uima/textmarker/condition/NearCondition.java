@@ -55,12 +55,22 @@ public class NearCondition extends TypeSentiveCondition {
   @Override
   public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
           TextMarkerStream stream, InferenceCrowd crowd) {
+    int maxValue = max.getIntegerValue(element.getParent());
+    int minValue = min.getIntegerValue(element.getParent());
+    boolean forwardValue = forward.getBooleanValue(element.getParent());
+    
     FSIterator<AnnotationFS> it = filtered.getBooleanValue(element.getParent()) ? stream : stream
             .getUnfilteredBasicIterator();
-    it.moveTo(annotation);
+    AnnotationFS pointer = null;
+    if(forwardValue) {
+      pointer = stream.getEndAnchor(annotation.getEnd());
+    } else {
+      pointer = stream.getBeginAnchor(annotation.getBegin());
+    }
+    it.moveTo(pointer);
     int count = 0;
-    while (count <= max.getIntegerValue(element.getParent())) {
-      if (count >= min.getIntegerValue(element.getParent()) && it.isValid()) {
+    while (count <= maxValue) {
+      if (count >= minValue && it.isValid()) {
         FeatureStructure featureStructure = it.get();
         if (featureStructure instanceof TextMarkerBasic) {
           TextMarkerBasic each = (TextMarkerBasic) featureStructure;
@@ -69,7 +79,7 @@ public class NearCondition extends TypeSentiveCondition {
           }
         }
       }
-      if (forward.getBooleanValue(element.getParent())) {
+      if (forwardValue) {
         it.moveToNext();
       } else {
         it.moveToPrevious();
