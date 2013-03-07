@@ -222,7 +222,7 @@
         <mediaobject>
           <imageobject role="html">
             <imagedata width="250px" format="PNG" align="center"
-              fileref="&imgroot;explain/rule_elments.png" />
+              fileref="&imgroot;explain/rule_elements.png" />
           </imageobject>
           <imageobject role="fo">
             <imagedata width="3.5in" format="PNG" align="center"

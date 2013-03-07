@@ -928,8 +928,8 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
         <programlisting><![CDATA[Headline Paragraph{->MATCHEDTEXT(stringVariable,1,2)};]]></programlisting>
       </para>
       <para>
-        The text covered by the Headline (rule elment 1) and the
-        Paragraph (rule elment 2) annotation is saved in variable
+        The text covered by the Headline (rule element 1) and the
+        Paragraph (rule element 2) annotation is saved in variable
         'stringVariable'.
       </para>
     </section>
