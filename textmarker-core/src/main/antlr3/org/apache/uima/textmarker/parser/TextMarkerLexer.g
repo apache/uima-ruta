@@ -308,10 +308,6 @@ THEN
 	: 	'->'
 	;
 
-BasicAnnotationType 
-	: 'COLON'| 'SW' | 'MARKUP' | 'PERIOD' | 'CW'| 'NUM' | 'QUESTION' | 'SPECIAL' | 'CAP' | 'COMMA' | 'EXCLAMATION' | 'SEMICOLON' | 'NBSP'| 'AMP' |
-	'_' | 'SENTENCEEND' | 'W' | 'PM' | 'ANY' | 'ALL' | 'SPACE' | 'BREAK' 
-	;
 	
 LogLevel:
 	'finest' | 'finer' | 'fine' | 'config' | 'info' | 'warning' | 'severe'

@@ -286,7 +286,7 @@ List<String> vars = new ArrayList<String>();
 	type = TypeString
 	{!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {vars.add(id.getText());addVariable($blockDeclaration::env, id.getText(), type.getText());}
 		(COMMA {!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {vars.add(id.getText());addVariable($blockDeclaration::env, id.getText(), type.getText());}
-		 )* (ASSIGN_EQUAL value5 = annotationType)? {setValue($blockDeclaration::env, vars, value5);} SEMI
+		 )* (ASSIGN_EQUAL value5 = typeExpression)? {setValue($blockDeclaration::env, vars, value5);} SEMI
 	| 
 	type = WORDLIST 
 	{!isVariableOfType($blockDeclaration::env, input.LT(1).getText(), type.getText())}? 
@@ -1669,9 +1669,6 @@ dottedId returns [Token token = null ]
 annotationType returns [Token ref = null]
 	: 
 	(
-	//{isType($blockDeclaration::env, input.LT(1).getText())}? 
-	token = BasicAnnotationType {ref = token;}
-	|
 	did = dottedId {ref = did;}
 	)
 	;

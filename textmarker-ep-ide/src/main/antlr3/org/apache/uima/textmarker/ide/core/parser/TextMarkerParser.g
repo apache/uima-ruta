@@ -364,7 +364,7 @@ variableDeclaration returns [List<Statement> stmts = new ArrayList<Statement>()]
 	|
 	type = TypeString id = Identifier {addVariable(id.getText(), type.getText());decls.add(StatementFactory.createTypeVariable(id,type));}
 			(COMMA id = Identifier {addVariable(id.getText(), type.getText());decls.add(StatementFactory.createTypeVariable(id,type));}
-		 )* (ASSIGN_EQUAL init = annotationType)?  SEMI
+		 )* (ASSIGN_EQUAL init = typeExpression)?  SEMI
 		{
 		 stmts.add(StatementFactory.createDeclarationsStatement(type, decls, init));
 		 }
@@ -1891,7 +1891,6 @@ annotationType returns [Expression at = null]
 	: 
 	(
 	atRef = annotationTypeVariableReference {at = atRef;}
-	| basicAT = BasicAnnotationType {at = ExpressionFactory.createAnnotationTypeConstantReference(basicAT);}
 	)
 	;
 		

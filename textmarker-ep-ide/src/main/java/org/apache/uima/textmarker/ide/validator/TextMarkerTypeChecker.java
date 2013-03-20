@@ -584,20 +584,7 @@ public class TextMarkerTypeChecker implements IBuildParticipant, IBuildParticipa
     typeSysDescr.resolveImports(resMgr);
     for (TypeDescription each : typeSysDescr.getTypes()) {
       String name = each.getName();
-      String[] nameSpace = name.split("[.]");
-      // types.add(nameSpace[nameSpace.length - 1]);
-      StringBuffer fullName = new StringBuffer();
-      if (nameSpace.length > 0) {
-        fullName.append(nameSpace[0]);
-      }
-      for (int i = 1; i < nameSpace.length; i++) {
-        // TODO fix workaround
-        if (!nameSpace[i].equals("type")) {
-          fullName.append('.');
-          fullName.append(nameSpace[i]);
-        }
-      }
-      types.add(fullName.toString());
+      types.add(name);
     }
     return types;
   }

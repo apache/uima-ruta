@@ -32,6 +32,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.antlr.runtime.CommonToken;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.Type;
@@ -361,6 +362,12 @@ public class TextMarkerEnvironment {
   public <T> T getVariableValue(String name, Class<T> type) {
     boolean containsKey = variableValues.containsKey(name);
     Object result = variableValues.get(name);
+    
+    if(result instanceof String && type.equals(Type.class)) {
+      // "cast" string to type, because initial values were set when there was no cas/type system yet
+      result = types.get(result);
+    }
+    
     if (containsKey && result == null) {
       // TODO find the problem with the null values!
       // this might now work for word lists in another env.
@@ -422,6 +429,9 @@ public class TextMarkerEnvironment {
       } else if (clazz.equals(List.class) && value instanceof ListExpression) {
         List list = getList((ListExpression) value);
         return list;
+      } else if (clazz.equals(Type.class) && value instanceof CommonToken) {
+        String typeName = ((CommonToken) value).getText();
+        return typeName;
       }
 
       return null;
