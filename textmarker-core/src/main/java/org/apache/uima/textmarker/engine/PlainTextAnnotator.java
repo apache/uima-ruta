@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -63,8 +64,8 @@ public class PlainTextAnnotator extends JCasAnnotator_ImplBase {
     String eachLine = null;
     try {
       while ((eachLine = br.readLine()) != null) {
-        boolean wsLine = "".equals(eachLine.trim());
-        boolean emptyLine = "".equals(eachLine);
+        boolean wsLine = StringUtils.isBlank(eachLine);
+        boolean emptyLine = StringUtils.isEmpty(eachLine);
         int offsetAfterLine = offsetTillNow + eachLine.length();
         int nlLength = 1;
         if (documentText.length() >= offsetAfterLine + 2) {
@@ -92,6 +93,9 @@ public class PlainTextAnnotator extends JCasAnnotator_ImplBase {
         if (wsLine && !lastWasEmpty && lastLineEnd != 0) {
           AnnotationFS newParaFS = cas.createAnnotation(paragraphType, paragraphBegin, lastLineEnd);
           cas.addFsToIndexes(newParaFS);
+        } else if(offsetAfterLine + nlLength == documentText.length()) {
+          AnnotationFS newParaFS = cas.createAnnotation(paragraphType, paragraphBegin, offsetAfterLine);
+          cas.addFsToIndexes(newParaFS);
         }
         if (wsLine) {
           lastWasEmpty = true;
@@ -102,26 +106,6 @@ public class PlainTextAnnotator extends JCasAnnotator_ImplBase {
       throw new AnalysisEngineProcessException(e);
     }
 
-  }
-
-  public static void main(String[] args) throws Exception {
-    URL url = TextMarkerEngine.class.getClassLoader().getResource("PlainTextAnnotator.xml");
-    if (url == null) {
-      url = PlainTextAnnotator.class.getClassLoader().getResource(
-              "org/apache/uima/textmarker/engine/PlainTextAnnotator.xml");
-    }
-    XMLInputSource in = new XMLInputSource(url);
-    ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
-    AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
-    CAS cas = ae.newCAS();
-    cas.setDocumentText(FileUtils.file2String(new File(
-            "D:/work/workspace-textmarker/Test/input/list1.txt"), "UTF-8"));
-    ae.process(cas);
-    AnnotationIndex<AnnotationFS> annotationIndex = cas.getAnnotationIndex();
-    for (AnnotationFS annotationFS : annotationIndex) {
-      System.out.println(annotationFS.getType().getShortName() + " :  "
-              + annotationFS.getCoveredText());
-    }
   }
 
 }
