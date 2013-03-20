@@ -20,6 +20,8 @@
 package org.apache.uima.textmarker.ide;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.uima.textmarker.ide.ui.text.TextMarkerTextTools;
 import org.eclipse.core.runtime.IPath;
@@ -28,6 +30,12 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.environment.IDeployment;
 import org.eclipse.dltk.core.environment.IExecutionEnvironment;
 import org.eclipse.dltk.core.environment.IFileHandle;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchListener;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -58,6 +66,29 @@ public class TextMarkerIdePlugin extends AbstractUIPlugin {
   public void start(BundleContext context) throws Exception {
     super.start(context);
     plugin = this;
+    IWorkbench workbench = PlatformUI.getWorkbench();
+    workbench.addWorkbenchListener(new IWorkbenchListener() {
+      public boolean preShutdown(IWorkbench workbench, boolean forced) {
+        // close all CAS Editors if on is focused when exiting Eclipse
+        final IWorkbenchPage activePage = workbench.getActiveWorkbenchWindow().getActivePage();
+        IEditorPart activeEditor = activePage.getActiveEditor();
+        if (activeEditor.getClass().getName().equals("org.apache.uima.caseditor.editor.AnnotationEditor")) {
+          IEditorReference[] editorReferences = activePage.getEditorReferences();
+          List<IEditorReference> toClose = new ArrayList<IEditorReference>();
+          for (IEditorReference each : editorReferences) {
+            if (each.getId().equals("org.apache.uima.caseditor.editor")) {
+              toClose.add(each);
+            }
+          }
+          activePage.closeEditors(toClose.toArray(new IEditorReference[0]), true);
+        }
+        return true;
+      }
+
+      public void postShutdown(IWorkbench workbench) {
+
+      }
+    });  
   }
 
   /*
