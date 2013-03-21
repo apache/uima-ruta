@@ -566,11 +566,41 @@ ruleElementWithoutCA returns [TextMarkerRuleElement re = null]
 		
 simpleStatement returns [TextMarkerRule stmt = null]
 	: 
+	(regexpRule)=> rer = regexpRule {stmt = rer;}
+	|
 	elements=ruleElements 
 		s = SEMI 
 		{stmt = scriptFactory.createRule(elements, s);}
 		
 	;
+
+regexpRule returns [TextMarkerRule stmt = null]
+@init{
+	List<Expression> exprs = new ArrayList<Expression>();
+}
+	:
+	regexp = stringExpression {exprs.add(regexp);} {stmt = scriptFactory.createRule(exprs, s);} THEN
+	(
+	te = typeExpression {exprs.add(te);} {stmt = scriptFactory.createRule(exprs, s);}
+	|
+	indexCG = numberExpression {exprs.add(indexCG);}{stmt = scriptFactory.createRule(exprs, s);} ASSIGN_EQUAL indexTE = typeExpression {exprs.add(indexTE);}
+	)
+	(
+	COMMA
+	(
+	te = typeExpression {exprs.add(te);}{stmt = scriptFactory.createRule(exprs, s);}
+	|
+	indexCG = numberExpression {exprs.add(indexCG);}{stmt = scriptFactory.createRule(exprs, s);} ASSIGN_EQUAL indexTE = typeExpression {exprs.add(indexTE);}
+	)
+	
+	)*
+
+	s = SEMI
+	{stmt = scriptFactory.createRule(exprs, s);}
+	
+	;
+
+
 
 ruleElements returns [List<Expression> elements = new ArrayList<Expression>()]
 	:
