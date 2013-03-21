@@ -35,7 +35,6 @@ import org.apache.uima.textmarker.resource.TextMarkerWordList;
 import org.apache.uima.textmarker.resource.TreeWordList;
 import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class MarkFastAction extends AbstractMarkAction {

@@ -15,28 +15,46 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
-package org.apache.uima.textmarker.visitor;
+package org.apache.uima.textmarker.rule;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.ScriptApply;
-import org.apache.uima.textmarker.TextMarkerElement;
 import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.rule.AbstractRule;
-import org.apache.uima.textmarker.rule.AbstractRuleMatch;
 
+public class RegExpRuleMatch extends AbstractRuleMatch<RegExpRule> {
 
-public interface TextMarkerInferenceVisitor {
+  private Map<Integer, List<AnnotationFS>> map = new TreeMap<Integer, List<AnnotationFS>>();
 
-  void beginVisit(TextMarkerElement element, ScriptApply result);
+  public RegExpRuleMatch(RegExpRule rule) {
+    super(rule);
+  }
 
-  void endVisit(TextMarkerElement element, ScriptApply result);
+  @Override
+  public List<AnnotationFS> getMatchedAnnotationsOfRoot(TextMarkerStream stream) {
+    return map.get(0);
+  }
 
-  void finished(TextMarkerStream stream, List<TextMarkerInferenceVisitor> visitors);
+  public void addMatched(int group, AnnotationFS afs) {
+    List<AnnotationFS> list = map.get(group);
+    if (list == null) {
+      list = new LinkedList<AnnotationFS>();
+      map.put(group, list);
+    }
+    list.add(afs);
+  }
 
-  void annotationAdded(AnnotationFS annotation, AbstractRuleMatch<? extends AbstractRule> creator);
-  
+  public Map<Integer, List<AnnotationFS>> getMap() {
+    return map;
+  }
+
+  public void setMap(Map<Integer, List<AnnotationFS>> map) {
+    this.map = map;
+  }
+
 }

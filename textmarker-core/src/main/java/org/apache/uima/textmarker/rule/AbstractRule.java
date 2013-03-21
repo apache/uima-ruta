@@ -17,31 +17,24 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker;
 
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+package org.apache.uima.textmarker.rule;
 
-public abstract class TextMarkerStatement extends TextMarkerElement {
+import org.apache.uima.textmarker.TextMarkerBlock;
+import org.apache.uima.textmarker.TextMarkerStatement;
 
-  private TextMarkerBlock parent;
+public abstract class AbstractRule extends TextMarkerStatement {
 
-  public TextMarkerStatement(TextMarkerBlock parent) {
-    super();
-    this.parent = parent;
+  private final int id;
+  
+  public AbstractRule(TextMarkerBlock parent, int id) {
+    super(parent);
+    this.id = id;
   }
 
-  public abstract ScriptApply apply(TextMarkerStream stream, InferenceCrowd crowd);
-
-  public abstract TextMarkerEnvironment getEnvironment();
-
-  public TextMarkerBlock getParent() {
-    return parent;
+  public int getId() {
+    return id;
   }
-
-  public void setParent(TextMarkerBlock parent) {
-    this.parent = parent;
-  }
-
 
   
 }

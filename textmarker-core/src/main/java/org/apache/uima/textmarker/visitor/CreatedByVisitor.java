@@ -30,7 +30,8 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.ScriptApply;
 import org.apache.uima.textmarker.TextMarkerElement;
 import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.rule.RuleMatch;
+import org.apache.uima.textmarker.rule.AbstractRule;
+import org.apache.uima.textmarker.rule.AbstractRuleMatch;
 import org.apache.uima.textmarker.verbalize.TextMarkerVerbalizer;
 
 public class CreatedByVisitor implements TextMarkerInferenceVisitor {
@@ -66,7 +67,7 @@ public class CreatedByVisitor implements TextMarkerInferenceVisitor {
     }
   }
 
-  public void annotationAdded(AnnotationFS annotation, RuleMatch creator) {
+  public void annotationAdded(AnnotationFS annotation, AbstractRuleMatch<? extends AbstractRule> creator) {
     CAS cas = annotation.getCAS();
     Type t = cas.getTypeSystem().getType(TYPE);
     Feature featureRule = t.getFeatureByBaseName(FEATURE_RULE);

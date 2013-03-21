@@ -561,4 +561,31 @@ Document{->MARKTABLE(PresidentOfUSA, 1, "party" = 2,
       </para>
     </section>
   </section>
+  <section id="ugr.tools.tm.language.regexprule">
+    <title>Simple Rules based on Regular Expressions</title>
+    <para>
+      The TextMarker langugae includes, additionally to the normal rules, a simplified rule syntax for processing regular expressions.
+      These simple rules consist of two parts separated by <quote>-></quote>: The left part is the regular expression 
+      (flags: DOTALL and MULTILINE), which may contain capturing groups. The right part defines, which kind of annotations 
+      should be created for each match of the regular expression. If a type is given without a group index, then an annotation of that type is
+      created for the complete regular expression match, which corresponds to group 0. These simple rules can be restricted to match only within
+      certain annotations using the BLOCK construct, and ignore all filtering settings.
+    </para>
+    
+    <programlisting><![CDATA[
+RegExpRule      -> StringExpression "->" GroupAssignment 
+                  ("," GroupAssignment)* ";"
+GroupAssignment -> TypeExpression | NumberEpxression "=" TypeExpression
+]]></programlisting>
+    
+    <para>
+      The following example contains a simple rule, which is able to create annotations of two different types. It creates an annotation 
+      of the type <quote>T1</quote> for each match of the complete regular expression and an annotation 
+      of the type <quote>T2</quote> for each match of the first capturing group.
+    </para>
+    
+    <programlisting><![CDATA["A(.*?)C" -> T1, 1 = T2;]]></programlisting>
+    
+    
+  </section>
 </chapter>

@@ -23,6 +23,8 @@ import java.util.List;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.textmarker.rule.AbstractRule;
+import org.apache.uima.textmarker.rule.AbstractRuleMatch;
 import org.apache.uima.textmarker.rule.RuleApply;
 import org.apache.uima.textmarker.rule.RuleMatch;
 import org.apache.uima.textmarker.rule.TextMarkerRule;
@@ -41,9 +43,10 @@ public class TextMarkerAutomataBlock extends TextMarkerBlock {
     BlockApply result = new BlockApply(this);
     crowd.beginVisit(this, result);
     RuleApply apply = rule.apply(stream, crowd, true);
-    for (RuleMatch eachMatch : apply.getList()) {
+    for (AbstractRuleMatch<? extends AbstractRule> eachMatch : apply.getList()) {
       if (eachMatch.matched()) {
-        AnnotationFS each = eachMatch.getMatchedAnnotations(stream, null, null).get(0);
+        AnnotationFS each = ((RuleMatch) eachMatch).getMatchedAnnotations(stream, null, null)
+                .get(0);
         if (each == null) {
           continue;
         }
@@ -66,7 +69,7 @@ public class TextMarkerAutomataBlock extends TextMarkerBlock {
   @Override
   public String toString() {
     String ruleString = rule == null ? "Document" : rule.toString();
-    return "RULES(" + id + ") " + ruleString + " containing " + elements.size() + " Elements";
+    return "RULES(" + name + ") " + ruleString + " containing " + elements.size() + " Elements";
   }
 
   public void setMatchRule(TextMarkerRule rule) {

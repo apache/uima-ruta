@@ -37,7 +37,8 @@ import org.apache.uima.textmarker.TextMarkerElement;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
 import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
-import org.apache.uima.textmarker.rule.RuleMatch;
+import org.apache.uima.textmarker.rule.AbstractRule;
+import org.apache.uima.textmarker.rule.AbstractRuleMatch;
 import org.apache.uima.textmarker.type.Statistics;
 import org.apache.uima.textmarker.utils.UIMAUtils;
 import org.apache.uima.textmarker.verbalize.TextMarkerVerbalizer;
@@ -198,7 +199,7 @@ public class StatisticsVisitor implements TextMarkerInferenceVisitor {
     return actionAmount;
   }
 
-  public void annotationAdded(AnnotationFS annotation, RuleMatch creator) {
+  public void annotationAdded(AnnotationFS annotation, AbstractRuleMatch<? extends AbstractRule> creator) {
   }
 
 }

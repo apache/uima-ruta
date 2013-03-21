@@ -23,19 +23,15 @@ import java.util.List;
 
 import org.apache.uima.textmarker.TextMarkerBlock;
 import org.apache.uima.textmarker.TextMarkerEnvironment;
-import org.apache.uima.textmarker.TextMarkerStatement;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
-public class TextMarkerRule extends TextMarkerStatement {
+public class TextMarkerRule extends AbstractRule {
 
   private ComposedRuleElement root;
 
-  private final int id;
-
   public TextMarkerRule(List<RuleElement> elements, TextMarkerBlock parent, int id) {
-    super(parent);
-    this.id = id;
+    super(parent, id);
     this.root = new ComposedRuleElement(elements, null, null, null, null, parent);
   }
 
@@ -60,10 +56,6 @@ public class TextMarkerRule extends TextMarkerStatement {
 
   public final List<RuleElement> getRuleElements() {
     return root.getRuleElements();
-  }
-
-  public int getId() {
-    return id;
   }
 
   @Override

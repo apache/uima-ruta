@@ -33,8 +33,9 @@ import org.apache.uima.textmarker.TextMarkerElement;
 import org.apache.uima.textmarker.TextMarkerModule;
 import org.apache.uima.textmarker.TextMarkerStatement;
 import org.apache.uima.textmarker.TextMarkerStream;
+import org.apache.uima.textmarker.rule.AbstractRule;
+import org.apache.uima.textmarker.rule.AbstractRuleMatch;
 import org.apache.uima.textmarker.rule.RuleApply;
-import org.apache.uima.textmarker.rule.RuleMatch;
 import org.apache.uima.textmarker.rule.TextMarkerRule;
 import org.apache.uima.textmarker.type.DebugScriptApply;
 import org.apache.uima.textmarker.verbalize.TextMarkerVerbalizer;
@@ -186,7 +187,7 @@ public class DebugInfoCollectorVisitor implements TextMarkerInferenceVisitor {
     return null;
   }
 
-  public void annotationAdded(AnnotationFS annotation, RuleMatch creator) {
+  public void annotationAdded(AnnotationFS annotation, AbstractRuleMatch<? extends AbstractRule> creator) {
     
   }
 

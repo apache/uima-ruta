@@ -25,7 +25,7 @@ import org.apache.uima.textmarker.rule.TextMarkerRule;
 
 public abstract class TextMarkerBlock extends TextMarkerStatement {
 
-  protected final String id;
+  protected final String name;
 
   protected TextMarkerEnvironment environment;
 
@@ -37,10 +37,10 @@ public abstract class TextMarkerBlock extends TextMarkerStatement {
 
   private TextMarkerModule script;
 
-  public TextMarkerBlock(String id, TextMarkerRule rule, List<TextMarkerStatement> elements,
+  public TextMarkerBlock(String name, TextMarkerRule rule, List<TextMarkerStatement> elements,
           TextMarkerBlock parent, String defaultNamespace) {
     super(parent);
-    this.id = id;
+    this.name = name;
     this.rule = rule;
     this.elements = elements;
     this.environment = new TextMarkerEnvironment(this);
@@ -89,8 +89,8 @@ public abstract class TextMarkerBlock extends TextMarkerStatement {
     return namespace;
   }
 
-  public String getId() {
-    return id;
+  public String getName() {
+    return name;
   }
 
 }

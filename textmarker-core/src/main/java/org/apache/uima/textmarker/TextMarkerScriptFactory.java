@@ -32,6 +32,7 @@ import org.apache.uima.textmarker.expression.string.StringExpression;
 import org.apache.uima.textmarker.expression.type.SimpleTypeExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.rule.ComposedRuleElement;
+import org.apache.uima.textmarker.rule.RegExpRule;
 import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleElementContainer;
 import org.apache.uima.textmarker.rule.RuleElementIsolator;
@@ -185,6 +186,10 @@ public class TextMarkerScriptFactory {
   public TextMarkerBlock createAutomataBlock(Token id, TextMarkerRuleElement re,
           List<TextMarkerStatement> body, TextMarkerBlock env) {
     return createScriptBlock(id, re, body, env);
+  }
+
+  public RegExpRule createRegExpRule(TextMarkerBlock env) {
+    return new RegExpRule(null, null, idCounter++, env);
   }
 
 }

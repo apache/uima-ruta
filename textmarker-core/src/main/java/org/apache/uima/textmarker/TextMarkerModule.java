@@ -51,14 +51,14 @@ public class TextMarkerModule extends TextMarkerElement {
   }
 
   public TextMarkerBlock getBlock(String id) {
-    if (id == null || id.equals(rootBlock.getId())) {
+    if (id == null || id.equals(rootBlock.getName())) {
       return rootBlock;
     }
     return blocks.get(id);
   }
 
   public TextMarkerModule getScript(String name) {
-    if (name.equals(rootBlock.getId())) {
+    if (name.equals(rootBlock.getName())) {
       return this;
     }
     TextMarkerModule result = scripts.get(name);

@@ -41,11 +41,13 @@ public class RuleElementMatchNode extends ExplainAbstractTreeNode implements IEv
 
     f = fs.getType().getFeatureByBaseName(ExplainConstants.CONDITIONS);
     ArrayFS value = (ArrayFS) fs.getFeatureValue(f);
-    FeatureStructure[] fsarray = value.toArray();
-    for (FeatureStructure each : fsarray) {
-      Feature eachFeat = each.getType().getFeatureByBaseName(ExplainConstants.VALUE);
-      boolean eachValue = each.getBooleanValue(eachFeat);
-      matched &= eachValue;
+    if (value != null) {
+      FeatureStructure[] fsarray = value.toArray();
+      for (FeatureStructure each : fsarray) {
+        Feature eachFeat = each.getType().getFeatureByBaseName(ExplainConstants.VALUE);
+        boolean eachValue = each.getBooleanValue(eachFeat);
+        matched &= eachValue;
+      }
     }
   }
 

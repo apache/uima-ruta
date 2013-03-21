@@ -20,24 +20,16 @@
 package org.apache.uima.textmarker.engine;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
-import java.net.URL;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
-import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.ResourceSpecifier;
-import org.apache.uima.util.FileUtils;
-import org.apache.uima.util.XMLInputSource;
 
 public class PlainTextAnnotator extends JCasAnnotator_ImplBase {
 

@@ -33,7 +33,7 @@ import org.apache.uima.textmarker.ScriptApply;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
 
-public class RuleMatch {
+public class RuleMatch extends AbstractRuleMatch<TextMarkerRule> {
 
   private static class RuleMatchComparator implements Comparator<RuleElementMatch> {
 
@@ -47,11 +47,7 @@ public class RuleMatch {
 
   private RuleMatchComparator ruleElementComparator = new RuleMatchComparator();
 
-  private boolean matched = true;
-
   private boolean applied = false;
-
-  private final TextMarkerRule rule;
 
   private Map<AbstractTextMarkerAction, ScriptApply> delegateApply;
 
@@ -60,8 +56,7 @@ public class RuleMatch {
   private ComposedRuleElementMatch rootMatch;
 
   public RuleMatch(TextMarkerRule rule) {
-    super();
-    this.rule = rule;
+    super(rule);
     // map = new TreeMap<RuleElement, List<RuleElementMatch>>(
     // new RuleElementComparator(rule.getRoot()));
     delegateApply = new HashMap<AbstractTextMarkerAction, ScriptApply>(0);
@@ -84,9 +79,7 @@ public class RuleMatch {
     return result;
   }
 
-  public boolean matched() {
-    return matched;
-  }
+
 
   public boolean matchedCompletely() {
     return matched && rootMatch.matched();
@@ -96,12 +89,18 @@ public class RuleMatch {
     return getMatchedAnnotations(stream, element.getSelfIndexList(), element.getContainer());
   }
 
+  @Override
+  public List<AnnotationFS> getMatchedAnnotationsOfRoot(TextMarkerStream stream) {
+    return getMatchedAnnotationsOf(((TextMarkerRule)getRule()).getRoot(), stream);
+  }
+  
+  
   public List<AnnotationFS> getMatchedAnnotations(TextMarkerStream stream, List<Integer> indexes,
           RuleElementContainer container) {
     List<AnnotationFS> result = new ArrayList<AnnotationFS>();
     indexes = extendIndexes(indexes);
     if (container == null) {
-      container = rule.getRoot();
+      container = ((TextMarkerRule)rule).getRoot();
     }
 
     // TODO refactor this!
@@ -244,10 +243,6 @@ public class RuleMatch {
     this.applied = applied;
   }
 
-  public TextMarkerRule getRule() {
-    return rule;
-  }
-
   public ComposedRuleElementMatch getRootMatch() {
     return rootMatch;
   }
@@ -285,4 +280,6 @@ public class RuleMatch {
     }
     return result;
   }
+
+
 }

@@ -17,31 +17,41 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker;
+package org.apache.uima.textmarker.rule;
 
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import java.util.List;
 
-public abstract class TextMarkerStatement extends TextMarkerElement {
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.textmarker.TextMarkerStream;
 
-  private TextMarkerBlock parent;
+public abstract class AbstractRuleMatch<T extends AbstractRule> {
 
-  public TextMarkerStatement(TextMarkerBlock parent) {
+  protected boolean matched = true;
+
+  protected final T rule;
+
+  public AbstractRuleMatch(T rule) {
     super();
-    this.parent = parent;
+    this.rule = rule;
   }
 
-  public abstract ScriptApply apply(TextMarkerStream stream, InferenceCrowd crowd);
-
-  public abstract TextMarkerEnvironment getEnvironment();
-
-  public TextMarkerBlock getParent() {
-    return parent;
+  public T getRule() {
+    return rule;
   }
 
-  public void setParent(TextMarkerBlock parent) {
-    this.parent = parent;
+  public boolean matched() {
+    return matched;
   }
 
+  public boolean matchedCompletely() {
+    return true;
+  }
 
+//  public abstract List<AnnotationFS> getMatchedAnnotations(TextMarkerStream stream,
+//          List<Integer> indexes, RuleElementContainer container);
+
+  public abstract List<AnnotationFS> getMatchedAnnotationsOfRoot(TextMarkerStream stream);
   
+ 
+
 }

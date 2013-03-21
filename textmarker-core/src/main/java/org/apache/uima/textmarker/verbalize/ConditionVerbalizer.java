@@ -53,7 +53,6 @@ import org.apache.uima.textmarker.condition.VoteCondition;
 import org.apache.uima.textmarker.expression.list.ListExpression;
 import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.number.SimpleNumberExpression;
-import org.apache.uima.textmarker.expression.string.StringExpression;
 
 public class ConditionVerbalizer {
 

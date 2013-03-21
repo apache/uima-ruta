@@ -21,12 +21,8 @@
 
 
 package org.apache.uima.textmarker.seed;
-import java.util.*;
-import java.util.regex.*;
-
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.JCas;
-
 import org.apache.uima.textmarker.type.AMP;
 import org.apache.uima.textmarker.type.BREAK;
 import org.apache.uima.textmarker.type.CAP;

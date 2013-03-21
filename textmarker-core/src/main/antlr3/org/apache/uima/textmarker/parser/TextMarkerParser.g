@@ -76,6 +76,7 @@ import org.apache.uima.textmarker.expression.string.StringFunctionFactory;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.extensions.TextMarkerExternalFactory;
 import org.apache.uima.textmarker.rule.ComposedRuleElement;
+import org.apache.uima.textmarker.rule.RegExpRule;
 import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.RuleElementContainer;
 import org.apache.uima.textmarker.rule.RuleElementIsolator;
@@ -287,7 +288,7 @@ List<String> vars = new ArrayList<String>();
 	{!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {vars.add(id.getText());addVariable($blockDeclaration::env, id.getText(), type.getText());}
 		(COMMA {!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {vars.add(id.getText());addVariable($blockDeclaration::env, id.getText(), type.getText());}
 		 )* (ASSIGN_EQUAL value5 = typeExpression)? {setValue($blockDeclaration::env, vars, value5);} SEMI
-	| 
+	|
 	type = WORDLIST 
 	{!isVariableOfType($blockDeclaration::env, input.LT(1).getText(), type.getText())}? 
 	name = Identifier (ASSIGN_EQUAL list = wordListExpression)? SEMI {addVariable($blockDeclaration::env, name.getText(), type.getText());if(list != null){setValue($blockDeclaration::env, name.getText(), list);}} 
@@ -498,12 +499,61 @@ ruleElementWithCA[RuleElementContainer container] returns [TextMarkerRuleElement
 
 
 	
-simpleStatement returns [TextMarkerRule stmt = null]
+simpleStatement returns [TextMarkerStatement stmt = null]
+options {
+	backtrack = true;
+}
+@init{
+	//RegExpRule rer = null;
+	Map<TypeExpression, TextMarkerExpression> map = new HashMap<TypeExpression, TextMarkerExpression>();
+}
 	: 
+
+	(regexpRule)=> rer = regexpRule {stmt = rer;}
+	{stmt = rer;}
+	
+	|
+	
 	{stmt = factory.createRule(elements, $blockDeclaration::env);}
-	elements = ruleElements[stmt.getRoot()] SEMI 
-		{stmt.setRuleElements(elements);}
+	elements = ruleElements[((TextMarkerRule)stmt).getRoot()] SEMI 
+	{((TextMarkerRule)stmt).setRuleElements(elements);}
 	;
+
+
+
+
+regexpRule returns [RegExpRule stmt = null]
+@init{
+	Map<TypeExpression, NumberExpression> map = new HashMap<TypeExpression, NumberExpression>();
+}
+	:
+	{
+	stmt = factory.createRegExpRule($blockDeclaration::env);}
+	
+	regexp = stringExpression THEN
+	(
+	(numberExpression ASSIGN_EQUAL)=> indexCG = numberExpression ASSIGN_EQUAL indexTE = typeExpression {map.put(indexTE, indexCG);}
+	|
+	te = typeExpression {map.put(te, null);}
+	)
+	(
+	COMMA
+	(
+	(numberExpression ASSIGN_EQUAL)=> indexCG = numberExpression ASSIGN_EQUAL indexTE = typeExpression {map.put(indexTE, indexCG);}
+	|
+	te = typeExpression {map.put(te, null);}
+	)
+	
+	)*
+
+	SEMI
+	{stmt.setRegExp(regexp);
+	stmt.setTypeMap(map);
+	}
+	
+	;
+
+
 	
 ruleElements[RuleElementContainer container] returns [List<RuleElement> elements = new ArrayList<RuleElement>()]
 	:

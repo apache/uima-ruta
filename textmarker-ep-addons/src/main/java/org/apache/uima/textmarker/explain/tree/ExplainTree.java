@@ -238,9 +238,11 @@ public class ExplainTree {
 
     Feature feature = ruleMatchType.getFeatureByBaseName(ExplainConstants.ELEMENTS);
     ArrayFS value = (ArrayFS) fs.getFeatureValue(feature);
-    FeatureStructure[] fsarray = value.toArray();
-    for (FeatureStructure each : fsarray) {
-      buildTree(each, remRoot, ts, offset, onlyRules);
+    if (value != null) {
+      FeatureStructure[] fsarray = value.toArray();
+      for (FeatureStructure each : fsarray) {
+        buildTree(each, remRoot, ts, offset, onlyRules);
+      }
     }
   }
 
@@ -271,15 +273,16 @@ public class ExplainTree {
 
     feature = ruleElementMatchType.getFeatureByBaseName(ExplainConstants.CONDITIONS);
     ArrayFS value = (ArrayFS) fs.getFeatureValue(feature);
-    FeatureStructure[] fsarray = value.toArray();
-    for (FeatureStructure each : fsarray) {
-      buildTree(each, remNode, ts, offset, onlyRules);
+    if (value != null) {
+      FeatureStructure[] fsarray = value.toArray();
+      for (FeatureStructure each : fsarray) {
+        buildTree(each, remNode, ts, offset, onlyRules);
+      }
     }
-
     feature = fs.getType().getFeatureByBaseName(ExplainConstants.ELEMENTS);
     value = (ArrayFS) fs.getFeatureValue(feature);
     if (value != null) {
-      fsarray = value.toArray();
+      FeatureStructure[] fsarray = value.toArray();
       for (FeatureStructure each : fsarray) {
         buildTree(each, remNode, ts, offset, onlyRules);
       }

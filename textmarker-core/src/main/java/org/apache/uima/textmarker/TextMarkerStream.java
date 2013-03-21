@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -42,7 +41,8 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
-import org.apache.uima.textmarker.rule.RuleMatch;
+import org.apache.uima.textmarker.rule.AbstractRule;
+import org.apache.uima.textmarker.rule.AbstractRuleMatch;
 import org.apache.uima.textmarker.type.TextMarkerAnnotation;
 import org.apache.uima.textmarker.type.TextMarkerBasic;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
@@ -187,18 +187,21 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     updateIterators(documentAnnotation);
   }
 
-  public void addAnnotation(AnnotationFS annotation, boolean addToIndex, RuleMatch creator) {
+  public void addAnnotation(AnnotationFS annotation, boolean addToIndex,
+          AbstractRuleMatch<? extends AbstractRule> creator) {
     if (addToIndex) {
       cas.addFsToIndexes(annotation);
     }
     addAnnotation(annotation, creator);
   }
 
-  public void addAnnotation(AnnotationFS annotation, RuleMatch creator) {
+  public void addAnnotation(AnnotationFS annotation,
+          AbstractRuleMatch<? extends AbstractRule> creator) {
     addAnnotation(annotation, false, true, creator);
   }
-  
-  public void addAnnotation(AnnotationFS annotation, boolean addToIndex, boolean updateInternal, RuleMatch creator) {
+
+  public void addAnnotation(AnnotationFS annotation, boolean addToIndex, boolean updateInternal,
+          AbstractRuleMatch<? extends AbstractRule> creator) {
     Type type = annotation.getType();
     boolean modified = checkSpan(annotation);
     if (modified && updateInternal) {
@@ -213,6 +216,9 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     Collection<TextMarkerBasic> basicAnnotationsInWindow = getAllBasicsInWindow(annotation);
     for (TextMarkerBasic basic : basicAnnotationsInWindow) {
       basic.addPartOf(type);
+    }
+    if (addToIndex) {
+      cas.addFsToIndexes(annotation);
     }
     crowd.annotationAdded(annotation, creator);
   }
@@ -244,6 +250,9 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     // TextMarkerBasic floor = floorEntry.getValue();
     // TextMarkerBasic ceiling = ceilingEntry.getValue();
     TextMarkerBasic floor = getFloor(endAnchors, anchor);
+    if(floor == null) {
+      floor = getFloor(beginAnchors, anchor);
+    }
     TextMarkerBasic ceiling = getCeiling(endAnchors, anchor);
     if (floor != null && ceiling != null) {
       TextMarkerBasic toSplit = null;
@@ -266,8 +275,7 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
       endAnchors.put(ceiling.getEnd(), ceiling);
       return true;
     } else {
-      // TODO this should never happen! test it and remove the assert!
-      assert (false);
+      // TODO this should never happen! test it!
     }
     return false;
   }
@@ -607,7 +615,7 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     filter.filterTypes(list);
     currentIt = filter.createFilteredIterator(cas, basicType);
   }
-  
+
   public void addFilterTypes(List<Type> types) {
     filter.addFilterTypes(types);
     currentIt = filter.createFilteredIterator(cas, basicType);
@@ -627,7 +635,6 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     filter.removeRetainTypes(types);
     currentIt = filter.createFilteredIterator(cas, basicType);
   }
-  
 
   public FilterManager getFilter() {
     return filter;
@@ -704,7 +711,5 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
   public void setSimpleGreedyForComposed(boolean simpleGreedyForComposed) {
     this.simpleGreedyForComposed = simpleGreedyForComposed;
   }
-
-  
 
 }

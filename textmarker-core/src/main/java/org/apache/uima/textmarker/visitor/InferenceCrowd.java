@@ -25,7 +25,8 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.ScriptApply;
 import org.apache.uima.textmarker.TextMarkerElement;
 import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.rule.RuleMatch;
+import org.apache.uima.textmarker.rule.AbstractRule;
+import org.apache.uima.textmarker.rule.AbstractRuleMatch;
 
 
 public class InferenceCrowd implements TextMarkerInferenceVisitor {
@@ -59,7 +60,7 @@ public class InferenceCrowd implements TextMarkerInferenceVisitor {
     finished(stream);
   }
 
-  public void annotationAdded(AnnotationFS annotation, RuleMatch creator) {
+  public void annotationAdded(AnnotationFS annotation, AbstractRuleMatch<? extends AbstractRule> creator) {
     for (TextMarkerInferenceVisitor each : visitors) {
       each.annotationAdded(annotation, creator);
     }

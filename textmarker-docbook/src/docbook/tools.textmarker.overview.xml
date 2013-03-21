@@ -179,7 +179,15 @@ W{REGEXP("dog") -> MARK(Animal)};]]></programlisting>
       The default seeder does actually not add annotations of the type <quote>W</quote>, but annotations of the types <quote>SW</quote> and 
       <quote>CW</quote> for small written words and capitalized words, which both have the parent type <quote>W</quote>.
     </para>
-
+    
+    <para>
+      There is also a special kind of rules, which follow a different syntax and semantic, and enables a simplified creation of annotations based on regular expression.
+      The following rule, for example, creates an <quote>Animal</quote> annotation for each occurrence of <quote>dog</quote> or <quote>cat</quote>.
+    </para>
+    
+    <programlisting><![CDATA[DECLARE Animal;
+"dog|cat" -> Animal;]]></programlisting>
+    
     <para>
       Since it is tedious to create Animal annotations by matching on different regular expression, we apply an external dictionary in the next example.
       The first line defines a word list named <quote>AnimalsList</quote>, which is located in the resource folder (the file <quote>Animals.txt</quote> 

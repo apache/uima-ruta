@@ -21,6 +21,7 @@ package org.apache.uima.textmarker.verbalize;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.apache.uima.textmarker.TextMarkerBlock;
 import org.apache.uima.textmarker.TextMarkerElement;
@@ -28,7 +29,10 @@ import org.apache.uima.textmarker.TextMarkerStatement;
 import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
 import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
 import org.apache.uima.textmarker.expression.TextMarkerExpression;
+import org.apache.uima.textmarker.expression.number.NumberExpression;
+import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.rule.ComposedRuleElement;
+import org.apache.uima.textmarker.rule.RegExpRule;
 import org.apache.uima.textmarker.rule.RuleElement;
 import org.apache.uima.textmarker.rule.TextMarkerDisjunctiveMatcher;
 import org.apache.uima.textmarker.rule.TextMarkerMatcher;
@@ -47,6 +51,8 @@ import org.apache.uima.textmarker.rule.quantifier.StarReluctant;
 
 public class ScriptVerbalizer {
 
+  private static final String THEN = " -> ";
+
   private TextMarkerVerbalizer verbalizer;
 
   public ScriptVerbalizer(TextMarkerVerbalizer verbalizer) {
@@ -59,7 +65,7 @@ public class ScriptVerbalizer {
     TextMarkerRule rule = block.getRule();
     List<TextMarkerStatement> elements = block.getElements();
     result.append("BLOCK(");
-    result.append(block.getId());
+    result.append(block.getName());
     result.append(")");
     result.append(" ");
     if (rule != null) {
@@ -115,7 +121,7 @@ public class ScriptVerbalizer {
         }
       }
       if (!actions.isEmpty()) {
-        result.append(" -> ");
+        result.append(THEN);
         Iterator<AbstractTextMarkerAction> ait = actions.iterator();
         while (ait.hasNext()) {
           AbstractTextMarkerAction each = ait.next();
@@ -198,10 +204,38 @@ public class ScriptVerbalizer {
       return verbalizeQuantifier((RuleElementQuantifier) element);
     } else if (element instanceof TextMarkerRule) {
       return verbalizeRule((TextMarkerRule) element);
+    } else if (element instanceof RegExpRule) {
+      return verbalizeRegExpRule((RegExpRule) element);
     } else if (element instanceof TextMarkerRuleElement) {
       return verbalizeRuleElement((TextMarkerRuleElement) element);
     }
     return null;
+  }
+
+  private String verbalizeRegExpRule(RegExpRule rule) {
+    StringBuilder sb = new StringBuilder();
+    String regexp = verbalizer.verbalize(rule.getRegExp());
+    sb.append(regexp);
+    sb.append(THEN);
+
+    Iterator<Entry<TypeExpression, NumberExpression>> iterator = rule.getTypeMap().entrySet()
+            .iterator();
+    while (iterator.hasNext()) {
+      Entry<TypeExpression, NumberExpression> next = iterator.next();
+      String type = verbalizer.verbalize(next.getKey());
+      NumberExpression value = next.getValue();
+      if (value != null) {
+        String group = verbalizer.verbalize(value);
+        sb.append(group+" = "+type);
+      } else {
+        sb.append(type);
+      }
+      if(iterator.hasNext()) {
+        sb.append(", ");
+      }
+    }
+    sb.append(";");
+    return sb.toString();
   }
 
 }

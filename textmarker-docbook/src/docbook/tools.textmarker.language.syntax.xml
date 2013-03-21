@@ -83,7 +83,11 @@ BlockDeclaration    -> "BLOCK" "(" Identifier ")" RuleElementWithCA
                                                        "{" Statements "}"]]></programlisting>
 
     Syntax of statements and rule elements:
-    <programlisting><![CDATA[SimpleStatement        -> RuleElements ";"
+    <programlisting><![CDATA[SimpleStatement        -> RuleElements ";" | RegExpRule ";"
+RegExpRule             -> StringExpression "->" GroupAssignment 
+                          ("," GroupAssignment)*
+GroupAssignment        -> TypeExpression 
+                        | NumberEpxression "=" TypeExpression
 RuleElements           -> RuleElement+
 RuleElement            -> RuleElementType | RuleElementLiteral
                         | RuleElementComposed | RuleElementDisjunctive

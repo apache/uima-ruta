@@ -23,6 +23,8 @@ import java.util.List;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.textmarker.rule.AbstractRule;
+import org.apache.uima.textmarker.rule.AbstractRuleMatch;
 import org.apache.uima.textmarker.rule.RuleApply;
 import org.apache.uima.textmarker.rule.RuleMatch;
 import org.apache.uima.textmarker.rule.TextMarkerRule;
@@ -41,9 +43,10 @@ public class TextMarkerScriptBlock extends TextMarkerBlock {
     BlockApply result = new BlockApply(this);
     crowd.beginVisit(this, result);
     RuleApply apply = rule.apply(stream, crowd, true);
-    for (RuleMatch eachMatch : apply.getList()) {
+    for (AbstractRuleMatch<? extends AbstractRule> eachMatch : apply.getList()) {
       if (eachMatch.matched()) {
-        List<AnnotationFS> matchedAnnotations = eachMatch.getMatchedAnnotations(stream, null, null);
+        List<AnnotationFS> matchedAnnotations = ((RuleMatch) eachMatch).getMatchedAnnotations(
+                stream, null, null);
         if (matchedAnnotations == null || matchedAnnotations.isEmpty()) {
           continue;
         }
@@ -70,7 +73,7 @@ public class TextMarkerScriptBlock extends TextMarkerBlock {
   @Override
   public String toString() {
     String ruleString = rule == null ? "Document" : rule.toString();
-    return "BLOCK(" + id + ") " + ruleString + " containing " + elements.size() + " Elements";
+    return "BLOCK(" + name + ") " + ruleString + " containing " + elements.size() + " Elements";
   }
 
 }

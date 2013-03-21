@@ -27,7 +27,8 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.textmarker.ScriptApply;
 import org.apache.uima.textmarker.TextMarkerElement;
 import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.rule.RuleMatch;
+import org.apache.uima.textmarker.rule.AbstractRule;
+import org.apache.uima.textmarker.rule.AbstractRuleMatch;
 
 
 public class TimeProfilerVisitor implements TextMarkerInferenceVisitor {
@@ -57,7 +58,7 @@ public class TimeProfilerVisitor implements TextMarkerInferenceVisitor {
     return timeInfo;
   }
 
-  public void annotationAdded(AnnotationFS annotation, RuleMatch creator) {
+  public void annotationAdded(AnnotationFS annotation, AbstractRuleMatch<? extends AbstractRule> creator) {
   }
 
 }
