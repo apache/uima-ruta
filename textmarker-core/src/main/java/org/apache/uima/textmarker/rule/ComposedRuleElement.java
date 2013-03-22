@@ -129,13 +129,13 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
           InferenceCrowd crowd) {
     RuleElementContainer container = getContainer();
     doMatch(containerMatch, stream, crowd);
-    if (this.equals(entryPoint)) {
+    if (this.equals(entryPoint) && ruleApply == null) {
       return;
     }
     if (container == null) {
       fallback(after, failed, annotation, ruleMatch, ruleApply, containerMatch, sideStepOrigin,
               entryPoint, stream, crowd);
-    } else if (entryPoint == null) {
+    } else {
       ComposedRuleElementMatch parentContainerMatch = containerMatch.getContainerMatch();
       RuleElement nextElement = container.getNextElement(after, this);
       List<RuleElementMatch> match = getMatch(ruleMatch, parentContainerMatch);

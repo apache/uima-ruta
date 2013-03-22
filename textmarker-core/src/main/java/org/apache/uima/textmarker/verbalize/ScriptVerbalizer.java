@@ -38,6 +38,7 @@ import org.apache.uima.textmarker.rule.TextMarkerDisjunctiveMatcher;
 import org.apache.uima.textmarker.rule.TextMarkerMatcher;
 import org.apache.uima.textmarker.rule.TextMarkerRule;
 import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
+import org.apache.uima.textmarker.rule.WildCardRuleElement;
 import org.apache.uima.textmarker.rule.quantifier.MinMaxGreedy;
 import org.apache.uima.textmarker.rule.quantifier.MinMaxReluctant;
 import org.apache.uima.textmarker.rule.quantifier.NormalQuantifier;
@@ -107,6 +108,8 @@ public class ScriptVerbalizer {
     } else if (re instanceof TextMarkerRuleElement) {
       TextMarkerRuleElement tmre = (TextMarkerRuleElement) re;
       result.append(verbalizeMatcher(tmre));
+    } else if(re instanceof WildCardRuleElement) {
+      result.append("#");
     }
     result.append(verbalizeQuantifier(quantifier));
 

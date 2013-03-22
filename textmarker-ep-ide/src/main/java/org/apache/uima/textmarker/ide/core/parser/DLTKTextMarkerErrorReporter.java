@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.ide.core.parser;
 
@@ -33,7 +33,6 @@ import org.eclipse.dltk.ast.DLTKToken;
 import org.eclipse.dltk.compiler.problem.DefaultProblem;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.compiler.problem.ProblemSeverities;
-
 
 /**
  * 
@@ -70,11 +69,9 @@ public class DLTKTextMarkerErrorReporter {
     if (index < 0) {
       index = re.index;
       TokenStream tokenStream = parser.getTokenStream();
-      try {
+      if (index > 0) {
         token = tokenStream.get(index - 1);
         line = token.getLine();
-      } catch (ArrayIndexOutOfBoundsException e) {
-        e.printStackTrace();
       }
     }
 
@@ -91,8 +88,8 @@ public class DLTKTextMarkerErrorReporter {
 
     String errorPrefix = "";
 
-    // 
-    // 
+    //
+    //
     if (re instanceof NoViableAltException) {
       NoViableAltException nvae = (NoViableAltException) re;
       errorPrefix = "Syntax error: ";
@@ -278,8 +275,8 @@ public class DLTKTextMarkerErrorReporter {
       // reporter.handle(CompilerOptions.OFFSET, messages, messages,
       // st, et);
       DefaultProblem defaultProblem = new DefaultProblem("", "Type not defined in this script: "
-              + convert.getText(), 0, new String[] {}, ProblemSeverities.Warning, st, et, re.token
-              .getLine());
+              + convert.getText(), 0, new String[] {}, ProblemSeverities.Warning, st, et,
+              re.token.getLine());
       if (!problems.contains(defaultProblem)) {
         reporter.reportProblem(defaultProblem);
         problems.add(defaultProblem);

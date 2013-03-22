@@ -57,7 +57,7 @@ public class RuleElementCaretaker implements RuleElementContainer {
 
   public RuleElement getAnchoringRuleElement(TextMarkerStream stream) {
     List<RuleElement> ruleElements = container.getRuleElements();
-    if (ruleElements.size() == 1) {
+    if (ruleElements.size() == 1 || containsLiteralMatcher(ruleElements)) {
       return ruleElements.get(0);
     }
 
@@ -81,6 +81,18 @@ public class RuleElementCaretaker implements RuleElementContainer {
     }
     return ruleElements.get(0);
 
+  }
+
+  private boolean containsLiteralMatcher(List<RuleElement> ruleElements) {
+    for (RuleElement each : ruleElements) {
+      if(each instanceof TextMarkerRuleElement) {
+        TextMarkerRuleElement re = (TextMarkerRuleElement) each;
+        if(re.getMatcher() instanceof TextMarkerLiteralMatcher) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   public RuleElement getFirstElement() {

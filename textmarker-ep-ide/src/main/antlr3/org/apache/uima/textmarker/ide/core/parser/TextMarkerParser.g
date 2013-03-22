@@ -617,7 +617,33 @@ ruleElement returns [Expression re = null]
 	re1 = ruleElementType {re = re1;}
 	| re2 = ruleElementLiteral {re = re2;}
 	| re3 = ruleElementComposed {re = re3;}
+	| re4 = ruleElementWildCard {re = re4;}
 	;
+
+ruleElementWildCard returns [TextMarkerRuleElement re = null] 
+@init{
+List<TextMarkerCondition> dummyConds = new ArrayList<TextMarkerCondition>();
+}
+  :
+    	w = WILDCARD
+        (LCURLY 
+        {
+        
+        dummyConds.add(ConditionFactory.createEmptyCondition(input.LT(1)));
+        } 
+        c = conditions? 
+        {
+        if(c==null) {
+        	c = dummyConds;
+        }
+        }
+        (THEN a = actions)? end = RCURLY)?
+        {
+
+        re = scriptFactory.createRuleElement(w,c,a,end);}
+
+    ;
+
 	
 ruleElementComposed returns [ComposedRuleElement re = null] 
 @init{

@@ -511,6 +511,9 @@ LESSEQUAL	: '<=' ;
 
 GREATEREQUAL	: '>=' ;
 
+
+WILDCARD	: '#' ;
+
 WS  :  (' '|'\r'|'\t'|'\u000C'|'\n') {$channel=HIDDEN;}
     ;
 

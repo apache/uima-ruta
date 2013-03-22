@@ -31,6 +31,7 @@ import org.apache.uima.textmarker.expression.number.NumberExpression;
 import org.apache.uima.textmarker.expression.string.StringExpression;
 import org.apache.uima.textmarker.expression.type.SimpleTypeExpression;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
+import org.apache.uima.textmarker.rule.AbstractRuleElement;
 import org.apache.uima.textmarker.rule.ComposedRuleElement;
 import org.apache.uima.textmarker.rule.RegExpRule;
 import org.apache.uima.textmarker.rule.RuleElement;
@@ -41,6 +42,7 @@ import org.apache.uima.textmarker.rule.TextMarkerLiteralMatcher;
 import org.apache.uima.textmarker.rule.TextMarkerRule;
 import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
 import org.apache.uima.textmarker.rule.TextMarkerTypeMatcher;
+import org.apache.uima.textmarker.rule.WildCardRuleElement;
 import org.apache.uima.textmarker.rule.quantifier.MinMaxGreedy;
 import org.apache.uima.textmarker.rule.quantifier.MinMaxReluctant;
 import org.apache.uima.textmarker.rule.quantifier.PlusGreedy;
@@ -119,6 +121,13 @@ public class TextMarkerScriptFactory {
     return new TextMarkerRuleElement(matcher, quantifier, conditions, actions, container, parent);
   }
 
+  public AbstractRuleElement createWildCardRuleElement(List<AbstractTextMarkerCondition> conditions,
+          List<AbstractTextMarkerAction> actions, RuleElementContainer container,
+          TextMarkerBlock parent) {
+    return new WildCardRuleElement(conditions, actions, container, parent);
+  }
+  
+  
   public TextMarkerRuleElement createRuleElement(List<TextMarkerExpression> exprs,
           RuleElementQuantifier quantifier, List<AbstractTextMarkerCondition> conditions,
           List<AbstractTextMarkerAction> actions, RuleElementContainer container,
@@ -131,7 +140,6 @@ public class TextMarkerScriptFactory {
           RuleElementQuantifier quantifier, List<AbstractTextMarkerCondition> conditions,
           List<AbstractTextMarkerAction> actions, RuleElementContainer container,
           TextMarkerBlock parent) {
-
     TextMarkerLiteralMatcher matcher = new TextMarkerLiteralMatcher(stringExpression);
     return new TextMarkerRuleElement(matcher, quantifier, conditions, actions, container, parent);
   }
@@ -191,5 +199,7 @@ public class TextMarkerScriptFactory {
   public RegExpRule createRegExpRule(TextMarkerBlock env) {
     return new RegExpRule(null, null, idCounter++, env);
   }
+
+
 
 }

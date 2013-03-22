@@ -75,6 +75,7 @@ import org.apache.uima.textmarker.expression.string.StringExpression;
 import org.apache.uima.textmarker.expression.string.StringFunctionFactory;
 import org.apache.uima.textmarker.expression.type.TypeExpression;
 import org.apache.uima.textmarker.extensions.TextMarkerExternalFactory;
+import org.apache.uima.textmarker.rule.AbstractRuleElement;
 import org.apache.uima.textmarker.rule.ComposedRuleElement;
 import org.apache.uima.textmarker.rule.RegExpRule;
 import org.apache.uima.textmarker.rule.RuleElement;
@@ -567,7 +568,25 @@ ruleElement[RuleElementContainer container] returns [RuleElement re = null]
 	| re2 = ruleElementLiteral[container] {re = re2;}
 	| (ruleElementComposed[null])=>re3 = ruleElementComposed[container] {re = re3;}
 	| (ruleElementDisjunctive[null])=> re4 = ruleElementDisjunctive[container] {re = re4;}
+	| (ruleElementWildCard[null])=> re5 = ruleElementWildCard[container] {re = re5;}
 	;	
+
+ruleElementWildCard [RuleElementContainer container] returns [AbstractRuleElement re = null]
+    :
+    
+    w = WILDCARD 
+     {re = factory.createWildCardRuleElement(null, null, container, $blockDeclaration::env);} 
+        (LCURLY c = conditions? (THEN a = actions)? RCURLY)?
+   {
+	if(c!= null) {
+		re.setConditions(c);
+	}
+	if(a != null) {
+		re.setActions(a);
+	}
+	}
+    ;
+
 
 ruleElementDisjunctive [RuleElementContainer container] returns [TextMarkerRuleElement re = null]
 @init{

@@ -207,7 +207,7 @@ public class TextMarkerRuleElement extends AbstractRuleElement {
 
         doMatch(eachAnchor, extendedMatch, extendedContainerMatch, false, stream, crowd);
 
-        if (this.equals(entryPoint)) {
+        if (this.equals(entryPoint) && ruleApply == null) {
           return;
         }
         if (extendedMatch.matched()) {

@@ -64,7 +64,7 @@ public class TextMarkerLiteralMatcher implements TextMarkerMatcher {
     return "\"" + expression.toString() + "\"";
   }
 
-  public TextMarkerExpression getExpression() {
+  public StringExpression getExpression() {
     return expression;
   }
 

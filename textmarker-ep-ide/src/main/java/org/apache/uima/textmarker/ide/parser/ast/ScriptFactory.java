@@ -105,6 +105,20 @@ public class ScriptFactory extends AbstractFactory {
             conditions, actions);
   }
 
+  public TextMarkerRuleElement createRuleElement(Token w, List<TextMarkerCondition> c,
+          List<TextMarkerAction> a, Token end) {
+    int bounds[] = getSurroundingBounds(null, c, a);
+    setMinBegin(bounds, w);
+    filterNullObjects(c);
+    filterNullObjects(a);
+    return new TextMarkerRuleElement(bounds[0], bounds[1], null, null,
+            c, a);
+  }
+  
+  
+  
+
+
   /**
    * Creates Root-Block.
    * 
@@ -180,5 +194,7 @@ public class ScriptFactory extends AbstractFactory {
       }
     }
   }
+
+  
 
 }

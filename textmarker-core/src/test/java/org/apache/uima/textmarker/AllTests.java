@@ -41,7 +41,8 @@ import org.junit.runners.Suite.SuiteClasses;
     AllActionsTest.class, AllConditionsTest.class, CurrentCountTest.class, PartOfTest.class,
     PositionTest.class, DefaultSeederTest.class, ConditionVerbalizerTest.class,
     ActionVerbalizerTest.class, ExpressionVerbalizerTest.class, HtmlAnnotatorTest.class,
-    HtmlConverterTest.class, EmptyDocumentTest.class, TextMarkerModifierTest.class, RegExpRuleTest.class })
+    HtmlConverterTest.class, EmptyDocumentTest.class, TextMarkerModifierTest.class,
+    RegExpRuleTest.class, WildCardTest.class })
 public class AllTests {
 
 }

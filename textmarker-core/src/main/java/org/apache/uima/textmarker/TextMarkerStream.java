@@ -250,7 +250,7 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     // TextMarkerBasic floor = floorEntry.getValue();
     // TextMarkerBasic ceiling = ceilingEntry.getValue();
     TextMarkerBasic floor = getFloor(endAnchors, anchor);
-    if(floor == null) {
+    if (floor == null) {
       floor = getFloor(beginAnchors, anchor);
     }
     TextMarkerBasic ceiling = getCeiling(endAnchors, anchor);
@@ -526,14 +526,18 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
     if (before) {
       TextMarkerBasic pointer = beginAnchors.get(annotation.getBegin());
       moveTo(pointer);
-      moveToPrevious();
+      if(isVisible(pointer)) {
+        moveToPrevious();
+      }
       if (isValid()) {
         return (TextMarkerBasic) get();
       }
     } else {
       TextMarkerBasic pointer = endAnchors.get(annotation.getEnd());
       moveTo(pointer);
-      moveToNext();
+      if(isVisible(pointer)) {
+        moveToNext();
+      }
       if (isValid()) {
         return (TextMarkerBasic) get();
       }
@@ -710,6 +714,24 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
 
   public void setSimpleGreedyForComposed(boolean simpleGreedyForComposed) {
     this.simpleGreedyForComposed = simpleGreedyForComposed;
+  }
+
+  public boolean isVisible(AnnotationFS annotationFS) {
+    AnnotationFS windowAnnotation = filter.getWindowAnnotation();
+    if (windowAnnotation != null && (annotationFS.getBegin() < windowAnnotation.getBegin()
+            || annotationFS.getEnd() > windowAnnotation.getEnd())) {
+      return false;
+    }
+    FSMatchConstraint defaultConstraint = filter.getDefaultConstraint();
+    return defaultConstraint.match(annotationFS);
+  }
+
+  public TextMarkerBasic getAnchor(boolean direction, int pointer) {
+    if(direction) {
+      return getBeginAnchor(pointer);
+    } else {
+      return getEndAnchor(pointer);
+    }
   }
 
 }
