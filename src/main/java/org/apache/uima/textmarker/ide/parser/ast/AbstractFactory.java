@@ -128,6 +128,12 @@ public abstract class AbstractFactory {
     }
   }
 
+  protected static final void setMinBegin(int[] bounds, Token begin) {
+    if (begin != null && bounds != null && bounds.length >= 1) {
+      bounds[0] = Math.min(bounds[0], getBounds(begin)[1]);
+    }
+  }
+  
   /**
    * Applies start/end positions of <code>Token token</code> to <code>Node node</code>
    * 

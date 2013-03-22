@@ -39,7 +39,7 @@ public class TextMarkerKeywords implements ITextMarkerKeywords {
 
   private static String[] basic = { "ALL", "ANY", "AMP", "BREAK", "W", "NUM", "PM", "Document",
       "MARKUP", "SW", "CW", "CAP", "PERIOD", "NBSP", "SENTENCEEND", "COLON", "COMMA", "SEMICOLON",
-      "WS", "_", "SPACE", "SPECIAL", "EXCLAMATION", "QUESTION", };
+      "WS", "_", "SPACE", "SPECIAL", "EXCLAMATION", "QUESTION", "#" };
 
   private static String[] booleanFunction = { "true", "false" };
 
