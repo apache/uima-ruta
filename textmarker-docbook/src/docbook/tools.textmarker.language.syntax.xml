@@ -91,17 +91,19 @@ GroupAssignment        -> TypeExpression
 RuleElements           -> RuleElement+
 RuleElement            -> RuleElementType | RuleElementLiteral
                         | RuleElementComposed | RuleElementDisjunctive
+                        | RuleElementWildCard
 RuleElementType        ->  TypeExpression QuantifierPart?
                                          ("{" Conditions?  Actions? "}")?
 RuleElementWithCA      ->  TypeExpression QuantifierPart?
                                             "{" Conditions?  Actions? "}"
 RuleElementLiteral     ->  SimpleStringExpression QuantifierPart?
-                                            "{" Conditions?  Actions? "}"
+                                          ("{" Conditions?  Actions? "}")?
 RuleElementComposed    -> "(" RuleElements ")" QuantifierPart?
-                                            "{" Conditions?  Actions? "}"
+                                          ("{" Conditions?  Actions? "}")?
 RuleElementDisjunctive -> "(" (TypeExpression | SimpleStringExpression)
                         ("|" (TypeExpression | SimpleStringExpression) )+
-                         ")" QuantifierPart? "{" Conditions?  Actions? }"
+                        (")" QuantifierPart? "{" Conditions?  Actions? }")?
+RuleElementWildCard    -> "#"("{" Conditions?  Actions? }")?
 QuantifierPart         -> "*" | "*?" | "+" | "+?" | "?" | "??"
                         | "[" NumberExpression "," NumberExpression "]"
                         | "[" NumberExpression "," NumberExpression "]?"

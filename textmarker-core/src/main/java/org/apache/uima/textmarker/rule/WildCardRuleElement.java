@@ -25,17 +25,20 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.ConstraintFactory;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.FSTypeConstraint;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.jcas.JCas;
 import org.apache.uima.textmarker.TextMarkerBlock;
 import org.apache.uima.textmarker.TextMarkerStream;
 import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
 import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
 import org.apache.uima.textmarker.expression.string.StringExpression;
 import org.apache.uima.textmarker.type.TextMarkerBasic;
+import org.apache.uima.textmarker.type.TextMarkerFrame;
 import org.apache.uima.textmarker.visitor.InferenceCrowd;
 
 public class WildCardRuleElement extends AbstractRuleElement {
@@ -265,11 +268,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
         TextMarkerTypeMatcher typeMatcher = (TextMarkerTypeMatcher) re.getMatcher();
         List<Type> types = typeMatcher.getTypes(parent, stream);
         Type type = types.get(0);
-        if (annotation == null) {
-          iterator = cas.getAnnotationIndex(type).iterator();
-        } else {
-          iterator = cas.getAnnotationIndex(type).iterator(annotation);
-        }
+        iterator = getIteratorOfType(type, annotation, stream);
       } else if (matcher instanceof TextMarkerDisjunctiveMatcher) {
         List<Type> types = matcher.getTypes(parent, stream);
         iterator = getIteratorForDisjunctive(cas, types, after, annotation, stream);
@@ -277,13 +276,39 @@ public class WildCardRuleElement extends AbstractRuleElement {
         // should not happen
       }
     } else {
-      if (annotation == null) {
-        iterator = cas.getAnnotationIndex(defaultType).iterator();
-      } else {
-        iterator = cas.getAnnotationIndex(defaultType).iterator(annotation);
-      }
+      iterator = getIteratorOfType(defaultType, annotation, stream);
     }
     return iterator;
+  }
+
+  private FSIterator<AnnotationFS> getIteratorOfType(Type type, AnnotationFS annotation,
+          TextMarkerStream stream) {
+    CAS cas = stream.getCas();
+    FSIterator<AnnotationFS> result = null;
+    if(stream.getDocumentAnnotation().equals(cas.getDocumentAnnotation())) {
+      // no windowing needed
+      if(annotation == null) {
+        result = cas.getAnnotationIndex(type).iterator();
+      } else {
+        result = cas.getAnnotationIndex(type).iterator(annotation);
+      }
+    } else {
+      JCas jcas = null;
+      try {
+        jcas = cas.getJCas();
+      } catch (CASException e) {
+        e.printStackTrace();
+      }
+      TextMarkerFrame window = new TextMarkerFrame(jcas, stream.getDocumentAnnotation().getBegin(), stream.getDocumentAnnotation().getEnd());
+      if(annotation == null) {
+        result = cas.getAnnotationIndex(type).subiterator(window);
+      } else {
+        result = cas.getAnnotationIndex(type).subiterator(window);
+        result.moveTo(annotation);
+      }
+    }
+    
+    return result;
   }
 
   private void tryWithNextLiteral(boolean after, AnnotationFS annotation,
@@ -311,8 +336,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
         doneHere = true;
         break;
       }
-      TextMarkerBasic anchor = stream.getAnchor(after, indexOf);
-      TextMarkerBasic endAnchor = stream.getAnchor(!after, indexOf);
+      TextMarkerBasic anchor = stream.getAnchor(after, indexOf+delta);
+      TextMarkerBasic endAnchor = stream.getAnchor(!after, indexOf+delta);
       ComposedRuleElementMatch extendedContainerMatch = containerMatch.copy();
       RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch);
       AnnotationFS coveredByWildCard = getCoveredByWildCard(after, annotation, anchor, stream);
@@ -375,41 +400,34 @@ public class WildCardRuleElement extends AbstractRuleElement {
     }
   }
 
-  private AnnotationFS getCoveredByWildCard(boolean after, AnnotationFS annotation,
-          AnnotationFS nextOne, TextMarkerStream stream) {
-    AnnotationFS afs = null;
+  private AnnotationFS getCoveredByWildCard(boolean after, AnnotationFS last,
+          AnnotationFS next, TextMarkerStream stream) {
     CAS cas = stream.getCas();
     Type type = cas.getAnnotationType();
+    AnnotationFS documentAnnotation = stream.getDocumentAnnotation();
 
-    int lastBegin = 0;
-    int lastEnd = 0;
-    if (annotation != null) {
-      if (after) {
-        lastBegin = annotation.getBegin();
-        lastEnd = annotation.getEnd();
-      } else {
-        lastBegin = annotation.getBegin();
-        lastEnd = annotation.getEnd();
-        // TODO refactor code below
-      }
-    } else {
-      // TODO refactor code below
+    // order like in the index
+    AnnotationFS before = last;
+    AnnotationFS later = next;
+    if(!after) {
+      before = next;
+      later = last;
     }
-
-    if (nextOne == null) {
-      AnnotationFS documentAnnotation = stream.getDocumentAnnotation();
-      if (after) {
-        afs = cas.createAnnotation(type, lastEnd, documentAnnotation.getEnd());
-      } else {
-        afs = cas.createAnnotation(type, documentAnnotation.getBegin(), lastBegin);
-      }
-    } else {
-      if (after) {
-        afs = cas.createAnnotation(type, lastEnd, nextOne.getBegin());
-      } else {
-        afs = cas.createAnnotation(type, nextOne.getEnd(), lastBegin);
-      }
+    
+    // without any information, match on everything
+    int begin = documentAnnotation.getBegin();
+    int end = documentAnnotation.getEnd();
+    
+    // limit offsets
+    if(before != null) {
+      begin = before.getEnd();
     }
+    if(later != null) {
+      end = later.getBegin();
+    }
+    
+    AnnotationFS afs = cas.createAnnotation(type, begin, end);
+    
     return afs;
   }
 

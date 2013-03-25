@@ -122,6 +122,66 @@ public class WildCardTest {
     iterator = ai.iterator();
     assertEquals("The TextMarker language is an imperative rule language extended with scripting elements.", iterator.next().getCoveredText());
     
+    t = TextMarkerTestUtils.getTestType(cas, 16);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(4, ai.size());
+    
+    t = TextMarkerTestUtils.getTestType(cas, 17);
+    ai = cas.getAnnotationIndex(t);
+    iterator = ai.iterator();
+    assertEquals(4, ai.size());
+    assertEquals("The", iterator.next().getCoveredText());
+    assertEquals("If", iterator.next().getCoveredText());
+    assertEquals("The", iterator.next().getCoveredText());
+    assertEquals("The", iterator.next().getCoveredText());
+    
+    t = TextMarkerTestUtils.getTestType(cas, 18);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(4, ai.size());
+    
+    t = TextMarkerTestUtils.getTestType(cas, 19);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(8, ai.size());
+    
+    t = TextMarkerTestUtils.getTestType(cas, 20);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(4, ai.size());
+    
+    t = TextMarkerTestUtils.getTestType(cas, 21);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(4, ai.size());
+    
+    t = TextMarkerTestUtils.getTestType(cas, 22);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(4, ai.size());
+    
+    t = TextMarkerTestUtils.getTestType(cas, 23);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(4, ai.size());
+    
+    t = TextMarkerTestUtils.getTestType(cas, 24);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(2, ai.size());
+
+    t = TextMarkerTestUtils.getTestType(cas, 25);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(4, ai.size());
+    
+    t = TextMarkerTestUtils.getTestType(cas, 26);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(9, ai.size());
+    
+    t = TextMarkerTestUtils.getTestType(cas, 27);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(4, ai.size());
+    
+    t = TextMarkerTestUtils.getTestType(cas, 28);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(8, ai.size());
+    
+    t = TextMarkerTestUtils.getTestType(cas, 29);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
     
     if (cas != null) {
       cas.release();
