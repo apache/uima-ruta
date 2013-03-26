@@ -72,7 +72,9 @@ public class TextMarkerIdePlugin extends AbstractUIPlugin {
         // close all CAS Editors if on is focused when exiting Eclipse
         final IWorkbenchPage activePage = workbench.getActiveWorkbenchWindow().getActivePage();
         IEditorPart activeEditor = activePage.getActiveEditor();
-        if (activeEditor.getClass().getName().equals("org.apache.uima.caseditor.editor.AnnotationEditor")) {
+        if (activeEditor != null
+                && activeEditor.getClass().getName()
+                        .equals("org.apache.uima.caseditor.editor.AnnotationEditor")) {
           IEditorReference[] editorReferences = activePage.getEditorReferences();
           List<IEditorReference> toClose = new ArrayList<IEditorReference>();
           for (IEditorReference each : editorReferences) {
@@ -88,7 +90,7 @@ public class TextMarkerIdePlugin extends AbstractUIPlugin {
       public void postShutdown(IWorkbench workbench) {
 
       }
-    });  
+    });
   }
 
   /*
