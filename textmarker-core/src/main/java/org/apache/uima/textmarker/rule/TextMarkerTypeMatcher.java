@@ -92,7 +92,7 @@ public class TextMarkerTypeMatcher implements TextMarkerMatcher {
       return Collections.emptyList();
     }
     stream.moveTo(lastBasic);
-    if(stream.isVisible(annotation)) {
+    if(stream.isVisible(lastBasic)) {
       stream.moveToNext();
     }
     if (stream.isValid()) {
@@ -125,7 +125,9 @@ public class TextMarkerTypeMatcher implements TextMarkerMatcher {
       return Collections.emptyList();
     }
     stream.moveTo(firstBasic);
-    stream.moveToPrevious();
+    if(stream.isVisible(firstBasic)) {
+      stream.moveToPrevious();
+    }
     if (stream.isValid()) {
       TextMarkerBasic nextBasic = (TextMarkerBasic) stream.get();
       List<Type> reTypes = getTypes(parent, stream);
