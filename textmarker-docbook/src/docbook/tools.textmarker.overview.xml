@@ -583,7 +583,7 @@ AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed,
     resMgr, null);
 File scriptFile = new File("path/to/file/MyScript.tm");
 ae.setConfigParameterValue(TextMarkerEngine.SCRIPT_PATHS, 
-    new String[] { scriptFile.getParent().getAbsolutePath() });
+    new String[] { scriptFile.getParentFile().getAbsolutePath() });
 String name = scriptFile.getName().substring(0, 
     scriptFile.getName().length() - 3);
 ae.setConfigParameterValue(TextMarkerEngine.MAIN_SCRIPT, name);
