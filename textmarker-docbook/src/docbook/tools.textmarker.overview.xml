@@ -591,7 +591,11 @@ ae.reconfigure();
 CAS cas = ae.newCAS();
 cas.setDocumentText("This is my document.");
 ae.process(cas);]]></programlisting>
-      
+      <para>
+        There is also a convenience implementation for applying simple scripts, which do not introduce new types. The following java code
+        applies a simple rule <quote>T1 SW{-> MARK(T2)};</quote> on the given CAS. Note that the types need to be already defined in the type system of the CAS.
+      </para>
+      <programlisting><![CDATA[TextMarker.apply(cas, "T1 SW{-> MARK(T2)};");]]></programlisting>
       </section>
       <section id="ugr.tools.tm.ae.basic.parameter">
         <title>Configuration Parameters</title>
