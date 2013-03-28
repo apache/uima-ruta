@@ -70,6 +70,7 @@ public class AlgorithmPreferencePage extends FieldEditorPreferencePage implement
           }
 
           case ML_FLOAT_PARAM:
+          case ML_DOUBLE_PARAM:
           case ML_INT_PARAM:
           case ML_STRING_PARAM: {
             l = new StringFieldEditor(id, p.name, getFieldEditorParent());

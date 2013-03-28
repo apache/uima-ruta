@@ -84,6 +84,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     this.delegate = delegate;
     this.filterSet = filterSet;
     filterSetWithSlotNames = new HashSet<String>(filterSet);
+    filterSetWithSlotNames.add(TextMarkerEngine.BASIC_TYPE);
     for (String s : slotNames) {
       filterSetWithSlotNames.add(s);
       filterSetWithSlotNames.add(TextRulerTarget.getSingleSlotTypeName(

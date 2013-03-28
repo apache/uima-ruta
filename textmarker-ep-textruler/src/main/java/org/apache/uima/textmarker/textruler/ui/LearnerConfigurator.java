@@ -151,19 +151,19 @@ public class LearnerConfigurator {
         String id = algorithmController.getID() + "." + p.id;
         switch (p.type) {
           case ML_BOOL_PARAM: {
-            result.put(id, store.getBoolean(id));
+            result.put(p.id, store.getBoolean(id));
             break;
           }
           case ML_FLOAT_PARAM: {
-            result.put(id, store.getFloat(id));
+            result.put(p.id, store.getFloat(id));
             break;
           }
           case ML_INT_PARAM: {
-            result.put(id, store.getInt(id));
+            result.put(p.id, store.getInt(id));
             break;
           }
           case ML_STRING_PARAM: {
-            result.put(id, store.getString(id));
+            result.put(p.id, store.getString(id));
             break;
           }
             // case ML_SELECT_PARAM: {
