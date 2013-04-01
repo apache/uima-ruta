@@ -1440,4 +1440,20 @@ under the License.
             nature="org.apache.uima.textmarker.ide.nature">
       </validatorType>
    </extension>
+     <extension
+           point="org.eclipse.dltk.ui.buildpathContainerPage">
+        <buildpathContainerPage
+              class="org.apache.uima.textmarker.ide.ui.wizards.TextMarkerJavaContainerPage"
+              id="org.apache.uima.textmarker.ide.java.page"
+              name="Java"
+              nature="org.apache.uima.textmarker.ide.nature">
+        </buildpathContainerPage>
+     </extension>
+     <extension
+           point="org.eclipse.dltk.launching.buildpathProviders">
+        <buildpathProvider
+              class="abstractinterpreterinstalltype.AbstractInterpreterInstallType1"
+              id="textmarker-ep-ide.buildpathProvider1">
+        </buildpathProvider>
+     </extension>
 </plugin>

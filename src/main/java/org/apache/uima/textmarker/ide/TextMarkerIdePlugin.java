@@ -26,6 +26,7 @@ import java.util.List;
 import org.apache.uima.textmarker.ide.ui.text.TextMarkerTextTools;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.environment.IDeployment;
 import org.eclipse.dltk.core.environment.IExecutionEnvironment;
@@ -37,7 +38,9 @@ import org.eclipse.ui.IWorkbenchListener;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.service.packageadmin.PackageAdmin;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -49,6 +52,8 @@ public class TextMarkerIdePlugin extends AbstractUIPlugin {
 
   private TextMarkerTextTools textTools;
 
+  private BundleContext bundleContext;
+  
   // The shared instance
   private static TextMarkerIdePlugin plugin;
 
@@ -66,6 +71,7 @@ public class TextMarkerIdePlugin extends AbstractUIPlugin {
   public void start(BundleContext context) throws Exception {
     super.start(context);
     plugin = this;
+    bundleContext = context;
     IWorkbench workbench = PlatformUI.getWorkbench();
     workbench.addWorkbenchListener(new IWorkbenchListener() {
       public boolean preShutdown(IWorkbench workbench, boolean forced) {
@@ -131,6 +137,25 @@ public class TextMarkerIdePlugin extends AbstractUIPlugin {
     IPath path = deployment.add(this.getBundle(), "console");
     path.append("ConsoleProxy.tm");
     return deployment.getFile(path);
-
+  }
+  
+  public Bundle getBundle(String bundleName) {
+    Bundle[] bundles = getBundles(bundleName, null);
+    if (bundles != null && bundles.length > 0)
+      return bundles[0];
+    return null;
+  }
+  
+public Bundle[] getBundles(String bundleName, String version) {
+    Bundle[] bundles = Platform.getBundles(bundleName, version);
+    if (bundles != null)
+      return bundles;
+    // Accessing bundle which is not resolved
+    PackageAdmin admin = (PackageAdmin) bundleContext.getService(
+            bundleContext.getServiceReference(PackageAdmin.class.getName()));
+    bundles = admin.getBundles(bundleName, version);
+    if (bundles != null && bundles.length > 0)
+      return bundles;
+    return null;
   }
 }
