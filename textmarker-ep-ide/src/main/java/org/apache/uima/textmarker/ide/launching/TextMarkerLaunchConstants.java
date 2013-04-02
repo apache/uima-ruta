@@ -15,14 +15,14 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.ide.launching;
 
 public class TextMarkerLaunchConstants {
 
   public static final String ARG_INPUT_FOLDER = "-inputFolder";
-  
+
   public static final String ARG_OUTPUT_FOLDER = "-outputFolder";
 
   public static final String ARG_DESCRIPTOR = "-descriptor";
@@ -30,10 +30,17 @@ public class TextMarkerLaunchConstants {
   public static final String ARG_RECURSIVE = "-inputRecursive";
 
   public static final String ARG_MODE = "-mode";
-  
+
+  public static final String ARG_VIEW = "-view";
+
+  public static final String ARG_ENCODING = "-encoding";
+
   public static final String INPUT_FOLDER = "org.apache.uima.textmarker.ide.launching.inputFolder";
-  
+
   public static final String OUTPUT_FOLDER = "org.apache.uima.textmarker.ide.launching.outputFolder";
-  
-  
+
+  public static final String RECURSIVE = "org.apache.uima.textmarker.ide.launching.recursive";
+
+  public static final String VIEW = "org.apache.uima.textmarker.ide.launching.view";
+
 }

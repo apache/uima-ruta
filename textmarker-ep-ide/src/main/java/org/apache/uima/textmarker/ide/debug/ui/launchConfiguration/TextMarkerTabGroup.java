@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.ide.debug.ui.launchConfiguration;
 
@@ -25,13 +25,15 @@ import org.eclipse.debug.ui.EnvironmentTab;
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.dltk.debug.ui.launchConfigurations.ScriptCommonTab;
+import org.eclipse.jdt.debug.ui.launchConfigurations.JavaClasspathTab;
+import org.eclipse.jdt.debug.ui.launchConfigurations.JavaJRETab;
 
 public class TextMarkerTabGroup extends AbstractLaunchConfigurationTabGroup {
   public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
     TextMarkerMainLaunchConfigurationTab main = new TextMarkerMainLaunchConfigurationTab(mode);
-    ILaunchConfigurationTab[] tabs = new ILaunchConfigurationTab[] { main,
-        new TextMarkerArgumentsTab(), new TextMarkerInterpreterTab(main), new EnvironmentTab(),
-        new ScriptCommonTab(main) };
+    ILaunchConfigurationTab[] tabs = new ILaunchConfigurationTab[] { main, new JavaJRETab(),
+        new JavaClasspathTab(), new TextMarkerArgumentsTab(), new TextMarkerInterpreterTab(main),
+        new EnvironmentTab(), new ScriptCommonTab(main) };
     setTabs(tabs);
   }
 }

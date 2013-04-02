@@ -23,11 +23,16 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.UIManager;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.textmarker.ide.TextMarkerIdePlugin;
+import org.apache.uima.textmarker.ide.core.TextMarkerNature;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.QualifiedName;
@@ -36,9 +41,12 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 
 public class TextMarkerProjectUtils {
 
+  public static final String JAVANATURE = "org.eclipse.jdt.core.javanature";
   private static final String CDE_DATA_PATH = "CDEdataPath";
 
   public static IPath getEngineDescriptorPath(IPath scriptPath, IProject project) {
@@ -80,8 +88,14 @@ public class TextMarkerProjectUtils {
 
   public static List<IFolder> getScriptFolders(IScriptProject proj) {
     List<IFolder> result = new ArrayList<IFolder>();
+    IScriptFolder[] scriptFolders = null;
     try {
-      IScriptFolder[] scriptFolders = proj.getScriptFolders();
+      scriptFolders = proj.getScriptFolders();
+    } catch (ModelException e) {
+      // referring to a non-textmarker project
+      // TextMarkerIdePlugin.error(e);
+    }
+    if (scriptFolders != null) {
       for (IScriptFolder eachScriptFolder : scriptFolders) {
         IModelElement parent = eachScriptFolder.getParent();
         IResource resource = parent.getResource();
@@ -91,8 +105,6 @@ public class TextMarkerProjectUtils {
           }
         }
       }
-    } catch (ModelException e) {
-      TextMarkerIdePlugin.error(e);
     }
     return result;
   }
@@ -113,11 +125,28 @@ public class TextMarkerProjectUtils {
     return result;
   }
 
-  public static List<IFolder> getDescriptorFolders(IProject proj) throws ModelException {
+  public static List<IFolder> getDescriptorFolders(IProject proj) throws CoreException {
     List<IFolder> result = new ArrayList<IFolder>();
-    IFolder findElement = proj.getFolder(getDefaultDescriptorLocation());
-    if (findElement != null) {
-      result.add((IFolder) findElement);
+    IProjectNature javaNature = proj.getNature(JAVANATURE);
+    if (javaNature != null) {
+      IJavaProject javaProject = JavaCore.create(proj);
+      IPath readOutputLocation = javaProject.readOutputLocation();
+      IFolder folder = ResourcesPlugin.getWorkspace().getRoot().getFolder(readOutputLocation);
+      result.add(folder);
+    }
+    IProjectNature pearNature = proj.getNature("org.apache.uima.pear.UimaNature");
+    if (pearNature != null) {
+      IFolder findElement = proj.getFolder("desc");
+      if (findElement != null) {
+        result.add((IFolder) findElement);
+      }
+    }
+    IProjectNature textmarkerNature = proj.getNature(TextMarkerNature.NATURE_ID);
+    if (textmarkerNature != null) {
+      IFolder findElement = proj.getFolder(getDefaultDescriptorLocation());
+      if (findElement != null) {
+        result.add((IFolder) findElement);
+      }
     }
     return result;
   }

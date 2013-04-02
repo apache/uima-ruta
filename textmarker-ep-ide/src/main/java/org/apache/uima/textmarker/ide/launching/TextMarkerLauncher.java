@@ -25,12 +25,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.analysis_engine.metadata.SofaMapping;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.impl.XmiCasDeserializer;
 import org.apache.uima.cas.impl.XmiCasSerializer;
 import org.apache.uima.resource.ResourceConfigurationException;
@@ -95,6 +99,11 @@ public class TextMarkerLauncher {
           return false;
         }
         launchMode = args[index++];
+      } else if (TextMarkerLaunchConstants.ARG_VIEW.equals(each)) {
+        if (index >= args.length) {
+          return false;
+        }
+        view = args[index++];
       }
     }
     return count ==2;
@@ -106,6 +115,7 @@ public class TextMarkerLauncher {
     }
     XMLInputSource in = new XMLInputSource(descriptor);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
+    
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
     configure(ae);
     CAS cas = ae.newCAS();
@@ -122,16 +132,30 @@ public class TextMarkerLauncher {
 
   private static void processFile(File file, AnalysisEngine ae, CAS cas) throws IOException,
           AnalysisEngineProcessException, SAXException {
-
+    if(view != null) {
+      boolean found = false;
+      Iterator<CAS> viewIterator = cas.getViewIterator();
+      while (viewIterator.hasNext()) {
+        CAS each = (CAS) viewIterator.next();
+        String viewName = each.getViewName();
+        if(viewName.equals(view)) {
+          cas = cas.getView(view);
+          found = true;
+          break;
+        }
+      }
+      if(!found) {
+         cas = cas.createView(view);
+      }
+      
+    }
     if (file.getName().endsWith(".xmi")) {
       XmiCasDeserializer.deserialize(new FileInputStream(file), cas, true);
     } else {
       String document = FileUtils.file2String(file, inputEncoding);
       cas.setDocumentText(document);
     }
-
     ae.process(cas);
-
     if (outputFolder != null) {
       File outputFile = getOutputFile(file, inputFolder, outputFolder);
       writeXmi(cas, outputFile);
@@ -155,7 +179,7 @@ public class TextMarkerLauncher {
     List<File> result = new ArrayList<File>();
     for (File each : dir.listFiles()) {
       // TODO: find a solution for this hotfix
-      if (each.getName().endsWith(".svn")) {
+      if (each.isHidden()) {
         continue;
       }
       result.add(each);

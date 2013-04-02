@@ -197,7 +197,7 @@ public class TextMarkerCompletionEngine extends ScriptCompletionEngine {
 
   private void doCompletionOnComponentDeclaration(IModuleSource cu,
           TextMarkerModuleDeclaration parsed, String startPart, int type, String complString)
-          throws CoreException {
+          throws Exception {
     if (type == ComponentDeclaration.SCRIPT) {
       List<IFolder> scriptFolders = TextMarkerProjectUtils.getAllScriptFolders(sourceModule
               .getModelElement().getScriptProject());
