@@ -523,6 +523,9 @@ public class TextMarkerStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public TextMarkerBasic getBasicNextTo(boolean before, AnnotationFS annotation) {
+    if(annotation == null) {
+      return beginAnchors.get(0);
+    }
     if (before) {
       TextMarkerBasic pointer = beginAnchors.get(annotation.getBegin());
       moveTo(pointer);
