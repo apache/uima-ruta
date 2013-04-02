@@ -146,7 +146,7 @@ public class TextMarkerBuilder extends AbstractBuildParticipantType implements I
         List<IFolder> descriptorFolders = TextMarkerProjectUtils.getAllDescriptorFolders(proj
                 .getProject());
         descriptorPathList.addAll(TextMarkerProjectUtils.getFolderLocations(descriptorFolders));
-      } catch (CoreException e) {
+      } catch (Exception e) {
         TextMarkerIdePlugin.error(e);
       }
 

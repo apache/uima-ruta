@@ -171,7 +171,7 @@ public class TextMarkerCheckerUtils {
     List<IFolder> allDescriptorFolders;
     try {
       allDescriptorFolders = TextMarkerProjectUtils.getAllDescriptorFolders(project.getProject());
-    } catch (CoreException e) {
+    } catch (Exception e) {
       return false;
     }
     for (IFolder folder : allDescriptorFolders) {
@@ -254,7 +254,7 @@ public class TextMarkerCheckerUtils {
     List<IFolder> allDescriptorFolders;
     try {
       allDescriptorFolders = TextMarkerProjectUtils.getAllDescriptorFolders(project.getProject());
-    } catch (CoreException e) {
+    } catch (Exception e) {
       return false;
     }
     for (IFolder folder : allDescriptorFolders) {

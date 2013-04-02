@@ -524,7 +524,7 @@ public class TextMarkerTypeChecker implements IBuildParticipant, IBuildParticipa
    * @throws InvalidXMLException
    * @throws IOException
    *           when file not found
-   * @throws CoreException
+   * @throws Exception
    */
   private Set<String> importTypeSystem(String xmlFilePath) throws InvalidXMLException, IOException,
           CoreException {

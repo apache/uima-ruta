@@ -1404,6 +1404,7 @@ under the License.
             nature="org.apache.uima.textmarker.ide.nature">
       </validatorType>
    </extension>
+   <!--
      <extension
            point="org.eclipse.dltk.ui.buildpathContainerPage">
         <buildpathContainerPage
@@ -1413,4 +1414,5 @@ under the License.
               nature="org.apache.uima.textmarker.ide.nature">
         </buildpathContainerPage>
      </extension>
+     -->
 </plugin>
