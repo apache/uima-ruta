@@ -36,7 +36,6 @@ import org.apache.uima.resource.metadata.FeatureDescription;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.textmarker.ide.core.ITextMarkerKeywords;
-import org.apache.uima.textmarker.ide.core.TextMarkerKeywords;
 import org.apache.uima.textmarker.ide.core.TextMarkerKeywordsManager;
 import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
 import org.apache.uima.textmarker.ide.parser.ast.TMActionConstants;

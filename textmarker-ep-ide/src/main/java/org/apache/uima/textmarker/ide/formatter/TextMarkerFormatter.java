@@ -29,7 +29,6 @@ import org.antlr.runtime.BitSet;
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.CommonTokenStream;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.uima.textmarker.ide.core.parser.TextMarkerParser;
 import org.apache.uima.textmarker.ide.core.parser.TextMarkerSourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.parser.IModuleDeclaration;

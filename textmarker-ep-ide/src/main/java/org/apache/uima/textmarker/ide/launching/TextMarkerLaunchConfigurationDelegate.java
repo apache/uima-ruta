@@ -32,14 +32,10 @@ import java.util.Map;
 import org.apache.uima.textmarker.ide.TextMarkerIdePlugin;
 import org.apache.uima.textmarker.ide.core.TextMarkerCorePreferences;
 import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
-import org.eclipse.core.internal.resources.Project;
-import org.eclipse.core.internal.resources.Workspace;
 import org.eclipse.core.resources.IBuildConfiguration;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
@@ -53,21 +49,15 @@ import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IScriptProject;
-import org.eclipse.dltk.core.ScriptProjectUtil;
-import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate;
-import org.eclipse.dltk.launching.InterpreterConfig;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.internal.core.JavaProject;
 import org.eclipse.jdt.launching.JavaLaunchDelegate;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.ui.internal.Workbench;
 import org.osgi.framework.Bundle;
 
 public class TextMarkerLaunchConfigurationDelegate extends JavaLaunchDelegate {
@@ -116,6 +106,7 @@ public class TextMarkerLaunchConfigurationDelegate extends JavaLaunchDelegate {
 
   @Override
   public String[] getClasspath(ILaunchConfiguration configuration) throws CoreException {
+    TextMarkerIdePlugin d = TextMarkerIdePlugin.getDefault();
     // The class path already contains the jars which are specified in the Classpath tab
     List<String> extendedClasspath = new ArrayList<String>();
     Collections.addAll(extendedClasspath, super.getClasspath(configuration));
@@ -152,12 +143,12 @@ public class TextMarkerLaunchConfigurationDelegate extends JavaLaunchDelegate {
     if (!Platform.inDevelopmentMode()) {
       try {
         // Add this plugin jar to the classpath
-        extendedClasspath.add(pluginIdToJarPath(TextMarkerIdePlugin.PLUGIN_ID));
+        extendedClasspath.add(d.pluginIdToJarPath(TextMarkerIdePlugin.PLUGIN_ID));
 
         // UIMA jar should be added the end of the class path, because user uima jars
         // (maybe a different version) should appear first on the class path
-        extendedClasspath.add(pluginIdToJarPath("org.apache.uima.runtime"));
-        extendedClasspath.add(pluginIdToJarPath("org.apache.uima.textmarker.engine"));
+        extendedClasspath.add(d.pluginIdToJarPath("org.apache.uima.runtime"));
+        extendedClasspath.add(d.pluginIdToJarPath("org.apache.uima.textmarker.engine"));
       } catch (IOException e) {
         throw new CoreException(new Status(IStatus.ERROR, TextMarkerIdePlugin.PLUGIN_ID,
                 IStatus.OK, "Failed to compose classpath!", e));
@@ -169,7 +160,7 @@ public class TextMarkerLaunchConfigurationDelegate extends JavaLaunchDelegate {
     else {
       try {
         // Add classes folder of this plugin to class path
-        extendedClasspath.add(pluginIdToJarPath(TextMarkerIdePlugin.PLUGIN_ID) + "target/classes");
+        extendedClasspath.add(d.pluginIdToJarPath(TextMarkerIdePlugin.PLUGIN_ID) + "target/classes");
 
         // Add org.apache.uima.runtime jar to class path
         Bundle bundle = TextMarkerIdePlugin.getDefault().getBundle("org.apache.uima.runtime");
@@ -178,7 +169,7 @@ public class TextMarkerLaunchConfigurationDelegate extends JavaLaunchDelegate {
         if (bundle != null) {
           Enumeration<?> jarEnum = bundle.findEntries("/", "*.jar", true);
           if (jarEnum == null) {
-            extendedClasspath.add(pluginIdToJarPath("org.apache.uima.runtime"));
+            extendedClasspath.add(d.pluginIdToJarPath("org.apache.uima.runtime"));
           }
           while (jarEnum != null && jarEnum.hasMoreElements()) {
             URL element = (URL) jarEnum.nextElement();
@@ -249,13 +240,6 @@ public class TextMarkerLaunchConfigurationDelegate extends JavaLaunchDelegate {
     }
   }
 
-  private String pluginIdToJarPath(String pluginId) throws IOException {
-    Bundle bundle = TextMarkerIdePlugin.getDefault().getBundle(pluginId);
-    URL url = bundle.getEntry("/");
-    if (url == null) {
-      throw new IOException();
-    }
-    return FileLocator.toFileURL(url).getFile();
-  }
+  
 
 }

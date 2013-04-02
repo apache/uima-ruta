@@ -506,7 +506,7 @@ under the License.
     <buildpathContainerPath
       class="org.apache.uima.textmarker.ide.debug.ui.interpreters.TextMarkerInterpreterContainerWizardPage"
       id="org.apache.uima.textmarker.ide.launching.INTERPRETER_CONTAINER"
-      name="textmarker Interpreter Libraries"
+      name="TextMarker Interpreter Libraries"
       nature="org.apache.uima.textmarker.ide.nature" />
   </extension>
   <extension point="org.eclipse.ui.perspectiveExtensions">
