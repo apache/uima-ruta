@@ -19,18 +19,30 @@
 
 package org.apache.uima.textmarker.ide;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.uima.textmarker.ide.core.TextMarkerNature;
 import org.apache.uima.textmarker.ide.ui.text.TextMarkerTextTools;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.dltk.core.environment.FileAsFileHandle;
 import org.eclipse.dltk.core.environment.IDeployment;
+import org.eclipse.dltk.core.environment.IEnvironment;
 import org.eclipse.dltk.core.environment.IExecutionEnvironment;
 import org.eclipse.dltk.core.environment.IFileHandle;
+import org.eclipse.dltk.core.internal.environment.LocalEnvironment;
+import org.eclipse.dltk.launching.IInterpreterInstall;
+import org.eclipse.dltk.launching.ScriptRuntime;
+import org.eclipse.dltk.launching.ScriptRuntime.DefaultInterpreterEntry;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IWorkbench;
@@ -53,7 +65,7 @@ public class TextMarkerIdePlugin extends AbstractUIPlugin {
   private TextMarkerTextTools textTools;
 
   private BundleContext bundleContext;
-  
+
   // The shared instance
   private static TextMarkerIdePlugin plugin;
 
@@ -72,6 +84,9 @@ public class TextMarkerIdePlugin extends AbstractUIPlugin {
     super.start(context);
     plugin = this;
     bundleContext = context;
+
+    checkTextMarkerInterpreter();
+
     IWorkbench workbench = PlatformUI.getWorkbench();
     workbench.addWorkbenchListener(new IWorkbenchListener() {
       public boolean preShutdown(IWorkbench workbench, boolean forced) {
@@ -138,24 +153,49 @@ public class TextMarkerIdePlugin extends AbstractUIPlugin {
     path.append("ConsoleProxy.tm");
     return deployment.getFile(path);
   }
-  
+
   public Bundle getBundle(String bundleName) {
     Bundle[] bundles = getBundles(bundleName, null);
     if (bundles != null && bundles.length > 0)
       return bundles[0];
     return null;
   }
-  
-public Bundle[] getBundles(String bundleName, String version) {
+
+  public Bundle[] getBundles(String bundleName, String version) {
     Bundle[] bundles = Platform.getBundles(bundleName, version);
     if (bundles != null)
       return bundles;
     // Accessing bundle which is not resolved
-    PackageAdmin admin = (PackageAdmin) bundleContext.getService(
-            bundleContext.getServiceReference(PackageAdmin.class.getName()));
+    PackageAdmin admin = (PackageAdmin) bundleContext.getService(bundleContext
+            .getServiceReference(PackageAdmin.class.getName()));
     bundles = admin.getBundles(bundleName, version);
     if (bundles != null && bundles.length > 0)
       return bundles;
     return null;
   }
+
+  public String pluginIdToJarPath(String pluginId) throws IOException {
+    Bundle bundle = getBundle(pluginId);
+    URL url = bundle.getEntry("/");
+    if (url == null) {
+      throw new IOException();
+    }
+    return FileLocator.toFileURL(url).getFile();
+  }
+
+  private void checkTextMarkerInterpreter() throws IOException, CoreException {
+    IEnvironment localEnv = LocalEnvironment.getInstance();
+    DefaultInterpreterEntry defaultInterpreterEntry = new DefaultInterpreterEntry(
+            TextMarkerNature.NATURE_ID, localEnv.getId());
+    IInterpreterInstall defaultInterpreterInstall = ScriptRuntime.getDefaultInterpreterInstall(defaultInterpreterEntry);
+    IFileHandle rawInstallLocation = defaultInterpreterInstall.getRawInstallLocation();
+    if(!rawInstallLocation.exists()) {
+      String pluginIdToJarPath = pluginIdToJarPath(TextMarkerIdePlugin.PLUGIN_ID);
+      FileAsFileHandle fh = new FileAsFileHandle(new File(pluginIdToJarPath));
+      defaultInterpreterInstall.setInstallLocation(fh);
+      ScriptRuntime.setDefaultInterpreterInstall(defaultInterpreterInstall, new NullProgressMonitor());
+      
+    }
+  }
+
 }

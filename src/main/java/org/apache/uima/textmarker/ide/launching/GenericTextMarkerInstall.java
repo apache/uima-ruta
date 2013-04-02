@@ -33,6 +33,10 @@ import org.eclipse.dltk.launching.IInterpreterRunner;
 
 public class GenericTextMarkerInstall extends AbstractInterpreterInstall {
 
+  public GenericTextMarkerInstall(IInterpreterInstallType type, String id) {
+    super(type, id);
+  }
+
   @Override
   public String getBuiltinModuleContent(String name) {
     InputStream stream = GenericTextMarkerInstall.class.getResourceAsStream("builtins.tm");
@@ -57,11 +61,8 @@ public class GenericTextMarkerInstall extends AbstractInterpreterInstall {
   public String[] getBuiltinModules() {
     return new String[] { "builtins.tm" };
   }
-
-  public GenericTextMarkerInstall(IInterpreterInstallType type, String id) {
-    super(type, id);
-  }
-
+  
+  
   @Override
   public IInterpreterRunner getInterpreterRunner(String mode) {
     IInterpreterRunner runner = super.getInterpreterRunner(mode);
@@ -78,4 +79,5 @@ public class GenericTextMarkerInstall extends AbstractInterpreterInstall {
   public String getNatureId() {
     return TextMarkerNature.NATURE_ID;
   }
+  
 }

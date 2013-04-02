@@ -92,11 +92,10 @@ public class GenericTextMarkerInstallType extends AbstractInterpreterInstallType
 
   @Override
   protected String[] parsePaths(String result) {
-    ArrayList paths = new ArrayList();
+    ArrayList<String> paths = new ArrayList<String>();
     String subs = null;
     int index = 0;
     while (index < result.length()) {
-      // skip whitespaces
       while (index < result.length() && Character.isWhitespace(result.charAt(index)))
         index++;
       if (index == result.length())
@@ -127,4 +126,5 @@ public class GenericTextMarkerInstallType extends AbstractInterpreterInstallType
   protected ILog getLog() {
     return TextMarkerIdePlugin.getDefault().getLog();
   }
+  
 }
