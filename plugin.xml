@@ -19,7 +19,8 @@ under the License.
 -->
 
 <?eclipse version="3.4"?>
-<plugin>
+<plugin
+>
   <extension-point id="tmCommandProcessor" name="tmCommandProcessor" schema="schema/tmCommandProcessor.exsd"/>
    <extension-point id="tmCommandDetector" name="tmCommandDetector" schema="schema/tmCommandDetector.exsd"/>
    <extension-point id="tmkeywords" name="tmkeywords" schema="schema/tmkeywords.exsd"/>
@@ -473,137 +474,7 @@ under the License.
     description="Debug">
     </launchMode>
     </launchConfigurationTabGroup>
-    </extension-->
-
-  <extension point="org.eclipse.ui.preferencePages">
-    <page
-      category="org.apache.uima.textmarker.ide.preferences"
-      class="org.apache.uima.textmarker.ide.debug.ui.interpreters.TextMarkerInterpreterPreferencePage"
-      id="org.eclipse.dltk.debug.ui.TextMarkerInterpreters"
-      name="%Interpreters.PreferencePage" />
-    <page
-      category="org.apache.uima.textmarker.ide.preferences"
-      class="org.apache.uima.textmarker.ide.debug.ui.preferences.TextMarkerDebugPreferencePage"
-      id="org.apache.uima.textmarker.ide.preferences.debug"
-      name="%Debug.PreferencePage" />
-    <page
-      category="org.apache.uima.textmarker.ide.preferences.debug"
-      class="org.apache.uima.textmarker.ide.debug.ui.preferences.TextMarkerDebuggingEnginePreferencePage"
-      id="org.apache.uima.textmarker.ide.preferences.debug.engines"
-      name="%Engines.PreferencePage" />
-    <page
-      category="org.apache.uima.textmarker.ide.preferences"
-      class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerConsolePreferences"
-      id="org.apache.uima.textmarker.ide.ui.console.preferences.TextMarkerConsolePreferences"
-      name="%Console.PreferencePage" />
-    <page
-          category="org.apache.uima.textmarker.ide.preferences.debug.engines"
-          class="org.apache.uima.textmarker.ide.debugger.preferences.TextMarkerDebuggerPreferencePage"
-          id="org.apache.uima.textmarker.ide.preferences.debug.engines.debugger"
-          name="%PreferencePage.name">
-    </page>
-  </extension>
-  <extension
-        point="org.eclipse.ui.preferencePages">
-     <page
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerGlobalPreferencePage"
-           id="org.apache.uima.textmarker.ide.preferences"
-           name="%TextMarkerPreferencePage.name">
-     </page>
-     <page
-           category="org.apache.uima.textmarker.ide.preferences"
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerEditorPreferencesPage"
-           id="org.apache.uima.textmarker.ide.preferences.editor"
-           name="%TextMarkerEditorPreferencePage.name">
-     </page>
-     <page
-           category="org.apache.uima.textmarker.ide.preferences.editor"
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerEditorHoverPreferencePage"
-           id="org.apache.uima.textmarker.ide.preferences.editor.hovers"
-           name="%TextMarkerEditorHoversPreferencePage.name">
-     </page>
-     <page
-           category="org.apache.uima.textmarker.ide.preferences.editor"
-           class="org.apache.uima.textmarker.ide.ui.templates.TextMarkerCodeTemplatesPreferencePage"
-           id="org.apache.uima.textmarker.ide.preferences.templates"
-           name="%TextMarkerCodeTemplatesPreferencePage.name">
-     </page>
-     <page
-           category="org.apache.uima.textmarker.ide.preferences.editor"
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerEditorSyntaxColoringPreferencePage"
-           id="org.apache.uima.textmarker.ide.ui.editor.SyntaxColoring"
-           name="%TextMarkerEditorSyntaxColoringPreferencePage.name">
-     </page>
-     <page
-           category="org.apache.uima.textmarker.ide.preferences.editor"
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerSmartTypingPreferencePage"
-           id="org.apache.uima.textmarker.ide.ui.editor.SmartTyping"
-           name="%TextMarkerEditorSmartTypingPreferencePage.name">
-     </page>
-     <page
-           category="org.apache.uima.textmarker.ide.preferences.editor"
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerFoldingPreferencePage"
-           id="org.apache.uima.textmarker.ide.ui.editor.TextMarkerFolding"
-           name="%TextMarkerEditorFoldingPreferencePage.name">
-     </page>
-     <!--
-     <page
-           category="org.apache.uima.textmarker.ide.preferences"
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerTodoTaskPreferencePage"
-           id="org.apache.uima.textmarker.ide.ui.editor.TodoTasks"
-           name="%TextMarkerTaskTags.name">
-     </page>
-     -->
-     <page
-           category="org.apache.uima.textmarker.ide.preferences.editor"
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerEditorAssistancePreferencePage"
-           id="org.apache.uima.textmarker.ide.ui.editor.Assistence"
-           name="%TextMarkerEditorAssistancePreferencePage.name">
-     </page>
-     <page
-           category="org.apache.uima.textmarker.ide.preferences"
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerBuilderPreferencePage"
-           id="org.apache.uima.textmarker.ide.preferences.builder"
-           name="Builder">
-     </page>
-     <page
-           category="org.apache.uima.textmarker.ide.preferences.editor"
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerFormatterPreferencePage"
-           id="org.apache.uima.textmarker.ide.preferences.formatter"
-           name="Formatter">
-     </page>
-     <page
-           category="org.apache.uima.textmarker.ide.preferences"
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerProjectPreferencePage"
-           id="org.apache.uima.textmarker.ide.preferences.project"
-           name="Project Management">
-     </page>
-  </extension>
-
-  <extension point="org.eclipse.ui.propertyPages">
-    <page
-      class="org.apache.uima.textmarker.ide.debug.ui.preferences.TextMarkerDebugPreferencePage"
-      category="org.apache.uima.textmarker.ide.propertyPage"
-      id="org.apache.uima.textmarker.ide.propertyPage.debug"
-      name="%Debug.PropertyPage">
-      <enabledWhen>
-        <adapt type="org.eclipse.core.resources.IProject">
-          <test property="org.eclipse.core.resources.projectNature" value="org.apache.uima.textmarker.ide.nature"/>
-        </adapt>         
-      </enabledWhen>
-    </page>    
-    <page
-      class="org.apache.uima.textmarker.ide.debug.ui.preferences.TextMarkerDebuggingEnginePreferencePage"
-      category="org.apache.uima.textmarker.ide.propertyPage.debug"
-      id="org.apache.uima.textmarker.ide.propertyPage.debug.engines"
-      name="%Engines.PropertyPage">
-      <enabledWhen>
-        <adapt type="org.eclipse.core.resources.IProject">
-          <test property="org.eclipse.core.resources.projectNature" value="org.apache.uima.textmarker.ide.nature"/>
-        </adapt>         
-      </enabledWhen>
-    </page> 
-  </extension>   
+    </extension-->   
 
   <extension point="org.eclipse.ui.editorActions">
     <editorContribution
@@ -733,75 +604,6 @@ under the License.
         preferencePageId="org.apache.uima.textmarker.ide.preferences.debug.engines.debugger">
       </engine>
     </engineContribution>
-  </extension>
-
-
-  <extension point="org.eclipse.ui.propertyPages">
-    <page
-      class="org.apache.uima.textmarker.ide.debugger.preferences.TextMarkerDebuggerPreferencePage"
-      category="org.apache.uima.textmarker.ide.propertyPage.debug.engines"
-      id="org.apache.uima.textmarker.ide.propertyPage.debug.engines.debugger"
-      name="%PropertyPage.name">
-      <enabledWhen>
-        <adapt type="org.eclipse.core.resources.IProject">
-          <test
-            property="org.eclipse.core.resources.projectNature"
-            value="org.apache.uima.textmarker.ide.nature" />
-        </adapt>
-      </enabledWhen>
-    </page>
-  </extension>
-  <extension
-        point="org.eclipse.debug.core.launchConfigurationTypes">
-     <launchConfigurationType
-           delegate="org.apache.uima.textmarker.ide.testing.TextMarkerTestingLaunchConfigurationDelegate"
-           id="org.apache.uima.textmarker.ide.testing.launchConfig"
-           modes="run, debug"
-           name="TextMarker Testing"
-           public="true"
-           sourceLocatorId="tmSourceLocator"
-           sourcePathComputerId="tmSourcePathComputer">
-     </launchConfigurationType>
-  </extension>
-  <extension
-        point="org.eclipse.debug.ui.launchConfigurationTypeImages">
-     <launchConfigurationTypeImage
-           configTypeID="org.apache.uima.textmarker.ide.testing.launchConfig"
-           icon="icons/textmarker.png"
-           id="org.apache.uima.textmarker.ide.testing.launchConfigImage">
-     </launchConfigurationTypeImage>
-  </extension>
-  <extension
-        point="org.eclipse.debug.ui.launchConfigurationTabGroups">
-     <launchConfigurationTabGroup
-           class="org.apache.uima.textmarker.ide.testing.TextMarkerTestingTabGroup"
-           id="org.apache.uima.textmarker.ide.testing.launchConfigTabGroup"
-           type="org.apache.uima.textmarker.ide.testing.launchConfig">
-        <launchMode
-              description="Run mode"
-              mode="run">
-        </launchMode>
-        <launchMode
-              mode="debug"
-              perspective="org.eclipse.debug.ui.DebugPerspective">
-        </launchMode>
-     </launchConfigurationTabGroup>
-  </extension>
-  <extension
-        point="org.apache.uima.textmarker.ide.tmTestEngine">
-     <testEngine
-           class="org.apache.uima.textmarker.ide.testing.TextMarkerTestTestingEngine"
-           id="org.apache.uima.textmarker.ide.testing.testingEngine"
-           priority="0">
-     </testEngine>
-  </extension>
-  <extension
-        point="org.eclipse.dltk.testing.memberResolver">
-     <resolver
-           class="org.apache.uima.textmarker.ide.testing.TextMarkerTestMemberResolver"
-           id="org.apache.uima.textmarker.ide.testing.testingEngine"
-           priority="0">
-     </resolver>
   </extension>
   <extension
         point="org.eclipse.dltk.launching.interpreterInstallTypes">
@@ -1063,56 +865,6 @@ under the License.
      <include
            file="templates/templates.xml">
      </include>
-  </extension>
-  <extension
-        point="org.eclipse.ui.propertyPages">
-     <page
-           category="org.apache.uima.textmarker.ide.propertyPage"
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerBuildpathPropertyPage"
-           id="org.apache.uima.textmarker.ide.ui.BuildpathProperties"
-           name="%TextMarkerBuildPathPropertyPage.name">
-        <enabledWhen>
-           <adapt
-                 type="org.eclipse.core.resources.IProject">
-              <test
-                    property="org.eclipse.core.resources.projectNature"
-                    value="org.apache.uima.textmarker.ide.nature">
-              </test>
-           </adapt>
-        </enabledWhen>
-        <keywordReference
-              id="org.eclipse.dltk.ui.buildpath">
-        </keywordReference>
-     </page>
-     <page
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerPropertyPage"
-           id="org.apache.uima.textmarker.ide.propertyPage"
-           name="%TextMarkerPropertyPage.name">
-        <enabledWhen>
-           <adapt
-                 type="org.eclipse.core.resources.IProject">
-              <test
-                    property="org.eclipse.core.resources.projectNature"
-                    value="org.apache.uima.textmarker.ide.nature">
-              </test>
-           </adapt>
-        </enabledWhen>
-     </page>
-     <page
-           category="org.apache.uima.textmarker.ide.propertyPage"
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerTodoTaskPreferencePage"
-           id="org.apache.uima.textmarker.ide.propertyPage.todo"
-           name="%TextMarkerTodoPropertyPage.name">
-        <enabledWhen>
-           <adapt
-                 type="org.eclipse.core.resources.IProject">
-              <test
-                    property="org.eclipse.core.resources.projectNature"
-                    value="org.apache.uima.textmarker.ide.nature">
-              </test>
-           </adapt>
-        </enabledWhen>
-     </page>
   </extension>
   <extension
         point="org.eclipse.ui.views">
@@ -1412,6 +1164,58 @@ under the License.
         point="org.eclipse.ui.propertyPages">
      <page
            category="org.apache.uima.textmarker.ide.propertyPage"
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerBuildpathPropertyPage"
+           id="org.apache.uima.textmarker.ide.ui.BuildpathProperties"
+           name="%TextMarkerBuildPathPropertyPage.name">
+        <enabledWhen>
+           <adapt
+                 type="org.eclipse.core.resources.IProject">
+              <test
+                    property="org.eclipse.core.resources.projectNature"
+                    value="org.apache.uima.textmarker.ide.nature">
+              </test>
+           </adapt>
+        </enabledWhen>
+        <keywordReference
+              id="org.eclipse.dltk.ui.buildpath">
+        </keywordReference>
+     </page>
+     <page
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerPropertyPage"
+           id="org.apache.uima.textmarker.ide.propertyPage"
+           name="%TextMarkerPropertyPage.name">
+        <enabledWhen>
+           <adapt
+                 type="org.eclipse.core.resources.IProject">
+              <test
+                    property="org.eclipse.core.resources.projectNature"
+                    value="org.apache.uima.textmarker.ide.nature">
+              </test>
+           </adapt>
+        </enabledWhen>
+     </page>
+     <!--
+     <page
+           category="org.apache.uima.textmarker.ide.propertyPage"
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerTodoTaskPreferencePage"
+           id="org.apache.uima.textmarker.ide.propertyPage.todo"
+           name="%TextMarkerTodoPropertyPage.name">
+        <enabledWhen>
+           <adapt
+                 type="org.eclipse.core.resources.IProject">
+              <test
+                    property="org.eclipse.core.resources.projectNature"
+                    value="org.apache.uima.textmarker.ide.nature">
+              </test>
+           </adapt>
+        </enabledWhen>
+     </page>
+     -->
+  </extension>
+  <extension
+        point="org.eclipse.ui.propertyPages">
+     <page
+           category="org.apache.uima.textmarker.ide.propertyPage"
            class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerFormatterPreferencePage"
            id="org.apache.uima.textmarker.ide.propertyPage.formatter"
            name="TextMarker Formatter">
@@ -1426,6 +1230,166 @@ under the License.
         </enabledWhen>
      </page>
   </extension>
+  <extension
+        point="org.eclipse.ui.preferencePages">
+     <page
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerGlobalPreferencePage"
+           id="org.apache.uima.textmarker.ide.preferences"
+           name="%TextMarkerPreferencePage.name">
+     </page>
+     <page
+           category="org.apache.uima.textmarker.ide.preferences"
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerEditorPreferencesPage"
+           id="org.apache.uima.textmarker.ide.preferences.editor"
+           name="%TextMarkerEditorPreferencePage.name">
+     </page>
+     <page
+           category="org.apache.uima.textmarker.ide.preferences.editor"
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerEditorHoverPreferencePage"
+           id="org.apache.uima.textmarker.ide.preferences.editor.hovers"
+           name="%TextMarkerEditorHoversPreferencePage.name">
+     </page>
+     <page
+           category="org.apache.uima.textmarker.ide.preferences.editor"
+           class="org.apache.uima.textmarker.ide.ui.templates.TextMarkerCodeTemplatesPreferencePage"
+           id="org.apache.uima.textmarker.ide.preferences.templates"
+           name="%TextMarkerCodeTemplatesPreferencePage.name">
+     </page>
+     <page
+           category="org.apache.uima.textmarker.ide.preferences.editor"
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerEditorSyntaxColoringPreferencePage"
+           id="org.apache.uima.textmarker.ide.ui.editor.SyntaxColoring"
+           name="%TextMarkerEditorSyntaxColoringPreferencePage.name">
+     </page>
+     <page
+           category="org.apache.uima.textmarker.ide.preferences.editor"
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerSmartTypingPreferencePage"
+           id="org.apache.uima.textmarker.ide.ui.editor.SmartTyping"
+           name="%TextMarkerEditorSmartTypingPreferencePage.name">
+     </page>
+     <page
+           category="org.apache.uima.textmarker.ide.preferences.editor"
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerFoldingPreferencePage"
+           id="org.apache.uima.textmarker.ide.ui.editor.TextMarkerFolding"
+           name="%TextMarkerEditorFoldingPreferencePage.name">
+     </page>
+     <!--
+     <page
+           category="org.apache.uima.textmarker.ide.preferences"
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerTodoTaskPreferencePage"
+           id="org.apache.uima.textmarker.ide.ui.editor.TodoTasks"
+           name="%TextMarkerTaskTags.name">
+     </page>
+     -->
+     <page
+           category="org.apache.uima.textmarker.ide.preferences.editor"
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerEditorAssistancePreferencePage"
+           id="org.apache.uima.textmarker.ide.ui.editor.Assistence"
+           name="%TextMarkerEditorAssistancePreferencePage.name">
+     </page>
+     <page
+           category="org.apache.uima.textmarker.ide.preferences"
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerBuilderPreferencePage"
+           id="org.apache.uima.textmarker.ide.preferences.builder"
+           name="Builder">
+     </page>
+     <page
+           category="org.apache.uima.textmarker.ide.preferences.editor"
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerFormatterPreferencePage"
+           id="org.apache.uima.textmarker.ide.preferences.formatter"
+           name="Formatter">
+     </page>
+     <page
+           category="org.apache.uima.textmarker.ide.preferences"
+           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerProjectPreferencePage"
+           id="org.apache.uima.textmarker.ide.preferences.project"
+           name="Project Management">
+     </page>
+  </extension>
+
+  <extension point="org.eclipse.ui.preferencePages">
+    <page
+      category="org.apache.uima.textmarker.ide.preferences"
+      class="org.apache.uima.textmarker.ide.debug.ui.interpreters.TextMarkerInterpreterPreferencePage"
+      id="org.eclipse.dltk.debug.ui.TextMarkerInterpreters"
+      name="%Interpreters.PreferencePage" />
+      <!--
+    <page
+      category="org.apache.uima.textmarker.ide.preferences"
+      class="org.apache.uima.textmarker.ide.debug.ui.preferences.TextMarkerDebugPreferencePage"
+      id="org.apache.uima.textmarker.ide.preferences.debug"
+      name="%Debug.PreferencePage" />
+    <page
+      category="org.apache.uima.textmarker.ide.preferences.debug"
+      class="org.apache.uima.textmarker.ide.debug.ui.preferences.TextMarkerDebuggingEnginePreferencePage"
+      id="org.apache.uima.textmarker.ide.preferences.debug.engines"
+      name="%Engines.PreferencePage" />
+    <page
+      category="org.apache.uima.textmarker.ide.preferences"
+      class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerConsolePreferences"
+      id="org.apache.uima.textmarker.ide.ui.console.preferences.TextMarkerConsolePreferences"
+      name="%Console.PreferencePage" />
+    <page
+          category="org.apache.uima.textmarker.ide.preferences.debug.engines"
+          class="org.apache.uima.textmarker.ide.debugger.preferences.TextMarkerDebuggerPreferencePage"
+          id="org.apache.uima.textmarker.ide.preferences.debug.engines.debugger"
+          name="%PreferencePage.name">
+    </page>
+      -->
+  </extension>
+
+<!--
+  <extension point="org.eclipse.ui.propertyPages">
+    <page
+      class="org.apache.uima.textmarker.ide.debugger.preferences.TextMarkerDebuggerPreferencePage"
+      category="org.apache.uima.textmarker.ide.propertyPage.debug.engines"
+      id="org.apache.uima.textmarker.ide.propertyPage.debug.engines.debugger"
+      name="%PropertyPage.name">
+      <enabledWhen>
+        <adapt type="org.eclipse.core.resources.IProject">
+          <test
+            property="org.eclipse.core.resources.projectNature"
+            value="org.apache.uima.textmarker.ide.nature" />
+        </adapt>
+      </enabledWhen>
+    </page>
+  </extension>
+  -->
+<!--
+  <extension
+        point="org.eclipse.ui.propertyPages">
+     <page
+           category="org.apache.uima.textmarker.ide.propertyPage"
+           class="org.apache.uima.textmarker.ide.debug.ui.preferences.TextMarkerDebugPreferencePage"
+           id="org.apache.uima.textmarker.ide.propertyPage.debug"
+           name="%Debug.PropertyPage">
+        <enabledWhen>
+           <adapt
+                 type="org.eclipse.core.resources.IProject">
+              <test
+                    property="org.eclipse.core.resources.projectNature"
+                    value="org.apache.uima.textmarker.ide.nature">
+              </test>
+           </adapt>
+        </enabledWhen>
+     </page>
+     <page
+           category="org.apache.uima.textmarker.ide.propertyPage.debug"
+           class="org.apache.uima.textmarker.ide.debug.ui.preferences.TextMarkerDebuggingEnginePreferencePage"
+           id="org.apache.uima.textmarker.ide.propertyPage.debug.engines"
+           name="%Engines.PropertyPage">
+        <enabledWhen>
+           <adapt
+                 type="org.eclipse.core.resources.IProject">
+              <test
+                    property="org.eclipse.core.resources.projectNature"
+                    value="org.apache.uima.textmarker.ide.nature">
+              </test>
+           </adapt>
+        </enabledWhen>
+     </page>
+  </extension>
+  -->
   <extension
         point="org.apache.uima.textmarker.ide.tmSemanticHighlighting">
      <highlightingExtension
@@ -1445,15 +1409,8 @@ under the License.
         <buildpathContainerPage
               class="org.apache.uima.textmarker.ide.ui.wizards.TextMarkerJavaContainerPage"
               id="org.apache.uima.textmarker.ide.java.page"
-              name="Java"
+              name="Java Library"
               nature="org.apache.uima.textmarker.ide.nature">
         </buildpathContainerPage>
-     </extension>
-     <extension
-           point="org.eclipse.dltk.launching.buildpathProviders">
-        <buildpathProvider
-              class="abstractinterpreterinstalltype.AbstractInterpreterInstallType1"
-              id="textmarker-ep-ide.buildpathProvider1">
-        </buildpathProvider>
      </extension>
 </plugin>
