@@ -15,13 +15,15 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.textmarker.extensions;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.InvalidXMLException;
 
@@ -29,7 +31,8 @@ public interface IEngineLoader {
 
   String[] getKnownEngines();
 
-  AnalysisEngine loadEngine(String location) throws InvalidXMLException,
-          ResourceInitializationException, IOException;
+  AnalysisEngine loadEngine(String location, String viewName) throws InvalidXMLException,
+          ResourceInitializationException, ResourceConfigurationException, IOException,
+          URISyntaxException;
 
 }

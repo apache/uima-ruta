@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -248,7 +249,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     }
     if (!reloadScript) {
       try {
-        initializeScript();
+        initializeScript(CAS.NAME_DEFAULT_SOFA);
       } catch (AnalysisEngineProcessException e) {
         throw new ResourceInitializationException(e);
       }
@@ -258,8 +259,8 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
   @Override
   public void process(JCas jcas) throws AnalysisEngineProcessException {
     CAS cas = jcas.getCas();
-    if (reloadScript) {
-      initializeScript();
+    if (reloadScript || !cas.getViewName().equals(CAS.NAME_DEFAULT_SOFA)) {
+      initializeScript(cas.getViewName());
     } else {
       resetEnvironments(cas);
     }
@@ -436,7 +437,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
     return result;
   }
 
-  private void initializeScript() throws AnalysisEngineProcessException {
+  private void initializeScript(String viewName) throws AnalysisEngineProcessException {
     if (mainScript == null) {
       return;
     }
@@ -472,7 +473,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
         if (location == null) {
           String locationIS = locateIS(eachEngineLocation, descriptorPaths, ".xml");
           try {
-            eachEngine = engineLoader.loadEngineIS(locationIS);
+            eachEngine = engineLoader.loadEngineIS(locationIS, viewName);
           } catch (InvalidXMLException e) {
             throw new AnalysisEngineProcessException(new FileNotFoundException("Engine at ["
                     + eachEngineLocation + "] cannot be found in ["
@@ -491,10 +492,14 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
                     + collectionToString(descriptorPaths)
                     + "] with extension .xml (from mainScript=" + mainScript + " in "
                     + collectionToString(scriptPaths)));
+          } catch (ResourceConfigurationException e) {
+            throw new AnalysisEngineProcessException(e);
+          } catch (URISyntaxException e) {
+            throw new AnalysisEngineProcessException(e);
           }
         } else {
           try {
-            eachEngine = engineLoader.loadEngine(location);
+            eachEngine = engineLoader.loadEngine(location, viewName);
           } catch (Exception e) {
             throw new AnalysisEngineProcessException(e);
           }
@@ -514,7 +519,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
 
     if (additionalScriptLocations != null) {
       for (String add : additionalScriptLocations) {
-        recursiveLoadScript(add, additionalScripts, additionalEngines);
+        recursiveLoadScript(add, additionalScripts, additionalEngines, viewName);
       }
     }
 
@@ -607,7 +612,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
   }
 
   private void recursiveLoadScript(String toLoad, Map<String, TextMarkerModule> additionalScripts,
-          Map<String, AnalysisEngine> additionalEngines) throws AnalysisEngineProcessException {
+          Map<String, AnalysisEngine> additionalEngines, String viewName) throws AnalysisEngineProcessException {
     String location = locate(toLoad, scriptPaths, ".tm");
     try {
       TypeSystemDescription localTSD = getLocalTSD(toLoad);
@@ -615,7 +620,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
       additionalScripts.put(toLoad, eachScript);
       for (String add : eachScript.getScripts().keySet()) {
         if (!additionalScripts.containsKey(add)) {
-          recursiveLoadScript(add, additionalScripts, additionalEngines);
+          recursiveLoadScript(add, additionalScripts, additionalEngines, viewName);
         }
       }
       Set<String> engineKeySet = eachScript.getEngines().keySet();
@@ -623,7 +628,7 @@ public class TextMarkerEngine extends JCasAnnotator_ImplBase {
         if (!additionalEngines.containsKey(eachEngineLocation)) {
           String engineLocation = locate(eachEngineLocation, descriptorPaths, ".xml");
           try {
-            AnalysisEngine eachEngine = engineLoader.loadEngine(engineLocation);
+            AnalysisEngine eachEngine = engineLoader.loadEngine(engineLocation, viewName);
             additionalEngines.put(eachEngineLocation, eachEngine);
           } catch (Exception e) {
             throw new AnalysisEngineProcessException(e);

@@ -19,33 +19,37 @@
 
 package org.apache.uima.textmarker.extensions;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
+import org.apache.uima.textmarker.engine.TextMarker;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
 
 public abstract class DefaultEngineLoader implements IEngineLoader {
 
-  public AnalysisEngine loadEngine(String location) throws InvalidXMLException,
-          ResourceInitializationException, IOException {
-    return loadEngineMyself(location);
+  public AnalysisEngine loadEngine(String location, String viewName) throws InvalidXMLException, ResourceInitializationException, ResourceConfigurationException, IOException, URISyntaxException  {
+    return loadEngineMyself(location, viewName);
   }
 
-  protected AnalysisEngine loadEngineMyself(String location) throws IOException,
-          InvalidXMLException, ResourceInitializationException {
-    XMLInputSource in = new XMLInputSource(location);
-    ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
-    AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
+  protected AnalysisEngine loadEngineMyself(String location, String viewName) throws IOException,
+          InvalidXMLException, ResourceInitializationException, ResourceConfigurationException, URISyntaxException {
+    URL url = new File(location).toURL();
+    AnalysisEngine ae = TextMarker.wrapAnalysisEngine(url, viewName);
     return ae;
   }
 
   protected AnalysisEngine loadEngineMyselfIS(String location) throws IOException,
           InvalidXMLException, ResourceInitializationException {
+    // TODO handle multi-view CASs
     InputStream locationIS = getClass().getClassLoader().getResourceAsStream(location);
     XMLInputSource in = new XMLInputSource(locationIS, null);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);

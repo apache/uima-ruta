@@ -21,16 +21,18 @@ package org.apache.uima.textmarker.engine;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.Charset;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.InvalidXMLException;
@@ -40,21 +42,11 @@ public class TextMarker {
 
   public static void apply(CAS cas, String script) throws IOException, InvalidXMLException,
           ResourceInitializationException, ResourceConfigurationException,
-          AnalysisEngineProcessException {
+          AnalysisEngineProcessException, URISyntaxException {
+    String viewName = cas.getViewName();
     URL aedesc = TextMarkerEngine.class.getResource("BasicEngine.xml");
-    XMLInputSource inae = new XMLInputSource(aedesc);
-    ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(inae);
-    ResourceManager resMgr = UIMAFramework.newDefaultResourceManager();
-    AnalysisEngineDescription aed = (AnalysisEngineDescription) specifier;
+    AnalysisEngine ae = wrapAnalysisEngine(aedesc, viewName);
     
-//    TypeSystemDescription basicTypeSystem = aed.getAnalysisEngineMetaData().getTypeSystem();
-//    Collection<TypeSystemDescription> tsds = new ArrayList<TypeSystemDescription>();
-//    tsds.add(basicTypeSystem);
-//    TypeSystemDescription mergeTypeSystems = CasCreationUtils.mergeTypeSystems(tsds);
-//    aed.getAnalysisEngineMetaData().setTypeSystem(mergeTypeSystems);
-//    aed.resolveImports(resMgr);
-
-    AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed, resMgr, null);
     File scriptFile = File.createTempFile("TextMarker", ".tm");
     scriptFile.deleteOnExit();
     if (!script.startsWith("PACKAGE")) {
@@ -69,6 +61,41 @@ public class TextMarker {
     ae.process(cas);
     scriptFile.delete();
     ae.destroy();
+  }
+
+  public static AnalysisEngine wrapAnalysisEngine(URL descriptorUrl, String viewName)
+          throws ResourceInitializationException, ResourceConfigurationException,
+          InvalidXMLException, IOException, URISyntaxException {
+    return wrapAnalysisEngine(descriptorUrl, viewName, false, Charset.defaultCharset().name());
+  }
+
+  public static AnalysisEngine wrapAnalysisEngine(URL descriptorUrl, String viewName, boolean textmarkerEngine, 
+          String encoding) throws ResourceInitializationException, ResourceConfigurationException,
+          InvalidXMLException, IOException, URISyntaxException {
+    if (viewName.equals(CAS.NAME_DEFAULT_SOFA)) {
+      XMLInputSource in = new XMLInputSource(descriptorUrl);
+      ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
+      AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
+      return ae;
+    } else {
+      InputStream inputStream = null;
+      if(textmarkerEngine) {
+        inputStream = TextMarker.class.getResourceAsStream("AAEDBasicEngine.xml");
+      } else {
+        inputStream = TextMarker.class.getResourceAsStream("AAED.xml");
+      }
+      String aaedString = IOUtils.toString(inputStream, encoding);
+      String absolutePath = descriptorUrl.toExternalForm();
+      aaedString = aaedString.replaceAll("\\$\\{sofaName\\}", viewName);
+      aaedString = aaedString.replaceAll("\\$\\{descriptorLocation\\}", absolutePath);
+      File tempFile = File.createTempFile("TextMarkerAAED", ".xml");
+      FileUtils.saveString2File(aaedString, tempFile);
+      XMLInputSource in = new XMLInputSource(tempFile);
+      ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
+      AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
+      tempFile.delete();
+      return ae;
+    }
   }
 
 }

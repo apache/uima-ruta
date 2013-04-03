@@ -19,11 +19,11 @@
 
 package org.apache.uima.textmarker.explain.apply;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
@@ -38,7 +38,6 @@ import org.apache.uima.textmarker.explain.ExplainUtils;
 import org.apache.uima.textmarker.explain.tree.ExplainTree;
 import org.apache.uima.textmarker.explain.tree.RuleApplyNode;
 import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
-import org.apache.uima.textmarker.visitor.CreatedByVisitor;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -61,6 +60,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
@@ -69,7 +69,7 @@ import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 
 public class ApplyViewPage extends Page implements ISelectionListener, ICasEditorInputListener,
-        IDoubleClickListener {
+        IDoubleClickListener, ICasDocumentListener {
 
   protected TreeViewer viewer;
 
@@ -80,8 +80,6 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
   protected AnnotationEditor editor;
 
   protected ICasDocument document;
-
-  private ICasDocumentListener listener;
 
   public ApplyViewPage(AnnotationEditor editor) {
     super();
@@ -143,6 +141,8 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
     viewer.setContentProvider(new ApplyTreeContentProvider());
     viewer.setLabelProvider(new ApplyTreeLabelProvider(this));
 
+    document.addChangeListener(this);
+    
     ExplainTree tree = new ExplainTree(document.getCAS());
     viewer.setInput(tree.getRoot());
     viewer.addDoubleClickListener(this);
@@ -229,5 +229,46 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
     // viewer.setInput(tree.getRoot());
     // viewer.refresh();
 
+  }
+
+  public void added(FeatureStructure newFeatureStructure) {
+    
+  }
+
+  public void added(Collection<FeatureStructure> newFeatureStructure) {
+    
+  }
+
+  public void removed(FeatureStructure deletedFeatureStructure) {
+    
+  }
+
+  public void removed(Collection<FeatureStructure> deletedFeatureStructure) {
+    
+  }
+
+  public void updated(FeatureStructure featureStructure) {
+    
+  }
+
+  public void updated(Collection<FeatureStructure> featureStructure) {
+    
+  }
+
+  public void changed() {
+    Display.getDefault().syncExec(new Runnable() {
+      public void run() {
+        reloadTree();
+      }
+
+    });
+  }
+
+  private void reloadTree() {
+    ExplainTree tree = new ExplainTree(document.getCAS());
+    viewer.setInput(tree.getRoot());
+  }
+  public void viewChanged(String oldViewName, String newViewName) {
+    changed();
   }
 }

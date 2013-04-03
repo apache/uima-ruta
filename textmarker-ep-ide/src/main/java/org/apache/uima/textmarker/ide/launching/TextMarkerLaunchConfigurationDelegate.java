@@ -21,20 +21,17 @@ package org.apache.uima.textmarker.ide.launching;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.textmarker.ide.TextMarkerIdePlugin;
 import org.apache.uima.textmarker.ide.core.TextMarkerCorePreferences;
 import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
-import org.eclipse.core.resources.IBuildConfiguration;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectNature;
@@ -48,15 +45,11 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate;
-import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.JavaLaunchDelegate;
@@ -223,7 +216,16 @@ public class TextMarkerLaunchConfigurationDelegate extends JavaLaunchDelegate {
     }
     boolean recursive = configuration.getAttribute(TextMarkerLaunchConstants.RECURSIVE, false);
     clearOutputFolder(new File(ouputFolder.getLocation().toPortableString()), recursive);
+    
+//    String[] args = getProgramArguments(configuration).split(" ");
+//    try {
+//      TextMarkerLauncher.main(args);
+//    } catch (Exception e1) {
+//      e1.printStackTrace();
+//    }
+    
     super.launch(configuration, mode, launch, monitor);
+    
     while (!launch.isTerminated()) {
       try {
         Thread.sleep(100);

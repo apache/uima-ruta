@@ -21,10 +21,12 @@ package org.apache.uima.textmarker.extensions;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.InvalidXMLException;
 
@@ -38,26 +40,28 @@ public class TextMarkerEngineLoader extends DefaultEngineLoader {
   }
 
   @Override
-  public AnalysisEngine loadEngine(String location) throws InvalidXMLException,
-          ResourceInitializationException, IOException {
+  public AnalysisEngine loadEngine(String location, String viewName) throws InvalidXMLException,
+          ResourceInitializationException, ResourceConfigurationException, IOException,
+          URISyntaxException {
     String name = getEngineName(location);
     AnalysisEngine result = null;
     IEngineLoader engineLoader = loaders.get(name);
     if (engineLoader != null) {
-      result = engineLoader.loadEngine(location);
+      result = engineLoader.loadEngine(location, viewName);
     } else {
-      result = loadEngineMyself(location);
+      result = loadEngineMyself(location, viewName);
     }
     return result;
   }
 
-  public AnalysisEngine loadEngineIS(String location) throws InvalidXMLException,
-          ResourceInitializationException, IOException {
+  public AnalysisEngine loadEngineIS(String location, String viewName) throws InvalidXMLException,
+          ResourceInitializationException, IOException, ResourceConfigurationException,
+          URISyntaxException {
     String name = getEngineNameIS(location);
     AnalysisEngine result = null;
     IEngineLoader engineLoader = loaders.get(name);
     if (engineLoader != null) {
-      result = engineLoader.loadEngine(location);
+      result = engineLoader.loadEngine(location, viewName);
     } else {
       result = loadEngineMyselfIS(location);
     }

@@ -149,7 +149,8 @@ licensed under the Common Public License.</postNoticeText>
                   antlr.*,
                   org.htmlparser,
                   org.htmlparser.*,
-                  org.apache.commons.lang3.*
+                  org.apache.commons.lang3.*,
+                  org.apache.commons.io.*
                 </_exportcontents>
                 <Require-Bundle>
                   org.apache.uima.runtime
