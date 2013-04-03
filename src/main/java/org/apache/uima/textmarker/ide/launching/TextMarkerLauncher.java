@@ -28,20 +28,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.analysis_engine.metadata.SofaMapping;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.impl.XmiCasDeserializer;
 import org.apache.uima.cas.impl.XmiCasSerializer;
 import org.apache.uima.resource.ResourceConfigurationException;
-import org.apache.uima.resource.ResourceSpecifier;
+import org.apache.uima.textmarker.engine.TextMarker;
 import org.apache.uima.textmarker.engine.TextMarkerEngine;
 import org.apache.uima.util.FileUtils;
-import org.apache.uima.util.XMLInputSource;
 import org.apache.uima.util.XMLSerializer;
 import org.apache.uima.util.impl.ProcessTrace_impl;
 import org.xml.sax.SAXException;
@@ -58,10 +53,10 @@ public class TextMarkerLauncher {
 
   private static String inputEncoding = java.nio.charset.Charset.defaultCharset().name();
 
-  private static String launchMode =  "run";
+  private static String launchMode = "run";
 
   private static String view = null;
-  
+
   private static boolean parseCmdLineArgs(String[] args) {
     int index = 0;
     int count = 0;
@@ -106,17 +101,16 @@ public class TextMarkerLauncher {
         view = args[index++];
       }
     }
-    return count ==2;
+    return count == 2;
   }
 
   public static void main(String[] args) throws Exception {
     if (!parseCmdLineArgs(args)) {
       throw new IllegalArgumentException("Passed arguments are invalid!");
     }
-    XMLInputSource in = new XMLInputSource(descriptor);
-    ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
-    
-    AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
+
+    AnalysisEngine ae = TextMarker
+            .wrapAnalysisEngine(descriptor.toURL(), view, true, inputEncoding);
     configure(ae);
     CAS cas = ae.newCAS();
 
@@ -132,22 +126,22 @@ public class TextMarkerLauncher {
 
   private static void processFile(File file, AnalysisEngine ae, CAS cas) throws IOException,
           AnalysisEngineProcessException, SAXException {
-    if(view != null) {
+    if (view != null) {
       boolean found = false;
       Iterator<CAS> viewIterator = cas.getViewIterator();
       while (viewIterator.hasNext()) {
         CAS each = (CAS) viewIterator.next();
         String viewName = each.getViewName();
-        if(viewName.equals(view)) {
+        if (viewName.equals(view)) {
           cas = cas.getView(view);
           found = true;
           break;
         }
       }
-      if(!found) {
-         cas = cas.createView(view);
+      if (!found) {
+        cas = cas.createView(view);
       }
-      
+
     }
     if (file.getName().endsWith(".xmi")) {
       XmiCasDeserializer.deserialize(new FileInputStream(file), cas, true);
@@ -207,7 +201,7 @@ public class TextMarkerLauncher {
   private static File getOutputFile(File inputFile, File inputFolder, File outputFolder) {
     URI relativize = inputFolder.toURI().relativize(inputFile.toURI());
     String path = relativize.getPath();
-    if(!path.endsWith(".xmi")) {
+    if (!path.endsWith(".xmi")) {
       path += ".xmi";
     }
     File result = new File(outputFolder, path);
