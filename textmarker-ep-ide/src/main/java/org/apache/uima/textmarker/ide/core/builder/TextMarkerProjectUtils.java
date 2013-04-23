@@ -21,7 +21,11 @@ package org.apache.uima.textmarker.ide.core.builder;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.TreeSet;
 
 import javax.swing.UIManager;
 
@@ -41,8 +45,10 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.internal.core.JavaProject;
 
 public class TextMarkerProjectUtils {
 
@@ -77,11 +83,19 @@ public class TextMarkerProjectUtils {
   }
 
   public static List<IFolder> getReferencedScriptFolders(IScriptProject proj) throws CoreException {
+    return getReferencedScriptFolders(proj, new HashSet<IProject>());
+  }
+  
+  public static List<IFolder> getReferencedScriptFolders(IScriptProject proj, Collection<IProject> visited) throws CoreException {
     List<IFolder> result = new ArrayList<IFolder>();
     IProject[] referencedProjects = proj.getProject().getReferencedProjects();
     for (IProject eachProject : referencedProjects) {
-      IScriptProject scriptProject = DLTKCore.create(eachProject);
-      result.addAll(TextMarkerProjectUtils.getScriptFolders(scriptProject));
+      if(!visited.contains(eachProject)) {
+        IScriptProject scriptProject = DLTKCore.create(eachProject);
+        result.addAll(TextMarkerProjectUtils.getScriptFolders(scriptProject));
+        visited.add(eachProject);
+        result.addAll(getReferencedScriptFolders(scriptProject, visited));
+      }
     }
     return result;
   }
@@ -117,10 +131,36 @@ public class TextMarkerProjectUtils {
   }
 
   public static List<IFolder> getReferencedDescriptorFolders(IProject proj) throws CoreException {
+    return getReferencedDescriptorFolders(proj, new HashSet<IProject>());
+  }
+  
+  public static List<IFolder> getReferencedDescriptorFolders(IProject proj, Collection<IProject> visited) throws CoreException {
     List<IFolder> result = new ArrayList<IFolder>();
-    IProject[] referencedProjects = proj.getReferencedProjects();
+    Collection<IProject> referencedProjects = getReferencedProjects(proj, new HashSet<IProject>());
     for (IProject eachProject : referencedProjects) {
-      result.addAll(TextMarkerProjectUtils.getDescriptorFolders(eachProject));
+      if(!visited.contains(eachProject)) {
+        result.addAll(TextMarkerProjectUtils.getDescriptorFolders(eachProject));
+        visited.add(eachProject);
+        result.addAll(getReferencedDescriptorFolders(eachProject, visited));
+      }
+    }
+    return result;
+  }
+
+  private static Collection<IProject> getReferencedProjects(IProject proj, Collection<IProject> visited) throws CoreException {
+    Collection<IProject> result = new HashSet<IProject>();
+    IProject[] referencedProjects = proj.getReferencedProjects();
+    result.addAll(Arrays.asList(referencedProjects));
+    IProjectNature nature = proj.getNature(JAVANATURE);
+    if(nature != null) {
+      JavaProject javaProject = (JavaProject) JavaCore.create(proj);
+      IClasspathEntry[] resolvedClasspath = javaProject.getResolvedClasspath();
+      for (IClasspathEntry eachCPE : resolvedClasspath) {
+        if(eachCPE.getEntryKind() == IClasspathEntry.CPE_PROJECT) {
+         IProject project = getProject(eachCPE.getPath());
+         result.add(project);
+        }
+      }
     }
     return result;
   }
@@ -213,6 +253,16 @@ public class TextMarkerProjectUtils {
     project.setPersistentProperty(new QualifiedName("", CDE_DATA_PATH), dataPath);
   }
 
+  public static IProject getProject(IPath path) {
+    IResource member = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
+    if (member instanceof IProject) {
+      IProject p = (IProject) member;
+      return p;
+    }
+    return null;
+  }
+  
+  
   public static String getDefaultInputLocation() {
     return "input";
   }
