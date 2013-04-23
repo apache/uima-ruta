@@ -129,6 +129,10 @@ public class TextMarkerSimpleBuilder {
     importList.add(import_impl);
     for (String eachName : desc.getImportedTypeSystems()) {
       String locate = TextMarkerEngine.locate(eachName, enginePaths, ".xml");
+      if(locate == null) {
+        throw new FileNotFoundException("Build process can't find " + eachName + " in "
+                + mainScript);
+      }
       File file = new File(locate);
       TypeSystemDescription each = getTypeSystemDescriptor(file, option);
       if (each != null) {

@@ -23,9 +23,12 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
+import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.CAS;
@@ -50,8 +53,10 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate;
-import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.internal.core.JavaProject;
 import org.eclipse.jdt.launching.JavaLaunchDelegate;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.osgi.framework.Bundle;
@@ -66,10 +71,10 @@ public class TextMarkerLaunchConfigurationDelegate extends JavaLaunchDelegate {
     IScriptProject proj = AbstractScriptLaunchConfigurationDelegate.getScriptProject(configuration);
 
     String mainScriptAttribute = configuration.getAttribute("mainScript", "");
-    
+
     String encoding = proj.getProject().getDefaultCharset();
     String view = configuration.getAttribute(TextMarkerLaunchConstants.VIEW, CAS.NAME_DEFAULT_SOFA);
-    if(StringUtils.isBlank(view)) {
+    if (StringUtils.isBlank(view)) {
       view = CAS.NAME_DEFAULT_SOFA;
     }
     boolean recursive = configuration.getAttribute(TextMarkerLaunchConstants.RECURSIVE, false);
@@ -82,15 +87,15 @@ public class TextMarkerLaunchConfigurationDelegate extends JavaLaunchDelegate {
             proj.getProject()).toPortableString();
     String input = configuration.getAttribute(TextMarkerLaunchConstants.INPUT_FOLDER,
             inputDirPath.toPortableString());
-    if(StringUtils.isBlank(input)) {
+    if (StringUtils.isBlank(input)) {
       input = inputDirPath.toPortableString();
     }
     String output = configuration.getAttribute(TextMarkerLaunchConstants.OUTPUT_FOLDER,
             outputDirPath.toPortableString());
-    if(StringUtils.isBlank(output)) {
+    if (StringUtils.isBlank(output)) {
       output = outputDirPath.toPortableString();
     }
-    
+
     cmdline.append(TextMarkerLaunchConstants.ARG_DESCRIPTOR + " ");
     cmdline.append(engine + " ");
 
@@ -115,9 +120,10 @@ public class TextMarkerLaunchConfigurationDelegate extends JavaLaunchDelegate {
     return cmdline.toString();
   }
 
-  private String makeAbsolute(String input, ILaunchConfiguration configuration) throws CoreException {
+  private String makeAbsolute(String input, ILaunchConfiguration configuration)
+          throws CoreException {
     IResource member = ResourcesPlugin.getWorkspace().getRoot().findMember(input);
-    if(member != null) {
+    if (member != null) {
       return member.getLocation().toPortableString();
     }
     return input;
@@ -131,22 +137,9 @@ public class TextMarkerLaunchConfigurationDelegate extends JavaLaunchDelegate {
   @Override
   public String[] getClasspath(ILaunchConfiguration configuration) throws CoreException {
     TextMarkerIdePlugin d = TextMarkerIdePlugin.getDefault();
-    // The class path already contains the jars which are specified in the Classpath tab
     List<String> extendedClasspath = new ArrayList<String>();
     Collections.addAll(extendedClasspath, super.getClasspath(configuration));
 
-    IScriptProject scriptProject = AbstractScriptLaunchConfigurationDelegate.getScriptProject(configuration);
-    IProject[] referencedProjects = scriptProject.getProject().getReferencedProjects();
-    for (IProject eachProject : referencedProjects) {
-      IProjectNature nature = eachProject.getNature(TextMarkerProjectUtils.JAVANATURE);
-      if(nature != null) {
-        IJavaProject javaProject = JavaCore.create(eachProject);
-        IPath readOutputLocation = javaProject.readOutputLocation();
-        IFolder folder = ResourcesPlugin.getWorkspace().getRoot().getFolder(readOutputLocation);
-        extendedClasspath.add(folder.getLocation().toPortableString());
-      }
-    }
-    
     // Normal mode, add the launcher plugin and uima runtime jar to the classpath
     if (!Platform.inDevelopmentMode()) {
       try {
@@ -197,8 +190,70 @@ public class TextMarkerLaunchConfigurationDelegate extends JavaLaunchDelegate {
       }
     }
 
+    Collection<String> dependencies = getDependencies(configuration);
+    extendedClasspath.addAll(dependencies);
+
     return extendedClasspath.toArray(new String[extendedClasspath.size()]);
   }
+
+  private Collection<String> getDependencies(ILaunchConfiguration configuration)
+          throws CoreException {
+    Collection<String> result = new TreeSet<String>();
+
+    IScriptProject scriptProject = AbstractScriptLaunchConfigurationDelegate
+            .getScriptProject(configuration);
+    IProject[] referencedProjects = scriptProject.getProject().getReferencedProjects();
+    for (IProject eachProject : referencedProjects) {
+      // for each java project
+      extendClasspathWithProject(result, eachProject, new HashSet<IProject>());
+    }
+    return result;
+  }
+
+  private void extendClasspathWithProject(Collection<String> result, IProject project,
+          Collection<IProject> visited) throws CoreException, JavaModelException {
+    IProjectNature nature = project.getNature(TextMarkerProjectUtils.JAVANATURE);
+    if (nature != null) {
+      JavaProject javaProject = (JavaProject) JavaCore.create(project);
+
+      // add output, e.g., target/classes
+      IPath readOutputLocation = javaProject.readOutputLocation();
+      IFolder folder = ResourcesPlugin.getWorkspace().getRoot().getFolder(readOutputLocation);
+      result.add(folder.getLocation().toPortableString());
+
+      IClasspathEntry[] rawClasspath = javaProject.getRawClasspath();
+      for (IClasspathEntry each : rawClasspath) {
+        int entryKind = each.getEntryKind();
+        IPath path = each.getPath();
+        if (entryKind == IClasspathEntry.CPE_PROJECT) {
+          IProject p = TextMarkerProjectUtils.getProject(path);
+          if (!visited.contains(p)) {
+            visited.add(p);
+            extendClasspathWithProject(result, p, visited);
+          }
+        } else if (entryKind != IClasspathEntry.CPE_SOURCE) {
+          String segment = path.segment(0);
+          if (!segment.equals("org.eclipse.jdt.launching.JRE_CONTAINER")) {
+            IClasspathEntry[] resolveClasspath = javaProject
+                    .resolveClasspath(new IClasspathEntry[] { each });
+            for (IClasspathEntry eachResolved : resolveClasspath) {
+              if (eachResolved.getEntryKind() == IClasspathEntry.CPE_PROJECT) {
+                IProject p = TextMarkerProjectUtils.getProject(eachResolved.getPath());
+                if (!visited.contains(p)) {
+                  visited.add(p);
+                  extendClasspathWithProject(result, p, visited);
+                }
+              } else {
+                result.add(eachResolved.getPath().toPortableString());
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+
 
   @Override
   public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch,
@@ -216,16 +271,16 @@ public class TextMarkerLaunchConfigurationDelegate extends JavaLaunchDelegate {
     }
     boolean recursive = configuration.getAttribute(TextMarkerLaunchConstants.RECURSIVE, false);
     clearOutputFolder(new File(ouputFolder.getLocation().toPortableString()), recursive);
-    
-//    String[] args = getProgramArguments(configuration).split(" ");
-//    try {
-//      TextMarkerLauncher.main(args);
-//    } catch (Exception e1) {
-//      e1.printStackTrace();
-//    }
-    
+
+    // String[] args = getProgramArguments(configuration).split(" ");
+    // try {
+    // TextMarkerLauncher.main(args);
+    // } catch (Exception e1) {
+    // e1.printStackTrace();
+    // }
+
     super.launch(configuration, mode, launch, monitor);
-    
+
     while (!launch.isTerminated()) {
       try {
         Thread.sleep(100);

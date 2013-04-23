@@ -321,6 +321,14 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
       if(structure == null) {
         return false;
       }
+      
+      // TODO HOTFIX
+      if(structure.equals("Document") || structure.equals("DocumentAnnotation") || structure.equals("uima.tcas.DocumentAnnotation")) {
+        if(feat.equals("language")) {
+          return true;
+        }
+      }
+      
       boolean featureFound = false;
       TypeDescription[] descriptions = description.getTypes();
       Map<String, TypeDescription> typeMap = new HashMap<String, TypeDescription>();
@@ -328,9 +336,11 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
         String typeName = typeDescription.getName();
         typeMap.put(typeName, typeDescription);
       }
+      
       for (TypeDescription typeDescription : descriptions) {
         String typeName = typeDescription.getName();
-        if (typeName.endsWith(structure) || (typeName.equals("uima.tcas.DocumentAnnotation") && structure.equals("Document"))) {
+        String shortName = getShortName(typeName);
+        if(typeName.equals(structure) || shortName.equals(structure)) {
           Collection<FeatureDescription> allFeatures = getAllDeclaredFeatures(typeDescription,
                   typeMap);
           for (FeatureDescription featureDescription : allFeatures) {
@@ -341,11 +351,17 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
             }
           }
         }
+        
         if (featureFound) {
           break;
         }
       }
       return featureFound;
+    }
+
+    private String getShortName(String typeName) {
+      String[] nameSpace = typeName.split("[.]");
+      return nameSpace[nameSpace.length - 1];
     }
 
     private Collection<FeatureDescription> getAllDeclaredFeatures(TypeDescription typeDescription,
