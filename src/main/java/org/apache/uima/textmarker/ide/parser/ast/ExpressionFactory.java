@@ -341,6 +341,12 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
     return createStringFunction(name, list);
   }
 
+
+  public static Expression createFeatureMatch(Token feature, Expression value) {
+    int bounds[] = getBounds(feature);
+    return new FeatureMatchExpression(bounds[0], value.sourceEnd(), feature, value);
+  }
+
   public static Expression createBooleanFunction(Token id, List<Expression> args) {
     return createFunction(id, args, TMTypeConstants.TM_TYPE_B);
   }
