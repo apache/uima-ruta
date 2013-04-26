@@ -32,6 +32,7 @@ import java.util.TreeSet;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.resource.ResourceManager;
+import org.apache.uima.resource.metadata.FeatureDescription;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.textmarker.ide.TextMarkerIdePlugin;
@@ -154,6 +155,7 @@ public class TextMarkerTypeChecker implements IBuildParticipant, IBuildParticipa
       } catch (Exception e) {
         TextMarkerIdePlugin.error(e);
       }
+      
       Preferences store = TextMarkerIdePlugin.getDefault().getPluginPreferences();
       reportWarningOnShortNames = !store
               .getBoolean(TextMarkerCorePreferences.BUILDER_IGNORE_DUPLICATE_SHORTNAMES);
@@ -208,7 +210,7 @@ public class TextMarkerTypeChecker implements IBuildParticipant, IBuildParticipa
           rep.reportProblem(problem);
           return false;
         }
-        if ((newVar.getType() & TMTypeConstants.TM_TYPE_AT) != 0) {
+        if ((newVar.getKind() & TMTypeConstants.TM_TYPE_AT) != 0) {
           typeVariables.add(newVar.getName());
           return false;
         }
@@ -407,13 +409,86 @@ public class TextMarkerTypeChecker implements IBuildParticipant, IBuildParticipa
         }
         if (typeVariables.contains(ref.getName()) || completeTypes.contains(ref.getName())
                 || shortTypes.contains(ref.getName()) || otherTypes.contains(ref.getName())
-                || isLongLocalATRef(ref.getName()) || isLongExternalATRef(ref.getName())) {
+                || isLongLocalATRef(ref.getName()) || isLongExternalATRef(ref.getName())
+                ) {
+          return false;
+        }
+        if(isFeatureMatch(ref)) {
           return false;
         }
         rep.reportProblem(problemFactory.createTypeProblem(ref, currentFile));
         return false;
       }
       return true;
+    }
+
+    private boolean isFeatureMatch(TextMarkerVariableReference ref) {
+      String name = ref.getName();
+      for (String each : shortTypes) {
+        if(checkFeatureMatch(name, each)) return true;
+      }
+      for (String each : completeTypes) {
+        if(checkFeatureMatch(name, each)) return true;
+      }
+      return false;
+    }
+
+    private boolean checkFeatureMatch(String name, String type) {
+      if(name.startsWith(type)) {
+        boolean foundAll = true;
+        String tail = name.substring(type.length() + 1);
+        String[] split = tail.split("[.]");
+        String typeToCheck = type;
+        for (String feat : split) {
+          typeToCheck = checkFSFeatureOfType(feat, typeToCheck);
+          foundAll &= (typeToCheck != null);
+          if(!foundAll)  {
+            return false;
+          }
+        }
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    private String checkFSFeatureOfType(String feat, String type) {
+      if(type.indexOf(".") == -1) {
+        for (String each : completeTypes) {
+          String[] split = each.split("[.]");
+          if(split[split.length-1].equals(type)) {
+            type = each;
+            break;
+          }
+        }
+      }
+      TypeDescription t = description.getType(type);
+      if(t == null) return null;
+      FeatureDescription[] features = t.getFeatures();
+      for (FeatureDescription featureDescription : features) {
+        String name = featureDescription.getName();
+        String rangeTypeName = featureDescription.getRangeTypeName();
+        boolean isFS = isFeatureStructure(rangeTypeName);
+        if(name.equals(feat) && isFS) {
+          return rangeTypeName;
+        }
+      }
+      return null;
+    }
+
+    private boolean isFeatureStructure(String rangeTypeName) {
+      if(rangeTypeName.equals("uima.tcas.Annotation") || rangeTypeName.equals("uima.cas.TOP")) {
+        return true;
+      }
+      TypeDescription type = description.getType(rangeTypeName);
+      if(type == null) {
+        return false;
+      }
+      String supertypeName = type.getSupertypeName();
+      if(supertypeName != null) {
+        return isFeatureStructure(supertypeName);
+      }
+      return false;
     }
 
     private boolean isLongExternalATRef(String name) {

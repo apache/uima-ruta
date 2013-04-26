@@ -19,16 +19,15 @@
 
 package org.apache.uima.textmarker.ide.core.extensions;
 
-import java.util.List;
-
 import org.antlr.runtime.RecognitionException;
-import org.antlr.runtime.Token;
+import org.apache.uima.textmarker.ide.validator.TextMarkerCheckerProblemFactory;
 import org.eclipse.dltk.ast.expressions.Expression;
+import org.eclipse.dltk.compiler.problem.IProblemReporter;
 
 public interface ITextMarkerExtension {
 
   String[] getKnownExtensions();
   
-  void checkSyntax(Token name, List<Expression> arguments) throws RecognitionException;
+  boolean checkSyntax(Expression element, TextMarkerCheckerProblemFactory problemFactory, IProblemReporter rep) throws RecognitionException;
 
 }

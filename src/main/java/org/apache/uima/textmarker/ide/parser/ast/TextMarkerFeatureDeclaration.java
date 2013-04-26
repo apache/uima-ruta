@@ -28,7 +28,7 @@ public class TextMarkerFeatureDeclaration extends TextMarkerAbstractDeclaration 
   public TextMarkerFeatureDeclaration(String name, String type, int nameStart, int nameEnd,
           int declStart, int declEnd, SimpleReference ref) {
     super(name, nameStart, nameEnd, declStart, declEnd, ref);
-    this.setType(type);
+    this.type = type;
   }
 
   public void setType(String type) {

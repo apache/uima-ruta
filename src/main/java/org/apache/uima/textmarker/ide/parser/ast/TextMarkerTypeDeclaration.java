@@ -50,6 +50,11 @@ public class TextMarkerTypeDeclaration extends TextMarkerAbstractDeclaration {
     }
   }
 
+  @Override
+  public int getKind() {
+    return TMTypeConstants.TM_TYPE_AT;
+  }
+  
   public void setFeatures(List<TextMarkerFeatureDeclaration> features) {
     this.features = features;
   }
