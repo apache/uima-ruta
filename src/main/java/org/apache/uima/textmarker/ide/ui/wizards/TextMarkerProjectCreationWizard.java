@@ -137,7 +137,7 @@ public class TextMarkerProjectCreationWizard extends ProjectWizard {
 
   }
 
-  private void copyDescriptors(IFolder descFolder) {
+  public static void copyDescriptors(IFolder descFolder) {
     File descDir = descFolder.getLocation().toFile();
     File utilsDir = new File(descFolder.getLocation().toFile(), "utils/");
     copy(descDir, "BasicTypeSystem.xml");
@@ -156,7 +156,7 @@ public class TextMarkerProjectCreationWizard extends ProjectWizard {
     copy(utilsDir, "HtmlConverter.xml");
   }
 
-  private void copy(File dir, String fileName) {
+  private static void copy(File dir, String fileName) {
     InputStream in = null;
     OutputStream out = null;
     in = TextMarkerEngine.class.getResourceAsStream(fileName);
