@@ -190,7 +190,7 @@
             <nameValuePair>
                 <name>mainScript</name>
                 <value>
-                    <string>uima.textmarker.ExampleAction</string>
+                    <string>uima.textmarker.ExampleCondition</string>
                 </value>
             </nameValuePair>
             <nameValuePair>
@@ -246,10 +246,17 @@
             </nameValuePair>
         </configurationParameterSettings>
         <typeSystemDescription>
-            <name>uima.textmarker.ExampleActionTypeSystem</name>
+            <name>uima.textmarker.ExampleConditionTypeSystem</name>
             <imports>
                 <import location="../../BasicTypeSystem.xml"/>
             </imports>
+            <types>
+                <typeDescription>
+                    <name>uima.textmarker.ExampleCondition.BeforeMe</name>
+                    <description>Type defined in uima.textmarker.ExampleCondition</description>
+                    <supertypeName>uima.tcas.Annotation</supertypeName>
+                </typeDescription>
+            </types>
         </typeSystemDescription>
         <typePriorities>
             <priorityList>
@@ -263,6 +270,15 @@
             <capability>
                 <inputs/>
                 <outputs/>
+                <languagesSupported/>
+            </capability>
+            <capability>
+                <inputs>
+                    <type>uima.textmarker.ExampleCondition.BeforeMe</type>
+                </inputs>
+                <outputs>
+                    <type>uima.textmarker.ExampleCondition.BeforeMe</type>
+                </outputs>
                 <languagesSupported/>
             </capability>
         </capabilities>
