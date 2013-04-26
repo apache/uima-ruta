@@ -308,6 +308,11 @@ under the License.
             id="org.apache.uima.textmarker.utils.apply.script.noxmi"
             name="ApplyScriptNoXMICommand">
       </command>
+      <command
+            defaultHandler="org.apache.uima.textmarker.utils.update.UpdateProjectHandler"
+            id="org.apache.uima.textmarker.utils.update"
+            name="Update Project">
+      </command>
    </extension>   <extension
          point="org.eclipse.ui.menus">
       <menuContribution
@@ -428,6 +433,25 @@ under the License.
             </visibleWhen>
          </command>
       </menuContribution>
+      <menuContribution
+            locationURI="popup:org.apache.uima.textmarker.utils.popup.submenu">
+         <command
+               commandId="org.apache.uima.textmarker.utils.update"
+               disabledIcon="icons/tm_obj.png"
+               hoverIcon="icons/tm_obj.png"
+               icon="icons/tm_obj.png"
+               id="org.apache.uima.textmarker.utils.update.popup"
+               label="Update Project"
+               style="push"
+               tooltip="Update basic templates for descriptors">
+              <visibleWhen
+                    checkEnabled="true">
+                 <reference
+                       definitionId="org.apache.uima.textmarker.utils.update.definition">
+                 </reference>
+              </visibleWhen>
+         </command>
+      </menuContribution>
    </extension>   <extension
          point="org.eclipse.core.expressions.definitions">
       <definition
@@ -468,6 +492,19 @@ under the License.
                   value="tm">
             </test>
          </adapt>
+      </definition>
+      <definition
+            id="org.apache.uima.textmarker.utils.update.definition">
+         <with
+               variable="selection">
+            <iterate
+                  ifEmpty="true">
+               <or>
+                  <instanceof
+                        value="org.eclipse.dltk.core.IScriptProject ">
+                  </instanceof></or>
+            </iterate>
+         </with>
       </definition>
    </extension>   <extension
          point="org.eclipse.ui.bindings">
