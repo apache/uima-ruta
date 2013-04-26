@@ -24,7 +24,6 @@ import java.util.List;
 import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
-import org.eclipse.dltk.ast.expressions.ExpressionConstants;
 import org.eclipse.dltk.utils.CorePrinter;
 
 /**
@@ -38,11 +37,6 @@ public class TextMarkerStringExpression extends TextMarkerExpression {
   public TextMarkerStringExpression(int start, int end, List<Expression> exprList) {
     super(start, end, null, TMTypeConstants.TM_TYPE_S);
     this.exprs = new ASTListNode(start, end, exprList);
-  }
-
-  @Override
-  public int getKind() {
-    return ExpressionConstants.E_CONCAT;
   }
 
   @Override

@@ -26,5 +26,12 @@ under the License.
             engine="org.apache.uima.textmarker.example.extensions.ExampleActionExtension">
       </action>
    </extension>
+   <extension
+         point="org.apache.uima.textmarker.ide.conditionExtension">
+      <condition
+            class="org.apache.uima.textmarker.example.extensions.ExampleConditionIDEExtension"
+            engine="org.apache.uima.textmarker.example.extensions.ExampleConditionExtension">
+      </condition>
+   </extension>
 
 </plugin>
