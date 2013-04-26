@@ -76,7 +76,7 @@ public class TextMarkerExternalFactory {
     if (extension != null) {
       return extension.createAction(name, args);
     }
-    // Throw exception
+    // TODO throw exception
     return null;
   }
 

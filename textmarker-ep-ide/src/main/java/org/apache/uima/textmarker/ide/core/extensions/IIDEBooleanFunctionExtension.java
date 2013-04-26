@@ -19,15 +19,7 @@
 
 package org.apache.uima.textmarker.ide.core.extensions;
 
-import java.util.List;
-
-import org.antlr.runtime.RecognitionException;
-import org.antlr.runtime.Token;
-import org.apache.uima.textmarker.ide.parser.ast.TextMarkerExpression;
-import org.eclipse.dltk.ast.expressions.Expression;
 
 public interface IIDEBooleanFunctionExtension extends ITextMarkerExtension {
 
-  TextMarkerExpression createBooleanFunction(Token type, List<Expression> args)
-          throws RecognitionException;
 }

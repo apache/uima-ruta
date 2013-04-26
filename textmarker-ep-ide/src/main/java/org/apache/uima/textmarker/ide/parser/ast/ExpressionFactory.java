@@ -338,9 +338,46 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
 
   public static Expression createStringFunction(Token name, Expression var, List<Expression> list) {
     list.add(0, var);
-    return createStringExpression(list);
+    return createStringFunction(name, list);
   }
 
+  public static Expression createBooleanFunction(Token id, List<Expression> args) {
+    return createFunction(id, args, TMTypeConstants.TM_TYPE_B);
+  }
+  
+  public static Expression createNumberFunction(Token id, List<Expression> args) {
+    return createFunction(id, args, TMTypeConstants.TM_TYPE_N);
+  }
+  
+  public static Expression createStringFunction(Token id, List<Expression> args) {
+    return createFunction(id, args, TMTypeConstants.TM_TYPE_S);
+  }
+  
+  public static Expression createTypeFunction(Token id, List<Expression> args) {
+    return createFunction(id, args, TMTypeConstants.TM_TYPE_AT);
+  }
+  
+  public static TextMarkerFunction createFunction(Token type, List<Expression> exprsRaw, int kind) {
+    int bounds[] = getBounds(type);
+    int nameStart = bounds[0];
+    int nameEnd = bounds[1];
+    List<Expression> exprs = new ArrayList<Expression>();
+    if (exprsRaw != null) {
+      for (Object expressionObj : exprsRaw) {
+        Expression expr = (Expression) expressionObj;
+        if (expr != null) {
+          exprs.add(expr);
+        }
+      }
+      if (!exprs.isEmpty()) {
+        Expression lastExpr = (Expression) exprs.get(exprs.size() - 1);
+        bounds[1] = Math.max(bounds[1], lastExpr.sourceEnd());
+      }
+    }
+    return new TextMarkerFunction(bounds[0], bounds[1], exprs,
+            kind, type.getText(), nameStart,
+            nameEnd);
+  }
   
 
 }

@@ -851,7 +851,7 @@ externalTypeFunction returns [TypeExpression expr = null]
 	:
 	//{isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "TYPEFUNCTION")}? 
 	id = Identifier LPAREN
-	args = varArgumentList	RPAREN
+	args = varArgumentList?	RPAREN
 	{
 		expr = external.createExternalTypeFunction(id, args);
 	}
@@ -963,7 +963,7 @@ condition  returns [AbstractTextMarkerCondition result = null]
 externalCondition returns [AbstractTextMarkerCondition condition = null]
 	:		
 	
-	id = Identifier LPAREN args = varArgumentList	RPAREN
+	id = Identifier LPAREN args = varArgumentList?	RPAREN
 	{
 		condition = external.createExternalCondition(id, args);
 	}
@@ -1206,7 +1206,7 @@ action  returns [AbstractTextMarkerAction result = null]
 externalAction returns [AbstractTextMarkerAction action = null]
 	:		
 	
-	id = Identifier LPAREN args = varArgumentList	RPAREN
+	id = Identifier LPAREN args = varArgumentList?	RPAREN
 	{
 		action = external.createExternalAction(id, args);
 	}
@@ -1681,7 +1681,7 @@ List<TypeExpression> list = new ArrayList<TypeExpression>();
 
 varArgumentList returns [List args = new ArrayList()]
 	:
-	(LPAREN arg = argument {args.add(arg);}(COMMA arg = argument {args.add(arg);})* RPAREN)?
+	arg = argument {args.add(arg);}(COMMA arg = argument {args.add(arg);})*
 	;
 
 argument returns [TextMarkerExpression expr = null]
@@ -1776,7 +1776,7 @@ externalNumberFunction returns [NumberExpression expr = null]
 	:
 	//{isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "NUMBERFUNCTION")}? 
 	id = Identifier LPAREN
-	args = varArgumentList RPAREN
+	args = varArgumentList? RPAREN
 	{
 		expr = external.createExternalNumberFunction(id, args);
 	}
@@ -1860,7 +1860,7 @@ externalStringFunction returns [StringExpression expr = null]
 	:
 	//{isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "STRINGFUNCTION")}? 
 	id = Identifier LPAREN
-	args = varArgumentList	RPAREN
+	args = varArgumentList?	RPAREN
 	{
 		expr = external.createExternalStringFunction(id, args);
 	}
@@ -1910,7 +1910,7 @@ externalBooleanFunction returns [BooleanExpression expr = null]
 	:
 	//{isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "BOOLEANFUNCTION")}? 
 	id = Identifier LPAREN
-	args = varArgumentList RPAREN
+	args = varArgumentList? RPAREN
 	{
 		expr = external.createExternalBooleanFunction(id, args);
 	}

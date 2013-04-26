@@ -850,7 +850,7 @@ typeExpression returns [Expression expr = null]
 expr = ExpressionFactory.createEmptyTypeExpression(input.LT(1));
 }
 	:
-	tf = typeFunction {expr = tf;}
+	(typeFunction)=> tf = typeFunction {expr = tf;}
 	| st = simpleTypeExpression 
 	{expr = ExpressionFactory.createTypeExpression(st);
 	 }
@@ -865,9 +865,9 @@ typeFunction returns [Expression expr = null]
 // not checked
 externalTypeFunction returns [Expression expr = null]
 	:
-	{isVariableOfType(input.LT(1).getText(), "TYPEFUNCTION")}? id = Identifier 
+	id = Identifier 
 	LPAREN
-	args = varArgumentList	
+	args = varArgumentList?
 	RPAREN
 	{
 		expr = external.createExternalTypeFunction(id, args);
@@ -948,8 +948,7 @@ result = ConditionFactory.createEmptyCondition(input.LT(1));
 	| c = conditionEndsWith
 	| c = conditionPartOfNeq
 	| c = conditionSize
-	| (c = externalCondition)=> c = externalCondition
-	| c = variableCondition
+	| c = externalCondition
 	) {result = c;}
 	;
 	
@@ -967,12 +966,12 @@ variableCondition returns [TextMarkerCondition condition = null]
 	
 externalCondition returns [TextMarkerCondition condition = null]
 	:
-	{isVariableOfType(input.LT(1).getText(), "CONDITION")}? id = Identifier
+	id = Identifier
+	{condition = external.createExternalCondition(id, args);}
 	LPAREN
-	{condition = external.createExternalCondition(id, args);}
-	args = varArgumentList	
-	{condition = external.createExternalCondition(id, args);}
+	args = varArgumentList?
 	RPAREN
+	{condition = external.createExternalCondition(id, args);}
 	;
 conditionAnd returns [TextMarkerCondition cond = null]
     :   
@@ -1254,8 +1253,8 @@ result = ActionFactory.createEmptyAction(input.LT(1));
 	| a = actionAddRetainType
 	| a = actionRemoveFilterType
 	| a = actionRemoveRetainType
-	| (a = externalAction)=> a = externalAction
-	| a = variableAction
+	| a = externalAction
+	// | a = variableAction
 	) {result = a;}
 	;
 
@@ -1272,10 +1271,10 @@ variableAction returns [TextMarkerAction action = null]
 	
 externalAction returns [TextMarkerAction action = null]
 	:
-	{isVariableOfType(input.LT(1).getText(), "ACTION")}? id = Identifier
-	 LPAREN 
-	 args = varArgumentList 
-	 RPAREN	
+	 id = Identifier
+	 LPAREN
+	 args = varArgumentList? 
+	 RPAREN
 	{
 		action = external.createExternalAction(id, args);
 	}
@@ -1858,7 +1857,7 @@ actionClear returns [TextMarkerAction action = null]
 //OKdc
 varArgumentList returns [List<Expression> args = new ArrayList<Expression>()]
 	:
-	(LPAREN arg = argument {args.add(arg);} (COMMA arg = argument {args.add(arg);})* RPAREN)?
+	arg = argument {args.add(arg);} (COMMA arg = argument {args.add(arg);})*
 	;
 
 //changed but unknown statuslistExpression
@@ -2035,9 +2034,9 @@ numberFunction returns [Expression expr = null]
 // not checked
 externalNumberFunction returns [Expression expr = null]
 	:
-	{isVariableOfType(input.LT(1).getText(), "NUMBERFUNCTION")}? id = Identifier 
+	id = Identifier
 	LPAREN
-	args = varArgumentList
+	args = varArgumentList?
 	RPAREN
 	{
 		expr = external.createExternalNumberFunction(id, args);
@@ -2088,9 +2087,9 @@ stringFunction returns [Expression expr = null]
 // not checked
 externalStringFunction returns [Expression expr = null]
 	:
-	{isVariableOfType(input.LT(1).getText(), "STRINGFUNCTION")}? id = Identifier 
+	id = Identifier
 	LPAREN
-	args = varArgumentList
+	args = varArgumentList?
 	RPAREN
 	{
 		expr = external.createExternalStringFunction(id, args);
@@ -2151,9 +2150,9 @@ booleanFunction returns [Expression expr = null]
 // not checked
 externalBooleanFunction returns [Expression expr = null]
 	:
-	{isVariableOfType(input.LT(1).getText(), "BOOLEANFUNCTION")}? id = Identifier
+	id = Identifier
 	LPAREN
-	args = varArgumentList	
+	args = varArgumentList?
 	RPAREN
 	{
 		expr = external.createExternalBooleanFunction(id, args);
