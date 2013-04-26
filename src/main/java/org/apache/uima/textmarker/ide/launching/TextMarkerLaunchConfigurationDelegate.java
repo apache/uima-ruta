@@ -42,6 +42,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -193,7 +194,32 @@ public class TextMarkerLaunchConfigurationDelegate extends JavaLaunchDelegate {
     Collection<String> dependencies = getDependencies(configuration);
     extendedClasspath.addAll(dependencies);
 
+    Collection<String> extensions = getExtensions(configuration);
+    extendedClasspath.addAll(extensions);
+
     return extendedClasspath.toArray(new String[extendedClasspath.size()]);
+  }
+
+  private Collection<String> getExtensions(ILaunchConfiguration configuration) throws CoreException {
+    TextMarkerIdePlugin d = TextMarkerIdePlugin.getDefault();
+    Collection<String> result = new TreeSet<String>();
+    IExtension[] extensions = Platform.getExtensionRegistry()
+            .getExtensionPoint(TextMarkerIdePlugin.PLUGIN_ID, "actionExtension").getExtensions();
+    for (IExtension each : extensions) {
+      String namespaceIdentifier = each.getNamespaceIdentifier();
+      try {
+        if (!Platform.inDevelopmentMode()) {
+          result.add(d.pluginIdToJarPath(namespaceIdentifier));
+        } else {
+          result.add(d.pluginIdToJarPath(namespaceIdentifier)+ "target/classes");
+          result.add(d.pluginIdToJarPath(namespaceIdentifier)+ "bin");
+        }
+      } catch (IOException e) {
+        throw new CoreException(new Status(IStatus.ERROR, TextMarkerIdePlugin.PLUGIN_ID,
+                IStatus.OK, "Failed to extend classpath with " + namespaceIdentifier + "!", e));
+      }
+    }
+    return result;
   }
 
   private Collection<String> getDependencies(ILaunchConfiguration configuration)
@@ -252,8 +278,6 @@ public class TextMarkerLaunchConfigurationDelegate extends JavaLaunchDelegate {
       }
     }
   }
-
-
 
   @Override
   public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch,

@@ -23,13 +23,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.antlr.runtime.NoViableAltException;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.Token;
 import org.apache.uima.textmarker.ide.core.TextMarkerExtensionManager;
+import org.apache.uima.textmarker.ide.parser.ast.ActionFactory;
+import org.apache.uima.textmarker.ide.parser.ast.ConditionFactory;
+import org.apache.uima.textmarker.ide.parser.ast.ExpressionFactory;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerAction;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerCondition;
-import org.apache.uima.textmarker.ide.parser.ast.TextMarkerExpression;
 import org.eclipse.dltk.ast.expressions.Expression;
 
 public class TextMarkerExternalFactory {
@@ -105,71 +106,56 @@ public class TextMarkerExternalFactory {
 
   }
 
+
   public TextMarkerCondition createExternalCondition(Token id, List<Expression> args)
           throws RecognitionException {
     String name = id.getText();
-    IIDEConditionExtension extension = conditionExtensions.get(name);
-    if (extension != null) {
-      return extension.createCondition(id, args);
-    }
-    throw new NoViableAltException();
+    ITextMarkerExtension extension = conditionExtensions.get(name);
+    extension.checkSyntax(id, args);
+    return ConditionFactory.createCondition(id, args);
   }
 
   public TextMarkerAction createExternalAction(Token id, List<Expression> args)
           throws RecognitionException {
     String name = id.getText();
-    IIDEActionExtension extension = actionExtensions.get(name);
-    if (extension != null) {
-      return extension.createAction(id, args);
-    }
-    throw new NoViableAltException("Unknown action : " + name, id.getType(), id.getType(),
-            id.getInputStream());
+    ITextMarkerExtension extension = actionExtensions.get(name);
+    extension.checkSyntax(id, args);
+    return ActionFactory.createAction(id, args);
   }
 
-  public TextMarkerExpression createExternalNumberFunction(Token id, List<Expression> args)
+  public Expression createExternalNumberFunction(Token id, List<Expression> args)
           throws RecognitionException {
     String name = id.getText();
-    IIDENumberFunctionExtension extension = numberFunctionExtensions.get(name);
-    if (extension != null) {
-      return extension.createNumberFunction(id, args);
-    }
-    throw new NoViableAltException("Unknown number function : " + name, id.getType(), id.getType(),
-            id.getInputStream());
+    ITextMarkerExtension extension = numberFunctionExtensions.get(name);
+    extension.checkSyntax(id, args);
+    return ExpressionFactory.createNumberFunction(id, args);
   }
 
-  public TextMarkerExpression createExternalBooleanFunction(Token id, List<Expression> args)
+  public Expression createExternalBooleanFunction(Token id, List<Expression> args)
           throws RecognitionException {
     String name = id.getText();
-    IIDEBooleanFunctionExtension extension = booleanFunctionExtensions.get(name);
-    if (extension != null) {
-      return extension.createBooleanFunction(id, args);
-    }
-    throw new NoViableAltException("Unknown number function : " + name, id.getType(), id.getType(),
-            id.getInputStream());
+    ITextMarkerExtension extension = booleanFunctionExtensions.get(name);
+    extension.checkSyntax(id, args);
+    return ExpressionFactory.createBooleanFunction(id, args);
   }
 
-  public TextMarkerExpression createExternalStringFunction(Token id, List<Expression> args)
+  public Expression createExternalStringFunction(Token id, List<Expression> args)
           throws RecognitionException {
     String name = id.getText();
-    IIDEStringFunctionExtension extension = stringFunctionExtensions.get(name);
-    if (extension != null) {
-      return extension.createStringFunction(id, args);
-    }
-    throw new NoViableAltException("Unknown number function : " + name, id.getType(), id.getType(),
-            id.getInputStream());
+    ITextMarkerExtension extension = stringFunctionExtensions.get(name);
+    extension.checkSyntax(id, args);
+    return ExpressionFactory.createStringFunction(id, args);
   }
 
-  public TextMarkerExpression createExternalTypeFunction(Token id, List<Expression> args)
+  public Expression createExternalTypeFunction(Token id, List<Expression> args)
           throws RecognitionException {
     String name = id.getText();
-    IIDETypeFunctionExtension extension = typeFunctionExtensions.get(name);
-    if (extension != null) {
-      return extension.createTypeFunction(id, args);
-    }
-    throw new NoViableAltException("Unknown number function : " + name, id.getType(), id.getType(),
-            id.getInputStream());
+    ITextMarkerExtension extension = typeFunctionExtensions.get(name);
+    extension.checkSyntax(id, args);
+    return ExpressionFactory.createTypeFunction(id, args);
   }
 
+  
   public void addExtension(String id, ITextMarkerExtension extension) {
     if (extension instanceof IIDEActionExtension) {
       addActionExtension(id, (IIDEActionExtension) extension);
