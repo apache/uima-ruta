@@ -65,8 +65,8 @@ public class TextMarkerCondition extends Expression {
   @Override
   public void traverse(ASTVisitor visitor) throws Exception {
     if (visitor.visit(this)) {
-      for (Iterator iterator = exprs.iterator(); iterator.hasNext();) {
-        Expression expr = (Expression) iterator.next();
+      for (Iterator<Expression> iterator = exprs.iterator(); iterator.hasNext();) {
+        Expression expr = iterator.next();
         if (expr != null) {
           expr.traverse(visitor);
         }
@@ -76,7 +76,7 @@ public class TextMarkerCondition extends Expression {
   }
 
   @Override
-  public List getChilds() {
+  public List<Expression> getChilds() {
     return exprs;
   }
 

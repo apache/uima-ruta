@@ -154,17 +154,17 @@ public class TextMarkerCheckerProblemFactory {
       }
     }
     String message = "error: Feature \"" + feat + "\" is not defined.";
-    if(matchedType != null) {
-      message = "error: Feature \"" + feat + "\" is not defined for type \""+matchedType+"\".";
+    if (matchedType != null) {
+      message = "error: Feature \"" + feat + "\" is not defined for type \"" + matchedType + "\".";
     }
     return new TextMarkerCheckerDefaultProblem(this.fileName, message, var, getLine(var));
   }
 
-  public IProblem createWrongArgumentTypeProblem(Expression was,String expected) {
-    String message = "Wrong kind of argument: expected "+expected;
+  public IProblem createWrongArgumentTypeProblem(Expression was, String expected) {
+    String message = "Wrong kind of argument: expected " + expected;
     return new TextMarkerCheckerDefaultProblem(this.fileName, message, was, getLine(was));
   }
-  
+
   public IProblem createInheritenceFinalProblem(TextMarkerVariableReference parent) {
     String message = "Type \"" + parent.getName()
             + "\" is final and cannot be used as a parent type.";
@@ -179,6 +179,11 @@ public class TextMarkerCheckerProblemFactory {
   public IProblem createUnknownActionProblem(TextMarkerAction action) {
     String message = "error: Action \"" + action.getName() + "\" is not defined.";
     return new TextMarkerCheckerDefaultProblem(this.fileName, message, action, getLine(action));
+  }
+
+  public IProblem createWrongNumberOfArgumentsProblem(String name, Expression element, int expected) {
+    String message = "error: The element " + name + " expects " + expected + " arguments.";
+    return new TextMarkerCheckerDefaultProblem(this.fileName, message, element, getLine(element));
   }
 
 }
