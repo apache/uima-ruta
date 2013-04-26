@@ -36,14 +36,23 @@ import org.apache.uima.resource.metadata.FeatureDescription;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.textmarker.ide.core.ITextMarkerKeywords;
+import org.apache.uima.textmarker.ide.core.TextMarkerExtensionManager;
 import org.apache.uima.textmarker.ide.core.TextMarkerKeywordsManager;
 import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
+import org.apache.uima.textmarker.ide.core.extensions.IIDEActionExtension;
+import org.apache.uima.textmarker.ide.core.extensions.IIDEBooleanFunctionExtension;
+import org.apache.uima.textmarker.ide.core.extensions.IIDEConditionExtension;
+import org.apache.uima.textmarker.ide.core.extensions.IIDENumberFunctionExtension;
+import org.apache.uima.textmarker.ide.core.extensions.IIDEStringFunctionExtension;
+import org.apache.uima.textmarker.ide.core.extensions.IIDETypeFunctionExtension;
+import org.apache.uima.textmarker.ide.core.extensions.ITextMarkerExtension;
 import org.apache.uima.textmarker.ide.parser.ast.TMActionConstants;
 import org.apache.uima.textmarker.ide.parser.ast.TMTypeConstants;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerAction;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerBlock;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerCondition;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerExpression;
+import org.apache.uima.textmarker.ide.parser.ast.TextMarkerFunction;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerRuleElement;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerStringExpression;
 import org.apache.uima.textmarker.ide.parser.ast.TextMarkerStructureAction;
@@ -95,6 +104,18 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
 
     private String matchedType;
 
+    private Map<String, IIDEActionExtension> actionExtensions;
+
+    private Map<String, IIDEConditionExtension> conditionExtensions;
+
+    private Map<String, IIDEBooleanFunctionExtension> booleanFunctionExtensions;
+
+    private Map<String, IIDENumberFunctionExtension> numberFunctionExtensions;
+
+    private Map<String, IIDEStringFunctionExtension> stringFunctionExtensions;
+
+    private Map<String, IIDETypeFunctionExtension> typeFunctionExtensions;
+
     public VarRefVisitor(IProblemReporter rep, ISourceLineTracker linetracker, ISourceModule curFile) {
       this.linetracker = linetracker;
       this.rep = rep;
@@ -105,6 +126,61 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
       this.knownLocalTypeNames = new HashSet<String>();
       this.problemFactory = new TextMarkerCheckerProblemFactory(currentFile.getElementName(),
               linetracker);
+      conditionExtensions = new HashMap<String, IIDEConditionExtension>();
+      actionExtensions = new HashMap<String, IIDEActionExtension>();
+      numberFunctionExtensions = new HashMap<String, IIDENumberFunctionExtension>();
+      booleanFunctionExtensions = new HashMap<String, IIDEBooleanFunctionExtension>();
+      stringFunctionExtensions = new HashMap<String, IIDEStringFunctionExtension>();
+      typeFunctionExtensions = new HashMap<String, IIDETypeFunctionExtension>();
+      IIDEConditionExtension[] cextensions = TextMarkerExtensionManager.getDefault()
+              .getIDEConditionExtensions();
+      for (IIDEConditionExtension each : cextensions) {
+        String[] knownExtensions = each.getKnownExtensions();
+        for (String string : knownExtensions) {
+          conditionExtensions.put(string, each);
+        }
+      }
+      IIDEActionExtension[] aextensions = TextMarkerExtensionManager.getDefault()
+              .getIDEActionExtensions();
+      for (IIDEActionExtension each : aextensions) {
+        String[] knownExtensions = each.getKnownExtensions();
+        for (String string : knownExtensions) {
+          actionExtensions.put(string, each);
+        }
+      }
+      IIDENumberFunctionExtension[] nfextensions = TextMarkerExtensionManager.getDefault()
+              .getIDENumberFunctionExtensions();
+      for (IIDENumberFunctionExtension each : nfextensions) {
+        String[] knownExtensions = each.getKnownExtensions();
+        for (String string : knownExtensions) {
+          numberFunctionExtensions.put(string, each);
+        }
+      }
+      IIDEBooleanFunctionExtension[] bfextensions = TextMarkerExtensionManager.getDefault()
+              .getIDEBooleanFunctionExtensions();
+      for (IIDEBooleanFunctionExtension each : bfextensions) {
+        String[] knownExtensions = each.getKnownExtensions();
+        for (String string : knownExtensions) {
+          booleanFunctionExtensions.put(string, each);
+        }
+      }
+      IIDEStringFunctionExtension[] sfextensions = TextMarkerExtensionManager.getDefault()
+              .getIDEStringFunctionExtensions();
+      for (IIDEStringFunctionExtension each : sfextensions) {
+        String[] knownExtensions = each.getKnownExtensions();
+        for (String string : knownExtensions) {
+          stringFunctionExtensions.put(string, each);
+        }
+      }
+      IIDETypeFunctionExtension[] tfextensions = TextMarkerExtensionManager.getDefault()
+              .getIDETypeFunctionExtensions();
+      for (IIDETypeFunctionExtension each : tfextensions) {
+        String[] knownExtensions = each.getKnownExtensions();
+        for (String string : knownExtensions) {
+          typeFunctionExtensions.put(string, each);
+        }
+      }
+
       try {
         description = getTypeSystemOfScript();
       } catch (InvalidXMLException e) {
@@ -153,7 +229,7 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
           rep.reportProblem(problem);
           return false;
         }
-        knownLocalVariables.peek().put(newVar.getName(), newVar.getType());
+        knownLocalVariables.peek().put(newVar.getName(), newVar.getKind());
         return false;
       }
       return true;
@@ -179,6 +255,7 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
 
     @Override
     public boolean visit(Expression s) throws Exception {
+
       if (s instanceof TextMarkerRuleElement) {
         TextMarkerRuleElement re = (TextMarkerRuleElement) s;
         Expression head = re.getHead();
@@ -206,11 +283,18 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
         String actionName = currentFile.getSource().substring(tma.getNameStart(), tma.getNameEnd());
         String[] keywords = TextMarkerKeywordsManager.getKeywords(ITextMarkerKeywords.ACTION);
         List<String> asList = Arrays.asList(keywords);
-        if (!StringUtils.isEmpty(actionName) && !"-".equals(actionName) && !asList.contains(actionName)) {
+        if (!StringUtils.isEmpty(actionName) && !"-".equals(actionName)
+                && !asList.contains(actionName)) {
           IProblem problem = problemFactory.createUnknownActionProblem(tma);
           rep.reportProblem(problem);
         }
-        
+
+        ITextMarkerExtension extension = actionExtensions.get(actionName);
+        if (extension != null) {
+          // boolean checkSyntax =
+          extension.checkSyntax(tma, problemFactory, rep);
+        }
+
         if (tma.getName().equals("GETFEATURE") || tma.getName().equals("SETFEATURE")) {
           List<?> childs = tma.getChilds();
           TextMarkerStringExpression stringExpr = (TextMarkerStringExpression) childs.get(0);
@@ -222,13 +306,13 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
             rep.reportProblem(problem);
           }
         }
-        
+
         if (tma.getKind() == TMActionConstants.A_ASSIGN) {
           List<?> childs = tma.getChilds();
           try {
             TextMarkerVariableReference ref = (TextMarkerVariableReference) childs.get(0);
             TextMarkerExpression expr = (TextMarkerExpression) childs.get(1);
-            int type = expr.getType();
+            int type = expr.getKind();
             if (ref.getType() == TMTypeConstants.TM_TYPE_G) {
               ref.setType(type);
             }
@@ -279,6 +363,13 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
           rep.reportProblem(problem);
         }
 
+        ITextMarkerExtension extension = conditionExtensions.get(conditionName);
+        if (extension != null) {
+          // boolean checkSyntax =
+          extension.checkSyntax(cond, problemFactory, rep);
+        }
+        
+        
         if (conditionName.equals("FEATURE")) {
           if (matchedType != null) {
             List<?> args = cond.getChilds();
@@ -292,6 +383,31 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
             }
           }
         }
+      }
+      if(s instanceof TextMarkerFunction) {
+        TextMarkerFunction f = (TextMarkerFunction) s;
+        String name = f.getName();
+        if(s.getKind() == TMTypeConstants.TM_TYPE_AT) {
+          ITextMarkerExtension extension = typeFunctionExtensions.get(name);
+          if (extension != null) {
+            extension.checkSyntax(s, problemFactory, rep);
+          }
+        } else if(s.getKind() == TMTypeConstants.TM_TYPE_B) {
+          ITextMarkerExtension extension = booleanFunctionExtensions.get(name);
+          if (extension != null) {
+            extension.checkSyntax(s, problemFactory, rep);
+          }
+        } else if(s.getKind() == TMTypeConstants.TM_TYPE_N) {
+          ITextMarkerExtension extension = numberFunctionExtensions.get(name);
+          if (extension != null) {
+            extension.checkSyntax(s, problemFactory, rep);
+          }
+        } else if(s.getKind() == TMTypeConstants.TM_TYPE_S) {
+          ITextMarkerExtension extension = stringFunctionExtensions.get(name);
+          if (extension != null) {
+            extension.checkSyntax(s, problemFactory, rep);
+          }
+        } 
       }
       return true;
     }
@@ -318,17 +434,18 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
       if (description == null) {
         return true;
       }
-      if(structure == null) {
+      if (structure == null) {
         return false;
       }
-      
+
       // TODO HOTFIX
-      if(structure.equals("Document") || structure.equals("DocumentAnnotation") || structure.equals("uima.tcas.DocumentAnnotation")) {
-        if(feat.equals("language")) {
+      if (structure.equals("Document") || structure.equals("DocumentAnnotation")
+              || structure.equals("uima.tcas.DocumentAnnotation")) {
+        if (feat.equals("language")) {
           return true;
         }
       }
-      
+
       boolean featureFound = false;
       TypeDescription[] descriptions = description.getTypes();
       Map<String, TypeDescription> typeMap = new HashMap<String, TypeDescription>();
@@ -336,11 +453,11 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
         String typeName = typeDescription.getName();
         typeMap.put(typeName, typeDescription);
       }
-      
+
       for (TypeDescription typeDescription : descriptions) {
         String typeName = typeDescription.getName();
         String shortName = getShortName(typeName);
-        if(typeName.equals(structure) || shortName.equals(structure)) {
+        if (typeName.equals(structure) || shortName.equals(structure)) {
           Collection<FeatureDescription> allFeatures = getAllDeclaredFeatures(typeDescription,
                   typeMap);
           for (FeatureDescription featureDescription : allFeatures) {
@@ -351,7 +468,7 @@ public class TextMarkerVarRefChecker implements IBuildParticipant, IBuildPartici
             }
           }
         }
-        
+
         if (featureFound) {
           break;
         }

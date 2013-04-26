@@ -63,11 +63,9 @@ public class TextMarkerVariableDeclaration extends TextMarkerAbstractDeclaration
     return this.getName() + ":: TextMarkerIntVariable :: " + super.toString();
   }
 
-  /**
-   * @return see {@link TMTypeConstants}
-   */
-  public int getType() {
-    return this.type;
+  @Override
+  public int getKind() {
+    return type;
   }
 
   public boolean hasInitExpression() {

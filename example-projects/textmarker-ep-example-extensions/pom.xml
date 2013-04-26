@@ -109,7 +109,8 @@
                 <Require-Bundle>
                   org.apache.uima.runtime,
                   org.apache.uima.textmarker.engine,
-                  org.apache.uima.textmarker.ide
+                  org.apache.uima.textmarker.ide,
+                  org.eclipse.dltk.core;bundle-version="[3.0.0,5.0.0)"
                 </Require-Bundle>
                 <Import-Package>
                 </Import-Package>

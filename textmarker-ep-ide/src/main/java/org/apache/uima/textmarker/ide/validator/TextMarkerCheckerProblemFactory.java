@@ -160,6 +160,11 @@ public class TextMarkerCheckerProblemFactory {
     return new TextMarkerCheckerDefaultProblem(this.fileName, message, var, getLine(var));
   }
 
+  public IProblem createWrongArgumentTypeProblem(Expression was,String expected) {
+    String message = "Wrong kind of argument: expected "+expected;
+    return new TextMarkerCheckerDefaultProblem(this.fileName, message, was, getLine(was));
+  }
+  
   public IProblem createInheritenceFinalProblem(TextMarkerVariableReference parent) {
     String message = "Type \"" + parent.getName()
             + "\" is final and cannot be used as a parent type.";

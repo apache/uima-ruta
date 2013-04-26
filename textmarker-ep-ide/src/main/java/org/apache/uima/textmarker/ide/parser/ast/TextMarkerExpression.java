@@ -47,10 +47,6 @@ public class TextMarkerExpression extends Expression {
     }
   }
 
-  public int getType() {
-    return this.type;
-  }
-
   @Override
   public void traverse(ASTVisitor visitor) throws Exception {
     if (visitor.visit(this)) {
@@ -67,7 +63,7 @@ public class TextMarkerExpression extends Expression {
 
   @Override
   public int getKind() {
-    return expression.getKind();
+    return type;
   }
 
   public boolean isInParantheses() {

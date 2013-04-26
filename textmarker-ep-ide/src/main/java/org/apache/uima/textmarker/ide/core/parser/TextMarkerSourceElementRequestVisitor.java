@@ -211,7 +211,7 @@ public class TextMarkerSourceElementRequestVisitor extends SourceElementRequestV
     int modifier = Modifiers.AccDefault;
     if (fullDeclaration instanceof TextMarkerVariableDeclaration) {
       modifier = Modifiers.AccPrivate;
-      modifier |= ((TextMarkerVariableDeclaration) fullDeclaration).getType();
+      modifier |= ((TextMarkerVariableDeclaration) fullDeclaration).getKind();
     } else if (fullDeclaration instanceof TextMarkerBasicAnnotationType) {
       modifier = Modifiers.AccConstant;
       modifier |= TMTypeConstants.TM_TYPE_AT;
