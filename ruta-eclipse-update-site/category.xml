@@ -22,9 +22,9 @@
    <feature url="features/org.apache.uima.textmarker.feature_2.0.0.jar" id="org.apache.uima.textmarker.feature" version="2.0.0">
       <category name="uima-textmarker"/>
    </feature>
-   <category-def name="uima-textmarker" label="Apache UIMA TextMarker">
+   <category-def name="uima-textmarker" label="Apache UIMA Ruta">
       <description>
-         Apache UIMA TextMarker
+         Apache UIMA Ruta
       </description>
    </category-def>
 </site>

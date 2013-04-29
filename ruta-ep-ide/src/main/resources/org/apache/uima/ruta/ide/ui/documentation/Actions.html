@@ -2,7 +2,7 @@
     
     <p>
       The ADD action adds all the elements of the passed
-      TextMarkerExpressions to a given list. For example, this expressions
+      RutaExpressions to a given list. For example, this expressions
       could be a string, an integer variable or a list. For a
       complete overview on Textmarker expressions see
       <a class="xref" href="#ugr.tools.tm.language.expressions" title="2.5.&nbsp;Expressions">Section&nbsp;2.5, &#8220;Expressions&#8221;</a>.
@@ -12,7 +12,7 @@
       </h4></div></div></div>
       
       <p>
-        </p><pre class="programlisting">ADD(ListVariable,(TextMarkerExpression)+)</pre><p>
+        </p><pre class="programlisting">ADD(ListVariable,(RutaExpression)+)</pre><p>
       </p>
     </div>
     <div class="section" title="2.7.1.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1350">2.7.1.2.&nbsp;
@@ -347,7 +347,7 @@ Document{-&gt;CONFIGURE(HtmlAnnotator, "onlyContent" = false)};</pre><p>
       the matched text and the current filtering settings. If the argument
       refers to another script file, a new view on the document is created:
       the complete text of the original CAS with the default filtering
-      settings of the TextMarker analysis engine.
+      settings of the Ruta analysis engine.
     </p>
     <div class="section" title="2.7.12.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1508">2.7.12.1.&nbsp;
         <span class="bold"><strong>Definition:</strong></span>
@@ -616,7 +616,7 @@ A B{-&gt; GATHER(C, 1, 2, "a" = 1, "b" = 2)};</pre><p>
   <div class="section" title="2.7.20.&nbsp;MARK"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.tm.language.actions.mark">2.7.20.&nbsp;MARK</h3></div></div></div>
     
     <p>
-      The MARK action is the most important action in the TextMarker
+      The MARK action is the most important action in the Ruta
       system. It creates a new annotation of the given type. The optionally
       passed indexes (NumberExpressions after the TypeExpression) can be
       used to create an annotation that spanns the matched information of

@@ -19,12 +19,12 @@
 -->
 <feature
       id="org.apache.uima.textmarker.feature"
-      label="UIMA TextMarker Workbench"
+      label="UIMA Ruta Workbench"
       version="${parsedVersion.osgiVersion}"
       provider-name="Apache Software Foundation">
 
    <description url="http://uima.apache.org">
-      This feature packages the Apache UIMA TextMarker Workbench
+      This feature packages the Apache UIMA Ruta Workbench
    </description>
 
    <copyright url="http://www.apache.org/licenses/LICENSE-2.0">

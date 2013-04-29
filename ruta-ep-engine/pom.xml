@@ -38,9 +38,9 @@ This product contains htmlparser libraries (http://htmlparser.sourceforge.net/),
 licensed under the Common Public License.</postNoticeText>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
   </properties>
-  <name>Apache UIMA TextMarker Eclipse: ${project.artifactId}</name>
+  <name>Apache UIMA Ruta Eclipse: ${project.artifactId}</name>
   <url>${uimaWebsiteUrl}</url>
-  <description>Provides the UIMA TextMarker engine to other Eclipse 
+  <description>Provides the UIMA Ruta engine to other Eclipse 
     plugins for their use</description>
   <dependencies>
     <!-- <dependency> <groupId>org.antlr</groupId> <artifactId>antlr-runtime</artifactId> <version>3.4</version> 

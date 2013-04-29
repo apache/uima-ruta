@@ -22,7 +22,7 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="TextMarkerEngine">
+    <delegateAnalysisEngine key="RutaEngine">
       <import location="${descriptorLocation}"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
@@ -35,7 +35,7 @@
     <configurationParameterSettings/>
     <flowConstraints>
       <fixedFlow>
-        <node>TextMarkerEngine</node>
+        <node>RutaEngine</node>
       </fixedFlow>
     </flowConstraints>
     <fsIndexCollection/>
@@ -58,7 +58,7 @@
   <resourceManagerConfiguration/>
   <sofaMappings>
     <sofaMapping>
-      <componentKey>TextMarkerEngine</componentKey>
+      <componentKey>RutaEngine</componentKey>
       <aggregateSofaName>${sofaName}</aggregateSofaName>
     </sofaMapping>
   </sofaMappings>

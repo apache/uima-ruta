@@ -25,9 +25,9 @@
 <vendor></vendor>
 
       <priorityList>
-        <type>org.apache.uima.textmarker.type.TextMarkerFrame</type>
+        <type>org.apache.uima.textmarker.type.RutaFrame</type>
         <type>uima.tcas.Annotation</type>
-        <type>org.apache.uima.textmarker.type.TextMarkerBasic</type>
+        <type>org.apache.uima.textmarker.type.RutaBasic</type>
       </priorityList>
     
     

@@ -28,7 +28,7 @@ under the License.
             class="org.apache.uima.textmarker.query.ui.QueryView"
             icon="icons/basket_edit.png"
             id="org.apache.uima.textmarker.query.ui.ScriptQueryView"
-            name="TextMarker Query"
+            name="Ruta Query"
             restorable="true">
       </view>
       <view
@@ -320,7 +320,7 @@ under the License.
          <menu
                icon="icons/tm_obj.png"
                id="org.apache.uima.textmarker.utils.popup.submenu"
-               label="TextMarker">
+               label="UIMA Ruta">
          </menu>
       </menuContribution>
       <menuContribution
@@ -331,16 +331,16 @@ under the License.
                hoverIcon="icons/tm_obj.png"
                icon="icons/tm_obj.png"
                id="org.apache.uima.textmarker.utils.apply.script.basics.popup"
-               label="Quick TextMarker"
+               label="Quick Ruta"
                style="push"
-               tooltip="Apply current TextMarker script on folder and keep basics">
+               tooltip="Apply current Ruta script on folder and keep basics">
             <visibleWhen
                   checkEnabled="true">
                <and>
                   <with
                         variable="activeEditorId">
                      <equals
-                           value="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor">
+                           value="org.apache.uima.textmarker.ide.ui.editor.RutaEditor">
                      </equals>
                   </with>
                </and>
@@ -355,16 +355,16 @@ under the License.
                hoverIcon="icons/tm_obj.png"
                icon="icons/tm_obj.png"
                id="org.apache.uima.textmarker.utils.apply.script.popup"
-               label="Quick TextMarker (remove basics)"
+               label="Quick Ruta (remove basics)"
                style="push"
-               tooltip="Apply current TextMarker script on folder">
+               tooltip="Apply current Ruta script on folder">
             <visibleWhen
                   checkEnabled="true">
                <and>
                   <with
                         variable="activeEditorId">
                      <equals
-                           value="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor">
+                           value="org.apache.uima.textmarker.ide.ui.editor.RutaEditor">
                      </equals>
                   </with>
                </and>
@@ -379,16 +379,16 @@ under the License.
                hoverIcon="icons/tm_obj.png"
                icon="icons/tm_obj.png"
                id="org.apache.uima.textmarker.utils.apply.script.noxmi.popup"
-               label="Quick TextMarker (no xmi)"
+               label="Quick Ruta (no xmi)"
                style="push"
-               tooltip="Apply current TextMarker script on folder">
+               tooltip="Apply current Ruta script on folder">
             <visibleWhen
                   checkEnabled="true">
                <and>
                   <with
                         variable="activeEditorId">
                      <equals
-                           value="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor">
+                           value="org.apache.uima.textmarker.ide.ui.editor.RutaEditor">
                      </equals>
                   </with>
                </and>
@@ -604,19 +604,19 @@ under the License.
          point="org.apache.uima.caseditor.ide.searchstrategy">
       <searchStrategy
             class="org.apache.uima.textmarker.searchStrategy.LastLaunchSearchStrategy"
-            description="Use the type system of the last launched TextMarker script in the same project"
+            description="Use the type system of the last launched Ruta script in the same project"
             id="org.apache.uima.textmarker.searchstrategy.lastlaunch"
             priority="10">
       </searchStrategy>
       <searchStrategy
             class="org.apache.uima.textmarker.searchStrategy.DescriptorFolderSearchStrategy"
-            description="Pick one type system from the TextMarker project descriptor folder"
+            description="Pick one type system from the Ruta project descriptor folder"
             id="org.apache.uima.textmarker.searchstrategy.descriptorfolder"
             priority="500">
       </searchStrategy>
       <searchStrategy
             class="org.apache.uima.textmarker.testing.searchStrategy.TestingSearchStrategy"
-            description="Use the type system of the tested TextMarker script when opening a evaluated CAS"
+            description="Use the type system of the tested Ruta script when opening a evaluated CAS"
             id="org.apache.uima.textmarker.searchstrategy.testing"
             priority="5">
       </searchStrategy>

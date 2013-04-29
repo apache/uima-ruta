@@ -21,7 +21,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>org.apache.uima.textmarker.engine.TextMarkerEngine</annotatorImplementationName>
+  <annotatorImplementationName>org.apache.uima.textmarker.engine.RutaEngine</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>BasicEngine</name>
     <description/>
@@ -214,9 +214,9 @@
     </typeSystemDescription>
     <typePriorities>
       <priorityList>
-        <type>org.apache.uima.textmarker.type.TextMarkerFrame</type>
+        <type>org.apache.uima.textmarker.type.RutaFrame</type>
         <type>uima.tcas.Annotation</type>
-        <type>org.apache.uima.textmarker.type.TextMarkerBasic</type>
+        <type>org.apache.uima.textmarker.type.RutaBasic</type>
       </priorityList>
     </typePriorities>
     <fsIndexCollection/>

@@ -30,9 +30,9 @@
   <properties>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
   </properties>
-  <name>Apache UIMA TextMarker Eclipse: ${project.artifactId}</name>
+  <name>Apache UIMA Ruta Eclipse: ${project.artifactId}</name>
   <url>${uimaWebsiteUrl}</url>
-  <description>UIMA TextMarker TextRuler plugin for rule learning</description>
+  <description>UIMA Ruta TextRuler plugin for rule learning</description>
   <dependencies>
     <dependency>
       <groupId>org.apache.uima</groupId>

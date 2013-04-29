@@ -33,8 +33,8 @@
     <postNoticeText>${uniWueNoticeText}</postNoticeText>
   </properties>
   <url>${uimaWebsiteUrl}</url>
-  <description>The core implementation of the TextMarker rule engine.</description>
-  <name>Apache UIMA TextMarker: ${project.artifactId}</name>
+  <description>The core implementation of the UIMA Ruta rule engine.</description>
+  <name>Apache UIMA Ruta: ${project.artifactId}</name>
   <dependencies>
     <dependency>
       <groupId>org.apache.uima</groupId>
@@ -106,7 +106,7 @@
               <configuration>
                 <excludes>
                   <exclude>src/main/java/org/apache/uima/ruta/type/*.java</exclude> <!-- jcasgen files -->
-                  <exclude>src/main/antlr3/org/apache/uima/ruta/parser/TextMarkerLexer.tokens</exclude> <!-- grammar tokens -->
+                  <exclude>src/main/antlr3/org/apache/uima/ruta/parser/RutaLexer.tokens</exclude> <!-- grammar tokens -->
                   <exclude>src/test/resources/org/apache/uima/ruta/action/*.tm</exclude> <!-- test data -->
                   <exclude>src/test/resources/org/apache/uima/ruta/*.txt</exclude> <!-- test data -->
                   <exclude>src/test/resources/org/apache/uima/ruta/*.tm</exclude> <!-- test data -->

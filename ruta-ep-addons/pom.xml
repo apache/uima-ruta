@@ -30,9 +30,9 @@
   <properties>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
   </properties>
-  <name>Apache UIMA TextMarker Eclipse: ${project.artifactId}</name>
+  <name>Apache UIMA Ruta Eclipse: ${project.artifactId}</name>
   <url>${uimaWebsiteUrl}</url>
-  <description>Provides addons for the UIMA TextMarker Workbench in Eclipse</description>
+  <description>Provides addons for the UIMA Ruta Workbench in Eclipse</description>
   <dependencies>
     <dependency>
       <groupId>org.apache.uima</groupId>
@@ -210,7 +210,7 @@
             <configuration>
               <instructions>
                 <Bundle-SymbolicName>org.apache.uima.ruta.addons;singleton:=true</Bundle-SymbolicName>
-                <Bundle-Activator>org.apache.uima.ruta.addons.TextMarkerAddonsPlugin</Bundle-Activator>
+                <Bundle-Activator>org.apache.uima.ruta.addons.RutaAddonsPlugin</Bundle-Activator>
                 <Bundle-RequiredExecutionEnvironment>J2SE-1.5</Bundle-RequiredExecutionEnvironment>
                 <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
                 <Export-Package>

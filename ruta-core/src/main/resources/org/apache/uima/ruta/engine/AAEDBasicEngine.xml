@@ -22,7 +22,7 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="TextMarkerEngine">
+    <delegateAnalysisEngine key="RutaEngine">
       <import location="${descriptorLocation}"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
@@ -38,7 +38,7 @@
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
         <overrides>
-          <parameter>TextMarkerEngine/debug</parameter>
+          <parameter>RutaEngine/debug</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -47,7 +47,7 @@
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
         <overrides>
-          <parameter>TextMarkerEngine/debugWithMatches</parameter>
+          <parameter>RutaEngine/debugWithMatches</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -56,7 +56,7 @@
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
         <overrides>
-          <parameter>TextMarkerEngine/profile</parameter>
+          <parameter>RutaEngine/profile</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -65,7 +65,7 @@
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
         <overrides>
-          <parameter>TextMarkerEngine/statistics</parameter>
+          <parameter>RutaEngine/statistics</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -74,14 +74,14 @@
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
         <overrides>
-          <parameter>TextMarkerEngine/createdBy</parameter>
+          <parameter>RutaEngine/createdBy</parameter>
         </overrides>
       </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings/>
     <flowConstraints>
       <fixedFlow>
-        <node>TextMarkerEngine</node>
+        <node>RutaEngine</node>
       </fixedFlow>
     </flowConstraints>
     <fsIndexCollection/>
@@ -104,7 +104,7 @@
   <resourceManagerConfiguration/>
   <sofaMappings>
     <sofaMapping>
-      <componentKey>TextMarkerEngine</componentKey>
+      <componentKey>RutaEngine</componentKey>
       <aggregateSofaName>${sofaName}</aggregateSofaName>
     </sofaMapping>
   </sofaMappings>

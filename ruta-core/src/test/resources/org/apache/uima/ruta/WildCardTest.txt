@@ -1,5 +1,5 @@
-The TextMarker language is an imperative rule language extended with scripting elements. 
-A TextMarker rule defines a pattern of annotations with additional conditions. If this 
+The Ruta language is an imperative rule language extended with scripting elements. 
+A Ruta rule defines a pattern of annotations with additional conditions. If this 
 pattern applies, then the actions of the rule are performed  on the matched annotations. 
 A rule is composed of a sequence of rule elements and a rule element essentially consists 
 of four parts: A matching condition, an optional quantifier, a list of conditions and a 

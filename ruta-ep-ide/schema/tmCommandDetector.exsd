@@ -68,7 +68,7 @@ under the License.
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":org.apache.uima.textmarker.ide.core.ITextMarkerCommandDetector"/>
+                  <meta.attribute kind="java" basedOn=":org.apache.uima.textmarker.ide.core.IRutaCommandDetector"/>
                </appInfo>
             </annotation>
          </attribute>

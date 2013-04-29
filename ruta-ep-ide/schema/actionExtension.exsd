@@ -83,7 +83,7 @@ under the License.
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.apache.uima.textmarker.extensions.ITextMarkerActionExtension"/>
+                  <meta.attribute kind="java" basedOn=":org.apache.uima.textmarker.extensions.IRutaActionExtension"/>
                </appinfo>
             </annotation>
          </attribute>

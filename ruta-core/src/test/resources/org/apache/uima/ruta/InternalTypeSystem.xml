@@ -25,7 +25,7 @@
   <vendor/>
   <types>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.TextMarkerBasic</name>
+      <name>org.apache.uima.textmarker.type.RutaBasic</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -37,7 +37,7 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.TextMarkerAnnotation</name>
+      <name>org.apache.uima.textmarker.type.RutaAnnotation</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -184,7 +184,7 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.TextMarkerColoring</name>
+      <name>org.apache.uima.textmarker.type.RutaColoring</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -278,7 +278,7 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.TextMarkerFrame</name>
+      <name>org.apache.uima.textmarker.type.RutaFrame</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
     </typeDescription>

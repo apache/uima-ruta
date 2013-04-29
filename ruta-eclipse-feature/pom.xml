@@ -30,9 +30,9 @@
   <artifactId>ruta-eclipse-feature</artifactId>
   <version>2.0.1-SNAPSHOT</version>
   
-  <name>Apache UIMA TextMarker Eclipse: ${project.artifactId}</name>
+  <name>Apache UIMA Ruta Eclipse: ${project.artifactId}</name>
   <description>UIMA Eclipse Plugin Feature that
-    contains the TextMArker engine and IDE</description>
+    contains the UIMA Ruta engine and IDE</description>
   <url>${uimaWebsiteUrl}</url>
 
   <!-- Special inheritance note

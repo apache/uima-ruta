@@ -20,8 +20,8 @@
   <artifactId>ruta</artifactId>
   <packaging>pom</packaging>
   <version>2.0.1-SNAPSHOT</version>
-  <name>Apache UIMA TextMarker: ${project.artifactId}</name>
-  <description>The top project for Apache UIMA TextMarker</description>
+  <name>Apache UIMA Ruta: ${project.artifactId}</name>
+  <description>The top project for Apache UIMA Ruta</description>
   <url>${uimaWebsiteUrl}</url>
   <properties>
     <jiraVersion>12324120</jiraVersion>
@@ -132,7 +132,7 @@
               <configuration>
                 <useJql>true</useJql>
                 <fixVersionIds>${jiraVersion}</fixVersionIds>
-                <component>TextMarker</component>
+                <component>Ruta</component>
                 <columnNames>Type,Key,Status,Summary</columnNames>
                 <resolution>Fixed</resolution>
                 <status>Closed,Resolved</status>
