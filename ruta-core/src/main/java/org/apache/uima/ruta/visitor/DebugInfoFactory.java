@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.visitor;
+package org.apache.uima.ruta.visitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,59 +28,59 @@ import java.util.Set;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
-import org.apache.uima.textmarker.BlockApply;
-import org.apache.uima.textmarker.ScriptApply;
-import org.apache.uima.textmarker.TextMarkerBlock;
-import org.apache.uima.textmarker.TextMarkerElement;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.rule.AbstractRule;
-import org.apache.uima.textmarker.rule.AbstractRuleMatch;
-import org.apache.uima.textmarker.rule.ComposedRuleElement;
-import org.apache.uima.textmarker.rule.ComposedRuleElementMatch;
-import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.RegExpRule;
-import org.apache.uima.textmarker.rule.RegExpRuleMatch;
-import org.apache.uima.textmarker.rule.RuleApply;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleElementMatch;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.rule.TextMarkerRule;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
-import org.apache.uima.textmarker.type.DebugBlockApply;
-import org.apache.uima.textmarker.type.DebugEvaluatedCondition;
-import org.apache.uima.textmarker.type.DebugFailedRuleMatch;
-import org.apache.uima.textmarker.type.DebugMatchedRuleMatch;
-import org.apache.uima.textmarker.type.DebugRuleApply;
-import org.apache.uima.textmarker.type.DebugRuleElementMatch;
-import org.apache.uima.textmarker.type.DebugRuleElementMatches;
-import org.apache.uima.textmarker.type.DebugRuleMatch;
-import org.apache.uima.textmarker.type.DebugScriptApply;
-import org.apache.uima.textmarker.utils.UIMAUtils;
-import org.apache.uima.textmarker.verbalize.TextMarkerVerbalizer;
+import org.apache.uima.ruta.BlockApply;
+import org.apache.uima.ruta.ScriptApply;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaElement;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.AbstractRule;
+import org.apache.uima.ruta.rule.AbstractRuleMatch;
+import org.apache.uima.ruta.rule.ComposedRuleElement;
+import org.apache.uima.ruta.rule.ComposedRuleElementMatch;
+import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.RegExpRule;
+import org.apache.uima.ruta.rule.RegExpRuleMatch;
+import org.apache.uima.ruta.rule.RuleApply;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleElementMatch;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.rule.RutaRule;
+import org.apache.uima.ruta.rule.RutaRuleElement;
+import org.apache.uima.ruta.type.DebugBlockApply;
+import org.apache.uima.ruta.type.DebugEvaluatedCondition;
+import org.apache.uima.ruta.type.DebugFailedRuleMatch;
+import org.apache.uima.ruta.type.DebugMatchedRuleMatch;
+import org.apache.uima.ruta.type.DebugRuleApply;
+import org.apache.uima.ruta.type.DebugRuleElementMatch;
+import org.apache.uima.ruta.type.DebugRuleElementMatches;
+import org.apache.uima.ruta.type.DebugRuleMatch;
+import org.apache.uima.ruta.type.DebugScriptApply;
+import org.apache.uima.ruta.utils.UIMAUtils;
+import org.apache.uima.ruta.verbalize.RutaVerbalizer;
 
 public class DebugInfoFactory {
 
-  private TextMarkerVerbalizer verbalizer;
+  private RutaVerbalizer verbalizer;
 
-  public DebugInfoFactory(TextMarkerVerbalizer verbalizer) {
+  public DebugInfoFactory(RutaVerbalizer verbalizer) {
     super();
     this.verbalizer = verbalizer;
   }
 
-  public DebugBlockApply createDummyBlockApply(RuleMatch ruleMatch, TextMarkerStream stream,
-          boolean addToIndex, boolean withMatches, Map<TextMarkerElement, Long> timeInfo) {
+  public DebugBlockApply createDummyBlockApply(RuleMatch ruleMatch, RutaStream stream,
+          boolean addToIndex, boolean withMatches, Map<RutaElement, Long> timeInfo) {
     JCas cas = stream.getJCas();
     DebugBlockApply dba = new DebugBlockApply(cas);
     AnnotationFS matchedAnnotation = ruleMatch.getMatchedAnnotationsOf(
-            ((TextMarkerRule) ruleMatch.getRule()).getRoot(), stream).get(0);
+            ((RutaRule) ruleMatch.getRule()).getRoot(), stream).get(0);
     dba.setElement(matchedAnnotation.getCoveredText());
     dba.setBegin(matchedAnnotation.getBegin());
     dba.setEnd(matchedAnnotation.getEnd());
     return dba;
   }
 
-  public DebugBlockApply createDebugBlockApply(BlockApply blockApply, TextMarkerStream stream,
-          boolean addToIndex, boolean withMatches, Map<TextMarkerElement, Long> timeInfo) {
+  public DebugBlockApply createDebugBlockApply(BlockApply blockApply, RutaStream stream,
+          boolean addToIndex, boolean withMatches, Map<RutaElement, Long> timeInfo) {
     JCas cas = stream.getJCas();
     DebugBlockApply dba = new DebugBlockApply(cas);
     List<DebugScriptApply> innerApply = new ArrayList<DebugScriptApply>();
@@ -122,7 +122,7 @@ public class DebugInfoFactory {
         counter++;
       }
       dba.setInnerApply(UIMAUtils.toFSArray(cas, innerApply));
-      dba.setElement(verbalizer.verbalize((TextMarkerBlock) blockApply.getElement(), false));
+      dba.setElement(verbalizer.verbalize((RutaBlock) blockApply.getElement(), false));
       DebugRuleApply ruleApply = createDebugRuleApply(blockApply.getRuleApply(), stream,
               addToIndex, withMatches, timeInfo);
       dba.setApplied(ruleApply.getApplied());
@@ -143,7 +143,7 @@ public class DebugInfoFactory {
         innerApply.add(createDebugScriptApply(each, stream, addToIndex, withMatches, timeInfo));
       }
       dba.setInnerApply(UIMAUtils.toFSArray(cas, innerApply));
-      dba.setElement(verbalizer.verbalize((TextMarkerBlock) blockApply.getElement(), false));
+      dba.setElement(verbalizer.verbalize((RutaBlock) blockApply.getElement(), false));
       DebugRuleApply ruleApply = createDebugRuleApply(blockApply.getRuleApply(), stream,
               addToIndex, withMatches, timeInfo);
       dba.setApplied(ruleApply.getApplied());
@@ -161,8 +161,8 @@ public class DebugInfoFactory {
     }
   }
 
-  public DebugRuleApply createDebugRuleApply(RuleApply ruleApply, TextMarkerStream stream,
-          boolean addToIndex, boolean withMatches, Map<TextMarkerElement, Long> timeInfo) {
+  public DebugRuleApply createDebugRuleApply(RuleApply ruleApply, RutaStream stream,
+          boolean addToIndex, boolean withMatches, Map<RutaElement, Long> timeInfo) {
     JCas cas = stream.getJCas();
     DebugRuleApply dra = new DebugRuleApply(cas);
     List<DebugRuleMatch> ruleMatches = new ArrayList<DebugRuleMatch>();
@@ -197,8 +197,8 @@ public class DebugInfoFactory {
     return dra;
   }
 
-  public DebugRuleMatch createDebugRuleMatch(AbstractRuleMatch<? extends AbstractRule> match, TextMarkerStream stream,
-          boolean addToIndex, boolean withMatches, Map<TextMarkerElement, Long> timeInfo) {
+  public DebugRuleMatch createDebugRuleMatch(AbstractRuleMatch<? extends AbstractRule> match, RutaStream stream,
+          boolean addToIndex, boolean withMatches, Map<RutaElement, Long> timeInfo) {
     JCas cas = stream.getJCas();
     DebugRuleMatch drm = null;
     if (match.matchedCompletely()) {
@@ -270,7 +270,7 @@ public class DebugInfoFactory {
     return drm;
   }
 
-  private void setInnerMatches(TextMarkerStream stream, boolean addToIndex, JCas cas,
+  private void setInnerMatches(RutaStream stream, boolean addToIndex, JCas cas,
           DebugRuleMatch drm, ComposedRuleElementMatch rootMatch) {
     Set<Entry<RuleElement, List<RuleElementMatch>>> entrySet = rootMatch.getInnerMatches()
             .entrySet();
@@ -284,7 +284,7 @@ public class DebugInfoFactory {
     drm.setElements(UIMAUtils.toFSArray(cas, ruleElementMatches));
   }
 
-  private void setInnerMatches(TextMarkerStream stream, boolean addToIndex, JCas cas,
+  private void setInnerMatches(RutaStream stream, boolean addToIndex, JCas cas,
           DebugRuleElementMatch drm, ComposedRuleElementMatch rootMatch) {
     Set<Entry<RuleElement, List<RuleElementMatch>>> entrySet = rootMatch.getInnerMatches()
             .entrySet();
@@ -298,7 +298,7 @@ public class DebugInfoFactory {
   }
 
   public DebugRuleElementMatches createDebugRuleElementMatches(RuleElement re,
-          List<RuleElementMatch> rems, TextMarkerStream stream, boolean addToIndex) {
+          List<RuleElementMatch> rems, RutaStream stream, boolean addToIndex) {
     JCas cas = stream.getJCas();
     DebugRuleElementMatches drems = new DebugRuleElementMatches(cas);
     drems.setElement(verbalizer.verbalize(re));
@@ -323,7 +323,7 @@ public class DebugInfoFactory {
   }
 
   public DebugRuleElementMatch createDebugComposedRuleElementMatch(ComposedRuleElementMatch rem,
-          TextMarkerStream stream, boolean addToIndex) {
+          RutaStream stream, boolean addToIndex) {
     JCas cas = stream.getJCas();
     DebugRuleElementMatch drem = new DebugRuleElementMatch(cas);
 
@@ -347,7 +347,7 @@ public class DebugInfoFactory {
   }
 
   public DebugRuleElementMatch createDebugRuleElementMatch(RuleElementMatch rem,
-          TextMarkerStream stream, boolean addToIndex) {
+          RutaStream stream, boolean addToIndex) {
     JCas cas = stream.getJCas();
     DebugRuleElementMatch drem = new DebugRuleElementMatch(cas);
 
@@ -355,8 +355,8 @@ public class DebugInfoFactory {
     base.setValue(rem.isBaseConditionMatched());
     RuleElement ruleElement = rem.getRuleElement();
     String baseString = "";
-    if (ruleElement instanceof TextMarkerRuleElement) {
-      baseString = verbalizer.verbalizeMatcher((TextMarkerRuleElement) ruleElement);
+    if (ruleElement instanceof RutaRuleElement) {
+      baseString = verbalizer.verbalizeMatcher((RutaRuleElement) ruleElement);
     } else if (ruleElement instanceof ComposedRuleElement) {
       baseString = verbalizer.verbalizeComposed((ComposedRuleElement) ruleElement);
     }
@@ -374,7 +374,7 @@ public class DebugInfoFactory {
     return drem;
   }
 
-  private FSArray createEvaluatedConditions(RuleElementMatch rem, TextMarkerStream stream,
+  private FSArray createEvaluatedConditions(RuleElementMatch rem, RutaStream stream,
           boolean addToIndex) {
     JCas cas = stream.getJCas();
     List<DebugEvaluatedCondition> ecs = new ArrayList<DebugEvaluatedCondition>();
@@ -391,7 +391,7 @@ public class DebugInfoFactory {
     return result;
   }
 
-  private FSArray createEvaluatedConditions(EvaluatedCondition eval, TextMarkerStream stream,
+  private FSArray createEvaluatedConditions(EvaluatedCondition eval, RutaStream stream,
           boolean addToIndex) {
     JCas cas = stream.getJCas();
     List<DebugEvaluatedCondition> ecs = new ArrayList<DebugEvaluatedCondition>();
@@ -406,8 +406,8 @@ public class DebugInfoFactory {
     return result;
   }
 
-  public DebugScriptApply createDebugScriptApply(ScriptApply apply, TextMarkerStream stream,
-          boolean addToIndex, boolean withMatches, Map<TextMarkerElement, Long> timeInfo) {
+  public DebugScriptApply createDebugScriptApply(ScriptApply apply, RutaStream stream,
+          boolean addToIndex, boolean withMatches, Map<RutaElement, Long> timeInfo) {
     DebugScriptApply debug = null;
     if (apply instanceof BlockApply) {
       debug = createDebugBlockApply((BlockApply) apply, stream, addToIndex, withMatches, timeInfo);

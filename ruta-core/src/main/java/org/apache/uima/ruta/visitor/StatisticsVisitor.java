@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.visitor;
+package org.apache.uima.ruta.visitor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,18 +32,18 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.DoubleArray;
 import org.apache.uima.jcas.cas.IntegerArray;
 import org.apache.uima.jcas.cas.StringArray;
-import org.apache.uima.textmarker.ScriptApply;
-import org.apache.uima.textmarker.TextMarkerElement;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
-import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
-import org.apache.uima.textmarker.rule.AbstractRule;
-import org.apache.uima.textmarker.rule.AbstractRuleMatch;
-import org.apache.uima.textmarker.type.Statistics;
-import org.apache.uima.textmarker.utils.UIMAUtils;
-import org.apache.uima.textmarker.verbalize.TextMarkerVerbalizer;
+import org.apache.uima.ruta.ScriptApply;
+import org.apache.uima.ruta.RutaElement;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.action.AbstractRutaAction;
+import org.apache.uima.ruta.condition.AbstractRutaCondition;
+import org.apache.uima.ruta.rule.AbstractRule;
+import org.apache.uima.ruta.rule.AbstractRuleMatch;
+import org.apache.uima.ruta.type.Statistics;
+import org.apache.uima.ruta.utils.UIMAUtils;
+import org.apache.uima.ruta.verbalize.RutaVerbalizer;
 
-public class StatisticsVisitor implements TextMarkerInferenceVisitor {
+public class StatisticsVisitor implements RutaInferenceVisitor {
 
   private Map<String, Long> conditionTime;
 
@@ -57,9 +57,9 @@ public class StatisticsVisitor implements TextMarkerInferenceVisitor {
 
   private Map<String, Long> actionDelta;
 
-  private TextMarkerVerbalizer verbalizer;
+  private RutaVerbalizer verbalizer;
 
-  public StatisticsVisitor(TextMarkerVerbalizer verbalizer) {
+  public StatisticsVisitor(RutaVerbalizer verbalizer) {
     super();
     this.verbalizer = verbalizer;
     conditionTime = new HashMap<String, Long>();
@@ -70,9 +70,9 @@ public class StatisticsVisitor implements TextMarkerInferenceVisitor {
     actionDelta = new HashMap<String, Long>();
   }
 
-  public void beginVisit(TextMarkerElement element, ScriptApply result) {
-    if (element instanceof AbstractTextMarkerCondition) {
-      AbstractTextMarkerCondition c = (AbstractTextMarkerCondition) element;
+  public void beginVisit(RutaElement element, ScriptApply result) {
+    if (element instanceof AbstractRutaCondition) {
+      AbstractRutaCondition c = (AbstractRutaCondition) element;
       String name = verbalizer.verbalizeName(c);
       Integer amount = conditionAmount.get(name);
       if (amount == null)
@@ -80,8 +80,8 @@ public class StatisticsVisitor implements TextMarkerInferenceVisitor {
       amount++;
       conditionAmount.put(name, amount);
       conditionDelta.put(name, System.currentTimeMillis());
-    } else if (element instanceof AbstractTextMarkerAction) {
-      AbstractTextMarkerAction a = (AbstractTextMarkerAction) element;
+    } else if (element instanceof AbstractRutaAction) {
+      AbstractRutaAction a = (AbstractRutaAction) element;
       String name = verbalizer.verbalizeName(a);
       Integer amount = actionAmount.get(name);
       if (amount == null)
@@ -92,9 +92,9 @@ public class StatisticsVisitor implements TextMarkerInferenceVisitor {
     }
   }
 
-  public void endVisit(TextMarkerElement element, ScriptApply result) {
-    if (element instanceof AbstractTextMarkerCondition) {
-      AbstractTextMarkerCondition c = (AbstractTextMarkerCondition) element;
+  public void endVisit(RutaElement element, ScriptApply result) {
+    if (element instanceof AbstractRutaCondition) {
+      AbstractRutaCondition c = (AbstractRutaCondition) element;
       String name = verbalizer.verbalizeName(c);
       Long start = conditionDelta.get(name);
       long delta = System.currentTimeMillis() - start;
@@ -103,8 +103,8 @@ public class StatisticsVisitor implements TextMarkerInferenceVisitor {
         total = 0L;
       total += delta;
       conditionTime.put(name, total);
-    } else if (element instanceof AbstractTextMarkerAction) {
-      AbstractTextMarkerAction a = (AbstractTextMarkerAction) element;
+    } else if (element instanceof AbstractRutaAction) {
+      AbstractRutaAction a = (AbstractRutaAction) element;
       String name = verbalizer.verbalizeName(a);
       Long start = actionDelta.get(name);
       long delta = System.currentTimeMillis() - start;
@@ -116,7 +116,7 @@ public class StatisticsVisitor implements TextMarkerInferenceVisitor {
     }
   }
 
-  public void finished(TextMarkerStream stream, List<TextMarkerInferenceVisitor> visitors) {
+  public void finished(RutaStream stream, List<RutaInferenceVisitor> visitors) {
     List<String> names = new ArrayList<String>();
     List<Double> totals = new ArrayList<Double>();
     List<Integer> amounts = new ArrayList<Integer>();

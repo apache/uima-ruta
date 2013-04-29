@@ -17,44 +17,44 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.visitor;
+package org.apache.uima.ruta.visitor;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.ScriptApply;
-import org.apache.uima.textmarker.TextMarkerElement;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.rule.AbstractRule;
-import org.apache.uima.textmarker.rule.AbstractRuleMatch;
+import org.apache.uima.ruta.ScriptApply;
+import org.apache.uima.ruta.RutaElement;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.AbstractRule;
+import org.apache.uima.ruta.rule.AbstractRuleMatch;
 
 
-public class TimeProfilerVisitor implements TextMarkerInferenceVisitor {
+public class TimeProfilerVisitor implements RutaInferenceVisitor {
 
-  private Map<TextMarkerElement, Long> timeInfo;
+  private Map<RutaElement, Long> timeInfo;
 
   public TimeProfilerVisitor() {
     super();
-    timeInfo = new HashMap<TextMarkerElement, Long>();
+    timeInfo = new HashMap<RutaElement, Long>();
   }
 
-  public void beginVisit(TextMarkerElement element, ScriptApply result) {
+  public void beginVisit(RutaElement element, ScriptApply result) {
     getTimeInfo().put(element, System.currentTimeMillis());
   }
 
-  public void endVisit(TextMarkerElement element, ScriptApply result) {
+  public void endVisit(RutaElement element, ScriptApply result) {
     Long start = getTimeInfo().get(element);
     long value = System.currentTimeMillis() - start;
     getTimeInfo().put(element, value);
   }
 
-  public void finished(TextMarkerStream stream, List<TextMarkerInferenceVisitor> visitors) {
+  public void finished(RutaStream stream, List<RutaInferenceVisitor> visitors) {
     // others do the work
   }
 
-  public Map<TextMarkerElement, Long> getTimeInfo() {
+  public Map<RutaElement, Long> getTimeInfo() {
     return timeInfo;
   }
 

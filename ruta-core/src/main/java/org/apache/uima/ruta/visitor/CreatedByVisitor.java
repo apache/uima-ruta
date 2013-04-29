@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.visitor;
+package org.apache.uima.ruta.visitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,16 +27,16 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.ScriptApply;
-import org.apache.uima.textmarker.TextMarkerElement;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.rule.AbstractRule;
-import org.apache.uima.textmarker.rule.AbstractRuleMatch;
-import org.apache.uima.textmarker.verbalize.TextMarkerVerbalizer;
+import org.apache.uima.ruta.ScriptApply;
+import org.apache.uima.ruta.RutaElement;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.AbstractRule;
+import org.apache.uima.ruta.rule.AbstractRuleMatch;
+import org.apache.uima.ruta.verbalize.RutaVerbalizer;
 
-public class CreatedByVisitor implements TextMarkerInferenceVisitor {
+public class CreatedByVisitor implements RutaInferenceVisitor {
 
-  public static final String TYPE = "org.apache.uima.textmarker.type.DebugCreatedBy";
+  public static final String TYPE = "org.apache.uima.ruta.type.DebugCreatedBy";
 
   public static final String FEATURE_RULE = "rule";
 
@@ -48,20 +48,20 @@ public class CreatedByVisitor implements TextMarkerInferenceVisitor {
 
   private List<FeatureStructure> fsList = new ArrayList<FeatureStructure>();
 
-  private TextMarkerVerbalizer verbalizer;
+  private RutaVerbalizer verbalizer;
 
-  public CreatedByVisitor(TextMarkerVerbalizer verbalizer) {
+  public CreatedByVisitor(RutaVerbalizer verbalizer) {
     super();
     this.verbalizer = verbalizer;
   }
 
-  public void beginVisit(TextMarkerElement element, ScriptApply result) {
+  public void beginVisit(RutaElement element, ScriptApply result) {
   }
 
-  public void endVisit(TextMarkerElement element, ScriptApply result) {
+  public void endVisit(RutaElement element, ScriptApply result) {
   }
 
-  public void finished(TextMarkerStream stream, List<TextMarkerInferenceVisitor> visitors) {
+  public void finished(RutaStream stream, List<RutaInferenceVisitor> visitors) {
     for (FeatureStructure each : fsList) {
       each.getCAS().addFsToIndexes(each);
     }

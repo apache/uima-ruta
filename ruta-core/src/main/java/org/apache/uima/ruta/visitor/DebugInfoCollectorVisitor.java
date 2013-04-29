@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.visitor;
+package org.apache.uima.ruta.visitor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,22 +26,22 @@ import java.util.Map;
 import java.util.Stack;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.BlockApply;
-import org.apache.uima.textmarker.ScriptApply;
-import org.apache.uima.textmarker.TextMarkerBlock;
-import org.apache.uima.textmarker.TextMarkerElement;
-import org.apache.uima.textmarker.TextMarkerModule;
-import org.apache.uima.textmarker.TextMarkerStatement;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.rule.AbstractRule;
-import org.apache.uima.textmarker.rule.AbstractRuleMatch;
-import org.apache.uima.textmarker.rule.RuleApply;
-import org.apache.uima.textmarker.rule.TextMarkerRule;
-import org.apache.uima.textmarker.type.DebugScriptApply;
-import org.apache.uima.textmarker.verbalize.TextMarkerVerbalizer;
+import org.apache.uima.ruta.BlockApply;
+import org.apache.uima.ruta.ScriptApply;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaElement;
+import org.apache.uima.ruta.RutaModule;
+import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.AbstractRule;
+import org.apache.uima.ruta.rule.AbstractRuleMatch;
+import org.apache.uima.ruta.rule.RuleApply;
+import org.apache.uima.ruta.rule.RutaRule;
+import org.apache.uima.ruta.type.DebugScriptApply;
+import org.apache.uima.ruta.verbalize.RutaVerbalizer;
 
 
-public class DebugInfoCollectorVisitor implements TextMarkerInferenceVisitor {
+public class DebugInfoCollectorVisitor implements RutaInferenceVisitor {
 
   private boolean createDebugInfo;
 
@@ -53,20 +53,20 @@ public class DebugInfoCollectorVisitor implements TextMarkerInferenceVisitor {
 
   private ScriptApply rootApply;
 
-  private Map<TextMarkerStatement, Stack<ScriptApply>> applies;
+  private Map<RutaStatement, Stack<ScriptApply>> applies;
 
-  private Stack<TextMarkerElement> callStack;
+  private Stack<RutaElement> callStack;
 
   public DebugInfoCollectorVisitor(boolean createDebugInfo, boolean withMatches, List<String> ids,
-          TextMarkerVerbalizer verbalizer) {
+          RutaVerbalizer verbalizer) {
     super();
     this.createDebugInfo = createDebugInfo;
     this.withMatches = withMatches;
     this.ids = ids;
 
     debugFactory = new DebugInfoFactory(verbalizer);
-    applies = new HashMap<TextMarkerStatement, Stack<ScriptApply>>();
-    callStack = new Stack<TextMarkerElement>();
+    applies = new HashMap<RutaStatement, Stack<ScriptApply>>();
+    callStack = new Stack<RutaElement>();
   }
 
   public DebugInfoCollectorVisitor(boolean createDebugInfo) {
@@ -79,14 +79,14 @@ public class DebugInfoCollectorVisitor implements TextMarkerInferenceVisitor {
     return createDebugInfo;
   }
 
-  public boolean createDebugInfo(TextMarkerRule rule) {
+  public boolean createDebugInfo(RutaRule rule) {
     return createDebugInfo || ids.contains("" + rule.getId());
   }
 
-  public void beginVisit(TextMarkerElement element, ScriptApply result) {
-    if (element instanceof TextMarkerStatement) {
+  public void beginVisit(RutaElement element, ScriptApply result) {
+    if (element instanceof RutaStatement) {
       callStack.push(element);
-      TextMarkerStatement stmt = (TextMarkerStatement) element;
+      RutaStatement stmt = (RutaStatement) element;
       Stack<ScriptApply> stack = applies.get(stmt);
       if (stack == null) {
         stack = new Stack<ScriptApply>();
@@ -101,11 +101,11 @@ public class DebugInfoCollectorVisitor implements TextMarkerInferenceVisitor {
     }
   }
 
-  public void endVisit(TextMarkerElement element, ScriptApply result) {
+  public void endVisit(RutaElement element, ScriptApply result) {
     // TODO create UIMA stuff here not later -> save memory!
-    if (element instanceof TextMarkerStatement) {
-      TextMarkerStatement stmt = (TextMarkerStatement) element;
-      TextMarkerBlock parent = stmt.getParent();
+    if (element instanceof RutaStatement) {
+      RutaStatement stmt = (RutaStatement) element;
+      RutaBlock parent = stmt.getParent();
       Stack<ScriptApply> stack = applies.get(stmt);
       if (stack == null) {
         stack = new Stack<ScriptApply>();
@@ -123,7 +123,7 @@ public class DebugInfoCollectorVisitor implements TextMarkerInferenceVisitor {
           ScriptApply parentApply = parentStack.peek();
           if (parentApply instanceof BlockApply) {
             BlockApply blockApply = (BlockApply) parentApply;
-            if (element instanceof TextMarkerRule && parent.getRule().equals(element)
+            if (element instanceof RutaRule && parent.getRule().equals(element)
                     && result instanceof RuleApply) {
               blockApply.setRuleApply((RuleApply) result);
 
@@ -134,7 +134,7 @@ public class DebugInfoCollectorVisitor implements TextMarkerInferenceVisitor {
             } else if (stack.size() == 1) {
               if (callStack.size() > 1) {
                 // TODO hotfixed
-                TextMarkerElement tme = callStack.get(callStack.size() - 2);
+                RutaElement tme = callStack.get(callStack.size() - 2);
                 if (tme.equals(parent)
                 // || tme.equals(element)
                 ) {
@@ -148,7 +148,7 @@ public class DebugInfoCollectorVisitor implements TextMarkerInferenceVisitor {
               }
             } else {
               // TODO refactor !!! ... really!!!!
-              TextMarkerElement tme = callStack.get(callStack.size() - 2);
+              RutaElement tme = callStack.get(callStack.size() - 2);
               if (tme.equals(parent)
               // || tme.equals(element)
               ) {
@@ -163,14 +163,14 @@ public class DebugInfoCollectorVisitor implements TextMarkerInferenceVisitor {
       stack.pop();
       callStack.pop();
     }
-    if (element instanceof TextMarkerModule) {
+    if (element instanceof RutaModule) {
       rootApply = result;
     }
   }
 
-  public void finished(TextMarkerStream stream, List<TextMarkerInferenceVisitor> visitors) {
+  public void finished(RutaStream stream, List<RutaInferenceVisitor> visitors) {
     if (createDebugInfo) {
-      Map<TextMarkerElement, Long> timeInfo = getTimeInfo(visitors);
+      Map<RutaElement, Long> timeInfo = getTimeInfo(visitors);
 
       DebugScriptApply debugScriptApply = debugFactory.createDebugScriptApply(rootApply, stream,
               false, withMatches, timeInfo);
@@ -178,8 +178,8 @@ public class DebugInfoCollectorVisitor implements TextMarkerInferenceVisitor {
     }
   }
 
-  private Map<TextMarkerElement, Long> getTimeInfo(List<TextMarkerInferenceVisitor> visitors) {
-    for (TextMarkerInferenceVisitor each : visitors) {
+  private Map<RutaElement, Long> getTimeInfo(List<RutaInferenceVisitor> visitors) {
+    for (RutaInferenceVisitor each : visitors) {
       if (each instanceof TimeProfilerVisitor) {
         return ((TimeProfilerVisitor) each).getTimeInfo();
       }

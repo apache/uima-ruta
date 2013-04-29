@@ -17,51 +17,51 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.visitor;
+package org.apache.uima.ruta.visitor;
 
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.ScriptApply;
-import org.apache.uima.textmarker.TextMarkerElement;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.rule.AbstractRule;
-import org.apache.uima.textmarker.rule.AbstractRuleMatch;
+import org.apache.uima.ruta.ScriptApply;
+import org.apache.uima.ruta.RutaElement;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.AbstractRule;
+import org.apache.uima.ruta.rule.AbstractRuleMatch;
 
 
-public class InferenceCrowd implements TextMarkerInferenceVisitor {
+public class InferenceCrowd implements RutaInferenceVisitor {
 
-  private final List<TextMarkerInferenceVisitor> visitors;
+  private final List<RutaInferenceVisitor> visitors;
 
-  public InferenceCrowd(List<TextMarkerInferenceVisitor> visitors) {
+  public InferenceCrowd(List<RutaInferenceVisitor> visitors) {
     super();
     this.visitors = visitors;
   }
 
-  public void beginVisit(TextMarkerElement element, ScriptApply result) {
-    for (TextMarkerInferenceVisitor each : visitors) {
+  public void beginVisit(RutaElement element, ScriptApply result) {
+    for (RutaInferenceVisitor each : visitors) {
       each.beginVisit(element, result);
     }
   }
 
-  public void endVisit(TextMarkerElement element, ScriptApply result) {
-    for (TextMarkerInferenceVisitor each : visitors) {
+  public void endVisit(RutaElement element, ScriptApply result) {
+    for (RutaInferenceVisitor each : visitors) {
       each.endVisit(element, result);
     }
   }
 
-  public void finished(TextMarkerStream stream) {
-    for (TextMarkerInferenceVisitor each : visitors) {
+  public void finished(RutaStream stream) {
+    for (RutaInferenceVisitor each : visitors) {
       each.finished(stream, visitors);
     }
   }
 
-  public void finished(TextMarkerStream stream, List<TextMarkerInferenceVisitor> visitors) {
+  public void finished(RutaStream stream, List<RutaInferenceVisitor> visitors) {
     finished(stream);
   }
 
   public void annotationAdded(AnnotationFS annotation, AbstractRuleMatch<? extends AbstractRule> creator) {
-    for (TextMarkerInferenceVisitor each : visitors) {
+    for (RutaInferenceVisitor each : visitors) {
       each.annotationAdded(annotation, creator);
     }
     
