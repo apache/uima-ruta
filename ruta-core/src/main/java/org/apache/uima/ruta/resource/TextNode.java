@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.resource;
+package org.apache.uima.ruta.resource;
 
 import java.util.HashMap;
 import java.util.Map;

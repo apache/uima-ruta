@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.resource;
+package org.apache.uima.ruta.resource;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -39,15 +39,15 @@ import java.util.Set;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.type.RutaBasic;
 
 /**
  * Class MultiTreeWordList.
  * 
  * 
  */
-public class MultiTreeWordList implements TextMarkerWordList {
+public class MultiTreeWordList implements RutaWordList {
 
   private static final String ENCODING = "UTF-8";
 
@@ -574,7 +574,7 @@ public class MultiTreeWordList implements TextMarkerWordList {
     }
   }
 
-  public Collection<AnnotationFS> find(TextMarkerStream stream, Map<String, Type> typeMap,
+  public Collection<AnnotationFS> find(RutaStream stream, Map<String, Type> typeMap,
           boolean ignoreCase, int ignoreLength, boolean edit, double distance, String ignoreToken) {
 
     Collection<AnnotationFS> results = new HashSet<AnnotationFS>();
@@ -582,10 +582,10 @@ public class MultiTreeWordList implements TextMarkerWordList {
     FSIterator<AnnotationFS> streamPointer = stream.copy();
 
     while (stream.isValid()) {
-      TextMarkerBasic anchorBasic = (TextMarkerBasic) stream.get();
+      RutaBasic anchorBasic = (RutaBasic) stream.get();
       streamPointer.moveTo(anchorBasic);
 
-      List<TextMarkerBasic> basicsToAdd = new ArrayList<TextMarkerBasic>();
+      List<RutaBasic> basicsToAdd = new ArrayList<RutaBasic>();
       basicsToAdd.add(anchorBasic);
       String text = anchorBasic.getCoveredText();
       StringBuilder candidate = new StringBuilder(text);
@@ -600,7 +600,7 @@ public class MultiTreeWordList implements TextMarkerWordList {
         if (!types.isEmpty()) {
           streamPointer.moveToNext();
           if (streamPointer.isValid()) {
-            TextMarkerBasic next = (TextMarkerBasic) streamPointer.get();
+            RutaBasic next = (RutaBasic) streamPointer.get();
             // List<String> contains = contains(candidate,
             // ignoreCase,
             // ignoreLength, edit, distance, ignoreToken);
@@ -637,14 +637,14 @@ public class MultiTreeWordList implements TextMarkerWordList {
     return results;
   }
 
-  public List<AnnotationFS> find(TextMarkerStream stream, boolean ignoreCase, int size,
+  public List<AnnotationFS> find(RutaStream stream, boolean ignoreCase, int size,
           char[] ignoreChars, int maxIgnoredChars, boolean ignoreWS) {
     assert false;
     return new ArrayList<AnnotationFS>();
   }
 
-  private void tryToCreateAnnotation(TextMarkerStream stream, Collection<AnnotationFS> results,
-          List<TextMarkerBasic> basicsToAdd, String lastCandidate, List<AnnotationFS> interResult,
+  private void tryToCreateAnnotation(RutaStream stream, Collection<AnnotationFS> results,
+          List<RutaBasic> basicsToAdd, String lastCandidate, List<AnnotationFS> interResult,
           boolean ignoreCase, int ignoreLength, boolean edit, double distance, String ignoreToken,
           Map<String, Type> map) {
 

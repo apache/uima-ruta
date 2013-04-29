@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.resource;
+package org.apache.uima.ruta.resource;
 
 import java.io.FileInputStream;
 import java.nio.charset.Charset;
@@ -29,15 +29,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-public class CSVTable implements TextMarkerTable {
+public class CSVTable implements RutaTable {
 
   private List<List<String>> tableData;
 
-  private Map<Integer, TextMarkerWordList> columnWordLists;
+  private Map<Integer, RutaWordList> columnWordLists;
 
   public CSVTable(String location) {
     super();
-    columnWordLists = new HashMap<Integer, TextMarkerWordList>(2);
+    columnWordLists = new HashMap<Integer, RutaWordList>(2);
     try {
       buildTable(location);
     } catch (Exception e) {
@@ -59,8 +59,8 @@ public class CSVTable implements TextMarkerTable {
     }
   }
 
-  public TextMarkerWordList getWordList(int index) {
-    TextMarkerWordList list = columnWordLists.get(index);
+  public RutaWordList getWordList(int index) {
+    RutaWordList list = columnWordLists.get(index);
     if (list == null) {
       if (index > 0 && index <= tableData.get(0).size()) {
         list = new TreeWordList(getColumnData(index - 1));

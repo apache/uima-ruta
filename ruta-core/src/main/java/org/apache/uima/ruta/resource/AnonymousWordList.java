@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.resource;
+package org.apache.uima.ruta.resource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +25,10 @@ import java.util.Map;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.type.RutaBasic;
 
-public class AnonymousWordList implements TextMarkerWordList {
+public class AnonymousWordList implements RutaWordList {
 
   private final List<String> list;
 
@@ -47,13 +47,13 @@ public class AnonymousWordList implements TextMarkerWordList {
     return contains(s, ignoreCase, size, ignoreChars, maxIgnoreChars, ignoreWS);
   }
 
-  public List<AnnotationFS> find(TextMarkerStream stream, boolean ignoreCase, int size,
+  public List<AnnotationFS> find(RutaStream stream, boolean ignoreCase, int size,
           char[] ignoreToken, int maxIgnoredTokens, boolean ignoreWS) {
     List<AnnotationFS> result = new ArrayList<AnnotationFS>();
     for (String each : list) {
       stream.moveToFirst();
       while (stream.hasNext()) {
-        TextMarkerBasic next = (TextMarkerBasic) stream.next();
+        RutaBasic next = (RutaBasic) stream.next();
         if (each.equals(next.getCoveredText())) {
           result.add(next);
         }
@@ -62,7 +62,7 @@ public class AnonymousWordList implements TextMarkerWordList {
     return result;
   }
 
-  public List<AnnotationFS> find(TextMarkerStream stream, Map<String, Type> typeMap,
+  public List<AnnotationFS> find(RutaStream stream, Map<String, Type> typeMap,
           boolean ignoreCase, int ignoreLength, boolean edit, double distance, String ignoreToken) {
     return new ArrayList<AnnotationFS>();
   }
