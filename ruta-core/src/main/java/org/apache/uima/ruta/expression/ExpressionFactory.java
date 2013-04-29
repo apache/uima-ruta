@@ -17,49 +17,49 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.expression;
+package org.apache.uima.ruta.expression;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.antlr.runtime.Token;
-import org.apache.uima.textmarker.TextMarkerBlock;
-import org.apache.uima.textmarker.expression.bool.BooleanExpression;
-import org.apache.uima.textmarker.expression.bool.BooleanNumberExpression;
-import org.apache.uima.textmarker.expression.bool.BooleanTypeExpression;
-import org.apache.uima.textmarker.expression.bool.ReferenceBooleanExpression;
-import org.apache.uima.textmarker.expression.bool.SimpleBooleanExpression;
-import org.apache.uima.textmarker.expression.bool.SimpleBooleanFunction;
-import org.apache.uima.textmarker.expression.list.BooleanListExpression;
-import org.apache.uima.textmarker.expression.list.NumberListExpression;
-import org.apache.uima.textmarker.expression.list.ReferenceBooleanListExpression;
-import org.apache.uima.textmarker.expression.list.ReferenceNumberListExpression;
-import org.apache.uima.textmarker.expression.list.ReferenceStringListExpression;
-import org.apache.uima.textmarker.expression.list.ReferenceTypeListExpression;
-import org.apache.uima.textmarker.expression.list.SimpleBooleanListExpression;
-import org.apache.uima.textmarker.expression.list.SimpleNumberListExpression;
-import org.apache.uima.textmarker.expression.list.SimpleStringListExpression;
-import org.apache.uima.textmarker.expression.list.SimpleTypeListExpression;
-import org.apache.uima.textmarker.expression.list.StringListExpression;
-import org.apache.uima.textmarker.expression.list.TypeListExpression;
-import org.apache.uima.textmarker.expression.number.ComposedNumberExpression;
-import org.apache.uima.textmarker.expression.number.NegativeNumberExpression;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.number.ReferenceNumberExpression;
-import org.apache.uima.textmarker.expression.number.SimpleNumberExpression;
-import org.apache.uima.textmarker.expression.resource.LiteralWordListExpression;
-import org.apache.uima.textmarker.expression.resource.LiteralWordTableExpression;
-import org.apache.uima.textmarker.expression.resource.ReferenceWordListExpression;
-import org.apache.uima.textmarker.expression.resource.ReferenceWordTableExpression;
-import org.apache.uima.textmarker.expression.resource.WordListExpression;
-import org.apache.uima.textmarker.expression.resource.WordTableExpression;
-import org.apache.uima.textmarker.expression.string.ComposedStringExpression;
-import org.apache.uima.textmarker.expression.string.ReferenceStringExpression;
-import org.apache.uima.textmarker.expression.string.SimpleStringExpression;
-import org.apache.uima.textmarker.expression.string.StringExpression;
-import org.apache.uima.textmarker.expression.type.ReferenceTypeExpression;
-import org.apache.uima.textmarker.expression.type.SimpleTypeExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.bool.BooleanNumberExpression;
+import org.apache.uima.ruta.expression.bool.BooleanTypeExpression;
+import org.apache.uima.ruta.expression.bool.ReferenceBooleanExpression;
+import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
+import org.apache.uima.ruta.expression.bool.SimpleBooleanFunction;
+import org.apache.uima.ruta.expression.list.BooleanListExpression;
+import org.apache.uima.ruta.expression.list.NumberListExpression;
+import org.apache.uima.ruta.expression.list.ReferenceBooleanListExpression;
+import org.apache.uima.ruta.expression.list.ReferenceNumberListExpression;
+import org.apache.uima.ruta.expression.list.ReferenceStringListExpression;
+import org.apache.uima.ruta.expression.list.ReferenceTypeListExpression;
+import org.apache.uima.ruta.expression.list.SimpleBooleanListExpression;
+import org.apache.uima.ruta.expression.list.SimpleNumberListExpression;
+import org.apache.uima.ruta.expression.list.SimpleStringListExpression;
+import org.apache.uima.ruta.expression.list.SimpleTypeListExpression;
+import org.apache.uima.ruta.expression.list.StringListExpression;
+import org.apache.uima.ruta.expression.list.TypeListExpression;
+import org.apache.uima.ruta.expression.number.ComposedNumberExpression;
+import org.apache.uima.ruta.expression.number.NegativeNumberExpression;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.ReferenceNumberExpression;
+import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
+import org.apache.uima.ruta.expression.resource.LiteralWordListExpression;
+import org.apache.uima.ruta.expression.resource.LiteralWordTableExpression;
+import org.apache.uima.ruta.expression.resource.ReferenceWordListExpression;
+import org.apache.uima.ruta.expression.resource.ReferenceWordTableExpression;
+import org.apache.uima.ruta.expression.resource.WordListExpression;
+import org.apache.uima.ruta.expression.resource.WordTableExpression;
+import org.apache.uima.ruta.expression.string.ComposedStringExpression;
+import org.apache.uima.ruta.expression.string.ReferenceStringExpression;
+import org.apache.uima.ruta.expression.string.SimpleStringExpression;
+import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.type.ReferenceTypeExpression;
+import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
 
 public class ExpressionFactory {
 
@@ -140,7 +140,7 @@ public class ExpressionFactory {
     return new ReferenceBooleanExpression(id.getText());
   }
 
-  public static TypeExpression createSimpleTypeExpression(Token typeToken, TextMarkerBlock parent) {
+  public static TypeExpression createSimpleTypeExpression(Token typeToken, RutaBlock parent) {
     String typeString = typeToken == null ? "uima.tcas.DocumentAnnotation" : typeToken.getText();
     return new SimpleTypeExpression(typeString);
   }
@@ -150,7 +150,7 @@ public class ExpressionFactory {
     return new ReferenceTypeExpression(varString);
   }
 
-  public static TypeExpression createSimpleTypeExpression(String typeString, TextMarkerBlock parent) {
+  public static TypeExpression createSimpleTypeExpression(String typeString, RutaBlock parent) {
     return new SimpleTypeExpression(typeString);
   }
 
