@@ -17,63 +17,63 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.verbalizer;
+package org.apache.uima.ruta.verbalizer;
 
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
-import org.apache.uima.textmarker.condition.AfterCondition;
-import org.apache.uima.textmarker.condition.AndCondition;
-import org.apache.uima.textmarker.condition.BeforeCondition;
-import org.apache.uima.textmarker.condition.ContainsCondition;
-import org.apache.uima.textmarker.condition.ContextCountCondition;
-import org.apache.uima.textmarker.condition.CountCondition;
-import org.apache.uima.textmarker.condition.CurrentCountCondition;
-import org.apache.uima.textmarker.condition.EndsWithCondition;
-import org.apache.uima.textmarker.condition.FeatureCondition;
-import org.apache.uima.textmarker.condition.IfCondition;
-import org.apache.uima.textmarker.condition.InListCondition;
-import org.apache.uima.textmarker.condition.IsCondition;
-import org.apache.uima.textmarker.condition.LastCondition;
-import org.apache.uima.textmarker.condition.MOfNCondition;
-import org.apache.uima.textmarker.condition.NearCondition;
-import org.apache.uima.textmarker.condition.NotCondition;
-import org.apache.uima.textmarker.condition.OrCondition;
-import org.apache.uima.textmarker.condition.ParseCondition;
-import org.apache.uima.textmarker.condition.PartOfCondition;
-import org.apache.uima.textmarker.condition.PartOfNeqCondition;
-import org.apache.uima.textmarker.condition.PositionCondition;
-import org.apache.uima.textmarker.condition.RegExpCondition;
-import org.apache.uima.textmarker.condition.ScoreCondition;
-import org.apache.uima.textmarker.condition.SizeCondition;
-import org.apache.uima.textmarker.condition.StartsWithCondition;
-import org.apache.uima.textmarker.condition.TotalCountCondition;
-import org.apache.uima.textmarker.condition.VoteCondition;
-import org.apache.uima.textmarker.expression.bool.BooleanExpression;
-import org.apache.uima.textmarker.expression.bool.SimpleBooleanExpression;
-import org.apache.uima.textmarker.expression.list.SimpleStringListExpression;
-import org.apache.uima.textmarker.expression.list.SimpleTypeListExpression;
-import org.apache.uima.textmarker.expression.list.StringListExpression;
-import org.apache.uima.textmarker.expression.list.TypeListExpression;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.number.ReferenceNumberExpression;
-import org.apache.uima.textmarker.expression.number.SimpleNumberExpression;
-import org.apache.uima.textmarker.expression.string.SimpleStringExpression;
-import org.apache.uima.textmarker.expression.string.StringExpression;
-import org.apache.uima.textmarker.expression.type.ReferenceTypeExpression;
-import org.apache.uima.textmarker.expression.type.SimpleTypeExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.verbalize.TextMarkerVerbalizer;
+import org.apache.uima.ruta.condition.AbstractRutaCondition;
+import org.apache.uima.ruta.condition.AfterCondition;
+import org.apache.uima.ruta.condition.AndCondition;
+import org.apache.uima.ruta.condition.BeforeCondition;
+import org.apache.uima.ruta.condition.ContainsCondition;
+import org.apache.uima.ruta.condition.ContextCountCondition;
+import org.apache.uima.ruta.condition.CountCondition;
+import org.apache.uima.ruta.condition.CurrentCountCondition;
+import org.apache.uima.ruta.condition.EndsWithCondition;
+import org.apache.uima.ruta.condition.FeatureCondition;
+import org.apache.uima.ruta.condition.IfCondition;
+import org.apache.uima.ruta.condition.InListCondition;
+import org.apache.uima.ruta.condition.IsCondition;
+import org.apache.uima.ruta.condition.LastCondition;
+import org.apache.uima.ruta.condition.MOfNCondition;
+import org.apache.uima.ruta.condition.NearCondition;
+import org.apache.uima.ruta.condition.NotCondition;
+import org.apache.uima.ruta.condition.OrCondition;
+import org.apache.uima.ruta.condition.ParseCondition;
+import org.apache.uima.ruta.condition.PartOfCondition;
+import org.apache.uima.ruta.condition.PartOfNeqCondition;
+import org.apache.uima.ruta.condition.PositionCondition;
+import org.apache.uima.ruta.condition.RegExpCondition;
+import org.apache.uima.ruta.condition.ScoreCondition;
+import org.apache.uima.ruta.condition.SizeCondition;
+import org.apache.uima.ruta.condition.StartsWithCondition;
+import org.apache.uima.ruta.condition.TotalCountCondition;
+import org.apache.uima.ruta.condition.VoteCondition;
+import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
+import org.apache.uima.ruta.expression.list.SimpleStringListExpression;
+import org.apache.uima.ruta.expression.list.SimpleTypeListExpression;
+import org.apache.uima.ruta.expression.list.StringListExpression;
+import org.apache.uima.ruta.expression.list.TypeListExpression;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.ReferenceNumberExpression;
+import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
+import org.apache.uima.ruta.expression.string.SimpleStringExpression;
+import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.type.ReferenceTypeExpression;
+import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.verbalize.RutaVerbalizer;
 import org.junit.Test;
 
 public class ConditionVerbalizerTest {
 
   @Test
   public void test() {
-    TextMarkerVerbalizer v = new TextMarkerVerbalizer();
+    RutaVerbalizer v = new RutaVerbalizer();
     List<TypeExpression> typeExprList = new ArrayList<TypeExpression>();
     List<StringExpression> stringExprList = new ArrayList<StringExpression>();
     String var = "anyVar";
@@ -88,7 +88,7 @@ public class ConditionVerbalizerTest {
     stringExprList.add(stringExpr);
     TypeListExpression typeListExpr = new SimpleTypeListExpression(typeExprList);
     StringListExpression stringListExpr = new SimpleStringListExpression(stringExprList);
-    AbstractTextMarkerCondition c = null;
+    AbstractRutaCondition c = null;
     String s = null;
 
     // AFTER
@@ -105,9 +105,9 @@ public class ConditionVerbalizerTest {
     assertEquals("AFTER({Type1, typeVar})", s);
 
     // AND
-    List<AbstractTextMarkerCondition> conds = new ArrayList<AbstractTextMarkerCondition>();
-    AbstractTextMarkerCondition c1 = new AfterCondition(typeExpr2);
-    AbstractTextMarkerCondition c2 = new AfterCondition(typeListExpr);
+    List<AbstractRutaCondition> conds = new ArrayList<AbstractRutaCondition>();
+    AbstractRutaCondition c1 = new AfterCondition(typeExpr2);
+    AbstractRutaCondition c2 = new AfterCondition(typeListExpr);
     conds.add(c1);
     conds.add(c2);
     c = new AndCondition(conds);

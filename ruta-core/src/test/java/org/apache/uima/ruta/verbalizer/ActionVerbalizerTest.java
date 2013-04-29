@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.verbalizer;
+package org.apache.uima.ruta.verbalizer;
 
 import static org.junit.Assert.assertEquals;
 
@@ -27,64 +27,64 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
-import org.apache.uima.textmarker.action.AddAction;
-import org.apache.uima.textmarker.action.AssignAction;
-import org.apache.uima.textmarker.action.CallAction;
-import org.apache.uima.textmarker.action.ClearAction;
-import org.apache.uima.textmarker.action.ColorAction;
-import org.apache.uima.textmarker.action.ConfigureAction;
-import org.apache.uima.textmarker.action.CreateAction;
-import org.apache.uima.textmarker.action.DelAction;
-import org.apache.uima.textmarker.action.DynamicAnchoringAction;
-import org.apache.uima.textmarker.action.ExecAction;
-import org.apache.uima.textmarker.action.FillAction;
-import org.apache.uima.textmarker.action.FilterTypeAction;
-import org.apache.uima.textmarker.action.GatherAction;
-import org.apache.uima.textmarker.action.GetAction;
-import org.apache.uima.textmarker.action.GetFeatureAction;
-import org.apache.uima.textmarker.action.GetListAction;
-import org.apache.uima.textmarker.action.LogAction;
-import org.apache.uima.textmarker.action.MarkAction;
-import org.apache.uima.textmarker.action.MarkFastAction;
-import org.apache.uima.textmarker.action.MarkLastAction;
-import org.apache.uima.textmarker.action.MarkOnceAction;
-import org.apache.uima.textmarker.action.MarkTableAction;
-import org.apache.uima.textmarker.action.MatchedTextAction;
-import org.apache.uima.textmarker.action.MergeAction;
-import org.apache.uima.textmarker.action.RemoveAction;
-import org.apache.uima.textmarker.action.RemoveDuplicateAction;
-import org.apache.uima.textmarker.action.ReplaceAction;
-import org.apache.uima.textmarker.action.RetainTypeAction;
-import org.apache.uima.textmarker.action.SetFeatureAction;
-import org.apache.uima.textmarker.action.ShiftAction;
-import org.apache.uima.textmarker.action.TransferAction;
-import org.apache.uima.textmarker.action.TrieAction;
-import org.apache.uima.textmarker.action.UnmarkAction;
-import org.apache.uima.textmarker.action.UnmarkAllAction;
-import org.apache.uima.textmarker.expression.TextMarkerExpression;
-import org.apache.uima.textmarker.expression.bool.BooleanExpression;
-import org.apache.uima.textmarker.expression.bool.SimpleBooleanExpression;
-import org.apache.uima.textmarker.expression.list.ListExpression;
-import org.apache.uima.textmarker.expression.list.SimpleStringListExpression;
-import org.apache.uima.textmarker.expression.list.SimpleTypeListExpression;
-import org.apache.uima.textmarker.expression.list.StringListExpression;
-import org.apache.uima.textmarker.expression.list.TypeListExpression;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.number.ReferenceNumberExpression;
-import org.apache.uima.textmarker.expression.number.SimpleNumberExpression;
-import org.apache.uima.textmarker.expression.resource.LiteralWordTableExpression;
-import org.apache.uima.textmarker.expression.resource.ReferenceWordListExpression;
-import org.apache.uima.textmarker.expression.resource.ReferenceWordTableExpression;
-import org.apache.uima.textmarker.expression.resource.WordListExpression;
-import org.apache.uima.textmarker.expression.resource.WordTableExpression;
-import org.apache.uima.textmarker.expression.string.SimpleStringExpression;
-import org.apache.uima.textmarker.expression.string.StringExpression;
-import org.apache.uima.textmarker.expression.type.ReferenceTypeExpression;
-import org.apache.uima.textmarker.expression.type.SimpleTypeExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.resource.CSVTable;
-import org.apache.uima.textmarker.verbalize.TextMarkerVerbalizer;
+import org.apache.uima.ruta.action.AbstractRutaAction;
+import org.apache.uima.ruta.action.AddAction;
+import org.apache.uima.ruta.action.AssignAction;
+import org.apache.uima.ruta.action.CallAction;
+import org.apache.uima.ruta.action.ClearAction;
+import org.apache.uima.ruta.action.ColorAction;
+import org.apache.uima.ruta.action.ConfigureAction;
+import org.apache.uima.ruta.action.CreateAction;
+import org.apache.uima.ruta.action.DelAction;
+import org.apache.uima.ruta.action.DynamicAnchoringAction;
+import org.apache.uima.ruta.action.ExecAction;
+import org.apache.uima.ruta.action.FillAction;
+import org.apache.uima.ruta.action.FilterTypeAction;
+import org.apache.uima.ruta.action.GatherAction;
+import org.apache.uima.ruta.action.GetAction;
+import org.apache.uima.ruta.action.GetFeatureAction;
+import org.apache.uima.ruta.action.GetListAction;
+import org.apache.uima.ruta.action.LogAction;
+import org.apache.uima.ruta.action.MarkAction;
+import org.apache.uima.ruta.action.MarkFastAction;
+import org.apache.uima.ruta.action.MarkLastAction;
+import org.apache.uima.ruta.action.MarkOnceAction;
+import org.apache.uima.ruta.action.MarkTableAction;
+import org.apache.uima.ruta.action.MatchedTextAction;
+import org.apache.uima.ruta.action.MergeAction;
+import org.apache.uima.ruta.action.RemoveAction;
+import org.apache.uima.ruta.action.RemoveDuplicateAction;
+import org.apache.uima.ruta.action.ReplaceAction;
+import org.apache.uima.ruta.action.RetainTypeAction;
+import org.apache.uima.ruta.action.SetFeatureAction;
+import org.apache.uima.ruta.action.ShiftAction;
+import org.apache.uima.ruta.action.TransferAction;
+import org.apache.uima.ruta.action.TrieAction;
+import org.apache.uima.ruta.action.UnmarkAction;
+import org.apache.uima.ruta.action.UnmarkAllAction;
+import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
+import org.apache.uima.ruta.expression.list.ListExpression;
+import org.apache.uima.ruta.expression.list.SimpleStringListExpression;
+import org.apache.uima.ruta.expression.list.SimpleTypeListExpression;
+import org.apache.uima.ruta.expression.list.StringListExpression;
+import org.apache.uima.ruta.expression.list.TypeListExpression;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.ReferenceNumberExpression;
+import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
+import org.apache.uima.ruta.expression.resource.LiteralWordTableExpression;
+import org.apache.uima.ruta.expression.resource.ReferenceWordListExpression;
+import org.apache.uima.ruta.expression.resource.ReferenceWordTableExpression;
+import org.apache.uima.ruta.expression.resource.WordListExpression;
+import org.apache.uima.ruta.expression.resource.WordTableExpression;
+import org.apache.uima.ruta.expression.string.SimpleStringExpression;
+import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.type.ReferenceTypeExpression;
+import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.resource.CSVTable;
+import org.apache.uima.ruta.verbalize.RutaVerbalizer;
 import org.junit.Test;
 
 public class ActionVerbalizerTest {
@@ -92,10 +92,10 @@ public class ActionVerbalizerTest {
   @SuppressWarnings("unchecked")
   @Test
   public void test() {
-    TextMarkerVerbalizer v = new TextMarkerVerbalizer();
+    RutaVerbalizer v = new RutaVerbalizer();
     List<TypeExpression> typeExprList = new ArrayList<TypeExpression>();
     List<StringExpression> stringExprList = new ArrayList<StringExpression>();
-    List<TextMarkerExpression> exprList = new ArrayList<TextMarkerExpression>();
+    List<RutaExpression> exprList = new ArrayList<RutaExpression>();
     List<NumberExpression> indexes = new ArrayList<NumberExpression>();
     String var = "anyVar";
     TypeExpression typeExpr1 = new SimpleTypeExpression("Type1");
@@ -112,7 +112,7 @@ public class ActionVerbalizerTest {
     WordListExpression wordListExpr = new ReferenceWordListExpression(var);
     TypeListExpression typeListExpr = new SimpleTypeListExpression(typeExprList);
     StringListExpression stringListExpr = new SimpleStringListExpression(stringExprList);
-    Map<StringExpression, TextMarkerExpression> stringExprMap = new HashMap<StringExpression, TextMarkerExpression>();
+    Map<StringExpression, RutaExpression> stringExprMap = new HashMap<StringExpression, RutaExpression>();
     Map<StringExpression, NumberExpression> stringExprNumExprMap = new HashMap<StringExpression, NumberExpression>();
     Map<StringExpression, TypeExpression> stringExprTypeExprMap = new HashMap<StringExpression, TypeExpression>();
     @SuppressWarnings("rawtypes")
@@ -125,7 +125,7 @@ public class ActionVerbalizerTest {
     stringExprTypeExprMap.put(stringExpr, typeExpr1);
     indexes.add(numExpr1);
     indexes.add(numExpr2);
-    AbstractTextMarkerAction a = null;
+    AbstractRutaAction a = null;
     String s = null;
 
     // ADD

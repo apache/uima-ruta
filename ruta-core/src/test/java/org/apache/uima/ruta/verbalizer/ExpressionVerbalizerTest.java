@@ -17,42 +17,42 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.verbalizer;
+package org.apache.uima.ruta.verbalizer;
 
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.textmarker.expression.bool.BooleanExpression;
-import org.apache.uima.textmarker.expression.bool.BooleanNumberExpression;
-import org.apache.uima.textmarker.expression.bool.BooleanTypeExpression;
-import org.apache.uima.textmarker.expression.bool.ReferenceBooleanExpression;
-import org.apache.uima.textmarker.expression.bool.SimpleBooleanExpression;
-import org.apache.uima.textmarker.expression.list.BooleanListExpression;
-import org.apache.uima.textmarker.expression.list.NumberListExpression;
-import org.apache.uima.textmarker.expression.list.ReferenceBooleanListExpression;
-import org.apache.uima.textmarker.expression.list.ReferenceNumberListExpression;
-import org.apache.uima.textmarker.expression.list.ReferenceStringListExpression;
-import org.apache.uima.textmarker.expression.list.ReferenceTypeListExpression;
-import org.apache.uima.textmarker.expression.list.SimpleBooleanListExpression;
-import org.apache.uima.textmarker.expression.list.SimpleNumberListExpression;
-import org.apache.uima.textmarker.expression.list.SimpleStringListExpression;
-import org.apache.uima.textmarker.expression.list.SimpleTypeListExpression;
-import org.apache.uima.textmarker.expression.list.StringListExpression;
-import org.apache.uima.textmarker.expression.list.TypeListExpression;
-import org.apache.uima.textmarker.expression.number.ComposedNumberExpression;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.number.ReferenceNumberExpression;
-import org.apache.uima.textmarker.expression.number.SimpleNumberExpression;
-import org.apache.uima.textmarker.expression.string.ComposedStringExpression;
-import org.apache.uima.textmarker.expression.string.ReferenceStringExpression;
-import org.apache.uima.textmarker.expression.string.SimpleStringExpression;
-import org.apache.uima.textmarker.expression.string.StringExpression;
-import org.apache.uima.textmarker.expression.type.ReferenceTypeExpression;
-import org.apache.uima.textmarker.expression.type.SimpleTypeExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.verbalize.TextMarkerVerbalizer;
+import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.bool.BooleanNumberExpression;
+import org.apache.uima.ruta.expression.bool.BooleanTypeExpression;
+import org.apache.uima.ruta.expression.bool.ReferenceBooleanExpression;
+import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
+import org.apache.uima.ruta.expression.list.BooleanListExpression;
+import org.apache.uima.ruta.expression.list.NumberListExpression;
+import org.apache.uima.ruta.expression.list.ReferenceBooleanListExpression;
+import org.apache.uima.ruta.expression.list.ReferenceNumberListExpression;
+import org.apache.uima.ruta.expression.list.ReferenceStringListExpression;
+import org.apache.uima.ruta.expression.list.ReferenceTypeListExpression;
+import org.apache.uima.ruta.expression.list.SimpleBooleanListExpression;
+import org.apache.uima.ruta.expression.list.SimpleNumberListExpression;
+import org.apache.uima.ruta.expression.list.SimpleStringListExpression;
+import org.apache.uima.ruta.expression.list.SimpleTypeListExpression;
+import org.apache.uima.ruta.expression.list.StringListExpression;
+import org.apache.uima.ruta.expression.list.TypeListExpression;
+import org.apache.uima.ruta.expression.number.ComposedNumberExpression;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.ReferenceNumberExpression;
+import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
+import org.apache.uima.ruta.expression.string.ComposedStringExpression;
+import org.apache.uima.ruta.expression.string.ReferenceStringExpression;
+import org.apache.uima.ruta.expression.string.SimpleStringExpression;
+import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.type.ReferenceTypeExpression;
+import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.verbalize.RutaVerbalizer;
 import org.junit.Test;
 
 public class ExpressionVerbalizerTest {
@@ -60,10 +60,10 @@ public class ExpressionVerbalizerTest {
   @SuppressWarnings("unchecked")
   @Test
   public void test() {
-    TextMarkerVerbalizer v = new TextMarkerVerbalizer();
+    RutaVerbalizer v = new RutaVerbalizer();
 //    List<TypeExpression> typeExprList = new ArrayList<TypeExpression>();
 //    List<StringExpression> stringExprList = new ArrayList<StringExpression>();
-//    List<TextMarkerExpression> exprList = new ArrayList<TextMarkerExpression>();
+//    List<RutaExpression> exprList = new ArrayList<RutaExpression>();
 //    List<NumberExpression> indexes = new ArrayList<NumberExpression>();
 
 //    
@@ -78,7 +78,7 @@ public class ExpressionVerbalizerTest {
 //    WordListExpression wordListExpr = new ReferenceWordListExpression(var);
 //    TypeListExpression typeListExpr = new SimpleTypeListExpression(typeExprList);
 //    StringListExpression stringListExpr = new SimpleStringListExpression(stringExprList);
-//    Map<StringExpression, TextMarkerExpression> stringExprMap = new HashMap<StringExpression, TextMarkerExpression>();
+//    Map<StringExpression, RutaExpression> stringExprMap = new HashMap<StringExpression, RutaExpression>();
 //    Map<StringExpression, NumberExpression> stringExprNumExprMap = new HashMap<StringExpression, NumberExpression>();
 //    Map<StringExpression, TypeExpression> stringExprTypeExprMap = new HashMap<StringExpression, TypeExpression>();
 //    @SuppressWarnings("rawtypes")
