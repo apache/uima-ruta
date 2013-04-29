@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.engine;
+package org.apache.uima.ruta.engine;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -74,7 +74,7 @@ public class XMIWriter extends JCasAnnotator_ImplBase {
   public void process(JCas jcas) throws AnalysisEngineProcessException {
     CAS cas = jcas.getCas();
 
-    Type sdiType = cas.getTypeSystem().getType(TextMarkerEngine.SOURCE_DOCUMENT_INFORMATION);
+    Type sdiType = cas.getTypeSystem().getType(RutaEngine.SOURCE_DOCUMENT_INFORMATION);
 
     String filename = "output.txt";
     File file = new File(output, filename);

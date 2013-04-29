@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.engine;
+package org.apache.uima.ruta.engine;
 
 public class HtmlConverterPSpan implements Comparable<HtmlConverterPSpan> {
   private int begin;

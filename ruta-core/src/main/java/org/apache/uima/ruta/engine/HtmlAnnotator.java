@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.engine;
+package org.apache.uima.ruta.engine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 
 public class HtmlAnnotator extends JCasAnnotator_ImplBase {
-  public static final String NAMESPACE = "org.apache.uima.textmarker.type.html.";
+  public static final String NAMESPACE = "org.apache.uima.ruta.type.html.";
 
   public static final String ONLY_CONTENT = "onlyContent";
 

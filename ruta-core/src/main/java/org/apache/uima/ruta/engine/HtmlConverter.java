@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.engine;
+package org.apache.uima.ruta.engine;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -61,7 +61,7 @@ import org.htmlparser.util.ParserException;
  */
 public class HtmlConverter extends JCasAnnotator_ImplBase {
   // parameter names:
-  public static final String NAMESPACE = "org.apache.uima.textmarker.type.html.";
+  public static final String NAMESPACE = "org.apache.uima.ruta.type.html.";
 
   public static final String OUTPUT_VIEW = "outputView";
 

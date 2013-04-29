@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.engine;
+package org.apache.uima.ruta.engine;
 
 import java.awt.Color;
 import java.io.File;
@@ -40,7 +40,7 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.textmarker.type.TextMarkerColoring;
+import org.apache.uima.ruta.type.RutaColoring;
 import org.apache.uima.tools.stylemap.ColorParser;
 import org.apache.uima.tools.stylemap.StyleMapEntry;
 import org.apache.uima.tools.stylemap.StyleMapXmlParser;
@@ -190,10 +190,10 @@ public class StyleMapFactory {
 
   private List<StyleMapEntry> createStyleList(JCas jcas) {
     List<StyleMapEntry> result = new ArrayList<StyleMapEntry>();
-    Type type = jcas.getCasType(TextMarkerColoring.type);
+    Type type = jcas.getCasType(RutaColoring.type);
     FSIterator<FeatureStructure> iterator = jcas.getFSIndexRepository().getAllIndexedFS(type);
     while (iterator.hasNext()) {
-      TextMarkerColoring each = (TextMarkerColoring) iterator.next();
+      RutaColoring each = (RutaColoring) iterator.next();
       StyleMapEntry entry = new StyleMapEntry();
       entry.setAnnotationTypeName(each.getTargetType());
       String fgColor = each.getFgColor();

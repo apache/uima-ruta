@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.engine;
+package org.apache.uima.ruta.engine;
 
 import java.io.IOException;
 
@@ -47,14 +47,14 @@ public class StyleMapCreator extends JCasAnnotator_ImplBase {
     }
     styleMapLocation = (String) aContext.getConfigParameterValue(STYLE_MAP);
     descriptorPaths = (String[]) aContext
-            .getConfigParameterValue(TextMarkerEngine.DESCRIPTOR_PATHS);
+            .getConfigParameterValue(RutaEngine.DESCRIPTOR_PATHS);
     styleMapFactory = new StyleMapFactory();
   }
 
   @Override
   public void process(JCas jcas) throws AnalysisEngineProcessException {
     try {
-      String locate = TextMarkerEngine.locate(styleMapLocation, descriptorPaths, ".xml", false);
+      String locate = RutaEngine.locate(styleMapLocation, descriptorPaths, ".xml", false);
       if (locate != null) {
         styleMapFactory.createStyleMap(locate, jcas);
       }

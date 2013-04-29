@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.engine;
+package org.apache.uima.ruta.engine;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,11 +33,11 @@ import org.apache.uima.jcas.JCas;
 
 public class PlainTextAnnotator extends JCasAnnotator_ImplBase {
 
-  public static final String TYPE_LINE = "org.apache.uima.textmarker.type.Line";
+  public static final String TYPE_LINE = "org.apache.uima.ruta.type.Line";
 
-  public static final String TYPE_WSLINE = "org.apache.uima.textmarker.type.WSLine";
+  public static final String TYPE_WSLINE = "org.apache.uima.ruta.type.WSLine";
 
-  public static final String TYPE_PARAGRAPH = "org.apache.uima.textmarker.type.Paragraph";
+  public static final String TYPE_PARAGRAPH = "org.apache.uima.ruta.type.Paragraph";
 
   @Override
   public void process(JCas jcas) throws AnalysisEngineProcessException {

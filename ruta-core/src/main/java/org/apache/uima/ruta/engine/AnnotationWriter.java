@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.engine;
+package org.apache.uima.ruta.engine;
 
 import java.io.File;
 import java.io.IOException;
@@ -76,7 +76,7 @@ public class AnnotationWriter extends JCasAnnotator_ImplBase {
     }
 
 
-    Type sdiType = cas.getTypeSystem().getType(TextMarkerEngine.SOURCE_DOCUMENT_INFORMATION);
+    Type sdiType = cas.getTypeSystem().getType(RutaEngine.SOURCE_DOCUMENT_INFORMATION);
 
     String filename = "output.txt";
     File file = new File(output, filename);
