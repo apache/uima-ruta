@@ -17,22 +17,22 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.condition;
+package org.apache.uima.ruta.condition;
 
 import java.util.List;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.number.SimpleNumberExpression;
-import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.type.TextMarkerAnnotation;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
+import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.type.RutaAnnotation;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class ScoreCondition extends TerminalTextMarkerCondition {
+public class ScoreCondition extends TerminalRutaCondition {
   private final NumberExpression min;
 
   private final NumberExpression max;
@@ -48,16 +48,16 @@ public class ScoreCondition extends TerminalTextMarkerCondition {
 
   @Override
   public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          TextMarkerStream stream, InferenceCrowd crowd) {
-    Type heuristicType = stream.getJCas().getCasType(TextMarkerAnnotation.type);
+          RutaStream stream, InferenceCrowd crowd) {
+    Type heuristicType = stream.getJCas().getCasType(RutaAnnotation.type);
     List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(annotation,
             heuristicType);
     double score = 0;
     if (!annotationsInWindow.isEmpty()) {
-      TextMarkerAnnotation heuristicAnnotation = (TextMarkerAnnotation) stream.getCas()
+      RutaAnnotation heuristicAnnotation = (RutaAnnotation) stream.getCas()
               .createAnnotation(heuristicType, annotation.getBegin(), annotation.getEnd());
       heuristicAnnotation.setAnnotation((Annotation) annotation);
-      TextMarkerAnnotation tma = stream.getCorrectTMA(annotationsInWindow, heuristicAnnotation);
+      RutaAnnotation tma = stream.getCorrectTMA(annotationsInWindow, heuristicAnnotation);
       score = tma.getScore();
     }
     if (var != null) {

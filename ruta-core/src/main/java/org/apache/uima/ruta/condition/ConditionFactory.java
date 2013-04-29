@@ -17,50 +17,50 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.condition;
+package org.apache.uima.ruta.condition;
 
 import java.util.List;
 
 import org.antlr.runtime.Token;
-import org.apache.uima.textmarker.TextMarkerBlock;
-import org.apache.uima.textmarker.expression.TextMarkerExpression;
-import org.apache.uima.textmarker.expression.bool.BooleanExpression;
-import org.apache.uima.textmarker.expression.list.ListExpression;
-import org.apache.uima.textmarker.expression.list.StringListExpression;
-import org.apache.uima.textmarker.expression.list.TypeListExpression;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.resource.WordListExpression;
-import org.apache.uima.textmarker.expression.string.StringExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.list.ListExpression;
+import org.apache.uima.ruta.expression.list.StringListExpression;
+import org.apache.uima.ruta.expression.list.TypeListExpression;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.resource.WordListExpression;
+import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
 
 public class ConditionFactory {
 
   private ConditionFactory() {
   }
 
-  public static AbstractTextMarkerCondition createConditionAnd(
-          List<AbstractTextMarkerCondition> conds, TextMarkerBlock parent) {
+  public static AbstractRutaCondition createConditionAnd(
+          List<AbstractRutaCondition> conds, RutaBlock parent) {
     return new AndCondition(conds);
   }
 
-  public static AbstractTextMarkerCondition createConditionOr(
-          List<AbstractTextMarkerCondition> conds, TextMarkerBlock parent) {
+  public static AbstractRutaCondition createConditionOr(
+          List<AbstractRutaCondition> conds, RutaBlock parent) {
     return new OrCondition(conds);
   }
 
-  public static AbstractTextMarkerCondition createConditionNot(AbstractTextMarkerCondition cond,
-          TextMarkerBlock parent) {
+  public static AbstractRutaCondition createConditionNot(AbstractRutaCondition cond,
+          RutaBlock parent) {
     return new NotCondition(cond);
   }
 
-  public static AbstractTextMarkerCondition createConditionContains(TypeExpression typeExpr,
+  public static AbstractRutaCondition createConditionContains(TypeExpression typeExpr,
           NumberExpression min, NumberExpression max, BooleanExpression percent,
-          TextMarkerBlock parent) {
+          RutaBlock parent) {
     return new ContainsCondition(typeExpr, min, max, percent);
   }
 
-  public static AbstractTextMarkerCondition createConditionContextCount(TypeExpression typeExpr,
-          NumberExpression min, NumberExpression max, Token var, TextMarkerBlock parent) {
+  public static AbstractRutaCondition createConditionContextCount(TypeExpression typeExpr,
+          NumberExpression min, NumberExpression max, Token var, RutaBlock parent) {
     String varString = null;
     if (var != null) {
       varString = var.getText();
@@ -68,8 +68,8 @@ public class ConditionFactory {
     return new ContextCountCondition(typeExpr, min, max, varString);
   }
 
-  public static AbstractTextMarkerCondition createConditionCurrentCount(TypeExpression typeExpr,
-          NumberExpression min, NumberExpression max, Token var, TextMarkerBlock parent) {
+  public static AbstractRutaCondition createConditionCurrentCount(TypeExpression typeExpr,
+          NumberExpression min, NumberExpression max, Token var, RutaBlock parent) {
     String varString = null;
     if (var != null) {
       varString = var.getText();
@@ -77,8 +77,8 @@ public class ConditionFactory {
     return new CurrentCountCondition(typeExpr, min, max, varString);
   }
 
-  public static AbstractTextMarkerCondition createConditionCount(TypeExpression typeExpr,
-          NumberExpression min, NumberExpression max, Token var, TextMarkerBlock parent) {
+  public static AbstractRutaCondition createConditionCount(TypeExpression typeExpr,
+          NumberExpression min, NumberExpression max, Token var, RutaBlock parent) {
     String varString = null;
     if (var != null) {
       varString = var.getText();
@@ -86,8 +86,8 @@ public class ConditionFactory {
     return new CountCondition(typeExpr, min, max, varString);
   }
 
-  public static AbstractTextMarkerCondition createConditionTotalCount(TypeExpression typeExpr,
-          NumberExpression min, NumberExpression max, Token var, TextMarkerBlock parent) {
+  public static AbstractRutaCondition createConditionTotalCount(TypeExpression typeExpr,
+          NumberExpression min, NumberExpression max, Token var, RutaBlock parent) {
     String varString = null;
     if (var != null) {
       varString = var.getText();
@@ -95,25 +95,25 @@ public class ConditionFactory {
     return new TotalCountCondition(typeExpr, min, max, varString);
   }
 
-  public static AbstractTextMarkerCondition createConditionInList(WordListExpression listExpr,
-          NumberExpression dist, BooleanExpression rel, TextMarkerBlock parent) {
+  public static AbstractRutaCondition createConditionInList(WordListExpression listExpr,
+          NumberExpression dist, BooleanExpression rel, RutaBlock parent) {
     return new InListCondition(listExpr, dist, rel);
   }
 
-  public static AbstractTextMarkerCondition createConditionMOfN(
-          List<AbstractTextMarkerCondition> conds, NumberExpression min, NumberExpression max,
-          TextMarkerBlock parent) {
+  public static AbstractRutaCondition createConditionMOfN(
+          List<AbstractRutaCondition> conds, NumberExpression min, NumberExpression max,
+          RutaBlock parent) {
     return new MOfNCondition(conds, min, max);
   }
 
-  public static AbstractTextMarkerCondition createConditionNear(TypeExpression typeExpr,
+  public static AbstractRutaCondition createConditionNear(TypeExpression typeExpr,
           NumberExpression min, NumberExpression max, BooleanExpression direction,
-          BooleanExpression filtered, TextMarkerBlock parent) {
+          BooleanExpression filtered, RutaBlock parent) {
     return new NearCondition(typeExpr, min, max, direction, filtered);
   }
 
-  public static AbstractTextMarkerCondition createConditionPartOf(TypeExpression type,
-          TypeListExpression list, TextMarkerBlock parent) {
+  public static AbstractRutaCondition createConditionPartOf(TypeExpression type,
+          TypeListExpression list, RutaBlock parent) {
     if (type != null) {
       return new PartOfCondition(type);
     } else {
@@ -121,23 +121,23 @@ public class ConditionFactory {
     }
   }
 
-  public static AbstractTextMarkerCondition createConditionPosition(TypeExpression typeExpr,
-          NumberExpression pos, BooleanExpression rel, TextMarkerBlock parent) {
+  public static AbstractRutaCondition createConditionPosition(TypeExpression typeExpr,
+          NumberExpression pos, BooleanExpression rel, RutaBlock parent) {
     return new PositionCondition(typeExpr, pos, rel);
   }
 
-  public static AbstractTextMarkerCondition createConditionRegExp(StringExpression patternExpr,
-          BooleanExpression ignoreCase, TextMarkerBlock parent) {
+  public static AbstractRutaCondition createConditionRegExp(StringExpression patternExpr,
+          BooleanExpression ignoreCase, RutaBlock parent) {
     return new RegExpCondition(patternExpr, ignoreCase);
   }
 
-  public static AbstractTextMarkerCondition createConditionRegExp(Token var, StringExpression patternExpr,
-          BooleanExpression ignoreCase, TextMarkerBlock parent) {
+  public static AbstractRutaCondition createConditionRegExp(Token var, StringExpression patternExpr,
+          BooleanExpression ignoreCase, RutaBlock parent) {
     return new RegExpCondition(var == null ? null : var.getText(), patternExpr, ignoreCase);
   }
   
-  public static AbstractTextMarkerCondition createConditionScore(NumberExpression min,
-          NumberExpression max, Token var, TextMarkerBlock parent) {
+  public static AbstractRutaCondition createConditionScore(NumberExpression min,
+          NumberExpression max, Token var, RutaBlock parent) {
     String varString = null;
     if (var != null) {
       varString = var.getText();
@@ -145,23 +145,23 @@ public class ConditionFactory {
     return new ScoreCondition(min, max, varString);
   }
 
-  public static AbstractTextMarkerCondition createConditionVote(TypeExpression type1Expr,
-          TypeExpression type2Expr, TextMarkerBlock parent) {
+  public static AbstractRutaCondition createConditionVote(TypeExpression type1Expr,
+          TypeExpression type2Expr, RutaBlock parent) {
     return new VoteCondition(type1Expr, type2Expr);
   }
 
-  public static AbstractTextMarkerCondition createConditionLast(TypeExpression typeExpr,
-          TextMarkerBlock parent) {
+  public static AbstractRutaCondition createConditionLast(TypeExpression typeExpr,
+          RutaBlock parent) {
     return new LastCondition(typeExpr);
   }
 
-  public static AbstractTextMarkerCondition createConditionIf(BooleanExpression e,
-          TextMarkerBlock parent) {
+  public static AbstractRutaCondition createConditionIf(BooleanExpression e,
+          RutaBlock parent) {
     return new IfCondition(e);
   }
 
-  public static AbstractTextMarkerCondition createConditionFeature(StringExpression se, Object v,
-          TextMarkerBlock parent) {
+  public static AbstractRutaCondition createConditionFeature(StringExpression se, Object v,
+          RutaBlock parent) {
     if (v instanceof NumberExpression) {
       return new FeatureCondition(se, (NumberExpression) v);
     } else if (v instanceof BooleanExpression) {
@@ -172,17 +172,17 @@ public class ConditionFactory {
     return null;
   }
 
-  public static AbstractTextMarkerCondition createConditionParse(Token id, TextMarkerBlock env) {
+  public static AbstractRutaCondition createConditionParse(Token id, RutaBlock env) {
     String var = id == null ? "" : id.getText();
     return new ParseCondition(var);
   }
 
-  public static AbstractTextMarkerCondition createConditionVariable(Token id) {
+  public static AbstractRutaCondition createConditionVariable(Token id) {
     return new VariableCondition(id.getText());
   }
 
-  public static AbstractTextMarkerCondition createConditionIs(TypeExpression type,
-          TypeListExpression list, TextMarkerBlock env) {
+  public static AbstractRutaCondition createConditionIs(TypeExpression type,
+          TypeListExpression list, RutaBlock env) {
     if (type != null) {
       return new IsCondition(type);
     } else {
@@ -190,8 +190,8 @@ public class ConditionFactory {
     }
   }
 
-  public static AbstractTextMarkerCondition createConditionAfter(TypeExpression type,
-          TypeListExpression list, TextMarkerBlock env) {
+  public static AbstractRutaCondition createConditionAfter(TypeExpression type,
+          TypeListExpression list, RutaBlock env) {
     if (type != null) {
       return new AfterCondition(type);
     } else {
@@ -199,8 +199,8 @@ public class ConditionFactory {
     }
   }
 
-  public static AbstractTextMarkerCondition createConditionBefore(TypeExpression type,
-          TypeListExpression list, TextMarkerBlock env) {
+  public static AbstractRutaCondition createConditionBefore(TypeExpression type,
+          TypeListExpression list, RutaBlock env) {
     if (type != null) {
       return new BeforeCondition(type);
     } else {
@@ -208,8 +208,8 @@ public class ConditionFactory {
     }
   }
 
-  public static AbstractTextMarkerCondition createConditionEndsWith(TypeExpression type,
-          TypeListExpression list, TextMarkerBlock env) {
+  public static AbstractRutaCondition createConditionEndsWith(TypeExpression type,
+          TypeListExpression list, RutaBlock env) {
     if (type != null) {
       return new EndsWithCondition(type);
     } else {
@@ -217,8 +217,8 @@ public class ConditionFactory {
     }
   }
 
-  public static AbstractTextMarkerCondition createConditionStartsWith(TypeExpression type,
-          TypeListExpression list, TextMarkerBlock env) {
+  public static AbstractRutaCondition createConditionStartsWith(TypeExpression type,
+          TypeListExpression list, RutaBlock env) {
     if (type != null) {
       return new StartsWithCondition(type);
     } else {
@@ -226,8 +226,8 @@ public class ConditionFactory {
     }
   }
 
-  public static AbstractTextMarkerCondition createConditionPartOfNeq(TypeExpression type,
-          TypeListExpression list, TextMarkerBlock env) {
+  public static AbstractRutaCondition createConditionPartOfNeq(TypeExpression type,
+          TypeListExpression list, RutaBlock env) {
     if (type != null) {
       return new PartOfNeqCondition(type);
     } else {
@@ -235,25 +235,25 @@ public class ConditionFactory {
     }
   }
 
-  public static AbstractTextMarkerCondition createConditionSize(ListExpression<?> list,
-          NumberExpression min, NumberExpression max, Token var, TextMarkerBlock env) {
+  public static AbstractRutaCondition createConditionSize(ListExpression<?> list,
+          NumberExpression min, NumberExpression max, Token var, RutaBlock env) {
     return new SizeCondition(list, min, max, var == null ? null : var.getText());
   }
 
-  public static AbstractTextMarkerCondition createConditionInList(StringListExpression list,
-          NumberExpression dist, BooleanExpression rel, TextMarkerBlock env) {
+  public static AbstractRutaCondition createConditionInList(StringListExpression list,
+          NumberExpression dist, BooleanExpression rel, RutaBlock env) {
     return new InListCondition(list, dist, rel);
   }
 
-  public static AbstractTextMarkerCondition createConditionCount(ListExpression<Object> type,
-          TextMarkerExpression a, NumberExpression min, NumberExpression max, Token var,
-          TextMarkerBlock env) {
+  public static AbstractRutaCondition createConditionCount(ListExpression<Object> type,
+          RutaExpression a, NumberExpression min, NumberExpression max, Token var,
+          RutaBlock env) {
     return new CountCondition(type, a, min, max, var == null ? null : var.getText());
   }
 
-  public static AbstractTextMarkerCondition createConditionContains(ListExpression list,
-          TextMarkerExpression a, NumberExpression min, NumberExpression max,
-          BooleanExpression percent, TextMarkerBlock env) {
+  public static AbstractRutaCondition createConditionContains(ListExpression list,
+          RutaExpression a, NumberExpression min, NumberExpression max,
+          BooleanExpression percent, RutaBlock env) {
     return new ContainsCondition(list, a, min, max, percent);
   }
 

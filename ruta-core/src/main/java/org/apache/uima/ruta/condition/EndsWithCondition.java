@@ -17,19 +17,19 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.condition;
+package org.apache.uima.ruta.condition;
 
 import java.util.List;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.list.TypeListExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.list.TypeListExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.type.RutaBasic;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class EndsWithCondition extends TypeSentiveCondition {
 
@@ -43,7 +43,7 @@ public class EndsWithCondition extends TypeSentiveCondition {
 
   @Override
   public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          TextMarkerStream stream, InferenceCrowd crowd) {
+          RutaStream stream, InferenceCrowd crowd) {
     if (!isWorkingOnList()) {
       Type givenType = type.getType(element.getParent());
       boolean result = check(stream, annotation, givenType);
@@ -61,8 +61,8 @@ public class EndsWithCondition extends TypeSentiveCondition {
     }
   }
 
-  private boolean check(TextMarkerStream stream, AnnotationFS matched, Type givenType) {
-    TextMarkerBasic endAnchor = stream.getEndAnchor(matched.getEnd());
+  private boolean check(RutaStream stream, AnnotationFS matched, Type givenType) {
+    RutaBasic endAnchor = stream.getEndAnchor(matched.getEnd());
     return endAnchor.endsWith(givenType);
   }
 

@@ -17,29 +17,29 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.condition;
+package org.apache.uima.ruta.condition;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class AndCondition extends ComposedTextMarkerCondition {
+public class AndCondition extends ComposedRutaCondition {
 
-  public AndCondition(List<AbstractTextMarkerCondition> conditions) {
+  public AndCondition(List<AbstractRutaCondition> conditions) {
     super(conditions);
   }
 
   @Override
   public EvaluatedCondition eval(AnnotationFS currentSymbol, RuleElement element,
-          TextMarkerStream symbolStream, InferenceCrowd crowd) {
+          RutaStream symbolStream, InferenceCrowd crowd) {
     boolean result = true;
     List<EvaluatedCondition> evals = new ArrayList<EvaluatedCondition>();
-    for (AbstractTextMarkerCondition each : conditions) {
+    for (AbstractRutaCondition each : conditions) {
       crowd.beginVisit(each, null);
       EvaluatedCondition eval = each.eval(currentSymbol, element, symbolStream, crowd);
       crowd.endVisit(each, null);

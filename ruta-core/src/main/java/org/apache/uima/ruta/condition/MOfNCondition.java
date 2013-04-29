@@ -17,25 +17,25 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.condition;
+package org.apache.uima.ruta.condition;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class MOfNCondition extends ComposedTextMarkerCondition {
+public class MOfNCondition extends ComposedRutaCondition {
 
   private final NumberExpression min;
 
   private final NumberExpression max;
 
-  public MOfNCondition(List<AbstractTextMarkerCondition> conditions, NumberExpression min,
+  public MOfNCondition(List<AbstractRutaCondition> conditions, NumberExpression min,
           NumberExpression max) {
     super(conditions);
     this.min = min;
@@ -44,10 +44,10 @@ public class MOfNCondition extends ComposedTextMarkerCondition {
 
   @Override
   public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          TextMarkerStream stream, InferenceCrowd crowd) {
+          RutaStream stream, InferenceCrowd crowd) {
     int result = 0;
     List<EvaluatedCondition> evals = new ArrayList<EvaluatedCondition>();
-    for (AbstractTextMarkerCondition each : conditions) {
+    for (AbstractRutaCondition each : conditions) {
       crowd.beginVisit(each, null);
       EvaluatedCondition eval = each.eval(annotation, element, stream, crowd);
       crowd.endVisit(each, null);

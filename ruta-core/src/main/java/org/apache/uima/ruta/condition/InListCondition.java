@@ -17,22 +17,22 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.condition;
+package org.apache.uima.ruta.condition;
 
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.bool.BooleanExpression;
-import org.apache.uima.textmarker.expression.list.StringListExpression;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.resource.WordListExpression;
-import org.apache.uima.textmarker.resource.TextMarkerWordList;
-import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.list.StringListExpression;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.resource.WordListExpression;
+import org.apache.uima.ruta.resource.RutaWordList;
+import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class InListCondition extends TerminalTextMarkerCondition {
+public class InListCondition extends TerminalRutaCondition {
 
   private BooleanExpression relative;
 
@@ -60,10 +60,10 @@ public class InListCondition extends TerminalTextMarkerCondition {
 
   @Override
   public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          TextMarkerStream stream, InferenceCrowd crowd) {
+          RutaStream stream, InferenceCrowd crowd) {
     String coveredText = annotation.getCoveredText();
     if (stringList == null) {
-      TextMarkerWordList wordList = listExpr.getList(element.getParent());
+      RutaWordList wordList = listExpr.getList(element.getParent());
       return new EvaluatedCondition(this, wordList.contains(coveredText, false, 0, null, 0, true));
     }
     List<String> sList = stringList.getList(element.getParent());

@@ -17,16 +17,16 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.condition;
+package org.apache.uima.ruta.condition;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.type.RutaBasic;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class LastCondition extends TypeSentiveCondition {
 
@@ -36,8 +36,8 @@ public class LastCondition extends TypeSentiveCondition {
 
   @Override
   public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          TextMarkerStream stream, InferenceCrowd crowd) {
-    TextMarkerBasic endAnchor = stream.getEndAnchor(annotation.getEnd());
+          RutaStream stream, InferenceCrowd crowd) {
+    RutaBasic endAnchor = stream.getEndAnchor(annotation.getEnd());
     Type t = type.getType(element.getParent());
     boolean result = endAnchor.beginsWith(t) && endAnchor.endsWith(t);
     return new EvaluatedCondition(this, result);

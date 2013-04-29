@@ -17,21 +17,21 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.condition;
+package org.apache.uima.ruta.condition;
 
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.bool.BooleanExpression;
-import org.apache.uima.textmarker.expression.bool.SimpleBooleanExpression;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.number.SimpleNumberExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.type.RutaBasic;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class NearCondition extends TypeSentiveCondition {
 
@@ -54,7 +54,7 @@ public class NearCondition extends TypeSentiveCondition {
 
   @Override
   public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          TextMarkerStream stream, InferenceCrowd crowd) {
+          RutaStream stream, InferenceCrowd crowd) {
     int maxValue = max.getIntegerValue(element.getParent());
     int minValue = min.getIntegerValue(element.getParent());
     boolean forwardValue = forward.getBooleanValue(element.getParent());
@@ -72,8 +72,8 @@ public class NearCondition extends TypeSentiveCondition {
     while (count <= maxValue) {
       if (count >= minValue && it.isValid()) {
         FeatureStructure featureStructure = it.get();
-        if (featureStructure instanceof TextMarkerBasic) {
-          TextMarkerBasic each = (TextMarkerBasic) featureStructure;
+        if (featureStructure instanceof RutaBasic) {
+          RutaBasic each = (RutaBasic) featureStructure;
           if (each.isPartOf(type.getType(element.getParent()))) {
             return new EvaluatedCondition(this, true);
           }

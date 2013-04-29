@@ -17,19 +17,19 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.condition;
+package org.apache.uima.ruta.condition;
 
 import java.util.List;
 
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.list.TypeListExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.list.TypeListExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class BeforeCondition extends TypeSentiveCondition {
 
@@ -43,7 +43,7 @@ public class BeforeCondition extends TypeSentiveCondition {
 
   @Override
   public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          TextMarkerStream stream, InferenceCrowd crowd) {
+          RutaStream stream, InferenceCrowd crowd) {
     if (!isWorkingOnList()) {
       Type t = type.getType(element.getParent());
       boolean result = check(annotation, stream, t);
@@ -61,7 +61,7 @@ public class BeforeCondition extends TypeSentiveCondition {
     }
   }
 
-  private boolean check(AnnotationFS annotation, TextMarkerStream stream, Type t) {
+  private boolean check(AnnotationFS annotation, RutaStream stream, Type t) {
     boolean result = false;
     FSIterator<AnnotationFS> it = stream.getCas().getAnnotationIndex(t).iterator(annotation);
     while (it.isValid()) {

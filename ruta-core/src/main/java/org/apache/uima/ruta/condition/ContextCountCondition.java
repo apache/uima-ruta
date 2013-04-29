@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.condition;
+package org.apache.uima.ruta.condition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,14 +25,14 @@ import java.util.Set;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.number.SimpleNumberExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.type.RutaBasic;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class ContextCountCondition extends TypeSentiveCondition {
 
@@ -52,12 +52,12 @@ public class ContextCountCondition extends TypeSentiveCondition {
 
   @Override
   public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          TextMarkerStream stream, InferenceCrowd crowd) {
+          RutaStream stream, InferenceCrowd crowd) {
     Type contextType = type.getType(element.getParent());
     stream.moveToFirst();
     List<AnnotationFS> visibleContexts = new ArrayList<AnnotationFS>();
     while (stream.isValid()) {
-      TextMarkerBasic each = (TextMarkerBasic) stream.get();
+      RutaBasic each = (RutaBasic) stream.get();
       if (each.beginsWith(contextType)) {
         visibleContexts.addAll(each.getBeginAnchors(contextType));
       }
@@ -75,8 +75,8 @@ public class ContextCountCondition extends TypeSentiveCondition {
     for (AnnotationFS eachContext : overlappingContexts) {
       int index = 0;
       int counter = 0;
-      List<TextMarkerBasic> basicsInWindow = stream.getBasicsInWindow(eachContext);
-      for (TextMarkerBasic eachBasic : basicsInWindow) {
+      List<RutaBasic> basicsInWindow = stream.getBasicsInWindow(eachContext);
+      for (RutaBasic eachBasic : basicsInWindow) {
         Set<AnnotationFS> beginAnchors = eachBasic.getBeginAnchors(annotation.getType());
         if (beginAnchors != null) {
           for (AnnotationFS each : beginAnchors) {

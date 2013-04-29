@@ -17,28 +17,28 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.condition;
+package org.apache.uima.ruta.condition;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.TextMarkerExpression;
-import org.apache.uima.textmarker.expression.bool.BooleanExpression;
-import org.apache.uima.textmarker.expression.list.BooleanListExpression;
-import org.apache.uima.textmarker.expression.list.ListExpression;
-import org.apache.uima.textmarker.expression.list.NumberListExpression;
-import org.apache.uima.textmarker.expression.list.StringListExpression;
-import org.apache.uima.textmarker.expression.list.TypeListExpression;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.number.SimpleNumberExpression;
-import org.apache.uima.textmarker.expression.string.StringExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.list.BooleanListExpression;
+import org.apache.uima.ruta.expression.list.ListExpression;
+import org.apache.uima.ruta.expression.list.NumberListExpression;
+import org.apache.uima.ruta.expression.list.StringListExpression;
+import org.apache.uima.ruta.expression.list.TypeListExpression;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
+import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class CountCondition extends TypeSentiveCondition {
 
@@ -50,7 +50,7 @@ public class CountCondition extends TypeSentiveCondition {
 
   private ListExpression list;
 
-  private TextMarkerExpression arg;
+  private RutaExpression arg;
 
   public CountCondition(TypeExpression type, NumberExpression min, NumberExpression max, String var) {
     super(type);
@@ -59,7 +59,7 @@ public class CountCondition extends TypeSentiveCondition {
     this.var = var;
   }
 
-  public CountCondition(ListExpression list, TextMarkerExpression a, NumberExpression min,
+  public CountCondition(ListExpression list, RutaExpression a, NumberExpression min,
           NumberExpression max, String var) {
     super((TypeExpression) null);
     this.list = list;
@@ -71,7 +71,7 @@ public class CountCondition extends TypeSentiveCondition {
 
   @Override
   public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          TextMarkerStream stream, InferenceCrowd crowd) {
+          RutaStream stream, InferenceCrowd crowd) {
     if (arg == null) {
       List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(annotation,
               type.getType(element.getParent()));
@@ -142,7 +142,7 @@ public class CountCondition extends TypeSentiveCondition {
     return list;
   }
 
-  public TextMarkerExpression getArg() {
+  public RutaExpression getArg() {
     return arg;
   }
 }

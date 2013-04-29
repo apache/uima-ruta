@@ -17,17 +17,17 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.condition;
+package org.apache.uima.ruta.condition;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerEnvironment;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaEnvironment;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class ParseCondition extends AbstractTextMarkerCondition {
+public class ParseCondition extends AbstractRutaCondition {
 
   private final String var;
 
@@ -38,9 +38,9 @@ public class ParseCondition extends AbstractTextMarkerCondition {
 
   @Override
   public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          TextMarkerStream stream, InferenceCrowd crowd) {
+          RutaStream stream, InferenceCrowd crowd) {
     String text = annotation.getCoveredText();
-    TextMarkerEnvironment env = element.getParent().getEnvironment();
+    RutaEnvironment env = element.getParent().getEnvironment();
     Class<?> type = env.getVariableType(var);
     try {
       if (Integer.class.equals(type)) {

@@ -17,24 +17,24 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.condition;
+package org.apache.uima.ruta.condition;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class NotCondition extends ComposedTextMarkerCondition {
+public class NotCondition extends ComposedRutaCondition {
 
-  public NotCondition(AbstractTextMarkerCondition condition) {
+  public NotCondition(AbstractRutaCondition condition) {
     super(condition);
   }
 
   @Override
   public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          TextMarkerStream stream, InferenceCrowd crowd) {
-    AbstractTextMarkerCondition cond = conditions.get(0);
+          RutaStream stream, InferenceCrowd crowd) {
+    AbstractRutaCondition cond = conditions.get(0);
     crowd.beginVisit(cond, null);
     EvaluatedCondition eval = cond.eval(annotation, element, stream, crowd);
     crowd.endVisit(cond, null);

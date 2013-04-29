@@ -17,20 +17,20 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.condition;
+package org.apache.uima.ruta.condition;
 
 import java.util.List;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.type.RutaBasic;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class VoteCondition extends TerminalTextMarkerCondition {
+public class VoteCondition extends TerminalRutaCondition {
 
   private final TypeExpression type1;
 
@@ -44,15 +44,15 @@ public class VoteCondition extends TerminalTextMarkerCondition {
 
   @Override
   public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          TextMarkerStream stream, InferenceCrowd crowd) {
+          RutaStream stream, InferenceCrowd crowd) {
     int count1 = 0;
     int count2 = 0;
     int totalCount = 0;
     if (annotation != null) {
-      List<TextMarkerBasic> annotations = stream.getBasicsInWindow(annotation);
+      List<RutaBasic> annotations = stream.getBasicsInWindow(annotation);
       Type t1 = type1.getType(element.getParent());
       Type t2 = type2.getType(element.getParent());
-      for (TextMarkerBasic each : annotations) {
+      for (RutaBasic each : annotations) {
         totalCount++;
         if (each.beginsWith(t1)) {
           count1++;

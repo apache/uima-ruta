@@ -17,22 +17,22 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.condition;
+package org.apache.uima.ruta.condition;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerEnvironment;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.bool.BooleanExpression;
-import org.apache.uima.textmarker.expression.bool.SimpleBooleanExpression;
-import org.apache.uima.textmarker.expression.string.StringExpression;
-import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaEnvironment;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
+import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class RegExpCondition extends TerminalTextMarkerCondition {
+public class RegExpCondition extends TerminalRutaCondition {
   private final StringExpression pattern;
 
   private final BooleanExpression ignoreCase;
@@ -52,7 +52,7 @@ public class RegExpCondition extends TerminalTextMarkerCondition {
 
   @Override
   public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          TextMarkerStream stream, InferenceCrowd crowd) {
+          RutaStream stream, InferenceCrowd crowd) {
     Matcher matcher = null;
     boolean ignore = ignoreCase == null ? false : ignoreCase.getBooleanValue(element.getParent());
     String stringValue = pattern.getStringValue(element.getParent());
@@ -66,7 +66,7 @@ public class RegExpCondition extends TerminalTextMarkerCondition {
       }
       matcher = regularExpPattern.matcher(coveredText);
     } else {
-      TextMarkerEnvironment environment = element.getParent().getEnvironment();
+      RutaEnvironment environment = element.getParent().getEnvironment();
       String variableValue = environment.getVariableValue(variable, String.class);
       Pattern regularExpPattern = null;
       if (ignore) {

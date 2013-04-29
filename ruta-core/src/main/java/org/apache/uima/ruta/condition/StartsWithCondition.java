@@ -17,19 +17,19 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.condition;
+package org.apache.uima.ruta.condition;
 
 import java.util.List;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.list.TypeListExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.list.TypeListExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.type.RutaBasic;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class StartsWithCondition extends TypeSentiveCondition {
 
@@ -43,7 +43,7 @@ public class StartsWithCondition extends TypeSentiveCondition {
 
   @Override
   public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          TextMarkerStream stream, InferenceCrowd crowd) {
+          RutaStream stream, InferenceCrowd crowd) {
 
     // TODO rewrite
     if (!isWorkingOnList()) {
@@ -64,11 +64,11 @@ public class StartsWithCondition extends TypeSentiveCondition {
     return new EvaluatedCondition(this, result);
   }
 
-  private boolean check(AnnotationFS annotation, Type t, TextMarkerStream stream) {
+  private boolean check(AnnotationFS annotation, Type t, RutaStream stream) {
     if (annotation == null) {
       return false;
     }
-    TextMarkerBasic beginAnchor = stream.getBeginAnchor(annotation.getBegin());
+    RutaBasic beginAnchor = stream.getBeginAnchor(annotation.getBegin());
     return beginAnchor.beginsWith(t);
   }
 

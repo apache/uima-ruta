@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.condition;
+package org.apache.uima.ruta.condition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,15 +25,15 @@ import java.util.List;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.bool.BooleanExpression;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RutaRuleElement;
+import org.apache.uima.ruta.type.RutaBasic;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class PositionCondition extends TypeSentiveCondition {
 
@@ -50,11 +50,11 @@ public class PositionCondition extends TypeSentiveCondition {
 
   @Override
   public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          TextMarkerStream stream, InferenceCrowd crowd) {
+          RutaStream stream, InferenceCrowd crowd) {
     Type t = type.getType(element.getParent());
 
-    TextMarkerBasic beginAnchor = stream.getBeginAnchor(annotation.getBegin());
-    TextMarkerBasic endAnchor = stream.getEndAnchor(annotation.getEnd());
+    RutaBasic beginAnchor = stream.getBeginAnchor(annotation.getBegin());
+    RutaBasic endAnchor = stream.getEndAnchor(annotation.getEnd());
     if (beginAnchor == null || endAnchor == null || !beginAnchor.isPartOf(t)
             || !endAnchor.isPartOf(t)) {
       return new EvaluatedCondition(this, false);
@@ -81,8 +81,8 @@ public class PositionCondition extends TypeSentiveCondition {
     }
 
     List<Type> targetTypes = new ArrayList<Type>();
-    if (element instanceof TextMarkerRuleElement) {
-      TextMarkerRuleElement re = (TextMarkerRuleElement) element;
+    if (element instanceof RutaRuleElement) {
+      RutaRuleElement re = (RutaRuleElement) element;
       targetTypes.addAll(re.getMatcher().getTypes(element.getParent(), stream));
     } else {
       targetTypes.add(annotation.getType());
@@ -94,8 +94,8 @@ public class PositionCondition extends TypeSentiveCondition {
     int integerValue = position.getIntegerValue(element.getParent());
     if (relatively) {
       int counter = 0;
-      List<TextMarkerBasic> inWindow = stream.getBasicsInWindow(window);
-      for (TextMarkerBasic each : inWindow) {
+      List<RutaBasic> inWindow = stream.getBasicsInWindow(window);
+      for (RutaBasic each : inWindow) {
         if (beginsWith(each, targetTypes)) {
           counter++;
           if (counter == integerValue) {
@@ -112,8 +112,8 @@ public class PositionCondition extends TypeSentiveCondition {
       return new EvaluatedCondition(this, false);
     } else {
       int counter = 0;
-      List<TextMarkerBasic> inWindow = stream.getBasicsInWindow(window);
-      for (TextMarkerBasic each : inWindow) {
+      List<RutaBasic> inWindow = stream.getBasicsInWindow(window);
+      for (RutaBasic each : inWindow) {
         counter++;
         boolean beginsWith = beginsWith(each, targetTypes);
         if (each.getBegin() == beginAnchor.getBegin() && beginsWith && counter == integerValue) {
@@ -126,7 +126,7 @@ public class PositionCondition extends TypeSentiveCondition {
     }
   }
 
-  private boolean beginsWith(TextMarkerBasic each, List<Type> targetTypes) {
+  private boolean beginsWith(RutaBasic each, List<Type> targetTypes) {
     for (Type type : targetTypes) {
       if (each.beginsWith(type)) {
         return true;

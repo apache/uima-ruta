@@ -17,12 +17,12 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.condition;
+package org.apache.uima.ruta.condition;
 
-import org.apache.uima.textmarker.expression.list.TypeListExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.list.TypeListExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
 
-public abstract class TypeSentiveCondition extends TerminalTextMarkerCondition {
+public abstract class TypeSentiveCondition extends TerminalRutaCondition {
 
   protected final TypeExpression type;
 
