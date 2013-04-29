@@ -17,65 +17,65 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.verbalize;
+package org.apache.uima.ruta.verbalize;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
-import org.apache.uima.textmarker.action.AddAction;
-import org.apache.uima.textmarker.action.AssignAction;
-import org.apache.uima.textmarker.action.CallAction;
-import org.apache.uima.textmarker.action.ClearAction;
-import org.apache.uima.textmarker.action.ColorAction;
-import org.apache.uima.textmarker.action.ConfigureAction;
-import org.apache.uima.textmarker.action.CreateAction;
-import org.apache.uima.textmarker.action.DelAction;
-import org.apache.uima.textmarker.action.DynamicAnchoringAction;
-import org.apache.uima.textmarker.action.ExecAction;
-import org.apache.uima.textmarker.action.FillAction;
-import org.apache.uima.textmarker.action.FilterTypeAction;
-import org.apache.uima.textmarker.action.GatherAction;
-import org.apache.uima.textmarker.action.GetAction;
-import org.apache.uima.textmarker.action.GetFeatureAction;
-import org.apache.uima.textmarker.action.GetListAction;
-import org.apache.uima.textmarker.action.LogAction;
-import org.apache.uima.textmarker.action.MarkAction;
-import org.apache.uima.textmarker.action.MarkFastAction;
-import org.apache.uima.textmarker.action.MarkLastAction;
-import org.apache.uima.textmarker.action.MarkOnceAction;
-import org.apache.uima.textmarker.action.MarkTableAction;
-import org.apache.uima.textmarker.action.MatchedTextAction;
-import org.apache.uima.textmarker.action.MergeAction;
-import org.apache.uima.textmarker.action.RemoveAction;
-import org.apache.uima.textmarker.action.RemoveDuplicateAction;
-import org.apache.uima.textmarker.action.ReplaceAction;
-import org.apache.uima.textmarker.action.RetainTypeAction;
-import org.apache.uima.textmarker.action.SetFeatureAction;
-import org.apache.uima.textmarker.action.ShiftAction;
-import org.apache.uima.textmarker.action.TransferAction;
-import org.apache.uima.textmarker.action.TrieAction;
-import org.apache.uima.textmarker.action.UnmarkAction;
-import org.apache.uima.textmarker.action.UnmarkAllAction;
-import org.apache.uima.textmarker.expression.TextMarkerExpression;
-import org.apache.uima.textmarker.expression.bool.BooleanExpression;
-import org.apache.uima.textmarker.expression.list.TypeListExpression;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.resource.WordTableExpression;
-import org.apache.uima.textmarker.expression.string.StringExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
+import org.apache.uima.ruta.action.AbstractRutaAction;
+import org.apache.uima.ruta.action.AddAction;
+import org.apache.uima.ruta.action.AssignAction;
+import org.apache.uima.ruta.action.CallAction;
+import org.apache.uima.ruta.action.ClearAction;
+import org.apache.uima.ruta.action.ColorAction;
+import org.apache.uima.ruta.action.ConfigureAction;
+import org.apache.uima.ruta.action.CreateAction;
+import org.apache.uima.ruta.action.DelAction;
+import org.apache.uima.ruta.action.DynamicAnchoringAction;
+import org.apache.uima.ruta.action.ExecAction;
+import org.apache.uima.ruta.action.FillAction;
+import org.apache.uima.ruta.action.FilterTypeAction;
+import org.apache.uima.ruta.action.GatherAction;
+import org.apache.uima.ruta.action.GetAction;
+import org.apache.uima.ruta.action.GetFeatureAction;
+import org.apache.uima.ruta.action.GetListAction;
+import org.apache.uima.ruta.action.LogAction;
+import org.apache.uima.ruta.action.MarkAction;
+import org.apache.uima.ruta.action.MarkFastAction;
+import org.apache.uima.ruta.action.MarkLastAction;
+import org.apache.uima.ruta.action.MarkOnceAction;
+import org.apache.uima.ruta.action.MarkTableAction;
+import org.apache.uima.ruta.action.MatchedTextAction;
+import org.apache.uima.ruta.action.MergeAction;
+import org.apache.uima.ruta.action.RemoveAction;
+import org.apache.uima.ruta.action.RemoveDuplicateAction;
+import org.apache.uima.ruta.action.ReplaceAction;
+import org.apache.uima.ruta.action.RetainTypeAction;
+import org.apache.uima.ruta.action.SetFeatureAction;
+import org.apache.uima.ruta.action.ShiftAction;
+import org.apache.uima.ruta.action.TransferAction;
+import org.apache.uima.ruta.action.TrieAction;
+import org.apache.uima.ruta.action.UnmarkAction;
+import org.apache.uima.ruta.action.UnmarkAllAction;
+import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.list.TypeListExpression;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.resource.WordTableExpression;
+import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
 
 public class ActionVerbalizer {
 
-  private TextMarkerVerbalizer verbalizer;
+  private RutaVerbalizer verbalizer;
 
-  public ActionVerbalizer(TextMarkerVerbalizer verbalizer) {
+  public ActionVerbalizer(RutaVerbalizer verbalizer) {
     super();
     this.verbalizer = verbalizer;
   }
 
-  public String verbalizeName(AbstractTextMarkerAction action) {
+  public String verbalizeName(AbstractRutaAction action) {
     if (action instanceof AddAction) {
       return "ADD";
     } else if (action instanceof AssignAction) {
@@ -157,7 +157,7 @@ public class ActionVerbalizer {
     return action.getClass().getSimpleName();
   }
 
-  public String verbalize(AbstractTextMarkerAction action) {
+  public String verbalize(AbstractRutaAction action) {
     String name = verbalizeName(action) + "(";
     if (action instanceof AssignAction) {
       AssignAction a = (AssignAction) action;
@@ -180,7 +180,7 @@ public class ActionVerbalizer {
       StringBuilder features = new StringBuilder();
       if (a.getFeatures() != null) {
         features.append(", ");
-        for (Entry<StringExpression, TextMarkerExpression> each : a.getFeatures().entrySet()) {
+        for (Entry<StringExpression, RutaExpression> each : a.getFeatures().entrySet()) {
           features.append(verbalizer.verbalize(each.getKey()));
           features.append(" = ");
           features.append(verbalizer.verbalize(each.getValue()));

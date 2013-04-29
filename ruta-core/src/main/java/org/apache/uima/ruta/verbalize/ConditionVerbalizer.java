@@ -17,53 +17,53 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.verbalize;
+package org.apache.uima.ruta.verbalize;
 
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
-import org.apache.uima.textmarker.condition.AfterCondition;
-import org.apache.uima.textmarker.condition.AndCondition;
-import org.apache.uima.textmarker.condition.BeforeCondition;
-import org.apache.uima.textmarker.condition.ContainsCondition;
-import org.apache.uima.textmarker.condition.ContextCountCondition;
-import org.apache.uima.textmarker.condition.CountCondition;
-import org.apache.uima.textmarker.condition.CurrentCountCondition;
-import org.apache.uima.textmarker.condition.EndsWithCondition;
-import org.apache.uima.textmarker.condition.FeatureCondition;
-import org.apache.uima.textmarker.condition.IfCondition;
-import org.apache.uima.textmarker.condition.InListCondition;
-import org.apache.uima.textmarker.condition.IsCondition;
-import org.apache.uima.textmarker.condition.LastCondition;
-import org.apache.uima.textmarker.condition.MOfNCondition;
-import org.apache.uima.textmarker.condition.NearCondition;
-import org.apache.uima.textmarker.condition.NotCondition;
-import org.apache.uima.textmarker.condition.OrCondition;
-import org.apache.uima.textmarker.condition.ParseCondition;
-import org.apache.uima.textmarker.condition.PartOfCondition;
-import org.apache.uima.textmarker.condition.PartOfNeqCondition;
-import org.apache.uima.textmarker.condition.PositionCondition;
-import org.apache.uima.textmarker.condition.RegExpCondition;
-import org.apache.uima.textmarker.condition.ScoreCondition;
-import org.apache.uima.textmarker.condition.SizeCondition;
-import org.apache.uima.textmarker.condition.StartsWithCondition;
-import org.apache.uima.textmarker.condition.TotalCountCondition;
-import org.apache.uima.textmarker.condition.VoteCondition;
-import org.apache.uima.textmarker.expression.list.ListExpression;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.number.SimpleNumberExpression;
+import org.apache.uima.ruta.condition.AbstractRutaCondition;
+import org.apache.uima.ruta.condition.AfterCondition;
+import org.apache.uima.ruta.condition.AndCondition;
+import org.apache.uima.ruta.condition.BeforeCondition;
+import org.apache.uima.ruta.condition.ContainsCondition;
+import org.apache.uima.ruta.condition.ContextCountCondition;
+import org.apache.uima.ruta.condition.CountCondition;
+import org.apache.uima.ruta.condition.CurrentCountCondition;
+import org.apache.uima.ruta.condition.EndsWithCondition;
+import org.apache.uima.ruta.condition.FeatureCondition;
+import org.apache.uima.ruta.condition.IfCondition;
+import org.apache.uima.ruta.condition.InListCondition;
+import org.apache.uima.ruta.condition.IsCondition;
+import org.apache.uima.ruta.condition.LastCondition;
+import org.apache.uima.ruta.condition.MOfNCondition;
+import org.apache.uima.ruta.condition.NearCondition;
+import org.apache.uima.ruta.condition.NotCondition;
+import org.apache.uima.ruta.condition.OrCondition;
+import org.apache.uima.ruta.condition.ParseCondition;
+import org.apache.uima.ruta.condition.PartOfCondition;
+import org.apache.uima.ruta.condition.PartOfNeqCondition;
+import org.apache.uima.ruta.condition.PositionCondition;
+import org.apache.uima.ruta.condition.RegExpCondition;
+import org.apache.uima.ruta.condition.ScoreCondition;
+import org.apache.uima.ruta.condition.SizeCondition;
+import org.apache.uima.ruta.condition.StartsWithCondition;
+import org.apache.uima.ruta.condition.TotalCountCondition;
+import org.apache.uima.ruta.condition.VoteCondition;
+import org.apache.uima.ruta.expression.list.ListExpression;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
 
 public class ConditionVerbalizer {
 
-  private TextMarkerVerbalizer verbalizer;
+  private RutaVerbalizer verbalizer;
 
-  public ConditionVerbalizer(TextMarkerVerbalizer verbalizer) {
+  public ConditionVerbalizer(RutaVerbalizer verbalizer) {
     super();
     this.verbalizer = verbalizer;
   }
 
-  public String verbalizeName(AbstractTextMarkerCondition condition) {
+  public String verbalizeName(AbstractRutaCondition condition) {
     if (condition instanceof AndCondition) {
       return "AND";
     } else if (condition instanceof ContainsCondition) {
@@ -140,16 +140,16 @@ public class ConditionVerbalizer {
     return condition.getClass().getSimpleName();
   }
 
-  public String verbalize(AbstractTextMarkerCondition condition) {
+  public String verbalize(AbstractRutaCondition condition) {
     String name = verbalizeName(condition) + "(";
     if (condition instanceof AndCondition) {
       AndCondition c = (AndCondition) condition;
-      List<AbstractTextMarkerCondition> conditions = c.getConditions();
+      List<AbstractRutaCondition> conditions = c.getConditions();
       StringBuilder sb = new StringBuilder();
       sb.append(name);
-      Iterator<AbstractTextMarkerCondition> it = conditions.iterator();
+      Iterator<AbstractRutaCondition> it = conditions.iterator();
       while (it.hasNext()) {
-        AbstractTextMarkerCondition each = (AbstractTextMarkerCondition) it.next();
+        AbstractRutaCondition each = (AbstractRutaCondition) it.next();
         sb.append(verbalize(each));
         if (it.hasNext()) {
           sb.append(", ");
@@ -245,13 +245,13 @@ public class ConditionVerbalizer {
       String max = verbalizeMax(maxE, Integer.MAX_VALUE);
       sb.append(min.substring(2, min.length()));
       sb.append(max);
-      List<AbstractTextMarkerCondition> conditions = c.getConditions();
+      List<AbstractRutaCondition> conditions = c.getConditions();
       if (!conditions.isEmpty()) {
         sb.append(", ");
       }
-      Iterator<AbstractTextMarkerCondition> it = conditions.iterator();
+      Iterator<AbstractRutaCondition> it = conditions.iterator();
       while (it.hasNext()) {
-        AbstractTextMarkerCondition each = (AbstractTextMarkerCondition) it.next();
+        AbstractRutaCondition each = (AbstractRutaCondition) it.next();
         sb.append(verbalize(each));
         if (it.hasNext()) {
           sb.append(", ");
@@ -274,13 +274,13 @@ public class ConditionVerbalizer {
       return name + type + min + max + ", " + var + filtered + ")";
     } else if (condition instanceof NotCondition) {
       NotCondition c = (NotCondition) condition;
-      List<AbstractTextMarkerCondition> conditions = c.getConditions();
+      List<AbstractRutaCondition> conditions = c.getConditions();
       if (conditions.size() != 1) {
         StringBuilder sb = new StringBuilder();
         sb.append(name);
-        Iterator<AbstractTextMarkerCondition> it = conditions.iterator();
+        Iterator<AbstractRutaCondition> it = conditions.iterator();
         while (it.hasNext()) {
-          AbstractTextMarkerCondition each = (AbstractTextMarkerCondition) it.next();
+          AbstractRutaCondition each = (AbstractRutaCondition) it.next();
           sb.append(verbalize(each));
           if (it.hasNext()) {
             sb.append(", ");
@@ -293,12 +293,12 @@ public class ConditionVerbalizer {
       }
     } else if (condition instanceof OrCondition) {
       OrCondition c = (OrCondition) condition;
-      List<AbstractTextMarkerCondition> conditions = c.getConditions();
+      List<AbstractRutaCondition> conditions = c.getConditions();
       StringBuilder sb = new StringBuilder();
       sb.append(name);
-      Iterator<AbstractTextMarkerCondition> it = conditions.iterator();
+      Iterator<AbstractRutaCondition> it = conditions.iterator();
       while (it.hasNext()) {
-        AbstractTextMarkerCondition each = (AbstractTextMarkerCondition) it.next();
+        AbstractRutaCondition each = (AbstractRutaCondition) it.next();
         sb.append(verbalize(each));
         if (it.hasNext()) {
           sb.append(", ");

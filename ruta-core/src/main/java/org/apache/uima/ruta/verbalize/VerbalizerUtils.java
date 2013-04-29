@@ -17,19 +17,19 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.verbalize;
+package org.apache.uima.ruta.verbalize;
 
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.uima.cas.Type;
-import org.apache.uima.textmarker.expression.TextMarkerExpression;
+import org.apache.uima.ruta.expression.RutaExpression;
 
 public class VerbalizerUtils {
 
-  private TextMarkerVerbalizer verbalizer;
+  private RutaVerbalizer verbalizer;
 
-  public VerbalizerUtils(TextMarkerVerbalizer verbalizer) {
+  public VerbalizerUtils(RutaVerbalizer verbalizer) {
     super();
     this.verbalizer = verbalizer;
   }
@@ -60,11 +60,11 @@ public class VerbalizerUtils {
     return result.toString();
   }
 
-  public String verbalizeExpressionList(List<? extends TextMarkerExpression> list) {
+  public String verbalizeExpressionList(List<? extends RutaExpression> list) {
     StringBuilder result = new StringBuilder();
-    Iterator<? extends TextMarkerExpression> it = list.iterator();
+    Iterator<? extends RutaExpression> it = list.iterator();
     while (it.hasNext()) {
-      TextMarkerExpression e = it.next();
+      RutaExpression e = it.next();
       result.append(verbalizer.verbalize(e));
       if (it.hasNext()) {
         result.append(", ");

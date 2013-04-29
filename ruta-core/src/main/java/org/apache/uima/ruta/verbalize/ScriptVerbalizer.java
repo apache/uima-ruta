@@ -17,54 +17,54 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.verbalize;
+package org.apache.uima.ruta.verbalize;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.apache.uima.textmarker.TextMarkerBlock;
-import org.apache.uima.textmarker.TextMarkerElement;
-import org.apache.uima.textmarker.TextMarkerStatement;
-import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
-import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
-import org.apache.uima.textmarker.expression.TextMarkerExpression;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.rule.ComposedRuleElement;
-import org.apache.uima.textmarker.rule.RegExpRule;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.TextMarkerDisjunctiveMatcher;
-import org.apache.uima.textmarker.rule.TextMarkerMatcher;
-import org.apache.uima.textmarker.rule.TextMarkerRule;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
-import org.apache.uima.textmarker.rule.WildCardRuleElement;
-import org.apache.uima.textmarker.rule.quantifier.MinMaxGreedy;
-import org.apache.uima.textmarker.rule.quantifier.MinMaxReluctant;
-import org.apache.uima.textmarker.rule.quantifier.NormalQuantifier;
-import org.apache.uima.textmarker.rule.quantifier.PlusGreedy;
-import org.apache.uima.textmarker.rule.quantifier.PlusReluctant;
-import org.apache.uima.textmarker.rule.quantifier.QuestionGreedy;
-import org.apache.uima.textmarker.rule.quantifier.QuestionReluctant;
-import org.apache.uima.textmarker.rule.quantifier.RuleElementQuantifier;
-import org.apache.uima.textmarker.rule.quantifier.StarGreedy;
-import org.apache.uima.textmarker.rule.quantifier.StarReluctant;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaElement;
+import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.action.AbstractRutaAction;
+import org.apache.uima.ruta.condition.AbstractRutaCondition;
+import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.ComposedRuleElement;
+import org.apache.uima.ruta.rule.RegExpRule;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RutaDisjunctiveMatcher;
+import org.apache.uima.ruta.rule.RutaMatcher;
+import org.apache.uima.ruta.rule.RutaRule;
+import org.apache.uima.ruta.rule.RutaRuleElement;
+import org.apache.uima.ruta.rule.WildCardRuleElement;
+import org.apache.uima.ruta.rule.quantifier.MinMaxGreedy;
+import org.apache.uima.ruta.rule.quantifier.MinMaxReluctant;
+import org.apache.uima.ruta.rule.quantifier.NormalQuantifier;
+import org.apache.uima.ruta.rule.quantifier.PlusGreedy;
+import org.apache.uima.ruta.rule.quantifier.PlusReluctant;
+import org.apache.uima.ruta.rule.quantifier.QuestionGreedy;
+import org.apache.uima.ruta.rule.quantifier.QuestionReluctant;
+import org.apache.uima.ruta.rule.quantifier.RuleElementQuantifier;
+import org.apache.uima.ruta.rule.quantifier.StarGreedy;
+import org.apache.uima.ruta.rule.quantifier.StarReluctant;
 
 public class ScriptVerbalizer {
 
   private static final String THEN = " -> ";
 
-  private TextMarkerVerbalizer verbalizer;
+  private RutaVerbalizer verbalizer;
 
-  public ScriptVerbalizer(TextMarkerVerbalizer verbalizer) {
+  public ScriptVerbalizer(RutaVerbalizer verbalizer) {
     super();
     this.verbalizer = verbalizer;
   }
 
-  public String verbalizeBlock(TextMarkerBlock block, boolean withElements) {
+  public String verbalizeBlock(RutaBlock block, boolean withElements) {
     StringBuilder result = new StringBuilder();
-    TextMarkerRule rule = block.getRule();
-    List<TextMarkerStatement> elements = block.getElements();
+    RutaRule rule = block.getRule();
+    List<RutaStatement> elements = block.getElements();
     result.append("BLOCK(");
     result.append(block.getName());
     result.append(")");
@@ -74,11 +74,11 @@ public class ScriptVerbalizer {
     }
     if (withElements) {
       result.append(" {\n");
-      for (TextMarkerStatement each : elements) {
-        if (each instanceof TextMarkerBlock) {
-          result.append(verbalizeBlock((TextMarkerBlock) each, withElements));
-        } else if (each instanceof TextMarkerRule) {
-          result.append(verbalizeRule((TextMarkerRule) each));
+      for (RutaStatement each : elements) {
+        if (each instanceof RutaBlock) {
+          result.append(verbalizeBlock((RutaBlock) each, withElements));
+        } else if (each instanceof RutaRule) {
+          result.append(verbalizeRule((RutaRule) each));
         }
         result.append(";");
         result.append("\n");
@@ -88,7 +88,7 @@ public class ScriptVerbalizer {
     return result.toString();
   }
 
-  public String verbalizeRule(TextMarkerRule rule) {
+  public String verbalizeRule(RutaRule rule) {
     List<RuleElement> elements = rule.getRuleElements();
     StringBuilder result = new StringBuilder();
     for (RuleElement each : elements) {
@@ -99,14 +99,14 @@ public class ScriptVerbalizer {
   }
 
   public String verbalizeRuleElement(RuleElement re) {
-    List<AbstractTextMarkerCondition> conditions = re.getConditions();
-    List<AbstractTextMarkerAction> actions = re.getActions();
+    List<AbstractRutaCondition> conditions = re.getConditions();
+    List<AbstractRutaAction> actions = re.getActions();
     RuleElementQuantifier quantifier = re.getQuantifier();
     StringBuilder result = new StringBuilder();
     if (re instanceof ComposedRuleElement) {
       result.append(verbalizeComposed((ComposedRuleElement) re));
-    } else if (re instanceof TextMarkerRuleElement) {
-      TextMarkerRuleElement tmre = (TextMarkerRuleElement) re;
+    } else if (re instanceof RutaRuleElement) {
+      RutaRuleElement tmre = (RutaRuleElement) re;
       result.append(verbalizeMatcher(tmre));
     } else if(re instanceof WildCardRuleElement) {
       result.append("#");
@@ -115,9 +115,9 @@ public class ScriptVerbalizer {
 
     if (!conditions.isEmpty() || !actions.isEmpty()) {
       result.append("{");
-      Iterator<AbstractTextMarkerCondition> cit = conditions.iterator();
+      Iterator<AbstractRutaCondition> cit = conditions.iterator();
       while (cit.hasNext()) {
-        AbstractTextMarkerCondition each = cit.next();
+        AbstractRutaCondition each = cit.next();
         result.append(verbalizer.verbalize(each));
         if (cit.hasNext()) {
           result.append(",");
@@ -125,9 +125,9 @@ public class ScriptVerbalizer {
       }
       if (!actions.isEmpty()) {
         result.append(THEN);
-        Iterator<AbstractTextMarkerAction> ait = actions.iterator();
+        Iterator<AbstractRutaAction> ait = actions.iterator();
         while (ait.hasNext()) {
-          AbstractTextMarkerAction each = ait.next();
+          AbstractRutaAction each = ait.next();
           result.append(verbalizer.verbalize(each));
           if (ait.hasNext()) {
             result.append(",");
@@ -153,14 +153,14 @@ public class ScriptVerbalizer {
     return result.toString();
   }
 
-  public String verbalizeMatcher(TextMarkerRuleElement tmre) {
+  public String verbalizeMatcher(RutaRuleElement tmre) {
     StringBuilder result = new StringBuilder();
-    TextMarkerMatcher matcher = tmre.getMatcher();
-    if (matcher instanceof TextMarkerDisjunctiveMatcher) {
-      TextMarkerDisjunctiveMatcher dmatcher = (TextMarkerDisjunctiveMatcher) matcher;
-      List<TextMarkerExpression> expressions = dmatcher.getExpressions();
+    RutaMatcher matcher = tmre.getMatcher();
+    if (matcher instanceof RutaDisjunctiveMatcher) {
+      RutaDisjunctiveMatcher dmatcher = (RutaDisjunctiveMatcher) matcher;
+      List<RutaExpression> expressions = dmatcher.getExpressions();
       result.append("(");
-      for (TextMarkerExpression each : expressions) {
+      for (RutaExpression each : expressions) {
         if (expressions.indexOf(each) != 0) {
           result.append(" | ");
         }
@@ -200,17 +200,17 @@ public class ScriptVerbalizer {
     return null;
   }
 
-  public String verbalize(TextMarkerElement element) {
-    if (element instanceof TextMarkerBlock) {
-      return verbalizeBlock((TextMarkerBlock) element, false);
+  public String verbalize(RutaElement element) {
+    if (element instanceof RutaBlock) {
+      return verbalizeBlock((RutaBlock) element, false);
     } else if (element instanceof RuleElementQuantifier) {
       return verbalizeQuantifier((RuleElementQuantifier) element);
-    } else if (element instanceof TextMarkerRule) {
-      return verbalizeRule((TextMarkerRule) element);
+    } else if (element instanceof RutaRule) {
+      return verbalizeRule((RutaRule) element);
     } else if (element instanceof RegExpRule) {
       return verbalizeRegExpRule((RegExpRule) element);
-    } else if (element instanceof TextMarkerRuleElement) {
-      return verbalizeRuleElement((TextMarkerRuleElement) element);
+    } else if (element instanceof RutaRuleElement) {
+      return verbalizeRuleElement((RutaRuleElement) element);
     }
     return null;
   }
