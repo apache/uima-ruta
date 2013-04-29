@@ -17,11 +17,11 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
-import org.apache.uima.textmarker.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
 
-public abstract class TypeSensitiveAction extends AbstractTextMarkerAction {
+public abstract class TypeSensitiveAction extends AbstractRutaAction {
 
   public TypeSensitiveAction(TypeExpression type) {
     super();

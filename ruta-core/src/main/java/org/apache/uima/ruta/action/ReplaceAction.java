@@ -17,19 +17,19 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.string.StringExpression;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.type.RutaBasic;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class ReplaceAction extends AbstractTextMarkerAction {
+public class ReplaceAction extends AbstractRutaAction {
 
   public StringExpression getReplacement() {
     return replacement;
@@ -43,14 +43,14 @@ public class ReplaceAction extends AbstractTextMarkerAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(stream, null,
             element.getContainer());
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
-      List<TextMarkerBasic> annotationsInWindow = stream.getBasicsInWindow(matchedAnnotation);
+      List<RutaBasic> annotationsInWindow = stream.getBasicsInWindow(matchedAnnotation);
       boolean replaced = false;
-      for (TextMarkerBasic textMarkerBasic : annotationsInWindow) {
+      for (RutaBasic textMarkerBasic : annotationsInWindow) {
         textMarkerBasic.setReplacement(replaced ? "" : replacement.getStringValue(element
                 .getParent()));
         replaced = true;

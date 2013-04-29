@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,34 +29,34 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.TextMarkerExpression;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.string.StringExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class CreateAction extends AbstractStructureAction {
 
   private TypeExpression structureType;
 
-  private Map<StringExpression, TextMarkerExpression> features;
+  private Map<StringExpression, RutaExpression> features;
 
   private List<NumberExpression> indexes;
 
   public CreateAction(TypeExpression structureType,
-          Map<StringExpression, TextMarkerExpression> features, List<NumberExpression> indexes) {
+          Map<StringExpression, RutaExpression> features, List<NumberExpression> indexes) {
     super();
     this.structureType = structureType;
-    this.features = features == null ? new HashMap<StringExpression, TextMarkerExpression>()
+    this.features = features == null ? new HashMap<StringExpression, RutaExpression>()
             : features;
     this.indexes = (indexes == null || indexes.isEmpty()) ? null : indexes;
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
     List<Integer> indexList = getIndexList(match, element);
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(stream, indexList,
@@ -106,7 +106,7 @@ public class CreateAction extends AbstractStructureAction {
     return structureType;
   }
 
-  public Map<StringExpression, TextMarkerExpression> getFeatures() {
+  public Map<StringExpression, RutaExpression> getFeatures() {
     return features;
   }
 

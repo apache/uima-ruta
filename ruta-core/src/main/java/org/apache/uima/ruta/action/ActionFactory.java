@@ -17,142 +17,142 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
 import org.antlr.runtime.Token;
-import org.apache.uima.textmarker.TextMarkerBlock;
-import org.apache.uima.textmarker.expression.TextMarkerExpression;
-import org.apache.uima.textmarker.expression.bool.BooleanExpression;
-import org.apache.uima.textmarker.expression.list.ListExpression;
-import org.apache.uima.textmarker.expression.list.StringListExpression;
-import org.apache.uima.textmarker.expression.list.TypeListExpression;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.resource.WordListExpression;
-import org.apache.uima.textmarker.expression.resource.WordTableExpression;
-import org.apache.uima.textmarker.expression.string.StringExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.list.ListExpression;
+import org.apache.uima.ruta.expression.list.StringListExpression;
+import org.apache.uima.ruta.expression.list.TypeListExpression;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.resource.WordListExpression;
+import org.apache.uima.ruta.expression.resource.WordTableExpression;
+import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
 
 public class ActionFactory {
 
   private ActionFactory() {
   }
 
-  public static AbstractTextMarkerAction createColorAction(TypeExpression typeExpr,
+  public static AbstractRutaAction createColorAction(TypeExpression typeExpr,
           StringExpression bgcolor, StringExpression fgcolor, BooleanExpression selected,
-          TextMarkerBlock parent) {
+          RutaBlock parent) {
     return new ColorAction(typeExpr, bgcolor, fgcolor, selected);
   }
 
-  public static AbstractTextMarkerAction createDelAction(TextMarkerBlock parent) {
+  public static AbstractRutaAction createDelAction(RutaBlock parent) {
     return new DelAction();
   }
 
-  public static AbstractTextMarkerAction createMarkFastAction(TypeExpression type,
+  public static AbstractRutaAction createMarkFastAction(TypeExpression type,
           WordListExpression list, BooleanExpression ignore, NumberExpression ignoreLength,
-          BooleanExpression ignoreWS, TextMarkerBlock parent) {
+          BooleanExpression ignoreWS, RutaBlock parent) {
     return new MarkFastAction(type, list, ignore, ignoreLength, ignoreWS);
   }
 
-  public static AbstractTextMarkerAction createMarkFastAction(TypeExpression type,
+  public static AbstractRutaAction createMarkFastAction(TypeExpression type,
           StringListExpression list, BooleanExpression ignore, NumberExpression ignoreLength,
-          BooleanExpression ignoreWS, TextMarkerBlock env) {
+          BooleanExpression ignoreWS, RutaBlock env) {
     return new MarkFastAction(type, list, ignore, ignoreLength, ignoreWS);
   }
 
-  public static AbstractTextMarkerAction createMarkLastAction(TypeExpression type,
-          TextMarkerBlock parent) {
+  public static AbstractRutaAction createMarkLastAction(TypeExpression type,
+          RutaBlock parent) {
     return new MarkLastAction(type);
   }
 
-  public static AbstractTextMarkerAction createRetainTypeAction(List<TypeExpression> types,
-          TextMarkerBlock parent) {
+  public static AbstractRutaAction createRetainTypeAction(List<TypeExpression> types,
+          RutaBlock parent) {
     return new RetainTypeAction(types);
   }
 
-  public static AbstractTextMarkerAction createLogAction(StringExpression expr, Token log,
-          TextMarkerBlock parent) {
+  public static AbstractRutaAction createLogAction(StringExpression expr, Token log,
+          RutaBlock parent) {
     String logString = log == null ? "INFO" : log.getText();
     Level level = Level.parse(logString.toUpperCase());
     return new LogAction(expr, level);
   }
 
-  public static AbstractTextMarkerAction createMarkAction(NumberExpression score,
-          TypeExpression type, List<NumberExpression> list, TextMarkerBlock parent) {
+  public static AbstractRutaAction createMarkAction(NumberExpression score,
+          TypeExpression type, List<NumberExpression> list, RutaBlock parent) {
     return new MarkAction(type, score, list);
   }
 
-  public static AbstractTextMarkerAction createMarkOnceAction(NumberExpression score,
-          TypeExpression type, List<NumberExpression> list, TextMarkerBlock env) {
+  public static AbstractRutaAction createMarkOnceAction(NumberExpression score,
+          TypeExpression type, List<NumberExpression> list, RutaBlock env) {
     return new MarkOnceAction(type, score, list);
   }
 
-  public static AbstractTextMarkerAction createReplaceAction(StringExpression lit,
-          TextMarkerBlock parent) {
+  public static AbstractRutaAction createReplaceAction(StringExpression lit,
+          RutaBlock parent) {
     return new ReplaceAction(lit);
   }
 
-  public static AbstractTextMarkerAction createCreateAction(TypeExpression typeExpr,
-          Map<StringExpression, TextMarkerExpression> map, List<NumberExpression> indexes,
-          TextMarkerBlock parent) {
+  public static AbstractRutaAction createCreateAction(TypeExpression typeExpr,
+          Map<StringExpression, RutaExpression> map, List<NumberExpression> indexes,
+          RutaBlock parent) {
     return new CreateAction(typeExpr, map, indexes);
   }
 
-  public static AbstractTextMarkerAction createGatherAction(TypeExpression typeExpr,
-          Map<StringExpression, TextMarkerExpression> map, List<NumberExpression> indexes,
-          TextMarkerBlock parent) {
+  public static AbstractRutaAction createGatherAction(TypeExpression typeExpr,
+          Map<StringExpression, RutaExpression> map, List<NumberExpression> indexes,
+          RutaBlock parent) {
     return new GatherAction(typeExpr, map, indexes);
   }
 
-  public static AbstractTextMarkerAction createFillAction(TypeExpression type,
-          Map<StringExpression, TextMarkerExpression> map, TextMarkerBlock parent) {
+  public static AbstractRutaAction createFillAction(TypeExpression type,
+          Map<StringExpression, RutaExpression> map, RutaBlock parent) {
     return new FillAction(type, map);
   }
 
-  public static AbstractTextMarkerAction createCallAction(String ns, TextMarkerBlock parent) {
+  public static AbstractRutaAction createCallAction(String ns, RutaBlock parent) {
     return new CallAction(ns);
   }
 
-  public static AbstractTextMarkerAction createConfigureAction(String ns,
-          Map<StringExpression, TextMarkerExpression> map, TextMarkerBlock env) {
+  public static AbstractRutaAction createConfigureAction(String ns,
+          Map<StringExpression, RutaExpression> map, RutaBlock env) {
     return new ConfigureAction(ns, map);
   }
 
-  public static AbstractTextMarkerAction createAssignAction(Token nv, TextMarkerExpression e,
-          TextMarkerBlock parent) {
+  public static AbstractRutaAction createAssignAction(Token nv, RutaExpression e,
+          RutaBlock parent) {
     return new AssignAction(nv.getText(), e);
   }
 
-  public static AbstractTextMarkerAction createFilterTypeAction(List<TypeExpression> types,
-          TextMarkerBlock parent) {
+  public static AbstractRutaAction createFilterTypeAction(List<TypeExpression> types,
+          RutaBlock parent) {
     return new FilterTypeAction(types);
   }
 
-  public static AbstractTextMarkerAction createAddRetainTypeAction(List<TypeExpression> types,
-          TextMarkerBlock env) {
+  public static AbstractRutaAction createAddRetainTypeAction(List<TypeExpression> types,
+          RutaBlock env) {
     return new AddRetainTypeAction(types);
   }
   
-  public static AbstractTextMarkerAction createRemoveRetainTypeAction(List<TypeExpression> types,
-          TextMarkerBlock env) {
+  public static AbstractRutaAction createRemoveRetainTypeAction(List<TypeExpression> types,
+          RutaBlock env) {
     return new RemoveRetainTypeAction(types);
   }
   
-  public static AbstractTextMarkerAction createAddFilterTypeAction(List<TypeExpression> types,
-          TextMarkerBlock env) {
+  public static AbstractRutaAction createAddFilterTypeAction(List<TypeExpression> types,
+          RutaBlock env) {
     return new AddFilterTypeAction(types);
   }
   
-  public static AbstractTextMarkerAction createRemoveFilterTypeAction(List<TypeExpression> types,
-          TextMarkerBlock env) {
+  public static AbstractRutaAction createRemoveFilterTypeAction(List<TypeExpression> types,
+          RutaBlock env) {
     return new RemoveFilterTypeAction(types);
   }
   
-  public static AbstractTextMarkerAction createSetFeatureAction(StringExpression f, Object v,
-          TextMarkerBlock parent) {
+  public static AbstractRutaAction createSetFeatureAction(StringExpression f, Object v,
+          RutaBlock parent) {
     if (v instanceof NumberExpression) {
       return new SetFeatureAction(f, (NumberExpression) v);
     } else if (v instanceof StringExpression) {
@@ -163,104 +163,104 @@ public class ActionFactory {
     return null;
   }
 
-  public static AbstractTextMarkerAction createUnmarkAction(TypeExpression f, List<NumberExpression> list, BooleanExpression b, TextMarkerBlock env) {
+  public static AbstractRutaAction createUnmarkAction(TypeExpression f, List<NumberExpression> list, BooleanExpression b, RutaBlock env) {
     return new UnmarkAction(f, list, b);
   }
 
-  public static AbstractTextMarkerAction createUnmarkAllAction(TypeExpression f,
-          TypeListExpression list, TextMarkerBlock env) {
+  public static AbstractRutaAction createUnmarkAllAction(TypeExpression f,
+          TypeListExpression list, RutaBlock env) {
     return new UnmarkAllAction(f, list);
   }
 
-  public static AbstractTextMarkerAction createComposedAction(
-          List<AbstractTextMarkerAction> actions, TextMarkerBlock env) {
+  public static AbstractRutaAction createComposedAction(
+          List<AbstractRutaAction> actions, RutaBlock env) {
     return new ComposedAction(actions);
   }
 
-  public static AbstractTextMarkerAction createActionVariable(Token id) {
+  public static AbstractRutaAction createActionVariable(Token id) {
     return new VariableAction(id.getText());
   }
 
-  public static AbstractTextMarkerAction createTransferAction(TypeExpression f, TextMarkerBlock env) {
+  public static AbstractRutaAction createTransferAction(TypeExpression f, RutaBlock env) {
     return new TransferAction(f);
   }
 
-  public static AbstractTextMarkerAction createTrieAction(WordListExpression list,
+  public static AbstractRutaAction createTrieAction(WordListExpression list,
           Map<StringExpression, TypeExpression> map, BooleanExpression ignoreCase,
           NumberExpression ignoreLength, BooleanExpression edit, NumberExpression distance,
-          StringExpression ignoreChar, TextMarkerBlock parent) {
+          StringExpression ignoreChar, RutaBlock parent) {
     return new TrieAction(list, map, ignoreCase, ignoreLength, edit, distance, ignoreChar);
   }
 
-  public static AbstractTextMarkerAction createExecAction(String ns, TypeListExpression tl,
-          TextMarkerBlock env) {
+  public static AbstractRutaAction createExecAction(String ns, TypeListExpression tl,
+          RutaBlock env) {
     return new ExecAction(ns, tl);
   }
 
-  public static AbstractTextMarkerAction createMarkTableAction(TypeExpression structure,
+  public static AbstractRutaAction createMarkTableAction(TypeExpression structure,
           NumberExpression index, WordTableExpression table,
           Map<StringExpression, NumberExpression> map, BooleanExpression ignoreCase,
           NumberExpression ignoreLength, StringExpression ignoreChar,
-          NumberExpression maxIgnoreChar, TextMarkerBlock env) {
+          NumberExpression maxIgnoreChar, RutaBlock env) {
     return new MarkTableAction(structure, index, table, map, ignoreCase, ignoreLength, ignoreChar,
             maxIgnoreChar);
   }
 
-  public static AbstractTextMarkerAction createMergeAction(BooleanExpression union, Token target,
-          List<ListExpression> list, TextMarkerBlock env) {
+  public static AbstractRutaAction createMergeAction(BooleanExpression union, Token target,
+          List<ListExpression> list, RutaBlock env) {
     return new MergeAction(union, target == null ? null : target.getText(), list);
   }
 
-  public static AbstractTextMarkerAction createGetAction(ListExpression<TextMarkerExpression> f,
-          Token var, StringExpression op, TextMarkerBlock env) {
+  public static AbstractRutaAction createGetAction(ListExpression<RutaExpression> f,
+          Token var, StringExpression op, RutaBlock env) {
     return new GetAction(f, var == null ? null : var.getText(), op);
   }
 
-  public static AbstractTextMarkerAction createRemoveAction(Token var,
-          List<TextMarkerExpression> list, TextMarkerBlock env) {
+  public static AbstractRutaAction createRemoveAction(Token var,
+          List<RutaExpression> list, RutaBlock env) {
     return new RemoveAction(var == null ? null : var.getText(), list);
   }
 
-  public static AbstractTextMarkerAction createAddAction(Token var,
-          List<TextMarkerExpression> list, TextMarkerBlock env) {
+  public static AbstractRutaAction createAddAction(Token var,
+          List<RutaExpression> list, RutaBlock env) {
     return new AddAction(var == null ? null : var.getText(), list);
   }
 
-  public static AbstractTextMarkerAction createGetListAction(Token var, StringExpression op,
-          TextMarkerBlock env) {
+  public static AbstractRutaAction createGetListAction(Token var, StringExpression op,
+          RutaBlock env) {
     return new GetListAction(var == null ? null : var.getText(), op);
   }
 
-  public static AbstractTextMarkerAction createRemoveDuplicateAction(Token var, TextMarkerBlock env) {
+  public static AbstractRutaAction createRemoveDuplicateAction(Token var, RutaBlock env) {
     return new RemoveDuplicateAction(var == null ? null : var.getText());
   }
 
-  public static AbstractTextMarkerAction createGetFeatureAction(StringExpression f, Token var,
-          TextMarkerBlock env) {
+  public static AbstractRutaAction createGetFeatureAction(StringExpression f, Token var,
+          RutaBlock env) {
     return new GetFeatureAction(f, var == null ? null : var.getText());
   }
 
-  public static AbstractTextMarkerAction createMatchedTextAction(Token var,
-          List<NumberExpression> list, TextMarkerBlock env) {
+  public static AbstractRutaAction createMatchedTextAction(Token var,
+          List<NumberExpression> list, RutaBlock env) {
     return new MatchedTextAction(var == null ? null : var.getText(), list);
   }
 
-  public static AbstractTextMarkerAction createClearAction(Token var, TextMarkerBlock env) {
+  public static AbstractRutaAction createClearAction(Token var, RutaBlock env) {
     return new ClearAction(var == null ? null : var.getText());
   }
 
-  public static AbstractTextMarkerAction createShiftAction(TypeExpression type,
-          List<NumberExpression> list, TextMarkerBlock env) {
+  public static AbstractRutaAction createShiftAction(TypeExpression type,
+          List<NumberExpression> list, RutaBlock env) {
     return new ShiftAction(type, list);
   }
 
-  public static AbstractTextMarkerAction createDynamicAnchoringAction(BooleanExpression active,
-          NumberExpression penalty, NumberExpression factor, TextMarkerBlock env) {
+  public static AbstractRutaAction createDynamicAnchoringAction(BooleanExpression active,
+          NumberExpression penalty, NumberExpression factor, RutaBlock env) {
     return new DynamicAnchoringAction(active, penalty, factor);
   }
 
-  public static AbstractTextMarkerAction createTrimAction(List<TypeExpression> types,
-          TypeListExpression typeList, TextMarkerBlock env) {
+  public static AbstractRutaAction createTrimAction(List<TypeExpression> types,
+          TypeListExpression typeList, RutaBlock env) {
     return new TrimAction(types, typeList);
   }
 

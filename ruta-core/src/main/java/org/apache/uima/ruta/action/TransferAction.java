@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import java.util.List;
 
@@ -26,12 +26,12 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleElementMatch;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleElementMatch;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class TransferAction extends TypeSensitiveAction {
 
@@ -40,7 +40,7 @@ public class TransferAction extends TypeSensitiveAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
     List<List<RuleElementMatch>> list = match.getMatchInfo(element);
     CAS cas = stream.getCas();

@@ -17,25 +17,25 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.bool.BooleanExpression;
-import org.apache.uima.textmarker.expression.bool.SimpleBooleanExpression;
-import org.apache.uima.textmarker.expression.list.StringListExpression;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.number.SimpleNumberExpression;
-import org.apache.uima.textmarker.expression.resource.WordListExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.resource.TextMarkerWordList;
-import org.apache.uima.textmarker.resource.TreeWordList;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
+import org.apache.uima.ruta.expression.list.StringListExpression;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
+import org.apache.uima.ruta.expression.resource.WordListExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.resource.RutaWordList;
+import org.apache.uima.ruta.resource.TreeWordList;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class MarkFastAction extends AbstractMarkAction {
 
@@ -70,12 +70,12 @@ public class MarkFastAction extends AbstractMarkAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
     List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element, stream);
     for (AnnotationFS annotationFS : matchedAnnotationsOf) {
-      TextMarkerStream windowStream = stream.getWindowStream(annotationFS, annotationFS.getType());
-      TextMarkerWordList wl = null;
+      RutaStream windowStream = stream.getWindowStream(annotationFS, annotationFS.getType());
+      RutaWordList wl = null;
       if (list != null) {
         wl = list.getList(element.getParent());
       } else if (stringList != null) {

@@ -17,19 +17,19 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.cas.Type;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class AddFilterTypeAction extends AbstractTextMarkerAction {
+public class AddFilterTypeAction extends AbstractRutaAction {
 
   public List<TypeExpression> getList() {
     return list;
@@ -43,7 +43,7 @@ public class AddFilterTypeAction extends AbstractTextMarkerAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
     List<Type> types = new ArrayList<Type>();
     for (TypeExpression each : list) {

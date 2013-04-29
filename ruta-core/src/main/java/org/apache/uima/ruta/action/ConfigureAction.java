@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,49 +30,49 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.metadata.ConfigurationParameter;
 import org.apache.uima.resource.metadata.ConfigurationParameterDeclarations;
-import org.apache.uima.textmarker.TextMarkerModule;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.TextMarkerExpression;
-import org.apache.uima.textmarker.expression.bool.BooleanExpression;
-import org.apache.uima.textmarker.expression.list.BooleanListExpression;
-import org.apache.uima.textmarker.expression.list.NumberListExpression;
-import org.apache.uima.textmarker.expression.list.StringListExpression;
-import org.apache.uima.textmarker.expression.list.TypeListExpression;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.string.StringExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaModule;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.list.BooleanListExpression;
+import org.apache.uima.ruta.expression.list.NumberListExpression;
+import org.apache.uima.ruta.expression.list.StringListExpression;
+import org.apache.uima.ruta.expression.list.TypeListExpression;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class ConfigureAction extends AbstractTextMarkerAction {
+public class ConfigureAction extends AbstractRutaAction {
 
   private final String namespace;
 
-  private final Map<StringExpression, TextMarkerExpression> parameterMap;
+  private final Map<StringExpression, RutaExpression> parameterMap;
 
-  public ConfigureAction(String ns, Map<StringExpression, TextMarkerExpression> map) {
+  public ConfigureAction(String ns, Map<StringExpression, RutaExpression> map) {
     super();
     this.namespace = ns;
     this.parameterMap = map;
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
-    TextMarkerModule thisScript = element.getParent().getScript();
+    RutaModule thisScript = element.getParent().getScript();
     AnalysisEngine targetEngine = thisScript.getEngine(namespace);
     ConfigurationParameterDeclarations configurationParameterDeclarations = targetEngine
             .getAnalysisEngineMetaData().getConfigurationParameterDeclarations();
 
-    Set<Entry<StringExpression, TextMarkerExpression>> entrySet = parameterMap.entrySet();
-    for (Entry<StringExpression, TextMarkerExpression> entry : entrySet) {
+    Set<Entry<StringExpression, RutaExpression>> entrySet = parameterMap.entrySet();
+    for (Entry<StringExpression, RutaExpression> entry : entrySet) {
       StringExpression key = entry.getKey();
       String stringValue = key.getStringValue(element.getParent());
       ConfigurationParameter configurationParameter = configurationParameterDeclarations
               .getConfigurationParameter(null, stringValue);
       if (configurationParameter != null) {
-        TextMarkerExpression value = entry.getValue();
+        RutaExpression value = entry.getValue();
         String type = configurationParameter.getType();
         if (type.equals("String")) {
           if (configurationParameter.isMultiValued()) {
@@ -159,7 +159,7 @@ public class ConfigureAction extends AbstractTextMarkerAction {
     return namespace;
   }
 
-  public Map<StringExpression, TextMarkerExpression> getParameterMap() {
+  public Map<StringExpression, RutaExpression> getParameterMap() {
     return parameterMap;
   }
 

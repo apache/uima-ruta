@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,26 +31,26 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.cas.TOP;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.UIMAConstants;
-import org.apache.uima.textmarker.expression.TextMarkerExpression;
-import org.apache.uima.textmarker.expression.bool.BooleanExpression;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.string.StringExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.utils.UIMAUtils;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.UIMAConstants;
+import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.utils.UIMAUtils;
 
-public abstract class AbstractStructureAction extends AbstractTextMarkerAction {
+public abstract class AbstractStructureAction extends AbstractRutaAction {
 
   public AbstractStructureAction() {
     super();
   }
 
-  protected void fillFeatures(TOP structure, Map<StringExpression, TextMarkerExpression> features,
-          AnnotationFS matchedAnnotation, RuleElement element, TextMarkerStream stream) {
-    Map<String, TextMarkerExpression> map = new HashMap<String, TextMarkerExpression>();
-    for (Entry<StringExpression, TextMarkerExpression> each : features.entrySet()) {
+  protected void fillFeatures(TOP structure, Map<StringExpression, RutaExpression> features,
+          AnnotationFS matchedAnnotation, RuleElement element, RutaStream stream) {
+    Map<String, RutaExpression> map = new HashMap<String, RutaExpression>();
+    for (Entry<StringExpression, RutaExpression> each : features.entrySet()) {
       String value = each.getKey().getStringValue(element.getParent());
       map.put(value, each.getValue());
     }

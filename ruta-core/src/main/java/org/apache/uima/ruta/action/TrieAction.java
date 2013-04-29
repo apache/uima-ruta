@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -25,18 +25,18 @@ import java.util.Map;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.bool.BooleanExpression;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.resource.WordListExpression;
-import org.apache.uima.textmarker.expression.string.StringExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.resource.TextMarkerWordList;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.resource.WordListExpression;
+import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.resource.RutaWordList;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class TrieAction extends AbstractTextMarkerAction {
+public class TrieAction extends AbstractRutaAction {
 
   private final WordListExpression list;
 
@@ -66,7 +66,7 @@ public class TrieAction extends AbstractTextMarkerAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
 
     Map<String, Type> typeMap = new HashMap<String, Type>();
@@ -84,7 +84,7 @@ public class TrieAction extends AbstractTextMarkerAction {
     double distanceValue = distance.getDoubleValue(element.getParent());
     String ignoreCharValue = ignoreChar.getStringValue(element.getParent());
 
-    TextMarkerWordList wl = list.getList(element.getParent());
+    RutaWordList wl = list.getList(element.getParent());
     Collection<AnnotationFS> found = wl.find(stream, typeMap, ignoreCaseValue, ignoreLengthValue,
             editValue, distanceValue, ignoreCharValue);
 

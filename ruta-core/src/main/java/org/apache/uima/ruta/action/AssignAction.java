@@ -17,38 +17,38 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import org.apache.uima.cas.Type;
-import org.apache.uima.textmarker.TextMarkerBlock;
-import org.apache.uima.textmarker.TextMarkerEnvironment;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.TextMarkerExpression;
-import org.apache.uima.textmarker.expression.bool.BooleanExpression;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.string.StringExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaEnvironment;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class AssignAction extends AbstractTextMarkerAction {
+public class AssignAction extends AbstractRutaAction {
 
   private String var;
 
-  private TextMarkerExpression expression;
+  private RutaExpression expression;
 
-  public AssignAction(String var, TextMarkerExpression e) {
+  public AssignAction(String var, RutaExpression e) {
     super();
     this.var = var;
     this.expression = e;
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
-    TextMarkerBlock parent = element.getParent();
-    TextMarkerEnvironment environment = parent.getEnvironment();
+    RutaBlock parent = element.getParent();
+    RutaEnvironment environment = parent.getEnvironment();
     Class<?> clazz = environment.getVariableType(var);
     if (clazz.equals(Integer.class) && expression instanceof NumberExpression) {
       int v = ((NumberExpression) expression).getIntegerValue(parent);
@@ -72,7 +72,7 @@ public class AssignAction extends AbstractTextMarkerAction {
     return var;
   }
 
-  public TextMarkerExpression getExpression() {
+  public RutaExpression getExpression() {
     return expression;
   }
 

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +25,11 @@ import java.util.List;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleMatch;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
 
 public abstract class AbstractMarkAction extends TypeSensitiveAction {
 
@@ -38,7 +38,7 @@ public abstract class AbstractMarkAction extends TypeSensitiveAction {
   }
 
   protected Annotation createAnnotation(AnnotationFS matchedAnnotation, RuleElement element,
-          TextMarkerStream stream, RuleMatch match) {
+          RutaStream stream, RuleMatch match) {
     Type t = type.getType(element.getParent());
     AnnotationFS newAnnotationFS = stream.getCas().createAnnotation(t,
             matchedAnnotation.getBegin(), matchedAnnotation.getEnd());

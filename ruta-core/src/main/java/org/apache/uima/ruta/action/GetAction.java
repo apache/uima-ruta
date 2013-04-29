@@ -17,29 +17,29 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.textmarker.TextMarkerBlock;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.TextMarkerExpression;
-import org.apache.uima.textmarker.expression.list.ListExpression;
-import org.apache.uima.textmarker.expression.string.StringExpression;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.list.ListExpression;
+import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class GetAction extends AbstractTextMarkerAction {
+public class GetAction extends AbstractRutaAction {
 
-  private ListExpression<TextMarkerExpression> listExpr;
+  private ListExpression<RutaExpression> listExpr;
 
   private String var;
 
   private StringExpression opExpr;
 
-  public GetAction(ListExpression<TextMarkerExpression> f, String string, StringExpression op) {
+  public GetAction(ListExpression<RutaExpression> f, String string, StringExpression op) {
     super();
     this.listExpr = f;
     this.var = string;
@@ -47,7 +47,7 @@ public class GetAction extends AbstractTextMarkerAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
     String op = opExpr.getStringValue(element.getParent());
     List<?> list = listExpr.getList(element.getParent());
@@ -57,7 +57,7 @@ public class GetAction extends AbstractTextMarkerAction {
     }
   }
 
-  private Object getDominant(List<?> list, TextMarkerBlock parent) {
+  private Object getDominant(List<?> list, RutaBlock parent) {
     List<Object> objs = new ArrayList<Object>();
     List<Integer> counts = new ArrayList<Integer>();
     for (Object each : list) {
@@ -84,7 +84,7 @@ public class GetAction extends AbstractTextMarkerAction {
     return dominant;
   }
 
-  public ListExpression<TextMarkerExpression> getListExpr() {
+  public ListExpression<RutaExpression> getListExpr() {
     return listExpr;
   }
 

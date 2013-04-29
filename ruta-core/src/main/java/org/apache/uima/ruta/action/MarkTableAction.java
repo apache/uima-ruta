@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -30,21 +30,21 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.textmarker.TextMarkerBlock;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.UIMAConstants;
-import org.apache.uima.textmarker.expression.bool.BooleanExpression;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.resource.WordTableExpression;
-import org.apache.uima.textmarker.expression.string.StringExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.resource.TextMarkerTable;
-import org.apache.uima.textmarker.resource.TextMarkerWordList;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.UIMAConstants;
+import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.resource.WordTableExpression;
+import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.resource.RutaTable;
+import org.apache.uima.ruta.resource.RutaWordList;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class MarkTableAction extends AbstractTextMarkerAction {
+public class MarkTableAction extends AbstractRutaAction {
 
   private final TypeExpression typeExpr;
 
@@ -78,10 +78,10 @@ public class MarkTableAction extends AbstractTextMarkerAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
-    TextMarkerBlock block = element.getParent();
-    TextMarkerTable table = tableExpr.getTable(block);
+    RutaBlock block = element.getParent();
+    RutaTable table = tableExpr.getTable(block);
     int index = indexExpr.getIntegerValue(block);
     Type type = typeExpr.getType(block);
     Map<String, Integer> map = new HashMap<String, Integer>();
@@ -98,7 +98,7 @@ public class MarkTableAction extends AbstractTextMarkerAction {
     int maxIgnoreCharValue = maxIgnoreChar != null ? maxIgnoreChar.getIntegerValue(element
             .getParent()) : 0;
 
-    TextMarkerWordList wordList = table.getWordList(index);
+    RutaWordList wordList = table.getWordList(index);
     Collection<AnnotationFS> found = wordList.find(stream, ignoreCaseValue, ignoreLengthValue,
             ignoreCharValue.toCharArray(), maxIgnoreCharValue, true);
     for (AnnotationFS annotationFS : found) {
@@ -120,7 +120,7 @@ public class MarkTableAction extends AbstractTextMarkerAction {
   }
 
   private void fillFeatures(TOP structure, Map<String, Integer> map, AnnotationFS annotationFS,
-          RuleElement element, List<String> row, TextMarkerStream stream) {
+          RuleElement element, List<String> row, RutaStream stream) {
     List<?> featuresList = structure.getType().getFeatures();
     for (int i = 0; i < featuresList.size(); i++) {
       Feature targetFeature = (Feature) featuresList.get(i);

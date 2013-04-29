@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,16 +25,16 @@ import java.util.List;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerEnvironment;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.UIMAConstants;
-import org.apache.uima.textmarker.expression.string.StringExpression;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.rule.TextMarkerRuleElement;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaEnvironment;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.UIMAConstants;
+import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.rule.RutaRuleElement;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class GetFeatureAction extends AbstractTextMarkerAction {
+public class GetFeatureAction extends AbstractRutaAction {
 
   private StringExpression featureStringExpression;
 
@@ -47,11 +47,11 @@ public class GetFeatureAction extends AbstractTextMarkerAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
     List<Type> types = new ArrayList<Type>();
-    if (element instanceof TextMarkerRuleElement) {
-      types = ((TextMarkerRuleElement) element).getMatcher().getTypes(element.getParent(), stream);
+    if (element instanceof RutaRuleElement) {
+      types = ((RutaRuleElement) element).getMatcher().getTypes(element.getParent(), stream);
     }
     if (types == null)
       return;
@@ -59,7 +59,7 @@ public class GetFeatureAction extends AbstractTextMarkerAction {
     for (Type type : types) {
       String stringValue = featureStringExpression.getStringValue(element.getParent());
       Feature featureByBaseName = type.getFeatureByBaseName(stringValue);
-      TextMarkerEnvironment environment = element.getParent().getEnvironment();
+      RutaEnvironment environment = element.getParent().getEnvironment();
       List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOf(element, stream);
       for (AnnotationFS annotationFS : matchedAnnotations) {
         if (annotationFS.getType().getFeatureByBaseName(stringValue) == null) {

@@ -17,17 +17,17 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.type.RutaBasic;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class MarkLastAction extends AbstractMarkAction {
 
@@ -36,14 +36,14 @@ public class MarkLastAction extends AbstractMarkAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(stream, null,
             element.getContainer());
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
-      List<TextMarkerBasic> list = stream.getBasicsInWindow(matchedAnnotation);
+      List<RutaBasic> list = stream.getBasicsInWindow(matchedAnnotation);
       if (!list.isEmpty()) {
-        TextMarkerBasic last = list.get(list.size() - 1);
+        RutaBasic last = list.get(list.size() - 1);
         createAnnotation(last, element, stream, match);
       }
 

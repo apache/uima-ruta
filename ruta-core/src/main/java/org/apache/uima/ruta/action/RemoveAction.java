@@ -17,30 +17,30 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.textmarker.TextMarkerStatement;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.TextMarkerExpression;
-import org.apache.uima.textmarker.expression.bool.BooleanExpression;
-import org.apache.uima.textmarker.expression.list.ListExpression;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.string.StringExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.list.ListExpression;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class RemoveAction extends AbstractTextMarkerAction {
+public class RemoveAction extends AbstractRutaAction {
 
   private String var;
 
-  private List<TextMarkerExpression> elements;
+  private List<RutaExpression> elements;
 
-  public RemoveAction(String var, List<TextMarkerExpression> list) {
+  public RemoveAction(String var, List<RutaExpression> list) {
     super();
     this.var = var;
     this.elements = list;
@@ -50,20 +50,20 @@ public class RemoveAction extends AbstractTextMarkerAction {
     return var;
   }
 
-  public List<TextMarkerExpression> getElements() {
+  public List<RutaExpression> getElements() {
     return elements;
   }
 
   @SuppressWarnings({ "rawtypes" })
   @Override
-  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
-    TextMarkerStatement parent = element.getParent();
+    RutaStatement parent = element.getParent();
     List list = parent.getEnvironment().getVariableValue(var, List.class);
     List<Object> toRemove = new ArrayList<Object>();
     for (Object entry : list) {
       Object value1 = getValue(entry, parent);
-      for (TextMarkerExpression arg : elements) {
+      for (RutaExpression arg : elements) {
         if(arg instanceof ListExpression) {
           ListExpression l = (ListExpression) arg;
           List list2 = l.getList(parent);
@@ -87,7 +87,7 @@ public class RemoveAction extends AbstractTextMarkerAction {
     parent.getEnvironment().setVariableValue(var, list);
   }
 
-  private Object getValue(Object obj, TextMarkerStatement parent) {
+  private Object getValue(Object obj, RutaStatement parent) {
     if(obj instanceof NumberExpression) {
       return ((NumberExpression)obj).getDoubleValue(parent);
     } else if(obj instanceof BooleanExpression) {

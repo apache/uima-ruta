@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,14 +25,14 @@ import java.util.Set;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.bool.BooleanExpression;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.type.RutaBasic;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class UnmarkAction extends TypeSensitiveAction {
 
@@ -47,7 +47,7 @@ public class UnmarkAction extends TypeSensitiveAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
     Type t = type.getType(element.getParent());
     boolean allAtAnchor = false;
@@ -58,7 +58,7 @@ public class UnmarkAction extends TypeSensitiveAction {
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(stream, indexList,
             element.getContainer());
     for (AnnotationFS annotationFS : matchedAnnotations) {
-      TextMarkerBasic beginAnchor = stream.getBeginAnchor(annotationFS.getBegin());
+      RutaBasic beginAnchor = stream.getBeginAnchor(annotationFS.getBegin());
       Set<AnnotationFS> beginAnchors = beginAnchor.getBeginAnchors(t);
       if (beginAnchors != null) {
         for (AnnotationFS each : new ArrayList<AnnotationFS>(beginAnchors)) {

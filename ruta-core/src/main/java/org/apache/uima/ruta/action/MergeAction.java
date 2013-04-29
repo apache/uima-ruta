@@ -17,20 +17,20 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.ListUtils;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.bool.BooleanExpression;
-import org.apache.uima.textmarker.expression.list.ListExpression;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.list.ListExpression;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class MergeAction extends AbstractTextMarkerAction {
+public class MergeAction extends AbstractRutaAction {
 
   @SuppressWarnings("rawtypes")
   private List<ListExpression> lists;
@@ -49,7 +49,7 @@ public class MergeAction extends AbstractTextMarkerAction {
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
-  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
     boolean union = unionExpr.getBooleanValue(element.getParent());
     List<Object> list = new ArrayList<Object>();

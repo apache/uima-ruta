@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,38 +35,38 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.TextMarkerExpression;
-import org.apache.uima.textmarker.expression.list.NumberListExpression;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.string.StringExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleElementMatch;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.type.TextMarkerFrame;
-import org.apache.uima.textmarker.utils.UIMAUtils;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.list.NumberListExpression;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleElementMatch;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.type.RutaFrame;
+import org.apache.uima.ruta.utils.UIMAUtils;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class GatherAction extends AbstractStructureAction {
 
   private TypeExpression structureType;
 
-  private Map<StringExpression, TextMarkerExpression> features;
+  private Map<StringExpression, RutaExpression> features;
 
   private List<NumberExpression> indexes;
 
   public GatherAction(TypeExpression structureType,
-          Map<StringExpression, TextMarkerExpression> features, List<NumberExpression> indexes) {
+          Map<StringExpression, RutaExpression> features, List<NumberExpression> indexes) {
     super();
     this.structureType = structureType;
-    this.features = features == null ? new HashMap<StringExpression, TextMarkerExpression>()
+    this.features = features == null ? new HashMap<StringExpression, RutaExpression>()
             : features;
     this.indexes = (indexes == null || indexes.isEmpty()) ? null : indexes;
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
     List<Integer> indexList = getIndexList(match, element);
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(stream, indexList,
@@ -93,13 +93,13 @@ public class GatherAction extends AbstractStructureAction {
 
   }
 
-  private void gatherFeatures(TOP structure, Map<StringExpression, TextMarkerExpression> features,
+  private void gatherFeatures(TOP structure, Map<StringExpression, RutaExpression> features,
           AnnotationFS matchedAnnotation, RuleElement element, RuleMatch match,
-          TextMarkerStream stream) {
+          RutaStream stream) {
     Map<String, List<Number>> map = new HashMap<String, List<Number>>();
-    for (Entry<StringExpression, TextMarkerExpression> each : features.entrySet()) {
+    for (Entry<StringExpression, RutaExpression> each : features.entrySet()) {
       String value = each.getKey().getStringValue(element.getParent());
-      TextMarkerExpression expr = each.getValue();
+      RutaExpression expr = each.getValue();
       List<Number> ints = new ArrayList<Number>();
       if (expr instanceof NumberExpression) {
         NumberExpression ne = (NumberExpression) expr;
@@ -145,7 +145,7 @@ public class GatherAction extends AbstractStructureAction {
           } else {
             int begin = textsMatched.get(0).getBegin();
             int end = textsMatched.get(textsMatched.size() - 1).getEnd();
-            TextMarkerFrame frame = new TextMarkerFrame(jcas, begin, end);
+            RutaFrame frame = new RutaFrame(jcas, begin, end);
             FSIterator<Annotation> iterator = jcas.getAnnotationIndex(range).iterator(frame);
             AnnotationFS newA = null;
             while (iterator.isValid()) {
@@ -214,7 +214,7 @@ public class GatherAction extends AbstractStructureAction {
     return structureType;
   }
 
-  public Map<StringExpression, TextMarkerExpression> getFeatures() {
+  public Map<StringExpression, RutaExpression> getFeatures() {
     return features;
   }
 

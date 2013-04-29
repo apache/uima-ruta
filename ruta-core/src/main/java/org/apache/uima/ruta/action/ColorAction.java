@@ -17,22 +17,22 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.bool.BooleanExpression;
-import org.apache.uima.textmarker.expression.bool.SimpleBooleanExpression;
-import org.apache.uima.textmarker.expression.string.SimpleStringExpression;
-import org.apache.uima.textmarker.expression.string.StringExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.type.TextMarkerColoring;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
+import org.apache.uima.ruta.expression.string.SimpleStringExpression;
+import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.type.RutaColoring;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class ColorAction extends AbstractTextMarkerAction {
+public class ColorAction extends AbstractRutaAction {
 
   private StringExpression bgcolor;
 
@@ -52,13 +52,13 @@ public class ColorAction extends AbstractTextMarkerAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
-    Type casType = stream.getJCas().getCasType(TextMarkerColoring.type);
+    Type casType = stream.getJCas().getCasType(RutaColoring.type);
     FeatureStructure newAnnotationFS = stream.getCas().createFS(casType);
-    TextMarkerColoring coloring = null;
-    if (newAnnotationFS instanceof TextMarkerColoring) {
-      coloring = (TextMarkerColoring) newAnnotationFS;
+    RutaColoring coloring = null;
+    if (newAnnotationFS instanceof RutaColoring) {
+      coloring = (RutaColoring) newAnnotationFS;
       coloring.setBgColor(bgcolor.getStringValue(element.getParent()));
       coloring.setFgColor(fgcolor.getStringValue(element.getParent()));
       coloring.setSelected(selected.getBooleanValue(element.getParent()));

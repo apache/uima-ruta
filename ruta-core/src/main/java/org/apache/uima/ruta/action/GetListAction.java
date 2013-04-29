@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,14 +27,14 @@ import java.util.Set;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.string.StringExpression;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.type.RutaBasic;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class GetListAction extends AbstractTextMarkerAction {
+public class GetListAction extends AbstractRutaAction {
 
   private static final String TYPES = "Types";
 
@@ -53,7 +53,7 @@ public class GetListAction extends AbstractTextMarkerAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
     String op = opExpr.getStringValue(element.getParent());
     List<Type> list = new ArrayList<Type>();
@@ -66,7 +66,7 @@ public class GetListAction extends AbstractTextMarkerAction {
     for (AnnotationFS matched : matchedAnnotations) {
 
       if (TYPES_AT_BEGIN.equals(op)) {
-        TextMarkerBasic beginAnchor = stream.getBeginAnchor(matched.getBegin());
+        RutaBasic beginAnchor = stream.getBeginAnchor(matched.getBegin());
         Collection<Set<AnnotationFS>> values = beginAnchor.getBeginMap().values();
         Set<AnnotationFS> aset = new HashSet<AnnotationFS>();
         for (Set<AnnotationFS> set : values) {
@@ -76,7 +76,7 @@ public class GetListAction extends AbstractTextMarkerAction {
           list.add(annotationFS.getType());
         }
       } else if (TYPES_AT_END.equals(op)) {
-        TextMarkerBasic endAnchor = stream.getEndAnchor(matched.getEnd());
+        RutaBasic endAnchor = stream.getEndAnchor(matched.getEnd());
         Collection<Set<AnnotationFS>> values = endAnchor.getEndMap().values();
         Set<AnnotationFS> aset = new HashSet<AnnotationFS>();
         for (Set<AnnotationFS> set : values) {

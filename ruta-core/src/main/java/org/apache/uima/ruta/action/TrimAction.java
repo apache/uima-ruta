@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,16 +25,16 @@ import java.util.List;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.textmarker.TextMarkerStatement;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.list.TypeListExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.list.TypeListExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.type.RutaBasic;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class TrimAction extends AbstractTextMarkerAction {
+public class TrimAction extends AbstractRutaAction {
 
   private TypeListExpression typeList;
 
@@ -47,7 +47,7 @@ public class TrimAction extends AbstractTextMarkerAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
     List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element, stream);
     List<Type> typesToTrim = getTypes(element.getParent());
@@ -57,19 +57,19 @@ public class TrimAction extends AbstractTextMarkerAction {
   }
 
   private void trimAnnotation(AnnotationFS annotation, List<Type> typesToTrim, RuleMatch match,
-          TextMarkerStream stream) {
+          RutaStream stream) {
     int oldBegin = annotation.getBegin();
     int oldEnd = annotation.getEnd();
     int newBegin = oldBegin;
     int newEnd = oldEnd;
 
-    TextMarkerBasic beginBasic = stream.getBeginAnchor(oldBegin);
+    RutaBasic beginBasic = stream.getBeginAnchor(oldBegin);
     while (isPartof(beginBasic, typesToTrim) && beginBasic.getBegin() < oldEnd) {
       beginBasic = stream.getBasicNextTo(false, beginBasic);
     }
     newBegin = beginBasic.getBegin();
 
-    TextMarkerBasic endBasic = stream.getEndAnchor(oldEnd);
+    RutaBasic endBasic = stream.getEndAnchor(oldEnd);
     while (isPartof(endBasic, typesToTrim) && endBasic.getEnd() > newBegin) {
       endBasic = stream.getBasicNextTo(true, endBasic);
     }
@@ -88,7 +88,7 @@ public class TrimAction extends AbstractTextMarkerAction {
     }
   }
 
-  private boolean isPartof(TextMarkerBasic basic, List<Type> typesToTrim) {
+  private boolean isPartof(RutaBasic basic, List<Type> typesToTrim) {
     for (Type type : typesToTrim) {
       boolean partOf = basic.isPartOf(type);
       if (partOf) {
@@ -98,7 +98,7 @@ public class TrimAction extends AbstractTextMarkerAction {
     return false;
   }
 
-  private List<Type> getTypes(TextMarkerStatement parent) {
+  private List<Type> getTypes(RutaStatement parent) {
     List<Type> result = new ArrayList<Type>();
     if (types != null) {
       for (TypeExpression each : types) {

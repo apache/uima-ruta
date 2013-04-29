@@ -17,30 +17,30 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.type.RutaBasic;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class DelAction extends AbstractTextMarkerAction {
+public class DelAction extends AbstractRutaAction {
 
   public DelAction() {
     super();
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
     List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element, stream);
     for (AnnotationFS annotationFS : matchedAnnotationsOf) {
-      List<TextMarkerBasic> basicsInWindow = stream.getBasicsInWindow(annotationFS);
-      for (TextMarkerBasic basic : basicsInWindow) {
+      List<RutaBasic> basicsInWindow = stream.getBasicsInWindow(annotationFS);
+      for (RutaBasic basic : basicsInWindow) {
         basic.setReplacement("");
       }
     }

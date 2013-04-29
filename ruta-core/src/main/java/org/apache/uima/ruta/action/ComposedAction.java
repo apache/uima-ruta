@@ -17,35 +17,35 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import java.util.List;
 
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class ComposedAction extends AbstractTextMarkerAction {
+public class ComposedAction extends AbstractRutaAction {
 
-  private final List<AbstractTextMarkerAction> actions;
+  private final List<AbstractRutaAction> actions;
 
-  public ComposedAction(List<AbstractTextMarkerAction> actions) {
+  public ComposedAction(List<AbstractRutaAction> actions) {
     super();
     this.actions = actions;
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
-    for (AbstractTextMarkerAction each : actions) {
+    for (AbstractRutaAction each : actions) {
       crowd.beginVisit(each, null);
       each.execute(match, element, stream, crowd);
       crowd.endVisit(each, null);
     }
   }
 
-  public List<AbstractTextMarkerAction> getActions() {
+  public List<AbstractRutaAction> getActions() {
     return actions;
   }
 

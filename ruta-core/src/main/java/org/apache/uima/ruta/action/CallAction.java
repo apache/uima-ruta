@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -36,16 +36,16 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.apache.uima.textmarker.ScriptApply;
-import org.apache.uima.textmarker.TextMarkerBlock;
-import org.apache.uima.textmarker.TextMarkerModule;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.ScriptApply;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaModule;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.type.RutaBasic;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class CallAction extends AbstractTextMarkerAction {
+public class CallAction extends AbstractRutaAction {
 
   protected String namespace;
 
@@ -55,10 +55,10 @@ public class CallAction extends AbstractTextMarkerAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
 
-    TextMarkerModule thisScript = element.getParent().getScript();
+    RutaModule thisScript = element.getParent().getScript();
 
     AnalysisEngine targetEngine = thisScript.getEngine(namespace);
     if (targetEngine != null) {
@@ -77,7 +77,7 @@ public class CallAction extends AbstractTextMarkerAction {
         scriptName = split[0];
         blockName = split[split.length - 1];
       }
-      TextMarkerModule targetScript = thisScript.getScript(scriptName);
+      RutaModule targetScript = thisScript.getScript(scriptName);
       if (targetScript != null) {
         callScript(blockName, match, element, stream, crowd, targetScript);
       } else {
@@ -88,14 +88,14 @@ public class CallAction extends AbstractTextMarkerAction {
   }
 
   protected void callScript(String blockName, RuleMatch match, RuleElement element,
-          TextMarkerStream stream, InferenceCrowd crowd, TextMarkerModule targetScript) {
-    TextMarkerBlock block = targetScript.getBlock(blockName);
+          RutaStream stream, InferenceCrowd crowd, RutaModule targetScript) {
+    RutaBlock block = targetScript.getBlock(blockName);
     if (block == null) {
       return;
     }
     List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element, stream);
     for (AnnotationFS annotationFS : matchedAnnotationsOf) {
-      TextMarkerStream windowStream = stream.getWindowStream(annotationFS,
+      RutaStream windowStream = stream.getWindowStream(annotationFS,
               stream.getDocumentAnnotationType());
       ScriptApply apply = block.apply(windowStream, crowd);
       match.addDelegateApply(this, apply);
@@ -104,7 +104,7 @@ public class CallAction extends AbstractTextMarkerAction {
   }
 
   protected void callEngine(RuleMatch match, InferenceCrowd crowd, AnalysisEngine targetEngine,
-          RuleElement element, TextMarkerStream stream) throws ResourceInitializationException,
+          RuleElement element, RutaStream stream) throws ResourceInitializationException,
           AnalysisEngineProcessException {
 
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(stream, null,
@@ -112,7 +112,7 @@ public class CallAction extends AbstractTextMarkerAction {
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
 
       StringBuilder newDocument = new StringBuilder();
-      TextMarkerStream windowStream = stream.getWindowStream(matchedAnnotation,
+      RutaStream windowStream = stream.getWindowStream(matchedAnnotation,
               stream.getDocumentAnnotationType());
       windowStream.moveToFirst();
 
@@ -131,13 +131,13 @@ public class CallAction extends AbstractTextMarkerAction {
       int localEnd = 0;
       while (windowStream.isValid()) {
         FeatureStructure fs = windowStream.get();
-        if (fs instanceof TextMarkerBasic) {
-          TextMarkerBasic basic = (TextMarkerBasic) fs;
+        if (fs instanceof RutaBasic) {
+          RutaBasic basic = (RutaBasic) fs;
           for (Type type : types) {
             Set<AnnotationFS> beginAnchors = basic.getBeginAnchors(type);
             for (AnnotationFS a : beginAnchors) {
               if (a != null && !a.getType().getName().equals("uima.tcas.DocumentAnnotation")
-                      && !(a instanceof TextMarkerBasic)) {
+                      && !(a instanceof RutaBasic)) {
                 fsToAdd.add(a);
               }
             }
@@ -212,12 +212,12 @@ public class CallAction extends AbstractTextMarkerAction {
 
   private void transform(FeatureStructure each, Map<Integer, Integer> new2oldBegin,
           Map<Integer, Integer> new2oldEnd, Collection<AnnotationFS> fsToAdd,
-          TextMarkerStream stream, RuleMatch match) {
+          RutaStream stream, RuleMatch match) {
     CAS cas = stream.getCas();
     Type newType = cas.getTypeSystem().getType(each.getType().getName());
     if (newType != null && !fsToAdd.contains(each)
             && !newType.getName().equals("uima.tcas.DocumentAnnotation")
-            && !(each instanceof TextMarkerBasic)) {
+            && !(each instanceof RutaBasic)) {
 
       FeatureStructure newFS = null;
       if (each instanceof AnnotationFS) {
@@ -232,7 +232,7 @@ public class CallAction extends AbstractTextMarkerAction {
 
   private FeatureStructure transformAnnotation(AnnotationFS annotation, Type newType,
           Map<Integer, Integer> new2oldBegin, Map<Integer, Integer> new2oldEnd,
-          TextMarkerStream stream, RuleMatch match) {
+          RutaStream stream, RuleMatch match) {
     CAS cas = stream.getCas();
     Integer beginOld = annotation.getBegin();
     Integer endOld = annotation.getEnd();
@@ -278,7 +278,7 @@ public class CallAction extends AbstractTextMarkerAction {
 
   private void fillFeatures(FeatureStructure oldFS, FeatureStructure newFS, Type newType,
           Map<Integer, Integer> new2oldBegin, Map<Integer, Integer> new2oldEnd,
-          TextMarkerStream stream, RuleMatch match) {
+          RutaStream stream, RuleMatch match) {
     for (Object obj : newType.getFeatures()) {
       Feature feature = (Feature) obj;
       String sn = feature.getShortName();
@@ -291,7 +291,7 @@ public class CallAction extends AbstractTextMarkerAction {
 
   private void fillFeature(FeatureStructure oldFS, Feature oldFeature, FeatureStructure newFS,
           Feature feature, Map<Integer, Integer> new2oldBegin, Map<Integer, Integer> new2oldEnd,
-          TextMarkerStream stream, RuleMatch match) {
+          RutaStream stream, RuleMatch match) {
     CAS cas = stream.getCas();
     Type oldRange = oldFeature.getRange();
     if (oldRange.isPrimitive()) {

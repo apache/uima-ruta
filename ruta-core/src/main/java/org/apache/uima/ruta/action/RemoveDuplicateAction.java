@@ -17,24 +17,24 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import org.apache.uima.textmarker.TextMarkerStatement;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.bool.BooleanExpression;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.string.StringExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class RemoveDuplicateAction extends AbstractTextMarkerAction {
+public class RemoveDuplicateAction extends AbstractRutaAction {
 
   private String var;
 
@@ -49,7 +49,7 @@ public class RemoveDuplicateAction extends AbstractTextMarkerAction {
 
   @SuppressWarnings({ "rawtypes" })
   @Override
-  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
     List list = element.getParent().getEnvironment().getVariableValue(var, List.class);   
     Collection<Object> values = new HashSet<Object>();
@@ -66,7 +66,7 @@ public class RemoveDuplicateAction extends AbstractTextMarkerAction {
 
   }
 
-  private Object getValue(Object obj, TextMarkerStatement parent) {
+  private Object getValue(Object obj, RutaStatement parent) {
     if(obj instanceof NumberExpression) {
       return ((NumberExpression)obj).getDoubleValue(parent);
     } else if(obj instanceof BooleanExpression) {
