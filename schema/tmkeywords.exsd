@@ -68,7 +68,7 @@ under the License.
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":org.apache.uima.textmarker.ide.ITextMarkerKeywords"/>
+                  <meta.attribute kind="java" basedOn=":org.apache.uima.textmarker.ide.IRutaKeywords"/>
                </appInfo>
             </annotation>
          </attribute>

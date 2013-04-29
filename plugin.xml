@@ -38,13 +38,13 @@ under the License.
          id="nature"
          point="org.eclipse.core.resources.natures">
       <runtime>
-         <run class="org.apache.uima.textmarker.ide.core.TextMarkerNature"/>
+         <run class="org.apache.uima.textmarker.ide.core.RutaNature"/>
       </runtime>
    </extension>
    <extension
          point="org.eclipse.dltk.validators.core.validator">
       <validatorType
-            class="org.apache.uima.textmarker.ide.core.packages.TextMarkerPackageCheckerType"
+            class="org.apache.uima.textmarker.ide.core.packages.RutaPackageCheckerType"
             id="org.apache.uima.textmarker.ide.packageChecker"
             nature="org.apache.uima.textmarker.ide.nature">
       </validatorType>
@@ -53,13 +53,13 @@ under the License.
    <extension
          point="org.eclipse.dltk.core.language">
       <language
-            class="org.apache.uima.textmarker.ide.core.TextMarkerLanguageToolkit"
+            class="org.apache.uima.textmarker.ide.core.RutaLanguageToolkit"
             nature="org.apache.uima.textmarker.ide.nature"/>
    </extension>
    <extension
          point="org.eclipse.dltk.core.sourceElementParsers">
       <parser
-            class="org.apache.uima.textmarker.ide.core.parser.TextMarkerSourceElementParser"
+            class="org.apache.uima.textmarker.ide.core.parser.RutaSourceElementParser"
             nature="org.apache.uima.textmarker.ide.nature"
             priority="0">
       </parser>
@@ -67,7 +67,7 @@ under the License.
    <extension
          point="org.eclipse.dltk.core.selectionEngine">
       <selectionEngine
-            class="org.apache.uima.textmarker.ide.core.codeassist.TextMarkerSelectionEngine"
+            class="org.apache.uima.textmarker.ide.core.codeassist.RutaSelectionEngine"
             nature="org.apache.uima.textmarker.ide.nature"
             priority="0">
       </selectionEngine>
@@ -75,7 +75,7 @@ under the License.
    <extension
          point="org.eclipse.dltk.core.completionEngine">
       <completionEngine
-            class="org.apache.uima.textmarker.ide.core.codeassist.TextMarkerCompletionEngine"
+            class="org.apache.uima.textmarker.ide.core.codeassist.RutaCompletionEngine"
             nature="org.apache.uima.textmarker.ide.nature"
             priority="0">
       </completionEngine>
@@ -83,7 +83,7 @@ under the License.
    <extension
          point="org.eclipse.dltk.core.search">
       <seachFactory
-            class="org.apache.uima.textmarker.ide.core.TextMarkerSearchFactory"
+            class="org.apache.uima.textmarker.ide.core.RutaSearchFactory"
             nature="org.apache.uima.textmarker.ide.nature"
             priority="0">
       </seachFactory>
@@ -91,7 +91,7 @@ under the License.
    <extension
          point="org.eclipse.dltk.core.callHierarchy">
       <callHerarchiesFactory
-            class="org.apache.uima.textmarker.ide.core.TextMarkerCallHierarchyFactory"
+            class="org.apache.uima.textmarker.ide.core.RutaCallHierarchyFactory"
             nature="org.apache.uima.textmarker.ide.nature"
             priority="0">
       </callHerarchiesFactory>
@@ -105,7 +105,7 @@ under the License.
            name="%tmContentType"
            priority="high">
         <describer
-              class="org.apache.uima.textmarker.ide.core.TextMarkerContentDescriber"
+              class="org.apache.uima.textmarker.ide.core.RutaContentDescriber"
               plugin="org.apache.uima.textmarker.ide.core">
         </describer>       
      </content-type>
@@ -115,7 +115,7 @@ under the License.
       <parserContribution
             natureId="org.apache.uima.textmarker.ide.nature">
          <parser
-               class="org.apache.uima.textmarker.ide.core.parser.TextMarkerSourceParserFactory"
+               class="org.apache.uima.textmarker.ide.core.parser.RutaSourceParserFactory"
                description="%sourceParser.description"
                id="org.apache.uima.textmarker.ide.sourceParser"
                name="%sourceParser.name"
@@ -125,68 +125,68 @@ under the License.
    <extension
          point="org.apache.uima.textmarker.ide.tmkeywords">
       <keywords
-            class="org.apache.uima.textmarker.ide.core.TextMarkerKeywords">
+            class="org.apache.uima.textmarker.ide.core.RutaKeywords">
       </keywords>
    </extension>
  <extension
          name="tm commands"
          point="org.apache.uima.textmarker.ide.tmCommandProcessor">
       <processor
-            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.TextMarkerNamespaceProcessor"
+            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.RutaNamespaceProcessor"
             id="namespace"></processor>
       <processor
-            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.TextMarkerProcProcessor"
+            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.RutaProcProcessor"
             id="proc">
       </processor>
       <processor
-            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.TextMarkerVariableProcessor"
+            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.RutaVariableProcessor"
             id="set">
       </processor>
       <processor
-            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.TextMarkerUpvarProcessor"
+            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.RutaUpvarProcessor"
             id="upvar">
       </processor>
       <processor
-            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.TextMarkerGlobalVariableProcessor"
+            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.RutaGlobalVariableProcessor"
             id="global">
       </processor>
       <processor
-            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.TextMarkerPackageProcessor"
+            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.RutaPackageProcessor"
             id="package">
       </processor>
       <processor
-            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.TextMarkerCatchProcessor"
+            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.RutaCatchProcessor"
             id="catch">
       </processor>
       <processor
-            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.TextMarkerIfProcessor"
+            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.RutaIfProcessor"
             id="if">
       </processor>
       <processor
-            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.TextMarkerNamespaceVariableProcessor"
+            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.RutaNamespaceVariableProcessor"
             id="variable">
       </processor>
       <processor
-            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.TextMarkerSwitchCommandProcessor"
+            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.RutaSwitchCommandProcessor"
             id="switch">
       </processor>
       <processor
-            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.TextMarkerForCommandProcessor"
+            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.RutaForCommandProcessor"
             id="for">
       </processor>
       <processor
-            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.TextMarkerForeachCommandProcessor"
+            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.RutaForeachCommandProcessor"
             id="foreach">
       </processor>
       <processor
-            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.TextMarkerWhileCommandProcessor"
+            class="org.apache.uima.textmarker.ide.core.parser.processors.tm.RutaWhileCommandProcessor"
             id="while">
       </processor>
    </extension>
  <extension
          point="org.eclipse.dltk.core.mixin">
       <mixin
-            class="org.apache.uima.textmarker.ide.core.mixin.TextMarkerMixinParser"
+            class="org.apache.uima.textmarker.ide.core.mixin.RutaMixinParser"
             nature="org.apache.uima.textmarker.ide.nature"
             priority="0">
       </mixin>
@@ -194,22 +194,22 @@ under the License.
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer
-            class="org.apache.uima.textmarker.ide.core.TextMarkerPreferenceInitializer">
+            class="org.apache.uima.textmarker.ide.core.RutaPreferenceInitializer">
       </initializer>
       <initializer
-            class="org.apache.uima.textmarker.ide.debug.TextMarkerDebugPreferenceInitializer">
+            class="org.apache.uima.textmarker.ide.debug.RutaDebugPreferenceInitializer">
       </initializer>
       <initializer
-            class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerConsolePreferenceInitializer">
+            class="org.apache.uima.textmarker.ide.ui.preferences.RutaConsolePreferenceInitializer">
       </initializer>
       <initializer
-            class="org.apache.uima.textmarker.ide.ui.TextMarkerUIPreferenceInitializer">
+            class="org.apache.uima.textmarker.ide.ui.RutaUIPreferenceInitializer">
       </initializer>
    </extension>
    <extension
          point="org.eclipse.dltk.core.buildpathContainerInitializer">
       <buildpathContainerInitializer
-            class="org.apache.uima.textmarker.ide.core.packages.TextMarkerPackagesBuildpathContainerInitializer"
+            class="org.apache.uima.textmarker.ide.core.packages.RutaPackagesBuildpathContainerInitializer"
             id="org.apache.uima.textmarker.ide.core.PACKAGES">
       </buildpathContainerInitializer>
    </extension>
@@ -222,7 +222,7 @@ under the License.
             nature="org.apache.uima.textmarker.ide.nature">
       </buildParticipant>
     <buildParticipant
-      class="org.apache.uima.textmarker.ide.core.parser.TextMarkerTodoParserType"
+      class="org.apache.uima.textmarker.ide.core.parser.RutaTodoParserType"
       id="org.apache.uima.textmarker.ide.todo"
       name="%taskTagsBuildParticipant.name"
       nature="org.apache.uima.textmarker.ide.nature">
@@ -231,15 +231,15 @@ under the License.
       </requires>
     </buildParticipant>
     <buildParticipant
-          class="org.apache.uima.textmarker.ide.core.builder.TextMarkerBuilder"
+          class="org.apache.uima.textmarker.ide.core.builder.RutaBuilder"
           id="org.apache.uima.textmarker.ide.core.builder"
-          name="TextMarker Descriptor Bulider"
+          name="Ruta Descriptor Bulider"
           nature="org.apache.uima.textmarker.ide.nature">
     </buildParticipant>
     <buildParticipant
           class="org.apache.uima.textmarker.ide.validator.CheckValidator"
           id="org.apache.uima.textmarker.ide.validator.Checker"
-          name="TextMarker Validator"
+          name="Ruta Validator"
           nature="org.apache.uima.textmarker.ide.nature">
     </buildParticipant>
   </extension>
@@ -247,8 +247,8 @@ under the License.
          point="org.eclipse.dltk.debug.scriptDebugModel">
       <debugModel
             debugModelId="org.eclipse.dltk.debug.textmarkerModel"
-            natureId="org.apache.uima.textmarker.ide.core.TextMarkerNature"
-            typeFactory="org.apache.uima.textmarker.ide.debug.TextMarkerTypeFactory">
+            natureId="org.apache.uima.textmarker.ide.core.RutaNature"
+            typeFactory="org.apache.uima.textmarker.ide.debug.RutaTypeFactory">
       </debugModel>
    </extension>
   
@@ -271,26 +271,26 @@ under the License.
   
   <extension point="org.eclipse.dltk.ui.editorTextHovers">
     <hover
-      label="%TextMarkerVariableHoverLabel"
-      description="%TextMarkerVariableHoverDescription"
-      class="org.apache.uima.textmarker.ide.debug.ui.TextMarkerDebugHover"
-      id="org.apache.uima.textmarker.ide.debug.ui.TextMarkerDebugHover">
+      label="%RutaVariableHoverLabel"
+      description="%RutaVariableHoverDescription"
+      class="org.apache.uima.textmarker.ide.debug.ui.RutaDebugHover"
+      id="org.apache.uima.textmarker.ide.debug.ui.RutaDebugHover">
     </hover>
   </extension>
 
   <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
     <launchConfigurationTabGroup
-      type="org.apache.uima.textmarker.ide.launching.TextMarkerLaunchConfigurationType"
-      class="org.apache.uima.textmarker.ide.debug.ui.launchConfiguration.TextMarkerTabGroup"
-      id="org.apache.uima.textmarker.ide.debug.ui.launchConfiguration.TextMarkerTabGroup">
+      type="org.apache.uima.textmarker.ide.launching.RutaLaunchConfigurationType"
+      class="org.apache.uima.textmarker.ide.debug.ui.launchConfiguration.RutaTabGroup"
+      id="org.apache.uima.textmarker.ide.debug.ui.launchConfiguration.RutaTabGroup">
       <launchMode
         mode="debug"
         perspective="org.eclipse.debug.ui.DebugPerspective"
-        description="Debug TextMarker">
+        description="Debug Ruta">
       </launchMode>
       <launchMode
         mode="run"
-        description="Run TextMarker">
+        description="Run Ruta">
       </launchMode>
     </launchConfigurationTabGroup>
   </extension>
@@ -311,10 +311,10 @@ under the License.
 
   <extension point="org.eclipse.debug.ui.launchShortcuts">
     <shortcut
-      class="org.apache.uima.textmarker.ide.debug.ui.launcher.TextMarkerLaunchShortcut"
+      class="org.apache.uima.textmarker.ide.debug.ui.launcher.RutaLaunchShortcut"
       icon="icons/textmarker.png"
       id="org.apache.uima.textmarker.ide.debug.ui.launchShortcut"
-      label="TextMarker"
+      label="Ruta"
       modes="run, debug">
       <contextualLaunch>
         <enablement>
@@ -330,7 +330,7 @@ under the License.
           </with>
         </enablement>
       </contextualLaunch>
-      <perspective id="org.apache.uima.textmarker.ide.ui.TextMarkerPerspective">
+      <perspective id="org.apache.uima.textmarker.ide.ui.RutaPerspective">
       </perspective>
       <perspective id="org.eclipse.debug.ui.DebugPerspective"></perspective>
     </shortcut>
@@ -343,29 +343,29 @@ under the License.
       nameFilter="*"
       objectClass="org.eclipse.dltk.core.ISourceModule">
       <action
-        class="org.apache.uima.textmarker.ide.ui.console.PasteTextMarkerToConsole"
-        id="org.apache.uima.textmarker.ide.ui.console.PasteTextMarkerTextToConsoleAction"
-        label="%TextMarkerConsole.Actions.PasteToTextMarkerConsole" />
+        class="org.apache.uima.textmarker.ide.ui.console.PasteRutaToConsole"
+        id="org.apache.uima.textmarker.ide.ui.console.PasteRutaTextToConsoleAction"
+        label="%RutaConsole.Actions.PasteToRutaConsole" />
     </objectContribution>
 
     <viewerContribution
       id="org.apache.uima.textmarker.ide.debug.ui.viewerContribution1"
-      targetID="#TextMarkerEditorContext">
+      targetID="#RutaEditorContext">
       <!--action
         class="org.eclipse.dltk.debug.ui.actions.WatchExpressionAction"
         id="org.apache.uima.textmarker.ide.debug.ui.WatchExpressionAction"
         label="%WatchVariable"
         menubarPath="additions"/-->
       <action
-        id="org.apache.uima.textmarker.ide.ui.console.PasteToTextMarkerConsoleAction"
-        label="%TextMarkerConsole.Actions.PasteToTextMarkerConsole"
+        id="org.apache.uima.textmarker.ide.ui.console.PasteToRutaConsoleAction"
+        label="%RutaConsole.Actions.PasteToRutaConsole"
         menubarPath="additions"
-        class="org.apache.uima.textmarker.ide.ui.console.PasteTextMarkerTextToConsoleAction">
+        class="org.apache.uima.textmarker.ide.ui.console.PasteRutaTextToConsoleAction">
       </action>
     </viewerContribution>
     <viewerContribution
       id="org.apache.uima.textmarker.ide.debug.ui.rulerContribution"
-      targetID="#TextMarkerRulerContext">
+      targetID="#RutaRulerContext">
       <action
         class="org.eclipse.dltk.debug.ui.actions.RulerToggleWatchPointActionDelegate"
         icon="icons/jwatch_obj.gif"
@@ -396,7 +396,7 @@ under the License.
     </viewerContribution>
     
     <viewerContribution
-      targetID="#TextMarkerEditorContext"
+      targetID="#RutaEditorContext"
       id="org.eclipse.dltk.debug.ui.DebugPopupActions">
       <visibility>
         <and>
@@ -437,21 +437,21 @@ under the License.
   <extension point="org.eclipse.ui.actionSetPartAssociations">
     <actionSetPartAssociation
       targetID="org.eclipse.debug.ui.launchActionSet">
-      <part id="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor"></part>
+      <part id="org.apache.uima.textmarker.ide.ui.editor.RutaEditor"></part>
     </actionSetPartAssociation>
   </extension>
   <extension point="org.eclipse.ui.actionSetPartAssociations">
     <actionSetPartAssociation
       targetID="org.eclipse.debug.ui.launchActionSet">
       <part id="org.eclipse.dltk.ui.ScriptExplorer"></part>
-      <part id="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor"></part>
+      <part id="org.apache.uima.textmarker.ide.ui.editor.RutaEditor"></part>
     </actionSetPartAssociation>
   </extension>
   <extension point="org.eclipse.ui.console.consolePatternMatchListeners">
     <consolePatternMatchListener
-      class="org.apache.uima.textmarker.ide.ui.console.TextMarkerConsoleTracker"
+      class="org.apache.uima.textmarker.ide.ui.console.RutaConsoleTracker"
       regex="\(file &quot;.*&quot; line .*\)"
-      id="org.apache.uima.textmarker.ide.debug.ui.TextMarkerConsoleTracker">
+      id="org.apache.uima.textmarker.ide.debug.ui.RutaConsoleTracker">
       <enablement>
         <or>
           <test
@@ -466,7 +466,7 @@ under the License.
     point="org.eclipse.debug.ui.launchConfigurationTabGroups">
     <launchConfigurationTabGroup
     type="org.apache.uima.textmarker.ide.launching.localTMApplication"
-    class="org.apache.uima.textmarker.ide.debug.ui.launchConfiguration.TextMarkerTabGroup"
+    class="org.apache.uima.textmarker.ide.debug.ui.launchConfiguration.RutaTabGroup"
     id="org.apache.uima.textmarker.ide.debug.ui.TMTabGroup">
     <launchMode 
     mode="debug"
@@ -478,8 +478,8 @@ under the License.
 
   <extension point="org.eclipse.ui.editorActions">
     <editorContribution
-      targetID="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor"
-      id="org.apache.uima.textmarker.ide.debug.TextMarkerEditor.BreakpointRulerActions">
+      targetID="org.apache.uima.textmarker.ide.ui.editor.RutaEditor"
+      id="org.apache.uima.textmarker.ide.debug.RutaEditor.BreakpointRulerActions">
 
       <action
         label="Toggle Breakpoint"
@@ -493,32 +493,32 @@ under the License.
   </extension>
   <extension point="org.eclipse.ui.console.consoleFactories">
     <consoleFactory
-      class="org.apache.uima.textmarker.ide.ui.console.TextMarkerConsoleFactory"
-      label="%TextMarkerConsole.Console" />
+      class="org.apache.uima.textmarker.ide.ui.console.RutaConsoleFactory"
+      label="%RutaConsole.Console" />
   </extension>
 
   <extension point="org.eclipse.dltk.console.ui.scriptConsole">
     <scriptConsole
-      class="org.apache.uima.textmarker.ide.ui.console.TextMarkerConsoleFactory"
+      class="org.apache.uima.textmarker.ide.ui.console.RutaConsoleFactory"
       natureID="org.apache.uima.textmarker.ide.nature" />
   </extension>
   <extension point="org.eclipse.dltk.ui.buildpathContainerPage">
     <buildpathContainerPath
-      class="org.apache.uima.textmarker.ide.debug.ui.interpreters.TextMarkerInterpreterContainerWizardPage"
+      class="org.apache.uima.textmarker.ide.debug.ui.interpreters.RutaInterpreterContainerWizardPage"
       id="org.apache.uima.textmarker.ide.launching.INTERPRETER_CONTAINER"
-      name="TextMarker Interpreter Libraries"
+      name="Ruta Interpreter Libraries"
       nature="org.apache.uima.textmarker.ide.nature" />
   </extension>
   <extension point="org.eclipse.ui.perspectiveExtensions">
     <perspectiveExtension
-      targetID="org.apache.uima.textmarker.ide.ui.TextMarkerPerspective">
+      targetID="org.apache.uima.textmarker.ide.ui.RutaPerspective">
       <actionSet id="org.eclipse.debug.ui.breakpointActionSet"></actionSet>
     </perspectiveExtension>
   </extension>
 
   <extension point="org.eclipse.debug.ui.debugModelPresentations">
     <debugModelPresentation
-      class="org.apache.uima.textmarker.ide.debug.ui.TextMarkerDebugModelPresentation"
+      class="org.apache.uima.textmarker.ide.debug.ui.RutaDebugModelPresentation"
       id="org.eclipse.dltk.debug.textmarkerModel" />
   </extension>
 
@@ -537,8 +537,8 @@ under the License.
 
   <extension point="org.eclipse.core.runtime.adapters">
     <factory
-      adaptableType="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor"
-      class="org.apache.uima.textmarker.ide.debug.ui.TextMarkerEditorDebugAdapterFactory">
+      adaptableType="org.apache.uima.textmarker.ide.ui.editor.RutaEditor"
+      class="org.apache.uima.textmarker.ide.debug.ui.RutaEditorDebugAdapterFactory">
       <adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget" />
       <adapter type="org.eclipse.debug.ui.actions.IRunToLineTarget" />
     </factory>
@@ -595,7 +595,7 @@ under the License.
   <extension point="org.eclipse.dltk.launching.debuggingEngine">
     <engineContribution natureId="org.apache.uima.textmarker.ide.nature">
       <engine
-        class="org.apache.uima.textmarker.ide.debugger.TextMarkerDebuggerRunnerFactory"
+        class="org.apache.uima.textmarker.ide.debugger.RutaDebuggerRunnerFactory"
         description="%DebuggingEngine.description"
         id="org.apache.uima.textmarker.ide.debugger"
         name="%DebuggingEngine.name"
@@ -608,8 +608,8 @@ under the License.
   <extension
         point="org.eclipse.dltk.launching.interpreterInstallTypes">
      <interpreterInstallType
-           class="org.apache.uima.textmarker.ide.launching.GenericTextMarkerInstallType"
-           id="org.apache.uima.textmarker.ide.debug.ui.launcher.GenericTextMarkerInstallType">
+           class="org.apache.uima.textmarker.ide.launching.GenericRutaInstallType"
+           id="org.apache.uima.textmarker.ide.debug.ui.launcher.GenericRutaInstallType">
      </interpreterInstallType>
   </extension>
   <extension
@@ -618,32 +618,32 @@ under the License.
            delegate="org.apache.uima.textmarker.ide.launching.JavaLocalApplicationLaunchConfigurationDelegate"
            id="com.Instantiations.profiler.localJavaApplicationDelegate"
            modes="debug"
-           name="Debugging with TextMarker debug support"
+           name="Debugging with Ruta debug support"
            type="org.eclipse.jdt.launching.localJavaApplication">
      </launchDelegate>
   </extension>
   <extension
         point="org.eclipse.dltk.console.scriptInterpreter">
      <scriptInterpreter
-           class="org.apache.uima.textmarker.ide.ui.console.TextMarkerInterpreter"
+           class="org.apache.uima.textmarker.ide.ui.console.RutaInterpreter"
            natureID="org.apache.uima.textmarker.ide.nature">
      </scriptInterpreter>
   </extension>
   <extension
         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
      <launchConfigurationTypeImage
-           configTypeID="org.apache.uima.textmarker.ide.launching.TextMarkerLaunchConfigurationType"
+           configTypeID="org.apache.uima.textmarker.ide.launching.RutaLaunchConfigurationType"
            icon="$nl$/icons/textmarker.png"
-           id="org.apache.uima.textmarker.ide.launching.TextMarkerLaunchConfigurationTypeImage">
+           id="org.apache.uima.textmarker.ide.launching.RutaLaunchConfigurationTypeImage">
      </launchConfigurationTypeImage>
   </extension>
   <extension
         point="org.eclipse.debug.core.launchConfigurationTypes">
      <launchConfigurationType
-           delegate="org.apache.uima.textmarker.ide.launching.TextMarkerLaunchConfigurationDelegate"
-           id="org.apache.uima.textmarker.ide.launching.TextMarkerLaunchConfigurationType"
+           delegate="org.apache.uima.textmarker.ide.launching.RutaLaunchConfigurationDelegate"
+           id="org.apache.uima.textmarker.ide.launching.RutaLaunchConfigurationType"
            modes="run,debug"
-           name="TextMarker"
+           name="Ruta"
            public="true"
            sourceLocatorId="tmSourceLocator"
            sourcePathComputerId="tmSourcePathComputer">
@@ -652,14 +652,14 @@ under the License.
   <extension
         point="org.eclipse.debug.core.sourcePathComputers">
      <sourcePathComputer
-           class="org.apache.uima.textmarker.ide.launching.TextMarkerSourcePathComputer"
+           class="org.apache.uima.textmarker.ide.launching.RutaSourcePathComputer"
            id="tmSourcePathComputer">
      </sourcePathComputer>
   </extension>
   <extension
         point="org.eclipse.debug.core.sourceLocators">
      <sourceLocator
-           class="org.apache.uima.textmarker.ide.launching.TextMarkerSourceLookupDirector"
+           class="org.apache.uima.textmarker.ide.launching.RutaSourceLookupDirector"
            id="tmSourceLocator"
            name="org.apache.uima.textmarker.ide.launching.tmSourceLocator">
      </sourceLocator>
@@ -669,7 +669,7 @@ under the License.
      <engineContribution
            natureId="org.apache.uima.textmarker.ide.nature">
         <selector
-              class="org.apache.uima.textmarker.ide.launching.TextMarkerDebuggingEngineSelector">
+              class="org.apache.uima.textmarker.ide.launching.RutaDebuggingEngineSelector">
         </selector>
      </engineContribution>
   </extension>
@@ -677,15 +677,15 @@ under the License.
         point="org.eclipse.dltk.launching.interpreterInstalls">
      <interpreterInstall
            home="${eclipse_home}"
-           id="org.apache.uima.textmarker.ide.launching.embeddedTextMarker"
-           interpreterInstallType="org.apache.uima.textmarker.ide.debug.ui.launcher.GenericTextMarkerInstallType"
-           name="TextMarker Interpreter">
+           id="org.apache.uima.textmarker.ide.launching.embeddedRuta"
+           interpreterInstallType="org.apache.uima.textmarker.ide.debug.ui.launcher.GenericRutaInstallType"
+           name="Ruta Interpreter">
      </interpreterInstall>
   </extension>
   <extension
         point="org.eclipse.core.runtime.preferences">
      <initializer
-           class="org.apache.uima.textmarker.ide.formatter.TextMarkerFormatterPreferenceInitializer">
+           class="org.apache.uima.textmarker.ide.formatter.RutaFormatterPreferenceInitializer">
      </initializer>
   </extension>
   <extension
@@ -693,10 +693,10 @@ under the License.
      <engineContribution
            natureId="org.apache.uima.textmarker.ide.nature">
         <formatterFactory
-              class="org.apache.uima.textmarker.ide.formatter.TextMarkerFormatterFactory"
-              description="Default TextMarker formatter providing whitespace control and line wrapping"
+              class="org.apache.uima.textmarker.ide.formatter.RutaFormatterFactory"
+              description="Default Ruta formatter providing whitespace control and line wrapping"
               id="org.apache.uima.textmarker.ide.formatter.formatterFactory"
-              name="Default TextMarker Formatter"
+              name="Default Ruta Formatter"
               priority="10">
         </formatterFactory>
      </engineContribution>
@@ -706,7 +706,7 @@ under the License.
         name="%documentSetupParticipantName"
         point="org.eclipse.core.filebuffers.documentSetup">
      <participant
-           class="org.apache.uima.textmarker.ide.ui.editor.TextMarkerDocumentSetupParticipant">
+           class="org.apache.uima.textmarker.ide.ui.editor.RutaDocumentSetupParticipant">
      </participant>
   </extension>
   <extension
@@ -723,12 +723,12 @@ under the License.
         point="org.eclipse.search.searchPages">
      <page
            canSearchEnclosingProjects="true"
-           class="org.apache.uima.textmarker.ide.ui.search.TextMarkerSearchPage"
+           class="org.apache.uima.textmarker.ide.ui.search.RutaSearchPage"
            enabled="true"
            extensions="tm:90, exp:30"
            icon="$nl$/icons/search_obj.png"
-           id="org.eclipse.dltk.ui.TextMarkerSearchPage"
-           label="%TextMarkerSearchPage.label"
+           id="org.eclipse.dltk.ui.RutaSearchPage"
+           label="%RutaSearchPage.label"
            showScopeSection="true"
            sizeHint="460,160">
      </page>
@@ -736,25 +736,25 @@ under the License.
   <extension
         point="org.eclipse.ui.contexts">
      <context
-           description="%TextMarkerEditContext.description"
+           description="%RutaEditContext.description"
            id="org.apache.uima.textmarker.ide.ui.textMarkerEditorScope"
-           name="%TextMarkerEditContext.name"
+           name="%RutaEditContext.name"
            parentId="org.eclipse.dltk.ui.scriptEditorScope">
      </context>
   </extension>
   <extension
         point="org.eclipse.ui.perspectives">
      <perspective
-           class="org.apache.uima.textmarker.ide.ui.TextMarkerPerspective"
+           class="org.apache.uima.textmarker.ide.ui.RutaPerspective"
            icon="$nl$/icons/tm_persp.png"
-           id="org.apache.uima.textmarker.ide.ui.TextMarkerPerspective"
-           name="%TextMarkerPerspective.name">
+           id="org.apache.uima.textmarker.ide.ui.RutaPerspective"
+           name="%RutaPerspective.name">
      </perspective>
      <perspective
            class="org.apache.uima.textmarker.ide.ui.ExplainPerspective"
            icon="icons/explain.png"
            id="org.apache.uima.textmarker.ide.ui.explainPerspective"
-           name="TextMarker Explain">
+           name="Ruta Explain">
      </perspective>
   </extension>
   <extension
@@ -762,17 +762,17 @@ under the License.
      <perspectiveExtension
            targetID="org.eclipse.ui.resourcePerspective">
         <perspectiveShortcut
-              id="org.apache.uima.textmarker.ide.ui.TextMarkerPerspective">
+              id="org.apache.uima.textmarker.ide.ui.RutaPerspective">
         </perspectiveShortcut>
      </perspectiveExtension>
      <perspectiveExtension
-           targetID="org.apache.uima.textmarker.ide.ui.TextMarkerPerspective">
+           targetID="org.apache.uima.textmarker.ide.ui.RutaPerspective">
         <perspectiveShortcut
-              id="org.apache.uima.textmarker.ide.ui.TextMarkerPerspective">
+              id="org.apache.uima.textmarker.ide.ui.RutaPerspective">
         </perspectiveShortcut>
      </perspectiveExtension>
      <perspectiveExtension
-           targetID="org.apache.uima.textmarker.ide.ui.TextMarkerPerspective">
+           targetID="org.apache.uima.textmarker.ide.ui.RutaPerspective">
         <perspectiveShortcut
               id="org.eclipse.debug.ui.DebugPerspective">
         </perspectiveShortcut>
@@ -780,7 +780,7 @@ under the License.
      <perspectiveExtension
            targetID="org.eclipse.debug.ui.DebugPerspective">
         <perspectiveShortcut
-              id="org.apache.uima.textmarker.ide.ui.TextMarkerPerspective">
+              id="org.apache.uima.textmarker.ide.ui.RutaPerspective">
         </perspectiveShortcut>
      </perspectiveExtension>
      <perspectiveExtension
@@ -790,7 +790,7 @@ under the License.
         </actionSet>
      </perspectiveExtension>
      <perspectiveExtension
-           targetID="org.apache.uima.textmarker.ide.ui.TextMarkerPerspective">
+           targetID="org.apache.uima.textmarker.ide.ui.RutaPerspective">
         <showInPart
               id="org.eclipse.dltk.ui.ScriptExplorer">
         </showInPart>
@@ -806,24 +806,24 @@ under the License.
         point="org.eclipse.ui.newWizards">
      <category
            id="org.apache.uima.textmarker.ide.ui"
-           name="%TextMarkerWizardsCategory.name">
+           name="%RutaWizardsCategory.name">
      </category>
      <wizard
            category="org.apache.uima.textmarker.ide.ui"
-           class="org.apache.uima.textmarker.ide.ui.wizards.TextMarkerProjectCreationWizard"
-           finalPerspective="org.apache.uima.textmarker.ide.ui.TextMarkerPerspective"
+           class="org.apache.uima.textmarker.ide.ui.wizards.RutaProjectCreationWizard"
+           finalPerspective="org.apache.uima.textmarker.ide.ui.RutaPerspective"
            icon="$nl$/icons/newprj_wiz.png"
-           id="org.apache.uima.textmarker.ide.ui.wizards.TextMarkerProjectWizard"
-           name="TextMarker Project"
-           preferredPerspectives="org.apache.uima.textmarker.ide.ui.TextMarkerPerspective"
+           id="org.apache.uima.textmarker.ide.ui.wizards.RutaProjectWizard"
+           name="Ruta Project"
+           preferredPerspectives="org.apache.uima.textmarker.ide.ui.RutaPerspective"
            project="true">
         <description>
-           Creates new TextMarker project.
+           Creates new Ruta project.
         </description>
      </wizard>
      <wizard
            category="org.apache.uima.textmarker.ide.ui"
-           class="org.apache.uima.textmarker.ide.ui.wizards.TextMarkerPackageCreationWizard"
+           class="org.apache.uima.textmarker.ide.ui.wizards.RutaPackageCreationWizard"
            icon="icons/newpack_wiz.gif"
            id="org.apache.uima.textmarker.ide.ui.wizards.NewPackageCreationWizard"
            name="%NewTMPackage.label">
@@ -833,23 +833,23 @@ under the License.
      </wizard>
      <wizard
            category="org.apache.uima.textmarker.ide.ui"
-           class="org.apache.uima.textmarker.ide.ui.wizards.TextMarkerFileCreationWizard"
+           class="org.apache.uima.textmarker.ide.ui.wizards.RutaFileCreationWizard"
            icon="$nl$/icons/newfile_wiz.png"
-           id="org.apache.uima.textmarker.ide.ui.wizards.TextMarkerFileCreationWizard"
-           name="%NewTextMarkerFile.label">
+           id="org.apache.uima.textmarker.ide.ui.wizards.RutaFileCreationWizard"
+           name="%NewRutaFile.label">
         <description></description>
      </wizard>
   </extension>
   <extension
         point="org.eclipse.ui.editors">
      <editor
-           class="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor"
+           class="org.apache.uima.textmarker.ide.ui.editor.RutaEditor"
            contributorClass="org.eclipse.dltk.internal.ui.editor.SourceModuleEditorActionContributor"
            default="true"
            extensions="tm"
            icon="$nl$/icons/tm_obj.png"
-           id="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor"
-           name="%TextMarkerEditor.name">
+           id="org.apache.uima.textmarker.ide.ui.editor.RutaEditor"
+           name="%RutaEditor.name">
         <contentTypeBinding
               contentTypeId="org.apache.uima.textmarker.ide.tmContentType">
         </contentTypeBinding>
@@ -858,9 +858,9 @@ under the License.
   <extension
         point="org.eclipse.ui.editors.templates">
      <contextType
-           class="org.apache.uima.textmarker.ide.ui.templates.TextMarkerUniversalTemplateContextType"
+           class="org.apache.uima.textmarker.ide.ui.templates.RutaUniversalTemplateContextType"
            id="tmUniversalTemplateContextType"
-           name="%TextMarkerTemplateContext.name">
+           name="%RutaTemplateContext.name">
      </contextType>
      <include
            file="templates/templates.xml">
@@ -870,25 +870,25 @@ under the License.
         point="org.eclipse.ui.views">
      <category
            id="org.apache.uima.textmarker.ide.ui"
-           name="%TextMarkerViewsCategory.name">
+           name="%RutaViewsCategory.name">
      </category>
      <view
            category="org.apache.uima.textmarker.ide.ui"
-           class="org.apache.uima.textmarker.ide.ui.infoviews.TextMarkerDocumentationView"
+           class="org.apache.uima.textmarker.ide.ui.infoviews.RutaDocumentationView"
            icon="$nl$/icons/tmdoc.png"
-           id="org.apache.uima.textmarker.ide.ui.TextMarkerDocumentationView"
-           name="%TextMarkerDocumentationView.name">
+           id="org.apache.uima.textmarker.ide.ui.RutaDocumentationView"
+           name="%RutaDocumentationView.name">
      </view>
   </extension>
   <extension
         point="org.eclipse.ui.actionSets">
      <actionSet
-           description="%TextMarkerActionSet.description"
-           id="org.apache.uima.textmarker.ide.ui.TextMarkerActionSet"
-           label="%TextMarkerActionSet.label"
+           description="%RutaActionSet.description"
+           id="org.apache.uima.textmarker.ide.ui.RutaActionSet"
+           label="%RutaActionSet.label"
            visible="false">
         <action
-              class="org.apache.uima.textmarker.ide.ui.actions.TextMarkerOpenTypeAction"
+              class="org.apache.uima.textmarker.ide.ui.actions.RutaOpenTypeAction"
               definitionId="org.apache.uima.textmarker.ide.ui.navigate.open.type"
               icon="icons/opentype.gif"
               id="openType"
@@ -898,7 +898,7 @@ under the License.
               tooltip="%OpenTypeAction.tooltip">
         </action>
         <action
-              class="org.apache.uima.textmarker.ide.ui.actions.TextMarkerOpenTypeInHierarchyAction"
+              class="org.apache.uima.textmarker.ide.ui.actions.RutaOpenTypeInHierarchyAction"
               definitionId="org.apache.uima.textmarker.ide.ui.navigate.open.type.in.hierarchy"
               id="openTypeInHierarchy"
               label="%OpenTypeInHierarchyAction.label"
@@ -910,24 +910,24 @@ under the License.
   <extension
         point="org.eclipse.ui.actionSets">
      <actionSet
-           description="%TextMarkerSearchActionSet.description"
+           description="%RutaSearchActionSet.description"
            id="org.apache.uima.textmarker.ide.ui.SearchActionSet"
-           label="%TextMarkerSearchActionSet.label"
+           label="%RutaSearchActionSet.label"
            visible="false">
         <menu
               id="org.eclipse.search.menu"
               label="%SearchMenu.label"
               path="navigate">
            <groupMarker
-                 name="dialogTextMarkerGroup">
+                 name="dialogRutaGroup">
            </groupMarker>
         </menu>
         <action
-              class="org.apache.uima.textmarker.ide.ui.actions.OpenTextMarkerSearchPageAction"
+              class="org.apache.uima.textmarker.ide.ui.actions.OpenRutaSearchPageAction"
               icon="$nl$/icons/search_obj.png"
-              id="org.apache.uima.textmarker.ide.ui.actions.OpenTextMarkerSearchPage"
-              label="%OpenTextMarkerSearchPageAction.label"
-              menubarPath="org.eclipse.search.menu/dialogTextMarkerGroup">
+              id="org.apache.uima.textmarker.ide.ui.actions.OpenRutaSearchPage"
+              label="%OpenRutaSearchPageAction.label"
+              menubarPath="org.eclipse.search.menu/dialogRutaGroup">
         </action>
      </actionSet>
   </extension>
@@ -957,9 +957,9 @@ under the License.
         point="org.eclipse.ui.decorators">
      <decorator
            adaptable="false"
-           class="org.apache.uima.textmarker.ide.ui.TextMarkerProjectDecorator"
+           class="org.apache.uima.textmarker.ide.ui.RutaProjectDecorator"
            id="org.apache.uima.textmarker.ide.decorators.projectdecorator"
-           label="%TextMarkerProjectDecorator.name"
+           label="%RutaProjectDecorator.name"
            lightweight="true"
            location="TOP_LEFT"
            state="true">
@@ -1009,28 +1009,28 @@ under the License.
      <actionSetPartAssociation
            targetID="org.eclipse.ui.edit.text.actionSet.presentation">
         <part
-              id="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor">
+              id="org.apache.uima.textmarker.ide.ui.editor.RutaEditor">
         </part>
      </actionSetPartAssociation>
      <actionSetPartAssociation
            targetID="org.eclipse.dltk.ui.A_OpenActionSet">
         <part
-              id="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor">
+              id="org.apache.uima.textmarker.ide.ui.editor.RutaEditor">
         </part>
      </actionSetPartAssociation>
      <actionSetPartAssociation
            targetID="org.eclipse.dltk.ui.ScriptCodingActionSet">
         <part
-              id="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor">
+              id="org.apache.uima.textmarker.ide.ui.editor.RutaEditor">
         </part>
      </actionSetPartAssociation>
   </extension>
   <extension
-        id="TextMarkerScriptNoTypeCompletionProposalComputer"
+        id="RutaScriptNoTypeCompletionProposalComputer"
         point="org.eclipse.dltk.ui.scriptCompletionProposalComputer">
      <scriptCompletionProposalComputer
            categoryId="org.eclipse.dltk.ui.scriptNoTypeProposalCategory"
-           class="org.apache.uima.textmarker.ide.ui.text.completion.TextMarkerNoTypeCompletionProposalComputer"
+           class="org.apache.uima.textmarker.ide.ui.text.completion.RutaNoTypeCompletionProposalComputer"
            toolkitId="org.apache.uima.textmarker.ide.nature">
         <partition
               type="__dftl_partition_content_type">
@@ -1043,35 +1043,35 @@ under the License.
   <extension
         point="org.eclipse.dltk.ui.scriptDocumentationProviders">
      <provider
-           class="org.apache.uima.textmarker.ide.ui.documentation.TextMarkerCommentDocumentationProvider"
-           id="org.apache.uima.textmarker.ide.ui.TextMarkerCommentDocumentationProvider"
+           class="org.apache.uima.textmarker.ide.ui.documentation.RutaCommentDocumentationProvider"
+           id="org.apache.uima.textmarker.ide.ui.RutaCommentDocumentationProvider"
            nature="org.apache.uima.textmarker.ide.nature">
      </provider>
      <provider
-           class="org.apache.uima.textmarker.ide.ui.documentation.TextMarkerPagesDocumentationProvider"
-           id="org.apache.uima.textmarker.ide.textmarke.ui.TextMarkerPagesDocumentationProvider"
+           class="org.apache.uima.textmarker.ide.ui.documentation.RutaPagesDocumentationProvider"
+           id="org.apache.uima.textmarker.ide.textmarke.ui.RutaPagesDocumentationProvider"
            nature="org.apache.uima.textmarker.ide.nature">
      </provider>
      <provider
-           class="org.apache.uima.textmarker.ide.ui.documentation.TextMarkerActionDocumentationProvider"
-           id="org.apache.uima.textmarker.ide.ui.TextMarkerActionDocumentationProvider"
+           class="org.apache.uima.textmarker.ide.ui.documentation.RutaActionDocumentationProvider"
+           id="org.apache.uima.textmarker.ide.ui.RutaActionDocumentationProvider"
            nature="org.apache.uima.textmarker.ide.nature">
      </provider>
      <provider
-           class="org.apache.uima.textmarker.ide.ui.documentation.TextMarkerConditionDocumentationProvider"
-           id="org.apache.uima.textmarker.ide.ui.TextMarkerConditionDocumentationProvider"
+           class="org.apache.uima.textmarker.ide.ui.documentation.RutaConditionDocumentationProvider"
+           id="org.apache.uima.textmarker.ide.ui.RutaConditionDocumentationProvider"
            nature="org.apache.uima.textmarker.ide.nature">
      </provider>
      <provider
-           class="org.apache.uima.textmarker.ide.ui.documentation.TextMarkerFunctionDocumentationProvider"
-           id="org.apache.uima.textmarker.ide.ui.TextMarkerFunctionDocumentationProvider"
+           class="org.apache.uima.textmarker.ide.ui.documentation.RutaFunctionDocumentationProvider"
+           id="org.apache.uima.textmarker.ide.ui.RutaFunctionDocumentationProvider"
            nature="org.apache.uima.textmarker.ide.nature">
      </provider>
   </extension>
   <extension
         point="org.eclipse.dltk.ui.language">
      <language
-           class="org.apache.uima.textmarker.ide.ui.TextMarkerUILanguageToolkit"
+           class="org.apache.uima.textmarker.ide.ui.RutaUILanguageToolkit"
            nature="org.apache.uima.textmarker.ide.nature">
      </language>
   </extension>
@@ -1083,7 +1083,7 @@ under the License.
               id="org.eclipse.dltk.ui.ScriptExplorer">
         </part>
         <part
-              id="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor">
+              id="org.apache.uima.textmarker.ide.ui.editor.RutaEditor">
         </part>
         <part
               id="org.eclipse.search.SearchResultView">
@@ -1093,20 +1093,20 @@ under the License.
   <extension
         point="org.eclipse.ui.ide.markerResolution">
      <markerResolutionGenerator
-           class="org.apache.uima.textmarker.ide.ui.text.TextMarkerRequireMarkerResolutionGenerator"
+           class="org.apache.uima.textmarker.ide.ui.text.RutaRequireMarkerResolutionGenerator"
            markerType="org.eclipse.dltk.core.problem">
      </markerResolutionGenerator>
   </extension>
   <extension
         point="org.eclipse.ui.editorActions">
      <editorContribution
-           id="org.apache.uima.textmarker.ide.ui.TextMarkerEditor.ruler.actions"
-           targetID="org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor">
+           id="org.apache.uima.textmarker.ide.ui.RutaEditor.ruler.actions"
+           targetID="org.apache.uima.textmarker.ide.ui.editor.RutaEditor">
         <action
               actionID="RulerClick"
-              class="org.apache.uima.textmarker.ide.ui.actions.TextMarkerSelectRulerAction"
-              id="org.apache.uima.textmarker.ide.ui.tmeditor.TextMarkerSelectRulerAction"
-              label="TextMarker Selection Ruler action">
+              class="org.apache.uima.textmarker.ide.ui.actions.RutaSelectRulerAction"
+              id="org.apache.uima.textmarker.ide.ui.tmeditor.RutaSelectRulerAction"
+              label="Ruta Selection Ruler action">
         </action>
      </editorContribution>
   </extension>
@@ -1164,9 +1164,9 @@ under the License.
         point="org.eclipse.ui.propertyPages">
      <page
            category="org.apache.uima.textmarker.ide.propertyPage"
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerBuildpathPropertyPage"
+           class="org.apache.uima.textmarker.ide.ui.preferences.RutaBuildpathPropertyPage"
            id="org.apache.uima.textmarker.ide.ui.BuildpathProperties"
-           name="%TextMarkerBuildPathPropertyPage.name">
+           name="%RutaBuildPathPropertyPage.name">
         <enabledWhen>
            <adapt
                  type="org.eclipse.core.resources.IProject">
@@ -1181,9 +1181,9 @@ under the License.
         </keywordReference>
      </page>
      <page
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerPropertyPage"
+           class="org.apache.uima.textmarker.ide.ui.preferences.RutaPropertyPage"
            id="org.apache.uima.textmarker.ide.propertyPage"
-           name="%TextMarkerPropertyPage.name">
+           name="%RutaPropertyPage.name">
         <enabledWhen>
            <adapt
                  type="org.eclipse.core.resources.IProject">
@@ -1197,9 +1197,9 @@ under the License.
      <!--
      <page
            category="org.apache.uima.textmarker.ide.propertyPage"
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerTodoTaskPreferencePage"
+           class="org.apache.uima.textmarker.ide.ui.preferences.RutaTodoTaskPreferencePage"
            id="org.apache.uima.textmarker.ide.propertyPage.todo"
-           name="%TextMarkerTodoPropertyPage.name">
+           name="%RutaTodoPropertyPage.name">
         <enabledWhen>
            <adapt
                  type="org.eclipse.core.resources.IProject">
@@ -1216,9 +1216,9 @@ under the License.
         point="org.eclipse.ui.propertyPages">
      <page
            category="org.apache.uima.textmarker.ide.propertyPage"
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerFormatterPreferencePage"
+           class="org.apache.uima.textmarker.ide.ui.preferences.RutaFormatterPreferencePage"
            id="org.apache.uima.textmarker.ide.propertyPage.formatter"
-           name="TextMarker Formatter">
+           name="Ruta Formatter">
         <enabledWhen>
            <adapt
                  type="org.eclipse.core.resources.IProject">
@@ -1233,75 +1233,75 @@ under the License.
   <extension
         point="org.eclipse.ui.preferencePages">
      <page
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerGlobalPreferencePage"
+           class="org.apache.uima.textmarker.ide.ui.preferences.RutaGlobalPreferencePage"
            id="org.apache.uima.textmarker.ide.preferences"
-           name="%TextMarkerPreferencePage.name">
+           name="%RutaPreferencePage.name">
      </page>
      <page
            category="org.apache.uima.textmarker.ide.preferences"
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerEditorPreferencesPage"
+           class="org.apache.uima.textmarker.ide.ui.preferences.RutaEditorPreferencesPage"
            id="org.apache.uima.textmarker.ide.preferences.editor"
-           name="%TextMarkerEditorPreferencePage.name">
+           name="%RutaEditorPreferencePage.name">
      </page>
      <page
            category="org.apache.uima.textmarker.ide.preferences.editor"
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerEditorHoverPreferencePage"
+           class="org.apache.uima.textmarker.ide.ui.preferences.RutaEditorHoverPreferencePage"
            id="org.apache.uima.textmarker.ide.preferences.editor.hovers"
-           name="%TextMarkerEditorHoversPreferencePage.name">
+           name="%RutaEditorHoversPreferencePage.name">
      </page>
      <page
            category="org.apache.uima.textmarker.ide.preferences.editor"
-           class="org.apache.uima.textmarker.ide.ui.templates.TextMarkerCodeTemplatesPreferencePage"
+           class="org.apache.uima.textmarker.ide.ui.templates.RutaCodeTemplatesPreferencePage"
            id="org.apache.uima.textmarker.ide.preferences.templates"
-           name="%TextMarkerCodeTemplatesPreferencePage.name">
+           name="%RutaCodeTemplatesPreferencePage.name">
      </page>
      <page
            category="org.apache.uima.textmarker.ide.preferences.editor"
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerEditorSyntaxColoringPreferencePage"
+           class="org.apache.uima.textmarker.ide.ui.preferences.RutaEditorSyntaxColoringPreferencePage"
            id="org.apache.uima.textmarker.ide.ui.editor.SyntaxColoring"
-           name="%TextMarkerEditorSyntaxColoringPreferencePage.name">
+           name="%RutaEditorSyntaxColoringPreferencePage.name">
      </page>
      <page
            category="org.apache.uima.textmarker.ide.preferences.editor"
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerSmartTypingPreferencePage"
+           class="org.apache.uima.textmarker.ide.ui.preferences.RutaSmartTypingPreferencePage"
            id="org.apache.uima.textmarker.ide.ui.editor.SmartTyping"
-           name="%TextMarkerEditorSmartTypingPreferencePage.name">
+           name="%RutaEditorSmartTypingPreferencePage.name">
      </page>
      <page
            category="org.apache.uima.textmarker.ide.preferences.editor"
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerFoldingPreferencePage"
-           id="org.apache.uima.textmarker.ide.ui.editor.TextMarkerFolding"
-           name="%TextMarkerEditorFoldingPreferencePage.name">
+           class="org.apache.uima.textmarker.ide.ui.preferences.RutaFoldingPreferencePage"
+           id="org.apache.uima.textmarker.ide.ui.editor.RutaFolding"
+           name="%RutaEditorFoldingPreferencePage.name">
      </page>
      <!--
      <page
            category="org.apache.uima.textmarker.ide.preferences"
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerTodoTaskPreferencePage"
+           class="org.apache.uima.textmarker.ide.ui.preferences.RutaTodoTaskPreferencePage"
            id="org.apache.uima.textmarker.ide.ui.editor.TodoTasks"
-           name="%TextMarkerTaskTags.name">
+           name="%RutaTaskTags.name">
      </page>
      -->
      <page
            category="org.apache.uima.textmarker.ide.preferences.editor"
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerEditorAssistancePreferencePage"
+           class="org.apache.uima.textmarker.ide.ui.preferences.RutaEditorAssistancePreferencePage"
            id="org.apache.uima.textmarker.ide.ui.editor.Assistence"
-           name="%TextMarkerEditorAssistancePreferencePage.name">
+           name="%RutaEditorAssistancePreferencePage.name">
      </page>
      <page
            category="org.apache.uima.textmarker.ide.preferences"
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerBuilderPreferencePage"
+           class="org.apache.uima.textmarker.ide.ui.preferences.RutaBuilderPreferencePage"
            id="org.apache.uima.textmarker.ide.preferences.builder"
            name="Builder">
      </page>
      <page
            category="org.apache.uima.textmarker.ide.preferences.editor"
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerFormatterPreferencePage"
+           class="org.apache.uima.textmarker.ide.ui.preferences.RutaFormatterPreferencePage"
            id="org.apache.uima.textmarker.ide.preferences.formatter"
            name="Formatter">
      </page>
      <page
            category="org.apache.uima.textmarker.ide.preferences"
-           class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerProjectPreferencePage"
+           class="org.apache.uima.textmarker.ide.ui.preferences.RutaProjectPreferencePage"
            id="org.apache.uima.textmarker.ide.preferences.project"
            name="Project Management">
      </page>
@@ -1310,28 +1310,28 @@ under the License.
   <extension point="org.eclipse.ui.preferencePages">
     <page
       category="org.apache.uima.textmarker.ide.preferences"
-      class="org.apache.uima.textmarker.ide.debug.ui.interpreters.TextMarkerInterpreterPreferencePage"
-      id="org.eclipse.dltk.debug.ui.TextMarkerInterpreters"
+      class="org.apache.uima.textmarker.ide.debug.ui.interpreters.RutaInterpreterPreferencePage"
+      id="org.eclipse.dltk.debug.ui.RutaInterpreters"
       name="%Interpreters.PreferencePage" />
       <!--
     <page
       category="org.apache.uima.textmarker.ide.preferences"
-      class="org.apache.uima.textmarker.ide.debug.ui.preferences.TextMarkerDebugPreferencePage"
+      class="org.apache.uima.textmarker.ide.debug.ui.preferences.RutaDebugPreferencePage"
       id="org.apache.uima.textmarker.ide.preferences.debug"
       name="%Debug.PreferencePage" />
     <page
       category="org.apache.uima.textmarker.ide.preferences.debug"
-      class="org.apache.uima.textmarker.ide.debug.ui.preferences.TextMarkerDebuggingEnginePreferencePage"
+      class="org.apache.uima.textmarker.ide.debug.ui.preferences.RutaDebuggingEnginePreferencePage"
       id="org.apache.uima.textmarker.ide.preferences.debug.engines"
       name="%Engines.PreferencePage" />
     <page
       category="org.apache.uima.textmarker.ide.preferences"
-      class="org.apache.uima.textmarker.ide.ui.preferences.TextMarkerConsolePreferences"
-      id="org.apache.uima.textmarker.ide.ui.console.preferences.TextMarkerConsolePreferences"
+      class="org.apache.uima.textmarker.ide.ui.preferences.RutaConsolePreferences"
+      id="org.apache.uima.textmarker.ide.ui.console.preferences.RutaConsolePreferences"
       name="%Console.PreferencePage" />
     <page
           category="org.apache.uima.textmarker.ide.preferences.debug.engines"
-          class="org.apache.uima.textmarker.ide.debugger.preferences.TextMarkerDebuggerPreferencePage"
+          class="org.apache.uima.textmarker.ide.debugger.preferences.RutaDebuggerPreferencePage"
           id="org.apache.uima.textmarker.ide.preferences.debug.engines.debugger"
           name="%PreferencePage.name">
     </page>
@@ -1341,7 +1341,7 @@ under the License.
 <!--
   <extension point="org.eclipse.ui.propertyPages">
     <page
-      class="org.apache.uima.textmarker.ide.debugger.preferences.TextMarkerDebuggerPreferencePage"
+      class="org.apache.uima.textmarker.ide.debugger.preferences.RutaDebuggerPreferencePage"
       category="org.apache.uima.textmarker.ide.propertyPage.debug.engines"
       id="org.apache.uima.textmarker.ide.propertyPage.debug.engines.debugger"
       name="%PropertyPage.name">
@@ -1360,7 +1360,7 @@ under the License.
         point="org.eclipse.ui.propertyPages">
      <page
            category="org.apache.uima.textmarker.ide.propertyPage"
-           class="org.apache.uima.textmarker.ide.debug.ui.preferences.TextMarkerDebugPreferencePage"
+           class="org.apache.uima.textmarker.ide.debug.ui.preferences.RutaDebugPreferencePage"
            id="org.apache.uima.textmarker.ide.propertyPage.debug"
            name="%Debug.PropertyPage">
         <enabledWhen>
@@ -1375,7 +1375,7 @@ under the License.
      </page>
      <page
            category="org.apache.uima.textmarker.ide.propertyPage.debug"
-           class="org.apache.uima.textmarker.ide.debug.ui.preferences.TextMarkerDebuggingEnginePreferencePage"
+           class="org.apache.uima.textmarker.ide.debug.ui.preferences.RutaDebuggingEnginePreferencePage"
            id="org.apache.uima.textmarker.ide.propertyPage.debug.engines"
            name="%Engines.PropertyPage">
         <enabledWhen>
@@ -1393,7 +1393,7 @@ under the License.
   <extension
         point="org.apache.uima.textmarker.ide.tmSemanticHighlighting">
      <highlightingExtension
-           class="org.apache.uima.textmarker.ide.ui.DefaultTextMarkerSemanticHighlightingExtension">
+           class="org.apache.uima.textmarker.ide.ui.DefaultRutaSemanticHighlightingExtension">
      </highlightingExtension>
   </extension>
      <extension
@@ -1408,7 +1408,7 @@ under the License.
      <extension
            point="org.eclipse.dltk.ui.buildpathContainerPage">
         <buildpathContainerPage
-              class="org.apache.uima.textmarker.ide.ui.wizards.TextMarkerJavaContainerPage"
+              class="org.apache.uima.textmarker.ide.ui.wizards.RutaJavaContainerPage"
               id="org.apache.uima.textmarker.ide.java.page"
               name="Java Library"
               nature="org.apache.uima.textmarker.ide.nature">

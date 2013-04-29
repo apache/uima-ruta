@@ -75,7 +75,7 @@ under the License.
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":org.apache.uima.textmarker.ide.core.ITextMarkerCommandProcessor"/>
+                  <meta.attribute kind="java" basedOn=":org.apache.uima.textmarker.ide.core.IRutaCommandProcessor"/>
                </appInfo>
             </annotation>
          </attribute>
