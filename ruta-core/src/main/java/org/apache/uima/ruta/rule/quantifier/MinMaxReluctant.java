@@ -17,21 +17,21 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.rule.quantifier;
+package org.apache.uima.ruta.rule.quantifier;
 
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerBlock;
-import org.apache.uima.textmarker.TextMarkerStatement;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.number.SimpleNumberExpression;
-import org.apache.uima.textmarker.rule.ComposedRuleElementMatch;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleElementMatch;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
+import org.apache.uima.ruta.rule.ComposedRuleElementMatch;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleElementMatch;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class MinMaxReluctant implements RuleElementQuantifier {
 
@@ -62,7 +62,7 @@ public class MinMaxReluctant implements RuleElementQuantifier {
   }
 
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
-          TextMarkerStatement element, InferenceCrowd crowd) {
+          RutaStatement element, InferenceCrowd crowd) {
     int minValue = min.getIntegerValue(element.getParent());
     int maxValue = max.getIntegerValue(element.getParent());
     if (matches.size() > 0) {
@@ -81,7 +81,7 @@ public class MinMaxReluctant implements RuleElementQuantifier {
   }
 
   public boolean continueMatch(boolean after, AnnotationFS annotation, RuleElement ruleElement,
-          RuleMatch ruleMatch, ComposedRuleElementMatch containerMatch, TextMarkerStream stream,
+          RuleMatch ruleMatch, ComposedRuleElementMatch containerMatch, RutaStream stream,
           InferenceCrowd crowd) {
     int minValue = min.getIntegerValue(ruleElement.getParent());
     int maxValue = max.getIntegerValue(ruleElement.getParent());
@@ -116,7 +116,7 @@ public class MinMaxReluctant implements RuleElementQuantifier {
             || (!lastMatch.matched() && matchedSize >= minValue && matchedSize <= maxValue && !nextMatched);
   }
 
-  public boolean isOptional(TextMarkerBlock parent) {
+  public boolean isOptional(RutaBlock parent) {
     int minValue = min.getIntegerValue(parent);
     return minValue == 0;
   }

@@ -17,30 +17,30 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.rule.quantifier;
+package org.apache.uima.ruta.rule.quantifier;
 
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerBlock;
-import org.apache.uima.textmarker.TextMarkerStatement;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.rule.ComposedRuleElementMatch;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleElementMatch;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.ComposedRuleElementMatch;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleElementMatch;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class NormalQuantifier implements RuleElementQuantifier {
   // @Override
-  // public boolean continueMatch(int index, List<RuleElement> elements, TextMarkerBasic next,
-  // RuleElementMatch match, List<RuleElementMatch> matches, TextMarkerStream stream,
+  // public boolean continueMatch(int index, List<RuleElement> elements, RutaBasic next,
+  // RuleElementMatch match, List<RuleElementMatch> matches, RutaStream stream,
   // InferenceCrowd crowd) {
   // return match == null;
   // }
 
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
-          TextMarkerStatement element, InferenceCrowd crowd) {
+          RutaStatement element, InferenceCrowd crowd) {
     if (matches == null) {
       return null;
     }
@@ -60,12 +60,12 @@ public class NormalQuantifier implements RuleElementQuantifier {
 
   public boolean continueMatch(boolean after, AnnotationFS annotation, RuleElement ruleElement,
           RuleMatch extendedMatch, ComposedRuleElementMatch containerMatch,
-          TextMarkerStream stream, InferenceCrowd crowd) {
+          RutaStream stream, InferenceCrowd crowd) {
     List<RuleElementMatch> list = containerMatch.getInnerMatches().get(ruleElement);
     return list == null || list.isEmpty();
   }
 
-  public boolean isOptional(TextMarkerBlock parent) {
+  public boolean isOptional(RutaBlock parent) {
     return false;
   }
 }

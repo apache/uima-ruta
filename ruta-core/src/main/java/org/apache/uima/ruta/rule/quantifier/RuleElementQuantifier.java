@@ -17,28 +17,28 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.rule.quantifier;
+package org.apache.uima.ruta.rule.quantifier;
 
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerBlock;
-import org.apache.uima.textmarker.TextMarkerStatement;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.rule.ComposedRuleElementMatch;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleElementMatch;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.ComposedRuleElementMatch;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleElementMatch;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public interface RuleElementQuantifier {
 
   List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
-          TextMarkerStatement element, InferenceCrowd crowd);
+          RutaStatement element, InferenceCrowd crowd);
 
   boolean continueMatch(boolean after, AnnotationFS annotation, RuleElement ruleElement,
-          RuleMatch extendedMatch, ComposedRuleElementMatch containerMatch, TextMarkerStream stream, InferenceCrowd crowd);
+          RuleMatch extendedMatch, ComposedRuleElementMatch containerMatch, RutaStream stream, InferenceCrowd crowd);
 
-  boolean isOptional(TextMarkerBlock parent);
+  boolean isOptional(RutaBlock parent);
 
 }
