@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.ide.ui.text;
+package org.apache.uima.ruta.ide.ui.text;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -32,12 +32,12 @@ import org.apache.uima.UIMAFramework;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
-import org.apache.uima.textmarker.ide.core.codeassist.TextMarkerReferenceVisitor;
-import org.apache.uima.textmarker.ide.core.codeassist.TextMarkerSelectionParser;
-import org.apache.uima.textmarker.ide.parser.ast.TMTypeConstants;
-import org.apache.uima.textmarker.ide.parser.ast.TextMarkerModuleDeclaration;
-import org.apache.uima.textmarker.ide.parser.ast.TextMarkerVariableReference;
+import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
+import org.apache.uima.ruta.ide.core.codeassist.RutaReferenceVisitor;
+import org.apache.uima.ruta.ide.core.codeassist.RutaSelectionParser;
+import org.apache.uima.ruta.ide.parser.ast.TMTypeConstants;
+import org.apache.uima.ruta.ide.parser.ast.RutaModuleDeclaration;
+import org.apache.uima.ruta.ide.parser.ast.RutaVariableReference;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
 import org.eclipse.core.resources.IFile;
@@ -87,24 +87,24 @@ public class ExternalTypeHyperlinkDetector implements IHyperlinkDetector {
       if (input instanceof ISourceModule) {
         ISourceModule sm = (ISourceModule) input;
         IModelElement modelElement = sm.getModelElement();
-        TextMarkerSelectionParser parser = new TextMarkerSelectionParser();
+        RutaSelectionParser parser = new RutaSelectionParser();
         ModuleDeclaration moduleDeclaration = parser.parse(sm);
         String word = document.get(wordRegion.getOffset(), wordRegion.getLength());
-        TextMarkerReferenceVisitor referenceVisitor = new TextMarkerReferenceVisitor(wordRegion
+        RutaReferenceVisitor referenceVisitor = new RutaReferenceVisitor(wordRegion
                 .getOffset());
         moduleDeclaration.traverse(referenceVisitor);
         ASTNode node = referenceVisitor.getResult();
-        if (node instanceof TextMarkerVariableReference
-                && moduleDeclaration instanceof TextMarkerModuleDeclaration) {
-          TextMarkerVariableReference vr = (TextMarkerVariableReference) node;
-          TextMarkerModuleDeclaration parsed = (TextMarkerModuleDeclaration) moduleDeclaration;
+        if (node instanceof RutaVariableReference
+                && moduleDeclaration instanceof RutaModuleDeclaration) {
+          RutaVariableReference vr = (RutaVariableReference) node;
+          RutaModuleDeclaration parsed = (RutaModuleDeclaration) moduleDeclaration;
           if (vr.getType() == TMTypeConstants.TM_TYPE_AT) {
             String nodeText = vr.getStringRepresentation();
             Collection<String> importedTypeSystems = parsed.descriptorInfo.getImportedTypeSystems();
             List<IHyperlink> result = new ArrayList<IHyperlink>();
             for (String tsString : importedTypeSystems) {
               IFolder folder = modelElement.getScriptProject().getProject().getFolder(
-                      TextMarkerProjectUtils.getDefaultDescriptorLocation());
+                      RutaProjectUtils.getDefaultDescriptorLocation());
               String xmlFilePath = tsString.replaceAll("\\.", "/");
               xmlFilePath = xmlFilePath.substring(0, xmlFilePath.length()) + ".xml";
               Set<String> types = getTypes(folder, xmlFilePath);

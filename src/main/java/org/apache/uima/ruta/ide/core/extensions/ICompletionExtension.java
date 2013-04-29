@@ -17,14 +17,14 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.ide.core.extensions;
+package org.apache.uima.ruta.ide.core.extensions;
 
 import java.util.Set;
 
-import org.apache.uima.textmarker.ide.core.codeassist.CompletionOnKeywordArgumentOrFunctionArgument;
-import org.apache.uima.textmarker.ide.core.codeassist.CompletionOnKeywordOrFunction;
-import org.apache.uima.textmarker.ide.core.codeassist.TextMarkerCompletionEngine;
-import org.apache.uima.textmarker.ide.core.codeassist.TextMarkerCompletionParser;
+import org.apache.uima.ruta.ide.core.codeassist.CompletionOnKeywordArgumentOrFunctionArgument;
+import org.apache.uima.ruta.ide.core.codeassist.CompletionOnKeywordOrFunction;
+import org.apache.uima.ruta.ide.core.codeassist.RutaCompletionEngine;
+import org.apache.uima.ruta.ide.core.codeassist.RutaCompletionParser;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.statements.Statement;
@@ -32,16 +32,16 @@ import org.eclipse.dltk.core.CompletionRequestor;
 
 
 public interface ICompletionExtension {
-  boolean visit(Expression s, TextMarkerCompletionParser parser, int position);
+  boolean visit(Expression s, RutaCompletionParser parser, int position);
 
-  boolean visit(Statement s, TextMarkerCompletionParser parser, int position);
+  boolean visit(Statement s, RutaCompletionParser parser, int position);
 
   void completeOnKeywordOrFunction(CompletionOnKeywordOrFunction key, ASTNode astNodeParent,
-          TextMarkerCompletionEngine engine);
+          RutaCompletionEngine engine);
 
   void completeOnKeywordArgumentsOne(String name,
           CompletionOnKeywordArgumentOrFunctionArgument compl, Set methodNames, Statement st,
-          TextMarkerCompletionEngine tmCompletionEngine);
+          RutaCompletionEngine tmCompletionEngine);
 
   void setRequestor(CompletionRequestor requestor);
 }

@@ -17,23 +17,23 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.ide.parser.ast;
+package org.apache.uima.ruta.ide.parser.ast;
 
-import org.apache.uima.textmarker.ide.core.parser.TextMarkerParser;
+import org.apache.uima.ruta.ide.core.parser.RutaParser;
 import org.eclipse.dltk.ast.expressions.ExpressionConstants;
 
 public interface TMActionConstants {
   public static final int A_CALL = ExpressionConstants.USER_EXPRESSION_START
-          + TextMarkerParser.CALL;
+          + RutaParser.CALL;
 
   public static final int A_ASSIGN = ExpressionConstants.USER_EXPRESSION_START
-          + TextMarkerParser.ASSIGN;
+          + RutaParser.ASSIGN;
 
   public static final int A_CREATE = ExpressionConstants.USER_EXPRESSION_START
-          + TextMarkerParser.CREATE;
+          + RutaParser.CREATE;
 
   public static final int A_FILL = ExpressionConstants.USER_EXPRESSION_START
-          + TextMarkerParser.FILL;
+          + RutaParser.FILL;
 
-  public static final int A_LOG = ExpressionConstants.USER_EXPRESSION_START + TextMarkerParser.LOG;
+  public static final int A_LOG = ExpressionConstants.USER_EXPRESSION_START + RutaParser.LOG;
 }

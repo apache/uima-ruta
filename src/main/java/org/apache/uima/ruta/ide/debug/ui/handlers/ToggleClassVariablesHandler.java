@@ -17,10 +17,10 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.ide.debug.ui.handlers;
+package org.apache.uima.ruta.ide.debug.ui.handlers;
 
-import org.apache.uima.textmarker.ide.TextMarkerIdePlugin;
-import org.apache.uima.textmarker.ide.debug.TextMarkerDebugConstants;
+import org.apache.uima.ruta.ide.RutaIdePlugin;
+import org.apache.uima.ruta.ide.debug.RutaDebugConstants;
 import org.eclipse.dltk.debug.ui.handlers.AbstractToggleClassVariableHandler;
 import org.eclipse.dltk.ui.PreferencesAdapter;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -32,7 +32,7 @@ public class ToggleClassVariablesHandler extends AbstractToggleClassVariableHand
    */
   @Override
   protected String getModelId() {
-    return TextMarkerDebugConstants.DEBUG_MODEL_ID;
+    return RutaDebugConstants.DEBUG_MODEL_ID;
   }
 
   /*
@@ -40,6 +40,6 @@ public class ToggleClassVariablesHandler extends AbstractToggleClassVariableHand
    */
   @Override
   protected IPreferenceStore getPreferenceStore() {
-    return new PreferencesAdapter(TextMarkerIdePlugin.getDefault().getPluginPreferences());
+    return new PreferencesAdapter(RutaIdePlugin.getDefault().getPluginPreferences());
   }
 }

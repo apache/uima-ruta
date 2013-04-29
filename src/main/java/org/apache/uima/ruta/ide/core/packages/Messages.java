@@ -17,22 +17,22 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.ide.core.packages;
+package org.apache.uima.ruta.ide.core.packages;
 
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-  private static final String BUNDLE_NAME = "org.apache.uima.textmarker.ide.core.packages.messages"; //$NON-NLS-1$
+  private static final String BUNDLE_NAME = "org.apache.uima.ruta.ide.core.packages.messages"; //$NON-NLS-1$
 
-  public static String TextMarkerCheckBuilder_interpreterNotFound;
+  public static String RutaCheckBuilder_interpreterNotFound;
 
-  public static String TextMarkerCheckBuilder_processing;
+  public static String RutaCheckBuilder_processing;
 
-  public static String TextMarkerCheckBuilder_retrievePackages;
+  public static String RutaCheckBuilder_retrievePackages;
 
-  public static String TextMarkerCheckBuilder_unknownPackage;
+  public static String RutaCheckBuilder_unknownPackage;
 
-  public static String TextMarkerCheckBuilder_unresolvedDependencies;
+  public static String RutaCheckBuilder_unresolvedDependencies;
   static {
     // initialize resource bundle
     NLS.initializeMessages(BUNDLE_NAME, Messages.class);

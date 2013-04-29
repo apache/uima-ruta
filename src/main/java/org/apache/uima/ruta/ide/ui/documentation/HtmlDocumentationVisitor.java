@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.ide.ui.documentation;
+package org.apache.uima.ruta.ide.ui.documentation;
 
 import java.util.Map;
 import java.util.TreeMap;

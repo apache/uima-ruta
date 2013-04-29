@@ -17,13 +17,13 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.ide.ui.editor;
+package org.apache.uima.ruta.ide.ui.editor;
 
 import org.eclipse.osgi.util.NLS;
 
 public final class ActionMessages extends NLS {
 
-  private static final String BUNDLE_NAME = "org.apache.uima.textmarker.ide.ui.editor.ActionMessages";//$NON-NLS-1$
+  private static final String BUNDLE_NAME = "org.apache.uima.ruta.ide.ui.editor.ActionMessages";//$NON-NLS-1$
 
   private ActionMessages() {
     // Do not instantiate

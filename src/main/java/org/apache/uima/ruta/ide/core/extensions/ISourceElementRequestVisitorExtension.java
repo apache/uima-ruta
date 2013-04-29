@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.ide.core.extensions;
+package org.apache.uima.ruta.ide.core.extensions;
 
 import org.eclipse.dltk.ast.declarations.Declaration;
 
@@ -25,16 +25,16 @@ public interface ISourceElementRequestVisitorExtension {
 
   int getModifiers(Declaration s);
 
-  // boolean visit(Statement statement, TextMarkerSourceElementRequestVisitor
+  // boolean visit(Statement statement, RutaSourceElementRequestVisitor
   // original);
   //
   // boolean extendedExitRequired(MethodDeclaration method,
-  // TextMarkerSourceElementRequestVisitor tmSourceElementRequestVisitor);
+  // RutaSourceElementRequestVisitor tmSourceElementRequestVisitor);
   //
   // ExitFromType getExitExtended(MethodDeclaration method,
-  // TextMarkerSourceElementRequestVisitor tmSourceElementRequestVisitor);
+  // RutaSourceElementRequestVisitor tmSourceElementRequestVisitor);
   //
   // ExitFromType processField(FieldDeclaration decl,
-  // TextMarkerSourceElementRequestVisitor tmSourceElementRequestVisitor);
+  // RutaSourceElementRequestVisitor tmSourceElementRequestVisitor);
 
 }

@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.ide.ui.console;
+package org.apache.uima.ruta.ide.ui.console;
 
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.dltk.core.DLTKCore;

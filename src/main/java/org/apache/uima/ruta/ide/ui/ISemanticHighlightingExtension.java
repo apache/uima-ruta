@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.ide.ui;
+package org.apache.uima.ruta.ide.ui;
 
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ui.editor.highlighting.ISemanticHighlightingRequestor;

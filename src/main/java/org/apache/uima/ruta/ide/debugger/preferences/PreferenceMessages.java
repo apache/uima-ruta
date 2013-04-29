@@ -17,12 +17,12 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.ide.debugger.preferences;
+package org.apache.uima.ruta.ide.debugger.preferences;
 
 import org.eclipse.osgi.util.NLS;
 
 public class PreferenceMessages {
-  private static final String BUNDLE_NAME = "org.apache.uima.textmarker.ide.debugger.preferences.PreferenceMessages";
+  private static final String BUNDLE_NAME = "org.apache.uima.ruta.ide.debugger.preferences.PreferenceMessages";
 
   static {
     NLS.initializeMessages(BUNDLE_NAME, PreferenceMessages.class);

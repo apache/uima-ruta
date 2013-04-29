@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.ide.ui.documentation;
+package org.apache.uima.ruta.ide.ui.documentation;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,7 +28,7 @@ import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.uima.textmarker.ide.TextMarkerIdePlugin;
+import org.apache.uima.ruta.ide.RutaIdePlugin;
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.ui.documentation.IScriptDocumentationProvider;
 import org.htmlparser.Parser;
@@ -84,7 +84,7 @@ public abstract class AbstractLanguageElementDocumentationProvider implements
       list.visitAllNodesWith(visitor);
       map.putAll(visitor.getMap());
     } catch (Exception e) {
-      TextMarkerIdePlugin.error(e);
+      RutaIdePlugin.error(e);
     }
 
   }

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.ide.parser.ast;
+package org.apache.uima.ruta.ide.parser.ast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,14 +32,14 @@ public class ScriptFactory extends AbstractFactory {
 
   private int idCounter;
 
-  public TextMarkerRule createRule(TextMarkerRuleElement element) {
+  public RutaRule createRule(RutaRuleElement element) {
     List<Expression> elements = new ArrayList<Expression>();
     elements.add(element);
     return createRule(elements, null);
   }
 
-  public TextMarkerRule createRule(List<Expression> elements, Token s) {
-    TextMarkerRule rule = new TextMarkerRule(elements, idCounter++);
+  public RutaRule createRule(List<Expression> elements, Token s) {
+    RutaRule rule = new RutaRule(elements, idCounter++);
     if (s != null) {
       int[] bounds = getBounds(s);
       rule.setEnd(bounds[1]);
@@ -48,8 +48,8 @@ public class ScriptFactory extends AbstractFactory {
   }
 
   public ComposedRuleElement createComposedRuleElement(List<Expression> res, List<Expression> q,
-          List<TextMarkerCondition> c, List<TextMarkerAction> a, boolean disjunctive,
-          TextMarkerBlock env, Token... tokens) {
+          List<RutaCondition> c, List<RutaAction> a, boolean disjunctive,
+          RutaBlock env, Token... tokens) {
     int bounds[] = getSurroundingBounds((ASTNode) null, res);
     // taking care of null statements - errors should have been recognized
     // in parser
@@ -84,9 +84,9 @@ public class ScriptFactory extends AbstractFactory {
     return new ComposedRuleElement(bounds[0], bounds[1], res, q, c, a, disjunctive);
   }
 
-  public TextMarkerRuleElement createRuleElement(Expression head,
-          List<Expression> quantifierPartExpressions, List<TextMarkerCondition> conditions,
-          List<TextMarkerAction> actions, Token end) {
+  public RutaRuleElement createRuleElement(Expression head,
+          List<Expression> quantifierPartExpressions, List<RutaCondition> conditions,
+          List<RutaAction> actions, Token end) {
     int bounds[] = getSurroundingBounds(head, conditions, actions);
     setMaxEnd(bounds, end);
     // taking care of null statements - errors should have been recognized
@@ -101,17 +101,17 @@ public class ScriptFactory extends AbstractFactory {
     if (quantifierPart != null) {
       bounds[1] = Math.max(bounds[1], quantifierPart.sourceEnd());
     }
-    return new TextMarkerRuleElement(bounds[0], bounds[1], head, quantifierPartExpressions,
+    return new RutaRuleElement(bounds[0], bounds[1], head, quantifierPartExpressions,
             conditions, actions);
   }
 
-  public TextMarkerRuleElement createRuleElement(Token w, List<TextMarkerCondition> c,
-          List<TextMarkerAction> a, Token end) {
+  public RutaRuleElement createRuleElement(Token w, List<RutaCondition> c,
+          List<RutaAction> a, Token end) {
     int bounds[] = getSurroundingBounds(null, c, a);
     setMinBegin(bounds, w);
     filterNullObjects(c);
     filterNullObjects(a);
-    return new TextMarkerRuleElement(bounds[0], bounds[1], null, null,
+    return new RutaRuleElement(bounds[0], bounds[1], null, null,
             c, a);
   }
   
@@ -132,11 +132,11 @@ public class ScriptFactory extends AbstractFactory {
    * @param packageString
    * @return
    */
-  public TextMarkerScriptBlock createScriptBlock(int declStart, int declEnd, int nameStart,
-          int nameEnd, String string, List<TextMarkerRuleElement> res, Block block,
+  public RutaScriptBlock createScriptBlock(int declStart, int declEnd, int nameStart,
+          int nameEnd, String string, List<RutaRuleElement> res, Block block,
           String packageString) {
     createRule(new ArrayList<Expression>(), null);
-    return new TextMarkerScriptBlock(string, packageString, nameStart, nameEnd, declStart, declEnd);
+    return new RutaScriptBlock(string, packageString, nameStart, nameEnd, declStart, declEnd);
   }
 
   /**
@@ -148,21 +148,21 @@ public class ScriptFactory extends AbstractFactory {
    * @param textMarkerBlock
    * @return
    */
-  public TextMarkerBlock createScriptBlock(Token id, Token type, TextMarkerBlock textMarkerBlock) {
+  public RutaBlock createScriptBlock(Token id, Token type, RutaBlock textMarkerBlock) {
     int[] bounds = getBounds(type, id);
     int[] nameBounds = getBounds(id);
     if (textMarkerBlock == null) {
-      TextMarkerBlock block = new TextMarkerBlock(id.getText(), "error", nameBounds[0],
+      RutaBlock block = new RutaBlock(id.getText(), "error", nameBounds[0],
               nameBounds[1], bounds[0], bounds[1]);
       return block;
     } else {
-      TextMarkerBlock block = new TextMarkerBlock(id.getText(), textMarkerBlock.getNamespace(),
+      RutaBlock block = new RutaBlock(id.getText(), textMarkerBlock.getNamespace(),
               nameBounds[0], nameBounds[1], bounds[0], bounds[1]);
       return block;
     }
   }
 
-  public void finalizeScriptBlock(TextMarkerBlock block, Token rc, TextMarkerRule rule,
+  public void finalizeScriptBlock(RutaBlock block, Token rc, RutaRule rule,
           List<Statement> body) {
     // taking care of null statements - errors should have been recognized
     // in parser

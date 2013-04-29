@@ -17,14 +17,14 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.ide.ui.preferences;
+package org.apache.uima.ruta.ide.ui.preferences;
 
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-  private static final String BUNDLE_NAME = "org.apache.uima.textmarker.ide.ui.formatter.messages";
+  private static final String BUNDLE_NAME = "org.apache.uima.ruta.ide.ui.formatter.messages";
 
-  public static String TextMarkerFormatterPreferencePage_description;
+  public static String RutaFormatterPreferencePage_description;
   static {
     // init resource bundle
     NLS.initializeMessages(BUNDLE_NAME, Messages.class);

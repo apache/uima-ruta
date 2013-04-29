@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.ide.launching;
+package org.apache.uima.ruta.ide.launching;
 
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 

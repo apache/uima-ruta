@@ -17,16 +17,16 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.ide.ui.editor;
+package org.apache.uima.ruta.ide.ui.editor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.textmarker.ide.parser.ast.ComponentDeclaration;
-import org.apache.uima.textmarker.ide.parser.ast.ComponentReference;
-import org.apache.uima.textmarker.ide.parser.ast.TextMarkerAction;
-import org.apache.uima.textmarker.ide.parser.ast.TextMarkerCondition;
-import org.apache.uima.textmarker.ide.parser.ast.TextMarkerVariableReference;
+import org.apache.uima.ruta.ide.parser.ast.ComponentDeclaration;
+import org.apache.uima.ruta.ide.parser.ast.ComponentReference;
+import org.apache.uima.ruta.ide.parser.ast.RutaAction;
+import org.apache.uima.ruta.ide.parser.ast.RutaCondition;
+import org.apache.uima.ruta.ide.parser.ast.RutaVariableReference;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
@@ -45,9 +45,9 @@ public class ReferenceFinder extends ASTVisitor {
 
   @Override
   public boolean visit(Expression s) throws Exception {
-    if (s instanceof TextMarkerVariableReference && node instanceof TextMarkerVariableReference) {
-      TextMarkerVariableReference vr0 = (TextMarkerVariableReference) node;
-      TextMarkerVariableReference vr1 = (TextMarkerVariableReference) s;
+    if (s instanceof RutaVariableReference && node instanceof RutaVariableReference) {
+      RutaVariableReference vr0 = (RutaVariableReference) node;
+      RutaVariableReference vr1 = (RutaVariableReference) s;
       if (vr1.getStringRepresentation().equals(vr0.getStringRepresentation())
               && vr1.getType() == vr0.getType()) {
         result.add(s);
@@ -60,15 +60,15 @@ public class ReferenceFinder extends ASTVisitor {
       if (cr1.getName().equals(cr2.getName())) {
         result.add(s);
       }
-    } else if (s instanceof TextMarkerAction && node instanceof TextMarkerAction) {
-      TextMarkerAction a1 = (TextMarkerAction) node;
-      TextMarkerAction a2 = (TextMarkerAction) s;
+    } else if (s instanceof RutaAction && node instanceof RutaAction) {
+      RutaAction a1 = (RutaAction) node;
+      RutaAction a2 = (RutaAction) s;
       if (a1.getName().equals(a2.getName())) {
         result.add(s);
       }
-    } else if (s instanceof TextMarkerCondition && node instanceof TextMarkerCondition) {
-      TextMarkerCondition c1 = (TextMarkerCondition) node;
-      TextMarkerCondition c2 = (TextMarkerCondition) s;
+    } else if (s instanceof RutaCondition && node instanceof RutaCondition) {
+      RutaCondition c1 = (RutaCondition) node;
+      RutaCondition c2 = (RutaCondition) s;
       if (c1.getName().equals(c2.getName())) {
         result.add(s);
       }

@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.ide.core.extensions;
+package org.apache.uima.ruta.ide.core.extensions;
 
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.core.search.matching.PatternLocator;

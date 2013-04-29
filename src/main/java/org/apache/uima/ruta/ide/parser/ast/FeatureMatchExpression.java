@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.ide.parser.ast;
+package org.apache.uima.ruta.ide.parser.ast;
 
 import org.antlr.runtime.Token;
 import org.eclipse.dltk.ast.ASTVisitor;

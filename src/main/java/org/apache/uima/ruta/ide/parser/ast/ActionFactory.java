@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.ide.parser.ast;
+package org.apache.uima.ruta.ide.parser.ast;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -31,7 +31,7 @@ import org.eclipse.dltk.ast.expressions.ExpressionConstants;
 
 public class ActionFactory extends AbstractFactory {
 
-  public static TextMarkerAction createAction(Token type, List exprsRaw) {
+  public static RutaAction createAction(Token type, List exprsRaw) {
     int bounds[] = getBounds(type);
     int nameStart = bounds[0];
     int nameEnd = bounds[1];
@@ -48,12 +48,12 @@ public class ActionFactory extends AbstractFactory {
         bounds[1] = Math.max(bounds[1], lastExpr.sourceEnd());
       }
     }
-    return new TextMarkerAction(bounds[0], bounds[1], exprs,
+    return new RutaAction(bounds[0], bounds[1], exprs,
             ExpressionConstants.USER_EXPRESSION_START + type.getType(), type.getText(), nameStart,
             nameEnd);
   }
 
-  public static TextMarkerAction createAction(Token type, Expression... exprsArray) {
+  public static RutaAction createAction(Token type, Expression... exprsArray) {
     List<Expression> listOfExpressions = new ArrayList<Expression>();
     if (exprsArray != null) {
       for (int i = 0; i < exprsArray.length; i++) {
@@ -66,13 +66,13 @@ public class ActionFactory extends AbstractFactory {
     return createAction(type, listOfExpressions);
   }
 
-  public static TextMarkerAction createEmptyAction(Token token) {
+  public static RutaAction createEmptyAction(Token token) {
     int bounds[] = getBounds(token);
-    return new TextMarkerAction(bounds[0], bounds[0], new ArrayList<Expression>(),
+    return new RutaAction(bounds[0], bounds[0], new ArrayList<Expression>(),
             TMConditionConstants.CONSTANT_OFFSET, "", bounds[0], bounds[0]);
   }
   
-  public static TextMarkerAction createAction(Token type, Map<Expression, Expression> map,
+  public static RutaAction createAction(Token type, Map<Expression, Expression> map,
           Expression... exprsArray) {
     List<Expression> listOfExpressions = new ArrayList<Expression>();
     // TODO add map
@@ -87,16 +87,16 @@ public class ActionFactory extends AbstractFactory {
     return createAction(type, listOfExpressions);
   }
 
-  public static TextMarkerAction createCallAction(Token callToken, ComponentReference ref) {
+  public static RutaAction createCallAction(Token callToken, ComponentReference ref) {
     return createAction(callToken, ref);
   }
 
-  public static TextMarkerAction createCallAction(Token callToken, ComponentReference ref,
+  public static RutaAction createCallAction(Token callToken, ComponentReference ref,
           Expression list) {
     return createAction(callToken, ref, list);
   }
 
-  public static TextMarkerAction createStructureAction(Token type, Expression structure,
+  public static RutaAction createStructureAction(Token type, Expression structure,
           List<Expression> indexes, List<Expression> left, List<Expression> right) {
     List<Expression> args = new ArrayList<Expression>();
     if (indexes != null) {
@@ -125,7 +125,7 @@ public class ActionFactory extends AbstractFactory {
     }
   }
 
-  public static TextMarkerAction createLogAction(Token type, Expression logString, Token level) {
+  public static RutaAction createLogAction(Token type, Expression logString, Token level) {
     int[] nameBounds = getBounds(type);
     int[] bounds;
     int levelBounds[] = new int[] { -1, -1 };
@@ -140,11 +140,11 @@ public class ActionFactory extends AbstractFactory {
     }
     List exprs = new ArrayList();
     exprs.add(logString);
-    return new TextMarkerLogAction(bounds[0], bounds[1], type.getText(), nameBounds[0],
+    return new RutaLogAction(bounds[0], bounds[1], type.getText(), nameBounds[0],
             nameBounds[1], exprs, levelBounds[0], levelBounds[1]);
   }
 
-  public static TextMarkerAction createStructureAction(Token type, Expression structure,
+  public static RutaAction createStructureAction(Token type, Expression structure,
           Expression index, Expression table, List left, List right) {
     int bounds[] = getBounds(type);
     int nameStart = bounds[0];
@@ -172,19 +172,19 @@ public class ActionFactory extends AbstractFactory {
         bounds[1] = val.sourceEnd();
       }
     }
-    return new TextMarkerStructureAction(bounds[0], bounds[1], numExprs,
+    return new RutaStructureAction(bounds[0], bounds[1], numExprs,
             ExpressionConstants.USER_EXPRESSION_START + type.getType(), type.getText(), nameStart,
             nameEnd, assignments, structure);
   }
 
-  public static TextMarkerAction createAction(Token name, Expression f, List<Expression> list) {
+  public static RutaAction createAction(Token name, Expression f, List<Expression> list) {
     List<Expression> list2 = new ArrayList<Expression>();
     list2.add(f);
     list2.addAll(list);
     return createAction(name, list2);
   }
 
-  public static TextMarkerAction createAction(Token name, Expression a1, Expression a2,
+  public static RutaAction createAction(Token name, Expression a1, Expression a2,
           List<Expression> list) {
     List<Expression> complete = new ArrayList<Expression>();
     complete.add(a1);
@@ -193,7 +193,7 @@ public class ActionFactory extends AbstractFactory {
     return createAction(name, complete);
   }
 
-  public static TextMarkerAction createConfigureAction(Token name, ComponentReference ns,
+  public static RutaAction createConfigureAction(Token name, ComponentReference ns,
           List<Expression> left, List<Expression> right) {
     List<Expression> exprs = new ArrayList<Expression>();
     exprs.add(ns);
@@ -206,7 +206,7 @@ public class ActionFactory extends AbstractFactory {
     return createAction(name, exprs);
   }
 
-  public static TextMarkerAction createStructureAction(Token name, List<Expression> args,
+  public static RutaAction createStructureAction(Token name, List<Expression> args,
           List<Expression> left, List<Expression> right, Expression structure) {
     int bounds[] = getBounds(name);
     int nameStart = bounds[0];
@@ -230,7 +230,7 @@ public class ActionFactory extends AbstractFactory {
         bounds[1] = val.sourceEnd();
       }
     }
-    return new TextMarkerStructureAction(bounds[0], bounds[1], numExprs,
+    return new RutaStructureAction(bounds[0], bounds[1], numExprs,
             ExpressionConstants.USER_EXPRESSION_START + name.getType(), name.getText(), nameStart,
             nameEnd, assignments, structure);
   }

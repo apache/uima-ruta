@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.ide.launching;
+package org.apache.uima.ruta.ide.launching;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -51,14 +51,14 @@ public class JavaLocalApplicationLaunchConfigurationDelegate extends JavaLaunchD
       dbgpService = DLTKDebugPlugin.getDefault().getDbgpService();
 
       IScriptDebugTarget target = new ScriptDebugTarget(
-              "org.apache.uima.textmarker.ide.debug.textmarkerModel", dbgpService, "hello", launch,
+              "org.apache.uima.ruta.ide.debug.rutaModel", dbgpService, "hello", launch,
               null);
       IOConsole cs = new IOConsole("aa", null);
       ScriptStreamProxy proxy = new ScriptStreamProxy(cs);
       target.setStreamProxy(proxy);
       launch.addDebugTarget(target);
       final ISourceLocator sourceLocator = launch.getSourceLocator();
-      final TextMarkerSourceLookupDirector l = new TextMarkerSourceLookupDirector();
+      final RutaSourceLookupDirector l = new RutaSourceLookupDirector();
       launch.setSourceLocator(new ISourceLocator() {
 
         public Object getSourceElement(IStackFrame stackFrame) {

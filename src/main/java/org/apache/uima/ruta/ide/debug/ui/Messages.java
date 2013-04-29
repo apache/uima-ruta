@@ -17,12 +17,12 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.ide.debug.ui;
+package org.apache.uima.ruta.ide.debug.ui;
 
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-  private static final String BUNDLE_NAME = "org.apache.uima.textmarker.ide.debug.ui.messages"; //$NON-NLS-1$
+  private static final String BUNDLE_NAME = "org.apache.uima.ruta.ide.debug.ui.messages"; //$NON-NLS-1$
 
   public static String NoDebuggingEngine_title;
 
