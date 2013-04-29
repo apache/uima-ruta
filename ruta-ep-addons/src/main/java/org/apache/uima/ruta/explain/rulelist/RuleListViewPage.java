@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.explain.rulelist;
+package org.apache.uima.ruta.explain.rulelist;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +26,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.caseditor.editor.AnnotationEditor;
-import org.apache.uima.textmarker.explain.ExplainConstants;
-import org.apache.uima.textmarker.explain.apply.ApplyTreeContentProvider;
-import org.apache.uima.textmarker.explain.apply.ApplyTreeLabelProvider;
-import org.apache.uima.textmarker.explain.apply.ApplyViewPage;
-import org.apache.uima.textmarker.explain.tree.ApplyRootNode;
-import org.apache.uima.textmarker.explain.tree.ExplainTree;
-import org.apache.uima.textmarker.explain.tree.IExplainTreeNode;
-import org.apache.uima.textmarker.explain.tree.RuleApplyNode;
+import org.apache.uima.ruta.explain.ExplainConstants;
+import org.apache.uima.ruta.explain.apply.ApplyTreeContentProvider;
+import org.apache.uima.ruta.explain.apply.ApplyTreeLabelProvider;
+import org.apache.uima.ruta.explain.apply.ApplyViewPage;
+import org.apache.uima.ruta.explain.tree.ApplyRootNode;
+import org.apache.uima.ruta.explain.tree.ExplainTree;
+import org.apache.uima.ruta.explain.tree.IExplainTreeNode;
+import org.apache.uima.ruta.explain.tree.RuleApplyNode;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;

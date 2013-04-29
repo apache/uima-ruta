@@ -17,14 +17,14 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.explain.createdBy;
+package org.apache.uima.ruta.explain.createdBy;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
-import org.apache.uima.textmarker.visitor.CreatedByVisitor;
+import org.apache.uima.ruta.visitor.CreatedByVisitor;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;

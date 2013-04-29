@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.utils.apply;
+package org.apache.uima.ruta.utils.apply;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.resources.IFile;

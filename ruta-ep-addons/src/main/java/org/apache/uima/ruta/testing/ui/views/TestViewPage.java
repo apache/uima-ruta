@@ -17,27 +17,27 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.testing.ui.views;
+package org.apache.uima.ruta.testing.ui.views;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.uima.cas.CAS;
-import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
-import org.apache.uima.textmarker.ide.TextMarkerIdePlugin;
-import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
-import org.apache.uima.textmarker.testing.preferences.TestingPreferenceConstants;
-import org.apache.uima.textmarker.testing.ui.views.evalDataTable.EvalTableContentProvider;
-import org.apache.uima.textmarker.testing.ui.views.evalDataTable.EvalTableLabelProvider;
-import org.apache.uima.textmarker.testing.ui.views.evalDataTable.TypeEvalTableConst;
-import org.apache.uima.textmarker.testing.ui.views.evalDataTable.TypeTableSorter;
-import org.apache.uima.textmarker.testing.ui.views.fn.FalseNegativeView;
-import org.apache.uima.textmarker.testing.ui.views.fp.FalsePositiveView;
-import org.apache.uima.textmarker.testing.ui.views.tp.TruePositiveView;
-import org.apache.uima.textmarker.testing.ui.views.util.CASLoader;
-import org.apache.uima.textmarker.testing.ui.views.util.Caretaker;
-import org.apache.uima.textmarker.testing.ui.views.util.EvalDataProcessor;
+import org.apache.uima.ruta.addons.RutaAddonsPlugin;
+import org.apache.uima.ruta.ide.RutaIdePlugin;
+import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
+import org.apache.uima.ruta.testing.preferences.TestingPreferenceConstants;
+import org.apache.uima.ruta.testing.ui.views.evalDataTable.EvalTableContentProvider;
+import org.apache.uima.ruta.testing.ui.views.evalDataTable.EvalTableLabelProvider;
+import org.apache.uima.ruta.testing.ui.views.evalDataTable.TypeEvalTableConst;
+import org.apache.uima.ruta.testing.ui.views.evalDataTable.TypeTableSorter;
+import org.apache.uima.ruta.testing.ui.views.fn.FalseNegativeView;
+import org.apache.uima.ruta.testing.ui.views.fp.FalsePositiveView;
+import org.apache.uima.ruta.testing.ui.views.tp.TruePositiveView;
+import org.apache.uima.ruta.testing.ui.views.util.CASLoader;
+import org.apache.uima.ruta.testing.ui.views.util.Caretaker;
+import org.apache.uima.ruta.testing.ui.views.util.EvalDataProcessor;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -132,7 +132,7 @@ public class TestViewPage extends Page implements IPageBookViewPage {
   @Override
   public void createControl(Composite parent) {
 
-    IPreferenceStore store = TextMarkerAddonsPlugin.getDefault().getPreferenceStore();
+    IPreferenceStore store = RutaAddonsPlugin.getDefault().getPreferenceStore();
     this.propertyChangeListener = new IPropertyChangeListener() {
       public void propertyChange(PropertyChangeEvent event) {
         if (event.getProperty().equals("LOAD_OLD_TEST_RESULTS")) {
@@ -349,7 +349,7 @@ public class TestViewPage extends Page implements IPageBookViewPage {
       try {
         file.refreshLocal(IResource.DEPTH_ZERO, new NullProgressMonitor());
       } catch (CoreException e) {
-        TextMarkerAddonsPlugin.error(e);
+        RutaAddonsPlugin.error(e);
       }
     }
     try {
@@ -358,12 +358,12 @@ public class TestViewPage extends Page implements IPageBookViewPage {
       page.showView(FalsePositiveView.ID);
       page.showView(FalseNegativeView.ID);
     } catch (PartInitException e) {
-      TextMarkerAddonsPlugin.error(e);
+      RutaAddonsPlugin.error(e);
     }
   }
 
   public static Image createImage(String path) {
-    return TextMarkerAddonsPlugin.getImageDescriptor(path).createImage();
+    return RutaAddonsPlugin.getImageDescriptor(path).createImage();
   }
 
   public void setResource(IResource r) {
@@ -454,11 +454,11 @@ public class TestViewPage extends Page implements IPageBookViewPage {
   }
 
   private void loadExistingTests() {
-    IPreferenceStore store = TextMarkerAddonsPlugin.getDefault().getPreferenceStore();
+    IPreferenceStore store = RutaAddonsPlugin.getDefault().getPreferenceStore();
 
     IProject project = script.getProject();
     IPath testFolderPath = project.getFullPath()
-            .append(TextMarkerProjectUtils.getDefaultTestLocation()).removeFirstSegments(1);
+            .append(RutaProjectUtils.getDefaultTestLocation()).removeFirstSegments(1);
     IPath scriptPath = script.getFullPath();
     IPath scriptPackagePath = scriptPath.removeFirstSegments(2);
     IPath testFolderPackagePath = testFolderPath.append(scriptPackagePath).removeFileExtension();
@@ -486,7 +486,7 @@ public class TestViewPage extends Page implements IPageBookViewPage {
       }
       // tInfoPanel.addCASViewNamesToCombo(viewNames);
     } catch (CoreException e) {
-      TextMarkerIdePlugin.error(e);
+      RutaIdePlugin.error(e);
     }
     listviewer.setInput(viewerInput);
     listviewer.refresh();
@@ -495,7 +495,7 @@ public class TestViewPage extends Page implements IPageBookViewPage {
   private void checkProjectTestStructure(IResource r) {
     IProject project = r.getProject();
     IPath testFolderPath = project.getFullPath()
-            .append(TextMarkerProjectUtils.getDefaultTestLocation()).removeFirstSegments(1);
+            .append(RutaProjectUtils.getDefaultTestLocation()).removeFirstSegments(1);
     IPath scriptPath = r.getFullPath().removeFileExtension();
     IPath scriptPackagePath = scriptPath.removeFirstSegments(2);
     IPath testScriptPath = testFolderPath.append(scriptPackagePath);
@@ -503,15 +503,15 @@ public class TestViewPage extends Page implements IPageBookViewPage {
     IFolder resultFolder = project.getFolder(resultPath);
 
     IPath path2TempTests = project.getFullPath()
-            .append(TextMarkerProjectUtils.getDefaultTestLocation())
-            .append(TextMarkerProjectUtils.getDefaultTempTestLocation()).removeFirstSegments(1);
+            .append(RutaProjectUtils.getDefaultTestLocation())
+            .append(RutaProjectUtils.getDefaultTempTestLocation()).removeFirstSegments(1);
     IFolder tempTestFolder = project.getFolder(path2TempTests);
 
     if (!project.exists(resultPath)) {
       try {
         CoreUtility.createFolder(resultFolder, true, true, new NullProgressMonitor());
       } catch (CoreException e) {
-        TextMarkerIdePlugin.error(e);
+        RutaIdePlugin.error(e);
       }
     }
 
@@ -519,7 +519,7 @@ public class TestViewPage extends Page implements IPageBookViewPage {
       try {
         CoreUtility.createFolder(tempTestFolder, true, true, new NullProgressMonitor());
       } catch (CoreException e) {
-        TextMarkerIdePlugin.error(e);
+        RutaIdePlugin.error(e);
       }
     }
   }

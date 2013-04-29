@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.query.ui;
+package org.apache.uima.ruta.query.ui;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,9 +43,9 @@ import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
-import org.apache.uima.textmarker.engine.TextMarkerEngine;
-import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
+import org.apache.uima.ruta.addons.RutaAddonsPlugin;
+import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.util.CasCreationUtils;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.XMLInputSource;
@@ -144,7 +144,7 @@ public class QueryActionHandler implements IHandler {
       // script += "TYPESYSTEM " + typeSystemFileText.getText();
       script += rules;
       try {
-        URL aedesc = TextMarkerEngine.class.getResource("BasicEngine.xml");
+        URL aedesc = RutaEngine.class.getResource("BasicEngine.xml");
         XMLInputSource inae = new XMLInputSource(aedesc);
         ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(inae);
         ResourceManager resMgr = UIMAFramework.newDefaultResourceManager();
@@ -160,9 +160,9 @@ public class QueryActionHandler implements IHandler {
             IFile iFile = QueryComposite.getIFile(typeSystemLocation);
             IPath scriptPath = iFile.getLocation();
             IProject project = iFile.getProject();
-            IPath descriptorRootPath = TextMarkerProjectUtils.getDescriptorRootPath(project);
+            IPath descriptorRootPath = RutaProjectUtils.getDescriptorRootPath(project);
             resMgr.setDataPath(descriptorRootPath.toPortableString());
-            IPath path = TextMarkerProjectUtils.getTypeSystemDescriptorPath(scriptPath, project);
+            IPath path = RutaProjectUtils.getTypeSystemDescriptorPath(scriptPath, project);
             tsLocation = path.toPortableString();
           }
           File tsFile = new File(tsLocation);
@@ -176,19 +176,19 @@ public class QueryActionHandler implements IHandler {
         }
         aed.resolveImports(resMgr);
         AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed, resMgr, null);
-        File tempFile = File.createTempFile("TextMarkerQuery", ".tm");
+        File tempFile = File.createTempFile("RutaQuery", ".tm");
         tempFile.deleteOnExit();
         FileUtils.saveString2File(script, tempFile, "UTF-8");
         String portableString = Path.fromOSString(tempFile.getParentFile().getPath())
                 .toPortableString();
-        ae.setConfigParameterValue(TextMarkerEngine.SCRIPT_PATHS, new String[] { portableString });
+        ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { portableString });
         String name = tempFile.getName().substring(0, tempFile.getName().length() - 3);
-        ae.setConfigParameterValue(TextMarkerEngine.MAIN_SCRIPT, name);
+        ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, name);
 
-        ae.setConfigParameterValue(TextMarkerEngine.CREATE_DEBUG_INFO, true);
-        ae.setConfigParameterValue(TextMarkerEngine.CREATE_MATCH_DEBUG_INFO, true);
-        ae.setConfigParameterValue(TextMarkerEngine.CREATE_PROFILING_INFO, false);
-        ae.setConfigParameterValue(TextMarkerEngine.CREATE_STATISTIC_INFO, false);
+        ae.setConfigParameterValue(RutaEngine.CREATE_DEBUG_INFO, true);
+        ae.setConfigParameterValue(RutaEngine.CREATE_MATCH_DEBUG_INFO, true);
+        ae.setConfigParameterValue(RutaEngine.CREATE_PROFILING_INFO, false);
+        ae.setConfigParameterValue(RutaEngine.CREATE_STATISTIC_INFO, false);
         ae.reconfigure();
         CAS cas = ae.newCAS();
 
@@ -230,11 +230,11 @@ public class QueryActionHandler implements IHandler {
           }
 
           Type matchedType = cas.getTypeSystem().getType(
-                  "org.apache.uima.textmarker.type.DebugMatchedRuleMatch");
+                  "org.apache.uima.ruta.type.DebugMatchedRuleMatch");
           Type ruleApplyType = cas.getTypeSystem().getType(
-                  "org.apache.uima.textmarker.type.DebugRuleApply");
+                  "org.apache.uima.ruta.type.DebugRuleApply");
           Type blockApplyType = cas.getTypeSystem().getType(
-                  "org.apache.uima.textmarker.type.DebugBlockApply");
+                  "org.apache.uima.ruta.type.DebugBlockApply");
 
           removeDebugAnnotations(cas, matchedType, ruleApplyType, blockApplyType);
 
@@ -281,7 +281,7 @@ public class QueryActionHandler implements IHandler {
         ae.destroy();
         monitor.done();
       } catch (Exception e) {
-        TextMarkerAddonsPlugin.error(e);
+        RutaAddonsPlugin.error(e);
       }
 
       return Status.OK_STATUS;

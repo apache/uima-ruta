@@ -17,15 +17,15 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.utils.twl;
+package org.apache.uima.ruta.utils.twl;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
-import org.apache.uima.textmarker.resource.TreeWordList;
+import org.apache.uima.ruta.addons.RutaAddonsPlugin;
+import org.apache.uima.ruta.resource.TreeWordList;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
@@ -79,7 +79,7 @@ public class TWLConverterHandler implements IHandler {
         try {
           list = new TreeWordList(path);
         } catch (IOException e) {
-          TextMarkerAddonsPlugin.error(e);
+          RutaAddonsPlugin.error(e);
           return Status.CANCEL_STATUS;
         }
         String exportPath = path.substring(0, path.length() - 3) + "twl";

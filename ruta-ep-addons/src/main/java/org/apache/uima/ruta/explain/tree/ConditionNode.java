@@ -17,12 +17,12 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.explain.tree;
+package org.apache.uima.ruta.explain.tree;
 
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.TypeSystem;
-import org.apache.uima.textmarker.explain.ExplainConstants;
+import org.apache.uima.ruta.explain.ExplainConstants;
 
 public class ConditionNode extends ExplainAbstractTreeNode implements IEvaluatedNode {
 

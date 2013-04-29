@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.testing.ui.views;
+package org.apache.uima.ruta.testing.ui.views;
 
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;

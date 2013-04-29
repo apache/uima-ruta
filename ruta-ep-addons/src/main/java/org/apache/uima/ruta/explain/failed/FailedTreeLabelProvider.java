@@ -17,11 +17,11 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.explain.failed;
+package org.apache.uima.ruta.explain.failed;
 
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.explain.tree.RuleMatchNode;
+import org.apache.uima.ruta.explain.tree.RuleMatchNode;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;

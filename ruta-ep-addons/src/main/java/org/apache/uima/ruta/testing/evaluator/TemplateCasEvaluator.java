@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.testing.evaluator;
+package org.apache.uima.ruta.testing.evaluator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -55,7 +55,7 @@ public class TemplateCasEvaluator implements ICasEvaluator {
         for (Feature f : features) {
           Type range = f.getRange();
           if (typeSystem.subsumes(annotationType, range)) {
-            if (!eachType.getName().startsWith("org.apache.uima.textmarker.type")) {
+            if (!eachType.getName().startsWith("org.apache.uima.ruta.type")) {
               types.add(eachType);
               break;
             }

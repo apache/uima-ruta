@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.testing.ui.views;
+package org.apache.uima.ruta.testing.ui.views;
 
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;

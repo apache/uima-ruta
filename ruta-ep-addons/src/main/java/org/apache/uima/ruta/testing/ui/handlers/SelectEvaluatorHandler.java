@@ -17,9 +17,9 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.testing.ui.handlers;
+package org.apache.uima.ruta.testing.ui.handlers;
 
-import org.apache.uima.textmarker.testing.preferences.TestingPreferencePage;
+import org.apache.uima.ruta.testing.preferences.TestingPreferencePage;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;

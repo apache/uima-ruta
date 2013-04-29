@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.testing.evaluator;
+package org.apache.uima.ruta.testing.evaluator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,8 +35,8 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.textmarker.UIMAConstants;
-import org.apache.uima.textmarker.engine.TextMarkerEngine;
+import org.apache.uima.ruta.UIMAConstants;
+import org.apache.uima.ruta.engine.RutaEngine;
 
 public class FeatureCasEvaluator implements ICasEvaluator {
 
@@ -49,7 +49,7 @@ public class FeatureCasEvaluator implements ICasEvaluator {
     Feature feature = falsePositiveType.getFeatureByBaseName(ICasEvaluator.ORIGINAL);
     Type annotationType = test.getAnnotationType();
     Type stringType = run.getTypeSystem().getType(UIMAConstants.TYPE_STRING);
-    Type basicType = run.getTypeSystem().getType(TextMarkerEngine.BASIC_TYPE);
+    Type basicType = run.getTypeSystem().getType(RutaEngine.BASIC_TYPE);
     List<Type> allTypes = test.getTypeSystem().getProperlySubsumedTypes(annotationType);
     List<Type> types = new ArrayList<Type>();
     TypeSystem typeSystem = test.getTypeSystem();
@@ -59,7 +59,7 @@ public class FeatureCasEvaluator implements ICasEvaluator {
         for (Feature f : features) {
           Type range = f.getRange();
           if (typeSystem.subsumes(annotationType, range) || typeSystem.subsumes(stringType, range)) {
-            if (!eachType.getName().startsWith("org.apache.uima.textmarker.type")
+            if (!eachType.getName().startsWith("org.apache.uima.ruta.type")
                     && !typeSystem.subsumes(basicType, eachType)) {
               types.add(eachType);
               break;

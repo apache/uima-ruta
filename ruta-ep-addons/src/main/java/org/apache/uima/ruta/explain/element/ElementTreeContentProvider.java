@@ -17,9 +17,9 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.explain.element;
+package org.apache.uima.ruta.explain.element;
 
-import org.apache.uima.textmarker.explain.tree.IExplainTreeNode;
+import org.apache.uima.ruta.explain.tree.IExplainTreeNode;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 

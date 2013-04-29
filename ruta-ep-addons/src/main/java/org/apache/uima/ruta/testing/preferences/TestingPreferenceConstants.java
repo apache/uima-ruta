@@ -17,12 +17,12 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.testing.preferences;
+package org.apache.uima.ruta.testing.preferences;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
+import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.Platform;
@@ -31,7 +31,7 @@ public class TestingPreferenceConstants {
 
   public static final String EVALUATOR_FACTORY = "EVALUATOR_FACTORY";
 
-  public static final String DEFAULT_EVALUATOR_FACTORY = "org.apache.uima.textmarker.testing.exactCasEvaluator";
+  public static final String DEFAULT_EVALUATOR_FACTORY = "org.apache.uima.ruta.testing.exactCasEvaluator";
 
   public static final String AUTOMATED_FILE_SYNCRONIZATION = "AUTOMATED_FILE_SYNCRONIZATION";
 
@@ -45,7 +45,7 @@ public class TestingPreferenceConstants {
     int size = 0;
 
     IExtension[] evalExtensions = Platform.getExtensionRegistry()
-            .getExtensionPoint(TextMarkerAddonsPlugin.PLUGIN_ID, "evaluators").getExtensions();
+            .getExtensionPoint(RutaAddonsPlugin.PLUGIN_ID, "evaluators").getExtensions();
     for (IExtension extension : evalExtensions) {
       IConfigurationElement[] configurationElements = extension.getConfigurationElements();
       for (IConfigurationElement configurationElement : configurationElements) {

@@ -17,18 +17,18 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.explain.element;
+package org.apache.uima.ruta.explain.element;
 
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.explain.ExplainConstants;
-import org.apache.uima.textmarker.explain.tree.ConditionNode;
-import org.apache.uima.textmarker.explain.tree.IExplainTreeNode;
-import org.apache.uima.textmarker.explain.tree.RuleElementMatchNode;
-import org.apache.uima.textmarker.explain.tree.RuleElementMatchesNode;
+import org.apache.uima.ruta.explain.ExplainConstants;
+import org.apache.uima.ruta.explain.tree.ConditionNode;
+import org.apache.uima.ruta.explain.tree.IExplainTreeNode;
+import org.apache.uima.ruta.explain.tree.RuleElementMatchNode;
+import org.apache.uima.ruta.explain.tree.RuleElementMatchesNode;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;

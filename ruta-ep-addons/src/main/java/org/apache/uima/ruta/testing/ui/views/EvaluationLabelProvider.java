@@ -17,13 +17,13 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.testing.ui.views;
+package org.apache.uima.ruta.testing.ui.views;
 
-import org.apache.uima.textmarker.caseditor.view.tree.AnnotationTreeNode;
-import org.apache.uima.textmarker.caseditor.view.tree.FeatureTreeNode;
-import org.apache.uima.textmarker.caseditor.view.tree.TextUtils;
-import org.apache.uima.textmarker.caseditor.view.tree.TypeTreeNode;
-import org.apache.uima.textmarker.testing.evaluator.ICasEvaluator;
+import org.apache.uima.ruta.caseditor.view.tree.AnnotationTreeNode;
+import org.apache.uima.ruta.caseditor.view.tree.FeatureTreeNode;
+import org.apache.uima.ruta.caseditor.view.tree.TextUtils;
+import org.apache.uima.ruta.caseditor.view.tree.TypeTreeNode;
+import org.apache.uima.ruta.testing.evaluator.ICasEvaluator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;

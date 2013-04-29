@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.explain.apply;
+package org.apache.uima.ruta.explain.apply;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -31,13 +31,13 @@ import org.apache.uima.caseditor.editor.AnnotationEditor;
 import org.apache.uima.caseditor.editor.ICasDocument;
 import org.apache.uima.caseditor.editor.ICasDocumentListener;
 import org.apache.uima.caseditor.editor.ICasEditorInputListener;
-import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
-import org.apache.uima.textmarker.engine.TextMarkerEngine;
-import org.apache.uima.textmarker.explain.ExplainConstants;
-import org.apache.uima.textmarker.explain.ExplainUtils;
-import org.apache.uima.textmarker.explain.tree.ExplainTree;
-import org.apache.uima.textmarker.explain.tree.RuleApplyNode;
-import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
+import org.apache.uima.ruta.addons.RutaAddonsPlugin;
+import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.ruta.explain.ExplainConstants;
+import org.apache.uima.ruta.explain.ExplainUtils;
+import org.apache.uima.ruta.explain.tree.ExplainTree;
+import org.apache.uima.ruta.explain.tree.RuleApplyNode;
+import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -93,17 +93,17 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
     Image image;
     String name;
 
-    desc = TextMarkerAddonsPlugin.getImageDescriptor("/icons/arrow_refresh.png");
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/arrow_refresh.png");
     image = desc.createImage();
     name = ExplainConstants.BLOCK_APPLY_TYPE;
     images.put(name, image);
 
-    desc = TextMarkerAddonsPlugin.getImageDescriptor("/icons/arrow_right.png");
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/arrow_right.png");
     image = desc.createImage();
     name = ExplainConstants.RULE_APPLY_TYPE;
     images.put(name, image);
 
-    desc = TextMarkerAddonsPlugin.getImageDescriptor("/icons/arrow_branch.png");
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/arrow_branch.png");
     image = desc.createImage();
     name = ExplainConstants.RULE_APPLY_TYPE + "Delegate";
     images.put(name, image);
@@ -177,14 +177,14 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
             IScriptProject scriptProject = DLTKCore.create(project);
             List<IFolder> allScriptFolders;
             try {
-              allScriptFolders = TextMarkerProjectUtils.getAllScriptFolders(scriptProject);
-              List<String> folders = TextMarkerProjectUtils.getFolderLocations(allScriptFolders);
-              String locate = TextMarkerEngine
+              allScriptFolders = RutaProjectUtils.getAllScriptFolders(scriptProject);
+              List<String> folders = RutaProjectUtils.getFolderLocations(allScriptFolders);
+              String locate = RutaEngine
                       .locate(script, folders.toArray(new String[0]), ".tm");
               IPath locatedPath = new Path(locate);
-              ExplainUtils.openInTextMarkerEditor(locatedPath, id);
+              ExplainUtils.openInRutaEditor(locatedPath, id);
             } catch (CoreException e) {
-              TextMarkerAddonsPlugin.error(e);
+              RutaAddonsPlugin.error(e);
             }
           }
         }

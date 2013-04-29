@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.testing.ui.views.tree;
+package org.apache.uima.ruta.testing.ui.views.tree;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
@@ -25,11 +25,11 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
-import org.apache.uima.textmarker.caseditor.view.tree.AnnotationTreeNode;
-import org.apache.uima.textmarker.caseditor.view.tree.ITreeNode;
-import org.apache.uima.textmarker.caseditor.view.tree.TypeTreeNode;
-import org.apache.uima.textmarker.testing.evaluator.ICasEvaluator;
+import org.apache.uima.ruta.addons.RutaAddonsPlugin;
+import org.apache.uima.ruta.caseditor.view.tree.AnnotationTreeNode;
+import org.apache.uima.ruta.caseditor.view.tree.ITreeNode;
+import org.apache.uima.ruta.caseditor.view.tree.TypeTreeNode;
+import org.apache.uima.ruta.testing.evaluator.ICasEvaluator;
 
 public class TestEvaluationTree {
 
@@ -83,7 +83,7 @@ public class TestEvaluationTree {
         if (parentTypeNode != null) {
           parentTypeNode.addChild(newNode);
         } else {
-          TextMarkerAddonsPlugin.error(new IllegalArgumentException(
+          RutaAddonsPlugin.error(new IllegalArgumentException(
                   "Trying to display unknown type for " + a));
         }
       }

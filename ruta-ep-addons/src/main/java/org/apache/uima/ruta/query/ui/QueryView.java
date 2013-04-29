@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.query.ui;
+package org.apache.uima.ruta.query.ui;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -28,7 +28,7 @@ import org.eclipse.ui.part.ViewPart;
 
 public class QueryView extends ViewPart {
 
-  public static final String ID = "org.apache.uima.textmarker.query.ui.QueryView";
+  public static final String ID = "org.apache.uima.ruta.query.ui.QueryView";
 
   private QueryComposite viewContent;
 

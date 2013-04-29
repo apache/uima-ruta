@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.explain.tree;
+package org.apache.uima.ruta.explain.tree;
 
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.TypeSystem;

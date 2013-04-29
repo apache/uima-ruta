@@ -17,15 +17,15 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.searchStrategy;
+package org.apache.uima.ruta.searchStrategy;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.caseditor.ide.searchstrategy.ITypeSystemSearchStrategy;
-import org.apache.uima.textmarker.ide.core.TextMarkerNature;
-import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
+import org.apache.uima.ruta.ide.core.RutaNature;
+import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -57,15 +57,15 @@ public class DescriptorFolderSearchStrategy implements ITypeSystemSearchStrategy
     IProject project = casFile.getProject();
 
     try {
-      IProjectNature nature = project.getNature(TextMarkerNature.NATURE_ID);
-      if (!(nature instanceof TextMarkerNature)) {
+      IProjectNature nature = project.getNature(RutaNature.NATURE_ID);
+      if (!(nature instanceof RutaNature)) {
         return null;
       }
     } catch (CoreException e) {
       return null;
     }
 
-    IFolder folder = project.getFolder(TextMarkerProjectUtils.getDefaultDescriptorLocation());
+    IFolder folder = project.getFolder(RutaProjectUtils.getDefaultDescriptorLocation());
     try {
       List<IFile> list = collectTypeSystems(folder);
       ListDialog ld = new ListDialog(Display.getCurrent().getActiveShell());

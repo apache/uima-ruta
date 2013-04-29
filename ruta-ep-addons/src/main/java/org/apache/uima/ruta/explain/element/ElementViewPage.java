@@ -17,20 +17,20 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.explain.element;
+package org.apache.uima.ruta.explain.element;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.uima.caseditor.editor.AnnotationEditor;
 import org.apache.uima.caseditor.editor.ICasDocument;
-import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
-import org.apache.uima.textmarker.explain.ExplainConstants;
-import org.apache.uima.textmarker.explain.failed.FailedView;
-import org.apache.uima.textmarker.explain.matched.MatchedView;
-import org.apache.uima.textmarker.explain.tree.IExplainTreeNode;
-import org.apache.uima.textmarker.explain.tree.RuleElementRootNode;
-import org.apache.uima.textmarker.explain.tree.RuleMatchNode;
+import org.apache.uima.ruta.addons.RutaAddonsPlugin;
+import org.apache.uima.ruta.explain.ExplainConstants;
+import org.apache.uima.ruta.explain.failed.FailedView;
+import org.apache.uima.ruta.explain.matched.MatchedView;
+import org.apache.uima.ruta.explain.tree.IExplainTreeNode;
+import org.apache.uima.ruta.explain.tree.RuleElementRootNode;
+import org.apache.uima.ruta.explain.tree.RuleMatchNode;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
@@ -78,37 +78,37 @@ public class ElementViewPage extends Page implements ISelectionListener {
     Image image;
     String name;
 
-    desc = TextMarkerAddonsPlugin.getImageDescriptor("/icons/chart_organisation_add.png");
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/chart_organisation_add.png");
     image = desc.createImage();
     name = ExplainConstants.RULE_ELEMENT_MATCHES_TYPE + "true";
     images.put(name, image);
 
-    desc = TextMarkerAddonsPlugin.getImageDescriptor("/icons/chart_organisation_delete.png");
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/chart_organisation_delete.png");
     image = desc.createImage();
     name = ExplainConstants.RULE_ELEMENT_MATCHES_TYPE + "false";
     images.put(name, image);
 
-    desc = TextMarkerAddonsPlugin.getImageDescriptor("/icons/chart_organisation_delete.png");
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/chart_organisation_delete.png");
     image = desc.createImage();
     name = "element";
     images.put(name, image);
 
-    desc = TextMarkerAddonsPlugin.getImageDescriptor("/icons/font_add.png");
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/font_add.png");
     image = desc.createImage();
     name = ExplainConstants.RULE_ELEMENT_MATCH_TYPE + "true";
     images.put(name, image);
 
-    desc = TextMarkerAddonsPlugin.getImageDescriptor("/icons/font_delete.png");
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/font_delete.png");
     image = desc.createImage();
     name = ExplainConstants.RULE_ELEMENT_MATCH_TYPE + "false";
     images.put(name, image);
 
-    desc = TextMarkerAddonsPlugin.getImageDescriptor("/icons/accept.png");
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/accept.png");
     image = desc.createImage();
     name = ExplainConstants.EVAL_CONDITION_TYPE + "true";
     images.put(name, image);
 
-    desc = TextMarkerAddonsPlugin.getImageDescriptor("/icons/cancel.png");
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/cancel.png");
     image = desc.createImage();
     name = ExplainConstants.EVAL_CONDITION_TYPE + "false";
     images.put(name, image);

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.explain.createdBy;
+package org.apache.uima.ruta.explain.createdBy;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,11 +33,11 @@ import org.apache.uima.caseditor.editor.AnnotationEditor;
 import org.apache.uima.caseditor.editor.FeatureStructureSelection;
 import org.apache.uima.caseditor.editor.ICasDocument;
 import org.apache.uima.caseditor.editor.ICasEditorInputListener;
-import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
-import org.apache.uima.textmarker.engine.TextMarkerEngine;
-import org.apache.uima.textmarker.explain.ExplainUtils;
-import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
-import org.apache.uima.textmarker.visitor.CreatedByVisitor;
+import org.apache.uima.ruta.addons.RutaAddonsPlugin;
+import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.ruta.explain.ExplainUtils;
+import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
+import org.apache.uima.ruta.visitor.CreatedByVisitor;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -95,7 +95,7 @@ public class CreatedByViewPage extends Page implements ISelectionListener, ICasE
     Image image;
     String name;
 
-    desc = TextMarkerAddonsPlugin.getImageDescriptor("/icons/tm_obj.png");
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/tm_obj.png");
     image = desc.createImage();
     name = TM_RULE;
     images.put(name, image);
@@ -162,18 +162,18 @@ public class CreatedByViewPage extends Page implements ISelectionListener, ICasE
         IScriptProject scriptProject = DLTKCore.create(project);
         List<IFolder> allScriptFolders;
         try {
-          allScriptFolders = TextMarkerProjectUtils.getAllScriptFolders(scriptProject);
-          List<String> folders = TextMarkerProjectUtils.getFolderLocations(allScriptFolders);
-          String locate = TextMarkerEngine.locate(script, folders.toArray(new String[0]), ".tm");
+          allScriptFolders = RutaProjectUtils.getAllScriptFolders(scriptProject);
+          List<String> folders = RutaProjectUtils.getFolderLocations(allScriptFolders);
+          String locate = RutaEngine.locate(script, folders.toArray(new String[0]), ".tm");
           if (locate != null) {
             IPath locatedPath = new Path(locate);
-            ExplainUtils.openInTextMarkerEditor(locatedPath, id);
+            ExplainUtils.openInRutaEditor(locatedPath, id);
           } else {
-            TextMarkerAddonsPlugin.error(new IllegalArgumentException("Not able to locate script: "
+            RutaAddonsPlugin.error(new IllegalArgumentException("Not able to locate script: "
                     + script));
           }
         } catch (CoreException e) {
-          TextMarkerAddonsPlugin.error(e);
+          RutaAddonsPlugin.error(e);
         }
       }
     }

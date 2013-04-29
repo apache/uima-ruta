@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.testing.ui.views.util;
+package org.apache.uima.ruta.testing.ui.views.util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,8 +30,8 @@ import org.apache.uima.cas.impl.XmiCasDeserializer;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.resource.metadata.FsIndexDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.apache.uima.textmarker.ide.TextMarkerIdePlugin;
-import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
+import org.apache.uima.ruta.ide.RutaIdePlugin;
+import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.util.CasCreationUtils;
 import org.apache.uima.util.XMLInputSource;
 import org.eclipse.core.resources.IResource;
@@ -47,7 +47,7 @@ public class CASLoader {
       elementName = elementName.substring(0, lastIndexOf);
     }
 
-    IPath engineDescriptorPath = TextMarkerProjectUtils.getEngineDescriptorPath(r.getLocation(),
+    IPath engineDescriptorPath = RutaProjectUtils.getEngineDescriptorPath(r.getLocation(),
             r.getProject());
     try {
       XMLInputSource in = new XMLInputSource(engineDescriptorPath.toPortableString());
@@ -83,7 +83,7 @@ public class CASLoader {
       }
       return testCas;
     } catch (Exception e) {
-      TextMarkerIdePlugin.error(e);
+      RutaIdePlugin.error(e);
     }
     return null;
   }

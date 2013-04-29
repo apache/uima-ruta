@@ -17,14 +17,14 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.explain.selection;
+package org.apache.uima.ruta.explain.selection;
 
 import org.apache.uima.caseditor.editor.AnnotationEditor;
-import org.apache.uima.textmarker.explain.apply.ApplyTreeContentProvider;
-import org.apache.uima.textmarker.explain.apply.ApplyTreeLabelProvider;
-import org.apache.uima.textmarker.explain.apply.ApplyViewPage;
-import org.apache.uima.textmarker.explain.tree.ApplyRootNode;
-import org.apache.uima.textmarker.explain.tree.ExplainTree;
+import org.apache.uima.ruta.explain.apply.ApplyTreeContentProvider;
+import org.apache.uima.ruta.explain.apply.ApplyTreeLabelProvider;
+import org.apache.uima.ruta.explain.apply.ApplyViewPage;
+import org.apache.uima.ruta.explain.tree.ApplyRootNode;
+import org.apache.uima.ruta.explain.tree.ExplainTree;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;

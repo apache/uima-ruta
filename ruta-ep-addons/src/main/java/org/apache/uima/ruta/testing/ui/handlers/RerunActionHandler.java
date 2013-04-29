@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.testing.ui.handlers;
+package org.apache.uima.ruta.testing.ui.handlers;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,17 +43,17 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.resource.metadata.FsIndexDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
-import org.apache.uima.textmarker.ide.TextMarkerIdePlugin;
-import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
-import org.apache.uima.textmarker.testing.evaluator.ICasEvaluator;
-import org.apache.uima.textmarker.testing.preferences.TestingPreferenceConstants;
-import org.apache.uima.textmarker.testing.ui.views.TestCasData;
-import org.apache.uima.textmarker.testing.ui.views.TestPageBookView;
-import org.apache.uima.textmarker.testing.ui.views.TestViewPage;
-import org.apache.uima.textmarker.testing.ui.views.evalDataTable.TypeEvalData;
-import org.apache.uima.textmarker.testing.ui.views.util.EvalDataProcessor;
-import org.apache.uima.textmarker.type.EvalAnnotation;
+import org.apache.uima.ruta.addons.RutaAddonsPlugin;
+import org.apache.uima.ruta.ide.RutaIdePlugin;
+import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
+import org.apache.uima.ruta.testing.evaluator.ICasEvaluator;
+import org.apache.uima.ruta.testing.preferences.TestingPreferenceConstants;
+import org.apache.uima.ruta.testing.ui.views.TestCasData;
+import org.apache.uima.ruta.testing.ui.views.TestPageBookView;
+import org.apache.uima.ruta.testing.ui.views.TestViewPage;
+import org.apache.uima.ruta.testing.ui.views.evalDataTable.TypeEvalData;
+import org.apache.uima.ruta.testing.ui.views.util.EvalDataProcessor;
+import org.apache.uima.ruta.type.EvalAnnotation;
 import org.apache.uima.util.CasCreationUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
@@ -121,7 +121,7 @@ public class RerunActionHandler implements IHandler {
       ArrayList<TestCasData> testCasData = (ArrayList) debugPage.getViewer().getInput();
       monitor.beginTask("Running evaluation, please wait", testCasData.size());
       IProject project = r.getProject();
-      IPath engineDescriptorPath = TextMarkerProjectUtils.getEngineDescriptorPath(r.getLocation(),
+      IPath engineDescriptorPath = RutaProjectUtils.getEngineDescriptorPath(r.getLocation(),
               project);
       try {
         XMLInputSource in = new XMLInputSource(engineDescriptorPath.toPortableString());
@@ -162,16 +162,16 @@ public class RerunActionHandler implements IHandler {
               view.setDocumentText(each.getDocumentText());
 
             } catch (Exception e) {
-              TextMarkerAddonsPlugin.error(e);
+              RutaAddonsPlugin.error(e);
             }
           }
 
           testCas = testCas.getView(viewCasName);
           runCas = runCas.getView(viewCasName);
 
-          IPreferenceStore store = TextMarkerAddonsPlugin.getDefault().getPreferenceStore();
+          IPreferenceStore store = RutaAddonsPlugin.getDefault().getPreferenceStore();
           String factoryName = store.getString(TestingPreferenceConstants.EVALUATOR_FACTORY);
-          ICasEvaluator evaluator = TextMarkerAddonsPlugin.getCasEvaluatorFactoryById(factoryName)
+          ICasEvaluator evaluator = RutaAddonsPlugin.getCasEvaluatorFactoryById(factoryName)
                   .createEvaluator();
 
           ae.process(runCas);
@@ -180,7 +180,7 @@ public class RerunActionHandler implements IHandler {
           IPath path2Test = td.getPath().removeLastSegments(1);
 
           IPath estimatedTestPath = project.getFullPath().append(
-                  TextMarkerProjectUtils.getDefaultTestLocation());
+                  RutaProjectUtils.getDefaultTestLocation());
           IPath path2recource = r.getFullPath();
           IPath projectRelativePath2Script = path2recource.removeFirstSegments(2);
           IPath estimatedTestFolderPath = estimatedTestPath.append(projectRelativePath2Script
@@ -193,8 +193,8 @@ public class RerunActionHandler implements IHandler {
 
           if (!path2Test.toOSString().contains(estimatedTestFolderPath.toOSString())) {
             path2Result = project.getLocation()
-                    .append(TextMarkerProjectUtils.getDefaultTestLocation())
-                    .append(TextMarkerProjectUtils.getDefaultTempTestLocation());
+                    .append(RutaProjectUtils.getDefaultTestLocation())
+                    .append(RutaProjectUtils.getDefaultTempTestLocation());
             path2ResultFile = path2Result.append(td.getPath().removeFileExtension().lastSegment()
                     + ".result.xmi");
           }
@@ -224,7 +224,7 @@ public class RerunActionHandler implements IHandler {
             return Status.CANCEL_STATUS;
         }
       } catch (Exception e) {
-        TextMarkerIdePlugin.error(e);
+        RutaIdePlugin.error(e);
       }
 
       monitor.done();
@@ -285,7 +285,7 @@ public class RerunActionHandler implements IHandler {
       XMLSerializer xmlSer = new XMLSerializer(out, false);
       ser.serialize(aCas, xmlSer.getContentHandler());
     } catch (Exception e) {
-      TextMarkerIdePlugin.error(e);
+      RutaIdePlugin.error(e);
     } finally {
       if (out != null) {
         out.close();

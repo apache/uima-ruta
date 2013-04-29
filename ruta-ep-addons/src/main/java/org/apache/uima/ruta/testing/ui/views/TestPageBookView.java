@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.testing.ui.views;
+package org.apache.uima.ruta.testing.ui.views;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.ui.IWorkbenchPage;
@@ -83,7 +83,7 @@ public class TestPageBookView extends PageBookView {
   @Override
   protected boolean isImportant(IWorkbenchPart part) {
     return part.getSite().getId()
-            .equals("org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor");
+            .equals("org.apache.uima.ruta.ide.ui.editor.RutaEditor");
   }
 
 }

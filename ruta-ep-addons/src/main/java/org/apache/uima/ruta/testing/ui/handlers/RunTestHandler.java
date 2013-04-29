@@ -17,10 +17,10 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.testing.ui.handlers;
+package org.apache.uima.ruta.testing.ui.handlers;
 
-import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
-import org.apache.uima.textmarker.testing.ui.views.TestViewPage;
+import org.apache.uima.ruta.addons.RutaAddonsPlugin;
+import org.apache.uima.ruta.testing.ui.views.TestViewPage;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
@@ -51,10 +51,10 @@ public class RunTestHandler implements IHandler {
       IResource r = input.getFile();
       view = (TestViewPage) HandlerUtil.getActiveWorkbenchWindow(event).getWorkbench()
               .getActiveWorkbenchWindow().getActivePage()
-              .showView("org.apache.uima.textmarker.testing.annotationTest");
+              .showView("org.apache.uima.ruta.testing.annotationTest");
       view.setResource(r);
     } catch (PartInitException e) {
-      TextMarkerAddonsPlugin.error(e);
+      RutaAddonsPlugin.error(e);
     }
 
     /*

@@ -17,10 +17,10 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.explain;
+package org.apache.uima.ruta.explain;
 
-import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
-import org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor;
+import org.apache.uima.ruta.addons.RutaAddonsPlugin;
+import org.apache.uima.ruta.ide.ui.editor.RutaEditor;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -33,7 +33,7 @@ import org.eclipse.ui.part.FileEditorInput;
 
 public class ExplainUtils {
 
-  public static void openInTextMarkerEditor(IPath resultPath, int id) {
+  public static void openInRutaEditor(IPath resultPath, int id) {
     if (resultPath == null) {
       return;
     }
@@ -41,11 +41,11 @@ public class ExplainUtils {
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
     IFile file = workspace.getRoot().getFileForLocation(resultPath);
     try {
-      IEditorPart openEditor = page.openEditor(new FileEditorInput(file), "org.apache.uima.textmarker.ide.ui.editor.TextMarkerEditor");
-      TextMarkerEditor tme = (TextMarkerEditor) openEditor;
+      IEditorPart openEditor = page.openEditor(new FileEditorInput(file), "org.apache.uima.ruta.ide.ui.editor.RutaEditor");
+      RutaEditor tme = (RutaEditor) openEditor;
       tme.highlightElement(id);
     } catch (PartInitException e) {
-      TextMarkerAddonsPlugin.error(e);
+      RutaAddonsPlugin.error(e);
     }
   }
   

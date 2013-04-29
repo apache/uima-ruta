@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.explain.apply;
+package org.apache.uima.ruta.explain.apply;
 
 import org.apache.uima.caseditor.editor.AnnotationEditor;
 import org.apache.uima.caseditor.editor.CasEditorView;
@@ -26,7 +26,7 @@ import org.eclipse.ui.part.IPageBookViewPage;
 
 public class ApplyView extends CasEditorView {
 
-  public static final String ID = "org.apache.uima.textmarker.explain.apply";
+  public static final String ID = "org.apache.uima.ruta.explain.apply";
 
   public ApplyView() {
     super("The instance view is currently not available.");

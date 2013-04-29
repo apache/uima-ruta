@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.testing.evaluator;
+package org.apache.uima.ruta.testing.evaluator;
 
 import java.util.Collection;
 
@@ -27,11 +27,11 @@ import org.apache.uima.cas.CASRuntimeException;
 
 public interface ICasEvaluator {
 
-  public static final String FALSE_NEGATIVE = "org.apache.uima.textmarker.type.FalseNegative";
+  public static final String FALSE_NEGATIVE = "org.apache.uima.ruta.type.FalseNegative";
 
-  public static final String FALSE_POSITIVE = "org.apache.uima.textmarker.type.FalsePositive";
+  public static final String FALSE_POSITIVE = "org.apache.uima.ruta.type.FalsePositive";
 
-  public static final String TRUE_POSITIVE = "org.apache.uima.textmarker.type.TruePositive";
+  public static final String TRUE_POSITIVE = "org.apache.uima.ruta.type.TruePositive";
 
   public static final String ORIGINAL = "original";
 

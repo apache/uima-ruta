@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.testing.ui.handlers;
+package org.apache.uima.ruta.testing.ui.handlers;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,10 +29,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
-import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
-import org.apache.uima.textmarker.testing.ui.views.TestPageBookView;
-import org.apache.uima.textmarker.testing.ui.views.TestViewPage;
+import org.apache.uima.ruta.addons.RutaAddonsPlugin;
+import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
+import org.apache.uima.ruta.testing.ui.views.TestPageBookView;
+import org.apache.uima.ruta.testing.ui.views.TestViewPage;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -73,7 +73,7 @@ public class SelectedExcludedTypesHandler implements IHandler {
     TypeSystemDescription defaultTypeSystemDescription = null;
     List<String> types = new ArrayList<String>();
     try {
-      String tsDesc = TextMarkerProjectUtils.getTypeSystemDescriptorPath(location,
+      String tsDesc = RutaProjectUtils.getTypeSystemDescriptorPath(location,
               resource.getProject()).toPortableString();
 
       defaultTypeSystemDescription = UIMAFramework.getXMLParser().parseTypeSystemDescription(
@@ -85,9 +85,9 @@ public class SelectedExcludedTypesHandler implements IHandler {
       }
       Collections.sort(types);
     } catch (InvalidXMLException e) {
-      TextMarkerAddonsPlugin.error(e);
+      RutaAddonsPlugin.error(e);
     } catch (IOException e) {
-      TextMarkerAddonsPlugin.error(e);
+      RutaAddonsPlugin.error(e);
     }
     Display display = Display.getDefault();
     Shell shell = new Shell(display, SWT.RESIZE | SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);

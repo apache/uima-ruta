@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.testing.preferences;
+package org.apache.uima.ruta.testing.preferences;
 
 public class DescriptionChangedListener implements IDescriptionChangedListener {
 

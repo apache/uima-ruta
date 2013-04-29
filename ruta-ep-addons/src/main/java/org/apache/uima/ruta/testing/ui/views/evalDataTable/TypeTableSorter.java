@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.testing.ui.views.evalDataTable;
+package org.apache.uima.ruta.testing.ui.views.evalDataTable;
 
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;

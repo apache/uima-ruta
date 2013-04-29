@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.testing.ui.views;
+package org.apache.uima.ruta.testing.ui.views;
 
 import java.util.Collection;
 import java.util.Map;
@@ -27,8 +27,8 @@ import org.apache.uima.caseditor.editor.AnnotationEditor;
 import org.apache.uima.caseditor.editor.ICasDocument;
 import org.apache.uima.caseditor.editor.ICasDocumentListener;
 import org.apache.uima.caseditor.editor.ICasEditorInputListener;
-import org.apache.uima.textmarker.caseditor.view.tree.AnnotationTreeViewDragListener;
-import org.apache.uima.textmarker.testing.ui.views.tree.TestEvaluationTree;
+import org.apache.uima.ruta.caseditor.view.tree.AnnotationTreeViewDragListener;
+import org.apache.uima.ruta.testing.ui.views.tree.TestEvaluationTree;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeViewer;

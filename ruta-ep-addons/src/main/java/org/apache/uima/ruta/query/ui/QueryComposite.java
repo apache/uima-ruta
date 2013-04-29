@@ -17,15 +17,15 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.query.ui;
+package org.apache.uima.ruta.query.ui;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
 
 import org.apache.uima.caseditor.editor.AnnotationEditor;
-import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
-import org.apache.uima.textmarker.ide.core.TextMarkerLanguageToolkit;
+import org.apache.uima.ruta.addons.RutaAddonsPlugin;
+import org.apache.uima.ruta.ide.core.RutaLanguageToolkit;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -224,7 +224,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
         @Override
         public void widgetSelected(SelectionEvent event) {
           FileDialog fd = new FileDialog(getShell(), SWT.OPEN);
-          fd.setText("Choose Type System Descriptor or TextMarker Script");
+          fd.setText("Choose Type System Descriptor or Ruta Script");
           String[] filterExt = { "*.tm", "*.*" };
           fd.setFilterExtensions(filterExt);
           String file = fd.open();
@@ -250,7 +250,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
       composite1.setLayoutData(compData);
       composite1.setLayout(new FillLayout());
       IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager
-              .getLanguageToolkit(TextMarkerLanguageToolkit.getDefault().getNatureId());
+              .getLanguageToolkit(RutaLanguageToolkit.getDefault().getNatureId());
       final ScriptTextTools textTools = toolkit.getTextTools();
       IPreferenceStore store = toolkit.getCombinedPreferenceStore();
       viewer = new ScriptSourceViewer(composite1, null, null, false, SWT.H_SCROLL | SWT.V_SCROLL
@@ -315,7 +315,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
 
       this.layout();
     } catch (Exception e) {
-      TextMarkerAddonsPlugin.error(e);
+      RutaAddonsPlugin.error(e);
     }
 
     DropTarget dt = new DropTarget(inputDirectoryText, DND.DROP_DEFAULT | DND.DROP_MOVE);
@@ -400,7 +400,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
               "org.apache.uima.caseditor.editor");
       editor.selectAndReveal(begin, end - begin);
     } catch (PartInitException e) {
-      TextMarkerAddonsPlugin.error(e);
+      RutaAddonsPlugin.error(e);
     }
   }
 
@@ -418,7 +418,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
     }
     IDocument doc = new Document(content);
     IDLTKUILanguageToolkit uiToolkit = DLTKUILanguageManager
-            .getLanguageToolkit(TextMarkerLanguageToolkit.getDefault().getNatureId());
+            .getLanguageToolkit(RutaLanguageToolkit.getDefault().getNatureId());
     ScriptTextTools textTools = uiToolkit.getTextTools();
     if (textTools != null) {
       textTools.setupDocumentPartitioner(doc, uiToolkit.getPartitioningId());
@@ -432,22 +432,22 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
     Image image;
     String name;
 
-    desc = TextMarkerAddonsPlugin.getImageDescriptor("/icons/folder_edit.png");
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/folder_edit.png");
     image = desc.createImage();
     name = "prepFolder";
     images.put(name, image);
 
-    desc = TextMarkerAddonsPlugin.getImageDescriptor("/icons/folder.png");
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/folder.png");
     image = desc.createImage();
     name = "folder";
     images.put(name, image);
 
-    desc = TextMarkerAddonsPlugin.getImageDescriptor("/icons/start.png");
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/start.png");
     image = desc.createImage();
     name = "start";
     images.put(name, image);
 
-    desc = TextMarkerAddonsPlugin.getImageDescriptor("/icons/stop.gif");
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/stop.gif");
     image = desc.createImage();
     name = "stop";
     images.put(name, image);

@@ -17,9 +17,9 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.utils.apply;
+package org.apache.uima.ruta.utils.apply;
 
-import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
+import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
@@ -40,7 +40,7 @@ public abstract class AbstarctApplyScriptHandler implements IHandler {
   }
 
   public Object execute(ExecutionEvent event) throws ExecutionException {
-    IWorkbench workbench = TextMarkerAddonsPlugin.getDefault().getWorkbench();
+    IWorkbench workbench = RutaAddonsPlugin.getDefault().getWorkbench();
     IWorkbenchPage page = workbench.getActiveWorkbenchWindow().getActivePage();
     IEditorPart part = page.getActiveEditor();
     IEditorInput editorInput = part.getEditorInput();

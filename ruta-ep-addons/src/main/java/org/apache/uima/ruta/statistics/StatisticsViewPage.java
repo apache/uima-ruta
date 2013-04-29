@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.statistics;
+package org.apache.uima.ruta.statistics;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -54,7 +54,7 @@ import org.eclipse.ui.part.Page;
 public class StatisticsViewPage extends Page implements IDoubleClickListener,
         ISelectionChangedListener, ISelectionListener {
 
-  private static final String TYPE = "org.apache.uima.textmarker.type.Statistics";
+  private static final String TYPE = "org.apache.uima.ruta.type.Statistics";
 
   private int current;
 
@@ -88,7 +88,7 @@ public class StatisticsViewPage extends Page implements IDoubleClickListener,
     Image image;
     String name;
 
-    // desc = TextMarkerCEVPlugin.getImageDescriptor("/icons/accept.png");
+    // desc = RutaCEVPlugin.getImageDescriptor("/icons/accept.png");
     // image = desc.createImage();
     // name = "matched";
     // images.put(name, image);

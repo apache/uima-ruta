@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.query.ui;
+package org.apache.uima.ruta.query.ui;
 
 import java.io.File;
 

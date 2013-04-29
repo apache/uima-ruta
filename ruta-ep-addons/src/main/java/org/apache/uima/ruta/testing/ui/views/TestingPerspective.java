@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.testing.ui.views;
+package org.apache.uima.ruta.testing.ui.views;
 
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
@@ -26,7 +26,7 @@ import org.eclipse.ui.progress.IProgressConstants;
 
 public class TestingPerspective implements IPerspectiveFactory {
 
-  public static final String BASIC_STREAM = "org.apache.uima.textmarker.explain.basic";
+  public static final String BASIC_STREAM = "org.apache.uima.ruta.explain.basic";
 
   public static final String PALETTE_VIEW = "org.apache.uima.cev.views.palette";
 
@@ -44,23 +44,23 @@ public class TestingPerspective implements IPerspectiveFactory {
 
   public static final String NEW_UNTITLED_TEXT_FILE_WIZARD = "org.eclipse.ui.editors.wizards.UntitledTextFileWizard"; //$NON-NLS-1$
 
-  public static final String ID_NEW_SOURCE_WIZARD = "org.apache.uima.textmarker.ide.ui.wizards.NewSourceFolderCreationWizard";
+  public static final String ID_NEW_SOURCE_WIZARD = "org.apache.uima.ruta.ide.ui.wizards.NewSourceFolderCreationWizard";
 
-  public static final String ID_NEW_PACKAGE_WIZARD = "org.apache.uima.textmarker.ide.ui.wizards.NewPackageCreationWizard";
+  public static final String ID_NEW_PACKAGE_WIZARD = "org.apache.uima.ruta.ide.ui.wizards.NewPackageCreationWizard";
 
-  public static final String ID_PROJECT_CREATION_WIZARD = "org.apache.uima.textmarker.ide.ui.wizards.TextMarkerProjectWizard";
+  public static final String ID_PROJECT_CREATION_WIZARD = "org.apache.uima.ruta.ide.ui.wizards.RutaProjectWizard";
 
-  public static final String ID_FILE_CREATION_WIZARD = "org.apache.uima.textmarker.ide.ui.wizards.TextMarkerFileCreationWizard";
+  public static final String ID_FILE_CREATION_WIZARD = "org.apache.uima.ruta.ide.ui.wizards.RutaFileCreationWizard";
 
-  public static final String ID_PACKAGE_CREATION_WIZARD = "org.apache.uima.textmarker.ide.ui.wizards.NewPackageCreationWizard";
+  public static final String ID_PACKAGE_CREATION_WIZARD = "org.apache.uima.ruta.ide.ui.wizards.NewPackageCreationWizard";
 
-  public static final String ID_TESTING_VIEW = "org.apache.uima.textmarker.testing.TestingView";
+  public static final String ID_TESTING_VIEW = "org.apache.uima.ruta.testing.TestingView";
 
-  public static final String ID_TRUEPOSITIVE_VIEW = "org.apache.uima.textmarker.testing.truePositive";
+  public static final String ID_TRUEPOSITIVE_VIEW = "org.apache.uima.ruta.testing.truePositive";
 
-  public static final String ID_FALSEPOSITIVEVIEW = "org.apache.uima.textmarker.testing.falsePositive";
+  public static final String ID_FALSEPOSITIVEVIEW = "org.apache.uima.ruta.testing.falsePositive";
 
-  public static final String ID_FALSENEGATIVEVIEW = "org.apache.uima.textmarker.testing.falseNegative";
+  public static final String ID_FALSENEGATIVEVIEW = "org.apache.uima.ruta.testing.falseNegative";
 
   protected void addNewWizardShortcuts(IPageLayout layout) {
 

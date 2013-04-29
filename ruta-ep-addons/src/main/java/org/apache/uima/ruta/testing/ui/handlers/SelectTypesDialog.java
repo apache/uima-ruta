@@ -17,14 +17,14 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.testing.ui.handlers;
+package org.apache.uima.ruta.testing.ui.handlers;
 
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.uima.textmarker.testing.ui.views.TestViewPage;
+import org.apache.uima.ruta.testing.ui.views.TestViewPage;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;

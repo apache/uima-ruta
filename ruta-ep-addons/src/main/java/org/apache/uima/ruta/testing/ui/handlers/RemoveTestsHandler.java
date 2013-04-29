@@ -17,14 +17,14 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.testing.ui.handlers;
+package org.apache.uima.ruta.testing.ui.handlers;
 
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.uima.textmarker.testing.ui.views.TestCasData;
-import org.apache.uima.textmarker.testing.ui.views.TestPageBookView;
-import org.apache.uima.textmarker.testing.ui.views.TestViewPage;
+import org.apache.uima.ruta.testing.ui.views.TestCasData;
+import org.apache.uima.ruta.testing.ui.views.TestPageBookView;
+import org.apache.uima.ruta.testing.ui.views.TestViewPage;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;

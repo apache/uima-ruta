@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.explain.selection;
+package org.apache.uima.ruta.explain.selection;
 
 import org.apache.uima.caseditor.editor.AnnotationEditor;
 import org.apache.uima.caseditor.editor.CasEditorView;
@@ -26,7 +26,7 @@ import org.eclipse.ui.part.IPageBookViewPage;
 
 public class ExplainSelectionView extends CasEditorView {
 
-  public static final String ID = "org.apache.uima.textmarker.explain.selection";
+  public static final String ID = "org.apache.uima.ruta.explain.selection";
 
   public ExplainSelectionView() {
     super("The instance view is currently not available.");

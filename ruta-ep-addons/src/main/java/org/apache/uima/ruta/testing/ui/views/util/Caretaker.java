@@ -17,13 +17,13 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.testing.ui.views.util;
+package org.apache.uima.ruta.testing.ui.views.util;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import org.apache.uima.textmarker.testing.ui.views.TestCasData;
+import org.apache.uima.ruta.testing.ui.views.TestCasData;
 import org.eclipse.jface.viewers.TableViewer;
 
 

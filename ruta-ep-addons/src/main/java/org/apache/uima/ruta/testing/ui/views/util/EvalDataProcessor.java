@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.testing.ui.views.util;
+package org.apache.uima.ruta.testing.ui.views.util;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -30,9 +30,9 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.textmarker.testing.evaluator.ICasEvaluator;
-import org.apache.uima.textmarker.testing.ui.views.TestCasData;
-import org.apache.uima.textmarker.testing.ui.views.evalDataTable.TypeEvalData;
+import org.apache.uima.ruta.testing.evaluator.ICasEvaluator;
+import org.apache.uima.ruta.testing.ui.views.TestCasData;
+import org.apache.uima.ruta.testing.ui.views.evalDataTable.TypeEvalData;
 
 
 public class EvalDataProcessor {

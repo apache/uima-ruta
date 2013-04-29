@@ -17,13 +17,13 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.explain.matched;
+package org.apache.uima.ruta.explain.matched;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.textmarker.explain.tree.IExplainTreeNode;
-import org.apache.uima.textmarker.explain.tree.RuleMatchNode;
+import org.apache.uima.ruta.explain.tree.IExplainTreeNode;
+import org.apache.uima.ruta.explain.tree.RuleMatchNode;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 

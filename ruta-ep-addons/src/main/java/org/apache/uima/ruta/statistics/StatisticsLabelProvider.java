@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.statistics;
+package org.apache.uima.ruta.statistics;
 
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;

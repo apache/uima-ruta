@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.explain.tree;
+package org.apache.uima.ruta.explain.tree;
 
 public interface ExplainRootNode {
 

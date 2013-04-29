@@ -17,18 +17,18 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.testing.ui.views.fn;
+package org.apache.uima.ruta.testing.ui.views.fn;
 
 import org.apache.uima.caseditor.editor.AnnotationEditor;
 import org.apache.uima.caseditor.editor.CasEditorView;
 import org.apache.uima.caseditor.editor.ICasEditor;
-import org.apache.uima.textmarker.testing.evaluator.ICasEvaluator;
-import org.apache.uima.textmarker.testing.ui.views.EvaluationViewPage;
+import org.apache.uima.ruta.testing.evaluator.ICasEvaluator;
+import org.apache.uima.ruta.testing.ui.views.EvaluationViewPage;
 import org.eclipse.ui.part.IPageBookViewPage;
 
 public class FalseNegativeView extends CasEditorView {
 
-  public static final String ID = "org.apache.uima.textmarker.testing.falseNegative";
+  public static final String ID = "org.apache.uima.ruta.testing.falseNegative";
 
   public FalseNegativeView() {
     super("The instance view is currently not available.");

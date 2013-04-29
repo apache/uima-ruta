@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.explain.createdBy;
+package org.apache.uima.ruta.explain.createdBy;
 
 import org.apache.uima.caseditor.editor.AnnotationEditor;
 import org.apache.uima.caseditor.editor.CasEditorView;
@@ -26,7 +26,7 @@ import org.eclipse.ui.part.IPageBookViewPage;
 
 public class CreatedByView extends CasEditorView {
 
-  public static final String ID = "org.apache.uima.textmarker.explain.createdBy";
+  public static final String ID = "org.apache.uima.ruta.explain.createdBy";
 
   public CreatedByView() {
     super("The instance view is currently not available.");

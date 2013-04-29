@@ -17,30 +17,30 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.explain;
+package org.apache.uima.ruta.explain;
 
-import org.apache.uima.textmarker.engine.TextMarkerEngine;
+import org.apache.uima.ruta.engine.RutaEngine;
 
 public class ExplainConstants {
-  public static final String BASIC_TYPE = TextMarkerEngine.BASIC_TYPE;
+  public static final String BASIC_TYPE = RutaEngine.BASIC_TYPE;
 
-  public static final String SCRIPT_APPLY_TYPE = "org.apache.uima.textmarker.type.DebugScriptApply";
+  public static final String SCRIPT_APPLY_TYPE = "org.apache.uima.ruta.type.DebugScriptApply";
 
-  public static final String BLOCK_APPLY_TYPE = "org.apache.uima.textmarker.type.DebugBlockApply";
+  public static final String BLOCK_APPLY_TYPE = "org.apache.uima.ruta.type.DebugBlockApply";
 
-  public static final String RULE_APPLY_TYPE = "org.apache.uima.textmarker.type.DebugRuleApply";
+  public static final String RULE_APPLY_TYPE = "org.apache.uima.ruta.type.DebugRuleApply";
 
-  public static final String RULE_MATCH_TYPE = "org.apache.uima.textmarker.type.DebugRuleMatch";
+  public static final String RULE_MATCH_TYPE = "org.apache.uima.ruta.type.DebugRuleMatch";
 
-  public static final String MATCHED_RULE_MATCH_TYPE = "org.apache.uima.textmarker.type.DebugMatchedRuleMatch";
+  public static final String MATCHED_RULE_MATCH_TYPE = "org.apache.uima.ruta.type.DebugMatchedRuleMatch";
 
-  public static final String FAILED_RULE_MATCH_TYPE = "org.apache.uima.textmarker.type.DebugFailedRuleMatch";
+  public static final String FAILED_RULE_MATCH_TYPE = "org.apache.uima.ruta.type.DebugFailedRuleMatch";
 
-  public static final String RULE_ELEMENT_MATCH_TYPE = "org.apache.uima.textmarker.type.DebugRuleElementMatch";
+  public static final String RULE_ELEMENT_MATCH_TYPE = "org.apache.uima.ruta.type.DebugRuleElementMatch";
 
-  public static final String RULE_ELEMENT_MATCHES_TYPE = "org.apache.uima.textmarker.type.DebugRuleElementMatches";
+  public static final String RULE_ELEMENT_MATCHES_TYPE = "org.apache.uima.ruta.type.DebugRuleElementMatches";
 
-  public static final String EVAL_CONDITION_TYPE = "org.apache.uima.textmarker.type.DebugEvaluatedCondition";
+  public static final String EVAL_CONDITION_TYPE = "org.apache.uima.ruta.type.DebugEvaluatedCondition";
 
   public static final String BASE_CONDITION = "baseCondition";
 

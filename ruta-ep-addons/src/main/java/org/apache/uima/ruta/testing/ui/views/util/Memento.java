@@ -17,11 +17,11 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.testing.ui.views.util;
+package org.apache.uima.ruta.testing.ui.views.util;
 
 import java.util.ArrayList;
 
-import org.apache.uima.textmarker.testing.ui.views.TestCasData;
+import org.apache.uima.ruta.testing.ui.views.TestCasData;
 
 
 public class Memento {

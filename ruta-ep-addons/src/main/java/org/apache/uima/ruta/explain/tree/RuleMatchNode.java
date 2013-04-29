@@ -17,12 +17,12 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.explain.tree;
+package org.apache.uima.ruta.explain.tree;
 
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.caseditor.view.tree.IAnnotationNode;
+import org.apache.uima.ruta.caseditor.view.tree.IAnnotationNode;
 
 public class RuleMatchNode extends ExplainAbstractTreeNode implements IAnnotationNode {
 

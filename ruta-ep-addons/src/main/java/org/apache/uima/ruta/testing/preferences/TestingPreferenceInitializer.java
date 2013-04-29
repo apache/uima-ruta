@@ -17,9 +17,9 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.testing.preferences;
+package org.apache.uima.ruta.testing.preferences;
 
-import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
+import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 
@@ -27,7 +27,7 @@ public class TestingPreferenceInitializer extends AbstractPreferenceInitializer 
 
   @Override
   public void initializeDefaultPreferences() {
-    IPreferenceStore store = TextMarkerAddonsPlugin.getDefault().getPreferenceStore();
+    IPreferenceStore store = RutaAddonsPlugin.getDefault().getPreferenceStore();
 
     store.setDefault(TestingPreferenceConstants.EVALUATOR_FACTORY,
             TestingPreferenceConstants.DEFAULT_EVALUATOR_FACTORY);

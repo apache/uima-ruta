@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.testing.evaluator;
+package org.apache.uima.ruta.testing.evaluator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,7 +35,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.textmarker.seed.DefaultSeeder;
+import org.apache.uima.ruta.seed.DefaultSeeder;
 
 public class WordTemplateCasEvaluator implements ICasEvaluator {
 
@@ -57,7 +57,7 @@ public class WordTemplateCasEvaluator implements ICasEvaluator {
         for (Feature f : features) {
           Type range = f.getRange();
           if (typeSystem.subsumes(annotationType, range)) {
-            if (!eachType.getName().startsWith("org.apache.uima.textmarker.type")) {
+            if (!eachType.getName().startsWith("org.apache.uima.ruta.type")) {
               types.add(eachType);
               break;
             }
@@ -76,7 +76,7 @@ public class WordTemplateCasEvaluator implements ICasEvaluator {
     List<FeatureStructure> tp = new ArrayList<FeatureStructure>();
 
     if (test.getAnnotationIndex(
-            test.getTypeSystem().getType("org.apache.uima.textmarker.type.TextMarkerBasic")).size() == 0) {
+            test.getTypeSystem().getType("org.apache.uima.ruta.type.RutaBasic")).size() == 0) {
       // need basics in this test cas too:
       final DefaultSeeder scanner = new DefaultSeeder();
       scanner.seed(test.getDocumentText(), test);
@@ -135,8 +135,8 @@ public class WordTemplateCasEvaluator implements ICasEvaluator {
 
   private List<Type> getWordTypes(CAS test) {
     List<Type> result = new ArrayList<Type>();
-    result.add(test.getTypeSystem().getType("org.apache.uima.textmarker.type.W"));
-    result.add(test.getTypeSystem().getType("org.apache.uima.textmarker.type.NUM"));
+    result.add(test.getTypeSystem().getType("org.apache.uima.ruta.type.W"));
+    result.add(test.getTypeSystem().getType("org.apache.uima.ruta.type.NUM"));
     return result;
   }
 

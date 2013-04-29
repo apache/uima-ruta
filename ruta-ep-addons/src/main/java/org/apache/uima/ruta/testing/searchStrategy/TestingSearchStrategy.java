@@ -17,11 +17,11 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.testing.searchStrategy;
+package org.apache.uima.ruta.testing.searchStrategy;
 
 import org.apache.uima.caseditor.ide.searchstrategy.ITypeSystemSearchStrategy;
-import org.apache.uima.textmarker.ide.core.TextMarkerNature;
-import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
+import org.apache.uima.ruta.ide.core.RutaNature;
+import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -36,16 +36,16 @@ public class TestingSearchStrategy implements ITypeSystemSearchStrategy {
     IProject project = casFile.getProject();
 
     try {
-      IProjectNature nature = project.getNature(TextMarkerNature.NATURE_ID);
-      if (!(nature instanceof TextMarkerNature)) {
+      IProjectNature nature = project.getNature(RutaNature.NATURE_ID);
+      if (!(nature instanceof RutaNature)) {
         return null;
       }
     } catch (CoreException e) {
       return null;
     }
 
-    IFolder testFolder = project.getFolder(TextMarkerProjectUtils.getDefaultTestLocation());
-    IFolder descFolder = project.getFolder(TextMarkerProjectUtils.getDefaultDescriptorLocation());
+    IFolder testFolder = project.getFolder(RutaProjectUtils.getDefaultTestLocation());
+    IFolder descFolder = project.getFolder(RutaProjectUtils.getDefaultDescriptorLocation());
     IPath relativeTo = location.makeRelativeTo(testFolder.getLocation());
     IPath segments = relativeTo.removeLastSegments(2);
     String scriptName = segments.lastSegment();

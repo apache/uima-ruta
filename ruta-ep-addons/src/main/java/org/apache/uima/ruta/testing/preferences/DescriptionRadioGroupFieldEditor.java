@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.testing.preferences;
+package org.apache.uima.ruta.testing.preferences;
 
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.util.Assert;

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.statistics;
+package org.apache.uima.ruta.statistics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ public class StatisticsEntry {
 
   private static final String NAMES = "name";
 
-  private static final String TYPE = "org.apache.uima.textmarker.type.Statistics";
+  private static final String TYPE = "org.apache.uima.ruta.type.Statistics";
 
   private final String name;
 

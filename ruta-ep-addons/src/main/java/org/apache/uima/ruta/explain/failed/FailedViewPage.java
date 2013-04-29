@@ -17,22 +17,22 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.explain.failed;
+package org.apache.uima.ruta.explain.failed;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.uima.caseditor.editor.AnnotationEditor;
 import org.apache.uima.caseditor.editor.ICasDocument;
-import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
-import org.apache.uima.textmarker.explain.ExplainConstants;
-import org.apache.uima.textmarker.explain.apply.ApplyView;
-import org.apache.uima.textmarker.explain.rulelist.RuleListView;
-import org.apache.uima.textmarker.explain.selection.ExplainSelectionView;
-import org.apache.uima.textmarker.explain.tree.BlockApplyNode;
-import org.apache.uima.textmarker.explain.tree.FailedRootNode;
-import org.apache.uima.textmarker.explain.tree.IExplainTreeNode;
-import org.apache.uima.textmarker.explain.tree.RuleApplyNode;
+import org.apache.uima.ruta.addons.RutaAddonsPlugin;
+import org.apache.uima.ruta.explain.ExplainConstants;
+import org.apache.uima.ruta.explain.apply.ApplyView;
+import org.apache.uima.ruta.explain.rulelist.RuleListView;
+import org.apache.uima.ruta.explain.selection.ExplainSelectionView;
+import org.apache.uima.ruta.explain.tree.BlockApplyNode;
+import org.apache.uima.ruta.explain.tree.FailedRootNode;
+import org.apache.uima.ruta.explain.tree.IExplainTreeNode;
+import org.apache.uima.ruta.explain.tree.RuleApplyNode;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.jface.viewers.ISelection;
@@ -82,22 +82,22 @@ public class FailedViewPage extends Page implements ISelectionListener {
     Image image;
     String name;
 
-    desc = TextMarkerAddonsPlugin.getImageDescriptor("/icons/accept.png");
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/accept.png");
     image = desc.createImage();
     name = "matched";
     images.put(name, image);
 
-    desc = TextMarkerAddonsPlugin.getImageDescriptor("/icons/cancel.png");
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/cancel.png");
     image = desc.createImage();
     name = "failed";
     images.put(name, image);
 
-    desc = TextMarkerAddonsPlugin.getImageDescriptor("/icons/font_add.png");
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/font_add.png");
     image = desc.createImage();
     name = ExplainConstants.MATCHED_RULE_MATCH_TYPE;
     images.put(name, image);
 
-    desc = TextMarkerAddonsPlugin.getImageDescriptor("/icons/font_delete.png");
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/font_delete.png");
     image = desc.createImage();
     name = ExplainConstants.FAILED_RULE_MATCH_TYPE;
     images.put(name, image);

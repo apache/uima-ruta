@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.utils.apply;
+package org.apache.uima.ruta.utils.apply;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,9 +34,9 @@ import org.apache.uima.cas.impl.XmiCasDeserializer;
 import org.apache.uima.cas.impl.XmiCasSerializer;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.ResourceSpecifier;
-import org.apache.uima.textmarker.engine.TextMarkerEngine;
-import org.apache.uima.textmarker.ide.TextMarkerIdePlugin;
-import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
+import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.ruta.ide.RutaIdePlugin;
+import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.XMLInputSource;
 import org.apache.uima.util.XMLSerializer;
@@ -95,9 +95,9 @@ public abstract class AbstractApplyScriptHandlerJob extends Job {
           paths.addAll(getPaths(resource));
         }
       }
-      IPath descriptorPath = TextMarkerProjectUtils.getEngineDescriptorPath(
+      IPath descriptorPath = RutaProjectUtils.getEngineDescriptorPath(
               scriptFile.getLocation(), scriptFile.getProject());
-      IPath rootPath = TextMarkerProjectUtils.getDescriptorRootPath(scriptFile.getProject());
+      IPath rootPath = RutaProjectUtils.getDescriptorRootPath(scriptFile.getProject());
 
       CAS cas = null;
       AnalysisEngine ae = null;
@@ -132,8 +132,8 @@ public abstract class AbstractApplyScriptHandlerJob extends Job {
           } else {
             cas.setDocumentText(getText(path.toPortableString()));
           }
-          TextMarkerEngine.removeSourceDocumentInformation(cas);
-          TextMarkerEngine.addSourceDocumentInformation(cas, new File(path.toPortableString()));
+          RutaEngine.removeSourceDocumentInformation(cas);
+          RutaEngine.addSourceDocumentInformation(cas, new File(path.toPortableString()));
           ae.process(cas);
         } catch (Exception e) {
           DLTKCore.error(e.getMessage(), e);
@@ -195,7 +195,7 @@ public abstract class AbstractApplyScriptHandlerJob extends Job {
       XMLSerializer xmlSer = new XMLSerializer(out, false);
       ser.serialize(aCas, xmlSer.getContentHandler());
     } catch (Exception e) {
-      TextMarkerIdePlugin.error(e);
+      RutaIdePlugin.error(e);
     } finally {
       if (out != null) {
         out.close();

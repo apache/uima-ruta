@@ -17,9 +17,9 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.testing.preferences;
+package org.apache.uima.ruta.testing.preferences;
 
-import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
+import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
@@ -35,7 +35,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 public class TestingPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
-  public static String ID = "org.apache.uima.textmarker.testing.preferences";
+  public static String ID = "org.apache.uima.ruta.testing.preferences";
 
   private Text desc;
 
@@ -48,7 +48,7 @@ public class TestingPreferencePage extends PreferencePage implements IWorkbenchP
   private BooleanFieldEditor oldResults;
 
   public TestingPreferencePage() {
-    IPreferenceStore store = TextMarkerAddonsPlugin.getDefault().getPreferenceStore();
+    IPreferenceStore store = RutaAddonsPlugin.getDefault().getPreferenceStore();
     setPreferenceStore(store);
   }
 
@@ -84,7 +84,7 @@ public class TestingPreferencePage extends PreferencePage implements IWorkbenchP
 
     IDescriptionChangedListener listener = new IDescriptionChangedListener() {
       public void descriptionChanged(String s) {
-        String text = TextMarkerAddonsPlugin.getCasEvaluatorFactoryById(s).getDescription();
+        String text = RutaAddonsPlugin.getCasEvaluatorFactoryById(s).getDescription();
         desc.setText(text);
         desc.update();
         desc.redraw();
@@ -104,7 +104,7 @@ public class TestingPreferencePage extends PreferencePage implements IWorkbenchP
   }
 
   public String getEvalDesc() {
-    return TextMarkerAddonsPlugin.getCasEvaluatorFactoryById(
+    return RutaAddonsPlugin.getCasEvaluatorFactoryById(
             getPreferenceStore().getString(TestingPreferenceConstants.EVALUATOR_FACTORY))
             .getDescription();
   }

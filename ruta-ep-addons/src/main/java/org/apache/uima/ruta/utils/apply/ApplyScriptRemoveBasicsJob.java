@@ -17,10 +17,10 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.utils.apply;
+package org.apache.uima.ruta.utils.apply;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.textmarker.engine.TextMarkerEngine;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.resources.IFile;
 
@@ -33,7 +33,7 @@ public class ApplyScriptRemoveBasicsJob extends AbstractApplyScriptHandlerJob {
 
   @Override
   void initAE(AnalysisEngine ae) {
-    ae.setConfigParameterValue(TextMarkerEngine.REMOVE_BASICS, true);
+    ae.setConfigParameterValue(RutaEngine.REMOVE_BASICS, true);
   }
 
 }

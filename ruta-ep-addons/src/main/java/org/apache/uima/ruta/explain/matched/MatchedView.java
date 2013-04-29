@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.explain.matched;
+package org.apache.uima.ruta.explain.matched;
 
 import org.apache.uima.caseditor.editor.AnnotationEditor;
 import org.apache.uima.caseditor.editor.CasEditorView;
@@ -26,7 +26,7 @@ import org.eclipse.ui.part.IPageBookViewPage;
 
 public class MatchedView extends CasEditorView {
 
-  public static final String ID = "org.apache.uima.textmarker.explain.matched";
+  public static final String ID = "org.apache.uima.ruta.explain.matched";
 
   public MatchedView() {
     super("The instance view is currently not available.");

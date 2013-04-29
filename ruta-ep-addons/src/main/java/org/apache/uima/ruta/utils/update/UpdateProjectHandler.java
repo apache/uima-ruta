@@ -17,17 +17,17 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.utils.update;
+package org.apache.uima.ruta.utils.update;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
-import org.apache.uima.textmarker.ide.core.TextMarkerNature;
-import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
-import org.apache.uima.textmarker.ide.ui.wizards.TextMarkerProjectCreationWizard;
+import org.apache.uima.ruta.addons.RutaAddonsPlugin;
+import org.apache.uima.ruta.ide.core.RutaNature;
+import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
+import org.apache.uima.ruta.ide.ui.wizards.RutaProjectCreationWizard;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
@@ -80,34 +80,34 @@ public class UpdateProjectHandler implements IHandler {
 
         // update old projects
 //        try {
-//          IProjectNature oldNature = project.getNature(TextMarkerNature.NATURE_ID);
+//          IProjectNature oldNature = project.getNature(RutaNature.NATURE_ID);
 //          if (oldNature != null) {
 //            IProjectDescription description = project.getDescription();
 //            String[] natureIds = description.getNatureIds();
 //            int counter = 0;
 //            for (String id : Arrays.asList(natureIds)) {
-//              if (id.equals(TextMarkerNature.NATURE_ID)) {
-//                natureIds[counter] = TextMarkerNature.NATURE_ID;
+//              if (id.equals(RutaNature.NATURE_ID)) {
+//                natureIds[counter] = RutaNature.NATURE_ID;
 //              }
 //              counter++;
 //            }
 //          }
 //        } catch (CoreException e) {
-//          TextMarkerAddonsPlugin.error(e);
+//          RutaAddonsPlugin.error(e);
 //        }
 
         try {
-          IProjectNature nature = project.getNature(TextMarkerNature.NATURE_ID);
+          IProjectNature nature = project.getNature(RutaNature.NATURE_ID);
           if (nature != null) {
-            List<IFolder> descriptorFolders = TextMarkerProjectUtils.getDescriptorFolders(project);
+            List<IFolder> descriptorFolders = RutaProjectUtils.getDescriptorFolders(project);
             if (descriptorFolders != null && !descriptorFolders.isEmpty()) {
               IFolder descFolder = descriptorFolders.get(0);
-              TextMarkerProjectCreationWizard.copyDescriptors(descFolder);
+              RutaProjectCreationWizard.copyDescriptors(descFolder);
               descFolder.refreshLocal(IResource.DEPTH_INFINITE, monitor);
             }
           }
         } catch (CoreException e) {
-          TextMarkerAddonsPlugin.error(e);
+          RutaAddonsPlugin.error(e);
         }
         monitor.worked(1);
       }

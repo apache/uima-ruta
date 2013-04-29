@@ -17,11 +17,11 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.searchStrategy;
+package org.apache.uima.ruta.searchStrategy;
 
 import org.apache.uima.caseditor.ide.searchstrategy.ITypeSystemSearchStrategy;
-import org.apache.uima.textmarker.ide.core.TextMarkerNature;
-import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
+import org.apache.uima.ruta.ide.core.RutaNature;
+import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectNature;
@@ -38,8 +38,8 @@ public class LastLaunchSearchStrategy implements ITypeSystemSearchStrategy {
   public IFile findTypeSystem(IFile casFile) {
     IProject project = casFile.getProject();
     try {
-      IProjectNature nature = project.getNature(TextMarkerNature.NATURE_ID);
-      if (!(nature instanceof TextMarkerNature)) {
+      IProjectNature nature = project.getNature(RutaNature.NATURE_ID);
+      if (!(nature instanceof RutaNature)) {
         return null;
       }
     } catch (CoreException e) {
@@ -53,7 +53,7 @@ public class LastLaunchSearchStrategy implements ITypeSystemSearchStrategy {
             && Path.ROOT.isValidPath(scriptName)) {
       final IFile scriptFile = project.getFile(scriptName);
       if (scriptFile.exists()) {
-        IPath path = TextMarkerProjectUtils.getTypeSystemDescriptorPath(
+        IPath path = RutaProjectUtils.getTypeSystemDescriptorPath(
                 scriptFile.getProjectRelativePath(), project);
         IFile ts = project.getFile(path.makeRelativeTo(project.getLocation()));
         if (ts.exists()) {

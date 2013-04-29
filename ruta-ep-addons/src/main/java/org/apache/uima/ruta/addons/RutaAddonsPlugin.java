@@ -17,12 +17,12 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.addons;
+package org.apache.uima.ruta.addons;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.textmarker.testing.evaluator.ICasEvaluatorFactory;
+import org.apache.uima.ruta.testing.evaluator.ICasEvaluatorFactory;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -36,20 +36,20 @@ import org.osgi.framework.BundleContext;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class TextMarkerAddonsPlugin extends AbstractUIPlugin {
+public class RutaAddonsPlugin extends AbstractUIPlugin {
 
   // The plug-in ID
-  public static final String PLUGIN_ID = "org.apache.uima.textmarker.addons"; //$NON-NLS-1$
+  public static final String PLUGIN_ID = "org.apache.uima.ruta.addons"; //$NON-NLS-1$
 
   public static final String ATT_FACTORY = "factory";
 
   // The shared instance
-  private static TextMarkerAddonsPlugin plugin;
+  private static RutaAddonsPlugin plugin;
 
   /**
    * The constructor
    */
-  public TextMarkerAddonsPlugin() {
+  public RutaAddonsPlugin() {
   }
 
   /*
@@ -79,7 +79,7 @@ public class TextMarkerAddonsPlugin extends AbstractUIPlugin {
    * 
    * @return the shared instance
    */
-  public static TextMarkerAddonsPlugin getDefault() {
+  public static RutaAddonsPlugin getDefault() {
     return plugin;
   }
 
@@ -97,7 +97,7 @@ public class TextMarkerAddonsPlugin extends AbstractUIPlugin {
   public static List<ICasEvaluatorFactory> getCasEvaluators() {
     List<ICasEvaluatorFactory> result = new ArrayList<ICasEvaluatorFactory>();
     IExtension[] evalExtensions = Platform.getExtensionRegistry()
-            .getExtensionPoint(TextMarkerAddonsPlugin.PLUGIN_ID, "evaluators").getExtensions();
+            .getExtensionPoint(RutaAddonsPlugin.PLUGIN_ID, "evaluators").getExtensions();
     for (IExtension extension : evalExtensions) {
       IConfigurationElement[] configurationElements = extension.getConfigurationElements();
       for (IConfigurationElement configurationElement : configurationElements) {
@@ -118,7 +118,7 @@ public class TextMarkerAddonsPlugin extends AbstractUIPlugin {
 
   public static ICasEvaluatorFactory getCasEvaluatorFactoryById(String id) {
     IExtension[] evalExtensions = Platform.getExtensionRegistry()
-            .getExtensionPoint(TextMarkerAddonsPlugin.PLUGIN_ID, "evaluators").getExtensions();
+            .getExtensionPoint(RutaAddonsPlugin.PLUGIN_ID, "evaluators").getExtensions();
     for (IExtension extension : evalExtensions) {
       IConfigurationElement[] configurationElements = extension.getConfigurationElements();
       for (IConfigurationElement configurationElement : configurationElements) {

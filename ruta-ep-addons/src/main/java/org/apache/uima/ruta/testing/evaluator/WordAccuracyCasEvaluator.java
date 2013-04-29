@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.testing.evaluator;
+package org.apache.uima.ruta.testing.evaluator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,7 +33,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.seed.DefaultSeeder;
+import org.apache.uima.ruta.seed.DefaultSeeder;
 
 public class WordAccuracyCasEvaluator implements ICasEvaluator {
 
@@ -120,8 +120,8 @@ public class WordAccuracyCasEvaluator implements ICasEvaluator {
 
   private List<Type> getWordTypes(CAS test) {
     List<Type> result = new ArrayList<Type>();
-    result.add(test.getTypeSystem().getType("org.apache.uima.textmarker.type.W"));
-    result.add(test.getTypeSystem().getType("org.apache.uima.textmarker.type.NUM"));
+    result.add(test.getTypeSystem().getType("org.apache.uima.ruta.type.W"));
+    result.add(test.getTypeSystem().getType("org.apache.uima.ruta.type.NUM"));
     return result;
   }
 

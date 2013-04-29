@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.utils.twl;
+package org.apache.uima.ruta.utils.twl;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,8 +25,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin;
-import org.apache.uima.textmarker.resource.MultiTreeWordList;
+import org.apache.uima.ruta.addons.RutaAddonsPlugin;
+import org.apache.uima.ruta.resource.MultiTreeWordList;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
@@ -86,7 +86,7 @@ public class MultiTWLConverterHandler implements IHandler {
           try {
             trie = new MultiTreeWordList(paths.toArray(new String[0]));
           } catch (IOException e) {
-            TextMarkerAddonsPlugin.error(e);
+            RutaAddonsPlugin.error(e);
             return Status.CANCEL_STATUS;
           }
 
