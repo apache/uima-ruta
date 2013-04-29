@@ -21,7 +21,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>org.apache.uima.textmarker.engine.RutaEngine</annotatorImplementationName>
+  <annotatorImplementationName>org.apache.uima.ruta.engine.RutaEngine</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>BasicEngine</name>
     <description/>
@@ -179,10 +179,10 @@
         <name>defaultFilteredTypes</name>
         <value>
           <array>
-            <string>org.apache.uima.textmarker.type.SPACE</string>
-            <string>org.apache.uima.textmarker.type.NBSP</string>
-            <string>org.apache.uima.textmarker.type.BREAK</string>
-            <string>org.apache.uima.textmarker.type.MARKUP</string>
+            <string>org.apache.uima.ruta.type.SPACE</string>
+            <string>org.apache.uima.ruta.type.NBSP</string>
+            <string>org.apache.uima.ruta.type.BREAK</string>
+            <string>org.apache.uima.ruta.type.MARKUP</string>
           </array>
         </value>
       </nameValuePair>
@@ -196,7 +196,7 @@
         <name>seeders</name>
         <value>
           <array>
-            <string>org.apache.uima.textmarker.seed.DefaultSeeder</string>
+            <string>org.apache.uima.ruta.seed.DefaultSeeder</string>
           </array>
         </value>
       </nameValuePair>
@@ -214,9 +214,9 @@
     </typeSystemDescription>
     <typePriorities>
       <priorityList>
-        <type>org.apache.uima.textmarker.type.RutaFrame</type>
+        <type>org.apache.uima.ruta.type.RutaFrame</type>
         <type>uima.tcas.Annotation</type>
-        <type>org.apache.uima.textmarker.type.RutaBasic</type>
+        <type>org.apache.uima.ruta.type.RutaBasic</type>
       </priorityList>
     </typePriorities>
     <fsIndexCollection/>

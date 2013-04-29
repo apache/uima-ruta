@@ -28,7 +28,7 @@
     <version>2.0.1-SNAPSHOT</version>
     <relativePath>../ruta-parent/pom.xml</relativePath>
   </parent>
-  <name>Apache UIMA TextMarker Documentation</name>
+  <name>Apache UIMA Ruta Documentation</name>
   <url>${uimaWebsiteUrl}</url>
   <scm>
   	<url>http://svn.apache.org/viewvc/uima/sandbox/ruta/trunk/ruta-docbook</url>

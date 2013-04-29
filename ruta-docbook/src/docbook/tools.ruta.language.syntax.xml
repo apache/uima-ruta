@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
-<!ENTITY imgroot "images/tools/tools.textmarker/" >
+<!ENTITY imgroot "images/tools/tools.ruta/" >
 <!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
 %uimaents;
 ]>
@@ -19,11 +19,11 @@
 <section id="ugr.tools.tm.language.syntax">
   <title>Syntax</title>
   <para>
-    TextMarker defines its own language for writing rules and rule
+    Ruta defines its own language for writing rules and rule
     scripts. This section gives a formal overview of its syntax.
   </para>
   <para>
-    Structure: The overall structure of a TextMarker
+    Structure: The overall structure of a Ruta
     script is defined by
     the following syntax.
     <programlisting><![CDATA[Script              -> PackageDeclaration GlobalStatements Statements
@@ -38,16 +38,16 @@ Statement           -> Declaration | VariableDeclaration
     "//" and always go to the end of the line.
   </para>
   <para>
-    Example beginning of a TextMarker file:
-    <programlisting><![CDATA[PACKAGE uima.textmarker.example;
+    Example beginning of a Ruta file:
+    <programlisting><![CDATA[PACKAGE uima.ruta.example;
 
 // import the types of this type system 
 // (located in the descriptor folder -> types folder)
 TYPESYSTEM types.BibtexTypeSystem;
 
-SCRIPT uima.textmarker.example.Author;
-SCRIPT uima.textmarker.example.Title;
-SCRIPT uima.textmarker.example.Year;
+SCRIPT uima.ruta.example.Author;
+SCRIPT uima.ruta.example.Title;
+SCRIPT uima.ruta.example.Year;
 ]]></programlisting>
 
     Syntax of declarations:

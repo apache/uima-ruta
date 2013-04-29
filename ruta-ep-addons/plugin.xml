@@ -24,60 +24,60 @@ under the License.
          point="org.eclipse.ui.views">
       <view
             allowMultiple="false"
-            category="org.apache.uima.textmarker.ide.ui"
-            class="org.apache.uima.textmarker.query.ui.QueryView"
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.query.ui.QueryView"
             icon="icons/basket_edit.png"
-            id="org.apache.uima.textmarker.query.ui.ScriptQueryView"
+            id="org.apache.uima.ruta.query.ui.ScriptQueryView"
             name="Ruta Query"
             restorable="true">
       </view>
       <view
-            category="org.apache.uima.textmarker.ide.ui"
-            class="org.apache.uima.textmarker.testing.ui.views.fp.FalsePositiveView"
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.testing.ui.views.fp.FalsePositiveView"
             icon="icons/bug.png"
-            id="org.apache.uima.textmarker.testing.falsePositive"
+            id="org.apache.uima.ruta.testing.falsePositive"
             name="False Positive">
       </view>
       <view
-            category="org.apache.uima.textmarker.ide.ui"
-            class="org.apache.uima.textmarker.testing.ui.views.fn.FalseNegativeView"
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.testing.ui.views.fn.FalseNegativeView"
             icon="icons/bug.png"
-            id="org.apache.uima.textmarker.testing.falseNegative"
+            id="org.apache.uima.ruta.testing.falseNegative"
             name="False Negative">
       </view>
       <view
-            category="org.apache.uima.textmarker.ide.ui"
-            class="org.apache.uima.textmarker.testing.ui.views.TestPageBookView"
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.testing.ui.views.TestPageBookView"
             icon="icons/bug_edit.png"
-            id="org.apache.uima.textmarker.testing.TestingView"
+            id="org.apache.uima.ruta.testing.TestingView"
             name="Annotation Test"
             restorable="true">
       </view>
       <view
-            category="org.apache.uima.textmarker.ide.ui"
-            class="org.apache.uima.textmarker.testing.ui.views.tp.TruePositiveView"
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.testing.ui.views.tp.TruePositiveView"
             icon="icons/bug.png"
-            id="org.apache.uima.textmarker.testing.truePositive"
+            id="org.apache.uima.ruta.testing.truePositive"
             name="True Positive">
       </view>
    </extension> <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.apache.uima.textmarker.query.ui.QueryActionHandler"
-            id="org.apache.uima.textmarker.query.command"
+            defaultHandler="org.apache.uima.ruta.query.ui.QueryActionHandler"
+            id="org.apache.uima.ruta.query.command"
             name="Query Command">
       </command>
       <command
-            defaultHandler="org.apache.uima.textmarker.query.ui.ExportActionHandler"
-            id="org.apache.uima.textmarker.query.export"
+            defaultHandler="org.apache.uima.ruta.query.ui.ExportActionHandler"
+            id="org.apache.uima.ruta.query.export"
             name="Export List">
       </command>
    </extension>   <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            locationURI="toolbar:org.apache.uima.textmarker.query.ui.ScriptQueryView?after=additions">
+            locationURI="toolbar:org.apache.uima.ruta.query.ui.ScriptQueryView?after=additions">
          <command
-               commandId="org.apache.uima.textmarker.query.command"
+               commandId="org.apache.uima.ruta.query.command"
                icon="icons/13555.actionengine_play.gif"
                label="Query"
                style="push">
@@ -86,7 +86,7 @@ under the License.
             </visibleWhen>
          </command>
          <command
-               commandId="org.apache.uima.textmarker.query.export"
+               commandId="org.apache.uima.ruta.query.export"
                icon="icons/10892.resource_persp.gif"
                label="Export List"
                style="push">
@@ -98,15 +98,15 @@ under the License.
       <menuContribution
             locationURI="toolbar:org.eclipse.ui.main.toolbar">
          <toolbar
-               id="org.apache.uima.textmarker.utils.query.queryToolbar">
+               id="org.apache.uima.ruta.utils.query.queryToolbar">
          </toolbar>
       </menuContribution>
    </extension> <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            locationURI="toolbar:org.apache.uima.textmarker.testing.TestingView?after=additions">
+            locationURI="toolbar:org.apache.uima.ruta.testing.TestingView?after=additions">
          <command
-               commandId="org.apache.uima.textmarker.testing.rerun"
+               commandId="org.apache.uima.ruta.testing.rerun"
                icon="icons/13555.actionengine_play.gif"
                label="Rerun Tests"
                style="push">
@@ -115,7 +115,7 @@ under the License.
             </visibleWhen>
          </command>
          <command
-               commandId="org.apache.uima.textmarker.testing.PreviousTestCase"
+               commandId="org.apache.uima.ruta.testing.PreviousTestCase"
                icon="icons/back.gif"
                label="Previous Test Case"
                style="push">
@@ -124,7 +124,7 @@ under the License.
             </visibleWhen>
          </command>
          <command
-               commandId="org.apache.uima.textmarker.testing.nextTestCase"
+               commandId="org.apache.uima.ruta.testing.nextTestCase"
                icon="icons/forward.gif"
                label="Next Test Case"
                style="push">
@@ -133,7 +133,7 @@ under the License.
             </visibleWhen>
          </command>
          <command
-               commandId="org.apache.uima.textmarker.testing.LoadFolderCommand"
+               commandId="org.apache.uima.ruta.testing.LoadFolderCommand"
                icon="icons/add.gif"
                label="Load all test files from selected folder"
                style="push">
@@ -142,7 +142,7 @@ under the License.
             </visibleWhen>
          </command>
          <command
-               commandId="org.apache.uima.textmarker.testing.excludeTypes"
+               commandId="org.apache.uima.ruta.testing.excludeTypes"
                icon="icons/exclamation.png"
                label="Select excluded types"
                style="push">
@@ -151,7 +151,7 @@ under the License.
             </visibleWhen>
          </command>
          <command
-               commandId="org.apache.uima.textmarker.testing.selectEvaluator"
+               commandId="org.apache.uima.ruta.testing.selectEvaluator"
                icon="icons/evaluator.gif"
                label="Select Evaluator"
                style="push">
@@ -160,7 +160,7 @@ under the License.
             </visibleWhen>
          </command>
          <command
-               commandId="org.apache.uima.textmarker.testing.ExportTabel"
+               commandId="org.apache.uima.ruta.testing.ExportTabel"
                icon="icons/10892.resource_persp.gif"
                style="push">
             <visibleWhen
@@ -171,146 +171,146 @@ under the License.
       <menuContribution
             locationURI="toolbar:org.eclipse.ui.main.toolbar">
          <toolbar
-               id="org.apache.uima.textmarker.testing.annotationTestToolbar">
+               id="org.apache.uima.ruta.testing.annotationTestToolbar">
          </toolbar>
       </menuContribution>
    </extension>   <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.apache.uima.textmarker.testing.ui.handlers.RemoveTestsHandler"
-            id="org.apache.uima.textmarker.testing.removeTests"
+            defaultHandler="org.apache.uima.ruta.testing.ui.handlers.RemoveTestsHandler"
+            id="org.apache.uima.ruta.testing.removeTests"
             name="Remove Resource">
       </command>
       <command
-            defaultHandler="org.apache.uima.textmarker.testing.ui.handlers.RerunActionHandler"
-            id="org.apache.uima.textmarker.testing.rerun"
+            defaultHandler="org.apache.uima.ruta.testing.ui.handlers.RerunActionHandler"
+            id="org.apache.uima.ruta.testing.rerun"
             name="Rerun Command">
       </command>
       <command
-            defaultHandler="org.apache.uima.textmarker.testing.ui.handlers.NextTestCaseHandler"
-            id="org.apache.uima.textmarker.testing.nextTestCase"
+            defaultHandler="org.apache.uima.ruta.testing.ui.handlers.NextTestCaseHandler"
+            id="org.apache.uima.ruta.testing.nextTestCase"
             name="NextTestCase">
       </command>
       <command
-            defaultHandler="org.apache.uima.textmarker.testing.ui.handlers.PreviousTestCaseHandler"
-            id="org.apache.uima.textmarker.testing.PreviousTestCase"
+            defaultHandler="org.apache.uima.ruta.testing.ui.handlers.PreviousTestCaseHandler"
+            id="org.apache.uima.ruta.testing.PreviousTestCase"
             name="PreviousTestCase">
       </command>
       <command
-            defaultHandler="org.apache.uima.textmarker.testing.ui.handlers.LoadFilesFromFolderHandler"
-            id="org.apache.uima.textmarker.testing.LoadFolderCommand"
+            defaultHandler="org.apache.uima.ruta.testing.ui.handlers.LoadFilesFromFolderHandler"
+            id="org.apache.uima.ruta.testing.LoadFolderCommand"
             name="LoadFolderCommand">
       </command>
       <command
-            defaultHandler="org.apache.uima.textmarker.testing.ui.handlers.SelectedExcludedTypesHandler"
-            id="org.apache.uima.textmarker.testing.excludeTypes"
+            defaultHandler="org.apache.uima.ruta.testing.ui.handlers.SelectedExcludedTypesHandler"
+            id="org.apache.uima.ruta.testing.excludeTypes"
             name="Select excluded types">
       </command>
       <command
-            defaultHandler="org.apache.uima.textmarker.testing.ui.handlers.SelectEvaluatorHandler"
-            id="org.apache.uima.textmarker.testing.selectEvaluator"
+            defaultHandler="org.apache.uima.ruta.testing.ui.handlers.SelectEvaluatorHandler"
+            id="org.apache.uima.ruta.testing.selectEvaluator"
             name="Select Evaluator">
       </command>
       <command
-            defaultHandler="org.apache.uima.textmarker.testing.ui.handlers.ExportTabelHandler"
-            id="org.apache.uima.textmarker.testing.ExportTabel"
+            defaultHandler="org.apache.uima.ruta.testing.ui.handlers.ExportTabelHandler"
+            id="org.apache.uima.ruta.testing.ExportTabel"
             name="Export Table">
       </command>
    </extension>
     <extension
-         point="org.apache.uima.textmarker.addons.evaluators">
+         point="org.apache.uima.ruta.addons.evaluators">
       <evaluator
-            factory="org.apache.uima.textmarker.testing.evaluator.PartialMatchCasEvaluatorFacotry"
-            id="org.apache.uima.textmarker.testing.partialmatchevaluator"
+            factory="org.apache.uima.ruta.testing.evaluator.PartialMatchCasEvaluatorFacotry"
+            id="org.apache.uima.ruta.testing.partialmatchevaluator"
             name="Partial Match">
       </evaluator>
       <evaluator
-            factory="org.apache.uima.textmarker.testing.evaluator.ExactCasEvaluatorFactory"
-            id="org.apache.uima.textmarker.testing.exactCasEvaluator"
+            factory="org.apache.uima.ruta.testing.evaluator.ExactCasEvaluatorFactory"
+            id="org.apache.uima.ruta.testing.exactCasEvaluator"
             name="Exact Match">
       </evaluator>
       <evaluator
-            factory="org.apache.uima.textmarker.testing.evaluator.CoreMatchCasEvaluatorFactory"
-            id="org.apache.uima.textmarker.testing.corematchevaluator"
+            factory="org.apache.uima.ruta.testing.evaluator.CoreMatchCasEvaluatorFactory"
+            id="org.apache.uima.ruta.testing.corematchevaluator"
             name="Core Term Match">
       </evaluator>
       <evaluator
-            factory="org.apache.uima.textmarker.testing.evaluator.WordAccuracyCasEvaluatorFactory"
-            id="org.apache.uima.textmarker.testing.wordAccurecyCasEvaluator"
+            factory="org.apache.uima.ruta.testing.evaluator.WordAccuracyCasEvaluatorFactory"
+            id="org.apache.uima.ruta.testing.wordAccurecyCasEvaluator"
             name="Word Accuracy">
       </evaluator>
       <evaluator
-            factory="org.apache.uima.textmarker.testing.evaluator.TemplateCasEvaluatorFactory"
-            id="org.apache.uima.textmarker.testing.templateCasEvaluator"
+            factory="org.apache.uima.ruta.testing.evaluator.TemplateCasEvaluatorFactory"
+            id="org.apache.uima.ruta.testing.templateCasEvaluator"
             name="Template only">
       </evaluator>
       <evaluator
-            factory="org.apache.uima.textmarker.testing.evaluator.WordTemplateCasEvaluatorFactory"
-            id="org.apache.uima.textmarker.testing.wordTemplateCasEvaluator"
+            factory="org.apache.uima.ruta.testing.evaluator.WordTemplateCasEvaluatorFactory"
+            id="org.apache.uima.ruta.testing.wordTemplateCasEvaluator"
             name="Template on word level">
       </evaluator>
       <evaluator
-            factory="org.apache.uima.textmarker.testing.evaluator.FeatureCasEvaluatorFactory"
-            id="org.apache.uima.textmarker.testing.featureCasEvaluator"
+            factory="org.apache.uima.ruta.testing.evaluator.FeatureCasEvaluatorFactory"
+            id="org.apache.uima.ruta.testing.featureCasEvaluator"
             name="Features: Annotations and Strings">
       </evaluator>
       <evaluator
-            factory="org.apache.uima.textmarker.testing.evaluator.StringFeatureCasEvaluatorFactory"
-            id="org.apache.uima.textmarker.testing.stringFeature"
+            factory="org.apache.uima.ruta.testing.evaluator.StringFeatureCasEvaluatorFactory"
+            id="org.apache.uima.ruta.testing.stringFeature"
             name="Annotations with String features">
       </evaluator>
    </extension>   <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer
-            class="org.apache.uima.textmarker.testing.preferences.TestingPreferenceInitializer">
+            class="org.apache.uima.ruta.testing.preferences.TestingPreferenceInitializer">
       </initializer>
    </extension>   <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            category="org.apache.uima.textmarker.ide.preferences"
-            class="org.apache.uima.textmarker.testing.preferences.TestingPreferencePage"
-            id="org.apache.uima.textmarker.testing.preferences"
+            category="org.apache.uima.ruta.ide.preferences"
+            class="org.apache.uima.ruta.testing.preferences.TestingPreferencePage"
+            id="org.apache.uima.ruta.testing.preferences"
             name="Testing">
       </page>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.apache.uima.textmarker.utils.twl.TWLConverterHandler"
+            defaultHandler="org.apache.uima.ruta.utils.twl.TWLConverterHandler"
             description="TWLConvertCommand"
-            id="org.apache.uima.textmarker.utils.twl.command"
+            id="org.apache.uima.ruta.utils.twl.command"
             name="Convert to TWL">
          <defaultHandler
-               class="org.apache.uima.textmarker.utils.twl.TWLConverterHandler">
+               class="org.apache.uima.ruta.utils.twl.TWLConverterHandler">
          </defaultHandler>
       </command>
       <command
-            defaultHandler="org.apache.uima.textmarker.utils.twl.MultiTWLConverterHandler"
+            defaultHandler="org.apache.uima.ruta.utils.twl.MultiTWLConverterHandler"
             description="MultiTWLConvertCommand"
-            id="org.apache.uima.textmarker.utils.mtwl.command"
+            id="org.apache.uima.ruta.utils.mtwl.command"
             name="Convert to Multi TWL">
          <defaultHandler
-               class="org.apache.uima.textmarker.utils.twl.MultiTWLConverterHandler">
+               class="org.apache.uima.ruta.utils.twl.MultiTWLConverterHandler">
          </defaultHandler>
       </command>
       <command
-            defaultHandler="org.apache.uima.textmarker.utils.apply.ApplyScriptRemoveBasicsHandler"
-            id="org.apache.uima.textmarker.utils.apply.script"
+            defaultHandler="org.apache.uima.ruta.utils.apply.ApplyScriptRemoveBasicsHandler"
+            id="org.apache.uima.ruta.utils.apply.script"
             name="ApplyScriptCommand">
       </command>
       <command
-            defaultHandler="org.apache.uima.textmarker.utils.apply.ApplyScriptKeepBasicsHandler"
-            id="org.apache.uima.textmarker.utils.apply.script.basics"
+            defaultHandler="org.apache.uima.ruta.utils.apply.ApplyScriptKeepBasicsHandler"
+            id="org.apache.uima.ruta.utils.apply.script.basics"
             name="ApplyScriptBasicsCommand">
       </command>
       <command
-            defaultHandler="org.apache.uima.textmarker.utils.apply.ApplyScriptNoXMIHandler"
-            id="org.apache.uima.textmarker.utils.apply.script.noxmi"
+            defaultHandler="org.apache.uima.ruta.utils.apply.ApplyScriptNoXMIHandler"
+            id="org.apache.uima.ruta.utils.apply.script.noxmi"
             name="ApplyScriptNoXMICommand">
       </command>
       <command
-            defaultHandler="org.apache.uima.textmarker.utils.update.UpdateProjectHandler"
-            id="org.apache.uima.textmarker.utils.update"
+            defaultHandler="org.apache.uima.ruta.utils.update.UpdateProjectHandler"
+            id="org.apache.uima.ruta.utils.update"
             name="Update Project">
       </command>
    </extension>   <extension
@@ -319,18 +319,18 @@ under the License.
             locationURI="popup:org.eclipse.dltk.ui.ScriptExplorer?after=additions">
          <menu
                icon="icons/tm_obj.png"
-               id="org.apache.uima.textmarker.utils.popup.submenu"
+               id="org.apache.uima.ruta.utils.popup.submenu"
                label="UIMA Ruta">
          </menu>
       </menuContribution>
       <menuContribution
-            locationURI="popup:org.apache.uima.textmarker.utils.popup.submenu">
+            locationURI="popup:org.apache.uima.ruta.utils.popup.submenu">
          <command
-               commandId="org.apache.uima.textmarker.utils.apply.script.basics"
+               commandId="org.apache.uima.ruta.utils.apply.script.basics"
                disabledIcon="icons/tm_obj.png"
                hoverIcon="icons/tm_obj.png"
                icon="icons/tm_obj.png"
-               id="org.apache.uima.textmarker.utils.apply.script.basics.popup"
+               id="org.apache.uima.ruta.utils.apply.script.basics.popup"
                label="Quick Ruta"
                style="push"
                tooltip="Apply current Ruta script on folder and keep basics">
@@ -340,7 +340,7 @@ under the License.
                   <with
                         variable="activeEditorId">
                      <equals
-                           value="org.apache.uima.textmarker.ide.ui.editor.RutaEditor">
+                           value="org.apache.uima.ruta.ide.ui.editor.RutaEditor">
                      </equals>
                   </with>
                </and>
@@ -348,13 +348,13 @@ under the License.
          </command>
       </menuContribution>
       <menuContribution
-            locationURI="popup:org.apache.uima.textmarker.utils.popup.submenu">
+            locationURI="popup:org.apache.uima.ruta.utils.popup.submenu">
          <command
-               commandId="org.apache.uima.textmarker.utils.apply.script"
+               commandId="org.apache.uima.ruta.utils.apply.script"
                disabledIcon="icons/tm_obj.png"
                hoverIcon="icons/tm_obj.png"
                icon="icons/tm_obj.png"
-               id="org.apache.uima.textmarker.utils.apply.script.popup"
+               id="org.apache.uima.ruta.utils.apply.script.popup"
                label="Quick Ruta (remove basics)"
                style="push"
                tooltip="Apply current Ruta script on folder">
@@ -364,7 +364,7 @@ under the License.
                   <with
                         variable="activeEditorId">
                      <equals
-                           value="org.apache.uima.textmarker.ide.ui.editor.RutaEditor">
+                           value="org.apache.uima.ruta.ide.ui.editor.RutaEditor">
                      </equals>
                   </with>
                </and>
@@ -372,13 +372,13 @@ under the License.
          </command>
       </menuContribution>
       <menuContribution
-            locationURI="popup:org.apache.uima.textmarker.utils.popup.submenu">
+            locationURI="popup:org.apache.uima.ruta.utils.popup.submenu">
          <command
-               commandId="org.apache.uima.textmarker.utils.apply.script.noxmi"
+               commandId="org.apache.uima.ruta.utils.apply.script.noxmi"
                disabledIcon="icons/tm_obj.png"
                hoverIcon="icons/tm_obj.png"
                icon="icons/tm_obj.png"
-               id="org.apache.uima.textmarker.utils.apply.script.noxmi.popup"
+               id="org.apache.uima.ruta.utils.apply.script.noxmi.popup"
                label="Quick Ruta (no xmi)"
                style="push"
                tooltip="Apply current Ruta script on folder">
@@ -388,7 +388,7 @@ under the License.
                   <with
                         variable="activeEditorId">
                      <equals
-                           value="org.apache.uima.textmarker.ide.ui.editor.RutaEditor">
+                           value="org.apache.uima.ruta.ide.ui.editor.RutaEditor">
                      </equals>
                   </with>
                </and>
@@ -396,58 +396,58 @@ under the License.
          </command>
       </menuContribution>
       <menuContribution
-            locationURI="popup:org.apache.uima.textmarker.utils.popup.submenu">
+            locationURI="popup:org.apache.uima.ruta.utils.popup.submenu">
          <command
-               commandId="org.apache.uima.textmarker.utils.twl.command"
+               commandId="org.apache.uima.ruta.utils.twl.command"
                disabledIcon="icons/tm_obj.png"
                hoverIcon="icons/tm_obj.png"
                icon="icons/tm_obj.png"
-               id="org.apache.uima.textmarker.utils.twl.popup"
+               id="org.apache.uima.ruta.utils.twl.popup"
                label="Convert to TWL"
                style="push"
                tooltip="Convert the word list to a tree">
             <visibleWhen
                   checkEnabled="true">
                <reference
-                     definitionId="org.apache.uima.textmarker.utils.twl.definition">
+                     definitionId="org.apache.uima.ruta.utils.twl.definition">
                </reference>
             </visibleWhen>
          </command>
       </menuContribution>
       <menuContribution
-            locationURI="popup:org.apache.uima.textmarker.utils.popup.submenu">
+            locationURI="popup:org.apache.uima.ruta.utils.popup.submenu">
          <command
-               commandId="org.apache.uima.textmarker.utils.mtwl.command"
+               commandId="org.apache.uima.ruta.utils.mtwl.command"
                disabledIcon="icons/tm_obj.png"
                hoverIcon="icons/tm_obj.png"
                icon="icons/tm_obj.png"
-               id="org.apache.uima.textmarker.utils.mtwl.popup"
+               id="org.apache.uima.ruta.utils.mtwl.popup"
                label="Convert to Multi TWL"
                style="push"
                tooltip="Convert several word lists to a tree">
             <visibleWhen
                   checkEnabled="true">
                <reference
-                     definitionId="org.apache.uima.textmarker.utils.mtwl.definition">
+                     definitionId="org.apache.uima.ruta.utils.mtwl.definition">
                </reference>
             </visibleWhen>
          </command>
       </menuContribution>
       <menuContribution
-            locationURI="popup:org.apache.uima.textmarker.utils.popup.submenu">
+            locationURI="popup:org.apache.uima.ruta.utils.popup.submenu">
          <command
-               commandId="org.apache.uima.textmarker.utils.update"
+               commandId="org.apache.uima.ruta.utils.update"
                disabledIcon="icons/tm_obj.png"
                hoverIcon="icons/tm_obj.png"
                icon="icons/tm_obj.png"
-               id="org.apache.uima.textmarker.utils.update.popup"
+               id="org.apache.uima.ruta.utils.update.popup"
                label="Update Project"
                style="push"
                tooltip="Update basic templates for descriptors">
               <visibleWhen
                     checkEnabled="true">
                  <reference
-                       definitionId="org.apache.uima.textmarker.utils.update.definition">
+                       definitionId="org.apache.uima.ruta.utils.update.definition">
                  </reference>
               </visibleWhen>
          </command>
@@ -455,7 +455,7 @@ under the License.
    </extension>   <extension
          point="org.eclipse.core.expressions.definitions">
       <definition
-            id="org.apache.uima.textmarker.utils.twl.definition">
+            id="org.apache.uima.ruta.utils.twl.definition">
          <with
                variable="selection">
             <iterate
@@ -469,7 +469,7 @@ under the License.
          </with>
       </definition>
       <definition
-            id="org.apache.uima.textmarker.utils.mtwl.definition">
+            id="org.apache.uima.ruta.utils.mtwl.definition">
          <with
                variable="selection">
             <iterate
@@ -484,7 +484,7 @@ under the License.
          </with>
       </definition>
       <definition
-            id="org.apache.uima.textmarker.utils.apply.script.definition">
+            id="org.apache.uima.ruta.utils.apply.script.definition">
          <adapt
                type="org.eclipse.core.resources.IResource">
             <test
@@ -494,7 +494,7 @@ under the License.
          </adapt>
       </definition>
       <definition
-            id="org.apache.uima.textmarker.utils.update.definition">
+            id="org.apache.uima.ruta.utils.update.definition">
          <with
                variable="selection">
             <iterate
@@ -509,31 +509,31 @@ under the License.
    </extension>   <extension
          point="org.eclipse.ui.bindings">
       <key
-            commandId="org.apache.uima.textmarker.utils.apply.script"
+            commandId="org.apache.uima.ruta.utils.apply.script"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M1+M3+T">
       </key>
       <key
-            commandId="org.apache.uima.textmarker.utils.apply.script.basics"
+            commandId="org.apache.uima.ruta.utils.apply.script.basics"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M1+T">
       </key>
       <key
-            commandId="org.apache.uima.textmarker.utils.apply.script.noxmi"
+            commandId="org.apache.uima.ruta.utils.apply.script.noxmi"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M1+M2+M3+T">
       </key>
       <key
-            commandId="org.apache.uima.textmarker.utils.twl.command"
+            commandId="org.apache.uima.ruta.utils.twl.command"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M1+J">
       </key>
       <key
-            commandId="org.apache.uima.textmarker.utils.mtwl.command"
+            commandId="org.apache.uima.ruta.utils.mtwl.command"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M1+M2+J">
@@ -542,60 +542,60 @@ under the License.
    <extension
          point="org.eclipse.ui.views">
       <view
-            category="org.apache.uima.textmarker.ide.ui"
-            class="org.apache.uima.textmarker.explain.apply.ApplyView"
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.explain.apply.ApplyView"
             icon="icons/chart_organisation.png"
-            id="org.apache.uima.textmarker.explain.apply"
+            id="org.apache.uima.ruta.explain.apply"
             name="Applied Rules">
       </view>
       <view
-            category="org.apache.uima.textmarker.ide.ui"
-            class="org.apache.uima.textmarker.explain.matched.MatchedView"
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.explain.matched.MatchedView"
             icon="icons/accept.png"
-            id="org.apache.uima.textmarker.explain.matched"
+            id="org.apache.uima.ruta.explain.matched"
             name="Matched Rules"
             restorable="true">
       </view>
       <view
-            category="org.apache.uima.textmarker.ide.ui"
-            class="org.apache.uima.textmarker.explain.failed.FailedView"
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.explain.failed.FailedView"
             icon="icons/cancel.png"
-            id="org.apache.uima.textmarker.explain.failed"
+            id="org.apache.uima.ruta.explain.failed"
             name="Failed Rules">
       </view>
       <view
-            category="org.apache.uima.textmarker.ide.ui"
-            class="org.apache.uima.textmarker.explain.element.ElementView"
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.explain.element.ElementView"
             icon="icons/chart_organisation.png"
-            id="org.apache.uima.textmarker.explain.element"
+            id="org.apache.uima.ruta.explain.element"
             name="Rule Elements">
       </view>
       <view
-            category="org.apache.uima.textmarker.ide.ui"
-            class="org.apache.uima.textmarker.statistics.StatisticsView"
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.statistics.StatisticsView"
             icon="icons/statistics.png"
-            id="org.apache.uima.textmarker.statistics"
+            id="org.apache.uima.ruta.statistics"
             name="Statistics">
       </view>
       <view
-            category="org.apache.uima.textmarker.ide.ui"
-            class="org.apache.uima.textmarker.explain.selection.ExplainSelectionView"
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.explain.selection.ExplainSelectionView"
             icon="icons/chart_organisation.png"
-            id="org.apache.uima.textmarker.explain.selection"
+            id="org.apache.uima.ruta.explain.selection"
             name="Covering Rules">
       </view>
       <view
-            category="org.apache.uima.textmarker.ide.ui"
-            class="org.apache.uima.textmarker.explain.rulelist.RuleListView"
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.explain.rulelist.RuleListView"
             icon="icons/chart_organisation.png"
-            id="org.apache.uima.textmarker.explain.rulelist"
+            id="org.apache.uima.ruta.explain.rulelist"
             name="Rule List">
       </view>
       <view
-            category="org.apache.uima.textmarker.ide.ui"
-            class="org.apache.uima.textmarker.explain.createdBy.CreatedByView"
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.explain.createdBy.CreatedByView"
             icon="icons/font_add.png"
-            id="org.apache.uima.textmarker.explain.createdBy"
+            id="org.apache.uima.ruta.explain.createdBy"
             name="Created By"
             restorable="true">
       </view>
@@ -603,21 +603,21 @@ under the License.
    <extension
          point="org.apache.uima.caseditor.ide.searchstrategy">
       <searchStrategy
-            class="org.apache.uima.textmarker.searchStrategy.LastLaunchSearchStrategy"
+            class="org.apache.uima.ruta.searchStrategy.LastLaunchSearchStrategy"
             description="Use the type system of the last launched Ruta script in the same project"
-            id="org.apache.uima.textmarker.searchstrategy.lastlaunch"
+            id="org.apache.uima.ruta.searchstrategy.lastlaunch"
             priority="10">
       </searchStrategy>
       <searchStrategy
-            class="org.apache.uima.textmarker.searchStrategy.DescriptorFolderSearchStrategy"
+            class="org.apache.uima.ruta.searchStrategy.DescriptorFolderSearchStrategy"
             description="Pick one type system from the Ruta project descriptor folder"
-            id="org.apache.uima.textmarker.searchstrategy.descriptorfolder"
+            id="org.apache.uima.ruta.searchstrategy.descriptorfolder"
             priority="500">
       </searchStrategy>
       <searchStrategy
-            class="org.apache.uima.textmarker.testing.searchStrategy.TestingSearchStrategy"
+            class="org.apache.uima.ruta.testing.searchStrategy.TestingSearchStrategy"
             description="Use the type system of the tested Ruta script when opening a evaluated CAS"
-            id="org.apache.uima.textmarker.searchstrategy.testing"
+            id="org.apache.uima.ruta.searchstrategy.testing"
             priority="5">
       </searchStrategy>
    </extension>

@@ -18,7 +18,7 @@
    under the License.    
 -->
 <feature
-      id="org.apache.uima.textmarker.feature"
+      id="org.apache.uima.ruta.feature"
       label="UIMA Ruta Workbench"
       version="${parsedVersion.osgiVersion}"
       provider-name="Apache Software Foundation">
@@ -46,35 +46,35 @@ and NOTICE files
    </requires>
 
    <plugin
-         id="org.apache.uima.textmarker.addons"
+         id="org.apache.uima.ruta.addons"
          download-size="0"
          install-size="0"
          version="${parsedVersion.osgiVersion}"
          unpack="false"/>
 
    <plugin
-         id="org.apache.uima.textmarker.caseditor"
+         id="org.apache.uima.ruta.caseditor"
          download-size="0"
          install-size="0"
          version="${parsedVersion.osgiVersion}"
          unpack="false"/>
 
    <plugin
-         id="org.apache.uima.textmarker.engine"
+         id="org.apache.uima.ruta.engine"
          download-size="0"
          install-size="0"
          version="${parsedVersion.osgiVersion}"
          unpack="false"/>
 
    <plugin
-         id="org.apache.uima.textmarker.ide"
+         id="org.apache.uima.ruta.ide"
          download-size="0"
          install-size="0"
          version="${parsedVersion.osgiVersion}"
          unpack="false"/>
 
    <plugin
-         id="org.apache.uima.textmarker.textruler"
+         id="org.apache.uima.ruta.textruler"
          download-size="0"
          install-size="0"
          version="${parsedVersion.osgiVersion}"

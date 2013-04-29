@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
-<!ENTITY imgroot "images/tools/tools.textmarker/" >
+<!ENTITY imgroot "images/tools/tools.ruta/" >
 <!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
 %uimaents;
 ]>
@@ -19,7 +19,7 @@
 <section id="ugr.tools.tm.language.expressions">
   <title>Expressions</title>
   <para>
-    TextMarker provides five different kinds of expressions. These are
+    Ruta provides five different kinds of expressions. These are
     type expressions, number expressions, string expressions,
     boolean expressions and list expressions.
   </para>
@@ -32,7 +32,7 @@
   <section id="ugr.tools.tm.language.expressions.type">
     <title>Type Expressions</title>
     <para>
-      TextMarker provides two kinds of type expressions.
+      Ruta provides two kinds of type expressions.
       <orderedlist numeration="arabic">
         <listitem>
           Declared annotation types (see
@@ -71,9 +71,9 @@ Document{->ASSIGN(typeVar, Author)};]]></programlisting>
   <section id="ugr.tools.tm.language.expressions.number">
     <title>Number Expressions</title>
     <para>
-      TextMarker provides several possibilities to define number
+      Ruta provides several possibilities to define number
       expressions. As expected, every number expression evaluates to a
-      number. TextMarker supports integer and floating-point numbers. A
+      number. Ruta supports integer and floating-point numbers. A
       floating-point number can be in single or in double precision. To get
       a complete overview, have a look at the following syntax definition
       of number expressions.
@@ -130,7 +130,7 @@ Document{->ASSIGN(intVar1, 12 * intVar1 - SIN(intVar2))};]]></programlisting>
   <section id="ugr.tools.tm.language.expressions.string">
     <title>String Expressions</title>
     <para>
-      There are two kinds of string expressions in TextMarker.
+      There are two kinds of string expressions in Ruta.
        
       <orderedlist numeration="arabic">
         <listitem>
@@ -173,7 +173,7 @@ Document{->ASSIGN(strVar, "strLiteral" + strVar)};]]></programlisting>
   <section id="ugr.tools.tm.language.expressions.boolean">
     <title>Boolean Expressions</title>
     <para>
-      TextMarker provides several possibilities to define boolean
+      Ruta provides several possibilities to define boolean
       expressions. As expected, every boolean expression evaluates to
       either
       true or false. To get a complete overview, have a look at the

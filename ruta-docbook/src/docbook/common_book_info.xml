@@ -23,7 +23,7 @@ under the License.
 
     <releaseinfo>Version <?eval ${project.version}?></releaseinfo>
 
-    <productname>UIMA TextMarker</productname>
+    <productname>UIMA Ruta</productname>
 
     <authorgroup>
       <corpauthor>Written and maintained by the Apache UIMA Development Community</corpauthor>

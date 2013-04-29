@@ -25,7 +25,7 @@
   <vendor/>
   <types>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.TAG</name>
+      <name>org.apache.uima.ruta.type.html.TAG</name>
       <description></description>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -49,197 +49,197 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.B</name>
+      <name>org.apache.uima.ruta.type.html.B</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.H1</name>
+      <name>org.apache.uima.ruta.type.html.H1</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.H2</name>
+      <name>org.apache.uima.ruta.type.html.H2</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.H3</name>
+      <name>org.apache.uima.ruta.type.html.H3</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.H4</name>
+      <name>org.apache.uima.ruta.type.html.H4</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.H5</name>
+      <name>org.apache.uima.ruta.type.html.H5</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.H6</name>
+      <name>org.apache.uima.ruta.type.html.H6</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.COMMENT</name>
+      <name>org.apache.uima.ruta.type.html.COMMENT</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.TITLE</name>
+      <name>org.apache.uima.ruta.type.html.TITLE</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.I</name>
+      <name>org.apache.uima.ruta.type.html.I</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.U</name>
+      <name>org.apache.uima.ruta.type.html.U</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.BIG</name>
+      <name>org.apache.uima.ruta.type.html.BIG</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.SMALL</name>
+      <name>org.apache.uima.ruta.type.html.SMALL</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.FONT</name>
+      <name>org.apache.uima.ruta.type.html.FONT</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.A</name>
+      <name>org.apache.uima.ruta.type.html.A</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.HEAD</name>
+      <name>org.apache.uima.ruta.type.html.HEAD</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.HTML</name>
+      <name>org.apache.uima.ruta.type.html.HTML</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.BODY</name>
+      <name>org.apache.uima.ruta.type.html.BODY</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.EM</name>
+      <name>org.apache.uima.ruta.type.html.EM</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.TABLE</name>
+      <name>org.apache.uima.ruta.type.html.TABLE</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.DIV</name>
+      <name>org.apache.uima.ruta.type.html.DIV</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.SPAN</name>
+      <name>org.apache.uima.ruta.type.html.SPAN</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.UL</name>
+      <name>org.apache.uima.ruta.type.html.UL</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.OL</name>
+      <name>org.apache.uima.ruta.type.html.OL</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.P</name>
+      <name>org.apache.uima.ruta.type.html.P</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.LI</name>
+      <name>org.apache.uima.ruta.type.html.LI</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.TBODY</name>
+      <name>org.apache.uima.ruta.type.html.TBODY</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.TD</name>
+      <name>org.apache.uima.ruta.type.html.TD</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.TR</name>
+      <name>org.apache.uima.ruta.type.html.TR</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.TH</name>
+      <name>org.apache.uima.ruta.type.html.TH</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.IMG</name>
+      <name>org.apache.uima.ruta.type.html.IMG</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.STYLE</name>
+      <name>org.apache.uima.ruta.type.html.STYLE</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.SCRIPT</name>
+      <name>org.apache.uima.ruta.type.html.SCRIPT</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.LINK</name>
+      <name>org.apache.uima.ruta.type.html.LINK</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.INPUT</name>
+      <name>org.apache.uima.ruta.type.html.INPUT</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.FORM</name>
+      <name>org.apache.uima.ruta.type.html.FORM</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.META</name>
+      <name>org.apache.uima.ruta.type.html.META</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.BR</name>
+      <name>org.apache.uima.ruta.type.html.BR</name>
       <description></description>
-      <supertypeName>org.apache.uima.textmarker.type.html.TAG</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.html.REMARK</name>
+      <name>org.apache.uima.ruta.type.html.REMARK</name>
       <description></description>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>

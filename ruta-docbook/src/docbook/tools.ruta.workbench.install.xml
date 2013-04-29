@@ -27,7 +27,7 @@ under the License.
   <title>Installation</title>
   <para>
 
-    Do the installation of the TextMarker workbench as follows:
+    Do the installation of the Ruta workbench as follows:
     <orderedlist numeration="arabic">
       <listitem>
         <para>
@@ -55,7 +55,7 @@ under the License.
       </listitem>
       <listitem>
         <para>
-          Select <quote>Apche UIMA TextMarker</quote> and (if not yet installed) <quote>Apache UIMA Eclipse tooling and runtime support</quote>
+          Select <quote>Apche UIMA Ruta</quote> and (if not yet installed) <quote>Apache UIMA Eclipse tooling and runtime support</quote>
           by clicking into the related checkbox.
         </para>
       </listitem>
@@ -73,7 +73,7 @@ under the License.
         <para>
           On the next page, click <quote>Next</quote>
           again. Now, the license
-          agreement site is diplayed. To install UIMA TextMarker read the license and
+          agreement site is diplayed. To install UIMA Ruta read the license and
           choose
           <quote>I accept the ...</quote>
           if you agree to it. Then,
@@ -104,9 +104,9 @@ under the License.
     </figure>
   </para>
   <para>
-    Now, TextMarker is going to be installed.
+    Now, Ruta is going to be installed.
     After the successful
-    installation, switch to the TextMarker
+    installation, switch to the Ruta
     perspective. To get an overview, see
     <xref linkend='section.ugr.tools.tm.workbench.overview' />.
   </para>
@@ -117,15 +117,15 @@ under the License.
     </para>
   </note>
   <para>
-    Several times within this chapter we use a TextMarker example
+    Several times within this chapter we use a Ruta example
     project
-    to illustrate the use of the TextMarker workbench.
+    to illustrate the use of the Ruta workbench.
     The example project
     can be downloaded per
     <emphasis>svn</emphasis>
     from
     <ulink
-      url="https://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk/example-projects/ExampleProject">https://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk/example-projects/ExampleProject
+      url="https://svn.apache.org/repos/asf/uima/sandbox/ruta/trunk/example-projects/ExampleProject">https://svn.apache.org/repos/asf/uima/sandbox/ruta/trunk/example-projects/ExampleProject
     </ulink>
     .
   </para>

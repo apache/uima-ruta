@@ -14,14 +14,14 @@
   See the License for the specific language governing permissions and limitations under the License. -->
 
 <section id="section.ugr.tools.tm.workbench.overview">
-  <title>TextMarker Workbench Overview</title>
+  <title>Ruta Workbench Overview</title>
   <para>
-    The TextMarker workbench provides two main perspectives.
+    The Ruta workbench provides two main perspectives.
     <orderedlist numeration="arabic">
       <listitem>
         <para>
           The
-          <quote>TextMarker perspective</quote>, which provides the main functionality for working on TextMarker projects. See
+          <quote>Ruta perspective</quote>, which provides the main functionality for working on Ruta projects. See
           <xref linkend='section.ugr.tools.tm.workbench.tm_perspective' />
           for detailed information.
         </para>
@@ -37,9 +37,9 @@
     </orderedlist>
   </para>
   <para>
-    The following image shows the TextMarker perspective.
+    The following image shows the Ruta perspective.
     <figure id="figure.ugr.tools.tm.workbench.overview.tm_perspective">
-      <title> The TextMarker perspective.
+      <title> The Ruta perspective.
       </title>
       <mediaobject>
         <imageobject role="html">
@@ -52,21 +52,21 @@
         </imageobject>
         <textobject>
           <phrase>
-            The TextMarker perspective.
+            The Ruta perspective.
           </phrase>
         </textobject>
       </mediaobject>
     </figure>
-    As you can see, the TextMarker perspective provides an editor for editing documents, e.g.,
-    TextMarker scripts, and several views for different other tasks. The Script Explorer, for
-    example, helps to manage your TextMarker projects.
+    As you can see, the Ruta perspective provides an editor for editing documents, e.g.,
+    Ruta scripts, and several views for different other tasks. The Script Explorer, for
+    example, helps to manage your Ruta projects.
   </para>
   <para>
     The following
     <xref linkend='table.ugr.tools.tm.workbench.overview.views' />
-    lists all available TextMarker views:
+    lists all available Ruta views:
     <table id="table.ugr.tools.tm.workbench.overview.views" frame="all">
-      <title>TextMarker views</title>
+      <title>Ruta views</title>
       <tgroup cols="2" colsep="1" rowsep="1">
         <colspec colname="c1" colwidth="1*" />
         <colspec colname="c2" colwidth="1*" />
@@ -155,7 +155,7 @@
             </entry>
           </row>
           <row>
-            <entry>TextMarker Query</entry>
+            <entry>Ruta Query</entry>
             <entry>
               See
               <xref linkend='section.ugr.tools.tm.workbench.tm_query' />
@@ -189,9 +189,9 @@
   <para>
     The following
     <xref linkend='table.ugr.tools.tm.workbench.overview.wizards' />
-    lists all TextMarker wizards:
+    lists all Ruta wizards:
     <table id="table.ugr.tools.tm.workbench.overview.wizards" frame="all">
-      <title>TextMarker wizards</title>
+      <title>Ruta wizards</title>
       <tgroup cols="2" colsep="1" rowsep="1">
         <colspec colname="c1" colwidth="1*" />
         <colspec colname="c2" colwidth="1*" />
@@ -203,7 +203,7 @@
         </thead>
         <tbody>
           <row>
-            <entry>Create TextMarker project</entry>
+            <entry>Create Ruta project</entry>
             <entry>
               See
               <xref linkend='section.ugr.tools.tm.workbench.projects.create_projects' />

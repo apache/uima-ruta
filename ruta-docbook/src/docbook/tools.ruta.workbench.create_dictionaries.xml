@@ -32,7 +32,7 @@ under the License.
     with a given annotation type, very fast. For more details
     on their use, see <xref linkend='ugr.tools.tm.language.external_resources' />. 
     Since simple tree and multi tree word lists have to be compiled
-    the TextMarker workbench provides an easy way to compile
+    the Ruta workbench provides an easy way to compile
     them from ordinary text files. These text files have to
     containing one item per line, for example, like in the
     following list of first names: 
@@ -44,7 +44,7 @@ Martin
   </para>
   <para>
     To compile a simple tree word list from a text file,
-    right-click on the text file in TextMarker script
+    right-click on the text file in Ruta script
     explorer. The resulting menu is shown in
     <xref linkend='figure.ugr.tools.tm.workbench.create_dictionaries_1' />.
 
@@ -69,7 +69,7 @@ Martin
     </figure>
   </para>
   <para>
-    When hovering over TextMarker item you can choose
+    When hovering over Ruta item you can choose
     <quote>Convert to TWL</quote>.
     Click on it and a tree word list with the same name as the original
     file is generated in the same folder.
@@ -85,7 +85,7 @@ Martin
     generated
     into the multi tree word list. Again right-click and select
     <quote>Convert to Multi TWL</quote>
-    under item TextMarker. A multi tree word list
+    under item Ruta. A multi tree word list
     named
     <quote>generated.mtwl</quote>
     will be created.

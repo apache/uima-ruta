@@ -25,22 +25,22 @@
   <vendor/>
   <types>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.Line</name>
+      <name>org.apache.uima.ruta.type.Line</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.AnyLine</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.AnyLine</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.Paragraph</name>
+      <name>org.apache.uima.ruta.type.Paragraph</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.WSLine</name>
+      <name>org.apache.uima.ruta.type.WSLine</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.AnyLine</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.AnyLine</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.AnyLine</name>
+      <name>org.apache.uima.ruta.type.AnyLine</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
     </typeDescription>

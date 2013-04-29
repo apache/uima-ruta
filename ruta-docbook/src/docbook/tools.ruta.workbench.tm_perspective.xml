@@ -17,22 +17,22 @@
   language governing permissions and limitations under the License. -->
 
 <section id="section.ugr.tools.tm.workbench.tm_perspective">
-  <title>TextMarker Perspective</title>
+  <title>Ruta Perspective</title>
   <para>
-    The TextMarker perspective is the main view to manage TextMarker
-    projects. There are several views associated with the TextMarker
+    The Ruta perspective is the main view to manage Ruta
+    projects. There are several views associated with the Ruta
     perspective: Annotation Test, Annotation Browser, Selection,
-    TextRuler and TextMarker Query. Since Annotation Test, TextRuler and
-    TextMarker Query have a stand-alone functionality. They are explained
+    TextRuler and Ruta Query. Since Annotation Test, TextRuler and
+    Ruta Query have a stand-alone functionality. They are explained
     in separate sections.
   </para>
 
   <para>
     To make it possible to reproduce all of the examples used below,
-    switch to the TextMarker Explain perspective within your Eclipse
+    switch to the Ruta Explain perspective within your Eclipse
     workbench.
-    Import the TextMarker example project and open the main
-    TextMarker script file 'Main.tm'. Now press the 'Run' button (green
+    Import the Ruta example project and open the main
+    Ruta script file 'Main.tm'. Now press the 'Run' button (green
     arrow) and wait for the end of execution. Open the resulting xmiCAS
     file 'Test1.txt.xmi', which you can find in the output folder.
   </para>
@@ -42,12 +42,12 @@
     <title>Annotation Browser</title>
     <para>
       The Annotation Browser can be used to view the annotations
-      created by the execution of a TextMarker project. If an xmiCAS file
+      created by the execution of a Ruta project. If an xmiCAS file
       is opened and active in the editor, the related annotations are shown
       in this view.
     </para>
     <para>
-      The result of the execution of the TextMarker example project is
+      The result of the execution of the Ruta example project is
       shown in <xref linkend='figure.ugr.tools.tm.workbench.tm_perspective.annotation_browser' />.
     </para>
     <para>

@@ -24,39 +24,39 @@
   <vendor/>
   <types>
     <typeDescription>
-      <name>uima.textmarker.example.Bibtex</name>
+      <name>uima.ruta.example.Bibtex</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
         <featureDescription>
           <name>author</name>
           <description/>
-          <rangeTypeName>uima.textmarker.example.Author</rangeTypeName>
+          <rangeTypeName>uima.ruta.example.Author</rangeTypeName>
         </featureDescription>
         <featureDescription>
           <name>title</name>
           <description/>
-          <rangeTypeName>uima.textmarker.example.Title</rangeTypeName>
+          <rangeTypeName>uima.ruta.example.Title</rangeTypeName>
         </featureDescription>
         <featureDescription>
           <name>year</name>
           <description/>
-          <rangeTypeName>uima.textmarker.example.Year</rangeTypeName>
+          <rangeTypeName>uima.ruta.example.Year</rangeTypeName>
         </featureDescription>
       </features>
     </typeDescription>
     <typeDescription>
-      <name>uima.textmarker.example.Author</name>
+      <name>uima.ruta.example.Author</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>uima.textmarker.example.Year</name>
+      <name>uima.ruta.example.Year</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>uima.textmarker.example.Title</name>
+      <name>uima.ruta.example.Title</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
     </typeDescription>

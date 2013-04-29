@@ -20,17 +20,17 @@ under the License.
 
 <plugin>
    <extension
-         point="org.apache.uima.textmarker.ide.actionExtension">
+         point="org.apache.uima.ruta.ide.actionExtension">
       <action
-            class="org.apache.uima.textmarker.example.extensions.ExampleActionIDEExtension"
-            engine="org.apache.uima.textmarker.example.extensions.ExampleActionExtension">
+            class="org.apache.uima.ruta.example.extensions.ExampleActionIDEExtension"
+            engine="org.apache.uima.ruta.example.extensions.ExampleActionExtension">
       </action>
    </extension>
    <extension
-         point="org.apache.uima.textmarker.ide.conditionExtension">
+         point="org.apache.uima.ruta.ide.conditionExtension">
       <condition
-            class="org.apache.uima.textmarker.example.extensions.ExampleConditionIDEExtension"
-            engine="org.apache.uima.textmarker.example.extensions.ExampleConditionExtension">
+            class="org.apache.uima.ruta.example.extensions.ExampleConditionIDEExtension"
+            engine="org.apache.uima.ruta.example.extensions.ExampleConditionExtension">
       </condition>
    </extension>
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
-<!ENTITY imgroot "images/tools/tools.textmarker/" >
+<!ENTITY imgroot "images/tools/tools.ruta/" >
 <!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
 %uimaents;
 ]>
@@ -31,7 +31,7 @@ under the License.
     <title>ADD</title>
     <para>
       The ADD action adds all the elements of the passed
-      TextMarkerExpressions to a given list. For example, this expressions
+      RutaExpressions to a given list. For example, this expressions
       could be a string, an integer variable or a list. For a
       complete overview on Textmarker expressions see
       <xref linkend='ugr.tools.tm.language.expressions' />.
@@ -41,7 +41,7 @@ under the License.
         <emphasis role="bold">Definition:</emphasis>
       </title>
       <para>
-        <programlisting><![CDATA[ADD(ListVariable,(TextMarkerExpression)+)]]></programlisting>
+        <programlisting><![CDATA[ADD(ListVariable,(RutaExpression)+)]]></programlisting>
       </para>
     </section>
     <section>
@@ -376,7 +376,7 @@ Document{->CONFIGURE(HtmlAnnotator, "onlyContent" = false)};]]></programlisting>
       the matched text and the current filtering settings. If the argument
       refers to another script file, a new view on the document is created:
       the complete text of the original CAS with the default filtering
-      settings of the TextMarker analysis engine.
+      settings of the Ruta analysis engine.
     </para>
     <section>
       <title>
@@ -679,7 +679,7 @@ A B{-> GATHER(C, 1, 2, "a" = 1, "b" = 2)};]]></programlisting>
   <section id="ugr.tools.tm.language.actions.mark">
     <title>MARK</title>
     <para>
-      The MARK action is the most important action in the TextMarker
+      The MARK action is the most important action in the Ruta
       system. It creates a new annotation of the given type. The optionally
       passed indexes (NumberExpressions after the TypeExpression) can be
       used to create an annotation that spanns the matched information of

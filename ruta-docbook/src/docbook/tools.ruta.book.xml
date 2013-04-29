@@ -20,15 +20,15 @@ specific language governing permissions and limitations
 under the License.
 -->
 <book lang="en">
-  <title>Apache UIMA TextMarker Guide and Reference</title>
+  <title>Apache UIMA Ruta Guide and Reference</title>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="common_book_info.xml"/>
     
   <toc/>
   
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.textmarker.overview.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.overview.xml"/>
   
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.textmarker.language.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.language.xml"/>
   
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.textmarker.workbench.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.workbench.xml"/>
   
 </book>

@@ -28,122 +28,122 @@
   </imports>
   <types>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.ALL</name>
+      <name>org.apache.uima.ruta.type.ALL</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.TokenSeed</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.TokenSeed</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.ANY</name>
+      <name>org.apache.uima.ruta.type.ANY</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.ALL</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.ALL</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.MARKUP</name>
+      <name>org.apache.uima.ruta.type.MARKUP</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.ALL</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.ALL</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.CW</name>
+      <name>org.apache.uima.ruta.type.CW</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.W</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.W</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.W</name>
+      <name>org.apache.uima.ruta.type.W</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.ANY</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.ANY</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.SW</name>
+      <name>org.apache.uima.ruta.type.SW</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.W</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.W</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.PM</name>
+      <name>org.apache.uima.ruta.type.PM</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.ANY</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.ANY</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.CAP</name>
+      <name>org.apache.uima.ruta.type.CAP</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.W</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.W</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.COLON</name>
+      <name>org.apache.uima.ruta.type.COLON</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.PM</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.PM</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.PERIOD</name>
+      <name>org.apache.uima.ruta.type.PERIOD</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.SENTENCEEND</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.SENTENCEEND</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.SENTENCEEND</name>
+      <name>org.apache.uima.ruta.type.SENTENCEEND</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.PM</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.PM</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.QUESTION</name>
+      <name>org.apache.uima.ruta.type.QUESTION</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.SENTENCEEND</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.SENTENCEEND</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.COMMA</name>
+      <name>org.apache.uima.ruta.type.COMMA</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.PM</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.PM</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.EXCLAMATION</name>
+      <name>org.apache.uima.ruta.type.EXCLAMATION</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.SENTENCEEND</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.SENTENCEEND</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.SEMICOLON</name>
+      <name>org.apache.uima.ruta.type.SEMICOLON</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.PM</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.PM</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.WS</name>
+      <name>org.apache.uima.ruta.type.WS</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.ANY</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.ANY</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.NUM</name>
+      <name>org.apache.uima.ruta.type.NUM</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.ANY</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.ANY</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.SPECIAL</name>
+      <name>org.apache.uima.ruta.type.SPECIAL</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.ANY</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.ANY</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.NBSP</name>
+      <name>org.apache.uima.ruta.type.NBSP</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.ANY</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.ANY</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.AMP</name>
+      <name>org.apache.uima.ruta.type.AMP</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.ANY</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.ANY</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.SPACE</name>
+      <name>org.apache.uima.ruta.type.SPACE</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.WS</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.WS</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.BREAK</name>
+      <name>org.apache.uima.ruta.type.BREAK</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.WS</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.WS</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.Document</name>
+      <name>org.apache.uima.ruta.type.Document</name>
       <description/>
       <supertypeName>uima.tcas.DocumentAnnotation</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.TokenSeed</name>
+      <name>org.apache.uima.ruta.type.TokenSeed</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
     </typeDescription>

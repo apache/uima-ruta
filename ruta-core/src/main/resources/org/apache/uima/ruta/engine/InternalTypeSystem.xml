@@ -25,7 +25,7 @@
   <vendor/>
   <types>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.RutaBasic</name>
+      <name>org.apache.uima.ruta.type.RutaBasic</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -37,7 +37,7 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.RutaAnnotation</name>
+      <name>org.apache.uima.ruta.type.RutaAnnotation</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -54,9 +54,9 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.DebugRuleApply</name>
+      <name>org.apache.uima.ruta.type.DebugRuleApply</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.DebugScriptApply</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.DebugScriptApply</supertypeName>
       <features>
         <featureDescription>
           <name>applied</name>
@@ -72,7 +72,7 @@
           <name>rules</name>
           <description/>
           <rangeTypeName>uima.cas.FSArray</rangeTypeName>
-          <elementType>org.apache.uima.textmarker.type.DebugRuleMatch</elementType>
+          <elementType>org.apache.uima.ruta.type.DebugRuleMatch</elementType>
         </featureDescription>
         <featureDescription>
           <name>id</name>
@@ -87,15 +87,15 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.DebugRuleMatch</name>
+      <name>org.apache.uima.ruta.type.DebugRuleMatch</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.ProfiledAnnotation</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.ProfiledAnnotation</supertypeName>
       <features>
         <featureDescription>
           <name>elements</name>
           <description/>
           <rangeTypeName>uima.cas.FSArray</rangeTypeName>
-          <elementType>org.apache.uima.textmarker.type.DebugRuleElementMatches</elementType>
+          <elementType>org.apache.uima.ruta.type.DebugRuleElementMatches</elementType>
         </featureDescription>
         <featureDescription>
           <name>matched</name>
@@ -106,14 +106,14 @@
           <name>delegates</name>
           <description/>
           <rangeTypeName>uima.cas.FSArray</rangeTypeName>
-          <elementType>org.apache.uima.textmarker.type.DebugScriptApply</elementType>
+          <elementType>org.apache.uima.ruta.type.DebugScriptApply</elementType>
         </featureDescription>
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.DebugScriptApply</name>
+      <name>org.apache.uima.ruta.type.DebugScriptApply</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.ProfiledAnnotation</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.ProfiledAnnotation</supertypeName>
       <features>
         <featureDescription>
           <name>element</name>
@@ -123,45 +123,45 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.DebugBlockApply</name>
+      <name>org.apache.uima.ruta.type.DebugBlockApply</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.DebugRuleApply</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.DebugRuleApply</supertypeName>
       <features>
         <featureDescription>
           <name>innerApply</name>
           <description/>
           <rangeTypeName>uima.cas.FSArray</rangeTypeName>
-          <elementType>org.apache.uima.textmarker.type.DebugScriptApply</elementType>
+          <elementType>org.apache.uima.ruta.type.DebugScriptApply</elementType>
         </featureDescription>
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.DebugRuleElementMatch</name>
+      <name>org.apache.uima.ruta.type.DebugRuleElementMatch</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.ProfiledAnnotation</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.ProfiledAnnotation</supertypeName>
       <features>
         <featureDescription>
           <name>baseCondition</name>
           <description/>
-          <rangeTypeName>org.apache.uima.textmarker.type.DebugEvaluatedCondition</rangeTypeName>
+          <rangeTypeName>org.apache.uima.ruta.type.DebugEvaluatedCondition</rangeTypeName>
         </featureDescription>
         <featureDescription>
           <name>conditions</name>
           <description/>
           <rangeTypeName>uima.cas.FSArray</rangeTypeName>
-          <elementType>org.apache.uima.textmarker.type.DebugEvaluatedCondition</elementType>
+          <elementType>org.apache.uima.ruta.type.DebugEvaluatedCondition</elementType>
         </featureDescription>
         <featureDescription>
           <name>elements</name>
           <description/>
           <rangeTypeName>uima.cas.FSArray</rangeTypeName>
-          <elementType>org.apache.uima.textmarker.type.DebugRuleElementMatches</elementType>
+          <elementType>org.apache.uima.ruta.type.DebugRuleElementMatches</elementType>
           <multipleReferencesAllowed>false</multipleReferencesAllowed>
         </featureDescription>
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.DebugRuleElementMatches</name>
+      <name>org.apache.uima.ruta.type.DebugRuleElementMatches</name>
       <description/>
       <supertypeName>uima.cas.TOP</supertypeName>
       <features>
@@ -169,7 +169,7 @@
           <name>matches</name>
           <description/>
           <rangeTypeName>uima.cas.FSArray</rangeTypeName>
-          <elementType>org.apache.uima.textmarker.type.DebugRuleElementMatch</elementType>
+          <elementType>org.apache.uima.ruta.type.DebugRuleElementMatch</elementType>
         </featureDescription>
         <featureDescription>
           <name>element</name>
@@ -184,7 +184,7 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.RutaColoring</name>
+      <name>org.apache.uima.ruta.type.RutaColoring</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -211,7 +211,7 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.DebugEvaluatedCondition</name>
+      <name>org.apache.uima.ruta.type.DebugEvaluatedCondition</name>
       <description/>
       <supertypeName>uima.cas.TOP</supertypeName>
       <features>
@@ -229,27 +229,27 @@
           <name>conditions</name>
           <description/>
           <rangeTypeName>uima.cas.FSArray</rangeTypeName>
-          <elementType>org.apache.uima.textmarker.type.DebugEvaluatedCondition</elementType>
+          <elementType>org.apache.uima.ruta.type.DebugEvaluatedCondition</elementType>
         </featureDescription>
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.DebugMatchedRuleMatch</name>
+      <name>org.apache.uima.ruta.type.DebugMatchedRuleMatch</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.DebugRuleMatch</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.DebugRuleMatch</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.DebugFailedRuleMatch</name>
+      <name>org.apache.uima.ruta.type.DebugFailedRuleMatch</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.DebugRuleMatch</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.DebugRuleMatch</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.FalsePositive</name>
+      <name>org.apache.uima.ruta.type.FalsePositive</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.EvalAnnotation</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.EvalAnnotation</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.EvalAnnotation</name>
+      <name>org.apache.uima.ruta.type.EvalAnnotation</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -261,12 +261,12 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.FalseNegative</name>
+      <name>org.apache.uima.ruta.type.FalseNegative</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.EvalAnnotation</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.EvalAnnotation</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.ProfiledAnnotation</name>
+      <name>org.apache.uima.ruta.type.ProfiledAnnotation</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -278,12 +278,12 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.RutaFrame</name>
+      <name>org.apache.uima.ruta.type.RutaFrame</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.Statistics</name>
+      <name>org.apache.uima.ruta.type.Statistics</name>
       <description/>
       <supertypeName>uima.cas.TOP</supertypeName>
       <features>
@@ -310,12 +310,12 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.TruePositive</name>
+      <name>org.apache.uima.ruta.type.TruePositive</name>
       <description/>
-      <supertypeName>org.apache.uima.textmarker.type.EvalAnnotation</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.EvalAnnotation</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.textmarker.type.DebugCreatedBy</name>
+      <name>org.apache.uima.ruta.type.DebugCreatedBy</name>
       <description/>
       <supertypeName>uima.cas.TOP</supertypeName>
       <features>

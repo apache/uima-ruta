@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
-<!ENTITY imgroot "images/tools/tools.textmarker/" >
+<!ENTITY imgroot "images/tools/tools.ruta/" >
 <!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
 %uimaents;
 ]>
@@ -19,10 +19,10 @@
 <section id="ugr.tools.tm.language.declarations">
   <title>Declarations</title>
   <para>
-    There are three different kinds of declarations in the TextMarker system:
+    There are three different kinds of declarations in the Ruta system:
     Declarations of types with optional feature definitions,
     declarations of variables and declarations for importing
-    external resources, further TextMarker scripts and UIMA components
+    external resources, further Ruta scripts and UIMA components
     such as type systems and analysis engines.
   </para>
   <section id="ugr.tools.tm.language.declarations.type">
@@ -154,7 +154,7 @@ BOOLEANLIST newBooleanList;]]></programlisting>
     <title>Resources</title>
     <para>
       There are two kinds of resource declarations that make external
-      resources available in the TextMarker system:
+      resources available in the Ruta system:
       <itemizedlist mark='opencircle'>
         <listitem>
           <para>
@@ -206,7 +206,7 @@ Document{->CALL(AnotherScript)}; // <- rule executes "AnotherScript.tm"]]></prog
     <title>Components</title>
     <para>
       There are two kinds of UIMA components that can be imported in a
-      TextMarker script:
+      Ruta script:
       <itemizedlist mark='opencircle'>
         <listitem>
           <para>

@@ -23,14 +23,14 @@ under the License.
          point="org.eclipse.ui.views">
       <view
             category="org.apache.uima.caseditor.ui.views"
-            class="org.apache.uima.textmarker.caseditor.view.selection.SelectionView"
+            class="org.apache.uima.ruta.caseditor.view.selection.SelectionView"
             icon="icons/views.png"
             id="org.apache.uima.caseditor.selection"
             name="Selection View">
       </view>
       <view
             category="org.apache.uima.caseditor.ui.views"
-            class="org.apache.uima.textmarker.caseditor.view.browser.AnnotationBrowserView"
+            class="org.apache.uima.ruta.caseditor.view.browser.AnnotationBrowserView"
             icon="icons/views.png"
             id="org.apache.uima.caseditor.browser"
             name="Annotation Browser View">

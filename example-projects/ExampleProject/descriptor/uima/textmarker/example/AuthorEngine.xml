@@ -3,7 +3,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
     <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
     <primitive>true</primitive>
-    <annotatorImplementationName>org.apache.uima.textmarker.engine.TextMarkerEngine</annotatorImplementationName>
+    <annotatorImplementationName>org.apache.uima.ruta.engine.RutaEngine</annotatorImplementationName>
     <analysisEngineMetaData>
         <name>BasicEngine</name>
         <description/>
@@ -161,10 +161,10 @@
                 <name>defaultFilteredTypes</name>
                 <value>
                     <array>
-                        <string>org.apache.uima.textmarker.type.SPACE</string>
-                        <string>org.apache.uima.textmarker.type.NBSP</string>
-                        <string>org.apache.uima.textmarker.type.BREAK</string>
-                        <string>org.apache.uima.textmarker.type.MARKUP</string>
+                        <string>org.apache.uima.ruta.type.SPACE</string>
+                        <string>org.apache.uima.ruta.type.NBSP</string>
+                        <string>org.apache.uima.ruta.type.BREAK</string>
+                        <string>org.apache.uima.ruta.type.MARKUP</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -178,7 +178,7 @@
                 <name>seeders</name>
                 <value>
                     <array>
-                        <string>org.apache.uima.textmarker.seed.DefaultSeeder</string>
+                        <string>org.apache.uima.ruta.seed.DefaultSeeder</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -191,14 +191,14 @@
             <nameValuePair>
                 <name>mainScript</name>
                 <value>
-                    <string>uima.textmarker.example.Author</string>
+                    <string>uima.ruta.example.Author</string>
                 </value>
             </nameValuePair>
             <nameValuePair>
                 <name>scriptPaths</name>
                 <value>
                     <array>
-                        <string>D:/work/workspace-textmarker/ExampleProject/script</string>
+                        <string>D:/work/workspace-ruta/ExampleProject/script</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -206,7 +206,7 @@
                 <name>descriptorPaths</name>
                 <value>
                     <array>
-                        <string>D:/work/workspace-textmarker/ExampleProject/descriptor</string>
+                        <string>D:/work/workspace-ruta/ExampleProject/descriptor</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -214,7 +214,7 @@
                 <name>resourcePaths</name>
                 <value>
                     <array>
-                        <string>D:\work\workspace-textmarker\ExampleProject\resources</string>
+                        <string>D:\work\workspace-ruta\ExampleProject\resources</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -244,44 +244,44 @@
             </nameValuePair>
         </configurationParameterSettings>
         <typeSystemDescription>
-            <name>uima.textmarker.example.AuthorTypeSystem</name>
+            <name>uima.ruta.example.AuthorTypeSystem</name>
             <imports>
                 <import location="../../../BasicTypeSystem.xml"/>
                 <import location="../../../types/BibtexTypeSystem.xml"/>
             </imports>
             <types>
                 <typeDescription>
-                    <name>uima.textmarker.example.Author.FirstName</name>
-                    <description>Type defined in uima.textmarker.example.Author</description>
+                    <name>uima.ruta.example.Author.FirstName</name>
+                    <description>Type defined in uima.ruta.example.Author</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.textmarker.example.Author.FirstNameInitial</name>
-                    <description>Type defined in uima.textmarker.example.Author</description>
+                    <name>uima.ruta.example.Author.FirstNameInitial</name>
+                    <description>Type defined in uima.ruta.example.Author</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.textmarker.example.Author.Name</name>
-                    <description>Type defined in uima.textmarker.example.Author</description>
+                    <name>uima.ruta.example.Author.Name</name>
+                    <description>Type defined in uima.ruta.example.Author</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.textmarker.example.Author.NameListPart</name>
-                    <description>Type defined in uima.textmarker.example.Author</description>
+                    <name>uima.ruta.example.Author.NameListPart</name>
+                    <description>Type defined in uima.ruta.example.Author</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.textmarker.example.Author.NameLinker</name>
-                    <description>Type defined in uima.textmarker.example.Author</description>
+                    <name>uima.ruta.example.Author.NameLinker</name>
+                    <description>Type defined in uima.ruta.example.Author</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
             </types>
         </typeSystemDescription>
         <typePriorities>
             <priorityList>
-                <type>org.apache.uima.textmarker.type.TextMarkerFrame</type>
+                <type>org.apache.uima.ruta.type.RutaFrame</type>
                 <type>uima.tcas.Annotation</type>
-                <type>org.apache.uima.textmarker.type.TextMarkerBasic</type>
+                <type>org.apache.uima.ruta.type.RutaBasic</type>
             </priorityList>
         </typePriorities>
         <fsIndexCollection/>
@@ -293,18 +293,18 @@
             </capability>
             <capability>
                 <inputs>
-                    <type>uima.textmarker.example.Author.FirstName</type>
-                    <type>uima.textmarker.example.Author.FirstNameInitial</type>
-                    <type>uima.textmarker.example.Author.Name</type>
-                    <type>uima.textmarker.example.Author.NameListPart</type>
-                    <type>uima.textmarker.example.Author.NameLinker</type>
+                    <type>uima.ruta.example.Author.FirstName</type>
+                    <type>uima.ruta.example.Author.FirstNameInitial</type>
+                    <type>uima.ruta.example.Author.Name</type>
+                    <type>uima.ruta.example.Author.NameListPart</type>
+                    <type>uima.ruta.example.Author.NameLinker</type>
                 </inputs>
                 <outputs>
-                    <type>uima.textmarker.example.Author.FirstName</type>
-                    <type>uima.textmarker.example.Author.FirstNameInitial</type>
-                    <type>uima.textmarker.example.Author.Name</type>
-                    <type>uima.textmarker.example.Author.NameListPart</type>
-                    <type>uima.textmarker.example.Author.NameLinker</type>
+                    <type>uima.ruta.example.Author.FirstName</type>
+                    <type>uima.ruta.example.Author.FirstNameInitial</type>
+                    <type>uima.ruta.example.Author.Name</type>
+                    <type>uima.ruta.example.Author.NameListPart</type>
+                    <type>uima.ruta.example.Author.NameLinker</type>
                 </outputs>
                 <languagesSupported/>
             </capability>

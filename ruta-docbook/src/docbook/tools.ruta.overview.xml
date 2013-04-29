@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
-<!ENTITY imgroot "images/tools/tools.textmarker/" >
+<!ENTITY imgroot "images/tools/tools.ruta/" >
 <!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
 %uimaents;
 ]>
@@ -24,20 +24,20 @@ specific language governing permissions and limitations
 under the License.
 -->
 <chapter id="ugr.tools.tm.overview">
-  <title>Apache UIMA TextMarker Overview</title>
+  <title>Apache UIMA Ruta Overview</title>
   <para>
    
   </para>
   <section id="ugr.tools.tm.overview.intro">
-    <title>What is Apache UIMA TextMarker?</title>
+    <title>What is Apache UIMA Ruta?</title>
     <para>
-      Apache UIMA&#8482; TextMarker is a rule-based script language supported by Eclipse-based tooling.
+      Apache UIMA&#8482; Ruta is a rule-based script language supported by Eclipse-based tooling.
       The language is designed to enable rapid development of text processing applications within UIMA. 
       A special focus lies on the intuitive and flexible domain specific language for defining 
       patterns of annotations. Writing rules for information extraction or other text processing 
-      applications is a tedious process. The Eclipse-based tooling for TextMarker, called the Apache UIMA TextMarker Workbench,
-      was created to support the user and to facilitate every step when writing TextMarker rules. Both the 
-      TextMarker rule language and the TextMarker Workbench integrate smoothly with Apache UIMA.
+      applications is a tedious process. The Eclipse-based tooling for Ruta, called the Apache UIMA Ruta Workbench,
+      was created to support the user and to facilitate every step when writing Ruta rules. Both the 
+      Ruta rule language and the Ruta Workbench integrate smoothly with Apache UIMA.
     </para>
   </section>
   
@@ -45,44 +45,44 @@ under the License.
     <title>Getting started</title>
     <para>
       This section gives a short roadmap how to read the documentation and gives some recommendations how to 
-      start developing TextMarker-based applications. This documentation assumes that the reader knows about 
+      start developing Ruta-based applications. This documentation assumes that the reader knows about 
       the core concepts of Apache UIMA. Knowledge of the meaning and usage of the terms <quote>CAS</quote>, 
       <quote>Feature Structure</quote>, <quote>Annotation</quote>, <quote>Type</quote>, <quote>Type System</quote> 
       and <quote>Analysis Engine</quote> is required. Please refer to the documentation of Apache UIMA for an introduction.
     </para>
     <para>  
-      Unexperienced users that want to learn about TextMarker can start with the next two sections: 
+      Unexperienced users that want to learn about Ruta can start with the next two sections: 
       <xref linkend="ugr.tools.tm.overview.coreconcepts"/>
-      gives a short overview of the core ideas and features of the TextMarker language and Workbench. 
-      This section introduces the main concepts of the TextMarker language. It explains how TextMarker rules 
-      are composed and applied, and discusses the advantages of the TextMarker system.
-      The following <xref linkend="ugr.tools.tm.overview.examples"/> approaches the TextMarker language using a different
+      gives a short overview of the core ideas and features of the Ruta language and Workbench. 
+      This section introduces the main concepts of the Ruta language. It explains how Ruta rules 
+      are composed and applied, and discusses the advantages of the Ruta system.
+      The following <xref linkend="ugr.tools.tm.overview.examples"/> approaches the Ruta language using a different
       perspective. Here, the language is introduced by examples. The first example starts with explaining how a simple rule
-      looks like, and each following example extends the syntax or semantics of the TextMarker language. 
+      looks like, and each following example extends the syntax or semantics of the Ruta language. 
       After the consultation of these two sections, the reader is expected to have gained enough 
-      knowledge to start writing her first TextMarker-based application.
+      knowledge to start writing her first Ruta-based application.
     </para>  
     <para>
-      The TextMarker Workbench was created to support the user and to facilitate the development process. It is strongly recommended to 
+      The Ruta Workbench was created to support the user and to facilitate the development process. It is strongly recommended to 
       use this Eclipse-based IDE since it, for example, automatically configures the component descriptors and provides editing support like
-      syntax checking. <xref linkend="section.ugr.tools.tm.workbench.install"/> describes how the TextMarker Workbench is installed.
-      TextMarker rules can also be applied on CAS without using the TextMarker Workbench. 
-      <xref linkend="ugr.tools.tm.ae.basic.apply"/> contains examples how to execute TextMarker rules in plain java.
-      A good way to get started with TextMarker is to play around with an exemplary TextMarker project, e.g., 
-      <uri>https://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk/example-projects/ExampleProject</uri>. This TextMarker project 
+      syntax checking. <xref linkend="section.ugr.tools.tm.workbench.install"/> describes how the Ruta Workbench is installed.
+      Ruta rules can also be applied on CAS without using the Ruta Workbench. 
+      <xref linkend="ugr.tools.tm.ae.basic.apply"/> contains examples how to execute Ruta rules in plain java.
+      A good way to get started with Ruta is to play around with an exemplary Ruta project, e.g., 
+      <uri>https://svn.apache.org/repos/asf/uima/sandbox/ruta/trunk/example-projects/ExampleProject</uri>. This Ruta project 
       contains some simple rules for processing citation metadata.
     </para>  
     <para>    
       <xref linkend="ugr.tools.tm.language.language"/> and <xref linkend="ugr.tools.tm.workbench"/> provide 
       more detailed descriptions and can be referred to in order to gain knowledge of specific parts 
-      of the TextMarker language or the TextMarker Workbench.    
+      of the Ruta language or the Ruta Workbench.    
     </para>  
   </section>
   
   <section id="ugr.tools.tm.overview.coreconcepts">
     <title>Core Concepts</title>
     <para>
-      The TextMarker language is an imperative rule language extended with scripting elements. A TextMarker rule defines a
+      The Ruta language is an imperative rule language extended with scripting elements. A Ruta rule defines a
       pattern of annotations with additional conditions. If this pattern applies, then the actions of the rule are performed 
       on the matched annotations. A rule is composed of a sequence of rule elements and a rule element essentially consist of four parts: 
       A matching condition, an optional quantifier, a list of conditions and a list of actions.
@@ -90,71 +90,71 @@ under the License.
       The quantifier specifies, whether it is necessary that the rule element successfully matches and how often the rule element may match.
       The list of conditions specifies additional constraints that the matched text or annotations need to fulfill. The list of actions defines
       the consequences of the rule and often creates new annotations or modifies existing annotations. 
-      They are only applied if all rule elements of the rule have successfully matched. Examples for TextMarker rules can be found in 
+      They are only applied if all rule elements of the rule have successfully matched. Examples for Ruta rules can be found in 
       <xref linkend="ugr.tools.tm.overview.examples"/>.
     </para>
     <para>
-      When TextMarker rules are applied on a document, respectively on a CAS, then they are always grouped in a script file. However, a TextMarker
+      When Ruta rules are applied on a document, respectively on a CAS, then they are always grouped in a script file. However, a Ruta
       script file does not only contain rules, but also other statements. First of all, each script file starts with a package declaration followed by
       a list of optional imports. Then, common statements like rules, type declarations or blocks build the body and functionality of a script.
-      <xref linkend="ugr.tools.tm.ae.basic.apply"/> gives an example, how TextMarker scripts can be applied in plain Java.
-      TextMarker script files are naturally organized in TextMarker projects, which is a concept of the TextMarker Workbench. 
-      The structure of a TextMarker project is described in <xref linkend="section.ugr.tools.tm.workbench.projects"/>
+      <xref linkend="ugr.tools.tm.ae.basic.apply"/> gives an example, how Ruta scripts can be applied in plain Java.
+      Ruta script files are naturally organized in Ruta projects, which is a concept of the Ruta Workbench. 
+      The structure of a Ruta project is described in <xref linkend="section.ugr.tools.tm.workbench.projects"/>
     </para>
     <para>
-      The inference of TextMarker rules, that is the approach how the rules are applied, can be described as imperative depth-first matching.
-      In contrast to similar rule-based systems, TextMarker rules are applied in the order they are defined in the script.
+      The inference of Ruta rules, that is the approach how the rules are applied, can be described as imperative depth-first matching.
+      In contrast to similar rule-based systems, Ruta rules are applied in the order they are defined in the script.
       The imperative execution of the matching rules may have disadvantages, but also many advantages like an increased rate of development or 
-      an easier explanation. The second main property of the TextMarker inference is the depth-first matching. When a rule matches on a pattern of annotations, then
+      an easier explanation. The second main property of the Ruta inference is the depth-first matching. When a rule matches on a pattern of annotations, then
       an alternative is always tracked until it has matched or failed before the next alternative is considered. The behavior of a rule may change, if 
       it has already matched on an early alternative and thus has performed an action, which influences some constraints of the rule.
-      Examples, how TextMarker rules are applied, are given in <xref linkend="ugr.tools.tm.overview.examples"/>.
+      Examples, how Ruta rules are applied, are given in <xref linkend="ugr.tools.tm.overview.examples"/>.
     </para>
     <para>
-      The TextMarker language provides the possibility to approach an annotation problem in different ways. Let us distinguish 
+      The Ruta language provides the possibility to approach an annotation problem in different ways. Let us distinguish 
       some approaches as an example.
-      It is common in the TextMarker language to create many annotations of different types. These annotations are probably not the targeted annotation of the domain,
+      It is common in the Ruta language to create many annotations of different types. These annotations are probably not the targeted annotation of the domain,
       but can be helpful to incrementally approximate the annotation of interest. This enables the user to work <quote>bottom-up</quote> and <quote>top-down</quote>.
       In the former approach, the rules add incrementally more complex annotations using simple ones until the target annotation can be created.
       In the latter approach, the rules get more specific while partitioning the document in smaller segments, which result in the targeted annotation, eventually.
       By using many <quote>helper</quote>-annotations, the engineering task becomes easier and more comprehensive.
-      The TextMarker language provides distinctive language elements for different tasks. There are, for example, actions 
+      The Ruta language provides distinctive language elements for different tasks. There are, for example, actions 
       that are able to create new annotations, actions that are able to remove annotations and actions that are able to modify the
       offsets of annotations. This enables, amongst other things, a transformation-based approach. The user starts by creating general rules that are able to
       annotate most of the text fragments of interest. Then, instead of making these rules more complex by adding more conditions for situations where they fail,
       additional rules are defined that correct the mistakes of the general rules, e.g., by deleting false positive annotations.
-      <xref linkend="ugr.tools.tm.overview.examples"/> provides some examples how TextMarker rules can be engineered.
+      <xref linkend="ugr.tools.tm.overview.examples"/> provides some examples how Ruta rules can be engineered.
     </para>
     <para>
-      To write rules manually is a tedious and error-prone process. The <link linkend="ugr.tools.tm.workbench">TextMarker Workbench</link>
+      To write rules manually is a tedious and error-prone process. The <link linkend="ugr.tools.tm.workbench">Ruta Workbench</link>
       was developed to facilitate writing rules by providing as much tooling support as possible. This includes, for example, syntax checking and auto completion, which
       make the development less error-prone. The user can annotate documents and use these documents as unit tests for test-driven development or 
       quality maintenance. Sometimes, it is necessary to debug the rules because they do not match as expected. In this case, the explanation perspective provides views
-      that explain every detail of the matching process. Finally, the TextMarker language can also be used by the tooling, for example, by the <quote>Query</quote> view.
-      Here, TextMarker rules can be used as query statements in order to investigate annotated documents.
+      that explain every detail of the matching process. Finally, the Ruta language can also be used by the tooling, for example, by the <quote>Query</quote> view.
+      Here, Ruta rules can be used as query statements in order to investigate annotated documents.
     </para>
     <para>
-      TextMarker smoothly integrates with Apache UIMA. First of all, the TextMarker rules are applied using a generic Analysis Engine and thus TextMarker scripts can 
-      easily be added to Apache UIMA pipelines. TextMarker also provides the functionality to import and use other UIMA components like Analysis Engines and Type Systems.
-      TextMarker rules can refer to every type defined in an imported type system, and the TextMarker Workbench generates a type system descriptor file containing all 
+      Ruta smoothly integrates with Apache UIMA. First of all, the Ruta rules are applied using a generic Analysis Engine and thus Ruta scripts can 
+      easily be added to Apache UIMA pipelines. Ruta also provides the functionality to import and use other UIMA components like Analysis Engines and Type Systems.
+      Ruta rules can refer to every type defined in an imported type system, and the Ruta Workbench generates a type system descriptor file containing all 
       types that were defined in a script file. Any Analysis Engine can be executed by rules as long as their implementation is available in the classpath. Therefore,
-      functionality outsourced in an arbitrary Analysis Engine can be added and used within TextMarker.
+      functionality outsourced in an arbitrary Analysis Engine can be added and used within Ruta.
     </para>
   </section>
   
   <section id="ugr.tools.tm.overview.examples">
     <title>Learning by Example</title>
     <para>
-      This section gives an introduction to the TextMarker language by explaining the rule syntax 
-      and inference with some simplified examples. It is recommended to use the TextMarker Workbench to write TextMarker rules
-      in order to gain advantages like syntax checking. A short description how to install the TextMarker Workbench 
+      This section gives an introduction to the Ruta language by explaining the rule syntax 
+      and inference with some simplified examples. It is recommended to use the Ruta Workbench to write Ruta rules
+      in order to gain advantages like syntax checking. A short description how to install the Ruta Workbench 
       is given <link linkend="section.ugr.tools.tm.workbench.install">here</link>. The following examples make use of the 
-      annotations added by the default seeding of the TextMarker Analysis Engine. Their meaning is explained along with the examples. 
+      annotations added by the default seeding of the Ruta Analysis Engine. Their meaning is explained along with the examples. 
     </para>
     <note><para>
       The examples in this section are not valid script files as they are missing at least a package declaration. 
       In order to obtain a valid script file, please ensure that all used types are imported or declared and 
-      that a package declaration like <quote>PACKAGE uima.textmarker.example;</quote> is added in the first line of the script.
+      that a package declaration like <quote>PACKAGE uima.ruta.example;</quote> is added in the first line of the script.
     </para></note>
     <para>
       The first example consists of a declaration of a type followed by a simple rule. Type declarations always start with the keyword 
@@ -162,7 +162,7 @@ under the License.
       There is also the possibility to create more complex types with features or specific parent types, but this will be neglected for now.
       In the example, a simple annotation type with the short name <quote>Animal</quote> is defined.
       After the declaration of the type, a rule with one rule element is given. 
-      TextMarker rules in general can consist of a sequence of rule elements. Simple rule elements themselves consist of four parts: A matching condition,
+      Ruta rules in general can consist of a sequence of rule elements. Simple rule elements themselves consist of four parts: A matching condition,
       an optional quantifier, an optional list of conditions and an optional list of actions. The rule element in the 
       following example has a matching condition <quote>W</quote>, an annotation type standing for normal words. 
       Statements like declarations and rules always end with a semicolon. 
@@ -268,7 +268,7 @@ Paragraph{CONTAINS(Bold, 90, 100, true),
     
     <para>
       The readability and maintenance of rules does not increase, if more conditions are added.
-      One of the strengths of the TextMarker language is that it provides different approaches to solve an annotation task. The next two examples 
+      One of the strengths of the Ruta language is that it provides different approaches to solve an annotation task. The next two examples 
       introduce actions for transformation-based rules.  
     </para>
     
@@ -292,7 +292,7 @@ Paragraph{CONTAINS(Bold, 90, 100, true),
     </para>
     
     <para>
-      TextMarker rules can contain arbitrary conditions and actions, which is illustrated by the next example.
+      Ruta rules can contain arbitrary conditions and actions, which is illustrated by the next example.
     </para>
     
     <programlisting><![CDATA[DECLARE Month, Year, Date;
@@ -337,7 +337,7 @@ ANY+{-PARTOF(Text2) -> MARK(Text2)};]]></programlisting>
     </para>
     
     <para>
-      TextMarker rules can not only be used to create or modify annotations, but also to create features for annotations. The next example defines 
+      Ruta rules can not only be used to create or modify annotations, but also to create features for annotations. The next example defines 
       and assigns a relation of employment, by storing the given annotations as feature values.
     </para>
     
@@ -372,27 +372,27 @@ NUM{PARSE(moneyAmount)} SPECIAL{REGEXP("€") -> MATCHEDTEXT(moneyCurrency),
 
     <para>
       First, a new annotation with the name <quote>MoneyAmount</quote> and two features are defined, one string feature and one integer feature.
-      Then, two TextMarker variables are declared, one integer variable and one string variable. The rule matches on a number, whose value is stored 
+      Then, two Ruta variables are declared, one integer variable and one string variable. The rule matches on a number, whose value is stored 
       in the variable <quote>moneyAmount</quote>, followed by a special token that needs to be equal to the string <quote>€</quote>. Then,
       the covered text of the special annotation is stored in the string variable <quote>moneyCurrency</quote> and annotation of the
       type <quote>MoneyAmount</quote> spanning over both rule elements is created. Additionally, the variables are assigned as feature values.
     </para>
 
     <para>
-      TextMarker script files with many rules can quickly confuse the reader. The TextMarker language, therefore, allows to import other script files in order to increase
+      Ruta script files with many rules can quickly confuse the reader. The Ruta language, therefore, allows to import other script files in order to increase
       the modularity of a project or to create rule libraries. The next example imports the rules together with all known types of another script file 
       and executes that script file.
     </para>
 
-    <programlisting><![CDATA[SCRIPT uima.textmarker.example.SecondaryScript;
+    <programlisting><![CDATA[SCRIPT uima.ruta.example.SecondaryScript;
 Document{-> CALL(SecondaryScript)};]]></programlisting>
 
     <para>
-      The script file with the name <quote>SecondaryScript.tm</quote>, which is located in the package <quote>uima/textmarker/example</quote>, is imported and executed
+      The script file with the name <quote>SecondaryScript.tm</quote>, which is located in the package <quote>uima/ruta/example</quote>, is imported and executed
       by the CALL action on the complete document. The script needs to be located in the folder specified by the parameter 
-      <link linkend="ugr.tools.tm.ae.basic.parameter.scriptPaths">scriptPaths</link>. It is also possible to import script files of other TextMarker projects, e.g.,
-      by adapting the configuration parameters of the TextMarker Analysis Engine or 
-      by setting a project reference in the project properties of a TextMarker project.
+      <link linkend="ugr.tools.tm.ae.basic.parameter.scriptPaths">scriptPaths</link>. It is also possible to import script files of other Ruta projects, e.g.,
+      by adapting the configuration parameters of the Ruta Analysis Engine or 
+      by setting a project reference in the project properties of a Ruta project.
     </para>
 
     <para>
@@ -412,10 +412,10 @@ Person{PARTOF(Organization) -> UNMARK(Person)};
 
     <para>
       It is sometimes easier to express functionality with control structures known by programming languages rather than to engineer all functionality 
-      only with matching rules. The TextMarker language provides the BLOCK element for some of these use cases. 
-      The TextMarker BLOCK element starts with the keyword <quote>BLOCK</quote> followed by its name in parentheses. The name of a block has two purposes:
+      only with matching rules. The Ruta language provides the BLOCK element for some of these use cases. 
+      The Ruta BLOCK element starts with the keyword <quote>BLOCK</quote> followed by its name in parentheses. The name of a block has two purposes:
       On the one hand, it is easier to distinguish the block, if they have different names, e.g., in the 
-      <link linkend="section.ugr.tools.tm.workbench.explain_perspective">explain perspective</link> of the TextMarker Workbench. On the other hand,
+      <link linkend="section.ugr.tools.tm.workbench.explain_perspective">explain perspective</link> of the Ruta Workbench. On the other hand,
       the name can be used to execute this block using the CALL action. Hereby, it is possible to access only specific sets of rules of other script files, 
       or to implement a recursive call of rules. After the name of the block, a single rule element is given, which has curly parentheses, 
       even if no conditions or actions are specified. Then, the body of the block is framed by curly brackets.
@@ -453,7 +453,7 @@ BLOCK(ForEach) Sentence{} {
     </para>
 
     <para>
-      Let us take a closer look on what exactly the TextMarker rules match. The following rule matches on a word followed by another word:
+      Let us take a closer look on what exactly the Ruta rules match. The following rule matches on a word followed by another word:
     </para>
     <programlisting><![CDATA[W W;]]></programlisting>
     
@@ -462,7 +462,7 @@ BLOCK(ForEach) Sentence{} {
       <quote><![CDATA[Apache <b>UIMA</b>]]></quote>. There are two main reasons for this: First of all, it depends on how the available annotations are defined. The default seeder
       for the inital annotations creates an annotation for all characters until an upper case character occurs. Thus, the string <quote>ApacheUIMA</quote> consists of 
       two tokens.
-      However, more important, the TextMarker language provides a concept of visibility of the annotations. By default, all annotations of the types 
+      However, more important, the Ruta language provides a concept of visibility of the annotations. By default, all annotations of the types 
       <quote>SPACE</quote>, <quote>NBSP</quote>, <quote>BREAK</quote> and <quote>MARKUP</quote> (whitespace and XML elements) are filtered and not visible. This holds of course for
       their covered text, too. The rule elements skip all positions of the
       document where those annotations occur. The rule in the last example matches on all examples. Without the default filtering settings, 
@@ -471,7 +471,7 @@ BLOCK(ForEach) Sentence{} {
     </para>
     
     <para>
-      The filtering setting can also be modified by the TextMarker rules themselves. The next example provides rules that extend and limit 
+      The filtering setting can also be modified by the Ruta rules themselves. The next example provides rules that extend and limit 
       the amount of visible text of the document.
     </para>
     
@@ -489,14 +489,14 @@ Document{-> RETAINTYPE, FILTERTYPE};]]></programlisting>
       that the rule elements are now sensible to whitespaces. The following rule will, therefore, match on sentences that start with whitespaces.
       The third rule now filters the type <quote>CW</quote> with the consequence that all capitalized words are invisible.
       If the following rule now wants to match on sentences, then this is only possible for Sentence annotations that do not start with a capitalized word.
-      The last rule finally resets the filtering setting to the default configuration in the TextMarker Analysis Engine.
+      The last rule finally resets the filtering setting to the default configuration in the Ruta Analysis Engine.
     </para>
     
     <para>
       The next example gives a showcase for importing external Analysis Engines and for modifying the documents by creating a new view called <quote>modified</quote>.
       Additional Analysis Engines can be imported with the keyword <quote>ENGINE</quote> followed by the name of the descriptor. These imported Analysis Engines can be 
       executed with the actions <quote>CALL</quote> or <quote>EXEC</quote>. If the executed Analysis Engine adds, removes or modifies annotations, then their types need 
-      to be mentioned when calling the descriptor, or else these annotations will not be correctly processed by the following TextMarker rules.
+      to be mentioned when calling the descriptor, or else these annotations will not be correctly processed by the following Ruta rules.
     </para>
 
     <programlisting><![CDATA[ENGINE utils.Modifier;
@@ -519,26 +519,26 @@ Document{-> EXEC(Modifier)};
   
   <section id="ugr.tools.tm.ae">
     <title>UIMA Analysis Engines</title>
-    <para>This section gives an overview of the UIMA Analysis Engines shipped with TextMarker. The most 
-      important one is <quote>TextMarkerEngine</quote>, a generic analysis engine, which is able to interpret 
+    <para>This section gives an overview of the UIMA Analysis Engines shipped with Ruta. The most 
+      important one is <quote>RutaEngine</quote>, a generic analysis engine, which is able to interpret 
       and execute script files. The other analysis engines provide support for some additional functionality or
       add certain types of annotations.
     </para>
     <section id="ugr.tools.tm.ae.basic">
-      <title>TextMarker Engine</title>
+      <title>Ruta Engine</title>
       <para>
-         This generic Analysis Engine is the most important one for the TextMarker language since it is
-         responsible for applying the TextMarker rules on a CAS. Its functionality is configured by the configuration parameters, 
-         which, for example, specify the rule file that should be executed. In the TextMarker IDE, a basic template named <quote>BasicEngine.xml</quote>
-         is given in the descriptor folder of a TextMarker project and correctly configured descriptors typically named <quote>MyScriptEngine.xml</quote>
+         This generic Analysis Engine is the most important one for the Ruta language since it is
+         responsible for applying the Ruta rules on a CAS. Its functionality is configured by the configuration parameters, 
+         which, for example, specify the rule file that should be executed. In the Ruta IDE, a basic template named <quote>BasicEngine.xml</quote>
+         is given in the descriptor folder of a Ruta project and correctly configured descriptors typically named <quote>MyScriptEngine.xml</quote>
          are generated in the descriptor folder corresponding to the package namespace of the script file.
-         The available configuration parameters of the TextMarker Analysis Engine are described in the following.   
+         The available configuration parameters of the Ruta Analysis Engine are described in the following.   
       </para>
       <section id="ugr.tools.tm.ae.basic.apply">
-      <title>Apply TextMarker Analysis Engine in plain Java</title>
+      <title>Apply Ruta Analysis Engine in plain Java</title>
         <para>
-          Let us assume that the reader wrote the TextMarker rules using the TextMarker Workbench, which already creates correctly configured descriptors.
-          In this case, the following java code can be used to apply the TextMarker script.
+          Let us assume that the reader wrote the Ruta rules using the Ruta Workbench, which already creates correctly configured descriptors.
+          In this case, the following java code can be used to apply the Ruta script.
         </para>
           <programlisting><![CDATA[File specFile = new File("pathToMyWorkspace/MyProject/descriptor/"+
     "my/package/MyScriptEngine.xml");
@@ -551,16 +551,16 @@ CAS cas = ae.newCAS();
 cas.setDocumentText("This is my document.");
 ae.process(cas);]]></programlisting>
       <note><para>
-        The TextMarker Analysis Engine utilizes type priorities. If the CAS object is 
-        not created using the TextMarker Analysis Engine descriptor by other means, then please 
-        provide the necessary type priorities for a valid execution of the TextMarker rules.
+        The Ruta Analysis Engine utilizes type priorities. If the CAS object is 
+        not created using the Ruta Analysis Engine descriptor by other means, then please 
+        provide the necessary type priorities for a valid execution of the Ruta rules.
       </para></note>
       <para>
-        If the TextMarker script was written, for example, with a common text editor and no configured descriptors are yet available, 
+        If the Ruta script was written, for example, with a common text editor and no configured descriptors are yet available, 
         then the following java code can be used, which, however, is only applicable for executing single script files that do not import 
         additional components or scripts. In this case the other parameters, e.g., <quote>additionalScripts</quote>, need to be configured correctly.
       </para>
-      <programlisting><![CDATA[URL aedesc = TextMarkerEngine.class.getResource("BasicEngine.xml");
+      <programlisting><![CDATA[URL aedesc = RutaEngine.class.getResource("BasicEngine.xml");
 XMLInputSource inae = new XMLInputSource(aedesc);
 ResourceSpecifier specifier = UIMAFramework.getXMLParser().
     parseResourceSpecifier(inae);
@@ -582,11 +582,11 @@ aed.resolveImports(resMgr);
 AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed, 
     resMgr, null);
 File scriptFile = new File("path/to/file/MyScript.tm");
-ae.setConfigParameterValue(TextMarkerEngine.SCRIPT_PATHS, 
+ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, 
     new String[] { scriptFile.getParentFile().getAbsolutePath() });
 String name = scriptFile.getName().substring(0, 
     scriptFile.getName().length() - 3);
-ae.setConfigParameterValue(TextMarkerEngine.MAIN_SCRIPT, name);
+ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, name);
 ae.reconfigure();
 CAS cas = ae.newCAS();
 cas.setDocumentText("This is my document.");
@@ -595,12 +595,12 @@ ae.process(cas);]]></programlisting>
         There is also a convenience implementation for applying simple scripts, which do not introduce new types. The following java code
         applies a simple rule <quote>T1 SW{-> MARK(T2)};</quote> on the given CAS. Note that the types need to be already defined in the type system of the CAS.
       </para>
-      <programlisting><![CDATA[TextMarker.apply(cas, "T1 SW{-> MARK(T2)};");]]></programlisting>
+      <programlisting><![CDATA[Ruta.apply(cas, "T1 SW{-> MARK(T2)};");]]></programlisting>
       </section>
       <section id="ugr.tools.tm.ae.basic.parameter">
         <title>Configuration Parameters</title>
         <para>
-          The configuration parameters of the TextMarker Analysis Engine can be subdivided into three
+          The configuration parameters of the Ruta Analysis Engine can be subdivided into three
           different groups: parameters for the setup of the environment (<link linkend='ugr.tools.tm.ae.basic.parameter.mainScript'>mainScript</link>
           to <link linkend='ugr.tools.tm.ae.basic.parameter.additionalExtensions'>additionalExtensions</link>), 
           parameters that change the behavior of the analysis engine (<link linkend='ugr.tools.tm.ae.basic.parameter.reloadScript'>reloadScript</link>
@@ -611,13 +611,13 @@ ae.process(cas);]]></programlisting>
           <xref linkend='table.ugr.tools.tm.ae.parameter' />. Afterwards, all parameters are described in detail with examples.
         </para>
         <para>
-          To change the value of any configuration parameter within a TextMarker script, the CONFIGURE action (see <xref linkend='ugr.tools.tm.language.actions.configure' />)
+          To change the value of any configuration parameter within a Ruta script, the CONFIGURE action (see <xref linkend='ugr.tools.tm.language.actions.configure' />)
           can be used. For changing behaviour of <link linkend='ugr.tools.tm.ae.basic.parameter.dynamicAnchoring'>dynamicAnchoring</link> the DYNAMICANCHORING action 
           (see <xref linkend='ugr.tools.tm.language.actions.dynamicanchoring' />) is recommended.
         </para>
         <para>
           <table id="table.ugr.tools.tm.ae.parameter" frame="all">
-            <title>Configuration parameters of the TextMarker Analysis Engine   </title>
+            <title>Configuration parameters of the Ruta Analysis Engine   </title>
             <tgroup cols="3" colsep="1" rowsep="1">
               <colspec colname="c1" colwidth="1.2*" />
               <colspec colname="c2" colwidth="2*" />
@@ -643,7 +643,7 @@ ae.process(cas);]]></programlisting>
                   <entry>
                     <link linkend='ugr.tools.tm.ae.basic.parameter.scriptEncoding'>scriptEncoding</link>
                   </entry>
-                  <entry>Encoding of all TextMarker script files.</entry>
+                  <entry>Encoding of all Ruta script files.</entry>
                   <entry>Single String</entry>
                 </row>
                 <row>
@@ -687,7 +687,7 @@ ae.process(cas);]]></programlisting>
                     <link linkend='ugr.tools.tm.ae.basic.parameter.additionalEngines'>additionalEngines</link>
                   </entry>
                   <entry>List of names with complete namespace of additional analysis engines, which
-                    can be called by TextMarker rules.
+                    can be called by Ruta rules.
                   </entry>
                   <entry>Multi String</entry>
                 </row>
@@ -704,7 +704,7 @@ ae.process(cas);]]></programlisting>
                   <entry>
                     <link linkend='ugr.tools.tm.ae.basic.parameter.additionalExtensions'>additionalExtensions</link>
                   </entry>
-                  <entry>List of factory classes for additional extensions of the TextMarker language
+                  <entry>List of factory classes for additional extensions of the Ruta language
                     like proprietary conditions.
                   </entry>
                   <entry>Multi String</entry>
@@ -835,9 +835,9 @@ ae.process(cas);]]></programlisting>
           <title>scriptPaths</title>
           <para>
             The parameter scriptPaths refers to a list of String values, which specify the possible locations of script files. 
-            The given locations are absolute paths. A typical value for this parameter is, for example, "C:/TextMarker/MyProject/script/".
+            The given locations are absolute paths. A typical value for this parameter is, for example, "C:/Ruta/MyProject/script/".
             If the parameter <link linkend='ugr.tools.tm.ae.basic.parameter.mainScript'>mainScript</link> is set to org.apache.uima.Main, 
-            then the absolute path of the script file has to be "C:/TextMarker/MyProject/script/org/apache/uima/Main.tm". 
+            then the absolute path of the script file has to be "C:/Ruta/MyProject/script/org/apache/uima/Main.tm". 
             This parameter can contain multiple values, as the main script can refer to multiple projects similar to a class path in Java.
           </para>
         </section>
@@ -846,7 +846,7 @@ ae.process(cas);]]></programlisting>
           <para>
             This parameter specifies the possible locations for descriptors like analysis engines or type systems, similar to the parameter
             <link linkend='ugr.tools.tm.ae.basic.parameter.scriptPaths'>scriptPaths</link> for the script files. A typical value for this parameter 
-            is for example "C:/TextMarker/MyProject/descriptor/".
+            is for example "C:/Ruta/MyProject/descriptor/".
             The relative values of the parameter <link linkend='ugr.tools.tm.ae.basic.parameter.additionalEngines'>additionalEngines</link> are
             resolved to these absolute locations.
             This parameter can contain multiple values, as the main script can refer to multiple projects similar to a class path in Java.
@@ -856,7 +856,7 @@ ae.process(cas);]]></programlisting>
           <title>resourcePaths</title>
           <para>
             This parameter specifies the possible locations of additional resources like word lists or CSV tables. The string values have to contain absolute
-            locations, for example, "C:/TextMarker/MyProject/resources/".
+            locations, for example, "C:/Ruta/MyProject/resources/".
           </para>
         </section>
         <section id="ugr.tools.tm.ae.basic.parameter.additionalScripts">
@@ -872,7 +872,7 @@ ae.process(cas);]]></programlisting>
         <section id="ugr.tools.tm.ae.basic.parameter.additionalEngines">
           <title>additionalEngines</title>
           <para>
-            This parameter contains a list of additional analysis engines, which can be executed by the TextMarker rules. The single values
+            This parameter contains a list of additional analysis engines, which can be executed by the Ruta rules. The single values
             are given by the name of the analysis engine with their complete namespace and have to be located relative to one value of the parameter
             <link linkend='ugr.tools.tm.ae.basic.parameter.descriptorPaths'>descriptorPaths</link>, the location where the analysis engine searches for the descriptor file.
             An example for one value of the parameter is "utils.HtmlAnnotator", which points to the descriptor "HtmlAnnotator.xml" in the folder "utils".
@@ -882,15 +882,15 @@ ae.process(cas);]]></programlisting>
           <title>additionalEngineLoaders</title>
           <para>
             The parameter "additionalEngineLoaders" specifies a list of optional implementations of the interface 
-            "org.apache.uima.textmarker.extensions.IEngineLoader", which can be used to application-specific configurations of
+            "org.apache.uima.ruta.extensions.IEngineLoader", which can be used to application-specific configurations of
             additional analysis engines.
           </para>
         </section>
         <section id="ugr.tools.tm.ae.basic.parameter.additionalExtensions">
           <title>additionalExtensions</title>
           <para>
-            This parameter specifies optional extensions of the TextMarker language. The elements of the string list have to implement the interface 
-            "org.apache.uima.textmarker.extensions.ITextMarkerExtension". With these extensions, application-specific conditions and actions can be
+            This parameter specifies optional extensions of the Ruta language. The elements of the string list have to implement the interface 
+            "org.apache.uima.ruta.extensions.IRutaExtension". With these extensions, application-specific conditions and actions can be
             added to the set of provided ones.
           </para>
         </section>
@@ -905,17 +905,17 @@ ae.process(cas);]]></programlisting>
         <section id="ugr.tools.tm.ae.basic.parameter.seeders">
           <title>seeders</title>
           <para>
-            This list of string values refers to implementations of the interface "org.apache.uima.textmarker.seed.TextMarkerAnnotationSeeder", 
-            which can be used to automatically add annotations to the CAS. The default value of the parameter is a single seeder, namely "org.apache.uima.textmarker.seed.DefaultSeeder"
+            This list of string values refers to implementations of the interface "org.apache.uima.ruta.seed.RutaAnnotationSeeder", 
+            which can be used to automatically add annotations to the CAS. The default value of the parameter is a single seeder, namely "org.apache.uima.ruta.seed.DefaultSeeder"
             that adds annotations for token classes like CW, MARKUP or SEMICOLON. Remember that additional annotations can also be added with 
-            an additional engine that is executed by a TextMarker rule.
+            an additional engine that is executed by a Ruta rule.
           </para>
         </section>
         <section id="ugr.tools.tm.ae.basic.parameter.defaultFilteredTypes">
           <title>defaultFilteredTypes</title>
           <para>
             This parameter specifies a list of types, which are filtered by default when executing a script file. Using the default values of this parameter,
-            whitespaces, line breaks and markup elements are not visible to TextMarker rules. The visibility of annotations and, therefore, the covered text can be changed
+            whitespaces, line breaks and markup elements are not visible to Ruta rules. The visibility of annotations and, therefore, the covered text can be changed
             using the actions <link linkend='ugr.tools.tm.language.actions.filtertype'>FILTERTYPE</link> and 
             <link linkend='ugr.tools.tm.language.actions.retaintype'>RETAINTYPE</link>.
           </para>
@@ -930,7 +930,7 @@ ae.process(cas);]]></programlisting>
         <section id="ugr.tools.tm.ae.basic.parameter.dynamicAnchoring">
           <title>dynamicAnchoring</title>
           <para>
-            If this parameter is set to true, then the TextMarker rules are not forced to start to match with the first rule element. 
+            If this parameter is set to true, then the Ruta rules are not forced to start to match with the first rule element. 
             Rather, the rule element referring to the most rare type is chosen. This option can be utilized to optimize the performance.
             Please mind that the matching result can vary in some cases when greedy rule elements are applied.
             The default value is set to false.
@@ -983,7 +983,7 @@ ae.process(cas);]]></programlisting>
         <section id="ugr.tools.tm.ae.basic.parameter.statistics">
           <title>statistics</title>
           <para>
-            If this parameter is set to true, then additional information about the runtime of TextMarker language elements like conditions and actions
+            If this parameter is set to true, then additional information about the runtime of Ruta language elements like conditions and actions
             is added to the CAS.
             The default value of this parameter is set to false.
           </para>
@@ -1003,7 +1003,7 @@ ae.process(cas);]]></programlisting>
         This Analysis Engine can be utilized to write the covered text of annotations in a text file, whereas each covered text is put into a new line.
         If the Analyis engine, for example, is configured for the type <quote>uima.example.Person</quote>, then all covered texts of all Person annotations are stored
         in a text file, one person in each line.
-        A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a TextMarker project.
+        A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a Ruta project.
       </para>
       <section id="ugr.tools.tm.ae.annotationwriter.parameter">
         <title>Configuration Parameters</title>
@@ -1014,7 +1014,7 @@ ae.process(cas);]]></programlisting>
           <para>
             This string parameter specifies the absolute path of the resulting file named <quote>output.txt</quote>. However, if an annotation of the 
             type <quote>org.apache.uima.examples.SourceDocumentInformation</quote> is given, then the value of this parameter is interpreted to be relative
-            to the URI stored in the annotation and the name of the file will be adapted to the name of the source file. The TextMarker IDE automatically adds
+            to the URI stored in the annotation and the name of the file will be adapted to the name of the source file. The Ruta IDE automatically adds
             the SourceDocumentInformation annotation when the user launches a script file. The default value of this parameter is <quote>/../output/</quote>.
           </para>
         </section>
@@ -1037,7 +1037,7 @@ ae.process(cas);]]></programlisting>
       <title>Plain Text Annotator</title>
       <para>
         This Analysis Engines adds annotations for lines and paragraphs.
-        A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a TextMarker project. There are no configuration parameters.
+        A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a Ruta project. There are no configuration parameters.
       </para>
     </section>
     <section id="ugr.tools.tm.ae.modifier">
@@ -1047,7 +1047,7 @@ ae.process(cas);]]></programlisting>
         were specified by the executed rules. This Analysis Engine can be applied, e.g., 
         for anonymization where all annotations of persons are replaced by the string <quote>Person</quote>. 
         Furthermore, the content of the new view can optionally be stored in a new HTML file.
-        A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a TextMarker project.
+        A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a Ruta project.
       </para>
       <section id="ugr.tools.tm.ae.modifier.parameter">
         <title>Configuration Parameters</title>
@@ -1071,7 +1071,7 @@ ae.process(cas);]]></programlisting>
           <para>
             This optional string parameter specifies the absolute path of the resulting file named <quote>output.modified.html</quote>. However, if an annotation of the 
             type <quote>org.apache.uima.examples.SourceDocumentInformation</quote> is given, then the value of this parameter is interpreted to be relative
-            to the URI stored in the annotation and the name of the file will be adapted to the name of the source file. The TextMarker IDE automatically adds
+            to the URI stored in the annotation and the name of the file will be adapted to the name of the source file. The Ruta IDE automatically adds
             the SourceDocumentInformation annotation when the user launches a script file. The default value of this parameter is empty. 
             In this case no additional html file will be created.
           </para>
@@ -1091,9 +1091,9 @@ ae.process(cas);]]></programlisting>
         This Analysis Engine provides support for HTML files by adding annotations for the HTML elements. Using the default values, the HTML Annotator creates annotations
         for each HTML element spanning the content of the element, whereas the most common elements are represented by own types. 
         The document <quote><![CDATA[This text is <b>bold</b>.]]></quote>, for example, would be annotated with an annotation of the type 
-        <quote>org.apache.uima.textmarker.type.html.B</quote> for the word <quote>bold</quote>. The HTML annotator can be configured 
+        <quote>org.apache.uima.ruta.type.html.B</quote> for the word <quote>bold</quote>. The HTML annotator can be configured 
         in order to include the start and end elements in the created annotations. 
-        A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a TextMarker project.
+        A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a Ruta project.
       </para>
       <section id="ugr.tools.tm.ae.html.parameter">
         <title>Configuration Parameters</title>
@@ -1122,7 +1122,7 @@ ae.process(cas);]]></programlisting>
         
         Note that in general it is suggested to run an html cleaner before any further processing to avoid problems with malformed html. 
         
-        A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a TextMarker project.
+        A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a Ruta project.
       </para>
       <section id="ugr.tools.tm.ae.htmlconverter.parameter">
         <title>Configuration Parameters</title>
@@ -1191,7 +1191,7 @@ ae.process(cas);]]></programlisting>
         This Analysis Engine can be utilized to create style map information, which is needed by the Modifier Analysis Engine in order to create
         highlightings for some annotations.
         Style map information can be created using the <link linkend='ugr.tools.tm.language.actions.color'>COLOR</link> action.
-        A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a TextMarker project.
+        A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a Ruta project.
       </para>
       <section id="ugr.tools.tm.ae.stylemap.parameter">
         <title>Configuration Parameters</title>
@@ -1217,7 +1217,7 @@ ae.process(cas);]]></programlisting>
       <para>
         This Analysis Engine is able to serialize the processed CAS to an XMI file. One use case for the XMI Writer is, for example, a rule-based sort,
         which stores the processed XMI files in different folder, dependent on the execution of the rules, e.g., whether a pattern of annotations occurs or not.
-        A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a TextMarker project.
+        A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a Ruta project.
       </para>
       <section id="ugr.tools.tm.ae.xmi.parameter">
         <title>Configuration Parameters</title>
@@ -1228,7 +1228,7 @@ ae.process(cas);]]></programlisting>
           <para>
             This string parameter specifies the absolute path of the resulting file named <quote>output.xmi</quote>. However, if an annotation of the 
             type <quote>org.apache.uima.examples.SourceDocumentInformation</quote> is given, then the value of this parameter is interpreted to be relative
-            to the URI stored in the annotation and the name of the file will be adapted to the name of the source file. The TextMarker IDE automatically adds
+            to the URI stored in the annotation and the name of the file will be adapted to the name of the source file. The Ruta IDE automatically adds
             the SourceDocumentInformation annotation when the user launches a script file.
             The default value is <quote>/../output/</quote>
           </para>
