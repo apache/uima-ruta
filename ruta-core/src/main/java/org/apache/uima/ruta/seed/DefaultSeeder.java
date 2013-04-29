@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.seed;
+package org.apache.uima.ruta.seed;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
@@ -32,12 +32,12 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.textmarker.type.MARKUP;
-import org.apache.uima.textmarker.type.TokenSeed;
+import org.apache.uima.ruta.type.MARKUP;
+import org.apache.uima.ruta.type.TokenSeed;
 
-public class DefaultSeeder implements TextMarkerAnnotationSeeder {
+public class DefaultSeeder implements RutaAnnotationSeeder {
 
-  public static final String seedType = "org.apache.uima.textmarker.type.TokenSeed";
+  public static final String seedType = "org.apache.uima.ruta.type.TokenSeed";
 
   private final Pattern markupPattern = Pattern
           .compile("</?\\w+((\\s+\\w+(\\s*=\\s*(?:\".*?\"|'.*?'|[^'\">\\s]+))?)+\\s*|\\s*)/?>");
