@@ -1,4 +1,4 @@
-lexer grammar TextMarkerLexer;
+lexer grammar RutaLexer;
 options {
 	language = Java;
 }
@@ -30,7 +30,7 @@ tokens {
  * under the License.
 */
 
-	package org.apache.uima.textmarker.parser;
+	package org.apache.uima.ruta.parser;
 }
 
 @lexer::members {
