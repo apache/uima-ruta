@@ -1,6 +1,6 @@
 
 /* First created by JCasGen Wed Jan 11 14:42:22 CET 2012 */
-package org.apache.uima.textmarker.type;
+package org.apache.uima.ruta.type;
 
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
@@ -37,7 +37,7 @@ public class TokenSeed_Type extends Annotation_Type {
   public final static int typeIndexID = TokenSeed.typeIndexID;
   /** @generated 
      @modifiable */
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.textmarker.type.TokenSeed");
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.ruta.type.TokenSeed");
 
 
 

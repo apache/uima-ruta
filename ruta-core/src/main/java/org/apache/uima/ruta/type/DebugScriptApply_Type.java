@@ -1,6 +1,6 @@
 
 /* First created by JCasGen Tue Aug 09 16:26:13 CEST 2011 */
-package org.apache.uima.textmarker.type;
+package org.apache.uima.ruta.type;
 
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
@@ -38,7 +38,7 @@ public class DebugScriptApply_Type extends ProfiledAnnotation_Type {
   public final static int typeIndexID = DebugScriptApply.typeIndexID;
   /** @generated 
      @modifiable */
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.textmarker.type.DebugScriptApply");
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.ruta.type.DebugScriptApply");
  
   /** @generated */
   final Feature casFeat_element;
@@ -47,13 +47,13 @@ public class DebugScriptApply_Type extends ProfiledAnnotation_Type {
   /** @generated */ 
   public String getElement(int addr) {
         if (featOkTst && casFeat_element == null)
-      jcas.throwFeatMissing("element", "org.apache.uima.textmarker.type.DebugScriptApply");
+      jcas.throwFeatMissing("element", "org.apache.uima.ruta.type.DebugScriptApply");
     return ll_cas.ll_getStringValue(addr, casFeatCode_element);
   }
   /** @generated */    
   public void setElement(int addr, String v) {
         if (featOkTst && casFeat_element == null)
-      jcas.throwFeatMissing("element", "org.apache.uima.textmarker.type.DebugScriptApply");
+      jcas.throwFeatMissing("element", "org.apache.uima.ruta.type.DebugScriptApply");
     ll_cas.ll_setStringValue(addr, casFeatCode_element, v);}
     
   

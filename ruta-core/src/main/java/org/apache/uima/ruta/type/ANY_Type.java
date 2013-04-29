@@ -1,6 +1,6 @@
 
 /* First created by JCasGen Tue Aug 09 16:26:13 CEST 2011 */
-package org.apache.uima.textmarker.type;
+package org.apache.uima.ruta.type;
 
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
@@ -36,7 +36,7 @@ public class ANY_Type extends ALL_Type {
   public final static int typeIndexID = ANY.typeIndexID;
   /** @generated 
      @modifiable */
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.textmarker.type.ANY");
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.ruta.type.ANY");
 
 
 

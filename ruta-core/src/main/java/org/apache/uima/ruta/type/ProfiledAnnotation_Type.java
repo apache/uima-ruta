@@ -1,6 +1,6 @@
 
 /* First created by JCasGen Tue Aug 09 16:26:13 CEST 2011 */
-package org.apache.uima.textmarker.type;
+package org.apache.uima.ruta.type;
 
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
@@ -39,7 +39,7 @@ public class ProfiledAnnotation_Type extends Annotation_Type {
   public final static int typeIndexID = ProfiledAnnotation.typeIndexID;
   /** @generated 
      @modifiable */
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.textmarker.type.ProfiledAnnotation");
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.ruta.type.ProfiledAnnotation");
  
   /** @generated */
   final Feature casFeat_time;
@@ -48,13 +48,13 @@ public class ProfiledAnnotation_Type extends Annotation_Type {
   /** @generated */ 
   public long getTime(int addr) {
         if (featOkTst && casFeat_time == null)
-      jcas.throwFeatMissing("time", "org.apache.uima.textmarker.type.ProfiledAnnotation");
+      jcas.throwFeatMissing("time", "org.apache.uima.ruta.type.ProfiledAnnotation");
     return ll_cas.ll_getLongValue(addr, casFeatCode_time);
   }
   /** @generated */    
   public void setTime(int addr, long v) {
         if (featOkTst && casFeat_time == null)
-      jcas.throwFeatMissing("time", "org.apache.uima.textmarker.type.ProfiledAnnotation");
+      jcas.throwFeatMissing("time", "org.apache.uima.ruta.type.ProfiledAnnotation");
     ll_cas.ll_setLongValue(addr, casFeatCode_time, v);}
     
   

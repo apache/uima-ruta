@@ -1,7 +1,7 @@
 
 
 /* First created by JCasGen Wed Jul 11 15:10:37 CEST 2012 */
-package org.apache.uima.textmarker.type;
+package org.apache.uima.ruta.type;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
@@ -12,7 +12,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 /** 
  * Updated by JCasGen Thu Jul 12 10:42:33 CEST 2012
- * XML source: D:/work/workspace-uima6/uimaj-textmarker/src/main/java/org/apache/uima/textmarker/engine/InternalTypeSystem.xml
+ * XML source: D:/work/workspace-uima6/uimaj-ruta/src/main/java/org/apache/uima/ruta/engine/InternalTypeSystem.xml
  * @generated */
 public class DebugCreatedBy extends TOP {
   /** @generated
@@ -61,14 +61,14 @@ public class DebugCreatedBy extends TOP {
    * @generated */
   public String getRule() {
     if (DebugCreatedBy_Type.featOkTst && ((DebugCreatedBy_Type)jcasType).casFeat_rule == null)
-      jcasType.jcas.throwFeatMissing("rule", "org.apache.uima.textmarker.type.DebugCreatedBy");
+      jcasType.jcas.throwFeatMissing("rule", "org.apache.uima.ruta.type.DebugCreatedBy");
     return jcasType.ll_cas.ll_getStringValue(addr, ((DebugCreatedBy_Type)jcasType).casFeatCode_rule);}
     
   /** setter for rule - sets  
    * @generated */
   public void setRule(String v) {
     if (DebugCreatedBy_Type.featOkTst && ((DebugCreatedBy_Type)jcasType).casFeat_rule == null)
-      jcasType.jcas.throwFeatMissing("rule", "org.apache.uima.textmarker.type.DebugCreatedBy");
+      jcasType.jcas.throwFeatMissing("rule", "org.apache.uima.ruta.type.DebugCreatedBy");
     jcasType.ll_cas.ll_setStringValue(addr, ((DebugCreatedBy_Type)jcasType).casFeatCode_rule, v);}    
    
     
@@ -79,14 +79,14 @@ public class DebugCreatedBy extends TOP {
    * @generated */
   public Annotation getAnnotation() {
     if (DebugCreatedBy_Type.featOkTst && ((DebugCreatedBy_Type)jcasType).casFeat_annotation == null)
-      jcasType.jcas.throwFeatMissing("annotation", "org.apache.uima.textmarker.type.DebugCreatedBy");
+      jcasType.jcas.throwFeatMissing("annotation", "org.apache.uima.ruta.type.DebugCreatedBy");
     return (Annotation)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((DebugCreatedBy_Type)jcasType).casFeatCode_annotation)));}
     
   /** setter for annotation - sets  
    * @generated */
   public void setAnnotation(Annotation v) {
     if (DebugCreatedBy_Type.featOkTst && ((DebugCreatedBy_Type)jcasType).casFeat_annotation == null)
-      jcasType.jcas.throwFeatMissing("annotation", "org.apache.uima.textmarker.type.DebugCreatedBy");
+      jcasType.jcas.throwFeatMissing("annotation", "org.apache.uima.ruta.type.DebugCreatedBy");
     jcasType.ll_cas.ll_setRefValue(addr, ((DebugCreatedBy_Type)jcasType).casFeatCode_annotation, jcasType.ll_cas.ll_getFSRef(v));}    
    
     
@@ -97,14 +97,14 @@ public class DebugCreatedBy extends TOP {
    * @generated */
   public String getScript() {
     if (DebugCreatedBy_Type.featOkTst && ((DebugCreatedBy_Type)jcasType).casFeat_script == null)
-      jcasType.jcas.throwFeatMissing("script", "org.apache.uima.textmarker.type.DebugCreatedBy");
+      jcasType.jcas.throwFeatMissing("script", "org.apache.uima.ruta.type.DebugCreatedBy");
     return jcasType.ll_cas.ll_getStringValue(addr, ((DebugCreatedBy_Type)jcasType).casFeatCode_script);}
     
   /** setter for script - sets  
    * @generated */
   public void setScript(String v) {
     if (DebugCreatedBy_Type.featOkTst && ((DebugCreatedBy_Type)jcasType).casFeat_script == null)
-      jcasType.jcas.throwFeatMissing("script", "org.apache.uima.textmarker.type.DebugCreatedBy");
+      jcasType.jcas.throwFeatMissing("script", "org.apache.uima.ruta.type.DebugCreatedBy");
     jcasType.ll_cas.ll_setStringValue(addr, ((DebugCreatedBy_Type)jcasType).casFeatCode_script, v);}    
    
     
@@ -115,14 +115,14 @@ public class DebugCreatedBy extends TOP {
    * @generated */
   public int getId() {
     if (DebugCreatedBy_Type.featOkTst && ((DebugCreatedBy_Type)jcasType).casFeat_id == null)
-      jcasType.jcas.throwFeatMissing("id", "org.apache.uima.textmarker.type.DebugCreatedBy");
+      jcasType.jcas.throwFeatMissing("id", "org.apache.uima.ruta.type.DebugCreatedBy");
     return jcasType.ll_cas.ll_getIntValue(addr, ((DebugCreatedBy_Type)jcasType).casFeatCode_id);}
     
   /** setter for id - sets  
    * @generated */
   public void setId(int v) {
     if (DebugCreatedBy_Type.featOkTst && ((DebugCreatedBy_Type)jcasType).casFeat_id == null)
-      jcasType.jcas.throwFeatMissing("id", "org.apache.uima.textmarker.type.DebugCreatedBy");
+      jcasType.jcas.throwFeatMissing("id", "org.apache.uima.ruta.type.DebugCreatedBy");
     jcasType.ll_cas.ll_setIntValue(addr, ((DebugCreatedBy_Type)jcasType).casFeatCode_id, v);}    
   }
 

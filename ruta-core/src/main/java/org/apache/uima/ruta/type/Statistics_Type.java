@@ -1,6 +1,6 @@
 
 /* First created by JCasGen Tue Aug 09 16:26:13 CEST 2011 */
-package org.apache.uima.textmarker.type;
+package org.apache.uima.ruta.type;
 
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
@@ -39,7 +39,7 @@ public class Statistics_Type extends TOP_Type {
   public final static int typeIndexID = Statistics.typeIndexID;
   /** @generated 
      @modifiable */
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.textmarker.type.Statistics");
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.ruta.type.Statistics");
  
   /** @generated */
   final Feature casFeat_name;
@@ -48,19 +48,19 @@ public class Statistics_Type extends TOP_Type {
   /** @generated */ 
   public int getName(int addr) {
         if (featOkTst && casFeat_name == null)
-      jcas.throwFeatMissing("name", "org.apache.uima.textmarker.type.Statistics");
+      jcas.throwFeatMissing("name", "org.apache.uima.ruta.type.Statistics");
     return ll_cas.ll_getRefValue(addr, casFeatCode_name);
   }
   /** @generated */    
   public void setName(int addr, int v) {
         if (featOkTst && casFeat_name == null)
-      jcas.throwFeatMissing("name", "org.apache.uima.textmarker.type.Statistics");
+      jcas.throwFeatMissing("name", "org.apache.uima.ruta.type.Statistics");
     ll_cas.ll_setRefValue(addr, casFeatCode_name, v);}
     
    /** @generated */
   public String getName(int addr, int i) {
         if (featOkTst && casFeat_name == null)
-      jcas.throwFeatMissing("name", "org.apache.uima.textmarker.type.Statistics");
+      jcas.throwFeatMissing("name", "org.apache.uima.ruta.type.Statistics");
     if (lowLevelTypeChecks)
       return ll_cas.ll_getStringArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_name), i, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_name), i);
@@ -70,7 +70,7 @@ public class Statistics_Type extends TOP_Type {
   /** @generated */ 
   public void setName(int addr, int i, String v) {
         if (featOkTst && casFeat_name == null)
-      jcas.throwFeatMissing("name", "org.apache.uima.textmarker.type.Statistics");
+      jcas.throwFeatMissing("name", "org.apache.uima.ruta.type.Statistics");
     if (lowLevelTypeChecks)
       ll_cas.ll_setStringArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_name), i, v, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_name), i);
@@ -85,19 +85,19 @@ public class Statistics_Type extends TOP_Type {
   /** @generated */ 
   public int getTotal(int addr) {
         if (featOkTst && casFeat_total == null)
-      jcas.throwFeatMissing("total", "org.apache.uima.textmarker.type.Statistics");
+      jcas.throwFeatMissing("total", "org.apache.uima.ruta.type.Statistics");
     return ll_cas.ll_getRefValue(addr, casFeatCode_total);
   }
   /** @generated */    
   public void setTotal(int addr, int v) {
         if (featOkTst && casFeat_total == null)
-      jcas.throwFeatMissing("total", "org.apache.uima.textmarker.type.Statistics");
+      jcas.throwFeatMissing("total", "org.apache.uima.ruta.type.Statistics");
     ll_cas.ll_setRefValue(addr, casFeatCode_total, v);}
     
    /** @generated */
   public double getTotal(int addr, int i) {
         if (featOkTst && casFeat_total == null)
-      jcas.throwFeatMissing("total", "org.apache.uima.textmarker.type.Statistics");
+      jcas.throwFeatMissing("total", "org.apache.uima.ruta.type.Statistics");
     if (lowLevelTypeChecks)
       return ll_cas.ll_getDoubleArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_total), i, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_total), i);
@@ -107,7 +107,7 @@ public class Statistics_Type extends TOP_Type {
   /** @generated */ 
   public void setTotal(int addr, int i, double v) {
         if (featOkTst && casFeat_total == null)
-      jcas.throwFeatMissing("total", "org.apache.uima.textmarker.type.Statistics");
+      jcas.throwFeatMissing("total", "org.apache.uima.ruta.type.Statistics");
     if (lowLevelTypeChecks)
       ll_cas.ll_setDoubleArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_total), i, v, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_total), i);
@@ -122,19 +122,19 @@ public class Statistics_Type extends TOP_Type {
   /** @generated */ 
   public int getAmount(int addr) {
         if (featOkTst && casFeat_amount == null)
-      jcas.throwFeatMissing("amount", "org.apache.uima.textmarker.type.Statistics");
+      jcas.throwFeatMissing("amount", "org.apache.uima.ruta.type.Statistics");
     return ll_cas.ll_getRefValue(addr, casFeatCode_amount);
   }
   /** @generated */    
   public void setAmount(int addr, int v) {
         if (featOkTst && casFeat_amount == null)
-      jcas.throwFeatMissing("amount", "org.apache.uima.textmarker.type.Statistics");
+      jcas.throwFeatMissing("amount", "org.apache.uima.ruta.type.Statistics");
     ll_cas.ll_setRefValue(addr, casFeatCode_amount, v);}
     
    /** @generated */
   public int getAmount(int addr, int i) {
         if (featOkTst && casFeat_amount == null)
-      jcas.throwFeatMissing("amount", "org.apache.uima.textmarker.type.Statistics");
+      jcas.throwFeatMissing("amount", "org.apache.uima.ruta.type.Statistics");
     if (lowLevelTypeChecks)
       return ll_cas.ll_getIntArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_amount), i, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_amount), i);
@@ -144,7 +144,7 @@ public class Statistics_Type extends TOP_Type {
   /** @generated */ 
   public void setAmount(int addr, int i, int v) {
         if (featOkTst && casFeat_amount == null)
-      jcas.throwFeatMissing("amount", "org.apache.uima.textmarker.type.Statistics");
+      jcas.throwFeatMissing("amount", "org.apache.uima.ruta.type.Statistics");
     if (lowLevelTypeChecks)
       ll_cas.ll_setIntArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_amount), i, v, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_amount), i);
@@ -159,19 +159,19 @@ public class Statistics_Type extends TOP_Type {
   /** @generated */ 
   public int getPart(int addr) {
         if (featOkTst && casFeat_part == null)
-      jcas.throwFeatMissing("part", "org.apache.uima.textmarker.type.Statistics");
+      jcas.throwFeatMissing("part", "org.apache.uima.ruta.type.Statistics");
     return ll_cas.ll_getRefValue(addr, casFeatCode_part);
   }
   /** @generated */    
   public void setPart(int addr, int v) {
         if (featOkTst && casFeat_part == null)
-      jcas.throwFeatMissing("part", "org.apache.uima.textmarker.type.Statistics");
+      jcas.throwFeatMissing("part", "org.apache.uima.ruta.type.Statistics");
     ll_cas.ll_setRefValue(addr, casFeatCode_part, v);}
     
    /** @generated */
   public double getPart(int addr, int i) {
         if (featOkTst && casFeat_part == null)
-      jcas.throwFeatMissing("part", "org.apache.uima.textmarker.type.Statistics");
+      jcas.throwFeatMissing("part", "org.apache.uima.ruta.type.Statistics");
     if (lowLevelTypeChecks)
       return ll_cas.ll_getDoubleArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_part), i, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_part), i);
@@ -181,7 +181,7 @@ public class Statistics_Type extends TOP_Type {
   /** @generated */ 
   public void setPart(int addr, int i, double v) {
         if (featOkTst && casFeat_part == null)
-      jcas.throwFeatMissing("part", "org.apache.uima.textmarker.type.Statistics");
+      jcas.throwFeatMissing("part", "org.apache.uima.ruta.type.Statistics");
     if (lowLevelTypeChecks)
       ll_cas.ll_setDoubleArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_part), i, v, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_part), i);

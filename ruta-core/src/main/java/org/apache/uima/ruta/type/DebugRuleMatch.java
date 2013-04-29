@@ -1,7 +1,7 @@
 
 
 /* First created by JCasGen Tue Aug 09 16:26:13 CEST 2011 */
-package org.apache.uima.textmarker.type;
+package org.apache.uima.ruta.type;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
@@ -11,7 +11,7 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 /** 
  * Updated by JCasGen Thu Jul 12 10:42:33 CEST 2012
- * XML source: D:/work/workspace-uima6/uimaj-textmarker/src/main/java/org/apache/uima/textmarker/engine/InternalTypeSystem.xml
+ * XML source: D:/work/workspace-uima6/uimaj-ruta/src/main/java/org/apache/uima/ruta/engine/InternalTypeSystem.xml
  * @generated */
 public class DebugRuleMatch extends ProfiledAnnotation {
   /** @generated
@@ -65,21 +65,21 @@ public class DebugRuleMatch extends ProfiledAnnotation {
    * @generated */
   public FSArray getElements() {
     if (DebugRuleMatch_Type.featOkTst && ((DebugRuleMatch_Type)jcasType).casFeat_elements == null)
-      jcasType.jcas.throwFeatMissing("elements", "org.apache.uima.textmarker.type.DebugRuleMatch");
+      jcasType.jcas.throwFeatMissing("elements", "org.apache.uima.ruta.type.DebugRuleMatch");
     return (FSArray)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((DebugRuleMatch_Type)jcasType).casFeatCode_elements)));}
     
   /** setter for elements - sets  
    * @generated */
   public void setElements(FSArray v) {
     if (DebugRuleMatch_Type.featOkTst && ((DebugRuleMatch_Type)jcasType).casFeat_elements == null)
-      jcasType.jcas.throwFeatMissing("elements", "org.apache.uima.textmarker.type.DebugRuleMatch");
+      jcasType.jcas.throwFeatMissing("elements", "org.apache.uima.ruta.type.DebugRuleMatch");
     jcasType.ll_cas.ll_setRefValue(addr, ((DebugRuleMatch_Type)jcasType).casFeatCode_elements, jcasType.ll_cas.ll_getFSRef(v));}    
     
   /** indexed getter for elements - gets an indexed value - 
    * @generated */
   public DebugRuleElementMatches getElements(int i) {
     if (DebugRuleMatch_Type.featOkTst && ((DebugRuleMatch_Type)jcasType).casFeat_elements == null)
-      jcasType.jcas.throwFeatMissing("elements", "org.apache.uima.textmarker.type.DebugRuleMatch");
+      jcasType.jcas.throwFeatMissing("elements", "org.apache.uima.ruta.type.DebugRuleMatch");
     jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((DebugRuleMatch_Type)jcasType).casFeatCode_elements), i);
     return (DebugRuleElementMatches)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((DebugRuleMatch_Type)jcasType).casFeatCode_elements), i)));}
 
@@ -87,7 +87,7 @@ public class DebugRuleMatch extends ProfiledAnnotation {
    * @generated */
   public void setElements(int i, DebugRuleElementMatches v) { 
     if (DebugRuleMatch_Type.featOkTst && ((DebugRuleMatch_Type)jcasType).casFeat_elements == null)
-      jcasType.jcas.throwFeatMissing("elements", "org.apache.uima.textmarker.type.DebugRuleMatch");
+      jcasType.jcas.throwFeatMissing("elements", "org.apache.uima.ruta.type.DebugRuleMatch");
     jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((DebugRuleMatch_Type)jcasType).casFeatCode_elements), i);
     jcasType.ll_cas.ll_setRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((DebugRuleMatch_Type)jcasType).casFeatCode_elements), i, jcasType.ll_cas.ll_getFSRef(v));}
    
@@ -99,14 +99,14 @@ public class DebugRuleMatch extends ProfiledAnnotation {
    * @generated */
   public boolean getMatched() {
     if (DebugRuleMatch_Type.featOkTst && ((DebugRuleMatch_Type)jcasType).casFeat_matched == null)
-      jcasType.jcas.throwFeatMissing("matched", "org.apache.uima.textmarker.type.DebugRuleMatch");
+      jcasType.jcas.throwFeatMissing("matched", "org.apache.uima.ruta.type.DebugRuleMatch");
     return jcasType.ll_cas.ll_getBooleanValue(addr, ((DebugRuleMatch_Type)jcasType).casFeatCode_matched);}
     
   /** setter for matched - sets  
    * @generated */
   public void setMatched(boolean v) {
     if (DebugRuleMatch_Type.featOkTst && ((DebugRuleMatch_Type)jcasType).casFeat_matched == null)
-      jcasType.jcas.throwFeatMissing("matched", "org.apache.uima.textmarker.type.DebugRuleMatch");
+      jcasType.jcas.throwFeatMissing("matched", "org.apache.uima.ruta.type.DebugRuleMatch");
     jcasType.ll_cas.ll_setBooleanValue(addr, ((DebugRuleMatch_Type)jcasType).casFeatCode_matched, v);}    
    
     
@@ -117,21 +117,21 @@ public class DebugRuleMatch extends ProfiledAnnotation {
    * @generated */
   public FSArray getDelegates() {
     if (DebugRuleMatch_Type.featOkTst && ((DebugRuleMatch_Type)jcasType).casFeat_delegates == null)
-      jcasType.jcas.throwFeatMissing("delegates", "org.apache.uima.textmarker.type.DebugRuleMatch");
+      jcasType.jcas.throwFeatMissing("delegates", "org.apache.uima.ruta.type.DebugRuleMatch");
     return (FSArray)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((DebugRuleMatch_Type)jcasType).casFeatCode_delegates)));}
     
   /** setter for delegates - sets  
    * @generated */
   public void setDelegates(FSArray v) {
     if (DebugRuleMatch_Type.featOkTst && ((DebugRuleMatch_Type)jcasType).casFeat_delegates == null)
-      jcasType.jcas.throwFeatMissing("delegates", "org.apache.uima.textmarker.type.DebugRuleMatch");
+      jcasType.jcas.throwFeatMissing("delegates", "org.apache.uima.ruta.type.DebugRuleMatch");
     jcasType.ll_cas.ll_setRefValue(addr, ((DebugRuleMatch_Type)jcasType).casFeatCode_delegates, jcasType.ll_cas.ll_getFSRef(v));}    
     
   /** indexed getter for delegates - gets an indexed value - 
    * @generated */
   public DebugScriptApply getDelegates(int i) {
     if (DebugRuleMatch_Type.featOkTst && ((DebugRuleMatch_Type)jcasType).casFeat_delegates == null)
-      jcasType.jcas.throwFeatMissing("delegates", "org.apache.uima.textmarker.type.DebugRuleMatch");
+      jcasType.jcas.throwFeatMissing("delegates", "org.apache.uima.ruta.type.DebugRuleMatch");
     jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((DebugRuleMatch_Type)jcasType).casFeatCode_delegates), i);
     return (DebugScriptApply)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((DebugRuleMatch_Type)jcasType).casFeatCode_delegates), i)));}
 
@@ -139,7 +139,7 @@ public class DebugRuleMatch extends ProfiledAnnotation {
    * @generated */
   public void setDelegates(int i, DebugScriptApply v) { 
     if (DebugRuleMatch_Type.featOkTst && ((DebugRuleMatch_Type)jcasType).casFeat_delegates == null)
-      jcasType.jcas.throwFeatMissing("delegates", "org.apache.uima.textmarker.type.DebugRuleMatch");
+      jcasType.jcas.throwFeatMissing("delegates", "org.apache.uima.ruta.type.DebugRuleMatch");
     jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((DebugRuleMatch_Type)jcasType).casFeatCode_delegates), i);
     jcasType.ll_cas.ll_setRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((DebugRuleMatch_Type)jcasType).casFeatCode_delegates), i, jcasType.ll_cas.ll_getFSRef(v));}
   }

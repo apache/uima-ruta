@@ -1,6 +1,6 @@
 
 /* First created by JCasGen Tue Aug 09 16:26:13 CEST 2011 */
-package org.apache.uima.textmarker.type;
+package org.apache.uima.ruta.type;
 
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
@@ -38,7 +38,7 @@ public class DebugRuleApply_Type extends DebugScriptApply_Type {
   public final static int typeIndexID = DebugRuleApply.typeIndexID;
   /** @generated 
      @modifiable */
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.textmarker.type.DebugRuleApply");
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.ruta.type.DebugRuleApply");
  
   /** @generated */
   final Feature casFeat_applied;
@@ -47,13 +47,13 @@ public class DebugRuleApply_Type extends DebugScriptApply_Type {
   /** @generated */ 
   public int getApplied(int addr) {
         if (featOkTst && casFeat_applied == null)
-      jcas.throwFeatMissing("applied", "org.apache.uima.textmarker.type.DebugRuleApply");
+      jcas.throwFeatMissing("applied", "org.apache.uima.ruta.type.DebugRuleApply");
     return ll_cas.ll_getIntValue(addr, casFeatCode_applied);
   }
   /** @generated */    
   public void setApplied(int addr, int v) {
         if (featOkTst && casFeat_applied == null)
-      jcas.throwFeatMissing("applied", "org.apache.uima.textmarker.type.DebugRuleApply");
+      jcas.throwFeatMissing("applied", "org.apache.uima.ruta.type.DebugRuleApply");
     ll_cas.ll_setIntValue(addr, casFeatCode_applied, v);}
     
   
@@ -65,13 +65,13 @@ public class DebugRuleApply_Type extends DebugScriptApply_Type {
   /** @generated */ 
   public int getTried(int addr) {
         if (featOkTst && casFeat_tried == null)
-      jcas.throwFeatMissing("tried", "org.apache.uima.textmarker.type.DebugRuleApply");
+      jcas.throwFeatMissing("tried", "org.apache.uima.ruta.type.DebugRuleApply");
     return ll_cas.ll_getIntValue(addr, casFeatCode_tried);
   }
   /** @generated */    
   public void setTried(int addr, int v) {
         if (featOkTst && casFeat_tried == null)
-      jcas.throwFeatMissing("tried", "org.apache.uima.textmarker.type.DebugRuleApply");
+      jcas.throwFeatMissing("tried", "org.apache.uima.ruta.type.DebugRuleApply");
     ll_cas.ll_setIntValue(addr, casFeatCode_tried, v);}
     
   
@@ -83,19 +83,19 @@ public class DebugRuleApply_Type extends DebugScriptApply_Type {
   /** @generated */ 
   public int getRules(int addr) {
         if (featOkTst && casFeat_rules == null)
-      jcas.throwFeatMissing("rules", "org.apache.uima.textmarker.type.DebugRuleApply");
+      jcas.throwFeatMissing("rules", "org.apache.uima.ruta.type.DebugRuleApply");
     return ll_cas.ll_getRefValue(addr, casFeatCode_rules);
   }
   /** @generated */    
   public void setRules(int addr, int v) {
         if (featOkTst && casFeat_rules == null)
-      jcas.throwFeatMissing("rules", "org.apache.uima.textmarker.type.DebugRuleApply");
+      jcas.throwFeatMissing("rules", "org.apache.uima.ruta.type.DebugRuleApply");
     ll_cas.ll_setRefValue(addr, casFeatCode_rules, v);}
     
    /** @generated */
   public int getRules(int addr, int i) {
         if (featOkTst && casFeat_rules == null)
-      jcas.throwFeatMissing("rules", "org.apache.uima.textmarker.type.DebugRuleApply");
+      jcas.throwFeatMissing("rules", "org.apache.uima.ruta.type.DebugRuleApply");
     if (lowLevelTypeChecks)
       return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_rules), i, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_rules), i);
@@ -105,7 +105,7 @@ public class DebugRuleApply_Type extends DebugScriptApply_Type {
   /** @generated */ 
   public void setRules(int addr, int i, int v) {
         if (featOkTst && casFeat_rules == null)
-      jcas.throwFeatMissing("rules", "org.apache.uima.textmarker.type.DebugRuleApply");
+      jcas.throwFeatMissing("rules", "org.apache.uima.ruta.type.DebugRuleApply");
     if (lowLevelTypeChecks)
       ll_cas.ll_setRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_rules), i, v, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_rules), i);
@@ -120,13 +120,13 @@ public class DebugRuleApply_Type extends DebugScriptApply_Type {
   /** @generated */ 
   public int getId(int addr) {
         if (featOkTst && casFeat_id == null)
-      jcas.throwFeatMissing("id", "org.apache.uima.textmarker.type.DebugRuleApply");
+      jcas.throwFeatMissing("id", "org.apache.uima.ruta.type.DebugRuleApply");
     return ll_cas.ll_getIntValue(addr, casFeatCode_id);
   }
   /** @generated */    
   public void setId(int addr, int v) {
         if (featOkTst && casFeat_id == null)
-      jcas.throwFeatMissing("id", "org.apache.uima.textmarker.type.DebugRuleApply");
+      jcas.throwFeatMissing("id", "org.apache.uima.ruta.type.DebugRuleApply");
     ll_cas.ll_setIntValue(addr, casFeatCode_id, v);}
     
   
@@ -138,13 +138,13 @@ public class DebugRuleApply_Type extends DebugScriptApply_Type {
   /** @generated */ 
   public String getScript(int addr) {
         if (featOkTst && casFeat_script == null)
-      jcas.throwFeatMissing("script", "org.apache.uima.textmarker.type.DebugRuleApply");
+      jcas.throwFeatMissing("script", "org.apache.uima.ruta.type.DebugRuleApply");
     return ll_cas.ll_getStringValue(addr, casFeatCode_script);
   }
   /** @generated */    
   public void setScript(int addr, String v) {
         if (featOkTst && casFeat_script == null)
-      jcas.throwFeatMissing("script", "org.apache.uima.textmarker.type.DebugRuleApply");
+      jcas.throwFeatMissing("script", "org.apache.uima.ruta.type.DebugRuleApply");
     ll_cas.ll_setStringValue(addr, casFeatCode_script, v);}
     
   

@@ -1,6 +1,6 @@
 
 /* First created by JCasGen Tue Aug 09 16:26:13 CEST 2011 */
-package org.apache.uima.textmarker.type;
+package org.apache.uima.ruta.type;
 
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
@@ -38,7 +38,7 @@ public class DebugBlockApply_Type extends DebugRuleApply_Type {
   public final static int typeIndexID = DebugBlockApply.typeIndexID;
   /** @generated 
      @modifiable */
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.textmarker.type.DebugBlockApply");
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.ruta.type.DebugBlockApply");
  
   /** @generated */
   final Feature casFeat_innerApply;
@@ -47,19 +47,19 @@ public class DebugBlockApply_Type extends DebugRuleApply_Type {
   /** @generated */ 
   public int getInnerApply(int addr) {
         if (featOkTst && casFeat_innerApply == null)
-      jcas.throwFeatMissing("innerApply", "org.apache.uima.textmarker.type.DebugBlockApply");
+      jcas.throwFeatMissing("innerApply", "org.apache.uima.ruta.type.DebugBlockApply");
     return ll_cas.ll_getRefValue(addr, casFeatCode_innerApply);
   }
   /** @generated */    
   public void setInnerApply(int addr, int v) {
         if (featOkTst && casFeat_innerApply == null)
-      jcas.throwFeatMissing("innerApply", "org.apache.uima.textmarker.type.DebugBlockApply");
+      jcas.throwFeatMissing("innerApply", "org.apache.uima.ruta.type.DebugBlockApply");
     ll_cas.ll_setRefValue(addr, casFeatCode_innerApply, v);}
     
    /** @generated */
   public int getInnerApply(int addr, int i) {
         if (featOkTst && casFeat_innerApply == null)
-      jcas.throwFeatMissing("innerApply", "org.apache.uima.textmarker.type.DebugBlockApply");
+      jcas.throwFeatMissing("innerApply", "org.apache.uima.ruta.type.DebugBlockApply");
     if (lowLevelTypeChecks)
       return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_innerApply), i, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_innerApply), i);
@@ -69,7 +69,7 @@ public class DebugBlockApply_Type extends DebugRuleApply_Type {
   /** @generated */ 
   public void setInnerApply(int addr, int i, int v) {
         if (featOkTst && casFeat_innerApply == null)
-      jcas.throwFeatMissing("innerApply", "org.apache.uima.textmarker.type.DebugBlockApply");
+      jcas.throwFeatMissing("innerApply", "org.apache.uima.ruta.type.DebugBlockApply");
     if (lowLevelTypeChecks)
       ll_cas.ll_setRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_innerApply), i, v, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_innerApply), i);

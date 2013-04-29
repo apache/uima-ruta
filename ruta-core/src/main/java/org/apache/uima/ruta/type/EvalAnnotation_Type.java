@@ -1,6 +1,6 @@
 
 /* First created by JCasGen Tue Aug 09 16:26:13 CEST 2011 */
-package org.apache.uima.textmarker.type;
+package org.apache.uima.ruta.type;
 
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
@@ -39,7 +39,7 @@ public class EvalAnnotation_Type extends Annotation_Type {
   public final static int typeIndexID = EvalAnnotation.typeIndexID;
   /** @generated 
      @modifiable */
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.textmarker.type.EvalAnnotation");
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.ruta.type.EvalAnnotation");
  
   /** @generated */
   final Feature casFeat_original;
@@ -48,13 +48,13 @@ public class EvalAnnotation_Type extends Annotation_Type {
   /** @generated */ 
   public int getOriginal(int addr) {
         if (featOkTst && casFeat_original == null)
-      jcas.throwFeatMissing("original", "org.apache.uima.textmarker.type.EvalAnnotation");
+      jcas.throwFeatMissing("original", "org.apache.uima.ruta.type.EvalAnnotation");
     return ll_cas.ll_getRefValue(addr, casFeatCode_original);
   }
   /** @generated */    
   public void setOriginal(int addr, int v) {
         if (featOkTst && casFeat_original == null)
-      jcas.throwFeatMissing("original", "org.apache.uima.textmarker.type.EvalAnnotation");
+      jcas.throwFeatMissing("original", "org.apache.uima.ruta.type.EvalAnnotation");
     ll_cas.ll_setRefValue(addr, casFeatCode_original, v);}
     
   

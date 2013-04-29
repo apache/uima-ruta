@@ -1,7 +1,7 @@
 
 
 /* First created by JCasGen Tue Aug 09 16:26:13 CEST 2011 */
-package org.apache.uima.textmarker.type;
+package org.apache.uima.ruta.type;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
@@ -11,7 +11,7 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 /** 
  * Updated by JCasGen Thu Jul 12 10:42:33 CEST 2012
- * XML source: D:/work/workspace-uima6/uimaj-textmarker/src/main/java/org/apache/uima/textmarker/engine/InternalTypeSystem.xml
+ * XML source: D:/work/workspace-uima6/uimaj-ruta/src/main/java/org/apache/uima/ruta/engine/InternalTypeSystem.xml
  * @generated */
 public class DebugBlockApply extends DebugRuleApply {
   /** @generated
@@ -65,21 +65,21 @@ public class DebugBlockApply extends DebugRuleApply {
    * @generated */
   public FSArray getInnerApply() {
     if (DebugBlockApply_Type.featOkTst && ((DebugBlockApply_Type)jcasType).casFeat_innerApply == null)
-      jcasType.jcas.throwFeatMissing("innerApply", "org.apache.uima.textmarker.type.DebugBlockApply");
+      jcasType.jcas.throwFeatMissing("innerApply", "org.apache.uima.ruta.type.DebugBlockApply");
     return (FSArray)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((DebugBlockApply_Type)jcasType).casFeatCode_innerApply)));}
     
   /** setter for innerApply - sets  
    * @generated */
   public void setInnerApply(FSArray v) {
     if (DebugBlockApply_Type.featOkTst && ((DebugBlockApply_Type)jcasType).casFeat_innerApply == null)
-      jcasType.jcas.throwFeatMissing("innerApply", "org.apache.uima.textmarker.type.DebugBlockApply");
+      jcasType.jcas.throwFeatMissing("innerApply", "org.apache.uima.ruta.type.DebugBlockApply");
     jcasType.ll_cas.ll_setRefValue(addr, ((DebugBlockApply_Type)jcasType).casFeatCode_innerApply, jcasType.ll_cas.ll_getFSRef(v));}    
     
   /** indexed getter for innerApply - gets an indexed value - 
    * @generated */
   public DebugScriptApply getInnerApply(int i) {
     if (DebugBlockApply_Type.featOkTst && ((DebugBlockApply_Type)jcasType).casFeat_innerApply == null)
-      jcasType.jcas.throwFeatMissing("innerApply", "org.apache.uima.textmarker.type.DebugBlockApply");
+      jcasType.jcas.throwFeatMissing("innerApply", "org.apache.uima.ruta.type.DebugBlockApply");
     jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((DebugBlockApply_Type)jcasType).casFeatCode_innerApply), i);
     return (DebugScriptApply)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((DebugBlockApply_Type)jcasType).casFeatCode_innerApply), i)));}
 
@@ -87,7 +87,7 @@ public class DebugBlockApply extends DebugRuleApply {
    * @generated */
   public void setInnerApply(int i, DebugScriptApply v) { 
     if (DebugBlockApply_Type.featOkTst && ((DebugBlockApply_Type)jcasType).casFeat_innerApply == null)
-      jcasType.jcas.throwFeatMissing("innerApply", "org.apache.uima.textmarker.type.DebugBlockApply");
+      jcasType.jcas.throwFeatMissing("innerApply", "org.apache.uima.ruta.type.DebugBlockApply");
     jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((DebugBlockApply_Type)jcasType).casFeatCode_innerApply), i);
     jcasType.ll_cas.ll_setRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((DebugBlockApply_Type)jcasType).casFeatCode_innerApply), i, jcasType.ll_cas.ll_getFSRef(v));}
   }

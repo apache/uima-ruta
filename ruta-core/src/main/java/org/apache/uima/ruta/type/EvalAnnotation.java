@@ -1,7 +1,7 @@
 
 
 /* First created by JCasGen Tue Aug 09 16:26:13 CEST 2011 */
-package org.apache.uima.textmarker.type;
+package org.apache.uima.ruta.type;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 /** 
  * Updated by JCasGen Thu Jul 12 10:42:33 CEST 2012
- * XML source: D:/work/workspace-uima6/uimaj-textmarker/src/main/java/org/apache/uima/textmarker/engine/InternalTypeSystem.xml
+ * XML source: D:/work/workspace-uima6/uimaj-ruta/src/main/java/org/apache/uima/ruta/engine/InternalTypeSystem.xml
  * @generated */
 public class EvalAnnotation extends Annotation {
   /** @generated
@@ -65,14 +65,14 @@ public class EvalAnnotation extends Annotation {
    * @generated */
   public Annotation getOriginal() {
     if (EvalAnnotation_Type.featOkTst && ((EvalAnnotation_Type)jcasType).casFeat_original == null)
-      jcasType.jcas.throwFeatMissing("original", "org.apache.uima.textmarker.type.EvalAnnotation");
+      jcasType.jcas.throwFeatMissing("original", "org.apache.uima.ruta.type.EvalAnnotation");
     return (Annotation)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((EvalAnnotation_Type)jcasType).casFeatCode_original)));}
     
   /** setter for original - sets  
    * @generated */
   public void setOriginal(Annotation v) {
     if (EvalAnnotation_Type.featOkTst && ((EvalAnnotation_Type)jcasType).casFeat_original == null)
-      jcasType.jcas.throwFeatMissing("original", "org.apache.uima.textmarker.type.EvalAnnotation");
+      jcasType.jcas.throwFeatMissing("original", "org.apache.uima.ruta.type.EvalAnnotation");
     jcasType.ll_cas.ll_setRefValue(addr, ((EvalAnnotation_Type)jcasType).casFeatCode_original, jcasType.ll_cas.ll_getFSRef(v));}    
   }
 

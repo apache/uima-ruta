@@ -1,6 +1,6 @@
 
 /* First created by JCasGen Tue Aug 09 16:26:13 CEST 2011 */
-package org.apache.uima.textmarker.type;
+package org.apache.uima.ruta.type;
 
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
@@ -39,7 +39,7 @@ public class DebugEvaluatedCondition_Type extends TOP_Type {
   public final static int typeIndexID = DebugEvaluatedCondition.typeIndexID;
   /** @generated 
      @modifiable */
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.textmarker.type.DebugEvaluatedCondition");
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.ruta.type.DebugEvaluatedCondition");
  
   /** @generated */
   final Feature casFeat_element;
@@ -48,13 +48,13 @@ public class DebugEvaluatedCondition_Type extends TOP_Type {
   /** @generated */ 
   public String getElement(int addr) {
         if (featOkTst && casFeat_element == null)
-      jcas.throwFeatMissing("element", "org.apache.uima.textmarker.type.DebugEvaluatedCondition");
+      jcas.throwFeatMissing("element", "org.apache.uima.ruta.type.DebugEvaluatedCondition");
     return ll_cas.ll_getStringValue(addr, casFeatCode_element);
   }
   /** @generated */    
   public void setElement(int addr, String v) {
         if (featOkTst && casFeat_element == null)
-      jcas.throwFeatMissing("element", "org.apache.uima.textmarker.type.DebugEvaluatedCondition");
+      jcas.throwFeatMissing("element", "org.apache.uima.ruta.type.DebugEvaluatedCondition");
     ll_cas.ll_setStringValue(addr, casFeatCode_element, v);}
     
   
@@ -66,13 +66,13 @@ public class DebugEvaluatedCondition_Type extends TOP_Type {
   /** @generated */ 
   public boolean getValue(int addr) {
         if (featOkTst && casFeat_value == null)
-      jcas.throwFeatMissing("value", "org.apache.uima.textmarker.type.DebugEvaluatedCondition");
+      jcas.throwFeatMissing("value", "org.apache.uima.ruta.type.DebugEvaluatedCondition");
     return ll_cas.ll_getBooleanValue(addr, casFeatCode_value);
   }
   /** @generated */    
   public void setValue(int addr, boolean v) {
         if (featOkTst && casFeat_value == null)
-      jcas.throwFeatMissing("value", "org.apache.uima.textmarker.type.DebugEvaluatedCondition");
+      jcas.throwFeatMissing("value", "org.apache.uima.ruta.type.DebugEvaluatedCondition");
     ll_cas.ll_setBooleanValue(addr, casFeatCode_value, v);}
     
   
@@ -84,19 +84,19 @@ public class DebugEvaluatedCondition_Type extends TOP_Type {
   /** @generated */ 
   public int getConditions(int addr) {
         if (featOkTst && casFeat_conditions == null)
-      jcas.throwFeatMissing("conditions", "org.apache.uima.textmarker.type.DebugEvaluatedCondition");
+      jcas.throwFeatMissing("conditions", "org.apache.uima.ruta.type.DebugEvaluatedCondition");
     return ll_cas.ll_getRefValue(addr, casFeatCode_conditions);
   }
   /** @generated */    
   public void setConditions(int addr, int v) {
         if (featOkTst && casFeat_conditions == null)
-      jcas.throwFeatMissing("conditions", "org.apache.uima.textmarker.type.DebugEvaluatedCondition");
+      jcas.throwFeatMissing("conditions", "org.apache.uima.ruta.type.DebugEvaluatedCondition");
     ll_cas.ll_setRefValue(addr, casFeatCode_conditions, v);}
     
    /** @generated */
   public int getConditions(int addr, int i) {
         if (featOkTst && casFeat_conditions == null)
-      jcas.throwFeatMissing("conditions", "org.apache.uima.textmarker.type.DebugEvaluatedCondition");
+      jcas.throwFeatMissing("conditions", "org.apache.uima.ruta.type.DebugEvaluatedCondition");
     if (lowLevelTypeChecks)
       return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_conditions), i, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_conditions), i);
@@ -106,7 +106,7 @@ public class DebugEvaluatedCondition_Type extends TOP_Type {
   /** @generated */ 
   public void setConditions(int addr, int i, int v) {
         if (featOkTst && casFeat_conditions == null)
-      jcas.throwFeatMissing("conditions", "org.apache.uima.textmarker.type.DebugEvaluatedCondition");
+      jcas.throwFeatMissing("conditions", "org.apache.uima.ruta.type.DebugEvaluatedCondition");
     if (lowLevelTypeChecks)
       ll_cas.ll_setRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_conditions), i, v, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_conditions), i);
