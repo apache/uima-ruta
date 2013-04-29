@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.engine;
+package org.apache.uima.ruta.engine;
 
 import static org.junit.Assert.assertEquals;
 
@@ -48,7 +48,7 @@ public class HtmlAnnotatorTest {
     URL url = HtmlAnnotator.class.getClassLoader().getResource("HtmlAnnotator.xml");
     if (url == null) {
       url = HtmlAnnotator.class.getClassLoader().getResource(
-              "org/apache/uima/textmarker/engine/HtmlAnnotator.xml");
+              "org/apache/uima/ruta/engine/HtmlAnnotator.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);

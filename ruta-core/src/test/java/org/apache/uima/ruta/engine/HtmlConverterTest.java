@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.engine;
+package org.apache.uima.ruta.engine;
 
 import static org.junit.Assert.assertEquals;
 
@@ -39,7 +39,7 @@ import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.apache.uima.textmarker.TextMarkerTestUtils;
+import org.apache.uima.ruta.RutaTestUtils;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
@@ -105,7 +105,7 @@ public class HtmlConverterTest {
     URL url = HtmlConverter.class.getClassLoader().getResource("HtmlConverter.xml");
     if (url == null) {
       url = HtmlConverter.class.getClassLoader().getResource(
-              "org/apache/uima/textmarker/engine/HtmlConverter.xml");
+              "org/apache/uima/ruta/engine/HtmlConverter.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
@@ -146,7 +146,7 @@ public class HtmlConverterTest {
     URL url = HtmlConverter.class.getClassLoader().getResource("HtmlConverter.xml");
     if (url == null) {
       url = HtmlConverter.class.getClassLoader().getResource(
-              "org/apache/uima/textmarker/engine/HtmlConverter.xml");
+              "org/apache/uima/ruta/engine/HtmlConverter.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
@@ -184,7 +184,7 @@ public class HtmlConverterTest {
     URL url = HtmlConverter.class.getClassLoader().getResource("HtmlConverter.xml");
     if (url == null) {
       url = HtmlConverter.class.getClassLoader().getResource(
-              "org/apache/uima/textmarker/engine/HtmlConverter.xml");
+              "org/apache/uima/ruta/engine/HtmlConverter.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
@@ -221,7 +221,7 @@ public class HtmlConverterTest {
     URL url = HtmlConverter.class.getClassLoader().getResource("HtmlConverter.xml");
     if (url == null) {
       url = HtmlConverter.class.getClassLoader().getResource(
-              "org/apache/uima/textmarker/engine/HtmlConverter.xml");
+              "org/apache/uima/ruta/engine/HtmlConverter.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
@@ -258,7 +258,7 @@ public class HtmlConverterTest {
     URL url = HtmlConverter.class.getClassLoader().getResource("HtmlConverter.xml");
     if (url == null) {
       url = HtmlConverter.class.getClassLoader().getResource(
-              "org/apache/uima/textmarker/engine/HtmlConverter.xml");
+              "org/apache/uima/ruta/engine/HtmlConverter.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
@@ -295,7 +295,7 @@ public class HtmlConverterTest {
     URL url = HtmlConverter.class.getClassLoader().getResource("HtmlConverter.xml");
     if (url == null) {
       url = HtmlConverter.class.getClassLoader().getResource(
-              "org/apache/uima/textmarker/engine/HtmlConverter.xml");
+              "org/apache/uima/ruta/engine/HtmlConverter.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
@@ -333,7 +333,7 @@ public class HtmlConverterTest {
     URL url = HtmlConverter.class.getClassLoader().getResource("HtmlConverter.xml");
     if (url == null) {
       url = HtmlConverter.class.getClassLoader().getResource(
-              "org/apache/uima/textmarker/engine/HtmlConverter.xml");
+              "org/apache/uima/ruta/engine/HtmlConverter.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
@@ -371,7 +371,7 @@ public class HtmlConverterTest {
       URL url = HtmlConverter.class.getClassLoader().getResource("HtmlConverter.xml");
       if (url == null) {
         url = HtmlConverter.class.getClassLoader().getResource(
-                "org/apache/uima/textmarker/engine/HtmlConverter.xml");
+                "org/apache/uima/ruta/engine/HtmlConverter.xml");
       }
       XMLInputSource in = new XMLInputSource(url);
       AnalysisEngineDescription specifier = (AnalysisEngineDescription) UIMAFramework
@@ -430,7 +430,7 @@ public class HtmlConverterTest {
     URL url = HtmlConverter.class.getClassLoader().getResource("HtmlConverter.xml");
     if (url == null) {
       url = HtmlConverter.class.getClassLoader().getResource(
-              "org/apache/uima/textmarker/engine/HtmlConverter.xml");
+              "org/apache/uima/ruta/engine/HtmlConverter.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     AnalysisEngineDescription specifier = (AnalysisEngineDescription) UIMAFramework
@@ -509,7 +509,7 @@ public class HtmlConverterTest {
     URL url = HtmlConverter.class.getClassLoader().getResource("HtmlConverter.xml");
     if (url == null) {
       url = HtmlConverter.class.getClassLoader().getResource(
-              "org/apache/uima/textmarker/engine/HtmlConverter.xml");
+              "org/apache/uima/ruta/engine/HtmlConverter.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
