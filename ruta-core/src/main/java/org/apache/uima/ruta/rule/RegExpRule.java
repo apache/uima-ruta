@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.rule;
+package org.apache.uima.ruta.rule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,14 +32,14 @@ import java.util.regex.Pattern;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.ScriptApply;
-import org.apache.uima.textmarker.TextMarkerBlock;
-import org.apache.uima.textmarker.TextMarkerEnvironment;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.expression.string.StringExpression;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.ScriptApply;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaEnvironment;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class RegExpRule extends AbstractRule {
 
@@ -48,14 +48,14 @@ public class RegExpRule extends AbstractRule {
   private StringExpression regexpExpr;
 
   public RegExpRule(StringExpression regexp, Map<TypeExpression, NumberExpression> typeMap, int id,
-          TextMarkerBlock parent) {
+          RutaBlock parent) {
     super(parent, id);
     this.regexpExpr = regexp;
     this.typeMap = typeMap;
   }
 
   @Override
-  public ScriptApply apply(TextMarkerStream stream, InferenceCrowd crowd) {
+  public ScriptApply apply(RutaStream stream, InferenceCrowd crowd) {
     RuleApply ruleApply = new RuleApply(this, false);
     crowd.beginVisit(this, ruleApply);
 
@@ -111,7 +111,7 @@ public class RegExpRule extends AbstractRule {
     return groupTypes;
   }
 
-  private void createAnnotations(int group, int delta, int begin, int end, List<Type> globalTypes, RegExpRuleMatch match, TextMarkerStream stream) {
+  private void createAnnotations(int group, int delta, int begin, int end, List<Type> globalTypes, RegExpRuleMatch match, RutaStream stream) {
     CAS cas = stream.getCas();
     if (begin < end) {
       for (Type type : globalTypes) {
@@ -123,7 +123,7 @@ public class RegExpRule extends AbstractRule {
   }
 
   @Override
-  public TextMarkerEnvironment getEnvironment() {
+  public RutaEnvironment getEnvironment() {
     return getParent().getEnvironment();
   }
 

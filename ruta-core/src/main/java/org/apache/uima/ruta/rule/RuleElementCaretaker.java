@@ -17,12 +17,12 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.rule;
+package org.apache.uima.ruta.rule;
 
 import java.util.List;
 
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class RuleElementCaretaker implements RuleElementContainer {
 
@@ -55,7 +55,7 @@ public class RuleElementCaretaker implements RuleElementContainer {
     return container.getRuleElements();
   }
 
-  public RuleElement getAnchoringRuleElement(TextMarkerStream stream) {
+  public RuleElement getAnchoringRuleElement(RutaStream stream) {
     List<RuleElement> ruleElements = container.getRuleElements();
     if (ruleElements.size() == 1 || containsLiteralMatcher(ruleElements)) {
       return ruleElements.get(0);
@@ -85,9 +85,9 @@ public class RuleElementCaretaker implements RuleElementContainer {
 
   private boolean containsLiteralMatcher(List<RuleElement> ruleElements) {
     for (RuleElement each : ruleElements) {
-      if(each instanceof TextMarkerRuleElement) {
-        TextMarkerRuleElement re = (TextMarkerRuleElement) each;
-        if(re.getMatcher() instanceof TextMarkerLiteralMatcher) {
+      if(each instanceof RutaRuleElement) {
+        RutaRuleElement re = (RutaRuleElement) each;
+        if(re.getMatcher() instanceof RutaLiteralMatcher) {
           return true;
         }
       }
@@ -105,13 +105,13 @@ public class RuleElementCaretaker implements RuleElementContainer {
     return ruleElements.get(ruleElements.size() - 1);
   }
 
-  public void applyRuleElements(RuleMatch ruleMatch, TextMarkerStream stream, InferenceCrowd crowd) {
+  public void applyRuleElements(RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd) {
     for (RuleElement eachElement : getRuleElements()) {
       eachElement.apply(ruleMatch, stream, crowd);
     }
   }
 
-  public TextMarkerRule getRule() {
+  public RutaRule getRule() {
     return container.getRule();
   }
 

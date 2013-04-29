@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.rule;
+package org.apache.uima.ruta.rule;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerStream;
+import org.apache.uima.ruta.RutaStream;
 
 public class RegExpRuleMatch extends AbstractRuleMatch<RegExpRule> {
 
@@ -36,7 +36,7 @@ public class RegExpRuleMatch extends AbstractRuleMatch<RegExpRule> {
   }
 
   @Override
-  public List<AnnotationFS> getMatchedAnnotationsOfRoot(TextMarkerStream stream) {
+  public List<AnnotationFS> getMatchedAnnotationsOfRoot(RutaStream stream) {
     return map.get(0);
   }
 

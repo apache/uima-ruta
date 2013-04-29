@@ -17,57 +17,57 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.rule;
+package org.apache.uima.ruta.rule;
 
 import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerBlock;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
-import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
-import org.apache.uima.textmarker.rule.quantifier.RuleElementQuantifier;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.action.AbstractRutaAction;
+import org.apache.uima.ruta.condition.AbstractRutaCondition;
+import org.apache.uima.ruta.rule.quantifier.RuleElementQuantifier;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public interface RuleElement {
 
-  void apply(RuleMatch match, TextMarkerStream stream, InferenceCrowd crowd);
+  void apply(RuleMatch match, RutaStream stream, InferenceCrowd crowd);
 
   void startMatch(RuleMatch ruleMatch, RuleApply ruleApply,
-          ComposedRuleElementMatch containerMatch, RuleElement entryPoint, TextMarkerStream stream,
+          ComposedRuleElementMatch containerMatch, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd);
 
   void continueMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
           RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
-          TextMarkerRuleElement sideStepOrigin, RuleElement entryPoint, TextMarkerStream stream,
+          RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd);
 
   void continueOwnMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
           RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
-          TextMarkerRuleElement sideStepOrigin, RuleElement entryPoint, TextMarkerStream stream,
+          RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd);
 
   
-  List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches, TextMarkerBlock parent);
+  List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches, RutaBlock parent);
 
-  Collection<AnnotationFS> getAnchors(TextMarkerStream symbolStream);
+  Collection<AnnotationFS> getAnchors(RutaStream symbolStream);
 
-  TextMarkerBlock getParent();
+  RutaBlock getParent();
 
-  TextMarkerRule getRule();
+  RutaRule getRule();
 
   RuleElementContainer getContainer();
 
   RuleElementQuantifier getQuantifier();
 
-  int estimateAnchors(TextMarkerStream stream);
+  int estimateAnchors(RutaStream stream);
 
   List<Integer> getSelfIndexList();
 
-  List<AbstractTextMarkerCondition> getConditions();
+  List<AbstractRutaCondition> getConditions();
 
-  List<AbstractTextMarkerAction> getActions();
+  List<AbstractRutaAction> getActions();
 
   boolean hasAncestor(boolean after);
 }

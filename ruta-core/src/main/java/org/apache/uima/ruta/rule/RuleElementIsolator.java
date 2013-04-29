@@ -17,12 +17,12 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.rule;
+package org.apache.uima.ruta.rule;
 
 import java.util.List;
 
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class RuleElementIsolator implements RuleElementContainer {
 
@@ -41,7 +41,7 @@ public class RuleElementIsolator implements RuleElementContainer {
     return container.getRuleElements();
   }
 
-  public RuleElement getAnchoringRuleElement(TextMarkerStream stream) {
+  public RuleElement getAnchoringRuleElement(RutaStream stream) {
     return getRuleElement();
   }
 
@@ -53,7 +53,7 @@ public class RuleElementIsolator implements RuleElementContainer {
     return getRuleElement();
   }
 
-  public void applyRuleElements(RuleMatch ruleMatch, TextMarkerStream stream, InferenceCrowd crowd) {
+  public void applyRuleElements(RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd) {
     getRuleElement().apply(ruleMatch, stream, crowd);
   }
 
@@ -61,7 +61,7 @@ public class RuleElementIsolator implements RuleElementContainer {
     return container;
   }
 
-  public void setContainer(TextMarkerRule container) {
+  public void setContainer(RutaRule container) {
     this.container = container.getRoot();
   }
 
@@ -69,7 +69,7 @@ public class RuleElementIsolator implements RuleElementContainer {
     return container.getRuleElements().get(0);
   }
 
-  public TextMarkerRule getRule() {
+  public RutaRule getRule() {
     return container.getRule();
   }
 

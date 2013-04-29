@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.rule;
+package org.apache.uima.ruta.rule;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -17,12 +17,12 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.rule;
+package org.apache.uima.ruta.rule;
 
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerStream;
+import org.apache.uima.ruta.RutaStream;
 
 public abstract class AbstractRuleMatch<T extends AbstractRule> {
 
@@ -47,10 +47,10 @@ public abstract class AbstractRuleMatch<T extends AbstractRule> {
     return true;
   }
 
-//  public abstract List<AnnotationFS> getMatchedAnnotations(TextMarkerStream stream,
+//  public abstract List<AnnotationFS> getMatchedAnnotations(RutaStream stream,
 //          List<Integer> indexes, RuleElementContainer container);
 
-  public abstract List<AnnotationFS> getMatchedAnnotationsOfRoot(TextMarkerStream stream);
+  public abstract List<AnnotationFS> getMatchedAnnotationsOfRoot(RutaStream stream);
   
  
 

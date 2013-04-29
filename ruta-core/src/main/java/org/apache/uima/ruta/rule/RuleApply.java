@@ -1,10 +1,10 @@
-package org.apache.uima.textmarker.rule;
+package org.apache.uima.ruta.rule;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.textmarker.ScriptApply;
-import org.apache.uima.textmarker.TextMarkerStatement;
+import org.apache.uima.ruta.ScriptApply;
+import org.apache.uima.ruta.RutaStatement;
 
 public class RuleApply extends ScriptApply {
 
@@ -16,7 +16,7 @@ public class RuleApply extends ScriptApply {
   
   private boolean acceptMatches;
   
-  public RuleApply(TextMarkerStatement tme, boolean remember) {
+  public RuleApply(RutaStatement tme, boolean remember) {
     super(tme);
     list = new ArrayList<AbstractRuleMatch<? extends AbstractRule>>();
     this.acceptMatches = remember;

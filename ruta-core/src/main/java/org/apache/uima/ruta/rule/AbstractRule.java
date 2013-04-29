@@ -18,16 +18,16 @@
  */
 
 
-package org.apache.uima.textmarker.rule;
+package org.apache.uima.ruta.rule;
 
-import org.apache.uima.textmarker.TextMarkerBlock;
-import org.apache.uima.textmarker.TextMarkerStatement;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStatement;
 
-public abstract class AbstractRule extends TextMarkerStatement {
+public abstract class AbstractRule extends RutaStatement {
 
   private final int id;
   
-  public AbstractRule(TextMarkerBlock parent, int id) {
+  public AbstractRule(RutaBlock parent, int id) {
     super(parent);
     this.id = id;
   }

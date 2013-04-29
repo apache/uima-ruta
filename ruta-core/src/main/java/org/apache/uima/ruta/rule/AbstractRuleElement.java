@@ -17,36 +17,36 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.rule;
+package org.apache.uima.ruta.rule;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.uima.textmarker.TextMarkerBlock;
-import org.apache.uima.textmarker.TextMarkerElement;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
-import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
-import org.apache.uima.textmarker.rule.quantifier.NormalQuantifier;
-import org.apache.uima.textmarker.rule.quantifier.RuleElementQuantifier;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaElement;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.action.AbstractRutaAction;
+import org.apache.uima.ruta.condition.AbstractRutaCondition;
+import org.apache.uima.ruta.rule.quantifier.NormalQuantifier;
+import org.apache.uima.ruta.rule.quantifier.RuleElementQuantifier;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public abstract class AbstractRuleElement extends TextMarkerElement implements RuleElement {
+public abstract class AbstractRuleElement extends RutaElement implements RuleElement {
 
   protected RuleElementQuantifier quantifier;
 
-  protected List<AbstractTextMarkerCondition> conditions;
+  protected List<AbstractRutaCondition> conditions;
 
-  protected List<AbstractTextMarkerAction> actions;
+  protected List<AbstractRutaAction> actions;
 
   private RuleElementContainer container;
 
-  protected TextMarkerBlock parent;
+  protected RutaBlock parent;
 
   public AbstractRuleElement(RuleElementQuantifier quantifier,
-          List<AbstractTextMarkerCondition> conditions, List<AbstractTextMarkerAction> actions,
-          RuleElementContainer container, TextMarkerBlock parent) {
+          List<AbstractRutaCondition> conditions, List<AbstractRutaAction> actions,
+          RuleElementContainer container, RutaBlock parent) {
     super();
     this.quantifier = quantifier;
     this.conditions = conditions;
@@ -54,10 +54,10 @@ public abstract class AbstractRuleElement extends TextMarkerElement implements R
     this.container = container;
     this.parent = parent;
     if (this.conditions == null) {
-      this.conditions = new ArrayList<AbstractTextMarkerCondition>();
+      this.conditions = new ArrayList<AbstractRutaCondition>();
     }
     if (this.actions == null) {
-      this.actions = new ArrayList<AbstractTextMarkerAction>();
+      this.actions = new ArrayList<AbstractRutaAction>();
     }
     if (this.quantifier == null) {
       this.quantifier = new NormalQuantifier();
@@ -67,7 +67,7 @@ public abstract class AbstractRuleElement extends TextMarkerElement implements R
   @SuppressWarnings("unchecked")
   protected final InferenceCrowd emptyCrowd = new InferenceCrowd(Collections.EMPTY_LIST);
 
-  protected void doneMatching(RuleMatch ruleMatch, RuleApply ruleApply, TextMarkerStream stream,
+  protected void doneMatching(RuleMatch ruleMatch, RuleApply ruleApply, RutaStream stream,
           InferenceCrowd crowd) {
     if (!ruleMatch.isApplied()) {
       ruleApply.add(ruleMatch);
@@ -78,8 +78,8 @@ public abstract class AbstractRuleElement extends TextMarkerElement implements R
     }
   }
 
-  public void apply(RuleMatch ruleMatch, TextMarkerStream stream, InferenceCrowd crowd) {
-    for (AbstractTextMarkerAction action : actions) {
+  public void apply(RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd) {
+    for (AbstractRutaAction action : actions) {
       crowd.beginVisit(action, null);
       action.execute(ruleMatch, this, stream, crowd);
       crowd.endVisit(action, null);
@@ -98,7 +98,7 @@ public abstract class AbstractRuleElement extends TextMarkerElement implements R
   }
 
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
-          TextMarkerBlock parent) {
+          RutaBlock parent) {
     return quantifier.evaluateMatches(matches, parent, emptyCrowd);
   }
 
@@ -131,23 +131,23 @@ public abstract class AbstractRuleElement extends TextMarkerElement implements R
     return quantifier;
   }
 
-  public TextMarkerBlock getParent() {
+  public RutaBlock getParent() {
     return parent;
   }
 
-  public List<AbstractTextMarkerCondition> getConditions() {
+  public List<AbstractRutaCondition> getConditions() {
     return conditions;
   }
 
-  public void setConditions(List<AbstractTextMarkerCondition> conditions) {
+  public void setConditions(List<AbstractRutaCondition> conditions) {
     this.conditions = conditions;
   }
 
-  public List<AbstractTextMarkerAction> getActions() {
+  public List<AbstractRutaAction> getActions() {
     return actions;
   }
 
-  public void setActions(List<AbstractTextMarkerAction> actions) {
+  public void setActions(List<AbstractRutaAction> actions) {
     this.actions = actions;
   }
 
@@ -155,7 +155,7 @@ public abstract class AbstractRuleElement extends TextMarkerElement implements R
     this.quantifier = quantifier;
   }
 
-  public TextMarkerRule getRule() {
+  public RutaRule getRule() {
     return container.getRule();
   }
 

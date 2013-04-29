@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.rule;
+package org.apache.uima.ruta.rule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,32 +32,32 @@ import org.apache.uima.cas.FSTypeConstraint;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.textmarker.TextMarkerBlock;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
-import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
-import org.apache.uima.textmarker.expression.string.StringExpression;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
-import org.apache.uima.textmarker.type.TextMarkerFrame;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.action.AbstractRutaAction;
+import org.apache.uima.ruta.condition.AbstractRutaCondition;
+import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.type.RutaBasic;
+import org.apache.uima.ruta.type.RutaFrame;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class WildCardRuleElement extends AbstractRuleElement {
 
-  public WildCardRuleElement(List<AbstractTextMarkerCondition> conditions,
-          List<AbstractTextMarkerAction> actions, RuleElementContainer container,
-          TextMarkerBlock parent) {
+  public WildCardRuleElement(List<AbstractRutaCondition> conditions,
+          List<AbstractRutaAction> actions, RuleElementContainer container,
+          RutaBlock parent) {
     super(null, conditions, actions, container, parent);
   }
 
   public void startMatch(RuleMatch ruleMatch, RuleApply ruleApply,
-          ComposedRuleElementMatch containerMatch, RuleElement entryPoint, TextMarkerStream stream,
+          ComposedRuleElementMatch containerMatch, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
     continueMatch(true, null, ruleMatch, ruleApply, containerMatch, null, entryPoint, stream, crowd);
   }
 
   public void continueMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
           RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
-          TextMarkerRuleElement sideStepOrigin, RuleElement entryPoint, TextMarkerStream stream,
+          RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
     RuleElement nextElement = getContainer().getNextElement(after, this);
 
@@ -68,8 +68,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
 
   private void tryWithNextRuleElement(RuleElement nextElement, boolean after,
           AnnotationFS annotation, RuleMatch ruleMatch, RuleApply ruleApply,
-          ComposedRuleElementMatch containerMatch, TextMarkerRuleElement sideStepOrigin,
-          RuleElement entryPoint, TextMarkerStream stream, InferenceCrowd crowd) {
+          ComposedRuleElementMatch containerMatch, RutaRuleElement sideStepOrigin,
+          RuleElement entryPoint, RutaStream stream, InferenceCrowd crowd) {
     // what is the next stuff that should match?
     if (nextElement == null) {
       AnnotationFS afs = getCoveredByWildCard(after, annotation, null, stream);
@@ -77,16 +77,16 @@ public class WildCardRuleElement extends AbstractRuleElement {
       ComposedRuleElement composed = (ComposedRuleElement) getContainer();
       composed.fallbackContinue(after, ruleMatch.matched(), afs, ruleMatch, ruleApply,
               containerMatch, sideStepOrigin, entryPoint, stream, crowd);
-    } else if (nextElement instanceof TextMarkerRuleElement) {
-      TextMarkerRuleElement re = (TextMarkerRuleElement) nextElement;
-      TextMarkerMatcher matcher = re.getMatcher();
-      if (matcher instanceof TextMarkerTypeMatcher) {
+    } else if (nextElement instanceof RutaRuleElement) {
+      RutaRuleElement re = (RutaRuleElement) nextElement;
+      RutaMatcher matcher = re.getMatcher();
+      if (matcher instanceof RutaTypeMatcher) {
         tryWithNextType(after, annotation, nextElement, null, ruleMatch, ruleApply, containerMatch,
                 sideStepOrigin, stream, crowd);
-      } else if (matcher instanceof TextMarkerLiteralMatcher) {
+      } else if (matcher instanceof RutaLiteralMatcher) {
         tryWithNextLiteral(after, annotation, re, ruleMatch, ruleApply, containerMatch,
                 sideStepOrigin, stream, crowd);
-      } else if (matcher instanceof TextMarkerDisjunctiveMatcher) {
+      } else if (matcher instanceof RutaDisjunctiveMatcher) {
         tryWithNextType(after, annotation, re, null, ruleMatch, ruleApply, containerMatch,
                 sideStepOrigin, stream, crowd);
       }
@@ -121,12 +121,12 @@ public class WildCardRuleElement extends AbstractRuleElement {
 
   private void tryWithNextComposed(boolean after, AnnotationFS annotation, ComposedRuleElement cre,
           RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
-          TextMarkerRuleElement sideStepOrigin, TextMarkerStream stream, InferenceCrowd crowd) {
+          RutaRuleElement sideStepOrigin, RutaStream stream, InferenceCrowd crowd) {
     AnnotationFS nextOne = annotation;
     boolean doneHere = false;
     while (!doneHere
             && (nextOne = getNextPositionForComposed(cre, after, nextOne, stream)) != null) {
-      TextMarkerBasic endAnchor = stream.getEndAnchor(nextOne.getBegin());
+      RutaBasic endAnchor = stream.getEndAnchor(nextOne.getBegin());
       ComposedRuleElementMatch extendedContainerMatch = containerMatch.copy();
       RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch);
       AnnotationFS coveredByWildCard = getCoveredByWildCard(after, annotation, nextOne, stream);
@@ -167,7 +167,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
   }
 
   private AnnotationFS getNextPositionForComposed(ComposedRuleElement cre, boolean after,
-          AnnotationFS annotation, TextMarkerStream stream) {
+          AnnotationFS annotation, RutaStream stream) {
     RuleElement element = getNextAtomicRuleElement(cre, after);
     AnnotationFS result = null;
     if (element instanceof WildCardRuleElement) {
@@ -177,16 +177,16 @@ public class WildCardRuleElement extends AbstractRuleElement {
         return stream.getAnchor(after, annotation.getBegin());
       }
     } else {
-      TextMarkerRuleElement re = (TextMarkerRuleElement) element;
-      TextMarkerMatcher matcher = re.getMatcher();
-      if (matcher instanceof TextMarkerTypeMatcher) {
+      RutaRuleElement re = (RutaRuleElement) element;
+      RutaMatcher matcher = re.getMatcher();
+      if (matcher instanceof RutaTypeMatcher) {
         FSIterator<AnnotationFS> iterator = getIterator(after, annotation, re, null, stream);
 //        moveOn(after, iterator);
         if (iterator.isValid()) {
           result = iterator.get();
         }
-      } else if (matcher instanceof TextMarkerLiteralMatcher) {
-        TextMarkerLiteralMatcher lm = (TextMarkerLiteralMatcher) matcher;
+      } else if (matcher instanceof RutaLiteralMatcher) {
+        RutaLiteralMatcher lm = (RutaLiteralMatcher) matcher;
         StringExpression expression = lm.getExpression();
         String stringValue = expression.getStringValue(parent);
         AnnotationFS documentAnnotation = stream.getDocumentAnnotation();
@@ -225,14 +225,14 @@ public class WildCardRuleElement extends AbstractRuleElement {
 
   private void tryWithNextType(boolean after, AnnotationFS annotation, RuleElement nextElement,
           Type defaultType, RuleMatch ruleMatch, RuleApply ruleApply,
-          ComposedRuleElementMatch containerMatch, TextMarkerRuleElement sideStepOrigin,
-          TextMarkerStream stream, InferenceCrowd crowd) {
+          ComposedRuleElementMatch containerMatch, RutaRuleElement sideStepOrigin,
+          RutaStream stream, InferenceCrowd crowd) {
     FSIterator<AnnotationFS> iterator = getIterator(after, annotation, nextElement, defaultType,
             stream);
     boolean doneHere = false;
     while (!doneHere && iterator.isValid() && stream.isVisible(iterator.get())) {
       AnnotationFS nextOne = iterator.get();
-      TextMarkerBasic endAnchor = stream.getEndAnchor(nextOne.getBegin());
+      RutaBasic endAnchor = stream.getEndAnchor(nextOne.getBegin());
       ComposedRuleElementMatch extendedContainerMatch = containerMatch.copy();
       RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch);
 
@@ -258,18 +258,18 @@ public class WildCardRuleElement extends AbstractRuleElement {
   }
 
   private FSIterator<AnnotationFS> getIterator(boolean after, AnnotationFS annotation,
-          RuleElement nextElement, Type defaultType, TextMarkerStream stream) {
+          RuleElement nextElement, Type defaultType, RutaStream stream) {
     CAS cas = stream.getCas();
     FSIterator<AnnotationFS> iterator = null;
     if (defaultType == null) {
-      TextMarkerRuleElement re = (TextMarkerRuleElement) nextElement;
-      TextMarkerMatcher matcher = re.getMatcher();
-      if (matcher instanceof TextMarkerTypeMatcher) {
-        TextMarkerTypeMatcher typeMatcher = (TextMarkerTypeMatcher) re.getMatcher();
+      RutaRuleElement re = (RutaRuleElement) nextElement;
+      RutaMatcher matcher = re.getMatcher();
+      if (matcher instanceof RutaTypeMatcher) {
+        RutaTypeMatcher typeMatcher = (RutaTypeMatcher) re.getMatcher();
         List<Type> types = typeMatcher.getTypes(parent, stream);
         Type type = types.get(0);
         iterator = getIteratorOfType(type, annotation, stream);
-      } else if (matcher instanceof TextMarkerDisjunctiveMatcher) {
+      } else if (matcher instanceof RutaDisjunctiveMatcher) {
         List<Type> types = matcher.getTypes(parent, stream);
         iterator = getIteratorForDisjunctive(cas, types, after, annotation, stream);
       } else {
@@ -282,7 +282,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
   }
 
   private FSIterator<AnnotationFS> getIteratorOfType(Type type, AnnotationFS annotation,
-          TextMarkerStream stream) {
+          RutaStream stream) {
     CAS cas = stream.getCas();
     FSIterator<AnnotationFS> result = null;
     if(stream.getDocumentAnnotation().equals(cas.getDocumentAnnotation())) {
@@ -299,7 +299,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
       } catch (CASException e) {
         e.printStackTrace();
       }
-      TextMarkerFrame window = new TextMarkerFrame(jcas, stream.getDocumentAnnotation().getBegin(), stream.getDocumentAnnotation().getEnd());
+      RutaFrame window = new RutaFrame(jcas, stream.getDocumentAnnotation().getBegin(), stream.getDocumentAnnotation().getEnd());
       if(annotation == null) {
         result = cas.getAnnotationIndex(type).subiterator(window);
       } else {
@@ -312,10 +312,10 @@ public class WildCardRuleElement extends AbstractRuleElement {
   }
 
   private void tryWithNextLiteral(boolean after, AnnotationFS annotation,
-          TextMarkerRuleElement nextElement, RuleMatch ruleMatch, RuleApply ruleApply,
-          ComposedRuleElementMatch containerMatch, TextMarkerRuleElement sideStepOrigin,
-          TextMarkerStream stream, InferenceCrowd crowd) {
-    TextMarkerLiteralMatcher matcher = (TextMarkerLiteralMatcher) nextElement.getMatcher();
+          RutaRuleElement nextElement, RuleMatch ruleMatch, RuleApply ruleApply,
+          ComposedRuleElementMatch containerMatch, RutaRuleElement sideStepOrigin,
+          RutaStream stream, InferenceCrowd crowd) {
+    RutaLiteralMatcher matcher = (RutaLiteralMatcher) nextElement.getMatcher();
     StringExpression expression = matcher.getExpression();
     String stringValue = expression.getStringValue(parent);
     AnnotationFS documentAnnotation = stream.getDocumentAnnotation();
@@ -336,8 +336,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
         doneHere = true;
         break;
       }
-      TextMarkerBasic anchor = stream.getAnchor(after, indexOf+delta);
-      TextMarkerBasic endAnchor = stream.getAnchor(!after, indexOf+delta);
+      RutaBasic anchor = stream.getAnchor(after, indexOf+delta);
+      RutaBasic endAnchor = stream.getAnchor(!after, indexOf+delta);
       ComposedRuleElementMatch extendedContainerMatch = containerMatch.copy();
       RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch);
       AnnotationFS coveredByWildCard = getCoveredByWildCard(after, annotation, anchor, stream);
@@ -367,7 +367,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
   }
 
   private FSIterator<AnnotationFS> getIteratorForDisjunctive(CAS cas, List<Type> types,
-          boolean after, AnnotationFS annotation, TextMarkerStream stream) {
+          boolean after, AnnotationFS annotation, RutaStream stream) {
     ConstraintFactory cf = cas.getConstraintFactory();
     FSTypeConstraint typeConstraint = cf.createTypeConstraint();
     for (Type each : types) {
@@ -401,7 +401,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
   }
 
   private AnnotationFS getCoveredByWildCard(boolean after, AnnotationFS last,
-          AnnotationFS next, TextMarkerStream stream) {
+          AnnotationFS next, RutaStream stream) {
     CAS cas = stream.getCas();
     Type type = cas.getAnnotationType();
     AnnotationFS documentAnnotation = stream.getDocumentAnnotation();
@@ -432,7 +432,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
   }
 
   private void doMatch(AnnotationFS annotation, RuleMatch ruleMatch,
-          ComposedRuleElementMatch containerMatch, boolean ruleAnchor, TextMarkerStream stream,
+          ComposedRuleElementMatch containerMatch, boolean ruleAnchor, RutaStream stream,
           InferenceCrowd crowd) {
     RuleElementMatch result = new RuleElementMatch(this, containerMatch);
     result.setRuleAnchor(ruleAnchor);
@@ -441,7 +441,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
     boolean base = true;
     List<AnnotationFS> textsMatched = new ArrayList<AnnotationFS>(1);
     if (base) {
-      for (AbstractTextMarkerCondition condition : conditions) {
+      for (AbstractRutaCondition condition : conditions) {
         crowd.beginVisit(condition, null);
         EvaluatedCondition eval = condition.eval(annotation, this, stream, crowd);
         crowd.endVisit(condition, null);
@@ -460,18 +460,18 @@ public class WildCardRuleElement extends AbstractRuleElement {
 
   public void continueOwnMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
           RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
-          TextMarkerRuleElement sideStepOrigin, RuleElement entryPoint, TextMarkerStream stream,
+          RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
     // won't happen
   }
 
-  public Collection<AnnotationFS> getAnchors(TextMarkerStream symbolStream) {
+  public Collection<AnnotationFS> getAnchors(RutaStream symbolStream) {
     // shouldn't happen
     // really? what about anchoring at start?
     return Collections.emptyList();
   }
 
-  public int estimateAnchors(TextMarkerStream stream) {
+  public int estimateAnchors(RutaStream stream) {
     return Integer.MAX_VALUE;
   }
 

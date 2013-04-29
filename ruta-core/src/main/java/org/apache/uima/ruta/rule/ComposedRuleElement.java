@@ -17,19 +17,19 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.rule;
+package org.apache.uima.ruta.rule;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerBlock;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
-import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
-import org.apache.uima.textmarker.rule.quantifier.RuleElementQuantifier;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.action.AbstractRutaAction;
+import org.apache.uima.ruta.condition.AbstractRutaCondition;
+import org.apache.uima.ruta.rule.quantifier.RuleElementQuantifier;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class ComposedRuleElement extends AbstractRuleElement implements RuleElementContainer {
 
@@ -38,20 +38,20 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
   protected RuleElementContainer caretaker;
 
   public ComposedRuleElement(List<RuleElement> elements, RuleElementQuantifier quantifier,
-          List<AbstractTextMarkerCondition> conditions, List<AbstractTextMarkerAction> actions,
-          RuleElementContainer container, TextMarkerBlock parent) {
+          List<AbstractRutaCondition> conditions, List<AbstractRutaAction> actions,
+          RuleElementContainer container, RutaBlock parent) {
     super(quantifier, conditions, actions, container, parent);
     this.elements = elements;
     this.caretaker = new RuleElementCaretaker(this);
   }
 
-  public void apply(RuleMatch match, TextMarkerStream symbolStream, InferenceCrowd crowd) {
+  public void apply(RuleMatch match, RutaStream symbolStream, InferenceCrowd crowd) {
     applyRuleElements(match, symbolStream, crowd);
     super.apply(match, symbolStream, crowd);
   }
 
   public void startMatch(RuleMatch ruleMatch, RuleApply ruleApply,
-          ComposedRuleElementMatch containerMatch, RuleElement entryPoint, TextMarkerStream stream,
+          ComposedRuleElementMatch containerMatch, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
     RuleElement anchorElement = getAnchoringRuleElement(stream);
     ComposedRuleElementMatch composedMatch = createComposedMatch(ruleMatch, containerMatch);
@@ -67,7 +67,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
 
   public void continueMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
           RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
-          TextMarkerRuleElement sideStepOrigin, RuleElement entryPoint, TextMarkerStream stream,
+          RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
     RuleElement nextElement = getNextElement(after, this);
     if (nextElement != null) {
@@ -82,7 +82,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
 
   public void continueOwnMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
           RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
-          TextMarkerRuleElement sideStepOrigin, RuleElement entryPoint, TextMarkerStream stream,
+          RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
     if (!stream.isSimpleGreedyForComposed()) {
       continueMatch(after, annotation, ruleMatch, ruleApply, containerMatch, sideStepOrigin,
@@ -125,7 +125,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
 
   public void fallbackContinue(boolean after, boolean failed, AnnotationFS annotation,
           RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
-          TextMarkerRuleElement sideStepOrigin, RuleElement entryPoint, TextMarkerStream stream,
+          RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
     RuleElementContainer container = getContainer();
     doMatch(containerMatch, stream, crowd);
@@ -187,7 +187,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
 
   private void fallback(boolean after, boolean failed, AnnotationFS annotation,
           RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
-          TextMarkerRuleElement sideStepOrigin, RuleElement entryPoint, TextMarkerStream stream,
+          RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
     RuleElementContainer parentContainer = getContainer();
     if (parentContainer instanceof ComposedRuleElement) {
@@ -211,7 +211,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     }
   }
 
-  private void doMatch(ComposedRuleElementMatch match, TextMarkerStream stream, InferenceCrowd crowd) {
+  private void doMatch(ComposedRuleElementMatch match, RutaStream stream, InferenceCrowd crowd) {
     List<AnnotationFS> textsMatched = match.getTextsMatched();
     if (textsMatched == null || textsMatched.isEmpty()) {
       return;
@@ -223,7 +223,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
 
     List<EvaluatedCondition> evaluatedConditions = new ArrayList<EvaluatedCondition>(
             conditions.size());
-    for (AbstractTextMarkerCondition condition : conditions) {
+    for (AbstractRutaCondition condition : conditions) {
       crowd.beginVisit(condition, null);
       EvaluatedCondition eval = condition.eval(annotation, this, stream, crowd);
       crowd.endVisit(condition, null);
@@ -233,13 +233,13 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     match.evaluateInnerMatches(true);
   }
 
-  public Collection<AnnotationFS> getAnchors(TextMarkerStream stream) {
+  public Collection<AnnotationFS> getAnchors(RutaStream stream) {
     RuleElement anchorElement = getAnchoringRuleElement(stream);
     Collection<AnnotationFS> anchors = anchorElement.getAnchors(stream);
     return anchors;
   }
 
-  public int estimateAnchors(TextMarkerStream stream) {
+  public int estimateAnchors(RutaStream stream) {
     int result = 1;
     for (RuleElement each : elements) {
       result += each.estimateAnchors(stream);
@@ -247,7 +247,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     return result;
   }
 
-  public RuleElement getAnchoringRuleElement(TextMarkerStream stream) {
+  public RuleElement getAnchoringRuleElement(RutaStream stream) {
     return caretaker.getAnchoringRuleElement(stream);
   }
 
@@ -267,7 +267,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     return caretaker.getLastElement();
   }
 
-  public void applyRuleElements(RuleMatch ruleMatch, TextMarkerStream stream, InferenceCrowd crowd) {
+  public void applyRuleElements(RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd) {
     caretaker.applyRuleElements(ruleMatch, stream, crowd);
   }
 

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.rule;
+package org.apache.uima.ruta.rule;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -29,11 +29,11 @@ import java.util.Set;
 
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.textmarker.ScriptApply;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
+import org.apache.uima.ruta.ScriptApply;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.action.AbstractRutaAction;
 
-public class RuleMatch extends AbstractRuleMatch<TextMarkerRule> {
+public class RuleMatch extends AbstractRuleMatch<RutaRule> {
 
   private static class RuleMatchComparator implements Comparator<RuleElementMatch> {
 
@@ -49,21 +49,21 @@ public class RuleMatch extends AbstractRuleMatch<TextMarkerRule> {
 
   private boolean applied = false;
 
-  private Map<AbstractTextMarkerAction, ScriptApply> delegateApply;
+  private Map<AbstractRutaAction, ScriptApply> delegateApply;
 
   // private Map<RuleElement, List<RuleElementMatch>> map;
 
   private ComposedRuleElementMatch rootMatch;
 
-  public RuleMatch(TextMarkerRule rule) {
+  public RuleMatch(RutaRule rule) {
     super(rule);
     // map = new TreeMap<RuleElement, List<RuleElementMatch>>(
     // new RuleElementComparator(rule.getRoot()));
-    delegateApply = new HashMap<AbstractTextMarkerAction, ScriptApply>(0);
+    delegateApply = new HashMap<AbstractRutaAction, ScriptApply>(0);
   }
 
   public boolean processMatchInfo(RuleElement ruleElement,
-          List<RuleElementMatch> ruleElementMatches, TextMarkerStream stream) {
+          List<RuleElementMatch> ruleElementMatches, RutaStream stream) {
     // return true, if you changed the matches -> current basic needs to be set correctly
     // TODO remove this here?!
     boolean result = false;
@@ -85,22 +85,22 @@ public class RuleMatch extends AbstractRuleMatch<TextMarkerRule> {
     return matched && rootMatch.matched();
   }
 
-  public List<AnnotationFS> getMatchedAnnotationsOf(RuleElement element, TextMarkerStream stream) {
+  public List<AnnotationFS> getMatchedAnnotationsOf(RuleElement element, RutaStream stream) {
     return getMatchedAnnotations(stream, element.getSelfIndexList(), element.getContainer());
   }
 
   @Override
-  public List<AnnotationFS> getMatchedAnnotationsOfRoot(TextMarkerStream stream) {
-    return getMatchedAnnotationsOf(((TextMarkerRule)getRule()).getRoot(), stream);
+  public List<AnnotationFS> getMatchedAnnotationsOfRoot(RutaStream stream) {
+    return getMatchedAnnotationsOf(((RutaRule)getRule()).getRoot(), stream);
   }
   
   
-  public List<AnnotationFS> getMatchedAnnotations(TextMarkerStream stream, List<Integer> indexes,
+  public List<AnnotationFS> getMatchedAnnotations(RutaStream stream, List<Integer> indexes,
           RuleElementContainer container) {
     List<AnnotationFS> result = new ArrayList<AnnotationFS>();
     indexes = extendIndexes(indexes);
     if (container == null) {
-      container = ((TextMarkerRule)rule).getRoot();
+      container = ((RutaRule)rule).getRoot();
     }
 
     // TODO refactor this!
@@ -196,11 +196,11 @@ public class RuleMatch extends AbstractRuleMatch<TextMarkerRule> {
     return result.toString();
   }
 
-  public Map<AbstractTextMarkerAction, ScriptApply> getDelegateApply() {
+  public Map<AbstractRutaAction, ScriptApply> getDelegateApply() {
     return delegateApply;
   }
 
-  public void addDelegateApply(AbstractTextMarkerAction action, ScriptApply scriptApply) {
+  public void addDelegateApply(AbstractRutaAction action, ScriptApply scriptApply) {
     delegateApply.put(action, scriptApply);
   }
 
@@ -217,7 +217,7 @@ public class RuleMatch extends AbstractRuleMatch<TextMarkerRule> {
       copy.setRootMatch(rootMatch.copy(extendedContainerMatch));
     }
 
-    Map<AbstractTextMarkerAction, ScriptApply> newDelegateApply = new HashMap<AbstractTextMarkerAction, ScriptApply>(
+    Map<AbstractRutaAction, ScriptApply> newDelegateApply = new HashMap<AbstractRutaAction, ScriptApply>(
             delegateApply);
     copy.setDelegateApply(newDelegateApply);
     return copy;
@@ -231,7 +231,7 @@ public class RuleMatch extends AbstractRuleMatch<TextMarkerRule> {
     }
   }
 
-  public void setDelegateApply(Map<AbstractTextMarkerAction, ScriptApply> delegateApply) {
+  public void setDelegateApply(Map<AbstractRutaAction, ScriptApply> delegateApply) {
     this.delegateApply = delegateApply;
   }
 

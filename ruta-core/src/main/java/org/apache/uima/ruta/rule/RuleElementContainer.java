@@ -17,12 +17,12 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.rule;
+package org.apache.uima.ruta.rule;
 
 import java.util.List;
 
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public interface RuleElementContainer {
 
@@ -36,11 +36,11 @@ public interface RuleElementContainer {
 
   RuleElement getLastElement();
 
-  RuleElement getAnchoringRuleElement(TextMarkerStream stream);
+  RuleElement getAnchoringRuleElement(RutaStream stream);
 
-  void applyRuleElements(RuleMatch ruleMatch, TextMarkerStream stream, InferenceCrowd crowd);
+  void applyRuleElements(RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd);
 
-  TextMarkerRule getRule();
+  RutaRule getRule();
 
   RuleElement getNextElement(boolean after, RuleElement ruleElement);
 

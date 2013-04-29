@@ -17,17 +17,17 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.rule;
+package org.apache.uima.ruta.rule;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
-import org.apache.uima.textmarker.condition.NotCondition;
+import org.apache.uima.ruta.condition.AbstractRutaCondition;
+import org.apache.uima.ruta.condition.NotCondition;
 
 public class EvaluatedCondition {
 
-  private final AbstractTextMarkerCondition condition;
+  private final AbstractRutaCondition condition;
 
   private final boolean value;
 
@@ -35,7 +35,7 @@ public class EvaluatedCondition {
 
   private final List<EvaluatedCondition> noConditions = new ArrayList<EvaluatedCondition>(0);
 
-  public EvaluatedCondition(AbstractTextMarkerCondition condition, boolean value,
+  public EvaluatedCondition(AbstractRutaCondition condition, boolean value,
           List<EvaluatedCondition> conditions) {
     super();
     this.condition = condition;
@@ -43,7 +43,7 @@ public class EvaluatedCondition {
     this.conditions = conditions;
   }
 
-  public EvaluatedCondition(AbstractTextMarkerCondition condition, boolean value) {
+  public EvaluatedCondition(AbstractRutaCondition condition, boolean value) {
     super();
     this.condition = condition;
     this.value = value;
@@ -58,7 +58,7 @@ public class EvaluatedCondition {
     conditions.add(eval);
   }
 
-  public AbstractTextMarkerCondition getCondition() {
+  public AbstractRutaCondition getCondition() {
     return condition;
   }
 
