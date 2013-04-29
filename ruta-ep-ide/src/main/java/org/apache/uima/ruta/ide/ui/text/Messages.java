@@ -17,14 +17,14 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.ide.ui.text;
+package org.apache.uima.ruta.ide.ui.text;
 
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-  private static final String BUNDLE_NAME = "org.apache.uima.textmarker.ide.ui.text.messages"; //$NON-NLS-1$
+  private static final String BUNDLE_NAME = "org.apache.uima.ruta.ide.ui.text.messages"; //$NON-NLS-1$
 
-  public static String TextMarkerRequirePackageMarkerResolution_addPackageToBuildpath;
+  public static String RutaRequirePackageMarkerResolution_addPackageToBuildpath;
   static {
     // initialize resource bundle
     NLS.initializeMessages(BUNDLE_NAME, Messages.class);

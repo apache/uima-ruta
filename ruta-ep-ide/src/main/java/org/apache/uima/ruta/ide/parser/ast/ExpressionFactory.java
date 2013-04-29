@@ -17,14 +17,14 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.ide.parser.ast;
+package org.apache.uima.ruta.ide.parser.ast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.Token;
-import org.apache.uima.textmarker.parser.TextMarkerLexer;
+import org.apache.uima.ruta.parser.RutaLexer;
 import org.eclipse.dltk.ast.expressions.BooleanLiteral;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.ExpressionConstants;
@@ -43,57 +43,57 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
    */
   private static VariableReference newVariableReference(Token ref, int kind) {
     int bounds[] = getBounds(ref);
-    return new TextMarkerVariableReference(bounds[0], bounds[1], ref.getText(), kind);
+    return new RutaVariableReference(bounds[0], bounds[1], ref.getText(), kind);
   }
 
   public static VariableReference createGenericVariableReference(Token ref) {
     return newVariableReference(ref, TMTypeConstants.TM_TYPE_G);
   }
 
-  public static TextMarkerQuantifierLiteralExpression createQuantifierLiteralExpression(Token q,
+  public static RutaQuantifierLiteralExpression createQuantifierLiteralExpression(Token q,
           Token q2) {
     int bounds[] = getBounds(q);
     if (q2 != null) {
       bounds[1] = Math.max(bounds[1], getBounds(q2)[1]);
     }
-    return new TextMarkerQuantifierLiteralExpression(bounds[0], bounds[1], q.getText());
+    return new RutaQuantifierLiteralExpression(bounds[0], bounds[1], q.getText());
   }
 
   // =====> BOOLEAN-EXPRESSIONS <======
   public static Expression createBooleanExpression(Expression e) {
     if (e == null)
       return null;
-    return new TextMarkerExpression(e.sourceStart(), e.sourceEnd(), e, TMTypeConstants.TM_TYPE_B);
+    return new RutaExpression(e.sourceStart(), e.sourceEnd(), e, TMTypeConstants.TM_TYPE_B);
   }
 
-  public static TextMarkerBooleanNumberExpression createBooleanNumberExpression(Expression e1,
+  public static RutaBooleanNumberExpression createBooleanNumberExpression(Expression e1,
           Token op, Expression e2) {
     int lexerOpID = op.getType(); // Integer.valueOf(op.getText());
     int operatorID = 0;
     // convert lexer-opId to dltk-opId:
     switch (lexerOpID) {
-      case TextMarkerLexer.LESS:
+      case RutaLexer.LESS:
         operatorID = E_LT;
         break;
-      case TextMarkerLexer.LESSEQUAL:
+      case RutaLexer.LESSEQUAL:
         operatorID = E_LE;
         break;
-      case TextMarkerLexer.GREATER:
+      case RutaLexer.GREATER:
         operatorID = E_GT;
         break;
-      case TextMarkerLexer.GREATEREQUAL:
+      case RutaLexer.GREATEREQUAL:
         operatorID = E_GE;
         break;
-      case TextMarkerLexer.EQUAL:
+      case RutaLexer.EQUAL:
         operatorID = E_EQUAL;
         break;
-      case TextMarkerLexer.NOTEQUAL:
+      case RutaLexer.NOTEQUAL:
         operatorID = E_NOT_EQUAL;
         break;
       default:
         break;
     }
-    return new TextMarkerBooleanNumberExpression(e1.sourceStart(), e2.sourceEnd(), operatorID, e1,
+    return new RutaBooleanNumberExpression(e1.sourceStart(), e2.sourceEnd(), operatorID, e1,
             e2);
   }
 
@@ -110,28 +110,28 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
 
   // =====> TYPE-EXPRESSIONS <======
   public static Expression createTypeExpression(Expression e) {
-    return new TextMarkerExpression(e.sourceStart(), e.sourceEnd(), e, TMTypeConstants.TM_TYPE_AT);
+    return new RutaExpression(e.sourceStart(), e.sourceEnd(), e, TMTypeConstants.TM_TYPE_AT);
   }
 
   public static Expression createEmptyTypeExpression(Token token) {
     int bounds[] = getBounds(token);
-    return new TextMarkerVariableReference(bounds[0], bounds[0], "", TMTypeConstants.TM_TYPE_AT);
+    return new RutaVariableReference(bounds[0], bounds[0], "", TMTypeConstants.TM_TYPE_AT);
   }
   public static Expression createEmptyStringExpression(Token token) {
     int bounds[] = getBounds(token);
-    return new TextMarkerVariableReference(bounds[0], bounds[0], "", TMTypeConstants.TM_TYPE_S);
+    return new RutaVariableReference(bounds[0], bounds[0], "", TMTypeConstants.TM_TYPE_S);
   }
   public static Expression createEmptyNumberExpression(Token token) {
     int bounds[] = getBounds(token);
-    return new TextMarkerVariableReference(bounds[0], bounds[0], "", TMTypeConstants.TM_TYPE_N);
+    return new RutaVariableReference(bounds[0], bounds[0], "", TMTypeConstants.TM_TYPE_N);
   }
   public static Expression createEmptyBooleanExpression(Token token) {
     int bounds[] = getBounds(token);
-    return new TextMarkerVariableReference(bounds[0], bounds[0], "", TMTypeConstants.TM_TYPE_B);
+    return new RutaVariableReference(bounds[0], bounds[0], "", TMTypeConstants.TM_TYPE_B);
   }
-  // public static Expression createSimpleTypeExpression(Token at, TextMarkerBlock env) {
+  // public static Expression createSimpleTypeExpression(Token at, RutaBlock env) {
   // int bounds[] = getBounds(at);
-  // return new TextMarkerSimpleTypeExpression(bounds[0], bounds[1], at.getText());
+  // return new RutaSimpleTypeExpression(bounds[0], bounds[1], at.getText());
   // }
 
   public static VariableReference createAnnotationTypeVariableReference(Token atRef) {
@@ -140,13 +140,13 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
 
   public static Expression createAnnotationTypeConstantReference(Token atBasic) {
     int bounds[] = getBounds(atBasic);
-    return new TextMarkerVariableReference(bounds[0], bounds[1], atBasic.getText(),
+    return new RutaVariableReference(bounds[0], bounds[1], atBasic.getText(),
             TMTypeConstants.TM_TYPE_AT);
-    // TextMarkerBasicAnnotationType(atBasic.getText(),bounds[0],bounds[1],bounds[0],bounds[1]);
+    // RutaBasicAnnotationType(atBasic.getText(),bounds[0],bounds[1],bounds[0],bounds[1]);
   }
 
   // =====> STRING-EXPRESSIONS <======
-  public static TextMarkerStringExpression createStringExpression(List<Expression> exprList) {
+  public static RutaStringExpression createStringExpression(List<Expression> exprList) {
     if (exprList == null) {
       exprList = new ArrayList<Expression>();
     }
@@ -156,7 +156,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
       start = exprList.get(0).sourceStart();
       end = exprList.get(exprList.size() - 1).sourceEnd();
     }
-    return new TextMarkerStringExpression(start, end, exprList);
+    return new RutaStringExpression(start, end, exprList);
   }
 
   public static StringLiteral createSimpleString(Token stringToken) {
@@ -171,8 +171,8 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
   }
 
   // =====> NUMBER-EXPRESSIONS <======
-  public static TextMarkerExpression createNumberExpression(Expression e) {
-    return new TextMarkerExpression(e.sourceStart(), e.sourceEnd(), e, TMTypeConstants.TM_TYPE_N);
+  public static RutaExpression createNumberExpression(Expression e) {
+    return new RutaExpression(e.sourceStart(), e.sourceEnd(), e, TMTypeConstants.TM_TYPE_N);
   }
 
   public static NumericLiteral createDecimalLiteral(Token decLit, Token minus) {
@@ -215,35 +215,35 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
     if (minus != null) {
       bounds[0] = ((CommonToken) minus).getStartIndex();
     }
-    return new TextMarkerExpression(bounds[0], bounds[1], expr, TMTypeConstants.TM_TYPE_N);
+    return new RutaExpression(bounds[0], bounds[1], expr, TMTypeConstants.TM_TYPE_N);
   }
 
-  public static TextMarkerBinaryArithmeticExpression createBinaryArithmeticExpr(Expression exprA,
+  public static RutaBinaryArithmeticExpression createBinaryArithmeticExpr(Expression exprA,
           Expression exprB, Token op) {
     int bounds[] = getBounds(exprA, exprB);
     int lexerOpID = op.getType();
     int operatorID = 0;
     // convert lexer-opId to dltk-opId:
     switch (lexerOpID) {
-      case TextMarkerLexer.STAR:
+      case RutaLexer.STAR:
         operatorID = ExpressionConstants.E_MULT;
         break;
-      case TextMarkerLexer.SLASH:
+      case RutaLexer.SLASH:
         operatorID = ExpressionConstants.E_DIV;
         break;
-      case TextMarkerLexer.PERCENT:
+      case RutaLexer.PERCENT:
         operatorID = ExpressionConstants.E_MOD;
         break;
-      case TextMarkerLexer.PLUS:
+      case RutaLexer.PLUS:
         operatorID = ExpressionConstants.E_PLUS;
         break;
-      case TextMarkerLexer.MINUS:
+      case RutaLexer.MINUS:
         operatorID = ExpressionConstants.E_MINUS;
         break;
       default:
         break;
     }
-    return new TextMarkerBinaryArithmeticExpression(bounds[0], bounds[1], exprA, exprB, operatorID);
+    return new RutaBinaryArithmeticExpression(bounds[0], bounds[1], exprA, exprB, operatorID);
   }
 
   public static Expression createUnaryArithmeticExpr(Expression expr, Token op) {
@@ -254,7 +254,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
       System.out.println("debug::expr==null->null pointer Excptn");
     }
     int opID = convertOpToInt(op);
-    return new TextMarkerUnaryArithmeticExpression(bounds[0], bounds[1], expr, opID);
+    return new RutaUnaryArithmeticExpression(bounds[0], bounds[1], expr, opID);
   }
 
   private static int convertOpToInt(Token opToken) {
@@ -263,7 +263,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
 
   // TODO
   public static Expression createBooleanFunction(Token op, Expression e1, Expression e2) {
-    return new TextMarkerExpression(e1.sourceStart(), e2.sourceEnd(), null,
+    return new RutaExpression(e1.sourceStart(), e2.sourceEnd(), null,
             TMTypeConstants.TM_TYPE_B);
   }
 
@@ -279,7 +279,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
     int bounds[] = getBounds(path);
     String pathWithoutQuotes = path.getText();
     pathWithoutQuotes = pathWithoutQuotes.substring(1, pathWithoutQuotes.length() - 1);
-    return new TextMarkerRessourceReference(bounds[0], bounds[1], pathWithoutQuotes);
+    return new RutaRessourceReference(bounds[0], bounds[1], pathWithoutQuotes);
   }
 
   public static Expression createInnerListExpression(Token lBrak, List<String> inner, Token rBrak) {
@@ -290,7 +290,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
       s.append(el);
     }
     s.append(rBrak);
-    return new TextMarkerInnerListExpression(boundsA[0], boundsA[1], s.toString());
+    return new RutaInnerListExpression(boundsA[0], boundsA[1], s.toString());
   }
 
   public static Expression createBooleanTypeExpression(Expression e1, Token op, Expression e2) {
@@ -298,17 +298,17 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
     int operatorID = 0;
     // convert lexer-opId to dltk-opId:
     switch (lexerOpID) {
-      case TextMarkerLexer.EQUAL:
+      case RutaLexer.EQUAL:
         operatorID = E_EQUAL;
         break;
-      case TextMarkerLexer.NOTEQUAL:
+      case RutaLexer.NOTEQUAL:
         operatorID = E_NOT_EQUAL;
         break;
       default:
         break;
     }
     if (e1 != null && e2 != null) {
-      return new TextMarkerBooleanTypeExpression(e1.sourceStart(), e2.sourceEnd(), operatorID, e1,
+      return new RutaBooleanTypeExpression(e1.sourceStart(), e2.sourceEnd(), operatorID, e1,
               e2);
     }
     return null;
@@ -329,7 +329,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
         exprList.get(0).sourceEnd();
       }
     }
-    return new TextMarkerListExpression(start, end, exprList, type);
+    return new RutaListExpression(start, end, exprList, type);
   }
 
   public static Expression createListExpression(Token var, int type) {
@@ -363,7 +363,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
     return createFunction(id, args, TMTypeConstants.TM_TYPE_AT);
   }
   
-  public static TextMarkerFunction createFunction(Token type, List<Expression> exprsRaw, int kind) {
+  public static RutaFunction createFunction(Token type, List<Expression> exprsRaw, int kind) {
     int bounds[] = getBounds(type);
     int nameStart = bounds[0];
     int nameEnd = bounds[1];
@@ -380,7 +380,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
         bounds[1] = Math.max(bounds[1], lastExpr.sourceEnd());
       }
     }
-    return new TextMarkerFunction(bounds[0], bounds[1], exprs,
+    return new RutaFunction(bounds[0], bounds[1], exprs,
             kind, type.getText(), nameStart,
             nameEnd);
   }

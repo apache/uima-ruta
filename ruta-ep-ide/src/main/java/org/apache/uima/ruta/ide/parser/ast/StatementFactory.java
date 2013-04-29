@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.ide.parser.ast;
+package org.apache.uima.ruta.ide.parser.ast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +38,10 @@ public class StatementFactory extends AbstractFactory {
    *          Antlr-Token (dotted-identifier/id)
    * @return new Import-Statement
    */
-  public static TextMarkerImportStatement createImport(ComponentDeclaration dottedId,
+  public static RutaImportStatement createImport(ComponentDeclaration dottedId,
           Token impString, int type) {
     int bounds[] = getBounds(impString, dottedId);
-    return new TextMarkerImportStatement(bounds[0], bounds[1], dottedId, type);
+    return new RutaImportStatement(bounds[0], bounds[1], dottedId, type);
   }
 
   public static ComponentDeclaration createEmptyComponentDeclaration(Token t) {
@@ -51,13 +51,13 @@ public class StatementFactory extends AbstractFactory {
     return new ComponentDeclaration(bounds[0], bounds[1], "");
   }
 
-  public static TextMarkerImportStatement createImportTypeSystem(ComponentDeclaration dottedId,
+  public static RutaImportStatement createImportTypeSystem(ComponentDeclaration dottedId,
           Token impString) {
     dottedId.setType(ComponentDeclaration.TYPESYSTEM);
     return createImport(dottedId, impString, TMStatementConstants.S_IMPORT_TYPESYSTEM);
   }
 
-  public static TextMarkerImportStatement createImportScript(ComponentDeclaration dottedId,
+  public static RutaImportStatement createImportScript(ComponentDeclaration dottedId,
           Token impString) {
     if (dottedId != null) {
       dottedId.setType(ComponentDeclaration.SCRIPT);
@@ -65,7 +65,7 @@ public class StatementFactory extends AbstractFactory {
     return createImport(dottedId, impString, TMStatementConstants.S_IMPORT_SCRIPT);
   }
 
-  public static TextMarkerImportStatement createImportEngine(ComponentDeclaration dottedId,
+  public static RutaImportStatement createImportEngine(ComponentDeclaration dottedId,
           Token impString) {
     dottedId.setType(ComponentDeclaration.ENGINE);
     return createImport(dottedId, impString, TMStatementConstants.S_IMPORT_ENGINE);
@@ -78,7 +78,7 @@ public class StatementFactory extends AbstractFactory {
    *          Antlr-Token (dotted-identifier/id)
    * @return
    */
-  public static TextMarkerPackageDeclaration createPkgDeclaration(Token dottedId, Token pString) {
+  public static RutaPackageDeclaration createPkgDeclaration(Token dottedId, Token pString) {
     int bounds[] = getBounds(pString, dottedId);
     int nameBounds[] = new int[2];
     if (dottedId != null) {
@@ -86,7 +86,7 @@ public class StatementFactory extends AbstractFactory {
     }
     SimpleReference ref = new SimpleReference(nameBounds[0], nameBounds[1], dottedId == null ? ""
             : dottedId.getText());
-    return new TextMarkerPackageDeclaration(bounds[0], bounds[1], ref);
+    return new RutaPackageDeclaration(bounds[0], bounds[1], ref);
   }
 
   /**
@@ -94,18 +94,18 @@ public class StatementFactory extends AbstractFactory {
    * @param type
    * @return
    */
-  private static TextMarkerVariableDeclaration createVariable(Token id, Token typeToken, int type) {
+  private static RutaVariableDeclaration createVariable(Token id, Token typeToken, int type) {
     return createVariable(id, typeToken, type, null);
   }
 
-  private static TextMarkerVariableDeclaration createVariable(Token id, Token typeToken, int type,
+  private static RutaVariableDeclaration createVariable(Token id, Token typeToken, int type,
           Expression expr) {
     int declBounds[] = getBounds(typeToken, id);
     int nameBounds[] = getBounds(id);
     // FieldDeclaration
-    SimpleReference ref = new TextMarkerVariableReference(nameBounds[0], nameBounds[1], id
+    SimpleReference ref = new RutaVariableReference(nameBounds[0], nameBounds[1], id
             .getText(), type);
-    return new TextMarkerVariableDeclaration(id.getText(), nameBounds[0], nameBounds[1],
+    return new RutaVariableDeclaration(id.getText(), nameBounds[0], nameBounds[1],
             declBounds[0], declBounds[1], ref, type, expr);
   }
 
@@ -114,7 +114,7 @@ public class StatementFactory extends AbstractFactory {
    * @param type
    * @return
    */
-  public static TextMarkerVariableDeclaration createIntVariable(Token id, Token type) {
+  public static RutaVariableDeclaration createIntVariable(Token id, Token type) {
     return createVariable(id, type, TMTypeConstants.TM_TYPE_I);
   }
 
@@ -132,7 +132,7 @@ public class StatementFactory extends AbstractFactory {
    * @param type
    * @return
    */
-  public static TextMarkerVariableDeclaration createDoubleVariable(Token id, Token type) {
+  public static RutaVariableDeclaration createDoubleVariable(Token id, Token type) {
     return createVariable(id, type, TMTypeConstants.TM_TYPE_D);
   }
 
@@ -141,7 +141,7 @@ public class StatementFactory extends AbstractFactory {
    * @param type
    * @return
    */
-  public static TextMarkerVariableDeclaration createStringVariable(Token id, Token type) {
+  public static RutaVariableDeclaration createStringVariable(Token id, Token type) {
     return createVariable(id, type, TMTypeConstants.TM_TYPE_S);
   }
 
@@ -150,7 +150,7 @@ public class StatementFactory extends AbstractFactory {
    * @param type
    * @return
    */
-  public static TextMarkerVariableDeclaration createBooleanVariable(Token id, Token type) {
+  public static RutaVariableDeclaration createBooleanVariable(Token id, Token type) {
     return createVariable(id, type, TMTypeConstants.TM_TYPE_B);
   }
 
@@ -159,7 +159,7 @@ public class StatementFactory extends AbstractFactory {
    * @param type
    * @return
    */
-  public static TextMarkerVariableDeclaration createTypeVariable(Token id, Token type) {
+  public static RutaVariableDeclaration createTypeVariable(Token id, Token type) {
     return createVariable(id, type, TMTypeConstants.TM_TYPE_AT);
   }
 
@@ -168,7 +168,7 @@ public class StatementFactory extends AbstractFactory {
    * @param type
    * @return
    */
-  public static TextMarkerVariableDeclaration createListVariable(Token id, Token type,
+  public static RutaVariableDeclaration createListVariable(Token id, Token type,
           Expression expr) {
     return createVariable(id, type, TMTypeConstants.TM_TYPE_WL, expr);
   }
@@ -178,7 +178,7 @@ public class StatementFactory extends AbstractFactory {
    * @param type
    * @return
    */
-  public static TextMarkerVariableDeclaration createTableVariable(Token id, Token type,
+  public static RutaVariableDeclaration createTableVariable(Token id, Token type,
           Expression expr) {
     return createVariable(id, type, TMTypeConstants.TM_TYPE_WT, expr);
   }
@@ -193,7 +193,7 @@ public class StatementFactory extends AbstractFactory {
    */
 
   public static Declaration createAnnotationType(Token id, Token declareToken, Expression type,
-          List<TextMarkerFeatureDeclaration> features) {
+          List<RutaFeatureDeclaration> features) {
 
     int declBounds[] = getBounds(declareToken, id);
     if (features != null && !features.isEmpty()) {
@@ -202,9 +202,9 @@ public class StatementFactory extends AbstractFactory {
     int nameBounds[] = getBounds(id);
     // FieldDeclarartion
 
-    SimpleReference ref = new TextMarkerVariableReference(nameBounds[0], nameBounds[1], id
+    SimpleReference ref = new RutaVariableReference(nameBounds[0], nameBounds[1], id
             .getText(), TMTypeConstants.TM_TYPE_AT);
-    return new TextMarkerTypeDeclaration(id.getText(), nameBounds[0], nameBounds[1], declBounds[0],
+    return new RutaTypeDeclaration(id.getText(), nameBounds[0], nameBounds[1], declBounds[0],
             declBounds[1], ref, features);
   }
 
@@ -212,13 +212,13 @@ public class StatementFactory extends AbstractFactory {
     int declBounds[] = getBounds(declareToken, id);
     int nameBounds[] = getBounds(id);
 
-    SimpleReference ref = new TextMarkerVariableReference(nameBounds[0], nameBounds[1], id
+    SimpleReference ref = new RutaVariableReference(nameBounds[0], nameBounds[1], id
             .getText(), TMTypeConstants.TM_TYPE_AT);
-    return new TextMarkerTypeDeclaration(id.getText(), nameBounds[0], nameBounds[1], declBounds[0],
+    return new RutaTypeDeclaration(id.getText(), nameBounds[0], nameBounds[1], declBounds[0],
             declBounds[1], ref);
   }
 
-  public static TextMarkerFeatureDeclaration createFeatureDeclaration(Object eachTO, Token eachName) {
+  public static RutaFeatureDeclaration createFeatureDeclaration(Object eachTO, Token eachName) {
     int declBounds[] = { 0, 0 };
     String type = "";
     if (eachTO instanceof ASTNode) {
@@ -232,15 +232,15 @@ public class StatementFactory extends AbstractFactory {
     }
     int nameBounds[] = getBounds(eachName);
     SimpleReference ref = new SimpleReference(nameBounds[0], nameBounds[1], eachName.getText());
-    return new TextMarkerFeatureDeclaration(eachName.getText(), type, nameBounds[0], nameBounds[1],
+    return new RutaFeatureDeclaration(eachName.getText(), type, nameBounds[0], nameBounds[1],
             declBounds[0], declBounds[1], ref);
   }
 
   @SuppressWarnings("unchecked")
   public static Statement createDeclareDeclarationsStatement(Token declareToken, List declarations,
           ASTNode parent) {
-    List<TextMarkerAbstractDeclaration> decls = declarations;
-    for (TextMarkerAbstractDeclaration d : decls) {
+    List<RutaAbstractDeclaration> decls = declarations;
+    for (RutaAbstractDeclaration d : decls) {
       if (d == null) {
         decls.remove(d);
       }
@@ -253,15 +253,15 @@ public class StatementFactory extends AbstractFactory {
       int end = decls.get(decls.size() - 1).sourceEnd();
       statementBounds[1] = Math.max(statementBounds[1], end);
     }
-    return new TextMarkerDeclareDeclarationsStatement(statementBounds[0], statementBounds[1],
+    return new RutaDeclareDeclarationsStatement(statementBounds[0], statementBounds[1],
             declarations, parent, declBounds[0], declBounds[1]);
   }
 
   @SuppressWarnings("unchecked")
   public static Statement createDeclarationsStatement(Token declareToken, List declarations,
           Expression init) {
-    List<TextMarkerAbstractDeclaration> decls = declarations;
-    for (TextMarkerAbstractDeclaration d : decls) {
+    List<RutaAbstractDeclaration> decls = declarations;
+    for (RutaAbstractDeclaration d : decls) {
       if (d == null) {
         decls.remove(d);
       }
@@ -274,7 +274,7 @@ public class StatementFactory extends AbstractFactory {
       int end = decls.get(decls.size() - 1).sourceEnd();
       statementBounds[1] = Math.max(statementBounds[1], end);
     }
-    return new TextMarkerDeclarationsStatement(statementBounds[0], statementBounds[1],
+    return new RutaDeclarationsStatement(statementBounds[0], statementBounds[1],
             declarations, init, declBounds[0], declBounds[1]);
   }
 
@@ -285,18 +285,18 @@ public class StatementFactory extends AbstractFactory {
 
   @SuppressWarnings("unchecked")
   public static Statement createDeclarationsStatement(Token declareToken,
-          TextMarkerAbstractDeclaration declaration, Expression init) {
-    List decl = new ArrayList<TextMarkerAbstractDeclaration>();
+          RutaAbstractDeclaration declaration, Expression init) {
+    List decl = new ArrayList<RutaAbstractDeclaration>();
     return createDeclarationsStatement(declareToken, decl, init);
   }
 
   public static Statement createComposedVariableConditionDeclaration(Token id,
-          List<TextMarkerCondition> conditions) {
+          List<RutaCondition> conditions) {
     return null;
   }
 
   public static Statement createComposedVariableActionDeclaration(Token id,
-          List<TextMarkerAction> actions) {
+          List<RutaAction> actions) {
     return null;
   }
 

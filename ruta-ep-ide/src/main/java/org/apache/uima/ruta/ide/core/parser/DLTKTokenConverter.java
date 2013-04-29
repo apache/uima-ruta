@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.ide.core.parser;
+package org.apache.uima.ruta.ide.core.parser;
 
 import org.antlr.runtime.Token;
 import org.eclipse.dltk.ast.DLTKToken;

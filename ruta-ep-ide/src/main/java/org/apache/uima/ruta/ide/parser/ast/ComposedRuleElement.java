@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.ide.parser.ast;
+package org.apache.uima.ruta.ide.parser.ast;
 
 import java.util.List;
 
@@ -25,14 +25,14 @@ import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.ExpressionConstants;
 
-public class ComposedRuleElement extends TextMarkerRuleElement {
+public class ComposedRuleElement extends RutaRuleElement {
   List<Expression> elements;
 
   private boolean disjunctive;
 
   public ComposedRuleElement(int start, int end, List<Expression> elements,
-          List<Expression> quantifierExpressions, List<TextMarkerCondition> conditionExpressions,
-          List<TextMarkerAction> actionExpressions, boolean disjunctive) {
+          List<Expression> quantifierExpressions, List<RutaCondition> conditionExpressions,
+          List<RutaAction> actionExpressions, boolean disjunctive) {
     super(start, end, null, quantifierExpressions, conditionExpressions, actionExpressions);
     if (elements != null) {
       this.elements = elements;

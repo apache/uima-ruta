@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.ide.core.builder;
+package org.apache.uima.ruta.ide.core.builder;
 
 import java.util.ArrayList;
 import java.util.Collection;

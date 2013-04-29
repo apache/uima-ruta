@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.ide.parser.ast;
+package org.apache.uima.ruta.ide.parser.ast;
 
 public interface TMStatementConstants {
   public static final int S_USERSTART = 1;

@@ -17,19 +17,19 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.ide.parser.ast;
+package org.apache.uima.ruta.ide.parser.ast;
 
-import org.apache.uima.textmarker.ide.core.parser.TextMarkerParser;
+import org.apache.uima.ruta.ide.core.parser.RutaParser;
 import org.eclipse.dltk.ast.expressions.ExpressionConstants;
 
 public class TMConditionConstants {
   public static final int CONSTANT_OFFSET = ExpressionConstants.USER_EXPRESSION_START;
 
   // important for formatter to handle the only condition without parantheses
-  public static final int COND_MINUS = CONSTANT_OFFSET + TextMarkerParser.MINUS;
+  public static final int COND_MINUS = CONSTANT_OFFSET + RutaParser.MINUS;
 
   // public static int getConditionConstant(String str) {
-  // // TextMarkerParser.tokenNames;
+  // // RutaParser.tokenNames;
   // return 0;
   // }
 }

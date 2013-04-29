@@ -17,10 +17,10 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.ide.core.extensions;
+package org.apache.uima.ruta.ide.core.extensions;
 
 
 
-public interface IIDEConditionExtension extends ITextMarkerExtension {
+public interface IIDEConditionExtension extends IRutaExtension {
 
 }

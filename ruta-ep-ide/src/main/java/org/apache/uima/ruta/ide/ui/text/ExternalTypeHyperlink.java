@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.ide.ui.text;
+package org.apache.uima.ruta.ide.ui.text;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.dltk.internal.ui.editor.DLTKEditorMessages;

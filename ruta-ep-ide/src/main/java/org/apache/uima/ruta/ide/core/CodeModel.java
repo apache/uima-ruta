@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.ide.core;
+package org.apache.uima.ruta.ide.core;
 
 public class CodeModel {
   private String[] codeLines;

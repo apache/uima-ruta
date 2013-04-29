@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.ide.core.codeassist;
+package org.apache.uima.ruta.ide.core.codeassist;
 
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.references.SimpleReference;

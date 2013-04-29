@@ -17,9 +17,9 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.ide.core.extensions;
+package org.apache.uima.ruta.ide.core.extensions;
 
 
-public interface IIDEStringFunctionExtension extends ITextMarkerExtension {
+public interface IIDEStringFunctionExtension extends IRutaExtension {
 
 }

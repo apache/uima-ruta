@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.ide.core.extensions;
+package org.apache.uima.ruta.ide.core.extensions;
 
 public interface IMixinBuildVisitorExtension {
   //
@@ -25,20 +25,20 @@ public interface IMixinBuildVisitorExtension {
   // * If method return true, then other checks will not be provided and
   // * original visit will return true
   // */
-  // boolean visit(MethodDeclaration s, TextMarkerMixinBuildVisitor original);
+  // boolean visit(MethodDeclaration s, RutaMixinBuildVisitor original);
   //
   // /**
   // * If method return true, then other checks will not be provided and
   // * original visit will return true
   // */
-  // boolean visit(TypeDeclaration s, TextMarkerMixinBuildVisitor
+  // boolean visit(TypeDeclaration s, RutaMixinBuildVisitor
   // tmMixinBuildVisitor);
   //
   // /**
   // * If method return true, then other checks will not be provided and
   // * original visit will return <b>false</b>
   // */
-  // boolean visit(Statement s, TextMarkerMixinBuildVisitor
+  // boolean visit(Statement s, RutaMixinBuildVisitor
   // tmMixinBuildVisitor);
 
 }

@@ -17,9 +17,9 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.ide.core.codeassist;
+package org.apache.uima.ruta.ide.core.codeassist;
 
-import org.apache.uima.textmarker.ide.parser.ast.TextMarkerStatement;
+import org.apache.uima.ruta.ide.parser.ast.RutaStatement;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.references.SimpleReference;
@@ -31,19 +31,19 @@ public class CompletionOnKeywordArgumentOrFunctionArgument extends SimpleReferen
 
   private String[] possibleKeywords;
 
-  private TextMarkerStatement statement;
+  private RutaStatement statement;
 
   private ASTNode completionNode;
 
   public CompletionOnKeywordArgumentOrFunctionArgument(String token, ASTNode completionNode,
-          TextMarkerStatement node, String[] KeywordspossibleKeywords) {
+          RutaStatement node, String[] KeywordspossibleKeywords) {
     super(completionNode.sourceStart(), completionNode.sourceEnd(), token);
     this.possibleKeywords = KeywordspossibleKeywords;
     this.statement = node;
     this.completionNode = completionNode;
   }
 
-  public CompletionOnKeywordArgumentOrFunctionArgument(String token, TextMarkerStatement node,
+  public CompletionOnKeywordArgumentOrFunctionArgument(String token, RutaStatement node,
           String[] possibleKeywords, int position) {
     super(position, position, token);
     this.possibleKeywords = possibleKeywords;
@@ -74,7 +74,7 @@ public class CompletionOnKeywordArgumentOrFunctionArgument extends SimpleReferen
     return true;
   }
 
-  public TextMarkerStatement getStatement() {
+  public RutaStatement getStatement() {
     return this.statement;
   }
 

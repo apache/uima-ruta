@@ -17,12 +17,12 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.ide.parser.ast;
+package org.apache.uima.ruta.ide.parser.ast;
 
 import java.util.List;
 
 import org.antlr.runtime.Token;
-import org.apache.uima.textmarker.ide.core.parser.TextMarkerParseUtils;
+import org.apache.uima.ruta.ide.core.parser.RutaParseUtils;
 import org.eclipse.dltk.ast.ASTNode;
 
 public abstract class AbstractFactory {
@@ -34,7 +34,7 @@ public abstract class AbstractFactory {
    *           when token==null or !(token instanceof CommonToken)
    */
   protected static final int[] getBounds(Token token) throws IllegalArgumentException {
-    return TextMarkerParseUtils.getBounds(token);
+    return RutaParseUtils.getBounds(token);
   }
 
   /**
@@ -48,7 +48,7 @@ public abstract class AbstractFactory {
    */
   protected static final int[] getBounds(Token tokenA, Token tokenB)
           throws IllegalArgumentException {
-    return TextMarkerParseUtils.getBounds(tokenA, tokenB);
+    return RutaParseUtils.getBounds(tokenA, tokenB);
   }
 
   /**

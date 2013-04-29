@@ -17,20 +17,20 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.ide.core.extensions;
+package org.apache.uima.ruta.ide.core.extensions;
 
-import org.apache.uima.textmarker.ide.core.codeassist.SelectionOnKeywordOrFunction;
-import org.apache.uima.textmarker.ide.core.codeassist.TextMarkerSelectionEngine;
+import org.apache.uima.ruta.ide.core.codeassist.SelectionOnKeywordOrFunction;
+import org.apache.uima.ruta.ide.core.codeassist.RutaSelectionEngine;
 import org.eclipse.dltk.ast.ASTNode;
 
 
 public interface ISelectionExtension {
 
   void selectionOnKeywordOrFunction(SelectionOnKeywordOrFunction key,
-          TextMarkerSelectionEngine tmSelectionEngine);
+          RutaSelectionEngine tmSelectionEngine);
 
-  void selectionOnAST(ASTNode node, TextMarkerSelectionEngine tmSelectionEngine);
+  void selectionOnAST(ASTNode node, RutaSelectionEngine tmSelectionEngine);
 
-  void selectionOnNode(ASTNode node, int position, TextMarkerSelectionEngine tmSelectionEngine);
+  void selectionOnNode(ASTNode node, int position, RutaSelectionEngine tmSelectionEngine);
 
 }

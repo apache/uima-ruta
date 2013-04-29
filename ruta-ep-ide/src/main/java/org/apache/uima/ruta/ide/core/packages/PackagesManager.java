@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.ide.core.packages;
+package org.apache.uima.ruta.ide.core.packages;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -46,8 +46,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.apache.uima.textmarker.ide.TextMarkerIdePlugin;
-import org.apache.uima.textmarker.ide.core.packages.DLTKTextMarkerHelper.TextMarkerPackage;
+import org.apache.uima.ruta.ide.RutaIdePlugin;
+import org.apache.uima.ruta.ide.core.packages.DLTKRutaHelper.RutaPackage;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -176,7 +176,7 @@ public class PackagesManager {
   }
 
   private void initialize() {
-    IPath packagesPath = TextMarkerIdePlugin.getDefault().getStateLocation().append(PACKAGES_FILE);
+    IPath packagesPath = RutaIdePlugin.getDefault().getStateLocation().append(PACKAGES_FILE);
     File packagesFile = packagesPath.toFile();
     if (packagesFile.exists()) {
       DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -207,7 +207,7 @@ public class PackagesManager {
   }
 
   private void save() {
-    IPath packagesPath = TextMarkerIdePlugin.getDefault().getStateLocation().append(PACKAGES_FILE);
+    IPath packagesPath = RutaIdePlugin.getDefault().getStateLocation().append(PACKAGES_FILE);
     File packagesFile = packagesPath.toFile();
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder builder;
@@ -355,7 +355,7 @@ public class PackagesManager {
       return (IPath[]) els.toArray(new IPath[els.size()]);
     }
     // Retrieve paths from interpreter with all dependencies.
-    TextMarkerPackage[] srcs = DLTKTextMarkerHelper.getSrcs(install.getExecEnvironment(),
+    RutaPackage[] srcs = DLTKRutaHelper.getSrcs(install.getExecEnvironment(),
             install.getInstallLocation(), install.getEnvironmentVariables(), packageName);
 
     PackageInformation resultInfo = null;
@@ -427,7 +427,7 @@ public class PackagesManager {
       return set;
     }
     // Evaluate
-    Set packs = DLTKTextMarkerHelper.getPackages(install);
+    Set packs = DLTKRutaHelper.getPackages(install);
     this.interpreterToPackages.put(key, packs);
     save();
     return packs;
@@ -488,7 +488,7 @@ public class PackagesManager {
       return (IPath[]) paths.toArray(new IPath[paths.size()]);
     }
     // Retrieve paths from interpreter with all dependencies.
-    TextMarkerPackage[] srcs = DLTKTextMarkerHelper.getSrcs(install.getExecEnvironment(),
+    RutaPackage[] srcs = DLTKRutaHelper.getSrcs(install.getExecEnvironment(),
             install.getInstallLocation(), install.getEnvironmentVariables(), buf.toString());
     Set result = new HashSet();
     if (srcs == null) {

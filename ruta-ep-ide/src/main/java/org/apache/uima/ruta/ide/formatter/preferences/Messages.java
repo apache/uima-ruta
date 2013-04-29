@@ -17,54 +17,54 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.ide.formatter.preferences;
+package org.apache.uima.ruta.ide.formatter.preferences;
 
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-  private static final String BUNDLE_NAME = "org.apache.uima.textmarker.ide.formatter.preferences.messages"; //$NON-NLS-1$
+  private static final String BUNDLE_NAME = "org.apache.uima.ruta.ide.formatter.preferences.messages"; //$NON-NLS-1$
 
-  // public static String TextMarkerFormatterBlankLinesPage_afterGlobalStatements;
-  // public static String TextMarkerFormatterBlankLinesPage_befireFirstDeclaration;
-  // public static String TextMarkerFormatterBlankLinesPage_beforeBlockDeclarations;
-  // public static String TextMarkerFormatterBlankLinesPage_betweenBlocks;
-  public static String TextMarkerFormatterBlankLinesPage_blankLinesBeforeDeclarations;
+  // public static String RutaFormatterBlankLinesPage_afterGlobalStatements;
+  // public static String RutaFormatterBlankLinesPage_befireFirstDeclaration;
+  // public static String RutaFormatterBlankLinesPage_beforeBlockDeclarations;
+  // public static String RutaFormatterBlankLinesPage_betweenBlocks;
+  public static String RutaFormatterBlankLinesPage_blankLinesBeforeDeclarations;
 
-  public static String TextMarkerFormatterBlankLinesPage_beforeDeclarations;
+  public static String RutaFormatterBlankLinesPage_beforeDeclarations;
 
-  // public static String TextMarkerFormatterBlankLinesPage_existingBlankLines;
-  // public static String TextMarkerFormatterBlankLinesPage_numberOfEmptyLinesToPreserve;
-  // public static String TextMarkerFormatterCommentsPage_commentFormatting;
-  // public static String TextMarkerFormatterCommentsPage_enableCommentWrapping;
-  // public static String TextMarkerFormatterCommentsPage_maximumLineWidthForComments;
-  public static String TextMarkerFormatterLineWrappingPage_maximumLineLenght;
+  // public static String RutaFormatterBlankLinesPage_existingBlankLines;
+  // public static String RutaFormatterBlankLinesPage_numberOfEmptyLinesToPreserve;
+  // public static String RutaFormatterCommentsPage_commentFormatting;
+  // public static String RutaFormatterCommentsPage_enableCommentWrapping;
+  // public static String RutaFormatterCommentsPage_maximumLineWidthForComments;
+  public static String RutaFormatterLineWrappingPage_maximumLineLenght;
 
-  public static String TextMarkerFormatterLineWrappingPage_generalWrapping;
+  public static String RutaFormatterLineWrappingPage_generalWrapping;
 
-  public static String TextMarkerFormatterIndentationTabPage_statementsWithinBlockBody;
+  public static String RutaFormatterIndentationTabPage_statementsWithinBlockBody;
 
-  public static String TextMarkerFormatterIndentationTabPage_assignmentsWithinCreateAction;
+  public static String RutaFormatterIndentationTabPage_assignmentsWithinCreateAction;
 
-  public static String TextMarkerFormatterIndentationTabPage_generalSettings;
+  public static String RutaFormatterIndentationTabPage_generalSettings;
 
-  public static String TextMarkerFormatterIndentationTabPage_indentationCharacter;
+  public static String RutaFormatterIndentationTabPage_indentationCharacter;
 
-  public static String TextMarkerFormatterIndentationTabPage_indentationSize;
+  public static String RutaFormatterIndentationTabPage_indentationSize;
 
-  public static String TextMarkerFormatterIndentationTabPage_indentWithinBlocks;
+  public static String RutaFormatterIndentationTabPage_indentWithinBlocks;
 
-  public static String TextMarkerFormatterIndentationTabPage_indentWithinCreateActions;
+  public static String RutaFormatterIndentationTabPage_indentWithinCreateActions;
 
-  public static String TextMarkerFormatterIndentationTabPage_tabSize;
+  public static String RutaFormatterIndentationTabPage_tabSize;
 
-  public static String TextMarkerFormatterModifyDialog_blankLines;
+  public static String RutaFormatterModifyDialog_blankLines;
 
-  // public static String TextMarkerFormatterModifyDialog_comments;
-  public static String TextMarkerFormatterModifyDialog_indentation;
+  // public static String RutaFormatterModifyDialog_comments;
+  public static String RutaFormatterModifyDialog_indentation;
 
-  public static String TextMarkerFormatterModifyDialog_lineWrapping;
+  public static String RutaFormatterModifyDialog_lineWrapping;
 
-  public static String TextMarkerFormatterModifyDialog_TextMarkerFormatter;
+  public static String RutaFormatterModifyDialog_RutaFormatter;
   static {
     // initialize resource bundle
     NLS.initializeMessages(BUNDLE_NAME, Messages.class);

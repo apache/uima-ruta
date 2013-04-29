@@ -17,9 +17,9 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.ide.launching;
+package org.apache.uima.ruta.ide.launching;
 
 public interface IConfigurableRunner {
 
-  public void setRunnerConfig(ITextMarkerInterpreterRunnerConfig config);
+  public void setRunnerConfig(IRutaInterpreterRunnerConfig config);
 }

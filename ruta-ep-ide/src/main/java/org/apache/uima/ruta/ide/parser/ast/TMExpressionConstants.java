@@ -17,30 +17,30 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.ide.parser.ast;
+package org.apache.uima.ruta.ide.parser.ast;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.uima.textmarker.parser.TextMarkerLexer;
+import org.apache.uima.ruta.parser.RutaLexer;
 import org.eclipse.dltk.ast.expressions.ExpressionConstants;
 
 public final class TMExpressionConstants implements ExpressionConstants {
-  public static final int E_EXP = USER_EXPRESSION_START + TextMarkerLexer.EXP;
+  public static final int E_EXP = USER_EXPRESSION_START + RutaLexer.EXP;
 
-  public static final int E_LOGN = USER_EXPRESSION_START + TextMarkerLexer.LOGN;
+  public static final int E_LOGN = USER_EXPRESSION_START + RutaLexer.LOGN;
 
-  public static final int E_SIN = USER_EXPRESSION_START + TextMarkerLexer.SIN;
+  public static final int E_SIN = USER_EXPRESSION_START + RutaLexer.SIN;
 
-  public static final int E_COS = USER_EXPRESSION_START + TextMarkerLexer.COS;
+  public static final int E_COS = USER_EXPRESSION_START + RutaLexer.COS;
 
-  public static final int E_TAN = USER_EXPRESSION_START + TextMarkerLexer.TAN;
+  public static final int E_TAN = USER_EXPRESSION_START + RutaLexer.TAN;
 
-  public static final int E_QUANTIFIER_LIT = USER_EXPRESSION_START + TextMarkerLexer.QUESTION;
+  public static final int E_QUANTIFIER_LIT = USER_EXPRESSION_START + RutaLexer.QUESTION;
 
-  public static final int E_INNERLIST = USER_EXPRESSION_START + TextMarkerLexer.RBRACK;
+  public static final int E_INNERLIST = USER_EXPRESSION_START + RutaLexer.RBRACK;
 
-  public static final int E_RESSOURCE = USER_EXPRESSION_START + TextMarkerLexer.RessourceLiteral;
+  public static final int E_RESSOURCE = USER_EXPRESSION_START + RutaLexer.RessourceLiteral;
 
   public static final String E_EXP_STR = "EXP";
 
