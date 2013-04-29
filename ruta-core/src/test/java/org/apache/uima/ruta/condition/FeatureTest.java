@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.condition;
+package org.apache.uima.ruta.condition;
 
 import static org.junit.Assert.assertEquals;
 
@@ -31,8 +31,8 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.textmarker.TextMarkerTestUtils;
-import org.apache.uima.textmarker.TextMarkerTestUtils.TestFeature;
+import org.apache.uima.ruta.RutaTestUtils;
+import org.apache.uima.ruta.RutaTestUtils.TestFeature;
 import org.junit.Test;
 
 public class FeatureTest {
@@ -47,7 +47,7 @@ public class FeatureTest {
     complexTypes.put(typeName, "uima.tcas.Annotation");
     
     Map<String, List<TestFeature>> features = new TreeMap<String, List<TestFeature>>();
-    List<TestFeature> list = new ArrayList<TextMarkerTestUtils.TestFeature>();
+    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
     features.put(typeName, list);
     String fn1 = "string";
     list.add(new TestFeature(fn1, "", "uima.cas.String"));
@@ -60,7 +60,7 @@ public class FeatureTest {
     
     CAS cas = null;
     try {
-      cas = TextMarkerTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
+      cas = RutaTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
               + ".txt", 50, false, false, complexTypes, features, namespace + "/");
     } catch (Exception e) {
       e.printStackTrace();
@@ -70,31 +70,31 @@ public class FeatureTest {
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
 
-    t = TextMarkerTestUtils.getTestType(cas, 1);
+    t = RutaTestUtils.getTestType(cas, 1);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals("Testing FEATURE condition.", iterator.next().getCoveredText());
     
-    t = TextMarkerTestUtils.getTestType(cas, 2);
+    t = RutaTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals("Testing FEATURE condition.", iterator.next().getCoveredText());
     
-    t = TextMarkerTestUtils.getTestType(cas, 3);
+    t = RutaTestUtils.getTestType(cas, 3);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals("Testing FEATURE condition.", iterator.next().getCoveredText());
     
-    t = TextMarkerTestUtils.getTestType(cas, 4);
+    t = RutaTestUtils.getTestType(cas, 4);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals("Testing FEATURE condition.", iterator.next().getCoveredText());
     
-    t = TextMarkerTestUtils.getTestType(cas, 5);
+    t = RutaTestUtils.getTestType(cas, 5);
     ai = cas.getAnnotationIndex(t);
     assertEquals(0, ai.size());
     

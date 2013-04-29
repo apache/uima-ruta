@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import static org.junit.Assert.assertEquals;
 
@@ -33,8 +33,8 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.textmarker.TextMarkerTestUtils;
-import org.apache.uima.textmarker.TextMarkerTestUtils.TestFeature;
+import org.apache.uima.ruta.RutaTestUtils;
+import org.apache.uima.ruta.RutaTestUtils.TestFeature;
 import org.junit.Test;
 
 public class ShiftTest2 {
@@ -49,7 +49,7 @@ public class ShiftTest2 {
     complexTypes.put(typeName, "uima.tcas.Annotation");
     
     Map<String, List<TestFeature>> features = new TreeMap<String, List<TestFeature>>();
-    List<TestFeature> list = new ArrayList<TextMarkerTestUtils.TestFeature>();
+    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
     features.put(typeName, list);
     String fn1 = "doc";
     list.add(new TestFeature(fn1, "", "uima.tcas.Annotation"));
@@ -58,7 +58,7 @@ public class ShiftTest2 {
     
     CAS cas = null;
     try {
-      cas = TextMarkerTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
+      cas = RutaTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
               + ".txt", 50, false, false, complexTypes, features, namespace + "/");
     } catch (Exception e) {
       e.printStackTrace();

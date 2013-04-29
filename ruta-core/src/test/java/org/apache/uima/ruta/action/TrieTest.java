@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import static org.junit.Assert.assertEquals;
 
@@ -26,7 +26,7 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.textmarker.TextMarkerTestUtils;
+import org.apache.uima.ruta.RutaTestUtils;
 import org.junit.Test;
 
 public class TrieTest {
@@ -38,7 +38,7 @@ public class TrieTest {
 
     CAS cas = null;
     try {
-      cas = TextMarkerTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
+      cas = RutaTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
               + ".txt", 50, false, false, null, namespace + "/");
     } catch (Exception e) {
       e.printStackTrace();
@@ -48,7 +48,7 @@ public class TrieTest {
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
 
-    t = TextMarkerTestUtils.getTestType(cas, 1);
+    t = RutaTestUtils.getTestType(cas, 1);
     ai = cas.getAnnotationIndex(t);
     assertEquals(3, ai.size());
     iterator = ai.iterator();
@@ -56,7 +56,7 @@ public class TrieTest {
     assertEquals("Marshall", iterator.next().getCoveredText());
     assertEquals("Joern", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 2);
+    t = RutaTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
     assertEquals(3, ai.size());
     iterator = ai.iterator();

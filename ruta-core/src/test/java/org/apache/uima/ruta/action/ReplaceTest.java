@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import static org.junit.Assert.assertEquals;
 
@@ -27,8 +27,8 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.textmarker.TextMarkerTestUtils;
-import org.apache.uima.textmarker.engine.TextMarkerEngine;
+import org.apache.uima.ruta.RutaTestUtils;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.junit.Test;
 
 public class ReplaceTest {
@@ -40,7 +40,7 @@ public class ReplaceTest {
     
     CAS cas = null;
     try {
-      cas = TextMarkerTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
+      cas = RutaTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
               + ".txt", 50);
     } catch (Exception e) {
       e.printStackTrace();
@@ -50,7 +50,7 @@ public class ReplaceTest {
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
 
-    t = cas.getTypeSystem().getType(TextMarkerEngine.BASIC_TYPE);
+    t = cas.getTypeSystem().getType(RutaEngine.BASIC_TYPE);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     iterator.moveToLast();

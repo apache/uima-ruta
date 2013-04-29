@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.action;
+package org.apache.uima.ruta.action;
 
 import static org.junit.Assert.assertEquals;
 
@@ -25,7 +25,7 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.textmarker.TextMarkerTestUtils;
+import org.apache.uima.ruta.RutaTestUtils;
 import org.junit.Test;
 
 public class ClearTest {
@@ -37,7 +37,7 @@ public class ClearTest {
     
     CAS cas = null;
     try {
-      cas = TextMarkerTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
+      cas = RutaTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
               + ".txt", 50);
     } catch (Exception e) {
       e.printStackTrace();
@@ -45,11 +45,11 @@ public class ClearTest {
     }
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
-    t = TextMarkerTestUtils.getTestType(cas, 1);
+    t = RutaTestUtils.getTestType(cas, 1);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     
-    t = TextMarkerTestUtils.getTestType(cas, 2);
+    t = RutaTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.condition;
+package org.apache.uima.ruta.condition;
 
 import static org.junit.Assert.assertEquals;
 
@@ -26,7 +26,7 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.textmarker.TextMarkerTestUtils;
+import org.apache.uima.ruta.RutaTestUtils;
 import org.junit.Test;
 
 public class EndsWithTest {
@@ -38,7 +38,7 @@ public class EndsWithTest {
     
     CAS cas = null;
     try {
-      cas = TextMarkerTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
+      cas = RutaTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
               + ".txt", 50);
     } catch (Exception e) {
       e.printStackTrace();
@@ -48,26 +48,26 @@ public class EndsWithTest {
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
 
-    t = TextMarkerTestUtils.getTestType(cas, 1);
+    t = RutaTestUtils.getTestType(cas, 1);
     ai = cas.getAnnotationIndex(t);
     assertEquals(3, ai.size());
     iterator = ai.iterator();
     assertEquals("A single sentence!", iterator.next().getCoveredText());
     assertEquals("And here is another one?", iterator.next().getCoveredText());
-    assertEquals("Testing the ENDSWITH condition of TextMarker.", iterator.next().getCoveredText());
+    assertEquals("Testing the ENDSWITH condition of Ruta.", iterator.next().getCoveredText());
     
-    t = TextMarkerTestUtils.getTestType(cas, 2);
+    t = RutaTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
-    assertEquals("Testing the ENDSWITH condition of TextMarker.", iterator.next().getCoveredText());
+    assertEquals("Testing the ENDSWITH condition of Ruta.", iterator.next().getCoveredText());
     
-    t = TextMarkerTestUtils.getTestType(cas, 3);
+    t = RutaTestUtils.getTestType(cas, 3);
     ai = cas.getAnnotationIndex(t);
     assertEquals(2, ai.size());
     iterator = ai.iterator();
     assertEquals("A single sentence!", iterator.next().getCoveredText());
-    assertEquals("Testing the ENDSWITH condition of TextMarker.", iterator.next().getCoveredText());
+    assertEquals("Testing the ENDSWITH condition of Ruta.", iterator.next().getCoveredText());
  
     cas.release();
   }
