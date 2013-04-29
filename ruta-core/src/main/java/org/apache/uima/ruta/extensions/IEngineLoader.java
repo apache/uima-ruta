@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.extensions;
+package org.apache.uima.ruta.extensions;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

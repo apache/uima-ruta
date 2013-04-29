@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.extensions;
+package org.apache.uima.ruta.extensions;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +30,7 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
-import org.apache.uima.textmarker.engine.TextMarker;
+import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
 
@@ -43,7 +43,7 @@ public abstract class DefaultEngineLoader implements IEngineLoader {
   protected AnalysisEngine loadEngineMyself(String location, String viewName) throws IOException,
           InvalidXMLException, ResourceInitializationException, ResourceConfigurationException, URISyntaxException {
     URL url = new File(location).toURL();
-    AnalysisEngine ae = TextMarker.wrapAnalysisEngine(url, viewName);
+    AnalysisEngine ae = Ruta.wrapAnalysisEngine(url, viewName);
     return ae;
   }
 
