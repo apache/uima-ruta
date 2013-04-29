@@ -16,7 +16,7 @@ Document{-> DYNAMICANCHORING(true)};
 Document{-> DYNAMICANCHORING(false)};
 #{-> MARK(T7)};
 # #{-> MARK(T8)};
-"Text" "Marker" #{-> MARK(T9)} ".";
+"Ruta" #{-> MARK(T9)} ".";
 #{-PARTOF(T10)-> MARK(T10)} ".";
 CW{-PARTOF(T11)} #{-> MARK(T11,1,2,3)} (PERIOD | COLON);
 #{-PARTOF(T12) -> MARK(T12,1,2)} (PERIOD | COLON);
@@ -38,7 +38,7 @@ BLOCK(window) T15{}{
     Document{-> DYNAMICANCHORING(false)};
     #{-> MARK(T22)};
     # #{-> MARK(T23)};
-    "Text" "Marker" #{-> MARK(T24)} ".";
+    "Ruta" #{-> MARK(T24)} ".";
     #{-PARTOF(T25)-> MARK(T25)} ".";
     CW{-PARTOF(T26)} #{-> MARK(T26,1,2,3)} (PERIOD | COLON);
     #{-PARTOF(T27) -> MARK(T27,1,2)} (PERIOD | COLON);

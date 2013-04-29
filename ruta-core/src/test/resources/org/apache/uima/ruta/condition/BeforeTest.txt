@@ -1,2 +1,2 @@
 To mark everything before a special annotation,
-you need the BEFORE condition of TextMarker.
+you need the BEFORE condition of Ruta.

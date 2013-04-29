@@ -54,7 +54,7 @@ public class ContextCountTest {
     iterator = ai.iterator();
     assertEquals("A single sentence", iterator.next().getCoveredText());
     assertEquals("And here is another one", iterator.next().getCoveredText());
-    assertEquals("Testing the CONTEXTCOUNT condition of Ruta", iterator.next().getCoveredText());
+    assertEquals("Testing the CONTEXTCOUNT condition of Ruta System", iterator.next().getCoveredText());
     
     t = RutaTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
@@ -63,7 +63,7 @@ public class ContextCountTest {
     assertEquals("A", iterator.next().getCoveredText());
     assertEquals("And", iterator.next().getCoveredText());
     assertEquals("Testing", iterator.next().getCoveredText());
-    assertEquals("Text", iterator.next().getCoveredText());
+    assertEquals("Ruta", iterator.next().getCoveredText());
     
     t = RutaTestUtils.getTestType(cas, 3);
     ai = cas.getAnnotationIndex(t);
@@ -71,7 +71,7 @@ public class ContextCountTest {
     iterator = ai.iterator();
     assertEquals("A single sentence." +
             "And here is another one." +
-            "Testing the CONTEXTCOUNT condition of Ruta.",
+            "Testing the CONTEXTCOUNT condition of Ruta System.",
             iterator.next().getCoveredText().replaceAll("[\n\r]", ""));
     
     cas.release();

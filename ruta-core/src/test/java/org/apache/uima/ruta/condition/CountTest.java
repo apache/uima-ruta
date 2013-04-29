@@ -54,19 +54,19 @@ public class CountTest {
     iterator = ai.iterator();
     assertEquals("A single sentence", iterator.next().getCoveredText());
     assertEquals("And here is another one", iterator.next().getCoveredText());
-    assertEquals("Testing the COUNT condition of Ruta", iterator.next().getCoveredText());
+    assertEquals("Testing the COUNT condition of Ruta System", iterator.next().getCoveredText());
     
     t = RutaTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
-    assertEquals("Testing the COUNT condition of Ruta", iterator.next().getCoveredText());
+    assertEquals("Testing the COUNT condition of Ruta System", iterator.next().getCoveredText());
     
     t = RutaTestUtils.getTestType(cas, 3);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
-    assertEquals("Testing the COUNT condition of Ruta", iterator.next().getCoveredText());
+    assertEquals("Testing the COUNT condition of Ruta System", iterator.next().getCoveredText());
     
     cas.release();    
   }
