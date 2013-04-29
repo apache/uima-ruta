@@ -26,13 +26,13 @@ under the License.
   
   <includeBaseDirectory>true</includeBaseDirectory>
   
-  <baseDirectory>apache-uima-textmarker-${project.version}</baseDirectory>
+  <baseDirectory>apache-uima-ruta-${project.version}</baseDirectory>
   
   <!-- Copy each core binary into the /lib dir of the distribution -->
   <dependencySets>
     <dependencySet>
       <includes>
-        <include>org.apache.uima:textmarker-core</include>
+        <include>org.apache.uima:ruta-core</include>
       </includes>
       <unpack>false</unpack>
       <scope>runtime</scope>
@@ -46,11 +46,11 @@ under the License.
     <!-- Copy each eclipse plugin into the /eclipsePlugins dir of the distribution -->
     <dependencySet>
       <includes>
-        <include>org.apache.uima:textmarker-ep-addons</include>
-        <include>org.apache.uima:textmarker-ep-caseditor</include>
-        <include>org.apache.uima:textmarker-ep-engine</include>
-        <include>org.apache.uima:textmarker-ep-ide</include>
-        <include>org.apache.uima:textmarker-ep-textruler</include>
+        <include>org.apache.uima:ruta-ep-addons</include>
+        <include>org.apache.uima:ruta-ep-caseditor</include>
+        <include>org.apache.uima:ruta-ep-engine</include>
+        <include>org.apache.uima:ruta-ep-ide</include>
+        <include>org.apache.uima:ruta-ep-textruler</include>
       </includes>
       <unpack>false</unpack>
       <scope>runtime</scope>
@@ -90,7 +90,7 @@ under the License.
 
     <!-- docbooks -->
     <fileSet>
-      <directory>textmarker-docbook/target/site/</directory>
+      <directory>ruta-docbook/target/site/</directory>
       <outputDirectory>docs</outputDirectory>
       <fileMode>644</fileMode>
       <directoryMode>755</directoryMode>        

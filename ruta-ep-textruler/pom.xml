@@ -19,13 +19,13 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>textmarker-ep-textruler</artifactId>
+  <artifactId>ruta-ep-textruler</artifactId>
   <version>2.0.1-SNAPSHOT</version>
   <parent>
     <groupId>org.apache.uima</groupId>
-    <artifactId>textmarker-parent</artifactId>
+    <artifactId>ruta-parent</artifactId>
     <version>2.0.1-SNAPSHOT</version>
-    <relativePath>../textmarker-parent/pom.xml</relativePath>
+    <relativePath>../ruta-parent/pom.xml</relativePath>
   </parent>
   <properties>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
@@ -36,13 +36,13 @@
   <dependencies>
     <dependency>
       <groupId>org.apache.uima</groupId>
-      <artifactId>textmarker-core</artifactId>
+      <artifactId>ruta-core</artifactId>
       <version>${project.parent.version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
-      <artifactId>textmarker-ep-ide</artifactId>
+      <artifactId>ruta-ep-ide</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
     <dependency>
@@ -143,13 +143,13 @@
     </dependency>
   </dependencies>
   <scm>
-    <url>http://svn.apache.org/viewvc/uima/sandbox/textmarker/trunk/textmarker-ep-textruler</url>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk/textmarker-ep-textruler</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk/textmarker-ep-textruler</developerConnection>
+    <url>http://svn.apache.org/viewvc/uima/sandbox/ruta/trunk/ruta-ep-textruler</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/ruta/trunk/ruta-ep-textruler</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/ruta/trunk/ruta-ep-textruler</developerConnection>
   </scm>
   <build>
     <!-- don't use artifactId as first part of finalName, follow instead the eclipse convention -->
-    <finalName>org.apache.uima.textmarker.textruler_${parsedVersion.osgiVersion}</finalName>
+    <finalName>org.apache.uima.ruta.textruler_${parsedVersion.osgiVersion}</finalName>
     <resources>
       <resource>
         <directory>.</directory>
@@ -195,18 +195,18 @@
             <id>uima-bundle</id>
             <configuration>
               <instructions>
-                <Bundle-SymbolicName>org.apache.uima.textmarker.textruler;singleton:=true</Bundle-SymbolicName>
-                <Bundle-Activator>org.apache.uima.textmarker.textruler.TextRulerPlugin</Bundle-Activator>
+                <Bundle-SymbolicName>org.apache.uima.ruta.textruler;singleton:=true</Bundle-SymbolicName>
+                <Bundle-Activator>org.apache.uima.ruta.textruler.TextRulerPlugin</Bundle-Activator>
                 <Bundle-RequiredExecutionEnvironment>J2SE-1.5</Bundle-RequiredExecutionEnvironment>
                 <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
                 <_nouses>true</_nouses>
                 <Export-Package>
-                  org.apache.uima.textmarker.textruler.*
+                  org.apache.uima.ruta.textruler.*
                 </Export-Package>
                 <Require-Bundle>
                   org.apache.uima.runtime,
-                  org.apache.uima.textmarker.ide,
-                  org.apache.uima.textmarker.engine,
+                  org.apache.uima.ruta.ide,
+                  org.apache.uima.ruta.engine,
                   org.eclipse.core.runtime,
                   org.eclipse.core.resources,
                   org.eclipse.ui,

@@ -22,12 +22,12 @@
 
   <parent>
     <groupId>org.apache.uima</groupId>
-    <artifactId>textmarker-parent</artifactId>
+    <artifactId>ruta-parent</artifactId>
     <version>2.0.1-SNAPSHOT</version>
-    <relativePath>../textmarker-parent/pom.xml</relativePath>
+    <relativePath>../ruta-parent/pom.xml</relativePath>
   </parent>
     
-  <artifactId>textmarker-eclipse-feature</artifactId>
+  <artifactId>ruta-eclipse-feature</artifactId>
   <version>2.0.1-SNAPSHOT</version>
   
   <name>Apache UIMA TextMarker Eclipse: ${project.artifactId}</name>
@@ -45,13 +45,13 @@
        element, and just changing the following two properties -->  
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk/textmarker-eclipse-feature
+      scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/ruta/trunk/ruta-eclipse-feature
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk/textmarker-eclipse-feature
+      scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/ruta/trunk/ruta-eclipse-feature
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/sandbox/textmarker/trunk/textmarker-eclipse-feature
+      http://svn.apache.org/viewvc/uima/sandbox/ruta/trunk/ruta-eclipse-feature
     </url>
   </scm>
   

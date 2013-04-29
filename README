@@ -1,5 +1,5 @@
 
-Apache UIMA TextMarker v2.0.0
+Apache UIMA Ruta v2.0.1
 -------------------------------------------------------------------------
 
 Building from the Source Distribution
@@ -8,7 +8,7 @@ Building from the Source Distribution
 We use Maven 3.0 or later for building; download this if needed, 
 and set the environment variable MAVEN_OPTS to -Xmx800m -XX:MaxPerSize=256m.
 
-Then do the build by going into the TextMarker directory, and issuing the command
+Then do the build by going into the UIMA Ruta directory, and issuing the command
    mvn clean install
    
 This builds everything except the ...source-release.zip file. If you want that,
@@ -26,7 +26,7 @@ If Eclipse is closed while an opened CAS Editor is focused, then problems may oc
 when Eclipse is started with the same workspace.
 
 There is a workaround: 
-- remove either the plugin org.apache.uima.textmarker.ide or
+- remove either the plugin org.apache.uima.ruta.ide or
   the plugin org.apache.uima.caseditor from the plugins folder of your Eclipse installation
 - start Eclipse
 - close the CAS Editor
@@ -38,8 +38,8 @@ There is a workaround:
 
 -------------------------------------
 
-If you use the uimaFIT JCasGenPomFriendly in Maven and want to use TextMarker 
-as a standalone annotator you have to exclude the generated TextMarker basic 
+If you use the uimaFIT JCasGenPomFriendly in Maven and want to use UIMA Ruta 
+as a standalone annotator you have to exclude the generated UIMA Ruta basic 
 type files from the build, e.g., by adding:
 
    <plugin>
@@ -48,7 +48,7 @@ type files from the build, e.g., by adding:
     <version>3.0</version>
     <configuration>
          <excludes>
-             <exclude>org/apache/uima/textmarker/type/*.java</exclude>
+             <exclude>org/apache/uima/ruta/type/*.java</exclude>
          </excludes>
     </configuration>
    </plugin> 

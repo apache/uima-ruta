@@ -19,13 +19,13 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>textmarker-ep-addons</artifactId>
+  <artifactId>ruta-ep-addons</artifactId>
   <version>2.0.1-SNAPSHOT</version>
   <parent>
     <groupId>org.apache.uima</groupId>
-    <artifactId>textmarker-parent</artifactId>
+    <artifactId>ruta-parent</artifactId>
     <version>2.0.1-SNAPSHOT</version>
-    <relativePath>../textmarker-parent/pom.xml</relativePath>
+    <relativePath>../ruta-parent/pom.xml</relativePath>
   </parent>
   <properties>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
@@ -41,7 +41,7 @@
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
-      <artifactId>textmarker-ep-caseditor</artifactId>
+      <artifactId>ruta-ep-caseditor</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
     <dependency>
@@ -51,12 +51,12 @@
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
-      <artifactId>textmarker-ep-engine</artifactId>
+      <artifactId>ruta-ep-engine</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
-      <artifactId>textmarker-ep-ide</artifactId>
+      <artifactId>ruta-ep-ide</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
     <dependency>
@@ -156,13 +156,13 @@
     </dependency>
   </dependencies>
   <scm>
-    <url>http://svn.apache.org/viewvc/uima/sandbox/textmarker/trunk/textmarker-ep-addons</url>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk/textmarker-ep-addons</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk/textmarker-ep-addons</developerConnection>
+    <url>http://svn.apache.org/viewvc/uima/sandbox/ruta/trunk/ruta-ep-addons</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/ruta/trunk/ruta-ep-addons</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/ruta/trunk/ruta-ep-addons</developerConnection>
   </scm>
   <build>
     <!-- don't use artifactId as first part of finalName, follow instead the eclipse convention -->
-    <finalName>org.apache.uima.textmarker.addons_${parsedVersion.osgiVersion}</finalName>
+    <finalName>org.apache.uima.ruta.addons_${parsedVersion.osgiVersion}</finalName>
     <resources>
       <resource>
         <directory>.</directory>
@@ -209,20 +209,20 @@
             <id>uima-bundle</id>
             <configuration>
               <instructions>
-                <Bundle-SymbolicName>org.apache.uima.textmarker.addons;singleton:=true</Bundle-SymbolicName>
-                <Bundle-Activator>org.apache.uima.textmarker.addons.TextMarkerAddonsPlugin</Bundle-Activator>
+                <Bundle-SymbolicName>org.apache.uima.ruta.addons;singleton:=true</Bundle-SymbolicName>
+                <Bundle-Activator>org.apache.uima.ruta.addons.TextMarkerAddonsPlugin</Bundle-Activator>
                 <Bundle-RequiredExecutionEnvironment>J2SE-1.5</Bundle-RequiredExecutionEnvironment>
                 <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
                 <Export-Package>
-                  org.apache.uima.textmarker.*
+                  org.apache.uima.ruta.*
                 </Export-Package>
                 <Require-Bundle>
                   org.eclipse.ui,
                   org.eclipse.core.runtime,
                   org.apache.uima.runtime,
-                  org.apache.uima.textmarker.engine;bundle-version="1.0.0",
+                  org.apache.uima.ruta.engine;bundle-version="1.0.0",
                   org.eclipse.core.resources,
-                  org.apache.uima.textmarker.ide;bundle-version="1.0.0",
+                  org.apache.uima.ruta.ide;bundle-version="1.0.0",
                   org.eclipse.ui.ide,
                   org.eclipse.dltk.core;bundle-version="[3.0.0,5.0.0)",
                   org.eclipse.jface.text,
@@ -231,7 +231,7 @@
                   org.eclipse.dltk.launching;bundle-version="[3.0.0,5.0.0)",
                   org.eclipse.debug.ui;bundle-version="3.5.0",
                   org.apache.uima.caseditor;bundle-version="2.4.0",
-                  org.apache.uima.textmarker.caseditor;bundle-version="1.0.0",
+                  org.apache.uima.ruta.caseditor;bundle-version="1.0.0",
                   org.apache.uima.caseditor.ide;bundle-version="2.4.0",
                   org.junit4;bundle-version="4.5.0";resolution:=optional
                 </Require-Bundle>

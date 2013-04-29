@@ -27,7 +27,7 @@
     <relativePath />
   </parent>
   
-	<artifactId>textmarker-eclipse-update-site</artifactId>
+	<artifactId>ruta-eclipse-update-site</artifactId>
 	<packaging>pom</packaging>
 	<version>2.0.0</version>
   
@@ -37,13 +37,13 @@
 
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk/textmarker-eclipse-update-site
+      scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/ruta/trunk/ruta-eclipse-update-site
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk/textmarker-eclipse-update-site
+      scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/ruta/trunk/ruta-eclipse-update-site
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/sandbox/textmarker/trunk/textmarker-eclipse-update-site
+      http://svn.apache.org/viewvc/uima/sandbox/ruta/trunk/ruta-eclipse-update-site
     </url>
   </scm>
   
@@ -77,33 +77,33 @@
               <artifactItems>
                 <artifactItem>
                   <groupId>org.apache.uima</groupId>
-                  <artifactId>textmarker-ep-addons</artifactId>
+                  <artifactId>ruta-ep-addons</artifactId>
                   <version>${item-maven-release-version}</version>
-                  <destFileName>org.apache.uima.textmarker.addons_${item-eclipse-release-version}.jar</destFileName>
+                  <destFileName>org.apache.uima.ruta.addons_${item-eclipse-release-version}.jar</destFileName>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.uima</groupId>
-                  <artifactId>textmarker-ep-caseditor</artifactId>
+                  <artifactId>ruta-ep-caseditor</artifactId>
                   <version>${item-maven-release-version}</version>
-                  <destFileName>org.apache.uima.textmarker.caseditor_${item-eclipse-release-version}.jar</destFileName>
+                  <destFileName>org.apache.uima.ruta.caseditor_${item-eclipse-release-version}.jar</destFileName>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.uima</groupId>
-                  <artifactId>textmarker-ep-engine</artifactId>
+                  <artifactId>ruta-ep-engine</artifactId>
                   <version>${item-maven-release-version}</version>
-                  <destFileName>org.apache.uima.textmarker.engine_${item-eclipse-release-version}.jar</destFileName>
+                  <destFileName>org.apache.uima.ruta.engine_${item-eclipse-release-version}.jar</destFileName>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.uima</groupId>
-                  <artifactId>textmarker-ep-ide</artifactId>
+                  <artifactId>ruta-ep-ide</artifactId>
                   <version>${item-maven-release-version}</version>
-                  <destFileName>org.apache.uima.textmarker.ide_${item-eclipse-release-version}.jar</destFileName>
+                  <destFileName>org.apache.uima.ruta.ide_${item-eclipse-release-version}.jar</destFileName>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.uima</groupId>
-                  <artifactId>textmarker-ep-textruler</artifactId>
+                  <artifactId>ruta-ep-textruler</artifactId>
                   <version>${item-maven-release-version}</version>
-                  <destFileName>org.apache.uima.textmarker.textruler_${item-eclipse-release-version}.jar</destFileName>
+                  <destFileName>org.apache.uima.ruta.textruler_${item-eclipse-release-version}.jar</destFileName>
                 </artifactItem>
               </artifactItems>
               <outputDirectory>${eclipseUpdateSite}/plugins</outputDirectory>
@@ -121,9 +121,9 @@
               <artifactItems>
                 <artifactItem>
                   <groupId>org.apache.uima</groupId>
-                  <artifactId>textmarker-eclipse-feature</artifactId>
+                  <artifactId>ruta-eclipse-feature</artifactId>
                   <version>${item-maven-release-version}</version>
-                  <destFileName>org.apache.uima.textmarker.feature_${item-eclipse-release-version}.jar</destFileName>
+                  <destFileName>org.apache.uima.ruta.feature_${item-eclipse-release-version}.jar</destFileName>
                 </artifactItem>
               </artifactItems>
               <outputDirectory>${eclipseUpdateSite}/features</outputDirectory>
@@ -192,7 +192,7 @@
                   <arg line="-application org.eclipse.equinox.p2.publisher.CategoryPublisher" />
                   <arg line="-metadataRepository file://${eclipseUpdateSite}" />
                   <arg line="-categoryDefinition file://${basedir}/category.xml" />
-                  <arg line="-categoryQualifier apache-uima-textmarker" />
+                  <arg line="-categoryQualifier apache-uima-ruta" />
                   <arg line="-compress"/>
                 </java>
                 

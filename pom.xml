@@ -11,13 +11,13 @@
 
   <parent>
     <groupId>org.apache.uima</groupId>
-    <artifactId>textmarker-parent</artifactId>
+    <artifactId>ruta-parent</artifactId>
     <version>2.0.1-SNAPSHOT</version>
-    <relativePath>textmarker-parent/pom.xml</relativePath>
+    <relativePath>ruta-parent/pom.xml</relativePath>
   </parent>
 
   <groupId>org.apache.uima</groupId>
-  <artifactId>textmarker</artifactId>
+  <artifactId>ruta</artifactId>
   <packaging>pom</packaging>
   <version>2.0.1-SNAPSHOT</version>
   <name>Apache UIMA TextMarker: ${project.artifactId}</name>
@@ -39,57 +39,57 @@
     elements from the chain of parent poms, if this is omitted. Keeping this a bit factored allows cutting/pasting 
     the <scm> element, and just changing the following two properties -->
   <scm>
-    <url>http://svn.apache.org/viewvc/uima/sandbox/textmarker/trunk</url>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk</developerConnection>
+    <url>http://svn.apache.org/viewvc/uima/sandbox/ruta/trunk</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/ruta/trunk</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/ruta/trunk</developerConnection>
   </scm>
 
   <!-- dependencies used during assembly -->
   <dependencies>
     <dependency>
       <groupId>org.apache.uima</groupId>
-      <artifactId>textmarker-core</artifactId>
+      <artifactId>ruta-core</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
-      <artifactId>textmarker-ep-addons</artifactId>
+      <artifactId>ruta-ep-addons</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
-      <artifactId>textmarker-ep-caseditor</artifactId>
+      <artifactId>ruta-ep-caseditor</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
-      <artifactId>textmarker-ep-engine</artifactId>
+      <artifactId>ruta-ep-engine</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
-      <artifactId>textmarker-ep-ide</artifactId>
+      <artifactId>ruta-ep-ide</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
-      <artifactId>textmarker-ep-textruler</artifactId>
+      <artifactId>ruta-ep-textruler</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>
   
   <modules>
-    <module>textmarker-parent</module>
-    <module>textmarker-core</module>
+    <module>ruta-parent</module>
+    <module>ruta-core</module>
 
-    <module>textmarker-ep-engine</module>
-    <module>textmarker-ep-ide</module>
-    <module>textmarker-ep-caseditor</module>
-    <module>textmarker-ep-addons</module>
-    <module>textmarker-ep-textruler</module>
+    <module>ruta-ep-engine</module>
+    <module>ruta-ep-ide</module>
+    <module>ruta-ep-caseditor</module>
+    <module>ruta-ep-addons</module>
+    <module>ruta-ep-textruler</module>
 
-    <module>textmarker-docbook</module>
-    <module>textmarker-eclipse-feature</module>
+    <module>ruta-docbook</module>
+    <module>ruta-eclipse-feature</module>
   </modules>
   <build>
     <pluginManagement>

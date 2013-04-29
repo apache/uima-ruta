@@ -19,13 +19,13 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>textmarker-ep-caseditor</artifactId>
+  <artifactId>ruta-ep-caseditor</artifactId>
   <version>2.0.1-SNAPSHOT</version>
   <parent>
     <groupId>org.apache.uima</groupId>
-    <artifactId>textmarker-parent</artifactId>
+    <artifactId>ruta-parent</artifactId>
     <version>2.0.1-SNAPSHOT</version>
-    <relativePath>../textmarker-parent/pom.xml</relativePath>
+    <relativePath>../ruta-parent/pom.xml</relativePath>
   </parent>
   <properties>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
@@ -34,9 +34,9 @@
   <url>${uimaWebsiteUrl}</url>
   <description>Provides additional views for the CAS Editor</description>
   <scm>
-    <url>http://svn.apache.org/viewvc/uima/sandbox/textmarker/trunk/textmarker-ep-caseditor</url>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk/textmarker-ep-caseditor</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk/textmarker-ep-caseditor</developerConnection>
+    <url>http://svn.apache.org/viewvc/uima/sandbox/ruta/trunk/ruta-ep-caseditor</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/ruta/trunk/ruta-ep-caseditor</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/ruta/trunk/ruta-ep-caseditor</developerConnection>
   </scm>
   <dependencies>
     <dependency>
@@ -101,7 +101,7 @@
 
   <build>
     <!-- don't use artifactId as first part of finalName, follow instead the eclipse convention -->
-    <finalName>org.apache.uima.textmarker.caseditor_${parsedVersion.osgiVersion}</finalName>
+    <finalName>org.apache.uima.ruta.caseditor_${parsedVersion.osgiVersion}</finalName>
     <resources>
       <resource>
         <directory>.</directory>
@@ -148,12 +148,12 @@
             <id>uima-bundle</id>
             <configuration>
               <instructions>
-                <Bundle-SymbolicName>org.apache.uima.textmarker.caseditor;singleton:=true</Bundle-SymbolicName>
-                <Bundle-Activator>org.apache.uima.textmarker.caseditor.TextMarkerCasEditorPlugin</Bundle-Activator>
+                <Bundle-SymbolicName>org.apache.uima.ruta.caseditor;singleton:=true</Bundle-SymbolicName>
+                <Bundle-Activator>org.apache.uima.ruta.caseditor.TextMarkerCasEditorPlugin</Bundle-Activator>
                 <Bundle-RequiredExecutionEnvironment>J2SE-1.5</Bundle-RequiredExecutionEnvironment>
                 <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
                 <Export-Package>
-                  org.apache.uima.textmarker.caseditor.*
+                  org.apache.uima.ruta.caseditor.*
                 </Export-Package>
                 <Require-Bundle>
                   org.eclipse.jface.text,

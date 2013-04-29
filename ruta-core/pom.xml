@@ -20,13 +20,13 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>textmarker-core</artifactId>
+  <artifactId>ruta-core</artifactId>
   <version>2.0.1-SNAPSHOT</version>
   <parent>
     <groupId>org.apache.uima</groupId>
-    <artifactId>textmarker-parent</artifactId>
+    <artifactId>ruta-parent</artifactId>
     <version>2.0.1-SNAPSHOT</version>
-    <relativePath>../textmarker-parent/pom.xml</relativePath>
+    <relativePath>../ruta-parent/pom.xml</relativePath>
   </parent>
   <properties>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
@@ -82,7 +82,7 @@
       <artifactId>commons-lang3</artifactId>
       <version>3.1</version>
     </dependency>
-    <!-- needed for textmarker-ep-ide - TODO this should be moved to engine?-->
+    <!-- needed for ruta-ep-ide - TODO this should be moved to engine?-->
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
@@ -90,9 +90,9 @@
     </dependency>
   </dependencies>
   <scm>
-    <url>http://svn.apache.org/viewvc/uima/sandbox/textmarker/trunk/textmarker-core</url>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk/textmarker-core</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk/textmarker-core</developerConnection>
+    <url>http://svn.apache.org/viewvc/uima/sandbox/ruta/trunk/ruta-core</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/ruta/trunk/ruta-core</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/ruta/trunk/ruta-core</developerConnection>
   </scm>
   <build>
     <pluginManagement>
@@ -105,18 +105,18 @@
               <id>default-cli</id>
               <configuration>
                 <excludes>
-                  <exclude>src/main/java/org/apache/uima/textmarker/type/*.java</exclude> <!-- jcasgen files -->
-                  <exclude>src/main/antlr3/org/apache/uima/textmarker/parser/TextMarkerLexer.tokens</exclude> <!-- grammar tokens -->
-                  <exclude>src/test/resources/org/apache/uima/textmarker/action/*.tm</exclude> <!-- test data -->
-                  <exclude>src/test/resources/org/apache/uima/textmarker/*.txt</exclude> <!-- test data -->
-                  <exclude>src/test/resources/org/apache/uima/textmarker/*.tm</exclude> <!-- test data -->
-                  <exclude>src/test/resources/org/apache/uima/textmarker/action/*.*</exclude> <!-- test data -->
-                  <exclude>src/test/resources/org/apache/uima/textmarker/condition/*.txt</exclude> <!-- test data -->
-                  <exclude>src/test/resources/org/apache/uima/textmarker/condition/*.tm</exclude> <!-- test data -->
-                  <exclude>src/test/resources/org/apache/uima/textmarker/seed/*.txt</exclude> <!-- test data -->
-                  <exclude>src/test/resources/org/apache/uima/textmarker/seed/*.tm</exclude> <!-- test data -->
-                  <exclude>src/test/resources/org/apache/uima/textmarker/engine/*.html</exclude> <!-- test data -->
-                  <exclude>src/test/resources/org/apache/uima/textmarker/engine/*.tm</exclude> <!-- test data -->
+                  <exclude>src/main/java/org/apache/uima/ruta/type/*.java</exclude> <!-- jcasgen files -->
+                  <exclude>src/main/antlr3/org/apache/uima/ruta/parser/TextMarkerLexer.tokens</exclude> <!-- grammar tokens -->
+                  <exclude>src/test/resources/org/apache/uima/ruta/action/*.tm</exclude> <!-- test data -->
+                  <exclude>src/test/resources/org/apache/uima/ruta/*.txt</exclude> <!-- test data -->
+                  <exclude>src/test/resources/org/apache/uima/ruta/*.tm</exclude> <!-- test data -->
+                  <exclude>src/test/resources/org/apache/uima/ruta/action/*.*</exclude> <!-- test data -->
+                  <exclude>src/test/resources/org/apache/uima/ruta/condition/*.txt</exclude> <!-- test data -->
+                  <exclude>src/test/resources/org/apache/uima/ruta/condition/*.tm</exclude> <!-- test data -->
+                  <exclude>src/test/resources/org/apache/uima/ruta/seed/*.txt</exclude> <!-- test data -->
+                  <exclude>src/test/resources/org/apache/uima/ruta/seed/*.tm</exclude> <!-- test data -->
+                  <exclude>src/test/resources/org/apache/uima/ruta/engine/*.html</exclude> <!-- test data -->
+                  <exclude>src/test/resources/org/apache/uima/ruta/engine/*.tm</exclude> <!-- test data -->
                   <exclude>issuesFixed/**</exclude> <!-- generated -->
                 </excludes>
               </configuration>

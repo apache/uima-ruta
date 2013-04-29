@@ -29,13 +29,13 @@
   </parent>
 
   <groupId>org.apache.uima</groupId>
-  <artifactId>textmarker-parent</artifactId>
+  <artifactId>ruta-parent</artifactId>
   <packaging>pom</packaging>
   <version>2.0.1-SNAPSHOT</version>
-  <name>Apache UIMA TextMarker: ${project.artifactId}</name>
+  <name>Apache UIMA Ruta: ${project.artifactId}</name>
   <url>${uimaWebsiteUrl}</url>
 
-  <description>The common parent pom for the UIMA TextMarker</description>
+  <description>The common parent pom for the UIMA Ruta</description>
   
   <!-- Special inheritance note
        even though the <scm> element that follows is exactly the
@@ -46,9 +46,9 @@
        Keeping this a bit factored allows cutting/pasting the <scm>
        element, and just changing the following two properties -->
   <scm>
-    <url>http://svn.apache.org/viewvc/uima/sandbox/textmarker/trunk/textmarker-parent</url>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk/textmarker-parent</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk/textmarker-parent</developerConnection>
+    <url>http://svn.apache.org/viewvc/uima/sandbox/ruta/trunk/ruta-parent</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/ruta/trunk/ruta-parent</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/ruta/trunk/ruta-parent</developerConnection>
   </scm>
 
   <!-- The repositories and pluginRepositories section is duplicated from the parent pom one, and adds 
@@ -100,7 +100,7 @@
       </releases>
     </repository>
 
-    <!-- Temporary repository that contains osgi bundles like DLTK 3.0. Added to ease building the TextMarker 
+    <!-- Temporary repository that contains osgi bundles like DLTK 3.0. Added to ease building the UIMA Ruta 
       Eclipse plugins that depend on bundles, which are not provided by public maven repositories. -->
     <repository>
       <id>ukp-osgi-releases</id>
@@ -127,7 +127,7 @@
   </pluginRepositories>
   
     <properties>
-    <uniWueNoticeText>Portions of TextMarker were originally developed by
+    <uniWueNoticeText>Portions of UIMA Ruta were originally developed by
 the Universität Würzburg.
 Copyright (c) 2006, 2011 Universität Würzburg.
     </uniWueNoticeText>

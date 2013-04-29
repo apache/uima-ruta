@@ -20,13 +20,13 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>textmarker-ep-engine</artifactId>
+  <artifactId>ruta-ep-engine</artifactId>
   <version>2.0.1-SNAPSHOT</version>
   <parent>
     <groupId>org.apache.uima</groupId>
-    <artifactId>textmarker-parent</artifactId>
+    <artifactId>ruta-parent</artifactId>
     <version>2.0.1-SNAPSHOT</version>
-    <relativePath>../textmarker-parent/pom.xml</relativePath>
+    <relativePath>../ruta-parent/pom.xml</relativePath>
   </parent>
   <properties>
     <postNoticeText>${uniWueNoticeText}
@@ -47,19 +47,19 @@ licensed under the Common Public License.</postNoticeText>
       <scope>compile</scope> </dependency> -->
     <dependency>
       <groupId>org.apache.uima</groupId>
-      <artifactId>textmarker-core</artifactId>
+      <artifactId>ruta-core</artifactId>
       <version>${project.parent.version}</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>
   <scm>
-    <url>http://svn.apache.org/viewvc/uima/sandbox/textmarker/trunk/textmarker-ep-engine</url>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk/textmarker-ep-engine</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/textmarker/trunk/textmarker-ep-engine</developerConnection>
+    <url>http://svn.apache.org/viewvc/uima/sandbox/ruta/trunk/ruta-ep-engine</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/sandbox/ruta/trunk/ruta-ep-engine</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/sandbox/ruta/trunk/ruta-ep-engine</developerConnection>
   </scm>
   <build>
     <!-- don't use artifactId as first part of finalName, follow instead the eclipse convention -->
-    <finalName>org.apache.uima.textmarker.engine_${parsedVersion.osgiVersion}</finalName>
+    <finalName>org.apache.uima.ruta.engine_${parsedVersion.osgiVersion}</finalName>
     <pluginManagement>
       <plugins>
         <plugin>
@@ -116,28 +116,28 @@ licensed under the Common Public License.</postNoticeText>
             <configuration>
               <instructions>
                 <_nouses>true</_nouses>
-                <_exportcontents>org.apache.uima.textmarker,
-                  org.apache.uima.textmarker.action,
-                  org.apache.uima.textmarker.condition,
-                  org.apache.uima.textmarker.constraint,
-                  org.apache.uima.textmarker.engine,
-                  org.apache.uima.textmarker.expression,
-                  org.apache.uima.textmarker.expression.bool,
-                  org.apache.uima.textmarker.expression.list,
-                  org.apache.uima.textmarker.expression.number,
-                  org.apache.uima.textmarker.expression.resource,
-                  org.apache.uima.textmarker.expression.string,
-                  org.apache.uima.textmarker.expression.type,
-                  org.apache.uima.textmarker.extensions,
-                  org.apache.uima.textmarker.parser,
-                  org.apache.uima.textmarker.resource,
-                  org.apache.uima.textmarker.rule,
-                  org.apache.uima.textmarker.rule.quantifier,
-                  org.apache.uima.textmarker.seed,
-                  org.apache.uima.textmarker.type,
-                  org.apache.uima.textmarker.utils,
-                  org.apache.uima.textmarker.verbalize,
-                  org.apache.uima.textmarker.visitor,
+                <_exportcontents>org.apache.uima.ruta,
+                  org.apache.uima.ruta.action,
+                  org.apache.uima.ruta.condition,
+                  org.apache.uima.ruta.constraint,
+                  org.apache.uima.ruta.engine,
+                  org.apache.uima.ruta.expression,
+                  org.apache.uima.ruta.expression.bool,
+                  org.apache.uima.ruta.expression.list,
+                  org.apache.uima.ruta.expression.number,
+                  org.apache.uima.ruta.expression.resource,
+                  org.apache.uima.ruta.expression.string,
+                  org.apache.uima.ruta.expression.type,
+                  org.apache.uima.ruta.extensions,
+                  org.apache.uima.ruta.parser,
+                  org.apache.uima.ruta.resource,
+                  org.apache.uima.ruta.rule,
+                  org.apache.uima.ruta.rule.quantifier,
+                  org.apache.uima.ruta.seed,
+                  org.apache.uima.ruta.type,
+                  org.apache.uima.ruta.utils,
+                  org.apache.uima.ruta.verbalize,
+                  org.apache.uima.ruta.visitor,
                   org.antlr.runtime,
                   org.antlr.runtime.debug,
                   org.antlr.runtime.misc,
@@ -159,7 +159,7 @@ licensed under the Common Public License.</postNoticeText>
                 </Import-Package>
                 <Embed-Dependency>*;scope=compile;inline=true</Embed-Dependency>
 
-                <Bundle-SymbolicName>org.apache.uima.textmarker.engine;singleton:=true</Bundle-SymbolicName>
+                <Bundle-SymbolicName>org.apache.uima.ruta.engine;singleton:=true</Bundle-SymbolicName>
                 <Bundle-RequiredExecutionEnvironment>J2SE-1.5</Bundle-RequiredExecutionEnvironment>
                 <Eclipse-ExtensibleAPI>true</Eclipse-ExtensibleAPI>
                 <!-- <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy> -->

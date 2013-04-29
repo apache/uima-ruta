@@ -20,26 +20,26 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>textmarker-ep-example-extensions</artifactId>
+  <artifactId>ruta-ep-example-extensions</artifactId>
   <version>2.0.1-SNAPSHOT</version>
   <name>Example for language extensions</name>
   <parent>
     <groupId>org.apache.uima</groupId>
-    <artifactId>textmarker-parent</artifactId>
+    <artifactId>ruta-parent</artifactId>
     <version>2.0.1-SNAPSHOT</version>
-    <relativePath>../textmarker-parent/pom.xml</relativePath>
+    <relativePath>../ruta-parent/pom.xml</relativePath>
   </parent>
   <url>${uimaWebsiteUrl}</url>
   <dependencies>
     <dependency>
       <groupId>org.apache.uima</groupId>
-      <artifactId>textmarker-core</artifactId>
+      <artifactId>ruta-core</artifactId>
       <version>${project.parent.version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
-      <artifactId>textmarker-ep-ide</artifactId>
+      <artifactId>ruta-ep-ide</artifactId>
       <version>${project.parent.version}</version>
       <scope>compile</scope>
     </dependency>
@@ -71,7 +71,7 @@
   
   <build>
     <!-- don't use artifactId as first part of finalName, follow instead the eclipse convention -->
-    <finalName>org.apache.uima.textmarker.example.extensions_${parsedVersion.osgiVersion}</finalName>
+    <finalName>org.apache.uima.ruta.example.extensions_${parsedVersion.osgiVersion}</finalName>
     <pluginManagement>
       <plugins>
         <plugin>
@@ -104,23 +104,23 @@
               <instructions>
                 <_nouses>true</_nouses>
                 <_exportcontents>
-                  org.apache.uima.textmarker.example.extensions
+                  org.apache.uima.ruta.example.extensions
                 </_exportcontents>
                 <Require-Bundle>
                   org.apache.uima.runtime,
-                  org.apache.uima.textmarker.engine,
-                  org.apache.uima.textmarker.ide,
+                  org.apache.uima.ruta.engine,
+                  org.apache.uima.ruta.ide,
                   org.eclipse.dltk.core;bundle-version="[3.0.0,5.0.0)"
                 </Require-Bundle>
                 <Import-Package>
                 </Import-Package>
-                <Bundle-SymbolicName>org.apache.uima.textmarker.example.extensions;singleton:=true</Bundle-SymbolicName>
+                <Bundle-SymbolicName>org.apache.uima.ruta.example.extensions;singleton:=true</Bundle-SymbolicName>
                 <Bundle-RequiredExecutionEnvironment>J2SE-1.5</Bundle-RequiredExecutionEnvironment>
                 <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
                 <Eclipse-ExtensibleAPI>true</Eclipse-ExtensibleAPI>
                 <!-- <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy> -->
                 <Eclipse-BuddyPolicy>registered</Eclipse-BuddyPolicy>
-                <Eclipse-RegisterBuddy>org.apache.uima.runtime,org.apache.uima.textmarker.engine</Eclipse-RegisterBuddy>
+                <Eclipse-RegisterBuddy>org.apache.uima.runtime,org.apache.uima.ruta.engine</Eclipse-RegisterBuddy>
               </instructions>
             </configuration>
           </execution>
