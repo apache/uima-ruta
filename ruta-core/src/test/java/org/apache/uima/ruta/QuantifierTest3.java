@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker;
+package org.apache.uima.ruta;
 
 import static org.junit.Assert.assertEquals;
 
@@ -35,7 +35,7 @@ public class QuantifierTest3 {
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
     CAS cas = null;
     try {
-      cas = TextMarkerTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
+      cas = RutaTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
               + ".txt", 50);
     } catch (Exception e) {
       e.printStackTrace();
@@ -45,29 +45,29 @@ public class QuantifierTest3 {
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
 
-    t = TextMarkerTestUtils.getTestType(cas, 1);
+    t = RutaTestUtils.getTestType(cas, 1);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals("Big Big Big", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 2);
+    t = RutaTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals("Big Big Big", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 3);
+    t = RutaTestUtils.getTestType(cas, 3);
     ai = cas.getAnnotationIndex(t);
     assertEquals(0, ai.size());
 
-    t = TextMarkerTestUtils.getTestType(cas, 4);
+    t = RutaTestUtils.getTestType(cas, 4);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals("Big Big Big", iterator.next().getCoveredText());
     
-    t = TextMarkerTestUtils.getTestType(cas, 5);
+    t = RutaTestUtils.getTestType(cas, 5);
     ai = cas.getAnnotationIndex(t);
     assertEquals(0, ai.size());
     

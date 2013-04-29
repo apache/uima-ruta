@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker;
+package org.apache.uima.ruta;
 
 import static org.junit.Assert.assertEquals;
 
@@ -36,7 +36,7 @@ public class RegExpRuleTest {
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
     CAS cas = null;
     try {
-      cas = TextMarkerTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
+      cas = RutaTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
               + ".txt", 50);
     } catch (Exception e) {
       e.printStackTrace();
@@ -46,33 +46,33 @@ public class RegExpRuleTest {
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
 
-    t = TextMarkerTestUtils.getTestType(cas, 1);
+    t = RutaTestUtils.getTestType(cas, 1);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals(28, iterator.next().getCoveredText().length());
    
-    t = TextMarkerTestUtils.getTestType(cas, 2);
+    t = RutaTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(1, ai.size());
     assertEquals(26, iterator.next().getCoveredText().length());
 
-    t = TextMarkerTestUtils.getTestType(cas, 3);
+    t = RutaTestUtils.getTestType(cas, 3);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(2, ai.size());
     assertEquals("y", iterator.next().getCoveredText());
     assertEquals("z", iterator.next().getCoveredText());
     
-    t = TextMarkerTestUtils.getTestType(cas, 4);
+    t = RutaTestUtils.getTestType(cas, 4);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(2, ai.size());
     assertEquals("y", iterator.next().getCoveredText());
     assertEquals("z", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 5);
+    t = RutaTestUtils.getTestType(cas, 5);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(3, ai.size());
@@ -80,14 +80,14 @@ public class RegExpRuleTest {
     assertEquals("B", iterator.next().getCoveredText());
     assertEquals("B", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 6);
+    t = RutaTestUtils.getTestType(cas, 6);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(2, ai.size());
     assertEquals("y", iterator.next().getCoveredText());
     assertEquals("z", iterator.next().getCoveredText());
     
-    t = TextMarkerTestUtils.getTestType(cas, 7);
+    t = RutaTestUtils.getTestType(cas, 7);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(3, ai.size());

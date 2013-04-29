@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker;
+package org.apache.uima.ruta;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
@@ -34,7 +34,7 @@ public class LongGreedyTest2 {
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
     CAS cas = null;
     try {
-//      cas = TextMarkerTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
+//      cas = RutaTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
 //              + ".txt", 50, false, true, null, null);
     } catch (Exception e) {
       e.printStackTrace();
@@ -44,7 +44,7 @@ public class LongGreedyTest2 {
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
 
-    // t = TextMarkerTestUtils.getTestType(cas, 2);
+    // t = RutaTestUtils.getTestType(cas, 2);
     // ai = cas.getAnnotationIndex(t);
     // assertEquals(1, ai.size());
     // iterator = ai.iterator();

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker;
+package org.apache.uima.ruta;
 
 import static org.junit.Assert.assertEquals;
 
@@ -43,7 +43,7 @@ public class SubAtomicTest {
     
     CAS cas = null;
     try {
-      cas = TextMarkerTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
+      cas = RutaTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
               + ".txt", 50, false, false, complexTypes, null);
     } catch (Exception e) {
       e.printStackTrace();
@@ -53,7 +53,7 @@ public class SubAtomicTest {
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
     
-    t = TextMarkerTestUtils.getTestType(cas, 1);
+    t = RutaTestUtils.getTestType(cas, 1);
     ai = cas.getAnnotationIndex(t);
     assertEquals(0, ai.size());
     
@@ -65,7 +65,7 @@ public class SubAtomicTest {
     cas.addFsToIndexes(a2);
     
     try {
-      cas = TextMarkerTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
+      cas = RutaTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
               + ".txt", 50, false, false, complexTypes, null, null, cas);
     } catch (Exception e) {
       e.printStackTrace();
@@ -74,31 +74,31 @@ public class SubAtomicTest {
     
 
 
-    t = TextMarkerTestUtils.getTestType(cas, 1);
+    t = RutaTestUtils.getTestType(cas, 1);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals("Jochen", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 2);
+    t = RutaTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals("hen", iterator.next().getCoveredText());
     
-    t = TextMarkerTestUtils.getTestType(cas, 3);
+    t = RutaTestUtils.getTestType(cas, 3);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals("Joc", iterator.next().getCoveredText());
     
-    t = TextMarkerTestUtils.getTestType(cas, 4);
+    t = RutaTestUtils.getTestType(cas, 4);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals("Jochen", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 5);
+    t = RutaTestUtils.getTestType(cas, 5);
     ai = cas.getAnnotationIndex(t);
     assertEquals(0, ai.size());
     

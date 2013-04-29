@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker;
+package org.apache.uima.ruta;
 
 import static org.junit.Assert.assertEquals;
 
@@ -37,7 +37,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.apache.uima.textmarker.engine.TextMarkerEngine;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.util.CasCreationUtils;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.XMLInputSource;
@@ -52,14 +52,14 @@ public class IncompletePartitioningTest {
 
     String ruleFileName = namespace + "/" + className + ".tm";
     String textFileName = namespace + "/" + className + ".txt";
-    URL ruleURL = TextMarkerTestUtils.class.getClassLoader().getResource(ruleFileName);
+    URL ruleURL = RutaTestUtils.class.getClassLoader().getResource(ruleFileName);
     File ruleFile = new File(ruleURL.toURI());
-    URL textURL = TextMarkerTestUtils.class.getClassLoader().getResource(textFileName);
+    URL textURL = RutaTestUtils.class.getClassLoader().getResource(textFileName);
     File textFile = new File(textURL.toURI());
-    URL url = TextMarkerEngine.class.getClassLoader().getResource("BasicEngine.xml");
+    URL url = RutaEngine.class.getClassLoader().getResource("BasicEngine.xml");
     if (url == null) {
-      url = TextMarkerTestUtils.class.getClassLoader().getResource(
-              "org/apache/uima/textmarker/TestEngine.xml");
+      url = RutaTestUtils.class.getClassLoader().getResource(
+              "org/apache/uima/ruta/TestEngine.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
@@ -67,7 +67,7 @@ public class IncompletePartitioningTest {
 
     TypeSystemDescription basicTypeSystem = aed.getAnalysisEngineMetaData().getTypeSystem();
     for (int i = 1; i <= 50; i++) {
-      basicTypeSystem.addType(TextMarkerTestUtils.TYPE + i, "Type for Testing",
+      basicTypeSystem.addType(RutaTestUtils.TYPE + i, "Type for Testing",
               "uima.tcas.Annotation");
     }
     Collection<TypeSystemDescription> tsds = new ArrayList<TypeSystemDescription>();
@@ -76,22 +76,22 @@ public class IncompletePartitioningTest {
     aed.getAnalysisEngineMetaData().setTypeSystem(mergeTypeSystems);
 
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
-    ae.setConfigParameterValue(TextMarkerEngine.SCRIPT_PATHS, new String[] { ruleFile
+    ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { ruleFile
             .getParentFile().getPath() });
     String name = ruleFile.getName();
     if (name.endsWith(".tm")) {
       name = name.substring(0, name.length() - 3);
     }
-    ae.setConfigParameterValue(TextMarkerEngine.MAIN_SCRIPT, name);
-    ae.setConfigParameterValue(TextMarkerEngine.SEEDERS, new String[0]);
-    ae.setConfigParameterValue(TextMarkerEngine.DEFAULT_FILTERED_TYPES, new String[0]);
+    ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, name);
+    ae.setConfigParameterValue(RutaEngine.SEEDERS, new String[0]);
+    ae.setConfigParameterValue(RutaEngine.DEFAULT_FILTERED_TYPES, new String[0]);
 
     ae.reconfigure();
     CAS cas = ae.newCAS();
     cas.setDocumentText(FileUtils.file2String(textFile, "UTF-8"));
     
-    Type typeCW = cas.getTypeSystem().getType("org.apache.uima.textmarker.type.CW");
-    Type typeSW = cas.getTypeSystem().getType("org.apache.uima.textmarker.type.SW");
+    Type typeCW = cas.getTypeSystem().getType("org.apache.uima.ruta.type.CW");
+    Type typeSW = cas.getTypeSystem().getType("org.apache.uima.ruta.type.SW");
     cas.addFsToIndexes(cas.createAnnotation(typeCW, 0, 5));
     cas.addFsToIndexes(cas.createAnnotation(typeCW, 7, 13));
     cas.addFsToIndexes(cas.createAnnotation(typeCW, 15, 18));
@@ -104,7 +104,7 @@ public class IncompletePartitioningTest {
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
     
-    t = TextMarkerTestUtils.getTestType(cas, 1);
+    t = RutaTestUtils.getTestType(cas, 1);
     ai = cas.getAnnotationIndex(t);
     assertEquals(2, ai.size());
     iterator = ai.iterator();

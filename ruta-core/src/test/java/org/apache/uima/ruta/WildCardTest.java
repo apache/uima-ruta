@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker;
+package org.apache.uima.ruta;
 
 import static org.junit.Assert.assertEquals;
 
@@ -36,7 +36,7 @@ public class WildCardTest {
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
     CAS cas = null;
     try {
-      cas = TextMarkerTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
+      cas = RutaTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
               + ".txt", 50);
     } catch (Exception e) {
       e.printStackTrace();
@@ -46,87 +46,87 @@ public class WildCardTest {
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
 
-    t = TextMarkerTestUtils.getTestType(cas, 1);
+    t = RutaTestUtils.getTestType(cas, 1);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals(cas.getDocumentText().length(), iterator.next().getCoveredText().length());
    
-    t = TextMarkerTestUtils.getTestType(cas, 2);
+    t = RutaTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals("The", iterator.next().getCoveredText());
    
-    t = TextMarkerTestUtils.getTestType(cas, 3);
+    t = RutaTestUtils.getTestType(cas, 3);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
-    assertEquals("The TextMarker language is an imperative rule language extended with scripting elements.", iterator.next().getCoveredText());
+    assertEquals("The Ruta language is an imperative rule language extended with scripting elements.", iterator.next().getCoveredText());
     
-    t = TextMarkerTestUtils.getTestType(cas, 4);
+    t = RutaTestUtils.getTestType(cas, 4);
     ai = cas.getAnnotationIndex(t);
     assertEquals(8, ai.size());
     
-    t = TextMarkerTestUtils.getTestType(cas, 5);
+    t = RutaTestUtils.getTestType(cas, 5);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
-    assertEquals("The TextMarker language is an imperative rule language extended with scripting elements", iterator.next().getCoveredText());
+    assertEquals("The Ruta language is an imperative rule language extended with scripting elements", iterator.next().getCoveredText());
     
-    t = TextMarkerTestUtils.getTestType(cas, 6);
+    t = RutaTestUtils.getTestType(cas, 6);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
-    assertEquals("The TextMarker language is an imperative rule language extended with scripting elements", iterator.next().getCoveredText());
+    assertEquals("The Ruta language is an imperative rule language extended with scripting elements", iterator.next().getCoveredText());
     
-    t = TextMarkerTestUtils.getTestType(cas, 7);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals(cas.getDocumentText(), iterator.next().getCoveredText());
-    
-    t = TextMarkerTestUtils.getTestType(cas, 8);
+    t = RutaTestUtils.getTestType(cas, 7);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals(cas.getDocumentText(), iterator.next().getCoveredText());
     
-    t = TextMarkerTestUtils.getTestType(cas, 9);
+    t = RutaTestUtils.getTestType(cas, 8);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    assertEquals(cas.getDocumentText(), iterator.next().getCoveredText());
+    
+    t = RutaTestUtils.getTestType(cas, 9);
     ai = cas.getAnnotationIndex(t);
     assertEquals(2, ai.size());
     
-    t = TextMarkerTestUtils.getTestType(cas, 10);
+    t = RutaTestUtils.getTestType(cas, 10);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
-    assertEquals("The TextMarker language is an imperative rule language extended with scripting elements", iterator.next().getCoveredText());
+    assertEquals("The Ruta language is an imperative rule language extended with scripting elements", iterator.next().getCoveredText());
     
-    t = TextMarkerTestUtils.getTestType(cas, 11);
+    t = RutaTestUtils.getTestType(cas, 11);
     ai = cas.getAnnotationIndex(t);
     assertEquals(9, ai.size());
     
-    t = TextMarkerTestUtils.getTestType(cas, 12);
+    t = RutaTestUtils.getTestType(cas, 12);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
-    assertEquals("The TextMarker language is an imperative rule language extended with scripting elements.", iterator.next().getCoveredText());
+    assertEquals("The Ruta language is an imperative rule language extended with scripting elements.", iterator.next().getCoveredText());
     
-    t = TextMarkerTestUtils.getTestType(cas, 13);
+    t = RutaTestUtils.getTestType(cas, 13);
     ai = cas.getAnnotationIndex(t);
     assertEquals(8, ai.size());
     
-    t = TextMarkerTestUtils.getTestType(cas, 14);
+    t = RutaTestUtils.getTestType(cas, 14);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
-    assertEquals("The TextMarker language is an imperative rule language extended with scripting elements.", iterator.next().getCoveredText());
+    assertEquals("The Ruta language is an imperative rule language extended with scripting elements.", iterator.next().getCoveredText());
     
-    t = TextMarkerTestUtils.getTestType(cas, 16);
+    t = RutaTestUtils.getTestType(cas, 16);
     ai = cas.getAnnotationIndex(t);
     assertEquals(4, ai.size());
     
-    t = TextMarkerTestUtils.getTestType(cas, 17);
+    t = RutaTestUtils.getTestType(cas, 17);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(4, ai.size());
@@ -135,51 +135,51 @@ public class WildCardTest {
     assertEquals("The", iterator.next().getCoveredText());
     assertEquals("The", iterator.next().getCoveredText());
     
-    t = TextMarkerTestUtils.getTestType(cas, 18);
+    t = RutaTestUtils.getTestType(cas, 18);
     ai = cas.getAnnotationIndex(t);
     assertEquals(4, ai.size());
     
-    t = TextMarkerTestUtils.getTestType(cas, 19);
+    t = RutaTestUtils.getTestType(cas, 19);
     ai = cas.getAnnotationIndex(t);
     assertEquals(8, ai.size());
     
-    t = TextMarkerTestUtils.getTestType(cas, 20);
+    t = RutaTestUtils.getTestType(cas, 20);
     ai = cas.getAnnotationIndex(t);
     assertEquals(4, ai.size());
     
-    t = TextMarkerTestUtils.getTestType(cas, 21);
+    t = RutaTestUtils.getTestType(cas, 21);
     ai = cas.getAnnotationIndex(t);
     assertEquals(4, ai.size());
     
-    t = TextMarkerTestUtils.getTestType(cas, 22);
+    t = RutaTestUtils.getTestType(cas, 22);
     ai = cas.getAnnotationIndex(t);
     assertEquals(4, ai.size());
     
-    t = TextMarkerTestUtils.getTestType(cas, 23);
+    t = RutaTestUtils.getTestType(cas, 23);
     ai = cas.getAnnotationIndex(t);
     assertEquals(4, ai.size());
     
-    t = TextMarkerTestUtils.getTestType(cas, 24);
+    t = RutaTestUtils.getTestType(cas, 24);
     ai = cas.getAnnotationIndex(t);
     assertEquals(2, ai.size());
 
-    t = TextMarkerTestUtils.getTestType(cas, 25);
+    t = RutaTestUtils.getTestType(cas, 25);
     ai = cas.getAnnotationIndex(t);
     assertEquals(4, ai.size());
     
-    t = TextMarkerTestUtils.getTestType(cas, 26);
+    t = RutaTestUtils.getTestType(cas, 26);
     ai = cas.getAnnotationIndex(t);
     assertEquals(9, ai.size());
     
-    t = TextMarkerTestUtils.getTestType(cas, 27);
+    t = RutaTestUtils.getTestType(cas, 27);
     ai = cas.getAnnotationIndex(t);
     assertEquals(4, ai.size());
     
-    t = TextMarkerTestUtils.getTestType(cas, 28);
+    t = RutaTestUtils.getTestType(cas, 28);
     ai = cas.getAnnotationIndex(t);
     assertEquals(8, ai.size());
     
-    t = TextMarkerTestUtils.getTestType(cas, 29);
+    t = RutaTestUtils.getTestType(cas, 29);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     

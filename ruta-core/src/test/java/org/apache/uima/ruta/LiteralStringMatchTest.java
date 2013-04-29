@@ -17,7 +17,7 @@
  * SWer the License.
  */
 
-package org.apache.uima.textmarker;
+package org.apache.uima.ruta;
 
 import static org.junit.Assert.assertEquals;
 
@@ -36,7 +36,7 @@ public class LiteralStringMatchTest {
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
     CAS cas = null;
     try {
-      cas = TextMarkerTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
+      cas = RutaTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
               + ".txt", 50);
     } catch (Exception e) {
       e.printStackTrace();
@@ -47,7 +47,7 @@ public class LiteralStringMatchTest {
     FSIterator<AnnotationFS> iterator = null;
 
  
-    t = TextMarkerTestUtils.getTestType(cas, 1);
+    t = RutaTestUtils.getTestType(cas, 1);
     ai = cas.getAnnotationIndex(t);
     assertEquals(4, ai.size());
     iterator = ai.iterator();
@@ -56,26 +56,26 @@ public class LiteralStringMatchTest {
     assertEquals("CW", iterator.next().getCoveredText());
     assertEquals("CW", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 2);
+    t = RutaTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(1, ai.size());
     assertEquals("SW", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 3);
+    t = RutaTestUtils.getTestType(cas, 3);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(0, ai.size());
 
    
-    t = TextMarkerTestUtils.getTestType(cas, 6);
+    t = RutaTestUtils.getTestType(cas, 6);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(2, ai.size());
     assertEquals("CW COMMA CW COMMA", iterator.next().getCoveredText());
     assertEquals("CW COMMA", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 7);
+    t = RutaTestUtils.getTestType(cas, 7);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(5, ai.size());
@@ -85,7 +85,7 @@ public class LiteralStringMatchTest {
     assertEquals("SW", iterator.next().getCoveredText());
     assertEquals("CW", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 8);
+    t = RutaTestUtils.getTestType(cas, 8);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(5, ai.size());
@@ -95,14 +95,14 @@ public class LiteralStringMatchTest {
     assertEquals("SW CW", iterator.next().getCoveredText());
     assertEquals("CW", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 9);
+    t = RutaTestUtils.getTestType(cas, 9);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(2, ai.size());
     assertEquals("CW COMMA CW COMMA CW", iterator.next().getCoveredText());
     assertEquals("CW COMMA CW", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 10);
+    t = RutaTestUtils.getTestType(cas, 10);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(3, ai.size());
@@ -110,7 +110,7 @@ public class LiteralStringMatchTest {
     assertEquals("CW COMMA CW SW", iterator.next().getCoveredText());
     assertEquals("CW SW", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 11);
+    t = RutaTestUtils.getTestType(cas, 11);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(3, ai.size());
@@ -118,7 +118,7 @@ public class LiteralStringMatchTest {
     assertEquals("CW COMMA CW SW CW PERIOD", iterator.next().getCoveredText());
     assertEquals("CW SW CW PERIOD", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 13);
+    t = RutaTestUtils.getTestType(cas, 13);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(6, ai.size());
@@ -129,7 +129,7 @@ public class LiteralStringMatchTest {
     assertEquals("CW SW", iterator.next().getCoveredText());
     assertEquals("CW SW", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 14);
+    t = RutaTestUtils.getTestType(cas, 14);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(3, ai.size());

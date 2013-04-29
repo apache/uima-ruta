@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker;
+package org.apache.uima.ruta;
 
 import static org.junit.Assert.assertEquals;
 
@@ -36,7 +36,7 @@ public class RuleInferenceTest3 {
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
     CAS cas = null;
     try {
-      cas = TextMarkerTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
+      cas = RutaTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
               + ".txt", 50);
     } catch (Exception e) {
       e.printStackTrace();
@@ -46,7 +46,7 @@ public class RuleInferenceTest3 {
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
 
-    t = TextMarkerTestUtils.getTestType(cas, 4);
+    t = RutaTestUtils.getTestType(cas, 4);
     ai = cas.getAnnotationIndex(t);
     assertEquals(4, ai.size());
        

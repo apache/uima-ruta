@@ -17,18 +17,18 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker;
+package org.apache.uima.ruta;
 
-import org.apache.uima.textmarker.condition.CurrentCountTest;
-import org.apache.uima.textmarker.condition.PartOfTest;
-import org.apache.uima.textmarker.condition.PositionTest;
-import org.apache.uima.textmarker.engine.HtmlAnnotatorTest;
-import org.apache.uima.textmarker.engine.HtmlConverterTest;
-import org.apache.uima.textmarker.engine.TextMarkerModifierTest;
-import org.apache.uima.textmarker.seed.DefaultSeederTest;
-import org.apache.uima.textmarker.verbalizer.ActionVerbalizerTest;
-import org.apache.uima.textmarker.verbalizer.ConditionVerbalizerTest;
-import org.apache.uima.textmarker.verbalizer.ExpressionVerbalizerTest;
+import org.apache.uima.ruta.condition.CurrentCountTest;
+import org.apache.uima.ruta.condition.PartOfTest;
+import org.apache.uima.ruta.condition.PositionTest;
+import org.apache.uima.ruta.engine.HtmlAnnotatorTest;
+import org.apache.uima.ruta.engine.HtmlConverterTest;
+import org.apache.uima.ruta.engine.RutaModifierTest;
+import org.apache.uima.ruta.seed.DefaultSeederTest;
+import org.apache.uima.ruta.verbalizer.ActionVerbalizerTest;
+import org.apache.uima.ruta.verbalizer.ConditionVerbalizerTest;
+import org.apache.uima.ruta.verbalizer.ExpressionVerbalizerTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -41,7 +41,7 @@ import org.junit.runners.Suite.SuiteClasses;
     AllActionsTest.class, AllConditionsTest.class, CurrentCountTest.class, PartOfTest.class,
     PositionTest.class, DefaultSeederTest.class, ConditionVerbalizerTest.class,
     ActionVerbalizerTest.class, ExpressionVerbalizerTest.class, HtmlAnnotatorTest.class,
-    HtmlConverterTest.class, EmptyDocumentTest.class, TextMarkerModifierTest.class,
+    HtmlConverterTest.class, EmptyDocumentTest.class, RutaModifierTest.class,
     RegExpRuleTest.class, WildCardTest.class })
 public class AllTests {
 

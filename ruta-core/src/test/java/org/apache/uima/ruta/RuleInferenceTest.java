@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker;
+package org.apache.uima.ruta;
 
 import static org.junit.Assert.assertEquals;
 
@@ -36,7 +36,7 @@ public class RuleInferenceTest {
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
     CAS cas = null;
     try {
-      cas = TextMarkerTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
+      cas = RutaTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
               + ".txt", 50);
     } catch (Exception e) {
       e.printStackTrace();
@@ -46,7 +46,7 @@ public class RuleInferenceTest {
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
 
-    t = TextMarkerTestUtils.getTestType(cas, 1);
+    t = RutaTestUtils.getTestType(cas, 1);
     ai = cas.getAnnotationIndex(t);
     assertEquals(4, ai.size());
     iterator = ai.iterator();
@@ -55,18 +55,18 @@ public class RuleInferenceTest {
     assertEquals("Flo", iterator.next().getCoveredText());
     assertEquals("Georg", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 2);
+    t = RutaTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(1, ai.size());
     assertEquals("und", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 3);
+    t = RutaTestUtils.getTestType(cas, 3);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(0, ai.size());
 
-    t = TextMarkerTestUtils.getTestType(cas, 4);
+    t = RutaTestUtils.getTestType(cas, 4);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(5, ai.size());
@@ -76,21 +76,21 @@ public class RuleInferenceTest {
     assertEquals("und Georg", iterator.next().getCoveredText());
     assertEquals("Georg", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 5);
+    t = RutaTestUtils.getTestType(cas, 5);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(2, ai.size());
     assertEquals(",", iterator.next().getCoveredText());
     assertEquals(",", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 6);
+    t = RutaTestUtils.getTestType(cas, 6);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(2, ai.size());
     assertEquals("Peter, Jochen,", iterator.next().getCoveredText());
     assertEquals("Jochen,", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 7);
+    t = RutaTestUtils.getTestType(cas, 7);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(5, ai.size());
@@ -100,7 +100,7 @@ public class RuleInferenceTest {
     assertEquals("und", iterator.next().getCoveredText());
     assertEquals("Georg", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 8);
+    t = RutaTestUtils.getTestType(cas, 8);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(5, ai.size());
@@ -110,14 +110,14 @@ public class RuleInferenceTest {
     assertEquals("und Georg", iterator.next().getCoveredText());
     assertEquals("Georg", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 9);
+    t = RutaTestUtils.getTestType(cas, 9);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(2, ai.size());
     assertEquals("Peter, Jochen, Flo", iterator.next().getCoveredText());
     assertEquals("Jochen, Flo", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 10);
+    t = RutaTestUtils.getTestType(cas, 10);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(3, ai.size());
@@ -125,7 +125,7 @@ public class RuleInferenceTest {
     assertEquals("Jochen, Flo und", iterator.next().getCoveredText());
     assertEquals("Flo und", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 11);
+    t = RutaTestUtils.getTestType(cas, 11);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(3, ai.size());
@@ -133,7 +133,7 @@ public class RuleInferenceTest {
     assertEquals("Jochen, Flo und Georg.", iterator.next().getCoveredText());
     assertEquals("Flo und Georg.", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 12);
+    t = RutaTestUtils.getTestType(cas, 12);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(6, ai.size());
@@ -144,7 +144,7 @@ public class RuleInferenceTest {
     assertEquals("und", iterator.next().getCoveredText());
     assertEquals("und", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 13);
+    t = RutaTestUtils.getTestType(cas, 13);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(6, ai.size());
@@ -155,7 +155,7 @@ public class RuleInferenceTest {
     assertEquals("Flo und", iterator.next().getCoveredText());
     assertEquals("Flo und", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 14);
+    t = RutaTestUtils.getTestType(cas, 14);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(3, ai.size());
@@ -163,25 +163,25 @@ public class RuleInferenceTest {
     assertEquals("Jochen, Flo und", iterator.next().getCoveredText());
     assertEquals("Flo und", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 15);
+    t = RutaTestUtils.getTestType(cas, 15);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(1, ai.size());
     assertEquals("Peter, Jochen", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 16);
+    t = RutaTestUtils.getTestType(cas, 16);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(1, ai.size());
     assertEquals("Georg.", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 17);
+    t = RutaTestUtils.getTestType(cas, 17);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(1, ai.size());
     assertEquals("Flo und Georg.", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 18);
+    t = RutaTestUtils.getTestType(cas, 18);
     ai = cas.getAnnotationIndex(t);
     assertEquals(3, ai.size());
     iterator = ai.iterator();
@@ -189,19 +189,19 @@ public class RuleInferenceTest {
     assertEquals("Jochen,", iterator.next().getCoveredText());
     assertEquals("Georg.", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 20);
+    t = RutaTestUtils.getTestType(cas, 20);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(1, ai.size());
     assertEquals("Peter, Jochen", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 21);
+    t = RutaTestUtils.getTestType(cas, 21);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(1, ai.size());
     assertEquals("Georg.", iterator.next().getCoveredText());
 
-    t = TextMarkerTestUtils.getTestType(cas, 22);
+    t = RutaTestUtils.getTestType(cas, 22);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(1, ai.size());
