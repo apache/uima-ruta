@@ -1,8 +1,8 @@
-parser grammar TextMarkerParser;
+parser grammar RutaParser;
 
 options {
 	language = Java;
-	tokenVocab = TextMarkerLexer;
+	tokenVocab = RutaLexer;
 }
 
 
@@ -26,7 +26,7 @@ options {
  * under the License.
 */
 
-package org.apache.uima.textmarker.ide.core.parser;
+package org.apache.uima.ruta.ide.core.parser;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,30 +56,30 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Statement;
 
-import org.apache.uima.textmarker.ide.core.extensions.TextMarkerExternalFactory;
-import org.apache.uima.textmarker.ide.core.builder.DescriptorManager;
-import org.apache.uima.textmarker.ide.parser.ast.ActionFactory;
-import org.apache.uima.textmarker.ide.parser.ast.ComponentDeclaration;
-import org.apache.uima.textmarker.ide.parser.ast.ComponentReference;
-import org.apache.uima.textmarker.ide.parser.ast.ComposedRuleElement;
-import org.apache.uima.textmarker.ide.parser.ast.ConditionFactory;
-import org.apache.uima.textmarker.ide.parser.ast.ExpressionFactory;
-import org.apache.uima.textmarker.ide.parser.ast.ScriptFactory;
-import org.apache.uima.textmarker.ide.parser.ast.StatementFactory;
-import org.apache.uima.textmarker.ide.parser.ast.TMTypeConstants;
-import org.apache.uima.textmarker.ide.parser.ast.TextMarkerBlock;
-import org.apache.uima.textmarker.ide.parser.ast.TextMarkerExpression;
-import org.apache.uima.textmarker.ide.parser.ast.TextMarkerRule;
-import org.apache.uima.textmarker.ide.parser.ast.TextMarkerRuleElement;
-import org.apache.uima.textmarker.ide.parser.ast.TextMarkerScriptBlock;
-import org.apache.uima.textmarker.ide.parser.ast.TextMarkerAction;
-import org.apache.uima.textmarker.ide.parser.ast.TextMarkerCondition;
-import org.apache.uima.textmarker.ide.parser.ast.TextMarkerFeatureDeclaration;
-import org.apache.uima.textmarker.ide.parser.ast.TextMarkerPackageDeclaration;
+import org.apache.uima.ruta.ide.core.extensions.RutaExternalFactory;
+import org.apache.uima.ruta.ide.core.builder.DescriptorManager;
+import org.apache.uima.ruta.ide.parser.ast.ActionFactory;
+import org.apache.uima.ruta.ide.parser.ast.ComponentDeclaration;
+import org.apache.uima.ruta.ide.parser.ast.ComponentReference;
+import org.apache.uima.ruta.ide.parser.ast.ComposedRuleElement;
+import org.apache.uima.ruta.ide.parser.ast.ConditionFactory;
+import org.apache.uima.ruta.ide.parser.ast.ExpressionFactory;
+import org.apache.uima.ruta.ide.parser.ast.ScriptFactory;
+import org.apache.uima.ruta.ide.parser.ast.StatementFactory;
+import org.apache.uima.ruta.ide.parser.ast.TMTypeConstants;
+import org.apache.uima.ruta.ide.parser.ast.RutaBlock;
+import org.apache.uima.ruta.ide.parser.ast.RutaExpression;
+import org.apache.uima.ruta.ide.parser.ast.RutaRule;
+import org.apache.uima.ruta.ide.parser.ast.RutaRuleElement;
+import org.apache.uima.ruta.ide.parser.ast.RutaScriptBlock;
+import org.apache.uima.ruta.ide.parser.ast.RutaAction;
+import org.apache.uima.ruta.ide.parser.ast.RutaCondition;
+import org.apache.uima.ruta.ide.parser.ast.RutaFeatureDeclaration;
+import org.apache.uima.ruta.ide.parser.ast.RutaPackageDeclaration;
 }
 
 @parser::members {
-	public DLTKTextMarkerErrorReporter reporter;
+	public DLTKRutaErrorReporter reporter;
 	public ModuleDeclaration md;
 	private List<String> vars = new ArrayList<String>();	
 	private Map<String, String> varTypeMap = new HashMap<String, String>();
@@ -89,7 +89,7 @@ import org.apache.uima.textmarker.ide.parser.ast.TextMarkerPackageDeclaration;
 	public DLTKTokenConverter converter;
 	public DescriptorManager descriptor;
 	private int level = 0;
-	private TextMarkerExternalFactory external = new TextMarkerExternalFactory();
+	private RutaExternalFactory external = new RutaExternalFactory();
 	
 	private String module;
 	private String packageString;
@@ -116,7 +116,7 @@ import org.apache.uima.textmarker.ide.parser.ast.TextMarkerPackageDeclaration;
 		}
 	}
 	
-	public void addType(TextMarkerBlock parent, String type, String parentType) {
+	public void addType(RutaBlock parent, String type, String parentType) {
 		vars.add(type);
 		descriptor.addType(parent.getNamespace()+"."+type.trim(), "Type defined in "+packageString+"."+module, parentType);
 	}
@@ -127,7 +127,7 @@ import org.apache.uima.textmarker.ide.parser.ast.TextMarkerPackageDeclaration;
 		
 	}
 	
-	public void addType(TextMarkerBlock parent, String name, String parentType, List featuresTypes,
+	public void addType(RutaBlock parent, String name, String parentType, List featuresTypes,
           List<Token> featuresNames) {
 	   	 name = parent.getNamespace() + "." + name.trim();
 	   	 descriptor.addType(name, "Type defined in " + packageString + "." + module, parentType);
@@ -144,15 +144,15 @@ import org.apache.uima.textmarker.ide.parser.ast.TextMarkerPackageDeclaration;
 	   	 }
  	 }
 	
-	public void addWordList(TextMarkerBlock parent, String name, String list) {
+	public void addWordList(RutaBlock parent, String name, String list) {
 		lists.put(name, list);
 	}
 	
-	public void addCSVTable(TextMarkerBlock parent, String name, String table) {
+	public void addCSVTable(RutaBlock parent, String name, String table) {
 		tables.put(name, table);
 	}
 	
-	public boolean isType(TextMarkerBlock parent, String type) {
+	public boolean isType(RutaBlock parent, String type) {
 		return vars.contains(type);
 	}
 		
@@ -229,7 +229,7 @@ import org.apache.uima.textmarker.ide.parser.ast.TextMarkerPackageDeclaration;
 
 file_input [String module]
 @init {
-TextMarkerScriptBlock rootBlock = null;
+RutaScriptBlock rootBlock = null;
 List<Statement> stmts = new ArrayList<Statement>();
 }
 	:	
@@ -261,7 +261,7 @@ List<Statement> stmts = new ArrayList<Statement>();
 	;
 	
 
-packageDeclaration returns [TextMarkerPackageDeclaration pack]
+packageDeclaration returns [RutaPackageDeclaration pack]
 	:	pString = PackageString 
 	{
 	pack = StatementFactory.createPkgDeclaration(p, pString);
@@ -497,7 +497,7 @@ declaration returns [List<Statement> stmts = new ArrayList<Statement>()]
 			fname = Identifier{featureNames.add(fname);})* 
 		RPAREN) SEMI // TODO removed question mark
 		{
-		List<TextMarkerFeatureDeclaration> features = new ArrayList<TextMarkerFeatureDeclaration>();
+		List<RutaFeatureDeclaration> features = new ArrayList<RutaFeatureDeclaration>();
 		int i = 0;
 		for (Object eachTO : featureTypes) {
 		   Token eachName = featureNames.get(i); 
@@ -516,15 +516,15 @@ declaration returns [List<Statement> stmts = new ArrayList<Statement>()]
 
 	
 
-blockDeclaration returns [TextMarkerBlock block = null]
+blockDeclaration returns [RutaBlock block = null]
 options{
 	backtrack = true;
 }
 scope {
-	TextMarkerBlock env;
+	RutaBlock env;
 	}	
 @init{
-TextMarkerRule rule = null;
+RutaRule rule = null;
 level++;
 }
 @after {
@@ -549,7 +549,7 @@ level--;
 	;
 
 	
-ruleElementWithCA returns [TextMarkerRuleElement re = null] 
+ruleElementWithCA returns [RutaRuleElement re = null] 
     :
     idRef=typeExpression quantifier = quantifierPart? {re = scriptFactory.createRuleElement(idRef,quantifier,c,a, end);}
         LCURLY c = conditions? (THEN a = actions)? end = RCURLY
@@ -557,14 +557,14 @@ ruleElementWithCA returns [TextMarkerRuleElement re = null]
     ;
 
 	
-ruleElementWithoutCA returns [TextMarkerRuleElement re = null] 
+ruleElementWithoutCA returns [RutaRuleElement re = null] 
     :
     idRef=typeExpression quantifier = quantifierPart? 
              {re = scriptFactory.createRuleElement(idRef,quantifier,null,null, null);}
 
     ;
 		
-simpleStatement returns [TextMarkerRule stmt = null]
+simpleStatement returns [RutaRule stmt = null]
 	: 
 	(regexpRule)=> rer = regexpRule {stmt = rer;}
 	|
@@ -574,7 +574,7 @@ simpleStatement returns [TextMarkerRule stmt = null]
 		
 	;
 
-regexpRule returns [TextMarkerRule stmt = null]
+regexpRule returns [RutaRule stmt = null]
 @init{
 	List<Expression> exprs = new ArrayList<Expression>();
 }
@@ -607,7 +607,7 @@ ruleElements returns [List<Expression> elements = new ArrayList<Expression>()]
 	re = ruleElement {if(re!=null) elements.add(re);} (re = ruleElement {if(re!=null) elements.add(re);})*
 	;	
 	
-blockRuleElement returns [TextMarkerRuleElement rElement = null] //[List<TextMarkerRuleElement> elements = new ArrayList<TextMarkerRuleElement>()]
+blockRuleElement returns [RutaRuleElement rElement = null] //[List<RutaRuleElement> elements = new ArrayList<RutaRuleElement>()]
 	:
 	re = ruleElementType {rElement = re;}
 	;	
@@ -620,9 +620,9 @@ ruleElement returns [Expression re = null]
 	| re4 = ruleElementWildCard {re = re4;}
 	;
 
-ruleElementWildCard returns [TextMarkerRuleElement re = null] 
+ruleElementWildCard returns [RutaRuleElement re = null] 
 @init{
-List<TextMarkerCondition> dummyConds = new ArrayList<TextMarkerCondition>();
+List<RutaCondition> dummyConds = new ArrayList<RutaCondition>();
 }
   :
     	w = WILDCARD
@@ -666,9 +666,9 @@ ruleElementComposed returns [ComposedRuleElement re = null]
 	{re = scriptFactory.createComposedRuleElement(res, q, c, a, disjunctive,$blockDeclaration::env, ft, lt1, lt2);}
 	;
 
-ruleElementType returns [TextMarkerRuleElement re = null] 
+ruleElementType returns [RutaRuleElement re = null] 
 @init{
-List<TextMarkerCondition> dummyConds = new ArrayList<TextMarkerCondition>();
+List<RutaCondition> dummyConds = new ArrayList<RutaCondition>();
 }
   :
     (typeExpression)=>idRef=typeExpression quantifier = quantifierPart? 
@@ -690,7 +690,7 @@ List<TextMarkerCondition> dummyConds = new ArrayList<TextMarkerCondition>();
         //start, end, "", cp, ap, "", $blockDeclaration::env);}
     ;
 
-ruleElementLiteral returns [TextMarkerRuleElement re = null] 
+ruleElementLiteral returns [RutaRuleElement re = null] 
     :
     (simpleStringExpression)=>idRef=simpleStringExpression quantifier = quantifierPart? 
         (LCURLY 
@@ -704,7 +704,7 @@ ruleElementLiteral returns [TextMarkerRuleElement re = null]
         //start, end, "", cp, ap, "", $blockDeclaration::env);}
     ;
     
-conditions returns [List<TextMarkerCondition> conds = new ArrayList<TextMarkerCondition>()]
+conditions returns [List<RutaCondition> conds = new ArrayList<RutaCondition>()]
 @init {
 conds.add(ConditionFactory.createEmptyCondition(input.LT(1)));
 }
@@ -713,7 +713,7 @@ conds.add(ConditionFactory.createEmptyCondition(input.LT(1)));
     ;
 
   
-actions returns [List<TextMarkerAction> actions = new ArrayList<TextMarkerAction>()]
+actions returns [List<RutaAction> actions = new ArrayList<RutaAction>()]
     :
     a = action {actions.add(a);} (COMMA a = action {actions.add(a);} )*
     ; 	
@@ -915,7 +915,7 @@ quantifierPart returns [List<Expression> exprs = new ArrayList<Expression>()]
 	;
 	
 	
-condition returns [TextMarkerCondition result = null]
+condition returns [RutaCondition result = null]
 @init {
 result = ConditionFactory.createEmptyCondition(input.LT(1));
 }
@@ -953,7 +953,7 @@ result = ConditionFactory.createEmptyCondition(input.LT(1));
 	;
 	
 //TODO added rule
-variableCondition returns [TextMarkerCondition condition = null]
+variableCondition returns [RutaCondition condition = null]
 	:		
 	// also create condition for auto-completion
 	//{isVariableOfType(input.LT(1).getText(), "CONDITION")}? 
@@ -964,7 +964,7 @@ variableCondition returns [TextMarkerCondition condition = null]
 	;	
 	
 	
-externalCondition returns [TextMarkerCondition condition = null]
+externalCondition returns [RutaCondition condition = null]
 	:
 	id = Identifier
 	{condition = external.createExternalCondition(id, args);}
@@ -973,14 +973,14 @@ externalCondition returns [TextMarkerCondition condition = null]
 	RPAREN
 	{condition = external.createExternalCondition(id, args);}
 	;
-conditionAnd returns [TextMarkerCondition cond = null]
+conditionAnd returns [RutaCondition cond = null]
     :   
     name = AND LPAREN conds = conditions  
     {cond = ConditionFactory.createCondition(name, conds);}
     RPAREN
     ;
 
-conditionContains returns [TextMarkerCondition cond = null]
+conditionContains returns [RutaCondition cond = null]
  options {
 	backtrack = true;
 }
@@ -992,7 +992,7 @@ conditionContains returns [TextMarkerCondition cond = null]
     RPAREN
     ;
     
-conditionContextCount returns [TextMarkerCondition cond = null]
+conditionContextCount returns [RutaCondition cond = null]
     :   
     name = CONTEXTCOUNT LPAREN typeExpr = typeExpression 
     {cond = ConditionFactory.createCondition(name, typeExpr, min, max, var);}
@@ -1003,7 +1003,7 @@ conditionContextCount returns [TextMarkerCondition cond = null]
     RPAREN
     ;
     
-conditionCount returns [TextMarkerCondition cond = null]
+conditionCount returns [RutaCondition cond = null]
  options {
 	backtrack = true;
 }
@@ -1027,7 +1027,7 @@ conditionCount returns [TextMarkerCondition cond = null]
     RPAREN 
     ;   
     
-conditionCurrentCount returns [TextMarkerCondition cond = null]
+conditionCurrentCount returns [RutaCondition cond = null]
     :   
     name = CURRENTCOUNT LPAREN type = typeExpression 
     {cond = ConditionFactory.createCondition(name,type, min, max, var);}
@@ -1038,7 +1038,7 @@ conditionCurrentCount returns [TextMarkerCondition cond = null]
     RPAREN
     ;   
     
-conditionTotalCount returns [TextMarkerCondition cond = null]
+conditionTotalCount returns [RutaCondition cond = null]
     :   
     name = TOTALCOUNT LPAREN type = typeExpression 
     {cond = ConditionFactory.createCondition(name,type, min, max, var);}
@@ -1048,7 +1048,7 @@ conditionTotalCount returns [TextMarkerCondition cond = null]
     {cond = ConditionFactory.createCondition(name, type, min, max, var);}
     RPAREN
     ;
-conditionInList returns [TextMarkerCondition cond = null]
+conditionInList returns [RutaCondition cond = null]
  options {
 	backtrack = true;
 }
@@ -1060,14 +1060,14 @@ conditionInList returns [TextMarkerCondition cond = null]
     RPAREN
     ;
             
-conditionLast returns [TextMarkerCondition cond = null]
+conditionLast returns [RutaCondition cond = null]
     :   
     name = LAST LPAREN type = typeExpression 
     {cond = ConditionFactory.createCondition(name, type);}
     RPAREN
     ;
     
-conditionMofN returns [TextMarkerCondition cond = null]
+conditionMofN returns [RutaCondition cond = null]
     :   
     name = MOFN LPAREN min = numberExpression COMMA max = numberExpression COMMA conds = conditions 
     {List exprs = new ArrayList();
@@ -1078,32 +1078,32 @@ conditionMofN returns [TextMarkerCondition cond = null]
     RPAREN
     ;
 
-conditionNear returns [TextMarkerCondition cond = null]
+conditionNear returns [RutaCondition cond = null]
     :   
     name = NEAR LPAREN type = typeExpression COMMA min = numberExpression COMMA max = numberExpression 
     (COMMA direction = booleanExpression (COMMA filtered = booleanExpression)?)? 
     {cond = ConditionFactory.createCondition(name, type, min, max, direction, filtered);}   
     RPAREN
     ;
-conditionNot returns [TextMarkerCondition cond = null]
+conditionNot returns [RutaCondition cond = null]
     :   
     ((name = MINUS c = condition) |  (name = NOT LPAREN c = condition RPAREN))
     {cond = ConditionFactory.createCondition(name, c);} 
     ;
-conditionOr returns [TextMarkerCondition cond = null]
+conditionOr returns [RutaCondition cond = null]
     :   
     name = OR LPAREN conds = conditions 
     {cond = ConditionFactory.createCondition(name, conds);}
     RPAREN
     ;
-conditionPartOf returns [TextMarkerCondition cond = null]
+conditionPartOf returns [RutaCondition cond = null]
     :
     name = PARTOF LPAREN (type = typeExpression|type = typeListExpression)    
     {cond = ConditionFactory.createCondition(name, type);}
     RPAREN
     ;
     
-conditionPartOfNeq returns [TextMarkerCondition cond = null]
+conditionPartOfNeq returns [RutaCondition cond = null]
     :
     name = PARTOFNEQ LPAREN (type = typeExpression|type = typeListExpression)    
     {cond = ConditionFactory.createCondition(name, type);}
@@ -1111,7 +1111,7 @@ conditionPartOfNeq returns [TextMarkerCondition cond = null]
     ;    
 
 
-conditionPosition returns [TextMarkerCondition cond = null]
+conditionPosition returns [RutaCondition cond = null]
     :   
     name = POSITION LPAREN type = typeExpression 
     {cond = ConditionFactory.createCondition(name, type, pos, rel);}
@@ -1121,14 +1121,14 @@ conditionPosition returns [TextMarkerCondition cond = null]
     {cond = ConditionFactory.createCondition(name, type, pos, rel);}
     RPAREN
     ;
-conditionRegExp returns [TextMarkerCondition cond = null]
+conditionRegExp returns [RutaCondition cond = null]
     :
     name = REGEXP LPAREN (v = variable COMMA)? pattern = stringExpression (COMMA caseSensitive = booleanExpression)? 
     {cond = ConditionFactory.createCondition(name, v, pattern, caseSensitive);}   
     RPAREN 
     ;
     
-conditionScore returns [TextMarkerCondition cond = null]
+conditionScore returns [RutaCondition cond = null]
     :
     name = SCORE LPAREN min = numberExpression (COMMA max = numberExpression  
     (COMMA var = numberVariable)?)? 
@@ -1136,26 +1136,26 @@ conditionScore returns [TextMarkerCondition cond = null]
     RPAREN
     ;
 
-conditionVote returns [TextMarkerCondition cond = null]
+conditionVote returns [RutaCondition cond = null]
     :   
     name = VOTE LPAREN type1 = typeExpression COMMA type2 = typeExpression 
     {cond = ConditionFactory.createCondition(name, type1, type2);}
     RPAREN
     ;   
-conditionIf returns [TextMarkerCondition cond = null]
+conditionIf returns [RutaCondition cond = null]
     :   
     name = IF LPAREN e = booleanExpression 
     {cond = ConditionFactory.createCondition(name, e);}
     RPAREN
     ;   
     
-conditionFeature returns [TextMarkerCondition cond = null]
+conditionFeature returns [RutaCondition cond = null]
     :   
     name = FEATURE LPAREN se = stringExpression COMMA v = argument 
     {cond = ConditionFactory.createCondition(name, se, v);}
     RPAREN
     ;   
-conditionParse returns [TextMarkerCondition cond = null]
+conditionParse returns [RutaCondition cond = null]
     :
     name = PARSE LPAREN
      var=genericVariableReference 
@@ -1164,42 +1164,42 @@ conditionParse returns [TextMarkerCondition cond = null]
     ;
 
 
-conditionIs returns [TextMarkerCondition cond = null]
+conditionIs returns [RutaCondition cond = null]
     :
     name = IS LPAREN (type = typeExpression|type = typeListExpression) 
     {cond = ConditionFactory.createCondition(name, type);}
     RPAREN
     ;
 
-conditionBefore returns [TextMarkerCondition cond = null]
+conditionBefore returns [RutaCondition cond = null]
     :
     name = BEFORE LPAREN (type = typeExpression|type = typeListExpression) 
     {cond = ConditionFactory.createCondition(name, type);}
     RPAREN
     ;
 
-conditionAfter returns [TextMarkerCondition cond = null]
+conditionAfter returns [RutaCondition cond = null]
     :
     name = AFTER LPAREN (type = typeExpression|type = typeListExpression) 
     {cond = ConditionFactory.createCondition(name, type);}
     RPAREN
     ;
     
-conditionStartsWith returns [TextMarkerCondition cond = null]
+conditionStartsWith returns [RutaCondition cond = null]
     :
     name = STARTSWITH LPAREN (type = typeExpression|type = typeListExpression) 
     {cond = ConditionFactory.createCondition(name, type);}
     RPAREN
     ;
     
-conditionEndsWith returns [TextMarkerCondition cond = null]
+conditionEndsWith returns [RutaCondition cond = null]
     :
     name = ENDSWITH LPAREN (type = typeExpression|type = typeListExpression) 
     {cond = ConditionFactory.createCondition(name, type);}
     RPAREN
     ;
     
-conditionSize returns [TextMarkerCondition cond = null]
+conditionSize returns [RutaCondition cond = null]
     :
     name = SIZE LPAREN list = listExpression (COMMA min = numberExpression COMMA max = numberExpression)? (COMMA var = numberVariable)? 
     {cond = ConditionFactory.createCondition(name, list, min, max, var);}
@@ -1207,7 +1207,7 @@ conditionSize returns [TextMarkerCondition cond = null]
     ;
 
 	
-action returns [TextMarkerAction result = null]
+action returns [RutaAction result = null]
 @init {
 result = ActionFactory.createEmptyAction(input.LT(1));
 }
@@ -1259,7 +1259,7 @@ result = ActionFactory.createEmptyAction(input.LT(1));
 	;
 
 
-variableAction returns [TextMarkerAction action = null]
+variableAction returns [RutaAction action = null]
 	:
 	// also create an dummy action for auto-completion
 	//{isVariableOfType(input.LT(1).getText(), "ACTION")}?
@@ -1269,7 +1269,7 @@ variableAction returns [TextMarkerAction action = null]
 	}
 	;
 	
-externalAction returns [TextMarkerAction action = null]
+externalAction returns [RutaAction action = null]
 	:
 	 id = Identifier
 	 LPAREN
@@ -1281,7 +1281,7 @@ externalAction returns [TextMarkerAction action = null]
 	;
 
 
-actionCreate returns [TextMarkerAction action = null]
+actionCreate returns [RutaAction action = null]
 @init {
     List left = new ArrayList();
     List right = new ArrayList();
@@ -1302,7 +1302,7 @@ actionCreate returns [TextMarkerAction action = null]
     ;
 
 
-actionMarkTable returns [TextMarkerAction action = null]
+actionMarkTable returns [RutaAction action = null]
 @init {
     List<Expression> left = new ArrayList<Expression>();
     List<Expression> right = new ArrayList<Expression>();
@@ -1333,7 +1333,7 @@ actionMarkTable returns [TextMarkerAction action = null]
     RPAREN
     ;
 
-actionGather returns [TextMarkerAction action = null]
+actionGather returns [RutaAction action = null]
 @init {
     List left = new ArrayList();
     List right = new ArrayList();
@@ -1353,7 +1353,7 @@ actionGather returns [TextMarkerAction action = null]
     ;
 
 
-actionFill returns [TextMarkerAction action = null]
+actionFill returns [RutaAction action = null]
 @init {
     List left = new ArrayList();
     List right = new ArrayList();
@@ -1370,7 +1370,7 @@ actionFill returns [TextMarkerAction action = null]
     ;
     
 
-actionColor returns [TextMarkerAction action = null]
+actionColor returns [RutaAction action = null]
     :   
     name = COLOR LPAREN type = typeExpression 
     {action = ActionFactory.createAction(name, type, bgcolor, fgcolor, selected);}
@@ -1386,20 +1386,20 @@ actionColor returns [TextMarkerAction action = null]
     RPAREN
     ;
 
-actionDel returns [TextMarkerAction action = null]
+actionDel returns [RutaAction action = null]
     :   
     name = DEL
     {action = ActionFactory.createAction(name, new ArrayList());}
     ;
         
-actionLog returns [TextMarkerAction action = null]
+actionLog returns [RutaAction action = null]
     :   
     name = LOG LPAREN lit = stringExpression (COMMA log = LogLevel)? 
     {action = ActionFactory.createLogAction(name, lit, log);} //TODO handle logLevel
     RPAREN 
     ;
 
-actionMark returns [TextMarkerAction action = null]
+actionMark returns [RutaAction action = null]
 @init {
 List<Expression> list = new ArrayList<Expression>();
 }
@@ -1414,7 +1414,7 @@ List<Expression> list = new ArrayList<Expression>();
      RPAREN
     ;
 
-actionShift returns [TextMarkerAction action = null]
+actionShift returns [RutaAction action = null]
 @init {
 List<Expression> list = new ArrayList<Expression>();
 }
@@ -1429,7 +1429,7 @@ List<Expression> list = new ArrayList<Expression>();
      RPAREN
     ;
 
-actionMarkScore returns [TextMarkerAction action = null]
+actionMarkScore returns [RutaAction action = null]
 @init {
 List<Expression> list = new ArrayList<Expression>();
 }
@@ -1443,7 +1443,7 @@ List<Expression> list = new ArrayList<Expression>();
      RPAREN
     ;
 
-actionMarkOnce returns [TextMarkerAction action = null]
+actionMarkOnce returns [RutaAction action = null]
 @init {
 List<Expression> list = new ArrayList<Expression>();
 }
@@ -1457,7 +1457,7 @@ List<Expression> list = new ArrayList<Expression>();
     RPAREN
     ;
 
-actionMarkFast returns [TextMarkerAction action = null]
+actionMarkFast returns [RutaAction action = null]
 @init {
  Expression list = null;
 }
@@ -1471,7 +1471,7 @@ actionMarkFast returns [TextMarkerAction action = null]
     RPAREN
     ;
 
-actionMarkLast returns [TextMarkerAction action = null]
+actionMarkLast returns [RutaAction action = null]
     :   
     name = MARKLAST LPAREN type = typeExpression 
     {action = ActionFactory.createAction(name, type);}
@@ -1479,7 +1479,7 @@ actionMarkLast returns [TextMarkerAction action = null]
     ;
 
 
-actionReplace returns [TextMarkerAction action = null]
+actionReplace returns [RutaAction action = null]
     :   
     name = REPLACE LPAREN lit = stringExpression 
     {action = ActionFactory.createAction(name, lit);}
@@ -1487,7 +1487,7 @@ actionReplace returns [TextMarkerAction action = null]
     ;
 
         
-actionRetainType returns [TextMarkerAction action = null]
+actionRetainType returns [RutaAction action = null]
 @init {
 List<Expression> list = new ArrayList<Expression>();
 }
@@ -1501,7 +1501,7 @@ List<Expression> list = new ArrayList<Expression>();
     ;
     
 
-actionFilterType returns [TextMarkerAction action = null]
+actionFilterType returns [RutaAction action = null]
 @init {
 List<Expression> list = new ArrayList<Expression>();
 }
@@ -1514,7 +1514,7 @@ List<Expression> list = new ArrayList<Expression>();
     {action = ActionFactory.createAction(name, list);}
     ;       
 
-actionAddFilterType returns [TextMarkerAction action = null]
+actionAddFilterType returns [RutaAction action = null]
 @init {
 List<Expression> list = new ArrayList<Expression>();
 }
@@ -1527,7 +1527,7 @@ List<Expression> list = new ArrayList<Expression>();
     {action = ActionFactory.createAction(name, list);}
     ;   
 
-actionAddRetainType returns [TextMarkerAction action = null]
+actionAddRetainType returns [RutaAction action = null]
 @init {
 List<Expression> list = new ArrayList<Expression>();
 }
@@ -1541,7 +1541,7 @@ List<Expression> list = new ArrayList<Expression>();
     ;   
 
 
-actionRemoveFilterType returns [TextMarkerAction action = null]
+actionRemoveFilterType returns [RutaAction action = null]
 @init {
 List<Expression> list = new ArrayList<Expression>();
 }
@@ -1554,7 +1554,7 @@ List<Expression> list = new ArrayList<Expression>();
     {action = ActionFactory.createAction(name, list);}
     ;   
 
-actionRemoveRetainType returns [TextMarkerAction action = null]
+actionRemoveRetainType returns [RutaAction action = null]
 @init {
 List<Expression> list = new ArrayList<Expression>();
 }
@@ -1567,7 +1567,7 @@ List<Expression> list = new ArrayList<Expression>();
     {action = ActionFactory.createAction(name, list);}
     ; 
 
-actionCall returns [TextMarkerAction action = null]
+actionCall returns [RutaAction action = null]
 @init {
 String string = "";
 
@@ -1582,7 +1582,7 @@ String string = "";
     ;
 
 
-actionConfigure returns [TextMarkerAction action = null]
+actionConfigure returns [RutaAction action = null]
 @init {
     List left = new ArrayList();
     List right = new ArrayList();
@@ -1602,7 +1602,7 @@ actionConfigure returns [TextMarkerAction action = null]
     ;
 
 
-actionExec returns [TextMarkerAction action = null]
+actionExec returns [RutaAction action = null]
 @init {
 String string = "";
 }
@@ -1617,7 +1617,7 @@ String string = "";
     ;
 
         
-actionAssign returns [TextMarkerAction action = null]
+actionAssign returns [RutaAction action = null]
 @init{
     VariableReference ref = null;
 }
@@ -1636,7 +1636,7 @@ actionAssign returns [TextMarkerAction action = null]
     ;
 
 //unknown
-actionSetFeature returns [TextMarkerAction action = null]
+actionSetFeature returns [RutaAction action = null]
     :
     name = SETFEATURE LPAREN f = stringExpression 
      {action = ActionFactory.createAction(name, f, v);}
@@ -1645,7 +1645,7 @@ actionSetFeature returns [TextMarkerAction action = null]
     RPAREN
     ;
 
-actionGetFeature returns [TextMarkerAction action = null]
+actionGetFeature returns [RutaAction action = null]
     :
     name = GETFEATURE LPAREN f = stringExpression 
     {action = ActionFactory.createAction(name, f, v);}
@@ -1655,7 +1655,7 @@ actionGetFeature returns [TextMarkerAction action = null]
     ;
 
 //unknown
-actionDynamicAnchoring returns [TextMarkerAction action = null]
+actionDynamicAnchoring returns [RutaAction action = null]
     :
     name = DYNAMICANCHORING LPAREN active = booleanExpression 
      {action = ActionFactory.createAction(name, active);}
@@ -1666,7 +1666,7 @@ actionDynamicAnchoring returns [TextMarkerAction action = null]
     RPAREN
     ;
 
-actionTrim returns [TextMarkerAction action = null]
+actionTrim returns [RutaAction action = null]
 @init {
 List<Expression> list = new ArrayList<Expression>();
 }
@@ -1683,7 +1683,7 @@ List<Expression> list = new ArrayList<Expression>();
     ;
 
 //unknown
-actionUnmark returns [TextMarkerAction action = null]
+actionUnmark returns [RutaAction action = null]
 @init {
 List<Expression> list = new ArrayList<Expression>();
 }
@@ -1711,7 +1711,7 @@ List<Expression> list = new ArrayList<Expression>();
 
 
 
-actionUnmarkAll returns [TextMarkerAction action = null]
+actionUnmarkAll returns [RutaAction action = null]
     :
     name = UNMARKALL LPAREN f = typeExpression 
     {action = ActionFactory.createAction(name, f, list);}
@@ -1723,14 +1723,14 @@ actionUnmarkAll returns [TextMarkerAction action = null]
 
 //unknown
 
-actionTransfer returns [TextMarkerAction action = null]
+actionTransfer returns [RutaAction action = null]
     :
     name = TRANSFER LPAREN f = typeExpression 
     {action = ActionFactory.createAction(name, f);}
     RPAREN
     ;
     
-actionTrie returns [TextMarkerAction action = null]
+actionTrie returns [RutaAction action = null]
 @init {
 Map<Expression, Expression> map = new HashMap<Expression, Expression>();
 List<Expression> left = new ArrayList<Expression>();
@@ -1764,7 +1764,7 @@ List<Expression> right = new ArrayList<Expression>();
     ;   
 
 
-actionAdd returns [TextMarkerAction action = null]
+actionAdd returns [RutaAction action = null]
 @init{
 	List<Expression> list = new ArrayList<Expression>();
 } 
@@ -1776,7 +1776,7 @@ actionAdd returns [TextMarkerAction action = null]
     RPAREN
     ;
 
-actionRemove returns [TextMarkerAction action = null]
+actionRemove returns [RutaAction action = null]
 @init{
 	List<Expression> list = new ArrayList<Expression>();
 } 
@@ -1789,14 +1789,14 @@ actionRemove returns [TextMarkerAction action = null]
     ;
 
 
-actionRemoveDuplicate returns [TextMarkerAction action = null]
+actionRemoveDuplicate returns [RutaAction action = null]
     :
     name = REMOVEDUPLICATE LPAREN f = listVariable 
     {action = ActionFactory.createAction(name, f);}
     RPAREN
     ;
    
-actionMerge returns [TextMarkerAction action = null]
+actionMerge returns [RutaAction action = null]
 @init{
 	List<Expression> list = new ArrayList<Expression>();
 } 
@@ -1811,7 +1811,7 @@ actionMerge returns [TextMarkerAction action = null]
     RPAREN
     ;
 
-actionGet returns [TextMarkerAction action = null]
+actionGet returns [RutaAction action = null]
     :
     name = GET LPAREN f = listExpression 
     {action = ActionFactory.createAction(name, f, var, op);}
@@ -1823,7 +1823,7 @@ actionGet returns [TextMarkerAction action = null]
     ;
 
 
-actionGetList returns [TextMarkerAction action = null]
+actionGetList returns [RutaAction action = null]
     :
     name = GETLIST LPAREN var = listVariable 
     {action = ActionFactory.createAction(name, var, op);}
@@ -1832,7 +1832,7 @@ actionGetList returns [TextMarkerAction action = null]
     RPAREN
     ;
 
-actionMatchedText returns [TextMarkerAction action = null]
+actionMatchedText returns [RutaAction action = null]
 @init {
 List<Expression> list = new ArrayList<Expression>();
 }
@@ -1846,7 +1846,7 @@ List<Expression> list = new ArrayList<Expression>();
     RPAREN
     ;
     
-actionClear returns [TextMarkerAction action = null]
+actionClear returns [RutaAction action = null]
     :
     name = CLEAR LPAREN var = listVariable 
     {action = ActionFactory.createAction(name, var);}
@@ -1999,10 +1999,10 @@ multiplicativeExpression returns [Expression root = null]
 	;
 
 //seems OK
-numberExpressionInPar returns [TextMarkerExpression expr = null]
+numberExpressionInPar returns [RutaExpression expr = null]
 	:
 	lp = LPAREN numE = numberExpression rp = RPAREN 
-	{expr = ExpressionFactory.createNumberExpression((TextMarkerExpression)numE); 
+	{expr = ExpressionFactory.createNumberExpression((RutaExpression)numE); 
 	  expr.setInParantheses(true);
           expr.setStart(((CommonToken) lp).getStartIndex());
           expr.setEnd(((CommonToken) rp).getStopIndex()+1);}
