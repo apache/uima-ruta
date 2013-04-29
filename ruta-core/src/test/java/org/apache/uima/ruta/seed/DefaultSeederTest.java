@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.seed;
+package org.apache.uima.ruta.seed;
 
 import static org.junit.Assert.assertEquals;
 
@@ -31,18 +31,18 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.resource.ResourceSpecifier;
-import org.apache.uima.textmarker.TextMarkerTestUtils;
-import org.apache.uima.textmarker.engine.TextMarkerEngine;
+import org.apache.uima.ruta.RutaTestUtils;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.util.XMLInputSource;
 import org.junit.Test;
 
 public class DefaultSeederTest {
   @Test
   public void test() throws Exception {
-    URL url = TextMarkerEngine.class.getClassLoader().getResource("BasicEngine.xml");
+    URL url = RutaEngine.class.getClassLoader().getResource("BasicEngine.xml");
     if (url == null) {
-      url = TextMarkerTestUtils.class.getClassLoader().getResource(
-              "org/apache/uima/textmarker/TestEngine.xml");
+      url = RutaTestUtils.class.getClassLoader().getResource(
+              "org/apache/uima/ruta/TestEngine.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
@@ -56,7 +56,7 @@ public class DefaultSeederTest {
 
     DefaultSeeder seeder = new DefaultSeeder();
     Type type = seeder.seed(text, cas);
-    assertEquals("org.apache.uima.textmarker.type.TokenSeed", type.getName());
+    assertEquals("org.apache.uima.ruta.type.TokenSeed", type.getName());
     AnnotationIndex<AnnotationFS> annotationIndex = cas.getAnnotationIndex(type);
     assertEquals(40, annotationIndex.size());
     FSIterator<AnnotationFS> iterator = annotationIndex.iterator();
