@@ -17,9 +17,9 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.expression.string;
+package org.apache.uima.ruta.expression.string;
 
-import org.apache.uima.textmarker.TextMarkerStatement;
+import org.apache.uima.ruta.RutaStatement;
 
 public class ReferenceStringExpression extends LiteralStringExpression {
 
@@ -31,7 +31,7 @@ public class ReferenceStringExpression extends LiteralStringExpression {
   }
 
   @Override
-  public String getStringValue(TextMarkerStatement parent) {
+  public String getStringValue(RutaStatement parent) {
     String variableValue = parent.getEnvironment().getVariableValue(getVar(), String.class);
     return variableValue;
   }

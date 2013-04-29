@@ -17,9 +17,9 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.expression.bool;
+package org.apache.uima.ruta.expression.bool;
 
-import org.apache.uima.textmarker.TextMarkerStatement;
+import org.apache.uima.ruta.RutaStatement;
 
 public class ReferenceBooleanExpression extends BooleanExpression {
 
@@ -31,7 +31,7 @@ public class ReferenceBooleanExpression extends BooleanExpression {
   }
 
   @Override
-  public boolean getBooleanValue(TextMarkerStatement parent) {
+  public boolean getBooleanValue(RutaStatement parent) {
     Boolean variableValue = parent.getEnvironment().getVariableValue(var, Boolean.class);
     if (variableValue == null) {
       return false;
@@ -44,7 +44,7 @@ public class ReferenceBooleanExpression extends BooleanExpression {
   }
 
   @Override
-  public String getStringValue(TextMarkerStatement parent) {
+  public String getStringValue(RutaStatement parent) {
     return getBooleanValue(parent) ? "true" : "false";
   }
 

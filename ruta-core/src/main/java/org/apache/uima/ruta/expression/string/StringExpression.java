@@ -17,13 +17,13 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.expression.string;
+package org.apache.uima.ruta.expression.string;
 
-import org.apache.uima.textmarker.TextMarkerStatement;
-import org.apache.uima.textmarker.expression.TextMarkerExpression;
+import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.expression.RutaExpression;
 
-public abstract class StringExpression extends TextMarkerExpression {
+public abstract class StringExpression extends RutaExpression {
 
-  public abstract String getStringValue(TextMarkerStatement parent);
+  public abstract String getStringValue(RutaStatement parent);
 
 }

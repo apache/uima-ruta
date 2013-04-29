@@ -17,9 +17,9 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.expression.number;
+package org.apache.uima.ruta.expression.number;
 
-import org.apache.uima.textmarker.TextMarkerStatement;
+import org.apache.uima.ruta.RutaStatement;
 
 public class ReferenceNumberExpression extends NumberExpression {
 
@@ -31,7 +31,7 @@ public class ReferenceNumberExpression extends NumberExpression {
   }
 
   @Override
-  public double getDoubleValue(TextMarkerStatement parent) {
+  public double getDoubleValue(RutaStatement parent) {
     Object value = parent.getEnvironment().getVariableValue(getVar());
     double variableValue = 0;
     if (value instanceof Number) {
@@ -41,7 +41,7 @@ public class ReferenceNumberExpression extends NumberExpression {
   }
 
   @Override
-  public float getFloatValue(TextMarkerStatement parent) {
+  public float getFloatValue(RutaStatement parent) {
     Object value = parent.getEnvironment().getVariableValue(getVar());
     float variableValue = 0;
     if (value instanceof Number) {
@@ -51,7 +51,7 @@ public class ReferenceNumberExpression extends NumberExpression {
   }
   
   @Override
-  public int getIntegerValue(TextMarkerStatement parent) {
+  public int getIntegerValue(RutaStatement parent) {
     Object value = parent.getEnvironment().getVariableValue(getVar());
     int variableValue = 0;
     if (value instanceof Number) {
@@ -61,7 +61,7 @@ public class ReferenceNumberExpression extends NumberExpression {
   }
 
   @Override
-  public String getStringValue(TextMarkerStatement parent) {
+  public String getStringValue(RutaStatement parent) {
     Class<?> variableType = parent.getEnvironment().getVariableType(getVar());
     if (variableType.equals(Integer.class)) {
       return "" + getIntegerValue(parent);

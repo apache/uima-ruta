@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.expression.list;
+package org.apache.uima.ruta.expression.list;
 
 public abstract class BooleanListExpression extends ListExpression<Boolean> {
 

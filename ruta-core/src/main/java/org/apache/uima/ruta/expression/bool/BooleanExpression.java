@@ -17,13 +17,13 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.expression.bool;
+package org.apache.uima.ruta.expression.bool;
 
-import org.apache.uima.textmarker.TextMarkerStatement;
-import org.apache.uima.textmarker.expression.string.StringExpression;
+import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.expression.string.StringExpression;
 
 public abstract class BooleanExpression extends StringExpression {
 
-  public abstract boolean getBooleanValue(TextMarkerStatement parent);
+  public abstract boolean getBooleanValue(RutaStatement parent);
 
 }

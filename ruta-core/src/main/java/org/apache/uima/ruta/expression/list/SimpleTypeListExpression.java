@@ -17,14 +17,14 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.expression.list;
+package org.apache.uima.ruta.expression.list;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.cas.Type;
-import org.apache.uima.textmarker.TextMarkerStatement;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
+import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.expression.type.TypeExpression;
 
 public class SimpleTypeListExpression extends TypeListExpression {
 
@@ -36,7 +36,7 @@ public class SimpleTypeListExpression extends TypeListExpression {
   }
 
   @Override
-  public List<Type> getList(TextMarkerStatement parent) {
+  public List<Type> getList(RutaStatement parent) {
     List<Type> result = new ArrayList<Type>();
     for (TypeExpression each : list) {
       result.add(each.getType(parent));

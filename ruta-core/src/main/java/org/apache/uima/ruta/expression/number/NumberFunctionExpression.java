@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.expression.number;
+package org.apache.uima.ruta.expression.number;
 
 
 public abstract class NumberFunctionExpression extends NumberExpression {

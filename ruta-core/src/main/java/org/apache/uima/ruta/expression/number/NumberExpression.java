@@ -17,17 +17,17 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.expression.number;
+package org.apache.uima.ruta.expression.number;
 
-import org.apache.uima.textmarker.TextMarkerStatement;
-import org.apache.uima.textmarker.expression.string.StringExpression;
+import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.expression.string.StringExpression;
 
 public abstract class NumberExpression extends StringExpression {
 
-  public abstract int getIntegerValue(TextMarkerStatement parent);
+  public abstract int getIntegerValue(RutaStatement parent);
 
-  public abstract double getDoubleValue(TextMarkerStatement parent);
+  public abstract double getDoubleValue(RutaStatement parent);
   
-  public abstract float getFloatValue(TextMarkerStatement parent);
+  public abstract float getFloatValue(RutaStatement parent);
 
 }

@@ -17,9 +17,9 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.expression.number;
+package org.apache.uima.ruta.expression.number;
 
-import org.apache.uima.textmarker.TextMarkerStatement;
+import org.apache.uima.ruta.RutaStatement;
 
 public class SimpleNumberExpression extends NumberExpression {
 
@@ -31,17 +31,17 @@ public class SimpleNumberExpression extends NumberExpression {
   }
 
   @Override
-  public double getDoubleValue(TextMarkerStatement parent) {
+  public double getDoubleValue(RutaStatement parent) {
     return number.doubleValue();
   }
 
   @Override
-  public float getFloatValue(TextMarkerStatement parent) {
+  public float getFloatValue(RutaStatement parent) {
     return number.floatValue();
   }
   
   @Override
-  public int getIntegerValue(TextMarkerStatement parent) {
+  public int getIntegerValue(RutaStatement parent) {
     return number.intValue();
   }
 
@@ -50,7 +50,7 @@ public class SimpleNumberExpression extends NumberExpression {
   }
 
   @Override
-  public String getStringValue(TextMarkerStatement parent) {
+  public String getStringValue(RutaStatement parent) {
     boolean floating = number.intValue() != number.doubleValue();
     if (floating) {
       return "" + getDoubleValue(parent);

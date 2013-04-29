@@ -17,14 +17,14 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.expression.resource;
+package org.apache.uima.ruta.expression.resource;
 
-import org.apache.uima.textmarker.TextMarkerStatement;
-import org.apache.uima.textmarker.expression.TextMarkerExpression;
-import org.apache.uima.textmarker.resource.TextMarkerWordList;
+import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.resource.RutaWordList;
 
-public abstract class WordListExpression extends TextMarkerExpression {
+public abstract class WordListExpression extends RutaExpression {
 
-  public abstract TextMarkerWordList getList(TextMarkerStatement element);
+  public abstract RutaWordList getList(RutaStatement element);
 
 }

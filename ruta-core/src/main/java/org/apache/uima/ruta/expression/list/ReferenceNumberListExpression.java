@@ -17,13 +17,13 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.expression.list;
+package org.apache.uima.ruta.expression.list;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.textmarker.TextMarkerStatement;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
+import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.expression.number.NumberExpression;
 
 
 public class ReferenceNumberListExpression extends NumberListExpression {
@@ -37,7 +37,7 @@ public class ReferenceNumberListExpression extends NumberListExpression {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Number> getList(TextMarkerStatement parent) {
+  public List<Number> getList(RutaStatement parent) {
     List<Object> list = parent.getEnvironment().getVariableValue(var, List.class);
     List<Number> result = new ArrayList<Number>();
     for (Object each : list) {

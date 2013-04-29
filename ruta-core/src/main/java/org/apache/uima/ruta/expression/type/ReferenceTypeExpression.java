@@ -17,10 +17,10 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.expression.type;
+package org.apache.uima.ruta.expression.type;
 
 import org.apache.uima.cas.Type;
-import org.apache.uima.textmarker.TextMarkerStatement;
+import org.apache.uima.ruta.RutaStatement;
 
 public class ReferenceTypeExpression extends TypeExpression {
 
@@ -41,12 +41,12 @@ public class ReferenceTypeExpression extends TypeExpression {
   }
 
   @Override
-  public Type getType(TextMarkerStatement parent) {
+  public Type getType(RutaStatement parent) {
     return parent.getEnvironment().getVariableValue(var, Type.class);
   }
 
   @Override
-  public String getStringValue(TextMarkerStatement parent) {
+  public String getStringValue(RutaStatement parent) {
     Type type = getType(parent);
     return type != null ? type.getName() : "null";
   }

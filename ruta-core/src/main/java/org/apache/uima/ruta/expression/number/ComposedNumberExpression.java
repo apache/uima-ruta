@@ -17,11 +17,11 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.expression.number;
+package org.apache.uima.ruta.expression.number;
 
 import java.util.List;
 
-import org.apache.uima.textmarker.TextMarkerStatement;
+import org.apache.uima.ruta.RutaStatement;
 
 
 public class ComposedNumberExpression extends AbstractNumberExpression {
@@ -37,7 +37,7 @@ public class ComposedNumberExpression extends AbstractNumberExpression {
   }
 
   @Override
-  public double getDoubleValue(TextMarkerStatement parent) {
+  public double getDoubleValue(RutaStatement parent) {
     NumberExpression numberExpression = getExpressions().get(0);
     if (numberExpression == null) {
       return 0;
@@ -54,7 +54,7 @@ public class ComposedNumberExpression extends AbstractNumberExpression {
   }
   
   @Override
-  public float getFloatValue(TextMarkerStatement parent) {
+  public float getFloatValue(RutaStatement parent) {
     NumberExpression numberExpression = getExpressions().get(0);
     if (numberExpression == null) {
       return 0;
@@ -71,7 +71,7 @@ public class ComposedNumberExpression extends AbstractNumberExpression {
   }
   
   @Override
-  public int getIntegerValue(TextMarkerStatement parent) {
+  public int getIntegerValue(RutaStatement parent) {
     int result = getExpressions().get(0).getIntegerValue(parent);
     for (int i = 0; i < getOperators().size(); i++) {
       int second = 0;
@@ -84,7 +84,7 @@ public class ComposedNumberExpression extends AbstractNumberExpression {
   }
 
   @Override
-  public String getStringValue(TextMarkerStatement parent) {
+  public String getStringValue(RutaStatement parent) {
     return "" + getDoubleValue(parent);
   }
 

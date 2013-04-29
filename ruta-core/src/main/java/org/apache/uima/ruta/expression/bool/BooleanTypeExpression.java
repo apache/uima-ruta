@@ -17,11 +17,11 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.expression.bool;
+package org.apache.uima.ruta.expression.bool;
 
 import org.apache.uima.cas.Type;
-import org.apache.uima.textmarker.TextMarkerStatement;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
+import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.expression.type.TypeExpression;
 
 public class BooleanTypeExpression extends BooleanExpression {
 
@@ -39,7 +39,7 @@ public class BooleanTypeExpression extends BooleanExpression {
   }
 
   @Override
-  public boolean getBooleanValue(TextMarkerStatement parent) {
+  public boolean getBooleanValue(RutaStatement parent) {
     Type type1 = getFristExpression().getType(parent);
     String first = type1.getName();
     Type type2 = getSecondExpression().getType(parent);
@@ -69,7 +69,7 @@ public class BooleanTypeExpression extends BooleanExpression {
   }
 
   @Override
-  public String getStringValue(TextMarkerStatement parent) {
+  public String getStringValue(RutaStatement parent) {
     return e1.getStringValue(parent) + " " + op + " " + e2.getStringValue(parent);
   }
 

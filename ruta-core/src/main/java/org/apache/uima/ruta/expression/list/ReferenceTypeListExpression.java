@@ -17,14 +17,14 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.expression.list;
+package org.apache.uima.ruta.expression.list;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.cas.Type;
-import org.apache.uima.textmarker.TextMarkerStatement;
-import org.apache.uima.textmarker.expression.type.TypeExpression;
+import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.expression.type.TypeExpression;
 
 public class ReferenceTypeListExpression extends TypeListExpression {
 
@@ -37,7 +37,7 @@ public class ReferenceTypeListExpression extends TypeListExpression {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Type> getList(TextMarkerStatement parent) {
+  public List<Type> getList(RutaStatement parent) {
     List<Object> list = parent.getEnvironment().getVariableValue(var, List.class);
     List<Type> result = new ArrayList<Type>();
     for (Object each : list) {

@@ -17,13 +17,13 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.expression.list;
+package org.apache.uima.ruta.expression.list;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.textmarker.TextMarkerStatement;
-import org.apache.uima.textmarker.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.expression.bool.BooleanExpression;
 
 
 public class SimpleBooleanListExpression extends BooleanListExpression {
@@ -36,7 +36,7 @@ public class SimpleBooleanListExpression extends BooleanListExpression {
   }
 
   @Override
-  public List<Boolean> getList(TextMarkerStatement parent) {
+  public List<Boolean> getList(RutaStatement parent) {
     List<Boolean> result = new ArrayList<Boolean>();
     for (BooleanExpression each : list) {
       result.add(each.getBooleanValue(parent));

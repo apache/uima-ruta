@@ -17,10 +17,10 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.expression.resource;
+package org.apache.uima.ruta.expression.resource;
 
-import org.apache.uima.textmarker.TextMarkerStatement;
-import org.apache.uima.textmarker.resource.TextMarkerTable;
+import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.resource.RutaTable;
 
 public class ReferenceWordTableExpression extends WordTableExpression {
 
@@ -32,8 +32,8 @@ public class ReferenceWordTableExpression extends WordTableExpression {
   }
 
   @Override
-  public TextMarkerTable getTable(TextMarkerStatement element) {
-    return element.getEnvironment().getVariableValue(ref, TextMarkerTable.class);
+  public RutaTable getTable(RutaStatement element) {
+    return element.getEnvironment().getVariableValue(ref, RutaTable.class);
   }
 
   public String getRef() {

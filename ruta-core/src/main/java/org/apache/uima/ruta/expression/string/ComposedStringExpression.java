@@ -17,11 +17,11 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.expression.string;
+package org.apache.uima.ruta.expression.string;
 
 import java.util.List;
 
-import org.apache.uima.textmarker.TextMarkerStatement;
+import org.apache.uima.ruta.RutaStatement;
 
 
 public class ComposedStringExpression extends LiteralStringExpression {
@@ -34,7 +34,7 @@ public class ComposedStringExpression extends LiteralStringExpression {
   }
 
   @Override
-  public String getStringValue(TextMarkerStatement parent) {
+  public String getStringValue(RutaStatement parent) {
     StringBuilder result = new StringBuilder();
     for (StringExpression each : getExpressions()) {
       result.append(each.getStringValue(parent));

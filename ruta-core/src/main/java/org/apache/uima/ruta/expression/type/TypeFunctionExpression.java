@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.expression.type;
+package org.apache.uima.ruta.expression.type;
 
 
 public abstract class TypeFunctionExpression extends TypeExpression {

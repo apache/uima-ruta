@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.expression.bool;
+package org.apache.uima.ruta.expression.bool;
 
 public abstract class BooleanFunctionExpression extends BooleanExpression {
 

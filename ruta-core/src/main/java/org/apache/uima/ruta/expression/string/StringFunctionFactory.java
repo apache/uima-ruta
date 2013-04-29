@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.expression.string;
+package org.apache.uima.ruta.expression.string;
 
 import java.util.List;
 

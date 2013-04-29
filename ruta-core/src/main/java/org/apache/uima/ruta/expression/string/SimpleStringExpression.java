@@ -17,9 +17,9 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.expression.string;
+package org.apache.uima.ruta.expression.string;
 
-import org.apache.uima.textmarker.TextMarkerStatement;
+import org.apache.uima.ruta.RutaStatement;
 
 public class SimpleStringExpression extends LiteralStringExpression {
 
@@ -39,7 +39,7 @@ public class SimpleStringExpression extends LiteralStringExpression {
   }
 
   @Override
-  public String getStringValue(TextMarkerStatement parent) {
+  public String getStringValue(RutaStatement parent) {
     return getValue();
   }
 

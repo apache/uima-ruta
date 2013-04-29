@@ -17,9 +17,9 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.expression.number;
+package org.apache.uima.ruta.expression.number;
 
-import org.apache.uima.textmarker.TextMarkerStatement;
+import org.apache.uima.ruta.RutaStatement;
 
 public class NegativeNumberExpression extends NumberExpression {
 
@@ -31,22 +31,22 @@ public class NegativeNumberExpression extends NumberExpression {
   }
 
   @Override
-  public double getDoubleValue(TextMarkerStatement parent) {
+  public double getDoubleValue(RutaStatement parent) {
     return -ne.getDoubleValue(parent);
   }
 
   @Override
-  public float getFloatValue(TextMarkerStatement parent) {
+  public float getFloatValue(RutaStatement parent) {
     return -ne.getFloatValue(parent);
   }
   
   @Override
-  public int getIntegerValue(TextMarkerStatement parent) {
+  public int getIntegerValue(RutaStatement parent) {
     return -ne.getIntegerValue(parent);
   }
 
   @Override
-  public String getStringValue(TextMarkerStatement parent) {
+  public String getStringValue(RutaStatement parent) {
     return "-" + ne.getStringValue(parent);
   }
 

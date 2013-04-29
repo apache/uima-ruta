@@ -17,14 +17,14 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.expression.type;
+package org.apache.uima.ruta.expression.type;
 
 import org.apache.uima.cas.Type;
-import org.apache.uima.textmarker.TextMarkerStatement;
-import org.apache.uima.textmarker.expression.string.StringExpression;
+import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.expression.string.StringExpression;
 
 public abstract class TypeExpression extends StringExpression {
 
-  public abstract Type getType(TextMarkerStatement parent);
+  public abstract Type getType(RutaStatement parent);
 
 }

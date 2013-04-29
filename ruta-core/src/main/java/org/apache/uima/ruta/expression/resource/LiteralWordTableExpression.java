@@ -17,10 +17,10 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.expression.resource;
+package org.apache.uima.ruta.expression.resource;
 
-import org.apache.uima.textmarker.TextMarkerStatement;
-import org.apache.uima.textmarker.resource.TextMarkerTable;
+import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.resource.RutaTable;
 
 public class LiteralWordTableExpression extends WordTableExpression {
 
@@ -40,8 +40,8 @@ public class LiteralWordTableExpression extends WordTableExpression {
   }
 
   @Override
-  public TextMarkerTable getTable(TextMarkerStatement element) {
-    TextMarkerTable table = element.getEnvironment().getWordTable(getText());
+  public RutaTable getTable(RutaStatement element) {
+    RutaTable table = element.getEnvironment().getWordTable(getText());
     return table;
   }
 

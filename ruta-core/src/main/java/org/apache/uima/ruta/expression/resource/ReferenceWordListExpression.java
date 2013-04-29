@@ -17,10 +17,10 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.expression.resource;
+package org.apache.uima.ruta.expression.resource;
 
-import org.apache.uima.textmarker.TextMarkerStatement;
-import org.apache.uima.textmarker.resource.TextMarkerWordList;
+import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.resource.RutaWordList;
 
 public class ReferenceWordListExpression extends WordListExpression {
 
@@ -32,8 +32,8 @@ public class ReferenceWordListExpression extends WordListExpression {
   }
 
   @Override
-  public TextMarkerWordList getList(TextMarkerStatement element) {
-    return element.getEnvironment().getVariableValue(ref, TextMarkerWordList.class);
+  public RutaWordList getList(RutaStatement element) {
+    return element.getEnvironment().getVariableValue(ref, RutaWordList.class);
   }
 
   public String getRef() {

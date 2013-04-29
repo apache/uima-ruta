@@ -17,11 +17,11 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.expression.string;
+package org.apache.uima.ruta.expression.string;
 
 import java.util.List;
 
-import org.apache.uima.textmarker.TextMarkerStatement;
+import org.apache.uima.ruta.RutaStatement;
 
 
 public class RemoveFunction extends StringFunctionExpression {
@@ -37,7 +37,7 @@ public class RemoveFunction extends StringFunctionExpression {
   }
 
   @Override
-  public String getStringValue(TextMarkerStatement parent) {
+  public String getStringValue(RutaStatement parent) {
     StringBuilder result = new StringBuilder();
     String value = parent.getEnvironment().getVariableValue(var, String.class);
     for (StringExpression each : list) {

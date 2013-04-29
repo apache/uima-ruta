@@ -17,20 +17,20 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.expression.list;
+package org.apache.uima.ruta.expression.list;
 
 import java.util.List;
 
-import org.apache.uima.textmarker.TextMarkerStatement;
-import org.apache.uima.textmarker.expression.string.StringExpression;
+import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.expression.string.StringExpression;
 
 
 public abstract class ListExpression<T> extends StringExpression {
 
-  public abstract List<T> getList(TextMarkerStatement parent);
+  public abstract List<T> getList(RutaStatement parent);
 
   @Override
-  public String getStringValue(TextMarkerStatement parent) {
+  public String getStringValue(RutaStatement parent) {
     return getList(parent).toString();
   }
 
