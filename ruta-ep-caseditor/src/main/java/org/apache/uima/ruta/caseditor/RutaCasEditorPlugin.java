@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.caseditor;
+package org.apache.uima.ruta.caseditor;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -27,18 +27,18 @@ import org.osgi.framework.BundleContext;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class TextMarkerCasEditorPlugin extends AbstractUIPlugin {
+public class RutaCasEditorPlugin extends AbstractUIPlugin {
 
   // The plug-in ID
-  public static final String PLUGIN_ID = "org.apache.uima.textmarker.ide"; //$NON-NLS-1$
+  public static final String PLUGIN_ID = "org.apache.uima.ruta.ide"; //$NON-NLS-1$
 
   // The shared instance
-  private static TextMarkerCasEditorPlugin plugin;
+  private static RutaCasEditorPlugin plugin;
 
   /**
    * The constructor
    */
-  public TextMarkerCasEditorPlugin() {
+  public RutaCasEditorPlugin() {
   }
 
   /*
@@ -66,7 +66,7 @@ public class TextMarkerCasEditorPlugin extends AbstractUIPlugin {
    * 
    * @return the shared instance
    */
-  public static TextMarkerCasEditorPlugin getDefault() {
+  public static RutaCasEditorPlugin getDefault() {
     return plugin;
   }
 

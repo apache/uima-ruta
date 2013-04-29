@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.caseditor.view.tree;
+package org.apache.uima.ruta.caseditor.view.tree;
 
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;

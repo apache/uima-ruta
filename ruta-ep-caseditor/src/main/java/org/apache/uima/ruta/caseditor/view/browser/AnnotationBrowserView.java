@@ -17,12 +17,12 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.caseditor.view.browser;
+package org.apache.uima.ruta.caseditor.view.browser;
 
 import org.apache.uima.caseditor.editor.AnnotationEditor;
 import org.apache.uima.caseditor.editor.CasEditorView;
 import org.apache.uima.caseditor.editor.ICasEditor;
-import org.apache.uima.textmarker.caseditor.view.tree.AnnotationTreeViewPage;
+import org.apache.uima.ruta.caseditor.view.tree.AnnotationTreeViewPage;
 import org.eclipse.ui.part.IPageBookViewPage;
 
 public class AnnotationBrowserView extends CasEditorView {
