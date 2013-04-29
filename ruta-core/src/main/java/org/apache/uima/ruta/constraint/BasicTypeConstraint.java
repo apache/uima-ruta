@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.constraint;
+package org.apache.uima.ruta.constraint;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,7 +25,7 @@ import java.util.Collection;
 import org.apache.uima.cas.FSTypeConstraint;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
-import org.apache.uima.textmarker.type.TextMarkerBasic;
+import org.apache.uima.ruta.type.RutaBasic;
 
 public class BasicTypeConstraint implements FSTypeConstraint {
   private static final long serialVersionUID = 1115953538613617791L;
@@ -56,8 +56,8 @@ public class BasicTypeConstraint implements FSTypeConstraint {
   }
 
   public boolean match(FeatureStructure fs) {
-    if (fs instanceof TextMarkerBasic) {
-      TextMarkerBasic tmb = (TextMarkerBasic) fs;
+    if (fs instanceof RutaBasic) {
+      RutaBasic tmb = (RutaBasic) fs;
       if(tmb.getBeginMap().isEmpty() && tmb.getEndMap().isEmpty()) {
         return true;
       }
@@ -66,8 +66,8 @@ public class BasicTypeConstraint implements FSTypeConstraint {
         return true;
     }
     boolean result = false;
-    if (fs instanceof TextMarkerBasic) {
-      TextMarkerBasic tmb = (TextMarkerBasic) fs;
+    if (fs instanceof RutaBasic) {
+      RutaBasic tmb = (RutaBasic) fs;
       if (types != null) {
         for (Type each : types) {
           result |= tmb.isPartOf(each)|| tmb.beginsWith(each) || tmb.endsWith(each);

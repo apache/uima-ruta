@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.constraint;
+package org.apache.uima.ruta.constraint;
 
 import org.apache.uima.cas.FSMatchConstraint;
 import org.apache.uima.cas.FeatureStructure;
