@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.tools;
+package org.apache.uima.ruta.textruler.tools;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -26,8 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.uima.textmarker.textruler.TextRulerPlugin;
-import org.apache.uima.textmarker.textruler.core.TextRulerToolkit;
+import org.apache.uima.ruta.textruler.TextRulerPlugin;
+import org.apache.uima.ruta.textruler.core.TextRulerToolkit;
 import org.apache.uima.util.FileUtils;
 
 public class TestSetGenerator {

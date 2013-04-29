@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.textruler.extension;
+package org.apache.uima.ruta.textruler.extension;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,8 +25,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.uima.textmarker.textruler.TextRulerPlugin;
-import org.apache.uima.textmarker.textruler.core.TextRulerToolkit;
+import org.apache.uima.ruta.textruler.TextRulerPlugin;
+import org.apache.uima.ruta.textruler.core.TextRulerToolkit;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -207,7 +207,7 @@ public class TextRulerController {
       if (reg == null)
         return null;
       IConfigurationElement[] extensions = reg
-              .getConfigurationElementsFor("org.apache.uima.textmarker.textruler.learners");
+              .getConfigurationElementsFor("org.apache.uima.ruta.textruler.learners");
       for (IConfigurationElement element : extensions) {
         try {
           TextRulerLearnerFactory factory = (TextRulerLearnerFactory) element

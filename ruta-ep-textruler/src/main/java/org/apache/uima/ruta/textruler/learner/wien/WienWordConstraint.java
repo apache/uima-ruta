@@ -17,10 +17,10 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.learner.wien;
+package org.apache.uima.ruta.textruler.learner.wien;
 
-import org.apache.uima.textmarker.textruler.core.TextRulerAnnotation;
-import org.apache.uima.textmarker.textruler.core.TextRulerWordConstraint;
+import org.apache.uima.ruta.textruler.core.TextRulerAnnotation;
+import org.apache.uima.ruta.textruler.core.TextRulerWordConstraint;
 
 public class WienWordConstraint extends TextRulerWordConstraint {
 

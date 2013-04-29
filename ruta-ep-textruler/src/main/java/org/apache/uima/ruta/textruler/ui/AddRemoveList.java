@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.ui;
+package org.apache.uima.ruta.textruler.ui;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,8 +31,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.apache.uima.textmarker.textruler.TextRulerPlugin;
-import org.apache.uima.textmarker.textruler.core.TextRulerToolkit;
+import org.apache.uima.ruta.textruler.TextRulerPlugin;
+import org.apache.uima.ruta.textruler.core.TextRulerToolkit;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
 import org.apache.uima.util.XMLizable;

@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.learner.rapier;
+package org.apache.uima.ruta.textruler.learner.rapier;
 
 import java.util.Collection;
 import java.util.Comparator;

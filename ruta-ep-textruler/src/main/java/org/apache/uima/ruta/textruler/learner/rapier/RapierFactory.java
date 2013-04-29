@@ -17,17 +17,17 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.learner.rapier;
+package org.apache.uima.ruta.textruler.learner.rapier;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearner;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerDelegate;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerFactory;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerParameter;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerParameter.MLAlgorithmParamType;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearner;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearnerDelegate;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearnerFactory;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearnerParameter;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearnerParameter.MLAlgorithmParamType;
 
 public class RapierFactory implements TextRulerLearnerFactory {
 

@@ -17,11 +17,11 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.learner.rapier;
+package org.apache.uima.ruta.textruler.learner.rapier;
 
-import org.apache.uima.textmarker.textruler.core.TextRulerRuleItem;
-import org.apache.uima.textmarker.textruler.core.TextRulerRulePattern;
-import org.apache.uima.textmarker.textruler.core.TextRulerToolkit;
+import org.apache.uima.ruta.textruler.core.TextRulerRuleItem;
+import org.apache.uima.ruta.textruler.core.TextRulerRulePattern;
+import org.apache.uima.ruta.textruler.core.TextRulerToolkit;
 
 public class RapierPatternSegment {
 

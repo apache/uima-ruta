@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.ui;
+package org.apache.uima.ruta.textruler.ui;
 
 import java.awt.Toolkit;
 import java.util.ArrayList;

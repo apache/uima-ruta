@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.textruler.core;
+package org.apache.uima.ruta.textruler.core;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,12 +34,12 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.resource.ResourceConfigurationException;
-import org.apache.uima.textmarker.engine.TextMarkerEngine;
-import org.apache.uima.textmarker.textruler.TextRulerPlugin;
-import org.apache.uima.textmarker.textruler.core.TextRulerTarget.MLTargetType;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearner;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerDelegate;
-import org.apache.uima.textmarker.textruler.tools.MemoryWatch;
+import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.ruta.textruler.TextRulerPlugin;
+import org.apache.uima.ruta.textruler.core.TextRulerTarget.MLTargetType;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearner;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearnerDelegate;
+import org.apache.uima.ruta.textruler.tools.MemoryWatch;
 import org.apache.uima.util.FileUtils;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -84,7 +84,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     this.delegate = delegate;
     this.filterSet = filterSet;
     filterSetWithSlotNames = new HashSet<String>(filterSet);
-    filterSetWithSlotNames.add(TextMarkerEngine.BASIC_TYPE);
+    filterSetWithSlotNames.add(RutaEngine.BASIC_TYPE);
     for (String s : slotNames) {
       filterSetWithSlotNames.add(s);
       filterSetWithSlotNames.add(TextRulerTarget.getSingleSlotTypeName(
@@ -120,12 +120,12 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
       // the FILTERTYPE expression!
       String tempRulesFileName = getTempRulesFileName();
       IPath path = new Path(tempRulesFileName);
-      ae.setConfigParameterValue(TextMarkerEngine.MAIN_SCRIPT, path.removeFileExtension()
+      ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, path.removeFileExtension()
               .lastSegment());
       String portableString = path.removeLastSegments(1).toPortableString();
-      ae.setConfigParameterValue(TextMarkerEngine.SCRIPT_PATHS, new String[] { portableString });
-      ae.setConfigParameterValue(TextMarkerEngine.ADDITIONAL_SCRIPTS, new String[0]);
-      ae.setConfigParameterValue(TextMarkerEngine.RELOAD_SCRIPT, true);
+      ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { portableString });
+      ae.setConfigParameterValue(RutaEngine.ADDITIONAL_SCRIPTS, new String[0]);
+      ae.setConfigParameterValue(RutaEngine.RELOAD_SCRIPT, true);
 
       try {
         ae.reconfigure();

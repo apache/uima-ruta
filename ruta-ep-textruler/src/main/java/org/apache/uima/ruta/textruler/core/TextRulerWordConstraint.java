@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.core;
+package org.apache.uima.ruta.textruler.core;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
@@ -25,7 +25,7 @@ import org.apache.uima.cas.TypeSystem;
 /**
  * 
  * This class was moved from one of the algorithms to the core framework since it gets used in
- * almost every algorithm. It encapsulates the word constraint e.g. of a TextMarker rule item.
+ * almost every algorithm. It encapsulates the word constraint e.g. of a Ruta rule item.
  */
 public class TextRulerWordConstraint {
 

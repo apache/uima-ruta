@@ -17,16 +17,16 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.core;
+package org.apache.uima.ruta.textruler.core;
 
 import java.io.File;
 
-import org.apache.uima.textmarker.textruler.TextRulerPlugin;
+import org.apache.uima.ruta.textruler.TextRulerPlugin;
 import org.apache.uima.util.FileUtils;
 
 /**
  * 
- * TextRulerRule is the basic class for any kind of TextMarker-Rule representation for any learning
+ * TextRulerRule is the basic class for any kind of Ruta-Rule representation for any learning
  * algorithm. A rule usually has a parent algorithm (that created it) and a learning target
  * (TextRulerTarget).
  * 

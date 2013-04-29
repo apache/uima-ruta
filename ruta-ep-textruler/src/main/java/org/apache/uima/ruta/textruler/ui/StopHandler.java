@@ -17,9 +17,9 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.ui;
+package org.apache.uima.ruta.textruler.ui;
 
-import org.apache.uima.textmarker.textruler.extension.TextRulerController;
+import org.apache.uima.ruta.textruler.extension.TextRulerController;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;

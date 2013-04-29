@@ -17,15 +17,15 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.learner.lp2;
+package org.apache.uima.ruta.textruler.learner.lp2;
 
-import org.apache.uima.textmarker.textruler.core.TextRulerBasicLearner;
-import org.apache.uima.textmarker.textruler.core.TextRulerRuleItem;
-import org.apache.uima.textmarker.textruler.core.TextRulerSingleSlotRule;
-import org.apache.uima.textmarker.textruler.core.TextRulerStatisticsCollector;
-import org.apache.uima.textmarker.textruler.core.TextRulerTarget;
-import org.apache.uima.textmarker.textruler.core.TextRulerTarget.MLTargetType;
-import org.apache.uima.textmarker.textruler.core.TextRulerToolkit;
+import org.apache.uima.ruta.textruler.core.TextRulerBasicLearner;
+import org.apache.uima.ruta.textruler.core.TextRulerRuleItem;
+import org.apache.uima.ruta.textruler.core.TextRulerSingleSlotRule;
+import org.apache.uima.ruta.textruler.core.TextRulerStatisticsCollector;
+import org.apache.uima.ruta.textruler.core.TextRulerTarget;
+import org.apache.uima.ruta.textruler.core.TextRulerTarget.MLTargetType;
+import org.apache.uima.ruta.textruler.core.TextRulerToolkit;
 
 public class LP2Rule extends TextRulerSingleSlotRule {
 

@@ -17,16 +17,16 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.learner.wien;
+package org.apache.uima.ruta.textruler.learner.wien;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearner;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerDelegate;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerFactory;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerParameter;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearner;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearnerDelegate;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearnerFactory;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearnerParameter;
 
 public class WienFactory implements TextRulerLearnerFactory {
 

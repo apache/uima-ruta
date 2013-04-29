@@ -17,15 +17,15 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.learner.rapier;
+package org.apache.uima.ruta.textruler.learner.rapier;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.apache.uima.textmarker.textruler.core.TextRulerRuleItem;
-import org.apache.uima.textmarker.textruler.core.TextRulerRulePattern;
-import org.apache.uima.textmarker.textruler.core.TextRulerToolkit;
-import org.apache.uima.textmarker.textruler.core.TextRulerWordConstraint;
+import org.apache.uima.ruta.textruler.core.TextRulerRuleItem;
+import org.apache.uima.ruta.textruler.core.TextRulerRulePattern;
+import org.apache.uima.ruta.textruler.core.TextRulerToolkit;
+import org.apache.uima.ruta.textruler.core.TextRulerWordConstraint;
 
 public class RapierGeneralizationHelper {
 

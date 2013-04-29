@@ -17,14 +17,14 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.core;
+package org.apache.uima.ruta.textruler.core;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.textmarker.textruler.TextRulerPlugin;
+import org.apache.uima.ruta.textruler.TextRulerPlugin;
 
 /**
  * 

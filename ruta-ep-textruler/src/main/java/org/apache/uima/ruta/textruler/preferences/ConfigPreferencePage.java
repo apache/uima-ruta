@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.textruler.preferences;
+package org.apache.uima.ruta.textruler.preferences;
 
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
@@ -31,7 +31,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 public class ConfigPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
-  public static String ID = "org.apache.uima.textmarker.textruler.config";
+  public static String ID = "org.apache.uima.ruta.textruler.config";
 
   private Label evalHeadline;
 

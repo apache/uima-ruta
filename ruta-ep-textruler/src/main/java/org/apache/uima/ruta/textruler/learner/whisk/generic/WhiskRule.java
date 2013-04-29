@@ -17,17 +17,17 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.learner.whisk.generic;
+package org.apache.uima.ruta.textruler.learner.whisk.generic;
 
-import org.apache.uima.textmarker.textruler.core.TextRulerBasicLearner;
-import org.apache.uima.textmarker.textruler.core.TextRulerExample;
-import org.apache.uima.textmarker.textruler.core.TextRulerMultiSlotRule;
-import org.apache.uima.textmarker.textruler.core.TextRulerRuleItem;
-import org.apache.uima.textmarker.textruler.core.TextRulerRulePattern;
-import org.apache.uima.textmarker.textruler.core.TextRulerSlotPattern;
-import org.apache.uima.textmarker.textruler.core.TextRulerStatisticsCollector;
-import org.apache.uima.textmarker.textruler.core.TextRulerTarget;
-import org.apache.uima.textmarker.textruler.core.TextRulerToolkit;
+import org.apache.uima.ruta.textruler.core.TextRulerBasicLearner;
+import org.apache.uima.ruta.textruler.core.TextRulerExample;
+import org.apache.uima.ruta.textruler.core.TextRulerMultiSlotRule;
+import org.apache.uima.ruta.textruler.core.TextRulerRuleItem;
+import org.apache.uima.ruta.textruler.core.TextRulerRulePattern;
+import org.apache.uima.ruta.textruler.core.TextRulerSlotPattern;
+import org.apache.uima.ruta.textruler.core.TextRulerStatisticsCollector;
+import org.apache.uima.ruta.textruler.core.TextRulerTarget;
+import org.apache.uima.ruta.textruler.core.TextRulerToolkit;
 
 public class WhiskRule extends TextRulerMultiSlotRule {
 

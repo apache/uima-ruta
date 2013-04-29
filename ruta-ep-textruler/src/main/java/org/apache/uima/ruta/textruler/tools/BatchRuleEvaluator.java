@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.textruler.tools;
+package org.apache.uima.ruta.textruler.tools;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -27,9 +27,9 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.resource.ResourceConfigurationException;
-import org.apache.uima.textmarker.engine.TextMarkerEngine;
-import org.apache.uima.textmarker.textruler.TextRulerPlugin;
-import org.apache.uima.textmarker.textruler.core.TextRulerToolkit;
+import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.ruta.textruler.TextRulerPlugin;
+import org.apache.uima.ruta.textruler.core.TextRulerToolkit;
 import org.apache.uima.util.FileUtils;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -61,11 +61,11 @@ public class BatchRuleEvaluator {
       // set filters to NO filtering so that we can add it manually with
       // the FILTERTYPE expression!
       IPath path = new Path(tempDir + "/results.tm");
-      ae.setConfigParameterValue(TextMarkerEngine.MAIN_SCRIPT, path.removeFileExtension()
+      ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, path.removeFileExtension()
               .lastSegment());
-      ae.setConfigParameterValue(TextMarkerEngine.SCRIPT_PATHS, new String[] { path
+      ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { path
               .removeLastSegments(1).toPortableString() });
-      ae.setConfigParameterValue(TextMarkerEngine.RELOAD_SCRIPT, true);
+      ae.setConfigParameterValue(RutaEngine.RELOAD_SCRIPT, true);
       try {
         ae.reconfigure();
       } catch (ResourceConfigurationException e) {

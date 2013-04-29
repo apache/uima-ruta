@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.core;
+package org.apache.uima.ruta.textruler.core;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +32,7 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.textruler.core.TextRulerTarget.MLTargetType;
+import org.apache.uima.ruta.textruler.core.TextRulerTarget.MLTargetType;
 
 
 /**

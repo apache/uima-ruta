@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.textruler.tools;
+package org.apache.uima.ruta.textruler.tools;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -28,13 +28,13 @@ import java.util.List;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.textmarker.textruler.core.CasCache;
-import org.apache.uima.textmarker.textruler.core.CasCacheLoader;
-import org.apache.uima.textmarker.textruler.core.GlobalCASSource;
-import org.apache.uima.textmarker.textruler.core.TextRulerExample;
-import org.apache.uima.textmarker.textruler.core.TextRulerExampleDocument;
-import org.apache.uima.textmarker.textruler.core.TextRulerTarget;
-import org.apache.uima.textmarker.textruler.core.TextRulerToolkit;
+import org.apache.uima.ruta.textruler.core.CasCache;
+import org.apache.uima.ruta.textruler.core.CasCacheLoader;
+import org.apache.uima.ruta.textruler.core.GlobalCASSource;
+import org.apache.uima.ruta.textruler.core.TextRulerExample;
+import org.apache.uima.ruta.textruler.core.TextRulerExampleDocument;
+import org.apache.uima.ruta.textruler.core.TextRulerTarget;
+import org.apache.uima.ruta.textruler.core.TextRulerToolkit;
 
 public class F1Scorer implements CasCacheLoader {
 

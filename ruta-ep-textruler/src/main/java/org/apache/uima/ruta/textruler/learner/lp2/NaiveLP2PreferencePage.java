@@ -17,16 +17,16 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.textruler.learner.lp2;
+package org.apache.uima.ruta.textruler.learner.lp2;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-import org.apache.uima.textmarker.textruler.TextRulerPlugin;
-import org.apache.uima.textmarker.textruler.extension.TextRulerController;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerController;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerFactory;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerParameter;
+import org.apache.uima.ruta.textruler.TextRulerPlugin;
+import org.apache.uima.ruta.textruler.extension.TextRulerController;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearnerController;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearnerFactory;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearnerParameter;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -42,7 +42,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 public class NaiveLP2PreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
-  public static String ID = "org.apache.uima.textmarker.textruler.preference.lp2naive";
+  public static String ID = "org.apache.uima.ruta.textruler.preference.lp2naive";
 
   private TextRulerLearnerController algorithmController;
 
@@ -52,7 +52,7 @@ public class NaiveLP2PreferencePage extends PreferencePage implements IWorkbench
 
   public NaiveLP2PreferencePage() {
     TextRulerLearnerController ctrl = TextRulerController
-            .getControllerForID("org.apache.uima.textmarker.textruler.lp2naive");
+            .getControllerForID("org.apache.uima.ruta.textruler.lp2naive");
     this.algorithmController = ctrl;
     store = TextRulerPlugin.getDefault().getPreferenceStore();
     setPreferenceStore(store);

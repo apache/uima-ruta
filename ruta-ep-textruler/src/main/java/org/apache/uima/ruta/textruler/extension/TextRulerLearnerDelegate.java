@@ -17,9 +17,9 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.extension;
+package org.apache.uima.ruta.textruler.extension;
 
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearner.TextRulerLearnerState;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearner.TextRulerLearnerState;
 
 /**
  * 

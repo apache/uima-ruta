@@ -17,14 +17,14 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.learner.wien;
+package org.apache.uima.ruta.textruler.learner.wien;
 
 import java.util.ArrayList;
 
-import org.apache.uima.textmarker.textruler.core.TextRulerAnnotation;
-import org.apache.uima.textmarker.textruler.core.TextRulerMultiSlotRule;
-import org.apache.uima.textmarker.textruler.core.TextRulerRule;
-import org.apache.uima.textmarker.textruler.core.TextRulerRuleItem;
+import org.apache.uima.ruta.textruler.core.TextRulerAnnotation;
+import org.apache.uima.ruta.textruler.core.TextRulerMultiSlotRule;
+import org.apache.uima.ruta.textruler.core.TextRulerRule;
+import org.apache.uima.ruta.textruler.core.TextRulerRuleItem;
 
 public class WienRuleItem implements TextRulerRuleItem {
 

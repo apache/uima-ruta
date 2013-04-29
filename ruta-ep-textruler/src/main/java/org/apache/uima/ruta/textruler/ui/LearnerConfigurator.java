@@ -17,15 +17,15 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.ui;
+package org.apache.uima.ruta.textruler.ui;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.uima.textmarker.textruler.TextRulerPlugin;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerController;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerFactory;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerParameter;
+import org.apache.uima.ruta.textruler.TextRulerPlugin;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearnerController;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearnerFactory;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearnerParameter;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Control;
 

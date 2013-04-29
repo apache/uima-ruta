@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.ui;
+package org.apache.uima.ruta.textruler.ui;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,10 +29,10 @@ import java.util.Map;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.apache.uima.textmarker.textruler.TextRulerPlugin;
-import org.apache.uima.textmarker.textruler.core.TextRulerToolkit;
-import org.apache.uima.textmarker.textruler.extension.TextRulerController;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerController;
+import org.apache.uima.ruta.textruler.TextRulerPlugin;
+import org.apache.uima.ruta.textruler.core.TextRulerToolkit;
+import org.apache.uima.ruta.textruler.extension.TextRulerController;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearnerController;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
@@ -406,7 +406,7 @@ public class TextRulerViewComposite extends org.eclipse.swt.widgets.Composite {
         @Override
         public void widgetSelected(SelectionEvent event) {
           FileDialog fd = new FileDialog(getShell(), SWT.OPEN);
-          fd.setText("Choose TextMarker Source File");
+          fd.setText("Choose Ruta Source File");
           String[] filterExt = { "*.tm", "*.*" };
           fd.setFilterExtensions(filterExt);
           String file = fd.open();

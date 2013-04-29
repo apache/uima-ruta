@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.textruler.core;
+package org.apache.uima.ruta.textruler.core;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -46,10 +46,10 @@ import org.apache.uima.cas.impl.XmiCasDeserializer;
 import org.apache.uima.cas.impl.XmiCasSerializer;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.resource.ResourceSpecifier;
-import org.apache.uima.textmarker.engine.TextMarkerEngine;
-import org.apache.uima.textmarker.ide.core.builder.TextMarkerProjectUtils;
-import org.apache.uima.textmarker.textruler.TextRulerPlugin;
-import org.apache.uima.textmarker.textruler.core.TextRulerTarget.MLTargetType;
+import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
+import org.apache.uima.ruta.textruler.TextRulerPlugin;
+import org.apache.uima.ruta.textruler.core.TextRulerTarget.MLTargetType;
 import org.apache.uima.util.XMLInputSource;
 import org.apache.uima.util.XMLSerializer;
 import org.eclipse.core.runtime.FileLocator;
@@ -67,23 +67,23 @@ public class TextRulerToolkit {
 
   public static final boolean DEBUG = false;
 
-  public static final String TM_ALL_TYPE_NAME = "org.apache.uima.textmarker.type.ALL";
+  public static final String TM_ALL_TYPE_NAME = "org.apache.uima.ruta.type.ALL";
 
-  public static final String TM_ANY_TYPE_NAME = "org.apache.uima.textmarker.type.ANY";
+  public static final String TM_ANY_TYPE_NAME = "org.apache.uima.ruta.type.ANY";
 
-  public static final String TM_WORD_TYPE_NAME = "org.apache.uima.textmarker.type.W";
+  public static final String TM_WORD_TYPE_NAME = "org.apache.uima.ruta.type.W";
 
-  public static final String TM_BREAK_TYPE_NAME = "org.apache.uima.textmarker.type.BREAK";
+  public static final String TM_BREAK_TYPE_NAME = "org.apache.uima.ruta.type.BREAK";
 
-  public static final String TM_SPACE_TYPE_NAME = "org.apache.uima.textmarker.type.SPACE";
+  public static final String TM_SPACE_TYPE_NAME = "org.apache.uima.ruta.type.SPACE";
 
-  public static final String TM_NUM_TYPE_NAME = "org.apache.uima.textmarker.type.NUM";
+  public static final String TM_NUM_TYPE_NAME = "org.apache.uima.ruta.type.NUM";
 
-  public static final String TM_MARKUP_TYPE_NAME = "org.apache.uima.textmarker.type.MARKUP";
+  public static final String TM_MARKUP_TYPE_NAME = "org.apache.uima.ruta.type.MARKUP";
 
-  public static final String TM_SPECIAL_TYPE_NAME = "org.apache.uima.textmarker.type.SPECIAL";
+  public static final String TM_SPECIAL_TYPE_NAME = "org.apache.uima.ruta.type.SPECIAL";
 
-  public static final String TM_NBSP_TYPE_NAME = "org.apache.uima.textmarker.type.NBSP";
+  public static final String TM_NBSP_TYPE_NAME = "org.apache.uima.ruta.type.NBSP";
 
   public static final String LEFT_BOUNDARY_EXTENSION = "START";
 
@@ -302,7 +302,7 @@ public class TextRulerToolkit {
     Type tmRootType = ts.getType(TM_ALL_TYPE_NAME);
     Set<String> allFilters = new HashSet<String>();
     allFilters.add("uima.tcas.DocumentAnnotation");
-    allFilters.add(TextMarkerEngine.BASIC_TYPE);
+    allFilters.add(RutaEngine.BASIC_TYPE);
     if (filterSet != null)
       allFilters.addAll(filterSet);
     for (; it.isValid(); it.moveToNext()) {
@@ -352,7 +352,7 @@ public class TextRulerToolkit {
   public static synchronized Set<String> getFilterSetWithSlotNames(String[] slotNames,
           Set<String> otherFilters) {
     Set<String> result = new HashSet<String>(otherFilters);
-    result.add(TextMarkerEngine.BASIC_TYPE);
+    result.add(RutaEngine.BASIC_TYPE);
     if (slotNames != null)
       for (String s : slotNames)
         result.add(s);
@@ -394,7 +394,7 @@ public class TextRulerToolkit {
     filterSet.add("uima.cas.AnnotationBase:sofa");
     filterSet.add("uima.tcas.Annotation:begin");
     filterSet.add("uima.tcas.Annotation:end");
-    filterSet.add("org.apache.uima.textmarker.type.TextMarkerBasic:Replacement");
+    filterSet.add("org.apache.uima.ruta.type.RutaBasic:Replacement");
     return filterSet;
   }
 
@@ -454,7 +454,7 @@ public class TextRulerToolkit {
   public static synchronized String getEngineDescriptorFromTMSourceFile(IPath scriptFilePath) {
     IPath folder = scriptFilePath;
 
-    while (!folder.lastSegment().equals(TextMarkerProjectUtils.getDefaultScriptLocation())) {
+    while (!folder.lastSegment().equals(RutaProjectUtils.getDefaultScriptLocation())) {
       folder = folder.removeLastSegments(1);
     }
     IPath relativeTo = scriptFilePath.makeRelativeTo(folder);
@@ -464,7 +464,7 @@ public class TextRulerToolkit {
     if (lastIndexOf != -1) {
       elementName = elementName.substring(0, lastIndexOf);
     }
-    IPath descPath = projectPath.append(TextMarkerProjectUtils.getDefaultDescriptorLocation());
+    IPath descPath = projectPath.append(RutaProjectUtils.getDefaultDescriptorLocation());
     IPath descPackagePath = descPath.append(relativeTo.removeLastSegments(1));
     return descPackagePath.append(elementName + "Engine.xml").toString();
   }
@@ -472,7 +472,7 @@ public class TextRulerToolkit {
   public static synchronized String getTypeSystemDescriptorFromTMSourceFile(IPath scriptFilePath) {
     IPath folder = scriptFilePath;
 
-    while (!folder.lastSegment().equals(TextMarkerProjectUtils.getDefaultScriptLocation())) {
+    while (!folder.lastSegment().equals(RutaProjectUtils.getDefaultScriptLocation())) {
       folder = folder.removeLastSegments(1);
     }
     IPath relativeTo = scriptFilePath.makeRelativeTo(folder);
@@ -482,7 +482,7 @@ public class TextRulerToolkit {
     if (lastIndexOf != -1) {
       elementName = elementName.substring(0, lastIndexOf);
     }
-    IPath descPath = projectPath.append(TextMarkerProjectUtils.getDefaultDescriptorLocation());
+    IPath descPath = projectPath.append(RutaProjectUtils.getDefaultDescriptorLocation());
     IPath descPackagePath = descPath.append(relativeTo.removeLastSegments(1));
     return descPackagePath.append(elementName + "TypeSystem.xml").toString();
   }

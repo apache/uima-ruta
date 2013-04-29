@@ -17,16 +17,16 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.textruler.ui;
+package org.apache.uima.ruta.textruler.ui;
 
 import java.util.List;
 
-import org.apache.uima.textmarker.textruler.TextRulerPlugin;
-import org.apache.uima.textmarker.textruler.extension.TextRulerController;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerController;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerParameter;
-import org.apache.uima.textmarker.textruler.preferences.AlgorithmPreferencePage;
-import org.apache.uima.textmarker.textruler.preferences.ConfigPreferencePage;
+import org.apache.uima.ruta.textruler.TextRulerPlugin;
+import org.apache.uima.ruta.textruler.extension.TextRulerController;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearnerController;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearnerParameter;
+import org.apache.uima.ruta.textruler.preferences.AlgorithmPreferencePage;
+import org.apache.uima.ruta.textruler.preferences.ConfigPreferencePage;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
@@ -52,13 +52,13 @@ public class ConfigureLearnersHandler implements IHandler {
 
     PreferencePage page = new ConfigPreferencePage();
     page.setTitle("TextRuler");
-    PreferenceNode node = new PreferenceNode("org.apache.uima.textmarker.textruler.config", page);
+    PreferenceNode node = new PreferenceNode("org.apache.uima.ruta.textruler.config", page);
     pm.addToRoot(node);
 
     List<PreferenceNode> nodes = pm.getElements(0);
     PreferenceNode top = null;
     for (PreferenceNode n : nodes)
-      if (n.getId().equals("org.apache.uima.textmarker.textruler.config"))
+      if (n.getId().equals("org.apache.uima.ruta.textruler.config"))
         top = n;
     if (top != null) {
       for (TextRulerLearnerController ctrl : TextRulerController.getAvailableControllers()) {

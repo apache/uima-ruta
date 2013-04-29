@@ -17,19 +17,19 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.learner.lp2;
+package org.apache.uima.ruta.textruler.learner.lp2;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.cas.Type;
-import org.apache.uima.textmarker.textruler.core.TextRulerAnnotation;
-import org.apache.uima.textmarker.textruler.core.TextRulerRule;
-import org.apache.uima.textmarker.textruler.core.TextRulerRuleItem;
-import org.apache.uima.textmarker.textruler.core.TextRulerSingleSlotRule;
-import org.apache.uima.textmarker.textruler.core.TextRulerTarget.MLTargetType;
-import org.apache.uima.textmarker.textruler.core.TextRulerToolkit;
-import org.apache.uima.textmarker.textruler.core.TextRulerWordConstraint;
+import org.apache.uima.ruta.textruler.core.TextRulerAnnotation;
+import org.apache.uima.ruta.textruler.core.TextRulerRule;
+import org.apache.uima.ruta.textruler.core.TextRulerRuleItem;
+import org.apache.uima.ruta.textruler.core.TextRulerSingleSlotRule;
+import org.apache.uima.ruta.textruler.core.TextRulerTarget.MLTargetType;
+import org.apache.uima.ruta.textruler.core.TextRulerToolkit;
+import org.apache.uima.ruta.textruler.core.TextRulerWordConstraint;
 
 public class LP2RuleItem implements TextRulerRuleItem {
 
@@ -207,7 +207,7 @@ public class LP2RuleItem implements TextRulerRuleItem {
     MLLP2OtherConstraint anchorConstraint = null;
     if (wordConstraint == null) {
 
-      // prefer the basic TextMarker constraint as the anchor
+      // prefer the basic Ruta constraint as the anchor
       anchorConstraint = getTMBasicTypeTokenConstraint(); // returns null
       // if we don't
       // have one...

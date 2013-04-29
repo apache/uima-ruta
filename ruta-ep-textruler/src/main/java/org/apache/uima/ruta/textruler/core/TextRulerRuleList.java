@@ -17,18 +17,18 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.core;
+package org.apache.uima.ruta.textruler.core;
 
 import java.io.File;
 import java.util.ArrayList;
 
-import org.apache.uima.textmarker.textruler.TextRulerPlugin;
+import org.apache.uima.ruta.textruler.TextRulerPlugin;
 import org.apache.uima.util.FileUtils;
 
 /**
  * 
  * TextRulerRuleList can hold a list of rules and provides some extra functionality like saving them
- * to a TextMarker rule file...
+ * to a Ruta rule file...
  * 
  */
 public class TextRulerRuleList extends ArrayList<TextRulerRule> {

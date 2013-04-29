@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.extension;
+package org.apache.uima.ruta.textruler.extension;
 
 /**
  * Small helper class for possible UI implementations for the preprocessor (see .ui)

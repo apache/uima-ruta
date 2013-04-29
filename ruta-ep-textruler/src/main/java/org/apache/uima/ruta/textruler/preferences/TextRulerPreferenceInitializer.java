@@ -17,16 +17,16 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.textruler.preferences;
+package org.apache.uima.ruta.textruler.preferences;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.apache.uima.textmarker.textruler.TextRulerPlugin;
-import org.apache.uima.textmarker.textruler.extension.TextRulerController;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerController;
+import org.apache.uima.ruta.textruler.TextRulerPlugin;
+import org.apache.uima.ruta.textruler.extension.TextRulerController;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearnerController;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 

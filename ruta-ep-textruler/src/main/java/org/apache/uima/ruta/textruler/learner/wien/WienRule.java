@@ -17,11 +17,11 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.learner.wien;
+package org.apache.uima.ruta.textruler.learner.wien;
 
-import org.apache.uima.textmarker.textruler.core.TextRulerBasicLearner;
-import org.apache.uima.textmarker.textruler.core.TextRulerMultiSlotRule;
-import org.apache.uima.textmarker.textruler.core.TextRulerTarget;
+import org.apache.uima.ruta.textruler.core.TextRulerBasicLearner;
+import org.apache.uima.ruta.textruler.core.TextRulerMultiSlotRule;
+import org.apache.uima.ruta.textruler.core.TextRulerTarget;
 
 public class WienRule extends TextRulerMultiSlotRule {
 

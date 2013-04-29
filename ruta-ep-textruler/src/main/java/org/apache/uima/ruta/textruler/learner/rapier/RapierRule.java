@@ -17,17 +17,17 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.learner.rapier;
+package org.apache.uima.ruta.textruler.learner.rapier;
 
 import java.util.ArrayList;
 
-import org.apache.uima.textmarker.textruler.core.TextRulerBasicLearner;
-import org.apache.uima.textmarker.textruler.core.TextRulerRuleItem;
-import org.apache.uima.textmarker.textruler.core.TextRulerRulePattern;
-import org.apache.uima.textmarker.textruler.core.TextRulerSingleSlotRule;
-import org.apache.uima.textmarker.textruler.core.TextRulerStatisticsCollector;
-import org.apache.uima.textmarker.textruler.core.TextRulerTarget;
-import org.apache.uima.textmarker.textruler.core.TextRulerToolkit;
+import org.apache.uima.ruta.textruler.core.TextRulerBasicLearner;
+import org.apache.uima.ruta.textruler.core.TextRulerRuleItem;
+import org.apache.uima.ruta.textruler.core.TextRulerRulePattern;
+import org.apache.uima.ruta.textruler.core.TextRulerSingleSlotRule;
+import org.apache.uima.ruta.textruler.core.TextRulerStatisticsCollector;
+import org.apache.uima.ruta.textruler.core.TextRulerTarget;
+import org.apache.uima.ruta.textruler.core.TextRulerToolkit;
 
 
 public class RapierRule extends TextRulerSingleSlotRule {

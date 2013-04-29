@@ -17,11 +17,11 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.learner.rapier;
+package org.apache.uima.ruta.textruler.learner.rapier;
 
 import java.util.Set;
 
-import org.apache.uima.textmarker.textruler.core.TextRulerExample;
+import org.apache.uima.ruta.textruler.core.TextRulerExample;
 
 public class RapierDebugHelper {
 

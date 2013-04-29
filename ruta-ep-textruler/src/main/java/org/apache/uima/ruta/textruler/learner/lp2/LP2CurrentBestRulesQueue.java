@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.learner.lp2;
+package org.apache.uima.ruta.textruler.learner.lp2;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,7 +25,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.PriorityQueue;
 
-import org.apache.uima.textmarker.textruler.core.TextRulerToolkit;
+import org.apache.uima.ruta.textruler.core.TextRulerToolkit;
 
 public class LP2CurrentBestRulesQueue implements Iterable<LP2Rule> {
 

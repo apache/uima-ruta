@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.textruler.learner.whisk.generic;
+package org.apache.uima.ruta.textruler.learner.whisk.generic;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,20 +33,20 @@ import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.textruler.core.TextRulerAnnotation;
-import org.apache.uima.textmarker.textruler.core.TextRulerBasicLearner;
-import org.apache.uima.textmarker.textruler.core.TextRulerExample;
-import org.apache.uima.textmarker.textruler.core.TextRulerExampleDocument;
-import org.apache.uima.textmarker.textruler.core.TextRulerRule;
-import org.apache.uima.textmarker.textruler.core.TextRulerRuleItem;
-import org.apache.uima.textmarker.textruler.core.TextRulerRuleList;
-import org.apache.uima.textmarker.textruler.core.TextRulerRulePattern;
-import org.apache.uima.textmarker.textruler.core.TextRulerSlotPattern;
-import org.apache.uima.textmarker.textruler.core.TextRulerStatisticsCollector;
-import org.apache.uima.textmarker.textruler.core.TextRulerTarget;
-import org.apache.uima.textmarker.textruler.core.TextRulerToolkit;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerDelegate;
-import org.apache.uima.textmarker.textruler.learner.whisk.generic.WhiskRuleItem.MLWhiskOtherConstraint;
+import org.apache.uima.ruta.textruler.core.TextRulerAnnotation;
+import org.apache.uima.ruta.textruler.core.TextRulerBasicLearner;
+import org.apache.uima.ruta.textruler.core.TextRulerExample;
+import org.apache.uima.ruta.textruler.core.TextRulerExampleDocument;
+import org.apache.uima.ruta.textruler.core.TextRulerRule;
+import org.apache.uima.ruta.textruler.core.TextRulerRuleItem;
+import org.apache.uima.ruta.textruler.core.TextRulerRuleList;
+import org.apache.uima.ruta.textruler.core.TextRulerRulePattern;
+import org.apache.uima.ruta.textruler.core.TextRulerSlotPattern;
+import org.apache.uima.ruta.textruler.core.TextRulerStatisticsCollector;
+import org.apache.uima.ruta.textruler.core.TextRulerTarget;
+import org.apache.uima.ruta.textruler.core.TextRulerToolkit;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearnerDelegate;
+import org.apache.uima.ruta.textruler.learner.whisk.generic.WhiskRuleItem.MLWhiskOtherConstraint;
 
 public class Whisk extends TextRulerBasicLearner {
 
@@ -732,7 +732,7 @@ public class Whisk extends TextRulerBasicLearner {
     int end = whiskRuleItem.getWordConstraint().getTokenAnnotation().getEnd();
     CAS cas = example.getDocumentCAS();
     // TODO: access type with string constant
-    Type frameType = cas.getTypeSystem().getType("org.apache.uima.textmarker.type.TextMarkerFrame");
+    Type frameType = cas.getTypeSystem().getType("org.apache.uima.ruta.type.RutaFrame");
     AnnotationFS pointer = cas.createAnnotation(frameType, end, Integer.MAX_VALUE);
     FSIterator iterator = cas.getAnnotationIndex().iterator(pointer);
     int nextBegin = -1;
@@ -762,7 +762,7 @@ public class Whisk extends TextRulerBasicLearner {
     CAS cas = example.getDocumentCAS();
 
     // TODO: access type with string constant
-    Type frameType = cas.getTypeSystem().getType("org.apache.uima.textmarker.type.TextMarkerFrame");
+    Type frameType = cas.getTypeSystem().getType("org.apache.uima.ruta.type.RutaFrame");
     AnnotationFS pointer = cas.createAnnotation(frameType, begin, begin);
     FSIterator iterator = cas.getAnnotationIndex().iterator(pointer);
     int nextEnd = -1;
@@ -822,7 +822,7 @@ public class Whisk extends TextRulerBasicLearner {
     List<List<WhiskRuleItem>> result = new ArrayList<List<WhiskRuleItem>>();
     CAS cas = example.getDocumentCAS();
     // TODO: access type with string constant
-    Type frameType = cas.getTypeSystem().getType("org.apache.uima.textmarker.type.TextMarkerFrame");
+    Type frameType = cas.getTypeSystem().getType("org.apache.uima.ruta.type.RutaFrame");
     AnnotationFS pointer = cas.createAnnotation(frameType, startPos, endPos);
     FSIterator iterator = cas.getAnnotationIndex().iterator(pointer);
     List<AnnotationFS> startAs = new ArrayList<AnnotationFS>();
@@ -937,7 +937,7 @@ public class Whisk extends TextRulerBasicLearner {
           TextRulerExample example) {
     CAS cas = example.getDocumentCAS();
     // TODO: access type with string constant
-    Type frameType = cas.getTypeSystem().getType("org.apache.uima.textmarker.type.TextMarkerFrame");
+    Type frameType = cas.getTypeSystem().getType("org.apache.uima.ruta.type.RutaFrame");
     int begin = left.getWordConstraint().getTokenAnnotation().getEnd();
     int end = right.getWordConstraint().getTokenAnnotation().getBegin();
     AnnotationFS pointer = cas.createAnnotation(frameType, begin, end);

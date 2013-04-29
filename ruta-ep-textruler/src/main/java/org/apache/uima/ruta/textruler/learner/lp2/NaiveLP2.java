@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.textruler.learner.lp2;
+package org.apache.uima.ruta.textruler.learner.lp2;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,18 +30,18 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.textruler.TextRulerPlugin;
-import org.apache.uima.textmarker.textruler.core.TextRulerAnnotation;
-import org.apache.uima.textmarker.textruler.core.TextRulerExample;
-import org.apache.uima.textmarker.textruler.core.TextRulerRule;
-import org.apache.uima.textmarker.textruler.core.TextRulerRuleItem;
-import org.apache.uima.textmarker.textruler.core.TextRulerRulePattern;
-import org.apache.uima.textmarker.textruler.core.TextRulerTarget;
-import org.apache.uima.textmarker.textruler.core.TextRulerTarget.MLTargetType;
-import org.apache.uima.textmarker.textruler.core.TextRulerToolkit;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerDelegate;
-import org.apache.uima.textmarker.textruler.learner.lp2.LP2RuleItem.MLLP2ContextConstraint;
-import org.apache.uima.textmarker.textruler.learner.lp2.LP2RuleItem.MLLP2OtherConstraint;
+import org.apache.uima.ruta.textruler.TextRulerPlugin;
+import org.apache.uima.ruta.textruler.core.TextRulerAnnotation;
+import org.apache.uima.ruta.textruler.core.TextRulerExample;
+import org.apache.uima.ruta.textruler.core.TextRulerRule;
+import org.apache.uima.ruta.textruler.core.TextRulerRuleItem;
+import org.apache.uima.ruta.textruler.core.TextRulerRulePattern;
+import org.apache.uima.ruta.textruler.core.TextRulerTarget;
+import org.apache.uima.ruta.textruler.core.TextRulerTarget.MLTargetType;
+import org.apache.uima.ruta.textruler.core.TextRulerToolkit;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearnerDelegate;
+import org.apache.uima.ruta.textruler.learner.lp2.LP2RuleItem.MLLP2ContextConstraint;
+import org.apache.uima.ruta.textruler.learner.lp2.LP2RuleItem.MLLP2OtherConstraint;
 import org.apache.uima.util.FileUtils;
 
 public class NaiveLP2 extends BasicLP2 {

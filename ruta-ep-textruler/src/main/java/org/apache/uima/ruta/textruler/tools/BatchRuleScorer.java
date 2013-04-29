@@ -17,15 +17,15 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.textruler.tools;
+package org.apache.uima.ruta.textruler.tools;
 
 import java.io.File;
 import java.io.IOException;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.textmarker.textruler.TextRulerPlugin;
-import org.apache.uima.textmarker.textruler.core.TextRulerToolkit;
-import org.apache.uima.textmarker.textruler.tools.F1Scorer.Score;
+import org.apache.uima.ruta.textruler.TextRulerPlugin;
+import org.apache.uima.ruta.textruler.core.TextRulerToolkit;
+import org.apache.uima.ruta.textruler.tools.F1Scorer.Score;
 import org.apache.uima.util.FileUtils;
 
 public class BatchRuleScorer {

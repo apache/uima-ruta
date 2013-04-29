@@ -17,21 +17,21 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.textruler.extension;
+package org.apache.uima.ruta.textruler.extension;
 
 import java.io.File;
 import java.io.FilenameFilter;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.textmarker.textruler.TextRulerPlugin;
-import org.apache.uima.textmarker.textruler.core.GlobalCASSource;
-import org.apache.uima.textmarker.textruler.core.TextRulerToolkit;
+import org.apache.uima.ruta.textruler.TextRulerPlugin;
+import org.apache.uima.ruta.textruler.core.GlobalCASSource;
+import org.apache.uima.ruta.textruler.core.TextRulerToolkit;
 import org.eclipse.core.runtime.Path;
 
 /**
  * This "algorithm" gets executed right before the real algorithms get started. It preprocesses the
- * input XMI files with the given TextMarker preprocessing file and stores the results in a
+ * input XMI files with the given Ruta preprocessing file and stores the results in a
  * temporary folder. Those new XMI files are then passed as input documents to the MLAlgorithms.
  * 
  */
@@ -55,11 +55,11 @@ public class TextRulerPreprocessor {
       outputFolder.mkdir();
       // FileUtils.saveString2File("PACKAGE org.apache.uima;\n\n", new
       // File(tmpDir+"preprocess.tm"));
-      // ae.setConfigParameterValue(TextMarkerEngine.SCRIPT_LOCATION,
+      // ae.setConfigParameterValue(RutaEngine.SCRIPT_LOCATION,
       // tmpDir+"preprocess.tm");
       // IPath path = new Path(tmFile);
       // IPath scriptRoot = new Path(tmFile);
-      // while (!scriptRoot.lastSegment().equals(TextMarkerProjectUtils.getDefaultScriptLocation()))
+      // while (!scriptRoot.lastSegment().equals(RutaProjectUtils.getDefaultScriptLocation()))
       // {
       // scriptRoot = scriptRoot.removeLastSegments(1);
       // }
@@ -68,11 +68,11 @@ public class TextRulerPreprocessor {
       // String replaceAll =
       // makeRelativeTo.removeFileExtension().toPortableString().replaceAll("[/]",
       // ".");
-      // Object configParameterValue = ae.getConfigParameterValue(TextMarkerEngine.MAIN_SCRIPT);
-      // ae.setConfigParameterValue(TextMarkerEngine.MAIN_SCRIPT, replaceAll);
-      // ae.setConfigParameterValue(TextMarkerEngine.SCRIPT_PATHS, new String[] { scriptRoot
+      // Object configParameterValue = ae.getConfigParameterValue(RutaEngine.MAIN_SCRIPT);
+      // ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, replaceAll);
+      // ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { scriptRoot
       // .toPortableString() });
-      // ae.setConfigParameterValue(TextMarkerEngine.USE_SCANNER, true);
+      // ae.setConfigParameterValue(RutaEngine.USE_SCANNER, true);
       // ae.reconfigure();
     } catch (Exception e) {
       TextRulerPlugin.error(e);

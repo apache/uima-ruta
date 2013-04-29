@@ -17,9 +17,9 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.tools;
+package org.apache.uima.ruta.textruler.tools;
 
-import org.apache.uima.textmarker.textruler.core.TextRulerToolkit;
+import org.apache.uima.ruta.textruler.core.TextRulerToolkit;
 
 public class MemoryWatch {
 

@@ -17,9 +17,9 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.textruler.ui;
+package org.apache.uima.ruta.textruler.ui;
 
-import org.apache.uima.textmarker.ide.core.TextMarkerLanguageToolkit;
+import org.apache.uima.ruta.ide.core.RutaLanguageToolkit;
 import org.eclipse.dltk.internal.ui.editor.ScriptSourceViewer;
 import org.eclipse.dltk.ui.DLTKUILanguageManager;
 import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
@@ -36,7 +36,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 public class TextRulerResultsView extends ViewPart {
 
-  public static final String ID = "org.apache.uima.textmarker.textruler.TextRulerResultsView";
+  public static final String ID = "org.apache.uima.ruta.textruler.TextRulerResultsView";
 
   protected SourceViewer viewer;
 
@@ -47,7 +47,7 @@ public class TextRulerResultsView extends ViewPart {
   @Override
   public void createPartControl(Composite parent) {
     IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager
-            .getLanguageToolkit(TextMarkerLanguageToolkit.getDefault().getNatureId());
+            .getLanguageToolkit(RutaLanguageToolkit.getDefault().getNatureId());
     final ScriptTextTools textTools = toolkit.getTextTools();
     IPreferenceStore store = toolkit.getCombinedPreferenceStore();
     viewer = new ScriptSourceViewer(parent, null, null, false, SWT.BORDER | SWT.V_SCROLL
@@ -69,7 +69,7 @@ public class TextRulerResultsView extends ViewPart {
     }
     IDocument doc = new Document(content);
     IDLTKUILanguageToolkit uiToolkit = DLTKUILanguageManager
-            .getLanguageToolkit(TextMarkerLanguageToolkit.getDefault().getNatureId());
+            .getLanguageToolkit(RutaLanguageToolkit.getDefault().getNatureId());
     ScriptTextTools textTools = uiToolkit.getTextTools();
     if (textTools != null) {
       textTools.setupDocumentPartitioner(doc, uiToolkit.getPartitioningId());

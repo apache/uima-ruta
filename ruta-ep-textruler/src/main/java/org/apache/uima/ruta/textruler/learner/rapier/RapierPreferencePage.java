@@ -17,16 +17,16 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.textruler.learner.rapier;
+package org.apache.uima.ruta.textruler.learner.rapier;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-import org.apache.uima.textmarker.textruler.TextRulerPlugin;
-import org.apache.uima.textmarker.textruler.extension.TextRulerController;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerController;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerFactory;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerParameter;
+import org.apache.uima.ruta.textruler.TextRulerPlugin;
+import org.apache.uima.ruta.textruler.extension.TextRulerController;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearnerController;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearnerFactory;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearnerParameter;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -38,7 +38,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class RapierPreferencePage extends FieldEditorPreferencePage implements
         IWorkbenchPreferencePage {
 
-  public static String ID = "org.apache.uima.textmarker.textruler.preference.rapier";
+  public static String ID = "org.apache.uima.ruta.textruler.preference.rapier";
 
   private TextRulerLearnerController algorithmController;
 
@@ -49,7 +49,7 @@ public class RapierPreferencePage extends FieldEditorPreferencePage implements
   public RapierPreferencePage() {
     super(FieldEditorPreferencePage.GRID);
     TextRulerLearnerController ctrl = TextRulerController
-            .getControllerForID("org.apache.uima.textmarker.textruler.rapier");
+            .getControllerForID("org.apache.uima.ruta.textruler.rapier");
     this.algorithmController = ctrl;
     store = TextRulerPlugin.getDefault().getPreferenceStore();
     setPreferenceStore(store);

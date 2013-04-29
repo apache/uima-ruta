@@ -17,16 +17,16 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.learner.whisk.generic;
+package org.apache.uima.ruta.textruler.learner.whisk.generic;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.cas.Type;
-import org.apache.uima.textmarker.textruler.core.TextRulerAnnotation;
-import org.apache.uima.textmarker.textruler.core.TextRulerRule;
-import org.apache.uima.textmarker.textruler.core.TextRulerRuleItem;
-import org.apache.uima.textmarker.textruler.core.TextRulerWordConstraint;
+import org.apache.uima.ruta.textruler.core.TextRulerAnnotation;
+import org.apache.uima.ruta.textruler.core.TextRulerRule;
+import org.apache.uima.ruta.textruler.core.TextRulerRuleItem;
+import org.apache.uima.ruta.textruler.core.TextRulerWordConstraint;
 
 public class WhiskRuleItem implements TextRulerRuleItem {
 

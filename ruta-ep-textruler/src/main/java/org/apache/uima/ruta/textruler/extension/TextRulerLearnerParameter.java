@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.extension;
+package org.apache.uima.ruta.textruler.extension;
 
 /**
  * With your TextRulerLearnerFactory-class you can specify some parameters your algorithm has (e.g.

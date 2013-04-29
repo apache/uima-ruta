@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.extension;
+package org.apache.uima.ruta.textruler.extension;
 
 import java.util.Map;
 import java.util.Set;
@@ -35,7 +35,7 @@ public interface TextRulerLearnerFactory {
    *          the input folder path where e.g. example XMIs are located
    * @param additionalFolderPath TODO
    * @param preprocessorTMfile
-   *          the preprocessing TextMarker file (this is important for finding the type system and
+   *          the preprocessing Ruta file (this is important for finding the type system and
    *          analysis engine descriptor file)
    * @param tempFolderPath
    *          a folder name that you can use as temporary folder (caution: you need to create it if
@@ -46,7 +46,7 @@ public interface TextRulerLearnerFactory {
    *          a delegate that can be notified for status updates and asked for aborting the
    *          algorithm
    * @param the
-   *          TextMarker filter set (full qualified UIMA type names)
+   *          Ruta filter set (full qualified UIMA type names)
    * @return the algorithm of your class that implements TextRulerLearner
    */
   public TextRulerLearner createAlgorithm(String inputFolderPath, String additionalFolderPath,

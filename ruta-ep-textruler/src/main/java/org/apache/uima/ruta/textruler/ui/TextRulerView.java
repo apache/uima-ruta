@@ -17,18 +17,18 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.textruler.ui;
+package org.apache.uima.ruta.textruler.ui;
 
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.uima.textmarker.textruler.TextRulerPlugin;
-import org.apache.uima.textmarker.textruler.extension.TextRulerController;
-import org.apache.uima.textmarker.textruler.extension.TextRulerControllerDelegate;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearner.TextRulerLearnerState;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerController;
-import org.apache.uima.textmarker.textruler.extension.TextRulerPreprocessor;
+import org.apache.uima.ruta.textruler.TextRulerPlugin;
+import org.apache.uima.ruta.textruler.extension.TextRulerController;
+import org.apache.uima.ruta.textruler.extension.TextRulerControllerDelegate;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearner.TextRulerLearnerState;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearnerController;
+import org.apache.uima.ruta.textruler.extension.TextRulerPreprocessor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.MessageBox;
@@ -43,7 +43,7 @@ import org.eclipse.ui.part.ViewPart;
 
 public class TextRulerView extends ViewPart implements TextRulerControllerDelegate {
 
-  public static final String ID = "org.apache.uima.textmarker.ml.MainView";
+  public static final String ID = "org.apache.uima.ruta.ml.MainView";
 
   private TextRulerViewComposite viewContent;
 

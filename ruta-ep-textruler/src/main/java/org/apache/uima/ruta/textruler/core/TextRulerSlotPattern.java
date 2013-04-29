@@ -17,11 +17,11 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.core;
+package org.apache.uima.ruta.textruler.core;
 
 /**
  * 
- * TextRulerSlotPattern holds the three slot patterns we usually have for a TextMarker-Rule: a
+ * TextRulerSlotPattern holds the three slot patterns we usually have for a Ruta-Rule: a
  * preFiller pattern, a filler pattern and a post filler pattern
  * 
  */

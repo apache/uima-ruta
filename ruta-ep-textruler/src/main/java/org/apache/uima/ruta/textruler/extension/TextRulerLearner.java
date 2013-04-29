@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.textruler.extension;
+package org.apache.uima.ruta.textruler.extension;
 
 import java.util.Map;
 
@@ -39,7 +39,7 @@ import org.apache.uima.cas.CAS;
  * 
  * which gets created and used by adding an extension point to
  * 
- * org.apache.uima.textmarker.textruler.algorithms
+ * org.apache.uima.ruta.textruler.algorithms
  * 
  */
 public interface TextRulerLearner {
@@ -60,7 +60,7 @@ public interface TextRulerLearner {
   void setParameters(Map<String, Object> params);
 
   /**
-   * If any TextMarker-Rules result is available (yet), the system asks your algorithm for it by
+   * If any Ruta-Rules result is available (yet), the system asks your algorithm for it by
    * calling this method.
    */
   String getResultString();

@@ -17,10 +17,10 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.core;
+package org.apache.uima.ruta.textruler.core;
 
-import org.apache.uima.textmarker.textruler.core.TextRulerRuleItem.MLRuleItemType;
-import org.apache.uima.textmarker.textruler.core.TextRulerTarget.MLTargetType;
+import org.apache.uima.ruta.textruler.core.TextRulerRuleItem.MLRuleItemType;
+import org.apache.uima.ruta.textruler.core.TextRulerTarget.MLTargetType;
 
 /**
  * 

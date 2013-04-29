@@ -17,13 +17,13 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.textruler.extension;
+package org.apache.uima.ruta.textruler.extension;
 
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.uima.textmarker.textruler.core.TextRulerToolkit;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearner.TextRulerLearnerState;
+import org.apache.uima.ruta.textruler.core.TextRulerToolkit;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearner.TextRulerLearnerState;
 
 
 /**

@@ -17,15 +17,15 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.textruler.preferences;
+package org.apache.uima.ruta.textruler.preferences;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-import org.apache.uima.textmarker.textruler.TextRulerPlugin;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerController;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerFactory;
-import org.apache.uima.textmarker.textruler.extension.TextRulerLearnerParameter;
+import org.apache.uima.ruta.textruler.TextRulerPlugin;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearnerController;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearnerFactory;
+import org.apache.uima.ruta.textruler.extension.TextRulerLearnerParameter;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -35,7 +35,7 @@ import org.eclipse.jface.preference.StringFieldEditor;
 
 public class AlgorithmPreferencePage extends FieldEditorPreferencePage implements IPreferencePage {
 
-  public static String ID = "org.apache.uima.textmarker.textruler.algorithmPages";
+  public static String ID = "org.apache.uima.ruta.textruler.algorithmPages";
 
   private TextRulerLearnerController algorithmController;
 
