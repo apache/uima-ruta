@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker;
+package org.apache.uima.ruta;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,8 +33,8 @@ import org.apache.uima.cas.FSMatchConstraint;
 import org.apache.uima.cas.FeaturePath;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.constraint.BasicTypeConstraint;
-import org.apache.uima.textmarker.constraint.NotConstraint;
+import org.apache.uima.ruta.constraint.BasicTypeConstraint;
+import org.apache.uima.ruta.constraint.NotConstraint;
 
 public class FilterManager {
 

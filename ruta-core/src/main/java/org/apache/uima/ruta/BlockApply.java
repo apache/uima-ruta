@@ -17,17 +17,17 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker;
+package org.apache.uima.ruta;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.textmarker.rule.RuleApply;
+import org.apache.uima.ruta.rule.RuleApply;
 
 
 public class BlockApply extends ScriptApply {
 
-  public BlockApply(TextMarkerStatement tme) {
+  public BlockApply(RutaStatement tme) {
     super(tme);
   }
 

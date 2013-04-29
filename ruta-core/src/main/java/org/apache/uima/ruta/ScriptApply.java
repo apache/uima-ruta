@@ -17,20 +17,20 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker;
+package org.apache.uima.ruta;
 
 public abstract class ScriptApply {
 
   public static int count = 0;
 
-  private final TextMarkerStatement tme;
+  private final RutaStatement tme;
 
-  public ScriptApply(TextMarkerStatement tme) {
+  public ScriptApply(RutaStatement tme) {
     super();
     this.tme = tme;
   }
 
-  public TextMarkerStatement getElement() {
+  public RutaStatement getElement() {
     return tme;
   }
 
