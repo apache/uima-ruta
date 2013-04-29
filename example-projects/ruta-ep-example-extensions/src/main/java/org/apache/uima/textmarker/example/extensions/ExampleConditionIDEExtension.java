@@ -17,15 +17,15 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.example.extensions;
+package org.apache.uima.ruta.example.extensions;
 
 import java.util.List;
 
 import org.antlr.runtime.RecognitionException;
-import org.apache.uima.textmarker.ide.core.extensions.IIDEConditionExtension;
-import org.apache.uima.textmarker.ide.parser.ast.TMTypeConstants;
-import org.apache.uima.textmarker.ide.parser.ast.TextMarkerCondition;
-import org.apache.uima.textmarker.ide.validator.TextMarkerCheckerProblemFactory;
+import org.apache.uima.ruta.ide.core.extensions.IIDEConditionExtension;
+import org.apache.uima.ruta.ide.parser.ast.TMTypeConstants;
+import org.apache.uima.ruta.ide.parser.ast.RutaCondition;
+import org.apache.uima.ruta.ide.validator.RutaCheckerProblemFactory;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.compiler.problem.IProblem;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
@@ -39,10 +39,10 @@ public class ExampleConditionIDEExtension implements IIDEConditionExtension {
     return strings;
   }
 
-  public boolean checkSyntax(Expression element, TextMarkerCheckerProblemFactory problemFactory,
+  public boolean checkSyntax(Expression element, RutaCheckerProblemFactory problemFactory,
           IProblemReporter rep) throws RecognitionException {
-    if (element instanceof TextMarkerCondition) {
-      TextMarkerCondition a = (TextMarkerCondition) element;
+    if (element instanceof RutaCondition) {
+      RutaCondition a = (RutaCondition) element;
       String name = a.getName();
       if (!name.equals(strings[0])) {
         IProblem problem = problemFactory.createUnknownConditionProblem(a);

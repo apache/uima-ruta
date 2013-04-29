@@ -17,27 +17,27 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.example.extensions;
+package org.apache.uima.ruta.example.extensions;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.textmarker.TextMarkerElement;
-import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
-import org.apache.uima.textmarker.expression.TextMarkerExpression;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.extensions.ITextMarkerActionExtension;
-import org.apache.uima.textmarker.verbalize.TextMarkerVerbalizer;
+import org.apache.uima.ruta.RutaElement;
+import org.apache.uima.ruta.action.AbstractRutaAction;
+import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.extensions.IRutaActionExtension;
+import org.apache.uima.ruta.verbalize.RutaVerbalizer;
 
 import antlr.ANTLRException;
 
-public class ExampleActionExtension implements ITextMarkerActionExtension {
+public class ExampleActionExtension implements IRutaActionExtension {
 
   private final String[] knownExtensions = new String[] { "ExampleAction" };
 
   private final Class<?>[] extensions = new Class[] { ExampleAction.class };
 
-  public String verbalize(TextMarkerElement element, TextMarkerVerbalizer verbalizer) {
+  public String verbalize(RutaElement element, RutaVerbalizer verbalizer) {
     if (element instanceof ExampleAction) {
       return verbalizeName(element) + "("
               + verbalizer.verbalizeExpressionList(((ExampleAction) element).getIndexExprList()) + ")";
@@ -46,11 +46,11 @@ public class ExampleActionExtension implements ITextMarkerActionExtension {
     }
   }
 
-  public AbstractTextMarkerAction createAction(String name, List<TextMarkerExpression> args)
+  public AbstractRutaAction createAction(String name, List<RutaExpression> args)
           throws ANTLRException {
     List<NumberExpression> arguments = new ArrayList<NumberExpression>();
     if (args != null) {
-      for (TextMarkerExpression each : args) {
+      for (RutaExpression each : args) {
         if (each instanceof NumberExpression) {
           arguments.add((NumberExpression) each);
         } else {
@@ -61,7 +61,7 @@ public class ExampleActionExtension implements ITextMarkerActionExtension {
     return new ExampleAction(arguments);
   }
 
-  public String verbalizeName(TextMarkerElement element) {
+  public String verbalizeName(RutaElement element) {
     return knownExtensions[0];
   }
 

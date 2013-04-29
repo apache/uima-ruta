@@ -17,7 +17,7 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.example.extensions;
+package org.apache.uima.ruta.example.extensions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +26,14 @@ import java.util.Random;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.action.AbstractTextMarkerAction;
-import org.apache.uima.textmarker.expression.number.NumberExpression;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.rule.RuleMatch;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.action.AbstractRutaAction;
+import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class ExampleAction extends AbstractTextMarkerAction {
+public class ExampleAction extends AbstractRutaAction {
 
   private List<NumberExpression> indexExprList;
 
@@ -43,7 +43,7 @@ public class ExampleAction extends AbstractTextMarkerAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, TextMarkerStream stream,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
     List<Integer> indexes = new ArrayList<Integer>();
     for (NumberExpression each : indexExprList) {
@@ -66,7 +66,7 @@ public class ExampleAction extends AbstractTextMarkerAction {
     }
   }
 
-  private Type getRandomType(TextMarkerStream stream) {
+  private Type getRandomType(RutaStream stream) {
     Type annotationType = stream.getCas().getAnnotationType();
     TypeSystem typeSystem = stream.getCas().getTypeSystem();
     List<Type> subsumedTypes = typeSystem.getProperlySubsumedTypes(annotationType);

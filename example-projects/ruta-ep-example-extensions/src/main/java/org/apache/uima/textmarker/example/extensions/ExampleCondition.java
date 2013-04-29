@@ -17,20 +17,20 @@
  * under the License.
 */
 
-package org.apache.uima.textmarker.example.extensions;
+package org.apache.uima.ruta.example.extensions;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.textmarker.TextMarkerStream;
-import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
-import org.apache.uima.textmarker.expression.string.StringExpression;
-import org.apache.uima.textmarker.rule.EvaluatedCondition;
-import org.apache.uima.textmarker.rule.RuleElement;
-import org.apache.uima.textmarker.visitor.InferenceCrowd;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.condition.AbstractRutaCondition;
+import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class ExampleCondition extends AbstractTextMarkerCondition {
+public class ExampleCondition extends AbstractRutaCondition {
   
   private final StringExpression dateExpr;
 
@@ -44,7 +44,7 @@ public class ExampleCondition extends AbstractTextMarkerCondition {
   
   @Override
   public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          TextMarkerStream stream, InferenceCrowd crowd) {
+          RutaStream stream, InferenceCrowd crowd) {
     String coveredText = annotation.getCoveredText();
     String dateValue = dateExpr.getStringValue(element.getParent());
     String formatValue = formatExpr.getStringValue(element.getParent());

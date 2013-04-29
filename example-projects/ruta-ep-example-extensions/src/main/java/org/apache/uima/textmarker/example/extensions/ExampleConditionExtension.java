@@ -17,26 +17,26 @@
  * under the License.
  */
 
-package org.apache.uima.textmarker.example.extensions;
+package org.apache.uima.ruta.example.extensions;
 
 import java.util.List;
 
-import org.apache.uima.textmarker.TextMarkerElement;
-import org.apache.uima.textmarker.condition.AbstractTextMarkerCondition;
-import org.apache.uima.textmarker.expression.TextMarkerExpression;
-import org.apache.uima.textmarker.expression.string.StringExpression;
-import org.apache.uima.textmarker.extensions.ITextMarkerConditionExtension;
-import org.apache.uima.textmarker.verbalize.TextMarkerVerbalizer;
+import org.apache.uima.ruta.RutaElement;
+import org.apache.uima.ruta.condition.AbstractRutaCondition;
+import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.extensions.IRutaConditionExtension;
+import org.apache.uima.ruta.verbalize.RutaVerbalizer;
 
 import antlr.ANTLRException;
 
-public class ExampleConditionExtension implements ITextMarkerConditionExtension {
+public class ExampleConditionExtension implements IRutaConditionExtension {
 
   private final String[] knownExtensions = new String[] { "ExampleCondition" };
 
   private final Class<?>[] extensions = new Class[] { ExampleCondition.class };
 
-  public String verbalize(TextMarkerElement element, TextMarkerVerbalizer verbalizer) {
+  public String verbalize(RutaElement element, RutaVerbalizer verbalizer) {
     if (element instanceof ExampleCondition) {
       ExampleCondition c = (ExampleCondition) element;
       return verbalizeName(element) + "(" + verbalizer.verbalize(c.getExpr()) + ", "
@@ -46,7 +46,7 @@ public class ExampleConditionExtension implements ITextMarkerConditionExtension 
     }
   }
 
-  public AbstractTextMarkerCondition createCondition(String name, List<TextMarkerExpression> args)
+  public AbstractRutaCondition createCondition(String name, List<RutaExpression> args)
           throws ANTLRException {
     if (args != null && args.size() == 2) {
       if (!(args.get(0) instanceof StringExpression)) {
@@ -60,7 +60,7 @@ public class ExampleConditionExtension implements ITextMarkerConditionExtension 
     return new ExampleCondition((StringExpression) args.get(0), (StringExpression) args.get(1));
   }
 
-  public String verbalizeName(TextMarkerElement element) {
+  public String verbalizeName(RutaElement element) {
     return knownExtensions[0];
   }
 
