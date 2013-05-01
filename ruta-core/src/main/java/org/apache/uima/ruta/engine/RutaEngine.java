@@ -78,6 +78,8 @@ import org.apache.uima.util.XMLInputSource;
 
 public class RutaEngine extends JCasAnnotator_ImplBase {
 
+  private static final String SCRIPT_FILE_EXTENSION = ".ruta";
+
   public static final String SOURCE_DOCUMENT_INFORMATION = "org.apache.uima.examples.SourceDocumentInformation";
 
   public static final String BASIC_TYPE = "org.apache.uima.ruta.type.RutaBasic";
@@ -441,19 +443,19 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     if (mainScript == null) {
       return;
     }
-    String scriptLocation = locate(mainScript, scriptPaths, ".tm");
+    String scriptLocation = locate(mainScript, scriptPaths, SCRIPT_FILE_EXTENSION);
     if (scriptLocation == null) {
       try {
-        String mainScriptPath = mainScript.replaceAll("\\.", "/") + ".tm";
+        String mainScriptPath = mainScript.replaceAll("\\.", "/") + SCRIPT_FILE_EXTENSION;
         script = loadScriptIS(mainScriptPath, null);
       } catch (IOException e) {
         throw new AnalysisEngineProcessException(new FileNotFoundException("Script [" + mainScript
                 + "] cannot be found at [" + collectionToString(scriptPaths)
-                + "] with extension .tm"));
+                + "] with extension .ruta"));
       } catch (RecognitionException e) {
         throw new AnalysisEngineProcessException(new FileNotFoundException("Script [" + mainScript
                 + "] cannot be found at [" + collectionToString(scriptPaths)
-                + "] with extension .tm"));
+                + "] with extension .ruta"));
       }
     } else {
       try {
@@ -613,7 +615,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   private void recursiveLoadScript(String toLoad, Map<String, RutaModule> additionalScripts,
           Map<String, AnalysisEngine> additionalEngines, String viewName) throws AnalysisEngineProcessException {
-    String location = locate(toLoad, scriptPaths, ".tm");
+    String location = locate(toLoad, scriptPaths, SCRIPT_FILE_EXTENSION);
     try {
       TypeSystemDescription localTSD = getLocalTSD(toLoad);
       RutaModule eachScript = loadScript(location, localTSD);
@@ -681,7 +683,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     parser.setExternalFactory(factory);
     parser.setResourcePaths(resourcePaths);
     String name = scriptFile.getName();
-    int lastIndexOf = name.lastIndexOf(".tm");
+    int lastIndexOf = name.lastIndexOf(SCRIPT_FILE_EXTENSION);
     name = name.substring(0, lastIndexOf);
     RutaModule script = parser.file_input(name);
     return script;
@@ -698,7 +700,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     parser.setExternalFactory(factory);
     parser.setResourcePaths(resourcePaths);
     String name = scriptLocation;
-    int lastIndexOf = name.lastIndexOf(".tm");
+    int lastIndexOf = name.lastIndexOf(SCRIPT_FILE_EXTENSION);
     name = name.substring(0, lastIndexOf);
     RutaModule script = parser.file_input(name);
     return script;
