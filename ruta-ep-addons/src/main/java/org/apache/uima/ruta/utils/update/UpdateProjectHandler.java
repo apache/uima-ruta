@@ -43,6 +43,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -98,9 +99,16 @@ public class UpdateProjectHandler implements IHandler {
             List<File> files = getFiles(new File(each.getLocation().toPortableString()));
             for (File file : files) {
               String absolutePath = file.getAbsolutePath();
-              File newFile = new File(absolutePath.substring(0, absolutePath.length() - 5)
-                      + ".ruta");
-              file.renameTo(newFile);
+              if (file.getName().endsWith(".tm")) {
+                File newFile = new File(absolutePath.substring(0, absolutePath.length() - 3)
+                        + ".ruta");
+                file.renameTo(newFile);
+              }
+            }
+            IScriptProject sp = DLTKCore.create(each);
+            List<IFolder> scriptFolders = RutaProjectUtils.getScriptFolders(sp);
+            for (IFolder iFolder : scriptFolders) {
+              iFolder.refreshLocal(IResource.DEPTH_INFINITE, monitor);
             }
           }
         } catch (CoreException e) {
