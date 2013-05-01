@@ -152,8 +152,8 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
         extendedClasspath.add(d.pluginIdToJarPath("org.apache.uima.runtime"));
         extendedClasspath.add(d.pluginIdToJarPath("org.apache.uima.ruta.engine"));
       } catch (IOException e) {
-        throw new CoreException(new Status(IStatus.ERROR, RutaIdePlugin.PLUGIN_ID,
-                IStatus.OK, "Failed to compose classpath!", e));
+        throw new CoreException(new Status(IStatus.ERROR, RutaIdePlugin.PLUGIN_ID, IStatus.OK,
+                "Failed to compose classpath!", e));
       }
     }
     // When running inside eclipse with PDE in development mode the plugins
@@ -161,8 +161,7 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     // from the target/classes folder or target/org.apache.uima.runtime.*.jar file
     else {
       try {
-        extendedClasspath
-                .add(d.pluginIdToJarPath(RutaIdePlugin.PLUGIN_ID) + "target/classes");
+        extendedClasspath.add(d.pluginIdToJarPath(RutaIdePlugin.PLUGIN_ID) + "target/classes");
         Bundle bundle = RutaIdePlugin.getDefault().getBundle("org.apache.uima.runtime");
         if (bundle != null) {
           Enumeration<?> jarEnum = bundle.findEntries("/", "*.jar", true);
@@ -175,8 +174,7 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
           }
         }
 
-        Bundle bundle2 = RutaIdePlugin.getDefault().getBundle(
-                "org.apache.uima.ruta.engine");
+        Bundle bundle2 = RutaIdePlugin.getDefault().getBundle("org.apache.uima.ruta.engine");
         if (bundle2 != null) {
           Enumeration<?> jarEnum = bundle2.findEntries("/", "*.jar", true);
           while (jarEnum != null && jarEnum.hasMoreElements()) {
@@ -186,8 +184,8 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
         }
 
       } catch (IOException e) {
-        throw new CoreException(new Status(IStatus.ERROR, RutaIdePlugin.PLUGIN_ID,
-                IStatus.OK, "Failed to compose classpath!", e));
+        throw new CoreException(new Status(IStatus.ERROR, RutaIdePlugin.PLUGIN_ID, IStatus.OK,
+                "Failed to compose classpath!", e));
       }
     }
 
@@ -211,12 +209,12 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
         if (!Platform.inDevelopmentMode()) {
           result.add(d.pluginIdToJarPath(namespaceIdentifier));
         } else {
-          result.add(d.pluginIdToJarPath(namespaceIdentifier)+ "target/classes");
-          result.add(d.pluginIdToJarPath(namespaceIdentifier)+ "bin");
+          result.add(d.pluginIdToJarPath(namespaceIdentifier) + "target/classes");
+          result.add(d.pluginIdToJarPath(namespaceIdentifier) + "bin");
         }
       } catch (IOException e) {
-        throw new CoreException(new Status(IStatus.ERROR, RutaIdePlugin.PLUGIN_ID,
-                IStatus.OK, "Failed to extend classpath with " + namespaceIdentifier + "!", e));
+        throw new CoreException(new Status(IStatus.ERROR, RutaIdePlugin.PLUGIN_ID, IStatus.OK,
+                "Failed to extend classpath with " + namespaceIdentifier + "!", e));
       }
     }
     return result;
@@ -287,8 +285,8 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     IScriptProject proj = AbstractScriptLaunchConfigurationDelegate.getScriptProject(configuration);
     IPath projectPath = proj.getResource().getLocation();
     IPath outputDirPath = projectPath.append(RutaProjectUtils.getDefaultOutputLocation());
-    String outputFolderPath = configuration.getAttribute(
-            RutaLaunchConstants.ARG_OUTPUT_FOLDER, outputDirPath.toPortableString());
+    String outputFolderPath = configuration.getAttribute(RutaLaunchConstants.ARG_OUTPUT_FOLDER,
+            outputDirPath.toPortableString());
     if (outputFolderPath.length() != 0) {
       IPath path = Path.fromPortableString(outputFolderPath);
       ouputFolder = ResourcesPlugin.getWorkspace().getRoot().getContainerForLocation(path);
@@ -296,23 +294,24 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     boolean recursive = configuration.getAttribute(RutaLaunchConstants.RECURSIVE, false);
     clearOutputFolder(new File(ouputFolder.getLocation().toPortableString()), recursive);
 
-    // String[] args = getProgramArguments(configuration).split(" ");
-    // try {
-    // RutaLauncher.main(args);
-    // } catch (Exception e1) {
-    // e1.printStackTrace();
-    // }
-
-    super.launch(configuration, mode, launch, monitor);
-
-    while (!launch.isTerminated()) {
+    if (Platform.inDevelopmentMode()) {
+      String[] args = getProgramArguments(configuration).split(" ");
       try {
-        Thread.sleep(100);
-      } catch (InterruptedException e) {
-        Thread.interrupted();
+        RutaLauncher.main(args);
+      } catch (Exception e1) {
+        RutaIdePlugin.error(e1);
+      }
+    } else {
+      super.launch(configuration, mode, launch, monitor);
+
+      while (!launch.isTerminated()) {
+        try {
+          Thread.sleep(100);
+        } catch (InterruptedException e) {
+          Thread.interrupted();
+        }
       }
     }
-
     if (ouputFolder != null) {
       ouputFolder.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
     }
