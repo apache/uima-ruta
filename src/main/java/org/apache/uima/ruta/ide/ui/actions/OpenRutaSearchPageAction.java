@@ -29,7 +29,7 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
 public class OpenRutaSearchPageAction implements IWorkbenchWindowActionDelegate {
 
-  private static final String TM_SEARCH_PAGE_ID = "org.apache.uima.ruta.ide.ui.RutaSearchPage";
+  private static final String RUTA_SEARCH_PAGE_ID = "org.apache.uima.ruta.ide.ui.RutaSearchPage";
 
   private IWorkbenchWindow window;
 
@@ -46,7 +46,7 @@ public class OpenRutaSearchPageAction implements IWorkbenchWindowActionDelegate 
       return;
     }
 
-    NewSearchUI.openSearchDialog(window, TM_SEARCH_PAGE_ID);
+    NewSearchUI.openSearchDialog(window, RUTA_SEARCH_PAGE_ID);
   }
 
   public void selectionChanged(IAction action, ISelection selection) {

@@ -86,7 +86,7 @@ public class RutaPagesDocumentationProvider implements IScriptDocumentationProvi
             });
 
     String value = RutaIdePlugin.getDefault().getPreferenceStore()
-            .getString(RutaPreferenceConstants.DOC_TM_PAGES_LOCATIONS);
+            .getString(RutaPreferenceConstants.DOC_RUTA_PAGES_LOCATIONS);
 
     try {
       if (!StringUtils.isEmpty(value)) {

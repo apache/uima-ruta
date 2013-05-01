@@ -31,7 +31,7 @@ public interface RutaPartitions {
 
   public final static String RUTA_STRING = "__ruta_string";
 
-  public static final String RUTA_INNER_CODE = "__tm_inner_code";
+  public static final String RUTA_INNER_CODE = "__ruta_inner_code";
 
   public final static String[] RUTA_PARTITION_TYPES = new String[] { RutaPartitions.RUTA_STRING,
       RutaPartitions.RUTA_COMMENT, IDocument.DEFAULT_CONTENT_TYPE };

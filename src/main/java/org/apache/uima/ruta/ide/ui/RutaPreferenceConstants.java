@@ -216,7 +216,7 @@ public class RutaPreferenceConstants extends PreferenceConstants {
 
   public final static int EDITOR_SMART_PASTE_MODE_FULL = 2;
 
-  public static final String DOC_TM_PAGES_LOCATIONS = "doc_tm_pages_location";
+  public static final String DOC_RUTA_PAGES_LOCATIONS = "doc_ruta_pages_location";
 
   public static final String COMMENT_TASK_TAGS = RutaColorConstants.RUTA_TODO_TAG;// RutaColorConstants
 

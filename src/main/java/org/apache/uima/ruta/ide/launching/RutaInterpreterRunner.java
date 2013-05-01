@@ -361,7 +361,7 @@ public class RutaInterpreterRunner extends AbstractInterpreterRunner implements
 
   @Override
   protected String getProcessType() {
-    return RutaLaunchConfigurationConstants.ID_TM_PROCESS_TYPE;
+    return RutaLaunchConfigurationConstants.ID_RUTA_PROCESS_TYPE;
   }
 
   public void setRunnerConfig(IRutaInterpreterRunnerConfig config) {

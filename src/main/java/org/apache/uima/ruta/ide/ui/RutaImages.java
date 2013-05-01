@@ -28,7 +28,7 @@ public class RutaImages {
   private static final PluginImagesHelper helper = new PluginImagesHelper(RutaIdePlugin
           .getDefault().getBundle(), new Path("/icons"));
 
-  public static final ImageDescriptor PROJECT_DECARATOR = helper.createUnManaged("", "tm_ovr.gif");
+  public static final ImageDescriptor PROJECT_DECARATOR = helper.createUnManaged("", "ruta_ovr.gif");
 
   public static final ImageDescriptor DESC_WIZBAN_PROJECT_CREATION = helper.createUnManaged("",
           "projectcreate_wiz.png");
