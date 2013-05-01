@@ -23,12 +23,13 @@ import java.util.List;
 
 import org.antlr.runtime.RecognitionException;
 import org.apache.uima.ruta.ide.core.extensions.IIDEConditionExtension;
-import org.apache.uima.ruta.ide.parser.ast.TMTypeConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaCondition;
+import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
 import org.apache.uima.ruta.ide.validator.RutaCheckerProblemFactory;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.compiler.problem.IProblem;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
+
 
 
 
@@ -57,7 +58,7 @@ public class ExampleConditionIDEExtension implements IIDEConditionExtension {
         ok = false;
       }
       for (Expression expression : childs) {
-        if (expression.getKind() != TMTypeConstants.TM_TYPE_S) {
+        if (expression.getKind() != RutaTypeConstants.RUTA_TYPE_S) {
           IProblem problem = problemFactory.createWrongArgumentTypeProblem(expression, "StringExpression");
           rep.reportProblem(problem);
           ok = false;

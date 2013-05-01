@@ -150,7 +150,7 @@ public class RutaIdePlugin extends AbstractUIPlugin {
   public IFileHandle getConsoleProxy(IExecutionEnvironment exeEnv) throws IOException {
     IDeployment deployment = exeEnv.createDeployment();
     IPath path = deployment.add(this.getBundle(), "console");
-    path.append("ConsoleProxy.tm");
+    path.append("ConsoleProxy.ruta");
     return deployment.getFile(path);
   }
 

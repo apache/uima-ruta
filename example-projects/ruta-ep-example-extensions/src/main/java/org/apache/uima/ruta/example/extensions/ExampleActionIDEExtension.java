@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.antlr.runtime.RecognitionException;
 import org.apache.uima.ruta.ide.core.extensions.IIDEActionExtension;
-import org.apache.uima.ruta.ide.parser.ast.TMTypeConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaAction;
+import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
 import org.apache.uima.ruta.ide.validator.RutaCheckerProblemFactory;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.compiler.problem.IProblem;
@@ -31,7 +31,7 @@ public class ExampleActionIDEExtension implements IIDEActionExtension {
       boolean ok = true;
       List<Expression> childs = a.getChilds();
       for (Expression expression : childs) {
-        if (expression.getKind() != TMTypeConstants.TM_TYPE_N) {
+        if (expression.getKind() != RutaTypeConstants.RUTA_TYPE_N) {
           IProblem problem = problemFactory.createWrongArgumentTypeProblem(expression, "NumberExpression");
           rep.reportProblem(problem);
           ok = false;

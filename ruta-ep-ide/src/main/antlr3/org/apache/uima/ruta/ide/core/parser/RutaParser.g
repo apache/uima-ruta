@@ -235,7 +235,7 @@ List<Statement> stmts = new ArrayList<Statement>();
 	:	
 	p = packageDeclaration
 	{
-	String packageName = "org.apache.uima.tm";
+	String packageName = "org.apache.uima.ruta";
 	if(p != null) {packageName = p.getName();}
 	rootBlock = scriptFactory.createScriptBlock(0,0,0,0,module, null, null, packageName);
 	stmts.add(p);

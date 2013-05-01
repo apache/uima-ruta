@@ -318,7 +318,7 @@ under the License.
       <menuContribution
             locationURI="popup:org.eclipse.dltk.ui.ScriptExplorer?after=additions">
          <menu
-               icon="icons/tm_obj.png"
+               icon="icons/ruta_obj.png"
                id="org.apache.uima.ruta.utils.popup.submenu"
                label="UIMA Ruta">
          </menu>
@@ -327,9 +327,9 @@ under the License.
             locationURI="popup:org.apache.uima.ruta.utils.popup.submenu">
          <command
                commandId="org.apache.uima.ruta.utils.apply.script.basics"
-               disabledIcon="icons/tm_obj.png"
-               hoverIcon="icons/tm_obj.png"
-               icon="icons/tm_obj.png"
+               disabledIcon="icons/ruta_obj.png"
+               hoverIcon="icons/ruta_obj.png"
+               icon="icons/ruta_obj.png"
                id="org.apache.uima.ruta.utils.apply.script.basics.popup"
                label="Quick Ruta"
                style="push"
@@ -351,9 +351,9 @@ under the License.
             locationURI="popup:org.apache.uima.ruta.utils.popup.submenu">
          <command
                commandId="org.apache.uima.ruta.utils.apply.script"
-               disabledIcon="icons/tm_obj.png"
-               hoverIcon="icons/tm_obj.png"
-               icon="icons/tm_obj.png"
+               disabledIcon="icons/ruta_obj.png"
+               hoverIcon="icons/ruta_obj.png"
+               icon="icons/ruta_obj.png"
                id="org.apache.uima.ruta.utils.apply.script.popup"
                label="Quick Ruta (remove basics)"
                style="push"
@@ -375,9 +375,9 @@ under the License.
             locationURI="popup:org.apache.uima.ruta.utils.popup.submenu">
          <command
                commandId="org.apache.uima.ruta.utils.apply.script.noxmi"
-               disabledIcon="icons/tm_obj.png"
-               hoverIcon="icons/tm_obj.png"
-               icon="icons/tm_obj.png"
+               disabledIcon="icons/ruta_obj.png"
+               hoverIcon="icons/ruta_obj.png"
+               icon="icons/ruta_obj.png"
                id="org.apache.uima.ruta.utils.apply.script.noxmi.popup"
                label="Quick Ruta (no xmi)"
                style="push"
@@ -399,9 +399,9 @@ under the License.
             locationURI="popup:org.apache.uima.ruta.utils.popup.submenu">
          <command
                commandId="org.apache.uima.ruta.utils.twl.command"
-               disabledIcon="icons/tm_obj.png"
-               hoverIcon="icons/tm_obj.png"
-               icon="icons/tm_obj.png"
+               disabledIcon="icons/ruta_obj.png"
+               hoverIcon="icons/ruta_obj.png"
+               icon="icons/ruta_obj.png"
                id="org.apache.uima.ruta.utils.twl.popup"
                label="Convert to TWL"
                style="push"
@@ -418,9 +418,9 @@ under the License.
             locationURI="popup:org.apache.uima.ruta.utils.popup.submenu">
          <command
                commandId="org.apache.uima.ruta.utils.mtwl.command"
-               disabledIcon="icons/tm_obj.png"
-               hoverIcon="icons/tm_obj.png"
-               icon="icons/tm_obj.png"
+               disabledIcon="icons/ruta_obj.png"
+               hoverIcon="icons/ruta_obj.png"
+               icon="icons/ruta_obj.png"
                id="org.apache.uima.ruta.utils.mtwl.popup"
                label="Convert to Multi TWL"
                style="push"
@@ -437,9 +437,9 @@ under the License.
             locationURI="popup:org.apache.uima.ruta.utils.popup.submenu">
          <command
                commandId="org.apache.uima.ruta.utils.update"
-               disabledIcon="icons/tm_obj.png"
-               hoverIcon="icons/tm_obj.png"
-               icon="icons/tm_obj.png"
+               disabledIcon="icons/ruta_obj.png"
+               hoverIcon="icons/ruta_obj.png"
+               icon="icons/ruta_obj.png"
                id="org.apache.uima.ruta.utils.update.popup"
                label="Update Project"
                style="push"
@@ -489,7 +489,7 @@ under the License.
                type="org.eclipse.core.resources.IResource">
             <test
                   property="org.eclipse.core.resources.extension"
-                  value="tm">
+                  value="ruta">
             </test>
          </adapt>
       </definition>
