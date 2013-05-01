@@ -19,11 +19,13 @@
 
 package org.apache.uima.ruta.utils.update;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.apache.uima.ruta.ide.core.RutaNature;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
@@ -43,9 +45,12 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.dltk.core.IScriptProject;
+import org.eclipse.dltk.internal.ui.util.SelectionUtil;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 public class UpdateProjectHandler implements IHandler {
@@ -54,15 +59,15 @@ public class UpdateProjectHandler implements IHandler {
     ExecutionEvent event;
 
     ConverterHandlerJob(ExecutionEvent event) {
-      super("Converting...");
+      super("Updating...");
       this.event = event;
       setUser(true);
     }
 
     @Override
     public IStatus run(IProgressMonitor monitor) {
-      List<IScriptProject> projects = new ArrayList<IScriptProject>();
-      ISelection currentSelection = HandlerUtil.getCurrentSelection(event);
+      List<IProject> projects = new ArrayList<IProject>();
+      final ISelection currentSelection = HandlerUtil.getCurrentSelection(event);
       if (currentSelection instanceof IStructuredSelection) {
         StructuredSelection selection = (StructuredSelection) currentSelection;
         Iterator<?> iter = selection.iterator();
@@ -70,36 +75,46 @@ public class UpdateProjectHandler implements IHandler {
           Object object = iter.next();
           if (object instanceof IScriptProject) {
             IScriptProject p = (IScriptProject) object;
-            projects.add(p);
+            projects.add(p.getProject());
+          } else if (object instanceof IProject) {
+            projects.add((IProject) object);
           }
         }
       }
-      monitor.beginTask("Updating descriptor files...", projects.size());
-      for (IScriptProject each : projects) {
-        IProject project = each.getProject();
-
+      monitor.beginTask("Updating UIMA Ruta project...", projects.size());
+      for (IProject each : projects) {
         // update old projects
-//        try {
-//          IProjectNature oldNature = project.getNature(RutaNature.NATURE_ID);
-//          if (oldNature != null) {
-//            IProjectDescription description = project.getDescription();
-//            String[] natureIds = description.getNatureIds();
-//            int counter = 0;
-//            for (String id : Arrays.asList(natureIds)) {
-//              if (id.equals(RutaNature.NATURE_ID)) {
-//                natureIds[counter] = RutaNature.NATURE_ID;
-//              }
-//              counter++;
-//            }
-//          }
-//        } catch (CoreException e) {
-//          RutaAddonsPlugin.error(e);
-//        }
+        try {
+          IProjectDescription description = each.getDescription();
+          String[] natureIds = description.getNatureIds();
+          int counter = 0;
+          boolean oldProject = false;
+          for (String id : Arrays.asList(natureIds)) {
+            if (id.equals("org.apache.uima.textmarker.ide.nature")) {
+              natureIds[counter] = RutaNature.NATURE_ID;
+              oldProject = true;
+            }
+            counter++;
+          }
+          if (oldProject) {
+            description.setNatureIds(natureIds);
+            each.setDescription(description, monitor);
+            List<File> files = getFiles(new File(each.getLocation().toPortableString()));
+            for (File file : files) {
+              String absolutePath = file.getAbsolutePath();
+              File newFile = new File(absolutePath.substring(0, absolutePath.length() - 3)
+                      + ".ruta");
+              file.renameTo(newFile);
+            }
+          }
+        } catch (CoreException e) {
+          RutaAddonsPlugin.error(e);
+        }
 
         try {
-          IProjectNature nature = project.getNature(RutaNature.NATURE_ID);
+          IProjectNature nature = each.getNature(RutaNature.NATURE_ID);
           if (nature != null) {
-            List<IFolder> descriptorFolders = RutaProjectUtils.getDescriptorFolders(project);
+            List<IFolder> descriptorFolders = RutaProjectUtils.getDescriptorFolders(each);
             if (descriptorFolders != null && !descriptorFolders.isEmpty()) {
               IFolder descFolder = descriptorFolders.get(0);
               RutaProjectCreationWizard.copyDescriptors(descFolder);
@@ -113,7 +128,6 @@ public class UpdateProjectHandler implements IHandler {
       }
       monitor.done();
       return Status.OK_STATUS;
-
     }
   }
 
@@ -138,6 +152,22 @@ public class UpdateProjectHandler implements IHandler {
 
   public void removeHandlerListener(IHandlerListener handlerListener) {
 
+  }
+
+  private static List<File> getFiles(File dir) {
+    List<File> result = new ArrayList<File>();
+    for (File each : dir.listFiles()) {
+      if (each.isHidden()) {
+        continue;
+      }
+      if (each.getName().endsWith(".tm")) {
+        result.add(each);
+      }
+      if (each.isDirectory()) {
+        result.addAll(getFiles(each));
+      }
+    }
+    return result;
   }
 
 }

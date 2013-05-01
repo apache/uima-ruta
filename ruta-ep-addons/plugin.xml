@@ -502,7 +502,11 @@ under the License.
                <or>
                   <instanceof
                         value="org.eclipse.dltk.core.IScriptProject ">
-                  </instanceof></or>
+                  </instanceof>
+                  <instanceof
+                        value="org.eclipse.core.resources.IProject ">
+                  </instanceof>
+               </or>
             </iterate>
          </with>
       </definition>
