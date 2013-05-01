@@ -73,7 +73,7 @@ public class RuleElementIsolator implements RuleElementContainer {
     return container.getRule();
   }
 
-  public RuleElement getNextElement(boolean after, RuleElement textMarkerRuleElement) {
+  public RuleElement getNextElement(boolean after, RuleElement ruleElement) {
     return null;
   }
 

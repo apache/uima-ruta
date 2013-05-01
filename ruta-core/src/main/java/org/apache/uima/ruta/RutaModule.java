@@ -84,8 +84,8 @@ public class RutaModule extends RutaElement {
 
   public void setScriptDependencies(Map<String, RutaModule> additionalScripts) {
     for (String eachTarget : scripts.keySet()) {
-      RutaModule textMarkerModule = additionalScripts.get(eachTarget);
-      addScript(eachTarget, textMarkerModule);
+      RutaModule module = additionalScripts.get(eachTarget);
+      addScript(eachTarget, module);
     }
   }
 

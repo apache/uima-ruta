@@ -18,10 +18,10 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<schema targetNamespace="org.apache.uima.textmarker.textruler" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="org.apache.uima.ruta.textruler" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.apache.uima.textmarker.textruler" id="learners" name="Ruta ML"/>
+         <meta.schema plugin="org.apache.uima.ruta.textruler" id="learners" name="Ruta ML"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]
@@ -87,7 +87,7 @@ under the License.
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":org.apache.uima.textmarker.textruler.extension.TextRulerLearnerFactory"/>
+                  <meta.attribute kind="java" basedOn=":org.apache.uima.ruta.textruler.extension.TextRulerLearnerFactory"/>
                </appInfo>
             </annotation>
          </attribute>

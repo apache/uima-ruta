@@ -18,10 +18,10 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<schema targetNamespace="org.apache.uima.textmarker.ide">
+<schema targetNamespace="org.apache.uima.ruta.ide">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.apache.uima.textmarker.ide" id="tmExtension" name="tmExtension"/>
+         <meta.schema plugin="org.apache.uima.ruta.ide" id="tmExtension" name="tmExtension"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]
@@ -75,7 +75,7 @@ under the License.
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":org.apache.uima.textmarker.ide.core.extensions.IRutaLanguageExtension"/>
+                  <meta.attribute kind="java" basedOn=":org.apache.uima.ruta.ide.core.extensions.IRutaLanguageExtension"/>
                </appInfo>
             </annotation>
          </attribute>

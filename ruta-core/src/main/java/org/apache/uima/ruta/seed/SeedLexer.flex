@@ -18,29 +18,29 @@
  */
 
 
-package org.apache.uima.textmarker.seed;
+package org.apache.uima.ruta.seed;
 import java.util.*;
 import java.util.regex.*;
 
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.JCas;
 
-import org.apache.uima.textmarker.type.AMP;
-import org.apache.uima.textmarker.type.BREAK;
-import org.apache.uima.textmarker.type.CAP;
-import org.apache.uima.textmarker.type.COLON;
-import org.apache.uima.textmarker.type.COMMA;
-import org.apache.uima.textmarker.type.CW;
-import org.apache.uima.textmarker.type.EXCLAMATION;
-import org.apache.uima.textmarker.type.MARKUP;
-import org.apache.uima.textmarker.type.NBSP;
-import org.apache.uima.textmarker.type.NUM;
-import org.apache.uima.textmarker.type.PERIOD;
-import org.apache.uima.textmarker.type.QUESTION;
-import org.apache.uima.textmarker.type.SEMICOLON;
-import org.apache.uima.textmarker.type.SPACE;
-import org.apache.uima.textmarker.type.SPECIAL;
-import org.apache.uima.textmarker.type.SW;
+import org.apache.uima.ruta.type.AMP;
+import org.apache.uima.ruta.type.BREAK;
+import org.apache.uima.ruta.type.CAP;
+import org.apache.uima.ruta.type.COLON;
+import org.apache.uima.ruta.type.COMMA;
+import org.apache.uima.ruta.type.CW;
+import org.apache.uima.ruta.type.EXCLAMATION;
+import org.apache.uima.ruta.type.MARKUP;
+import org.apache.uima.ruta.type.NBSP;
+import org.apache.uima.ruta.type.NUM;
+import org.apache.uima.ruta.type.PERIOD;
+import org.apache.uima.ruta.type.QUESTION;
+import org.apache.uima.ruta.type.SEMICOLON;
+import org.apache.uima.ruta.type.SPACE;
+import org.apache.uima.ruta.type.SPECIAL;
+import org.apache.uima.ruta.type.SW;
 
 %%
 

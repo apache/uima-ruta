@@ -50,8 +50,8 @@ public class ReplaceAction extends AbstractRutaAction {
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
       List<RutaBasic> annotationsInWindow = stream.getBasicsInWindow(matchedAnnotation);
       boolean replaced = false;
-      for (RutaBasic textMarkerBasic : annotationsInWindow) {
-        textMarkerBasic.setReplacement(replaced ? "" : replacement.getStringValue(element
+      for (RutaBasic basic : annotationsInWindow) {
+        basic.setReplacement(replaced ? "" : replacement.getStringValue(element
                 .getParent()));
         replaced = true;
       }

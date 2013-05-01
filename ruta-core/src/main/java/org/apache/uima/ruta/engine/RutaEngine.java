@@ -330,8 +330,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     RutaBlock block = script.getBlock(null);
     block.setParent(mainRootBlock);
     Collection<RutaModule> innerScripts = script.getScripts().values();
-    for (RutaModule textMarkerModule : innerScripts) {
-      relinkEnvironments(textMarkerModule, mainRootBlock);
+    for (RutaModule module : innerScripts) {
+      relinkEnvironments(module, mainRootBlock);
     }
   }
 

@@ -420,7 +420,7 @@ public class RutaEditor extends ScriptEditor {
 
   @Override
   protected void initializeKeyBindingScopes() {
-    setKeyBindingScopes(new String[] { "org.apache.uima.ruta.ide.ui.textMarkerEditorScope" }); //$NON-NLS-1$
+    setKeyBindingScopes(new String[] { "org.apache.uima.ruta.ide.ui.rutaEditorScope" }); //$NON-NLS-1$
   }
 
   @Override

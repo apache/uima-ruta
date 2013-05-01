@@ -145,18 +145,18 @@ public class ScriptFactory extends AbstractFactory {
    * 
    * @param id
    * @param type
-   * @param textMarkerBlock
+   * @param rutaBlock
    * @return
    */
-  public RutaBlock createScriptBlock(Token id, Token type, RutaBlock textMarkerBlock) {
+  public RutaBlock createScriptBlock(Token id, Token type, RutaBlock rutaBlock) {
     int[] bounds = getBounds(type, id);
     int[] nameBounds = getBounds(id);
-    if (textMarkerBlock == null) {
+    if (rutaBlock == null) {
       RutaBlock block = new RutaBlock(id.getText(), "error", nameBounds[0],
               nameBounds[1], bounds[0], bounds[1]);
       return block;
     } else {
-      RutaBlock block = new RutaBlock(id.getText(), textMarkerBlock.getNamespace(),
+      RutaBlock block = new RutaBlock(id.getText(), rutaBlock.getNamespace(),
               nameBounds[0], nameBounds[1], bounds[0], bounds[1]);
       return block;
     }
