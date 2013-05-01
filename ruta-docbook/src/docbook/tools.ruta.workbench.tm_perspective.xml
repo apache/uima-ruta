@@ -16,7 +16,7 @@
   OF ANY KIND, either express or implied. See the License for the specific 
   language governing permissions and limitations under the License. -->
 
-<section id="section.ugr.tools.tm.workbench.tm_perspective">
+<section id="section.ugr.tools.ruta.workbench.ruta_perspective">
   <title>Ruta Perspective</title>
   <para>
     The Ruta perspective is the main view to manage Ruta
@@ -32,13 +32,13 @@
     switch to the Ruta Explain perspective within your Eclipse
     workbench.
     Import the Ruta example project and open the main
-    Ruta script file 'Main.tm'. Now press the 'Run' button (green
+    Ruta script file 'Main.ruta'. Now press the 'Run' button (green
     arrow) and wait for the end of execution. Open the resulting xmiCAS
     file 'Test1.txt.xmi', which you can find in the output folder.
   </para>
 
   <section
-    id="section.ugr.tools.tm.workbench.tm_perspective.annotation_browser">
+    id="section.ugr.tools.ruta.workbench.ruta_perspective.annotation_browser">
     <title>Annotation Browser</title>
     <para>
       The Annotation Browser can be used to view the annotations
@@ -48,11 +48,11 @@
     </para>
     <para>
       The result of the execution of the Ruta example project is
-      shown in <xref linkend='figure.ugr.tools.tm.workbench.tm_perspective.annotation_browser' />.
+      shown in <xref linkend='figure.ugr.tools.ruta.workbench.ruta_perspective.annotation_browser' />.
     </para>
     <para>
       <figure
-        id="figure.ugr.tools.tm.workbench.tm_perspective.annotation_browser">
+        id="figure.ugr.tools.ruta.workbench.ruta_perspective.annotation_browser">
         <title> Annotation Browser view
         </title>
         <mediaobject>
@@ -83,7 +83,7 @@
     </para>
   </section>
 
-  <section id="section.ugr.tools.tm.workbench.tm_perspective.selection">
+  <section id="section.ugr.tools.ruta.workbench.ruta_perspective.selection">
     <title>Selection</title>
     <para>
       The Selection view is very similar to the Annotation Browser
@@ -94,10 +94,10 @@
     <para>
       If you select the text passage
       <literal>2008</literal>, the Selection view will be generated as shown in
-      <xref linkend='figure.ugr.tools.tm.workbench.tm_perspective.annotation_browser' />.
+      <xref linkend='figure.ugr.tools.ruta.workbench.ruta_perspective.annotation_browser' />.
     </para>
     <para>
-      <figure id="figure.ugr.tools.tm.workbench.tm_perspective.selection">
+      <figure id="figure.ugr.tools.ruta.workbench.ruta_perspective.selection">
         <title> Selection view
         </title>
         <mediaobject>

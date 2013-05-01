@@ -16,23 +16,23 @@
   OF ANY KIND, either express or implied. See the License for the specific 
   language governing permissions and limitations under the License. -->
 
-<section id="ugr.tools.tm.language.seeding">
+<section id="ugr.tools.ruta.language.seeding">
   <title>Basic annotations and tokens</title>
   <para>
     The Ruta system uses a JFlex lexer to initially create a
-    seed of basic token annotations. These tokens build a hierarchy shown in <xref linkend='figure.ugr.tools.tm.language.seeding.basic_token' />. The
+    seed of basic token annotations. These tokens build a hierarchy shown in <xref linkend='figure.ugr.tools.ruta.language.seeding.basic_token' />. The
     <quote>ALL</quote> (green) annotation is the root of the hierarchy. ALL and the red
     marked annotation types are abstract. This means that they are actually not
     created by the lexer. An overview of these abstract types can
-    be found in <xref linkend='table.ugr.tools.tm.language.seeding.basic_token.abstract' />. The leafs of the hierarchy (blue) are created by the lexer. Each
+    be found in <xref linkend='table.ugr.tools.ruta.language.seeding.basic_token.abstract' />. The leafs of the hierarchy (blue) are created by the lexer. Each
     leaf is an own type, but also inherits the types of the abstract
     annotation types further up in the hierarchy. The leaf types are
-    described in more detail in <xref linkend='table.ugr.tools.tm.language.seeding.basic_token.created' />.
+    described in more detail in <xref linkend='table.ugr.tools.ruta.language.seeding.basic_token.created' />.
     Each text unit within an input document belongs to exactly one of these
     annotation types.
   </para>
   <para>
-    <figure id="figure.ugr.tools.tm.language.seeding.basic_token">
+    <figure id="figure.ugr.tools.ruta.language.seeding.basic_token">
       <title>Basic token hierarchy
       </title>
       <mediaobject>
@@ -53,7 +53,7 @@
     </figure>
   </para>
   <para>
-    <table id="table.ugr.tools.tm.language.seeding.basic_token.abstract"
+    <table id="table.ugr.tools.ruta.language.seeding.basic_token.abstract"
       frame="all">
       <title>Abstract annotations</title>
       <tgroup cols="3" colsep="1" rowsep="1">
@@ -105,7 +105,7 @@
     </table>
   </para>
   <para>
-    <table id="table.ugr.tools.tm.language.seeding.basic_token.created"
+    <table id="table.ugr.tools.ruta.language.seeding.basic_token.created"
       frame="all">
       <title>Annotations created by lexer</title>
       <tgroup cols="4" colsep="1" rowsep="1">

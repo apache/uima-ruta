@@ -24,7 +24,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<section id="section.ugr.tools.tm.workbench.tm_query">
+<section id="section.ugr.tools.ruta.workbench.ruta_query">
   <title>Query View</title>
   <para> With the Query View, the Ruta language can be used to write queries on a set of
     documents. A query is simply a set of Ruta rules. Each query returns a list of all text
@@ -33,7 +33,7 @@ under the License.
     names associated with these annotations.
   </para>
   <para>
-    <figure id="figure.ugr.tools.tm.workbench.tm_query.query_view">
+    <figure id="figure.ugr.tools.ruta.workbench.ruta_query.query_view">
       <title>The Query View.
         <emphasis role="bold">(1)</emphasis>
         Start Button;

@@ -23,7 +23,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<section id="section.ugr.tools.tm.workbench.install">
+<section id="section.ugr.tools.ruta.workbench.install">
   <title>Installation</title>
   <para>
 
@@ -42,7 +42,7 @@ under the License.
           </ulink>) to the available
           software sites in your Eclipse installation.
           Click on <quote>Help &rarr; Install New Software</quote>. This opens the install wizard, which can be
-          seen in <xref linkend='figure.ugr.tools.tm.workbench.install.update' />
+          seen in <xref linkend='figure.ugr.tools.ruta.workbench.install.update' />
         </para>
       </listitem>
       <listitem>
@@ -83,7 +83,7 @@ under the License.
     </orderedlist>
   </para>
   <para>
-    <figure id="figure.ugr.tools.tm.workbench.install.update">
+    <figure id="figure.ugr.tools.ruta.workbench.install.update">
       <title> Eclipse update site
       </title>
       <mediaobject>
@@ -108,7 +108,7 @@ under the License.
     After the successful
     installation, switch to the Ruta
     perspective. To get an overview, see
-    <xref linkend='section.ugr.tools.tm.workbench.overview' />.
+    <xref linkend='section.ugr.tools.ruta.workbench.overview' />.
   </para>
   <note>
     <para>

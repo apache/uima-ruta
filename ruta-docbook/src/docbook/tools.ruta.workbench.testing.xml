@@ -24,7 +24,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<section id="section.ugr.tools.tm.workbench.testing">
+<section id="section.ugr.tools.ruta.workbench.testing">
   <title>Testing</title>
   <para> The Ruta workbench comes bundled with its own testing environment that allows you to
     test and evaluate Ruta scripts. It provides full back-end testing capabilities and allows
@@ -42,7 +42,7 @@ under the License.
     view is by default associated with the Ruta perspective.
   </para>
   <para>
-    <xref linkend='figure.ugr.tools.tm.workbench.testing.script_explorer' />
+    <xref linkend='figure.ugr.tools.ruta.workbench.testing.script_explorer' />
     shows the script explorer. Every Ruta project contains a folder called
     <quote>test</quote>. This folder is the default location for the test-files. In the folder each script file has its
     own subfolder with a relative path equal to the scripts package path in the
@@ -53,7 +53,7 @@ under the License.
     Eclipse is closed.
   </para>
   <para>
-    <figure id="figure.ugr.tools.tm.workbench.testing.script_explorer">
+    <figure id="figure.ugr.tools.ruta.workbench.testing.script_explorer">
       <title>Test folder structure. </title>
       <mediaobject>
         <imageobject role="html">
@@ -70,7 +70,7 @@ under the License.
       </mediaobject>
     </figure>
   </para>
-  <section id="section.ugr.tools.tm.workbench.testing.usage">
+  <section id="section.ugr.tools.ruta.workbench.testing.usage">
     <title>Usage</title>
     <para> This section describes the general proceeding when using the testing environment. </para>
     <para>
@@ -84,13 +84,13 @@ under the License.
       is used again. Open this project. 
       Firstly, one has to select a script for testing: Ruta will always test the script, that
       is currently open and active in the script editor. So, open the
-      <quote>Main.tm</quote>
+      <quote>Main.ruta</quote>
       script file of the Ruta example project.
-      The next <link linkend='figure.ugr.tools.tm.workbench.testing.annotation_test_initial_view'>figure</link>.
+      The next <link linkend='figure.ugr.tools.ruta.workbench.testing.annotation_test_initial_view'>figure</link>.
       shows the Annotation Test view after doing this.
     </para>
     <para>
-      <figure id="figure.ugr.tools.tm.workbench.testing.annotation_test_initial_view">
+      <figure id="figure.ugr.tools.ruta.workbench.testing.annotation_test_initial_view">
         <title>
           The Annotation Test view.
           <emphasis role="bold">(1)</emphasis>
@@ -171,10 +171,10 @@ under the License.
       filtered version of the Ruta preference page. The default evaluator is the "Exact CAS
       Evaluator", which compares the offsets of the annotations between the test file and the file
       annotated by the tested script. To get an overview of all available evaluators, see
-      <xref linkend='section.ugr.tools.tm.workbench.testing.evaluators' />
+      <xref linkend='section.ugr.tools.ruta.workbench.testing.evaluators' />
     </para>
     <para>
-      This preference page (see <xref linkend='figure.ugr.tools.tm.workbench.testing.preference' />) 
+      This preference page (see <xref linkend='figure.ugr.tools.ruta.workbench.testing.preference' />) 
       offers a few options that will modify the plug-ins general behavior. For example, the
       preloading of previously collected result data can be turned off. An important option in the
       preference page is the evaluator you can select. On default the "exact evaluator" is selected,
@@ -183,7 +183,7 @@ under the License.
       annotations in a different way.
     </para>
     <para>
-      <figure id="figure.ugr.tools.tm.workbench.testing.preference">
+      <figure id="figure.ugr.tools.ruta.workbench.testing.preference">
         <title>The testing preference page view   </title>
         <mediaobject>
           <imageobject role="html">
@@ -202,11 +202,11 @@ under the License.
       During a test-run it might be convenient to disable testing for specific
       types like punctuation or tags. The
       <quote>Select excluded types</quote>
-      button (white exclamation in a red disk) will open a dialog (see <xref linkend='figure.ugr.tools.tm.workbench.testing.excluded_types' />) 
+      button (white exclamation in a red disk) will open a dialog (see <xref linkend='figure.ugr.tools.ruta.workbench.testing.excluded_types' />) 
       where all types can be selected that should not be considered in the test.
     </para>
     <para>
-      <figure id="figure.ugr.tools.tm.workbench.testing.excluded_types">
+      <figure id="figure.ugr.tools.ruta.workbench.testing.excluded_types">
         <title>Excluded types window   </title>
         <mediaobject>
           <imageobject role="html">
@@ -226,11 +226,11 @@ under the License.
     <para>
       A test-run can be started by clicking on the start button. Do this for the
       Ruta example project.
-      <xref linkend='figure.ugr.tools.tm.workbench.testing.annotation_test_test_run' />
+      <xref linkend='figure.ugr.tools.ruta.workbench.testing.annotation_test_test_run' />
       shows the results.
     </para>
     <para>
-      <figure id="figure.ugr.tools.tm.workbench.testing.annotation_test_test_run">
+      <figure id="figure.ugr.tools.ruta.workbench.testing.annotation_test_test_run">
         <title>The Annotation Test view.   </title>
         <mediaobject>
           <imageobject role="html">
@@ -272,7 +272,7 @@ under the License.
       annotations in those views will highlight the annotation in the CAS Editor. Opening
       <quote>test1.result.xmi</quote>
       in the Ruta example project changes the True Positive view as shown in
-      <xref linkend='figure.ugr.tools.tm.workbench.testing.true_positive' />.
+      <xref linkend='figure.ugr.tools.ruta.workbench.testing.true_positive' />.
       Notice that the type system, which will be used by the CAS Editor to open the evaluated file, 
       can only be resolved for the tested script, if the test files are located in the associated
       folder structure that is the folder with the name of the script. If the files are located 
@@ -281,7 +281,7 @@ under the License.
       for example, this will be the type system of the last launched script in this project. 
     </para>
     <para>
-      <figure id="figure.ugr.tools.tm.workbench.testing.true_positive">
+      <figure id="figure.ugr.tools.ruta.workbench.testing.true_positive">
         <title>The True Positive view.   </title>
         <mediaobject>
           <imageobject role="html">
@@ -299,7 +299,7 @@ under the License.
       </figure>
     </para>
   </section>
-  <section id="section.ugr.tools.tm.workbench.testing.evaluators">
+  <section id="section.ugr.tools.ruta.workbench.testing.evaluators">
     <title>Evaluators</title>
     <para> When testing a CAS file, the system compared the offsets of the annotations of a
       previously annotated gold standard file with the offsets of the annotations of the result file

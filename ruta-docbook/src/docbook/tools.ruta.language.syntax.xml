@@ -16,7 +16,7 @@
   OF ANY KIND, either express or implied. See the License for the specific 
   language governing permissions and limitations under the License. -->
 
-<section id="ugr.tools.tm.language.syntax">
+<section id="ugr.tools.ruta.language.syntax">
   <title>Syntax</title>
   <para>
     Ruta defines its own language for writing rules and rule
@@ -112,11 +112,11 @@ Actions                -> "->" Action ( "," Action)*
 ]]></programlisting>
     Since each condition and each action has its own syntax, conditions
     and actions are described in their own section. For conditions see
-    <xref linkend='ugr.tools.tm.language.conditions' />
+    <xref linkend='ugr.tools.ruta.language.conditions' />
     , for actions see
-    <xref linkend='ugr.tools.tm.language.actions' />.
+    <xref linkend='ugr.tools.ruta.language.actions' />.
     The syntax of expressions is explained in
-    <xref linkend='ugr.tools.tm.language.expressions' />.
+    <xref linkend='ugr.tools.ruta.language.expressions' />.
   </para>
   <para>
     Identifier:

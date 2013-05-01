@@ -23,12 +23,12 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<chapter id="ugr.tools.tm.overview">
+<chapter id="ugr.tools.ruta.overview">
   <title>Apache UIMA Ruta Overview</title>
   <para>
    
   </para>
-  <section id="ugr.tools.tm.overview.intro">
+  <section id="ugr.tools.ruta.overview.intro">
     <title>What is Apache UIMA Ruta?</title>
     <para>
       Apache UIMA&#8482; Ruta is a rule-based script language supported by Eclipse-based tooling.
@@ -41,7 +41,7 @@ under the License.
     </para>
   </section>
   
-  <section id="ugr.tools.tm.overview.gettingstarted">
+  <section id="ugr.tools.ruta.overview.gettingstarted">
     <title>Getting started</title>
     <para>
       This section gives a short roadmap how to read the documentation and gives some recommendations how to 
@@ -52,11 +52,11 @@ under the License.
     </para>
     <para>  
       Unexperienced users that want to learn about Ruta can start with the next two sections: 
-      <xref linkend="ugr.tools.tm.overview.coreconcepts"/>
+      <xref linkend="ugr.tools.ruta.overview.coreconcepts"/>
       gives a short overview of the core ideas and features of the Ruta language and Workbench. 
       This section introduces the main concepts of the Ruta language. It explains how Ruta rules 
       are composed and applied, and discusses the advantages of the Ruta system.
-      The following <xref linkend="ugr.tools.tm.overview.examples"/> approaches the Ruta language using a different
+      The following <xref linkend="ugr.tools.ruta.overview.examples"/> approaches the Ruta language using a different
       perspective. Here, the language is introduced by examples. The first example starts with explaining how a simple rule
       looks like, and each following example extends the syntax or semantics of the Ruta language. 
       After the consultation of these two sections, the reader is expected to have gained enough 
@@ -65,21 +65,21 @@ under the License.
     <para>
       The Ruta Workbench was created to support the user and to facilitate the development process. It is strongly recommended to 
       use this Eclipse-based IDE since it, for example, automatically configures the component descriptors and provides editing support like
-      syntax checking. <xref linkend="section.ugr.tools.tm.workbench.install"/> describes how the Ruta Workbench is installed.
+      syntax checking. <xref linkend="section.ugr.tools.ruta.workbench.install"/> describes how the Ruta Workbench is installed.
       Ruta rules can also be applied on CAS without using the Ruta Workbench. 
-      <xref linkend="ugr.tools.tm.ae.basic.apply"/> contains examples how to execute Ruta rules in plain java.
+      <xref linkend="ugr.tools.ruta.ae.basic.apply"/> contains examples how to execute Ruta rules in plain java.
       A good way to get started with Ruta is to play around with an exemplary Ruta project, e.g., 
       <uri>https://svn.apache.org/repos/asf/uima/sandbox/ruta/trunk/example-projects/ExampleProject</uri>. This Ruta project 
       contains some simple rules for processing citation metadata.
     </para>  
     <para>    
-      <xref linkend="ugr.tools.tm.language.language"/> and <xref linkend="ugr.tools.tm.workbench"/> provide 
+      <xref linkend="ugr.tools.ruta.language.language"/> and <xref linkend="ugr.tools.ruta.workbench"/> provide 
       more detailed descriptions and can be referred to in order to gain knowledge of specific parts 
       of the Ruta language or the Ruta Workbench.    
     </para>  
   </section>
   
-  <section id="ugr.tools.tm.overview.coreconcepts">
+  <section id="ugr.tools.ruta.overview.coreconcepts">
     <title>Core Concepts</title>
     <para>
       The Ruta language is an imperative rule language extended with scripting elements. A Ruta rule defines a
@@ -91,15 +91,15 @@ under the License.
       The list of conditions specifies additional constraints that the matched text or annotations need to fulfill. The list of actions defines
       the consequences of the rule and often creates new annotations or modifies existing annotations. 
       They are only applied if all rule elements of the rule have successfully matched. Examples for Ruta rules can be found in 
-      <xref linkend="ugr.tools.tm.overview.examples"/>.
+      <xref linkend="ugr.tools.ruta.overview.examples"/>.
     </para>
     <para>
       When Ruta rules are applied on a document, respectively on a CAS, then they are always grouped in a script file. However, a Ruta
       script file does not only contain rules, but also other statements. First of all, each script file starts with a package declaration followed by
       a list of optional imports. Then, common statements like rules, type declarations or blocks build the body and functionality of a script.
-      <xref linkend="ugr.tools.tm.ae.basic.apply"/> gives an example, how Ruta scripts can be applied in plain Java.
+      <xref linkend="ugr.tools.ruta.ae.basic.apply"/> gives an example, how Ruta scripts can be applied in plain Java.
       Ruta script files are naturally organized in Ruta projects, which is a concept of the Ruta Workbench. 
-      The structure of a Ruta project is described in <xref linkend="section.ugr.tools.tm.workbench.projects"/>
+      The structure of a Ruta project is described in <xref linkend="section.ugr.tools.ruta.workbench.projects"/>
     </para>
     <para>
       The inference of Ruta rules, that is the approach how the rules are applied, can be described as imperative depth-first matching.
@@ -108,7 +108,7 @@ under the License.
       an easier explanation. The second main property of the Ruta inference is the depth-first matching. When a rule matches on a pattern of annotations, then
       an alternative is always tracked until it has matched or failed before the next alternative is considered. The behavior of a rule may change, if 
       it has already matched on an early alternative and thus has performed an action, which influences some constraints of the rule.
-      Examples, how Ruta rules are applied, are given in <xref linkend="ugr.tools.tm.overview.examples"/>.
+      Examples, how Ruta rules are applied, are given in <xref linkend="ugr.tools.ruta.overview.examples"/>.
     </para>
     <para>
       The Ruta language provides the possibility to approach an annotation problem in different ways. Let us distinguish 
@@ -123,10 +123,10 @@ under the License.
       offsets of annotations. This enables, amongst other things, a transformation-based approach. The user starts by creating general rules that are able to
       annotate most of the text fragments of interest. Then, instead of making these rules more complex by adding more conditions for situations where they fail,
       additional rules are defined that correct the mistakes of the general rules, e.g., by deleting false positive annotations.
-      <xref linkend="ugr.tools.tm.overview.examples"/> provides some examples how Ruta rules can be engineered.
+      <xref linkend="ugr.tools.ruta.overview.examples"/> provides some examples how Ruta rules can be engineered.
     </para>
     <para>
-      To write rules manually is a tedious and error-prone process. The <link linkend="ugr.tools.tm.workbench">Ruta Workbench</link>
+      To write rules manually is a tedious and error-prone process. The <link linkend="ugr.tools.ruta.workbench">Ruta Workbench</link>
       was developed to facilitate writing rules by providing as much tooling support as possible. This includes, for example, syntax checking and auto completion, which
       make the development less error-prone. The user can annotate documents and use these documents as unit tests for test-driven development or 
       quality maintenance. Sometimes, it is necessary to debug the rules because they do not match as expected. In this case, the explanation perspective provides views
@@ -142,13 +142,13 @@ under the License.
     </para>
   </section>
   
-  <section id="ugr.tools.tm.overview.examples">
+  <section id="ugr.tools.ruta.overview.examples">
     <title>Learning by Example</title>
     <para>
       This section gives an introduction to the Ruta language by explaining the rule syntax 
       and inference with some simplified examples. It is recommended to use the Ruta Workbench to write Ruta rules
       in order to gain advantages like syntax checking. A short description how to install the Ruta Workbench 
-      is given <link linkend="section.ugr.tools.tm.workbench.install">here</link>. The following examples make use of the 
+      is given <link linkend="section.ugr.tools.ruta.workbench.install">here</link>. The following examples make use of the 
       annotations added by the default seeding of the Ruta Analysis Engine. Their meaning is explained along with the examples. 
     </para>
     <note><para>
@@ -388,9 +388,9 @@ NUM{PARSE(moneyAmount)} SPECIAL{REGEXP("€") -> MATCHEDTEXT(moneyCurrency),
 Document{-> CALL(SecondaryScript)};]]></programlisting>
 
     <para>
-      The script file with the name <quote>SecondaryScript.tm</quote>, which is located in the package <quote>uima/ruta/example</quote>, is imported and executed
+      The script file with the name <quote>SecondaryScript.ruta</quote>, which is located in the package <quote>uima/ruta/example</quote>, is imported and executed
       by the CALL action on the complete document. The script needs to be located in the folder specified by the parameter 
-      <link linkend="ugr.tools.tm.ae.basic.parameter.scriptPaths">scriptPaths</link>. It is also possible to import script files of other Ruta projects, e.g.,
+      <link linkend="ugr.tools.ruta.ae.basic.parameter.scriptPaths">scriptPaths</link>. It is also possible to import script files of other Ruta projects, e.g.,
       by adapting the configuration parameters of the Ruta Analysis Engine or 
       by setting a project reference in the project properties of a Ruta project.
     </para>
@@ -406,7 +406,7 @@ Person{PARTOF(Organization) -> UNMARK(Person)};
     <para>
       The type system descriptor file with the name <quote>NamedEntityTypeSystem.xml</quote> located in the package <quote>my/package</quote> is imported.
       The descriptor needs to be located in a folder specified by the parameter 
-      <link linkend="ugr.tools.tm.ae.basic.parameter.descriptorPaths">descriptorPaths</link>.
+      <link linkend="ugr.tools.ruta.ae.basic.parameter.descriptorPaths">descriptorPaths</link>.
     </para>
 
 
@@ -415,7 +415,7 @@ Person{PARTOF(Organization) -> UNMARK(Person)};
       only with matching rules. The Ruta language provides the BLOCK element for some of these use cases. 
       The Ruta BLOCK element starts with the keyword <quote>BLOCK</quote> followed by its name in parentheses. The name of a block has two purposes:
       On the one hand, it is easier to distinguish the block, if they have different names, e.g., in the 
-      <link linkend="section.ugr.tools.tm.workbench.explain_perspective">explain perspective</link> of the Ruta Workbench. On the other hand,
+      <link linkend="section.ugr.tools.ruta.workbench.explain_perspective">explain perspective</link> of the Ruta Workbench. On the other hand,
       the name can be used to execute this block using the CALL action. Hereby, it is possible to access only specific sets of rules of other script files, 
       or to implement a recursive call of rules. After the name of the block, a single rule element is given, which has curly parentheses, 
       even if no conditions or actions are specified. Then, the body of the block is framed by curly brackets.
@@ -508,23 +508,23 @@ Document{-> EXEC(Modifier)};
 
   <para>
     In this example, we first import an Analysis Engine defined by the descriptor <quote>Modifier.xml</quote> located in the folder <quote>utils</quote>. 
-    The descriptor needs to be located in the folder specified by the parameter <link linkend="ugr.tools.tm.ae.basic.parameter.descriptorPaths">descriptorPaths</link>.
+    The descriptor needs to be located in the folder specified by the parameter <link linkend="ugr.tools.ruta.ae.basic.parameter.descriptorPaths">descriptorPaths</link>.
     The first rule deletes all text covered by annotations of the type <quote>Date</quote>. The second rule replaces the text of all annotations of the type <quote>MoneyAmount</quote> 
     with the string <quote><![CDATA[<MoneyAmount/>]]></quote>. The third rule remembers to set the background color of text in Headline annotation to green. The last rule
     finally performs all of these changes in an additonal view called <quote>modified</quote>, which is specified in the configuration parameters of the analysis engine.
-    <xref linkend="ugr.tools.tm.ae.modifier"/> and <xref linkend="ugr.tools.tm.language.modification"/> provide a more detailed description.
+    <xref linkend="ugr.tools.ruta.ae.modifier"/> and <xref linkend="ugr.tools.ruta.language.modification"/> provide a more detailed description.
   </para>
 
   </section>
   
-  <section id="ugr.tools.tm.ae">
+  <section id="ugr.tools.ruta.ae">
     <title>UIMA Analysis Engines</title>
     <para>This section gives an overview of the UIMA Analysis Engines shipped with Ruta. The most 
       important one is <quote>RutaEngine</quote>, a generic analysis engine, which is able to interpret 
       and execute script files. The other analysis engines provide support for some additional functionality or
       add certain types of annotations.
     </para>
-    <section id="ugr.tools.tm.ae.basic">
+    <section id="ugr.tools.ruta.ae.basic">
       <title>Ruta Engine</title>
       <para>
          This generic Analysis Engine is the most important one for the Ruta language since it is
@@ -534,7 +534,7 @@ Document{-> EXEC(Modifier)};
          are generated in the descriptor folder corresponding to the package namespace of the script file.
          The available configuration parameters of the Ruta Analysis Engine are described in the following.   
       </para>
-      <section id="ugr.tools.tm.ae.basic.apply">
+      <section id="ugr.tools.ruta.ae.basic.apply">
       <title>Apply Ruta Analysis Engine in plain Java</title>
         <para>
           Let us assume that the reader wrote the Ruta rules using the Ruta Workbench, which already creates correctly configured descriptors.
@@ -581,7 +581,7 @@ aed.resolveImports(resMgr);
         
 AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed, 
     resMgr, null);
-File scriptFile = new File("path/to/file/MyScript.tm");
+File scriptFile = new File("path/to/file/MyScript.ruta");
 ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, 
     new String[] { scriptFile.getParentFile().getAbsolutePath() });
 String name = scriptFile.getName().substring(0, 
@@ -597,26 +597,26 @@ ae.process(cas);]]></programlisting>
       </para>
       <programlisting><![CDATA[Ruta.apply(cas, "T1 SW{-> MARK(T2)};");]]></programlisting>
       </section>
-      <section id="ugr.tools.tm.ae.basic.parameter">
+      <section id="ugr.tools.ruta.ae.basic.parameter">
         <title>Configuration Parameters</title>
         <para>
           The configuration parameters of the Ruta Analysis Engine can be subdivided into three
-          different groups: parameters for the setup of the environment (<link linkend='ugr.tools.tm.ae.basic.parameter.mainScript'>mainScript</link>
-          to <link linkend='ugr.tools.tm.ae.basic.parameter.additionalExtensions'>additionalExtensions</link>), 
-          parameters that change the behavior of the analysis engine (<link linkend='ugr.tools.tm.ae.basic.parameter.reloadScript'>reloadScript</link>
-          to <link linkend='ugr.tools.tm.ae.basic.parameter.simpleGreedyForComposed'>simpleGreedyForComposed</link>) 
+          different groups: parameters for the setup of the environment (<link linkend='ugr.tools.ruta.ae.basic.parameter.mainScript'>mainScript</link>
+          to <link linkend='ugr.tools.ruta.ae.basic.parameter.additionalExtensions'>additionalExtensions</link>), 
+          parameters that change the behavior of the analysis engine (<link linkend='ugr.tools.ruta.ae.basic.parameter.reloadScript'>reloadScript</link>
+          to <link linkend='ugr.tools.ruta.ae.basic.parameter.simpleGreedyForComposed'>simpleGreedyForComposed</link>) 
           and parameters for creating additional information how the rules were executed 
-          (<link linkend='ugr.tools.tm.ae.basic.parameter.debug'>debug</link>
-          to <link linkend='ugr.tools.tm.ae.basic.parameter.createdBy'>createdBy</link>). First, a short overview of the configuration parameters is given in
-          <xref linkend='table.ugr.tools.tm.ae.parameter' />. Afterwards, all parameters are described in detail with examples.
+          (<link linkend='ugr.tools.ruta.ae.basic.parameter.debug'>debug</link>
+          to <link linkend='ugr.tools.ruta.ae.basic.parameter.createdBy'>createdBy</link>). First, a short overview of the configuration parameters is given in
+          <xref linkend='table.ugr.tools.ruta.ae.parameter' />. Afterwards, all parameters are described in detail with examples.
         </para>
         <para>
-          To change the value of any configuration parameter within a Ruta script, the CONFIGURE action (see <xref linkend='ugr.tools.tm.language.actions.configure' />)
-          can be used. For changing behaviour of <link linkend='ugr.tools.tm.ae.basic.parameter.dynamicAnchoring'>dynamicAnchoring</link> the DYNAMICANCHORING action 
-          (see <xref linkend='ugr.tools.tm.language.actions.dynamicanchoring' />) is recommended.
+          To change the value of any configuration parameter within a Ruta script, the CONFIGURE action (see <xref linkend='ugr.tools.ruta.language.actions.configure' />)
+          can be used. For changing behaviour of <link linkend='ugr.tools.ruta.ae.basic.parameter.dynamicAnchoring'>dynamicAnchoring</link> the DYNAMICANCHORING action 
+          (see <xref linkend='ugr.tools.ruta.language.actions.dynamicanchoring' />) is recommended.
         </para>
         <para>
-          <table id="table.ugr.tools.tm.ae.parameter" frame="all">
+          <table id="table.ugr.tools.ruta.ae.parameter" frame="all">
             <title>Configuration parameters of the Ruta Analysis Engine   </title>
             <tgroup cols="3" colsep="1" rowsep="1">
               <colspec colname="c1" colwidth="1.2*" />
@@ -632,7 +632,7 @@ ae.process(cas);]]></programlisting>
               <tbody>
                 <row>
                   <entry>
-                    <link linkend='ugr.tools.tm.ae.basic.parameter.mainScript'>mainScript</link>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.mainScript'>mainScript</link>
                   </entry>
                   <entry>Name with complete namespace of the script which will be interpreted and
                     executed by the analysis engine.
@@ -641,14 +641,14 @@ ae.process(cas);]]></programlisting>
                 </row>
                 <row>
                   <entry>
-                    <link linkend='ugr.tools.tm.ae.basic.parameter.scriptEncoding'>scriptEncoding</link>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.scriptEncoding'>scriptEncoding</link>
                   </entry>
                   <entry>Encoding of all Ruta script files.</entry>
                   <entry>Single String</entry>
                 </row>
                 <row>
                   <entry>
-                    <link linkend='ugr.tools.tm.ae.basic.parameter.scriptPaths'>scriptPaths</link>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.scriptPaths'>scriptPaths</link>
                   </entry>
                   <entry>List of absolute locations, which contain the necessary script files like
                     the main script.
@@ -657,7 +657,7 @@ ae.process(cas);]]></programlisting>
                 </row>
                 <row>
                   <entry>
-                    <link linkend='ugr.tools.tm.ae.basic.parameter.descriptorPaths'>descriptorPaths</link>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.descriptorPaths'>descriptorPaths</link>
                   </entry>
                   <entry>List of absolute locations, which contain the necessary descriptor files
                     like type systems.
@@ -666,7 +666,7 @@ ae.process(cas);]]></programlisting>
                 </row>
                 <row>
                   <entry>
-                    <link linkend='ugr.tools.tm.ae.basic.parameter.resourcePaths'>resourcePaths</link>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.resourcePaths'>resourcePaths</link>
                   </entry>
                   <entry>List of absolute locations, which contain the necessary resource files like
                     word lists.
@@ -675,7 +675,7 @@ ae.process(cas);]]></programlisting>
                 </row>
                 <row>
                   <entry>
-                    <link linkend='ugr.tools.tm.ae.basic.parameter.additionalScripts'>additionalScripts</link>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.additionalScripts'>additionalScripts</link>
                   </entry>
                   <entry>List of names with complete namespace of additional scripts, which can be
                     referred to.
@@ -684,7 +684,7 @@ ae.process(cas);]]></programlisting>
                 </row>
                 <row>
                   <entry>
-                    <link linkend='ugr.tools.tm.ae.basic.parameter.additionalEngines'>additionalEngines</link>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.additionalEngines'>additionalEngines</link>
                   </entry>
                   <entry>List of names with complete namespace of additional analysis engines, which
                     can be called by Ruta rules.
@@ -693,7 +693,7 @@ ae.process(cas);]]></programlisting>
                 </row>
                 <row>
                   <entry>
-                    <link linkend='ugr.tools.tm.ae.basic.parameter.additionalEngineLoaders'>additionalEngineLoaders</link>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.additionalEngineLoaders'>additionalEngineLoaders</link>
                   </entry>
                   <entry>List of class names of implementations that are able to perform additional
                     task when loading external analysis engines.
@@ -702,7 +702,7 @@ ae.process(cas);]]></programlisting>
                 </row>
                 <row>
                   <entry>
-                    <link linkend='ugr.tools.tm.ae.basic.parameter.additionalExtensions'>additionalExtensions</link>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.additionalExtensions'>additionalExtensions</link>
                   </entry>
                   <entry>List of factory classes for additional extensions of the Ruta language
                     like proprietary conditions.
@@ -711,7 +711,7 @@ ae.process(cas);]]></programlisting>
                 </row>
                 <row>
                   <entry>
-                    <link linkend='ugr.tools.tm.ae.basic.parameter.reloadScript'>reloadScript</link>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.reloadScript'>reloadScript</link>
                   </entry>
                   <entry>Option to initialize the rule script each time the analysis engine processes
                     a CAS.
@@ -720,7 +720,7 @@ ae.process(cas);]]></programlisting>
                 </row>
                 <row>
                   <entry>
-                    <link linkend='ugr.tools.tm.ae.basic.parameter.seeders'>seeders</link>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.seeders'>seeders</link>
                   </entry>
                   <entry>List of class names that provide additional annotations before the rules are
                     executed.
@@ -729,7 +729,7 @@ ae.process(cas);]]></programlisting>
                 </row>
                 <row>
                   <entry>
-                    <link linkend='ugr.tools.tm.ae.basic.parameter.defaultFilteredTypes'>defaultFilteredTypes</link>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.defaultFilteredTypes'>defaultFilteredTypes</link>
                   </entry>
                   <entry>List of complete type names of annotations that are invisible by default.
                   </entry>
@@ -737,7 +737,7 @@ ae.process(cas);]]></programlisting>
                 </row>
                 <row>
                   <entry>
-                    <link linkend='ugr.tools.tm.ae.basic.parameter.removeBasics'>removeBasics</link>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.removeBasics'>removeBasics</link>
                   </entry>
                   <entry>Option to remove all inference annotations after execution of the rule script.
                   </entry>
@@ -745,42 +745,42 @@ ae.process(cas);]]></programlisting>
                 </row>
                 <row>
                   <entry>
-                    <link linkend='ugr.tools.tm.ae.basic.parameter.dynamicAnchoring'>dynamicAnchoring</link>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.dynamicAnchoring'>dynamicAnchoring</link>
                   </entry>
                   <entry>Option to allow rule matches to start at any rule element.</entry>
                   <entry>Single Boolean</entry>
                 </row>
                 <row>
                   <entry>
-                    <link linkend='ugr.tools.tm.ae.basic.parameter.lowMemoryProfile'>lowMemoryProfile</link>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.lowMemoryProfile'>lowMemoryProfile</link>
                   </entry>
                   <entry>Option to decrease the memory consumption when processing a large CAS.</entry>
                   <entry>Single Boolean</entry>
                 </row>
                 <row>
                   <entry>
-                    <link linkend='ugr.tools.tm.ae.basic.parameter.simpleGreedyForComposed'>simpleGreedyForComposed</link>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.simpleGreedyForComposed'>simpleGreedyForComposed</link>
                   </entry>
                   <entry>Option to activate a different inferencer for composed rule elements.</entry>
                   <entry>Single Boolean</entry>
                 </row>
                 <row>
                   <entry>
-                    <link linkend='ugr.tools.tm.ae.basic.parameter.debug'>debug</link>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.debug'>debug</link>
                   </entry>
                   <entry>Option to add debug information to the CAS.</entry>
                   <entry>Single Boolean</entry>
                 </row>
                 <row>
                   <entry>
-                    <link linkend='ugr.tools.tm.ae.basic.parameter.debugWithMatches'>debugWithMatches</link>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.debugWithMatches'>debugWithMatches</link>
                   </entry>
                   <entry>Option to add information about the rule matches to the CAS.</entry>
                   <entry>Single Boolean</entry>
                 </row>
                 <row>
                   <entry>
-                    <link linkend='ugr.tools.tm.ae.basic.parameter.debugOnlyFor'>debugOnlyFor</link>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.debugOnlyFor'>debugOnlyFor</link>
                   </entry>
                   <entry>List of rule ids. If provided, then debug information is only created for
                     those rules.
@@ -789,21 +789,21 @@ ae.process(cas);]]></programlisting>
                 </row>
                 <row>
                   <entry>
-                    <link linkend='ugr.tools.tm.ae.basic.parameter.profile'>profile</link>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.profile'>profile</link>
                   </entry>
                   <entry>Option to add profile information to the CAS.</entry>
                   <entry>Single Boolean</entry>
                 </row>
                 <row>
                   <entry>
-                    <link linkend='ugr.tools.tm.ae.basic.parameter.statistics'>statistics</link>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.statistics'>statistics</link>
                   </entry>
                   <entry>Option to add statistics of conditions and actions to the CAS.</entry>
                   <entry>Single Boolean</entry>
                 </row>
                 <row>
                   <entry>
-                    <link linkend='ugr.tools.tm.ae.basic.parameter.createdBy'>createdBy</link>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.createdBy'>createdBy</link>
                   </entry>
                   <entry>Option to add additional information, which rule created a annotation.
                   </entry>
@@ -813,72 +813,72 @@ ae.process(cas);]]></programlisting>
             </tgroup>
           </table>
         </para>
-        <section id="ugr.tools.tm.ae.basic.parameter.mainScript">
+        <section id="ugr.tools.ruta.ae.basic.parameter.mainScript">
           <title>mainScript</title>
           <para>
             This parameter specifies the rule file that will be executed by the analysis engine and is,
             therefore, one of the most important ones. The exact name of the script is given by the complete namespace of the file, which corresponds to its location
-            relative to the given parameter <link linkend='ugr.tools.tm.ae.basic.parameter.scriptPaths'>scriptPaths</link>.
+            relative to the given parameter <link linkend='ugr.tools.ruta.ae.basic.parameter.scriptPaths'>scriptPaths</link>.
             The single names of packages (or folders) are separated by periods. An exemplary value for this parameter could be "org.apache.uima.Main", 
             whereas "Main" specifies the file containing the rules and "org.apache.uima" its package.
-            In this case, the analysis engine loads the script file "Main.tm", which is located in the folder structure "org/apache/uima/".
+            In this case, the analysis engine loads the script file "Main.ruta", which is located in the folder structure "org/apache/uima/".
             This parameter has no default value and has to be provided, although it is not specified as mandatory.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.basic.parameter.scriptEncoding">
+        <section id="ugr.tools.ruta.ae.basic.parameter.scriptEncoding">
           <title>scriptEncoding</title>
           <para>
             This parameter specifies the encoding of the rule files. Its default value is "UTF-8".
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.basic.parameter.scriptPaths">
+        <section id="ugr.tools.ruta.ae.basic.parameter.scriptPaths">
           <title>scriptPaths</title>
           <para>
             The parameter scriptPaths refers to a list of String values, which specify the possible locations of script files. 
             The given locations are absolute paths. A typical value for this parameter is, for example, "C:/Ruta/MyProject/script/".
-            If the parameter <link linkend='ugr.tools.tm.ae.basic.parameter.mainScript'>mainScript</link> is set to org.apache.uima.Main, 
-            then the absolute path of the script file has to be "C:/Ruta/MyProject/script/org/apache/uima/Main.tm". 
+            If the parameter <link linkend='ugr.tools.ruta.ae.basic.parameter.mainScript'>mainScript</link> is set to org.apache.uima.Main, 
+            then the absolute path of the script file has to be "C:/Ruta/MyProject/script/org/apache/uima/Main.ruta". 
             This parameter can contain multiple values, as the main script can refer to multiple projects similar to a class path in Java.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.basic.parameter.descriptorPaths">
+        <section id="ugr.tools.ruta.ae.basic.parameter.descriptorPaths">
           <title>descriptorPaths</title>
           <para>
             This parameter specifies the possible locations for descriptors like analysis engines or type systems, similar to the parameter
-            <link linkend='ugr.tools.tm.ae.basic.parameter.scriptPaths'>scriptPaths</link> for the script files. A typical value for this parameter 
+            <link linkend='ugr.tools.ruta.ae.basic.parameter.scriptPaths'>scriptPaths</link> for the script files. A typical value for this parameter 
             is for example "C:/Ruta/MyProject/descriptor/".
-            The relative values of the parameter <link linkend='ugr.tools.tm.ae.basic.parameter.additionalEngines'>additionalEngines</link> are
+            The relative values of the parameter <link linkend='ugr.tools.ruta.ae.basic.parameter.additionalEngines'>additionalEngines</link> are
             resolved to these absolute locations.
             This parameter can contain multiple values, as the main script can refer to multiple projects similar to a class path in Java.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.basic.parameter.resourcePaths">
+        <section id="ugr.tools.ruta.ae.basic.parameter.resourcePaths">
           <title>resourcePaths</title>
           <para>
             This parameter specifies the possible locations of additional resources like word lists or CSV tables. The string values have to contain absolute
             locations, for example, "C:/Ruta/MyProject/resources/".
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.basic.parameter.additionalScripts">
+        <section id="ugr.tools.ruta.ae.basic.parameter.additionalScripts">
           <title>additionalScripts</title>
           <para>
             The parameter additionalScripts is defined as a list of string values and contains script files, which are additionally loaded by the analysis engine. These script files are specified by their 
-            complete namespace, exactly like the value of the parameter <link linkend='ugr.tools.tm.ae.basic.parameter.mainScript'>mainScript</link> 
+            complete namespace, exactly like the value of the parameter <link linkend='ugr.tools.ruta.ae.basic.parameter.mainScript'>mainScript</link> 
             and can be refered to by language elements, e.g., by executing the containing rules. An exemplary value of this parameter is "org.apache.uima.SecondaryScript". In this example, the main script could import 
             this script file by the declaration "SCRIPT org.apache.uima.SecondaryScript;" and then could execute it with the rule 
             "Document{-> CALL(SecondaryScript)};". 
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.basic.parameter.additionalEngines">
+        <section id="ugr.tools.ruta.ae.basic.parameter.additionalEngines">
           <title>additionalEngines</title>
           <para>
             This parameter contains a list of additional analysis engines, which can be executed by the Ruta rules. The single values
             are given by the name of the analysis engine with their complete namespace and have to be located relative to one value of the parameter
-            <link linkend='ugr.tools.tm.ae.basic.parameter.descriptorPaths'>descriptorPaths</link>, the location where the analysis engine searches for the descriptor file.
+            <link linkend='ugr.tools.ruta.ae.basic.parameter.descriptorPaths'>descriptorPaths</link>, the location where the analysis engine searches for the descriptor file.
             An example for one value of the parameter is "utils.HtmlAnnotator", which points to the descriptor "HtmlAnnotator.xml" in the folder "utils".
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.basic.parameter.additionalEngineLoaders">
+        <section id="ugr.tools.ruta.ae.basic.parameter.additionalEngineLoaders">
           <title>additionalEngineLoaders</title>
           <para>
             The parameter "additionalEngineLoaders" specifies a list of optional implementations of the interface 
@@ -886,7 +886,7 @@ ae.process(cas);]]></programlisting>
             additional analysis engines.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.basic.parameter.additionalExtensions">
+        <section id="ugr.tools.ruta.ae.basic.parameter.additionalExtensions">
           <title>additionalExtensions</title>
           <para>
             This parameter specifies optional extensions of the Ruta language. The elements of the string list have to implement the interface 
@@ -894,7 +894,7 @@ ae.process(cas);]]></programlisting>
             added to the set of provided ones.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.basic.parameter.reloadScript">
+        <section id="ugr.tools.ruta.ae.basic.parameter.reloadScript">
           <title>reloadScript</title>
           <para>
             This boolean parameter indicates whether the script or resource files should be reloaded when processing a CAS. The default value is set to false. 
@@ -902,7 +902,7 @@ ae.process(cas);]]></programlisting>
             yet when a collection of documents are processed, then the parameter is needed to be set to true in order to include the changes.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.basic.parameter.seeders">
+        <section id="ugr.tools.ruta.ae.basic.parameter.seeders">
           <title>seeders</title>
           <para>
             This list of string values refers to implementations of the interface "org.apache.uima.ruta.seed.RutaAnnotationSeeder", 
@@ -911,23 +911,23 @@ ae.process(cas);]]></programlisting>
             an additional engine that is executed by a Ruta rule.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.basic.parameter.defaultFilteredTypes">
+        <section id="ugr.tools.ruta.ae.basic.parameter.defaultFilteredTypes">
           <title>defaultFilteredTypes</title>
           <para>
             This parameter specifies a list of types, which are filtered by default when executing a script file. Using the default values of this parameter,
             whitespaces, line breaks and markup elements are not visible to Ruta rules. The visibility of annotations and, therefore, the covered text can be changed
-            using the actions <link linkend='ugr.tools.tm.language.actions.filtertype'>FILTERTYPE</link> and 
-            <link linkend='ugr.tools.tm.language.actions.retaintype'>RETAINTYPE</link>.
+            using the actions <link linkend='ugr.tools.ruta.language.actions.filtertype'>FILTERTYPE</link> and 
+            <link linkend='ugr.tools.ruta.language.actions.retaintype'>RETAINTYPE</link>.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.basic.parameter.removeBasics">
+        <section id="ugr.tools.ruta.ae.basic.parameter.removeBasics">
           <title>removeBasics</title>
           <para>
             This parameter specifies whether the inference annotations created by the analysis engine should be removed after processing the CAS.
             The default value is set to false.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.basic.parameter.dynamicAnchoring">
+        <section id="ugr.tools.ruta.ae.basic.parameter.dynamicAnchoring">
           <title>dynamicAnchoring</title>
           <para>
             If this parameter is set to true, then the Ruta rules are not forced to start to match with the first rule element. 
@@ -936,14 +936,14 @@ ae.process(cas);]]></programlisting>
             The default value is set to false.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.basic.parameter.lowMemoryProfile">
+        <section id="ugr.tools.ruta.ae.basic.parameter.lowMemoryProfile">
           <title>lowMemoryProfile</title>
           <para>
             This parameter specifies whether the memory consumption should be reduced. This parameter should be set to true for 
             very large CAS documents (e.g., > 500k tokens), but it also reduces the performance. The default value is set to false.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.basic.parameter.simpleGreedyForComposed">
+        <section id="ugr.tools.ruta.ae.basic.parameter.simpleGreedyForComposed">
           <title>simpleGreedyForComposed</title>
           <para>
             This parameter specifies whether a different inference strategy for composed rule elements should be applied. This option is only necessary 
@@ -951,7 +951,7 @@ ae.process(cas);]]></programlisting>
             The default value of this parameter is set to false.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.basic.parameter.debug">
+        <section id="ugr.tools.ruta.ae.basic.parameter.debug">
           <title>debug</title>
           <para>
             If this parameter is set to true, then additional information about the execution of a rule script is added to the CAS.
@@ -959,28 +959,28 @@ ae.process(cas);]]></programlisting>
             The default value of this parameter is set to false.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.basic.parameter.debugWithMatches">
+        <section id="ugr.tools.ruta.ae.basic.parameter.debugWithMatches">
           <title>debugWithMatches</title>
           <para>
             This parameter specificies whether the match information (covered text) of the rules should be stored in the CAS.
             The default value of this parameter is set to false.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.basic.parameter.debugOnlyFor">
+        <section id="ugr.tools.ruta.ae.basic.parameter.debugOnlyFor">
           <title>debugOnlyFor</title>
           <para>
             This parameter specifies a list of rule-ids that enumerate the rule for which debug information should be created. 
             No specific ids are given by default.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.basic.parameter.profile">
+        <section id="ugr.tools.ruta.ae.basic.parameter.profile">
           <title>profile</title>
           <para>
             If this parameter is set to true, then additional information about the runtime of applied rules is added to the CAS.
             The default value of this parameter is set to false.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.basic.parameter.statistics">
+        <section id="ugr.tools.ruta.ae.basic.parameter.statistics">
           <title>statistics</title>
           <para>
             If this parameter is set to true, then additional information about the runtime of Ruta language elements like conditions and actions
@@ -988,7 +988,7 @@ ae.process(cas);]]></programlisting>
             The default value of this parameter is set to false.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.basic.parameter.createdBy">
+        <section id="ugr.tools.ruta.ae.basic.parameter.createdBy">
           <title>createdBy</title>
           <para>
             If this parameter is set to true, then additional information about what annotation was created by which rule is added to the CAS.
@@ -997,7 +997,7 @@ ae.process(cas);]]></programlisting>
         </section>
       </section>
     </section>
-    <section id="ugr.tools.tm.ae.annotationwriter">
+    <section id="ugr.tools.ruta.ae.annotationwriter">
       <title>Annotation Writer</title>
       <para>
         This Analysis Engine can be utilized to write the covered text of annotations in a text file, whereas each covered text is put into a new line.
@@ -1005,11 +1005,11 @@ ae.process(cas);]]></programlisting>
         in a text file, one person in each line.
         A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a Ruta project.
       </para>
-      <section id="ugr.tools.tm.ae.annotationwriter.parameter">
+      <section id="ugr.tools.ruta.ae.annotationwriter.parameter">
         <title>Configuration Parameters</title>
         <para>
         </para>
-        <section id="ugr.tools.tm.ae.annotationwriter.parameter.output">
+        <section id="ugr.tools.ruta.ae.annotationwriter.parameter.output">
           <title>Output</title>
           <para>
             This string parameter specifies the absolute path of the resulting file named <quote>output.txt</quote>. However, if an annotation of the 
@@ -1018,13 +1018,13 @@ ae.process(cas);]]></programlisting>
             the SourceDocumentInformation annotation when the user launches a script file. The default value of this parameter is <quote>/../output/</quote>.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.annotationwriter.parameter.encoding">
+        <section id="ugr.tools.ruta.ae.annotationwriter.parameter.encoding">
           <title>Encoding</title>
           <para>
            This string parameter specifies the encoding of the resulting file. The default value of this parameter is <quote>UTF-8</quote>.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.annotationwriter.parameter.type">
+        <section id="ugr.tools.ruta.ae.annotationwriter.parameter.type">
           <title>Type</title>
           <para>
             Only the covered texts of annotations of the type specified with this parameter are stored in the resulting file.
@@ -1033,14 +1033,14 @@ ae.process(cas);]]></programlisting>
         </section>
       </section>
     </section>
-    <section id="ugr.tools.tm.ae.plaintext">
+    <section id="ugr.tools.ruta.ae.plaintext">
       <title>Plain Text Annotator</title>
       <para>
         This Analysis Engines adds annotations for lines and paragraphs.
         A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a Ruta project. There are no configuration parameters.
       </para>
     </section>
-    <section id="ugr.tools.tm.ae.modifier">
+    <section id="ugr.tools.ruta.ae.modifier">
       <title>Modifier</title>
       <para>
         The Modifier Analysis Engine can be used to create an additional view, which contains all textual modifications and HTML highlightings that
@@ -1049,24 +1049,24 @@ ae.process(cas);]]></programlisting>
         Furthermore, the content of the new view can optionally be stored in a new HTML file.
         A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a Ruta project.
       </para>
-      <section id="ugr.tools.tm.ae.modifier.parameter">
+      <section id="ugr.tools.ruta.ae.modifier.parameter">
         <title>Configuration Parameters</title>
         <para>
         </para>
-        <section id="ugr.tools.tm.ae.modifier.parameter.styleMap">
+        <section id="ugr.tools.ruta.ae.modifier.parameter.styleMap">
           <title>styleMap</title>
           <para>
             This string parameter specifies the name of the style map file created by the Style Map Creator Analysis Engine, which stores the colors for
             additional highlightings in the modified view.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.modifier.parameter.descriptorPaths">
+        <section id="ugr.tools.ruta.ae.modifier.parameter.descriptorPaths">
           <title>descriptorPaths</title>
           <para>
             This parameter can contain multiple string values and specifies the absolute paths where the style map file can be found.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.modifier.parameter.outputLocation">
+        <section id="ugr.tools.ruta.ae.modifier.parameter.outputLocation">
           <title>outputLocation</title>
           <para>
             This optional string parameter specifies the absolute path of the resulting file named <quote>output.modified.html</quote>. However, if an annotation of the 
@@ -1076,7 +1076,7 @@ ae.process(cas);]]></programlisting>
             In this case no additional html file will be created.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.modifier.parameter.outputView">
+        <section id="ugr.tools.ruta.ae.modifier.parameter.outputView">
           <title>outputView</title>
           <para>
             This string parameter specifies the name of the view, which will contain the modified document. A view of this name must not yet exist.
@@ -1085,7 +1085,7 @@ ae.process(cas);]]></programlisting>
         </section>
       </section>
     </section>
-    <section id="ugr.tools.tm.ae.html">
+    <section id="ugr.tools.ruta.ae.html">
       <title>HTML Annotator</title>
       <para>
         This Analysis Engine provides support for HTML files by adding annotations for the HTML elements. Using the default values, the HTML Annotator creates annotations
@@ -1095,11 +1095,11 @@ ae.process(cas);]]></programlisting>
         in order to include the start and end elements in the created annotations. 
         A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a Ruta project.
       </para>
-      <section id="ugr.tools.tm.ae.html.parameter">
+      <section id="ugr.tools.ruta.ae.html.parameter">
         <title>Configuration Parameters</title>
         <para>
         </para>
-        <section id="ugr.tools.tm.ae.html.parameter.onlyContent">
+        <section id="ugr.tools.ruta.ae.html.parameter.onlyContent">
           <title>onlyContent</title>
           <para>
             This parameter specifies whether created annotations should cover only the content of the HTML elements or also their start and end elements. 
@@ -1108,7 +1108,7 @@ ae.process(cas);]]></programlisting>
         </section>
       </section>
     </section>
-    <section id="ugr.tools.tm.ae.htmlconverter">
+    <section id="ugr.tools.ruta.ae.htmlconverter">
       <title>HTML Converter</title>
       <para>
         This Analysis Engine is able to convert html content from a source view into a plain string representation stored in an output view. 
@@ -1124,38 +1124,38 @@ ae.process(cas);]]></programlisting>
         
         A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a Ruta project.
       </para>
-      <section id="ugr.tools.tm.ae.htmlconverter.parameter">
+      <section id="ugr.tools.ruta.ae.htmlconverter.parameter">
         <title>Configuration Parameters</title>
         <para>
         </para>
-        <section id="ugr.tools.tm.ae.htmlconverter.parameter.outputView">
+        <section id="ugr.tools.ruta.ae.htmlconverter.parameter.outputView">
           <title>outputView</title>
           <para>
             This string parameter specifies the name of the new view. 
             The default value is <quote>plaintext</quote>.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.htmlconverter.parameter.inputView">
+        <section id="ugr.tools.ruta.ae.htmlconverter.parameter.inputView">
           <title>inputView</title>
           <para>
             This string parameter can optionally be set to specify the name of the input view.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.htmlconverter.parameter.newlineInducingTags">
+        <section id="ugr.tools.ruta.ae.htmlconverter.parameter.newlineInducingTags">
           <title>newlineInducingTags</title>
           <para>
             This string array parameter sets the names of the html tags that create linebreaks in the output view.
             The default is <quote>br, p, div, ul, ol, dl, li, h1, ..., h6, blockquote</quote>.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.htmlconverter.parameter.replaceLinebreaks">
+        <section id="ugr.tools.ruta.ae.htmlconverter.parameter.replaceLinebreaks">
           <title>replaceLinebreaks</title>
           <para>
             This boolean parameter determines if linebreaks inside the text nodes are kept or removed.
             The default behaviour is <quote>true</quote>.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.htmlconverter.parameter.conversionPolicy">
+        <section id="ugr.tools.ruta.ae.htmlconverter.parameter.conversionPolicy">
           <title>conversionPolicy</title>
           <para>
             This string parameter determines the conversion policy used, either "heuristic", "explicit", or "none". 
@@ -1164,7 +1164,7 @@ ae.process(cas);]]></programlisting>
             The default behaviour is "heuristic".
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.htmlconverter.parameter.conversionPatterns">
+        <section id="ugr.tools.ruta.ae.htmlconverter.parameter.conversionPatterns">
           <title>conversionPatterns</title>
           <para>
             This string array parameter can be used to apply custom conversions.
@@ -1174,7 +1174,7 @@ ae.process(cas);]]></programlisting>
             Remember to enable explicit conversion via <quote>conversionPolicy</quote> first.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.htmlconverter.parameter.conversionReplacements">
+        <section id="ugr.tools.ruta.ae.htmlconverter.parameter.conversionReplacements">
           <title>conversionReplacements</title>
           <para>
             This string array parameter corresponds to <quote>conversionPatterns</quote> 
@@ -1185,26 +1185,26 @@ ae.process(cas);]]></programlisting>
           </para>
         </section>
       </section>
-    </section><section id="ugr.tools.tm.ae.stylemap">
+    </section><section id="ugr.tools.ruta.ae.stylemap">
       <title>Style Map Creator</title>
       <para>
         This Analysis Engine can be utilized to create style map information, which is needed by the Modifier Analysis Engine in order to create
         highlightings for some annotations.
-        Style map information can be created using the <link linkend='ugr.tools.tm.language.actions.color'>COLOR</link> action.
+        Style map information can be created using the <link linkend='ugr.tools.ruta.language.actions.color'>COLOR</link> action.
         A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a Ruta project.
       </para>
-      <section id="ugr.tools.tm.ae.stylemap.parameter">
+      <section id="ugr.tools.ruta.ae.stylemap.parameter">
         <title>Configuration Parameters</title>
         <para>
         </para>
-        <section id="ugr.tools.tm.ae.stylemap.parameter.styleMap">
+        <section id="ugr.tools.ruta.ae.stylemap.parameter.styleMap">
           <title>styleMap</title>
           <para>
             This string parameter specifies the name of the style map file created by the Style Map Creator Analysis Engine, which stores the colors for
             additional highlightings in the modified view.
           </para>
         </section>
-        <section id="ugr.tools.tm.ae.stylemap.parameter.descriptorPaths">
+        <section id="ugr.tools.ruta.ae.stylemap.parameter.descriptorPaths">
           <title>descriptorPaths</title>
           <para>
             This parameter can contain multiple string values and specifies the absolute paths where the style map can be found.
@@ -1212,18 +1212,18 @@ ae.process(cas);]]></programlisting>
         </section>
       </section>
     </section>
-    <section id="ugr.tools.tm.ae.xmi">
+    <section id="ugr.tools.ruta.ae.xmi">
       <title>XMI Writer</title>
       <para>
         This Analysis Engine is able to serialize the processed CAS to an XMI file. One use case for the XMI Writer is, for example, a rule-based sort,
         which stores the processed XMI files in different folder, dependent on the execution of the rules, e.g., whether a pattern of annotations occurs or not.
         A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a Ruta project.
       </para>
-      <section id="ugr.tools.tm.ae.xmi.parameter">
+      <section id="ugr.tools.ruta.ae.xmi.parameter">
         <title>Configuration Parameters</title>
         <para>
         </para>
-        <section id="ugr.tools.tm.ae.xmi.parameter.output">
+        <section id="ugr.tools.ruta.ae.xmi.parameter.output">
           <title>Output</title>
           <para>
             This string parameter specifies the absolute path of the resulting file named <quote>output.xmi</quote>. However, if an annotation of the 

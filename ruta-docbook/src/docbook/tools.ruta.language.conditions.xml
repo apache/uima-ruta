@@ -16,10 +16,10 @@
   OF ANY KIND, either express or implied. See the License for the specific 
   language governing permissions and limitations under the License. -->
 
-<section id="ugr.tools.tm.language.conditions">
+<section id="ugr.tools.ruta.language.conditions">
   <title>Conditions</title>
 
-  <section id="ugr.tools.tm.language.conditions.after">
+  <section id="ugr.tools.ruta.language.conditions.after">
     <title>AFTER</title>
     <para>
       The AFTER condition evaluates true, if the matched annotation
@@ -49,7 +49,7 @@
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.conditions.and">
+  <section id="ugr.tools.ruta.language.conditions.and">
     <title>AND</title>
     <para>
       The AND condition is a composed condition and evaluates true, if
@@ -79,7 +79,7 @@
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.conditions.before">
+  <section id="ugr.tools.ruta.language.conditions.before">
     <title>BEFORE</title>
     <para>
       The BEFORE condition evaluates true, if the matched annotation
@@ -109,7 +109,7 @@
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.conditions.contains">
+  <section id="ugr.tools.ruta.language.conditions.contains">
     <title>CONTAINS</title>
     <para>
       The CONTAINS condition evaluates true on a matched annotation,
@@ -159,14 +159,14 @@
         contains between 50% and 100% Keyword annotations. This is
         calculated based on the tokens of the Paragraph. If the Paragraph
         contains six basic annotations (see
-        <xref linkend='ugr.tools.tm.language.seeding' />), two of them are part of one Keyword annotation, and if one basic
+        <xref linkend='ugr.tools.ruta.language.seeding' />), two of them are part of one Keyword annotation, and if one basic
         annotation is also annotated with a Keyword annotation, then the
         percentage of the contained Keywords is 50%.
       </para>
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.conditions.contextcount">
+  <section id="ugr.tools.ruta.language.conditions.contextcount">
     <title>CONTEXTCOUNT</title>
     <para>
       The CONTEXTCOUNT condition numbers all occurrences of the
@@ -203,7 +203,7 @@
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.conditions.count">
+  <section id="ugr.tools.ruta.language.conditions.count">
     <title>COUNT</title>
     <para>
       The COUNT condition can be used in two different ways. In the
@@ -257,7 +257,7 @@
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.conditions.currentcount">
+  <section id="ugr.tools.ruta.language.conditions.currentcount">
     <title>CURRENTCOUNT</title>
     <para>
       The CURRENTCOUNT condition numbers all occurences of the matched
@@ -291,7 +291,7 @@
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.conditions.endswith">
+  <section id="ugr.tools.ruta.language.conditions.endswith">
     <title>ENDSWITH</title>
     <para>
       The ENDSWITH condition evaluates true, if an annotation of the
@@ -321,7 +321,7 @@
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.conditions.feature">
+  <section id="ugr.tools.ruta.language.conditions.feature">
     <title>FEATURE</title>
     <para>
       The FEATURE condition compares a feature of the matched
@@ -350,7 +350,7 @@
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.conditions.if">
+  <section id="ugr.tools.ruta.language.conditions.if">
     <title>IF</title>
     <para>
       The IF condition evaluates true, if the contained boolean
@@ -379,7 +379,7 @@
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.conditions.inlist">
+  <section id="ugr.tools.ruta.language.conditions.inlist">
     <title>INLIST</title>
     <para>
       The INLIST condition is fulfilled, if the matched annotation is listed
@@ -414,7 +414,7 @@
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.conditions.is">
+  <section id="ugr.tools.ruta.language.conditions.is">
     <title>IS</title>
     <para>
       The IS condition evaluates true, if there is an annotation of the
@@ -446,7 +446,7 @@
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.conditions.last">
+  <section id="ugr.tools.ruta.language.conditions.last">
     <title>LAST</title>
     <para>
       The LAST condition evaluates true, if the type of the last token
@@ -474,7 +474,7 @@
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.conditions.mofn">
+  <section id="ugr.tools.ruta.language.conditions.mofn">
     <title>MOFN</title>
     <para>
       The MOFN condition is a composed condition. It evaluates true if
@@ -505,7 +505,7 @@
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.conditions.near">
+  <section id="ugr.tools.ruta.language.conditions.near">
     <title>NEAR</title>
     <para>
       The NEAR condition is fulfilled, if the distance of the matched
@@ -539,7 +539,7 @@
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.conditions.not">
+  <section id="ugr.tools.ruta.language.conditions.not">
     <title>NOT</title>
     <para>
       The NOT condition negates the result of its contained
@@ -567,7 +567,7 @@
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.conditions.or">
+  <section id="ugr.tools.ruta.language.conditions.or">
     <title>OR</title>
     <para>
       The OR Condition is a composed condition and evaluates true, if
@@ -597,7 +597,7 @@
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.conditions.parse">
+  <section id="ugr.tools.ruta.language.conditions.parse">
     <title>PARSE</title>
     <para>
       The PARSE condition is fulfilled, if the text covered by the
@@ -627,7 +627,7 @@
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.conditions.partof">
+  <section id="ugr.tools.ruta.language.conditions.partof">
     <title>PARTOF</title>
     <para>
       The PARTOF condition is fulfilled, if the matched annotation is
@@ -660,7 +660,7 @@
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.conditions.partofneq">
+  <section id="ugr.tools.ruta.language.conditions.partofneq">
     <title>PARTOFNEQ</title>
     <para>
       The PARTOFNEQ condition is fulfilled if the matched annotation
@@ -691,7 +691,7 @@
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.conditions.position">
+  <section id="ugr.tools.ruta.language.conditions.position">
     <title>POSITION</title>
     <para>
       The POSITION condition is fulfilled, if the matched type is the
@@ -731,7 +731,7 @@
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.conditions.regexp">
+  <section id="ugr.tools.ruta.language.conditions.regexp">
     <title>REGEXP</title>
     <para>
       The REGEXP condition is fulfilled, if the given pattern matches on the
@@ -770,7 +770,7 @@
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.conditions.score">
+  <section id="ugr.tools.ruta.language.conditions.score">
     <title>SCORE</title>
     <para>
       The SCORE condition evaluates the heuristic score of the matched
@@ -803,7 +803,7 @@
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.conditions.size">
+  <section id="ugr.tools.ruta.language.conditions.size">
     <title>SIZE</title>
     <para>
       The SIZE contition counts the number of elements in the given
@@ -835,7 +835,7 @@
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.conditions.startswith">
+  <section id="ugr.tools.ruta.language.conditions.startswith">
     <title>STARTSWITH</title>
     <para>
       The STARTSWITH condition evaluates true, if an annotation of the
@@ -865,7 +865,7 @@
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.conditions.totalcount">
+  <section id="ugr.tools.ruta.language.conditions.totalcount">
     <title>TOTALCOUNT</title>
     <para>
       The TOTALCOUNT condition counts the annotations of the passed
@@ -899,7 +899,7 @@
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.conditions.vote">
+  <section id="ugr.tools.ruta.language.conditions.vote">
     <title>VOTE</title>
     <para>
       The VOTE condition counts the annotations of the given two types

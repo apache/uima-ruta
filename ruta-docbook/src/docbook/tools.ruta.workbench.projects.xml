@@ -17,20 +17,20 @@
   language governing permissions and limitations under the License. -->
 
 
-<section id="section.ugr.tools.tm.workbench.projects">
+<section id="section.ugr.tools.ruta.workbench.projects">
   <title>Ruta Projects</title>
   <para>
     Ruta projects used within the Ruta workbench need to have
     a certain folder structure. The parts of this folder structure are
     explained in
-    <xref linkend='table.ugr.tools.tm.workbench.create_project.folder_strucutre' />. To create a Ruta project it is recommended to use the provided
+    <xref linkend='table.ugr.tools.ruta.workbench.create_project.folder_strucutre' />. To create a Ruta project it is recommended to use the provided
     wizard, explained in
-    <xref linkend='section.ugr.tools.tm.workbench.projects.create_projects' />. If this wizard is used, the required folder structure is
+    <xref linkend='section.ugr.tools.ruta.workbench.projects.create_projects' />. If this wizard is used, the required folder structure is
     automatically created.
   </para>
 
   <para>
-    <table id="table.ugr.tools.tm.workbench.create_project.folder_strucutre"
+    <table id="table.ugr.tools.ruta.workbench.create_project.folder_strucutre"
       frame="all">
       <title>Project folder structure</title>
       <tgroup cols="2" colsep="1" rowsep="1">
@@ -92,10 +92,10 @@
     </table>
   </para>
   <para>
-    <xref linkend='figure.ugr.tools.tm.workbench.projects.test_project' />
+    <xref linkend='figure.ugr.tools.ruta.workbench.projects.test_project' />
     shows a project, newly created with the wizard.
 
-    <figure id="figure.ugr.tools.tm.workbench.projects.test_project">
+    <figure id="figure.ugr.tools.ruta.workbench.projects.test_project">
       <title>A newly created Ruta project</title>
       <mediaobject>
         <imageobject role="html">
@@ -115,7 +115,7 @@
     </figure>
   </para>
 
-  <section id="section.ugr.tools.tm.workbench.projects.create_projects">
+  <section id="section.ugr.tools.ruta.workbench.projects.create_projects">
     <title>Ruta create project wizard</title>
     <para>
       To create a new Ruta project, switch to Ruta perspective
@@ -124,10 +124,10 @@
 
     <para>
       <xref
-        linkend='figure.ugr.tools.tm.workbench.projects.create_projects.wizard1' />
+        linkend='figure.ugr.tools.ruta.workbench.projects.create_projects.wizard1' />
       shows the start page of the wizard.
       <figure
-        id="figure.ugr.tools.tm.workbench.projects.create_projects.wizard1">
+        id="figure.ugr.tools.ruta.workbench.projects.create_projects.wizard1">
         <title>Wizard start page</title>
         <mediaobject>
           <imageobject role="html">
@@ -169,10 +169,10 @@
      -->
     <para>
       <xref
-        linkend='figure.ugr.tools.tm.workbench.projects.create_projects.wizard2' />
+        linkend='figure.ugr.tools.ruta.workbench.projects.create_projects.wizard2' />
       shows the second page of the wizard.
       <figure
-        id="figure.ugr.tools.tm.workbench.projects.create_projects.wizard2">
+        id="figure.ugr.tools.ruta.workbench.projects.create_projects.wizard2">
         <title>Wizard second page</title>
         <mediaobject>
           <imageobject role="html">

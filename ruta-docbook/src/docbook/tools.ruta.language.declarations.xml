@@ -16,7 +16,7 @@
   OF ANY KIND, either express or implied. See the License for the specific 
   language governing permissions and limitations under the License. -->
 
-<section id="ugr.tools.tm.language.declarations">
+<section id="ugr.tools.ruta.language.declarations">
   <title>Declarations</title>
   <para>
     There are three different kinds of declarations in the Ruta system:
@@ -25,7 +25,7 @@
     external resources, further Ruta scripts and UIMA components
     such as type systems and analysis engines.
   </para>
-  <section id="ugr.tools.tm.language.declarations.type">
+  <section id="ugr.tools.ruta.language.declarations.type">
     <title>Types</title>
     <para>
       Type declarations define new kinds of annotation types and
@@ -49,7 +49,7 @@ DECLARE ParentType NewType (SomeType feature1, INT feature2);
         </para>
       </section>
   </section>
-  <section id="ugr.tools.tm.language.declarations.variable">
+  <section id="ugr.tools.ruta.language.declarations.variable">
     <title>Variables</title>
     <para>
       Variable declarations define new variables. There are 12 kinds of
@@ -150,7 +150,7 @@ BOOLEANLIST newBooleanList;]]></programlisting>
         </para>
       </section>
   </section>
-  <section id="ugr.tools.tm.language.declarations.ressource">
+  <section id="ugr.tools.ruta.language.declarations.ressource">
     <title>Resources</title>
     <para>
       There are two kinds of resource declarations that make external
@@ -183,7 +183,7 @@ WORDTABLE tableName = 'someTable.csv';]]></programlisting>
         </para>
       </section>
   </section>
-  <section id="ugr.tools.tm.language.declarations.scripts">
+  <section id="ugr.tools.ruta.language.declarations.scripts">
     <title>Scripts</title>
     <para>
       Additional scripts can be imported and reused with the CALL action.
@@ -196,13 +196,13 @@ WORDTABLE tableName = 'someTable.csv';]]></programlisting>
           <emphasis role="bold">Example:</emphasis>
         </title>
         <para>
-          <programlisting><![CDATA[SCRIPT my.package.AnotherScript; // "AnotherScript.tm" in the  
+          <programlisting><![CDATA[SCRIPT my.package.AnotherScript; // "AnotherScript.ruta" in the  
                      //package "my.package"
-Document{->CALL(AnotherScript)}; // <- rule executes "AnotherScript.tm"]]></programlisting>
+Document{->CALL(AnotherScript)}; // <- rule executes "AnotherScript.ruta"]]></programlisting>
         </para>
       </section>
   </section>
-  <section id="ugr.tools.tm.language.declarations.components">
+  <section id="ugr.tools.ruta.language.declarations.components">
     <title>Components</title>
     <para>
       There are two kinds of UIMA components that can be imported in a

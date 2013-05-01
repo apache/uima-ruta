@@ -16,7 +16,7 @@
   OF ANY KIND, either express or implied. See the License for the specific 
   language governing permissions and limitations under the License. -->
 
-<section id="ugr.tools.tm.language.expressions">
+<section id="ugr.tools.ruta.language.expressions">
   <title>Expressions</title>
   <para>
     Ruta provides five different kinds of expressions. These are
@@ -29,20 +29,20 @@
                            StringExpression | BooleanExpression
                            | ListExpression]]></programlisting>
   </para>
-  <section id="ugr.tools.tm.language.expressions.type">
+  <section id="ugr.tools.ruta.language.expressions.type">
     <title>Type Expressions</title>
     <para>
       Ruta provides two kinds of type expressions.
       <orderedlist numeration="arabic">
         <listitem>
           Declared annotation types (see
-          <xref linkend='ugr.tools.tm.language.declarations.type' />
+          <xref linkend='ugr.tools.ruta.language.declarations.type' />
           ).
         </listitem>
         <listitem>
           Type variables
           (see
-          <xref linkend='ugr.tools.tm.language.declarations.variable' />
+          <xref linkend='ugr.tools.ruta.language.declarations.variable' />
           ).
         </listitem>
       </orderedlist>
@@ -68,7 +68,7 @@ Document{->ASSIGN(typeVar, Author)};]]></programlisting>
     </para>
   </section>
 
-  <section id="ugr.tools.tm.language.expressions.number">
+  <section id="ugr.tools.ruta.language.expressions.number">
     <title>Number Expressions</title>
     <para>
       Ruta provides several possibilities to define number
@@ -105,7 +105,7 @@ Digit                 -> ('0'..'9') ]]></programlisting>
       </section>
       <para>
         For more information on number variables, see
-        <xref linkend='ugr.tools.tm.language.declarations.variable' />
+        <xref linkend='ugr.tools.ruta.language.declarations.variable' />
         .
       </para>
       <section>
@@ -127,7 +127,7 @@ Document{->ASSIGN(intVar1, 12 * intVar1 - SIN(intVar2))};]]></programlisting>
       </section>
   </section>
 
-  <section id="ugr.tools.tm.language.expressions.string">
+  <section id="ugr.tools.ruta.language.expressions.string">
     <title>String Expressions</title>
     <para>
       There are two kinds of string expressions in Ruta.
@@ -142,7 +142,7 @@ Document{->ASSIGN(intVar1, 12 * intVar1 - SIN(intVar2))};]]></programlisting>
         <listitem>
          <para>
           String variables (see
-          <xref linkend='ugr.tools.tm.language.declarations.variable' />
+          <xref linkend='ugr.tools.ruta.language.declarations.variable' />
           )
          </para>
         </listitem>
@@ -170,7 +170,7 @@ Document{->ASSIGN(strVar, "strLiteral" + strVar)};]]></programlisting>
       </section>
   </section>
 
-  <section id="ugr.tools.tm.language.expressions.boolean">
+  <section id="ugr.tools.ruta.language.expressions.boolean">
     <title>Boolean Expressions</title>
     <para>
       Ruta provides several possibilities to define boolean
@@ -199,7 +199,7 @@ BooleanLiteral    ->  "true" | "false"]]></programlisting>
         </para>
         <para>
           Boolean variables are defined in
-          <xref linkend='ugr.tools.tm.language.declarations.variable' />
+          <xref linkend='ugr.tools.ruta.language.declarations.variable' />
           .
         </para>
       </section>
@@ -264,7 +264,7 @@ BooleanLiteral    ->  "true" | "false"]]></programlisting>
   </section>
   
 
-<section id="ugr.tools.tm.language.expressions.lists">
+<section id="ugr.tools.ruta.language.expressions.lists">
     <title>List Expressions</title>
     <para>
       List expression are a rather simple kind of expression.
@@ -297,7 +297,7 @@ BooleanListExpression  ->  BooleanListVariable
         </para>
         <para>
           List variables are defined in
-          <xref linkend='ugr.tools.tm.language.declarations.variable' />.
+          <xref linkend='ugr.tools.ruta.language.declarations.variable' />.
         </para>
       </section>
   </section>

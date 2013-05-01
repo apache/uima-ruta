@@ -24,7 +24,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<chapter id="ugr.tools.tm.language.language">
+<chapter id="ugr.tools.ruta.language.language">
   <title>Apache UIMA Ruta Language</title>
   <para>
     This chapter provides a complete description of the Apache UIMA Ruta
@@ -48,7 +48,7 @@ under the License.
     href="tools.ruta.language.actions.xml" />
 
 
-  <section id="ugr.tools.tm.language.filtering">
+  <section id="ugr.tools.ruta.language.filtering">
     <title>Robust extraction using filtering</title>
     <para>
       Rule based or pattern based information extraction systems often
@@ -129,7 +129,7 @@ Dr.JoachimBaumeister
     </para>
     
   </section>
-  <section id="ugr.tools.tm.language.blocks">
+  <section id="ugr.tools.ruta.language.blocks">
     <title>Blocks</title>
     <para>
       Blocks combine some more complex control structures in the
@@ -192,9 +192,9 @@ RuleElementWithCA      ->  TypeExpression QuantifierPart?
       declaration. But a block may also be called from another
       position of
       the script. See
-      <xref linkend='ugr.tools.tm.language.blocks.procedure' />
+      <xref linkend='ugr.tools.ruta.language.blocks.procedure' />
     </para>
-    <section id="ugr.tools.tm.language.blocks.condition">
+    <section id="ugr.tools.ruta.language.blocks.condition">
       <title>Conditioned statements</title>
       <para>
         A block can use common Ruta conditions to condition the
@@ -215,11 +215,11 @@ BLOCK(GermanDates) Document{FEATURE("language", "de")} {
 }
 ]]></programlisting>
         The example is explained in detail in
-        <xref linkend='ugr.tools.tm.overview.examples' />
+        <xref linkend='ugr.tools.ruta.overview.examples' />
         .
       </para>
     </section>
-    <section id="ugr.tools.tm.language.blocks.foreach">
+    <section id="ugr.tools.ruta.language.blocks.foreach">
       <title>
         <quote>Foreach</quote>
         -Loops
@@ -239,7 +239,7 @@ BLOCK(ForEach) Sentence{} {
 }
 ]]></programlisting>
         The example is explained in detail in
-        <xref linkend='ugr.tools.tm.overview.examples' />
+        <xref linkend='ugr.tools.ruta.overview.examples' />
         .
       </para>
       <para>
@@ -290,7 +290,7 @@ BLOCK(IsBig) Paragraph{} {
         this is done for every Paragraph in the whole document.
       </para>
     </section>
-    <section id="ugr.tools.tm.language.blocks.procedure">
+    <section id="ugr.tools.ruta.language.blocks.procedure">
       <title>Procedures</title>
       <para>
         Blocks can be used to introduce procedures to the Ruta
@@ -337,12 +337,12 @@ Document{->CALL(MyScript.countNumberOfTypesInDocument)};
         of the script
         the
         block is defined in. In this example, the script is
-        called MyScript.tm.
+        called MyScript.ruta.
       </para>
     </section>
 
   </section>
-  <section id="ugr.tools.tm.language.score">
+  <section id="ugr.tools.ruta.language.score">
     <title>Heuristic extraction using scoring rules</title>
     <para>
       Diagnostic scores are a well known and successfully applied
@@ -406,7 +406,7 @@ Headline{SCORE(5,10)->LOG("Maybe a headline")};]]></programlisting>
       points, respectively.
     </para>
   </section>
-  <section id="ugr.tools.tm.language.modification">
+  <section id="ugr.tools.ruta.language.modification">
     <title>Modification</title>
     <para>
       There are different actions that can modify the input document,
@@ -418,7 +418,7 @@ Headline{SCORE(5,10)->LOG("Maybe a headline")};]]></programlisting>
     <para>
       The following example shows how to import and call the
       Modifier.xml engine. The example is explained in detail in
-      <xref linkend='ugr.tools.tm.overview.examples' />.
+      <xref linkend='ugr.tools.ruta.overview.examples' />.
     </para>
     <programlisting><![CDATA[ENGINE utils.Modifier;
 Date{-> DEL};
@@ -429,7 +429,7 @@ Document{-> EXEC(Modifier)};
 
   </section>
 
-  <section id="ugr.tools.tm.language.external_resources">
+  <section id="ugr.tools.ruta.language.external_resources">
     <title>External resources</title>
     <para>
       Imagine you have a set of documents containing many different
@@ -500,7 +500,7 @@ Document{->MARKFAST(FistName, FirstNameList)};
         resulting complexity is O(m*log(n)) instead of O(m*n) for simple text
         files. Here m is the amount of basic annotations in the document and
         n is the amount of entries in the dictionary. To generate a tree word
-        list, see <xref linkend='section.ugr.tools.tm.workbench.create_dictionaries' />.
+        list, see <xref linkend='section.ugr.tools.ruta.workbench.create_dictionaries' />.
         A tree word list is used in the same way as simple word lists,
         for example <literal>Document{->MARKFAST(FistName, "FirstNames.twl")};</literal>.
       </para>
@@ -515,7 +515,7 @@ Document{->MARKFAST(FistName, FirstNameList)};
         times resulting in a complexity of 5*O(m*log(n)) With a multi tree
         word list this can be reduced to about O(m*log(5*n)). To
         generate a multi tree word list, see
-        <xref linkend='section.ugr.tools.tm.workbench.create_dictionaries' />
+        <xref linkend='section.ugr.tools.ruta.workbench.create_dictionaries' />
         To use a multi tree word list Ruta provides the action
         TRIE. If for example two word lists
         <quote>FirstNames.txt</quote>
@@ -561,7 +561,7 @@ Document{->MARKTABLE(PresidentOfUSA, 1, "party" = 2,
       </para>
     </section>
   </section>
-  <section id="ugr.tools.tm.language.regexprule">
+  <section id="ugr.tools.ruta.language.regexprule">
     <title>Simple Rules based on Regular Expressions</title>
     <para>
       The Ruta langugae includes, additionally to the normal rules, a simplified rule syntax for processing regular expressions.

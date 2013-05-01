@@ -16,7 +16,7 @@
   OF ANY KIND, either express or implied. See the License for the specific 
   language governing permissions and limitations under the License. -->
 
-<section id="section.ugr.tools.tm.workbench.explain_perspective">
+<section id="section.ugr.tools.ruta.workbench.explain_perspective">
   <title>Explain Perspective</title>
   <para>
     Writing new rules is laborious, especially if the newly written
@@ -45,14 +45,14 @@
     switch to the Ruta Explain perspective within your Eclipse
     workbench.
     Import the Ruta example project and open the main
-    Ruta script file 'Main.tm'. Now press the 'Debug' button
+    Ruta script file 'Main.ruta'. Now press the 'Debug' button
     and wait
     for the end of execution. Open the resulting xmiCAS file
     'Test1.txt.xmi', which you can find in the output folder.
   </para>
 
   <section
-    id="section.ugr.tools.tm.workbench.explain_perspective.applied_rules">
+    id="section.ugr.tools.ruta.workbench.explain_perspective.applied_rules">
     <title>Applied Rules</title>
     <para>
       The Applied Rules view displays structured information about all
@@ -73,19 +73,19 @@
       is opened within the editor and the rule itself is selected.
     </para>
     <para>
-      <xref linkend='section.ugr.tools.tm.workbench.explain_perspective' />
+      <xref linkend='section.ugr.tools.ruta.workbench.explain_perspective' />
       shows the whole rule hierarchy resulting from the Ruta example
       project. The root of the whole hierarchy is the BLOCK associated to
-      the 'Main.tm' script. On the next level, the rules called by the
-      'Main.tm' script are listed. Since there is a call to each of the
-      script files 'Year.tm',
-      'Author.tm' and 'Title.tm', these are included
+      the 'Main.ruta' script. On the next level, the rules called by the
+      'Main.ruta' script are listed. Since there is a call to each of the
+      script files 'Year.ruta',
+      'Author.ruta' and 'Title.ruta', these are included
       into the hierarchy, each forming their own block.
     </para>
     <para>
       The following image shows the Ruta Applied Rules view.
       <figure
-        id="figure.ugr.tools.tm.workbench.explain_perspective.applied_rules">
+        id="figure.ugr.tools.ruta.workbench.explain_perspective.applied_rules">
         <title> Applied Rules view
         </title>
         <mediaobject>
@@ -111,7 +111,7 @@
       beginning of each rule entry. The Applied Rules view tells us
       that the rule
       <literal>NUM{REGEXP("19..|20..") -> MARK(Year)};</literal>
-      within script 'Year.tm' tried to match twice but only succeeded once.
+      within script 'Year.ruta' tried to match twice but only succeeded once.
     </para>
     <para>
       After this information, the rule itself is given. Notice that
@@ -120,7 +120,7 @@
       <literal>[1/1]Document{->MARKFAST(FirstName,FirstNameList,false,0,true)}
       </literal> within BLOCK Author. The rule obviously has been executed with five
       parameters. If you double-click on this rule, you will get to the
-      rule in the script file 'Author.tm'. It shows the rule as follows:
+      rule in the script file 'Author.ruta'. It shows the rule as follows:
       <literal>Document{-> MARKFAST(FirstName, FirstNameList)};</literal>. This means the last three parameters have been default values used
       to execute the rule.
     </para>
@@ -137,7 +137,7 @@
   </section>
 
   <section
-    id="section.ugr.tools.tm.workbench.explain_perspective.matched_and_failed_rules">
+    id="section.ugr.tools.ruta.workbench.explain_perspective.matched_and_failed_rules">
     <title>Matched Rules and Failed Rules</title>
     <para>
       If a rule is selected (single-click) in the Applied Rules view,
@@ -149,7 +149,7 @@
       Select rule <literal>[2/3]Name{-PARTOF(NameListPart)} NameLinker[1,2]{->
         MARK(NameListPart,1,2)};</literal> within BLOCK Author.
       <xref
-        linkend='figure.ugr.tools.tm.workbench.explain_perspective.matched_and_failed_rules' />
+        linkend='figure.ugr.tools.ruta.workbench.explain_perspective.matched_and_failed_rules' />
       shows the text passages this rule tried to match on. One did not
       succeed. It is displayed within the Failed Rules view. Two
       succeeded and are shown in the Matched Rules view.
@@ -157,7 +157,7 @@
     <para>
       The following image shows the Ruta Applied Rules view.
       <figure
-        id="figure.ugr.tools.tm.workbench.explain_perspective.matched_and_failed_rules">
+        id="figure.ugr.tools.ruta.workbench.explain_perspective.matched_and_failed_rules">
         <title> The views Matched Rules and Failed Rules
         </title>
         <mediaobject>
@@ -185,7 +185,7 @@
   </section>
 
   <section
-    id="section.ugr.tools.tm.workbench.explain_perspective.rule_elements">
+    id="section.ugr.tools.ruta.workbench.explain_perspective.rule_elements">
     <title>Rule Elements</title>
     <para>
       If you select one of the listed instances in the Matched or
@@ -211,12 +211,12 @@
     <para>
       In the previous example, select the listed instance
       <literal>Bethard, S.</literal>. The Rule Elements view shows the related explanation displayed
-      in <xref linkend='figure.ugr.tools.tm.workbench.explain_perspective.rule_elements' />.
+      in <xref linkend='figure.ugr.tools.ruta.workbench.explain_perspective.rule_elements' />.
     </para>
     <para>
       The following image shows the Ruta Rule Elements view.
       <figure
-        id="figure.ugr.tools.tm.workbench.explain_perspective.rule_elements">
+        id="figure.ugr.tools.ruta.workbench.explain_perspective.rule_elements">
         <title> The views Matched Rules and Failed Rules
         </title>
         <mediaobject>
@@ -246,7 +246,7 @@
   </section>
 
   <section
-    id="section.ugr.tools.tm.workbench.explain_perspective.covering_rules">
+    id="section.ugr.tools.ruta.workbench.explain_perspective.covering_rules">
     <title>Covering Rules</title>
     <para>
       This views is very similar to the Applied Rules view, but
@@ -260,7 +260,7 @@
     </para>
   </section>
 
-  <section id="section.ugr.tools.tm.workbench.explain_perspective.rule_list">
+  <section id="section.ugr.tools.ruta.workbench.explain_perspective.rule_list">
     <title>Rule List</title>
     <para>
       This views is very similar to the Applied Rules view and the
@@ -276,7 +276,7 @@
   </section>
 
   <section
-    id="section.ugr.tools.tm.workbench.explain_perspective.created_by">
+    id="section.ugr.tools.ruta.workbench.explain_perspective.created_by">
     <title>Created By</title>
     <para>
       The Created By view tells you which rule created a specific
@@ -289,14 +289,14 @@
       Annotation view. Select the
       <quote>d.u.e.Year</quote>
       annotation <quote>(2008)</quote>. The Created By view displays the information, shown in
-      <xref linkend='figure.ugr.tools.tm.workbench.explain_perspective.created_by' />. 
+      <xref linkend='figure.ugr.tools.ruta.workbench.explain_perspective.created_by' />. 
       You can double-click on the shown rule to jump to the related
-      document <quote>Year.tm</quote>.
+      document <quote>Year.ruta</quote>.
     </para>
     <para>
       The following image shows the Ruta Created By view.
       <figure
-        id="figure.ugr.tools.tm.workbench.explain_perspective.created_by">
+        id="figure.ugr.tools.ruta.workbench.explain_perspective.created_by">
         <title> The Created By view
         </title>
         <mediaobject>
@@ -319,7 +319,7 @@
   </section>
 
   <section
-    id="section.ugr.tools.tm.workbench.explain_perspective.statistics">
+    id="section.ugr.tools.ruta.workbench.explain_perspective.statistics">
     <title>Statistics</title>
     <para>
       The Statistics view displays profiling information for the used
@@ -332,7 +332,7 @@
       The following image shows the Ruta Statistics view generated
       form the Ruta example project.
       <figure
-        id="figure.ugr.tools.tm.workbench.explain_perspective.statistics">
+        id="figure.ugr.tools.ruta.workbench.explain_perspective.statistics">
         <title> The Statistics view
         </title>
         <mediaobject>

@@ -13,7 +13,7 @@
   distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
   See the License for the specific language governing permissions and limitations under the License. -->
 
-<section id="section.ugr.tools.tm.workbench.overview">
+<section id="section.ugr.tools.ruta.workbench.overview">
   <title>Ruta Workbench Overview</title>
   <para>
     The Ruta workbench provides two main perspectives.
@@ -22,7 +22,7 @@
         <para>
           The
           <quote>Ruta perspective</quote>, which provides the main functionality for working on Ruta projects. See
-          <xref linkend='section.ugr.tools.tm.workbench.tm_perspective' />
+          <xref linkend='section.ugr.tools.ruta.workbench.ruta_perspective' />
           for detailed information.
         </para>
       </listitem>
@@ -31,24 +31,24 @@
           The
           <quote>Explain perspective</quote>, which provides functionality primarily used to explain how a set of rules
           are executed on input documents. See
-          <xref linkend='section.ugr.tools.tm.workbench.explain_perspective' />.
+          <xref linkend='section.ugr.tools.ruta.workbench.explain_perspective' />.
         </para>
       </listitem>
     </orderedlist>
   </para>
   <para>
     The following image shows the Ruta perspective.
-    <figure id="figure.ugr.tools.tm.workbench.overview.tm_perspective">
+    <figure id="figure.ugr.tools.ruta.workbench.overview.ruta_perspective">
       <title> The Ruta perspective.
       </title>
       <mediaobject>
         <imageobject role="html">
           <imagedata width="576px" format="PNG" align="center"
-            fileref="&imgroot;overview/screenshot_tm_perspective_.png" />
+            fileref="&imgroot;overview/screenshot_ruta_perspective_.png" />
         </imageobject>
         <imageobject role="fo">
           <imagedata width="5.5in" format="PNG" align="center"
-            fileref="&imgroot;overview/screenshot_tm_perspective_.png" />
+            fileref="&imgroot;overview/screenshot_ruta_perspective_.png" />
         </imageobject>
         <textobject>
           <phrase>
@@ -63,9 +63,9 @@
   </para>
   <para>
     The following
-    <xref linkend='table.ugr.tools.tm.workbench.overview.views' />
+    <xref linkend='table.ugr.tools.ruta.workbench.overview.views' />
     lists all available Ruta views:
-    <table id="table.ugr.tools.tm.workbench.overview.views" frame="all">
+    <table id="table.ugr.tools.ruta.workbench.overview.views" frame="all">
       <title>Ruta views</title>
       <tgroup cols="2" colsep="1" rowsep="1">
         <colspec colname="c1" colwidth="1*" />
@@ -81,105 +81,105 @@
             <entry>Annotation Test</entry>
             <entry>
               See
-              <xref linkend='section.ugr.tools.tm.workbench.testing.usage' />
+              <xref linkend='section.ugr.tools.ruta.workbench.testing.usage' />
             </entry>
           </row>
           <row>
             <entry>Applied Rules</entry>
             <entry>
               See
-              <xref linkend='section.ugr.tools.tm.workbench.explain_perspective.applied_rules' />
+              <xref linkend='section.ugr.tools.ruta.workbench.explain_perspective.applied_rules' />
             </entry>
           </row>
           <row>
             <entry>Covering Rules</entry>
             <entry>
               See
-              <xref linkend='section.ugr.tools.tm.workbench.explain_perspective.covering_rules' />
+              <xref linkend='section.ugr.tools.ruta.workbench.explain_perspective.covering_rules' />
             </entry>
           </row>
           <row>
             <entry>Created By</entry>
             <entry>
               See
-              <xref linkend='section.ugr.tools.tm.workbench.explain_perspective.created_by' />
+              <xref linkend='section.ugr.tools.ruta.workbench.explain_perspective.created_by' />
             </entry>
           </row>
           <row>
             <entry>Failed Rules</entry>
             <entry>
               See
-              <xref linkend='section.ugr.tools.tm.workbench.explain_perspective.matched_and_failed_rules' />
+              <xref linkend='section.ugr.tools.ruta.workbench.explain_perspective.matched_and_failed_rules' />
             </entry>
           </row>
           <row>
             <entry>False Negative</entry>
             <entry>
               See
-              <xref linkend='section.ugr.tools.tm.workbench.testing.usage' />
+              <xref linkend='section.ugr.tools.ruta.workbench.testing.usage' />
             </entry>
           </row>
           <row>
             <entry>False Positive</entry>
             <entry>
               See
-              <xref linkend='section.ugr.tools.tm.workbench.testing.usage' />
+              <xref linkend='section.ugr.tools.ruta.workbench.testing.usage' />
             </entry>
           </row>
           <row>
             <entry>Matched Rules</entry>
             <entry>
               See
-              <xref linkend='figure.ugr.tools.tm.workbench.explain_perspective.matched_and_failed_rules' />
+              <xref linkend='figure.ugr.tools.ruta.workbench.explain_perspective.matched_and_failed_rules' />
             </entry>
           </row>
           <row>
             <entry>Rule Elements</entry>
             <entry>
               See
-              <xref linkend='section.ugr.tools.tm.workbench.explain_perspective.rule_elements' />
+              <xref linkend='section.ugr.tools.ruta.workbench.explain_perspective.rule_elements' />
             </entry>
           </row>
           <row>
             <entry>Rule List</entry>
             <entry>
               See
-              <xref linkend='section.ugr.tools.tm.workbench.explain_perspective.rule_list' />
+              <xref linkend='section.ugr.tools.ruta.workbench.explain_perspective.rule_list' />
             </entry>
           </row>
           <row>
             <entry>Statistics</entry>
             <entry>
               See
-              <xref linkend='section.ugr.tools.tm.workbench.explain_perspective.statistics' />
+              <xref linkend='section.ugr.tools.ruta.workbench.explain_perspective.statistics' />
             </entry>
           </row>
           <row>
             <entry>Ruta Query</entry>
             <entry>
               See
-              <xref linkend='section.ugr.tools.tm.workbench.tm_query' />
+              <xref linkend='section.ugr.tools.ruta.workbench.ruta_query' />
             </entry>
           </row>
           <row>
             <entry>TextRuler</entry>
             <entry>
               See
-              <xref linkend='section.ugr.tools.tm.workbench.textruler' />
+              <xref linkend='section.ugr.tools.ruta.workbench.textruler' />
             </entry>
           </row>
           <row>
             <entry>TextRuler Results</entry>
             <entry>
               See
-              <xref linkend='section.ugr.tools.tm.workbench.textruler' />
+              <xref linkend='section.ugr.tools.ruta.workbench.textruler' />
             </entry>
           </row>
           <row>
             <entry>True Positive</entry>
             <entry>
               See
-              <xref linkend='section.ugr.tools.tm.workbench.testing.usage' />
+              <xref linkend='section.ugr.tools.ruta.workbench.testing.usage' />
             </entry>
           </row>
         </tbody>
@@ -188,9 +188,9 @@
   </para>
   <para>
     The following
-    <xref linkend='table.ugr.tools.tm.workbench.overview.wizards' />
+    <xref linkend='table.ugr.tools.ruta.workbench.overview.wizards' />
     lists all Ruta wizards:
-    <table id="table.ugr.tools.tm.workbench.overview.wizards" frame="all">
+    <table id="table.ugr.tools.ruta.workbench.overview.wizards" frame="all">
       <title>Ruta wizards</title>
       <tgroup cols="2" colsep="1" rowsep="1">
         <colspec colname="c1" colwidth="1*" />
@@ -206,7 +206,7 @@
             <entry>Create Ruta project</entry>
             <entry>
               See
-              <xref linkend='section.ugr.tools.tm.workbench.projects.create_projects' />
+              <xref linkend='section.ugr.tools.ruta.workbench.projects.create_projects' />
             </entry>
           </row>
         </tbody>

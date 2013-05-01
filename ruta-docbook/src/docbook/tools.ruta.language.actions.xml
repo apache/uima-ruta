@@ -24,17 +24,17 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<section id="ugr.tools.tm.language.actions">
+<section id="ugr.tools.ruta.language.actions">
   <title>Actions</title>
 
-  <section id="ugr.tools.tm.language.actions.add">
+  <section id="ugr.tools.ruta.language.actions.add">
     <title>ADD</title>
     <para>
       The ADD action adds all the elements of the passed
       RutaExpressions to a given list. For example, this expressions
       could be a string, an integer variable or a list. For a
       complete overview on Textmarker expressions see
-      <xref linkend='ugr.tools.tm.language.expressions' />.
+      <xref linkend='ugr.tools.ruta.language.expressions' />.
     </para>
     <section>
       <title>
@@ -58,7 +58,7 @@ under the License.
     </section>
   </section>
   
-  <section id="ugr.tools.tm.language.actions.addfiltertype">
+  <section id="ugr.tools.ruta.language.actions.addfiltertype">
     <title>ADDFILTERTYPE</title>
     <para>
       The ADDFILTERTYPE action adds its arguments to the list of filtered types, 
@@ -85,7 +85,7 @@ under the License.
     </section>
   </section>
   
-    <section id="ugr.tools.tm.language.actions.addretaintype">
+    <section id="ugr.tools.ruta.language.actions.addretaintype">
     <title>ADDRETAINTYPE</title>
     <para>
       The ADDFILTERTYPE action adds its arguments to the list of retained types, 
@@ -113,7 +113,7 @@ under the License.
   </section>
   
   
-  <section id="ugr.tools.tm.language.actions.assign">
+  <section id="ugr.tools.ruta.language.actions.assign">
     <title>ASSIGN</title>
     <para>
       The ASSIGN action assigns the value of the passed expression to
@@ -149,7 +149,7 @@ under the License.
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.call">
+  <section id="ugr.tools.ruta.language.actions.call">
     <title>CALL</title>
     <para>
       The CALL action initiates the execution of a different script
@@ -181,7 +181,7 @@ under the License.
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.clear">
+  <section id="ugr.tools.ruta.language.actions.clear">
     <title>CLEAR</title>
     <para>
       The CLEAR action removes all elements of the given list. If the list was initialized as it was declared, 
@@ -208,7 +208,7 @@ under the License.
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.color">
+  <section id="ugr.tools.ruta.language.actions.color">
     <title>COLOR</title>
     <para>
       The COLOR action sets the color of an annotation type in the
@@ -244,7 +244,7 @@ under the License.
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.configure">
+  <section id="ugr.tools.ruta.language.actions.configure">
     <title>CONFIGURE</title>
     <para>
       The CONFIGURE action can be used to configure the analysis
@@ -276,7 +276,7 @@ Document{->CONFIGURE(HtmlAnnotator, "onlyContent" = false)};]]></programlisting>
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.create">
+  <section id="ugr.tools.ruta.language.actions.create">
     <title>CREATE</title>
     <para>
       The CREATE action is similar to the MARK action. It also
@@ -310,7 +310,7 @@ Document{->CONFIGURE(HtmlAnnotator, "onlyContent" = false)};]]></programlisting>
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.del">
+  <section id="ugr.tools.ruta.language.actions.del">
     <title>DEL</title>
     <para>
       The DEL action deletes the matched text fragments in the
@@ -339,7 +339,7 @@ Document{->CONFIGURE(HtmlAnnotator, "onlyContent" = false)};]]></programlisting>
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.dynamicanchoring">
+  <section id="ugr.tools.ruta.language.actions.dynamicanchoring">
     <title>DYNAMICANCHORING</title>
     <para>
       The DYNAMICANCHORING action turns dynamic anchoring on or off
@@ -368,7 +368,7 @@ Document{->CONFIGURE(HtmlAnnotator, "onlyContent" = false)};]]></programlisting>
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.exec">
+  <section id="ugr.tools.ruta.language.actions.exec">
     <title>EXEC</title>
     <para>
       The EXEC action initiates the execution of a different script
@@ -400,7 +400,7 @@ Document{->EXEC(NamedEntities)};]]></programlisting>
       </para>
     </section>
   </section>
-  <section id="ugr.tools.tm.language.actions.fill">
+  <section id="ugr.tools.ruta.language.actions.fill">
     <title>FILL</title>
     <para>
       The FILL action fills a choosen subset of the given type's
@@ -431,12 +431,12 @@ Document{->EXEC(NamedEntities)};]]></programlisting>
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.filtertype">
+  <section id="ugr.tools.ruta.language.actions.filtertype">
     <title>FILTERTYPE</title>
     <para>
       This action filters the given types of annotations. They are now
       ignored by rules. Expressions are not yet supported. 
-      This action is related to RETAINTYPE (see <xref linkend='ugr.tools.tm.language.actions.retaintype' />).
+      This action is related to RETAINTYPE (see <xref linkend='ugr.tools.ruta.language.actions.retaintype' />).
     </para>
     <note>    
       <para>
@@ -478,7 +478,7 @@ Document{->EXEC(NamedEntities)};]]></programlisting>
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.gather">
+  <section id="ugr.tools.ruta.language.actions.gather">
     <title>GATHER</title>
     <para>
       This action creates a complex structure: an annotation with
@@ -519,7 +519,7 @@ A B{-> GATHER(C, 1, 2, "a" = 1, "b" = 2)};]]></programlisting>
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.get">
+  <section id="ugr.tools.ruta.language.actions.get">
     <title>GET</title>
     <para>
       The GET action retrieves an element of the given list dependent on a
@@ -564,7 +564,7 @@ A B{-> GATHER(C, 1, 2, "a" = 1, "b" = 2)};]]></programlisting>
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.getfeature">
+  <section id="ugr.tools.ruta.language.actions.getfeature">
     <title>GETFEATURE</title>
     <para>
       The GETFEATURE action stores the value of the matched
@@ -593,7 +593,7 @@ A B{-> GATHER(C, 1, 2, "a" = 1, "b" = 2)};]]></programlisting>
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.getlist">
+  <section id="ugr.tools.ruta.language.actions.getlist">
     <title>GETLIST</title>
     <para>
       This action retrieves a list of types dependent on a given strategy.
@@ -650,7 +650,7 @@ A B{-> GATHER(C, 1, 2, "a" = 1, "b" = 2)};]]></programlisting>
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.log">
+  <section id="ugr.tools.ruta.language.actions.log">
     <title>LOG</title>
     <para>
       The LOG action writes a log message.
@@ -676,7 +676,7 @@ A B{-> GATHER(C, 1, 2, "a" = 1, "b" = 2)};]]></programlisting>
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.mark">
+  <section id="ugr.tools.ruta.language.actions.mark">
     <title>MARK</title>
     <para>
       The MARK action is the most important action in the Ruta
@@ -710,7 +710,7 @@ A B{-> GATHER(C, 1, 2, "a" = 1, "b" = 2)};]]></programlisting>
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.markfast">
+  <section id="ugr.tools.ruta.language.actions.markfast">
     <title>MARKFAST</title>
     <para>
       The MARKFAST action creates annotations of the given type (first
@@ -725,7 +725,7 @@ A B{-> GATHER(C, 1, 2, "a" = 1, "b" = 2)};]]></programlisting>
       parameter is set to true by default and specifies whether whitespaces
       in the entries of the dictionary should be ignored. For more
       information on lists see
-      <xref linkend='ugr.tools.tm.language.declarations.ressource' />. 
+      <xref linkend='ugr.tools.ruta.language.declarations.ressource' />. 
       Additionally to external word lists, string lists variables can be
       used.
     </para>
@@ -758,7 +758,7 @@ Document{-> MARKFAST(FirstName, FirstNameList, true, 2)};]]></programlisting>
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.marklast">
+  <section id="ugr.tools.ruta.language.actions.marklast">
     <title>MARKLAST</title>
     <para>
       The MARKLAST action annotates the last token of the matched
@@ -786,7 +786,7 @@ Document{-> MARKFAST(FirstName, FirstNameList, true, 2)};]]></programlisting>
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.markonce">
+  <section id="ugr.tools.ruta.language.actions.markonce">
     <title>MARKONCE</title>
     <para>
       The MARKONCE action has the same functionality as the MARK
@@ -818,7 +818,7 @@ Document{-> MARKFAST(FirstName, FirstNameList, true, 2)};]]></programlisting>
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.markscore">
+  <section id="ugr.tools.ruta.language.actions.markscore">
     <title>MARKSCORE</title>
     <para>
       The MARKSCORE action is similar to the MARK action. It also creates a
@@ -828,7 +828,7 @@ Document{-> MARKFAST(FirstName, FirstNameList, true, 2)};]]></programlisting>
       information of several rule elements. Additionally, a score value
       (first parameter) is added to the heuristic score value of the
       annotation. For more information on heuristic scores see
-      <xref linkend='ugr.tools.tm.language.score' />
+      <xref linkend='ugr.tools.ruta.language.score' />
       .
     </para>
     <section>
@@ -858,7 +858,7 @@ Document{-> MARKFAST(FirstName, FirstNameList, true, 2)};]]></programlisting>
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.marktable">
+  <section id="ugr.tools.ruta.language.actions.marktable">
     <title>MARKTABLE</title>
     <para>
       The MARKTABLE action creates annotations of the given type (first
@@ -870,7 +870,7 @@ Document{-> MARKFAST(FirstName, FirstNameList, true, 2)};]]></programlisting>
       entries of the given table to features of the created annotation.
       For
       more information on tables see
-      <xref linkend='ugr.tools.tm.language.declarations.ressource' />. Additionally, several configuration parameters are possible. (See example.)
+      <xref linkend='ugr.tools.ruta.language.declarations.ressource' />. Additionally, several configuration parameters are possible. (See example.)
     </para>
     <section>
       <title>
@@ -905,7 +905,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.matchedtext">
+  <section id="ugr.tools.ruta.language.actions.matchedtext">
     <title>MATCHEDTEXT</title>
     <para>
       The MATCHEDTEXT action saves the text of the matched annotation
@@ -935,7 +935,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.merge">
+  <section id="ugr.tools.ruta.language.actions.merge">
     <title>MERGE</title>
     <para>
       The MERGE action merges a number of given lists. The first
@@ -965,7 +965,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.remove">
+  <section id="ugr.tools.ruta.language.actions.remove">
     <title>REMOVE</title>
     <para>
       The REMOVE action removes lists or single values from a given
@@ -993,7 +993,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.removeduplicate">
+  <section id="ugr.tools.ruta.language.actions.removeduplicate">
     <title>REMOVEDUPLICATE</title>
     <para>
       This action removes all duplicates within a given list.
@@ -1019,7 +1019,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.removefiltertype">
+  <section id="ugr.tools.ruta.language.actions.removefiltertype">
     <title>REMOVEFILTERTYPE</title>
     <para>
       The REMOVEFILTERTYPE action removes its arguments from the list of filtered types, 
@@ -1046,7 +1046,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
     </section>
   </section>
   
-    <section id="ugr.tools.tm.language.actions.removeretaintype">
+    <section id="ugr.tools.ruta.language.actions.removeretaintype">
     <title>REMOVERETAINTYPE</title>
     <para>
       The REMOVEFILTERTYPE action removes its arguments from the list of retained types, 
@@ -1074,13 +1074,13 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
   </section>
 
 
-  <section id="ugr.tools.tm.language.actions.replace">
+  <section id="ugr.tools.ruta.language.actions.replace">
     <title>REPLACE</title>
     <para>
       The REPLACE action replaces the text of all matched annotations with
       the given StringExpression. It remembers the modification for the
       matched annotations and shows them in the modified view (see
-      <xref linkend='ugr.tools.tm.language.modification' />).
+      <xref linkend='ugr.tools.ruta.language.modification' />).
     </para>
     <section>
       <title>
@@ -1104,12 +1104,12 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.retaintype">
+  <section id="ugr.tools.ruta.language.actions.retaintype">
     <title>RETAINTYPE</title>
     <para>
       The RETAINTYPE action retains the given types. This means that they
       are now not ignored by rules. This action is related to
-      FILTERTYPE (see <xref linkend='ugr.tools.tm.language.actions.filtertype' />).
+      FILTERTYPE (see <xref linkend='ugr.tools.ruta.language.actions.filtertype' />).
     </para>
     <note>    
       <para>
@@ -1150,7 +1150,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.setfeature">
+  <section id="ugr.tools.ruta.language.actions.setfeature">
     <title>SETFEATURE</title>
     <para>
       The SETFEATURE action sets the value of a feature of the
@@ -1179,7 +1179,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
     </section>
   </section>
 
-    <section id="ugr.tools.tm.language.actions.shift">
+    <section id="ugr.tools.ruta.language.actions.shift">
       <title>SHIFT</title>
       <para>
         The SHIFT action can be used to change the offsets of an annotation. The optional number expressions,
@@ -1216,7 +1216,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
       </section>
     </section>
 
-  <section id="ugr.tools.tm.language.actions.transfer">
+  <section id="ugr.tools.ruta.language.actions.transfer">
     <title>TRANSFER</title>
     <para>
       The TRANSFER action creates a new feature structure and adds all
@@ -1246,7 +1246,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.trie">
+  <section id="ugr.tools.ruta.language.actions.trie">
     <title>TRIE</title>
     <para>
       The TRIE action uses an external multi tree word list to
@@ -1284,7 +1284,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
     </section>
   </section>
 
-<section id="ugr.tools.tm.language.actions.trim">
+<section id="ugr.tools.ruta.language.actions.trim">
     <title>TRIM</title>
     <para>
       The TRIM action changes the offsets on the matched annotations by removing annotations, whose
@@ -1313,7 +1313,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.unmark">
+  <section id="ugr.tools.ruta.language.actions.unmark">
     <title>UNMARK</title>
     <para>
       The UNMARK action removes the annotation of the given type
@@ -1357,7 +1357,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
     </section>
   </section>
 
-  <section id="ugr.tools.tm.language.actions.unmarkall">
+  <section id="ugr.tools.ruta.language.actions.unmarkall">
     <title>UNMARKALL</title>
     <para>
       The UNMARKALL action removes all the annotations of the given

@@ -24,7 +24,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<section id="section.ugr.tools.tm.workbench.textruler">
+<section id="section.ugr.tools.ruta.workbench.textruler">
   <title>TextRuler</title>
   <para> Using the knowledge engineering approach, a knowledge engineer normally writes handcrafted
     rules to create a domain dependent information extraction application often supported by a gold
@@ -57,7 +57,7 @@ under the License.
     process is iterated and the focus is moved to the next concept until the development of the
     application is completed.
   </para>
-  <section id="ugr.tools.tm.textruler.learner">
+  <section id="ugr.tools.ruta.textruler.learner">
     <title>Available Learners</title>
     <para>
       The available learners are based on the following publications:
@@ -116,7 +116,7 @@ under the License.
     </para>
     <para>
       The following table gives an overview:
-      <table id="table.ugr.tools.tm.workbench.textruler.available_learners" frame="all">
+      <table id="table.ugr.tools.ruta.workbench.textruler.available_learners" frame="all">
         <title>Overview of available learners</title>
         <tgroup cols="6" colsep="1" rowsep="1">
           <colspec colname="c1" colwidth="1*" />
@@ -183,7 +183,7 @@ under the License.
       </table>
     </para>
     <!-- 
-    <section id="section.ugr.tools.tm.workbench.textruler.bwi">
+    <section id="section.ugr.tools.ruta.workbench.textruler.bwi">
       <title>BWI (Boosted Wrapper Induction)</title>
       <para> BWI uses boosting techniques to improve the performance of simple pattern matching
         single-slot boundary wrappers (boundary detectors). Two sets of detectors are learned: the
@@ -195,7 +195,7 @@ under the License.
       <para> Parameters No parameters are yet available.   </para>
     </section>
      -->
-    <section id="section.ugr.tools.tm.workbench.textruler.lp2">
+    <section id="section.ugr.tools.ruta.workbench.textruler.lp2">
       <title>LP2</title>
       <para>This method operates on all three kinds of documents. It learns separate rules for
         the beginning and the end of a single slot. Tagging rules insert boundary SGML
@@ -226,7 +226,7 @@ under the License.
         </listitem>
       </itemizedlist>
     </section>
-    <section id="section.ugr.tools.tm.workbench.textruler.rapier">
+    <section id="section.ugr.tools.ruta.workbench.textruler.rapier">
       <title>RAPIER</title>
       <para>RAPIER induces single slot extraction rules for semi-structured documents. The rules
         consist of three patterns: a pre-filler, a filler and a post-filler pattern. Each pattern can hold
@@ -262,7 +262,7 @@ under the License.
         </listitem>
       </itemizedlist>
     </section>
-    <section id="section.ugr.tools.tm.workbench.textruler.whisk">
+    <section id="section.ugr.tools.ruta.workbench.textruler.whisk">
       <title>WHISK</title>
       <para> WHISK is a multi-slot method that operates on all three kinds of documents and learns
         single- or multi-slot rules looking similar to regular expressions. The top-down covering
@@ -286,7 +286,7 @@ under the License.
         </listitem>
       </itemizedlist>
     </section>
-    <section id="section.ugr.tools.tm.workbench.textruler.wien">
+    <section id="section.ugr.tools.ruta.workbench.textruler.wien">
       <title>WIEN </title>
       <para> WIEN is the only method listed here that operates on highly structured texts only. It
         induces wrappers that anchor the slots by their structured context.

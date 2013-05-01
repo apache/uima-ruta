@@ -24,7 +24,7 @@ specific language governing permissions and limitations
 under the License.
 -->
   
-<chapter id="ugr.tools.tm.workbench">
+<chapter id="ugr.tools.ruta.workbench">
   <title>Apache UIMA Ruta Workbench</title>
   <para>
   The Apache UIMA Ruta Workbench, which is made available as an Eclipse-plugin, offers a powerful environment for creating and working on Ruta projects. It provides two main
@@ -41,7 +41,7 @@ under the License.
 
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.workbench.projects.xml" />
 
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.workbench.tm_perspective.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.workbench.ruta_perspective.xml" />
   
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.workbench.explain_perspective.xml" />
   
@@ -53,13 +53,13 @@ under the License.
   
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.workbench.create_dictionaries.xml" />
   
-  <section id="ugr.tools.tm.workbench.apply">
+  <section id="ugr.tools.ruta.workbench.apply">
     <title>Apply a Ruta script to a folder</title>
     <para>
       The Ruta Workbench makes it possible to apply a Ruta script to any folder of the workspace. 
       Select a folder in the script explorer, right-click to open the context menu and select the menu entry Ruta.
       There are three options to apply a Ruta script to the files of the selected folder, 
-      cf. <xref linkend='figure.ugr.tools.tm.workbench.apply' />.
+      cf. <xref linkend='figure.ugr.tools.ruta.workbench.apply' />.
     </para>
     <para>
       <orderedlist numeration="arabic">
@@ -86,7 +86,7 @@ under the License.
       </orderedlist>
     </para>
     <para>
-    <figure id="figure.ugr.tools.tm.workbench.apply">
+    <figure id="figure.ugr.tools.ruta.workbench.apply">
       <title>Remove Ruta basics
       </title>
       <mediaobject>

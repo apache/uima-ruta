@@ -16,11 +16,11 @@
   OF ANY KIND, either express or implied. See the License for the specific 
   language governing permissions and limitations under the License. -->
 
-<section id="ugr.tools.tm.language.quantifier">
+<section id="ugr.tools.ruta.language.quantifier">
   <title>Quantifiers</title>
   <para>
   </para>
-  <section id="ugr.tools.tm.language.quantifier.sg">
+  <section id="ugr.tools.ruta.language.quantifier.sg">
     <title>* Star Greedy</title>
     <para>
       The Star Greedy quantifier matches on any amount of annotations and
@@ -36,7 +36,7 @@ Matched:  Big Big
 Matched:  Big]]></programlisting>
     </para>
   </section>
-  <section id="ugr.tools.tm.language.quantifier.sr">
+  <section id="ugr.tools.ruta.language.quantifier.sr">
     <title>*? Star Reluctant</title>
     <para>
       The Star Reluctant quantifier matches on any amount of annotations
@@ -56,7 +56,7 @@ Matched:  Big]]></programlisting>
      if the rule starts matching with the first rule element.
     </para>
   </section>
-  <section id="ugr.tools.tm.language.quantifier.pg">
+  <section id="ugr.tools.ruta.language.quantifier.pg">
     <title>+ Plus Greedy</title>
     <para>
       The Plus Greedy quantifier needs to match on at least one
@@ -74,7 +74,7 @@ Matched:  small small
 Matched:  small]]></programlisting>
     </para>
   </section>
-  <section id="ugr.tools.tm.language.quantifier.pr">
+  <section id="ugr.tools.ruta.language.quantifier.pr">
     <title>+? Plus Reluctant</title>
     <para>
       The Plus Reluctant quantifier has to match on at least one
@@ -90,7 +90,7 @@ Matched:  small small Big
 Matched:  small Big]]></programlisting>
     </para>
   </section>
-  <section id="ugr.tools.tm.language.quantifier.qg">
+  <section id="ugr.tools.ruta.language.quantifier.qg">
     <title>? Question Greedy</title>
     <para>
       The Question Greedy quantifier matches optionally on an annotation
@@ -102,7 +102,7 @@ Rule:     SW CW? SW
 Matched:  small Big small]]></programlisting>
     </para>
   </section>
-  <section id="ugr.tools.tm.language.quantifier.qr">
+  <section id="ugr.tools.ruta.language.quantifier.qr">
     <title>?? Question Reluctant</title>
     <para>
       The Question Reluctant quantifier matches optionally on an
@@ -117,7 +117,7 @@ Rule:     SW CW?? SW
 Matched:  small Big small]]></programlisting>
     </para>
   </section>
-  <section id="ugr.tools.tm.language.quantifier.mmg">
+  <section id="ugr.tools.ruta.language.quantifier.mmg">
     <title>[x,y] Min Max Greedy</title>
     <para>
       The Min Max Greedy quantifier has to match at least x and at most y
@@ -129,7 +129,7 @@ Rule:     SW CW[1,2] SW
 Matched:  small Big small]]></programlisting>
     </para>
   </section>
-  <section id="ugr.tools.tm.language.quantifier.mmr">
+  <section id="ugr.tools.ruta.language.quantifier.mmr">
     <title>[x,y]? Min Max Reluctant</title>
     <para>
       The Min Max Greedy quantifier has to match at least x and at most y

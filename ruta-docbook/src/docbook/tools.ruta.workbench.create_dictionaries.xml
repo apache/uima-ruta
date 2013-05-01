@@ -24,13 +24,13 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<section id="section.ugr.tools.tm.workbench.create_dictionaries">
+<section id="section.ugr.tools.ruta.workbench.create_dictionaries">
   <title>Creation of Tree Word Lists</title>
   <para>
     Tree word lists are external resources, which can be used
     to annotate all occurrences of list items in a document
     with a given annotation type, very fast. For more details
-    on their use, see <xref linkend='ugr.tools.tm.language.external_resources' />. 
+    on their use, see <xref linkend='ugr.tools.ruta.language.external_resources' />. 
     Since simple tree and multi tree word lists have to be compiled
     the Ruta workbench provides an easy way to compile
     them from ordinary text files. These text files have to
@@ -46,9 +46,9 @@ Martin
     To compile a simple tree word list from a text file,
     right-click on the text file in Ruta script
     explorer. The resulting menu is shown in
-    <xref linkend='figure.ugr.tools.tm.workbench.create_dictionaries_1' />.
+    <xref linkend='figure.ugr.tools.ruta.workbench.create_dictionaries_1' />.
 
-    <figure id="figure.ugr.tools.tm.workbench.create_dictionaries_1">
+    <figure id="figure.ugr.tools.ruta.workbench.create_dictionaries_1">
       <title>Create a simple tree word list
       </title>
       <mediaobject>
