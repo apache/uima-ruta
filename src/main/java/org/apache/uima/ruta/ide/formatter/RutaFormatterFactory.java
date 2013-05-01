@@ -22,6 +22,7 @@ package org.apache.uima.ruta.ide.formatter;
 import java.net.URL;
 import java.util.Map;
 
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.ide.RutaIdePlugin;
 import org.apache.uima.ruta.ide.formatter.preferences.RutaFormatterModifyDialog;
 import org.eclipse.dltk.formatter.AbstractScriptFormatterFactory;
@@ -34,13 +35,11 @@ public class RutaFormatterFactory extends AbstractScriptFormatterFactory {
 
   private static final String[] KEYS = {
       // RutaUI.PLUGIN_ID :
-      RutaFormatterConstants.FORMATTER_TAB_CHAR,
-      RutaFormatterConstants.FORMATTER_INDENTATION_SIZE,
+      RutaFormatterConstants.FORMATTER_TAB_CHAR, RutaFormatterConstants.FORMATTER_INDENTATION_SIZE,
       RutaFormatterConstants.FORMATTER_TAB_SIZE,
       // RutaFormatterPlugin.PLUGIN_ID :
       RutaFormatterConstants.INDENT_BLOCK, RutaFormatterConstants.INDENT_STRUCTURE,
-      RutaFormatterConstants.LINES_BEFORE_LONG_DECLARATIONS,
-      RutaFormatterConstants.MAX_LINE_LENGTH };
+      RutaFormatterConstants.LINES_BEFORE_LONG_DECLARATIONS, RutaFormatterConstants.MAX_LINE_LENGTH };
 
   public PreferenceKey[] getPreferenceKeys() {
     final PreferenceKey[] result = new PreferenceKey[KEYS.length];
@@ -61,8 +60,7 @@ public class RutaFormatterFactory extends AbstractScriptFormatterFactory {
 
   @Override
   public PreferenceKey getProfilesKey() {
-    return new PreferenceKey(RutaIdePlugin.PLUGIN_ID,
-            RutaFormatterConstants.FORMATTER_PROFILES);
+    return new PreferenceKey(RutaIdePlugin.PLUGIN_ID, RutaFormatterConstants.FORMATTER_PROFILES);
   }
 
   public PreferenceKey getActiveProfileKey() {
@@ -76,7 +74,7 @@ public class RutaFormatterFactory extends AbstractScriptFormatterFactory {
 
   @Override
   public URL getPreviewContent() {
-    return getClass().getResource("formatPreviewScript.tm"); //$NON-NLS-1$
+    return getClass().getResource("formatPreviewScript" + RutaEngine.SCRIPT_FILE_EXTENSION); //$NON-NLS-1$
   }
 
   public IFormatterModifyDialog createDialog(IFormatterModifyDialogOwner dialogOwner) {

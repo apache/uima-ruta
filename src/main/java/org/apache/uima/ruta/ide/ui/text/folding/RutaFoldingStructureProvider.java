@@ -133,7 +133,7 @@ public class RutaFoldingStructureProvider extends AbstractASTFoldingStructurePro
    */
   @Override
   protected String getCommentPartition() {
-    return RutaPartitions.TM_COMMENT;
+    return RutaPartitions.RUTA_COMMENT;
   }
 
   /*
@@ -149,7 +149,7 @@ public class RutaFoldingStructureProvider extends AbstractASTFoldingStructurePro
    */
   @Override
   protected String getPartition() {
-    return RutaPartitions.TM_PARTITIONING;
+    return RutaPartitions.RUTA_PARTITIONING;
   }
 
   /*
@@ -165,7 +165,7 @@ public class RutaFoldingStructureProvider extends AbstractASTFoldingStructurePro
    */
   @Override
   protected String[] getPartitionTypes() {
-    return RutaPartitions.TM_PARTITION_TYPES;
+    return RutaPartitions.RUTA_PARTITION_TYPES;
   }
 
   /*

@@ -30,8 +30,8 @@ import org.eclipse.jface.text.rules.WhitespaceRule;
 public class RutaStringScanner extends AbstractScriptScanner {
 
   private static final String[] tokenProperties = new String[] {
-      RutaColorConstants.TM_STRING, RutaColorConstants.TM_NUMBER,
-      RutaColorConstants.TM_VARIABLE };
+      RutaColorConstants.RUTA_STRING, RutaColorConstants.RUTA_NUMBER,
+      RutaColorConstants.RUTA_VARIABLE };
 
   public RutaStringScanner(IColorManager manager, IPreferenceStore store) {
     super(manager, store);
@@ -51,7 +51,7 @@ public class RutaStringScanner extends AbstractScriptScanner {
     // Add generic whitespace rule.
     rules.add(new WhitespaceRule(new RutaWhitespaceDetector()));
 
-    setDefaultReturnToken(getToken(RutaColorConstants.TM_STRING));
+    setDefaultReturnToken(getToken(RutaColorConstants.RUTA_STRING));
 
     return rules;
   }

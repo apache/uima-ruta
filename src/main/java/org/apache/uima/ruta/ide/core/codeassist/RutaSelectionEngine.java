@@ -313,7 +313,7 @@ public class RutaSelectionEngine extends ScriptSelectionEngine {
     private void importScript(String sRefName) throws ModelException {
       int lastDot = sRefName.lastIndexOf('.');
       String fileNameShort = sRefName.substring(lastDot + 1);
-      String fileName = fileNameShort + ".tm";
+      String fileName = fileNameShort + RutaEngine.SCRIPT_FILE_EXTENSION;
 
       org.eclipse.dltk.core.ISourceModule sm = null;
       IScriptFolder[] scriptFolders = sourceModule.getScriptProject().getScriptFolders();

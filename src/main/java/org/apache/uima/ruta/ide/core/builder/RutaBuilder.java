@@ -22,6 +22,7 @@ package org.apache.uima.ruta.ide.core.builder;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.extensions.IEngineLoader;
 import org.apache.uima.ruta.extensions.IRutaActionExtension;
 import org.apache.uima.ruta.extensions.IRutaBooleanFunctionExtension;
@@ -154,7 +155,7 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
       String[] scriptPaths = scriptPathList.toArray(new String[0]);
       String mainScript = relativeTo.toPortableString();
       mainScript = mainScript.replaceAll("/", ".");
-      if (mainScript.endsWith(".tm")) {
+      if (mainScript.endsWith(RutaEngine.SCRIPT_FILE_EXTENSION)) {
         mainScript = mainScript.substring(0, mainScript.length() - 5);
       }
       build(basicTS, basicE, typeSystem, engine, sm, mainScript, scriptPaths, descriptorPaths);

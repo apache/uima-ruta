@@ -76,7 +76,7 @@ public class RutaCheckerUtils {
       e.printStackTrace();
     }
     String fileNameWithoutExtension = path.substring(path.lastIndexOf('.') + 1);
-    String fileNameWithExtension = fileNameWithoutExtension + ".tm";
+    String fileNameWithExtension = fileNameWithoutExtension + RutaEngine.SCRIPT_FILE_EXTENSION;
     ISourceModule sourceModule = null;
     boolean found = false;
     for (IFolder eachFolder : scriptFolders) {
@@ -191,7 +191,7 @@ public class RutaCheckerUtils {
       return false;
     }
     for (IFolder folder : allDescriptorFolders) {
-      String fileExtended = xmlFilePath.replaceAll("[.]", "/") + ".tm";
+      String fileExtended = xmlFilePath.replaceAll("[.]", "/") + RutaEngine.SCRIPT_FILE_EXTENSION;
       IFile iFile = RutaCheckerUtils.getFile(folder, fileExtended);
       result |= iFile.exists();
     }

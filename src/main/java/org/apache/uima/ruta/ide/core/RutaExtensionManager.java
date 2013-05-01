@@ -52,7 +52,7 @@ import org.eclipse.dltk.core.PriorityDLTKExtensionManager.ElementInfo;
 
 public class RutaExtensionManager {
   PriorityClassDLTKExtensionManager manager = new PriorityClassDLTKExtensionManager(
-          RutaIdePlugin.PLUGIN_ID + ".tmExtension", "language");
+          RutaIdePlugin.PLUGIN_ID + ".rutaExtension", "language");
 
   private static RutaExtensionManager sInstance;
 

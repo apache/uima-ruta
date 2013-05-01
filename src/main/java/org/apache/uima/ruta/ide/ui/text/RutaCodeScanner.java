@@ -35,12 +35,12 @@ import org.eclipse.jface.text.rules.WhitespaceRule;
 public class RutaCodeScanner extends AbstractScriptScanner {
 
   private static String fgTokenProperties[] = new String[] {
-      RutaColorConstants.TM_SINGLE_LINE_COMMENT, RutaColorConstants.TM_DEFAULT,
-      RutaColorConstants.TM_KEYWORD, RutaColorConstants.TM_KEYWORD_RETURN,
-      RutaColorConstants.TM_NUMBER, RutaColorConstants.TM_FUNCTION,
-      RutaColorConstants.TM_CONDITION, RutaColorConstants.TM_ACTION,
-      RutaColorConstants.TM_RULE, RutaColorConstants.TM_DECLARATION,
-      RutaColorConstants.TM_BASICSYMBOL, RutaColorConstants.TM_THEN };
+      RutaColorConstants.RUTA_SINGLE_LINE_COMMENT, RutaColorConstants.RUTA_DEFAULT,
+      RutaColorConstants.RUTA_KEYWORD, RutaColorConstants.RUTA_KEYWORD_RETURN,
+      RutaColorConstants.RUTA_NUMBER, RutaColorConstants.RUTA_FUNCTION,
+      RutaColorConstants.RUTA_CONDITION, RutaColorConstants.RUTA_ACTION,
+      RutaColorConstants.RUTA_RULE, RutaColorConstants.RUTA_DECLARATION,
+      RutaColorConstants.RUTA_BASICSYMBOL, RutaColorConstants.RUTA_THEN };
 
   public RutaCodeScanner(IColorManager manager, IPreferenceStore store) {
     super(manager, store);
@@ -55,18 +55,18 @@ public class RutaCodeScanner extends AbstractScriptScanner {
   @Override
   protected List createRules() {
     List<IRule> rules = new ArrayList<IRule>();
-    IToken keyword = getToken(RutaColorConstants.TM_KEYWORD);
-    IToken rule = getToken(RutaColorConstants.TM_RULE);
-    IToken comment = getToken(RutaColorConstants.TM_SINGLE_LINE_COMMENT);
-    IToken other = getToken(RutaColorConstants.TM_DEFAULT);
-    IToken declaration = getToken(RutaColorConstants.TM_DECLARATION);
-    IToken basicSymbol = getToken(RutaColorConstants.TM_BASICSYMBOL);
-    IToken function = getToken(RutaColorConstants.TM_FUNCTION);
-    IToken condition = getToken(RutaColorConstants.TM_CONDITION);
-    IToken action = getToken(RutaColorConstants.TM_ACTION);
-    IToken then = getToken(RutaColorConstants.TM_THEN);
-    IToken number = getToken(RutaColorConstants.TM_NUMBER);
-    IToken string = getToken(RutaColorConstants.TM_STRING);
+    IToken keyword = getToken(RutaColorConstants.RUTA_KEYWORD);
+    IToken rule = getToken(RutaColorConstants.RUTA_RULE);
+    IToken comment = getToken(RutaColorConstants.RUTA_SINGLE_LINE_COMMENT);
+    IToken other = getToken(RutaColorConstants.RUTA_DEFAULT);
+    IToken declaration = getToken(RutaColorConstants.RUTA_DECLARATION);
+    IToken basicSymbol = getToken(RutaColorConstants.RUTA_BASICSYMBOL);
+    IToken function = getToken(RutaColorConstants.RUTA_FUNCTION);
+    IToken condition = getToken(RutaColorConstants.RUTA_CONDITION);
+    IToken action = getToken(RutaColorConstants.RUTA_ACTION);
+    IToken then = getToken(RutaColorConstants.RUTA_THEN);
+    IToken number = getToken(RutaColorConstants.RUTA_NUMBER);
+    IToken string = getToken(RutaColorConstants.RUTA_STRING);
 
     // rules.add(new MultiLineRule("/*", "*/", comment, '\\', true));
     // rules.add(new EndOfLineRule("//", comment));

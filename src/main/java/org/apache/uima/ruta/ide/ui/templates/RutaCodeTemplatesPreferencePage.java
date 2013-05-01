@@ -40,7 +40,7 @@ public class RutaCodeTemplatesPreferencePage extends ScriptTemplatePreferencePag
   @Override
   protected ScriptSourceViewerConfiguration createSourceViewerConfiguration() {
     return new SimpleRutaSourceViewerConfiguration(getTextTools().getColorManager(),
-            getPreferenceStore(), null, RutaPartitions.TM_PARTITIONING, false);
+            getPreferenceStore(), null, RutaPartitions.RUTA_PARTITIONING, false);
   }
 
   /*
@@ -50,7 +50,7 @@ public class RutaCodeTemplatesPreferencePage extends ScriptTemplatePreferencePag
    */
   @Override
   protected void setDocumentParticioner(IDocument document) {
-    getTextTools().setupDocumentPartitioner(document, RutaPartitions.TM_PARTITIONING);
+    getTextTools().setupDocumentPartitioner(document, RutaPartitions.RUTA_PARTITIONING);
   }
 
   /*

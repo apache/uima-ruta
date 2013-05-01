@@ -106,7 +106,7 @@ public class RutaEditorColoringConfigurationBlock extends
           IColorManager colorManager, IPreferenceStore preferenceStore, ITextEditor editor,
           boolean configureFormatter) {
     return new SimpleRutaSourceViewerConfiguration(colorManager, preferenceStore, editor,
-            RutaPartitions.TM_PARTITIONING, configureFormatter);
+            RutaPartitions.RUTA_PARTITIONING, configureFormatter);
   }
 
   @Override

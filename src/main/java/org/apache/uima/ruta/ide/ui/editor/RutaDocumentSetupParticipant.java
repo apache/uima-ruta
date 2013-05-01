@@ -36,6 +36,6 @@ public class RutaDocumentSetupParticipant implements IDocumentSetupParticipant {
    */
   public void setup(IDocument document) {
     RutaTextTools tools = RutaIdePlugin.getDefault().getTextTools();
-    tools.setupDocumentPartitioner(document, RutaPartitions.TM_PARTITIONING);
+    tools.setupDocumentPartitioner(document, RutaPartitions.RUTA_PARTITIONING);
   }
 }

@@ -209,11 +209,6 @@ public class RutaFormattedPrinter extends ASTVisitor {
       return false;
       // return true;
     }
-    // if (s instanceof RutaVariableDeclaration && s.getKind() ==
-    // TMTypeConstants.TM_TYPE_WL ||
-    // s.getKind() == TMTC)
-    // special format for declaration statements (they're wrapped in a
-    // declarations-statement)
     if (s instanceof RutaTypeDeclaration) {
       append(s);
       List<RutaFeatureDeclaration> features = ((RutaTypeDeclaration) s).getFeatures();

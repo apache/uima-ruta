@@ -105,7 +105,7 @@ public class RutaEditor extends ScriptEditor {
           viewer.setRedraw(false);
 
           final String type = TextUtilities.getContentType(viewer.getDocument(),
-                  RutaPartitions.TM_PARTITIONING, selection.x, true);
+                  RutaPartitions.RUTA_PARTITIONING, selection.x, true);
           if (type.equals(IDocument.DEFAULT_CONTENT_TYPE) && selection.y == 0) {
 
             try {
@@ -280,7 +280,7 @@ public class RutaEditor extends ScriptEditor {
   protected void connectPartitioningToElement(IEditorInput input, IDocument document) {
     if (document instanceof IDocumentExtension3) {
       IDocumentExtension3 doc = (IDocumentExtension3) document;
-      if (doc.getDocumentPartitioner(RutaPartitions.TM_PARTITIONING) == null) {
+      if (doc.getDocumentPartitioner(RutaPartitions.RUTA_PARTITIONING) == null) {
         IDocumentSetupParticipant participant = new RutaDocumentSetupParticipant();
         participant.setup(document);
       }

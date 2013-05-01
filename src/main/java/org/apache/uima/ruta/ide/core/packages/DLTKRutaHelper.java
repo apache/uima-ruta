@@ -36,6 +36,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.ide.RutaIdePlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -57,7 +58,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class DLTKRutaHelper {
 
-  private static final String DLTK_TM = "scripts/dltk.tm"; //$NON-NLS-1$
+  private static final String DLTK_TM = "scripts/dltk" + RutaEngine.SCRIPT_FILE_EXTENSION; //$NON-NLS-1$
 
   public static List getScriptOutput(InputStream stream) {
     final List elements = new ArrayList();
@@ -158,8 +159,8 @@ public class DLTKRutaHelper {
     // return autoPath;
   }
 
-  public static RutaPackage[] getSrcs(IExecutionEnvironment exeEnv,
-          IFileHandle installLocation, EnvironmentVariable[] environment, String packageName) {
+  public static RutaPackage[] getSrcs(IExecutionEnvironment exeEnv, IFileHandle installLocation,
+          EnvironmentVariable[] environment, String packageName) {
     IDeployment deployment = exeEnv.createDeployment();
     IFileHandle script = deploy(deployment);
     if (script == null) {

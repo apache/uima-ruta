@@ -29,6 +29,7 @@ import org.antlr.runtime.BitSet;
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.CommonTokenStream;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.ide.core.parser.RutaSourceParser;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.parser.IModuleDeclaration;
@@ -46,7 +47,6 @@ public class RutaFormatter extends AbstractScriptFormatter {
   class DummyReporter implements IProblemReporter {
 
     private boolean gotProblems = false;
-
 
     public void reportProblem(IProblem problem) {
       setProblems(true);
@@ -84,7 +84,8 @@ public class RutaFormatter extends AbstractScriptFormatter {
     RutaSourceParser tmsp = new RutaSourceParser();
 
     DummyReporter reporter = new DummyReporter();
-    IModuleDeclaration md = tmsp.parse("format.tm", source, reporter);
+    IModuleDeclaration md = tmsp.parse("format" + RutaEngine.SCRIPT_FILE_EXTENSION, source,
+            reporter);
     CommonTokenStream tokenStream = tmsp.getTokenStream();
 
     if (!reporter.gotProblems()) {
@@ -94,7 +95,7 @@ public class RutaFormatter extends AbstractScriptFormatter {
       bs.add(org.apache.uima.ruta.parser.RutaParser.COMMENT);
       List<CommonToken> comments = tokenStream.getTokens(0, tokenStream.size(), bs);
 
-      final String output = format(input, (ModuleDeclaration)md, comments, indent);
+      final String output = format(input, (ModuleDeclaration) md, comments, indent);
       if (output != null) {
         if (!input.equals(output)) {
           return new ReplaceEdit(0, source.length(), output);

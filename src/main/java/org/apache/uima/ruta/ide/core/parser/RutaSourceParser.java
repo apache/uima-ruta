@@ -27,6 +27,7 @@ import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.Token;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.ide.core.IRutaKeywords;
 import org.apache.uima.ruta.ide.core.RutaKeywordsManager;
 import org.apache.uima.ruta.ide.core.builder.DescriptorManager;
@@ -123,7 +124,7 @@ public class RutaSourceParser extends AbstractSourceParser {
     if (fileName != null) {
       File fn = new File(fileName);
       name = fn.getName();
-      int lastIndexOf = name.lastIndexOf(".tm");
+      int lastIndexOf = name.lastIndexOf(RutaEngine.SCRIPT_FILE_EXTENSION);
       if(lastIndexOf>0) {
         name = name.substring(0, lastIndexOf);
       }

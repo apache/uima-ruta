@@ -89,7 +89,6 @@ public class RutaStatement extends Statement {
   @Override
   public int getKind() {
     return StatementConstants.S_BLOCK;
-    // return RutaConstants.TM_STATEMENT;
   }
 
   @Override
