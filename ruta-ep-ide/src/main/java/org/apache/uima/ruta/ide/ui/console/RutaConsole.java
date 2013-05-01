@@ -22,7 +22,7 @@ package org.apache.uima.ruta.ide.ui.console;
 import org.eclipse.dltk.console.ui.ScriptConsole;
 
 public class RutaConsole extends ScriptConsole {
-  public static final String CONSOLE_TYPE = "tm_console";
+  public static final String CONSOLE_TYPE = "ruta_console";
 
   public static final String CONSOLE_NAME = "Ruta Console";
 

@@ -26,7 +26,7 @@ public class RutaLaunchConfigurationConstants extends ScriptLaunchConfigurationC
 
   }
 
-  public static final String ID_TM_SCRIPT = "org.apache.uima.ruta.ide.launching.RutaLaunchConfigurationType"; //$NON-NLS-1$
+  public static final String ID_RUTA_SCRIPT = "org.apache.uima.ruta.ide.launching.RutaLaunchConfigurationType"; //$NON-NLS-1$
 
-  public static final String ID_TM_PROCESS_TYPE = "rutaInterpreter"; //$NON-NLS-1$
+  public static final String ID_RUTA_PROCESS_TYPE = "rutaInterpreter"; //$NON-NLS-1$
 }

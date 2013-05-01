@@ -28,7 +28,7 @@ public class RutaLaunchShortcut extends AbstractScriptLaunchShortcut {
   @Override
   protected ILaunchConfigurationType getConfigurationType() {
     return getLaunchManager().getLaunchConfigurationType(
-            RutaLaunchConfigurationConstants.ID_TM_SCRIPT);
+            RutaLaunchConfigurationConstants.ID_RUTA_SCRIPT);
   }
 
   @Override

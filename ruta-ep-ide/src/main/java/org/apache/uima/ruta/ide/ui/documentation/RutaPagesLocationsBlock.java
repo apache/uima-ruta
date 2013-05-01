@@ -345,8 +345,8 @@ public class RutaPagesLocationsBlock implements SelectionListener, ISelectionCha
   }
 
   public void setDefaults() {
-    String res = fStore.getDefaultString(RutaPreferenceConstants.DOC_TM_PAGES_LOCATIONS);
-    fStore.setValue(RutaPreferenceConstants.DOC_TM_PAGES_LOCATIONS, res);
+    String res = fStore.getDefaultString(RutaPreferenceConstants.DOC_RUTA_PAGES_LOCATIONS);
+    fStore.setValue(RutaPreferenceConstants.DOC_RUTA_PAGES_LOCATIONS, res);
     initialize();
   }
 
@@ -361,7 +361,7 @@ public class RutaPagesLocationsBlock implements SelectionListener, ISelectionCha
   }
 
   public void initialize() {
-    String value = fStore.getString(RutaPreferenceConstants.DOC_TM_PAGES_LOCATIONS);
+    String value = fStore.getString(RutaPreferenceConstants.DOC_RUTA_PAGES_LOCATIONS);
     try {
       this.folders = RutaPageFolder.readXML(value);
     } catch (IOException e) {
@@ -377,7 +377,7 @@ public class RutaPagesLocationsBlock implements SelectionListener, ISelectionCha
   public void performApply() {
     String xml = this.getFoldersAsXML();
     if (xml != null)
-      fStore.setValue(RutaPreferenceConstants.DOC_TM_PAGES_LOCATIONS, xml);
+      fStore.setValue(RutaPreferenceConstants.DOC_RUTA_PAGES_LOCATIONS, xml);
   }
 
   /*

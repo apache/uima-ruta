@@ -39,9 +39,9 @@ import org.eclipse.dltk.launching.LibraryLocation;
 
 public class GenericRutaInstallType extends AbstractInterpreterInstallType {
 
-  public static final String DBGP_FOR_TM_BUNDLE_ID = "org.apache.uima.ruta.ide.interpreter.dbgp";
+  public static final String DBGP_FOR_RUTA_BUNDLE_ID = "org.apache.uima.ruta.ide.interpreter.dbgp";
 
-  public static final String EMBEDDED_TM_BUNDLE_ID = "org.apache.uima.ruta.ide.interpreter";
+  public static final String EMBEDDED_RUTA_BUNDLE_ID = "org.apache.uima.ruta.ide.interpreter";
 
   public String getNatureId() {
     return RutaNature.NATURE_ID;
@@ -57,7 +57,7 @@ public class GenericRutaInstallType extends AbstractInterpreterInstallType {
     return new LibraryLocation[0];
   }
 
-  private static String[] possibleExes = { "tm" };
+  private static String[] possibleExes = { "ruta" };
 
   @Override
   protected String getPluginId() {

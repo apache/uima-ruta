@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 
 public class RutaDebugModelPresentation extends ScriptDebugModelPresentation {
-  private static final String TM_EDITOR_ID = "org.apache.uima.ruta.ide.ui.editor.RutaEditor";
+  private static final String RUTA_EDITOR_ID = "org.apache.uima.ruta.ide.ui.editor.RutaEditor";
 
   static ImageRegistry registry = new ImageRegistry(Display.getDefault());
 
@@ -145,6 +145,6 @@ public class RutaDebugModelPresentation extends ScriptDebugModelPresentation {
 
   @Override
   public String getEditorId(IEditorInput input, Object element) {
-    return TM_EDITOR_ID;
+    return RUTA_EDITOR_ID;
   }
 }

@@ -95,7 +95,7 @@ public class CreatedByViewPage extends Page implements ISelectionListener, ICasE
     Image image;
     String name;
 
-    desc = RutaAddonsPlugin.getImageDescriptor("/icons/tm_obj.png");
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/ruta_obj.png");
     image = desc.createImage();
     name = RUTA_RULE;
     images.put(name, image);

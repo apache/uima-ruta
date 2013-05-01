@@ -78,9 +78,6 @@ public class RutaRemoteTab extends AbstractLaunchConfigurationTab {
   }
 
   protected void createPathTemplate(Composite parent, Object data) {
-    Text text = new Text(parent, SWT.NONE);
-    text
-            .setText("${DEBUGGIN_ENGINE} -host-ide ${HOST} -port-ide ${PORT} -app-shell ${TM_INTERPRETER} -ide-key ${SESSION_ID} -app-file {TM_FILE}");
   }
 
   protected void createConnectionPropertiesGroup(Composite parent, Object data) {
