@@ -233,13 +233,13 @@ under the License.
     <buildParticipant
           class="org.apache.uima.ruta.ide.core.builder.RutaBuilder"
           id="org.apache.uima.ruta.ide.core.builder"
-          name="Ruta Descriptor Bulider"
+          name="UIMA Ruta Descriptor Builder"
           nature="org.apache.uima.ruta.ide.nature">
     </buildParticipant>
     <buildParticipant
           class="org.apache.uima.ruta.ide.validator.CheckValidator"
           id="org.apache.uima.ruta.ide.validator.Checker"
-          name="Ruta Validator"
+          name="UIMA Ruta Validator"
           nature="org.apache.uima.ruta.ide.nature">
     </buildParticipant>
   </extension>
@@ -314,7 +314,7 @@ under the License.
       class="org.apache.uima.ruta.ide.debug.ui.launcher.RutaLaunchShortcut"
       icon="icons/ruta.png"
       id="org.apache.uima.ruta.ide.debug.ui.launchShortcut"
-      label="Ruta"
+      label="UIMA Ruta"
       modes="run, debug">
       <contextualLaunch>
         <enablement>
@@ -506,7 +506,7 @@ under the License.
     <buildpathContainerPath
       class="org.apache.uima.ruta.ide.debug.ui.interpreters.RutaInterpreterContainerWizardPage"
       id="org.apache.uima.ruta.ide.launching.INTERPRETER_CONTAINER"
-      name="Ruta Interpreter Libraries"
+      name="UIMA Ruta Interpreter Libraries"
       nature="org.apache.uima.ruta.ide.nature" />
   </extension>
   <extension point="org.eclipse.ui.perspectiveExtensions">
@@ -643,7 +643,7 @@ under the License.
            delegate="org.apache.uima.ruta.ide.launching.RutaLaunchConfigurationDelegate"
            id="org.apache.uima.ruta.ide.launching.RutaLaunchConfigurationType"
            modes="run,debug"
-           name="Ruta"
+           name="UIMA Ruta"
            public="true"
            sourceLocatorId="rutaSourceLocator"
            sourcePathComputerId="rutaSourcePathComputer">
@@ -679,7 +679,7 @@ under the License.
            home="${eclipse_home}"
            id="org.apache.uima.ruta.ide.launching.embeddedRuta"
            interpreterInstallType="org.apache.uima.ruta.ide.debug.ui.launcher.GenericRutaInstallType"
-           name="Ruta Interpreter">
+           name="UIMA Ruta Interpreter">
      </interpreterInstall>
   </extension>
   <extension
@@ -754,7 +754,7 @@ under the License.
            class="org.apache.uima.ruta.ide.ui.ExplainPerspective"
            icon="icons/explain.png"
            id="org.apache.uima.ruta.ide.ui.explainPerspective"
-           name="Ruta Explain">
+           name="UIMA Ruta Explain">
      </perspective>
   </extension>
   <extension
@@ -814,7 +814,7 @@ under the License.
            finalPerspective="org.apache.uima.ruta.ide.ui.RutaPerspective"
            icon="$nl$/icons/newprj_wiz.png"
            id="org.apache.uima.ruta.ide.ui.wizards.RutaProjectWizard"
-           name="Ruta Project"
+           name="UIMA Ruta Project"
            preferredPerspectives="org.apache.uima.ruta.ide.ui.RutaPerspective"
            project="true">
         <description>
@@ -1106,7 +1106,7 @@ under the License.
               actionID="RulerClick"
               class="org.apache.uima.ruta.ide.ui.actions.RutaSelectRulerAction"
               id="org.apache.uima.ruta.ide.ui.rutaeditor.RutaSelectRulerAction"
-              label="Ruta Selection Ruler action">
+              label="UIMA Ruta Selection Ruler action">
         </action>
      </editorContribution>
   </extension>
@@ -1218,7 +1218,7 @@ under the License.
            category="org.apache.uima.ruta.ide.propertyPage"
            class="org.apache.uima.ruta.ide.ui.preferences.RutaFormatterPreferencePage"
            id="org.apache.uima.ruta.ide.propertyPage.formatter"
-           name="Ruta Formatter">
+           name="UIMA Ruta Formatter">
         <enabledWhen>
            <adapt
                  type="org.eclipse.core.resources.IProject">
