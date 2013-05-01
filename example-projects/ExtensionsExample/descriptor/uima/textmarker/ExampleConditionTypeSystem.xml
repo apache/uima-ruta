@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+    <name>uima.textmarker.ExampleConditionTypeSystem</name>
+    <imports>
+        <import location="../../BasicTypeSystem.xml"/>
+    </imports>
+    <types>
+        <typeDescription>
+            <name>uima.textmarker.ExampleCondition.BeforeMe</name>
+            <description>Type defined in uima.textmarker.ExampleCondition</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+    </types>
+</typeSystemDescription>
