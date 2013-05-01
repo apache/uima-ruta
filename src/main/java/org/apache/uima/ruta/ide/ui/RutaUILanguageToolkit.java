@@ -23,7 +23,7 @@ import org.apache.uima.ruta.ide.RutaIdePlugin;
 import org.apache.uima.ruta.ide.core.RutaConstants;
 import org.apache.uima.ruta.ide.core.RutaLanguageToolkit;
 import org.apache.uima.ruta.ide.core.parser.RutaParseUtils;
-import org.apache.uima.ruta.ide.parser.ast.TMTypeConstants;
+import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
 import org.apache.uima.ruta.ide.ui.editor.RutaEditor;
 import org.apache.uima.ruta.ide.ui.text.SimpleRutaSourceViewerConfiguration;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
@@ -62,7 +62,7 @@ public class RutaUILanguageToolkit extends AbstractDLTKUILanguageToolkit {
     protected void getFieldLabel(IField field, long flags, StringBuffer buf) {
       super.getFieldLabel(field, flags, buf);
       int i = RutaParseUtils.getTypeOfIModelElement(field);
-      String type = TMTypeConstants.typeStringOfInt.get(i);
+      String type = RutaTypeConstants.typeStringOfInt.get(i);
       if (type != null) {
         type = type.toLowerCase();
         buf.append(" : ");

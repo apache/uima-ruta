@@ -46,8 +46,8 @@ import org.apache.uima.ruta.ide.core.extensions.IIDENumberFunctionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IIDEStringFunctionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IIDETypeFunctionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IRutaExtension;
-import org.apache.uima.ruta.ide.parser.ast.TMActionConstants;
-import org.apache.uima.ruta.ide.parser.ast.TMTypeConstants;
+import org.apache.uima.ruta.ide.parser.ast.RutaActionConstants;
+import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaAction;
 import org.apache.uima.ruta.ide.parser.ast.RutaBlock;
 import org.apache.uima.ruta.ide.parser.ast.RutaCondition;
@@ -267,7 +267,7 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
       if (s instanceof RutaVariableReference) {
         RutaVariableReference ref = (RutaVariableReference) s;
         // filter AnnotationTypeReferences
-        if ((ref.getType() & TMTypeConstants.TM_TYPE_AT) != 0) {
+        if ((ref.getType() & RutaTypeConstants.RUTA_TYPE_AT) != 0) {
           return false;
         }
         if (!isVariableDeclared(ref)) {
@@ -307,13 +307,13 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
           }
         }
 
-        if (tma.getKind() == TMActionConstants.A_ASSIGN) {
+        if (tma.getKind() == RutaActionConstants.A_ASSIGN) {
           List<?> childs = tma.getChilds();
           try {
             RutaVariableReference ref = (RutaVariableReference) childs.get(0);
             RutaExpression expr = (RutaExpression) childs.get(1);
             int type = expr.getKind();
-            if (ref.getType() == TMTypeConstants.TM_TYPE_G) {
+            if (ref.getType() == RutaTypeConstants.RUTA_TYPE_G) {
               ref.setType(type);
             }
           } catch (IndexOutOfBoundsException e) {
@@ -387,22 +387,22 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
       if(s instanceof RutaFunction) {
         RutaFunction f = (RutaFunction) s;
         String name = f.getName();
-        if(s.getKind() == TMTypeConstants.TM_TYPE_AT) {
+        if(s.getKind() == RutaTypeConstants.RUTA_TYPE_AT) {
           IRutaExtension extension = typeFunctionExtensions.get(name);
           if (extension != null) {
             extension.checkSyntax(s, problemFactory, rep);
           }
-        } else if(s.getKind() == TMTypeConstants.TM_TYPE_B) {
+        } else if(s.getKind() == RutaTypeConstants.RUTA_TYPE_B) {
           IRutaExtension extension = booleanFunctionExtensions.get(name);
           if (extension != null) {
             extension.checkSyntax(s, problemFactory, rep);
           }
-        } else if(s.getKind() == TMTypeConstants.TM_TYPE_N) {
+        } else if(s.getKind() == RutaTypeConstants.RUTA_TYPE_N) {
           IRutaExtension extension = numberFunctionExtensions.get(name);
           if (extension != null) {
             extension.checkSyntax(s, problemFactory, rep);
           }
-        } else if(s.getKind() == TMTypeConstants.TM_TYPE_S) {
+        } else if(s.getKind() == RutaTypeConstants.RUTA_TYPE_S) {
           IRutaExtension extension = stringFunctionExtensions.get(name);
           if (extension != null) {
             extension.checkSyntax(s, problemFactory, rep);
@@ -529,13 +529,13 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
       int variableType = vt.intValue();
       int requiredType = ref.getType();
       // reject generic types
-      if ((requiredType & TMTypeConstants.TM_TYPE_G) != 0) {
+      if ((requiredType & RutaTypeConstants.RUTA_TYPE_G) != 0) {
         return true;
       }
       if ((variableType & requiredType) == 0) {
         String errMsg = errMsgHead + ref.getName() + "\" has type "
-                + TMTypeConstants.typeStringOfInt.get(variableType) + ". \nBut type "
-                + TMTypeConstants.typeStringOfInt.get(requiredType) + " required.";
+                + RutaTypeConstants.typeStringOfInt.get(variableType) + ". \nBut type "
+                + RutaTypeConstants.typeStringOfInt.get(requiredType) + " required.";
         IProblem problem = new RutaCheckerDefaultProblem(currentFile.getElementName(),
                 errMsg, ref, linetracker.getLineNumberOfOffset(ref.sourceStart()));
         rep.reportProblem(problem);
@@ -553,7 +553,7 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
         if (knownLocalTypeNames.contains(ref.getName())) {
           String errMsg = "\"" + ref.getName()
                   + "\" declared as a ANNOTATION_TYPE. Variable of type "
-                  + TMTypeConstants.typeStringOfInt.get(ref.getType()) + " required.";
+                  + RutaTypeConstants.typeStringOfInt.get(ref.getType()) + " required.";
           IProblem problem = new RutaCheckerDefaultProblem(currentFile.getElementName(),
                   errMsg, ref, linetracker.getLineNumberOfOffset(ref.sourceStart()));
           rep.reportProblem(problem);

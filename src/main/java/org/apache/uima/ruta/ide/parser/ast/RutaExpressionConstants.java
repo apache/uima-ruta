@@ -25,7 +25,7 @@ import java.util.Map;
 import org.apache.uima.ruta.parser.RutaLexer;
 import org.eclipse.dltk.ast.expressions.ExpressionConstants;
 
-public final class TMExpressionConstants implements ExpressionConstants {
+public final class RutaExpressionConstants implements ExpressionConstants {
   public static final int E_EXP = USER_EXPRESSION_START + RutaLexer.EXP;
 
   public static final int E_LOGN = USER_EXPRESSION_START + RutaLexer.LOGN;

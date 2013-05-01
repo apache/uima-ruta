@@ -42,7 +42,7 @@ import org.apache.uima.ruta.ide.core.extensions.ICompletionExtension;
 import org.apache.uima.ruta.ide.core.parser.RutaParseUtils;
 import org.apache.uima.ruta.ide.parser.ast.ComponentDeclaration;
 import org.apache.uima.ruta.ide.parser.ast.ComponentReference;
-import org.apache.uima.ruta.ide.parser.ast.TMTypeConstants;
+import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaAction;
 import org.apache.uima.ruta.ide.parser.ast.RutaCondition;
 import org.apache.uima.ruta.ide.parser.ast.RutaModuleDeclaration;
@@ -144,9 +144,9 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
           doCompletionOnComponentReference(module, parsed, startPart,
                   ((ComponentReference) node).getType(), startPart);
         } else if (node instanceof RutaAction) {
-          doCompletionOnAction(module, parsed, startPart, TMTypeConstants.TM_TYPE_A, startPart);
+          doCompletionOnAction(module, parsed, startPart, RutaTypeConstants.RUTA_TYPE_A, startPart);
         } else if (node instanceof RutaCondition) {
-          doCompletionOnCondition(module, parsed, startPart, TMTypeConstants.TM_TYPE_C, startPart);
+          doCompletionOnCondition(module, parsed, startPart, RutaTypeConstants.RUTA_TYPE_C, startPart);
         }
         // if(requestor.)
         // doCompletionOnKeyword(position, i, startPart);
@@ -309,7 +309,7 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
       } else if (iResource instanceof IFile) {
         IFile file = (IFile) iResource;
         if (file.getFileExtension().equals("tm")) {
-          result.add(prefix + file.getName().substring(0, file.getName().length() - 3));
+          result.add(prefix + file.getName().substring(0, file.getName().length() - 5));
         }
       }
     }
@@ -329,7 +329,7 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
           throws InvalidXMLException, IOException {
     IFolder folder = project.getProject().getFolder(
             RutaProjectUtils.getDefaultDescriptorLocation());
-    xmlFilePath = xmlFilePath.substring(0, xmlFilePath.length() - 3) + "TypeSystem.xml";
+    xmlFilePath = xmlFilePath.substring(0, xmlFilePath.length() - 5) + "TypeSystem.xml";
     return getTypes(folder, xmlFilePath);
   }
 
@@ -414,7 +414,7 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
   private void doCompletionOnVarRef(IModuleSource cu, RutaModuleDeclaration parsed,
           String startPart, int type, String complString) {
     Collection<String> types = new HashSet<String>();
-    if (type == TMTypeConstants.TM_TYPE_AT) {
+    if (type == RutaTypeConstants.RUTA_TYPE_AT) {
       try {
         IPath path = sourceModule.getModelElement().getPath();
         path = path.removeFirstSegments(2);
@@ -436,10 +436,10 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
           for (IField iField : fields) {
             SourceField f = (SourceField) iField;
             int fieldType = RutaParseUtils.getTypeOfIModelElement(f);
-            if (TMTypeConstants.TM_TYPE_N == type) {
-              if (fieldType == TMTypeConstants.TM_TYPE_N || fieldType == TMTypeConstants.TM_TYPE_I
-                      || fieldType == TMTypeConstants.TM_TYPE_D
-                      || fieldType == TMTypeConstants.TM_TYPE_F) {
+            if (RutaTypeConstants.RUTA_TYPE_N == type) {
+              if (fieldType == RutaTypeConstants.RUTA_TYPE_N || fieldType == RutaTypeConstants.RUTA_TYPE_I
+                      || fieldType == RutaTypeConstants.RUTA_TYPE_D
+                      || fieldType == RutaTypeConstants.RUTA_TYPE_F) {
                 addProposal(complString, f.getElementName(), CompletionProposal.LOCAL_VARIABLE_REF);
               }
             } else if (type == fieldType) {

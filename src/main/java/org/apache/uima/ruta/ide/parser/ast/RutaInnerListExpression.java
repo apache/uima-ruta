@@ -43,7 +43,7 @@ public class RutaInnerListExpression extends Expression {
 
   @Override
   public String getOperator() {
-    return TMExpressionConstants.E_INNERLIST_STR;
+    return RutaExpressionConstants.E_INNERLIST_STR;
   }
 
   /*
@@ -53,7 +53,7 @@ public class RutaInnerListExpression extends Expression {
    */
   @Override
   public int getKind() {
-    return TMExpressionConstants.E_INNERLIST;
+    return RutaExpressionConstants.E_INNERLIST;
   }
 
   /**

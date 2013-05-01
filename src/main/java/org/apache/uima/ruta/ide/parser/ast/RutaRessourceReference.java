@@ -29,7 +29,7 @@ public class RutaRessourceReference extends StringLiteral {
 
   @Override
   public int getKind() {
-    return TMExpressionConstants.E_RESSOURCE;
+    return RutaExpressionConstants.E_RESSOURCE;
   }
 
 }

@@ -29,7 +29,7 @@ public class RutaVariableReference extends VariableReference {
    * @param end
    * @param name
    * @param typedId
-   *          raw type id from {@link TMTypeConstants}
+   *          raw type id from {@link RutaTypeConstants}
    */
   public RutaVariableReference(int start, int end, String name, int typedId) {
     super(start, end, name);

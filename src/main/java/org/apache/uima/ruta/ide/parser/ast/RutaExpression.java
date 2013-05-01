@@ -33,7 +33,7 @@ public class RutaExpression extends Expression {
   private boolean inParantheses;
 
   /**
-   * see {@link TMTypeConstants}
+   * see {@link RutaTypeConstants}
    */
   private int type;
 

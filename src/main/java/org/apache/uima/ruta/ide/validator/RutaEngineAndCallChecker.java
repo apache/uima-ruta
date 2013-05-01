@@ -23,8 +23,8 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.uima.ruta.ide.parser.ast.TMActionConstants;
-import org.apache.uima.ruta.ide.parser.ast.TMStatementConstants;
+import org.apache.uima.ruta.ide.parser.ast.RutaActionConstants;
+import org.apache.uima.ruta.ide.parser.ast.RutaStatementConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaAction;
 import org.apache.uima.ruta.ide.parser.ast.RutaImportStatement;
 import org.apache.uima.util.InvalidXMLException;
@@ -73,11 +73,11 @@ public class RutaEngineAndCallChecker implements IBuildParticipant,
       this.scriptsInnerBlocks = new HashSet<String>();
       this.curFile = curFile;
 
-      if (curFile != null && curFile.endsWith(".tm")) {
-        scripts.add(curFile.substring(0, curFile.length() - 3));
+      if (curFile != null && curFile.endsWith(".ruta")) {
+        scripts.add(curFile.substring(0, curFile.length() - 5));
       }
       try {
-        String fnwe = curFile.substring(0, curFile.length() - 3);
+        String fnwe = curFile.substring(0, curFile.length() - 5);
         scriptsInnerBlocks.addAll(RutaCheckerUtils.importScript(fnwe, IModelElement.METHOD,
                 project));
       } catch (InvalidXMLException e) {
@@ -90,7 +90,7 @@ public class RutaEngineAndCallChecker implements IBuildParticipant,
     public boolean visit(Statement s) throws Exception {
       if (s instanceof RutaImportStatement) {
         // handle engine imports
-        if (((RutaImportStatement) s).getType() == TMStatementConstants.S_IMPORT_ENGINE) {
+        if (((RutaImportStatement) s).getType() == RutaStatementConstants.S_IMPORT_ENGINE) {
           SimpleReference sRef = (SimpleReference) ((RutaImportStatement) s).getExpression();
           if (RutaCheckerUtils.checkEngineImport(sRef.getName(), project)) {
             importEngine(sRef.getName());
@@ -100,7 +100,7 @@ public class RutaEngineAndCallChecker implements IBuildParticipant,
           }
         }
         // handle script imports
-        if (((RutaImportStatement) s).getType() == TMStatementConstants.S_IMPORT_SCRIPT) {
+        if (((RutaImportStatement) s).getType() == RutaStatementConstants.S_IMPORT_SCRIPT) {
           SimpleReference stRef = (SimpleReference) ((RutaImportStatement) s).getExpression();
           String sRefName = stRef.getName();
           try {
@@ -135,7 +135,7 @@ public class RutaEngineAndCallChecker implements IBuildParticipant,
     public boolean visit(Expression s) throws Exception {
       if (s instanceof RutaAction) {
         RutaAction action = (RutaAction) s;
-        if (action.getKind() == TMActionConstants.A_CALL) {
+        if (action.getKind() == RutaActionConstants.A_CALL) {
           // TODO see antlr grammar: no viable child defined!
           if (action.getChilds().size() > 0) {
             SimpleReference ref = (SimpleReference) action.getChilds().get(0);

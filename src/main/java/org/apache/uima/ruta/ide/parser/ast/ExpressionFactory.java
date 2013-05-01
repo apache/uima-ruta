@@ -38,7 +38,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
   /**
    * @param ref
    * @param kind
-   *          see {@link TMExpressionConstants}
+   *          see {@link RutaExpressionConstants}
    * @return
    */
   private static VariableReference newVariableReference(Token ref, int kind) {
@@ -47,7 +47,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
   }
 
   public static VariableReference createGenericVariableReference(Token ref) {
-    return newVariableReference(ref, TMTypeConstants.TM_TYPE_G);
+    return newVariableReference(ref, RutaTypeConstants.RUTA_TYPE_G);
   }
 
   public static RutaQuantifierLiteralExpression createQuantifierLiteralExpression(Token q,
@@ -63,7 +63,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
   public static Expression createBooleanExpression(Expression e) {
     if (e == null)
       return null;
-    return new RutaExpression(e.sourceStart(), e.sourceEnd(), e, TMTypeConstants.TM_TYPE_B);
+    return new RutaExpression(e.sourceStart(), e.sourceEnd(), e, RutaTypeConstants.RUTA_TYPE_B);
   }
 
   public static RutaBooleanNumberExpression createBooleanNumberExpression(Expression e1,
@@ -99,7 +99,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
 
   public static VariableReference createBooleanVariableReference(Token variableId) {
     // int bounds[] = getBounds(variableId);
-    return newVariableReference(variableId, TMTypeConstants.TM_TYPE_B);
+    return newVariableReference(variableId, RutaTypeConstants.RUTA_TYPE_B);
   }
 
   public static BooleanLiteral createSimpleBooleanExpression(Token bToken) {
@@ -110,24 +110,24 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
 
   // =====> TYPE-EXPRESSIONS <======
   public static Expression createTypeExpression(Expression e) {
-    return new RutaExpression(e.sourceStart(), e.sourceEnd(), e, TMTypeConstants.TM_TYPE_AT);
+    return new RutaExpression(e.sourceStart(), e.sourceEnd(), e, RutaTypeConstants.RUTA_TYPE_AT);
   }
 
   public static Expression createEmptyTypeExpression(Token token) {
     int bounds[] = getBounds(token);
-    return new RutaVariableReference(bounds[0], bounds[0], "", TMTypeConstants.TM_TYPE_AT);
+    return new RutaVariableReference(bounds[0], bounds[0], "", RutaTypeConstants.RUTA_TYPE_AT);
   }
   public static Expression createEmptyStringExpression(Token token) {
     int bounds[] = getBounds(token);
-    return new RutaVariableReference(bounds[0], bounds[0], "", TMTypeConstants.TM_TYPE_S);
+    return new RutaVariableReference(bounds[0], bounds[0], "", RutaTypeConstants.RUTA_TYPE_S);
   }
   public static Expression createEmptyNumberExpression(Token token) {
     int bounds[] = getBounds(token);
-    return new RutaVariableReference(bounds[0], bounds[0], "", TMTypeConstants.TM_TYPE_N);
+    return new RutaVariableReference(bounds[0], bounds[0], "", RutaTypeConstants.RUTA_TYPE_N);
   }
   public static Expression createEmptyBooleanExpression(Token token) {
     int bounds[] = getBounds(token);
-    return new RutaVariableReference(bounds[0], bounds[0], "", TMTypeConstants.TM_TYPE_B);
+    return new RutaVariableReference(bounds[0], bounds[0], "", RutaTypeConstants.RUTA_TYPE_B);
   }
   // public static Expression createSimpleTypeExpression(Token at, RutaBlock env) {
   // int bounds[] = getBounds(at);
@@ -135,13 +135,13 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
   // }
 
   public static VariableReference createAnnotationTypeVariableReference(Token atRef) {
-    return newVariableReference(atRef, TMTypeConstants.TM_TYPE_AT);
+    return newVariableReference(atRef, RutaTypeConstants.RUTA_TYPE_AT);
   }
 
   public static Expression createAnnotationTypeConstantReference(Token atBasic) {
     int bounds[] = getBounds(atBasic);
     return new RutaVariableReference(bounds[0], bounds[1], atBasic.getText(),
-            TMTypeConstants.TM_TYPE_AT);
+            RutaTypeConstants.RUTA_TYPE_AT);
     // RutaBasicAnnotationType(atBasic.getText(),bounds[0],bounds[1],bounds[0],bounds[1]);
   }
 
@@ -167,12 +167,12 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
   // public static RessourceReference createRessourceReference
 
   public static VariableReference createStringVariableReference(Token variableId) {
-    return newVariableReference(variableId, TMTypeConstants.TM_TYPE_S);
+    return newVariableReference(variableId, RutaTypeConstants.RUTA_TYPE_S);
   }
 
   // =====> NUMBER-EXPRESSIONS <======
   public static RutaExpression createNumberExpression(Expression e) {
-    return new RutaExpression(e.sourceStart(), e.sourceEnd(), e, TMTypeConstants.TM_TYPE_N);
+    return new RutaExpression(e.sourceStart(), e.sourceEnd(), e, RutaTypeConstants.RUTA_TYPE_N);
   }
 
   public static NumericLiteral createDecimalLiteral(Token decLit, Token minus) {
@@ -207,7 +207,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
    * @return
    */
   public static VariableReference createNumberVariableReference(Token numVarRef) {
-    return newVariableReference(numVarRef, TMTypeConstants.TM_TYPE_N);
+    return newVariableReference(numVarRef, RutaTypeConstants.RUTA_TYPE_N);
   }
 
   public static Expression createNegatedNumberExpression(Token minus, Expression expr) {
@@ -215,7 +215,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
     if (minus != null) {
       bounds[0] = ((CommonToken) minus).getStartIndex();
     }
-    return new RutaExpression(bounds[0], bounds[1], expr, TMTypeConstants.TM_TYPE_N);
+    return new RutaExpression(bounds[0], bounds[1], expr, RutaTypeConstants.RUTA_TYPE_N);
   }
 
   public static RutaBinaryArithmeticExpression createBinaryArithmeticExpr(Expression exprA,
@@ -258,21 +258,21 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
   }
 
   private static int convertOpToInt(Token opToken) {
-    return TMExpressionConstants.opIDs.get(opToken.getText());
+    return RutaExpressionConstants.opIDs.get(opToken.getText());
   }
 
   // TODO
   public static Expression createBooleanFunction(Token op, Expression e1, Expression e2) {
     return new RutaExpression(e1.sourceStart(), e2.sourceEnd(), null,
-            TMTypeConstants.TM_TYPE_B);
+            RutaTypeConstants.RUTA_TYPE_B);
   }
 
   public static Expression createListVariableReference(Token id) {
-    return newVariableReference(id, TMTypeConstants.TM_TYPE_WL);
+    return newVariableReference(id, RutaTypeConstants.RUTA_TYPE_WL);
   }
 
   public static Expression createTableVariableReference(Token id) {
-    return newVariableReference(id, TMTypeConstants.TM_TYPE_WT);
+    return newVariableReference(id, RutaTypeConstants.RUTA_TYPE_WT);
   }
 
   public static Expression createRessourceReference(Token path) {
@@ -348,19 +348,19 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
   }
 
   public static Expression createBooleanFunction(Token id, List<Expression> args) {
-    return createFunction(id, args, TMTypeConstants.TM_TYPE_B);
+    return createFunction(id, args, RutaTypeConstants.RUTA_TYPE_B);
   }
   
   public static Expression createNumberFunction(Token id, List<Expression> args) {
-    return createFunction(id, args, TMTypeConstants.TM_TYPE_N);
+    return createFunction(id, args, RutaTypeConstants.RUTA_TYPE_N);
   }
   
   public static Expression createStringFunction(Token id, List<Expression> args) {
-    return createFunction(id, args, TMTypeConstants.TM_TYPE_S);
+    return createFunction(id, args, RutaTypeConstants.RUTA_TYPE_S);
   }
   
   public static Expression createTypeFunction(Token id, List<Expression> args) {
-    return createFunction(id, args, TMTypeConstants.TM_TYPE_AT);
+    return createFunction(id, args, RutaTypeConstants.RUTA_TYPE_AT);
   }
   
   public static RutaFunction createFunction(Token type, List<Expression> exprsRaw, int kind) {

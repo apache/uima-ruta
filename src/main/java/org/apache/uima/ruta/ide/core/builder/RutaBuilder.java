@@ -155,7 +155,7 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
       String mainScript = relativeTo.toPortableString();
       mainScript = mainScript.replaceAll("/", ".");
       if (mainScript.endsWith(".tm")) {
-        mainScript = mainScript.substring(0, mainScript.length() - 3);
+        mainScript = mainScript.substring(0, mainScript.length() - 5);
       }
       build(basicTS, basicE, typeSystem, engine, sm, mainScript, scriptPaths, descriptorPaths);
 

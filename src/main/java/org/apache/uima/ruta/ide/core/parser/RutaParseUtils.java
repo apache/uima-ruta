@@ -21,7 +21,7 @@ package org.apache.uima.ruta.ide.core.parser;
 
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.Token;
-import org.apache.uima.ruta.ide.parser.ast.TMTypeConstants;
+import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
@@ -210,7 +210,7 @@ public class RutaParseUtils {
 
   /**
    * @param member
-   * @return see {@link TMTypeConstants}, -1 if not valid
+   * @return see {@link RutaTypeConstants}, -1 if not valid
    */
   public static final int getTypeOfIModelElement(IMember member) {
     int type;
@@ -219,7 +219,7 @@ public class RutaParseUtils {
     } catch (ModelException e) {
       return -1;
     }
-    type &= TMTypeConstants.TM_TYPE_BITMASK;
+    type &= RutaTypeConstants.RUTA_TYPE_BITMASK;
     return type;
   }
 }
