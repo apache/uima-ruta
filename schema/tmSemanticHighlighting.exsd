@@ -18,10 +18,10 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<schema targetNamespace="org.apache.uima.textmarker.ide" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="org.apache.uima.ruta.ide" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.apache.uima.textmarker.ide" id="tmSemanticHighlighting" name="tmSemanticHighlighting"/>
+         <meta.schema plugin="org.apache.uima.ruta.ide" id="tmSemanticHighlighting" name="tmSemanticHighlighting"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]
@@ -73,7 +73,7 @@ under the License.
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":org.apache.uima.textmarker.ide.ui.ISemanticHighlightingExtension"/>
+                  <meta.attribute kind="java" basedOn=":org.apache.uima.ruta.ide.ui.ISemanticHighlightingExtension"/>
                </appInfo>
             </annotation>
          </attribute>
