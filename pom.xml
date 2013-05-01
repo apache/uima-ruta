@@ -267,9 +267,9 @@
                   <exclude>marker-file-identifying-*</exclude>
                   <exclude>src/main/antlr3/org/apache/uima/ruta/ide/core/parser/RutaLexer.tokens</exclude> <!-- grammar tokens -->
                   <exclude>src/main/antlr3/org/apache/uima/ruta/ide/core/parser/RutaParser.tokens</exclude> <!-- grammar tokens -->
-                  <exclude>src/main/resources/org/apache/uima/ruta/ide/formatter/*.tm</exclude> <!-- preview file -->
-                  <exclude>src/main/resources/org/apache/uima/ruta/ide/formatter/preferences/*.tm</exclude> <!-- preview file -->
-                  <exclude>src/main/resources/org/apache/uima/ruta/ide/launching/*.tm</exclude> <!-- preview file -->
+                  <exclude>src/main/resources/org/apache/uima/ruta/ide/formatter/*.ruta</exclude> <!-- preview file -->
+                  <exclude>src/main/resources/org/apache/uima/ruta/ide/formatter/preferences/*.ruta</exclude> <!-- preview file -->
+                  <exclude>src/main/resources/org/apache/uima/ruta/ide/launching/*.ruta</exclude> <!-- preview file -->
                   <exclude>src/main/resources/org/apache/uima/ruta/ide/ui/documentation/*.html</exclude> <!-- hover documentation -->
                   <exclude>src/main/resources/org/apache/uima/ruta/ide/ui/preferences/*.txt</exclude> <!-- preview file -->
                   <exclude>issuesFixed/**</exclude>

@@ -21,10 +21,10 @@ under the License.
 <?eclipse version="3.4"?>
 <plugin
 >
-  <extension-point id="tmCommandProcessor" name="tmCommandProcessor" schema="schema/tmCommandProcessor.exsd"/>
-   <extension-point id="tmCommandDetector" name="tmCommandDetector" schema="schema/tmCommandDetector.exsd"/>
-   <extension-point id="tmkeywords" name="tmkeywords" schema="schema/tmkeywords.exsd"/>
-   <extension-point id="tmExtension" name="tmExtension" schema="schema/tmExtension.exsd"/>
+  <extension-point id="rutaCommandProcessor" name="rutaCommandProcessor" schema="schema/rutaCommandProcessor.exsd"/>
+   <extension-point id="rutaCommandDetector" name="rutaCommandDetector" schema="schema/rutaCommandDetector.exsd"/>
+   <extension-point id="rutakeywords" name="rutakeywords" schema="schema/rutakeywords.exsd"/>
+   <extension-point id="rutaExtension" name="rutaExtension" schema="schema/rutaExtension.exsd"/>
    <extension-point id="conditionExtension" name="conditionExtension" schema="schema/conditionExtension.exsd"/>
    <extension-point id="actionExtension" name="actionExtension" schema="schema/actionExtension.exsd"/>
    <extension-point id="engineExtension" name="engineExtension" schema="schema/engineExtension.exsd"/>
@@ -32,8 +32,8 @@ under the License.
    <extension-point id="typeFunctionExtension" name="typeFunctionExtension" schema="schema/typeFunctionExtension.exsd"/>
    <extension-point id="numberFunctionExtension" name="numberFunctionExtension" schema="schema/numberFunctionExtension.exsd"/>
    <extension-point id="stringFunctionExtension" name="stringFunctionExtension" schema="schema/stringFunctionExtension.exsd"/>
-   <extension-point id="tmSemanticHighlighting" name="tmSemanticHighlighting" schema="schema/tmSemanticHighlighting.exsd"/>
-   <extension-point id="tmTestEngine" name="tmTestEngine" schema="schema/tmTestEngine.exsd"/>
+   <extension-point id="rutaSemanticHighlighting" name="rutaSemanticHighlighting" schema="schema/rutaSemanticHighlighting.exsd"/>
+   <extension-point id="rutaTestEngine" name="rutaTestEngine" schema="schema/rutaTestEngine.exsd"/>
    <extension
          id="nature"
          point="org.eclipse.core.resources.natures">
@@ -100,9 +100,9 @@ under the License.
         point="org.eclipse.core.runtime.contentTypes">
      <content-type
            base-type="org.eclipse.core.runtime.text"
-           file-extensions="tm"
-           id="org.apache.uima.ruta.ide.tmContentType"
-           name="%tmContentType"
+           file-extensions="ruta"
+           id="org.apache.uima.ruta.ide.rutaContentType"
+           name="%rutaContentType"
            priority="high">
         <describer
               class="org.apache.uima.ruta.ide.core.RutaContentDescriber"
@@ -123,63 +123,63 @@ under the License.
       </parserContribution>
    </extension>
    <extension
-         point="org.apache.uima.ruta.ide.tmkeywords">
+         point="org.apache.uima.ruta.ide.rutakeywords">
       <keywords
             class="org.apache.uima.ruta.ide.core.RutaKeywords">
       </keywords>
    </extension>
  <extension
-         name="tm commands"
-         point="org.apache.uima.ruta.ide.tmCommandProcessor">
+         name="ruta commands"
+         point="org.apache.uima.ruta.ide.rutaCommandProcessor">
       <processor
-            class="org.apache.uima.ruta.ide.core.parser.processors.tm.RutaNamespaceProcessor"
+            class="org.apache.uima.ruta.ide.core.parser.processors.RutaNamespaceProcessor"
             id="namespace"></processor>
       <processor
-            class="org.apache.uima.ruta.ide.core.parser.processors.tm.RutaProcProcessor"
+            class="org.apache.uima.ruta.ide.core.parser.processors.RutaProcProcessor"
             id="proc">
       </processor>
       <processor
-            class="org.apache.uima.ruta.ide.core.parser.processors.tm.RutaVariableProcessor"
+            class="org.apache.uima.ruta.ide.core.parser.processors.RutaVariableProcessor"
             id="set">
       </processor>
       <processor
-            class="org.apache.uima.ruta.ide.core.parser.processors.tm.RutaUpvarProcessor"
+            class="org.apache.uima.ruta.ide.core.parser.processors.RutaUpvarProcessor"
             id="upvar">
       </processor>
       <processor
-            class="org.apache.uima.ruta.ide.core.parser.processors.tm.RutaGlobalVariableProcessor"
+            class="org.apache.uima.ruta.ide.core.parser.processors.RutaGlobalVariableProcessor"
             id="global">
       </processor>
       <processor
-            class="org.apache.uima.ruta.ide.core.parser.processors.tm.RutaPackageProcessor"
+            class="org.apache.uima.ruta.ide.core.parser.processors.RutaPackageProcessor"
             id="package">
       </processor>
       <processor
-            class="org.apache.uima.ruta.ide.core.parser.processors.tm.RutaCatchProcessor"
+            class="org.apache.uima.ruta.ide.core.parser.processors.RutaCatchProcessor"
             id="catch">
       </processor>
       <processor
-            class="org.apache.uima.ruta.ide.core.parser.processors.tm.RutaIfProcessor"
+            class="org.apache.uima.ruta.ide.core.parser.processors.RutaIfProcessor"
             id="if">
       </processor>
       <processor
-            class="org.apache.uima.ruta.ide.core.parser.processors.tm.RutaNamespaceVariableProcessor"
+            class="org.apache.uima.ruta.ide.core.parser.processors.RutaNamespaceVariableProcessor"
             id="variable">
       </processor>
       <processor
-            class="org.apache.uima.ruta.ide.core.parser.processors.tm.RutaSwitchCommandProcessor"
+            class="org.apache.uima.ruta.ide.core.parser.processors.RutaSwitchCommandProcessor"
             id="switch">
       </processor>
       <processor
-            class="org.apache.uima.ruta.ide.core.parser.processors.tm.RutaForCommandProcessor"
+            class="org.apache.uima.ruta.ide.core.parser.processors.RutaForCommandProcessor"
             id="for">
       </processor>
       <processor
-            class="org.apache.uima.ruta.ide.core.parser.processors.tm.RutaForeachCommandProcessor"
+            class="org.apache.uima.ruta.ide.core.parser.processors.RutaForeachCommandProcessor"
             id="foreach">
       </processor>
       <processor
-            class="org.apache.uima.ruta.ide.core.parser.processors.tm.RutaWhileCommandProcessor"
+            class="org.apache.uima.ruta.ide.core.parser.processors.RutaWhileCommandProcessor"
             id="while">
       </processor>
    </extension>
@@ -263,7 +263,7 @@ under the License.
         helpContextId="show_functions_context"
         icon="icons/ruta.png"
         label="%showStaticAction.label"
-        menubarPath="org.apache.uima.ruta.ide.debug.ui.menu.VariableView/tm"
+        menubarPath="org.apache.uima.ruta.ide.debug.ui.menu.VariableView/ruta"
         tooltip="%showStaticAction.tooltip">
       </action>
     </viewContribution>
@@ -299,13 +299,13 @@ under the License.
   <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
     <launchConfigurationTypeImage
       icon="icons/ruta.png"
-      configTypeID="org.apache.uima.ruta.ide.launching.TMLaunchConfigurationType"
-      id="org.apache.uima.ruta.ide.debug.ui.launchConfigurationTypeImage.localTMScript">
+      configTypeID="org.apache.uima.ruta.ide.launching.RutaLaunchConfigurationType"
+      id="org.apache.uima.ruta.ide.debug.ui.launchConfigurationTypeImage.localRutaScript">
     </launchConfigurationTypeImage>
     <!--launchConfigurationTypeImage
-      configTypeID="org.apache.uima.ruta.ide.launching.TMRemoteLaunchConfigurationType"
+      configTypeID="org.apache.uima.ruta.ide.launching.RutaRemoteLaunchConfigurationType"
       icon="icons/ruta.png"
-      id="org.apache.uima.ruta.ide.debug.ui.launchConfigurationTypeImage.remoteTMScript">
+      id="org.apache.uima.ruta.ide.debug.ui.launchConfigurationTypeImage.remoteRutaScript">
       </launchConfigurationTypeImage-->
   </extension>
 
@@ -456,7 +456,7 @@ under the License.
         <or>
           <test
             property="org.eclipse.debug.ui.processTypeTest"
-            value="tmInterpreter" />
+            value="rutaInterpreter" />
         </or>
       </enablement>
     </consolePatternMatchListener>
@@ -465,9 +465,9 @@ under the License.
   <!--extension
     point="org.eclipse.debug.ui.launchConfigurationTabGroups">
     <launchConfigurationTabGroup
-    type="org.apache.uima.ruta.ide.launching.localTMApplication"
+    type="org.apache.uima.ruta.ide.launching.localRutaApplication"
     class="org.apache.uima.ruta.ide.debug.ui.launchConfiguration.RutaTabGroup"
-    id="org.apache.uima.ruta.ide.debug.ui.TMTabGroup">
+    id="org.apache.uima.ruta.ide.debug.ui.RutaTabGroup">
     <launchMode 
     mode="debug"
     perspective="org.eclipse.debug.ui.DebugPerspective"
@@ -645,23 +645,23 @@ under the License.
            modes="run,debug"
            name="Ruta"
            public="true"
-           sourceLocatorId="tmSourceLocator"
-           sourcePathComputerId="tmSourcePathComputer">
+           sourceLocatorId="rutaSourceLocator"
+           sourcePathComputerId="rutaSourcePathComputer">
      </launchConfigurationType>
   </extension>
   <extension
         point="org.eclipse.debug.core.sourcePathComputers">
      <sourcePathComputer
            class="org.apache.uima.ruta.ide.launching.RutaSourcePathComputer"
-           id="tmSourcePathComputer">
+           id="rutaSourcePathComputer">
      </sourcePathComputer>
   </extension>
   <extension
         point="org.eclipse.debug.core.sourceLocators">
      <sourceLocator
            class="org.apache.uima.ruta.ide.launching.RutaSourceLookupDirector"
-           id="tmSourceLocator"
-           name="org.apache.uima.ruta.ide.launching.tmSourceLocator">
+           id="rutaSourceLocator"
+           name="org.apache.uima.ruta.ide.launching.rutaSourceLocator">
      </sourceLocator>
   </extension>
   <extension
@@ -725,7 +725,7 @@ under the License.
            canSearchEnclosingProjects="true"
            class="org.apache.uima.ruta.ide.ui.search.RutaSearchPage"
            enabled="true"
-           extensions="tm:90, exp:30"
+           extensions="ruta:90, exp:30"
            icon="$nl$/icons/search_obj.png"
            id="org.eclipse.dltk.ui.RutaSearchPage"
            label="%RutaSearchPage.label"
@@ -746,7 +746,7 @@ under the License.
         point="org.eclipse.ui.perspectives">
      <perspective
            class="org.apache.uima.ruta.ide.ui.RutaPerspective"
-           icon="$nl$/icons/tm_persp.png"
+           icon="$nl$/icons/ruta_persp.png"
            id="org.apache.uima.ruta.ide.ui.RutaPerspective"
            name="%RutaPerspective.name">
      </perspective>
@@ -826,9 +826,9 @@ under the License.
            class="org.apache.uima.ruta.ide.ui.wizards.RutaPackageCreationWizard"
            icon="icons/newpack_wiz.gif"
            id="org.apache.uima.ruta.ide.ui.wizards.NewPackageCreationWizard"
-           name="%NewTMPackage.label">
+           name="%NewRutaPackage.label">
         <description>
-           %NewTMPackage.description
+           %NewRutaPackage.description
         </description>
      </wizard>
      <wizard
@@ -846,12 +846,12 @@ under the License.
            class="org.apache.uima.ruta.ide.ui.editor.RutaEditor"
            contributorClass="org.eclipse.dltk.internal.ui.editor.SourceModuleEditorActionContributor"
            default="true"
-           extensions="tm"
-           icon="$nl$/icons/tm_obj.png"
+           extensions="ruta"
+           icon="$nl$/icons/ruta_obj.png"
            id="org.apache.uima.ruta.ide.ui.editor.RutaEditor"
            name="%RutaEditor.name">
         <contentTypeBinding
-              contentTypeId="org.apache.uima.ruta.ide.tmContentType">
+              contentTypeId="org.apache.uima.ruta.ide.rutaContentType">
         </contentTypeBinding>
      </editor>
   </extension>
@@ -859,7 +859,7 @@ under the License.
         point="org.eclipse.ui.editors.templates">
      <contextType
            class="org.apache.uima.ruta.ide.ui.templates.RutaUniversalTemplateContextType"
-           id="tmUniversalTemplateContextType"
+           id="rutaUniversalTemplateContextType"
            name="%RutaTemplateContext.name">
      </contextType>
      <include
@@ -875,7 +875,7 @@ under the License.
      <view
            category="org.apache.uima.ruta.ide.ui"
            class="org.apache.uima.ruta.ide.ui.infoviews.RutaDocumentationView"
-           icon="$nl$/icons/tmdoc.png"
+           icon="$nl$/icons/rutadoc.png"
            id="org.apache.uima.ruta.ide.ui.RutaDocumentationView"
            name="%RutaDocumentationView.name">
      </view>
@@ -1036,7 +1036,7 @@ under the License.
               type="__dftl_partition_content_type">
         </partition>
         <partition
-              type="__tm_string">
+              type="__ruta_string">
         </partition>
      </scriptCompletionProposalComputer>
   </extension>
@@ -1049,7 +1049,7 @@ under the License.
      </provider>
      <provider
            class="org.apache.uima.ruta.ide.ui.documentation.RutaPagesDocumentationProvider"
-           id="org.apache.uima.ruta.ide.textmarke.ui.RutaPagesDocumentationProvider"
+           id="org.apache.uima.ruta.ide.ruta.ui.RutaPagesDocumentationProvider"
            nature="org.apache.uima.ruta.ide.nature">
      </provider>
      <provider
@@ -1105,7 +1105,7 @@ under the License.
         <action
               actionID="RulerClick"
               class="org.apache.uima.ruta.ide.ui.actions.RutaSelectRulerAction"
-              id="org.apache.uima.ruta.ide.ui.tmeditor.RutaSelectRulerAction"
+              id="org.apache.uima.ruta.ide.ui.rutaeditor.RutaSelectRulerAction"
               label="Ruta Selection Ruler action">
         </action>
      </editorContribution>
@@ -1391,7 +1391,7 @@ under the License.
   </extension>
   -->
   <extension
-        point="org.apache.uima.ruta.ide.tmSemanticHighlighting">
+        point="org.apache.uima.ruta.ide.rutaSemanticHighlighting">
      <highlightingExtension
            class="org.apache.uima.ruta.ide.ui.DefaultRutaSemanticHighlightingExtension">
      </highlightingExtension>
