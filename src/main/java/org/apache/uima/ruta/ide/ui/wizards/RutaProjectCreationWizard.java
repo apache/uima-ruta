@@ -140,6 +140,7 @@ public class RutaProjectCreationWizard extends ProjectWizard {
   public static void copyDescriptors(IFolder descFolder) {
     File descDir = descFolder.getLocation().toFile();
     File utilsDir = new File(descFolder.getLocation().toFile(), "utils/");
+    utilsDir.mkdirs();
     copy(descDir, "BasicTypeSystem.xml");
     copy(descDir, "BasicEngine.xml");
     copy(descDir, "InternalTypeSystem.xml");
