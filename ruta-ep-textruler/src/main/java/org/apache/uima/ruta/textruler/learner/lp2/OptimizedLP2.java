@@ -32,6 +32,7 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.textruler.TextRulerPlugin;
 import org.apache.uima.ruta.textruler.core.TextRulerAnnotation;
 import org.apache.uima.ruta.textruler.core.TextRulerExample;
@@ -177,7 +178,8 @@ public class OptimizedLP2 extends BasicLP2 {
       });
       String startend = e.getTarget().type == MLTargetType.SINGLE_LEFT_BOUNDARY ? "left_"
               : "right_";
-      File file = new File(tempDirectory() + startend + "generalizations" + roundNumber + ".tm");
+      File file = new File(tempDirectory() + startend + "generalizations" + roundNumber
+              + RutaEngine.SCRIPT_FILE_EXTENSION);
       StringBuffer str = new StringBuffer();
       for (TextRulerRule rule : debugRuleCollector) {
         str.append(rule.getCoveringStatistics() + "\t\t" + rule.getRuleString() + "\n");
@@ -359,8 +361,8 @@ public class OptimizedLP2 extends BasicLP2 {
     boolean isBestRule = !(tooFewPositives || tooManyErrors);
 
     if (TextRulerToolkit.DEBUG && SAVE_DEBUG_INFO_IN_TEMPFOLDER)
-      TextRulerToolkit.appendStringToFile(tempDirectory() + "bestcandidates.tm",
-              newRule.getRuleString() + "\n");
+      TextRulerToolkit.appendStringToFile(tempDirectory() + "bestcandidates"
+              + RutaEngine.SCRIPT_FILE_EXTENSION, newRule.getRuleString() + "\n");
 
     if (isBestRule) {
       currentBestRules.add(newRule);
@@ -393,8 +395,8 @@ public class OptimizedLP2 extends BasicLP2 {
         // + " ; "+newCTXRule.getCoveringStatistics());
 
         if (TextRulerToolkit.DEBUG && SAVE_DEBUG_INFO_IN_TEMPFOLDER)
-          TextRulerToolkit.appendStringToFile(tempDirectory() + "ctxcandidates.tm",
-                  newCTXRule.getRuleString() + "\n");
+          TextRulerToolkit.appendStringToFile(tempDirectory() + "ctxcandidates"
+                  + RutaEngine.SCRIPT_FILE_EXTENSION, newCTXRule.getRuleString() + "\n");
 
         if (isGoodCTXRule) {
           currentContextualRules.add(newCTXRule);
@@ -473,7 +475,7 @@ public class OptimizedLP2 extends BasicLP2 {
     CAS docCas = example.getDocumentCAS();
     TextRulerAnnotation exampleAnnotation = example.getAnnotation();
     TypeSystem ts = docCas.getTypeSystem();
-    Type tokensRootType = ts.getType(TextRulerToolkit.TM_ANY_TYPE_NAME);
+    Type tokensRootType = ts.getType(TextRulerToolkit.RUTA_ANY_TYPE_NAME);
 
     boolean isLeftBoundary = (target.type == MLTargetType.SINGLE_LEFT_BOUNDARY || target.type == MLTargetType.SINGLE_LEFT_CORRECTION);
     int thePosition = isLeftBoundary ? exampleAnnotation.getBegin() : exampleAnnotation.getEnd();

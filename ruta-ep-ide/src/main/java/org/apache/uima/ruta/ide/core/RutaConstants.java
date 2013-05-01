@@ -23,5 +23,5 @@ public class RutaConstants {
   protected RutaConstants() {
   }
 
-  public final static String TM_PARTITIONING = "__ruta_partitioning";
+  public final static String RUTA_PARTITIONING = "__ruta_partitioning";
 }

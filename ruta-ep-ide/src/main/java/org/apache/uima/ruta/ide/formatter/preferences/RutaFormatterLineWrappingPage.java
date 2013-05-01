@@ -21,6 +21,7 @@ package org.apache.uima.ruta.ide.formatter.preferences;
 
 import java.net.URL;
 
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.ide.formatter.RutaFormatterConstants;
 import org.eclipse.dltk.ui.formatter.FormatterModifyTabPage;
 import org.eclipse.dltk.ui.formatter.IFormatterControlManager;
@@ -83,7 +84,7 @@ public class RutaFormatterLineWrappingPage extends FormatterModifyTabPage {
 
   @Override
   protected URL getPreviewContent() {
-    return getClass().getResource("wrapping-preview.tm"); //$NON-NLS-1$
+    return getClass().getResource("wrapping-preview"+RutaEngine.SCRIPT_FILE_EXTENSION); //$NON-NLS-1$
   }
 
 }

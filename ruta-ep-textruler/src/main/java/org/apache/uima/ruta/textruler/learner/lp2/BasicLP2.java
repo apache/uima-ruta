@@ -32,6 +32,7 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.textruler.TextRulerPlugin;
 import org.apache.uima.ruta.textruler.core.TextRulerAnnotation;
 import org.apache.uima.ruta.textruler.core.TextRulerBasicLearner;
@@ -301,15 +302,16 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
 
   protected void addToFinalContextRulesPool(LP2Rule rule) {
     if (TextRulerToolkit.DEBUG)
-      TextRulerToolkit.appendStringToFile(tempDirectory() + "ctxpool.tm", rule.getRuleString()
-              + "\n");
+      TextRulerToolkit.appendStringToFile(tempDirectory() + "ctxpool"
+              + RutaEngine.SCRIPT_FILE_EXTENSION, rule.getRuleString() + "\n");
     String slotName = rule.getTarget().getSingleSlotRawTypeName();
     if (!contextRulesPoolMap.get(slotName).contains(rule)) {
       contextRulesPoolMap.get(slotName).add(rule);
       // TextRulerToolkit.log("CONTEXT RULE: "+rule.getRuleString()+" ; "+rule.getCoveringStatistics());
     } else {
       if (TextRulerToolkit.DEBUG) {
-        TextRulerToolkit.appendStringToFile(tempDirectory() + "ctxpool.tm", "\tDUPLICATE\n");
+        TextRulerToolkit.appendStringToFile(tempDirectory() + "ctxpool"
+                + RutaEngine.SCRIPT_FILE_EXTENSION, "\tDUPLICATE\n");
       }
     }
 
@@ -317,8 +319,8 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
 
   protected void addToFinalBestRulesPool(LP2Rule rule) {
     if (TextRulerToolkit.DEBUG && false)
-      TextRulerToolkit.appendStringToFile(tempDirectory() + "bestpool.tm", rule.getRuleString()
-              + "\n");
+      TextRulerToolkit.appendStringToFile(tempDirectory() + "bestpool"
+              + RutaEngine.SCRIPT_FILE_EXTENSION, rule.getRuleString() + "\n");
     String slotName = rule.getTarget().getSingleSlotRawTypeName();
     if (!bestRulesPoolMap.get(slotName).contains(rule)) {
       bestRulesPoolMap.get(slotName).add(rule);
@@ -331,7 +333,8 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
     } else {
       if (TextRulerToolkit.DEBUG && false) {
         TextRulerToolkit.log("KANN SOWAS PASSIEREN ??");
-        TextRulerToolkit.appendStringToFile(tempDirectory() + "bestpool.tm", "\tDUPLICATE\n");
+        TextRulerToolkit.appendStringToFile(tempDirectory() + "bestpool"
+                + RutaEngine.SCRIPT_FILE_EXTENSION, "\tDUPLICATE\n");
       }
     }
 
@@ -410,7 +413,7 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
   }
 
   private Integer getMaxTokens(String slot) {
-    if(slotMaximumTokenCountMap.get(slot) == null) {
+    if (slotMaximumTokenCountMap.get(slot) == null) {
       return 0;
     }
     return slotMaximumTokenCountMap.get(slot);
@@ -457,10 +460,11 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
       TextRulerExampleDocument[] sortedDocs = exampleDocuments
               .getSortedDocumentsInCacheOptimizedOrder();
       TypeSystem ts = sortedDocs[0].getCAS().getTypeSystem();
-      Type tokensRootType = ts.getType(TextRulerToolkit.TM_ANY_TYPE_NAME);
+      Type tokensRootType = ts.getType(TextRulerToolkit.RUTA_ANY_TYPE_NAME);
 
       // String allRulesContent = getResultString();
-      String allRulesContent = FileUtils.file2String(new File("/testinput/testrules/rules.tm"));
+      String allRulesContent = FileUtils.file2String(new File("/testinput/testrules/rules"
+              + RutaEngine.SCRIPT_FILE_EXTENSION));
       FileUtils.saveString2File(allRulesContent, new File(getTempRulesFileName()));
 
       CAS testCAS = getTestCAS();

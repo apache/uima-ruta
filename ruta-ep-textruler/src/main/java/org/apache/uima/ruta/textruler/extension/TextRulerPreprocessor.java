@@ -53,27 +53,6 @@ public class TextRulerPreprocessor {
 
     try {
       outputFolder.mkdir();
-      // FileUtils.saveString2File("PACKAGE org.apache.uima;\n\n", new
-      // File(tmpDir+"preprocess.tm"));
-      // ae.setConfigParameterValue(RutaEngine.SCRIPT_LOCATION,
-      // tmpDir+"preprocess.tm");
-      // IPath path = new Path(tmFile);
-      // IPath scriptRoot = new Path(tmFile);
-      // while (!scriptRoot.lastSegment().equals(RutaProjectUtils.getDefaultScriptLocation()))
-      // {
-      // scriptRoot = scriptRoot.removeLastSegments(1);
-      // }
-      // IPath makeRelativeTo = path.makeRelativeTo(scriptRoot);
-      //
-      // String replaceAll =
-      // makeRelativeTo.removeFileExtension().toPortableString().replaceAll("[/]",
-      // ".");
-      // Object configParameterValue = ae.getConfigParameterValue(RutaEngine.MAIN_SCRIPT);
-      // ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, replaceAll);
-      // ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { scriptRoot
-      // .toPortableString() });
-      // ae.setConfigParameterValue(RutaEngine.USE_SCANNER, true);
-      // ae.reconfigure();
     } catch (Exception e) {
       TextRulerPlugin.error(e);
       return null;

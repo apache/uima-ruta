@@ -613,7 +613,7 @@ public class Whisk extends TextRulerBasicLearner {
 
   public List<WhiskRuleItem> getAllTermsOfExample(TextRulerExample example) {
     CAS cas = example.getDocumentCAS();
-    Type tokensRootType = cas.getTypeSystem().getType(TextRulerToolkit.TM_ANY_TYPE_NAME);
+    Type tokensRootType = cas.getTypeSystem().getType(TextRulerToolkit.RUTA_ANY_TYPE_NAME);
     List<AnnotationFS> all = TextRulerToolkit.getAnnotationsWithinBounds(cas, 0, cas
             .getDocumentText().length() + 1, TextRulerToolkit.getFilterSetWithSlotNames(slotNames,
             filterSet), tokensRootType);

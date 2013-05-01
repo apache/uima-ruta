@@ -90,7 +90,7 @@ public class RutaUILanguageToolkit extends AbstractDLTKUILanguageToolkit {
 
   @Override
   public String getPartitioningId() {
-    return RutaConstants.TM_PARTITIONING;
+    return RutaConstants.RUTA_PARTITIONING;
   }
 
   @Override

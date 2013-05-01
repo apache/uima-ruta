@@ -26,35 +26,35 @@ public final class RutaColorConstants {
   private RutaColorConstants() {
   }
 
-  public static final String TM_STRING = DLTKColorConstants.DLTK_STRING;
+  public static final String RUTA_STRING = DLTKColorConstants.DLTK_STRING;
 
-  public static final String TM_SINGLE_LINE_COMMENT = DLTKColorConstants.DLTK_SINGLE_LINE_COMMENT;
+  public static final String RUTA_SINGLE_LINE_COMMENT = DLTKColorConstants.DLTK_SINGLE_LINE_COMMENT;
 
-  public static final String TM_DOC_COMMENT = DLTKColorConstants.DLTK_DOC;
+  public static final String RUTA_DOC_COMMENT = DLTKColorConstants.DLTK_DOC;
 
-  public static final String TM_NUMBER = DLTKColorConstants.DLTK_NUMBER;
+  public static final String RUTA_NUMBER = DLTKColorConstants.DLTK_NUMBER;
 
-  public static final String TM_KEYWORD = DLTKColorConstants.DLTK_KEYWORD;
+  public static final String RUTA_KEYWORD = DLTKColorConstants.DLTK_KEYWORD;
 
-  public static final String TM_KEYWORD_RETURN = DLTKColorConstants.DLTK_KEYWORD_RETURN;
+  public static final String RUTA_KEYWORD_RETURN = DLTKColorConstants.DLTK_KEYWORD_RETURN;
 
-  public static final String TM_DEFAULT = DLTKColorConstants.DLTK_DEFAULT;
+  public static final String RUTA_DEFAULT = DLTKColorConstants.DLTK_DEFAULT;
 
-  public static final String TM_CONDITION = "tm_condition"; //$NON-NLS-1$
+  public static final String RUTA_CONDITION = "ruta_condition"; //$NON-NLS-1$
 
-  public static final String TM_ACTION = "tm_action"; //$NON-NLS-1$
+  public static final String RUTA_ACTION = "ruta_action"; //$NON-NLS-1$
 
-  public static final String TM_RULE = "tm_rule";
+  public static final String RUTA_RULE = "ruta_rule";
 
-  public static final String TM_THEN = "tm_then";
+  public static final String RUTA_THEN = "ruta_then";
 
-  public static final String TM_DECLARATION = "tm_declaration";
+  public static final String RUTA_DECLARATION = "ruta_declaration";
 
-  public static final String TM_BASICSYMBOL = "tm_basicSymbol";
+  public static final String RUTA_BASICSYMBOL = "ruta_basicSymbol";
 
-  public static final String TM_FUNCTION = "tm_function";
+  public static final String RUTA_FUNCTION = "ruta_function";
 
-  public static final String TM_VARIABLE = "tm_variable"; //$NON-NLS-1$
+  public static final String RUTA_VARIABLE = "ruta_variable"; //$NON-NLS-1$
 
-  public static final String TM_TODO_TAG = DLTKColorConstants.TASK_TAG; // DLTKColorConstants.TASK_TAG;
+  public static final String RUTA_TODO_TAG = DLTKColorConstants.TASK_TAG; // DLTKColorConstants.TASK_TAG;
 }

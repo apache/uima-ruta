@@ -210,23 +210,5 @@ public class RutaEngineAndCallChecker implements IBuildParticipant,
     }
   }
 
-  // /**
-  // * @param filePath
-  // * absolute full path. i.e.: "org.apache.uima.myengine" ".xml" will be
-  // * added.
-  // * @return file.exists
-  // */
-  // private boolean checkBlockCall(String filePath) {
-  // // try engine
-  // if (checkEngineImport(filePath)) {
-  // return true;
-  // }
-  // String fileExtended = filePath + ".tm";
-  // IFolder scriptFolder = project.getProject().getFolder(
-  // RutaLanguageToolkit.getDefault()
-  // .getDefaultDescriptorLocation());
-  // IFile iFile = getFile(scriptFolder, fileExtended);
-  // return iFile.exists();
-  // }
 
 }

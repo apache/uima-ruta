@@ -389,7 +389,7 @@ public class Wien extends TextRulerBasicLearner {
       TextRulerExample lastExample = doc.getPositiveExamples().get(
               doc.getPositiveExamples().size() - 1);
       TypeSystem ts = cas.getTypeSystem();
-      Type tokenType = ts.getType(TextRulerToolkit.TM_ALL_TYPE_NAME);
+      Type tokenType = ts.getType(TextRulerToolkit.RUTA_ALL_TYPE_NAME);
       List<AnnotationFS> headTokens = TextRulerToolkit.getAnnotationsBeforePosition(cas,
               firstExample.getAnnotations()[0].getBegin(), 0, TextRulerToolkit
                       .getFilterSetWithSlotNames(slotNames, filterSet), tokenType);
@@ -416,7 +416,7 @@ public class Wien extends TextRulerBasicLearner {
       List<TextRulerRulePattern> result = new ArrayList<TextRulerRulePattern>();
       CAS cas = doc.getCAS();
       TypeSystem ts = cas.getTypeSystem();
-      Type tokenType = ts.getType(TextRulerToolkit.TM_ALL_TYPE_NAME);
+      Type tokenType = ts.getType(TextRulerToolkit.RUTA_ALL_TYPE_NAME);
       List<TextRulerExample> examples = doc.getPositiveExamples();
       for (int i = 0; i < examples.size() - 1; i++) {
         // get separator between i'th and (i+1)'th example:
@@ -444,7 +444,7 @@ public class Wien extends TextRulerBasicLearner {
     List<TextRulerRulePattern> result = new ArrayList<TextRulerRulePattern>();
     CAS cas = doc.getCAS();
     TypeSystem ts = cas.getTypeSystem();
-    Type tokenType = ts.getType(TextRulerToolkit.TM_ALL_TYPE_NAME);
+    Type tokenType = ts.getType(TextRulerToolkit.RUTA_ALL_TYPE_NAME);
     List<TextRulerExample> examples = doc.getPositiveExamples();
     boolean isLastSlot = slotIndex >= slotNames.length - 1;
     for (int ei = 0; ei < examples.size(); ei++) {
@@ -488,7 +488,7 @@ public class Wien extends TextRulerBasicLearner {
     List<TextRulerRulePattern> result = new ArrayList<TextRulerRulePattern>();
     CAS cas = doc.getCAS();
     TypeSystem ts = cas.getTypeSystem();
-    Type tokenType = ts.getType(TextRulerToolkit.TM_ALL_TYPE_NAME);
+    Type tokenType = ts.getType(TextRulerToolkit.RUTA_ALL_TYPE_NAME);
     List<TextRulerExample> examples = doc.getPositiveExamples();
 
     boolean isFirstSlot = slotIndex == 0;
@@ -530,7 +530,7 @@ public class Wien extends TextRulerBasicLearner {
     List<TextRulerRulePattern> result = new ArrayList<TextRulerRulePattern>();
     CAS cas = doc.getCAS();
     TypeSystem ts = cas.getTypeSystem();
-    Type tokenType = ts.getType(TextRulerToolkit.TM_ALL_TYPE_NAME);
+    Type tokenType = ts.getType(TextRulerToolkit.RUTA_ALL_TYPE_NAME);
     List<TextRulerExample> examples = doc.getPositiveExamples();
     for (TextRulerExample e : examples) {
       TextRulerAnnotation slotAnnotation = e.getAnnotations()[slotIndex];

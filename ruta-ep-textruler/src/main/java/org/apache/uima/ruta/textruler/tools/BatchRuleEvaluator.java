@@ -60,7 +60,7 @@ public class BatchRuleEvaluator {
 
       // set filters to NO filtering so that we can add it manually with
       // the FILTERTYPE expression!
-      IPath path = new Path(tempDir + "/results.tm");
+      IPath path = new Path(tempDir + "/results"+RutaEngine.SCRIPT_FILE_EXTENSION);
       ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, path.removeFileExtension()
               .lastSegment());
       ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { path
@@ -120,8 +120,8 @@ public class BatchRuleEvaluator {
     // Input: 0/testing/withouttags/*.xmi
     String inputFolder = foldRootDirectory + foldNumber + "/testing/withouttags/";
     String rulesFile = foldRootDirectory + foldNumber + "/learnResults/" + slotName + "/"
-            + algorithmID + "/results.tm";
-    String scriptFile = tempDir + "results.tm";
+            + algorithmID + "/results"+RutaEngine.SCRIPT_FILE_EXTENSION;
+    String scriptFile = tempDir + "results"+RutaEngine.SCRIPT_FILE_EXTENSION;
     File oldScriptFile = new File(scriptFile);
     if (oldScriptFile.exists()) {
       if (!oldScriptFile.delete()) {

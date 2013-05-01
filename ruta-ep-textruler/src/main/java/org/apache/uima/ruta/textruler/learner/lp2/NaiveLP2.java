@@ -30,6 +30,7 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.textruler.TextRulerPlugin;
 import org.apache.uima.ruta.textruler.core.TextRulerAnnotation;
 import org.apache.uima.ruta.textruler.core.TextRulerExample;
@@ -106,7 +107,7 @@ public class NaiveLP2 extends BasicLP2 {
 
       String startend = e.getTarget().type == MLTargetType.SINGLE_LEFT_BOUNDARY ? "left_"
               : "right_";
-      File file = new File(tempDirectory() + startend + "generalizations" + roundNumber + ".tm");
+      File file = new File(tempDirectory() + startend + "generalizations" + roundNumber + RutaEngine.SCRIPT_FILE_EXTENSION);
       StringBuffer str = new StringBuffer();
       for (TextRulerRule rule : test) {
         str.append(rule.getCoveringStatistics() + "\t\t" + rule.getRuleString() + "\n");
@@ -127,7 +128,7 @@ public class NaiveLP2 extends BasicLP2 {
     boolean isBestRule = !(tooFewPositives || tooManyErrors);
 
     if (TextRulerToolkit.DEBUG && SAVE_DEBUG_INFO_IN_TEMPFOLDER)
-      TextRulerToolkit.appendStringToFile(tempDirectory() + "bestcandidates.tm",
+      TextRulerToolkit.appendStringToFile(tempDirectory() + "bestcandidates"+RutaEngine.SCRIPT_FILE_EXTENSION,
               rule.getRuleString() + "\n");
 
     if (isBestRule) {
@@ -155,7 +156,7 @@ public class NaiveLP2 extends BasicLP2 {
         rule.setNeedsCompile(true);
 
         if (TextRulerToolkit.DEBUG && SAVE_DEBUG_INFO_IN_TEMPFOLDER)
-          TextRulerToolkit.appendStringToFile(tempDirectory() + "ctxcandidates.tm",
+          TextRulerToolkit.appendStringToFile(tempDirectory() + "ctxcandidates"+RutaEngine.SCRIPT_FILE_EXTENSION,
                   rule.getRuleString());
 
         testRuleOnDocumentSet(rule, exampleDocuments); // not very
@@ -206,7 +207,7 @@ public class NaiveLP2 extends BasicLP2 {
     CAS docCas = example.getDocumentCAS();
     TextRulerAnnotation exampleAnnotation = example.getAnnotation();
     TypeSystem ts = docCas.getTypeSystem();
-    Type tokensRootType = ts.getType(TextRulerToolkit.TM_ANY_TYPE_NAME);
+    Type tokensRootType = ts.getType(TextRulerToolkit.RUTA_ANY_TYPE_NAME);
     int thePosition = target.type == MLTargetType.SINGLE_LEFT_BOUNDARY ? exampleAnnotation
             .getBegin() : exampleAnnotation.getEnd();
 

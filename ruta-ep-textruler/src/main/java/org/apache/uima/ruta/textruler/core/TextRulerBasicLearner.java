@@ -120,8 +120,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
       // the FILTERTYPE expression!
       String tempRulesFileName = getTempRulesFileName();
       IPath path = new Path(tempRulesFileName);
-      ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, path.removeFileExtension()
-              .lastSegment());
+      ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, path.removeFileExtension().lastSegment());
       String portableString = path.removeLastSegments(1).toPortableString();
       ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { portableString });
       ae.setConfigParameterValue(RutaEngine.ADDITIONAL_SCRIPTS, new String[0]);
@@ -194,7 +193,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
 
           if (TextRulerToolkit.DEBUG) {
             try {
-              File file = new File(tempDirectory() + "results.tm");
+              File file = new File(tempDirectory() + "results" + RutaEngine.SCRIPT_FILE_EXTENSION);
               FileUtils.saveString2File(getResultString(), file);
             } catch (Exception e) {
               TextRulerPlugin.error(e);
@@ -238,11 +237,11 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
   }
 
   public String getTempRulesFileName() {
-    return tempDirectory() + "rules.tm";
+    return tempDirectory() + "rules" + RutaEngine.SCRIPT_FILE_EXTENSION;
   }
 
   public String getIntermediateRulesFileName() {
-    return tempDirectory() + "intermediaterules.tm";
+    return tempDirectory() + "intermediaterules" + RutaEngine.SCRIPT_FILE_EXTENSION;
   }
 
   public void compareOriginalDocumentWithTestCAS(TextRulerExampleDocument originalDoc, CAS testCas,

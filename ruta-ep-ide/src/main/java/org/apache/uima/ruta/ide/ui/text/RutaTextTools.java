@@ -41,13 +41,13 @@ public class RutaTextTools extends ScriptTextTools {
   private IPartitionTokenScanner fPartitionScanner;
 
   private SimpleClassDLTKExtensionManager extensions = new SimpleClassDLTKExtensionManager(
-          RutaIdePlugin.PLUGIN_ID + ".tmSemanticHighlighting"); //$NON-NLS-1$
+          RutaIdePlugin.PLUGIN_ID + ".rutaSemanticHighlighting"); //$NON-NLS-1$
 
   private final static String[] LEGAL_CONTENT_TYPES = new String[] {
-      RutaPartitions.TM_STRING, RutaPartitions.TM_COMMENT };
+      RutaPartitions.RUTA_STRING, RutaPartitions.RUTA_COMMENT };
 
   public RutaTextTools(boolean autoDisposeOnDisplayDispose) {
-    super(RutaPartitions.TM_PARTITIONING, LEGAL_CONTENT_TYPES, autoDisposeOnDisplayDispose);
+    super(RutaPartitions.RUTA_PARTITIONING, LEGAL_CONTENT_TYPES, autoDisposeOnDisplayDispose);
     fPartitionScanner = new RutaPartitionScanner();
   }
 

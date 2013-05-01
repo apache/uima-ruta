@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.textruler.ui;
 
@@ -29,6 +29,7 @@ import java.util.Map;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.textruler.TextRulerPlugin;
 import org.apache.uima.ruta.textruler.core.TextRulerToolkit;
 import org.apache.uima.ruta.textruler.extension.TextRulerController;
@@ -68,7 +69,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
-
 
 public class TextRulerViewComposite extends org.eclipse.swt.widgets.Composite {
 
@@ -298,8 +298,7 @@ public class TextRulerViewComposite extends org.eclipse.swt.widgets.Composite {
           DirectoryDialog dlg = new DirectoryDialog(getShell());
           dlg.setFilterPath(inputDirectoryText.getText());
           dlg.setText("Additional Directory");
-          dlg
-                  .setMessage("Select a directory with input additional XMI files for the learning algorithms.");
+          dlg.setMessage("Select a directory with input additional XMI files for the learning algorithms.");
           String dir = dlg.open();
           if (dir != null) {
             additionalDirectoryText.setText(dir);
@@ -407,7 +406,7 @@ public class TextRulerViewComposite extends org.eclipse.swt.widgets.Composite {
         public void widgetSelected(SelectionEvent event) {
           FileDialog fd = new FileDialog(getShell(), SWT.OPEN);
           fd.setText("Choose Ruta Source File");
-          String[] filterExt = { "*.tm", "*.*" };
+          String[] filterExt = { "*" + RutaEngine.SCRIPT_FILE_EXTENSION, "*.*" };
           fd.setFilterExtensions(filterExt);
           String file = fd.open();
           if (file != null) {

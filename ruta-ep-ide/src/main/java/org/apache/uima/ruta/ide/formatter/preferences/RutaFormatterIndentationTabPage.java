@@ -21,6 +21,7 @@ package org.apache.uima.ruta.ide.formatter.preferences;
 
 import java.net.URL;
 
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.ide.formatter.RutaFormatterConstants;
 import org.eclipse.dltk.ui.CodeFormatterConstants;
 import org.eclipse.dltk.ui.formatter.FormatterModifyTabPage;
@@ -127,6 +128,6 @@ public class RutaFormatterIndentationTabPage extends FormatterModifyTabPage {
 
   @Override
   protected URL getPreviewContent() {
-    return getClass().getResource("indentation-preview.tm");
+    return getClass().getResource("indentation-preview"+RutaEngine.SCRIPT_FILE_EXTENSION);
   }
 }

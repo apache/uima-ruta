@@ -99,11 +99,4 @@ public class SGMLToXMIConverter {
 
   }
 
-  public static void main(String[] args) {
-    String inputFolder = "/testinput/SA/all/txt";
-    String outputFolder = "/testinput/SA/all/xmi/";
-    String tmScriptFileForEngine = "/Users/tobi/Documents/runtime-EclipseApplication/MLSandBox/script/org.apache.uima.ml/types.tm";
-
-    convertFilesInFolder(inputFolder, outputFolder, tmScriptFileForEngine);
-  }
 }

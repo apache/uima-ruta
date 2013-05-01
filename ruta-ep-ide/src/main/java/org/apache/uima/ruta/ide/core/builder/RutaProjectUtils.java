@@ -30,6 +30,7 @@ import java.util.TreeSet;
 import javax.swing.UIManager;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.ide.RutaIdePlugin;
 import org.apache.uima.ruta.ide.core.RutaNature;
 import org.eclipse.core.resources.IFolder;
@@ -220,7 +221,7 @@ public class RutaProjectUtils {
 
   public static String getModuleName(IPath path) {
     String result = path.lastSegment();
-    int lastIndexOf = result.lastIndexOf(".tm");
+    int lastIndexOf = result.lastIndexOf(RutaEngine.SCRIPT_FILE_EXTENSION);
     if (lastIndexOf != -1) {
       result = result.substring(0, lastIndexOf);
     }

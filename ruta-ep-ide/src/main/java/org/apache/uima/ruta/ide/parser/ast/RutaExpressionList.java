@@ -88,7 +88,6 @@ public class RutaExpressionList extends Expression {
   @Override
   public int getKind() {
     return StatementConstants.S_BLOCK;
-    // return RutaConstants.TM_STATEMENT;
   }
 
   @Override

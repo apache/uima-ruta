@@ -22,6 +22,7 @@ package org.apache.uima.ruta.ide.core;
 import java.io.File;
 import java.io.FilenameFilter;
 
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.ide.RutaIdePlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.core.AbstractLanguageToolkit;
@@ -45,7 +46,7 @@ public class RutaLanguageToolkit extends AbstractLanguageToolkit {
       String members[] = file.list(new FilenameFilter() {
 
         public boolean accept(File dir, String name) {
-          if (name.toLowerCase().equals("__init__.tm")) {
+          if (name.toLowerCase().equals("__init__" + RutaEngine.SCRIPT_FILE_EXTENSION)) {
             return true;
           }
           return false;
@@ -71,7 +72,7 @@ public class RutaLanguageToolkit extends AbstractLanguageToolkit {
   }
 
   public String getLanguageContentType() {
-    return "org.apache.uima.ruta.ide.tmContentType";
+    return "org.apache.uima.ruta.ide.rutaContentType";
   }
 
   public static RutaLanguageToolkit getDefault() {

@@ -137,7 +137,7 @@ public class TextRulerExampleDocument {
       resetAndFillTestCAS(testCAS, target);
       CAS docCAS = getCAS();
       TypeSystem ts = docCAS.getTypeSystem();
-      Type tokensRootType = ts.getType(TextRulerToolkit.TM_ANY_TYPE_NAME);
+      Type tokensRootType = ts.getType(TextRulerToolkit.RUTA_ANY_TYPE_NAME);
       AnalysisEngine analysisEngine = learner.getAnalysisEngine();
       try {
         analysisEngine.process(testCAS);
@@ -302,7 +302,7 @@ public class TextRulerExampleDocument {
 
       List<AnnotationFS> slotTokens = TextRulerToolkit.getAnnotationsWithinBounds(aCas, a
               .getBegin(), a.getEnd(), TextRulerToolkit.getFilterSetWithSlotName(slotName,
-              tokenFilterSet), ts.getType(TextRulerToolkit.TM_ANY_TYPE_NAME));
+              tokenFilterSet), ts.getType(TextRulerToolkit.RUTA_ANY_TYPE_NAME));
       AnnotationFS first = slotTokens.get(0);
       AnnotationFS last = slotTokens.get(slotTokens.size() - 1);
       Type typeLB = ts.getType(slotName + TextRulerToolkit.LEFT_BOUNDARY_EXTENSION);

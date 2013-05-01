@@ -163,7 +163,7 @@ public class TextRulerExampleDocumentSet {
 
         List<AnnotationFS> slotTokens = TextRulerToolkit.getAnnotationsWithinBounds(aCas, a
                 .getBegin(), a.getEnd(), TextRulerToolkit.getFilterSetWithSlotName(slotName,
-                filterSet), ts.getType(TextRulerToolkit.TM_ANY_TYPE_NAME));
+                filterSet), ts.getType(TextRulerToolkit.RUTA_ANY_TYPE_NAME));
         int len = slotTokens.size();
         if (len > maxLen)
           maxLen = len;

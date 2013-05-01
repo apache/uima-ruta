@@ -31,7 +31,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.dltk.core.DLTKCore;
 
 public final class RutaKeywordsManager {
-  private static final String EXTENSION_POINT = "org.apache.uima.ruta.ide.tmkeywords";
+  private static final String EXTENSION_POINT = "org.apache.uima.ruta.ide.rutakeywords";
 
   private static final String CLASS = "class";
 

@@ -48,11 +48,9 @@ public class TextRulerWordConstraint {
     super();
     this.tokenAnnotation = tokenAnnotation;
     TypeSystem ts = tokenAnnotation.getDocument().getCAS().getTypeSystem();
-    Type wType = ts.getType(TextRulerToolkit.TM_WORD_TYPE_NAME);
-    Type numType = ts.getType(TextRulerToolkit.TM_NUM_TYPE_NAME);
-    Type markupType = ts.getType(TextRulerToolkit.TM_MARKUP_TYPE_NAME);
-    // TODO special auch wieder einschalten!? !!!!!
-    // Type specialType = ts.getType(TextRulerToolkit.TM_SPECIAL_TYPE_NAME);
+    Type wType = ts.getType(TextRulerToolkit.RUTA_WORD_TYPE_NAME);
+    Type numType = ts.getType(TextRulerToolkit.RUTA_NUM_TYPE_NAME);
+    Type markupType = ts.getType(TextRulerToolkit.RUTA_MARKUP_TYPE_NAME);
     isRegExpType = ts.subsumes(wType, tokenAnnotation.getType())
             || ts.subsumes(markupType, tokenAnnotation.getType())
             || ts.subsumes(numType, tokenAnnotation.getType())

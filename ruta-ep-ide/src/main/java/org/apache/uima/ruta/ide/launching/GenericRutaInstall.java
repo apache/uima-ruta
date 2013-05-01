@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.ide.RutaIdePlugin;
 import org.apache.uima.ruta.ide.core.RutaNature;
 import org.eclipse.debug.core.ILaunchManager;
@@ -39,9 +40,10 @@ public class GenericRutaInstall extends AbstractInterpreterInstall {
 
   @Override
   public String getBuiltinModuleContent(String name) {
-    InputStream stream = GenericRutaInstall.class.getResourceAsStream("builtins.tm");
+    InputStream stream = GenericRutaInstall.class.getResourceAsStream("builtins"
+            + RutaEngine.SCRIPT_FILE_EXTENSION);
     if (stream == null) {
-      return "PACKAGE org.apache.uima.tm;\n";
+      return "PACKAGE org.apache.uima.ruta;\n";
     }
     BufferedReader br = new BufferedReader(new InputStreamReader(stream));
     StringBuffer buf = new StringBuffer();
@@ -59,10 +61,9 @@ public class GenericRutaInstall extends AbstractInterpreterInstall {
 
   @Override
   public String[] getBuiltinModules() {
-    return new String[] { "builtins.tm" };
+    return new String[] { "builtins" + RutaEngine.SCRIPT_FILE_EXTENSION };
   }
-  
-  
+
   @Override
   public IInterpreterRunner getInterpreterRunner(String mode) {
     IInterpreterRunner runner = super.getInterpreterRunner(mode);
@@ -79,5 +80,5 @@ public class GenericRutaInstall extends AbstractInterpreterInstall {
   public String getNatureId() {
     return RutaNature.NATURE_ID;
   }
-  
+
 }

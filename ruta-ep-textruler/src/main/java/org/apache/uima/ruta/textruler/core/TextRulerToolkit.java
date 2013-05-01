@@ -67,23 +67,23 @@ public class TextRulerToolkit {
 
   public static final boolean DEBUG = false;
 
-  public static final String TM_ALL_TYPE_NAME = "org.apache.uima.ruta.type.ALL";
+  public static final String RUTA_ALL_TYPE_NAME = "org.apache.uima.ruta.type.ALL";
 
-  public static final String TM_ANY_TYPE_NAME = "org.apache.uima.ruta.type.ANY";
+  public static final String RUTA_ANY_TYPE_NAME = "org.apache.uima.ruta.type.ANY";
 
-  public static final String TM_WORD_TYPE_NAME = "org.apache.uima.ruta.type.W";
+  public static final String RUTA_WORD_TYPE_NAME = "org.apache.uima.ruta.type.W";
 
-  public static final String TM_BREAK_TYPE_NAME = "org.apache.uima.ruta.type.BREAK";
+  public static final String RUTA_BREAK_TYPE_NAME = "org.apache.uima.ruta.type.BREAK";
 
-  public static final String TM_SPACE_TYPE_NAME = "org.apache.uima.ruta.type.SPACE";
+  public static final String RUTA_SPACE_TYPE_NAME = "org.apache.uima.ruta.type.SPACE";
 
-  public static final String TM_NUM_TYPE_NAME = "org.apache.uima.ruta.type.NUM";
+  public static final String RUTA_NUM_TYPE_NAME = "org.apache.uima.ruta.type.NUM";
 
-  public static final String TM_MARKUP_TYPE_NAME = "org.apache.uima.ruta.type.MARKUP";
+  public static final String RUTA_MARKUP_TYPE_NAME = "org.apache.uima.ruta.type.MARKUP";
 
-  public static final String TM_SPECIAL_TYPE_NAME = "org.apache.uima.ruta.type.SPECIAL";
+  public static final String RUTA_SPECIAL_TYPE_NAME = "org.apache.uima.ruta.type.SPECIAL";
 
-  public static final String TM_NBSP_TYPE_NAME = "org.apache.uima.ruta.type.NBSP";
+  public static final String RUTA_NBSP_TYPE_NAME = "org.apache.uima.ruta.type.NBSP";
 
   public static final String LEFT_BOUNDARY_EXTENSION = "START";
 
@@ -108,13 +108,6 @@ public class TextRulerToolkit {
     return FileLocator.find(TextRulerPlugin.getDefault().getBundle(), new Path(name), null);
   }
 
-  // public static AnalysisEngine loadAnalysisEngine()
-  // {
-  // URL u = TextRulerToolkit.getResourceURL("desc/MLEngine.xml"); // this was
-  // a predefined engine file in the plugin. got removed now since we load the
-  // // engine file of the given preprocessing file!
-  // return loadAnalysisEngine(u);
-  // }
 
   public static AnalysisEngine loadAnalysisEngine(String descFile) {
     AnalysisEngine result = null;
@@ -299,7 +292,7 @@ public class TextRulerToolkit {
     FSIterator<AnnotationFS> leftIt = null;
     FSIterator<AnnotationFS> rightIt = null;
     TypeSystem ts = aCas.getTypeSystem();
-    Type tmRootType = ts.getType(TM_ALL_TYPE_NAME);
+    Type tmRootType = ts.getType(RUTA_ALL_TYPE_NAME);
     Set<String> allFilters = new HashSet<String>();
     allFilters.add("uima.tcas.DocumentAnnotation");
     allFilters.add(RutaEngine.BASIC_TYPE);
@@ -381,10 +374,10 @@ public class TextRulerToolkit {
       for (String s : slotNames)
         filterSet.add(s);
     }
-    filterSet.add(TM_SPACE_TYPE_NAME);
-    filterSet.add(TM_BREAK_TYPE_NAME);
-    filterSet.add(TM_MARKUP_TYPE_NAME);
-    filterSet.add(TM_NBSP_TYPE_NAME);
+    filterSet.add(RUTA_SPACE_TYPE_NAME);
+    filterSet.add(RUTA_BREAK_TYPE_NAME);
+    filterSet.add(RUTA_MARKUP_TYPE_NAME);
+    filterSet.add(RUTA_NBSP_TYPE_NAME);
     return filterSet;
   }
 
@@ -460,7 +453,7 @@ public class TextRulerToolkit {
     IPath relativeTo = scriptFilePath.makeRelativeTo(folder);
     IPath projectPath = folder.removeLastSegments(1);
     String elementName = scriptFilePath.lastSegment();
-    int lastIndexOf = elementName.lastIndexOf(".tm");
+    int lastIndexOf = elementName.lastIndexOf(RutaEngine.SCRIPT_FILE_EXTENSION);
     if (lastIndexOf != -1) {
       elementName = elementName.substring(0, lastIndexOf);
     }
@@ -478,7 +471,7 @@ public class TextRulerToolkit {
     IPath relativeTo = scriptFilePath.makeRelativeTo(folder);
     IPath projectPath = folder.removeLastSegments(1);
     String elementName = scriptFilePath.lastSegment();
-    int lastIndexOf = elementName.lastIndexOf(".tm");
+    int lastIndexOf = elementName.lastIndexOf(RutaEngine.SCRIPT_FILE_EXTENSION);
     if (lastIndexOf != -1) {
       elementName = elementName.substring(0, lastIndexOf);
     }

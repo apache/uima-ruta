@@ -222,11 +222,11 @@ public class RutaAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
     if (forward) {
       while (i < d.getLength()) {
         ITypedRegion region = TextUtilities.getPartition(d, fPartitioning, i, true);
-        if (region.getType() == RutaPartitions.TM_COMMENT && skipCommentLines) {
+        if (region.getType() == RutaPartitions.RUTA_COMMENT && skipCommentLines) {
           i = region.getOffset() + region.getLength();
           continue;
         }
-        if (region.getType() == RutaPartitions.TM_STRING && skipStrings) {
+        if (region.getType() == RutaPartitions.RUTA_STRING && skipStrings) {
           i = region.getOffset() + region.getLength();
           continue;
         }
@@ -245,11 +245,11 @@ public class RutaAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
     } else {
       while (i >= 0) {
         ITypedRegion region = TextUtilities.getPartition(d, fPartitioning, i, true);
-        if (region.getType() == RutaPartitions.TM_COMMENT && skipCommentLines) {
+        if (region.getType() == RutaPartitions.RUTA_COMMENT && skipCommentLines) {
           i = region.getOffset() - 1;
           continue;
         }
-        if (region.getType() == RutaPartitions.TM_STRING && skipStrings) {
+        if (region.getType() == RutaPartitions.RUTA_STRING && skipStrings) {
           i = region.getOffset() - 1;
           continue;
         }
@@ -346,11 +346,11 @@ public class RutaAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
    *          the document
    */
   private static void installStuff(Document document) {
-    String[] types = new String[] { RutaPartitions.TM_STRING,
-        RutaPartitions.TM_COMMENT, IDocument.DEFAULT_CONTENT_TYPE };
+    String[] types = new String[] { RutaPartitions.RUTA_STRING,
+        RutaPartitions.RUTA_COMMENT, IDocument.DEFAULT_CONTENT_TYPE };
     FastPartitioner partitioner = new FastPartitioner(new RutaPartitionScanner(), types);
     partitioner.connect(document);
-    document.setDocumentPartitioner(RutaPartitions.TM_PARTITIONING, partitioner);
+    document.setDocumentPartitioner(RutaPartitions.RUTA_PARTITIONING, partitioner);
   }
 
   /**
@@ -360,7 +360,7 @@ public class RutaAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
    *          the document
    */
   private static void removeStuff(Document document) {
-    document.setDocumentPartitioner(RutaPartitions.TM_PARTITIONING, null);
+    document.setDocumentPartitioner(RutaPartitions.RUTA_PARTITIONING, null);
   }
 
   /**
@@ -391,13 +391,13 @@ public class RutaAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
     // STRINGS
     if (newLine) {
       // if we wrap string
-      if (getRegionType(d, offset) == RutaPartitions.TM_STRING) {
+      if (getRegionType(d, offset) == RutaPartitions.RUTA_STRING) {
         int realLine = d.getLineOfOffset(offset);
         String curIndent = getLineIndent(d, realLine);
         // if we just closed string
         if (d.getChar(offset - 1) != '"') {
           // if we are fully in string
-          if (getRegionType(d, d.getLineOffset(realLine)) == RutaPartitions.TM_STRING) {
+          if (getRegionType(d, d.getLineOffset(realLine)) == RutaPartitions.RUTA_STRING) {
             return curIndent;
           }
           // if we first time wrap string
@@ -406,7 +406,7 @@ public class RutaAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
       }
     } else {
       // don't correct strings
-      if (getRegionType(d, d.getLineOffset(line)) == RutaPartitions.TM_STRING) {
+      if (getRegionType(d, d.getLineOffset(line)) == RutaPartitions.RUTA_STRING) {
         return getLineIndent(d, line); // notice, that we don't use
         // null
       }
@@ -469,7 +469,7 @@ public class RutaAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
     // first check, if we not inside string, if yes, jump to start
     ITypedRegion region = TextUtilities.getPartition(d, fPartitioning,
             d.getLineOffset(lastNonEmptyLine), true);
-    if (region.getType() == RutaPartitions.TM_STRING) {
+    if (region.getType() == RutaPartitions.RUTA_STRING) {
       lastNonEmptyLine = d.getLineOfOffset(region.getOffset());
     }
 
@@ -595,7 +595,7 @@ public class RutaAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 
     // after-string
     int prevLine = getLastNonEmptyLine(d, line - 1);
-    if (getRegionType(d, d.getLineOffset(prevLine)) == RutaPartitions.TM_STRING)
+    if (getRegionType(d, d.getLineOffset(prevLine)) == RutaPartitions.RUTA_STRING)
       return previousLineIndent;
 
     return null;
@@ -872,14 +872,7 @@ public class RutaAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
           if (DLTKCore.DEBUG) {
             System.err.println("Bug:PTN-9");
           }
-          // if (c.offset - 1 >= 0 &&
-          // d.getChar(c.offset - 1) != '"' &&
-          // getRegionType(d, c.offset - 1) ==
-          // RutaPartitions.TM_STRING)
-          // c.text = "\\" + c.text + indent;
-          // else {
           c.text = c.text + indent;
-          // }
         }
       } catch (BadLocationException e) {
         super.customizeDocumentCommand(d, c);

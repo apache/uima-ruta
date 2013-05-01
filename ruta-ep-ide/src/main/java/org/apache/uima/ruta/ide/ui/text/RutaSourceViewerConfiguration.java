@@ -75,7 +75,7 @@ public class RutaSourceViewerConfiguration extends ScriptSourceViewerConfigurati
 
   @Override
   public String[] getConfiguredContentTypes(ISourceViewer sourceViewer) {
-    return RutaPartitions.TM_PARTITION_TYPES;
+    return RutaPartitions.RUTA_PARTITION_TYPES;
   }
 
   @Override
@@ -99,11 +99,8 @@ public class RutaSourceViewerConfiguration extends ScriptSourceViewerConfigurati
     Assert.isTrue(isNewSetup());
     fCodeScanner = new RutaCodeScanner(getColorManager(), fPreferenceStore);
     fStringScanner = new RutaStringScanner(getColorManager(), fPreferenceStore);
-    fCommentScanner = createCommentScanner(RutaColorConstants.TM_SINGLE_LINE_COMMENT,
-            RutaColorConstants.TM_TODO_TAG);
-    // fCommentScanner = new SingleTokenScriptScanner(getColorManager(),
-    // fPreferenceStore,
-    // RutaColorConstants.TM_SINGLE_LINE_COMMENT);
+    fCommentScanner = createCommentScanner(RutaColorConstants.RUTA_SINGLE_LINE_COMMENT,
+            RutaColorConstants.RUTA_TODO_TAG);
   }
 
   @Override
@@ -113,15 +110,13 @@ public class RutaSourceViewerConfiguration extends ScriptSourceViewerConfigurati
             assistant, IDocument.DEFAULT_CONTENT_TYPE);
     assistant.setContentAssistProcessor(scriptProcessor, IDocument.DEFAULT_CONTENT_TYPE);
 
-    // RutaPartitions.TM_COMMENT
     ContentAssistProcessor singleLineProcessor = new RutaScriptCompletionProcessor(
-            getEditor(), assistant, RutaPartitions.TM_COMMENT);
-    assistant.setContentAssistProcessor(singleLineProcessor, RutaPartitions.TM_COMMENT);
+            getEditor(), assistant, RutaPartitions.RUTA_COMMENT);
+    assistant.setContentAssistProcessor(singleLineProcessor, RutaPartitions.RUTA_COMMENT);
 
-    // RutaPartitions.TM_STRING
     ContentAssistProcessor stringProcessor = new RutaScriptCompletionProcessor(getEditor(),
-            assistant, RutaPartitions.TM_STRING);
-    assistant.setContentAssistProcessor(stringProcessor, RutaPartitions.TM_STRING);
+            assistant, RutaPartitions.RUTA_STRING);
+    assistant.setContentAssistProcessor(stringProcessor, RutaPartitions.RUTA_STRING);
   }
 
   private boolean isNewSetup() {
@@ -151,12 +146,12 @@ public class RutaSourceViewerConfiguration extends ScriptSourceViewerConfigurati
     reconciler.setRepairer(dr, IDocument.DEFAULT_CONTENT_TYPE);
 
     dr = new DefaultDamagerRepairer(getStringScanner());
-    reconciler.setDamager(dr, RutaPartitions.TM_STRING);
-    reconciler.setRepairer(dr, RutaPartitions.TM_STRING);
+    reconciler.setDamager(dr, RutaPartitions.RUTA_STRING);
+    reconciler.setRepairer(dr, RutaPartitions.RUTA_STRING);
 
     dr = new DefaultDamagerRepairer(getCommentScanner());
-    reconciler.setDamager(dr, RutaPartitions.TM_COMMENT);
-    reconciler.setRepairer(dr, RutaPartitions.TM_COMMENT);
+    reconciler.setDamager(dr, RutaPartitions.RUTA_COMMENT);
+    reconciler.setRepairer(dr, RutaPartitions.RUTA_COMMENT);
 
     return reconciler;
   }
@@ -258,8 +253,8 @@ public class RutaSourceViewerConfiguration extends ScriptSourceViewerConfigurati
   @Override
   protected void initializeQuickOutlineContexts(InformationPresenter presenter,
           IInformationProvider provider) {
-    presenter.setInformationProvider(provider, RutaPartitions.TM_COMMENT);
-    presenter.setInformationProvider(provider, RutaPartitions.TM_STRING);
+    presenter.setInformationProvider(provider, RutaPartitions.RUTA_COMMENT);
+    presenter.setInformationProvider(provider, RutaPartitions.RUTA_STRING);
   }
 
   @Override

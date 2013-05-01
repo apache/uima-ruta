@@ -56,158 +56,158 @@ public class RutaPreferenceConstants extends PreferenceConstants {
 
   public static final String EDITOR_FOLDING_COMMENTS_FOLDING = "editor_folding_comments";
 
-  public final static String EDITOR_SINGLE_LINE_COMMENT_COLOR = RutaColorConstants.TM_SINGLE_LINE_COMMENT;
+  public final static String EDITOR_SINGLE_LINE_COMMENT_COLOR = RutaColorConstants.RUTA_SINGLE_LINE_COMMENT;
 
-  public final static String EDITOR_SINGLE_LINE_COMMENT_BOLD = RutaColorConstants.TM_SINGLE_LINE_COMMENT
+  public final static String EDITOR_SINGLE_LINE_COMMENT_BOLD = RutaColorConstants.RUTA_SINGLE_LINE_COMMENT
           + EDITOR_BOLD_SUFFIX;
 
-  public final static String EDITOR_SINGLE_LINE_COMMENT_ITALIC = RutaColorConstants.TM_SINGLE_LINE_COMMENT
+  public final static String EDITOR_SINGLE_LINE_COMMENT_ITALIC = RutaColorConstants.RUTA_SINGLE_LINE_COMMENT
           + EDITOR_ITALIC_SUFFIX;
 
-  public final static String EDITOR_SINGLE_LINE_COMMENT_STRIKETHROUGH = RutaColorConstants.TM_SINGLE_LINE_COMMENT
+  public final static String EDITOR_SINGLE_LINE_COMMENT_STRIKETHROUGH = RutaColorConstants.RUTA_SINGLE_LINE_COMMENT
           + EDITOR_STRIKETHROUGH_SUFFIX;
 
-  public final static String EDITOR_SINGLE_LINE_COMMENT_UNDERLINE = RutaColorConstants.TM_SINGLE_LINE_COMMENT
+  public final static String EDITOR_SINGLE_LINE_COMMENT_UNDERLINE = RutaColorConstants.RUTA_SINGLE_LINE_COMMENT
           + EDITOR_UNDERLINE_SUFFIX;
 
-  public final static String EDITOR_NUMBER_COLOR = RutaColorConstants.TM_NUMBER;
+  public final static String EDITOR_NUMBER_COLOR = RutaColorConstants.RUTA_NUMBER;
 
-  public final static String EDITOR_NUMBER_BOLD = RutaColorConstants.TM_NUMBER
+  public final static String EDITOR_NUMBER_BOLD = RutaColorConstants.RUTA_NUMBER
           + EDITOR_BOLD_SUFFIX;
 
-  public final static String EDITOR_NUMBER_ITALIC = RutaColorConstants.TM_NUMBER
+  public final static String EDITOR_NUMBER_ITALIC = RutaColorConstants.RUTA_NUMBER
           + EDITOR_ITALIC_SUFFIX;
 
-  public final static String EDITOR_NUMBER_STRIKETHROUGH = RutaColorConstants.TM_NUMBER
+  public final static String EDITOR_NUMBER_STRIKETHROUGH = RutaColorConstants.RUTA_NUMBER
           + EDITOR_STRIKETHROUGH_SUFFIX;
 
-  public final static String EDITOR_NUMBER_UNDERLINE = RutaColorConstants.TM_NUMBER
+  public final static String EDITOR_NUMBER_UNDERLINE = RutaColorConstants.RUTA_NUMBER
           + EDITOR_UNDERLINE_SUFFIX;
 
-  public final static String EDITOR_STRING_COLOR = RutaColorConstants.TM_STRING;
+  public final static String EDITOR_STRING_COLOR = RutaColorConstants.RUTA_STRING;
 
-  public final static String EDITOR_STRING_BOLD = RutaColorConstants.TM_STRING
+  public final static String EDITOR_STRING_BOLD = RutaColorConstants.RUTA_STRING
           + EDITOR_BOLD_SUFFIX;
 
-  public final static String EDITOR_STRING_ITALIC = RutaColorConstants.TM_STRING
+  public final static String EDITOR_STRING_ITALIC = RutaColorConstants.RUTA_STRING
           + EDITOR_ITALIC_SUFFIX;
 
-  public final static String EDITOR_STRING_STRIKETHROUGH = RutaColorConstants.TM_STRING
+  public final static String EDITOR_STRING_STRIKETHROUGH = RutaColorConstants.RUTA_STRING
           + EDITOR_STRIKETHROUGH_SUFFIX;
 
-  public final static String EDITOR_STRING_UNDERLINE = RutaColorConstants.TM_STRING
+  public final static String EDITOR_STRING_UNDERLINE = RutaColorConstants.RUTA_STRING
           + EDITOR_UNDERLINE_SUFFIX;
 
-  public final static String EDITOR_FUNCTION_COLOR = RutaColorConstants.TM_FUNCTION;
+  public final static String EDITOR_FUNCTION_COLOR = RutaColorConstants.RUTA_FUNCTION;
 
-  public final static String EDITOR_FUNCTION_COLOR_BOLD = RutaColorConstants.TM_FUNCTION
+  public final static String EDITOR_FUNCTION_COLOR_BOLD = RutaColorConstants.RUTA_FUNCTION
           + EDITOR_BOLD_SUFFIX;
 
-  public final static String EDITOR_FUNCTION_COLOR_ITALIC = RutaColorConstants.TM_FUNCTION
+  public final static String EDITOR_FUNCTION_COLOR_ITALIC = RutaColorConstants.RUTA_FUNCTION
           + EDITOR_ITALIC_SUFFIX;
 
-  public final static String EDITOR_FUNCTION_COLOR_STRIKETHROUGH = RutaColorConstants.TM_FUNCTION
+  public final static String EDITOR_FUNCTION_COLOR_STRIKETHROUGH = RutaColorConstants.RUTA_FUNCTION
           + EDITOR_STRIKETHROUGH_SUFFIX;
 
-  public final static String EDITOR_FUNCTION_COLOR_UNDERLINE = RutaColorConstants.TM_FUNCTION
+  public final static String EDITOR_FUNCTION_COLOR_UNDERLINE = RutaColorConstants.RUTA_FUNCTION
           + EDITOR_UNDERLINE_SUFFIX;
 
-  public final static String EDITOR_CONDITION_COLOR = RutaColorConstants.TM_CONDITION;
+  public final static String EDITOR_CONDITION_COLOR = RutaColorConstants.RUTA_CONDITION;
 
-  public final static String EDITOR_CONDITION_COLOR_BOLD = RutaColorConstants.TM_CONDITION
+  public final static String EDITOR_CONDITION_COLOR_BOLD = RutaColorConstants.RUTA_CONDITION
           + EDITOR_BOLD_SUFFIX;
 
-  public final static String EDITOR_CONDITION_COLOR_ITALIC = RutaColorConstants.TM_CONDITION
+  public final static String EDITOR_CONDITION_COLOR_ITALIC = RutaColorConstants.RUTA_CONDITION
           + EDITOR_ITALIC_SUFFIX;
 
-  public final static String EDITOR_CONDITION_COLOR_STRIKETHROUGH = RutaColorConstants.TM_CONDITION
+  public final static String EDITOR_CONDITION_COLOR_STRIKETHROUGH = RutaColorConstants.RUTA_CONDITION
           + EDITOR_STRIKETHROUGH_SUFFIX;
 
-  public final static String EDITOR_CONDITION_COLOR_UNDERLINE = RutaColorConstants.TM_CONDITION
+  public final static String EDITOR_CONDITION_COLOR_UNDERLINE = RutaColorConstants.RUTA_CONDITION
           + EDITOR_UNDERLINE_SUFFIX;
 
-  public final static String EDITOR_ACTION_COLOR = RutaColorConstants.TM_ACTION;
+  public final static String EDITOR_ACTION_COLOR = RutaColorConstants.RUTA_ACTION;
 
-  public final static String EDITOR_ACTION_COLOR_BOLD = RutaColorConstants.TM_ACTION
+  public final static String EDITOR_ACTION_COLOR_BOLD = RutaColorConstants.RUTA_ACTION
           + EDITOR_BOLD_SUFFIX;
 
-  public final static String EDITOR_ACTION_COLOR_ITALIC = RutaColorConstants.TM_ACTION
+  public final static String EDITOR_ACTION_COLOR_ITALIC = RutaColorConstants.RUTA_ACTION
           + EDITOR_ITALIC_SUFFIX;
 
-  public final static String EDITOR_ACTION_COLOR_STRIKETHROUGH = RutaColorConstants.TM_ACTION
+  public final static String EDITOR_ACTION_COLOR_STRIKETHROUGH = RutaColorConstants.RUTA_ACTION
           + EDITOR_STRIKETHROUGH_SUFFIX;
 
-  public final static String EDITOR_ACTION_COLOR_UNDERLINE = RutaColorConstants.TM_ACTION
+  public final static String EDITOR_ACTION_COLOR_UNDERLINE = RutaColorConstants.RUTA_ACTION
           + EDITOR_UNDERLINE_SUFFIX;
 
-  public final static String EDITOR_THEN_COLOR = RutaColorConstants.TM_THEN;
+  public final static String EDITOR_THEN_COLOR = RutaColorConstants.RUTA_THEN;
 
-  public final static String EDITOR_THEN_COLOR_BOLD = RutaColorConstants.TM_THEN
+  public final static String EDITOR_THEN_COLOR_BOLD = RutaColorConstants.RUTA_THEN
           + EDITOR_BOLD_SUFFIX;
 
-  public final static String EDITOR_THEN_COLOR_ITALIC = RutaColorConstants.TM_THEN
+  public final static String EDITOR_THEN_COLOR_ITALIC = RutaColorConstants.RUTA_THEN
           + EDITOR_ITALIC_SUFFIX;
 
-  public final static String EDITOR_THEN_COLOR_STRIKETHROUGH = RutaColorConstants.TM_THEN
+  public final static String EDITOR_THEN_COLOR_STRIKETHROUGH = RutaColorConstants.RUTA_THEN
           + EDITOR_STRIKETHROUGH_SUFFIX;
 
-  public final static String EDITOR_THEN_COLOR_UNDERLINE = RutaColorConstants.TM_THEN
+  public final static String EDITOR_THEN_COLOR_UNDERLINE = RutaColorConstants.RUTA_THEN
           + EDITOR_UNDERLINE_SUFFIX;
 
-  public final static String EDITOR_DECLARATION_DEFINITION_COLOR = RutaColorConstants.TM_DECLARATION;
+  public final static String EDITOR_DECLARATION_DEFINITION_COLOR = RutaColorConstants.RUTA_DECLARATION;
 
-  public final static String EDITOR_DECLARATION_DEFINITION_COLOR_BOLD = RutaColorConstants.TM_DECLARATION
+  public final static String EDITOR_DECLARATION_DEFINITION_COLOR_BOLD = RutaColorConstants.RUTA_DECLARATION
           + EDITOR_BOLD_SUFFIX;
 
-  public final static String EDITOR_DECLARATION_DEFINITION_COLOR_ITALIC = RutaColorConstants.TM_DECLARATION
+  public final static String EDITOR_DECLARATION_DEFINITION_COLOR_ITALIC = RutaColorConstants.RUTA_DECLARATION
           + EDITOR_ITALIC_SUFFIX;
 
-  public final static String EDITOR_DECLARATION_DEFINITION_COLOR_STRIKETHROUGH = RutaColorConstants.TM_DECLARATION
+  public final static String EDITOR_DECLARATION_DEFINITION_COLOR_STRIKETHROUGH = RutaColorConstants.RUTA_DECLARATION
           + EDITOR_STRIKETHROUGH_SUFFIX;
 
-  public final static String EDITOR_DECLARATION_DEFINITION_COLOR_UNDERLINE = RutaColorConstants.TM_DECLARATION
+  public final static String EDITOR_DECLARATION_DEFINITION_COLOR_UNDERLINE = RutaColorConstants.RUTA_DECLARATION
           + EDITOR_UNDERLINE_SUFFIX;
 
-  public final static String EDITOR_BASICSYMBOL_DEFINITION_COLOR = RutaColorConstants.TM_BASICSYMBOL;
+  public final static String EDITOR_BASICSYMBOL_DEFINITION_COLOR = RutaColorConstants.RUTA_BASICSYMBOL;
 
-  public final static String EDITOR_BASICSYMBOL_DEFINITION_COLOR_BOLD = RutaColorConstants.TM_BASICSYMBOL
+  public final static String EDITOR_BASICSYMBOL_DEFINITION_COLOR_BOLD = RutaColorConstants.RUTA_BASICSYMBOL
           + EDITOR_BOLD_SUFFIX;
 
-  public final static String EDITOR_BASICSYMBOL_DEFINITION_COLOR_ITALIC = RutaColorConstants.TM_BASICSYMBOL
+  public final static String EDITOR_BASICSYMBOL_DEFINITION_COLOR_ITALIC = RutaColorConstants.RUTA_BASICSYMBOL
           + EDITOR_ITALIC_SUFFIX;
 
-  public final static String EDITOR_BASICSYMBOL_DEFINITION_COLOR_STRIKETHROUGH = RutaColorConstants.TM_BASICSYMBOL
+  public final static String EDITOR_BASICSYMBOL_DEFINITION_COLOR_STRIKETHROUGH = RutaColorConstants.RUTA_BASICSYMBOL
           + EDITOR_STRIKETHROUGH_SUFFIX;
 
-  public final static String EDITOR_BASICSYMBOL_DEFINITION_COLOR_UNDERLINE = RutaColorConstants.TM_BASICSYMBOL
+  public final static String EDITOR_BASICSYMBOL_DEFINITION_COLOR_UNDERLINE = RutaColorConstants.RUTA_BASICSYMBOL
           + EDITOR_UNDERLINE_SUFFIX;
 
-  public final static String EDITOR_DOC_COMMENT_COLOR = RutaColorConstants.TM_DOC_COMMENT;
+  public final static String EDITOR_DOC_COMMENT_COLOR = RutaColorConstants.RUTA_DOC_COMMENT;
 
-  public final static String EDITOR_DOC_COMMENT_COLOR_BOLD = RutaColorConstants.TM_DOC_COMMENT
+  public final static String EDITOR_DOC_COMMENT_COLOR_BOLD = RutaColorConstants.RUTA_DOC_COMMENT
           + EDITOR_BOLD_SUFFIX;
 
-  public final static String EDITOR_DOC_COMMENT_COLOR_ITALIC = RutaColorConstants.TM_DOC_COMMENT
+  public final static String EDITOR_DOC_COMMENT_COLOR_ITALIC = RutaColorConstants.RUTA_DOC_COMMENT
           + EDITOR_ITALIC_SUFFIX;
 
-  public final static String EDITOR_DOC_COMMENT_COLOR_STRIKETHROUGH = RutaColorConstants.TM_DOC_COMMENT
+  public final static String EDITOR_DOC_COMMENT_COLOR_STRIKETHROUGH = RutaColorConstants.RUTA_DOC_COMMENT
           + EDITOR_STRIKETHROUGH_SUFFIX;
 
-  public final static String EDITOR_DOC_COMMENT_COLOR_UNDERLINE = RutaColorConstants.TM_DOC_COMMENT
+  public final static String EDITOR_DOC_COMMENT_COLOR_UNDERLINE = RutaColorConstants.RUTA_DOC_COMMENT
           + EDITOR_UNDERLINE_SUFFIX;
 
-  public final static String EDITOR_VARIABLE_COLOR = RutaColorConstants.TM_DOC_COMMENT;
+  public final static String EDITOR_VARIABLE_COLOR = RutaColorConstants.RUTA_DOC_COMMENT;
 
-  public final static String EDITOR_VARIABLE_COLOR_BOLD = RutaColorConstants.TM_DOC_COMMENT
+  public final static String EDITOR_VARIABLE_COLOR_BOLD = RutaColorConstants.RUTA_DOC_COMMENT
           + EDITOR_BOLD_SUFFIX;
 
-  public final static String EDITOR_VARIABLE_COLOR_ITALIC = RutaColorConstants.TM_DOC_COMMENT
+  public final static String EDITOR_VARIABLE_COLOR_ITALIC = RutaColorConstants.RUTA_DOC_COMMENT
           + EDITOR_ITALIC_SUFFIX;
 
-  public final static String EDITOR_VARIABLE_COLOR_STRIKETHROUGH = RutaColorConstants.TM_DOC_COMMENT
+  public final static String EDITOR_VARIABLE_COLOR_STRIKETHROUGH = RutaColorConstants.RUTA_DOC_COMMENT
           + EDITOR_STRIKETHROUGH_SUFFIX;
 
-  public final static String EDITOR_VARIABLE_COLOR_UNDERLINE = RutaColorConstants.TM_DOC_COMMENT
+  public final static String EDITOR_VARIABLE_COLOR_UNDERLINE = RutaColorConstants.RUTA_DOC_COMMENT
           + EDITOR_UNDERLINE_SUFFIX;
 
   public final static String EDITOR_SMART_PASTE_MODE = "smartPasteMode"; //$NON-NLS-1$
@@ -218,7 +218,7 @@ public class RutaPreferenceConstants extends PreferenceConstants {
 
   public static final String DOC_TM_PAGES_LOCATIONS = "doc_tm_pages_location";
 
-  public static final String COMMENT_TASK_TAGS = RutaColorConstants.TM_TODO_TAG;// RutaColorConstants
+  public static final String COMMENT_TASK_TAGS = RutaColorConstants.RUTA_TODO_TAG;// RutaColorConstants
 
   public static final String COMMENT_TASK_TAGS_BOLD = COMMENT_TASK_TAGS + EDITOR_BOLD_SUFFIX;
 

@@ -36,8 +36,8 @@ public class RutaPartitionScanner extends RuleBasedPartitionScanner {
   public RutaPartitionScanner() {
     super();
 
-    IToken string = new Token(RutaPartitions.TM_STRING);
-    IToken comment = new Token(RutaPartitions.TM_COMMENT);
+    IToken string = new Token(RutaPartitions.RUTA_STRING);
+    IToken comment = new Token(RutaPartitions.RUTA_COMMENT);
 
     List/* < IPredicateRule > */rules = new ArrayList/* <IPredicateRule> */();
 

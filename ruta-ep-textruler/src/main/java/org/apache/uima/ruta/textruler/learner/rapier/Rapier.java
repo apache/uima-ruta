@@ -207,7 +207,7 @@ public class Rapier extends TextRulerBasicLearner {
       TextRulerAnnotation slotAnnotation = example.getAnnotation();
       CAS docCas = example.getDocumentCAS();
       TypeSystem ts = docCas.getTypeSystem();
-      Type tokensRootType = ts.getType(TextRulerToolkit.TM_ANY_TYPE_NAME);
+      Type tokensRootType = ts.getType(TextRulerToolkit.RUTA_ANY_TYPE_NAME);
 
       // first, get all words/tokens:
       List<AnnotationFS> before = TextRulerToolkit.getAnnotationsBeforePosition(
