@@ -12,6 +12,6 @@
 		</buildCommand>
 	</buildSpec>
 	<natures>
-		<nature>org.apache.uima.textmarker.ide.nature</nature>
+		<nature>org.apache.uima.ruta.ide.nature</nature>
 	</natures>
 </projectDescription>

@@ -17,37 +17,63 @@
   specific language governing permissions and limitations
   under the License.
 -->
-
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>org.apache.uima.ruta.engine.HtmlAnnotator</annotatorImplementationName>
+  <annotatorImplementationName>org.apache.uima.ruta.engine.HtmlConverter</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>PlainTextAnnotator</name>
+    <name>XMLConverter</name>
     <description/>
     <version>1.0</version>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>onlyContent</name>
+        <name>outputView</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>newlineInducingTags</name>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>replaceLinebreaks</name>
         <type>Boolean</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
+      <configurationParameter>
+        <name>inputView</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>conversionPolicy</name>
+        <description>Either heuristic, explicit, or none.
+Defaults to heuristic.</description>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>conversionPatterns</name>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>conversionReplacements</name>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
     </configurationParameters>
-    <configurationParameterSettings>
-      <nameValuePair>
-        <name>onlyContent</name>
-        <value>
-          <boolean>true</boolean>
-        </value>
-      </nameValuePair>
-    </configurationParameterSettings>
-    <typeSystemDescription>
-      <imports>
-        <import location="HtmlTypeSystem.xml"/>
-      </imports>
-    </typeSystemDescription>
+    <configurationParameterSettings/>
+    <typeSystemDescription/>
     <typePriorities/>
     <fsIndexCollection/>
     <capabilities>

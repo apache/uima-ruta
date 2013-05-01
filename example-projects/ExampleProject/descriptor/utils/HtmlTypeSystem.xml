@@ -241,7 +241,7 @@
     <typeDescription>
       <name>org.apache.uima.ruta.type.html.REMARK</name>
       <description></description>
-      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.html.TAG</supertypeName>
       <features>
         <featureDescription>
           <name>comment</name>
