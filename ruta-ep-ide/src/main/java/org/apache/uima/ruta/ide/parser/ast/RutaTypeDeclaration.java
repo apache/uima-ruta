@@ -52,7 +52,7 @@ public class RutaTypeDeclaration extends RutaAbstractDeclaration {
 
   @Override
   public int getKind() {
-    return TMTypeConstants.TM_TYPE_AT;
+    return RutaTypeConstants.RUTA_TYPE_AT;
   }
   
   public void setFeatures(List<RutaFeatureDeclaration> features) {

@@ -35,6 +35,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.RutaTestUtils;
 import org.apache.uima.ruta.RutaTestUtils.TestFeature;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.junit.Test;
 
 public class ShiftTest2 {
@@ -58,7 +59,7 @@ public class ShiftTest2 {
     
     CAS cas = null;
     try {
-      cas = RutaTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
+      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
               + ".txt", 50, false, false, complexTypes, features, namespace + "/");
     } catch (Exception e) {
       e.printStackTrace();

@@ -40,7 +40,7 @@ public class CreatedByLabelProvider extends LabelProvider implements ILabelProvi
 
   @Override
   public Image getImage(Object element) {
-    return owner.getImage(CreatedByViewPage.TM_RULE);
+    return owner.getImage(CreatedByViewPage.RUTA_RULE);
   }
 
   @Override

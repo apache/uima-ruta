@@ -34,7 +34,7 @@ public class LongGreedyTest {
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
     CAS cas = null;
     try {
-//      cas = RutaTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
+//      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
 //              + ".txt", 50);
     } catch (Exception e) {
       e.printStackTrace();

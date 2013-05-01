@@ -47,7 +47,7 @@ public class Ruta {
     URL aedesc = RutaEngine.class.getResource("BasicEngine.xml");
     AnalysisEngine ae = wrapAnalysisEngine(aedesc, viewName);
     
-    File scriptFile = File.createTempFile("Ruta", ".tm");
+    File scriptFile = File.createTempFile("Ruta", RutaEngine.SCRIPT_FILE_EXTENSION);
     scriptFile.deleteOnExit();
     if (!script.startsWith("PACKAGE")) {
       script = "PACKAGE org.apache.uima.ruta;\n" + script;
@@ -55,7 +55,7 @@ public class Ruta {
     FileUtils.saveString2File(script, scriptFile);
     ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { scriptFile
             .getParentFile().getAbsolutePath() });
-    String name = scriptFile.getName().substring(0, scriptFile.getName().length() - 3);
+    String name = scriptFile.getName().substring(0, scriptFile.getName().length() - 5);
     ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, name);
     ae.reconfigure();
     ae.process(cas);

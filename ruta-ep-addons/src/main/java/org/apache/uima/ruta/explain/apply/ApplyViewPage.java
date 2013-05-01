@@ -180,7 +180,7 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
               allScriptFolders = RutaProjectUtils.getAllScriptFolders(scriptProject);
               List<String> folders = RutaProjectUtils.getFolderLocations(allScriptFolders);
               String locate = RutaEngine
-                      .locate(script, folders.toArray(new String[0]), ".tm");
+                      .locate(script, folders.toArray(new String[0]), RutaEngine.SCRIPT_FILE_EXTENSION);
               IPath locatedPath = new Path(locate);
               ExplainUtils.openInRutaEditor(locatedPath, id);
             } catch (CoreException e) {

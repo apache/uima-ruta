@@ -30,7 +30,7 @@ public class RutaLogAction extends RutaAction {
 
   public RutaLogAction(int exprStart, int exprEnd, String name, int nameStart, int nameEnd,
           List<Expression> exprs, int levelStart, int levelEnd) {
-    super(exprStart, exprEnd, exprs, TMActionConstants.A_LOG, name, nameStart, nameEnd);
+    super(exprStart, exprEnd, exprs, RutaActionConstants.A_LOG, name, nameStart, nameEnd);
     logLevelBounds = new int[2];
     logLevelBounds[0] = levelStart;
     logLevelBounds[1] = levelEnd;

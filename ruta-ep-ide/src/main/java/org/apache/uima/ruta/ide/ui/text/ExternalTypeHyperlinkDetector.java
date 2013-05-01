@@ -35,7 +35,7 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.ruta.ide.core.codeassist.RutaReferenceVisitor;
 import org.apache.uima.ruta.ide.core.codeassist.RutaSelectionParser;
-import org.apache.uima.ruta.ide.parser.ast.TMTypeConstants;
+import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaModuleDeclaration;
 import org.apache.uima.ruta.ide.parser.ast.RutaVariableReference;
 import org.apache.uima.util.InvalidXMLException;
@@ -98,7 +98,7 @@ public class ExternalTypeHyperlinkDetector implements IHyperlinkDetector {
                 && moduleDeclaration instanceof RutaModuleDeclaration) {
           RutaVariableReference vr = (RutaVariableReference) node;
           RutaModuleDeclaration parsed = (RutaModuleDeclaration) moduleDeclaration;
-          if (vr.getType() == TMTypeConstants.TM_TYPE_AT) {
+          if (vr.getType() == RutaTypeConstants.RUTA_TYPE_AT) {
             String nodeText = vr.getStringRepresentation();
             Collection<String> importedTypeSystems = parsed.descriptorInfo.getImportedTypeSystems();
             List<IHyperlink> result = new ArrayList<IHyperlink>();

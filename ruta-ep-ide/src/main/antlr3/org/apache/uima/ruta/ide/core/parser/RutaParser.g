@@ -66,7 +66,7 @@ import org.apache.uima.ruta.ide.parser.ast.ConditionFactory;
 import org.apache.uima.ruta.ide.parser.ast.ExpressionFactory;
 import org.apache.uima.ruta.ide.parser.ast.ScriptFactory;
 import org.apache.uima.ruta.ide.parser.ast.StatementFactory;
-import org.apache.uima.ruta.ide.parser.ast.TMTypeConstants;
+import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaBlock;
 import org.apache.uima.ruta.ide.parser.ast.RutaExpression;
 import org.apache.uima.ruta.ide.parser.ast.RutaRule;
@@ -386,42 +386,42 @@ variableDeclaration returns [List<Statement> stmts = new ArrayList<Statement>()]
         type = BOOLEANLIST id = Identifier (ASSIGN_EQUAL list = booleanListExpression)?  SEMI
         {
         addVariable(id.getText(), type.getText());
-        decls.add(StatementFactory.createVarListVariable(id,type,list, TMTypeConstants.TM_TYPE_BL));
+        decls.add(StatementFactory.createVarListVariable(id,type,list, RutaTypeConstants.RUTA_TYPE_BL));
         stmts.add(StatementFactory.createDeclarationsStatement(type, decls, list));
         }
         |
         type = INTLIST id = Identifier (ASSIGN_EQUAL list = numberListExpression)?  SEMI
         {
         addVariable(id.getText(), type.getText());
-        decls.add(StatementFactory.createVarListVariable(id,type,list, TMTypeConstants.TM_TYPE_NL));
+        decls.add(StatementFactory.createVarListVariable(id,type,list, RutaTypeConstants.RUTA_TYPE_NL));
         stmts.add(StatementFactory.createDeclarationsStatement(type, decls, list));
         }
          |
         type = DOUBLELIST id = Identifier (ASSIGN_EQUAL list = numberListExpression)?  SEMI
         {
         addVariable(id.getText(), type.getText());
-        decls.add(StatementFactory.createVarListVariable(id,type,list, TMTypeConstants.TM_TYPE_NL));
+        decls.add(StatementFactory.createVarListVariable(id,type,list, RutaTypeConstants.RUTA_TYPE_NL));
         stmts.add(StatementFactory.createDeclarationsStatement(type, decls, list));
         }
           |
         type = FLOATLIST id = Identifier (ASSIGN_EQUAL list = numberListExpression)?  SEMI
         {
         addVariable(id.getText(), type.getText());
-        decls.add(StatementFactory.createVarListVariable(id,type,list, TMTypeConstants.TM_TYPE_NL));
+        decls.add(StatementFactory.createVarListVariable(id,type,list, RutaTypeConstants.RUTA_TYPE_NL));
         stmts.add(StatementFactory.createDeclarationsStatement(type, decls, list));
         }
                 |
         type = STRINGLIST id = Identifier (ASSIGN_EQUAL list = stringListExpression)?  SEMI
         {
         addVariable(id.getText(), type.getText());
-        decls.add(StatementFactory.createVarListVariable(id,type,list, TMTypeConstants.TM_TYPE_SL));
+        decls.add(StatementFactory.createVarListVariable(id,type,list, RutaTypeConstants.RUTA_TYPE_SL));
         stmts.add(StatementFactory.createDeclarationsStatement(type, decls, list));
         }
                 |
         type = TYPELIST id = Identifier (ASSIGN_EQUAL list = typeListExpression)?  SEMI
         {
         addVariable(id.getText(), type.getText());
-        decls.add(StatementFactory.createVarListVariable(id,type,list, TMTypeConstants.TM_TYPE_TL));
+        decls.add(StatementFactory.createVarListVariable(id,type,list, RutaTypeConstants.RUTA_TYPE_TL));
         stmts.add(StatementFactory.createDeclarationsStatement(type, decls, list));
         }       
 	//|
@@ -740,11 +740,11 @@ simpleBooleanListExpression returns [Expression expr = null]
 	List<Expression> list = new ArrayList<Expression>();
 }	:
 	LCURLY (e = simpleBooleanExpression {list.add(e);} (COMMA e = simpleBooleanExpression {list.add(e);})*)?  RCURLY
-	{expr = ExpressionFactory.createListExpression(list, TMTypeConstants.TM_TYPE_BL);}
+	{expr = ExpressionFactory.createListExpression(list, RutaTypeConstants.RUTA_TYPE_BL);}
 	|
 	{isVariableOfType(input.LT(1).getText(), "BOOLEANLIST")}? 
 	var = Identifier 
-	{expr = ExpressionFactory.createListExpression(var, TMTypeConstants.TM_TYPE_BL);}
+	{expr = ExpressionFactory.createListExpression(var, RutaTypeConstants.RUTA_TYPE_BL);}
 	;
 
 
@@ -758,11 +758,11 @@ simpleIntListExpression returns [Expression expr = null]
 	List<Expression> list = new ArrayList<Expression>();
 }	:
 	LCURLY (e = simpleNumberExpression {list.add(e);} (COMMA e = simpleNumberExpression {list.add(e);})*)?  RCURLY
-	{expr = ExpressionFactory.createListExpression(list, TMTypeConstants.TM_TYPE_NL);}
+	{expr = ExpressionFactory.createListExpression(list, RutaTypeConstants.RUTA_TYPE_NL);}
 	|
 	{isVariableOfType(input.LT(1).getText(), "INTLIST")}? 
 	var = Identifier 
-	{expr = ExpressionFactory.createListExpression(var, TMTypeConstants.TM_TYPE_NL);}
+	{expr = ExpressionFactory.createListExpression(var, RutaTypeConstants.RUTA_TYPE_NL);}
 	;
 
 
@@ -785,11 +785,11 @@ simpleDoubleListExpression returns [Expression expr = null]
 	List<Expression> list = new ArrayList<Expression>();
 }	:
 	LCURLY (e = simpleNumberExpression {list.add(e);} (COMMA e = simpleNumberExpression {list.add(e);})*)?  RCURLY
-	{expr = ExpressionFactory.createListExpression(list, TMTypeConstants.TM_TYPE_NL);}
+	{expr = ExpressionFactory.createListExpression(list, RutaTypeConstants.RUTA_TYPE_NL);}
 	|
 	{isVariableOfType(input.LT(1).getText(), "DOUBLELIST")}? 
 	var = Identifier 
-	{expr = ExpressionFactory.createListExpression(var, TMTypeConstants.TM_TYPE_NL);}
+	{expr = ExpressionFactory.createListExpression(var, RutaTypeConstants.RUTA_TYPE_NL);}
 	;
 
 floatListExpression returns [Expression expr = null]
@@ -802,11 +802,11 @@ simpleFloatListExpression returns [Expression expr = null]
 	List<Expression> list = new ArrayList<Expression>();
 }	:
 	LCURLY (e = simpleNumberExpression {list.add(e);} (COMMA e = simpleNumberExpression {list.add(e);})*)?  RCURLY
-	{expr = ExpressionFactory.createListExpression(list, TMTypeConstants.TM_TYPE_NL);}
+	{expr = ExpressionFactory.createListExpression(list, RutaTypeConstants.RUTA_TYPE_NL);}
 	|
 	{isVariableOfType(input.LT(1).getText(), "FLOATLIST")}? 
 	var = Identifier 
-	{expr = ExpressionFactory.createListExpression(var, TMTypeConstants.TM_TYPE_NL);}
+	{expr = ExpressionFactory.createListExpression(var, RutaTypeConstants.RUTA_TYPE_NL);}
 	;
 
 
@@ -820,11 +820,11 @@ simpleStringListExpression returns [Expression expr = null]
 	List<Expression> list = new ArrayList<Expression>();
 }	:
 	LCURLY (e = simpleStringExpression {list.add(e);} (COMMA e = simpleStringExpression {list.add(e);})*)?  RCURLY
-	{expr = ExpressionFactory.createListExpression(list, TMTypeConstants.TM_TYPE_SL);}
+	{expr = ExpressionFactory.createListExpression(list, RutaTypeConstants.RUTA_TYPE_SL);}
 	|
 	{isVariableOfType(input.LT(1).getText(), "STRINGLIST")}? 
 	var = Identifier 
-	{expr = ExpressionFactory.createListExpression(var, TMTypeConstants.TM_TYPE_SL);}
+	{expr = ExpressionFactory.createListExpression(var, RutaTypeConstants.RUTA_TYPE_SL);}
 	;
 
 
@@ -838,11 +838,11 @@ simpleTypeListExpression returns [Expression expr = null]
 	List<Expression> list = new ArrayList<Expression>();
 }	:
 	LCURLY (e = simpleTypeExpression {list.add(e);} (COMMA e = simpleTypeExpression {list.add(e);})*)?  RCURLY
-	{expr = ExpressionFactory.createListExpression(list, TMTypeConstants.TM_TYPE_TL);}
+	{expr = ExpressionFactory.createListExpression(list, RutaTypeConstants.RUTA_TYPE_TL);}
 	|
 	{isVariableOfType(input.LT(1).getText(), "TYPELIST")}? 
 	var = Identifier 
-	{expr = ExpressionFactory.createListExpression(var, TMTypeConstants.TM_TYPE_TL);}
+	{expr = ExpressionFactory.createListExpression(var, RutaTypeConstants.RUTA_TYPE_TL);}
 	;	
 	
 typeExpression returns [Expression expr = null]

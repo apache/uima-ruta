@@ -145,8 +145,8 @@ public class RutaTestUtils {
     ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { ruleFile
             .getParentFile().getPath() });
     String name = ruleFile.getName();
-    if (name.endsWith(".tm")) {
-      name = name.substring(0, name.length() - 3);
+    if (name.endsWith(RutaEngine.SCRIPT_FILE_EXTENSION)) {
+      name = name.substring(0, name.length() - 5);
     }
     ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, name);
     ae.setConfigParameterValue(RutaEngine.DYNAMIC_ANCHORING, dynamicAnchoring);

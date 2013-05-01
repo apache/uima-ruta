@@ -27,7 +27,7 @@ import java.util.Map;
 
 import org.antlr.runtime.CommonToken;
 import org.apache.uima.ruta.ide.parser.ast.ComposedRuleElement;
-import org.apache.uima.ruta.ide.parser.ast.TMConditionConstants;
+import org.apache.uima.ruta.ide.parser.ast.RutaConditionConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaAbstractDeclaration;
 import org.apache.uima.ruta.ide.parser.ast.RutaAction;
 import org.apache.uima.ruta.ide.parser.ast.RutaBinaryArithmeticExpression;
@@ -364,11 +364,11 @@ public class RutaFormattedPrinter extends ASTVisitor {
       append(document.get(c.getNameStart(), c.getNameEnd()));
       List<? extends ASTNode> childs = c.getChilds();
       // minus is a condition without parameter parantheses:
-      if (s.getKind() != TMConditionConstants.COND_MINUS && childs != null && !childs.isEmpty()) {
+      if (s.getKind() != RutaConditionConstants.COND_MINUS && childs != null && !childs.isEmpty()) {
         append(PAR_OPEN);
       }
       traverseAstNodes(childs);
-      if (s.getKind() != TMConditionConstants.COND_MINUS && childs != null && !childs.isEmpty()) {
+      if (s.getKind() != RutaConditionConstants.COND_MINUS && childs != null && !childs.isEmpty()) {
         append(PAR_CLOSE);
       }
       return false;

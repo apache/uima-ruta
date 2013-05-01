@@ -67,7 +67,7 @@ public class RutaModifierTest {
     String scriptName = this.getClass().getSimpleName();
     CAS cas = null;
     try {
-      cas = RutaTestUtils.process(namespace + "/" + scriptName + ".tm", namespace + "/test.html", 50);
+      cas = RutaTestUtils.process(namespace + "/" + scriptName + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/test.html", 50);
     } catch (Exception e) {
       e.printStackTrace();
       assert (false);

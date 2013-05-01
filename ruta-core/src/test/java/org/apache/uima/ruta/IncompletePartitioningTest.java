@@ -50,7 +50,7 @@ public class IncompletePartitioningTest {
     String className = this.getClass().getSimpleName();
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
 
-    String ruleFileName = namespace + "/" + className + ".tm";
+    String ruleFileName = namespace + "/" + className + RutaEngine.SCRIPT_FILE_EXTENSION;
     String textFileName = namespace + "/" + className + ".txt";
     URL ruleURL = RutaTestUtils.class.getClassLoader().getResource(ruleFileName);
     File ruleFile = new File(ruleURL.toURI());
@@ -79,8 +79,8 @@ public class IncompletePartitioningTest {
     ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { ruleFile
             .getParentFile().getPath() });
     String name = ruleFile.getName();
-    if (name.endsWith(".tm")) {
-      name = name.substring(0, name.length() - 3);
+    if (name.endsWith(RutaEngine.SCRIPT_FILE_EXTENSION)) {
+      name = name.substring(0, name.length() - 5);
     }
     ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, name);
     ae.setConfigParameterValue(RutaEngine.SEEDERS, new String[0]);

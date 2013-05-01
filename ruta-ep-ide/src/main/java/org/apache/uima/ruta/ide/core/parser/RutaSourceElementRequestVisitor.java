@@ -25,7 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.uima.ruta.ide.parser.ast.TMTypeConstants;
+import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaBasicAnnotationType;
 import org.apache.uima.ruta.ide.parser.ast.RutaImportStatement;
 import org.apache.uima.ruta.ide.parser.ast.RutaPackageDeclaration;
@@ -214,10 +214,10 @@ public class RutaSourceElementRequestVisitor extends SourceElementRequestVisitor
       modifier |= ((RutaVariableDeclaration) fullDeclaration).getKind();
     } else if (fullDeclaration instanceof RutaBasicAnnotationType) {
       modifier = Modifiers.AccConstant;
-      modifier |= TMTypeConstants.TM_TYPE_AT;
+      modifier |= RutaTypeConstants.RUTA_TYPE_AT;
     } else if (fullDeclaration instanceof RutaTypeDeclaration) {
       modifier = Modifiers.AccPublic;
-      modifier |= TMTypeConstants.TM_TYPE_AT;
+      modifier |= RutaTypeConstants.RUTA_TYPE_AT;
     }
     if (canAddVariables((ASTNode) this.fNodes.peek(), variableIDRef.getName())) {
       ISourceElementRequestor.FieldInfo info = new ISourceElementRequestor.FieldInfo();

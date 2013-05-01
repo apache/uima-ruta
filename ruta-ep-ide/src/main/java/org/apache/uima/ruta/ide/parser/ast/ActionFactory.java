@@ -69,7 +69,7 @@ public class ActionFactory extends AbstractFactory {
   public static RutaAction createEmptyAction(Token token) {
     int bounds[] = getBounds(token);
     return new RutaAction(bounds[0], bounds[0], new ArrayList<Expression>(),
-            TMConditionConstants.CONSTANT_OFFSET, "", bounds[0], bounds[0]);
+            RutaConditionConstants.CONSTANT_OFFSET, "", bounds[0], bounds[0]);
   }
   
   public static RutaAction createAction(Token type, Map<Expression, Expression> map,

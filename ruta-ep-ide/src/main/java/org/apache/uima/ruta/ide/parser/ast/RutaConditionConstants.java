@@ -22,18 +22,14 @@ package org.apache.uima.ruta.ide.parser.ast;
 import org.apache.uima.ruta.ide.core.parser.RutaParser;
 import org.eclipse.dltk.ast.expressions.ExpressionConstants;
 
-public interface TMActionConstants {
-  public static final int A_CALL = ExpressionConstants.USER_EXPRESSION_START
-          + RutaParser.CALL;
+public class RutaConditionConstants {
+  public static final int CONSTANT_OFFSET = ExpressionConstants.USER_EXPRESSION_START;
 
-  public static final int A_ASSIGN = ExpressionConstants.USER_EXPRESSION_START
-          + RutaParser.ASSIGN;
+  // important for formatter to handle the only condition without parantheses
+  public static final int COND_MINUS = CONSTANT_OFFSET + RutaParser.MINUS;
 
-  public static final int A_CREATE = ExpressionConstants.USER_EXPRESSION_START
-          + RutaParser.CREATE;
-
-  public static final int A_FILL = ExpressionConstants.USER_EXPRESSION_START
-          + RutaParser.FILL;
-
-  public static final int A_LOG = ExpressionConstants.USER_EXPRESSION_START + RutaParser.LOG;
+  // public static int getConditionConstant(String str) {
+  // // RutaParser.tokenNames;
+  // return 0;
+  // }
 }

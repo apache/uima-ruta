@@ -56,7 +56,7 @@ public class RutaDeclareDeclarationsStatement extends RutaDeclarationsStatement 
 
   @Override
   public int getKind() {
-    return TMStatementConstants.S_DECLARATIONS;
+    return RutaStatementConstants.S_DECLARATIONS;
   }
 
   public ASTNode getParent() {

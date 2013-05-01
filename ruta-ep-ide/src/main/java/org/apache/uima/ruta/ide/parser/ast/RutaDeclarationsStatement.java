@@ -76,7 +76,7 @@ public class RutaDeclarationsStatement extends Statement {
 
   @Override
   public int getKind() {
-    return TMStatementConstants.S_DECLARATIONS;
+    return RutaStatementConstants.S_DECLARATIONS;
   }
 
   public void addDeclaration(RutaAbstractDeclaration decl) {

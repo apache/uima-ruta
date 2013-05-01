@@ -48,7 +48,7 @@ public class RutaUnaryArithmeticExpression extends Expression {
 
   @Override
   public String getOperator() {
-    Map<String, Integer> map = TMExpressionConstants.opIDs;
+    Map<String, Integer> map = RutaExpressionConstants.opIDs;
     for (Iterator iterator = map.keySet().iterator(); iterator.hasNext();) {
       String key = (String) iterator.next();
       Integer intID = map.get(key);

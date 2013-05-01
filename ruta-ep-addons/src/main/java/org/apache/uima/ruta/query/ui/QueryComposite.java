@@ -42,7 +42,6 @@ import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -225,7 +224,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
         public void widgetSelected(SelectionEvent event) {
           FileDialog fd = new FileDialog(getShell(), SWT.OPEN);
           fd.setText("Choose Type System Descriptor or Ruta Script");
-          String[] filterExt = { "*.tm", "*.*" };
+          String[] filterExt = { "*.ruta", "*.*" };
           fd.setFilterExtensions(filterExt);
           String file = fd.open();
           if (file != null) {

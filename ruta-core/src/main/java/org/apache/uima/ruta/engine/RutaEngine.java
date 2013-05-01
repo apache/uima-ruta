@@ -78,7 +78,7 @@ import org.apache.uima.util.XMLInputSource;
 
 public class RutaEngine extends JCasAnnotator_ImplBase {
 
-  private static final String SCRIPT_FILE_EXTENSION = ".ruta";
+  public static final String SCRIPT_FILE_EXTENSION = ".ruta";
 
   public static final String SOURCE_DOCUMENT_INFORMATION = "org.apache.uima.examples.SourceDocumentInformation";
 

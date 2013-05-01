@@ -23,15 +23,15 @@ public abstract class ScriptApply {
 
   public static int count = 0;
 
-  private final RutaStatement tme;
+  private final RutaStatement statement;
 
-  public ScriptApply(RutaStatement tme) {
+  public ScriptApply(RutaStatement statement) {
     super();
-    this.tme = tme;
+    this.statement = statement;
   }
 
   public RutaStatement getElement() {
-    return tme;
+    return statement;
   }
 
 }

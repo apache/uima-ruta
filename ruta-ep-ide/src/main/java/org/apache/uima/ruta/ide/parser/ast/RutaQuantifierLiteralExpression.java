@@ -41,7 +41,7 @@ public class RutaQuantifierLiteralExpression extends Expression {
    */
   @Override
   public int getKind() {
-    return TMExpressionConstants.E_QUANTIFIER_LIT;
+    return RutaExpressionConstants.E_QUANTIFIER_LIT;
   }
 
 }

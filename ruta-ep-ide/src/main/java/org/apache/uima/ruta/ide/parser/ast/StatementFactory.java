@@ -54,7 +54,7 @@ public class StatementFactory extends AbstractFactory {
   public static RutaImportStatement createImportTypeSystem(ComponentDeclaration dottedId,
           Token impString) {
     dottedId.setType(ComponentDeclaration.TYPESYSTEM);
-    return createImport(dottedId, impString, TMStatementConstants.S_IMPORT_TYPESYSTEM);
+    return createImport(dottedId, impString, RutaStatementConstants.S_IMPORT_TYPESYSTEM);
   }
 
   public static RutaImportStatement createImportScript(ComponentDeclaration dottedId,
@@ -62,13 +62,13 @@ public class StatementFactory extends AbstractFactory {
     if (dottedId != null) {
       dottedId.setType(ComponentDeclaration.SCRIPT);
     }
-    return createImport(dottedId, impString, TMStatementConstants.S_IMPORT_SCRIPT);
+    return createImport(dottedId, impString, RutaStatementConstants.S_IMPORT_SCRIPT);
   }
 
   public static RutaImportStatement createImportEngine(ComponentDeclaration dottedId,
           Token impString) {
     dottedId.setType(ComponentDeclaration.ENGINE);
-    return createImport(dottedId, impString, TMStatementConstants.S_IMPORT_ENGINE);
+    return createImport(dottedId, impString, RutaStatementConstants.S_IMPORT_ENGINE);
   }
 
   /**
@@ -115,7 +115,7 @@ public class StatementFactory extends AbstractFactory {
    * @return
    */
   public static RutaVariableDeclaration createIntVariable(Token id, Token type) {
-    return createVariable(id, type, TMTypeConstants.TM_TYPE_I);
+    return createVariable(id, type, RutaTypeConstants.RUTA_TYPE_I);
   }
 
   /**
@@ -124,7 +124,7 @@ public class StatementFactory extends AbstractFactory {
    * @return
    */
   public static Object createFloatVariable(Token id, Token type) {
-    return createVariable(id, type, TMTypeConstants.TM_TYPE_F);
+    return createVariable(id, type, RutaTypeConstants.RUTA_TYPE_F);
   }
   
   /**
@@ -133,7 +133,7 @@ public class StatementFactory extends AbstractFactory {
    * @return
    */
   public static RutaVariableDeclaration createDoubleVariable(Token id, Token type) {
-    return createVariable(id, type, TMTypeConstants.TM_TYPE_D);
+    return createVariable(id, type, RutaTypeConstants.RUTA_TYPE_D);
   }
 
   /**
@@ -142,7 +142,7 @@ public class StatementFactory extends AbstractFactory {
    * @return
    */
   public static RutaVariableDeclaration createStringVariable(Token id, Token type) {
-    return createVariable(id, type, TMTypeConstants.TM_TYPE_S);
+    return createVariable(id, type, RutaTypeConstants.RUTA_TYPE_S);
   }
 
   /**
@@ -151,7 +151,7 @@ public class StatementFactory extends AbstractFactory {
    * @return
    */
   public static RutaVariableDeclaration createBooleanVariable(Token id, Token type) {
-    return createVariable(id, type, TMTypeConstants.TM_TYPE_B);
+    return createVariable(id, type, RutaTypeConstants.RUTA_TYPE_B);
   }
 
   /**
@@ -160,7 +160,7 @@ public class StatementFactory extends AbstractFactory {
    * @return
    */
   public static RutaVariableDeclaration createTypeVariable(Token id, Token type) {
-    return createVariable(id, type, TMTypeConstants.TM_TYPE_AT);
+    return createVariable(id, type, RutaTypeConstants.RUTA_TYPE_AT);
   }
 
   /**
@@ -170,7 +170,7 @@ public class StatementFactory extends AbstractFactory {
    */
   public static RutaVariableDeclaration createListVariable(Token id, Token type,
           Expression expr) {
-    return createVariable(id, type, TMTypeConstants.TM_TYPE_WL, expr);
+    return createVariable(id, type, RutaTypeConstants.RUTA_TYPE_WL, expr);
   }
 
   /**
@@ -180,7 +180,7 @@ public class StatementFactory extends AbstractFactory {
    */
   public static RutaVariableDeclaration createTableVariable(Token id, Token type,
           Expression expr) {
-    return createVariable(id, type, TMTypeConstants.TM_TYPE_WT, expr);
+    return createVariable(id, type, RutaTypeConstants.RUTA_TYPE_WT, expr);
   }
 
   /**
@@ -203,7 +203,7 @@ public class StatementFactory extends AbstractFactory {
     // FieldDeclarartion
 
     SimpleReference ref = new RutaVariableReference(nameBounds[0], nameBounds[1], id
-            .getText(), TMTypeConstants.TM_TYPE_AT);
+            .getText(), RutaTypeConstants.RUTA_TYPE_AT);
     return new RutaTypeDeclaration(id.getText(), nameBounds[0], nameBounds[1], declBounds[0],
             declBounds[1], ref, features);
   }
@@ -213,7 +213,7 @@ public class StatementFactory extends AbstractFactory {
     int nameBounds[] = getBounds(id);
 
     SimpleReference ref = new RutaVariableReference(nameBounds[0], nameBounds[1], id
-            .getText(), TMTypeConstants.TM_TYPE_AT);
+            .getText(), RutaTypeConstants.RUTA_TYPE_AT);
     return new RutaTypeDeclaration(id.getText(), nameBounds[0], nameBounds[1], declBounds[0],
             declBounds[1], ref);
   }

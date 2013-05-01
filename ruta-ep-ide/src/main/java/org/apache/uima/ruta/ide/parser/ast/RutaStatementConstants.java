@@ -19,17 +19,16 @@
 
 package org.apache.uima.ruta.ide.parser.ast;
 
-import org.apache.uima.ruta.ide.core.parser.RutaParser;
-import org.eclipse.dltk.ast.expressions.ExpressionConstants;
+public interface RutaStatementConstants {
+  public static final int S_USERSTART = 1;
 
-public class TMConditionConstants {
-  public static final int CONSTANT_OFFSET = ExpressionConstants.USER_EXPRESSION_START;
+  public static final int S_IMPORT = S_USERSTART;
 
-  // important for formatter to handle the only condition without parantheses
-  public static final int COND_MINUS = CONSTANT_OFFSET + RutaParser.MINUS;
+  public static final int S_IMPORT_TYPESYSTEM = S_IMPORT | 1 << 1;
 
-  // public static int getConditionConstant(String str) {
-  // // RutaParser.tokenNames;
-  // return 0;
-  // }
+  public static final int S_IMPORT_SCRIPT = S_IMPORT | 1 << 2;
+
+  public static final int S_IMPORT_ENGINE = S_IMPORT | 1 << 3;
+
+  public static final int S_DECLARATIONS = S_USERSTART | 1 << 4;
 }

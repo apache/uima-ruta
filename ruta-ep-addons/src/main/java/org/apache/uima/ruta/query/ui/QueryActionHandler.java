@@ -156,7 +156,7 @@ public class QueryActionHandler implements IHandler {
           String tsLocation = typeSystemLocation;
           Collection<TypeSystemDescription> tsds = new ArrayList<TypeSystemDescription>();
           tsds.add(basicTypeSystem);
-          if (typeSystemLocation.endsWith(".tm")) {
+          if (typeSystemLocation.endsWith(RutaEngine.SCRIPT_FILE_EXTENSION)) {
             IFile iFile = QueryComposite.getIFile(typeSystemLocation);
             IPath scriptPath = iFile.getLocation();
             IProject project = iFile.getProject();
@@ -176,13 +176,13 @@ public class QueryActionHandler implements IHandler {
         }
         aed.resolveImports(resMgr);
         AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed, resMgr, null);
-        File tempFile = File.createTempFile("RutaQuery", ".tm");
+        File tempFile = File.createTempFile("RutaQuery", RutaEngine.SCRIPT_FILE_EXTENSION);
         tempFile.deleteOnExit();
         FileUtils.saveString2File(script, tempFile, "UTF-8");
         String portableString = Path.fromOSString(tempFile.getParentFile().getPath())
                 .toPortableString();
         ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { portableString });
-        String name = tempFile.getName().substring(0, tempFile.getName().length() - 3);
+        String name = tempFile.getName().substring(0, tempFile.getName().length() - 5);
         ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, name);
 
         ae.setConfigParameterValue(RutaEngine.CREATE_DEBUG_INFO, true);

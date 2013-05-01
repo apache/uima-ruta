@@ -32,10 +32,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.ruta.ide.core.parser.RutaParseUtils;
-import org.apache.uima.ruta.ide.parser.ast.TMActionConstants;
-import org.apache.uima.ruta.ide.parser.ast.TMStatementConstants;
+import org.apache.uima.ruta.ide.parser.ast.RutaActionConstants;
+import org.apache.uima.ruta.ide.parser.ast.RutaStatementConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaImportStatement;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
@@ -99,8 +100,8 @@ public class RutaSelectionEngine extends ScriptSelectionEngine {
       int i = curFileName2.indexOf("script");
       String s = curFileName2.substring(i + "scripts".length() - 1);
       s = s.replace('/', '.');
-      if (s.endsWith(".tm")) {
-        s = s.substring(1, s.length() - 3);
+      if (s.endsWith(RutaEngine.SCRIPT_FILE_EXTENSION)) {
+        s = s.substring(1, s.length() - 5);
       }
       return s;
     }
@@ -109,16 +110,16 @@ public class RutaSelectionEngine extends ScriptSelectionEngine {
     public boolean visit(Statement s) throws Exception {
       if (s instanceof RutaImportStatement) {
         // handle engine imports
-        if (((RutaImportStatement) s).getType() == TMStatementConstants.S_IMPORT_ENGINE) {
+        if (((RutaImportStatement) s).getType() == RutaStatementConstants.S_IMPORT_ENGINE) {
           SimpleReference sRef = (SimpleReference) ((RutaImportStatement) s).getExpression();
           importEngine(sRef.getName());
         }
         // handle script imports
-        if (((RutaImportStatement) s).getType() == TMStatementConstants.S_IMPORT_SCRIPT) {
+        if (((RutaImportStatement) s).getType() == RutaStatementConstants.S_IMPORT_SCRIPT) {
           importScript(s);
         }
         // handle type system imports
-        if (((RutaImportStatement) s).getType() == TMStatementConstants.S_IMPORT_TYPESYSTEM) {
+        if (((RutaImportStatement) s).getType() == RutaStatementConstants.S_IMPORT_TYPESYSTEM) {
           importTypesystem(s);
         }
         return false;
@@ -139,7 +140,7 @@ public class RutaSelectionEngine extends ScriptSelectionEngine {
             results.add(impFields.get(name));
           }
         }
-        if (s.getKind() == TMActionConstants.A_CALL) {
+        if (s.getKind() == RutaActionConstants.A_CALL) {
           SimpleReference sr = (SimpleReference) s.getChilds().get(0);
           if (sr != null) {
             String name = sr.getName();

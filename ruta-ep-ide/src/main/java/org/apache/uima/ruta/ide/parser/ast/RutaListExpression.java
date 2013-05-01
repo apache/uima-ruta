@@ -34,7 +34,7 @@ public class RutaListExpression extends RutaExpression {
   private int type;
 
   public RutaListExpression(int start, int end, List<Expression> exprList, int type) {
-    super(start, end, null, TMTypeConstants.TM_TYPE_S);
+    super(start, end, null, RutaTypeConstants.RUTA_TYPE_S);
     this.setExprs(new ASTListNode(start, end, exprList));
     this.type = type;
   }

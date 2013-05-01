@@ -41,7 +41,7 @@ public class ConditionFactory extends AbstractFactory {
       }
     }
     return new RutaCondition(wholeConditionBounds[0], wholeConditionBounds[1], exprs,
-            TMConditionConstants.CONSTANT_OFFSET + type.getType(), type.getText(), nameStart,
+            RutaConditionConstants.CONSTANT_OFFSET + type.getType(), type.getText(), nameStart,
             nameEnd);
   }
 
@@ -61,7 +61,7 @@ public class ConditionFactory extends AbstractFactory {
   public static RutaCondition createEmptyCondition(Token token) {
     int bounds[] = getBounds(token);
     return new RutaCondition(bounds[0], bounds[0], new ArrayList<Expression>(),
-            TMConditionConstants.CONSTANT_OFFSET, "", bounds[0], bounds[0]);
+            RutaConditionConstants.CONSTANT_OFFSET, "", bounds[0], bounds[0]);
   }
 
   // public static RutaCondition createConditionAnd(int start, int end,

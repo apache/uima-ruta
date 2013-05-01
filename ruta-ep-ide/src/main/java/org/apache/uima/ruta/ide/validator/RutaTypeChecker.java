@@ -38,8 +38,8 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.ide.RutaIdePlugin;
 import org.apache.uima.ruta.ide.core.RutaCorePreferences;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
-import org.apache.uima.ruta.ide.parser.ast.TMStatementConstants;
-import org.apache.uima.ruta.ide.parser.ast.TMTypeConstants;
+import org.apache.uima.ruta.ide.parser.ast.RutaStatementConstants;
+import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaBlock;
 import org.apache.uima.ruta.ide.parser.ast.RutaDeclareDeclarationsStatement;
 import org.apache.uima.ruta.ide.parser.ast.RutaFeatureDeclaration;
@@ -210,7 +210,7 @@ public class RutaTypeChecker implements IBuildParticipant, IBuildParticipantExte
           rep.reportProblem(problem);
           return false;
         }
-        if ((newVar.getKind() & TMTypeConstants.TM_TYPE_AT) != 0) {
+        if ((newVar.getKind() & RutaTypeConstants.RUTA_TYPE_AT) != 0) {
           typeVariables.add(newVar.getName());
           return false;
         }
@@ -264,7 +264,7 @@ public class RutaTypeChecker implements IBuildParticipant, IBuildParticipantExte
       }
       if (s instanceof RutaImportStatement) {
         // handle type system imports
-        if (((RutaImportStatement) s).getType() == TMStatementConstants.S_IMPORT_TYPESYSTEM) {
+        if (((RutaImportStatement) s).getType() == RutaStatementConstants.S_IMPORT_TYPESYSTEM) {
           SimpleReference sRef = (SimpleReference) ((RutaImportStatement) s).getExpression();
           String localPath = sRef.getName();
           try {
@@ -294,7 +294,7 @@ public class RutaTypeChecker implements IBuildParticipant, IBuildParticipantExte
           return false;
         }
         // handle script-imports
-        if (((RutaImportStatement) s).getType() == TMStatementConstants.S_IMPORT_SCRIPT) {
+        if (((RutaImportStatement) s).getType() == RutaStatementConstants.S_IMPORT_SCRIPT) {
           SimpleReference sRef = (SimpleReference) ((RutaImportStatement) s).getExpression();
           String localpath = sRef.getName();
 
@@ -341,7 +341,7 @@ public class RutaTypeChecker implements IBuildParticipant, IBuildParticipantExte
         String longName = this.packageName
                 + "."
                 + currentFile.getElementName().substring(0,
-                        currentFile.getElementName().length() - 3) + ".";
+                        currentFile.getElementName().length() - 5) + ".";
         for (String each : blocks) {
           longName += each + ".";
         }
@@ -404,7 +404,7 @@ public class RutaTypeChecker implements IBuildParticipant, IBuildParticipantExte
       if (s instanceof RutaVariableReference) {
         RutaVariableReference ref = (RutaVariableReference) s;
         // filter everything but AnnotationTypeReferences
-        if ((ref.getType() & TMTypeConstants.TM_TYPE_AT) == 0) {
+        if ((ref.getType() & RutaTypeConstants.RUTA_TYPE_AT) == 0) {
           return false;
         }
         if (typeVariables.contains(ref.getName()) || completeTypes.contains(ref.getName())
@@ -510,7 +510,7 @@ public class RutaTypeChecker implements IBuildParticipant, IBuildParticipantExte
       String longName = this.packageName
               + "."
               + currentFile.getElementName()
-                      .substring(0, currentFile.getElementName().length() - 3);
+                      .substring(0, currentFile.getElementName().length() - 5);
       if (!name.startsWith(longName)) {
         return false;
       }

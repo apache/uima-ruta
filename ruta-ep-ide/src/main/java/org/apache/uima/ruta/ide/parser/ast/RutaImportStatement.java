@@ -37,7 +37,7 @@ public class RutaImportStatement extends RutaSimpleStatement {
   }
 
   /**
-   * See {@link TMStatementConstants}
+   * See {@link RutaStatementConstants}
    * 
    * @return
    */

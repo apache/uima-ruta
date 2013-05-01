@@ -25,6 +25,7 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.junit.Test;
 
 public class EmptyDocumentTest {
@@ -35,7 +36,7 @@ public class EmptyDocumentTest {
     String namespace = RuleInferenceTest.class.getPackage().getName().replaceAll("\\.", "/");
     CAS cas = null;
     try {
-      cas = RutaTestUtils.process(namespace + "/" + name + ".tm", namespace + "/"
+      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/"
               + "EmptyDocumentTest.txt", 50);
 
     } catch (Exception e) {

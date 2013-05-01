@@ -31,6 +31,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.RutaTestUtils;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.junit.Test;
 
 public class TransferTest {
@@ -44,7 +45,7 @@ public class TransferTest {
     complexTypes.put(type, "uima.tcas.DocumentAnnotation");
     CAS cas = null;
     try {
-      cas = RutaTestUtils.process(namespace + "/" + name + ".tm", namespace + "/" + name
+      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
               + ".txt", 50, false, false, complexTypes, null);
     } catch (Exception e) {
       e.printStackTrace();

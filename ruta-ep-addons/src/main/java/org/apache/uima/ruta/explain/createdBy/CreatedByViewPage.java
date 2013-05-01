@@ -71,7 +71,7 @@ import org.eclipse.ui.part.Page;
 public class CreatedByViewPage extends Page implements ISelectionListener, ICasEditorInputListener,
         IDoubleClickListener {
 
-  public static final String TM_RULE = "TMRule";
+  public static final String RUTA_RULE = "RutaRule";
 
   protected TreeViewer viewer;
 
@@ -97,7 +97,7 @@ public class CreatedByViewPage extends Page implements ISelectionListener, ICasE
 
     desc = RutaAddonsPlugin.getImageDescriptor("/icons/tm_obj.png");
     image = desc.createImage();
-    name = TM_RULE;
+    name = RUTA_RULE;
     images.put(name, image);
 
   }
@@ -164,7 +164,7 @@ public class CreatedByViewPage extends Page implements ISelectionListener, ICasE
         try {
           allScriptFolders = RutaProjectUtils.getAllScriptFolders(scriptProject);
           List<String> folders = RutaProjectUtils.getFolderLocations(allScriptFolders);
-          String locate = RutaEngine.locate(script, folders.toArray(new String[0]), ".tm");
+          String locate = RutaEngine.locate(script, folders.toArray(new String[0]), RutaEngine.SCRIPT_FILE_EXTENSION);
           if (locate != null) {
             IPath locatedPath = new Path(locate);
             ExplainUtils.openInRutaEditor(locatedPath, id);

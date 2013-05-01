@@ -19,16 +19,21 @@
 
 package org.apache.uima.ruta.ide.parser.ast;
 
-public interface TMStatementConstants {
-  public static final int S_USERSTART = 1;
+import org.apache.uima.ruta.ide.core.parser.RutaParser;
+import org.eclipse.dltk.ast.expressions.ExpressionConstants;
 
-  public static final int S_IMPORT = S_USERSTART;
+public interface RutaActionConstants {
+  public static final int A_CALL = ExpressionConstants.USER_EXPRESSION_START
+          + RutaParser.CALL;
 
-  public static final int S_IMPORT_TYPESYSTEM = S_IMPORT | 1 << 1;
+  public static final int A_ASSIGN = ExpressionConstants.USER_EXPRESSION_START
+          + RutaParser.ASSIGN;
 
-  public static final int S_IMPORT_SCRIPT = S_IMPORT | 1 << 2;
+  public static final int A_CREATE = ExpressionConstants.USER_EXPRESSION_START
+          + RutaParser.CREATE;
 
-  public static final int S_IMPORT_ENGINE = S_IMPORT | 1 << 3;
+  public static final int A_FILL = ExpressionConstants.USER_EXPRESSION_START
+          + RutaParser.FILL;
 
-  public static final int S_DECLARATIONS = S_USERSTART | 1 << 4;
+  public static final int A_LOG = ExpressionConstants.USER_EXPRESSION_START + RutaParser.LOG;
 }

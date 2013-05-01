@@ -25,7 +25,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.apache.uima.ruta.ide.core.RutaNature;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
@@ -45,12 +44,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.dltk.core.IScriptProject;
-import org.eclipse.dltk.internal.ui.util.SelectionUtil;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 public class UpdateProjectHandler implements IHandler {
@@ -102,7 +98,7 @@ public class UpdateProjectHandler implements IHandler {
             List<File> files = getFiles(new File(each.getLocation().toPortableString()));
             for (File file : files) {
               String absolutePath = file.getAbsolutePath();
-              File newFile = new File(absolutePath.substring(0, absolutePath.length() - 3)
+              File newFile = new File(absolutePath.substring(0, absolutePath.length() - 5)
                       + ".ruta");
               file.renameTo(newFile);
             }

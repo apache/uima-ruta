@@ -44,6 +44,7 @@ import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.resource.metadata.FsIndexDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.ide.RutaIdePlugin;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.ruta.testing.evaluator.ICasEvaluator;
@@ -138,7 +139,7 @@ public class RerunActionHandler implements IHandler {
           runCas.reset();
           String elementName = r.getLocation().lastSegment();
           monitor.setTaskName("Evaluating " + td.getPath().lastSegment());
-          int lastIndexOf = elementName.lastIndexOf(".tm");
+          int lastIndexOf = elementName.lastIndexOf(RutaEngine.SCRIPT_FILE_EXTENSION);
           if (lastIndexOf != -1) {
             elementName = elementName.substring(0, lastIndexOf);
           }
