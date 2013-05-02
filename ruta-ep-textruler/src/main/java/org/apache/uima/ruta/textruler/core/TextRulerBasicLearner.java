@@ -111,29 +111,32 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
 
   public AnalysisEngine getAnalysisEngine() {
     if (ae == null) {
-      String descriptorFile = TextRulerToolkit.getEngineDescriptorFromTMSourceFile(new Path(
-              preprocessorTMFile));
-      sendStatusUpdateToDelegate("loading AE...", TextRulerLearnerState.ML_INITIALIZING, false);
-      ae = TextRulerToolkit.loadAnalysisEngine(descriptorFile);
-
-      // set filters to NO filtering so that we can add it manually with
-      // the FILTERTYPE expression!
-      String tempRulesFileName = getTempRulesFileName();
-      IPath path = new Path(tempRulesFileName);
-      ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, path.removeFileExtension().lastSegment());
-      String portableString = path.removeLastSegments(1).toPortableString();
-      ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { portableString });
-      ae.setConfigParameterValue(RutaEngine.ADDITIONAL_SCRIPTS, new String[0]);
-      ae.setConfigParameterValue(RutaEngine.RELOAD_SCRIPT, true);
-
-      try {
-        ae.reconfigure();
-      } catch (ResourceConfigurationException e) {
-        TextRulerPlugin.error(e);
-        return null;
-      }
+      updateAE();
     }
     return ae;
+  }
+
+  private void updateAE() {
+    String descriptorFile = TextRulerToolkit.getEngineDescriptorFromTMSourceFile(new Path(
+            preprocessorTMFile));
+    sendStatusUpdateToDelegate("loading AE...", TextRulerLearnerState.ML_INITIALIZING, false);
+    ae = TextRulerToolkit.loadAnalysisEngine(descriptorFile);
+
+    // set filters to NO filtering so that we can add it manually with
+    // the FILTERTYPE expression!
+    String tempRulesFileName = getTempRulesFileName();
+    IPath path = new Path(tempRulesFileName);
+    ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, path.removeFileExtension().lastSegment());
+    String portableString = path.removeLastSegments(1).toPortableString();
+    ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { portableString });
+    ae.setConfigParameterValue(RutaEngine.ADDITIONAL_SCRIPTS, new String[0]);
+    ae.setConfigParameterValue(RutaEngine.RELOAD_SCRIPT, true);
+
+    try {
+      ae.reconfigure();
+    } catch (ResourceConfigurationException e) {
+      TextRulerPlugin.error(e);
+    }
   }
 
   protected boolean checkForMandatoryTypes() {
@@ -172,7 +175,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
 
   public void run() {
     if (createTempDirIfNeccessary()) {
-      getAnalysisEngine(); // be sure that our AE was created...
+      updateAE();
 
       if (!checkForMandatoryTypes()) {
 
