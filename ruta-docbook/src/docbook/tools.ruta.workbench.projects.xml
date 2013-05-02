@@ -18,12 +18,12 @@
 
 
 <section id="section.ugr.tools.ruta.workbench.projects">
-  <title>Ruta Projects</title>
+  <title>UIMA Ruta Projects</title>
   <para>
-    Ruta projects used within the Ruta workbench need to have
+    UIMA Ruta projects used within the UIMA Ruta Workbench need to have
     a certain folder structure. The parts of this folder structure are
     explained in
-    <xref linkend='table.ugr.tools.ruta.workbench.create_project.folder_strucutre' />. To create a Ruta project it is recommended to use the provided
+    <xref linkend='table.ugr.tools.ruta.workbench.create_project.folder_strucutre' />. To create a UIMA Ruta project it is recommended to use the provided
     wizard, explained in
     <xref linkend='section.ugr.tools.ruta.workbench.projects.create_projects' />. If this wizard is used, the required folder structure is
     automatically created.
@@ -46,7 +46,7 @@
           <row>
             <entry>script</entry>
             <entry>
-              Source folder for Ruta scripts and packages.
+              Source folder for UIMA Ruta scripts and packages.
             </entry>
           </row>
           <row>
@@ -62,7 +62,7 @@
             <entry>
               Folder that contains the files that will be processed when
               launching a
-              Ruta script. Such input files could be plain
+              UIMA Ruta script. Such input files could be plain
               text,
               HTML or xmiCAS files.
             </entry>
@@ -96,7 +96,7 @@
     shows a project, newly created with the wizard.
 
     <figure id="figure.ugr.tools.ruta.workbench.projects.test_project">
-      <title>A newly created Ruta project</title>
+      <title>A newly created UIMA Ruta project</title>
       <mediaobject>
         <imageobject role="html">
           <imagedata width="300px" format="PNG" align="center"
@@ -108,7 +108,7 @@
         </imageobject>
         <textobject>
           <phrase>
-            A newly created Ruta project.
+            A newly created UIMA Ruta project.
           </phrase>
         </textobject>
       </mediaobject>
@@ -116,10 +116,10 @@
   </para>
 
   <section id="section.ugr.tools.ruta.workbench.projects.create_projects">
-    <title>Ruta create project wizard</title>
+    <title>UIMA Ruta create project wizard</title>
     <para>
-      To create a new Ruta project, switch to Ruta perspective
-      and click <quote>File &rarr; New &rarr; Ruta Project</quote>. This opens the corresponding wizard.
+      To create a new UIMA Ruta project, switch to UIMA Ruta perspective
+      and click <quote>File &rarr; New &rarr; UIMA Ruta Project</quote>. This opens the corresponding wizard.
     </para>
 
     <para>
@@ -147,7 +147,7 @@
       </figure>
     </para>
     <para>
-      To create a simple Ruta project, enter a project name for
+      To create a simple UIMA Ruta project, enter a project name for
       your project and click
       <quote>Finish</quote>. This will create everything you need to start.
     </para>

@@ -17,10 +17,10 @@
   language governing permissions and limitations under the License. -->
 
 <section id="section.ugr.tools.ruta.workbench.ruta_perspective">
-  <title>Ruta Perspective</title>
+  <title>UIMA Ruta Perspective</title>
   <para>
-    The Ruta perspective is the main view to manage Ruta
-    projects. There are several views associated with the Ruta
+    The UIMA Ruta perspective is the main view to manage UIMA Ruta
+    projects. There are several views associated with the UIMA Ruta
     perspective: Annotation Test, Annotation Browser, Selection,
     TextRuler and Ruta Query. Since Annotation Test, TextRuler and
     Ruta Query have a stand-alone functionality. They are explained
@@ -29,10 +29,10 @@
 
   <para>
     To make it possible to reproduce all of the examples used below,
-    switch to the Ruta Explain perspective within your Eclipse
+    switch to the UIMA Ruta Explain perspective within your Eclipse
     workbench.
-    Import the Ruta example project and open the main
-    Ruta script file 'Main.ruta'. Now press the 'Run' button (green
+    Import the UIMA Ruta example project and open the main
+    UIMA Ruta script file 'Main.ruta'. Now press the 'Run' button (green
     arrow) and wait for the end of execution. Open the resulting xmiCAS
     file 'Test1.txt.xmi', which you can find in the output folder.
   </para>
@@ -42,12 +42,12 @@
     <title>Annotation Browser</title>
     <para>
       The Annotation Browser can be used to view the annotations
-      created by the execution of a Ruta project. If an xmiCAS file
+      created by the execution of a UIMA Ruta project. If an xmiCAS file
       is opened and active in the editor, the related annotations are shown
       in this view.
     </para>
     <para>
-      The result of the execution of the Ruta example project is
+      The result of the execution of the UIMA Ruta example project is
       shown in <xref linkend='figure.ugr.tools.ruta.workbench.ruta_perspective.annotation_browser' />.
     </para>
     <para>

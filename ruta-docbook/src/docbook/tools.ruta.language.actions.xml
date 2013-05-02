@@ -33,7 +33,7 @@ under the License.
       The ADD action adds all the elements of the passed
       RutaExpressions to a given list. For example, this expressions
       could be a string, an integer variable or a list. For a
-      complete overview on Ruta expressions see
+      complete overview on UIMA Ruta expressions see
       <xref linkend='ugr.tools.ruta.language.expressions' />.
     </para>
     <section>
@@ -376,7 +376,7 @@ Document{->CONFIGURE(HtmlAnnotator, "onlyContent" = false)};]]></programlisting>
       the matched text and the current filtering settings. If the argument
       refers to another script file, a new view on the document is created:
       the complete text of the original CAS with the default filtering
-      settings of the Ruta analysis engine.
+      settings of the UIMA Ruta analysis engine.
     </para>
     <section>
       <title>
@@ -679,7 +679,7 @@ A B{-> GATHER(C, 1, 2, "a" = 1, "b" = 2)};]]></programlisting>
   <section id="ugr.tools.ruta.language.actions.mark">
     <title>MARK</title>
     <para>
-      The MARK action is the most important action in the Ruta
+      The MARK action is the most important action in the UIMA Ruta
       system. It creates a new annotation of the given type. The optionally
       passed indexes (NumberExpressions after the TypeExpression) can be
       used to create an annotation that spanns the matched information of

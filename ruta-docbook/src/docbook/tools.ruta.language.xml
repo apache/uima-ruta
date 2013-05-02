@@ -53,13 +53,13 @@ under the License.
     <para>
       Rule based or pattern based information extraction systems often
       suffer from unimportant fill words, additional whitespace and
-      unexpected markup. The Ruta System enables the knowledge
+      unexpected markup. The UIMA Ruta System enables the knowledge
       engineer to filter and to hide all possible combinations of
       predefined and new types of annotations. The
       visibility of tokens and annotations is modified by the actions of
       rule elements and can be conditioned using the complete
       expressiveness of the language.
-      Therefore the Ruta system
+      Therefore the UIMA Ruta system
       supports a robust approach to
       information extraction and simplifies
       the creation of new rules since
@@ -133,7 +133,7 @@ Dr.JoachimBaumeister
     <title>Blocks</title>
     <para>
       Blocks combine some more complex control structures in the
-      Ruta
+      UIMA Ruta
       language:
       <orderedlist numeration="arabic">
         <listitem>
@@ -163,7 +163,7 @@ RuleElementWithCA      ->  TypeExpression QuantifierPart?
       A block declaration always starts with the keyword
       <quote>BLOCK</quote>, followed by the identifier of the block within parentheses. The
       <quote>RuleElementType</quote>-element
-      is a Ruta rule that consists of exactly one rule
+      is a UIMA Ruta rule that consists of exactly one rule
       element. The rule element has to be a declared annotation type.
       <note>
         <para>
@@ -187,7 +187,7 @@ RuleElementWithCA      ->  TypeExpression QuantifierPart?
 ]]></programlisting>
     </para>
     <para>
-      A block is always executed when the Ruta interpreter
+      A block is always executed when the UIMA Ruta interpreter
       reaches its
       declaration. But a block may also be called from another
       position of
@@ -197,7 +197,7 @@ RuleElementWithCA      ->  TypeExpression QuantifierPart?
     <section id="ugr.tools.ruta.language.blocks.condition">
       <title>Conditioned statements</title>
       <para>
-        A block can use common Ruta conditions to condition the
+        A block can use common UIMA Ruta conditions to condition the
         execution of its containing rules.
       </para>
       <para>
@@ -293,7 +293,7 @@ BLOCK(IsBig) Paragraph{} {
     <section id="ugr.tools.ruta.language.blocks.procedure">
       <title>Procedures</title>
       <para>
-        Blocks can be used to introduce procedures to the Ruta
+        Blocks can be used to introduce procedures to the UIMA Ruta
         scripts.
         To do this, declare a block as before. Let us assume, you want to
         simulate a procedure
@@ -359,7 +359,7 @@ Document{->CALL(MyScript.countNumberOfTypesInDocument)};
       number of
       findings is used to derive a solution.
 
-      The Ruta system tries to
+      The UIMA Ruta system tries to
       transfer this diagnostic problem
       solution strategy to the
       information
@@ -457,14 +457,14 @@ Document{-> EXEC(Modifier)};
       would reduce the effort.
     </para>
     <para>
-      Ruta provides, therefore, two kinds of external resources to
+      UIMA Ruta provides, therefore, two kinds of external resources to
       solve such tasks more easily: WORDLISTs and WORDTABLEs.
     </para>
     <section>
       <title>WORDLISTs</title>
       <para>
         A WORDLIST is a list of text items. There are three
-        different possibilities of how to provide a WORDLIST to the Ruta system.
+        different possibilities of how to provide a WORDLIST to the UIMA Ruta system.
       </para>
       <para>
         The first possibility is the use of simple text files, which
@@ -510,13 +510,13 @@ Document{->MARKFAST(FistName, FirstNameList)};
         several ordinary WORDLISTs given as simple text files. It contains special
         nodes that provide additional information about the original file. These
         kind of WORDLIST is useful, if several fifferent WORDLISTs are used within
-        a Ruta script. Using five different lists results in five rules using
+        a UIMA Ruta script. Using five different lists results in five rules using
         the MARKFAST action. The documents to annotate are thus searched five
         times resulting in a complexity of 5*O(m*log(n)) With a multi tree
         word list this can be reduced to about O(m*log(5*n)). To
         generate a multi tree word list, see
         <xref linkend='section.ugr.tools.ruta.workbench.create_dictionaries' />
-        To use a multi tree word list Ruta provides the action
+        To use a multi tree word list UIMA Ruta provides the action
         TRIE. If for example two word lists
         <quote>FirstNames.txt</quote>
         and
@@ -564,7 +564,7 @@ Document{->MARKTABLE(PresidentOfUSA, 1, "party" = 2,
   <section id="ugr.tools.ruta.language.regexprule">
     <title>Simple Rules based on Regular Expressions</title>
     <para>
-      The Ruta language includes, additionally to the normal rules, a simplified rule syntax for processing regular expressions.
+      The UIMA Ruta language includes, additionally to the normal rules, a simplified rule syntax for processing regular expressions.
       These simple rules consist of two parts separated by <quote>-></quote>: The left part is the regular expression 
       (flags: DOTALL and MULTILINE), which may contain capturing groups. The right part defines, which kind of annotations 
       should be created for each match of the regular expression. If a type is given without a group index, then an annotation of that type is

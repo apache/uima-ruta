@@ -27,8 +27,8 @@ under the License.
 <chapter id="ugr.tools.ruta.workbench">
   <title>Apache UIMA Ruta Workbench</title>
   <para>
-  The Apache UIMA Ruta Workbench, which is made available as an Eclipse-plugin, offers a powerful environment for creating and working on Ruta projects. It provides two main
-  perspectives and several views to develop, run, debug, test and evaluate Ruta
+  The Apache UIMA Ruta Workbench, which is made available as an Eclipse-plugin, offers a powerful environment for creating and working on UIMA Ruta projects. It provides two main
+  perspectives and several views to develop, run, debug, test and evaluate UIMA Ruta
   rules in a comfortable way, supporting many of the known Eclipse features, e.g., auto-completion.
   Moreover, it makes the creation of dictionaries like tree word lists easy and supports machine
   learning methods, which can be used within a knowledge engineering process. The following chapter
@@ -54,19 +54,19 @@ under the License.
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.workbench.create_dictionaries.xml" />
   
   <section id="ugr.tools.ruta.workbench.apply">
-    <title>Apply a Ruta script to a folder</title>
+    <title>Apply a UIMA Ruta script to a folder</title>
     <para>
-      The Ruta Workbench makes it possible to apply a Ruta script to any folder of the workspace. 
-      Select a folder in the script explorer, right-click to open the context menu and select the menu entry Ruta.
-      There are three options to apply a Ruta script to the files of the selected folder, 
+      The UIMA Ruta Workbench makes it possible to apply a UIMA Ruta script to any folder of the workspace. 
+      Select a folder in the script explorer, right-click to open the context menu and select the menu entry UIMA Ruta.
+      There are three options to apply a UIMA Ruta script to the files of the selected folder, 
       cf. <xref linkend='figure.ugr.tools.ruta.workbench.apply' />.
     </para>
     <para>
       <orderedlist numeration="arabic">
         <listitem>
         <para>
-          <emphasis role="bold">Quick Ruta</emphasis> applies the Ruta script that is currently opened and focused
-          in the Ruta editor to all suitable files in the selected folder. Files of the type <quote>xmi</quote> will be adapted 
+          <emphasis role="bold">Quick Ruta</emphasis> applies the UIMA Ruta script that is currently opened and focused
+          in the UIMA Ruta editor to all suitable files in the selected folder. Files of the type <quote>xmi</quote> will be adapted 
           and a new xmi-file will be created for other files like txt-files.
         </para>
         </listitem>
@@ -78,7 +78,7 @@ under the License.
         </listitem>
         <listitem>
         <para>
-          <emphasis role="bold">Quick Ruta (no xmi)</emphasis> applies the Ruta script, but does not change
+          <emphasis role="bold">Quick Ruta (no xmi)</emphasis> applies the UIMA Ruta script, but does not change
            nor create an xmi-file. This menu entry can, for example, be used in combination with an imported XMIWriter Analysis Engine, which 
            stores the result of the script in a different folder depending on the execution of the rules.
         </para>
@@ -100,7 +100,7 @@ under the License.
         </imageobject>
         <textobject>
           <phrase>
-            Apply a Ruta script directly on a folder.
+            Apply a UIMA Ruta script directly on a folder.
           </phrase>
         </textobject>
       </mediaobject>

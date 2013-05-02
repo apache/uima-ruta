@@ -26,24 +26,24 @@ under the License.
 
 <section id="section.ugr.tools.ruta.workbench.testing">
   <title>Testing</title>
-  <para> The Ruta workbench comes bundled with its own testing environment that allows you to
-    test and evaluate Ruta scripts. It provides full back-end testing capabilities and allows
+  <para> The UIMA Ruta Workbench comes bundled with its own testing environment that allows you to
+    test and evaluate UIMA Ruta scripts. It provides full back-end testing capabilities and allows
     you to examine test results in detail.
   </para>
-  <para> To test the quality of a written Ruta script, the testing procedure compares a
+  <para> To test the quality of a written UIMA Ruta script, the testing procedure compares a
     previously annotated gold standard file with the resulting xmiCAS file created by the selected
-    Ruta script. As a product of the testing operation a new xmiCAS file will be created,
+    UIMA Ruta script. As a product of the testing operation a new xmiCAS file will be created,
     containing detailed information about the test results. The evaluators compare the offsets of
     annotations and, depending on the selected evaluator, add true positive, false positive or false
     negative annotations for each tested annotation to the resulting xmiCAS file. Afterwards
     precision, recall and f1-score are calculated for each test file and each type in the test file.
     The f1-score is also calculated for the whole test set. The testing environment consists of four
     views: Annotation Test, True Positive, False Positive and False Negative. The Annotation Test
-    view is by default associated with the Ruta perspective.
+    view is by default associated with the UIMA Ruta perspective.
   </para>
   <para>
     <xref linkend='figure.ugr.tools.ruta.workbench.testing.script_explorer' />
-    shows the script explorer. Every Ruta project contains a folder called
+    shows the script explorer. Every UIMA Ruta project contains a folder called
     <quote>test</quote>. This folder is the default location for the test-files. In the folder each script file has its
     own subfolder with a relative path equal to the scripts package path in the
     <quote>script</quote> folder. This folder contains the test files. In every scripts test folder, you will also find a
@@ -75,17 +75,17 @@ under the License.
     <para> This section describes the general proceeding when using the testing environment. </para>
     <para>
       Currently, the testing environment has no own perspective associated to it. It is recommended
-      to start within the Ruta perspective. There, the Annotation Test view is open by
+      to start within the UIMA Ruta perspective. There, the Annotation Test view is open by
       default. The True Positive, False Positive and False Negative views have to be opened
       manually:
       <quote>Window -> Show View -> True Positive/False Positive/False Negative </quote>.
     </para>
-    <para> To explain the usage of the Ruta testing environment, the Ruta example project
+    <para> To explain the usage of the UIMA Ruta testing environment, the UIMA Ruta example project
       is used again. Open this project. 
-      Firstly, one has to select a script for testing: Ruta will always test the script, that
+      Firstly, one has to select a script for testing: UIMA Ruta will always test the script, that
       is currently open and active in the script editor. So, open the
       <quote>Main.ruta</quote>
-      script file of the Ruta example project.
+      script file of the UIMA Ruta example project.
       The next <link linkend='figure.ugr.tools.ruta.workbench.testing.annotation_test_initial_view'>figure</link>.
       shows the Annotation Test view after doing this.
     </para>
@@ -148,7 +148,7 @@ under the License.
     <para>
       Next, you have to add test files to your project. A test file is a previously annotated xmiCAS
       file that can be used as a golden standard for the test. You can use any xmiCAS file. The
-      Ruta example project already contains such test files. These files are listed
+      UIMA Ruta example project already contains such test files. These files are listed
       in the Annotation Test view. Try do delete these files by selecting them and clicking on
       <literal>Del</literal>. Add these files again by simply dragging them from the Script Explorer into the test file
       list. A different way to add test-files is to use the
@@ -163,12 +163,12 @@ under the License.
     </para>
     <para>
       The testing environment supports different evaluators that allow a
-      sophisticated analysis of the behavior of a Ruta script. The evaluator can be chosen in
+      sophisticated analysis of the behavior of a UIMA Ruta script. The evaluator can be chosen in
       the testing environment's preference page. The preference page can be opened either through
       the menu or by clicking on the
       <quote>Select evaluator</quote>
       button (blue gear wheels) in the testing view's toolbar. Clicking the button will open a
-      filtered version of the Ruta preference page. The default evaluator is the "Exact CAS
+      filtered version of the UIMA Ruta preference page. The default evaluator is the "Exact CAS
       Evaluator", which compares the offsets of the annotations between the test file and the file
       annotated by the tested script. To get an overview of all available evaluators, see
       <xref linkend='section.ugr.tools.ruta.workbench.testing.evaluators' />
@@ -225,7 +225,7 @@ under the License.
     </para>
     <para>
       A test-run can be started by clicking on the start button. Do this for the
-      Ruta example project.
+      UIMA Ruta example project.
       <xref linkend='figure.ugr.tools.ruta.workbench.testing.annotation_test_test_run' />
       shows the results.
     </para>
@@ -271,13 +271,13 @@ under the License.
       allows an easy tracing of the results within the testing document. Clicking on one of the
       annotations in those views will highlight the annotation in the CAS Editor. Opening
       <quote>test1.result.xmi</quote>
-      in the Ruta example project changes the True Positive view as shown in
+      in the UIMA Ruta example project changes the True Positive view as shown in
       <xref linkend='figure.ugr.tools.ruta.workbench.testing.true_positive' />.
       Notice that the type system, which will be used by the CAS Editor to open the evaluated file, 
       can only be resolved for the tested script, if the test files are located in the associated
       folder structure that is the folder with the name of the script. If the files are located 
       in the temp folder, for example by adding the files to the list of test cases by drag and drop,
-      other strategies to find the correct type system will be applied. For Ruta projects, 
+      other strategies to find the correct type system will be applied. For UIMA Ruta projects, 
       for example, this will be the type system of the last launched script in this project. 
     </para>
     <para>

@@ -19,11 +19,11 @@
 <section id="ugr.tools.ruta.language.syntax">
   <title>Syntax</title>
   <para>
-    Ruta defines its own language for writing rules and rule
+    UIMA Ruta defines its own language for writing rules and rule
     scripts. This section gives a formal overview of its syntax.
   </para>
   <para>
-    Structure: The overall structure of a Ruta
+    Structure: The overall structure of a UIMA Ruta
     script is defined by
     the following syntax.
     <programlisting><![CDATA[Script              -> PackageDeclaration GlobalStatements Statements
@@ -38,7 +38,7 @@ Statement           -> Declaration | VariableDeclaration
     "//" and always go to the end of the line.
   </para>
   <para>
-    Example beginning of a Ruta file:
+    Example beginning of a UIMA Ruta file:
     <programlisting><![CDATA[PACKAGE uima.ruta.example;
 
 // import the types of this type system 

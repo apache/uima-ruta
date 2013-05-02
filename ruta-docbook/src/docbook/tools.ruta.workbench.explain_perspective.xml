@@ -20,15 +20,15 @@
   <title>Explain Perspective</title>
   <para>
     Writing new rules is laborious, especially if the newly written
-    rules do not behave as expected. The Ruta system is able to
+    rules do not behave as expected. The UIMA Ruta system is able to
     record the application of each single rule and block in order to
     provide an explanation of the rule inference and a
     minimal debugging functionality. The information about the application of the rules
     itself is stored in the resulting xmiCAS output file, if the parameters
     of the executed engine are configured correctly. The simplest way to
     generate these explanation information is to click on the common 'Debug' button (looks like a green bug)
-    while having the Ruta script file you want to debug active in
-    your editor. The current Ruta file will then be executed on the text files in the input
+    while having the UIMA Ruta script file you want to debug active in
+    your editor. The current UIMA Ruta file will then be executed on the text files in the input
     directory and xmiCAS are created in the output directory containing the
     additional UIMA feature structures describing the
     rule inference. To show the newly created execution information, you can either open the
@@ -37,14 +37,14 @@
     the execution of the rules: Applied Rules, Covering Rules, Created By,
     Failed Rules, Matched Rules, Rule Elements, Rule List
     and Statistics. All of theses views are further explained in detail, using the
-    Ruta example project for examples.
+    UIMA Ruta example project for examples.
   </para>
 
   <para>
     To make it possible to reproduce all of the examples used below,
-    switch to the Ruta Explain perspective within your Eclipse
+    switch to the UIMA Ruta Explain perspective within your Eclipse
     workbench.
-    Import the Ruta example project and open the main
+    Import the UIMA Ruta example project and open the main
     Ruta script file 'Main.ruta'. Now press the 'Debug' button
     and wait
     for the end of execution. Open the resulting xmiCAS file
@@ -64,7 +64,7 @@
       represented as child node in the tree of the view. Each Ruta
       file is a BLOCK construct itself and named after the file. The
       root node of the view is, therefore, always a BLOCK containing the rules of the
-      executed Ruta script. Additionally, if a rule calls a different
+      executed UIMA Ruta script. Additionally, if a rule calls a different
       Ruta file, then the root block of that file is the child of the
       calling rule.
     </para>
@@ -74,7 +74,7 @@
     </para>
     <para>
       <xref linkend='section.ugr.tools.ruta.workbench.explain_perspective' />
-      shows the whole rule hierarchy resulting from the Ruta example
+      shows the whole rule hierarchy resulting from the UIMA Ruta example
       project. The root of the whole hierarchy is the BLOCK associated to
       the 'Main.ruta' script. On the next level, the rules called by the
       'Main.ruta' script are listed. Since there is a call to each of the
@@ -83,7 +83,7 @@
       into the hierarchy, each forming their own block.
     </para>
     <para>
-      The following image shows the Ruta Applied Rules view.
+      The following image shows the UIMA Ruta Applied Rules view.
       <figure
         id="figure.ugr.tools.ruta.workbench.explain_perspective.applied_rules">
         <title> Applied Rules view
@@ -155,7 +155,7 @@
       succeeded and are shown in the Matched Rules view.
     </para>
     <para>
-      The following image shows the Ruta Applied Rules view.
+      The following image shows the UIMA Ruta Applied Rules view.
       <figure
         id="figure.ugr.tools.ruta.workbench.explain_perspective.matched_and_failed_rules">
         <title> The views Matched Rules and Failed Rules
@@ -214,7 +214,7 @@
       in <xref linkend='figure.ugr.tools.ruta.workbench.explain_perspective.rule_elements' />.
     </para>
     <para>
-      The following image shows the Ruta Rule Elements view.
+      The following image shows the UIMA Ruta Rule Elements view.
       <figure
         id="figure.ugr.tools.ruta.workbench.explain_perspective.rule_elements">
         <title> The views Matched Rules and Failed Rules
@@ -294,7 +294,7 @@
       document <quote>Year.ruta</quote>.
     </para>
     <para>
-      The following image shows the Ruta Created By view.
+      The following image shows the UIMA Ruta Created By view.
       <figure
         id="figure.ugr.tools.ruta.workbench.explain_perspective.created_by">
         <title> The Created By view
@@ -323,14 +323,14 @@
     <title>Statistics</title>
     <para>
       The Statistics view displays profiling information for the used
-      conditions and actions of the Ruta language. Three
+      conditions and actions of the UIMA Ruta language. Three
       numbers are
       given for each element: The total time of execution, the amount of
       executions and the average time per execution.
     </para>
     <para>
-      The following image shows the Ruta Statistics view generated
-      form the Ruta example project.
+      The following image shows the UIMA Ruta Statistics view generated
+      form the UIMA Ruta example project.
       <figure
         id="figure.ugr.tools.ruta.workbench.explain_perspective.statistics">
         <title> The Statistics view

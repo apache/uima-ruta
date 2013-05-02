@@ -27,7 +27,7 @@ under the License.
   <title>Installation</title>
   <para>
 
-    Do the installation of the Ruta workbench as follows:
+    Do the installation of the UIMA Ruta Workbench as follows:
     <orderedlist numeration="arabic">
       <listitem>
         <para>
@@ -104,9 +104,9 @@ under the License.
     </figure>
   </para>
   <para>
-    Now, Ruta is going to be installed.
+    Now, UIMA Ruta is going to be installed.
     After the successful
-    installation, switch to the Ruta
+    installation, switch to the UIMA Ruta
     perspective. To get an overview, see
     <xref linkend='section.ugr.tools.ruta.workbench.overview' />.
   </para>
@@ -117,9 +117,9 @@ under the License.
     </para>
   </note>
   <para>
-    Several times within this chapter we use a Ruta example
+    Several times within this chapter we use a UIMA Ruta example
     project
-    to illustrate the use of the Ruta workbench.
+    to illustrate the use of the UIMA Ruta Workbench.
     The example project
     can be downloaded per
     <emphasis>svn</emphasis>

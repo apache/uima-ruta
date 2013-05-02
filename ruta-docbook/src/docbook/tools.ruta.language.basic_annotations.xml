@@ -19,7 +19,7 @@
 <section id="ugr.tools.ruta.language.seeding">
   <title>Basic annotations and tokens</title>
   <para>
-    The Ruta system uses a JFlex lexer to initially create a
+    The UIMA Ruta system uses a JFlex lexer to initially create a
     seed of basic token annotations. These tokens build a hierarchy shown in <xref linkend='figure.ugr.tools.ruta.language.seeding.basic_token' />. The
     <quote>ALL</quote> (green) annotation is the root of the hierarchy. ALL and the red
     marked annotation types are abstract. This means that they are actually not
