@@ -107,6 +107,7 @@
                 <excludes>
                   <exclude>src/main/java/org/apache/uima/ruta/type/*.java</exclude> <!-- jcasgen files -->
                   <exclude>src/main/antlr3/org/apache/uima/ruta/parser/RutaLexer.tokens</exclude> <!-- grammar tokens -->
+                  <exclude>src/main/antlr3/org/apache/uima/ruta/parser/RutaParser.tokens</exclude> <!-- grammar tokens -->
                   <exclude>src/test/resources/org/apache/uima/ruta/action/*ruta</exclude> <!-- test data -->
                   <exclude>src/test/resources/org/apache/uima/ruta/*.txt</exclude> <!-- test data -->
                   <exclude>src/test/resources/org/apache/uima/ruta/*ruta</exclude> <!-- test data -->

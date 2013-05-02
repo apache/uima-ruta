@@ -22,7 +22,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>ruta-ep-example-extensions</artifactId>
   <version>2.0.1-SNAPSHOT</version>
-  <name>Example for language extensions</name>
+  <name>Apache UIMA Ruta: ${project.artifactId}</name>
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>ruta-parent</artifactId>

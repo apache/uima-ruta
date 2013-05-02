@@ -90,6 +90,8 @@
 
     <module>ruta-docbook</module>
     <module>ruta-eclipse-feature</module>
+    
+    <module>example-projects/ruta-ep-example-extensions</module>
   </modules>
   <build>
     <pluginManagement>
@@ -193,6 +195,12 @@
 		                <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
 									    <zipfileset dir="${basedir}/example-projects/ExampleProject/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/ExampleProject/" />
 									  </zip>
+									  <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
+                      <zipfileset dir="${basedir}/example-projects/ExtensionsExample/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/${basedir}/example-projects/ExtensionsExample/" />
+                    </zip>
+                    <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
+                      <zipfileset dir="${basedir}/example-projects/TextRulerExample/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/${basedir}/example-projects/TextRulerExample/" />
+                    </zip>
 		              </target>
 		            </configuration>
 		            <goals>
