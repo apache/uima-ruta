@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
-<!ENTITY imgroot "images/tools/tm/language/" >
+<!ENTITY imgroot "images/tools/ruta/language/" >
 <!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
 %uimaents;
 ]>
@@ -564,7 +564,7 @@ Document{->MARKTABLE(PresidentOfUSA, 1, "party" = 2,
   <section id="ugr.tools.ruta.language.regexprule">
     <title>Simple Rules based on Regular Expressions</title>
     <para>
-      The Ruta langugae includes, additionally to the normal rules, a simplified rule syntax for processing regular expressions.
+      The Ruta language includes, additionally to the normal rules, a simplified rule syntax for processing regular expressions.
       These simple rules consist of two parts separated by <quote>-></quote>: The left part is the regular expression 
       (flags: DOTALL and MULTILINE), which may contain capturing groups. The right part defines, which kind of annotations 
       should be created for each match of the regular expression. If a type is given without a group index, then an annotation of that type is

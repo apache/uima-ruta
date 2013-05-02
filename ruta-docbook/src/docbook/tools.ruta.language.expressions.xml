@@ -25,7 +25,7 @@
   </para>
   <para>
   <emphasis role="bold">Definition:</emphasis>
-<programlisting><![CDATA[TextmarkerExpression  ->   TypeExpression | NumberExpression | 
+<programlisting><![CDATA[RutaExpression  ->   TypeExpression | NumberExpression | 
                            StringExpression | BooleanExpression
                            | ListExpression]]></programlisting>
   </para>

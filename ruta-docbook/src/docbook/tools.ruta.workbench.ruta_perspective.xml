@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
-<!ENTITY imgroot "images/tools/tm/workbench/" >
+<!ENTITY imgroot "images/tools/ruta/workbench/" >
 <!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
 %uimaents;
 ]>
@@ -58,11 +58,11 @@
         <mediaobject>
           <imageobject role="html">
             <imagedata width="300px" format="PNG" align="center"
-              fileref="&imgroot;tm/annotation_browser.png" />
+              fileref="&imgroot;ruta/annotation_browser.png" />
           </imageobject>
           <imageobject role="fo">
             <imagedata width="3.0in" format="PNG" align="center"
-              fileref="&imgroot;tm/annotation_browser.png" />
+              fileref="&imgroot;ruta/annotation_browser.png" />
           </imageobject>
           <textobject>
             <phrase>
@@ -103,11 +103,11 @@
         <mediaobject>
           <imageobject role="html">
             <imagedata width="560px" format="PNG" align="center"
-              fileref="&imgroot;tm/selection.png" />
+              fileref="&imgroot;ruta/selection.png" />
           </imageobject>
           <imageobject role="fo">
             <imagedata width="5.5in" format="PNG" align="center"
-              fileref="&imgroot;tm/selection.png" />
+              fileref="&imgroot;ruta/selection.png" />
           </imageobject>
           <textobject>
             <phrase>

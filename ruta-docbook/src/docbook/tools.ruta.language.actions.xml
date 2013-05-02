@@ -33,7 +33,7 @@ under the License.
       The ADD action adds all the elements of the passed
       RutaExpressions to a given list. For example, this expressions
       could be a string, an integer variable or a list. For a
-      complete overview on Textmarker expressions see
+      complete overview on Ruta expressions see
       <xref linkend='ugr.tools.ruta.language.expressions' />.
     </para>
     <section>
