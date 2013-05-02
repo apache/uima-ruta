@@ -1,0 +1,85 @@
+PACKAGE uima.ruta.example;
+
+SCRIPT uima.ruta.example.Base;
+
+ENGINE utils.PlainTextAnnotator;
+TYPESYSTEM utils.PlainTextTypeSystem;
+
+WORDLIST EditorMarkerList = 'EditorMarker.txt';
+WORDLIST EnglishStopWordList = 'EnglishStopWords.txt';
+WORDLIST FirstNameList = 'FirstNames.txt';
+WORDLIST JournalVolumeMarkerList = 'JournalVolumeMarker.txt';
+WORDLIST MonthList = 'Months.txt';
+WORDLIST PagesMarkerList = 'PagesMarker.txt';
+WORDLIST PublisherList = 'Publishers.txt';
+
+DECLARE EditorMarker, EnglishStopWord, FirstName, JournalVolumeMarker, Month, PagesMarker, PublisherInd;
+Document{ -> MARKFAST(EditorMarker, EditorMarkerList)};
+Document{ -> MARKFAST(EnglishStopWord,EnglishStopWordList)};
+Document{ -> MARKFAST(FirstName, FirstNameList)};
+Document{ -> MARKFAST(JournalVolumeMarker, JournalVolumeMarkerList)};
+Document{ -> MARKFAST(Month, MonthList)};
+Document{ -> MARKFAST(PagesMarker, PagesMarkerList)};
+Document{ -> MARKFAST(PublisherInd, PublisherList)};
+
+
+DECLARE Reference;
+Document{-> EXEC(PlainTextAnnotator, {Line})};
+Document{-> RETAINTYPE(SPACE, BREAK)};
+Line{-REGEXP("CORA:.*") -> MARK(Reference)};
+Reference{-> TRIM(SPACE, BREAK)};
+Document{-> RETAINTYPE};
+
+DECLARE LParen, RParen;
+SPECIAL{REGEXP("[(]") -> MARK(LParen)};
+SPECIAL{REGEXP("[)]") -> MARK(RParen)};
+
+DECLARE YearInd;
+NUM{REGEXP("19..|20..") -> MARK(YearInd, 1, 2)} SW?{REGEXP("a|b|c|d", true)};
+Document{-> RETAINTYPE(SPACE)};
+CAP YearInd{-> UNMARK(YearInd)};
+Document{-> RETAINTYPE};
+
+
+DECLARE NameLinker;
+W{-PARTOF(NameLinker), REGEXP("and", true) -> MARK(NameLinker)};
+COMMA{-PARTOF(NameLinker) -> MARK(NameLinker)};
+SEMICOLON{-PARTOF(NameLinker) -> MARK(NameLinker)};
+SPECIAL{-PARTOF(NameLinker), REGEXP("&") -> MARK(NameLinker)};
+
+DECLARE FirstNameInd, FirstNameInitial, SingleChar;
+CW{-PARTOF(FirstNameInitial), REGEXP(".")} SPECIAL{-PARTOF(FirstNameInitial), REGEXP("-")} CW{REGEXP(".") -> MARK(FirstNameInitial,1,2,3,4)} PERIOD;
+SPECIAL{-PARTOF(FirstNameInitial), REGEXP("-")} CW{REGEXP(".") -> MARK(FirstNameInitial,1,2,3)} PERIOD;
+CW{-PARTOF(FirstNameInitial), REGEXP(".") -> MARK(FirstNameInitial,1,2)} PERIOD;
+CW{-PARTOF(FirstNameInitial), REGEXP(".") -> MARK(FirstNameInitial)} COMMA;
+CW{-PARTOF(FirstNameInitial), REGEXP(".") -> MARK(SingleChar)};
+
+DECLARE Quote, QuotedStuff;
+SPECIAL[1,2]{REGEXP("[\"'´`‘’“]"), -PARTOF(Quote) -> MARK(Quote)};
+Document{-> RETAINTYPE(SPACE)};
+W Quote{-> UNMARK(Quote)} W;
+Document{-> RETAINTYPE};
+BLOCK(InRef) Reference{}{
+    Quote ANY+{-PARTOF(Quote) -> MARK(QuotedStuff, 1, 2, 3)} Quote;
+}
+
+DECLARE InInd;
+W{REGEXP("In", true)-> MARK(InInd)};
+
+DECLARE FirstToken, LastToken;
+BLOCK(InRef) Reference{}{
+    ANY{POSITION(Reference,1) -> MARK(FirstToken)};
+    Document{-> MARKLAST(LastToken)};
+}
+
+
+DECLARE NumPeriod, NumComma, NumColon;
+Document{-> RETAINTYPE(SPACE, BREAK)};
+NUM PERIOD{-> MARKONCE(NumPeriod)} NUM;
+NUM COMMA{-> MARKONCE(NumComma)} NUM;
+NUM COLON{-> MARKONCE(NumColon)} NUM;
+Document{-> RETAINTYPE};
+DECLARE PeriodSep, CommaSep, ColonSep;
+PERIOD{-PARTOF(FirstNameInitial), -PARTOF(NumPeriod), -PARTOF(FirstToken) -> MARKONCE (PeriodSep)};
+COMMA{-PARTOF(FirstNameInitial), -PARTOF(NumComma), -PARTOF(FirstToken) -> MARKONCE (CommaSep)};
+COLON{-PARTOF(FirstNameInitial), -PARTOF(NumColon), -PARTOF(FirstToken) -> MARKONCE (ColonSep)};

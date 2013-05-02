@@ -1,0 +1,4 @@
+PACKAGE uima.ruta.example;
+
+TYPESYSTEM types.Bibtex;
+TYPESYSTEM types.Boundaries;
