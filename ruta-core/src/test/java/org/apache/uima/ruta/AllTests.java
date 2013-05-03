@@ -42,7 +42,7 @@ import org.junit.runners.Suite.SuiteClasses;
     PositionTest.class, DefaultSeederTest.class, ConditionVerbalizerTest.class,
     ActionVerbalizerTest.class, ExpressionVerbalizerTest.class, HtmlAnnotatorTest.class,
     HtmlConverterTest.class, EmptyDocumentTest.class, RutaModifierTest.class,
-    RegExpRuleTest.class, WildCardTest.class })
+    RegExpRuleTest.class, WildCardTest.class, EqualNamespaceTest.class })
 public class AllTests {
 
 }

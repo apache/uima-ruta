@@ -50,6 +50,7 @@ import org.apache.uima.ruta.expression.number.NumberExpression;
 import org.apache.uima.ruta.expression.resource.LiteralWordListExpression;
 import org.apache.uima.ruta.expression.resource.LiteralWordTableExpression;
 import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
 import org.apache.uima.ruta.resource.CSVTable;
 import org.apache.uima.ruta.resource.MultiTreeWordList;
 import org.apache.uima.ruta.resource.RutaTable;
@@ -431,6 +432,9 @@ public class RutaEnvironment {
         return list;
       } else if (clazz.equals(Type.class) && value instanceof CommonToken) {
         String typeName = ((CommonToken) value).getText();
+        return typeName;
+      } else if (clazz.equals(Type.class) && value instanceof SimpleTypeExpression) {
+        String typeName = ((SimpleTypeExpression) value).getTypeString();
         return typeName;
       }
 
