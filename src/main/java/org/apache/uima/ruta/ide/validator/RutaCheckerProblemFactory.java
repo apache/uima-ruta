@@ -25,6 +25,7 @@ import org.apache.uima.ruta.ide.parser.ast.RutaAbstractDeclaration;
 import org.apache.uima.ruta.ide.parser.ast.RutaAction;
 import org.apache.uima.ruta.ide.parser.ast.RutaCondition;
 import org.apache.uima.ruta.ide.parser.ast.RutaFeatureDeclaration;
+import org.apache.uima.ruta.ide.parser.ast.RutaFunction;
 import org.apache.uima.ruta.ide.parser.ast.RutaVariableReference;
 import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.ASTNode;
@@ -184,6 +185,11 @@ public class RutaCheckerProblemFactory {
   public IProblem createWrongNumberOfArgumentsProblem(String name, Expression element, int expected) {
     String message = "error: The element " + name + " expects " + expected + " arguments.";
     return new RutaCheckerDefaultProblem(this.fileName, message, element, getLine(element));
+  }
+
+  public IProblem createUnknownFunctionProblem(RutaFunction f) {
+    String message = "error: Function \"" + f.getName() + "\" is not defined.";
+    return new RutaCheckerDefaultProblem(this.fileName, message, f, getLine(f));
   }
 
 }
