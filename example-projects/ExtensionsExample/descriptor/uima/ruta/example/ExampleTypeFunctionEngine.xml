@@ -190,14 +190,14 @@
             <nameValuePair>
                 <name>mainScript</name>
                 <value>
-                    <string>uima.textmarker.ExampleAction</string>
+                    <string>uima.ruta.example.ExampleTypeFunction</string>
                 </value>
             </nameValuePair>
             <nameValuePair>
                 <name>scriptPaths</name>
                 <value>
                     <array>
-                        <string>D:/work/runtime-EclipseApplication/ExtensionsExample/script</string>
+                        <string>D:/work/workspace-textmarker/ExtensionsExample/script</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -205,7 +205,7 @@
                 <name>descriptorPaths</name>
                 <value>
                     <array>
-                        <string>D:/work/runtime-EclipseApplication/ExtensionsExample/descriptor</string>
+                        <string>D:/work/workspace-textmarker/ExtensionsExample/descriptor</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -213,7 +213,7 @@
                 <name>resourcePaths</name>
                 <value>
                     <array>
-                        <string>D:\work\runtime-EclipseApplication\ExtensionsExample\resources</string>
+                        <string>D:\work\workspace-textmarker\ExtensionsExample\resources</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -235,6 +235,7 @@
                     <array>
                         <string>org.apache.uima.ruta.example.extensions.ExampleConditionExtension</string>
                         <string>org.apache.uima.ruta.example.extensions.ExampleActionExtension</string>
+                        <string>org.apache.uima.ruta.example.extensions.ExampleTypeFunctionExtension</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -246,10 +247,27 @@
             </nameValuePair>
         </configurationParameterSettings>
         <typeSystemDescription>
-            <name>uima.textmarker.ExampleActionTypeSystem</name>
+            <name>uima.ruta.example.ExampleTypeFunctionTypeSystem</name>
             <imports>
-                <import location="../../BasicTypeSystem.xml"/>
+                <import location="../../../BasicTypeSystem.xml"/>
             </imports>
+            <types>
+                <typeDescription>
+                    <name>uima.ruta.example.ExampleTypeFunction.T1</name>
+                    <description>Type defined in uima.ruta.example.ExampleTypeFunction</description>
+                    <supertypeName>uima.tcas.Annotation</supertypeName>
+                </typeDescription>
+                <typeDescription>
+                    <name>uima.ruta.example.ExampleTypeFunction.T2</name>
+                    <description>Type defined in uima.ruta.example.ExampleTypeFunction</description>
+                    <supertypeName>uima.tcas.Annotation</supertypeName>
+                </typeDescription>
+                <typeDescription>
+                    <name>uima.ruta.example.ExampleTypeFunction.T3</name>
+                    <description>Type defined in uima.ruta.example.ExampleTypeFunction</description>
+                    <supertypeName>uima.tcas.Annotation</supertypeName>
+                </typeDescription>
+            </types>
         </typeSystemDescription>
         <typePriorities>
             <priorityList>
@@ -263,6 +281,19 @@
             <capability>
                 <inputs/>
                 <outputs/>
+                <languagesSupported/>
+            </capability>
+            <capability>
+                <inputs>
+                    <type>uima.ruta.example.ExampleTypeFunction.T1</type>
+                    <type>uima.ruta.example.ExampleTypeFunction.T2</type>
+                    <type>uima.ruta.example.ExampleTypeFunction.T3</type>
+                </inputs>
+                <outputs>
+                    <type>uima.ruta.example.ExampleTypeFunction.T1</type>
+                    <type>uima.ruta.example.ExampleTypeFunction.T2</type>
+                    <type>uima.ruta.example.ExampleTypeFunction.T3</type>
+                </outputs>
                 <languagesSupported/>
             </capability>
         </capabilities>

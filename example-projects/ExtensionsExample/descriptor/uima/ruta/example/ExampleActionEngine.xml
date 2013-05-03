@@ -197,7 +197,7 @@
                 <name>scriptPaths</name>
                 <value>
                     <array>
-                        <string>D:/work/runtime-EclipseApplication/ExtensionsExample/script</string>
+                        <string>D:/work/workspace-textmarker/ExtensionsExample/script</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -205,7 +205,7 @@
                 <name>descriptorPaths</name>
                 <value>
                     <array>
-                        <string>D:/work/runtime-EclipseApplication/ExtensionsExample/descriptor</string>
+                        <string>D:/work/workspace-textmarker/ExtensionsExample/descriptor</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -213,7 +213,7 @@
                 <name>resourcePaths</name>
                 <value>
                     <array>
-                        <string>D:\work\runtime-EclipseApplication\ExtensionsExample\resources</string>
+                        <string>D:\work\workspace-textmarker\ExtensionsExample\resources</string>
                     </array>
                 </value>
             </nameValuePair>
