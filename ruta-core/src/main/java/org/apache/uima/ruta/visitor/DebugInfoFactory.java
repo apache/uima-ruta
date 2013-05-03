@@ -103,7 +103,8 @@ public class DebugInfoFactory {
       }
       counter = 0;
       for (List<ScriptApply> list : loops) {
-        AbstractRuleMatch<? extends AbstractRule> ruleMatch = blockApply.getRuleApply().getList().get(counter);
+        AbstractRuleMatch<? extends AbstractRule> ruleMatch = blockApply.getRuleApply().getList()
+                .get(counter);
         DebugBlockApply dummyBlockApply = createDummyBlockApply((RuleMatch) ruleMatch, stream,
                 addToIndex, withMatches, timeInfo);
         List<DebugRuleMatch> ruleMatches = new ArrayList<DebugRuleMatch>();
@@ -197,8 +198,9 @@ public class DebugInfoFactory {
     return dra;
   }
 
-  public DebugRuleMatch createDebugRuleMatch(AbstractRuleMatch<? extends AbstractRule> match, RutaStream stream,
-          boolean addToIndex, boolean withMatches, Map<RutaElement, Long> timeInfo) {
+  public DebugRuleMatch createDebugRuleMatch(AbstractRuleMatch<? extends AbstractRule> match,
+          RutaStream stream, boolean addToIndex, boolean withMatches,
+          Map<RutaElement, Long> timeInfo) {
     JCas cas = stream.getJCas();
     DebugRuleMatch drm = null;
     if (match.matchedCompletely()) {
@@ -217,7 +219,7 @@ public class DebugInfoFactory {
         }
         drm.setDelegates(UIMAUtils.toFSArray(cas, delegates));
       }
-    } else if(match instanceof RegExpRuleMatch) {
+    } else if (match instanceof RegExpRuleMatch) {
       RegExpRuleMatch rerm = (RegExpRuleMatch) match;
       Map<Integer, List<AnnotationFS>> map = rerm.getMap();
       Set<Entry<Integer, List<AnnotationFS>>> entrySet = map.entrySet();
@@ -235,7 +237,7 @@ public class DebugInfoFactory {
 
             DebugEvaluatedCondition base = new DebugEvaluatedCondition(cas);
             base.setValue(true);
-            String baseString = "Group "+key ;
+            String baseString = "Group " + key;
             base.setElement(baseString);
             drem.setBaseCondition(base);
 
@@ -253,25 +255,28 @@ public class DebugInfoFactory {
         }
         ruleElementMatches.add(drems);
       }
-      
+
       drm.setElements(UIMAUtils.toFSArray(cas, ruleElementMatches));
     }
     if (timeInfo != null) {
       long time = timeInfo.get(match.getRule());
       drm.setTime(time);
     }
-    AnnotationFS matchedAnnotation = match.getMatchedAnnotationsOfRoot(stream).get(0);
-    if (matchedAnnotation != null) {
-      drm.setBegin(matchedAnnotation.getBegin());
-      drm.setEnd(matchedAnnotation.getEnd());
-      if (addToIndex || withMatches)
-        drm.addToIndexes();
+    List<AnnotationFS> matchedAnnotationsOfRoot = match.getMatchedAnnotationsOfRoot(stream);
+    if (!matchedAnnotationsOfRoot.isEmpty()) {
+      AnnotationFS matchedAnnotation = matchedAnnotationsOfRoot.get(0);
+      if (matchedAnnotation != null) {
+        drm.setBegin(matchedAnnotation.getBegin());
+        drm.setEnd(matchedAnnotation.getEnd());
+        if (addToIndex || withMatches)
+          drm.addToIndexes();
+      }
     }
     return drm;
   }
 
-  private void setInnerMatches(RutaStream stream, boolean addToIndex, JCas cas,
-          DebugRuleMatch drm, ComposedRuleElementMatch rootMatch) {
+  private void setInnerMatches(RutaStream stream, boolean addToIndex, JCas cas, DebugRuleMatch drm,
+          ComposedRuleElementMatch rootMatch) {
     Set<Entry<RuleElement, List<RuleElementMatch>>> entrySet = rootMatch.getInnerMatches()
             .entrySet();
     List<DebugRuleElementMatches> ruleElementMatches = new ArrayList<DebugRuleElementMatches>();
@@ -346,8 +351,8 @@ public class DebugInfoFactory {
     return drem;
   }
 
-  public DebugRuleElementMatch createDebugRuleElementMatch(RuleElementMatch rem,
-          RutaStream stream, boolean addToIndex) {
+  public DebugRuleElementMatch createDebugRuleElementMatch(RuleElementMatch rem, RutaStream stream,
+          boolean addToIndex) {
     JCas cas = stream.getJCas();
     DebugRuleElementMatch drem = new DebugRuleElementMatch(cas);
 

@@ -33,5 +33,12 @@ under the License.
             engine="org.apache.uima.ruta.example.extensions.ExampleConditionExtension">
       </condition>
    </extension>
+   <extension
+         point="org.apache.uima.ruta.ide.typeFunctionExtension">
+      <condition
+            class="org.apache.uima.ruta.example.extensions.ExampleTypeFunctionIDEExtension"
+            engine="org.apache.uima.ruta.example.extensions.ExampleTypeFunctionExtension">
+      </condition>
+   </extension>
 
 </plugin>

@@ -54,6 +54,9 @@ public class RutaTypeMatcher implements RutaMatcher {
     Collection<AnnotationFS> result = new TreeSet<AnnotationFS>(comparator);
     List<Type> types = getTypes(parent, stream);
     for (Type type : types) {
+      if(type == null) {
+        continue;
+      }
       String name = type.getName();
       RutaBasic firstBasicOfAll = stream.getFirstBasicOfAll();
       if ("uima.tcas.DocumentAnnotation".equals(name)
@@ -201,7 +204,7 @@ public class RutaTypeMatcher implements RutaMatcher {
 
   protected Type getType(TypeExpression expression, RutaBlock parent, RutaStream stream) {
     Type type = expression.getType(parent);
-    if ("uima.tcas.DocumentAnnotation".equals(type.getName())) {
+    if (type != null && "uima.tcas.DocumentAnnotation".equals(type.getName())) {
       return stream.getDocumentAnnotationType();
     }
     return type;
