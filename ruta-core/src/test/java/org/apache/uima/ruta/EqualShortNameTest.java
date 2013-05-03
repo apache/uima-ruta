@@ -32,7 +32,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.junit.Test;
 
-public class EqualNamespaceTest {
+public class EqualShortNameTest {
 
   @Test
   public void test() {
@@ -40,7 +40,7 @@ public class EqualNamespaceTest {
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
 
     Map<String, String> complexTypes = new HashMap<String, String>();
-    complexTypes.put("org.apache.uima.EqualNamepaceTest.NUM", "uima.tcas.Annotation");
+    complexTypes.put("org.apache.uima.EqualShortNameTest.NUM", "uima.tcas.Annotation");
     CAS cas = null;
     try {
       cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
