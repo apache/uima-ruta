@@ -47,8 +47,8 @@ public class RutaCompletionProposalCollector extends ScriptCompletionProposalCol
   @Override
   protected ScriptCompletionProposal createScriptCompletionProposal(String completion,
           int replaceStart, int length, Image image, String displayString, int i) {
-    return new RutaScriptCompletionProposal(displayString, replaceStart, length, image,
-            displayString, i);
+    return new RutaScriptCompletionProposal(completion, replaceStart, length, image,
+            null, i);
   }
 
   @Override

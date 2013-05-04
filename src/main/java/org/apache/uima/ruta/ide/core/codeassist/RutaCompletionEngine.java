@@ -42,10 +42,10 @@ import org.apache.uima.ruta.ide.core.extensions.ICompletionExtension;
 import org.apache.uima.ruta.ide.core.parser.RutaParseUtils;
 import org.apache.uima.ruta.ide.parser.ast.ComponentDeclaration;
 import org.apache.uima.ruta.ide.parser.ast.ComponentReference;
-import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaAction;
 import org.apache.uima.ruta.ide.parser.ast.RutaCondition;
 import org.apache.uima.ruta.ide.parser.ast.RutaModuleDeclaration;
+import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaVariableReference;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
@@ -127,6 +127,7 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
                 actualCompletionPosition);
         parsed.traverse(referenceVisitor);
         node = referenceVisitor.getResult();
+        
         if (node == null) {
           doCompletionOnEmptyStatement(module, position, i);
           doCompletionOnDeclaration(module, startPart);
@@ -360,18 +361,7 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
       String name = each.getName();
       String[] nameSpace = name.split("[.]");
       types.add(nameSpace[nameSpace.length - 1]);
-      StringBuffer fullName = new StringBuffer();
-      if (nameSpace.length > 0) {
-        fullName.append(nameSpace[0]);
-      }
-      for (int i = 1; i < nameSpace.length; i++) {
-        // TODO fix workaround
-        if (!nameSpace[i].equals("type")) {
-          fullName.append('.');
-          fullName.append(nameSpace[i]);
-        }
-      }
-      types.add(fullName.toString());
+      types.add(name);
     }
     return types;
   }
@@ -423,8 +413,8 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
       } catch (Exception e) {
       }
       for (String string : types) {
-        if (match(complString, string)) {
-          addProposal(complString, string, CompletionProposal.TYPE_REF);
+        if (match(startPart, string)) {
+          addProposal(startPart, string, CompletionProposal.TYPE_REF);
         }
       }
     } else {
@@ -440,10 +430,10 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
               if (fieldType == RutaTypeConstants.RUTA_TYPE_N || fieldType == RutaTypeConstants.RUTA_TYPE_I
                       || fieldType == RutaTypeConstants.RUTA_TYPE_D
                       || fieldType == RutaTypeConstants.RUTA_TYPE_F) {
-                addProposal(complString, f.getElementName(), CompletionProposal.LOCAL_VARIABLE_REF);
+                addProposal(startPart, f.getElementName(), CompletionProposal.LOCAL_VARIABLE_REF);
               }
             } else if (type == fieldType) {
-              addProposal(complString, f.getElementName(), CompletionProposal.LOCAL_VARIABLE_REF);
+              addProposal(startPart, f.getElementName(), CompletionProposal.LOCAL_VARIABLE_REF);
             }
 
           }

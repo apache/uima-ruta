@@ -56,4 +56,11 @@ public class RutaScriptCompletionProposal extends ScriptCompletionProposal {
     IPreferenceStore preference = RutaIdePlugin.getDefault().getPreferenceStore();
     return preference.getBoolean(PreferenceConstants.CODEASSIST_INSERT_COMPLETION);
   }
+
+  @Override
+  protected boolean isValidPrefix(String prefix) {
+    String[] split = getDisplayString().split("[.]");
+    return isPrefix(prefix, getDisplayString()) || isPrefix(prefix, split[split.length-1]);
+  }
+  
 }
