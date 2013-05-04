@@ -6,7 +6,7 @@
     </imports>
     <types>
         <typeDescription>
-            <name>uima.ruta.example.ExampleCondition.BeforeMe</name>
+            <name>uima.ruta.example.ExampleCondition.T1</name>
             <description>Type defined in uima.ruta.example.ExampleCondition</description>
             <supertypeName>uima.tcas.Annotation</supertypeName>
         </typeDescription>

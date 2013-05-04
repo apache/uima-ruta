@@ -190,7 +190,7 @@
             <nameValuePair>
                 <name>mainScript</name>
                 <value>
-                    <string>uima.ruta.example.ExampleCondition</string>
+                    <string>uima.ruta.example.ExampleNumberFunction</string>
                 </value>
             </nameValuePair>
             <nameValuePair>
@@ -235,6 +235,9 @@
                     <array>
                         <string>org.apache.uima.ruta.example.extensions.ExampleConditionExtension</string>
                         <string>org.apache.uima.ruta.example.extensions.ExampleActionExtension</string>
+                        <string>org.apache.uima.ruta.example.extensions.ExampleBooleanFunctionExtension</string>
+                        <string>org.apache.uima.ruta.example.extensions.ExampleNumberFunctionExtension</string>
+                        <string>org.apache.uima.ruta.example.extensions.ExampleStringFunctionExtension</string>
                         <string>org.apache.uima.ruta.example.extensions.ExampleTypeFunctionExtension</string>
                     </array>
                 </value>
@@ -247,14 +250,24 @@
             </nameValuePair>
         </configurationParameterSettings>
         <typeSystemDescription>
-            <name>uima.ruta.example.ExampleConditionTypeSystem</name>
+            <name>uima.ruta.example.ExampleNumberFunctionTypeSystem</name>
             <imports>
                 <import location="../../../BasicTypeSystem.xml"/>
             </imports>
             <types>
                 <typeDescription>
-                    <name>uima.ruta.example.ExampleCondition.T1</name>
-                    <description>Type defined in uima.ruta.example.ExampleCondition</description>
+                    <name>uima.ruta.example.ExampleNumberFunction.T1</name>
+                    <description>Type defined in uima.ruta.example.ExampleNumberFunction</description>
+                    <supertypeName>uima.tcas.Annotation</supertypeName>
+                </typeDescription>
+                <typeDescription>
+                    <name>uima.ruta.example.ExampleNumberFunction.T2</name>
+                    <description>Type defined in uima.ruta.example.ExampleNumberFunction</description>
+                    <supertypeName>uima.tcas.Annotation</supertypeName>
+                </typeDescription>
+                <typeDescription>
+                    <name>uima.ruta.example.ExampleNumberFunction.T3</name>
+                    <description>Type defined in uima.ruta.example.ExampleNumberFunction</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
             </types>
@@ -275,10 +288,14 @@
             </capability>
             <capability>
                 <inputs>
-                    <type>uima.ruta.example.ExampleCondition.T1</type>
+                    <type>uima.ruta.example.ExampleNumberFunction.T1</type>
+                    <type>uima.ruta.example.ExampleNumberFunction.T2</type>
+                    <type>uima.ruta.example.ExampleNumberFunction.T3</type>
                 </inputs>
                 <outputs>
-                    <type>uima.ruta.example.ExampleCondition.T1</type>
+                    <type>uima.ruta.example.ExampleNumberFunction.T1</type>
+                    <type>uima.ruta.example.ExampleNumberFunction.T2</type>
+                    <type>uima.ruta.example.ExampleNumberFunction.T3</type>
                 </outputs>
                 <languagesSupported/>
             </capability>

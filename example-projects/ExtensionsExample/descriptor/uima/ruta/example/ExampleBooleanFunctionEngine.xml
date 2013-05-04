@@ -190,7 +190,7 @@
             <nameValuePair>
                 <name>mainScript</name>
                 <value>
-                    <string>uima.ruta.example.ExampleCondition</string>
+                    <string>uima.ruta.example.ExampleBooleanFunction</string>
                 </value>
             </nameValuePair>
             <nameValuePair>
@@ -247,14 +247,24 @@
             </nameValuePair>
         </configurationParameterSettings>
         <typeSystemDescription>
-            <name>uima.ruta.example.ExampleConditionTypeSystem</name>
+            <name>uima.ruta.example.ExampleBooleanFunctionTypeSystem</name>
             <imports>
                 <import location="../../../BasicTypeSystem.xml"/>
             </imports>
             <types>
                 <typeDescription>
-                    <name>uima.ruta.example.ExampleCondition.T1</name>
-                    <description>Type defined in uima.ruta.example.ExampleCondition</description>
+                    <name>uima.ruta.example.ExampleBooleanFunction.T1</name>
+                    <description>Type defined in uima.ruta.example.ExampleBooleanFunction</description>
+                    <supertypeName>uima.tcas.Annotation</supertypeName>
+                </typeDescription>
+                <typeDescription>
+                    <name>uima.ruta.example.ExampleBooleanFunction.T2</name>
+                    <description>Type defined in uima.ruta.example.ExampleBooleanFunction</description>
+                    <supertypeName>uima.tcas.Annotation</supertypeName>
+                </typeDescription>
+                <typeDescription>
+                    <name>uima.ruta.example.ExampleBooleanFunction.T3</name>
+                    <description>Type defined in uima.ruta.example.ExampleBooleanFunction</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
             </types>
@@ -275,10 +285,14 @@
             </capability>
             <capability>
                 <inputs>
-                    <type>uima.ruta.example.ExampleCondition.T1</type>
+                    <type>uima.ruta.example.ExampleBooleanFunction.T1</type>
+                    <type>uima.ruta.example.ExampleBooleanFunction.T2</type>
+                    <type>uima.ruta.example.ExampleBooleanFunction.T3</type>
                 </inputs>
                 <outputs>
-                    <type>uima.ruta.example.ExampleCondition.T1</type>
+                    <type>uima.ruta.example.ExampleBooleanFunction.T1</type>
+                    <type>uima.ruta.example.ExampleBooleanFunction.T2</type>
+                    <type>uima.ruta.example.ExampleBooleanFunction.T3</type>
                 </outputs>
                 <languagesSupported/>
             </capability>
