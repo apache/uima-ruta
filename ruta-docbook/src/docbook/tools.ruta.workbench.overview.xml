@@ -22,8 +22,7 @@
         <para>
           The
           <quote>UIMA Ruta perspective</quote>, which provides the main functionality for working on UIMA Ruta projects. See
-          <xref linkend='section.ugr.tools.ruta.workbench.ruta_perspective' />
-          for detailed information.
+          <xref linkend='section.ugr.tools.ruta.workbench.ruta_perspective' />.
         </para>
       </listitem>
       <listitem>
