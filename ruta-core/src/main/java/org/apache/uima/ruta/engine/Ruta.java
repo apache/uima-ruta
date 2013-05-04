@@ -25,15 +25,23 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.analysis_engine.metadata.AnalysisEngineMetaData;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
+import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
+import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.apache.uima.util.CasCreationUtils;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
@@ -46,15 +54,15 @@ public class Ruta {
     String viewName = cas.getViewName();
     URL aedesc = RutaEngine.class.getResource("BasicEngine.xml");
     AnalysisEngine ae = wrapAnalysisEngine(aedesc, viewName);
-    
+
     File scriptFile = File.createTempFile("Ruta", RutaEngine.SCRIPT_FILE_EXTENSION);
     scriptFile.deleteOnExit();
     if (!script.startsWith("PACKAGE")) {
       script = "PACKAGE org.apache.uima.ruta;\n" + script;
     }
     FileUtils.saveString2File(script, scriptFile);
-    ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { scriptFile
-            .getParentFile().getAbsolutePath() });
+    ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { scriptFile.getParentFile()
+            .getAbsolutePath() });
     String name = scriptFile.getName().substring(0, scriptFile.getName().length() - 5);
     ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, name);
     ae.reconfigure();
@@ -69,9 +77,9 @@ public class Ruta {
     return wrapAnalysisEngine(descriptorUrl, viewName, false, Charset.defaultCharset().name());
   }
 
-  public static AnalysisEngine wrapAnalysisEngine(URL descriptorUrl, String viewName, boolean rutaEngine, 
-          String encoding) throws ResourceInitializationException, ResourceConfigurationException,
-          InvalidXMLException, IOException, URISyntaxException {
+  public static AnalysisEngine wrapAnalysisEngine(URL descriptorUrl, String viewName,
+          boolean rutaEngine, String encoding) throws ResourceInitializationException,
+          ResourceConfigurationException, InvalidXMLException, IOException, URISyntaxException {
     if (viewName.equals(CAS.NAME_DEFAULT_SOFA)) {
       XMLInputSource in = new XMLInputSource(descriptorUrl);
       ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
@@ -79,7 +87,7 @@ public class Ruta {
       return ae;
     } else {
       InputStream inputStream = null;
-      if(rutaEngine) {
+      if (rutaEngine) {
         inputStream = Ruta.class.getResourceAsStream("AAEDBasicEngine.xml");
       } else {
         inputStream = Ruta.class.getResourceAsStream("AAED.xml");
@@ -96,6 +104,40 @@ public class Ruta {
       tempFile.delete();
       return ae;
     }
+  }
+
+  public static AnalysisEngineDescription createAnalysisEngineDescription(String script)
+          throws IOException, InvalidXMLException, ResourceInitializationException {
+    return createAnalysisEngineDescription(script, (TypeSystemDescription[]) null);
+  }
+
+  public static AnalysisEngineDescription createAnalysisEngineDescription(String script,
+          TypeSystemDescription... tsds) throws IOException, InvalidXMLException,
+          ResourceInitializationException {
+    File scriptFile = File.createTempFile("Ruta", RutaEngine.SCRIPT_FILE_EXTENSION);
+    scriptFile.deleteOnExit();
+    if (!script.startsWith("PACKAGE")) {
+      script = "PACKAGE org.apache.uima.ruta;\n" + script;
+    }
+    FileUtils.saveString2File(script, scriptFile);
+    URL url = RutaEngine.class.getResource("BasicEngine.xml");
+    XMLInputSource in = new XMLInputSource(url);
+    AnalysisEngineDescription aed = (AnalysisEngineDescription) UIMAFramework.getXMLParser()
+            .parseResourceSpecifier(in);
+    AnalysisEngineMetaData metaData = aed.getAnalysisEngineMetaData();
+    ConfigurationParameterSettings settings = metaData.getConfigurationParameterSettings();
+    settings.setParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { scriptFile.getParentFile()
+            .getAbsolutePath() });
+    String name = scriptFile.getName().substring(0, scriptFile.getName().length() - 5);
+    settings.setParameterValue(RutaEngine.MAIN_SCRIPT, name);
+    if (tsds != null) {
+      List<TypeSystemDescription> tsdList = new ArrayList<TypeSystemDescription>();
+      tsdList.add(metaData.getTypeSystem());
+      tsdList.addAll(Arrays.asList(tsds));
+      TypeSystemDescription typeSystemDescription = CasCreationUtils.mergeTypeSystems(tsdList);
+      metaData.setTypeSystem(typeSystemDescription);
+    }
+    return aed;
   }
 
 }
