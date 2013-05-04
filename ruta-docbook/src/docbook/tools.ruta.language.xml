@@ -588,4 +588,19 @@ GroupAssignment -> TypeExpression | NumberEpxression "=" TypeExpression
     
     
   </section>
+  <section id="ugr.tools.ruta.language.extensions">
+    <title>Language Extensions</title>
+    <para>
+      The UIMA Ruta language can be extended with external actions, conditions, 
+      type functions, boolean functions, string functions and number functions. 
+      An exemplary implementation of each kind of extension can be found in the project
+      <uri>
+        https://svn.apache.org/repos/asf/uima/sandbox/ruta/trunk/example-projects/ruta-ep-example-extensions
+      </uri>
+       and a simple UIMA Ruta project, which uses these extensions, is located at 
+      <uri>
+        https://svn.apache.org/repos/asf/uima/sandbox/ruta/trunk/example-projects/ExtensionsExample
+      </uri>
+    </para>
+  </section>
 </chapter>
