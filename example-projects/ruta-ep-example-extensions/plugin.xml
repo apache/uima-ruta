@@ -40,5 +40,26 @@ under the License.
             engine="org.apache.uima.ruta.example.extensions.ExampleTypeFunctionExtension">
       </condition>
    </extension>
+   <extension
+         point="org.apache.uima.ruta.ide.booleanFunctionExtension">
+      <condition
+            class="org.apache.uima.ruta.example.extensions.ExampleBooleanFunctionIDEExtension"
+            engine="org.apache.uima.ruta.example.extensions.ExampleBooleanFunctionExtension">
+      </condition>
+   </extension>
+   <extension
+         point="org.apache.uima.ruta.ide.stringFunctionExtension">
+      <condition
+            class="org.apache.uima.ruta.example.extensions.ExampleStringFunctionIDEExtension"
+            engine="org.apache.uima.ruta.example.extensions.ExampleStringFunctionExtension">
+      </condition>
+   </extension>
+   <extension
+         point="org.apache.uima.ruta.ide.numberFunctionExtension">
+      <condition
+            class="org.apache.uima.ruta.example.extensions.ExampleNumberFunctionIDEExtension"
+            engine="org.apache.uima.ruta.example.extensions.ExampleNumberFunctionExtension">
+      </condition>
+   </extension>
 
 </plugin>

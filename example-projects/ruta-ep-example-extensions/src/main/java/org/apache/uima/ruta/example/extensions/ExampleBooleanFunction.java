@@ -21,30 +21,32 @@ package org.apache.uima.ruta.example.extensions;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.ruta.RutaStatement;
-import org.apache.uima.ruta.expression.string.StringExpression;
-import org.apache.uima.ruta.expression.type.TypeFunctionExpression;
+import org.apache.uima.ruta.expression.bool.BooleanFunctionExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
 
-public class ExampleTypeFunction extends TypeFunctionExpression {
+public class ExampleBooleanFunction extends BooleanFunctionExpression {
 
-  private final StringExpression expr;
+  private final TypeExpression expr;
 
-  public ExampleTypeFunction(StringExpression expr) {
+  public ExampleBooleanFunction(TypeExpression expr) {
     super();
     this.expr = expr;
   }
 
-  public StringExpression getExpr() {
+  public TypeExpression getExpr() {
     return expr;
   }
 
-  public Type getType(RutaStatement parent) {
-    String stringValue = expr.getStringValue(parent);
-    return parent.getEnvironment().getType(stringValue);
+  public boolean getBooleanValue(RutaStatement parent) {
+    Type type = expr.getType(parent);
+    return type.isFeatureFinal();
   }
 
   public String getStringValue(RutaStatement parent) {
     return expr.getStringValue(parent);
   }
+
+ 
 
 
 }

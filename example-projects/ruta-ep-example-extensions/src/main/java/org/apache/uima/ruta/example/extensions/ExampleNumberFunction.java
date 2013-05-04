@@ -15,36 +15,45 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.example.extensions;
 
-import org.apache.uima.cas.Type;
 import org.apache.uima.ruta.RutaStatement;
-import org.apache.uima.ruta.expression.string.StringExpression;
-import org.apache.uima.ruta.expression.type.TypeFunctionExpression;
+import org.apache.uima.ruta.expression.number.NumberFunctionExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
 
-public class ExampleTypeFunction extends TypeFunctionExpression {
+public class ExampleNumberFunction extends NumberFunctionExpression {
 
-  private final StringExpression expr;
+  private final TypeExpression expr;
 
-  public ExampleTypeFunction(StringExpression expr) {
+  public ExampleNumberFunction(TypeExpression expr) {
     super();
     this.expr = expr;
   }
 
-  public StringExpression getExpr() {
+  public TypeExpression getExpr() {
     return expr;
   }
 
-  public Type getType(RutaStatement parent) {
-    String stringValue = expr.getStringValue(parent);
-    return parent.getEnvironment().getType(stringValue);
-  }
-
   public String getStringValue(RutaStatement parent) {
-    return expr.getStringValue(parent);
+    return expr.getType(parent).getShortName();
   }
 
+  public int getIntegerValue(RutaStatement parent) {
+    return getFeatureAmount(parent);
+  }
+
+  public double getDoubleValue(RutaStatement parent) {
+    return getFeatureAmount(parent);
+  }
+
+  public float getFloatValue(RutaStatement parent) {
+    return getFeatureAmount(parent);
+  }
+
+  private int getFeatureAmount(RutaStatement parent) {
+    return expr.getType(parent).getFeatures().size();
+  }
 
 }

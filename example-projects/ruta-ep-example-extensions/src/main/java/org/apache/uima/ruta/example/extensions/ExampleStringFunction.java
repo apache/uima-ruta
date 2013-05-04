@@ -19,32 +19,29 @@
 
 package org.apache.uima.ruta.example.extensions;
 
-import org.apache.uima.cas.Type;
 import org.apache.uima.ruta.RutaStatement;
-import org.apache.uima.ruta.expression.string.StringExpression;
-import org.apache.uima.ruta.expression.type.TypeFunctionExpression;
+import org.apache.uima.ruta.expression.string.StringFunctionExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
 
-public class ExampleTypeFunction extends TypeFunctionExpression {
+public class ExampleStringFunction extends StringFunctionExpression {
 
-  private final StringExpression expr;
+  private final TypeExpression expr;
 
-  public ExampleTypeFunction(StringExpression expr) {
+  public ExampleStringFunction(TypeExpression expr) {
     super();
     this.expr = expr;
   }
 
-  public StringExpression getExpr() {
+  public TypeExpression getExpr() {
     return expr;
   }
 
-  public Type getType(RutaStatement parent) {
-    String stringValue = expr.getStringValue(parent);
-    return parent.getEnvironment().getType(stringValue);
+  
+  public String getStringValue(RutaStatement parent) {
+    return expr.getType(parent).getShortName();
   }
 
-  public String getStringValue(RutaStatement parent) {
-    return expr.getStringValue(parent);
-  }
+ 
 
 
 }

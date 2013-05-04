@@ -15,36 +15,35 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.example.extensions;
 
-import org.apache.uima.cas.Type;
-import org.apache.uima.ruta.RutaStatement;
-import org.apache.uima.ruta.expression.string.StringExpression;
-import org.apache.uima.ruta.expression.type.TypeFunctionExpression;
+import static org.junit.Assert.assertEquals;
 
-public class ExampleTypeFunction extends TypeFunctionExpression {
+import org.apache.uima.cas.CAS;
+import org.apache.uima.ruta.engine.RutaEngine;
+import org.junit.Test;
 
-  private final StringExpression expr;
+public class ExampleActionTest {
 
-  public ExampleTypeFunction(StringExpression expr) {
-    super();
-    this.expr = expr;
+  @Test
+  public void test() {
+    String name = this.getClass().getSimpleName();
+    String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
+    CAS cas = null;
+    try {
+      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/test.txt", 50);
+    } catch (Exception e) {
+      e.printStackTrace();
+      assert (false);
+    }
+
+    assertEquals(84, cas.getAnnotationIndex().size());
+
+    if (cas != null) {
+      cas.release();
+    }
+
   }
-
-  public StringExpression getExpr() {
-    return expr;
-  }
-
-  public Type getType(RutaStatement parent) {
-    String stringValue = expr.getStringValue(parent);
-    return parent.getEnvironment().getType(stringValue);
-  }
-
-  public String getStringValue(RutaStatement parent) {
-    return expr.getStringValue(parent);
-  }
-
-
 }
