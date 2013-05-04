@@ -27,7 +27,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 
 public interface IRootTreeNode extends ITreeNode {
 
-  public void insertFS(FeatureStructure annotation);
+  public void insertFS(FeatureStructure annotation, boolean withParents);
 
   public LinkedList<ITreeNode> getNodes();
 

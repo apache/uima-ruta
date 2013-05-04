@@ -75,11 +75,12 @@
     <para>
       Moreover, this view has two possible filters. Using the
       <quote>Only types with...</quote>
-      -filter lead to a list containing only those types that contain
+      -filter leads to a list containing only those types that contain
       the
       entered text. The
       <quote>Only annotations with...</quote>
       -filter leads to an analog list.
+      The user can choose whether all types are displayed using the preference page <quote>UIMA Cas Editor -> Cas Editor Views</quote>
     </para>
   </section>
 

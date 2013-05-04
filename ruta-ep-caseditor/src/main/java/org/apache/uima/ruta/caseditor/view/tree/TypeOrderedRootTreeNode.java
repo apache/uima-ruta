@@ -20,8 +20,10 @@
 package org.apache.uima.ruta.caseditor.view.tree;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
@@ -29,6 +31,8 @@ import org.apache.uima.cas.text.AnnotationFS;
 
 public class TypeOrderedRootTreeNode extends AbstractTreeNode implements IRootTreeNode {
 
+  private Map<Type, TypeTreeNode> typeMap = new HashMap<Type, TypeTreeNode>();
+  
   public TypeOrderedRootTreeNode() {
     super();
   }
@@ -41,34 +45,36 @@ public class TypeOrderedRootTreeNode extends AbstractTreeNode implements IRootTr
     return null;
   }
 
-  public void insertFS(FeatureStructure fs) {
+  public void insertFS(FeatureStructure fs, boolean withParents) {
     // TODO hotfix for explanation types...
-    if (fs.getType().getShortName().equals("DebugBlockApply")
-            || fs.getType().getShortName().equals("DebugMatchedRuleMatch")
-            || fs.getType().getShortName().equals("DebugFailedRuleMatch")
-            || fs.getType().getShortName().equals("DebugScriptApply")
-            || fs.getType().getShortName().equals("DebugRuleElementMatches")
-            || fs.getType().getShortName().equals("DebugRuleElementMatch")) {
+    Type type = fs.getType();
+    if (type.getShortName().equals("DebugBlockApply")
+            || type.getShortName().equals("DebugMatchedRuleMatch")
+            || type.getShortName().equals("DebugFailedRuleMatch")
+            || type.getShortName().equals("DebugScriptApply")
+            || type.getShortName().equals("DebugRuleElementMatches")
+            || type.getShortName().equals("DebugRuleElementMatch")) {
       return;
     }
+    insertFS(fs, type, withParents);
+  }
 
-    Iterator<ITreeNode> iter = getChildrenIterator();
-
-    while (iter.hasNext()) {
-      TypeTreeNode typeNode = (TypeTreeNode) iter.next();
-
-      if (typeNode.getType().equals(fs.getType())) {
-        FSTreeNode node = createFSNode(typeNode, fs);
-        typeNode.addChild(node);
-        return;
+  private void insertFS(FeatureStructure fs, Type type, boolean withParents) {
+    TypeTreeNode typeTreeNode = typeMap.get(type);
+    if(typeTreeNode == null) {
+      typeTreeNode = new TypeTreeNode(this, type);
+      typeMap.put(type, typeTreeNode);
+      addChild(typeTreeNode);
+    }
+    
+    FSTreeNode node = createFSNode(typeTreeNode, fs);
+    typeTreeNode.addChild(node);
+    if(withParents) {
+      Type parent = fs.getCAS().getTypeSystem().getParent(type);
+      if(parent != null) {
+        insertFS(fs, parent, withParents);
       }
     }
-
-    TypeTreeNode typeNode = new TypeTreeNode(this, fs.getType());
-    addChild(typeNode);
-
-    FSTreeNode node = createFSNode(typeNode, fs);
-    typeNode.addChild(node);
   }
 
   private FSTreeNode createFSNode(ITreeNode parent, FeatureStructure fs) {

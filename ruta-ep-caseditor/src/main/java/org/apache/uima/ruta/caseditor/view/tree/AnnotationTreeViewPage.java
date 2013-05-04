@@ -36,7 +36,10 @@ import org.apache.uima.caseditor.editor.AnnotationStyle;
 import org.apache.uima.caseditor.editor.AnnotationStyleChangeListener;
 import org.apache.uima.caseditor.editor.IAnnotationEditorModifyListener;
 import org.apache.uima.caseditor.editor.ICasDocument;
+import org.apache.uima.ruta.caseditor.RutaCasEditorPlugin;
+import org.apache.uima.ruta.caseditor.view.preferences.CasEditorViewsPreferenceConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -467,7 +470,8 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
 
   public IRootTreeNode getTypeOrderedTree(int pos, String manualTypeFilter, String manualTextFilter) {
     TypeOrderedRootTreeNode root = new TypeOrderedRootTreeNode();
-
+    IPreferenceStore preferenceStore = RutaCasEditorPlugin.getDefault().getPreferenceStore();
+    boolean withParents = preferenceStore.getBoolean(CasEditorViewsPreferenceConstants.SHOW_PARENT_TYPES);
     AnnotationIndex<AnnotationFS> annotationIndex = document.getCAS().getAnnotationIndex();
     for (AnnotationFS annotationFS : annotationIndex) {
       boolean offsetConstraint = pos == -1
@@ -477,7 +481,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
       boolean textConstraint = StringUtils.isEmpty(manualTextFilter)
               || annotationFS.getCoveredText().indexOf(manualTextFilter) != -1;
       if (offsetConstraint && typeConstraint && textConstraint) {
-        root.insertFS(annotationFS);
+        root.insertFS(annotationFS, withParents);
       }
 
     }

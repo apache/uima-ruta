@@ -36,5 +36,20 @@ under the License.
             name="Annotation Browser View">
       </view>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+         <page
+           category="org.apache.uima.caseditor.ide.CasEditorPreference"
+           class="org.apache.uima.ruta.caseditor.view.preferences.CasEditorViewPreferencePage"
+           id="org.apache.uima.ruta.caseditor.view.preferences"
+           name="Cas Editor Views">
+     </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+    <initializer
+          class="org.apache.uima.ruta.caseditor.view.preferences.CasEditorViewPreferenceInitializer">
+    </initializer>
+   </extension>
 
 </plugin>
