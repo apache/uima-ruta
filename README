@@ -20,21 +20,8 @@ For more details, please see http://uima.apache.org/building-uima.html
 
 -------------------------------------
 
-[UIMA-2528] Open CAS Editor blocks eclipse start
-
-If Eclipse is closed while an opened CAS Editor is focused, then problems may occur 
-when Eclipse is started with the same workspace.
-
-There is a workaround: 
-- remove either the plugin org.apache.uima.ruta.ide or
-  the plugin org.apache.uima.caseditor from the plugins folder of your Eclipse installation
-- start Eclipse
-- close the CAS Editor
-- close Eclipse
-- add the missing plugin again to the plugins folder
-- start Eclipse
-- reset perspectives
-
+This product was originally released as Apache UIMA TextMarker. The UIMA Ruta Workbench provides
+a command for updating old projects. Please right-click on a project and select "UIMA Ruta -> Update Project". 
 
 -------------------------------------
 

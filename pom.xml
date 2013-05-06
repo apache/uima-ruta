@@ -25,7 +25,9 @@
   <url>${uimaWebsiteUrl}</url>
   <properties>
     <jiraVersion>12324120</jiraVersion>
-    <assembly.attach>false</assembly.attach>
+    <!-- 
+     <assembly.attach>false</assembly.attach>
+     -->
   </properties>
 
   <!-- override pom setting in the build project. JIRA 5.1 needs different URL -->
@@ -149,12 +151,12 @@
     </pluginManagement>
   </build>
   <profiles>
+            <!-- 
     <profile>
       <id>build distribution</id>
       <build>
         <plugins>
           <plugin>
-            <!-- do not skip maven deployment of this project's artifacts -->
             <artifactId>maven-deploy-plugin</artifactId>      
             <configuration>
               <skip>false</skip>
@@ -163,6 +165,7 @@
         </plugins>
       </build>
     </profile>
+             -->
       
     <profile>
       <id>apache-release</id>
@@ -196,10 +199,10 @@
 									    <zipfileset dir="${basedir}/example-projects/ExampleProject/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/ExampleProject/" />
 									  </zip>
 									  <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
-                      <zipfileset dir="${basedir}/example-projects/ExtensionsExample/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/${basedir}/example-projects/ExtensionsExample/" />
+                      <zipfileset dir="${basedir}/example-projects/ExtensionsExample/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/ExtensionsExample/" />
                     </zip>
                     <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
-                      <zipfileset dir="${basedir}/example-projects/TextRulerExample/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/${basedir}/example-projects/TextRulerExample/" />
+                      <zipfileset dir="${basedir}/example-projects/TextRulerExample/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/TextRulerExample/" />
                     </zip>
 		              </target>
 		            </configuration>
