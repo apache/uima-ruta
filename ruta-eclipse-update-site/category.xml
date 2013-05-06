@@ -19,10 +19,10 @@
 -->
 
 <site>
-   <feature url="features/org.apache.uima.ruta.feature_2.0.0.jar" id="org.apache.uima.ruta.feature" version="2.0.0">
-      <category name="uima-ruta"/>
+   <feature url="features/org.apache.uima.ruta.feature_2.0.1.SNAPSHOT.jar" id="org.apache.uima.ruta.feature" version="2.0.1.SNAPSHOT">
+      <category name="apache-uima-ruta"/>
    </feature>
-   <category-def name="uima-ruta" label="Apache UIMA Ruta">
+   <category-def name="apache-uima-ruta" label="Apache UIMA Ruta">
       <description>
          Apache UIMA Ruta
       </description>
