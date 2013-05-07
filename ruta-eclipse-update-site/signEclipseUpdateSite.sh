@@ -39,7 +39,7 @@ for i in $(find ./target/eclipse-update-site -name '*.jar')
   done
   
 # Create PGP signatures, MD5, and SHA1 checksums on all gz files
-for i in $(find eclipse-update-site -name '*.gz') 
+for i in $(find ./target/eclipse-update-site -name '*.gz') 
   do 
     rm -f $i.asc 
     gpg --output $i.asc --detach-sig --armor $i

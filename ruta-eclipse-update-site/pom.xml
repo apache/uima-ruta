@@ -50,8 +50,8 @@
   <properties>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
     <eclipseUpdateSite>${project.build.directory}/eclipse-update-site</eclipseUpdateSite>
-    <item-maven-release-version>2.0.1-SNAPSHOT</item-maven-release-version>
-    <item-eclipse-release-version>2.0.1.SNAPSHOT</item-eclipse-release-version>
+    <item-maven-release-version>2.0.1</item-maven-release-version>
+    <item-eclipse-release-version>2.0.1</item-eclipse-release-version>
   </properties>
   <!-- don't use dependency mechanism - use dependency:copy
        because we need to get multiple versions for the
