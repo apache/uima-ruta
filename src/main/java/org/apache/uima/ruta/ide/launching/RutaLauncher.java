@@ -176,8 +176,10 @@ public class RutaLauncher {
       if (each.isHidden()) {
         continue;
       }
-      result.add(each);
-      if (each.isDirectory() && recusive) {
+      if(each.isFile()) {
+        result.add(each);
+      } else
+        if (each.isDirectory() && recusive) {
         result.addAll(getFiles(each, recusive));
       }
     }
