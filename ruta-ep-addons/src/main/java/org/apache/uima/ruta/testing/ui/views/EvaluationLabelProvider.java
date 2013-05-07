@@ -20,7 +20,7 @@
 package org.apache.uima.ruta.testing.ui.views;
 
 import org.apache.uima.ruta.caseditor.view.tree.AnnotationTreeNode;
-import org.apache.uima.ruta.caseditor.view.tree.FeatureTreeNode;
+import org.apache.uima.ruta.caseditor.view.tree.PrimitiveFeatureTreeNode;
 import org.apache.uima.ruta.caseditor.view.tree.TextUtils;
 import org.apache.uima.ruta.caseditor.view.tree.TypeTreeNode;
 import org.apache.uima.ruta.testing.evaluator.ICasEvaluator;
@@ -62,8 +62,8 @@ public class EvaluationLabelProvider extends LabelProvider implements ILabelProv
       TypeTreeNode testNode = (TypeTreeNode) element;
       return TextUtils.shrinkNamespace(testNode.getType().getName());
     }
-    if (element instanceof FeatureTreeNode) {
-      FeatureTreeNode fNode = (FeatureTreeNode) element;
+    if (element instanceof PrimitiveFeatureTreeNode) {
+      PrimitiveFeatureTreeNode fNode = (PrimitiveFeatureTreeNode) element;
       return fNode.getName();
     }
 

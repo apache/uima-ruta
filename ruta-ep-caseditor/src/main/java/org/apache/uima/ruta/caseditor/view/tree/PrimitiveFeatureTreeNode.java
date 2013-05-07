@@ -27,7 +27,7 @@ import java.util.LinkedList;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 
-public class FeatureTreeNode implements ITreeNode {
+public class PrimitiveFeatureTreeNode implements ITreeNode {
 
   private ITreeNode parent;
 
@@ -37,7 +37,7 @@ public class FeatureTreeNode implements ITreeNode {
 
   private ArrayList<ITreeNode> children;
 
-  public FeatureTreeNode(ITreeNode parent, Feature f, String value) {
+  public PrimitiveFeatureTreeNode(ITreeNode parent, Feature f, String value) {
     this.parent = parent;
     this.f = f;
     this.value = value;
@@ -57,7 +57,7 @@ public class FeatureTreeNode implements ITreeNode {
   }
 
   public String getName() {
-    return f.getShortName() + " : " + value;
+    return f.getShortName() + ": " + value;
   }
 
   public void getNodes(LinkedList<ITreeNode> list) {
@@ -92,7 +92,7 @@ public class FeatureTreeNode implements ITreeNode {
 
   public Object getAdapter(Class adapter) {
 
-    if (FeatureTreeNode.class.equals(adapter)) {
+    if (PrimitiveFeatureTreeNode.class.equals(adapter)) {
       return this;
     } else if (Feature.class.equals(adapter)) {
       return f;

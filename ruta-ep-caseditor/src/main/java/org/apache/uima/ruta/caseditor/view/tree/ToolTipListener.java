@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.caseditor.view.tree;
 
@@ -68,33 +68,43 @@ public class ToolTipListener implements Listener {
       case SWT.MouseHover: {
         TreeItem item = tree.getItem(new Point(event.x, event.y));
 
-        if (item != null && item.getData() instanceof AnnotationTreeNode) {
-          if (tip != null && !tip.isDisposed())
-            tip.dispose();
-
-          tip = new Shell(Display.getCurrent().getActiveShell(), SWT.ON_TOP | SWT.NO_FOCUS
-                  | SWT.TOOL);
-
-          tip.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
-          FillLayout layout = new FillLayout();
-          layout.marginWidth = 2;
-          tip.setLayout(layout);
-
-          label = new Label(tip, SWT.NONE);
-          label.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_INFO_FOREGROUND));
-          label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
-
-          AnnotationFS annot = ((AnnotationTreeNode) item.getData()).getAnnotation();
-
-          label.setText(TOOLTIP_TEXT_BEGIN + annot.getBegin() + TOOLTIP_TEXT_END + annot.getEnd());
-
-          Point size = tip.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-          Rectangle rect = item.getBounds(0);
-          Point pt = tree.toDisplay(rect.x, rect.y);
-          tip.setBounds(pt.x, pt.y, size.x, size.y);
-          tip.setVisible(true);
+        if (item != null) {
+          String text = "";
+          if (item.getData() instanceof FSFeatureTreeNode) {
+            FSFeatureTreeNode node = (FSFeatureTreeNode) item.getData();
+            text = "Type: "+ node.getType();
+          } else if (item.getData() instanceof AnnotationTreeNode) {
+            AnnotationFS annot = ((AnnotationTreeNode) item.getData()).getAnnotation();
+            text = TOOLTIP_TEXT_BEGIN + annot.getBegin() + TOOLTIP_TEXT_END + annot.getEnd();
+          } else if (item.getData() instanceof PrimitiveFeatureTreeNode) {
+            PrimitiveFeatureTreeNode node = (PrimitiveFeatureTreeNode) item.getData();
+            text = "Type: "+ node.getType();
+          }
+            if (tip != null && !tip.isDisposed())
+              tip.dispose();
+            
+            tip = new Shell(Display.getCurrent().getActiveShell(), SWT.ON_TOP | SWT.NO_FOCUS
+                    | SWT.TOOL);
+            
+            tip.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
+            FillLayout layout = new FillLayout();
+            layout.marginWidth = 2;
+            tip.setLayout(layout);
+            
+            label = new Label(tip, SWT.NONE);
+            label.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_INFO_FOREGROUND));
+            label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
+            
+            label.setText(text);
+            
+            Point size = tip.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+            Rectangle rect = item.getBounds(0);
+            Point pt = tree.toDisplay(rect.x, rect.y);
+            tip.setBounds(pt.x, pt.y, size.x, size.y);
+            tip.setVisible(true);
+          }
         }
-      }
+
     }
   }
 }

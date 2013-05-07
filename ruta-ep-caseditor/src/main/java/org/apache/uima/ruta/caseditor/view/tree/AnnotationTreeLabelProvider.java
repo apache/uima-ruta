@@ -23,11 +23,11 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-public class AnnotationTreeLableProvider extends LabelProvider implements ILabelProvider {
+public class AnnotationTreeLabelProvider extends LabelProvider implements ILabelProvider {
 
   private AnnotationTreeViewPage page;
 
-  public AnnotationTreeLableProvider(AnnotationTreeViewPage page) {
+  public AnnotationTreeLabelProvider(AnnotationTreeViewPage page) {
     this.page = page;
   }
 

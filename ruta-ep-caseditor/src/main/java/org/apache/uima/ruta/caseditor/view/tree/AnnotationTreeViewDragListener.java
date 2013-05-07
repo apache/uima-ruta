@@ -41,8 +41,8 @@ public class AnnotationTreeViewDragListener extends DragSourceAdapter {
     IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
     Object[] list = selection.toList().toArray();
     for (Object object : list) {
-      if (object instanceof FeatureTreeNode) {
-        event.data = ((FeatureTreeNode) object).getValue();
+      if (object instanceof PrimitiveFeatureTreeNode) {
+        event.data = ((PrimitiveFeatureTreeNode) object).getValue();
       } else if (object instanceof AnnotationTreeNode) {
         event.data = ((AnnotationTreeNode) object).getAnnotation().getCoveredText();
       }

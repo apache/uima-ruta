@@ -63,11 +63,9 @@ public class FSTreeNode extends AbstractTreeNode implements IAdaptable {
         ArrayFS array = (ArrayFS) featureValue;
         if (array != null) {
           String text = "Array" + "[" + array.size() + "]";
-          FeatureTreeNode arrayNode = new FeatureTreeNode(this, f, text);
+          PrimitiveFeatureTreeNode arrayNode = new PrimitiveFeatureTreeNode(this, f, text);
           parent.addChild(arrayNode);
-
           int size = array.size();
-
           for (int i = 0; i < size; i++) {
             FeatureStructure fs = array.get(i);
             if (fs instanceof FeatureStructure) {
@@ -89,12 +87,13 @@ public class FSTreeNode extends AbstractTreeNode implements IAdaptable {
     } else if (f.getRange().isPrimitive()) {
       if ("uima.cas.AnnotationBase:sofa".equals(f.getName())) {
       } else {
-        parent.addChild(new FeatureTreeNode(this, f, featureStructure.getFeatureValueAsString(f)));
+        parent.addChild(new PrimitiveFeatureTreeNode(this, f, featureStructure
+                .getFeatureValueAsString(f)));
       }
     } else if (f.getRange() instanceof Type) {
       FeatureStructure featureValue = featureStructure.getFeatureValue(f);
       if (featureValue instanceof AnnotationFS && expandable(featureValue.getType(), parentTypes)) {
-        parent.addChild(new AnnotationTreeNode(this, ((AnnotationFS) featureValue), parentTypes));
+        parent.addChild(new FSFeatureTreeNode(this, f, featureValue, parentTypes));
       }
     }
   }
@@ -105,14 +104,12 @@ public class FSTreeNode extends AbstractTreeNode implements IAdaptable {
   }
 
   public Object getAdapter(Class adapter) {
-
     if (FSTreeNode.class.equals(adapter)) {
       return this;
     } else if (FeatureStructure.class.equals(adapter)) {
       return fs;
 
     }
-
     return null;
   }
 

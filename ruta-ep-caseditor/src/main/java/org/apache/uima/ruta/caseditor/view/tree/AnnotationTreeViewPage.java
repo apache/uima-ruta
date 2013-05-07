@@ -96,7 +96,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
 
   private CheckboxTreeViewer treeView;
 
-  private AnnotationTreeLableProvider lableProvider;
+  private AnnotationTreeLabelProvider lableProvider;
 
   protected Text filterTypeTextField;
 
@@ -181,7 +181,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     treeView.setContentProvider(provider);
     document.addChangeListener(provider);
 
-    lableProvider = new AnnotationTreeLableProvider(this);
+    lableProvider = new AnnotationTreeLabelProvider(this);
     treeView.setLabelProvider(lableProvider);
     treeView.addCheckStateListener(this);
     treeView.addDoubleClickListener(this);
