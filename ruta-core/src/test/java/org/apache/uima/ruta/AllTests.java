@@ -37,12 +37,12 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({ DynamicAnchoringTest.class, DynamicAnchoringTest2.class, FilteringTest.class,
     IncompletePartitioningTest.class, LiteralStringMatchTest.class, LongGreedyTest.class,
     OutOfWindowTest.class, QuantifierTest1.class, QuantifierTest2.class, QuantifierTest3.class,
-    RuleInferenceTest.class, RuleInferenceTest2.class, RuleInferenceTest3.class,
-    AllActionsTest.class, AllConditionsTest.class, CurrentCountTest.class, PartOfTest.class,
-    PositionTest.class, DefaultSeederTest.class, ConditionVerbalizerTest.class,
-    ActionVerbalizerTest.class, ExpressionVerbalizerTest.class, HtmlAnnotatorTest.class,
-    HtmlConverterTest.class, EmptyDocumentTest.class, RutaModifierTest.class,
-    RegExpRuleTest.class, WildCardTest.class, EqualShortNameTest.class })
+    QuantifierTest4.class, RuleInferenceTest.class, RuleInferenceTest2.class,
+    RuleInferenceTest3.class, AllActionsTest.class, AllConditionsTest.class,
+    CurrentCountTest.class, PartOfTest.class, PositionTest.class, DefaultSeederTest.class,
+    ConditionVerbalizerTest.class, ActionVerbalizerTest.class, ExpressionVerbalizerTest.class,
+    HtmlAnnotatorTest.class, HtmlConverterTest.class, EmptyDocumentTest.class,
+    RutaModifierTest.class, RegExpRuleTest.class, WildCardTest.class, EqualShortNameTest.class })
 public class AllTests {
 
 }
