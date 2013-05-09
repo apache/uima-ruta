@@ -20,7 +20,11 @@
 package org.apache.uima.ruta.ide.parser.ast;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.antlr.runtime.Token;
 import org.eclipse.dltk.ast.ASTNode;
@@ -47,6 +51,31 @@ public class ScriptFactory extends AbstractFactory {
     return rule;
   }
 
+  public RutaRule createRegExpRule(List<Expression> exprs, Map<Expression, Map<Expression, Expression>> fa,
+          Token s) {
+    List<Expression> expressions = new ArrayList<Expression>();
+    for (Expression each : exprs) {
+      if(each != null) {
+        expressions.add(each);
+        Collection<Map<Expression, Expression>> values = fa.values();
+        for (Map<Expression, Expression> map : values) {
+          Set<Entry<Expression, Expression>> entrySet = map.entrySet();
+          for (Entry<Expression, Expression> entry : entrySet) {
+            expressions.add(entry.getKey());
+            expressions.add(entry.getValue());
+          }
+        }
+      }
+    }
+    RutaRegExpRule rule = new RutaRegExpRule(expressions, fa, idCounter++);
+    if(s != null) {
+      int[] bounds = getBounds(s);
+      rule.setEnd(bounds[1]);
+    }
+    return rule;
+  }
+  
+  
   public ComposedRuleElement createComposedRuleElement(List<Expression> res, List<Expression> q,
           List<RutaCondition> c, List<RutaAction> a, boolean disjunctive,
           RutaBlock env, Token... tokens) {
@@ -194,6 +223,8 @@ public class ScriptFactory extends AbstractFactory {
       }
     }
   }
+
+ 
 
   
 
