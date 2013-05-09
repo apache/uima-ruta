@@ -577,26 +577,36 @@ simpleStatement returns [RutaRule stmt = null]
 regexpRule returns [RutaRule stmt = null]
 @init{
 	List<Expression> exprs = new ArrayList<Expression>();
+	Map<Expression, Map<Expression, Expression>> fa = new HashMap<Expression, Map<Expression, Expression>>();
+	Map<Expression, Expression> fmap = null;
 }
 	:
-	regexp = stringExpression {exprs.add(regexp);} {stmt = scriptFactory.createRule(exprs, s);} THEN
+	regexp = stringExpression {exprs.add(regexp);} {stmt = scriptFactory.createRegExpRule(exprs, fa, s);} THEN
 	(
-	te = typeExpression {exprs.add(te);} {stmt = scriptFactory.createRule(exprs, s);}
+	te = typeExpression {exprs.add(te);} {stmt = scriptFactory.createRegExpRule(exprs, fa, s);}
+	(LPAREN {fmap = new HashMap<Expression, Expression>();} fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} 
+	(COMMA fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} )* RPAREN {fa.put(te, fmap);})?
 	|
-	indexCG = numberExpression {exprs.add(indexCG);}{stmt = scriptFactory.createRule(exprs, s);} ASSIGN_EQUAL indexTE = typeExpression {exprs.add(indexTE);}
+	indexCG = numberExpression {exprs.add(indexCG);}{stmt = scriptFactory.createRegExpRule(exprs, fa, s);} ASSIGN_EQUAL indexTE = typeExpression {exprs.add(indexTE);}
+	(LPAREN {fmap = new HashMap<Expression, Expression>();} fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} 
+	(COMMA fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} )* RPAREN {fa.put(indexTE, fmap);})?
 	)
+	
 	(
 	COMMA
 	(
-	te = typeExpression {exprs.add(te);}{stmt = scriptFactory.createRule(exprs, s);}
+	te = typeExpression {exprs.add(te);}{stmt = scriptFactory.createRegExpRule(exprs, fa, s);}
+	(LPAREN {fmap = new HashMap<Expression, Expression>();} fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} 
+	(COMMA fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} )* RPAREN {fa.put(te, fmap);})?
 	|
-	indexCG = numberExpression {exprs.add(indexCG);}{stmt = scriptFactory.createRule(exprs, s);} ASSIGN_EQUAL indexTE = typeExpression {exprs.add(indexTE);}
+	indexCG = numberExpression {exprs.add(indexCG);}{stmt = scriptFactory.createRegExpRule(exprs, fa, s);} ASSIGN_EQUAL indexTE = typeExpression {exprs.add(indexTE);}
+	(LPAREN {fmap = new HashMap<Expression, Expression>();} fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} 
+	(COMMA fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} )* RPAREN {fa.put(indexTE, fmap);})?
 	)
-	
 	)*
 
 	s = SEMI
-	{stmt = scriptFactory.createRule(exprs, s);}
+	{stmt = scriptFactory.createRegExpRule(exprs, fa, s);}
 	
 	;
 
@@ -846,11 +856,14 @@ simpleTypeListExpression returns [Expression expr = null]
 	;	
 	
 typeExpression returns [Expression expr = null]
+options {
+	backtrack = true;
+}
 @init {
 expr = ExpressionFactory.createEmptyTypeExpression(input.LT(1));
 }
 	:
-	(typeFunction)=> tf = typeFunction {expr = tf;}
+	tf = typeFunction {expr = tf;}
 	| st = simpleTypeExpression 
 	{expr = ExpressionFactory.createTypeExpression(st);
 	 }

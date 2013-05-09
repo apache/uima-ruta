@@ -21,6 +21,7 @@ package org.apache.uima.ruta.verbalize;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.uima.ruta.RutaBlock;
@@ -30,6 +31,7 @@ import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.string.StringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.ComposedRuleElement;
 import org.apache.uima.ruta.rule.RegExpRule;
@@ -108,7 +110,7 @@ public class ScriptVerbalizer {
     } else if (re instanceof RutaRuleElement) {
       RutaRuleElement tmre = (RutaRuleElement) re;
       result.append(verbalizeMatcher(tmre));
-    } else if(re instanceof WildCardRuleElement) {
+    } else if (re instanceof WildCardRuleElement) {
       result.append("#");
     }
     result.append(verbalizeQuantifier(quantifier));
@@ -229,11 +231,32 @@ public class ScriptVerbalizer {
       NumberExpression value = next.getValue();
       if (value != null) {
         String group = verbalizer.verbalize(value);
-        sb.append(group+" = "+type);
+        sb.append(group + " = " + type);
       } else {
         sb.append(type);
       }
-      if(iterator.hasNext()) {
+      Map<TypeExpression, Map<StringExpression, RutaExpression>> featureAssignments = rule
+              .getFeatureAssignments();
+      if (featureAssignments != null) {
+        Map<StringExpression, RutaExpression> map = featureAssignments.get(next.getKey());
+        if (map != null) {
+          sb.append("(");
+          Iterator<Entry<StringExpression, RutaExpression>> fit = map.entrySet().iterator();
+          while (fit.hasNext()) {
+            Map.Entry<StringExpression, RutaExpression> entry = (Map.Entry<StringExpression, RutaExpression>) fit
+                    .next();
+            sb.append(verbalizer.verbalize(entry.getKey()));
+            sb.append(" = ");
+            sb.append(verbalizer.verbalize(entry.getValue()));
+            if (fit.hasNext()) {
+              sb.append(", ");
+            }
+          }
+          sb.append(")");
+        }
+
+      }
+      if (iterator.hasNext()) {
         sb.append(", ");
       }
     }

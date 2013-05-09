@@ -568,14 +568,20 @@ Document{->MARKTABLE(PresidentOfUSA, 1, "party" = 2,
       These simple rules consist of two parts separated by <quote>-></quote>: The left part is the regular expression 
       (flags: DOTALL and MULTILINE), which may contain capturing groups. The right part defines, which kind of annotations 
       should be created for each match of the regular expression. If a type is given without a group index, then an annotation of that type is
-      created for the complete regular expression match, which corresponds to group 0. These simple rules can be restricted to match only within
+      created for the complete regular expression match, which corresponds to group 0. Each type can be extended with additional feature assignments, 
+      which store the value of the given expression in the feature specified by the given StringExpression. However, if the expression 
+      refers to a number (NumberExpression), then the match of the corresponding capturing group is applied. 
+      These simple rules can be restricted to match only within
       certain annotations using the BLOCK construct, and ignore all filtering settings.
     </para>
     
     <programlisting><![CDATA[
-RegExpRule      -> StringExpression "->" GroupAssignment 
-                  ("," GroupAssignment)* ";"
-GroupAssignment -> TypeExpression | NumberEpxression "=" TypeExpression
+RegExpRule        -> StringExpression "->" GroupAssignment 
+                     ("," GroupAssignment)* ";"
+GroupAssignment   -> TypeExpression FeatureAssignment?
+                     | NumberEpxression "=" TypeExpression FeatureAssignment?
+FeatureAssignment -> "(" StringExpression "=" Expression 
+                      ("," StringExpression "=" Expression)* ")"
 ]]></programlisting>
     
     <para>

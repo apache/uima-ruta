@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Stack;
 
@@ -47,6 +48,7 @@ import org.apache.uima.ruta.ide.core.extensions.IIDEStringFunctionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IIDETypeFunctionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IRutaExtension;
 import org.apache.uima.ruta.ide.parser.ast.RutaActionConstants;
+import org.apache.uima.ruta.ide.parser.ast.RutaRegExpRule;
 import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaAction;
 import org.apache.uima.ruta.ide.parser.ast.RutaBlock;
@@ -124,8 +126,7 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
       // this.knownLocalVariables = new HashMap<String, Integer>();
       this.currentFile = curFile;
       this.knownLocalTypeNames = new HashSet<String>();
-      this.problemFactory = new RutaCheckerProblemFactory(currentFile.getElementName(),
-              linetracker);
+      this.problemFactory = new RutaCheckerProblemFactory(currentFile.getElementName(), linetracker);
       conditionExtensions = new HashMap<String, IIDEConditionExtension>();
       actionExtensions = new HashMap<String, IIDEActionExtension>();
       numberFunctionExtensions = new HashMap<String, IIDENumberFunctionExtension>();
@@ -231,6 +232,31 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
         }
         knownLocalVariables.peek().put(newVar.getName(), newVar.getKind());
         return false;
+      }
+      if(s instanceof RutaRegExpRule) {
+        RutaRegExpRule rule  = (RutaRegExpRule) s;
+        Map<Expression, Map<Expression, Expression>> faMap = rule.getFeats();
+        Set<Entry<Expression, Map<Expression, Expression>>> typeEntrySet = faMap.entrySet();
+        for (Entry<Expression, Map<Expression, Expression>> entry : typeEntrySet) {
+          Expression struct = entry.getKey();
+          String structure = "";
+          if (struct != null) {
+            structure = currentFile.getSource().substring(struct.sourceStart(), struct.sourceEnd());
+          }
+          Map<Expression, Expression> fmap = entry.getValue();
+          Set<Expression> keySet = fmap.keySet();
+          for (Expression fkey : keySet) {
+            if(fkey instanceof RutaExpression && fkey.getKind() == RutaTypeConstants.RUTA_TYPE_S) {
+              String feat = fkey.toString();
+              feat = getFeatureName(fkey, feat);
+              boolean findFeature = findFeature(structure, feat);
+              if (!findFeature) {
+                IProblem problem = problemFactory.createUnknownFeatureProblem(fkey, structure);
+                rep.reportProblem(problem);
+              }
+            }
+          }
+        }
       }
       return true;
     }
@@ -368,8 +394,7 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
           // boolean checkSyntax =
           extension.checkSyntax(cond, problemFactory, rep);
         }
-        
-        
+
         if (conditionName.equals("FEATURE")) {
           if (matchedType != null) {
             List<?> args = cond.getChilds();
@@ -384,30 +409,30 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
           }
         }
       }
-      if(s instanceof RutaFunction) {
+      if (s instanceof RutaFunction) {
         RutaFunction f = (RutaFunction) s;
         String name = f.getName();
-        if(s.getKind() == RutaTypeConstants.RUTA_TYPE_AT) {
+        if (s.getKind() == RutaTypeConstants.RUTA_TYPE_AT) {
           IRutaExtension extension = typeFunctionExtensions.get(name);
           if (extension != null) {
             extension.checkSyntax(s, problemFactory, rep);
           }
-        } else if(s.getKind() == RutaTypeConstants.RUTA_TYPE_B) {
+        } else if (s.getKind() == RutaTypeConstants.RUTA_TYPE_B) {
           IRutaExtension extension = booleanFunctionExtensions.get(name);
           if (extension != null) {
             extension.checkSyntax(s, problemFactory, rep);
           }
-        } else if(s.getKind() == RutaTypeConstants.RUTA_TYPE_N) {
+        } else if (s.getKind() == RutaTypeConstants.RUTA_TYPE_N) {
           IRutaExtension extension = numberFunctionExtensions.get(name);
           if (extension != null) {
             extension.checkSyntax(s, problemFactory, rep);
           }
-        } else if(s.getKind() == RutaTypeConstants.RUTA_TYPE_S) {
+        } else if (s.getKind() == RutaTypeConstants.RUTA_TYPE_S) {
           IRutaExtension extension = stringFunctionExtensions.get(name);
           if (extension != null) {
             extension.checkSyntax(s, problemFactory, rep);
           }
-        } 
+        }
       }
       return true;
     }
@@ -501,8 +526,8 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
     }
 
     private TypeSystemDescription getTypeSystemOfScript() throws InvalidXMLException, IOException {
-      IPath descriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(currentFile
-              .getPath().removeFirstSegments(1), project.getProject());
+      IPath descriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(currentFile.getPath()
+              .removeFirstSegments(1), project.getProject());
       TypeSystemDescription typeSysDescr = null;
       typeSysDescr = UIMAFramework.getXMLParser().parseTypeSystemDescription(
               new XMLInputSource(descriptorPath.toPortableString()));
@@ -520,8 +545,7 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
      * @throws IllegalAccessException
      *           if ref not declared
      */
-    private boolean checkTypeOfReference(RutaVariableReference ref)
-            throws IllegalAccessException {
+    private boolean checkTypeOfReference(RutaVariableReference ref) throws IllegalAccessException {
       Integer vt = getVariableType(ref.getName());
       if (vt == null) {
         throw new IllegalAccessException(ref.getName() + " not declared.");
@@ -536,8 +560,8 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
         String errMsg = errMsgHead + ref.getName() + "\" has type "
                 + RutaTypeConstants.typeStringOfInt.get(variableType) + ". \nBut type "
                 + RutaTypeConstants.typeStringOfInt.get(requiredType) + " required.";
-        IProblem problem = new RutaCheckerDefaultProblem(currentFile.getElementName(),
-                errMsg, ref, linetracker.getLineNumberOfOffset(ref.sourceStart()));
+        IProblem problem = new RutaCheckerDefaultProblem(currentFile.getElementName(), errMsg, ref,
+                linetracker.getLineNumberOfOffset(ref.sourceStart()));
         rep.reportProblem(problem);
         return false;
       }
@@ -554,15 +578,15 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
           String errMsg = "\"" + ref.getName()
                   + "\" declared as a ANNOTATION_TYPE. Variable of type "
                   + RutaTypeConstants.typeStringOfInt.get(ref.getType()) + " required.";
-          IProblem problem = new RutaCheckerDefaultProblem(currentFile.getElementName(),
-                  errMsg, ref, linetracker.getLineNumberOfOffset(ref.sourceStart()));
+          IProblem problem = new RutaCheckerDefaultProblem(currentFile.getElementName(), errMsg,
+                  ref, linetracker.getLineNumberOfOffset(ref.sourceStart()));
           rep.reportProblem(problem);
           return false;
         }
         // not found
         String errMsg = errMsgHead + ref.getName() + "\" not" + errMsgTailDefault;
-        IProblem problem = new RutaCheckerDefaultProblem(currentFile.getElementName(),
-                errMsg, ref, linetracker.getLineNumberOfOffset(ref.sourceStart()));
+        IProblem problem = new RutaCheckerDefaultProblem(currentFile.getElementName(), errMsg, ref,
+                linetracker.getLineNumberOfOffset(ref.sourceStart()));
         rep.reportProblem(problem);
         return false;
       }

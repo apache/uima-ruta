@@ -526,6 +526,8 @@ options {
 regexpRule returns [RegExpRule stmt = null]
 @init{
 	Map<TypeExpression, NumberExpression> map = new HashMap<TypeExpression, NumberExpression>();
+	Map<TypeExpression, Map<StringExpression, RutaExpression>> fa = new HashMap<TypeExpression, Map<StringExpression, RutaExpression>>();
+	Map<StringExpression, RutaExpression> fmap = null;
 }
 	:
 	{
@@ -534,15 +536,24 @@ regexpRule returns [RegExpRule stmt = null]
 	regexp = stringExpression THEN
 	(
 	(numberExpression ASSIGN_EQUAL)=> indexCG = numberExpression ASSIGN_EQUAL indexTE = typeExpression {map.put(indexTE, indexCG);}
+	(LPAREN {fmap = new HashMap<StringExpression, RutaExpression>();} fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} 
+	(COMMA fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} )* RPAREN {fa.put(indexTE, fmap);})?
 	|
 	te = typeExpression {map.put(te, null);}
+	(LPAREN {fmap = new HashMap<StringExpression, RutaExpression>();} fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} 
+	(COMMA fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} )* RPAREN {fa.put(te, fmap);})?
 	)
+	
 	(
 	COMMA
 	(
 	(numberExpression ASSIGN_EQUAL)=> indexCG = numberExpression ASSIGN_EQUAL indexTE = typeExpression {map.put(indexTE, indexCG);}
+	(LPAREN {fmap = new HashMap<StringExpression, RutaExpression>();} fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} 
+	(COMMA fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} )* RPAREN {fa.put(indexTE, fmap);})?
 	|
 	te = typeExpression {map.put(te, null);}
+	(LPAREN {fmap = new HashMap<StringExpression, RutaExpression>();} fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} 
+	(COMMA fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} )* RPAREN {fa.put(te, fmap);})?
 	)
 	
 	)*
@@ -550,6 +561,7 @@ regexpRule returns [RegExpRule stmt = null]
 	SEMI
 	{stmt.setRegExp(regexp);
 	stmt.setTypeMap(map);
+	stmt.setFeatureAssignments(fa);
 	}
 	
 	;
