@@ -38,9 +38,9 @@ import org.apache.uima.ruta.type.RutaBasic;
 
 public class RutaTypeMatcher implements RutaMatcher {
 
-  private final TypeExpression expression;
+  protected final TypeExpression expression;
 
-  private AnnotationComparator comparator;
+  protected AnnotationComparator comparator;
 
   public RutaTypeMatcher(TypeExpression expression) {
     super();

@@ -27,6 +27,7 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.number.NumberExpression;
 import org.apache.uima.ruta.expression.string.StringExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
@@ -38,7 +39,9 @@ import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleElementContainer;
 import org.apache.uima.ruta.rule.RuleElementIsolator;
 import org.apache.uima.ruta.rule.RutaDisjunctiveMatcher;
+import org.apache.uima.ruta.rule.RutaFeatureMatcher;
 import org.apache.uima.ruta.rule.RutaLiteralMatcher;
+import org.apache.uima.ruta.rule.RutaMatcher;
 import org.apache.uima.ruta.rule.RutaRule;
 import org.apache.uima.ruta.rule.RutaRuleElement;
 import org.apache.uima.ruta.rule.RutaTypeMatcher;
@@ -113,41 +116,35 @@ public class RutaScriptFactory {
     return new RutaRule(elements, parent, idCounter++);
   }
 
-  public RutaRuleElement createRuleElement(TypeExpression typeExpression,
+  public RutaRuleElement createRuleElement(RutaExpression expression,
           RuleElementQuantifier quantifier, List<AbstractRutaCondition> conditions,
-          List<AbstractRutaAction> actions, RuleElementContainer container,
-          RutaBlock parent) {
-    RutaTypeMatcher matcher = new RutaTypeMatcher(typeExpression);
+          List<AbstractRutaAction> actions, RuleElementContainer container, RutaBlock parent) {
+    RutaMatcher matcher = null;
+    if (expression instanceof TypeExpression) {
+      matcher = new RutaTypeMatcher((TypeExpression) expression);
+    } else if (expression instanceof FeatureExpression) {
+      matcher = new RutaFeatureMatcher((FeatureExpression) expression);
+    } else if (expression instanceof StringExpression) {
+      matcher = new RutaLiteralMatcher((StringExpression) expression);
+    }
     return new RutaRuleElement(matcher, quantifier, conditions, actions, container, parent);
   }
 
   public AbstractRuleElement createWildCardRuleElement(List<AbstractRutaCondition> conditions,
-          List<AbstractRutaAction> actions, RuleElementContainer container,
-          RutaBlock parent) {
+          List<AbstractRutaAction> actions, RuleElementContainer container, RutaBlock parent) {
     return new WildCardRuleElement(conditions, actions, container, parent);
   }
-  
-  
+
   public RutaRuleElement createRuleElement(List<RutaExpression> exprs,
           RuleElementQuantifier quantifier, List<AbstractRutaCondition> conditions,
-          List<AbstractRutaAction> actions, RuleElementContainer container,
-          RutaBlock parent) {
+          List<AbstractRutaAction> actions, RuleElementContainer container, RutaBlock parent) {
     RutaDisjunctiveMatcher matcher = new RutaDisjunctiveMatcher(exprs);
-    return new RutaRuleElement(matcher, quantifier, conditions, actions, container, parent);
-  }
-
-  public RutaRuleElement createRuleElement(StringExpression stringExpression,
-          RuleElementQuantifier quantifier, List<AbstractRutaCondition> conditions,
-          List<AbstractRutaAction> actions, RuleElementContainer container,
-          RutaBlock parent) {
-    RutaLiteralMatcher matcher = new RutaLiteralMatcher(stringExpression);
     return new RutaRuleElement(matcher, quantifier, conditions, actions, container, parent);
   }
 
   public ComposedRuleElement createComposedRuleElement(List<RuleElement> res,
           RuleElementQuantifier quantifier, List<AbstractRutaCondition> conditions,
-          List<AbstractRutaAction> actions, RuleElementContainer container,
-          RutaBlock parent) {
+          List<AbstractRutaAction> actions, RuleElementContainer container, RutaBlock parent) {
 
     return new ComposedRuleElement(res, quantifier, conditions, actions, container, parent);
   }
@@ -191,15 +188,13 @@ public class RutaScriptFactory {
     return new QuestionGreedy();
   }
 
-  public RutaBlock createAutomataBlock(Token id, RutaRuleElement re,
-          List<RutaStatement> body, RutaBlock env) {
+  public RutaBlock createAutomataBlock(Token id, RutaRuleElement re, List<RutaStatement> body,
+          RutaBlock env) {
     return createScriptBlock(id, re, body, env);
   }
 
   public RegExpRule createRegExpRule(RutaBlock env) {
     return new RegExpRule(null, null, idCounter++, env);
   }
-
-
 
 }

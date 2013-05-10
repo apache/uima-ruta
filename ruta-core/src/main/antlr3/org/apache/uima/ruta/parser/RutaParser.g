@@ -62,6 +62,8 @@ import org.apache.uima.ruta.RutaAutomataFactory;
 import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.expression.ExpressionFactory;
 import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.feature.FeatureExpression;
+import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.bool.BooleanExpression;
 import org.apache.uima.ruta.expression.list.BooleanListExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
@@ -481,7 +483,7 @@ level--;
 ruleElementWithCA[RuleElementContainer container] returns [RutaRuleElement re = null] 
     :
     
-    idRef=typeExpression 
+    idRef=typeMatchExpression 
     {re = factory.createRuleElement(idRef,null,null,null, container, $blockDeclaration::env);}
     q = quantifierPart? 
         LCURLY c = conditions? (THEN a = actions)? RCURLY
@@ -606,12 +608,12 @@ ruleElementDisjunctive [RuleElementContainer container] returns [RutaRuleElement
 }
     :
     LPAREN
-    ((typeExpression | simpleStringExpression) VBAR)=>  (e11 =typeExpression | e12 =simpleStringExpression) 
+    ((typeMatchExpression | simpleStringExpression) VBAR)=>  (e11 =typeMatchExpression | e12 =simpleStringExpression) 
     {if(e11 != null) exprs.add(e11);if(e12 != null) exprs.add(e12);} 
-    VBAR (e21 =typeExpression | e22 =simpleStringExpression) 
+    VBAR (e21 =typeMatchExpression | e22 =simpleStringExpression) 
     {if(e21 != null) exprs.add(e21);if(e22 != null) exprs.add(e22);} 
     (
-    VBAR  (e31 =typeExpression | e32 =simpleStringExpression) 
+    VBAR  (e31 =typeMatchExpression | e32 =simpleStringExpression) 
     {if(e31 != null) exprs.add(e31);if(e32 != null) exprs.add(e32);} 
     )*
     RPAREN
@@ -673,7 +675,7 @@ scope {
 ruleElementType [RuleElementContainer container] returns [RutaRuleElement re = null]
     :
     
-    (typeExpression)=>typeExpr = typeExpression 
+    (typeMatchExpression)=>typeExpr = typeMatchExpression 
      {re = factory.createRuleElement(typeExpr, null, null, null, container, $blockDeclaration::env);} 
     q = quantifierPart? 
         (LCURLY c = conditions? (THEN a = actions)? RCURLY)?
@@ -841,6 +843,19 @@ simpleTypeListExpression returns [TypeListExpression expr = null]
 	{expr = ExpressionFactory.createReferenceTypeListExpression(var);}
 	;
 
+typeMatchExpression returns [RutaExpression expr = null]
+options {
+	backtrack = true;
+}
+	:
+	(featureMatchExpression)=> ft = featureMatchExpression {expr = ft;}
+	| 
+	tf = typeFunction {expr = tf;}
+	| 
+	st = simpleTypeExpression {expr = st;}
+	
+	;
+
 
 typeExpression returns [TypeExpression type = null]
 options {
@@ -876,6 +891,22 @@ simpleTypeExpression returns [TypeExpression type = null]
 	|
 	at = annotationType
 	{type = ExpressionFactory.createSimpleTypeExpression(at, $blockDeclaration::env);}
+	;
+
+featureExpression returns [FeatureExpression feat = null]
+@init{
+List<Token> fs = new ArrayList<Token>();
+}
+	:
+	at = Identifier {te = ExpressionFactory.createSimpleTypeExpression(at, $blockDeclaration::env);}
+	(DOT f = Identifier {fs.add(f);})+
+	{feat = ExpressionFactory.createFeatureExpression(te, fs, $blockDeclaration::env);}
+	;
+
+featureMatchExpression returns [FeatureMatchExpression fme = null]
+	:
+	f = featureExpression (EQUAL arg = primitiveArgument)?
+	{fme = ExpressionFactory.createFeatureMatchExpression(f, arg, $blockDeclaration::env);}
 	;
 
 
@@ -1711,7 +1742,24 @@ options {
 	//| (a4 = stringExpression)=> a4 = stringExpression {expr = a4;}
 	//| (a1 = typeExpression)=> a1 = typeExpression {expr = a1;}
 	;
-	
+
+primitiveArgument returns [RutaExpression expr = null]
+options {
+	backtrack = true;
+}
+	:
+	 a4 = simpleStringExpression {expr = a4;}
+	| a2 = simpleBooleanExpression {expr = a2;}
+	| a3 = simpleNumberExpression {expr = a3;}
+	| a1 = simpleTypeExpression {expr = a1;}
+	//token = (
+	//(booleanExpression[par]) => booleanExpression[par]
+	//| (numberExpression[par]) => numberExpression[par]
+	//| (stringExpression[par]) => stringExpression[par]
+	//| (typeExpression[par]) => typeExpression[par]
+	//)
+	//{arg = token;}
+	;	
 
 dottedIdentifier returns [String idString = ""]
 	:

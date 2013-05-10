@@ -30,6 +30,9 @@ import org.apache.uima.ruta.expression.bool.BooleanTypeExpression;
 import org.apache.uima.ruta.expression.bool.ReferenceBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanFunction;
+import org.apache.uima.ruta.expression.feature.FeatureExpression;
+import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
+import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.list.BooleanListExpression;
 import org.apache.uima.ruta.expression.list.NumberListExpression;
 import org.apache.uima.ruta.expression.list.ReferenceBooleanListExpression;
@@ -218,6 +221,20 @@ public class ExpressionFactory {
 
   public static StringListExpression createStringListExpression(List<StringExpression> list) {
     return new SimpleStringListExpression(list);
+  }
+
+  public static SimpleFeatureExpression createFeatureExpression(TypeExpression te, List<Token> fs,
+          RutaBlock env) {
+    List<String> featureReferences = new ArrayList<String>();
+    for (Token token : fs) {
+      featureReferences.add(token.getText());
+    }
+    return new SimpleFeatureExpression(te, featureReferences);
+  }
+
+  public static FeatureMatchExpression createFeatureMatchExpression(FeatureExpression f,
+          RutaExpression arg, RutaBlock env) {
+    return new FeatureMatchExpression(f, arg);
   }
 
 
