@@ -342,9 +342,9 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
   }
 
 
-  public static Expression createFeatureMatch(Token feature, Expression value) {
+  public static Expression createFeatureMatch(Token feature, Token comp, Expression value) {
     int bounds[] = getBounds(feature);
-    return new FeatureMatchExpression(bounds[0], value.sourceEnd(), feature, value);
+    return new FeatureMatchExpression(bounds[0], value.sourceEnd(), feature, comp, value);
   }
 
   public static Expression createBooleanFunction(Token id, List<Expression> args) {

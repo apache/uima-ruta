@@ -22,18 +22,23 @@ package org.apache.uima.ruta.ide.parser.ast;
 import org.antlr.runtime.Token;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
+import org.eclipse.dltk.ast.expressions.StringLiteral;
 
 public class FeatureMatchExpression extends Expression {
-  
+
   private final Token feature;
+
   private final Expression value;
 
-  public FeatureMatchExpression(int sourceStart, int sourceEnd, Token feature, Expression value) {
+  private Token comp;
+
+  public FeatureMatchExpression(int sourceStart, int sourceEnd, Token feature, Token comp,
+          Expression value) {
     super(sourceStart, sourceEnd);
     this.feature = feature;
+    this.comp = comp;
     this.value = value;
   }
-
 
   @Override
   public void traverse(ASTVisitor visitor) throws Exception {
@@ -45,20 +50,22 @@ public class FeatureMatchExpression extends Expression {
     }
   }
 
-
   @Override
   public int getKind() {
-    return 0;
+    return value.getKind();
   }
-
 
   public Token getFeature() {
     return feature;
   }
 
-
   public Expression getValue() {
     return value;
+  }
+
+  @Override
+  public String toString() {
+    return feature.getText() + comp.getText() + value.toString();
   }
 
 }

@@ -551,7 +551,7 @@ level--;
 	
 ruleElementWithCA returns [RutaRuleElement re = null] 
     :
-    idRef=typeExpression quantifier = quantifierPart? {re = scriptFactory.createRuleElement(idRef,quantifier,c,a, end);}
+    idRef=typeMatchExpression quantifier = quantifierPart? {re = scriptFactory.createRuleElement(idRef,quantifier,c,a, end);}
         LCURLY c = conditions? (THEN a = actions)? end = RCURLY
         {re = scriptFactory.createRuleElement(idRef,quantifier,c,a, end);}
     ;
@@ -559,7 +559,7 @@ ruleElementWithCA returns [RutaRuleElement re = null]
 	
 ruleElementWithoutCA returns [RutaRuleElement re = null] 
     :
-    idRef=typeExpression quantifier = quantifierPart? 
+    idRef=typeMatchExpression quantifier = quantifierPart? 
              {re = scriptFactory.createRuleElement(idRef,quantifier,null,null, null);}
 
     ;
@@ -681,7 +681,7 @@ ruleElementType returns [RutaRuleElement re = null]
 List<RutaCondition> dummyConds = new ArrayList<RutaCondition>();
 }
   :
-    (typeExpression)=>idRef=typeExpression quantifier = quantifierPart? 
+    (typeMatchExpression)=>idRef=typeMatchExpression quantifier = quantifierPart? 
         (LCURLY 
         {
         
@@ -855,7 +855,8 @@ simpleTypeListExpression returns [Expression expr = null]
 	{expr = ExpressionFactory.createListExpression(var, RutaTypeConstants.RUTA_TYPE_TL);}
 	;	
 	
-typeExpression returns [Expression expr = null]
+	
+typeMatchExpression returns [Expression expr = null]
 options {
 	backtrack = true;
 }
@@ -863,7 +864,22 @@ options {
 expr = ExpressionFactory.createEmptyTypeExpression(input.LT(1));
 }
 	:
+	(featureTypeExpression)=> ft = featureTypeExpression {expr = ft;}
+	| 
 	tf = typeFunction {expr = tf;}
+	| 
+	st = simpleTypeExpression 
+	{expr = ExpressionFactory.createTypeExpression(st);
+	 }
+	
+	;	
+	
+typeExpression returns [Expression expr = null]
+@init {
+expr = ExpressionFactory.createEmptyTypeExpression(input.LT(1));
+}
+	:
+	(typeFunction)=> tf = typeFunction {expr = tf;}
 	| st = simpleTypeExpression 
 	{expr = ExpressionFactory.createTypeExpression(st);
 	 }
@@ -885,6 +901,11 @@ externalTypeFunction returns [Expression expr = null]
 	{
 		expr = external.createExternalTypeFunction(id, args);
 	}
+	;
+
+featureTypeExpression returns [Expression expr = null]
+	:
+	feature = dottedId (comp = EQUAL | comp = NOTEQUAL) value = primitiveArgument {expr = ExpressionFactory.createFeatureMatch(feature, comp, value);}
 	;
 
 simpleTypeExpression returns [Expression type = null]
@@ -1883,6 +1904,24 @@ options {
 	| a2 = booleanExpression {expr = a2;}
 	| a3 = numberExpression {expr = a3;}
 	| a1 = typeExpression {expr = a1;}
+	//token = (
+	//(booleanExpression[par]) => booleanExpression[par]
+	//| (numberExpression[par]) => numberExpression[par]
+	//| (stringExpression[par]) => stringExpression[par]
+	//| (typeExpression[par]) => typeExpression[par]
+	//)
+	//{arg = token;}
+	;
+
+primitiveArgument returns [Expression expr = null]
+options {
+	backtrack = true;
+}
+	:
+	 a4 = simpleStringExpression {expr = a4;}
+	| a2 = simpleBooleanExpression {expr = a2;}
+	| a3 = simpleNumberExpression {expr = a3;}
+	| a1 = simpleTypeExpression {expr = a1;}
 	//token = (
 	//(booleanExpression[par]) => booleanExpression[par]
 	//| (numberExpression[par]) => numberExpression[par]
