@@ -48,6 +48,8 @@ import org.apache.uima.ruta.type.RutaBasic;
 
 public class RutaTypeMatcher implements RutaMatcher {
 
+  private static final boolean CHECK_ON_FEATURE = false;
+
   protected final MatchReference mr;
 
   protected AnnotationComparator comparator;
@@ -94,7 +96,6 @@ public class RutaTypeMatcher implements RutaMatcher {
         }
       }
     }
-    Collection<AnnotationFS> result = new TreeSet<AnnotationFS>(comparator);
     FeatureExpression featureExpression = mr.getFeatureExpression(parent, stream);
     if (featureExpression != null) {
       return getFeatureAnnotations(annotations, featureExpression, stream, parent);
@@ -110,11 +111,14 @@ public class RutaTypeMatcher implements RutaMatcher {
     for (AnnotationFS eachBase : annotations) {
       AnnotationFS afs = eachBase;
       for (Feature feature : features) {
-        if (feature.getRange().isPrimitive()
-                && featureExpression instanceof FeatureMatchExpression) {
+        if (feature.getRange().isPrimitive() && featureExpression instanceof FeatureMatchExpression) {
           FeatureMatchExpression fme = (FeatureMatchExpression) featureExpression;
           RutaExpression arg = fme.getArg();
-          if (checkFeatureValue(afs, feature, arg, stream, parent)) {
+          if (CHECK_ON_FEATURE) {
+            if (checkFeatureValue(afs, feature, arg, stream, parent)) {
+              result.add(afs);
+            }
+          } else {
             result.add(afs);
           }
           break;
@@ -159,7 +163,7 @@ public class RutaTypeMatcher implements RutaMatcher {
         }
       }
       FeatureExpression fm = mr.getFeatureExpression(parent, stream);
-      if(fm != null) {
+      if (fm != null) {
         return getFeatureAnnotations(anchors, fm, stream, parent);
       } else {
         return anchors;
@@ -197,7 +201,7 @@ public class RutaTypeMatcher implements RutaMatcher {
         }
       }
       FeatureExpression fm = mr.getFeatureExpression(parent, stream);
-      if(fm != null) {
+      if (fm != null) {
         return getFeatureAnnotations(anchors, fm, stream, parent);
       } else {
         return anchors;
@@ -229,21 +233,18 @@ public class RutaTypeMatcher implements RutaMatcher {
       return false;
     }
     FeatureExpression featureExpression = mr.getFeatureExpression(parent, stream);
-    if(featureExpression ==null) {
+    if (featureExpression == null) {
       boolean b = checkType(annotation, stream, parent);
-      if(b) {
+      if (b) {
         return true;
       }
     } else {
-      List<Type> types = getTypes(parent, stream);
-      for (Type type : types) {
-        boolean b = checkFeature(annotation,  stream,  parent);
-        if(b) {
-          return true;
-        }
+      boolean b = checkFeature(annotation, stream, parent);
+      if (b) {
+        return true;
       }
     }
-   
+
     return false;
 
   }
@@ -267,16 +268,17 @@ public class RutaTypeMatcher implements RutaMatcher {
   private boolean checkFeature(AnnotationFS annotation, RutaStream stream, RutaBlock parent) {
     FeatureExpression fe = mr.getFeatureExpression(parent, stream);
     Feature feature = fe.getFeature(parent);
-    if(fe instanceof FeatureMatchExpression) {
+    if (fe instanceof FeatureMatchExpression) {
       FeatureMatchExpression fme = (FeatureMatchExpression) fe;
-      boolean checkFeatureValue = checkFeatureValue(annotation, feature, fme.getArg(), stream, parent);
-      if(checkFeatureValue) {
+      boolean checkFeatureValue = checkFeatureValue(annotation, feature, fme.getArg(), stream,
+              parent);
+      if (checkFeatureValue) {
         return true;
       }
     } else {
       TypeSystem typeSystem = stream.getCas().getTypeSystem();
       boolean subsumes = typeSystem.subsumes(feature.getRange(), annotation.getType());
-      if(subsumes) {
+      if (subsumes) {
         return true;
       }
     }

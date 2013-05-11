@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.expression.feature;
 
@@ -31,6 +31,7 @@ import org.apache.uima.ruta.expression.type.TypeExpression;
 public class SimpleFeatureExpression extends FeatureExpression {
 
   private TypeExpression typeExpr;
+
   private List<String> features;
 
   public SimpleFeatureExpression(TypeExpression te, List<String> featureReferences) {
@@ -42,12 +43,18 @@ public class SimpleFeatureExpression extends FeatureExpression {
   public SimpleFeatureExpression(TypeExpression te, String[] featureReferences) {
     this(te, Arrays.asList(featureReferences));
   }
-  
+
   @Override
   public Feature getFeature(RutaStatement parent) {
-    return getFeatures(parent).get(0);
+    List<Feature> features = getFeatures(parent);
+    if (!features.isEmpty()) {
+      return features.get(features.size() - 1);
+    } else {
+      return null;
+    }
+
   }
-  
+
   @Override
   public List<Feature> getFeatures(RutaStatement parent) {
     List<Feature> result = new ArrayList<Feature>();
@@ -60,7 +67,7 @@ public class SimpleFeatureExpression extends FeatureExpression {
     }
     return result;
   }
-  
+
   public TypeExpression getTypeExpr() {
     return typeExpr;
   }
@@ -77,6 +84,4 @@ public class SimpleFeatureExpression extends FeatureExpression {
     this.features = features;
   }
 
-
-  
 }
