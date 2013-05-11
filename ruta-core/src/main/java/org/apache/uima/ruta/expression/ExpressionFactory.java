@@ -242,7 +242,7 @@ public class ExpressionFactory {
     String match = refToken.getText();
     String op = null;
     if (opToken != null) {
-      opToken.getText();
+      op = opToken.getText();
     }
     return new MatchReference(match, op, arg);
   }
