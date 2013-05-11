@@ -24,10 +24,15 @@ import org.apache.uima.ruta.expression.RutaExpression;
 
 public class FeatureMatchExpression extends SimpleFeatureExpression {
 
+  public static final String EQUAL = "=="; 
+  public static final String NOT_EQUAL = "!="; 
+  
   private RutaExpression arg;
+  private String op;
 
-  public FeatureMatchExpression(FeatureExpression f, RutaExpression arg) {
+  public FeatureMatchExpression(FeatureExpression f, String op, RutaExpression arg) {
     super(f.getTypeExpr(), f.getFeatureStringList());
+    this.op = op;
     this.arg = arg;
   }
 
@@ -37,6 +42,14 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
 
   public void setArg(RutaExpression arg) {
     this.arg = arg;
+  }
+
+  public String getOp() {
+    return op;
+  }
+
+  public void setOp(String op) {
+    this.op = op;
   }
 
   

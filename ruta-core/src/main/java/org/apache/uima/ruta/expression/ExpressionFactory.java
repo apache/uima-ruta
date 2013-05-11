@@ -206,7 +206,7 @@ public class ExpressionFactory {
   public static NumberListExpression createReferenceFloatListExpression(Token var) {
     return new ReferenceNumberListExpression(var.getText());
   }
-  
+
   public static BooleanListExpression createBooleanListExpression(List<BooleanExpression> list) {
     return new SimpleBooleanListExpression(list);
   }
@@ -232,11 +232,19 @@ public class ExpressionFactory {
     return new SimpleFeatureExpression(te, featureReferences);
   }
 
-  public static FeatureMatchExpression createFeatureMatchExpression(FeatureExpression f,
+  public static FeatureMatchExpression createFeatureMatchExpression(FeatureExpression f, Token op,
           RutaExpression arg, RutaBlock env) {
-    return new FeatureMatchExpression(f, arg);
+    return new FeatureMatchExpression(f, op.getText(), arg);
   }
 
-
+  public static MatchReference createMatchReference(Token refToken, Token opToken,
+          RutaExpression arg) {
+    String match = refToken.getText();
+    String op = null;
+    if (opToken != null) {
+      opToken.getText();
+    }
+    return new MatchReference(match, op, arg);
+  }
 
 }

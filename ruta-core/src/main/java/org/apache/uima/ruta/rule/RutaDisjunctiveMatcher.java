@@ -27,9 +27,9 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.string.StringExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
 
 public class RutaDisjunctiveMatcher implements RutaMatcher {
   private final List<RutaExpression> expressions;
@@ -41,8 +41,8 @@ public class RutaDisjunctiveMatcher implements RutaMatcher {
     this.expressions = expressions;
     matchers = new ArrayList<RutaMatcher>();
     for (RutaExpression each : expressions) {
-      if(each instanceof TypeExpression) {
-        matchers.add(new RutaTypeMatcher((TypeExpression) each));
+      if(each instanceof MatchReference) {
+        matchers.add(new RutaTypeMatcher((MatchReference) each));
       } else if(each instanceof StringExpression) {
         matchers.add(new RutaLiteralMatcher((StringExpression) each));
       }

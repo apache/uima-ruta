@@ -28,10 +28,12 @@ options {
 
 package org.apache.uima.ruta.parser;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.TreeSet;
 
 import org.antlr.runtime.BaseRecognizer;
 import org.antlr.runtime.BitSet;
@@ -47,6 +49,7 @@ import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.RecognizerSharedState;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.TokenStream;
+import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 
 import org.apache.uima.ruta.action.AbstractRutaAction;
@@ -62,6 +65,7 @@ import org.apache.uima.ruta.RutaAutomataFactory;
 import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.expression.ExpressionFactory;
 import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.bool.BooleanExpression;
@@ -183,17 +187,13 @@ public void emitErrorMessage(String msg) {
     		return null;
     	}
 	
-	private TypeSystemDescription localTSD;
 	private String[] resourcePaths;
 	
 
 	public void setResourcePaths(String[] resourcePaths) {
 		this.resourcePaths = resourcePaths;
 	}
-	
-	 public void setLocalTSD(TypeSystemDescription localTSD) {
-      		this.localTSD = localTSD;
-   	 }
+
 }
 
 @rulecatch {
@@ -214,7 +214,7 @@ List<RutaStatement> stmts = new ArrayList<RutaStatement>();
 	:
 	p = packageDeclaration	
 	{
-	rootBlock = factory.createRootScriptBlock(moduleName, p, localTSD);
+	rootBlock = factory.createRootScriptBlock(moduleName, p);
         rootBlock.getEnvironment().setResourcePaths(resourcePaths);
 	rootBlock.setElements(stmts);
 	module = new RutaModule(rootBlock);
@@ -848,14 +848,16 @@ options {
 	backtrack = true;
 }
 	:
-	(featureMatchExpression)=> ft = featureMatchExpression {expr = ft;}
-	| 
-	tf = typeFunction {expr = tf;}
-	| 
-	st = simpleTypeExpression {expr = st;}
-	
+	(typeFunction)=> tf = typeFunction {expr = tf;}
+	|
+	(matchReference)=> mr = matchReference {expr = mr;}
 	;
 
+matchReference returns [MatchReference mr = null]
+	:
+	ref = dottedId (op = EQUAL arg = primitiveArgument)?
+	{mr = ExpressionFactory.createMatchReference(ref, op, arg);}
+	;
 
 typeExpression returns [TypeExpression type = null]
 options {
@@ -896,6 +898,7 @@ simpleTypeExpression returns [TypeExpression type = null]
 featureExpression returns [FeatureExpression feat = null]
 @init{
 List<Token> fs = new ArrayList<Token>();
+TypeExpression te = null;
 }
 	:
 	at = Identifier {te = ExpressionFactory.createSimpleTypeExpression(at, $blockDeclaration::env);}
@@ -905,8 +908,8 @@ List<Token> fs = new ArrayList<Token>();
 
 featureMatchExpression returns [FeatureMatchExpression fme = null]
 	:
-	f = featureExpression (EQUAL arg = primitiveArgument)?
-	{fme = ExpressionFactory.createFeatureMatchExpression(f, arg, $blockDeclaration::env);}
+	f = featureExpression (op = EQUAL arg = primitiveArgument)?
+	{fme = ExpressionFactory.createFeatureMatchExpression(f, op, arg, $blockDeclaration::env);}
 	;
 
 

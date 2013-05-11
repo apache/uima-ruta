@@ -17,7 +17,6 @@
  * under the License.
  */
 
-
 package org.apache.uima.ruta.rule;
 
 import org.apache.uima.ruta.RutaBlock;

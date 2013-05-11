@@ -20,13 +20,17 @@
 package org.apache.uima.ruta.verbalize;
 
 import java.util.Iterator;
+import java.util.List;
 
+import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.bool.BooleanExpression;
 import org.apache.uima.ruta.expression.bool.BooleanNumberExpression;
 import org.apache.uima.ruta.expression.bool.BooleanTypeExpression;
 import org.apache.uima.ruta.expression.bool.ReferenceBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
+import org.apache.uima.ruta.expression.feature.FeatureExpression;
+import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.expression.list.ReferenceBooleanListExpression;
 import org.apache.uima.ruta.expression.list.ReferenceNumberListExpression;
@@ -78,6 +82,12 @@ public class ExpressionVerbalizer {
       return verbalize((ListExpression<?>) expression);
     } else if (expression instanceof StringExpression) {
       return verbalize((StringExpression) expression);
+    } else if (expression instanceof MatchReference) {
+      return verbalize((MatchReference) expression);
+    } else if (expression instanceof FeatureMatchExpression) {
+      return verbalize((FeatureMatchExpression) expression);
+    } else if (expression instanceof FeatureExpression) {
+      return verbalize((FeatureExpression) expression);
     }
     return expression.getClass().getSimpleName();
   }
@@ -237,6 +247,40 @@ public class ExpressionVerbalizer {
       return e.getVar();
     }
     return expression.getClass().getSimpleName();
+  }
+
+  public String verbalize(MatchReference expression) {
+    String head = "";
+    String tail = "";
+    if (expression.getRawFeatureExpression() != null) {
+      head = verbalizer.verbalize(expression.getRawFeatureExpression());
+    } else if (expression.getRawTypeExpression() != null) {
+      head = verbalize(expression.getRawTypeExpression());
+    } else {
+      head = expression.getMatch();
+    }
+    if (expression.getOp() != null) {
+      tail += expression.getOp();
+      if (expression.getArg() != null) {
+        tail += verbalize(expression.getArg());
+      }
+    }
+    return head + tail;
+  }
+
+  public String verbalize(FeatureExpression expression) {
+    StringBuilder sb = new StringBuilder();
+    sb.append(verbalize(expression.getTypeExpr()));
+    List<String> list = expression.getFeatureStringList();
+    for (String string : list) {
+      sb.append(".");
+      sb.append(string);
+    }
+    return sb.toString();
+  }
+
+  public String verbalize(FeatureMatchExpression expression) {
+    return verbalize(expression) + expression.getOp() + verbalize(expression.getArg());
   }
 
 }

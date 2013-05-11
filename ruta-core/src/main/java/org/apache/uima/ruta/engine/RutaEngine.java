@@ -125,7 +125,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   public static final String RELOAD_SCRIPT = "reloadScript";
 
   public static final String LOW_MEMORY_PROFILE = "lowMemoryProfile";
-  
+
   public static final String SIMPLE_GREEDY_FOR_COMPOSED = "simpleGreedyForComposed";
 
   private String[] seeders;
@@ -181,7 +181,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private Boolean lowMemoryProfile;
 
   private Boolean simpleGreedyForComposed;
-  
+
   private Boolean createCreatedByInfo;
 
   private boolean initialized = false;
@@ -218,7 +218,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     dynamicAnchoring = (Boolean) aContext.getConfigParameterValue(DYNAMIC_ANCHORING);
     reloadScript = (Boolean) aContext.getConfigParameterValue(RELOAD_SCRIPT);
     lowMemoryProfile = (Boolean) aContext.getConfigParameterValue(LOW_MEMORY_PROFILE);
-    simpleGreedyForComposed = (Boolean) aContext.getConfigParameterValue(SIMPLE_GREEDY_FOR_COMPOSED);
+    simpleGreedyForComposed = (Boolean) aContext
+            .getConfigParameterValue(SIMPLE_GREEDY_FOR_COMPOSED);
 
     removeBasics = removeBasics == null ? false : removeBasics;
     createDebugInfo = createDebugInfo == null ? false : createDebugInfo;
@@ -256,6 +257,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
         throw new ResourceInitializationException(e);
       }
     }
+    
   }
 
   @Override
@@ -394,7 +396,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     return new InferenceCrowd(visitors);
   }
 
-  private RutaStream initializeStream(CAS cas, InferenceCrowd crowd) throws AnalysisEngineProcessException {
+  private RutaStream initializeStream(CAS cas, InferenceCrowd crowd)
+          throws AnalysisEngineProcessException {
     Collection<Type> filterTypes = new ArrayList<Type>();
     TypeSystem typeSystem = cas.getTypeSystem();
     for (String each : defaultFilteredTypes) {
@@ -406,7 +409,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     FilterManager filter = new FilterManager(filterTypes, cas);
     Type basicType = typeSystem.getType(BASIC_TYPE);
     seedTypes = seedAnnotations(cas);
-    RutaStream stream = new RutaStream(cas, basicType, filter, lowMemoryProfile, simpleGreedyForComposed, crowd);
+    RutaStream stream = new RutaStream(cas, basicType, filter, lowMemoryProfile,
+            simpleGreedyForComposed, crowd);
 
     stream.initalizeBasics();
     return stream;
@@ -447,7 +451,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     if (scriptLocation == null) {
       try {
         String mainScriptPath = mainScript.replaceAll("\\.", "/") + SCRIPT_FILE_EXTENSION;
-        script = loadScriptIS(mainScriptPath, null);
+        script = loadScriptIS(mainScriptPath);
       } catch (IOException e) {
         throw new AnalysisEngineProcessException(new FileNotFoundException("Script [" + mainScript
                 + "] cannot be found at [" + collectionToString(scriptPaths)
@@ -456,10 +460,10 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
         throw new AnalysisEngineProcessException(new FileNotFoundException("Script [" + mainScript
                 + "] cannot be found at [" + collectionToString(scriptPaths)
                 + "] with extension .ruta"));
-      }
+      } 
     } else {
       try {
-        script = loadScript(scriptLocation, null);
+        script = loadScript(scriptLocation);
       } catch (Exception e) {
         throw new AnalysisEngineProcessException(e);
       }
@@ -614,11 +618,11 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   }
 
   private void recursiveLoadScript(String toLoad, Map<String, RutaModule> additionalScripts,
-          Map<String, AnalysisEngine> additionalEngines, String viewName) throws AnalysisEngineProcessException {
+          Map<String, AnalysisEngine> additionalEngines, String viewName)
+          throws AnalysisEngineProcessException {
     String location = locate(toLoad, scriptPaths, SCRIPT_FILE_EXTENSION);
     try {
-      TypeSystemDescription localTSD = getLocalTSD(toLoad);
-      RutaModule eachScript = loadScript(location, localTSD);
+      RutaModule eachScript = loadScript(location);
       additionalScripts.put(toLoad, eachScript);
       for (String add : eachScript.getScripts().keySet()) {
         if (!additionalScripts.containsKey(add)) {
@@ -641,9 +645,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       throw new AnalysisEngineProcessException(e);
     } catch (RecognitionException e) {
       throw new AnalysisEngineProcessException(e);
-    } catch (InvalidXMLException e) {
-      throw new AnalysisEngineProcessException(e);
-    }
+    } 
   }
 
   private TypeSystemDescription getLocalTSD(String toLoad) throws InvalidXMLException, IOException {
@@ -653,6 +655,20 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       if (locateTSD != null) {
         localTSD = UIMAFramework.getXMLParser().parseTypeSystemDescription(
                 new XMLInputSource(locateTSD));
+      } else {
+        // TODO this won't work for lazy applies
+        try {
+          // cannot load it with descriptor paths
+          String typeSystemLocation = toLoad.replaceAll("\\.", "/") + "TypeSystem.xml";
+          InputStream tsInputStream = getClass().getClassLoader().getResourceAsStream(
+                  typeSystemLocation);
+          localTSD = UIMAFramework.getXMLParser().parseTypeSystemDescription(
+                  new XMLInputSource(tsInputStream, null));
+        } catch (Exception e) {
+         e.printStackTrace();
+        }
+      }
+      if (localTSD != null) {
         ResourceManager resMgr = UIMAFramework.newDefaultResourceManager();
         resMgr.setDataPath(getDataPath());
         localTSD.resolveImports(resMgr);
@@ -672,14 +688,13 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     return result;
   }
 
-  private RutaModule loadScript(String scriptLocation, TypeSystemDescription localTSD)
+  private RutaModule loadScript(String scriptLocation)
           throws IOException, RecognitionException {
     File scriptFile = new File(scriptLocation);
     CharStream st = new ANTLRFileStream(scriptLocation, scriptEncoding);
     RutaLexer lexer = new RutaLexer(st);
     CommonTokenStream tokens = new CommonTokenStream(lexer);
     RutaParser parser = new RutaParser(tokens);
-    parser.setLocalTSD(localTSD);
     parser.setExternalFactory(factory);
     parser.setResourcePaths(resourcePaths);
     String name = scriptFile.getName();
@@ -689,14 +704,13 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     return script;
   }
 
-  private RutaModule loadScriptIS(String scriptLocation, TypeSystemDescription localTSD)
+  private RutaModule loadScriptIS(String scriptLocation)
           throws IOException, RecognitionException {
     InputStream scriptInputStream = getClass().getClassLoader().getResourceAsStream(scriptLocation);
     CharStream st = new ANTLRInputStream(scriptInputStream, scriptEncoding);
     RutaLexer lexer = new RutaLexer(st);
     CommonTokenStream tokens = new CommonTokenStream(lexer);
     RutaParser parser = new RutaParser(tokens);
-    parser.setLocalTSD(localTSD);
     parser.setExternalFactory(factory);
     parser.setResourcePaths(resourcePaths);
     String name = scriptLocation;

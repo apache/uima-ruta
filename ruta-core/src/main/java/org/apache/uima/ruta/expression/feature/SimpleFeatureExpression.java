@@ -20,6 +20,7 @@
 package org.apache.uima.ruta.expression.feature;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.uima.cas.Feature;
@@ -38,6 +39,10 @@ public class SimpleFeatureExpression extends FeatureExpression {
     this.features = featureReferences;
   }
 
+  public SimpleFeatureExpression(TypeExpression te, String[] featureReferences) {
+    this(te, Arrays.asList(featureReferences));
+  }
+  
   @Override
   public Feature getFeature(RutaStatement parent) {
     return getFeatures(parent).get(0);

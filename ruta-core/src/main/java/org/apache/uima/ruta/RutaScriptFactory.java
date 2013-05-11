@@ -23,14 +23,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.antlr.runtime.Token;
-import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
+import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.RutaExpression;
-import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.number.NumberExpression;
 import org.apache.uima.ruta.expression.string.StringExpression;
-import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.AbstractRuleElement;
 import org.apache.uima.ruta.rule.ComposedRuleElement;
@@ -39,7 +37,6 @@ import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleElementContainer;
 import org.apache.uima.ruta.rule.RuleElementIsolator;
 import org.apache.uima.ruta.rule.RutaDisjunctiveMatcher;
-import org.apache.uima.ruta.rule.RutaFeatureMatcher;
 import org.apache.uima.ruta.rule.RutaLiteralMatcher;
 import org.apache.uima.ruta.rule.RutaMatcher;
 import org.apache.uima.ruta.rule.RutaRule;
@@ -91,13 +88,12 @@ public class RutaScriptFactory {
     return new RutaScriptBlock(text, rule, elements, parent, defaultNamespace);
   }
 
-  public RutaScriptBlock createRootScriptBlock(String module, String pack,
-          TypeSystemDescription localTSD) {
+  public RutaScriptBlock createRootScriptBlock(String module, String pack) {
     String defaultNamespace = pack + "." + module;
     RutaScriptBlock result = createScriptBlock(module, null, null, null, defaultNamespace);
     List<RuleElement> ruleElements = new ArrayList<RuleElement>();
     RuleElementIsolator container = new RuleElementIsolator();
-    ruleElements.add(createRuleElement(new SimpleTypeExpression("uima.tcas.DocumentAnnotation"),
+    ruleElements.add(createRuleElement(new MatchReference("uima.tcas.DocumentAnnotation", null, null),
             null, null, null, container, result));
     RutaRule createRule = createRule(ruleElements, result);
     container.setContainer(createRule);
@@ -120,10 +116,12 @@ public class RutaScriptFactory {
           RuleElementQuantifier quantifier, List<AbstractRutaCondition> conditions,
           List<AbstractRutaAction> actions, RuleElementContainer container, RutaBlock parent) {
     RutaMatcher matcher = null;
-    if (expression instanceof TypeExpression) {
-      matcher = new RutaTypeMatcher((TypeExpression) expression);
-    } else if (expression instanceof FeatureExpression) {
-      matcher = new RutaFeatureMatcher((FeatureExpression) expression);
+    if(expression instanceof MatchReference) {
+      matcher = new RutaTypeMatcher((MatchReference)expression);
+    } else if (expression instanceof TypeExpression) {
+      // e.g., for functions
+      MatchReference matchReference = new MatchReference((TypeExpression) expression);
+      matcher = new RutaTypeMatcher(matchReference);
     } else if (expression instanceof StringExpression) {
       matcher = new RutaLiteralMatcher((StringExpression) expression);
     }
