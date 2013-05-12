@@ -20,11 +20,14 @@
 package org.apache.uima.ruta.action;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
@@ -136,6 +139,15 @@ public class GatherAction extends AbstractStructureAction {
               structure.setFeatureValue(targetFeature, UIMAUtils.toFSArray(jcas, list));
             } else if (typeSystem.subsumes(range, fs.getType())) {
               structure.setFeatureValue(targetFeature, fs);
+            } else {
+              // search for 
+              Set<AnnotationFS> beginAnchors = stream.getBeginAnchor(fs.getBegin()).getBeginAnchors(range);
+              Set<AnnotationFS> endAnchors = stream.getEndAnchor(fs.getEnd()).getEndAnchors(range);
+              @SuppressWarnings("unchecked")
+              Collection<AnnotationFS> intersection = CollectionUtils.intersection(beginAnchors, endAnchors);
+              if(intersection.size() >= 1) {
+                structure.setFeatureValue(targetFeature, intersection.iterator().next());
+              }
             }
           }
         } else {
