@@ -155,10 +155,10 @@ public class ActionFactory {
           RutaBlock parent) {
     if (v instanceof NumberExpression) {
       return new SetFeatureAction(f, (NumberExpression) v);
-    } else if (v instanceof StringExpression) {
-      return new SetFeatureAction(f, (StringExpression) v);
     } else if (v instanceof BooleanExpression) {
       return new SetFeatureAction(f, (BooleanExpression) v);
+    } else if (v instanceof StringExpression) {
+      return new SetFeatureAction(f, (StringExpression) v);
     }
     return null;
   }
