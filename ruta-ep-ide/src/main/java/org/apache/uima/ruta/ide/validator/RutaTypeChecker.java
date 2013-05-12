@@ -433,11 +433,11 @@ public class RutaTypeChecker implements IBuildParticipant, IBuildParticipantExte
     private void checkTypeOfFeatureMatch(String featText, FeatureMatchExpression fme) {
       int lastIndexOf = featText.lastIndexOf(".");
       String aref = featText.substring(0, lastIndexOf);
-      String fref = featText.substring(lastIndexOf+1, featText.length());
+      String fref = featText.substring(lastIndexOf + 1, featText.length());
       String match = isFeatureMatch(aref);
       if (match != null) {
         int kind = fme.getValue().getKind();
-        if(fme.getValue() instanceof StringLiteral) {
+        if (fme.getValue() instanceof StringLiteral) {
           kind = RutaTypeConstants.RUTA_TYPE_S;
         }
         boolean findFeature = findFeature(match, fref, kind);
@@ -555,17 +555,21 @@ public class RutaTypeChecker implements IBuildParticipant, IBuildParticipantExte
     private String checkFeatureMatch(String name, String type) {
       if (name.startsWith(type)) {
         boolean foundAll = true;
-        String tail = name.substring(type.length() + 1);
-        String[] split = tail.split("[.]");
-        String typeToCheck = type;
-        for (String feat : split) {
-          typeToCheck = checkFSFeatureOfType(feat, typeToCheck);
-          foundAll &= (typeToCheck != null);
-          if (!foundAll) {
-            return null;
+        if (name.length() > type.length()) {
+          String tail = name.substring(type.length() + 1);
+          String[] split = tail.split("[.]");
+          String typeToCheck = type;
+          for (String feat : split) {
+            typeToCheck = checkFSFeatureOfType(feat, typeToCheck);
+            foundAll &= (typeToCheck != null);
+            if (!foundAll) {
+              return null;
+            }
           }
+          return typeToCheck;
+        } else {
+          return type;
         }
-        return typeToCheck;
       } else {
         return null;
       }
