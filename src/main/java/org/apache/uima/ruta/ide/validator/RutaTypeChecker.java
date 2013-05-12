@@ -66,6 +66,7 @@ import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
+import org.eclipse.dltk.ast.expressions.NumericLiteral;
 import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Statement;
@@ -439,6 +440,8 @@ public class RutaTypeChecker implements IBuildParticipant, IBuildParticipantExte
         int kind = fme.getValue().getKind();
         if (fme.getValue() instanceof StringLiteral) {
           kind = RutaTypeConstants.RUTA_TYPE_S;
+        } else  if (fme.getValue() instanceof NumericLiteral) {
+          kind = RutaTypeConstants.RUTA_TYPE_N;
         }
         boolean findFeature = findFeature(match, fref, kind);
         if (findFeature) {
