@@ -45,6 +45,23 @@ public class ConditionFactory extends AbstractFactory {
             nameEnd);
   }
 
+  public static RutaCondition createCondition(Expression... exprsArray) {
+    List<Expression> exprL = new ArrayList<Expression>();
+    if (exprsArray != null) {
+      for (int i = 0; i < exprsArray.length; i++) {
+        Expression expression = exprsArray[i];
+        if (expression != null) {
+          exprL.add(expression);
+        }
+      }
+    }
+    int[] bounds = getBounds(exprL.get(0), exprL.get(exprL.size()-1));
+    return new RutaCondition(bounds[0], bounds[1], exprL,
+            RutaConditionConstants.CONSTANT_OFFSET, "IF", bounds[0],
+            bounds[0]);
+  }
+  
+  
   public static RutaCondition createCondition(Token type, Expression... exprsArray) {
     List<Expression> exprL = new ArrayList<Expression>();
     if (exprsArray != null) {

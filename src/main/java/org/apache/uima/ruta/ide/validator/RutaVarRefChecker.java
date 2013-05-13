@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Stack;
@@ -47,6 +48,7 @@ import org.apache.uima.ruta.ide.core.extensions.IIDENumberFunctionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IIDEStringFunctionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IIDETypeFunctionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IRutaExtension;
+import org.apache.uima.ruta.ide.parser.ast.FeatureMatchExpression;
 import org.apache.uima.ruta.ide.parser.ast.RutaActionConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaRegExpRule;
 import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
@@ -106,6 +108,10 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
 
     private String matchedType;
 
+    private Set<String> completeTypes;
+
+    private Set<String> shortTypes;
+    
     private Map<String, IIDEActionExtension> actionExtensions;
 
     private Map<String, IIDEConditionExtension> conditionExtensions;
@@ -187,8 +193,98 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
       } catch (InvalidXMLException e) {
       } catch (IOException e) {
       }
+      completeTypes = new TreeSet<String>();
+      shortTypes = new TreeSet<String>();
+      TypeDescription[] types = description.getTypes();
+      for (TypeDescription typeDescription : types) {
+        completeTypes.add(typeDescription.getName());
+        shortTypes.add(getShortName(typeDescription.getName()));
+      }
+    }
+    
+  
+    
+    private String isFeatureMatch(String text) {
+      for (String each : shortTypes) {
+        String t = checkFeatureMatch(text, each);
+        if (t != null) {
+          return t;
+        }
+      }
+      for (String each : completeTypes) {
+        String t = checkFeatureMatch(text, each);
+        if (t != null) {
+          return t;
+        }
+      }
+      return null;
+    }
+    
+    
+    private String checkFeatureMatch(String name, String type) {
+      if (name.startsWith(type)) {
+        boolean foundAll = true;
+        if (name.length() > type.length()) {
+          String tail = name.substring(type.length() + 1);
+          String[] split = tail.split("[.]");
+          String typeToCheck = type;
+          for (String feat : split) {
+            typeToCheck = checkFSFeatureOfType(feat, typeToCheck);
+            foundAll &= (typeToCheck != null);
+            if (!foundAll) {
+              return null;
+            }
+          }
+          return typeToCheck;
+        } else {
+          return type;
+        }
+      } else {
+        return null;
+      }
+    }
+    private String checkFSFeatureOfType(String feat, String type) {
+      if (type.indexOf(".") == -1) {
+        for (String each : completeTypes) {
+          String[] split = each.split("[.]");
+          if (split[split.length - 1].equals(type)) {
+            type = each;
+            break;
+          }
+        }
+      }
+      TypeDescription t = description.getType(type);
+      if (t == null)
+        return null;
+      FeatureDescription[] features = t.getFeatures();
+      for (FeatureDescription featureDescription : features) {
+        String name = featureDescription.getName();
+        String rangeTypeName = featureDescription.getRangeTypeName();
+        boolean isFS = isFeatureStructure(rangeTypeName);
+        if (name.equals(feat) && isFS) {
+          return rangeTypeName;
+        }
+      }
+      return null;
+    }
+    
+    private boolean isFeatureStructure(String rangeTypeName) {
+      if (rangeTypeName.equals("uima.tcas.Annotation") || rangeTypeName.equals("uima.cas.TOP")) {
+        return true;
+      }
+      TypeDescription type = description.getType(rangeTypeName);
+      if (type == null) {
+        return false;
+      }
+      String supertypeName = type.getSupertypeName();
+      if (supertypeName != null) {
+        return isFeatureStructure(supertypeName);
+      }
+      return false;
     }
 
+
+    
     @Override
     public boolean endvisit(Expression s) throws Exception {
       if (s instanceof RutaRuleElement) {
@@ -285,7 +381,13 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
       if (s instanceof RutaRuleElement) {
         RutaRuleElement re = (RutaRuleElement) s;
         Expression head = re.getHead();
-        if (head != null) {
+        if (head instanceof FeatureMatchExpression) {
+          FeatureMatchExpression fme = (FeatureMatchExpression) head;
+          String text = fme.getFeature().getText();
+          int lastIndexOf = text.lastIndexOf('.');
+          String twf = text.substring(0, lastIndexOf);
+          matchedType = isFeatureMatch(twf);
+        } else if (head != null) {
           String type = currentFile.getSource().substring(head.sourceStart(), head.sourceEnd());
           matchedType = type;
         }
@@ -626,4 +728,7 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
       e.printStackTrace();
     }
   }
+  
+
+  
 }
