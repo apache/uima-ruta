@@ -69,7 +69,7 @@ public class RutaReferenceVisitor extends ASTVisitor {
             && ((RutaCondition) s).getNameStart()-1 == start
             && start == ((RutaCondition) s).getNameEnd()-1) {
       result = s;
-    } else if(s instanceof RutaExpression && s.sourceStart() <= start && start <= s.sourceEnd()) {
+    } else if(s instanceof RutaExpression && s.sourceStart() == start && s.sourceEnd() == start) {
       result = s;
     }
     return super.visit(s);
