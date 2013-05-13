@@ -25,6 +25,7 @@ import org.antlr.runtime.Token;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.expression.list.StringListExpression;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
@@ -255,6 +256,10 @@ public class ConditionFactory {
           RutaExpression a, NumberExpression min, NumberExpression max,
           BooleanExpression percent, RutaBlock env) {
     return new ContainsCondition(list, a, min, max, percent);
+  }
+
+  public static AbstractRutaCondition createImplicitCondition(RutaExpression expr) {
+    return new ImplicitCondition(expr);
   }
 
 }

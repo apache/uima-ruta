@@ -982,7 +982,8 @@ result = ConditionFactory.createEmptyCondition(input.LT(1));
 	| c = conditionEndsWith
 	| c = conditionPartOfNeq
 	| c = conditionSize
-	| c = externalCondition
+	| (externalCondition)=> c = externalCondition
+	| b = booleanExpression {c = ConditionFactory.createCondition(b);}
 	) {result = c;}
 	;
 	
@@ -2168,7 +2169,8 @@ booleanExpression returns [Expression expr = null]
 expr = ExpressionFactory.createEmptyBooleanExpression(input.LT(1));
 }
 	:
-	bcE = composedBooleanExpression {expr = bcE;}
+	(featureTypeExpression)=>fmbe = featureTypeExpression {expr = ExpressionFactory.createBooleanExpression(fmbe);}
+	| (composedBooleanExpression)=> bcE = composedBooleanExpression {expr = bcE;}
 	| sbE = simpleBooleanExpression {expr = sbE;}
 	;
 	

@@ -912,6 +912,11 @@ featureMatchExpression returns [FeatureMatchExpression fme = null]
 	{fme = ExpressionFactory.createFeatureMatchExpression(f, op, arg, $blockDeclaration::env);}
 	;
 
+featureMatchExpression2 returns [FeatureMatchExpression fme = null]
+	:
+	f = featureExpression op = EQUAL arg = primitiveArgument
+	{fme = ExpressionFactory.createFeatureMatchExpression(f, op, arg, $blockDeclaration::env);}
+	;
 
 variable returns [Token var = null]
 	:
@@ -992,6 +997,8 @@ condition  returns [AbstractRutaCondition result = null]
 	| c = conditionPartOfNeq
 	| c = conditionSize	
 	| (c = externalCondition)=> c = externalCondition
+	| (booleanExpression)=> b = booleanExpression {c = ConditionFactory.createImplicitCondition(b);}
+	| (featureMatchExpression2)=> f = featureMatchExpression2 {c = ConditionFactory.createImplicitCondition(f);}
 //	| c = variableCondition
 	) {result = c;}
 	;
@@ -1940,6 +1947,7 @@ booleanExpression returns [BooleanExpression expr = null]
 	:
 	(e = composedBooleanExpression)=> e = composedBooleanExpression {expr = e;}
 	|sbE =  simpleBooleanExpression {expr = sbE;}
+	
 	;
 
 simpleBooleanExpression returns [BooleanExpression expr = null]

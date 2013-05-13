@@ -21,12 +21,19 @@ package org.apache.uima.ruta.expression.feature;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.TreeSet;
 
 import org.apache.uima.cas.Feature;
+import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.AnnotationComparator;
 
 public class SimpleFeatureExpression extends FeatureExpression {
 
@@ -34,6 +41,8 @@ public class SimpleFeatureExpression extends FeatureExpression {
 
   private List<String> features;
 
+  protected AnnotationComparator comparator = new AnnotationComparator();
+  
   public SimpleFeatureExpression(TypeExpression te, List<String> featureReferences) {
     super();
     this.typeExpr = te;
@@ -84,4 +93,34 @@ public class SimpleFeatureExpression extends FeatureExpression {
     this.features = features;
   }
 
+  public Collection<AnnotationFS> getFeatureAnnotations(Collection<AnnotationFS> annotations,
+           RutaStream stream, RutaBlock parent, boolean checkOnFeatureValue) {
+    Collection<AnnotationFS> result = new TreeSet<AnnotationFS>(comparator);
+    List<Feature> features = getFeatures(parent);
+    for (AnnotationFS eachBase : annotations) {
+      AnnotationFS afs = eachBase;
+      for (Feature feature : features) {
+        if (feature.getRange().isPrimitive() && this instanceof FeatureMatchExpression) {
+          FeatureMatchExpression fme = (FeatureMatchExpression) this;
+          if (checkOnFeatureValue) {
+            if (fme.checkFeatureValue(afs, feature, stream, parent)) {
+              result.add(afs);
+            }
+          } else {
+            result.add(afs);
+          }
+          break;
+        } else {
+          FeatureStructure value = afs.getFeatureValue(feature);
+          afs = (AnnotationFS) value;
+        }
+      }
+      if (!(this instanceof FeatureMatchExpression)) {
+        result.add(afs);
+      }
+    }
+    return result;
+  }
+  
+  
 }

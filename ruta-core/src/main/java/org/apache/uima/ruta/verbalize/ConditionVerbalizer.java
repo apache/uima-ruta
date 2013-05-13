@@ -33,6 +33,7 @@ import org.apache.uima.ruta.condition.CurrentCountCondition;
 import org.apache.uima.ruta.condition.EndsWithCondition;
 import org.apache.uima.ruta.condition.FeatureCondition;
 import org.apache.uima.ruta.condition.IfCondition;
+import org.apache.uima.ruta.condition.ImplicitCondition;
 import org.apache.uima.ruta.condition.InListCondition;
 import org.apache.uima.ruta.condition.IsCondition;
 import org.apache.uima.ruta.condition.LastCondition;
@@ -134,6 +135,9 @@ public class ConditionVerbalizer {
       return name;
     } else if (condition instanceof SizeCondition) {
       String name = "SIZE";
+      return name;
+    } else if (condition instanceof ImplicitCondition) {
+      String name = "";
       return name;
     }
 
@@ -435,6 +439,9 @@ public class ConditionVerbalizer {
         String l = verbalizer.verbalize(listExpr);
         return name + l + min + max + var + ")";
       } 
+    } else if (condition instanceof ImplicitCondition) {
+      ImplicitCondition c = (ImplicitCondition) condition;
+      return verbalizer.verbalize(c.getExpr());
     }
 
     return condition.getClass().getSimpleName();
