@@ -29,3 +29,10 @@ C.ci==3{-> MARK(T10)};
 B.bc.ci==3{-> MARK(T11)};
 A.ab.bc.ci==3{-> MARK(T12)};
 
+A.ab.bc{-> MARK(T13)};
+A.ab{-> MARK(T14)};
+A.ac{-> MARK(T15)};
+
+(A.ac.ci==1 # A.ac.ci==2 # A.ac.ci==3){-> MARK(T16)};
+(A.ac.ci==1 # A.ac # A.ab){-> MARK(T17)};
+

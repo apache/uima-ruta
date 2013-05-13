@@ -167,6 +167,44 @@ public class FeatureMatchTest {
     iterator = ai.iterator();
     assertEquals("Marshall", iterator.next().getCoveredText());
 
+    
+    t = RutaTestUtils.getTestType(cas, 13);
+    ai = cas.getAnnotationIndex(t);
+    iterator = ai.iterator();
+    assertEquals(3, ai.size());
+    assertEquals("Peter", iterator.next().getCoveredText());
+    assertEquals("Joern", iterator.next().getCoveredText());
+    assertEquals("Marshall", iterator.next().getCoveredText());
+    
+    t = RutaTestUtils.getTestType(cas, 14);
+    ai = cas.getAnnotationIndex(t);
+    iterator = ai.iterator();
+    assertEquals(3, ai.size());
+    assertEquals("Kluegl", iterator.next().getCoveredText());
+    assertEquals("Kottmann", iterator.next().getCoveredText());
+    assertEquals("Schor", iterator.next().getCoveredText());
+    
+    t = RutaTestUtils.getTestType(cas, 15);
+    ai = cas.getAnnotationIndex(t);
+    iterator = ai.iterator();
+    assertEquals(3, ai.size());
+    assertEquals("Peter", iterator.next().getCoveredText());
+    assertEquals("Joern", iterator.next().getCoveredText());
+    assertEquals("Marshall", iterator.next().getCoveredText());
+    
+    
+    t = RutaTestUtils.getTestType(cas, 16);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    assertEquals("Peter Kluegl, Joern Kottmann, Marshall", iterator.next().getCoveredText());
+    
+    t = RutaTestUtils.getTestType(cas, 17);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    assertEquals("Peter Kluegl, Joern Kottmann, Marshall Schor", iterator.next().getCoveredText());
+
 
     if (cas != null) {
       cas.release();
