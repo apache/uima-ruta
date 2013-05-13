@@ -20,6 +20,7 @@
 package org.apache.uima.ruta.expression;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaStatement;
@@ -64,7 +65,7 @@ public class MatchReference extends RutaExpression {
     if (typeExpression == null) {
       String[] elements = match.split("[.]");
       StringBuilder sb = new StringBuilder();
-      String[] tail = null;
+      List<String> tail = null;
       int counter = 0;
       for (String eachPart : elements) {
         if (sb.length() != 0) {
@@ -74,7 +75,7 @@ public class MatchReference extends RutaExpression {
         String head = sb.toString();
         typeExpression = buildTypeExpression(head, e);
         if (typeExpression != null) {
-          tail = Arrays.copyOfRange(elements, counter+1, elements.length);
+          tail = Arrays.asList(elements).subList(counter+1,  elements.length);
           break;
         }
         counter++;
