@@ -35,4 +35,5 @@ A.ac{-> MARK(T15)};
 
 (A.ac.ci==1 # A.ac.ci==2 # A.ac.ci==3){-> MARK(T16)};
 (A.ac.ci==1 # A.ac # A.ab){-> MARK(T17)};
+(A{A.ac.ci==1} # A{A.ac.ci==2} # A{A.ac.ci==3}){-> MARK(T18)};
 

@@ -205,6 +205,11 @@ public class FeatureMatchTest {
     iterator = ai.iterator();
     assertEquals("Peter Kluegl, Joern Kottmann, Marshall Schor", iterator.next().getCoveredText());
 
+    t = RutaTestUtils.getTestType(cas, 18);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    assertEquals("Peter Kluegl, Joern Kottmann, Marshall Schor", iterator.next().getCoveredText());
 
     if (cas != null) {
       cas.release();
