@@ -27,4 +27,6 @@ public class RutaCorePreferences {
   public static final String BUILDER_IGNORE_DUPLICATE_SHORTNAMES = "BuilderErrorOnDuplicateShortnames";
   
   public static final String PROJECT_CLEAR_OUTPUT = "ProjectClearOutput";
+
+  public static final String NO_VM_IN_DEV_MODE = "NoVMInDevMode";
 }

@@ -294,7 +294,9 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     boolean recursive = configuration.getAttribute(RutaLaunchConstants.RECURSIVE, false);
     clearOutputFolder(new File(ouputFolder.getLocation().toPortableString()), recursive);
 
-    if (Platform.inDevelopmentMode()) {
+     IPreferenceStore preferenceStore = RutaIdePlugin.getDefault().getPreferenceStore();
+    boolean noVM = preferenceStore.getBoolean(RutaCorePreferences.NO_VM_IN_DEV_MODE);
+    if (noVM && Platform.inDevelopmentMode()) {
       String[] args = getProgramArguments(configuration).split(" ");
       try {
         RutaLauncher.main(args);

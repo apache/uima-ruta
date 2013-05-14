@@ -34,6 +34,8 @@ public class RutaProjectPreferencePage extends FieldEditorPreferencePage
 
   private BooleanFieldEditor clearOutput;
   
+  private BooleanFieldEditor noVM;
+  
   public RutaProjectPreferencePage() {
     setPreferenceStore(RutaIdePlugin.getDefault().getPreferenceStore());
     setDescription("Project Management");
@@ -44,6 +46,11 @@ public class RutaProjectPreferencePage extends FieldEditorPreferencePage
 	  clearOutput = new BooleanFieldEditor(RutaCorePreferences.PROJECT_CLEAR_OUTPUT,
             RutaPreferencesMessages.ProjectClearOutput, getFieldEditorParent());
     addField(clearOutput);
+    
+    noVM = new BooleanFieldEditor(RutaCorePreferences.NO_VM_IN_DEV_MODE,
+            RutaPreferencesMessages.NoVMInDevMode, getFieldEditorParent());
+    addField(noVM);
+
   }
 
   public void init(IWorkbench workbench) {
