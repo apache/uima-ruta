@@ -40,6 +40,8 @@ import org.apache.uima.ruta.action.GatherAction;
 import org.apache.uima.ruta.action.GetAction;
 import org.apache.uima.ruta.action.GetFeatureAction;
 import org.apache.uima.ruta.action.GetListAction;
+import org.apache.uima.ruta.action.ImplicitFeatureAction;
+import org.apache.uima.ruta.action.ImplicitMarkAction;
 import org.apache.uima.ruta.action.LogAction;
 import org.apache.uima.ruta.action.MarkAction;
 import org.apache.uima.ruta.action.MarkFastAction;
@@ -152,6 +154,10 @@ public class ActionVerbalizer {
       return "REMOVEDUPLICATE";
     } else if (action instanceof UnmarkAllAction) {
       return "UNMARKALL";
+    } else if (action instanceof ImplicitMarkAction) {
+      return "";
+    } else if (action instanceof ImplicitFeatureAction) {
+      return "";
     }
 
     return action.getClass().getSimpleName();
@@ -456,6 +462,12 @@ public class ActionVerbalizer {
       String verbalize = verbalizer.verbalize(a.getType());
       String but = a.getList() == null ? "" : ", " + verbalizer.verbalize(a.getList());
       return name + verbalize + but + ")";
+    } else if (action instanceof ImplicitMarkAction) {
+      ImplicitMarkAction a = (ImplicitMarkAction) action; 
+      return verbalizer.verbalize(a.getType());
+    } else if (action instanceof ImplicitFeatureAction) {
+      ImplicitFeatureAction a = (ImplicitFeatureAction) action; 
+      return verbalizer.verbalize(a.getExpr());
     }
 
     return action.getClass().getSimpleName();
