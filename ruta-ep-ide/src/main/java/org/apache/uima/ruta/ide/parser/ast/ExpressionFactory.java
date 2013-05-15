@@ -110,7 +110,10 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
 
   // =====> TYPE-EXPRESSIONS <======
   public static Expression createTypeExpression(Expression e) {
-    return new RutaExpression(e.sourceStart(), e.sourceEnd(), e, RutaTypeConstants.RUTA_TYPE_AT);
+    if(e != null) {
+      return new RutaExpression(e.sourceStart(), e.sourceEnd(), e, RutaTypeConstants.RUTA_TYPE_AT);
+    }
+    return null;
   }
 
   public static Expression createEmptyTypeExpression(Token token) {

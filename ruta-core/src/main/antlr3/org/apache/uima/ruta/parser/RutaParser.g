@@ -918,6 +918,14 @@ featureMatchExpression2 returns [FeatureMatchExpression fme = null]
 	{fme = ExpressionFactory.createFeatureMatchExpression(f, op, arg, $blockDeclaration::env);}
 	;
 
+
+featureAssignmentExpression returns [FeatureMatchExpression fme = null]
+	:
+	f = featureExpression op = ASSIGN_EQUAL arg = primitiveArgument
+	{fme = ExpressionFactory.createFeatureMatchExpression(f, op, arg, $blockDeclaration::env);}
+	;
+	
+	
 variable returns [Token var = null]
 	:
 	{isVariable($blockDeclaration::env, input.LT(1).getText())}? v = Identifier {var = v;}
@@ -1241,7 +1249,10 @@ action  returns [AbstractRutaAction result = null]
 	| a = actionRemoveRetainType
 	| a = actionAddFilterType
 	| a = actionRemoveFilterType
-	| (a = externalAction)=> a = externalAction
+	| (externalAction)=> a = externalAction
+	| (featureAssignmentExpression)=> fae = featureAssignmentExpression {a = ActionFactory.createAction(fae);}
+	| (typeExpression)=> te = typeExpression {a = ActionFactory.createAction(te);}
+	
 //	| a = variableAction
 	) {result = a;}
 	;

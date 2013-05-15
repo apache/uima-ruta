@@ -27,6 +27,7 @@ import org.antlr.runtime.Token;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.expression.list.StringListExpression;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
@@ -262,6 +263,14 @@ public class ActionFactory {
   public static AbstractRutaAction createTrimAction(List<TypeExpression> types,
           TypeListExpression typeList, RutaBlock env) {
     return new TrimAction(types, typeList);
+  }
+
+  public static AbstractRutaAction createAction(FeatureMatchExpression fae) {
+    return new ImplicitFeatureAction(fae);
+  }
+
+  public static AbstractRutaAction createAction(TypeExpression te) {
+    return new ImplicitMarkAction(te);
   }
 
   
