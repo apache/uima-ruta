@@ -181,6 +181,19 @@ W{REGEXP("dog") -> MARK(Animal)};]]></programlisting>
     </para>
     
     <para>
+      There is also the possibility to add implicit actions and conditions, which have no explicit name, but consist only of an expression.
+      In the part of the conditions, boolean expressions and feature match expression can be applied, and in the part of the actions,
+      type expressions and feature assignment expression can be added. The following example contains one implicit condition and one implicit action.
+      The additional condition is a boolean expression (boolean variable), which is set to <quote>true</quote>, and therefore is always fulfills the condition.
+      The <quote>MARK</quote> action was replaced by a type expression, which refer to the type <quote>Animal</quote>. The follwong rule shows, therefore,
+      the same behavior as the rule in the last example.
+    </para>
+    
+    <programlisting><![CDATA[DECLARE Animal;
+BOOLEAN active = true;
+W{REGEXP("dog"), active -> Animal};]]></programlisting>
+    
+    <para>
       There is also a special kind of rules, which follow a different syntax and semantic, and enables a simplified creation of annotations based on regular expression.
       The following rule, for example, creates an <quote>Animal</quote> annotation for each occurrence of <quote>dog</quote> or <quote>cat</quote>.
     </para>
@@ -369,7 +382,7 @@ STRING moneyCurrency;
 NUM{PARSE(moneyAmount)} SPECIAL{REGEXP("€") -> MATCHEDTEXT(moneyCurrency),
     CREATE(MoneyAmount, 1, 2, "amount" = moneyAmount,
         "currency" = moneyCurrency)};]]></programlisting>
-
+    
     <para>
       First, a new annotation with the name <quote>MoneyAmount</quote> and two features are defined, one string feature and one integer feature.
       Then, two UIMA Ruta variables are declared, one integer variable and one string variable. The rule matches on a number, whose value is stored 
@@ -377,6 +390,17 @@ NUM{PARSE(moneyAmount)} SPECIAL{REGEXP("€") -> MATCHEDTEXT(moneyCurrency),
       the covered text of the special annotation is stored in the string variable <quote>moneyCurrency</quote> and annotation of the
       type <quote>MoneyAmount</quote> spanning over both rule elements is created. Additionally, the variables are assigned as feature values.
     </para>
+
+    <para>
+      Using feature expression for conditions and action, can reduce the complexity of a rule. The first rule in the follwing example set the value of the feature
+      <quote>currency</quote> of the annotation of the type <quote>MoneyAmount</quote> to <quote>Euro</quote>, if it was <quote>€</quote> before.
+      The second rule creates an annotation of the type <quote>LessThan</quote> for all annotations of the type <quote>MoneyAmount</quote>, 
+      if their amount is less than 100 and the currency is <quote>Euro</quote>. 
+    </para>
+    
+    <programlisting><![CDATA[DECLARE LessThan;
+    MoneyAmount.currency=="€"{-> MoneyAmount.currency="Euro"};
+    MoneyAmount{(MoneyAmount.amount<=100), MoneyAmount.currency=="Euro" -> LessThan};]]></programlisting>
 
     <para>
       UIMA Ruta script files with many rules can quickly confuse the reader. The UIMA Ruta language, therefore, allows to import other script files in order to increase

@@ -119,6 +119,16 @@ Actions                -> "->" Action ( "," Action)*
     <xref linkend='ugr.tools.ruta.language.expressions' />.
   </para>
   <para>
+    It is also possible to use specific expression as implicit conditions or action additionally to the set of available conditions and actions.
+        <programlisting><![CDATA[Condition -> BooleanExpression | FeatureMatchExpression
+Action    -> TypeExpression | FeatureAssignmentExpression 
+]]></programlisting>
+  
+
+  </para>
+  
+  
+  <para>
     Identifier:
     <programlisting><![CDATA[DottedIdentifier    ->  Identifier ("." Identifier)*
 DottedIdentifier2   ->  Identifier (("."|"-") Identifier)*
