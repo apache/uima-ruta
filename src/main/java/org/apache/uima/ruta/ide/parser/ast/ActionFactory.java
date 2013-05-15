@@ -235,4 +235,20 @@ public class ActionFactory extends AbstractFactory {
             nameEnd, assignments, structure);
   }
 
+  public static RutaAction createAction(Expression... exprsArray) {
+    List<Expression> exprL = new ArrayList<Expression>();
+    if (exprsArray != null) {
+      for (int i = 0; i < exprsArray.length; i++) {
+        Expression expression = exprsArray[i];
+        if (expression != null) {
+          exprL.add(expression);
+        }
+      }
+    }
+    int[] bounds = getBounds(exprL.get(0), exprL.get(exprL.size()-1));
+    return new RutaAction(bounds[0], bounds[1], exprL,
+            ExpressionConstants.USER_EXPRESSION_START, "", bounds[0],
+            bounds[0]);
+  }
+
 }

@@ -903,6 +903,11 @@ externalTypeFunction returns [Expression expr = null]
 	}
 	;
 
+featureAssignmentExpression returns [Expression expr = null]
+	:
+	feature = dottedId comp = ASSIGN_EQUAL value = primitiveArgument {expr = ExpressionFactory.createFeatureMatch(feature, comp, value);}
+	;
+
 featureTypeExpression returns [Expression expr = null]
 	:
 	feature = dottedId (comp = EQUAL | comp = NOTEQUAL) value = primitiveArgument {expr = ExpressionFactory.createFeatureMatch(feature, comp, value);}
@@ -1288,10 +1293,15 @@ result = ActionFactory.createEmptyAction(input.LT(1));
 	| a = actionAddRetainType
 	| a = actionRemoveFilterType
 	| a = actionRemoveRetainType
-	| a = externalAction
+	| (externalAction)=> a = externalAction
+	| (featureAssignmentExpression)=> fae = featureAssignmentExpression {a = ActionFactory.createAction(fae);}
+	| (typeExpression)=> te = typeExpression {a = ActionFactory.createAction(te);}
+	
 	// | a = variableAction
 	) {result = a;}
 	;
+
+
 
 
 variableAction returns [RutaAction action = null]
