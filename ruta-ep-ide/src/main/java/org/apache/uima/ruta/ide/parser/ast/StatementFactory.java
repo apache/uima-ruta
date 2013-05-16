@@ -68,7 +68,15 @@ public class StatementFactory extends AbstractFactory {
   public static RutaImportStatement createImportEngine(ComponentDeclaration dottedId,
           Token impString) {
     dottedId.setType(ComponentDeclaration.ENGINE);
-    return createImport(dottedId, impString, RutaStatementConstants.S_IMPORT_ENGINE);
+    int kind = RutaStatementConstants.S_IMPORT_ENGINE;
+    if(impString != null) {
+      String text = impString.getText();
+      if("UIMAFIT".equals(text)) {
+        kind = RutaStatementConstants.S_IMPORT_UIMAFIT_ENGINE;
+        dottedId.setType(ComponentDeclaration.UIMAFIT_ENGINE);
+      }
+    }
+    return createImport(dottedId, impString, kind);
   }
 
   /**

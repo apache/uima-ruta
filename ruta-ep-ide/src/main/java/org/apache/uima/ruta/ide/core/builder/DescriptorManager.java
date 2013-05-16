@@ -26,6 +26,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.uima.resource.metadata.Import;
+
 public class DescriptorManager {
 
   private static final boolean CONVERT = false;
@@ -42,6 +44,8 @@ public class DescriptorManager {
 
   private Collection<String> importedEngines;
 
+  private Collection<String> importedUimafitEngines;
+
   public DescriptorManager() {
     super();
     typeShortNames = new ArrayList<String>();
@@ -49,6 +53,7 @@ public class DescriptorManager {
     importedTypeSystems = new HashSet<String>();
     importedScripts = new HashSet<String>();
     importedEngines = new HashSet<String>();
+    importedUimafitEngines = new HashSet<String>();
     features = new HashMap<String, Collection<StringTriple>>();
   }
 
@@ -83,6 +88,10 @@ public class DescriptorManager {
     importedEngines.add(name);
   }
 
+  public void addUimafitEngine(String name) {
+    importedUimafitEngines.add(name);
+  }
+  
   public void addTypeSystem(String name, boolean convert) {
     if (convert) {
       name = name.replaceAll("[.]", "/");
@@ -124,6 +133,10 @@ public class DescriptorManager {
 
   public Collection<String> getImportedEngines() {
     return importedEngines;
+  }
+
+  public Collection<String> getImportedUimafitEngines() {
+    return importedUimafitEngines;
   }
 
 }

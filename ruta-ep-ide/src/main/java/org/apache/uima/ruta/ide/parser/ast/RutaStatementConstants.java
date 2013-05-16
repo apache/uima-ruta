@@ -31,4 +31,6 @@ public interface RutaStatementConstants {
   public static final int S_IMPORT_ENGINE = S_IMPORT | 1 << 3;
 
   public static final int S_DECLARATIONS = S_USERSTART | 1 << 4;
+
+  public static final int S_IMPORT_UIMAFIT_ENGINE = S_IMPORT | 1 << 5;
 }

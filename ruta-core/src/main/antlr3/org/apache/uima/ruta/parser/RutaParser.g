@@ -176,6 +176,9 @@ public void emitErrorMessage(String msg) {
 	public void addImportEngine(RutaBlock parent, String namespace) {
 		parent.getScript().addEngine(namespace, null);
 	}
+	public void addImportUimafitEngine(RutaBlock parent, String namespace) {
+		parent.getScript().addUimafitEngine(namespace, null);
+	}
 	
 	
 	protected static final int[] getBounds(Token t) {
@@ -352,6 +355,7 @@ importStatement returns [RutaStatement stmt = null]
 	TypeSystemString ts = dottedIdentifier2{addImportTypeSystem($blockDeclaration::env, ts);} SEMI
 	| ScriptString ns = dottedIdentifier2{addImportScript($blockDeclaration::env, ns);} SEMI
 	| EngineString ns = dottedIdentifier2{addImportEngine($blockDeclaration::env, ns);} SEMI
+	| UimafitString ns = dottedIdentifier2{addImportUimafitEngine($blockDeclaration::env, ns);} SEMI
 	;
 
 declaration returns [RutaStatement stmt = null]

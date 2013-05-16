@@ -53,6 +53,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.dltk.core.IScriptProject;
+import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.JavaCore;
@@ -137,10 +138,19 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
 
   @Override
   public String[] getClasspath(ILaunchConfiguration configuration) throws CoreException {
-    RutaIdePlugin d = RutaIdePlugin.getDefault();
+    
     List<String> extendedClasspath = new ArrayList<String>();
     Collections.addAll(extendedClasspath, super.getClasspath(configuration));
+    IScriptProject scriptProject = AbstractScriptLaunchConfigurationDelegate
+            .getScriptProject(configuration);
+    extendedClasspath.addAll(getClassPath(scriptProject));
 
+    return extendedClasspath.toArray(new String[extendedClasspath.size()]);
+  }
+
+  public static List<String> getClassPath(IScriptProject project) throws CoreException {
+    RutaIdePlugin d = RutaIdePlugin.getDefault();
+    List<String> extendedClasspath = new ArrayList<String>();
     // Normal mode, add the launcher plugin and uima runtime jar to the classpath
     if (!Platform.inDevelopmentMode()) {
       try {
@@ -188,17 +198,15 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
                 "Failed to compose classpath!", e));
       }
     }
-
-    Collection<String> dependencies = getDependencies(configuration);
+    Collection<String> dependencies = getDependencies(project);
     extendedClasspath.addAll(dependencies);
 
-    Collection<String> extensions = getExtensions(configuration);
+    Collection<String> extensions = getExtensions();
     extendedClasspath.addAll(extensions);
-
-    return extendedClasspath.toArray(new String[extendedClasspath.size()]);
+    return extendedClasspath;
   }
 
-  private Collection<String> getExtensions(ILaunchConfiguration configuration) throws CoreException {
+  private static Collection<String> getExtensions() throws CoreException {
     RutaIdePlugin d = RutaIdePlugin.getDefault();
     Collection<String> result = new TreeSet<String>();
     IExtension[] extensions = Platform.getExtensionRegistry()
@@ -220,12 +228,9 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     return result;
   }
 
-  private Collection<String> getDependencies(ILaunchConfiguration configuration)
+  private static Collection<String> getDependencies(IScriptProject scriptProject)
           throws CoreException {
     Collection<String> result = new TreeSet<String>();
-
-    IScriptProject scriptProject = AbstractScriptLaunchConfigurationDelegate
-            .getScriptProject(configuration);
     IProject[] referencedProjects = scriptProject.getProject().getReferencedProjects();
     for (IProject eachProject : referencedProjects) {
       // for each java project
@@ -234,7 +239,7 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     return result;
   }
 
-  private void extendClasspathWithProject(Collection<String> result, IProject project,
+  private static void extendClasspathWithProject(Collection<String> result, IProject project,
           Collection<IProject> visited) throws CoreException, JavaModelException {
     IProjectNature nature = project.getNature(RutaProjectUtils.JAVANATURE);
     if (nature != null) {

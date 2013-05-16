@@ -195,6 +195,9 @@ import org.apache.uima.ruta.ide.parser.ast.RutaPackageDeclaration;
 	  public void addImportEngine(ComponentDeclaration module) {
 		    descriptor.addEngine(module.getName());
 		  }
+	   public void addImportUimafitEngine(ComponentDeclaration module) {
+	    descriptor.addUimafitEngine(module.getName());
+	  }
 	
 	protected static final int[] getBounds(Token t) {
 		if (t instanceof CommonToken) {
@@ -319,6 +322,11 @@ importStatement returns [Statement stmt = null]
 	{stmt = StatementFactory.createImportEngine(StatementFactory.createEmptyComponentDeclaration(im),im);} 
 	name = dottedComponentDeclaration 
 	{if(name != null) {stmt = StatementFactory.createImportEngine(name,im);addImportEngine(name);}}
+	 SEMI 
+	 | im = UimafitString 
+	{stmt = StatementFactory.createImportEngine(StatementFactory.createEmptyComponentDeclaration(im),im);} 
+	name = dottedComponentDeclaration 
+	{if(name != null) {stmt = StatementFactory.createImportEngine(name,im);addImportUimafitEngine(name);}}
 	 SEMI 
 	;
 	

@@ -150,7 +150,9 @@ licensed under the Common Public License.</postNoticeText>
                   org.htmlparser,
                   org.htmlparser.*,
                   org.apache.commons.lang3.*,
-                  org.apache.commons.io.*
+                  org.apache.commons.io.*,
+                  org.apache.uima.fit.*,
+                  org.reflections.*
                 </_exportcontents>
                 <Require-Bundle>
                   org.apache.uima.runtime

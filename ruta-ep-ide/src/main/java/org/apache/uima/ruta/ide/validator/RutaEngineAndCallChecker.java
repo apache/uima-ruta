@@ -19,10 +19,18 @@
 
 package org.apache.uima.ruta.ide.validator;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.uima.ruta.ide.RutaIdePlugin;
+import org.apache.uima.ruta.ide.launching.RutaLaunchConfigurationDelegate;
 import org.apache.uima.ruta.ide.parser.ast.RutaActionConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaStatementConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaAction;
@@ -64,6 +72,8 @@ public class RutaEngineAndCallChecker implements IBuildParticipant,
 
     private HashSet<String> scriptsInnerBlocks;
 
+    private URLClassLoader classloader;
+
     public EngineAndCallCheckerVisitor(IProblemReporter rep, ISourceLineTracker linetracker,
             String curFile) {
       this.problemFactory = new RutaCheckerProblemFactory(curFile, linetracker);
@@ -84,6 +94,23 @@ public class RutaEngineAndCallChecker implements IBuildParticipant,
       } catch (IOException e) {
       } catch (ModelException e) {
       }
+      
+      try {
+        Collection<String> dependencies = RutaLaunchConfigurationDelegate.getClassPath(project);
+        URL[] urls = new URL[dependencies.size()];
+        int counter = 0;
+        for (String dep : dependencies) {
+          urls[counter] = new File(dep).toURL();
+          counter ++;
+          }
+          classloader = new URLClassLoader(urls);
+      } catch (CoreException e) {
+        RutaIdePlugin.error(e);
+      } catch (MalformedURLException e) {
+        RutaIdePlugin.error(e);
+      }
+      
+      
     }
 
     @Override
@@ -93,6 +120,15 @@ public class RutaEngineAndCallChecker implements IBuildParticipant,
         if (((RutaImportStatement) s).getType() == RutaStatementConstants.S_IMPORT_ENGINE) {
           SimpleReference sRef = (SimpleReference) ((RutaImportStatement) s).getExpression();
           if (RutaCheckerUtils.checkEngineImport(sRef.getName(), project)) {
+            importEngine(sRef.getName());
+          } else {
+            IProblem problem = problemFactory.createFileNotFoundProblem(sRef);
+            rep.reportProblem(problem);
+          }
+        }
+        if (((RutaImportStatement) s).getType() == RutaStatementConstants.S_IMPORT_UIMAFIT_ENGINE) {
+          SimpleReference sRef = (SimpleReference) ((RutaImportStatement) s).getExpression();
+          if (RutaCheckerUtils.checkEngineOnClasspath(sRef.getName(), project, classloader)) {
             importEngine(sRef.getName());
           } else {
             IProblem problem = problemFactory.createFileNotFoundProblem(sRef);

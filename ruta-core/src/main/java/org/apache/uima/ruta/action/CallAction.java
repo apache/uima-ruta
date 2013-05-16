@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -59,7 +60,11 @@ public class CallAction extends AbstractRutaAction {
           InferenceCrowd crowd) {
 
     RutaModule thisScript = element.getParent().getScript();
-
+Map<String, AnalysisEngine> engines = thisScript.getEngines();
+Set<Entry<String, AnalysisEngine>> entrySet = engines.entrySet();
+for (Entry<String, AnalysisEngine> entry : entrySet) {
+  System.out.println(entry.getKey());
+}
     AnalysisEngine targetEngine = thisScript.getEngine(namespace);
     if (targetEngine != null) {
       try {

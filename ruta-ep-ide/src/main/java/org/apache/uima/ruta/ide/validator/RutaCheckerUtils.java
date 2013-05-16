@@ -29,7 +29,9 @@ import java.util.Set;
 import java.util.Stack;
 
 import org.apache.uima.UIMAFramework;
+import org.apache.uima.analysis_component.AnalysisComponent;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
@@ -182,6 +184,36 @@ public class RutaCheckerUtils {
     return result;
   }
 
+  @SuppressWarnings({ "unchecked", "unused" })
+  public static boolean checkEngineOnClasspath(String clazz, IScriptProject project,
+          ClassLoader classloader) {
+    if (classloader != null) {
+      try {
+        Class<?> loadClass = classloader.loadClass(clazz);
+        Class<?> loadClass2 = classloader.loadClass(AnalysisComponent.class.getName());
+        boolean assignableFrom = loadClass2.isAssignableFrom(loadClass);
+        if (loadClass != null && loadClass2.isAssignableFrom(loadClass)) {
+          return true;
+        }
+      } catch (ClassNotFoundException e) {
+        return false;
+      }
+      return false;
+    } else {
+      try {
+        Class<?> forName = Class.forName(clazz);
+        try {
+          Class<? extends AnalysisComponent> uimafit = (Class<? extends AnalysisComponent>) forName;
+        } catch (Exception e) {
+          return false;
+        }
+      } catch (ClassNotFoundException e) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   public static boolean checkScriptImport(String xmlFilePath, IScriptProject project) {
     boolean result = false;
     List<IFolder> allDescriptorFolders;
@@ -243,8 +275,8 @@ public class RutaCheckerUtils {
    * @return file.exists
    */
   public static IFile getEngine(String xmlFilePath, IScriptProject project) {
-    IFolder folder = project.getProject().getFolder(
-            RutaProjectUtils.getDefaultDescriptorLocation());
+    IFolder folder = project.getProject()
+            .getFolder(RutaProjectUtils.getDefaultDescriptorLocation());
     String fileExtended = xmlFilePath + ".xml";
     return getFile(folder, fileExtended);
   }

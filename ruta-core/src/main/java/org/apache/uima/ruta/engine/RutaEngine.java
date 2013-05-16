@@ -39,6 +39,7 @@ import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_component.AnalysisComponent;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -48,6 +49,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -97,6 +99,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   public static final String ADDITIONAL_SCRIPTS = "additionalScripts";
 
   public static final String ADDITIONAL_ENGINES = "additionalEngines";
+
+  public static final String ADDITIONAL_UIMAFIT_ENGINES = "additionalUimafitEngines";
 
   public static final String ADDITIONAL_EXTENSIONS = "additionalExtensions";
 
@@ -152,6 +156,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   private String[] additionalEngineLocations;
 
+  private String[] additionalUimafitEngines;
+
   private String[] additionalExtensions;
 
   private String[] additionalEngineLoaders;
@@ -201,6 +207,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     mainScript = (String) aContext.getConfigParameterValue(MAIN_SCRIPT);
     additionalScriptLocations = (String[]) aContext.getConfigParameterValue(ADDITIONAL_SCRIPTS);
     additionalEngineLocations = (String[]) aContext.getConfigParameterValue(ADDITIONAL_ENGINES);
+    additionalUimafitEngines = (String[]) aContext
+            .getConfigParameterValue(ADDITIONAL_UIMAFIT_ENGINES);
     additionalExtensions = (String[]) aContext.getConfigParameterValue(ADDITIONAL_EXTENSIONS);
     additionalEngineLoaders = (String[]) aContext
             .getConfigParameterValue(ADDITIONAL_ENGINE_LOADERS);
@@ -257,7 +265,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
         throw new ResourceInitializationException(e);
       }
     }
-    
+
   }
 
   @Override
@@ -460,7 +468,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
         throw new AnalysisEngineProcessException(new FileNotFoundException("Script [" + mainScript
                 + "] cannot be found at [" + collectionToString(scriptPaths)
                 + "] with extension .ruta"));
-      } 
+      }
     } else {
       try {
         script = loadScript(scriptLocation);
@@ -472,6 +480,32 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     Map<String, RutaModule> additionalScripts = new HashMap<String, RutaModule>();
     Map<String, AnalysisEngine> additionalEngines = new HashMap<String, AnalysisEngine>();
 
+    if (additionalUimafitEngines != null) {
+      for (String eachUimafitEngine : additionalUimafitEngines) {
+        AnalysisEngine eachEngine = null;
+        try {
+          @SuppressWarnings("unchecked")
+//          Class clazz = this.getClass().getClassLoader().loadClass(eachUimafitEngine)       ;  
+          Class<? extends AnalysisComponent> uimafitClass = (Class<? extends AnalysisComponent>) Class
+                  .forName(eachUimafitEngine);
+          eachEngine = AnalysisEngineFactory.createPrimitive(uimafitClass);
+        } catch (ClassNotFoundException e) {
+          throw new AnalysisEngineProcessException(e);
+        } catch (ResourceInitializationException e) {
+          throw new AnalysisEngineProcessException(e);
+        }
+        try {
+          additionalEngines.put(eachUimafitEngine, eachEngine);
+          String[] eachEngineLocationPartArray = eachUimafitEngine.split("\\.");
+          if (eachEngineLocationPartArray.length > 1) {
+            String shortEachEngineLocation = eachEngineLocationPartArray[eachEngineLocationPartArray.length - 1];
+            additionalEngines.put(shortEachEngineLocation, eachEngine);
+          }
+        } catch (Exception e) {
+          throw new AnalysisEngineProcessException(e);
+        }
+      }
+    }
     if (additionalEngineLocations != null) {
       for (String eachEngineLocation : additionalEngineLocations) {
         AnalysisEngine eachEngine;
@@ -538,24 +572,6 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       each.setEngineDependencies(additionalEngines);
     }
     script.setEngineDependencies(additionalEngines);
-  }
-
-  private void configureEngine(AnalysisEngine engine) throws ResourceConfigurationException {
-    ConfigurationParameterDeclarations configurationParameterDeclarations = engine
-            .getAnalysisEngineMetaData().getConfigurationParameterDeclarations();
-    ConfigurationParameter configurationParameter = configurationParameterDeclarations
-            .getConfigurationParameter(null, DESCRIPTOR_PATHS);
-    if (configurationParameter != null) {
-      engine.setConfigParameterValue(DESCRIPTOR_PATHS, descriptorPaths);
-      engine.reconfigure();
-    }
-    configurationParameter = configurationParameterDeclarations.getConfigurationParameter(null,
-            StyleMapCreator.STYLE_MAP);
-    if (configurationParameter != null) {
-      engine.setConfigParameterValue(StyleMapCreator.STYLE_MAP, mainScript + "StyleMap");
-      engine.reconfigure();
-    }
-
   }
 
   public static void addSourceDocumentInformation(CAS cas, File each) {
@@ -645,7 +661,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       throw new AnalysisEngineProcessException(e);
     } catch (RecognitionException e) {
       throw new AnalysisEngineProcessException(e);
-    } 
+    }
   }
 
   private TypeSystemDescription getLocalTSD(String toLoad) throws InvalidXMLException, IOException {
@@ -665,7 +681,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
           localTSD = UIMAFramework.getXMLParser().parseTypeSystemDescription(
                   new XMLInputSource(tsInputStream, null));
         } catch (Exception e) {
-         e.printStackTrace();
+          e.printStackTrace();
         }
       }
       if (localTSD != null) {
@@ -688,8 +704,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     return result;
   }
 
-  private RutaModule loadScript(String scriptLocation)
-          throws IOException, RecognitionException {
+  private RutaModule loadScript(String scriptLocation) throws IOException, RecognitionException {
     File scriptFile = new File(scriptLocation);
     CharStream st = new ANTLRFileStream(scriptLocation, scriptEncoding);
     RutaLexer lexer = new RutaLexer(st);
@@ -704,8 +719,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     return script;
   }
 
-  private RutaModule loadScriptIS(String scriptLocation)
-          throws IOException, RecognitionException {
+  private RutaModule loadScriptIS(String scriptLocation) throws IOException, RecognitionException {
     InputStream scriptInputStream = getClass().getClassLoader().getResourceAsStream(scriptLocation);
     CharStream st = new ANTLRInputStream(scriptInputStream, scriptEncoding);
     RutaLexer lexer = new RutaLexer(st);

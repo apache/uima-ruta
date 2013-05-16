@@ -379,6 +379,10 @@ public class RutaSimpleBuilder {
     analysisEngineDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
             .setParameterValue(RutaEngine.ADDITIONAL_ENGINES, additionalEnginesArray);
 
+    String[] additionalUimafitEnginesArray = desc.getImportedUimafitEngines().toArray(new String[] {});
+    analysisEngineDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
+            .setParameterValue(RutaEngine.ADDITIONAL_UIMAFIT_ENGINES, additionalUimafitEnginesArray);
+    
     analysisEngineDescription.getAnalysisEngineMetaData().setTypeSystem(typeSystemDescription);
 
     configureExtensions(option);
