@@ -28,6 +28,8 @@ public class ComponentDeclaration extends SimpleReference {
   public static int ENGINE = 2;
 
   public static int TYPESYSTEM = 3;
+  
+  public static int UIMAFIT_ENGINE = 4;
 
   private int type;
 

@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -31,15 +32,20 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.uima.UIMAFramework;
+import org.apache.uima.analysis_component.AnalysisComponent;
+import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.internal.ReflectionUtil;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.apache.uima.ruta.ide.RutaIdePlugin;
 import org.apache.uima.ruta.ide.core.IRutaKeywords;
 import org.apache.uima.ruta.ide.core.RutaExtensionManager;
 import org.apache.uima.ruta.ide.core.RutaKeywordsManager;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.ruta.ide.core.extensions.ICompletionExtension;
 import org.apache.uima.ruta.ide.core.parser.RutaParseUtils;
+import org.apache.uima.ruta.ide.launching.RutaLaunchConfigurationDelegate;
 import org.apache.uima.ruta.ide.parser.ast.ComponentDeclaration;
 import org.apache.uima.ruta.ide.parser.ast.ComponentReference;
 import org.apache.uima.ruta.ide.parser.ast.RutaAction;
@@ -64,11 +70,15 @@ import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.core.SourceField;
 import org.eclipse.dltk.internal.core.SourceMethod;
 import org.eclipse.dltk.internal.core.SourceModule;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.util.ConfigurationBuilder;
 
 public class RutaCompletionEngine extends ScriptCompletionEngine {
 
@@ -79,6 +89,8 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
   protected final static boolean TRACE_COMPLETION_TIME = false;
 
   private ICompletionExtension[] extensions;
+
+  private URLClassLoader classloader = null;
 
   public RutaCompletionEngine() {
     extensions = RutaExtensionManager.getDefault().getCompletionExtensions();
@@ -119,15 +131,32 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
     RutaModuleDeclaration parsed = (RutaModuleDeclaration) this.parser.parse(module);
 
     // types = getShortNames(types);
+    if (classloader == null) {
+      IScriptProject scriptProject = sourceModule.getModelElement().getScriptProject();
+      try {
+        Collection<String> dependencies = RutaLaunchConfigurationDelegate
+                .getClassPath(scriptProject);
+        URL[] urls = new URL[dependencies.size()];
+        int counter = 0;
+        for (String dep : dependencies) {
+          urls[counter] = new File(dep).toURL();
+          counter++;
+        }
+        classloader = new URLClassLoader(urls);
+      } catch (CoreException e) {
+        RutaIdePlugin.error(e);
+      } catch (MalformedURLException e) {
+        RutaIdePlugin.error(e);
+      }
+    }
 
     ASTNode node;
     if (parsed != null) {
       try {
-        RutaReferenceVisitor referenceVisitor = new RutaReferenceVisitor(
-                actualCompletionPosition);
+        RutaReferenceVisitor referenceVisitor = new RutaReferenceVisitor(actualCompletionPosition);
         parsed.traverse(referenceVisitor);
         node = referenceVisitor.getResult();
-        
+
         if (node == null) {
           doCompletionOnEmptyStatement(module, position, i);
           doCompletionOnDeclaration(module, startPart);
@@ -135,7 +164,7 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
           int type = ((RutaVariableReference) node).getType();
           doCompletionOnVarRef(module, parsed, startPart, type,
                   ((RutaVariableReference) node).getName());
-          if(RutaParseUtils.isAtLineStart(node, content)) {
+          if (RutaParseUtils.isAtLineStart(node, content)) {
             doCompletionOnDeclaration(module, startPart);
           }
         } else if (node instanceof ComponentDeclaration) {
@@ -147,7 +176,8 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
         } else if (node instanceof RutaAction) {
           doCompletionOnAction(module, parsed, startPart, RutaTypeConstants.RUTA_TYPE_A, startPart);
         } else if (node instanceof RutaCondition) {
-          doCompletionOnCondition(module, parsed, startPart, RutaTypeConstants.RUTA_TYPE_C, startPart);
+          doCompletionOnCondition(module, parsed, startPart, RutaTypeConstants.RUTA_TYPE_C,
+                  startPart);
         }
         // if(requestor.)
         // doCompletionOnKeyword(position, i, startPart);
@@ -162,8 +192,8 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
     }
   }
 
-  private void doCompletionOnComponentReference(IModuleSource cu,
-          RutaModuleDeclaration parsed, String startPart, int type, String complString) {
+  private void doCompletionOnComponentReference(IModuleSource cu, RutaModuleDeclaration parsed,
+          String startPart, int type, String complString) {
     Collection<String> importedEngines = parsed.descriptorInfo.getImportedEngines();
     for (String string : importedEngines) {
       if (match(complString, string)) {
@@ -196,9 +226,8 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
     }
   }
 
-  private void doCompletionOnComponentDeclaration(IModuleSource cu,
-          RutaModuleDeclaration parsed, String startPart, int type, String complString)
-          throws Exception {
+  private void doCompletionOnComponentDeclaration(IModuleSource cu, RutaModuleDeclaration parsed,
+          String startPart, int type, String complString) throws Exception {
     if (type == ComponentDeclaration.SCRIPT) {
       List<IFolder> scriptFolders = RutaProjectUtils.getAllScriptFolders(sourceModule
               .getModelElement().getScriptProject());
@@ -211,6 +240,17 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
         }
       }
       for (String string : scripts) {
+        if (match(complString, string)) {
+          addProposal(complString, string, CompletionProposal.PACKAGE_REF);
+        }
+      }
+    } else if (type == ComponentDeclaration.UIMAFIT_ENGINE) {
+      List<String> engines = new ArrayList<String>();
+      Reflections reflections = new Reflections(new ConfigurationBuilder().addUrls(
+              classloader.getURLs()).setScanners(new SubTypesScanner(true)));
+      Set<String> subTypesOf = reflections.getStore().getSubTypesOf(AnalysisComponent.class.getName());
+      engines.addAll(subTypesOf);
+      for (String string : engines) {
         if (match(complString, string)) {
           addProposal(complString, string, CompletionProposal.PACKAGE_REF);
         }
@@ -328,8 +368,8 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
 
   private Set<String> importTypeSystem(String xmlFilePath, IProject project)
           throws InvalidXMLException, IOException {
-    IFolder folder = project.getProject().getFolder(
-            RutaProjectUtils.getDefaultDescriptorLocation());
+    IFolder folder = project.getProject()
+            .getFolder(RutaProjectUtils.getDefaultDescriptorLocation());
     xmlFilePath = xmlFilePath.substring(0, xmlFilePath.length() - 5) + "TypeSystem.xml";
     return getTypes(folder, xmlFilePath);
   }
@@ -427,7 +467,8 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
             SourceField f = (SourceField) iField;
             int fieldType = RutaParseUtils.getTypeOfIModelElement(f);
             if (RutaTypeConstants.RUTA_TYPE_N == type) {
-              if (fieldType == RutaTypeConstants.RUTA_TYPE_N || fieldType == RutaTypeConstants.RUTA_TYPE_I
+              if (fieldType == RutaTypeConstants.RUTA_TYPE_N
+                      || fieldType == RutaTypeConstants.RUTA_TYPE_I
                       || fieldType == RutaTypeConstants.RUTA_TYPE_D
                       || fieldType == RutaTypeConstants.RUTA_TYPE_F) {
                 addProposal(startPart, f.getElementName(), CompletionProposal.LOCAL_VARIABLE_REF);

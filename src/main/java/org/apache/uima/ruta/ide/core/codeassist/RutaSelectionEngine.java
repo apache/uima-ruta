@@ -114,6 +114,10 @@ public class RutaSelectionEngine extends ScriptSelectionEngine {
           SimpleReference sRef = (SimpleReference) ((RutaImportStatement) s).getExpression();
           importEngine(sRef.getName());
         }
+        if (((RutaImportStatement) s).getType() == RutaStatementConstants.S_IMPORT_ENGINE) {
+          SimpleReference sRef = (SimpleReference) ((RutaImportStatement) s).getExpression();
+          importEngine(sRef.getName());
+        }
         // handle script imports
         if (((RutaImportStatement) s).getType() == RutaStatementConstants.S_IMPORT_SCRIPT) {
           importScript(s);
