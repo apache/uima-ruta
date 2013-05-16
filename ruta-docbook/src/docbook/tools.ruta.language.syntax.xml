@@ -29,7 +29,7 @@
     <programlisting><![CDATA[Script              -> PackageDeclaration GlobalStatements Statements
 PackageDeclaration  -> "PACKAGE" DottedIdentifier ";"
 GlobalStatments     -> GlobalStatement*   
-GlobalStatment      -> ("TYPESYSTEM" | "SCRIPT" | "ENGINE") 
+GlobalStatment      -> ("TYPESYSTEM" | "SCRIPT" | "ENGINE" | "UIMAFIT") 
                        DottedIdentifier2 ";"
 Statements          -> Statement*
 Statement           -> Declaration | VariableDeclaration 

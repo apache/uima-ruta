@@ -538,7 +538,19 @@ Document{-> EXEC(Modifier)};
     finally performs all of these changes in an additonal view called <quote>modified</quote>, which is specified in the configuration parameters of the analysis engine.
     <xref linkend="ugr.tools.ruta.ae.modifier"/> and <xref linkend="ugr.tools.ruta.language.modification"/> provide a more detailed description.
   </para>
-
+  
+  <para>
+    In the last example, a descriptor file was loaded in order to import and apply an external analysis engine. Analysis engines can also be loaded using uimaFIT, 
+    whereas the given class name has to be present in the classpath. In the UIMA Ruta Workbench, you can add a dependency to a java project, which contains the 
+    implementation, to the UIMA Ruta project. If the UIMA Ruta script is applied in a UIMA Pipeline, then the configuration parameter 
+    <link linkend="ugr.tools.ruta.ae.basic.parameter.additionalUimafitEngines">additionalUimafitEngines</link> has to list the class of the analysis engine. 
+    The following example loads an analysis engine without an descriptor and applies it on the document.
+    
+  </para>
+      <programlisting><![CDATA[UIMAFIT my.package.impl.MyAnalysisEngine;
+Document{-> EXEC(MyAnalysisEngine)};
+]]></programlisting>
+  
   </section>
   
   <section id="ugr.tools.ruta.ae">
@@ -726,6 +738,15 @@ ae.process(cas);]]></programlisting>
                 </row>
                 <row>
                   <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.additionalUimafitEngines'>additionalUimafitEngines</link>
+                  </entry>
+                  <entry>List of class names with complete namespace of additional analysis engines, which can be
+                    referred to.
+                  </entry>
+                  <entry>Multi String</entry>
+                </row>
+                <row>
+                  <entry>
                     <link linkend='ugr.tools.ruta.ae.basic.parameter.additionalExtensions'>additionalExtensions</link>
                   </entry>
                   <entry>List of factory classes for additional extensions of the UIMA Ruta language
@@ -908,6 +929,14 @@ ae.process(cas);]]></programlisting>
             The parameter "additionalEngineLoaders" specifies a list of optional implementations of the interface 
             "org.apache.uima.ruta.extensions.IEngineLoader", which can be used to application-specific configurations of
             additional analysis engines.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.additionalUimafitEngines">
+          <title>additionalUimafitEngines</title>
+          <para>
+            This parameter contains a list of additional analysis engines, which can be executed by the UIMA Ruta rules. The single values
+            are given by the name of the implementation with the complete namespace and have to be present int he classpath of the application.
+            An example for one value of the parameter is "org.apache.uima.ruta.engine.HtmlAnnotator", which points to the "HtmlAnnotator" class.
           </para>
         </section>
         <section id="ugr.tools.ruta.ae.basic.parameter.additionalExtensions">

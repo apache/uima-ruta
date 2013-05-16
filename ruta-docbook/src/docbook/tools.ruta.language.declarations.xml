@@ -205,26 +205,31 @@ Document{->CALL(AnotherScript)}; // <- rule executes "AnotherScript.ruta"]]></pr
   <section id="ugr.tools.ruta.language.declarations.components">
     <title>Components</title>
     <para>
-      There are two kinds of UIMA components that can be imported in a
+      There are three kinds of UIMA components that can be imported in a
       UIMA Ruta script:
       <itemizedlist mark='opencircle'>
         <listitem>
           <para>
-            Type System: includes the types defined in an
-            external type
-            system.
+            Type System (TYPESYSTEM): includes the types defined in an
+            external type system.
           </para>
         </listitem>
         <listitem>
           <para>
-            Analysis Engine: makes an external analysis
-            engine available.
-            The
-            type system needed for the analysis engine has
-            to be imported
-            seperately. Please mind the filtering setting when
-            calling an
-            external analysis engine.
+            Analysis Engine (ENGINE): loads the given descriptor and creates an external analysis
+            engine. The descriptor  must be located in the descriptor paths.
+            The type system needed for the analysis engine has
+            to be imported seperately. Please mind the filtering setting when
+            calling an external analysis engine.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Analysis Engine (UIMAFIT): loads the given class and creates an external analysis
+            engine. Please mind that the implementation of the analysis engine needs to be available. 
+            The type system needed for the analysis engine has
+            to be imported seperately. Please mind the filtering setting when
+            calling an external analysis engine.
           </para>
         </listitem>
       </itemizedlist>
@@ -236,10 +241,12 @@ Document{->CALL(AnotherScript)}; // <- rule executes "AnotherScript.ruta"]]></pr
         <para>
           <programlisting><![CDATA[ENINGE my.package.ExternalEngine; // <- "ExternalEngine.xml" in the 
  // "my.package" package (in the descriptor folder)
+UIMAFIT my.implementation.AnotherEngine;
 TYPESYSTEM my.package.ExternalTypeSystem; // <- "ExternalTypeSystem.xml" 
  // in the "my.package" package (in the descriptor folder)
 Document{->RETAINTYPE(SPACE,BREAK),CALL(ExternalEngine)}; 
  // calls ExternalEngine, but retains white spaces]]></programlisting>
+Document{-> EXEC(AnotherEngine, {SomeType})};
         </para>
       </section>
   </section>
