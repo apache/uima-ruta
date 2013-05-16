@@ -95,9 +95,7 @@ public class RutaModule extends RutaElement {
       for (String each : engines.keySet()) {
         String[] split = each.split("\\.");
         String last = split[split.length - 1];
-        System.out.println(last+ " vs " + name);
         if (last.equals(name)) {
-          System.out.println("found");
           return engines.get(each);
         }
       }

@@ -57,9 +57,6 @@ public class UnmarkAllTest {
     
     t = RutaTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
-    for (AnnotationFS annotationFS : ai) {
-      System.out.println(annotationFS);
-    }
     iterator = ai.iterator();
     assertEquals(0, ai.size());
     

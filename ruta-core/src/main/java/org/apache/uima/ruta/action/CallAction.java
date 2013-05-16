@@ -58,13 +58,7 @@ public class CallAction extends AbstractRutaAction {
   @Override
   public void execute(RuleMatch match, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
-
     RutaModule thisScript = element.getParent().getScript();
-Map<String, AnalysisEngine> engines = thisScript.getEngines();
-Set<Entry<String, AnalysisEngine>> entrySet = engines.entrySet();
-for (Entry<String, AnalysisEngine> entry : entrySet) {
-  System.out.println(entry.getKey());
-}
     AnalysisEngine targetEngine = thisScript.getEngine(namespace);
     if (targetEngine != null) {
       try {

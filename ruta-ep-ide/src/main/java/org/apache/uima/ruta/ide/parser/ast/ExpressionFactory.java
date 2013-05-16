@@ -253,9 +253,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
     int bounds[] = getBounds(op);
     if (expr != null) {
       bounds[1] = expr.sourceEnd();
-    } else {
-      System.out.println("debug::expr==null->null pointer Excptn");
-    }
+    } 
     int opID = convertOpToInt(op);
     return new RutaUnaryArithmeticExpression(bounds[0], bounds[1], expr, opID);
   }
