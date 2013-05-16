@@ -548,8 +548,6 @@ public class RutaAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
           }
           lnum--;
         }
-        // no mathing "try"
-        // System.out.println ("No matching 'try'!");
         return null;
       }
 

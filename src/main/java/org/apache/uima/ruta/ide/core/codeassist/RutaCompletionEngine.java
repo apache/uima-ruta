@@ -185,7 +185,6 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
         // }
       } catch (Exception e) {
         System.out.println("no completion node found");
-        System.out.println("");
       } finally {
         this.requestor.endReporting();
       }

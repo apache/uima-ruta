@@ -83,7 +83,6 @@ public class ExternalTypeHyperlinkDetector implements IHyperlinkDetector {
       IRegion wordRegion = ScriptWordFinder.findWord(document, offset);
       if (wordRegion == null)
         return null;
-      // System.out.println(wordRegion);
       if (input instanceof ISourceModule) {
         ISourceModule sm = (ISourceModule) input;
         IModelElement modelElement = sm.getModelElement();
