@@ -257,8 +257,7 @@ public class RutaCheckBuilder implements IBuildParticipant, IBuildParticipantExt
     // Receive main package and it paths.
     if (checkPackage(packageName)) {
       reportPackageProblem(pkg, reporter, module,
-              NLS.bind(Messages.RutaCheckBuilder_unresolvedDependencies, packageName),
-              packageName);
+              NLS.bind(Messages.RutaCheckBuilder_unresolvedDependencies, packageName), packageName);
       return;
     }
 
@@ -318,9 +317,7 @@ public class RutaCheckBuilder implements IBuildParticipant, IBuildParticipantExt
   }
 
   public void prepare(IBuildChange buildChange, IBuildState buildState) throws CoreException {
-    
-  }
 
- 
+  }
 
 }

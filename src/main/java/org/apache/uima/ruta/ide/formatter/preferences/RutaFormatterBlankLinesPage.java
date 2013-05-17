@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.formatter.preferences;
 
@@ -31,7 +31,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
-
 public class RutaFormatterBlankLinesPage extends FormatterModifyTabPage {
 
   /**
@@ -46,8 +45,7 @@ public class RutaFormatterBlankLinesPage extends FormatterModifyTabPage {
     Group emptyLinesGroup = SWTFactory.createGroup(parent,
             Messages.RutaFormatterBlankLinesPage_blankLinesBeforeDeclarations, 2, 1,
             GridData.FILL_HORIZONTAL);
-    manager.createNumber(emptyLinesGroup,
-            RutaFormatterConstants.LINES_BEFORE_LONG_DECLARATIONS,
+    manager.createNumber(emptyLinesGroup, RutaFormatterConstants.LINES_BEFORE_LONG_DECLARATIONS,
             Messages.RutaFormatterBlankLinesPage_beforeDeclarations);
     // manager.createNumber(emptyLinesGroup,
     // RutaFormatterConstants.LINES_FILE_BETWEEN_BLOCK,
@@ -85,7 +83,7 @@ public class RutaFormatterBlankLinesPage extends FormatterModifyTabPage {
 
   @Override
   protected URL getPreviewContent() {
-    return getClass().getResource("blank-lines-preview"+RutaEngine.SCRIPT_FILE_EXTENSION); //$NON-NLS-1$
+    return getClass().getResource("blank-lines-preview" + RutaEngine.SCRIPT_FILE_EXTENSION); //$NON-NLS-1$
   }
 
 }

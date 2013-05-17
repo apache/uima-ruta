@@ -21,8 +21,8 @@ package org.apache.uima.ruta.ide.ui.templates;
 
 import org.apache.uima.ruta.ide.RutaIdePlugin;
 import org.apache.uima.ruta.ide.ui.RutaPartitions;
-import org.apache.uima.ruta.ide.ui.text.SimpleRutaSourceViewerConfiguration;
 import org.apache.uima.ruta.ide.ui.text.RutaTextTools;
+import org.apache.uima.ruta.ide.ui.text.SimpleRutaSourceViewerConfiguration;
 import org.eclipse.dltk.ui.templates.ScriptTemplateAccess;
 import org.eclipse.dltk.ui.templates.ScriptTemplatePreferencePage;
 import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;

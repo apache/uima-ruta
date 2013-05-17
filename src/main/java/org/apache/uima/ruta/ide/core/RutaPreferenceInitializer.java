@@ -30,7 +30,7 @@ public class RutaPreferenceInitializer extends AbstractPreferenceInitializer {
 
   public void initializeDefaultPreferences() {
     IPreferenceStore store = RutaIdePlugin.getDefault().getPreferenceStore();
-//    TaskTagUtils.initializeDefaultValues(store);
+    // TaskTagUtils.initializeDefaultValues(store);
     store.setDefault(RutaCorePreferences.BUILDER_IMPORT_BY_NAME, false);
     store.setDefault(RutaCorePreferences.BUILDER_RESOLVE_IMPORTS, false);
     store.setDefault(RutaCorePreferences.BUILDER_IGNORE_DUPLICATE_SHORTNAMES, false);

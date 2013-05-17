@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.core.codeassist;
 
@@ -41,7 +41,6 @@ import org.eclipse.dltk.core.IParent;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
-
 
 public class RutaResolver {
   private IResolveElementParent resolver;
@@ -169,10 +168,10 @@ public class RutaResolver {
           } else if (nde instanceof MethodDeclaration) {
             searchInMethod(node, element, nde, selectionElements);
           } /*
-             * else if (nde instanceof RutaStatement) { RutaStatement s =
-             * (RutaStatement) nde; Expression commandId = s.getAt(0); final IParent e =
-             * element; if (commandId != null && commandId instanceof SimpleReference) { String
-             * qname = ((SimpleReference) commandId) .getName(); } }
+             * else if (nde instanceof RutaStatement) { RutaStatement s = (RutaStatement) nde;
+             * Expression commandId = s.getAt(0); final IParent e = element; if (commandId != null
+             * && commandId instanceof SimpleReference) { String qname = ((SimpleReference)
+             * commandId) .getName(); } }
              */
           else {
             final IParent e = element;

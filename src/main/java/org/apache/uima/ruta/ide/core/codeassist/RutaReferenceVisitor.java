@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.core.codeassist;
 
@@ -28,7 +28,6 @@ import org.apache.uima.ruta.ide.parser.ast.RutaVariableReference;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
-
 
 public class RutaReferenceVisitor extends ASTVisitor {
   private ASTNode result = null;
@@ -58,18 +57,16 @@ public class RutaReferenceVisitor extends ASTVisitor {
     } else if (s instanceof RutaAction && ((RutaAction) s).getNameStart() <= start
             && start <= ((RutaAction) s).getNameEnd()) {
       result = s;
-    } else if (s instanceof RutaAction && ((RutaAction) s).getNameStart()-1 == start
-            && start == ((RutaAction) s).getNameEnd()-1) {
+    } else if (s instanceof RutaAction && ((RutaAction) s).getNameStart() - 1 == start
+            && start == ((RutaAction) s).getNameEnd() - 1) {
       result = s;
-    } else if (s instanceof RutaCondition
-            && ((RutaCondition) s).getNameStart() <= start
+    } else if (s instanceof RutaCondition && ((RutaCondition) s).getNameStart() <= start
             && start <= ((RutaCondition) s).getNameEnd()) {
       result = s;
-    } else if (s instanceof RutaCondition
-            && ((RutaCondition) s).getNameStart()-1 == start
-            && start == ((RutaCondition) s).getNameEnd()-1) {
+    } else if (s instanceof RutaCondition && ((RutaCondition) s).getNameStart() - 1 == start
+            && start == ((RutaCondition) s).getNameEnd() - 1) {
       result = s;
-    } else if(s instanceof RutaExpression && s.sourceStart() == start && s.sourceEnd() == start) {
+    } else if (s instanceof RutaExpression && s.sourceStart() == start && s.sourceEnd() == start) {
       result = s;
     }
     return super.visit(s);

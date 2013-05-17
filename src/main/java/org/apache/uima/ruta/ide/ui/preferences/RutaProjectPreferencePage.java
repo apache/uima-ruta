@@ -29,13 +29,13 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 /**
  * Preference page to manage preferences for the ide plugin.
  */
-public class RutaProjectPreferencePage extends FieldEditorPreferencePage
-        implements IWorkbenchPreferencePage {
+public class RutaProjectPreferencePage extends FieldEditorPreferencePage implements
+        IWorkbenchPreferencePage {
 
   private BooleanFieldEditor clearOutput;
-  
+
   private BooleanFieldEditor noVM;
-  
+
   public RutaProjectPreferencePage() {
     setPreferenceStore(RutaIdePlugin.getDefault().getPreferenceStore());
     setDescription("Project Management");
@@ -43,10 +43,10 @@ public class RutaProjectPreferencePage extends FieldEditorPreferencePage
 
   @Override
   protected void createFieldEditors() {
-	  clearOutput = new BooleanFieldEditor(RutaCorePreferences.PROJECT_CLEAR_OUTPUT,
+    clearOutput = new BooleanFieldEditor(RutaCorePreferences.PROJECT_CLEAR_OUTPUT,
             RutaPreferencesMessages.ProjectClearOutput, getFieldEditorParent());
     addField(clearOutput);
-    
+
     noVM = new BooleanFieldEditor(RutaCorePreferences.NO_VM_IN_DEV_MODE,
             RutaPreferencesMessages.NoVMInDevMode, getFieldEditorParent());
     addField(noVM);
@@ -55,6 +55,5 @@ public class RutaProjectPreferencePage extends FieldEditorPreferencePage
 
   public void init(IWorkbench workbench) {
   }
-  
- 
+
 }

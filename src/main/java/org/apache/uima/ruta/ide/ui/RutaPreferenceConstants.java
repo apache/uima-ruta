@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.ui;
 
@@ -26,7 +26,6 @@ import org.eclipse.dltk.ui.preferences.NewScriptProjectPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.swt.graphics.RGB;
-
 
 public class RutaPreferenceConstants extends PreferenceConstants {
 
@@ -233,40 +232,40 @@ public class RutaPreferenceConstants extends PreferenceConstants {
     PreferenceConverter.setDefault(store, COMMENT_TASK_TAGS, new RGB(127, 159, 191));
     store.setDefault(COMMENT_TASK_TAGS_BOLD, true);
 
-    PreferenceConverter.setDefault(store,
-            RutaPreferenceConstants.EDITOR_SINGLE_LINE_COMMENT_COLOR, new RGB(63, 127, 95));
+    PreferenceConverter.setDefault(store, RutaPreferenceConstants.EDITOR_SINGLE_LINE_COMMENT_COLOR,
+            new RGB(63, 127, 95));
     store.setDefault(RutaPreferenceConstants.EDITOR_SINGLE_LINE_COMMENT_BOLD, false);
     store.setDefault(RutaPreferenceConstants.EDITOR_SINGLE_LINE_COMMENT_ITALIC, false);
 
     PreferenceConverter.setDefault(store, RutaPreferenceConstants.EDITOR_DOC_COMMENT_COLOR,
             new RGB(63, 127, 95));
 
-    PreferenceConverter.setDefault(store, RutaPreferenceConstants.EDITOR_STRING_COLOR,
-            new RGB(42, 0, 255));
-    PreferenceConverter.setDefault(store, RutaPreferenceConstants.EDITOR_NUMBER_COLOR,
-            new RGB(128, 0, 0));
+    PreferenceConverter.setDefault(store, RutaPreferenceConstants.EDITOR_STRING_COLOR, new RGB(42,
+            0, 255));
+    PreferenceConverter.setDefault(store, RutaPreferenceConstants.EDITOR_NUMBER_COLOR, new RGB(128,
+            0, 0));
 
-    PreferenceConverter.setDefault(store, RutaPreferenceConstants.EDITOR_VARIABLE_COLOR,
-            new RGB(200, 0, 0));
+    PreferenceConverter.setDefault(store, RutaPreferenceConstants.EDITOR_VARIABLE_COLOR, new RGB(
+            200, 0, 0));
 
     // Functions
-    PreferenceConverter.setDefault(store, RutaPreferenceConstants.EDITOR_FUNCTION_COLOR,
-            new RGB(50, 50, 200));
+    PreferenceConverter.setDefault(store, RutaPreferenceConstants.EDITOR_FUNCTION_COLOR, new RGB(
+            50, 50, 200));
     store.setDefault(RutaPreferenceConstants.EDITOR_FUNCTION_COLOR_BOLD, true);
 
     // Conditions
-    PreferenceConverter.setDefault(store, RutaPreferenceConstants.EDITOR_CONDITION_COLOR,
-            new RGB(0, 128, 0));
+    PreferenceConverter.setDefault(store, RutaPreferenceConstants.EDITOR_CONDITION_COLOR, new RGB(
+            0, 128, 0));
     store.setDefault(RutaPreferenceConstants.EDITOR_CONDITION_COLOR_BOLD, true);
 
     // Actions
-    PreferenceConverter.setDefault(store, RutaPreferenceConstants.EDITOR_ACTION_COLOR,
-            new RGB(0, 0, 128));
+    PreferenceConverter.setDefault(store, RutaPreferenceConstants.EDITOR_ACTION_COLOR, new RGB(0,
+            0, 128));
     store.setDefault(RutaPreferenceConstants.EDITOR_ACTION_COLOR_BOLD, true);
 
     // Then
-    PreferenceConverter.setDefault(store, RutaPreferenceConstants.EDITOR_THEN_COLOR, new RGB(
-            0, 0, 0));
+    PreferenceConverter.setDefault(store, RutaPreferenceConstants.EDITOR_THEN_COLOR, new RGB(0, 0,
+            0));
     store.setDefault(RutaPreferenceConstants.EDITOR_THEN_COLOR_BOLD, true);
 
     // Declarations
@@ -276,8 +275,7 @@ public class RutaPreferenceConstants extends PreferenceConstants {
 
     // basic tokens
     PreferenceConverter.setDefault(store,
-            RutaPreferenceConstants.EDITOR_BASICSYMBOL_DEFINITION_COLOR, new RGB(128, 128,
-                    128));
+            RutaPreferenceConstants.EDITOR_BASICSYMBOL_DEFINITION_COLOR, new RGB(128, 128, 128));
     store.setDefault(RutaPreferenceConstants.EDITOR_BASICSYMBOL_DEFINITION_COLOR_BOLD, true);
 
     store.setDefault(PreferenceConstants.EDITOR_CLOSE_STRINGS, false);

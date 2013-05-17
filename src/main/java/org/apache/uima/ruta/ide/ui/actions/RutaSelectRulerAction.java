@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.ui.actions;
 
@@ -29,7 +29,7 @@ public class RutaSelectRulerAction extends AbstractRulerActionDelegate {
 
   @Override
   protected IAction createAction(ITextEditor editor, IVerticalRulerInfo rulerInfo) {
-    return new RutaSelectAnnotationRulerAction(DLTKEditorMessages
-            .getBundleForConstructedKeys(), "SelectAnnotationRulerAction.", editor, rulerInfo); //$NON-NLS-1$
+    return new RutaSelectAnnotationRulerAction(DLTKEditorMessages.getBundleForConstructedKeys(),
+            "SelectAnnotationRulerAction.", editor, rulerInfo); //$NON-NLS-1$
   }
 }

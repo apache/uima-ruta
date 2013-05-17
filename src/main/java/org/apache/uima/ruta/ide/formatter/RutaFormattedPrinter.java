@@ -27,13 +27,13 @@ import java.util.Map;
 
 import org.antlr.runtime.CommonToken;
 import org.apache.uima.ruta.ide.parser.ast.ComposedRuleElement;
-import org.apache.uima.ruta.ide.parser.ast.RutaConditionConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaAbstractDeclaration;
 import org.apache.uima.ruta.ide.parser.ast.RutaAction;
 import org.apache.uima.ruta.ide.parser.ast.RutaBinaryArithmeticExpression;
 import org.apache.uima.ruta.ide.parser.ast.RutaBlock;
 import org.apache.uima.ruta.ide.parser.ast.RutaBooleanNumberExpression;
 import org.apache.uima.ruta.ide.parser.ast.RutaCondition;
+import org.apache.uima.ruta.ide.parser.ast.RutaConditionConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaDeclarationsStatement;
 import org.apache.uima.ruta.ide.parser.ast.RutaDeclareDeclarationsStatement;
 import org.apache.uima.ruta.ide.parser.ast.RutaExpression;
@@ -126,8 +126,7 @@ public class RutaFormattedPrinter extends ASTVisitor {
   private boolean retainLB = true;
 
   public RutaFormattedPrinter(FormatterDocument document, String lineDelimiter,
-          IFormatterIndentGenerator indentGenerator, List<CommonToken> comments,
-          RutaFormatter tmf) {
+          IFormatterIndentGenerator indentGenerator, List<CommonToken> comments, RutaFormatter tmf) {
     this.document = document;
     this.lineDelimiter = lineDelimiter;
     this.indentGenerator = indentGenerator;
@@ -383,8 +382,7 @@ public class RutaFormattedPrinter extends ASTVisitor {
       return false;
     }
     // special format for string expressions
-    if (s instanceof RutaStringExpression
-            && ((RutaExpression) s).getExpression() != null) {
+    if (s instanceof RutaStringExpression && ((RutaExpression) s).getExpression() != null) {
       RutaStringExpression tmse = (RutaStringExpression) s;
       List<?> childs = tmse.getExpression().getChilds();
       Object object2 = childs.get(0);

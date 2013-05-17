@@ -112,7 +112,7 @@ public abstract class AbstractFactory {
         if (firstNode != null) {
           bounds[0] = Math.min(bounds[0], firstNode.sourceStart());
         }
-        
+
         ASTNode lastNode = list.get(list.size() - 1);
         if (lastNode != null) {
           bounds[1] = Math.max(bounds[0], lastNode.sourceEnd());
@@ -133,7 +133,7 @@ public abstract class AbstractFactory {
       bounds[0] = Math.min(bounds[0], getBounds(begin)[1]);
     }
   }
-  
+
   /**
    * Applies start/end positions of <code>Token token</code> to <code>Node node</code>
    * 

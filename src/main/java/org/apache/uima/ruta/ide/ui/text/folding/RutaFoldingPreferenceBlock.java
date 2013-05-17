@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.ui.text.folding;
 
@@ -47,7 +47,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-
 
 public class RutaFoldingPreferenceBlock extends AbstractConfigurationBlock implements
         IFoldingPreferenceBlock {
@@ -102,8 +101,7 @@ public class RutaFoldingPreferenceBlock extends AbstractConfigurationBlock imple
               return RutaFoldingMessages.RutaFoldingPreferenceBlock_2;
             }
           };
-          InputDialog dlg = new InputDialog(null,
-                  RutaFoldingMessages.RutaFoldingPreferenceBlock_3,
+          InputDialog dlg = new InputDialog(null, RutaFoldingMessages.RutaFoldingPreferenceBlock_3,
                   RutaFoldingMessages.RutaFoldingPreferenceBlock_4, "", validator);
           if (dlg.open() == Window.OK) {
             fList.add(dlg.getValue());
@@ -201,8 +199,7 @@ public class RutaFoldingPreferenceBlock extends AbstractConfigurationBlock imple
 
   private OverlayKey[] fKeys;
 
-  public RutaFoldingPreferenceBlock(OverlayPreferenceStore store,
-          PreferencePage mainPreferencePage) {
+  public RutaFoldingPreferenceBlock(OverlayPreferenceStore store, PreferencePage mainPreferencePage) {
     super(store, mainPreferencePage);
     fOverlayStore = store;
     fKeys = createKeys();

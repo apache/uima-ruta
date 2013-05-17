@@ -26,8 +26,7 @@ import org.eclipse.dltk.ui.preferences.OverlayPreferenceStore;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-public class RutaEditorAssistancePreferencePage extends
-        AbstractConfigurationBlockPreferencePage {
+public class RutaEditorAssistancePreferencePage extends AbstractConfigurationBlockPreferencePage {
 
   /*
    * @see org.eclipse.ui.internal.editors.text.AbstractConfigureationBlockPreferencePage#getHelpId()

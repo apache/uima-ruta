@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.parser.ast;
 
@@ -29,13 +29,13 @@ public class RutaTypeDeclaration extends RutaAbstractDeclaration {
 
   private List<RutaFeatureDeclaration> features = new ArrayList<RutaFeatureDeclaration>();
 
-  public RutaTypeDeclaration(String name, int nameStart, int nameEnd, int declStart,
-          int declEnd, SimpleReference ref) {
+  public RutaTypeDeclaration(String name, int nameStart, int nameEnd, int declStart, int declEnd,
+          SimpleReference ref) {
     super(name, nameStart, nameEnd, declStart, declEnd, ref);
   }
 
-  public RutaTypeDeclaration(String name, int nameStart, int nameEnd, int declStart,
-          int declEnd, SimpleReference ref, List<RutaFeatureDeclaration> features) {
+  public RutaTypeDeclaration(String name, int nameStart, int nameEnd, int declStart, int declEnd,
+          SimpleReference ref, List<RutaFeatureDeclaration> features) {
     super(name, nameStart, nameEnd, declStart, declEnd, ref);
     this.setFeatures(features);
   }
@@ -54,7 +54,7 @@ public class RutaTypeDeclaration extends RutaAbstractDeclaration {
   public int getKind() {
     return RutaTypeConstants.RUTA_TYPE_AT;
   }
-  
+
   public void setFeatures(List<RutaFeatureDeclaration> features) {
     this.features = features;
   }

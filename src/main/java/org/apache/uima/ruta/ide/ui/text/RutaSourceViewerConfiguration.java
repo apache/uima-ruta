@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.ui.text;
 
@@ -56,7 +56,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
 import org.eclipse.ui.texteditor.ITextEditor;
-
 
 public class RutaSourceViewerConfiguration extends ScriptSourceViewerConfiguration {
 
@@ -110,8 +109,8 @@ public class RutaSourceViewerConfiguration extends ScriptSourceViewerConfigurati
             assistant, IDocument.DEFAULT_CONTENT_TYPE);
     assistant.setContentAssistProcessor(scriptProcessor, IDocument.DEFAULT_CONTENT_TYPE);
 
-    ContentAssistProcessor singleLineProcessor = new RutaScriptCompletionProcessor(
-            getEditor(), assistant, RutaPartitions.RUTA_COMMENT);
+    ContentAssistProcessor singleLineProcessor = new RutaScriptCompletionProcessor(getEditor(),
+            assistant, RutaPartitions.RUTA_COMMENT);
     assistant.setContentAssistProcessor(singleLineProcessor, RutaPartitions.RUTA_COMMENT);
 
     ContentAssistProcessor stringProcessor = new RutaScriptCompletionProcessor(getEditor(),

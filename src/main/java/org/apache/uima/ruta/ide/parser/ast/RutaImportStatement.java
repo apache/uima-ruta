@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.parser.ast;
 
@@ -25,8 +25,7 @@ import org.eclipse.dltk.ast.references.SimpleReference;
 public class RutaImportStatement extends RutaSimpleStatement {
   private int type;
 
-  public RutaImportStatement(int sourceStart, int sourceEnd, SimpleReference importRef,
-          int type) {
+  public RutaImportStatement(int sourceStart, int sourceEnd, SimpleReference importRef, int type) {
     super(sourceStart, sourceEnd, importRef);
     this.type = type;
   }

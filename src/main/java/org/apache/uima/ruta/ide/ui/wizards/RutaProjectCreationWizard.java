@@ -144,7 +144,7 @@ public class RutaProjectCreationWizard extends ProjectWizard {
     copy(descDir, "BasicTypeSystem.xml");
     copy(descDir, "BasicEngine.xml");
     copy(descDir, "InternalTypeSystem.xml");
-    
+
     copy(utilsDir, "Modifier.xml");
     copy(utilsDir, "AnnotationWriter.xml");
     copy(utilsDir, "StyleMapCreator.xml");

@@ -126,5 +126,5 @@ public class GenericRutaInstallType extends AbstractInterpreterInstallType {
   protected ILog getLog() {
     return RutaIdePlugin.getDefault().getLog();
   }
-  
+
 }

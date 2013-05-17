@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.parser.ast;
 
@@ -25,8 +25,8 @@ import org.eclipse.dltk.ast.statements.Statement;
 
 public class RutaScriptBlock extends RutaBlock {
 
-  public RutaScriptBlock(String name, String namespace, int nameStart, int nameEnd,
-          int declStart, int declEnd) {
+  public RutaScriptBlock(String name, String namespace, int nameStart, int nameEnd, int declStart,
+          int declEnd) {
     super(name, namespace, nameStart, nameEnd, declStart, declEnd);
   }
 

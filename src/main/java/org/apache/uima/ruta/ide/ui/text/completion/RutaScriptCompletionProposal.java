@@ -60,7 +60,7 @@ public class RutaScriptCompletionProposal extends ScriptCompletionProposal {
   @Override
   protected boolean isValidPrefix(String prefix) {
     String[] split = getDisplayString().split("[.]");
-    return isPrefix(prefix, getDisplayString()) || isPrefix(prefix, split[split.length-1]);
+    return isPrefix(prefix, getDisplayString()) || isPrefix(prefix, split[split.length - 1]);
   }
-  
+
 }

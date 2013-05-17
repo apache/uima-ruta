@@ -22,7 +22,6 @@ package org.apache.uima.ruta.ide.parser.ast;
 import org.antlr.runtime.Token;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
-import org.eclipse.dltk.ast.expressions.StringLiteral;
 
 public class FeatureMatchExpression extends Expression {
 
@@ -52,6 +51,9 @@ public class FeatureMatchExpression extends Expression {
 
   @Override
   public int getKind() {
+    if (value == null) {
+      return -1;
+    }
     return value.getKind();
   }
 
@@ -65,7 +67,8 @@ public class FeatureMatchExpression extends Expression {
 
   @Override
   public String toString() {
-    return feature.getText() + comp.getText() + value.toString();
+    return feature.getText() + (comp == null ? "" : comp.getText())
+            + (value == null ? "" : value.toString());
   }
 
 }

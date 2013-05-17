@@ -47,7 +47,7 @@ public class ExplainPerspective implements IPerspectiveFactory {
   public static final String TYPE_BROWSER = "org.apache.uima.caseditor.browser";
 
   public static final String SELECTION_VIEW = "org.apache.uima.caseditor.selection";
-  
+
   public static final String QUERY = "org.apache.uima.ruta.query.ui.ScriptQueryView";
 
   public static final String SCRIPT_EXPLORER = "org.eclipse.dltk.ui.ScriptExplorer";
@@ -100,12 +100,12 @@ public class ExplainPerspective implements IPerspectiveFactory {
     rightFolder.addView(RULE_LIST);
     rightFolder.addView(TYPE_BROWSER);
     rightFolder.addView(SELECTION_VIEW);
-    
+
     IFolderLayout ruleFolder = layout.createFolder("ruleFolder", IPageLayout.BOTTOM, (float) 0.6,
             "rightFolder");
     ruleFolder.addView(RULE_ELEMENTS);
     ruleFolder.addView(CREATED_BY);
-    
+
     IFolderLayout navigationFolder = layout.createFolder("left", IPageLayout.LEFT, (float) 0.2,
             editorArea);
     navigationFolder.addView(SCRIPT_EXPLORER);

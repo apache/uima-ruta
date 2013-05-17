@@ -30,13 +30,15 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 /**
  * Preference page to manage preferences for the ide plugin.
  */
-public class RutaBuilderPreferencePage extends FieldEditorPreferencePage
-        implements IWorkbenchPreferencePage {
+public class RutaBuilderPreferencePage extends FieldEditorPreferencePage implements
+        IWorkbenchPreferencePage {
 
   private BooleanFieldEditor builderImport;
+
   private FieldEditor builderResolve;
+
   private BooleanFieldEditor builderShortNames;
-  
+
   public RutaBuilderPreferencePage() {
     setPreferenceStore(RutaIdePlugin.getDefault().getPreferenceStore());
     setDescription("Builder");
@@ -47,18 +49,18 @@ public class RutaBuilderPreferencePage extends FieldEditorPreferencePage
     builderResolve = new BooleanFieldEditor(RutaCorePreferences.BUILDER_RESOLVE_IMPORTS,
             RutaPreferencesMessages.BuilderResolveImports, getFieldEditorParent());
     addField(builderResolve);
-    
+
     builderImport = new BooleanFieldEditor(RutaCorePreferences.BUILDER_IMPORT_BY_NAME,
             RutaPreferencesMessages.BuilderImportByName, getFieldEditorParent());
     addField(builderImport);
-    
-    builderShortNames = new BooleanFieldEditor(RutaCorePreferences.BUILDER_IGNORE_DUPLICATE_SHORTNAMES,
+
+    builderShortNames = new BooleanFieldEditor(
+            RutaCorePreferences.BUILDER_IGNORE_DUPLICATE_SHORTNAMES,
             RutaPreferencesMessages.BuilderIgnoreDuplicateShortnames, getFieldEditorParent());
     addField(builderShortNames);
   }
 
   public void init(IWorkbench workbench) {
   }
-  
- 
+
 }

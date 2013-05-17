@@ -71,8 +71,7 @@ import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.xml.sax.SAXException;
 
-public class RutaInterpreterRunner extends AbstractInterpreterRunner implements
-        IConfigurableRunner {
+public class RutaInterpreterRunner extends AbstractInterpreterRunner implements IConfigurableRunner {
 
   public static final IRutaInterpreterRunnerConfig DEFAULT_CONFIG = new IRutaInterpreterRunnerConfig() {
 
@@ -172,8 +171,7 @@ public class RutaInterpreterRunner extends AbstractInterpreterRunner implements
   }
 
   public static void doRunImpl(InterpreterConfig config, ILaunch launch,
-          IRutaInterpreterRunnerConfig iconfig, IProgressMonitor monitor)
-          throws CoreException {
+          IRutaInterpreterRunnerConfig iconfig, IProgressMonitor monitor) throws CoreException {
     String launchMode = launch.getLaunchMode();
     IScriptProject proj = AbstractScriptLaunchConfigurationDelegate.getScriptProject(launch
             .getLaunchConfiguration());
@@ -188,27 +186,27 @@ public class RutaInterpreterRunner extends AbstractInterpreterRunner implements
     File inputDir = inputDirPath.makeAbsolute().toFile();
     File outputDir = outputDirPath.makeAbsolute().toFile();
 
-    if(!inputDir.exists()) {
+    if (!inputDir.exists()) {
       inputDir.mkdirs();
       IFolder folder = proj.getProject().getFolder(RutaProjectUtils.getDefaultInputLocation());
       folder.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
     }
     IFolder outputFolder = proj.getProject().getFolder(RutaProjectUtils.getDefaultOutputLocation());
-	if(!outputDir.exists()) {
+    if (!outputDir.exists()) {
       outputDir.mkdirs();
       outputFolder.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
     }
-    
+
     IPreferenceStore store = RutaIdePlugin.getDefault().getPreferenceStore();
     boolean clearOutput = store.getBoolean(RutaCorePreferences.PROJECT_CLEAR_OUTPUT);
-    if(clearOutput) {
-    	List<File> outputFiles = getFiles(outputDir, false);
-    	for (File file : outputFiles) {
-			file.delete();
-		}
-    	outputFolder.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+    if (clearOutput) {
+      List<File> outputFiles = getFiles(outputDir, false);
+      for (File file : outputFiles) {
+        file.delete();
+      }
+      outputFolder.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
     }
-    
+
     List<File> inputFiles = getFiles(inputDir, false);
 
     int ticks = (inputFiles.size() * 2) + 1;
@@ -253,9 +251,9 @@ public class RutaInterpreterRunner extends AbstractInterpreterRunner implements
     }
     mon.worked(1);
     for (File each : inputFiles) {
-      
+
       mon.setTaskName("Processing " + each.getName());
-      if(mon.isCanceled()) {
+      if (mon.isCanceled()) {
         break;
       }
       try {
@@ -269,22 +267,22 @@ public class RutaInterpreterRunner extends AbstractInterpreterRunner implements
         } else {
           cas.setDocumentText(getText(each));
         }
-        
-        if(mon.isCanceled()) {
+
+        if (mon.isCanceled()) {
           break;
         }
-        
+
         RutaEngine.removeSourceDocumentInformation(cas);
         RutaEngine.addSourceDocumentInformation(cas, each);
 
         ae.process(cas);
 
         mon.worked(1);
-        
-        if(mon.isCanceled()) {
+
+        if (mon.isCanceled()) {
           break;
         }
-        
+
         File outputFile = new File(outputDir, each.getName() + ".xmi");
         mon.setTaskName("Saving " + outputFile.getName());
         writeXmi(cas, outputFile);

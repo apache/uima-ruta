@@ -32,8 +32,8 @@ import org.eclipse.dltk.launching.ScriptLaunchUtil;
 
 public class RutaConsoleUtil {
 
-  public static void runDefaultRutaInterpreter(RutaInterpreter interpreter)
-          throws CoreException, IOException {
+  public static void runDefaultRutaInterpreter(RutaInterpreter interpreter) throws CoreException,
+          IOException {
     ScriptConsoleServer server = ScriptConsoleServer.getInstance();
 
     String id = server.register(interpreter);

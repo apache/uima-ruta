@@ -27,7 +27,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 public class RutaDebugPreferenceInitializer extends AbstractPreferenceInitializer {
 
   public void initializeDefaultPreferences() {
-//    Preferences store = RutaIdePlugin.getDefault().getPluginPreferences();
+    // Preferences store = RutaIdePlugin.getDefault().getPluginPreferences();
     IPreferenceStore store = RutaIdePlugin.getDefault().getPreferenceStore();
     store.setDefault(RutaDebugConstants.DEBUGGING_ENGINE_ID_KEY, "");
 

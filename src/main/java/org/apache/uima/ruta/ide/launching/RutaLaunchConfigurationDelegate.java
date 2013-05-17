@@ -53,7 +53,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.dltk.core.IScriptProject;
-import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.JavaCore;
@@ -138,7 +137,7 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
 
   @Override
   public String[] getClasspath(ILaunchConfiguration configuration) throws CoreException {
-    
+
     List<String> extendedClasspath = new ArrayList<String>();
     Collections.addAll(extendedClasspath, super.getClasspath(configuration));
     IScriptProject scriptProject = AbstractScriptLaunchConfigurationDelegate
@@ -299,7 +298,7 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     boolean recursive = configuration.getAttribute(RutaLaunchConstants.RECURSIVE, false);
     clearOutputFolder(new File(ouputFolder.getLocation().toPortableString()), recursive);
 
-     IPreferenceStore preferenceStore = RutaIdePlugin.getDefault().getPreferenceStore();
+    IPreferenceStore preferenceStore = RutaIdePlugin.getDefault().getPreferenceStore();
     boolean noVM = preferenceStore.getBoolean(RutaCorePreferences.NO_VM_IN_DEV_MODE);
     if (noVM && Platform.inDevelopmentMode()) {
       String[] args = getProgramArguments(configuration).split(" ");

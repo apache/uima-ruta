@@ -60,6 +60,7 @@ public class RutaSourceParser extends AbstractSourceParser {
       return super.nextToken();
     }
   }
+
   public IModuleDeclaration parse(IModuleSource input, IProblemReporter reporter) {
     return parse(input.getFileName(), input.getSourceContents(), reporter);
   }
@@ -67,8 +68,7 @@ public class RutaSourceParser extends AbstractSourceParser {
   public IModuleDeclaration parse(String fileName, String content, IProblemReporter reporter) {
     this.problemReporter = reporter;
 
-    RutaModuleDeclaration moduleDeclaration = new RutaModuleDeclaration(content.length(),
-            true);
+    RutaModuleDeclaration moduleDeclaration = new RutaModuleDeclaration(content.length(), true);
 
     CharStream st = new ANTLRStringStream(content);
     RutaLexer lexer = new TMLexer(st);
@@ -125,7 +125,7 @@ public class RutaSourceParser extends AbstractSourceParser {
       File fn = new File(fileName);
       name = fn.getName();
       int lastIndexOf = name.lastIndexOf(RutaEngine.SCRIPT_FILE_EXTENSION);
-      if(lastIndexOf>0) {
+      if (lastIndexOf > 0) {
         name = name.substring(0, lastIndexOf);
       }
     }
@@ -138,11 +138,9 @@ public class RutaSourceParser extends AbstractSourceParser {
     }
     return moduleDeclaration;
   }
-  
-  
+
   public CommonTokenStream getTokenStream() {
     return tokenStream;
   }
-
 
 }

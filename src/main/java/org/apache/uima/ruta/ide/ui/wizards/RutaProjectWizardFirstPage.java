@@ -38,7 +38,6 @@ final class RutaProjectWizardFirstPage extends ProjectWizardFirstPage {
     setDescription(RutaWizardMessages.ProjectCreationWizardFirstPage_description);
   }
 
-  
   @Override
   protected IInterpreterGroup createInterpreterGroup(Composite parent) {
     return new DefaultInterpreterGroup(parent);

@@ -31,4 +31,3 @@ public enum RutaProblemIdentifier implements IProblemIdentifier {
   }
 
 }
-

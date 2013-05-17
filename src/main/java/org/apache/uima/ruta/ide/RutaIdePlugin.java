@@ -187,14 +187,16 @@ public class RutaIdePlugin extends AbstractUIPlugin {
     IEnvironment localEnv = LocalEnvironment.getInstance();
     DefaultInterpreterEntry defaultInterpreterEntry = new DefaultInterpreterEntry(
             RutaNature.NATURE_ID, localEnv.getId());
-    IInterpreterInstall defaultInterpreterInstall = ScriptRuntime.getDefaultInterpreterInstall(defaultInterpreterEntry);
+    IInterpreterInstall defaultInterpreterInstall = ScriptRuntime
+            .getDefaultInterpreterInstall(defaultInterpreterEntry);
     IFileHandle rawInstallLocation = defaultInterpreterInstall.getRawInstallLocation();
-    if(!rawInstallLocation.exists()) {
+    if (!rawInstallLocation.exists()) {
       String pluginIdToJarPath = pluginIdToJarPath(RutaIdePlugin.PLUGIN_ID);
       FileAsFileHandle fh = new FileAsFileHandle(new File(pluginIdToJarPath));
       defaultInterpreterInstall.setInstallLocation(fh);
-      ScriptRuntime.setDefaultInterpreterInstall(defaultInterpreterInstall, new NullProgressMonitor());
-      
+      ScriptRuntime.setDefaultInterpreterInstall(defaultInterpreterInstall,
+              new NullProgressMonitor());
+
     }
   }
 

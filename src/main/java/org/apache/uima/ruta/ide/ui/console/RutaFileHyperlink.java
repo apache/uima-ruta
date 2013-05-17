@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.ui.console;
 
@@ -73,8 +73,8 @@ public class RutaFileHyperlink implements IHyperlink {
         lineNumber = getLineNumber(linkText);
       } catch (CoreException e1) {
         ErrorDialog.openError(DLTKDebugUIPlugin.getActiveWorkbenchShell(),
-                ConsoleMessages.RutaFileHyperlink_Error,
-                ConsoleMessages.RutaFileHyperlink_Error, e1.getStatus());
+                ConsoleMessages.RutaFileHyperlink_Error, ConsoleMessages.RutaFileHyperlink_Error,
+                e1.getStatus());
         return;
       }
 
@@ -108,10 +108,8 @@ public class RutaFileHyperlink implements IHyperlink {
                       ConsoleMessages.RutaFileHyperlink_Source_not_found_for__0__2,
                       new String[] { fileName }));
     } catch (CoreException e) {
-      DLTKDebugUIPlugin
-              .errorDialog(
-                      ConsoleMessages.RutaFileHyperlink_An_exception_occurred_while_following_link__3,
-                      e);
+      DLTKDebugUIPlugin.errorDialog(
+              ConsoleMessages.RutaFileHyperlink_An_exception_occurred_while_following_link__3, e);
       return;
     }
   }
@@ -154,8 +152,7 @@ public class RutaFileHyperlink implements IHyperlink {
       return name;
     }
     IStatus status = new Status(IStatus.ERROR, DLTKDebugUIPlugin.getUniqueIdentifier(), 0,
-            ConsoleMessages.RutaFileHyperlink_Unable_to_parse_type_name_from_hyperlink__5,
-            null);
+            ConsoleMessages.RutaFileHyperlink_Unable_to_parse_type_name_from_hyperlink__5, null);
     throw new CoreException(status);
   }
 
@@ -173,18 +170,13 @@ public class RutaFileHyperlink implements IHyperlink {
       try {
         return Integer.parseInt(lineText);
       } catch (NumberFormatException e) {
-        IStatus status = new Status(
-                IStatus.ERROR,
-                DLTKDebugUIPlugin.getUniqueIdentifier(),
-                0,
-                ConsoleMessages.RutaFileHyperlink_Unable_to_parse_line_number_from_hyperlink__6,
-                e);
+        IStatus status = new Status(IStatus.ERROR, DLTKDebugUIPlugin.getUniqueIdentifier(), 0,
+                ConsoleMessages.RutaFileHyperlink_Unable_to_parse_line_number_from_hyperlink__6, e);
         throw new CoreException(status);
       }
     }
     IStatus status = new Status(IStatus.ERROR, DLTKDebugUIPlugin.getUniqueIdentifier(), 0,
-            ConsoleMessages.RutaFileHyperlink_Unable_to_parse_line_number_from_hyperlink__7,
-            null);
+            ConsoleMessages.RutaFileHyperlink_Unable_to_parse_line_number_from_hyperlink__7, null);
     throw new CoreException(status);
   }
 

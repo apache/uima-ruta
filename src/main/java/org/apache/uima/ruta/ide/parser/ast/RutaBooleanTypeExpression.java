@@ -33,8 +33,7 @@ public class RutaBooleanTypeExpression extends Expression {
 
   private Expression e2;
 
-  public RutaBooleanTypeExpression(int start, int end, int operatorID, Expression e1,
-          Expression e2) {
+  public RutaBooleanTypeExpression(int start, int end, int operatorID, Expression e1, Expression e2) {
     super(start, end);
     this.kind = operatorID;
     this.e1 = e1;

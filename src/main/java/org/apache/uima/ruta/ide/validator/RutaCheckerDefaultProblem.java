@@ -26,15 +26,16 @@ import org.eclipse.dltk.compiler.problem.ProblemSeverity;
 
 public class RutaCheckerDefaultProblem extends DefaultProblem {
 
-    public RutaCheckerDefaultProblem(String fileName, String message,
-          RutaAbstractDeclaration node, int line, int column, ProblemSeverity severity) {
-    super(fileName, message, RutaProblemIdentifier.PROBLEM, new String[] {}, severity, node.getNameStart(), node.getNameEnd(), line, column);
+  public RutaCheckerDefaultProblem(String fileName, String message, RutaAbstractDeclaration node,
+          int line, int column, ProblemSeverity severity) {
+    super(fileName, message, RutaProblemIdentifier.PROBLEM, new String[] {}, severity, node
+            .getNameStart(), node.getNameEnd(), line, column);
   }
 
-  public RutaCheckerDefaultProblem(String fileName, String message,
-          RutaAbstractDeclaration node, int line) {
-    super(fileName, message, 0, new String[] {}, ProblemSeverity.ERROR, node.getNameStart(), node.getNameEnd(),
-            line);
+  public RutaCheckerDefaultProblem(String fileName, String message, RutaAbstractDeclaration node,
+          int line) {
+    super(fileName, message, 0, new String[] {}, ProblemSeverity.ERROR, node.getNameStart(), node
+            .getNameEnd(), line);
   }
 
   public RutaCheckerDefaultProblem(String fileName, String message, ASTNode node, int line) {

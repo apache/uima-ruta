@@ -111,8 +111,7 @@ public class RutaDebuggingEnginePreferencePage extends
    */
   @Override
   protected void setPreferenceStore() {
-    setPreferenceStore(new PreferencesAdapter(RutaIdePlugin.getDefault()
-            .getPluginPreferences()));
+    setPreferenceStore(new PreferencesAdapter(RutaIdePlugin.getDefault().getPluginPreferences()));
   }
 
   private PreferenceKey[] getKeys() {

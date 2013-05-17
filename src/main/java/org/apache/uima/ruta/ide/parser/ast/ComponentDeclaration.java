@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.parser.ast;
 
@@ -28,7 +28,7 @@ public class ComponentDeclaration extends SimpleReference {
   public static int ENGINE = 2;
 
   public static int TYPESYSTEM = 3;
-  
+
   public static int UIMAFIT_ENGINE = 4;
 
   private int type;

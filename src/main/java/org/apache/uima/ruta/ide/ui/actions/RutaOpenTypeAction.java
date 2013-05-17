@@ -15,14 +15,13 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.ui.actions;
 
 import org.apache.uima.ruta.ide.ui.RutaUILanguageToolkit;
 import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
 import org.eclipse.dltk.ui.actions.OpenTypeAction;
-
 
 public class RutaOpenTypeAction extends OpenTypeAction {
   @Override

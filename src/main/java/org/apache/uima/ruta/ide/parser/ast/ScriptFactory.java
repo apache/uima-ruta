@@ -51,11 +51,11 @@ public class ScriptFactory extends AbstractFactory {
     return rule;
   }
 
-  public RutaRule createRegExpRule(List<Expression> exprs, Map<Expression, Map<Expression, Expression>> fa,
-          Token s) {
+  public RutaRule createRegExpRule(List<Expression> exprs,
+          Map<Expression, Map<Expression, Expression>> fa, Token s) {
     List<Expression> expressions = new ArrayList<Expression>();
     for (Expression each : exprs) {
-      if(each != null) {
+      if (each != null) {
         expressions.add(each);
         Collection<Map<Expression, Expression>> values = fa.values();
         for (Map<Expression, Expression> map : values) {
@@ -68,17 +68,16 @@ public class ScriptFactory extends AbstractFactory {
       }
     }
     RutaRegExpRule rule = new RutaRegExpRule(expressions, fa, idCounter++);
-    if(s != null) {
+    if (s != null) {
       int[] bounds = getBounds(s);
       rule.setEnd(bounds[1]);
     }
     return rule;
   }
-  
-  
+
   public ComposedRuleElement createComposedRuleElement(List<Expression> res, List<Expression> q,
-          List<RutaCondition> c, List<RutaAction> a, boolean disjunctive,
-          RutaBlock env, Token... tokens) {
+          List<RutaCondition> c, List<RutaAction> a, boolean disjunctive, RutaBlock env,
+          Token... tokens) {
     int bounds[] = getSurroundingBounds((ASTNode) null, res);
     // taking care of null statements - errors should have been recognized
     // in parser
@@ -130,23 +129,18 @@ public class ScriptFactory extends AbstractFactory {
     if (quantifierPart != null) {
       bounds[1] = Math.max(bounds[1], quantifierPart.sourceEnd());
     }
-    return new RutaRuleElement(bounds[0], bounds[1], head, quantifierPartExpressions,
-            conditions, actions);
+    return new RutaRuleElement(bounds[0], bounds[1], head, quantifierPartExpressions, conditions,
+            actions);
   }
 
-  public RutaRuleElement createRuleElement(Token w, List<RutaCondition> c,
-          List<RutaAction> a, Token end) {
+  public RutaRuleElement createRuleElement(Token w, List<RutaCondition> c, List<RutaAction> a,
+          Token end) {
     int bounds[] = getSurroundingBounds(null, c, a);
     setMinBegin(bounds, w);
     filterNullObjects(c);
     filterNullObjects(a);
-    return new RutaRuleElement(bounds[0], bounds[1], null, null,
-            c, a);
+    return new RutaRuleElement(bounds[0], bounds[1], null, null, c, a);
   }
-  
-  
-  
-
 
   /**
    * Creates Root-Block.
@@ -161,9 +155,8 @@ public class ScriptFactory extends AbstractFactory {
    * @param packageString
    * @return
    */
-  public RutaScriptBlock createScriptBlock(int declStart, int declEnd, int nameStart,
-          int nameEnd, String string, List<RutaRuleElement> res, Block block,
-          String packageString) {
+  public RutaScriptBlock createScriptBlock(int declStart, int declEnd, int nameStart, int nameEnd,
+          String string, List<RutaRuleElement> res, Block block, String packageString) {
     createRule(new ArrayList<Expression>(), null);
     return new RutaScriptBlock(string, packageString, nameStart, nameEnd, declStart, declEnd);
   }
@@ -181,18 +174,17 @@ public class ScriptFactory extends AbstractFactory {
     int[] bounds = getBounds(type, id);
     int[] nameBounds = getBounds(id);
     if (rutaBlock == null) {
-      RutaBlock block = new RutaBlock(id.getText(), "error", nameBounds[0],
-              nameBounds[1], bounds[0], bounds[1]);
+      RutaBlock block = new RutaBlock(id.getText(), "error", nameBounds[0], nameBounds[1],
+              bounds[0], bounds[1]);
       return block;
     } else {
-      RutaBlock block = new RutaBlock(id.getText(), rutaBlock.getNamespace(),
-              nameBounds[0], nameBounds[1], bounds[0], bounds[1]);
+      RutaBlock block = new RutaBlock(id.getText(), rutaBlock.getNamespace(), nameBounds[0],
+              nameBounds[1], bounds[0], bounds[1]);
       return block;
     }
   }
 
-  public void finalizeScriptBlock(RutaBlock block, Token rc, RutaRule rule,
-          List<Statement> body) {
+  public void finalizeScriptBlock(RutaBlock block, Token rc, RutaRule rule, List<Statement> body) {
     // taking care of null statements - errors should have been recognized
     // in parser
     filterNullObjects(body);
@@ -223,9 +215,5 @@ public class ScriptFactory extends AbstractFactory {
       }
     }
   }
-
- 
-
-  
 
 }

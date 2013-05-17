@@ -202,8 +202,8 @@ public class RutaAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
   }
 
   /**
-   * Searchs an pair from offset, forward of backwards. Can skip strings and comments (uses
-   * ruta partitioning).
+   * Searchs an pair from offset, forward of backwards. Can skip strings and comments (uses ruta
+   * partitioning).
    * 
    * @param d
    * @param offset
@@ -346,8 +346,8 @@ public class RutaAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
    *          the document
    */
   private static void installStuff(Document document) {
-    String[] types = new String[] { RutaPartitions.RUTA_STRING,
-        RutaPartitions.RUTA_COMMENT, IDocument.DEFAULT_CONTENT_TYPE };
+    String[] types = new String[] { RutaPartitions.RUTA_STRING, RutaPartitions.RUTA_COMMENT,
+        IDocument.DEFAULT_CONTENT_TYPE };
     FastPartitioner partitioner = new FastPartitioner(new RutaPartitionScanner(), types);
     partitioner.connect(document);
     document.setDocumentPartitioner(RutaPartitions.RUTA_PARTITIONING, partitioner);
@@ -803,8 +803,8 @@ public class RutaAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
       String lastIndent = getLineIndent(temp, line);
       int firstLineOffset = temp.getLineOffset(line);
       String commonIndent = temp.get(firstLineOffset, c.offset - firstLineOffset);
-      if(StringUtils.isNotBlank(commonIndent)) {
-    	  // do not copy non whitespace content as indent
+      if (StringUtils.isNotBlank(commonIndent)) {
+        // do not copy non whitespace content as indent
         // and only use leading white spaces
         String notWSContent = commonIndent.replaceAll("^\\s+", "");
         commonIndent = StringUtils.removeEnd(commonIndent, notWSContent);

@@ -17,7 +17,6 @@
  * under the License.
  */
 
-
 package org.apache.uima.ruta.ide.core.codeassist;
 
 import org.apache.uima.ruta.ide.parser.ast.RutaRule;

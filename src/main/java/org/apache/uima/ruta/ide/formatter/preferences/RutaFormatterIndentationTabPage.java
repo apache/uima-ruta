@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.formatter.preferences;
 
@@ -38,7 +38,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
-
 
 public class RutaFormatterIndentationTabPage extends FormatterModifyTabPage {
 
@@ -91,8 +90,7 @@ public class RutaFormatterIndentationTabPage extends FormatterModifyTabPage {
     Group tabPolicyGroup = SWTFactory.createGroup(parent,
             Messages.RutaFormatterIndentationTabPage_generalSettings, 2, 1,
             GridData.FILL_HORIZONTAL);
-    tabPolicy = manager.createCombo(tabPolicyGroup,
-            RutaFormatterConstants.FORMATTER_TAB_CHAR,
+    tabPolicy = manager.createCombo(tabPolicyGroup, RutaFormatterConstants.FORMATTER_TAB_CHAR,
             FormatterMessages.IndentationTabPage_general_group_option_tab_policy, tabPolicyItems);
     tabPolicyListener = new TabPolicyListener(manager);
     tabPolicy.addSelectionListener(tabPolicyListener);
@@ -128,6 +126,6 @@ public class RutaFormatterIndentationTabPage extends FormatterModifyTabPage {
 
   @Override
   protected URL getPreviewContent() {
-    return getClass().getResource("indentation-preview"+RutaEngine.SCRIPT_FILE_EXTENSION);
+    return getClass().getResource("indentation-preview" + RutaEngine.SCRIPT_FILE_EXTENSION);
   }
 }

@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.formatter.preferences;
 
@@ -36,12 +36,11 @@ public class RutaFormatterModifyDialog extends FormatterModifyDialog {
 
   @Override
   protected void addPages() {
-    addTabPage(Messages.RutaFormatterModifyDialog_indentation,
-            new RutaFormatterIndentationTabPage(this));
-    addTabPage(Messages.RutaFormatterModifyDialog_blankLines,
-            new RutaFormatterBlankLinesPage(this));
-    addTabPage(Messages.RutaFormatterModifyDialog_lineWrapping,
-            new RutaFormatterLineWrappingPage(this));
+    addTabPage(Messages.RutaFormatterModifyDialog_indentation, new RutaFormatterIndentationTabPage(
+            this));
+    addTabPage(Messages.RutaFormatterModifyDialog_blankLines, new RutaFormatterBlankLinesPage(this));
+    addTabPage(Messages.RutaFormatterModifyDialog_lineWrapping, new RutaFormatterLineWrappingPage(
+            this));
     // addTabPage(Messages.RutaFormatterModifyDialog_comments,
     // new RutaFormatterCommentsPage(this));
   }

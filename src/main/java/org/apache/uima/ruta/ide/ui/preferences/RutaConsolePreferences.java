@@ -38,8 +38,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-public class RutaConsolePreferences extends PreferencePage implements
-        IWorkbenchPreferencePage {
+public class RutaConsolePreferences extends PreferencePage implements IWorkbenchPreferencePage {
 
   private Text newPrompt;
 

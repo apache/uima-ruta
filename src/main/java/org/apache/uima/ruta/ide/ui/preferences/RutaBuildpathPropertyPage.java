@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.ui.preferences;
 
@@ -34,8 +34,8 @@ public class RutaBuildpathPropertyPage extends BuildPathsPropertyPage implements
 
   @Override
   protected BuildpathsBlock createBuildPathBlock(IWorkbenchPreferenceContainer pageContainer) {
-    return new RutaBuildPathsBlock(new BusyIndicatorRunnableContext(), this, getSettings()
-            .getInt(INDEX), false, pageContainer);
+    return new RutaBuildPathsBlock(new BusyIndicatorRunnableContext(), this, getSettings().getInt(
+            INDEX), false, pageContainer);
   }
 
   public IDLTKLanguageToolkit getLanguageToolkit() {

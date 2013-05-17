@@ -40,9 +40,9 @@ import org.apache.uima.ruta.ide.core.extensions.IIDEStringFunctionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IIDETypeFunctionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IMatchLocatorExtension;
 import org.apache.uima.ruta.ide.core.extensions.IMixinBuildVisitorExtension;
+import org.apache.uima.ruta.ide.core.extensions.IRutaLanguageExtension;
 import org.apache.uima.ruta.ide.core.extensions.ISelectionExtension;
 import org.apache.uima.ruta.ide.core.extensions.ISourceElementRequestVisitorExtension;
-import org.apache.uima.ruta.ide.core.extensions.IRutaLanguageExtension;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -75,8 +75,8 @@ public class RutaExtensionManager {
         extensions.add(object);
       }
     }
-    return (IRutaLanguageExtension[]) extensions
-            .toArray(new IRutaLanguageExtension[extensions.size()]);
+    return (IRutaLanguageExtension[]) extensions.toArray(new IRutaLanguageExtension[extensions
+            .size()]);
   }
 
   public ISourceElementRequestVisitorExtension[] getSourceElementRequestoVisitorExtensions() {
@@ -188,8 +188,7 @@ public class RutaExtensionManager {
   public IIDENumberFunctionExtension[] getIDENumberFunctionExtensions() {
     Collection<IIDENumberFunctionExtension> result = new ArrayList<IIDENumberFunctionExtension>();
     IExtension[] extensions = Platform.getExtensionRegistry()
-            .getExtensionPoint(RutaIdePlugin.PLUGIN_ID, "numberFunctionExtension")
-            .getExtensions();
+            .getExtensionPoint(RutaIdePlugin.PLUGIN_ID, "numberFunctionExtension").getExtensions();
     for (IExtension extension : extensions) {
       IConfigurationElement[] configurationElements = extension.getConfigurationElements();
       for (IConfigurationElement configurationElement : configurationElements) {
@@ -210,8 +209,7 @@ public class RutaExtensionManager {
   public IIDEBooleanFunctionExtension[] getIDEBooleanFunctionExtensions() {
     Collection<IIDEBooleanFunctionExtension> result = new ArrayList<IIDEBooleanFunctionExtension>();
     IExtension[] extensions = Platform.getExtensionRegistry()
-            .getExtensionPoint(RutaIdePlugin.PLUGIN_ID, "booleanFunctionExtension")
-            .getExtensions();
+            .getExtensionPoint(RutaIdePlugin.PLUGIN_ID, "booleanFunctionExtension").getExtensions();
     for (IExtension extension : extensions) {
       IConfigurationElement[] configurationElements = extension.getConfigurationElements();
       for (IConfigurationElement configurationElement : configurationElements) {
@@ -232,8 +230,7 @@ public class RutaExtensionManager {
   public IIDEStringFunctionExtension[] getIDEStringFunctionExtensions() {
     Collection<IIDEStringFunctionExtension> result = new ArrayList<IIDEStringFunctionExtension>();
     IExtension[] extensions = Platform.getExtensionRegistry()
-            .getExtensionPoint(RutaIdePlugin.PLUGIN_ID, "stringFunctionExtension")
-            .getExtensions();
+            .getExtensionPoint(RutaIdePlugin.PLUGIN_ID, "stringFunctionExtension").getExtensions();
     for (IExtension extension : extensions) {
       IConfigurationElement[] configurationElements = extension.getConfigurationElements();
       for (IConfigurationElement configurationElement : configurationElements) {
@@ -254,8 +251,7 @@ public class RutaExtensionManager {
   public IIDETypeFunctionExtension[] getIDETypeFunctionExtensions() {
     Collection<IIDETypeFunctionExtension> result = new ArrayList<IIDETypeFunctionExtension>();
     IExtension[] extensions = Platform.getExtensionRegistry()
-            .getExtensionPoint(RutaIdePlugin.PLUGIN_ID, "typeFunctionExtension")
-            .getExtensions();
+            .getExtensionPoint(RutaIdePlugin.PLUGIN_ID, "typeFunctionExtension").getExtensions();
     for (IExtension extension : extensions) {
       IConfigurationElement[] configurationElements = extension.getConfigurationElements();
       for (IConfigurationElement configurationElement : configurationElements) {
@@ -318,8 +314,7 @@ public class RutaExtensionManager {
   public IRutaNumberFunctionExtension[] getRutaNumberFunctionExtensions() {
     Collection<IRutaNumberFunctionExtension> result = new ArrayList<IRutaNumberFunctionExtension>();
     IExtension[] extensions = Platform.getExtensionRegistry()
-            .getExtensionPoint(RutaIdePlugin.PLUGIN_ID, "numberFunctionExtension")
-            .getExtensions();
+            .getExtensionPoint(RutaIdePlugin.PLUGIN_ID, "numberFunctionExtension").getExtensions();
     for (IExtension extension : extensions) {
       IConfigurationElement[] configurationElements = extension.getConfigurationElements();
       for (IConfigurationElement configurationElement : configurationElements) {
@@ -340,8 +335,7 @@ public class RutaExtensionManager {
   public IRutaBooleanFunctionExtension[] getRutaBooleanFunctionExtensions() {
     Collection<IRutaBooleanFunctionExtension> result = new ArrayList<IRutaBooleanFunctionExtension>();
     IExtension[] extensions = Platform.getExtensionRegistry()
-            .getExtensionPoint(RutaIdePlugin.PLUGIN_ID, "booleanFunctionExtension")
-            .getExtensions();
+            .getExtensionPoint(RutaIdePlugin.PLUGIN_ID, "booleanFunctionExtension").getExtensions();
     for (IExtension extension : extensions) {
       IConfigurationElement[] configurationElements = extension.getConfigurationElements();
       for (IConfigurationElement configurationElement : configurationElements) {
@@ -362,8 +356,7 @@ public class RutaExtensionManager {
   public IRutaStringFunctionExtension[] getRutaStringFunctionExtensions() {
     Collection<IRutaStringFunctionExtension> result = new ArrayList<IRutaStringFunctionExtension>();
     IExtension[] extensions = Platform.getExtensionRegistry()
-            .getExtensionPoint(RutaIdePlugin.PLUGIN_ID, "stringFunctionExtension")
-            .getExtensions();
+            .getExtensionPoint(RutaIdePlugin.PLUGIN_ID, "stringFunctionExtension").getExtensions();
     for (IExtension extension : extensions) {
       IConfigurationElement[] configurationElements = extension.getConfigurationElements();
       for (IConfigurationElement configurationElement : configurationElements) {
@@ -384,8 +377,7 @@ public class RutaExtensionManager {
   public IRutaTypeFunctionExtension[] getRutaTypeFunctionExtensions() {
     Collection<IRutaTypeFunctionExtension> result = new ArrayList<IRutaTypeFunctionExtension>();
     IExtension[] extensions = Platform.getExtensionRegistry()
-            .getExtensionPoint(RutaIdePlugin.PLUGIN_ID, "typeFunctionExtension")
-            .getExtensions();
+            .getExtensionPoint(RutaIdePlugin.PLUGIN_ID, "typeFunctionExtension").getExtensions();
     for (IExtension extension : extensions) {
       IConfigurationElement[] configurationElements = extension.getConfigurationElements();
       for (IConfigurationElement configurationElement : configurationElements) {

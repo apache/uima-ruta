@@ -591,25 +591,28 @@ regexpRule returns [RutaRule stmt = null]
 	:
 	regexp = stringExpression {exprs.add(regexp);} {stmt = scriptFactory.createRegExpRule(exprs, fa, s);} THEN
 	(
-	te = typeExpression {exprs.add(te);} {stmt = scriptFactory.createRegExpRule(exprs, fa, s);}
-	(LPAREN {fmap = new HashMap<Expression, Expression>();} fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} 
-	(COMMA fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} )* RPAREN {fa.put(te, fmap);})?
-	|
+	(numberExpression ASSIGN_EQUAL)=>
 	indexCG = numberExpression {exprs.add(indexCG);}{stmt = scriptFactory.createRegExpRule(exprs, fa, s);} ASSIGN_EQUAL indexTE = typeExpression {exprs.add(indexTE);}
 	(LPAREN {fmap = new HashMap<Expression, Expression>();} fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} 
 	(COMMA fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} )* RPAREN {fa.put(indexTE, fmap);})?
+	|
+	te = typeExpression {exprs.add(te);} {stmt = scriptFactory.createRegExpRule(exprs, fa, s);}
+	(LPAREN {fmap = new HashMap<Expression, Expression>();} fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} 
+	(COMMA fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} )* RPAREN {fa.put(te, fmap);})?
+	
 	)
 	
 	(
 	COMMA
 	(
-	te = typeExpression {exprs.add(te);}{stmt = scriptFactory.createRegExpRule(exprs, fa, s);}
-	(LPAREN {fmap = new HashMap<Expression, Expression>();} fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} 
-	(COMMA fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} )* RPAREN {fa.put(te, fmap);})?
-	|
+	(numberExpression ASSIGN_EQUAL)=>
 	indexCG = numberExpression {exprs.add(indexCG);}{stmt = scriptFactory.createRegExpRule(exprs, fa, s);} ASSIGN_EQUAL indexTE = typeExpression {exprs.add(indexTE);}
 	(LPAREN {fmap = new HashMap<Expression, Expression>();} fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} 
 	(COMMA fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} )* RPAREN {fa.put(indexTE, fmap);})?
+	|
+	te = typeExpression {exprs.add(te);}{stmt = scriptFactory.createRegExpRule(exprs, fa, s);}
+	(LPAREN {fmap = new HashMap<Expression, Expression>();} fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} 
+	(COMMA fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} )* RPAREN {fa.put(te, fmap);})?
 	)
 	)*
 
@@ -919,6 +922,11 @@ featureAssignmentExpression returns [Expression expr = null]
 featureTypeExpression returns [Expression expr = null]
 	:
 	feature = dottedId (comp = EQUAL | comp = NOTEQUAL) value = primitiveArgument {expr = ExpressionFactory.createFeatureMatch(feature, comp, value);}
+	;
+
+featureExpression returns [Expression expr = null]
+	:
+	f = dottedId2  {expr = ExpressionFactory.createFeatureExpression(f);}
 	;
 
 simpleTypeExpression returns [Expression type = null]
@@ -1346,7 +1354,7 @@ actionCreate returns [RutaAction action = null]
         
     (index = numberExpression {indexes.add(index);} ((COMMA index = numberExpression)=> (COMMA index = numberExpression){indexes.add(index);})* COMMA)?
     
-    (fname = stringExpression ASSIGN_EQUAL obj1 = argument {left.add(fname); right.add(obj1);} 
+    ((stringExpression ASSIGN_EQUAL)=> fname = stringExpression ASSIGN_EQUAL obj1 = argument {left.add(fname); right.add(obj1);} 
     (COMMA fname = stringExpression ASSIGN_EQUAL obj1 = argument {left.add(fname);right.add(obj1);})*)?
     
     )?
@@ -1976,6 +1984,21 @@ dottedId returns [Token token = null ]
 	 return token;}
 	;
 
+dottedId2 returns [Token token = null ]
+@init {CommonToken ct = null;}
+	:
+	id = Identifier {
+		ct = new CommonToken(id);
+		}
+	(
+		dot = DOT {ct.setText(ct.getText() + dot.getText());}
+		id = Identifier {ct.setStopIndex(getBounds(id)[1]);
+		                 ct.setText(ct.getText() + id.getText());}
+	)+
+	{token = ct;
+	 return token;}
+	;
+
 //snooze	
 dottedComponentReference returns [ComponentReference ref = null ]
 @init {CommonToken ct = null;}
@@ -2082,7 +2105,9 @@ numberExpressionInPar returns [RutaExpression expr = null]
 //seems OK
 simpleNumberExpression returns [Expression expr = null]
 	:
-	m = MINUS? numVarRef = numberVariable
+	(featureExpression)=> fe = featureExpression {ExpressionFactory.createNumberExpression(fe);}
+	|
+	 m = MINUS? numVarRef = numberVariable
 	  {if(m == null) {expr = numVarRef;} else {expr = ExpressionFactory.createNegatedNumberExpression(m, numVarRef);}}
 	| (m = MINUS)? decLit = DecimalLiteral
 	  {expr = ExpressionFactory.createDecimalLiteral(decLit,m);}
@@ -2131,7 +2156,8 @@ List<Expression> exprList = new ArrayList<Expression>();
 {expr = ExpressionFactory.createEmptyStringExpression(input.LT(1));}
 }
 	:
-	
+	(featureExpression)=> fe = featureExpression {expr = ExpressionFactory.createStringExpression(fe);}
+	|
 	e = stringFunction {expr = e;} 
 	|
 	strExpr1 = simpleStringExpression {if (strExpr1!=null) exprList.add(strExpr1);}
@@ -2188,6 +2214,7 @@ expr = ExpressionFactory.createEmptyBooleanExpression(input.LT(1));
 }
 	:
 	(featureTypeExpression)=>fmbe = featureTypeExpression {expr = ExpressionFactory.createBooleanExpression(fmbe);}
+	| (featureExpression)=> fe = featureExpression {expr = ExpressionFactory.createBooleanExpression(fe);}
 	| (composedBooleanExpression)=> bcE = composedBooleanExpression {expr = bcE;}
 	| sbE = simpleBooleanExpression {expr = sbE;}
 	;

@@ -58,8 +58,8 @@ public class RutaSelectAnnotationRulerAction extends SelectMarkerRulerAction {
 
   private ResourceBundle fBundle;
 
-  public RutaSelectAnnotationRulerAction(ResourceBundle bundle, String prefix,
-          ITextEditor editor, IVerticalRulerInfo ruler) {
+  public RutaSelectAnnotationRulerAction(ResourceBundle bundle, String prefix, ITextEditor editor,
+          IVerticalRulerInfo ruler) {
     super(bundle, prefix, editor, ruler);
     fBundle = bundle;
     fTextEditor = editor;

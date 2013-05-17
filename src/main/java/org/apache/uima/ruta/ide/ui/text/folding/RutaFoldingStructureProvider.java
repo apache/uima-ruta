@@ -204,12 +204,9 @@ public class RutaFoldingStructureProvider extends AbstractASTFoldingStructurePro
       }
     }
 
-    fFoldNewLines = store
-            .getBoolean(RutaPreferenceConstants.EDITOR_FOLDING_COMMENTS_WITH_NEWLINES);
-    fInitCollapseBlocks = store
-            .getBoolean(RutaPreferenceConstants.EDITOR_FOLDING_INIT_BLOCKS);
-    fInitCollapseComments = store
-            .getBoolean(RutaPreferenceConstants.EDITOR_FOLDING_INIT_COMMENTS);
+    fFoldNewLines = store.getBoolean(RutaPreferenceConstants.EDITOR_FOLDING_COMMENTS_WITH_NEWLINES);
+    fInitCollapseBlocks = store.getBoolean(RutaPreferenceConstants.EDITOR_FOLDING_INIT_BLOCKS);
+    fInitCollapseComments = store.getBoolean(RutaPreferenceConstants.EDITOR_FOLDING_INIT_COMMENTS);
     fInitCollapseNamespaces = store
             .getBoolean(RutaPreferenceConstants.EDITOR_FOLDING_INIT_NAMESPACES);
   }

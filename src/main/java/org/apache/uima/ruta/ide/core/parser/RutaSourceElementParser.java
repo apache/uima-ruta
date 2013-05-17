@@ -15,14 +15,13 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.core.parser;
 
 import org.apache.uima.ruta.ide.core.RutaNature;
 import org.eclipse.dltk.compiler.SourceElementRequestVisitor;
 import org.eclipse.dltk.core.AbstractSourceElementParser;
-
 
 public class RutaSourceElementParser extends AbstractSourceElementParser {
 

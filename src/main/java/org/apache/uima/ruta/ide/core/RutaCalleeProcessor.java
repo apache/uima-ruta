@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.core;
 
@@ -43,7 +43,6 @@ import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
 
-
 public class RutaCalleeProcessor implements ICalleeProcessor {
   protected static int EXACT_RULE = SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE;
 
@@ -61,8 +60,8 @@ public class RutaCalleeProcessor implements ICalleeProcessor {
   private class CaleeSourceElementRequestor extends SourceElementRequestorAdaptor {
 
     @Override
-    public void acceptMethodReference(String methodName, int argCount,
-            int sourcePosition, int sourceEndPosition) {
+    public void acceptMethodReference(String methodName, int argCount, int sourcePosition,
+            int sourceEndPosition) {
       String name = new String(methodName);
       int off = 0;
       try {
@@ -169,7 +168,7 @@ public class RutaCalleeProcessor implements ICalleeProcessor {
     // }
     // }
     // };
-    //		
+    //
     // try {
     // String pattern = methodName;
     // if( pattern.startsWith("::")) {
@@ -203,7 +202,8 @@ public class RutaCalleeProcessor implements ICalleeProcessor {
     }
     SearchPattern pattern = SearchPattern.createPattern(patternString, searchFor, limitTo,
             matchRule, scope.getLanguageToolkit());
-    new SearchEngine().search(pattern, new SearchParticipant[] { SearchEngine
-            .getDefaultSearchParticipant() }, scope, requestor, null);
+    new SearchEngine().search(pattern,
+            new SearchParticipant[] { SearchEngine.getDefaultSearchParticipant() }, scope,
+            requestor, null);
   }
 }

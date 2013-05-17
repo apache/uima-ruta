@@ -31,8 +31,7 @@ public class RutaConsolePreferenceInitializer extends AbstractPreferenceInitiali
 
   public void initializeDefaultPreferences() {
     IPreferenceStore store = RutaIdePlugin.getDefault().getPreferenceStore();
-    store.setDefault(RutaConsoleConstants.PREF_NEW_PROMPT,
-            RutaConsoleConstants.DEFAULT_NEW_PROMPT);
+    store.setDefault(RutaConsoleConstants.PREF_NEW_PROMPT, RutaConsoleConstants.DEFAULT_NEW_PROMPT);
     store.setDefault(RutaConsoleConstants.PREF_CONTINUE_PROMPT,
             RutaConsoleConstants.DEFAULT_CONTINUE_PROMPT);
   }

@@ -109,7 +109,8 @@ public class RutaMainLaunchConfigurationTab extends MainLaunchConfigurationTab {
     inputResourceGroup.setLayout(inputResourceGroupLayout);
 
     inputText = new Text(inputResourceGroup, SWT.BORDER);
-    GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false).span(3,1).applyTo(inputText);
+    GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false).span(3, 1)
+            .applyTo(inputText);
     inputText.addModifyListener(new ModifyListener() {
 
       public void modifyText(ModifyEvent event) {
@@ -151,8 +152,6 @@ public class RutaMainLaunchConfigurationTab extends MainLaunchConfigurationTab {
       }
     });
 
-    
-    
     Label viewLabel = new Label(inputResourceGroup, SWT.NONE);
     viewLabel.setText("View Name:");
     viewText = new Text(inputResourceGroup, SWT.BORDER);
@@ -213,8 +212,7 @@ public class RutaMainLaunchConfigurationTab extends MainLaunchConfigurationTab {
   @Override
   public void doInitializeForm(ILaunchConfiguration config) {
     super.doInitializeForm(config);
-    
-    
+
     IScriptProject proj = null;
     try {
       proj = AbstractScriptLaunchConfigurationDelegate.getScriptProject(config);
@@ -225,43 +223,44 @@ public class RutaMainLaunchConfigurationTab extends MainLaunchConfigurationTab {
     String defaultOutputLocation = RutaProjectUtils.getDefaultOutputLocation();
     IResource inputFolder = proj.getProject().findMember(defaultInputLocation);
     IResource outputFolder = proj.getProject().findMember(defaultOutputLocation);
-    
-    
+
     try {
       recursivelyButton.setSelection(config.getAttribute(RutaLaunchConstants.RECURSIVE, false));
     } catch (CoreException e) {
       recursivelyButton.setSelection(false);
     }
-    
+
     try {
       viewText.setText(config.getAttribute(RutaLaunchConstants.VIEW, CAS.NAME_DEFAULT_SOFA));
     } catch (CoreException e) {
       viewText.setText(CAS.NAME_DEFAULT_SOFA);
     }
-    
+
     try {
-      inputText.setText(config.getAttribute(RutaLaunchConstants.INPUT_FOLDER, inputFolder.getFullPath().toPortableString()));
+      inputText.setText(config.getAttribute(RutaLaunchConstants.INPUT_FOLDER, inputFolder
+              .getFullPath().toPortableString()));
     } catch (CoreException e) {
       inputText.setText(inputFolder.getFullPath().toPortableString());
     }
-    
+
     try {
-      outputFolderText.setText(config.getAttribute(RutaLaunchConstants.OUTPUT_FOLDER, outputFolder.getFullPath().toPortableString()));
+      outputFolderText.setText(config.getAttribute(RutaLaunchConstants.OUTPUT_FOLDER, outputFolder
+              .getFullPath().toPortableString()));
     } catch (CoreException e) {
       outputFolderText.setText(outputFolder.getFullPath().toPortableString());
     }
-    
+
   }
 
   @Override
   public void doPerformApply(ILaunchConfigurationWorkingCopy config) {
     super.doPerformApply(config);
-    
+
     config.setAttribute(RutaLaunchConstants.RECURSIVE, recursivelyButton.getSelection());
     config.setAttribute(RutaLaunchConstants.VIEW, viewText.getText());
     config.setAttribute(RutaLaunchConstants.INPUT_FOLDER, inputText.getText());
     config.setAttribute(RutaLaunchConstants.OUTPUT_FOLDER, outputFolderText.getText());
-    
+
   }
 
   @Override
@@ -278,7 +277,9 @@ public class RutaMainLaunchConfigurationTab extends MainLaunchConfigurationTab {
     IResource inputFolder = proj.getProject().findMember(defaultInputLocation);
     IResource outputFolder = proj.getProject().findMember(defaultOutputLocation);
     config.setAttribute(RutaLaunchConstants.RECURSIVE, false);
-    config.setAttribute(RutaLaunchConstants.INPUT_FOLDER, inputFolder.getFullPath().toPortableString());
-    config.setAttribute(RutaLaunchConstants.OUTPUT_FOLDER, outputFolder.getFullPath().toPortableString());
+    config.setAttribute(RutaLaunchConstants.INPUT_FOLDER, inputFolder.getFullPath()
+            .toPortableString());
+    config.setAttribute(RutaLaunchConstants.OUTPUT_FOLDER, outputFolder.getFullPath()
+            .toPortableString());
   }
 }

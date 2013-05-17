@@ -33,8 +33,6 @@ import java.util.Set;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_component.AnalysisComponent;
-import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
-import org.apache.uima.fit.internal.ReflectionUtil;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
@@ -247,7 +245,8 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
       List<String> engines = new ArrayList<String>();
       Reflections reflections = new Reflections(new ConfigurationBuilder().addUrls(
               classloader.getURLs()).setScanners(new SubTypesScanner(true)));
-      Set<String> subTypesOf = reflections.getStore().getSubTypesOf(AnalysisComponent.class.getName());
+      Set<String> subTypesOf = reflections.getStore().getSubTypesOf(
+              AnalysisComponent.class.getName());
       engines.addAll(subTypesOf);
       for (String string : engines) {
         if (match(complString, string)) {

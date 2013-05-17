@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.core.search;
 
@@ -83,8 +83,9 @@ public class RutaCallProcessor implements ICallProcessor {
             IDLTKSearchConstants.METHOD, IDLTKSearchConstants.REFERENCES,
             GENERICS_AGNOSTIC_MATCH_RULE, scope.getLanguageToolkit());
     try {
-      searchEngine.search(pattern, new SearchParticipant[] { SearchEngine
-              .getDefaultSearchParticipant() }, scope, requestor, monitor);
+      searchEngine.search(pattern,
+              new SearchParticipant[] { SearchEngine.getDefaultSearchParticipant() }, scope,
+              requestor, monitor);
     } catch (CoreException e) {
       if (DLTKCore.DEBUG) {
         e.printStackTrace();

@@ -219,8 +219,7 @@ public class RutaEditor extends ScriptEditor {
     // IJavaHelpContextIds.FORMAT_ACTION);
   }
 
-  final static String[] properties = new String[] {
-      RutaPreferenceConstants.EDITOR_FOLDING_BLOCKS,
+  final static String[] properties = new String[] { RutaPreferenceConstants.EDITOR_FOLDING_BLOCKS,
       RutaPreferenceConstants.EDITOR_FOLDING_EXCLUDE_LIST,
       RutaPreferenceConstants.EDITOR_FOLDING_INCLUDE_LIST, };
 
@@ -339,8 +338,7 @@ public class RutaEditor extends ScriptEditor {
     }
     node = visitor1.getResult();
     if (node == null) {
-      RutaReferenceDeclarationVisitor visitor2 = new RutaReferenceDeclarationVisitor(
-              caret);
+      RutaReferenceDeclarationVisitor visitor2 = new RutaReferenceDeclarationVisitor(caret);
       try {
         parsed.traverse(visitor2);
       } catch (Exception e) {

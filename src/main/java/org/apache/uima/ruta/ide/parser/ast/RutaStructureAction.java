@@ -33,9 +33,8 @@ public class RutaStructureAction extends RutaAction {
 
   private Map<Expression, Expression> assignments;
 
-  public RutaStructureAction(int start, int end, List<Expression> exprs, int kind,
-          String name, int nameStart, int nameEnd, Map<Expression, Expression> assignments,
-          Expression structure) {
+  public RutaStructureAction(int start, int end, List<Expression> exprs, int kind, String name,
+          int nameStart, int nameEnd, Map<Expression, Expression> assignments, Expression structure) {
     super(start, end, exprs, kind, name, nameStart, nameEnd);
     this.assignments = assignments;
     this.structure = structure;
