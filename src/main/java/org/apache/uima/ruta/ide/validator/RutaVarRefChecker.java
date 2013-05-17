@@ -195,10 +195,12 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
       }
       completeTypes = new TreeSet<String>();
       shortTypes = new TreeSet<String>();
-      TypeDescription[] types = description.getTypes();
-      for (TypeDescription typeDescription : types) {
-        completeTypes.add(typeDescription.getName());
-        shortTypes.add(getShortName(typeDescription.getName()));
+      if (description != null) {
+        TypeDescription[] types = description.getTypes();
+        for (TypeDescription typeDescription : types) {
+          completeTypes.add(typeDescription.getName());
+          shortTypes.add(getShortName(typeDescription.getName()));
+        }
       }
     }
 
