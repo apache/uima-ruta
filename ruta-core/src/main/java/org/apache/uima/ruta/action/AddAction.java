@@ -57,8 +57,7 @@ public class AddAction extends AbstractRutaAction {
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
     RutaBlock parent = element.getParent();
     RutaEnvironment environment = parent.getEnvironment();
     List list = environment.getVariableValue(var, List.class);
@@ -67,17 +66,17 @@ public class AddAction extends AbstractRutaAction {
     for (RutaExpression each : elements) {
       if (each instanceof ListExpression) {
         ListExpression l = (ListExpression) each;
-        list.addAll(l.getList(parent));
+        list.addAll(l.getList(parent, stream));
       } else if (vgtype.equals(Boolean.class) && each instanceof BooleanExpression) {
-        list.add(((BooleanExpression) each).getBooleanValue(parent));
+        list.add(((BooleanExpression) each).getBooleanValue(parent, match, element, stream));
       } else if (vgtype.equals(Integer.class) && each instanceof NumberExpression) {
-        list.add(((NumberExpression) each).getIntegerValue(parent));
+        list.add(((NumberExpression) each).getIntegerValue(parent, match, element, stream));
       } else if (vgtype.equals(Double.class) && each instanceof NumberExpression) {
-        list.add(((NumberExpression) each).getDoubleValue(parent));
+        list.add(((NumberExpression) each).getDoubleValue(parent, match, element, stream));
       } else if (vgtype.equals(Type.class) && each instanceof TypeExpression) {
         list.add(((TypeExpression) each).getType(parent));
       } else if (vgtype.equals(String.class) && each instanceof StringExpression) {
-        list.add(((StringExpression) each).getStringValue(parent));
+        list.add(((StringExpression) each).getStringValue(parent, match, element, stream));
       }
     }
   }

@@ -34,7 +34,7 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 public class StarReluctant implements RuleElementQuantifier {
 
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
-          RutaStatement element, InferenceCrowd crowd) {
+          RutaStatement element, RutaStream stream, InferenceCrowd crowd) {
     return matches;
   }
 
@@ -53,7 +53,7 @@ public class StarReluctant implements RuleElementQuantifier {
     return nextList == null || nextList.isEmpty();
   }
 
-  public boolean isOptional(RutaBlock parent) {
+  public boolean isOptional(RutaBlock parent, RutaStream stream) {
     return true;
   }
 }

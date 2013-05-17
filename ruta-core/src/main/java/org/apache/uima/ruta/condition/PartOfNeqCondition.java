@@ -43,15 +43,15 @@ public class PartOfNeqCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          RutaStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
+          InferenceCrowd crowd) {
     if (!isWorkingOnList()) {
       Type t = type.getType(element.getParent());
       boolean result = check(annotation, stream, t);
       return new EvaluatedCondition(this, result);
     } else {
       boolean result = false;
-      List<Type> types = getList().getList(element.getParent());
+      List<Type> types = getList().getList(element.getParent(), stream);
       for (Type t : types) {
         result |= check(annotation, stream, t);
         if (result == true) {
@@ -67,7 +67,7 @@ public class PartOfNeqCondition extends TypeSentiveCondition {
     while (stream.isValid()) {
       RutaBasic each = (RutaBasic) stream.get();
       Set<AnnotationFS> set = each.getBeginAnchors(t);
-      if(set == null)  {
+      if (set == null) {
         stream.moveToPrevious();
         continue;
       }

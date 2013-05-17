@@ -25,13 +25,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.TreeSet;
-
-import javax.swing.UIManager;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.ruta.engine.RutaEngine;
-import org.apache.uima.ruta.ide.RutaIdePlugin;
 import org.apache.uima.ruta.ide.core.RutaNature;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -54,6 +50,7 @@ import org.eclipse.jdt.internal.core.JavaProject;
 public class RutaProjectUtils {
 
   public static final String JAVANATURE = "org.eclipse.jdt.core.javanature";
+
   private static final String CDE_DATA_PATH = "CDEdataPath";
 
   public static IPath getEngineDescriptorPath(IPath scriptPath, IProject project) {
@@ -86,12 +83,13 @@ public class RutaProjectUtils {
   public static List<IFolder> getReferencedScriptFolders(IScriptProject proj) throws CoreException {
     return getReferencedScriptFolders(proj, new HashSet<IProject>());
   }
-  
-  public static List<IFolder> getReferencedScriptFolders(IScriptProject proj, Collection<IProject> visited) throws CoreException {
+
+  public static List<IFolder> getReferencedScriptFolders(IScriptProject proj,
+          Collection<IProject> visited) throws CoreException {
     List<IFolder> result = new ArrayList<IFolder>();
     IProject[] referencedProjects = proj.getProject().getReferencedProjects();
     for (IProject eachProject : referencedProjects) {
-      if(!visited.contains(eachProject)) {
+      if (!visited.contains(eachProject)) {
         IScriptProject scriptProject = DLTKCore.create(eachProject);
         result.addAll(RutaProjectUtils.getScriptFolders(scriptProject));
         visited.add(eachProject);
@@ -134,12 +132,13 @@ public class RutaProjectUtils {
   public static List<IFolder> getReferencedDescriptorFolders(IProject proj) throws CoreException {
     return getReferencedDescriptorFolders(proj, new HashSet<IProject>());
   }
-  
-  public static List<IFolder> getReferencedDescriptorFolders(IProject proj, Collection<IProject> visited) throws CoreException {
+
+  public static List<IFolder> getReferencedDescriptorFolders(IProject proj,
+          Collection<IProject> visited) throws CoreException {
     List<IFolder> result = new ArrayList<IFolder>();
     Collection<IProject> referencedProjects = getReferencedProjects(proj, new HashSet<IProject>());
     for (IProject eachProject : referencedProjects) {
-      if(!visited.contains(eachProject)) {
+      if (!visited.contains(eachProject)) {
         result.addAll(RutaProjectUtils.getDescriptorFolders(eachProject));
         visited.add(eachProject);
         result.addAll(getReferencedDescriptorFolders(eachProject, visited));
@@ -148,18 +147,19 @@ public class RutaProjectUtils {
     return result;
   }
 
-  private static Collection<IProject> getReferencedProjects(IProject proj, Collection<IProject> visited) throws CoreException {
+  private static Collection<IProject> getReferencedProjects(IProject proj,
+          Collection<IProject> visited) throws CoreException {
     Collection<IProject> result = new HashSet<IProject>();
     IProject[] referencedProjects = proj.getReferencedProjects();
     result.addAll(Arrays.asList(referencedProjects));
     IProjectNature nature = proj.getNature(JAVANATURE);
-    if(nature != null) {
+    if (nature != null) {
       JavaProject javaProject = (JavaProject) JavaCore.create(proj);
       IClasspathEntry[] resolvedClasspath = javaProject.getResolvedClasspath();
       for (IClasspathEntry eachCPE : resolvedClasspath) {
-        if(eachCPE.getEntryKind() == IClasspathEntry.CPE_PROJECT) {
-         IProject project = getProject(eachCPE.getPath());
-         result.add(project);
+        if (eachCPE.getEntryKind() == IClasspathEntry.CPE_PROJECT) {
+          IProject project = getProject(eachCPE.getPath());
+          result.add(project);
         }
       }
     }
@@ -262,8 +262,7 @@ public class RutaProjectUtils {
     }
     return null;
   }
-  
-  
+
   public static String getDefaultInputLocation() {
     return "input";
   }

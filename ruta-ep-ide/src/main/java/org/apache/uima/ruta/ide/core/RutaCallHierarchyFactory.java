@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.core;
 
@@ -26,7 +26,6 @@ import org.eclipse.dltk.core.ICallProcessor;
 import org.eclipse.dltk.core.ICalleeProcessor;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
-
 
 public class RutaCallHierarchyFactory implements ICallHierarchyFactory {
 

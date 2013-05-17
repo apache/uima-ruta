@@ -37,8 +37,8 @@ public class ParseCondition extends AbstractRutaCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          RutaStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
+          InferenceCrowd crowd) {
     String text = annotation.getCoveredText();
     RutaEnvironment env = element.getParent().getEnvironment();
     Class<?> type = env.getVariableType(var);

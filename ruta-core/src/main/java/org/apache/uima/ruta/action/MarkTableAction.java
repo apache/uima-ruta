@@ -78,25 +78,25 @@ public class MarkTableAction extends AbstractRutaAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
     RutaBlock block = element.getParent();
     RutaTable table = tableExpr.getTable(block);
-    int index = indexExpr.getIntegerValue(block);
+    int index = indexExpr.getIntegerValue(block, match, element, stream);
     Type type = typeExpr.getType(block);
     Map<String, Integer> map = new HashMap<String, Integer>();
     for (StringExpression each : featureMap.keySet()) {
-      map.put(each.getStringValue(block), featureMap.get(each).getIntegerValue(block));
+      map.put(each.getStringValue(block, match, element, stream), featureMap.get(each)
+              .getIntegerValue(block, match, element, stream));
     }
 
-    boolean ignoreCaseValue = ignoreCase != null ? ignoreCase.getBooleanValue(element.getParent())
-            : false;
-    int ignoreLengthValue = ignoreLength != null ? ignoreLength
-            .getIntegerValue(element.getParent()) : 0;
-    String ignoreCharValue = ignoreChar != null ? ignoreChar.getStringValue(element.getParent())
-            : "";
-    int maxIgnoreCharValue = maxIgnoreChar != null ? maxIgnoreChar.getIntegerValue(element
-            .getParent()) : 0;
+    boolean ignoreCaseValue = ignoreCase != null ? ignoreCase.getBooleanValue(element.getParent(),
+            null, stream) : false;
+    int ignoreLengthValue = ignoreLength != null ? ignoreLength.getIntegerValue(
+            element.getParent(), null, stream) : 0;
+    String ignoreCharValue = ignoreChar != null ? ignoreChar.getStringValue(element.getParent(),
+            null, stream) : "";
+    int maxIgnoreCharValue = maxIgnoreChar != null ? maxIgnoreChar.getIntegerValue(
+            element.getParent(), null, stream) : 0;
 
     RutaWordList wordList = table.getWordList(index);
     Collection<AnnotationFS> found = wordList.find(stream, ignoreCaseValue, ignoreLengthValue,

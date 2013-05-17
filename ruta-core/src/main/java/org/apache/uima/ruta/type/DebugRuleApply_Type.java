@@ -1,4 +1,3 @@
-
 /* First created by JCasGen Tue Aug 09 16:26:13 CEST 2011 */
 package org.apache.uima.ruta.type;
 
@@ -12,174 +11,192 @@ import org.apache.uima.cas.impl.TypeImpl;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
 
-/** 
+/**
  * Updated by JCasGen Thu Jul 12 10:42:33 CEST 2012
- * @generated */
+ * 
+ * @generated
+ */
 public class DebugRuleApply_Type extends DebugScriptApply_Type {
   /** @generated */
-  protected FSGenerator getFSGenerator() {return fsGenerator;}
+  protected FSGenerator getFSGenerator() {
+    return fsGenerator;
+  }
+
   /** @generated */
-  private final FSGenerator fsGenerator = 
-    new FSGenerator() {
-      public FeatureStructure createFS(int addr, CASImpl cas) {
-  			 if (DebugRuleApply_Type.this.useExistingInstance) {
-  			   // Return eq fs instance if already created
-  		     FeatureStructure fs = DebugRuleApply_Type.this.jcas.getJfsFromCaddr(addr);
-  		     if (null == fs) {
-  		       fs = new DebugRuleApply(addr, DebugRuleApply_Type.this);
-  			   DebugRuleApply_Type.this.jcas.putJfsFromCaddr(addr, fs);
-  			   return fs;
-  		     }
-  		     return fs;
-        } else return new DebugRuleApply(addr, DebugRuleApply_Type.this);
-  	  }
-    };
+  private final FSGenerator fsGenerator = new FSGenerator() {
+    public FeatureStructure createFS(int addr, CASImpl cas) {
+      if (DebugRuleApply_Type.this.useExistingInstance) {
+        // Return eq fs instance if already created
+        FeatureStructure fs = DebugRuleApply_Type.this.jcas.getJfsFromCaddr(addr);
+        if (null == fs) {
+          fs = new DebugRuleApply(addr, DebugRuleApply_Type.this);
+          DebugRuleApply_Type.this.jcas.putJfsFromCaddr(addr, fs);
+          return fs;
+        }
+        return fs;
+      } else
+        return new DebugRuleApply(addr, DebugRuleApply_Type.this);
+    }
+  };
+
   /** @generated */
   public final static int typeIndexID = DebugRuleApply.typeIndexID;
-  /** @generated 
-     @modifiable */
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.ruta.type.DebugRuleApply");
- 
+
+  /**
+   * @generated
+   * @modifiable
+   */
+  public final static boolean featOkTst = JCasRegistry
+          .getFeatOkTst("org.apache.uima.ruta.type.DebugRuleApply");
+
   /** @generated */
   final Feature casFeat_applied;
+
   /** @generated */
-  final int     casFeatCode_applied;
-  /** @generated */ 
+  final int casFeatCode_applied;
+
+  /** @generated */
   public int getApplied(int addr) {
-        if (featOkTst && casFeat_applied == null)
+    if (featOkTst && casFeat_applied == null)
       jcas.throwFeatMissing("applied", "org.apache.uima.ruta.type.DebugRuleApply");
     return ll_cas.ll_getIntValue(addr, casFeatCode_applied);
   }
-  /** @generated */    
+
+  /** @generated */
   public void setApplied(int addr, int v) {
-        if (featOkTst && casFeat_applied == null)
+    if (featOkTst && casFeat_applied == null)
       jcas.throwFeatMissing("applied", "org.apache.uima.ruta.type.DebugRuleApply");
-    ll_cas.ll_setIntValue(addr, casFeatCode_applied, v);}
-    
-  
- 
+    ll_cas.ll_setIntValue(addr, casFeatCode_applied, v);
+  }
+
   /** @generated */
   final Feature casFeat_tried;
+
   /** @generated */
-  final int     casFeatCode_tried;
-  /** @generated */ 
+  final int casFeatCode_tried;
+
+  /** @generated */
   public int getTried(int addr) {
-        if (featOkTst && casFeat_tried == null)
+    if (featOkTst && casFeat_tried == null)
       jcas.throwFeatMissing("tried", "org.apache.uima.ruta.type.DebugRuleApply");
     return ll_cas.ll_getIntValue(addr, casFeatCode_tried);
   }
-  /** @generated */    
+
+  /** @generated */
   public void setTried(int addr, int v) {
-        if (featOkTst && casFeat_tried == null)
+    if (featOkTst && casFeat_tried == null)
       jcas.throwFeatMissing("tried", "org.apache.uima.ruta.type.DebugRuleApply");
-    ll_cas.ll_setIntValue(addr, casFeatCode_tried, v);}
-    
-  
- 
+    ll_cas.ll_setIntValue(addr, casFeatCode_tried, v);
+  }
+
   /** @generated */
   final Feature casFeat_rules;
+
   /** @generated */
-  final int     casFeatCode_rules;
-  /** @generated */ 
+  final int casFeatCode_rules;
+
+  /** @generated */
   public int getRules(int addr) {
-        if (featOkTst && casFeat_rules == null)
+    if (featOkTst && casFeat_rules == null)
       jcas.throwFeatMissing("rules", "org.apache.uima.ruta.type.DebugRuleApply");
     return ll_cas.ll_getRefValue(addr, casFeatCode_rules);
   }
-  /** @generated */    
+
+  /** @generated */
   public void setRules(int addr, int v) {
-        if (featOkTst && casFeat_rules == null)
+    if (featOkTst && casFeat_rules == null)
       jcas.throwFeatMissing("rules", "org.apache.uima.ruta.type.DebugRuleApply");
-    ll_cas.ll_setRefValue(addr, casFeatCode_rules, v);}
-    
-   /** @generated */
+    ll_cas.ll_setRefValue(addr, casFeatCode_rules, v);
+  }
+
+  /** @generated */
   public int getRules(int addr, int i) {
-        if (featOkTst && casFeat_rules == null)
+    if (featOkTst && casFeat_rules == null)
       jcas.throwFeatMissing("rules", "org.apache.uima.ruta.type.DebugRuleApply");
     if (lowLevelTypeChecks)
       return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_rules), i, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_rules), i);
-  return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_rules), i);
+    return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_rules), i);
   }
-   
-  /** @generated */ 
+
+  /** @generated */
   public void setRules(int addr, int i, int v) {
-        if (featOkTst && casFeat_rules == null)
+    if (featOkTst && casFeat_rules == null)
       jcas.throwFeatMissing("rules", "org.apache.uima.ruta.type.DebugRuleApply");
     if (lowLevelTypeChecks)
       ll_cas.ll_setRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_rules), i, v, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_rules), i);
     ll_cas.ll_setRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_rules), i, v);
   }
- 
- 
+
   /** @generated */
   final Feature casFeat_id;
+
   /** @generated */
-  final int     casFeatCode_id;
-  /** @generated */ 
+  final int casFeatCode_id;
+
+  /** @generated */
   public int getId(int addr) {
-        if (featOkTst && casFeat_id == null)
+    if (featOkTst && casFeat_id == null)
       jcas.throwFeatMissing("id", "org.apache.uima.ruta.type.DebugRuleApply");
     return ll_cas.ll_getIntValue(addr, casFeatCode_id);
   }
-  /** @generated */    
+
+  /** @generated */
   public void setId(int addr, int v) {
-        if (featOkTst && casFeat_id == null)
+    if (featOkTst && casFeat_id == null)
       jcas.throwFeatMissing("id", "org.apache.uima.ruta.type.DebugRuleApply");
-    ll_cas.ll_setIntValue(addr, casFeatCode_id, v);}
-    
-  
- 
+    ll_cas.ll_setIntValue(addr, casFeatCode_id, v);
+  }
+
   /** @generated */
   final Feature casFeat_script;
+
   /** @generated */
-  final int     casFeatCode_script;
-  /** @generated */ 
+  final int casFeatCode_script;
+
+  /** @generated */
   public String getScript(int addr) {
-        if (featOkTst && casFeat_script == null)
+    if (featOkTst && casFeat_script == null)
       jcas.throwFeatMissing("script", "org.apache.uima.ruta.type.DebugRuleApply");
     return ll_cas.ll_getStringValue(addr, casFeatCode_script);
   }
-  /** @generated */    
+
+  /** @generated */
   public void setScript(int addr, String v) {
-        if (featOkTst && casFeat_script == null)
+    if (featOkTst && casFeat_script == null)
       jcas.throwFeatMissing("script", "org.apache.uima.ruta.type.DebugRuleApply");
-    ll_cas.ll_setStringValue(addr, casFeatCode_script, v);}
-    
-  
+    ll_cas.ll_setStringValue(addr, casFeatCode_script, v);
+  }
 
-
-
-  /** initialize variables to correspond with Cas Type and Features
-	* @generated */
+  /**
+   * initialize variables to correspond with Cas Type and Features
+   * 
+   * @generated
+   */
   public DebugRuleApply_Type(JCas jcas, Type casType) {
     super(jcas, casType);
-    casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
+    casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl) this.casType, getFSGenerator());
 
- 
     casFeat_applied = jcas.getRequiredFeatureDE(casType, "applied", "uima.cas.Integer", featOkTst);
-    casFeatCode_applied  = (null == casFeat_applied) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_applied).getCode();
+    casFeatCode_applied = (null == casFeat_applied) ? JCas.INVALID_FEATURE_CODE
+            : ((FeatureImpl) casFeat_applied).getCode();
 
- 
     casFeat_tried = jcas.getRequiredFeatureDE(casType, "tried", "uima.cas.Integer", featOkTst);
-    casFeatCode_tried  = (null == casFeat_tried) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_tried).getCode();
+    casFeatCode_tried = (null == casFeat_tried) ? JCas.INVALID_FEATURE_CODE
+            : ((FeatureImpl) casFeat_tried).getCode();
 
- 
     casFeat_rules = jcas.getRequiredFeatureDE(casType, "rules", "uima.cas.FSArray", featOkTst);
-    casFeatCode_rules  = (null == casFeat_rules) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_rules).getCode();
+    casFeatCode_rules = (null == casFeat_rules) ? JCas.INVALID_FEATURE_CODE
+            : ((FeatureImpl) casFeat_rules).getCode();
 
- 
     casFeat_id = jcas.getRequiredFeatureDE(casType, "id", "uima.cas.Integer", featOkTst);
-    casFeatCode_id  = (null == casFeat_id) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_id).getCode();
+    casFeatCode_id = (null == casFeat_id) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl) casFeat_id)
+            .getCode();
 
- 
     casFeat_script = jcas.getRequiredFeatureDE(casType, "script", "uima.cas.String", featOkTst);
-    casFeatCode_script  = (null == casFeat_script) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_script).getCode();
+    casFeatCode_script = (null == casFeat_script) ? JCas.INVALID_FEATURE_CODE
+            : ((FeatureImpl) casFeat_script).getCode();
 
   }
 }
-
-
-
-    

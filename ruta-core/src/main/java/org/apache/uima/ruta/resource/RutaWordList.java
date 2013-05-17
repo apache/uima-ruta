@@ -43,7 +43,7 @@ public interface RutaWordList {
   Collection<AnnotationFS> find(RutaStream stream, boolean ignoreCase, int size,
           char[] ignoreToken, int maxIgnoredTokens, boolean ingoreWS);
 
-  Collection<AnnotationFS> find(RutaStream stream, Map<String, Type> typeMap,
-          boolean ignoreCase, int ignoreLength, boolean edit, double distance, String ignoreToken);
+  Collection<AnnotationFS> find(RutaStream stream, Map<String, Type> typeMap, boolean ignoreCase,
+          int ignoreLength, boolean edit, double distance, String ignoreToken);
 
 }

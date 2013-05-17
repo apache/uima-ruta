@@ -42,6 +42,4 @@ public abstract class RutaStatement extends RutaElement {
     this.parent = parent;
   }
 
-
-  
 }

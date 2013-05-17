@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.core.builder;
 
@@ -25,8 +25,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.uima.resource.metadata.Import;
 
 public class DescriptorManager {
 
@@ -91,7 +89,7 @@ public class DescriptorManager {
   public void addUimafitEngine(String name) {
     importedUimafitEngines.add(name);
   }
-  
+
   public void addTypeSystem(String name, boolean convert) {
     if (convert) {
       name = name.replaceAll("[.]", "/");

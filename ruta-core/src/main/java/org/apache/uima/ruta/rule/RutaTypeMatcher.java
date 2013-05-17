@@ -93,8 +93,7 @@ public class RutaTypeMatcher implements RutaMatcher {
     }
     FeatureExpression featureExpression = mr.getFeatureExpression(parent, stream);
     if (featureExpression != null) {
-      return featureExpression.getFeatureAnnotations(annotations, stream,
-              parent, CHECK_ON_FEATURE);
+      return featureExpression.getFeatureAnnotations(annotations, stream, parent, CHECK_ON_FEATURE);
     } else {
       return annotations;
     }

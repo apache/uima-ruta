@@ -15,12 +15,14 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.example.extensions;
 
 import org.apache.uima.cas.Type;
-import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.BooleanFunctionExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 
@@ -37,16 +39,13 @@ public class ExampleBooleanFunction extends BooleanFunctionExpression {
     return expr;
   }
 
-  public boolean getBooleanValue(RutaStatement parent) {
+  public boolean getBooleanValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     Type type = expr.getType(parent);
     return type.isFeatureFinal();
   }
 
-  public String getStringValue(RutaStatement parent) {
-    return expr.getStringValue(parent);
+  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+    return expr.getStringValue(parent, annotation, stream);
   }
-
- 
-
 
 }

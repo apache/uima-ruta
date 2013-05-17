@@ -39,17 +39,15 @@ public class FillAction extends AbstractStructureAction {
 
   private TypeExpression structureType;
 
-  public FillAction(TypeExpression structureType,
-          Map<StringExpression, RutaExpression> features) {
+  public FillAction(TypeExpression structureType, Map<StringExpression, RutaExpression> features) {
     super();
     this.structureType = structureType;
     this.features = features;
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
-    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(stream, null,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(null,
             element.getContainer());
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
       if (matchedAnnotation == null) {

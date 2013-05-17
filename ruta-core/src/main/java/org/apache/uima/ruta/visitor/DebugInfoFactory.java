@@ -29,10 +29,10 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.ruta.BlockApply;
-import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.rule.AbstractRule;
 import org.apache.uima.ruta.rule.AbstractRuleMatch;
 import org.apache.uima.ruta.rule.ComposedRuleElement;
@@ -72,7 +72,7 @@ public class DebugInfoFactory {
     JCas cas = stream.getJCas();
     DebugBlockApply dba = new DebugBlockApply(cas);
     AnnotationFS matchedAnnotation = ruleMatch.getMatchedAnnotationsOf(
-            ((RutaRule) ruleMatch.getRule()).getRoot(), stream).get(0);
+            ((RutaRule) ruleMatch.getRule()).getRoot()).get(0);
     dba.setElement(matchedAnnotation.getCoveredText());
     dba.setBegin(matchedAnnotation.getBegin());
     dba.setEnd(matchedAnnotation.getEnd());
@@ -262,7 +262,7 @@ public class DebugInfoFactory {
       long time = timeInfo.get(match.getRule());
       drm.setTime(time);
     }
-    List<AnnotationFS> matchedAnnotationsOfRoot = match.getMatchedAnnotationsOfRoot(stream);
+    List<AnnotationFS> matchedAnnotationsOfRoot = match.getMatchedAnnotationsOfRoot();
     if (!matchedAnnotationsOfRoot.isEmpty()) {
       AnnotationFS matchedAnnotation = matchedAnnotationsOfRoot.get(0);
       if (matchedAnnotation != null) {

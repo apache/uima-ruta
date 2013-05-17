@@ -74,7 +74,7 @@ public class RutaSimpleBuilder {
   private final String defaultTypeSystem;
 
   private ResourceManager rm;
-  
+
   public RutaSimpleBuilder(String defaultTypeSystem, String defaultEngine)
           throws InvalidXMLException, IOException {
     super();
@@ -90,17 +90,17 @@ public class RutaSimpleBuilder {
   }
 
   public void build(DescriptorManager desc, String typeSystemOutput, String engineOutput,
-          RutaBuildOptions option, String mainScript, String[] scriptPaths,
-          String[] enginePaths) throws SAXException, RutaBuildException, InvalidXMLException,
-          IOException, ResourceInitializationException {
-       
+          RutaBuildOptions option, String mainScript, String[] scriptPaths, String[] enginePaths)
+          throws SAXException, RutaBuildException, InvalidXMLException, IOException,
+          ResourceInitializationException {
+
     rm = new ResourceManager_impl();
-    String dataPath ="";
+    String dataPath = "";
     for (String string : enginePaths) {
       dataPath += string + File.pathSeparator;
     }
     rm.setDataPath(dataPath);
-    
+
     Map<String, String> typeNameMap = new HashMap<String, String>();
     Capability capability = uimaFactory.createCapability();
     // String defaultTypeSystem2 = defaultTypeSystem.replaceAll("/", "\\\\");
@@ -129,7 +129,7 @@ public class RutaSimpleBuilder {
     importList.add(import_impl);
     for (String eachName : desc.getImportedTypeSystems()) {
       String locate = RutaEngine.locate(eachName, enginePaths, ".xml");
-      if(locate == null) {
+      if (locate == null) {
         throw new FileNotFoundException("Build process can't find " + eachName + " in "
                 + mainScript);
       }
@@ -365,11 +365,8 @@ public class RutaSimpleBuilder {
               RutaProjectUtils.getDefaultResourcesLocation());
       resourceLocations.add(defaultResourceDir.getAbsolutePath());
     }
-    analysisEngineDescription
-            .getAnalysisEngineMetaData()
-            .getConfigurationParameterSettings()
-            .setParameterValue(RutaEngine.RESOURCE_PATHS,
-                    resourceLocations.toArray(new String[0]));
+    analysisEngineDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
+            .setParameterValue(RutaEngine.RESOURCE_PATHS, resourceLocations.toArray(new String[0]));
 
     String[] additionalScriptsArray = desc.getImportedScripts().toArray(new String[] {});
     analysisEngineDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
@@ -379,10 +376,13 @@ public class RutaSimpleBuilder {
     analysisEngineDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
             .setParameterValue(RutaEngine.ADDITIONAL_ENGINES, additionalEnginesArray);
 
-    String[] additionalUimafitEnginesArray = desc.getImportedUimafitEngines().toArray(new String[] {});
-    analysisEngineDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
+    String[] additionalUimafitEnginesArray = desc.getImportedUimafitEngines().toArray(
+            new String[] {});
+    analysisEngineDescription
+            .getAnalysisEngineMetaData()
+            .getConfigurationParameterSettings()
             .setParameterValue(RutaEngine.ADDITIONAL_UIMAFIT_ENGINES, additionalUimafitEnginesArray);
-    
+
     analysisEngineDescription.getAnalysisEngineMetaData().setTypeSystem(typeSystemDescription);
 
     configureExtensions(option);
@@ -406,8 +406,8 @@ public class RutaSimpleBuilder {
 
     configurationParameterSettings.setParameterValue(RutaEngine.ADDITIONAL_EXTENSIONS,
             languageExtensions.toArray(new String[0]));
-    configurationParameterSettings.setParameterValue(RutaEngine.ADDITIONAL_ENGINE_LOADERS,
-            options.getEngines().toArray(new String[0]));
+    configurationParameterSettings.setParameterValue(RutaEngine.ADDITIONAL_ENGINE_LOADERS, options
+            .getEngines().toArray(new String[0]));
   }
 
   private TypeSystemDescription getTypeSystemDescriptor(File file, RutaBuildOptions option)

@@ -42,8 +42,8 @@ public class StartsWithCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          RutaStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
+          InferenceCrowd crowd) {
 
     // TODO rewrite
     if (!isWorkingOnList()) {
@@ -52,7 +52,7 @@ public class StartsWithCondition extends TypeSentiveCondition {
       return new EvaluatedCondition(this, result);
     } else {
       boolean result = false;
-      List<Type> types = getList().getList(element.getParent());
+      List<Type> types = getList().getList(element.getParent(), stream);
       for (Type t : types) {
         result |= check(annotation, t, stream);
         if (result == true) {

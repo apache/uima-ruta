@@ -32,9 +32,9 @@ import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class PlusReluctant implements RuleElementQuantifier {
- 
+
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
-          RutaStatement element, InferenceCrowd crowd) {
+          RutaStatement element, RutaStream stream, InferenceCrowd crowd) {
     boolean result = true;
     boolean allEmpty = true;
     for (RuleElementMatch match : matches) {
@@ -75,7 +75,7 @@ public class PlusReluctant implements RuleElementQuantifier {
     return nextList == null || nextList.isEmpty();
   }
 
-  public boolean isOptional(RutaBlock parent) {
+  public boolean isOptional(RutaBlock parent, RutaStream stream) {
     return false;
   }
 }

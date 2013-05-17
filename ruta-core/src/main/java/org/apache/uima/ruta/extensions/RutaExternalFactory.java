@@ -58,8 +58,8 @@ public class RutaExternalFactory {
     typeFunctionExtensions = new HashMap<String, IRutaTypeFunctionExtension>();
   }
 
-  public AbstractRutaCondition createExternalCondition(Token id,
-          List<RutaExpression> args) throws ANTLRException {
+  public AbstractRutaCondition createExternalCondition(Token id, List<RutaExpression> args)
+          throws ANTLRException {
     String name = id.getText();
     IRutaConditionExtension extension = conditionExtensions.get(name);
     if (extension != null) {

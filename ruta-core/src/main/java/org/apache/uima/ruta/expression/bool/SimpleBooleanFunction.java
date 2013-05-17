@@ -15,11 +15,13 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.expression.bool;
 
-import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
 
 public class SimpleBooleanFunction extends BooleanExpression {
 
@@ -37,9 +39,9 @@ public class SimpleBooleanFunction extends BooleanExpression {
   }
 
   @Override
-  public boolean getBooleanValue(RutaStatement parent) {
-    boolean b1 = e1.getBooleanValue(parent);
-    boolean b2 = e2.getBooleanValue(parent);
+  public boolean getBooleanValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+    boolean b1 = e1.getBooleanValue(parent, null, stream);
+    boolean b2 = e2.getBooleanValue(parent, null, stream);
     if ("XOR".equals(op)) {
       return (b1 || b2) && !(b1 && b2);
     } else if ("==".equals(op)) {
@@ -51,8 +53,9 @@ public class SimpleBooleanFunction extends BooleanExpression {
   }
 
   @Override
-  public String getStringValue(RutaStatement parent) {
-    return e1.getStringValue(parent) + " " + op + " " + e2.getStringValue(parent);
+  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+    return e1.getStringValue(parent, annotation, stream) + " " + op + " "
+            + e2.getStringValue(parent, annotation, stream);
   }
 
 }

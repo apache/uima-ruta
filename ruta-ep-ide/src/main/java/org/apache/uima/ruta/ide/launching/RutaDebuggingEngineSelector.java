@@ -27,8 +27,7 @@ import org.eclipse.dltk.core.PreferencesLookupDelegate;
 public class RutaDebuggingEngineSelector extends DLTKIdContributionSelector {
   @Override
   protected String getSavedContributionId(PreferencesLookupDelegate delegate) {
-    return delegate.getString(RutaIdePlugin.PLUGIN_ID,
-            RutaDebugConstants.DEBUGGING_ENGINE_ID_KEY);
+    return delegate.getString(RutaIdePlugin.PLUGIN_ID, RutaDebugConstants.DEBUGGING_ENGINE_ID_KEY);
   }
 
 }

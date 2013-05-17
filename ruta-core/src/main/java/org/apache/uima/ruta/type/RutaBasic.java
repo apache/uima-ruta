@@ -17,10 +17,13 @@ import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
 import org.apache.uima.jcas.tcas.Annotation;
 
-/** 
- * Updated by JCasGen Thu Jul 12 10:42:33 CEST 2012
- * XML source: D:/work/workspace-uima6/uimaj-ruta/src/main/java/org/apache/uima/ruta/engine/InternalTypeSystem.xml
- * @generated */
+/**
+ * Updated by JCasGen Thu Jul 12 10:42:33 CEST 2012 XML source:
+ * D:/work/workspace-uima6/uimaj-ruta/src
+ * /main/java/org/apache/uima/ruta/engine/InternalTypeSystem.xml
+ * 
+ * @generated
+ */
 public class RutaBasic extends Annotation {
 
   private static final int INITIAL_CAPACITY = 2;
@@ -109,7 +112,7 @@ public class RutaBasic extends Annotation {
       }
       return result;
     } else {
-      if(set == null) {
+      if (set == null) {
         return Collections.emptySet();
       } else {
         return set;
@@ -133,7 +136,7 @@ public class RutaBasic extends Annotation {
       }
       return result;
     } else {
-      if(set == null) {
+      if (set == null) {
         return Collections.emptySet();
       } else {
         return set;
@@ -255,15 +258,18 @@ public class RutaBasic extends Annotation {
 
   /** @generated */
   @Override
-  public int getTypeIndexID() {return typeIndexID;}
- 
+  public int getTypeIndexID() {
+    return typeIndexID;
+  }
+
   /**
    * Never called. Disable default constructor
    * 
    * @generated
    */
-  protected RutaBasic() {/* intentionally empty block */}
-    
+  protected RutaBasic() {/* intentionally empty block */
+  }
+
   /**
    * Internal - constructor used by generator
    * 
@@ -273,12 +279,12 @@ public class RutaBasic extends Annotation {
     super(addr, type);
     readObject();
   }
-  
+
   /** @generated */
   public RutaBasic(JCas jcas) {
     super(jcas);
-    readObject();   
-  } 
+    readObject();
+  }
 
   /** @generated */
   public RutaBasic(JCas jcas, int begin, int end) {
@@ -286,10 +292,13 @@ public class RutaBasic extends Annotation {
     setBegin(begin);
     setEnd(end);
     readObject();
-  }   
+  }
 
-  /** <!-- begin-user-doc --> Write your own initialization here <!-- end-user-doc -->
-  @generated modifiable */
+  /**
+   * <!-- begin-user-doc --> Write your own initialization here <!-- end-user-doc -->
+   * 
+   * @generated modifiable
+   */
   private void readObject() {
   }
 
@@ -302,20 +311,24 @@ public class RutaBasic extends Annotation {
    * @generated
    */
   public String getReplacement() {
-    if (RutaBasic_Type.featOkTst && ((RutaBasic_Type)jcasType).casFeat_replacement == null)
+    if (RutaBasic_Type.featOkTst && ((RutaBasic_Type) jcasType).casFeat_replacement == null)
       jcasType.jcas.throwFeatMissing("replacement", "org.apache.uima.ruta.type.RutaBasic");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((RutaBasic_Type)jcasType).casFeatCode_replacement);}
-    
+    return jcasType.ll_cas.ll_getStringValue(addr,
+            ((RutaBasic_Type) jcasType).casFeatCode_replacement);
+  }
+
   /**
    * setter for Replacement - sets
    * 
    * @generated
    */
   public void setReplacement(String v) {
-    if (RutaBasic_Type.featOkTst && ((RutaBasic_Type)jcasType).casFeat_replacement == null)
+    if (RutaBasic_Type.featOkTst && ((RutaBasic_Type) jcasType).casFeat_replacement == null)
       jcasType.jcas.throwFeatMissing("replacement", "org.apache.uima.ruta.type.RutaBasic");
-    jcasType.ll_cas.ll_setStringValue(addr, ((RutaBasic_Type)jcasType).casFeatCode_replacement, v);}    
-      public Map<Type, Set<AnnotationFS>> getEndMap() {
+    jcasType.ll_cas.ll_setStringValue(addr, ((RutaBasic_Type) jcasType).casFeatCode_replacement, v);
+  }
+
+  public Map<Type, Set<AnnotationFS>> getEndMap() {
     return endMap;
   }
 

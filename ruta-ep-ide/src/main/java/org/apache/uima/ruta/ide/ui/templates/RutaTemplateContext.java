@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.ui.templates;
 
@@ -26,8 +26,8 @@ import org.eclipse.jface.text.templates.TemplateContextType;
 
 public class RutaTemplateContext extends ScriptTemplateContext {
 
-  public RutaTemplateContext(TemplateContextType type, IDocument document,
-          int completionOffset, int completionLength, ISourceModule sourceModule) {
+  public RutaTemplateContext(TemplateContextType type, IDocument document, int completionOffset,
+          int completionLength, ISourceModule sourceModule) {
     super(type, document, completionOffset, completionLength, sourceModule);
   }
 }

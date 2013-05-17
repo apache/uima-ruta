@@ -15,11 +15,13 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.expression.bool;
 
-import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
 
 public class ReferenceBooleanExpression extends BooleanExpression {
 
@@ -31,7 +33,7 @@ public class ReferenceBooleanExpression extends BooleanExpression {
   }
 
   @Override
-  public boolean getBooleanValue(RutaStatement parent) {
+  public boolean getBooleanValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     Boolean variableValue = parent.getEnvironment().getVariableValue(var, Boolean.class);
     if (variableValue == null) {
       return false;
@@ -44,8 +46,8 @@ public class ReferenceBooleanExpression extends BooleanExpression {
   }
 
   @Override
-  public String getStringValue(RutaStatement parent) {
-    return getBooleanValue(parent) ? "true" : "false";
+  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+    return getBooleanValue(parent, null, stream) ? "true" : "false";
   }
 
 }

@@ -463,10 +463,10 @@ public class ActionVerbalizer {
       String but = a.getList() == null ? "" : ", " + verbalizer.verbalize(a.getList());
       return name + verbalize + but + ")";
     } else if (action instanceof ImplicitMarkAction) {
-      ImplicitMarkAction a = (ImplicitMarkAction) action; 
+      ImplicitMarkAction a = (ImplicitMarkAction) action;
       return verbalizer.verbalize(a.getType());
     } else if (action instanceof ImplicitFeatureAction) {
-      ImplicitFeatureAction a = (ImplicitFeatureAction) action; 
+      ImplicitFeatureAction a = (ImplicitFeatureAction) action;
       return verbalizer.verbalize(a.getExpr());
     }
 

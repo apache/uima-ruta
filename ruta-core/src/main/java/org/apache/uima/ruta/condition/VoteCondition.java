@@ -43,8 +43,8 @@ public class VoteCondition extends TerminalRutaCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          RutaStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
+          InferenceCrowd crowd) {
     int count1 = 0;
     int count2 = 0;
     int totalCount = 0;

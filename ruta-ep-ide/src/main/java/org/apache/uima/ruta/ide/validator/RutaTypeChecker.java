@@ -437,11 +437,14 @@ public class RutaTypeChecker implements IBuildParticipant, IBuildParticipantExte
       String fref = featText.substring(lastIndexOf + 1, featText.length());
       String match = isFeatureMatch(aref);
       if (match != null) {
-        int kind = fme.getValue().getKind();
-        if (fme.getValue() instanceof StringLiteral) {
-          kind = RutaTypeConstants.RUTA_TYPE_S;
-        } else  if (fme.getValue() instanceof NumericLiteral) {
-          kind = RutaTypeConstants.RUTA_TYPE_N;
+        int kind = -1;
+        if (fme.getValue() != null) {
+          kind = fme.getValue().getKind();
+          if (fme.getValue() instanceof StringLiteral) {
+            kind = RutaTypeConstants.RUTA_TYPE_S;
+          } else if (fme.getValue() instanceof NumericLiteral) {
+            kind = RutaTypeConstants.RUTA_TYPE_N;
+          }
         }
         boolean findFeature = findFeature(match, fref, kind);
         if (findFeature) {
@@ -517,6 +520,9 @@ public class RutaTypeChecker implements IBuildParticipant, IBuildParticipantExte
     }
 
     private boolean checkFeatureKind(FeatureDescription f, int kind) {
+      if (kind == -1) {
+        return true;
+      }
       String t = f.getRangeTypeName();
       if (t.equals(UIMAConstants.TYPE_BOOLEAN) && RutaTypeConstants.RUTA_TYPE_B == kind) {
         return true;

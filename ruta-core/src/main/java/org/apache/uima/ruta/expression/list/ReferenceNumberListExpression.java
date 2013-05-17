@@ -15,16 +15,16 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.expression.list;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.NumberExpression;
-
 
 public class ReferenceNumberListExpression extends NumberListExpression {
 
@@ -37,12 +37,12 @@ public class ReferenceNumberListExpression extends NumberListExpression {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Number> getList(RutaStatement parent) {
+  public List<Number> getList(RutaBlock parent, RutaStream stream) {
     List<Object> list = parent.getEnvironment().getVariableValue(var, List.class);
     List<Number> result = new ArrayList<Number>();
     for (Object each : list) {
       if (each instanceof NumberExpression) {
-        result.add(((NumberExpression) each).getDoubleValue(parent));
+        result.add(((NumberExpression) each).getDoubleValue(parent, null, stream));
       } else if (each instanceof Number) {
         result.add((Number) each);
       }

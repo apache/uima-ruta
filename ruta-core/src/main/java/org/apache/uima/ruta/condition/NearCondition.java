@@ -53,16 +53,16 @@ public class NearCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          RutaStream stream, InferenceCrowd crowd) {
-    int maxValue = max.getIntegerValue(element.getParent());
-    int minValue = min.getIntegerValue(element.getParent());
-    boolean forwardValue = forward.getBooleanValue(element.getParent());
-    
-    FSIterator<AnnotationFS> it = filtered.getBooleanValue(element.getParent()) ? stream : stream
-            .getUnfilteredBasicIterator();
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
+          InferenceCrowd crowd) {
+    int maxValue = max.getIntegerValue(element.getParent(), annotation, stream);
+    int minValue = min.getIntegerValue(element.getParent(), annotation, stream);
+    boolean forwardValue = forward.getBooleanValue(element.getParent(), annotation, stream);
+
+    FSIterator<AnnotationFS> it = filtered.getBooleanValue(element.getParent(), annotation, stream) ? stream
+            : stream.getUnfilteredBasicIterator();
     AnnotationFS pointer = null;
-    if(forwardValue) {
+    if (forwardValue) {
       pointer = stream.getEndAnchor(annotation.getEnd());
     } else {
       pointer = stream.getBeginAnchor(annotation.getBegin());

@@ -37,8 +37,8 @@ public abstract class RutaBlock extends RutaStatement {
 
   private RutaModule script;
 
-  public RutaBlock(String name, RutaRule rule, List<RutaStatement> elements,
-          RutaBlock parent, String defaultNamespace) {
+  public RutaBlock(String name, RutaRule rule, List<RutaStatement> elements, RutaBlock parent,
+          String defaultNamespace) {
     super(parent);
     this.name = name;
     this.rule = rule;

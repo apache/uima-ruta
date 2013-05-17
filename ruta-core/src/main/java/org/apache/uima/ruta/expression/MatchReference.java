@@ -75,7 +75,7 @@ public class MatchReference extends RutaExpression {
         String head = sb.toString();
         typeExpression = buildTypeExpression(head, e);
         if (typeExpression != null) {
-          tail = Arrays.asList(elements).subList(counter+1,  elements.length);
+          tail = Arrays.asList(elements).subList(counter + 1, elements.length);
           break;
         }
         counter++;
@@ -117,11 +117,11 @@ public class MatchReference extends RutaExpression {
   public RutaExpression getArg() {
     return arg;
   }
-  
+
   public RutaExpression getRawTypeExpression() {
     return typeExpression;
   }
-  
+
   public RutaExpression getRawFeatureExpression() {
     return featureExpression;
   }

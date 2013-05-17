@@ -36,7 +36,7 @@ public class ImplicitMarkAction extends AbstractMarkAction {
 
   @Override
   public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
-    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(stream, null,
+    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(null,
             element.getContainer());
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
       if (matchedAnnotation == null) {

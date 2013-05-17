@@ -106,7 +106,7 @@ public class RutaModule extends RutaElement {
   public void addEngine(String name, AnalysisEngine engine) {
     engines.put(name, engine);
   }
-  
+
   public void addUimafitEngine(String name, AnalysisEngine engine) {
     engines.put(name, engine);
   }

@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.ui.editor;
 
@@ -30,7 +30,6 @@ import org.apache.uima.ruta.ide.parser.ast.RutaVariableReference;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
-
 
 public class ReferenceFinder extends ASTVisitor {
 

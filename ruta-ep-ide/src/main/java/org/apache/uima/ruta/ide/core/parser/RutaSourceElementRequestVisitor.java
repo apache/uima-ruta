@@ -25,10 +25,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaBasicAnnotationType;
 import org.apache.uima.ruta.ide.parser.ast.RutaImportStatement;
 import org.apache.uima.ruta.ide.parser.ast.RutaPackageDeclaration;
+import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaTypeDeclaration;
 import org.apache.uima.ruta.ide.parser.ast.RutaVariableDeclaration;
 import org.eclipse.dltk.ast.ASTNode;
@@ -203,8 +203,7 @@ public class RutaSourceElementRequestVisitor extends SourceElementRequestVisitor
 
   private void processPackage(Statement statement) {
     RutaPackageDeclaration pack = (RutaPackageDeclaration) statement;
-    this.fRequestor.acceptPackage(pack.getNameStart(), pack.getNameEnd(),
-           pack.getName());
+    this.fRequestor.acceptPackage(pack.getNameStart(), pack.getNameEnd(), pack.getName());
   }
 
   private void processFieldDeclaration(SimpleReference variableIDRef, Statement fullDeclaration) {

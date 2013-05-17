@@ -15,19 +15,58 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.expression.number;
 
-import org.apache.uima.ruta.RutaStatement;
+import java.util.List;
+
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
 
 public abstract class NumberExpression extends StringExpression {
 
-  public abstract int getIntegerValue(RutaStatement parent);
+  public int getIntegerValue(RutaBlock parent, RuleMatch match, RuleElement element,
+          RutaStream stream) {
+    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element);
+    // TODO: do we need to select the correct annotation?
+    AnnotationFS annotation = null;
+    if (!matchedAnnotationsOf.isEmpty()) {
+      annotation = matchedAnnotationsOf.get(0);
+    }
+    return getIntegerValue(parent, annotation, stream);
+  }
 
-  public abstract double getDoubleValue(RutaStatement parent);
-  
-  public abstract float getFloatValue(RutaStatement parent);
+  public double getDoubleValue(RutaBlock parent, RuleMatch match, RuleElement element,
+          RutaStream stream) {
+    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element);
+    // TODO: do we need to select the correct annotation?
+    AnnotationFS annotation = null;
+    if (!matchedAnnotationsOf.isEmpty()) {
+      annotation = matchedAnnotationsOf.get(0);
+    }
+    return getDoubleValue(parent, annotation, stream);
+  }
+
+  public float getFloatValue(RutaBlock parent, RuleMatch match, RuleElement element,
+          RutaStream stream) {
+    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element);
+    // TODO: do we need to select the correct annotation?
+    AnnotationFS annotation = null;
+    if (!matchedAnnotationsOf.isEmpty()) {
+      annotation = matchedAnnotationsOf.get(0);
+    }
+    return getFloatValue(parent, annotation, stream);
+  }
+
+  public abstract int getIntegerValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream);
+
+  public abstract double getDoubleValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream);
+
+  public abstract float getFloatValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream);
 
 }

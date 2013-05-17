@@ -32,8 +32,8 @@ public class NotCondition extends ComposedRutaCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          RutaStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
+          InferenceCrowd crowd) {
     AbstractRutaCondition cond = conditions.get(0);
     crowd.beginVisit(cond, null);
     EvaluatedCondition eval = cond.eval(annotation, element, stream, crowd);

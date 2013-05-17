@@ -30,14 +30,13 @@ import org.eclipse.dltk.ui.preferences.PreferenceKey;
 import org.eclipse.dltk.ui.util.IStatusChangeListener;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 
-public class RutaDebugPreferencePage extends
-        AbstractConfigurationBlockPropertyAndPreferencePage {
+public class RutaDebugPreferencePage extends AbstractConfigurationBlockPropertyAndPreferencePage {
 
-  private static PreferenceKey BREAK_ON_FIRST_LINE = new PreferenceKey(
-          RutaIdePlugin.PLUGIN_ID, DLTKDebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE);
+  private static PreferenceKey BREAK_ON_FIRST_LINE = new PreferenceKey(RutaIdePlugin.PLUGIN_ID,
+          DLTKDebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE);
 
-  private static PreferenceKey ENABLE_DBGP_LOGGING = new PreferenceKey(
-          RutaIdePlugin.PLUGIN_ID, DLTKDebugPreferenceConstants.PREF_DBGP_ENABLE_LOGGING);
+  private static PreferenceKey ENABLE_DBGP_LOGGING = new PreferenceKey(RutaIdePlugin.PLUGIN_ID,
+          DLTKDebugPreferenceConstants.PREF_DBGP_ENABLE_LOGGING);
 
   private static String PREFERENCE_PAGE_ID = "org.apache.uima.ruta.ide.preferences.debug";
 
@@ -112,8 +111,7 @@ public class RutaDebugPreferencePage extends
    */
   @Override
   protected void setPreferenceStore() {
-    setPreferenceStore(new PreferencesAdapter(RutaIdePlugin.getDefault()
-            .getPluginPreferences()));
+    setPreferenceStore(new PreferencesAdapter(RutaIdePlugin.getDefault().getPluginPreferences()));
   }
 
   private PreferenceKey[] getKeys() {

@@ -73,7 +73,7 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
       boolean v1 = afs.getBooleanValue(feature);
       if (arg instanceof BooleanExpression) {
         BooleanExpression expr = (BooleanExpression) arg;
-        boolean v2 = expr.getBooleanValue(parent);
+        boolean v2 = expr.getBooleanValue(parent, afs, stream);
         return v1 == v2;
       }
     } else if (rn.equals(UIMAConstants.TYPE_INTEGER) || rn.equals(UIMAConstants.TYPE_BYTE)
@@ -81,28 +81,28 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
       Integer v1 = afs.getIntValue(feature);
       if (arg instanceof NumberExpression) {
         NumberExpression expr = (NumberExpression) arg;
-        Integer v2 = expr.getIntegerValue(parent);
+        Integer v2 = expr.getIntegerValue(parent, afs, stream);
         return v1.equals(v2);
       }
     } else if (rn.equals(UIMAConstants.TYPE_DOUBLE)) {
       Double v1 = afs.getDoubleValue(feature);
       if (arg instanceof NumberExpression) {
         NumberExpression expr = (NumberExpression) arg;
-        Double v2 = expr.getDoubleValue(parent);
+        Double v2 = expr.getDoubleValue(parent, afs, stream);
         return v1.equals(v2);
       }
     } else if (rn.equals(UIMAConstants.TYPE_FLOAT)) {
       Float v1 = afs.getFloatValue(feature);
       if (arg instanceof NumberExpression) {
         NumberExpression expr = (NumberExpression) arg;
-        Float v2 = expr.getFloatValue(parent);
+        Float v2 = expr.getFloatValue(parent, afs, stream);
         return v1.equals(v2);
       }
     } else if (rn.equals(UIMAConstants.TYPE_STRING)) {
       String v1 = afs.getStringValue(feature);
       if (arg instanceof StringExpression) {
         StringExpression expr = (StringExpression) arg;
-        String v2 = expr.getStringValue(parent);
+        String v2 = expr.getStringValue(parent, afs, stream);
         return v1.equals(v2);
       }
     }

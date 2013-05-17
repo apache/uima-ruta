@@ -337,8 +337,8 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     FilterManager filterManager = new FilterManager(filter.getDefaultFilterTypes(),
             filter.getCurrentFilterTypes(), filter.getCurrentRetainTypes(), windowAnnotation,
             windowType, cas);
-    RutaStream stream = new RutaStream(cas, basicIt, basicType, filterManager,
-            lowMemoryProfile, simpleGreedyForComposed, crowd);
+    RutaStream stream = new RutaStream(cas, basicIt, basicType, filterManager, lowMemoryProfile,
+            simpleGreedyForComposed, crowd);
     return stream;
   }
 
@@ -523,13 +523,13 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public RutaBasic getBasicNextTo(boolean before, AnnotationFS annotation) {
-    if(annotation == null) {
+    if (annotation == null) {
       return beginAnchors.get(0);
     }
     if (before) {
       RutaBasic pointer = beginAnchors.get(annotation.getBegin());
       moveTo(pointer);
-      if(isVisible(pointer)) {
+      if (isVisible(pointer)) {
         moveToPrevious();
       }
       if (isValid()) {
@@ -538,7 +538,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     } else {
       RutaBasic pointer = endAnchors.get(annotation.getEnd());
       moveTo(pointer);
-      if(isVisible(pointer)) {
+      if (isVisible(pointer)) {
         moveToNext();
       }
       if (isValid()) {
@@ -569,8 +569,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     return getFirstBasicInWindow(windowAnnotation, currentIt);
   }
 
-  public RutaBasic getFirstBasicInWindow(AnnotationFS windowAnnotation,
-          FSIterator<AnnotationFS> it) {
+  public RutaBasic getFirstBasicInWindow(AnnotationFS windowAnnotation, FSIterator<AnnotationFS> it) {
     if (windowAnnotation instanceof RutaBasic) {
       return (RutaBasic) windowAnnotation;
     }
@@ -721,8 +720,9 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
 
   public boolean isVisible(AnnotationFS annotationFS) {
     AnnotationFS windowAnnotation = filter.getWindowAnnotation();
-    if (windowAnnotation != null && (annotationFS.getBegin() < windowAnnotation.getBegin()
-            || annotationFS.getEnd() > windowAnnotation.getEnd())) {
+    if (windowAnnotation != null
+            && (annotationFS.getBegin() < windowAnnotation.getBegin() || annotationFS.getEnd() > windowAnnotation
+                    .getEnd())) {
       return false;
     }
     FSMatchConstraint defaultConstraint = filter.getDefaultConstraint();
@@ -730,7 +730,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public RutaBasic getAnchor(boolean direction, int pointer) {
-    if(direction) {
+    if (direction) {
       return getBeginAnchor(pointer);
     } else {
       return getEndAnchor(pointer);

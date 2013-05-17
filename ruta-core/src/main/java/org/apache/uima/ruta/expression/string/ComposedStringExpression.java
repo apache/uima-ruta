@@ -15,14 +15,15 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.expression.string;
 
 import java.util.List;
 
-import org.apache.uima.ruta.RutaStatement;
-
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
 
 public class ComposedStringExpression extends LiteralStringExpression {
 
@@ -34,10 +35,10 @@ public class ComposedStringExpression extends LiteralStringExpression {
   }
 
   @Override
-  public String getStringValue(RutaStatement parent) {
+  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     StringBuilder result = new StringBuilder();
     for (StringExpression each : getExpressions()) {
-      result.append(each.getStringValue(parent));
+      result.append(each.getStringValue(parent, annotation, stream));
     }
     return result.toString();
   }

@@ -47,15 +47,15 @@ public class ScoreCondition extends TerminalRutaCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          RutaStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
+          InferenceCrowd crowd) {
     Type heuristicType = stream.getJCas().getCasType(RutaAnnotation.type);
     List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(annotation,
             heuristicType);
     double score = 0;
     if (!annotationsInWindow.isEmpty()) {
-      RutaAnnotation heuristicAnnotation = (RutaAnnotation) stream.getCas()
-              .createAnnotation(heuristicType, annotation.getBegin(), annotation.getEnd());
+      RutaAnnotation heuristicAnnotation = (RutaAnnotation) stream.getCas().createAnnotation(
+              heuristicType, annotation.getBegin(), annotation.getEnd());
       heuristicAnnotation.setAnnotation((Annotation) annotation);
       RutaAnnotation tma = stream.getCorrectTMA(annotationsInWindow, heuristicAnnotation);
       score = tma.getScore();
@@ -63,8 +63,8 @@ public class ScoreCondition extends TerminalRutaCondition {
     if (var != null) {
       element.getParent().getEnvironment().setVariableValue(var, score);
     }
-    boolean value = score >= min.getDoubleValue(element.getParent())
-            && score <= max.getDoubleValue(element.getParent());
+    boolean value = score >= min.getDoubleValue(element.getParent(), null, stream)
+            && score <= max.getDoubleValue(element.getParent(), null, stream);
     return new EvaluatedCondition(this, value);
   }
 

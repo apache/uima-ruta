@@ -64,8 +64,7 @@ public class ActionFactory {
     return new MarkFastAction(type, list, ignore, ignoreLength, ignoreWS);
   }
 
-  public static AbstractRutaAction createMarkLastAction(TypeExpression type,
-          RutaBlock parent) {
+  public static AbstractRutaAction createMarkLastAction(TypeExpression type, RutaBlock parent) {
     return new MarkLastAction(type);
   }
 
@@ -81,8 +80,8 @@ public class ActionFactory {
     return new LogAction(expr, level);
   }
 
-  public static AbstractRutaAction createMarkAction(NumberExpression score,
-          TypeExpression type, List<NumberExpression> list, RutaBlock parent) {
+  public static AbstractRutaAction createMarkAction(NumberExpression score, TypeExpression type,
+          List<NumberExpression> list, RutaBlock parent) {
     return new MarkAction(type, score, list);
   }
 
@@ -91,8 +90,7 @@ public class ActionFactory {
     return new MarkOnceAction(type, score, list);
   }
 
-  public static AbstractRutaAction createReplaceAction(StringExpression lit,
-          RutaBlock parent) {
+  public static AbstractRutaAction createReplaceAction(StringExpression lit, RutaBlock parent) {
     return new ReplaceAction(lit);
   }
 
@@ -122,8 +120,7 @@ public class ActionFactory {
     return new ConfigureAction(ns, map);
   }
 
-  public static AbstractRutaAction createAssignAction(Token nv, RutaExpression e,
-          RutaBlock parent) {
+  public static AbstractRutaAction createAssignAction(Token nv, RutaExpression e, RutaBlock parent) {
     return new AssignAction(nv.getText(), e);
   }
 
@@ -136,22 +133,22 @@ public class ActionFactory {
           RutaBlock env) {
     return new AddRetainTypeAction(types);
   }
-  
+
   public static AbstractRutaAction createRemoveRetainTypeAction(List<TypeExpression> types,
           RutaBlock env) {
     return new RemoveRetainTypeAction(types);
   }
-  
+
   public static AbstractRutaAction createAddFilterTypeAction(List<TypeExpression> types,
           RutaBlock env) {
     return new AddFilterTypeAction(types);
   }
-  
+
   public static AbstractRutaAction createRemoveFilterTypeAction(List<TypeExpression> types,
           RutaBlock env) {
     return new RemoveFilterTypeAction(types);
   }
-  
+
   public static AbstractRutaAction createSetFeatureAction(StringExpression f, Object v,
           RutaBlock parent) {
     if (v instanceof NumberExpression) {
@@ -164,17 +161,18 @@ public class ActionFactory {
     return null;
   }
 
-  public static AbstractRutaAction createUnmarkAction(TypeExpression f, List<NumberExpression> list, BooleanExpression b, RutaBlock env) {
+  public static AbstractRutaAction createUnmarkAction(TypeExpression f,
+          List<NumberExpression> list, BooleanExpression b, RutaBlock env) {
     return new UnmarkAction(f, list, b);
   }
 
-  public static AbstractRutaAction createUnmarkAllAction(TypeExpression f,
-          TypeListExpression list, RutaBlock env) {
+  public static AbstractRutaAction createUnmarkAllAction(TypeExpression f, TypeListExpression list,
+          RutaBlock env) {
     return new UnmarkAllAction(f, list);
   }
 
-  public static AbstractRutaAction createComposedAction(
-          List<AbstractRutaAction> actions, RutaBlock env) {
+  public static AbstractRutaAction createComposedAction(List<AbstractRutaAction> actions,
+          RutaBlock env) {
     return new ComposedAction(actions);
   }
 
@@ -193,8 +191,7 @@ public class ActionFactory {
     return new TrieAction(list, map, ignoreCase, ignoreLength, edit, distance, ignoreChar);
   }
 
-  public static AbstractRutaAction createExecAction(String ns, TypeListExpression tl,
-          RutaBlock env) {
+  public static AbstractRutaAction createExecAction(String ns, TypeListExpression tl, RutaBlock env) {
     return new ExecAction(ns, tl);
   }
 
@@ -212,23 +209,22 @@ public class ActionFactory {
     return new MergeAction(union, target == null ? null : target.getText(), list);
   }
 
-  public static AbstractRutaAction createGetAction(ListExpression<RutaExpression> f,
-          Token var, StringExpression op, RutaBlock env) {
+  public static AbstractRutaAction createGetAction(ListExpression<RutaExpression> f, Token var,
+          StringExpression op, RutaBlock env) {
     return new GetAction(f, var == null ? null : var.getText(), op);
   }
 
-  public static AbstractRutaAction createRemoveAction(Token var,
-          List<RutaExpression> list, RutaBlock env) {
+  public static AbstractRutaAction createRemoveAction(Token var, List<RutaExpression> list,
+          RutaBlock env) {
     return new RemoveAction(var == null ? null : var.getText(), list);
   }
 
-  public static AbstractRutaAction createAddAction(Token var,
-          List<RutaExpression> list, RutaBlock env) {
+  public static AbstractRutaAction createAddAction(Token var, List<RutaExpression> list,
+          RutaBlock env) {
     return new AddAction(var == null ? null : var.getText(), list);
   }
 
-  public static AbstractRutaAction createGetListAction(Token var, StringExpression op,
-          RutaBlock env) {
+  public static AbstractRutaAction createGetListAction(Token var, StringExpression op, RutaBlock env) {
     return new GetListAction(var == null ? null : var.getText(), op);
   }
 
@@ -241,8 +237,8 @@ public class ActionFactory {
     return new GetFeatureAction(f, var == null ? null : var.getText());
   }
 
-  public static AbstractRutaAction createMatchedTextAction(Token var,
-          List<NumberExpression> list, RutaBlock env) {
+  public static AbstractRutaAction createMatchedTextAction(Token var, List<NumberExpression> list,
+          RutaBlock env) {
     return new MatchedTextAction(var == null ? null : var.getText(), list);
   }
 
@@ -272,7 +268,5 @@ public class ActionFactory {
   public static AbstractRutaAction createAction(TypeExpression te) {
     return new ImplicitMarkAction(te);
   }
-
-  
 
 }

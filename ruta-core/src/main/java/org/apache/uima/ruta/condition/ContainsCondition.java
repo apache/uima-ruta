@@ -73,8 +73,8 @@ public class ContainsCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          RutaStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
+          InferenceCrowd crowd) {
     int basicCount = 0;
     int anchorCount = 0;
     int totalCount = 0;
@@ -94,28 +94,28 @@ public class ContainsCondition extends TypeSentiveCondition {
         }
       }
     } else {
-      totalCount = argList.getList(element.getParent()).size();
+      totalCount = argList.getList(element.getParent(), stream).size();
       if (arg instanceof BooleanExpression && argList instanceof BooleanListExpression) {
         BooleanExpression e = (BooleanExpression) arg;
         BooleanListExpression le = (BooleanListExpression) argList;
-        boolean v = e.getBooleanValue(element.getParent());
-        List<Boolean> l = new ArrayList<Boolean>(le.getList(element.getParent()));
+        boolean v = e.getBooleanValue(element.getParent(), annotation, stream);
+        List<Boolean> l = new ArrayList<Boolean>(le.getList(element.getParent(), stream));
         while (l.remove(v)) {
           basicCount++;
         }
       } else if (arg instanceof NumberExpression && argList instanceof NumberListExpression) {
         NumberExpression e = (NumberExpression) arg;
         NumberListExpression le = (NumberListExpression) argList;
-        Number v = e.getDoubleValue(element.getParent());
-        List<Number> l = new ArrayList<Number>(le.getList(element.getParent()));
+        Number v = e.getDoubleValue(element.getParent(), annotation, stream);
+        List<Number> l = new ArrayList<Number>(le.getList(element.getParent(), stream));
         while (l.remove(v)) {
           basicCount++;
         }
       } else if (arg instanceof StringExpression && argList instanceof StringListExpression) {
         StringExpression e = (StringExpression) arg;
         StringListExpression le = (StringListExpression) argList;
-        String v = e.getStringValue(element.getParent());
-        List<String> l = new ArrayList<String>(le.getList(element.getParent()));
+        String v = e.getStringValue(element.getParent(), annotation, stream);
+        List<String> l = new ArrayList<String>(le.getList(element.getParent(), stream));
         while (l.remove(v)) {
           basicCount++;
         }
@@ -123,24 +123,24 @@ public class ContainsCondition extends TypeSentiveCondition {
         TypeExpression e = (TypeExpression) arg;
         TypeListExpression le = (TypeListExpression) argList;
         Type v = e.getType(element.getParent());
-        List<Type> l = new ArrayList<Type>(le.getList(element.getParent()));
+        List<Type> l = new ArrayList<Type>(le.getList(element.getParent(), stream));
         while (l.remove(v)) {
           basicCount++;
         }
       }
       anchorCount = basicCount;
     }
-    if (percent.getBooleanValue(element.getParent())) {
+    if (percent.getBooleanValue(element.getParent(), null, stream)) {
       double percentValue = 0;
       if (totalCount != 0) {
         percentValue = (((double) basicCount) / ((double) totalCount)) * 100;
       }
-      boolean value = percentValue >= min.getDoubleValue(element.getParent())
-              && percentValue <= max.getDoubleValue(element.getParent());
+      boolean value = percentValue >= min.getDoubleValue(element.getParent(), annotation, stream)
+              && percentValue <= max.getDoubleValue(element.getParent(), annotation, stream);
       return new EvaluatedCondition(this, value);
     } else {
-      boolean value = anchorCount >= min.getIntegerValue(element.getParent())
-              && anchorCount <= max.getIntegerValue(element.getParent());
+      boolean value = anchorCount >= min.getIntegerValue(element.getParent(), annotation, stream)
+              && anchorCount <= max.getIntegerValue(element.getParent(), annotation, stream);
       return new EvaluatedCondition(this, value);
     }
   }

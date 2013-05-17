@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.ui;
 
@@ -25,7 +25,6 @@ import org.eclipse.dltk.compiler.env.IModuleSource;
 import org.eclipse.dltk.ui.editor.highlighting.ASTSemanticHighlighter;
 import org.eclipse.dltk.ui.editor.highlighting.ISemanticHighlightingRequestor;
 import org.eclipse.dltk.ui.editor.highlighting.SemanticHighlighting;
-
 
 public class RutaSemanticPositionUpdater extends ASTSemanticHighlighter {
 
@@ -50,7 +49,7 @@ public class RutaSemanticPositionUpdater extends ASTSemanticHighlighter {
 
     public void addPosition(int start, int end, String highlightingKey) {
       requestor.addPosition(start, end, highlightingKey);
-      
+
     }
 
   }
@@ -65,28 +64,22 @@ public class RutaSemanticPositionUpdater extends ASTSemanticHighlighter {
     }
   }
 
- 
-
   @Override
   protected String getNature() {
     return RutaNature.NATURE_ID;
   }
 
-
-
   public SemanticHighlighting[] getSemanticHighlightings() {
-   return  new SemanticHighlighting[] {
-            new RutaTextTools.SH(RutaPreferenceConstants.EDITOR_DECLARATION_DEFINITION_COLOR,
-                    null, null),
-            new RutaTextTools.SH(RutaPreferenceConstants.EDITOR_FUNCTION_COLOR, null, null),
-            new RutaTextTools.SH(RutaPreferenceConstants.EDITOR_ACTION_COLOR, null, null),
-            new RutaTextTools.SH(RutaPreferenceConstants.EDITOR_CONDITION_COLOR, null, null),
-            new RutaTextTools.SH(RutaPreferenceConstants.EDITOR_STRING_COLOR, null, null),
-            new RutaTextTools.SH(RutaPreferenceConstants.EDITOR_VARIABLE_COLOR,
-                    RutaPreferenceConstants.EDITOR_CONDITION_COLOR, null) };
+    return new SemanticHighlighting[] {
+        new RutaTextTools.SH(RutaPreferenceConstants.EDITOR_DECLARATION_DEFINITION_COLOR, null,
+                null),
+        new RutaTextTools.SH(RutaPreferenceConstants.EDITOR_FUNCTION_COLOR, null, null),
+        new RutaTextTools.SH(RutaPreferenceConstants.EDITOR_ACTION_COLOR, null, null),
+        new RutaTextTools.SH(RutaPreferenceConstants.EDITOR_CONDITION_COLOR, null, null),
+        new RutaTextTools.SH(RutaPreferenceConstants.EDITOR_STRING_COLOR, null, null),
+        new RutaTextTools.SH(RutaPreferenceConstants.EDITOR_VARIABLE_COLOR,
+                RutaPreferenceConstants.EDITOR_CONDITION_COLOR, null) };
   }
-
-
 
   @Override
   protected boolean doHighlighting(IModuleSource code) throws Exception {

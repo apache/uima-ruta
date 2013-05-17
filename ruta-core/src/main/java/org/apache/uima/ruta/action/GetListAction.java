@@ -27,6 +27,7 @@ import java.util.Set;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.string.StringExpression;
 import org.apache.uima.ruta.rule.RuleElement;
@@ -53,15 +54,15 @@ public class GetListAction extends AbstractRutaAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
-    String op = opExpr.getStringValue(element.getParent());
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+    RutaBlock parent = element.getParent();
+    String op = opExpr.getStringValue(parent, match, element, stream);
     List<Type> list = new ArrayList<Type>();
 
     int indexOf = element.getContainer().getRuleElements().indexOf(element);
     List<Integer> indexes = new ArrayList<Integer>();
     indexes.add(indexOf + 1);
-    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(stream, indexes,
+    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(indexes,
             element.getContainer());
     for (AnnotationFS matched : matchedAnnotations) {
 
@@ -98,7 +99,7 @@ public class GetListAction extends AbstractRutaAction {
         }
       }
     }
-    element.getParent().getEnvironment().setVariableValue(var, list);
+    parent.getEnvironment().setVariableValue(var, list);
   }
 
   public String getVar() {

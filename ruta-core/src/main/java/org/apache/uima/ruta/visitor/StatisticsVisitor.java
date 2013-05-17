@@ -32,9 +32,9 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.DoubleArray;
 import org.apache.uima.jcas.cas.IntegerArray;
 import org.apache.uima.jcas.cas.StringArray;
-import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.rule.AbstractRule;
@@ -199,7 +199,8 @@ public class StatisticsVisitor implements RutaInferenceVisitor {
     return actionAmount;
   }
 
-  public void annotationAdded(AnnotationFS annotation, AbstractRuleMatch<? extends AbstractRule> creator) {
+  public void annotationAdded(AnnotationFS annotation,
+          AbstractRuleMatch<? extends AbstractRule> creator) {
   }
 
 }

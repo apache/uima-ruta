@@ -109,8 +109,7 @@ public class RutaLauncher {
       throw new IllegalArgumentException("Passed arguments are invalid!");
     }
 
-    AnalysisEngine ae = Ruta
-            .wrapAnalysisEngine(descriptor.toURL(), view, true, inputEncoding);
+    AnalysisEngine ae = Ruta.wrapAnalysisEngine(descriptor.toURL(), view, true, inputEncoding);
     configure(ae);
     CAS cas = ae.newCAS();
 
@@ -176,10 +175,9 @@ public class RutaLauncher {
       if (each.isHidden()) {
         continue;
       }
-      if(each.isFile()) {
+      if (each.isFile()) {
         result.add(each);
-      } else
-        if (each.isDirectory() && recusive) {
+      } else if (each.isDirectory() && recusive) {
         result.addAll(getFiles(each, recusive));
       }
     }

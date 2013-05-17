@@ -22,7 +22,6 @@ package org.apache.uima.ruta.ide.validator;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Collection;
@@ -31,10 +30,10 @@ import java.util.Set;
 
 import org.apache.uima.ruta.ide.RutaIdePlugin;
 import org.apache.uima.ruta.ide.launching.RutaLaunchConfigurationDelegate;
-import org.apache.uima.ruta.ide.parser.ast.RutaActionConstants;
-import org.apache.uima.ruta.ide.parser.ast.RutaStatementConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaAction;
+import org.apache.uima.ruta.ide.parser.ast.RutaActionConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaImportStatement;
+import org.apache.uima.ruta.ide.parser.ast.RutaStatementConstants;
 import org.apache.uima.util.InvalidXMLException;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -56,8 +55,7 @@ import org.eclipse.dltk.core.builder.IBuildParticipant;
 import org.eclipse.dltk.core.builder.IBuildParticipantExtension;
 import org.eclipse.dltk.core.builder.ISourceLineTracker;
 
-public class RutaEngineAndCallChecker implements IBuildParticipant,
-        IBuildParticipantExtension {
+public class RutaEngineAndCallChecker implements IBuildParticipant, IBuildParticipantExtension {
 
   private class EngineAndCallCheckerVisitor extends ASTVisitor {
     private IProblemReporter rep;
@@ -88,29 +86,28 @@ public class RutaEngineAndCallChecker implements IBuildParticipant,
       }
       try {
         String fnwe = curFile.substring(0, curFile.length() - 5);
-        scriptsInnerBlocks.addAll(RutaCheckerUtils.importScript(fnwe, IModelElement.METHOD,
-                project));
+        scriptsInnerBlocks.addAll(RutaCheckerUtils
+                .importScript(fnwe, IModelElement.METHOD, project));
       } catch (InvalidXMLException e) {
       } catch (IOException e) {
       } catch (ModelException e) {
       }
-      
+
       try {
         Collection<String> dependencies = RutaLaunchConfigurationDelegate.getClassPath(project);
         URL[] urls = new URL[dependencies.size()];
         int counter = 0;
         for (String dep : dependencies) {
           urls[counter] = new File(dep).toURL();
-          counter ++;
-          }
-          classloader = new URLClassLoader(urls);
+          counter++;
+        }
+        classloader = new URLClassLoader(urls);
       } catch (CoreException e) {
         RutaIdePlugin.error(e);
       } catch (MalformedURLException e) {
         RutaIdePlugin.error(e);
       }
-      
-      
+
     }
 
     @Override
@@ -140,8 +137,8 @@ public class RutaEngineAndCallChecker implements IBuildParticipant,
           SimpleReference stRef = (SimpleReference) ((RutaImportStatement) s).getExpression();
           String sRefName = stRef.getName();
           try {
-            Set<String> blocks = RutaCheckerUtils.importScript(sRefName,
-                    IModelElement.METHOD, project);
+            Set<String> blocks = RutaCheckerUtils.importScript(sRefName, IModelElement.METHOD,
+                    project);
             scripts.add(sRefName);
             if (!blocks.isEmpty()) {
               scriptsInnerBlocks.addAll(blocks);
@@ -245,6 +242,5 @@ public class RutaEngineAndCallChecker implements IBuildParticipant,
       e.printStackTrace();
     }
   }
-
 
 }

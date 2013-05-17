@@ -15,16 +15,16 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.expression.list;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.string.StringExpression;
-
 
 public class SimpleStringListExpression extends StringListExpression {
 
@@ -36,10 +36,10 @@ public class SimpleStringListExpression extends StringListExpression {
   }
 
   @Override
-  public List<String> getList(RutaStatement parent) {
+  public List<String> getList(RutaBlock parent, RutaStream stream) {
     List<String> result = new ArrayList<String>();
     for (StringExpression each : list) {
-      result.add(each.getStringValue(parent));
+      result.add(each.getStringValue(parent, null, stream));
     }
     return result;
   }

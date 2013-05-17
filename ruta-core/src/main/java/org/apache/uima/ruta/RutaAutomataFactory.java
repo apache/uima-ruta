@@ -26,8 +26,8 @@ import org.apache.uima.ruta.rule.RutaRuleElement;
 
 public class RutaAutomataFactory extends RutaScriptFactory {
 
-  public RutaBlock createAutomataBlock(Token id, RutaRuleElement re,
-          List<RutaStatement> body, RutaBlock env) {
+  public RutaBlock createAutomataBlock(Token id, RutaRuleElement re, List<RutaStatement> body,
+          RutaBlock env) {
     return createScriptBlock(id, re, body, env);
   }
 

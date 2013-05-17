@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.example.extensions;
 
@@ -26,6 +26,7 @@ import java.util.Random;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.expression.number.NumberExpression;
@@ -43,20 +44,19 @@ public class ExampleAction extends AbstractRutaAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
     List<Integer> indexes = new ArrayList<Integer>();
     for (NumberExpression each : indexExprList) {
-      int integerValue = each.getIntegerValue(element.getParent());
+      RutaBlock parent = element.getParent();
+      int integerValue = each.getIntegerValue(parent, match, element, stream);
       indexes.add(integerValue);
     }
     List<RuleElement> ruleElements = element.getContainer().getRuleElements();
     for (Integer each : indexes) {
       if (each > 0 && each <= ruleElements.size()) {
         Type type = getRandomType(stream);
-        RuleElement ruleElement = ruleElements.get(each-1);
-        List<AnnotationFS> matchedAnnotationsOf = match
-                .getMatchedAnnotationsOf(ruleElement, stream);
+        RuleElement ruleElement = ruleElements.get(each - 1);
+        List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(ruleElement);
         for (AnnotationFS eachMatched : matchedAnnotationsOf) {
           AnnotationFS newAFS = stream.getCas().createAnnotation(type, eachMatched.getBegin(),
                   eachMatched.getEnd());

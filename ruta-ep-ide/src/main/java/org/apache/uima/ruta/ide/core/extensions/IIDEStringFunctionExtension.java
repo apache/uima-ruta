@@ -19,7 +19,6 @@
 
 package org.apache.uima.ruta.ide.core.extensions;
 
-
 public interface IIDEStringFunctionExtension extends IRutaExtension {
 
 }

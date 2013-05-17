@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.visitor;
 
@@ -24,12 +24,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.rule.AbstractRule;
 import org.apache.uima.ruta.rule.AbstractRuleMatch;
-
 
 public class TimeProfilerVisitor implements RutaInferenceVisitor {
 
@@ -58,7 +57,8 @@ public class TimeProfilerVisitor implements RutaInferenceVisitor {
     return timeInfo;
   }
 
-  public void annotationAdded(AnnotationFS annotation, AbstractRuleMatch<? extends AbstractRule> creator) {
+  public void annotationAdded(AnnotationFS annotation,
+          AbstractRuleMatch<? extends AbstractRule> creator) {
   }
 
 }

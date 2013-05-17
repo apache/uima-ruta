@@ -19,12 +19,12 @@
 
 package org.apache.uima.ruta.action;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.bool.BooleanExpression;
@@ -33,7 +33,6 @@ import org.apache.uima.ruta.expression.string.StringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
-import org.apache.uima.ruta.rule.RutaRuleElement;
 import org.apache.uima.ruta.utils.UIMAUtils;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
@@ -95,47 +94,46 @@ public class SetFeatureAction extends AbstractRutaAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
-    String featureString = featureStringExpression.getStringValue(element.getParent());
-    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOf(element, stream);
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+    RutaBlock parent = element.getParent();
+    String featureString = featureStringExpression.getStringValue(parent, match, element, stream);
+    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOf(element);
     for (AnnotationFS annotationFS : matchedAnnotations) {
       Feature feature = annotationFS.getType().getFeatureByBaseName(featureString);
-      if(feature != null) {
+      if (feature != null) {
         stream.getCas().removeFsFromIndexes(annotationFS);
         if (stringExpr != null) {
-          String string = stringExpr.getStringValue(element.getParent());
+          String string = stringExpr.getStringValue(parent, match, element, stream);
           annotationFS.setStringValue(feature, string);
         } else if (numberExpr != null) {
           String range = feature.getRange().getName();
           if (range.equals(UIMAConstants.TYPE_INTEGER)) {
-            int v = numberExpr.getIntegerValue(element.getParent());
+            int v = numberExpr.getIntegerValue(parent, match, element, stream);
             annotationFS.setIntValue(feature, v);
           } else if (range.equals(UIMAConstants.TYPE_DOUBLE)) {
-            double v = numberExpr.getDoubleValue(element.getParent());
+            double v = numberExpr.getDoubleValue(parent, match, element, stream);
             annotationFS.setDoubleValue(feature, v);
           } else if (range.equals(UIMAConstants.TYPE_FLOAT)) {
-            float v = (float) numberExpr.getFloatValue(element.getParent());
+            float v = (float) numberExpr.getFloatValue(parent, match, element, stream);
             annotationFS.setFloatValue(feature, v);
           } else if (range.equals(UIMAConstants.TYPE_BYTE)) {
-            byte v = (byte) numberExpr.getIntegerValue(element.getParent());
+            byte v = (byte) numberExpr.getIntegerValue(parent, match, element, stream);
             annotationFS.setByteValue(feature, v);
           } else if (range.equals(UIMAConstants.TYPE_SHORT)) {
-            short v = (short) numberExpr.getIntegerValue(element.getParent());
+            short v = (short) numberExpr.getIntegerValue(parent, match, element, stream);
             annotationFS.setShortValue(feature, v);
           } else if (range.equals(UIMAConstants.TYPE_LONG)) {
-            long v = numberExpr.getIntegerValue(element.getParent());
+            long v = numberExpr.getIntegerValue(parent, match, element, stream);
             annotationFS.setLongValue(feature, v);
           }
         } else if (booleanExpr != null) {
-          boolean v = booleanExpr.getBooleanValue(element.getParent());
+          boolean v = booleanExpr.getBooleanValue(parent, match, element, stream);
           annotationFS.setBooleanValue(feature, v);
         } else if (typeExpr != null) {
-          Type t = typeExpr.getType(element.getParent());
+          Type t = typeExpr.getType(parent);
           List<AnnotationFS> inWindow = stream.getAnnotationsInWindow(annotationFS, t);
           if (feature.getRange().isArray()) {
-            annotationFS.setFeatureValue(feature,
-                    UIMAUtils.toFSArray(stream.getJCas(), inWindow));
+            annotationFS.setFeatureValue(feature, UIMAUtils.toFSArray(stream.getJCas(), inWindow));
           } else {
             AnnotationFS annotation = inWindow.get(0);
             annotationFS.setFeatureValue(feature, annotation);

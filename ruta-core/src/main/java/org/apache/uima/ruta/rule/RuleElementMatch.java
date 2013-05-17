@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaStream;
 
 public class RuleElementMatch {
 
@@ -48,7 +49,7 @@ public class RuleElementMatch {
   }
 
   public void setMatchInfo(boolean baseCondition, List<AnnotationFS> texts,
-          List<EvaluatedCondition> conditionList) {
+          List<EvaluatedCondition> conditionList, RutaStream stream) {
     baseConditionMatched = baseCondition;
     textsMatched = texts;
     conditions = conditionList;
@@ -59,7 +60,7 @@ public class RuleElementMatch {
       }
     }
     if (containerMatch != null) {
-      containerMatch.addInnerMatch(ruleElement, this);
+      containerMatch.addInnerMatch(ruleElement, this, stream);
     }
   }
 

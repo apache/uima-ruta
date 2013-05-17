@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.extensions;
 
@@ -28,7 +28,6 @@ import antlr.ANTLRException;
 
 public interface IRutaActionExtension extends IRutaExtension {
 
-  AbstractRutaAction createAction(String name, List<RutaExpression> args)
-          throws ANTLRException;
+  AbstractRutaAction createAction(String name, List<RutaExpression> args) throws ANTLRException;
 
 }

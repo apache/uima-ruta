@@ -23,17 +23,13 @@ import org.apache.uima.ruta.ide.core.parser.RutaParser;
 import org.eclipse.dltk.ast.expressions.ExpressionConstants;
 
 public interface RutaActionConstants {
-  public static final int A_CALL = ExpressionConstants.USER_EXPRESSION_START
-          + RutaParser.CALL;
+  public static final int A_CALL = ExpressionConstants.USER_EXPRESSION_START + RutaParser.CALL;
 
-  public static final int A_ASSIGN = ExpressionConstants.USER_EXPRESSION_START
-          + RutaParser.ASSIGN;
+  public static final int A_ASSIGN = ExpressionConstants.USER_EXPRESSION_START + RutaParser.ASSIGN;
 
-  public static final int A_CREATE = ExpressionConstants.USER_EXPRESSION_START
-          + RutaParser.CREATE;
+  public static final int A_CREATE = ExpressionConstants.USER_EXPRESSION_START + RutaParser.CREATE;
 
-  public static final int A_FILL = ExpressionConstants.USER_EXPRESSION_START
-          + RutaParser.FILL;
+  public static final int A_FILL = ExpressionConstants.USER_EXPRESSION_START + RutaParser.FILL;
 
   public static final int A_LOG = ExpressionConstants.USER_EXPRESSION_START + RutaParser.LOG;
 }

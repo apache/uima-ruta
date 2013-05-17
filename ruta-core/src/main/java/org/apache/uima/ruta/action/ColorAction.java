@@ -21,6 +21,7 @@ package org.apache.uima.ruta.action;
 
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
+import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.BooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
@@ -52,17 +53,17 @@ public class ColorAction extends AbstractRutaAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
     Type casType = stream.getJCas().getCasType(RutaColoring.type);
     FeatureStructure newAnnotationFS = stream.getCas().createFS(casType);
     RutaColoring coloring = null;
     if (newAnnotationFS instanceof RutaColoring) {
       coloring = (RutaColoring) newAnnotationFS;
-      coloring.setBgColor(bgcolor.getStringValue(element.getParent()));
-      coloring.setFgColor(fgcolor.getStringValue(element.getParent()));
-      coloring.setSelected(selected.getBooleanValue(element.getParent()));
-      coloring.setTargetType(type.getType(element.getParent()).getName());
+      RutaBlock parent = element.getParent();
+      coloring.setBgColor(bgcolor.getStringValue(parent, match, element, stream));
+      coloring.setFgColor(fgcolor.getStringValue(parent, match, element, stream));
+      coloring.setSelected(selected.getBooleanValue(parent, match, element, stream));
+      coloring.setTargetType(type.getType(parent).getName());
       coloring.addToIndexes();
     }
   }

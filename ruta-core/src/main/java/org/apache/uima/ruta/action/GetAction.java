@@ -47,13 +47,12 @@ public class GetAction extends AbstractRutaAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
-    String op = opExpr.getStringValue(element.getParent());
-    List<?> list = listExpr.getList(element.getParent());
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+    RutaBlock parent = element.getParent();
+    String op = opExpr.getStringValue(parent, match, element, stream);
+    List<?> list = listExpr.getList(parent, stream);
     if ("dominant".equals(op)) {
-      element.getParent().getEnvironment()
-              .setVariableValue(var, getDominant(list, element.getParent()));
+      parent.getEnvironment().setVariableValue(var, getDominant(list, parent));
     }
   }
 

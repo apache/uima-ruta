@@ -45,10 +45,9 @@ public class MarkAction extends AbstractMarkAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
-    List<Integer> indexList = getIndexList(element, list);
-    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(stream, indexList,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+    List<Integer> indexList = getIndexList(element, list, stream);
+    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(indexList,
             element.getContainer());
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
       if (matchedAnnotation == null) {
@@ -57,19 +56,18 @@ public class MarkAction extends AbstractMarkAction {
       if (score == null) {
         createAnnotation(matchedAnnotation, element, stream, match);
       } else {
-        double deltaScore = score.getDoubleValue(element.getParent());
+        double deltaScore = score.getDoubleValue(element.getParent(), null, stream);
         updateHeuristicAnnotation(match, element, stream, matchedAnnotation, deltaScore);
       }
     }
 
   }
 
-  protected void updateHeuristicAnnotation(RuleMatch match, RuleElement element,
-          RutaStream stream, AnnotationFS matchedAnnotation, double deltaScore) {
+  protected void updateHeuristicAnnotation(RuleMatch match, RuleElement element, RutaStream stream,
+          AnnotationFS matchedAnnotation, double deltaScore) {
     Type heuristicType = stream.getJCas().getCasType(RutaAnnotation.type);
-    RutaAnnotation heuristicAnnotation = (RutaAnnotation) stream.getCas()
-            .createAnnotation(heuristicType, matchedAnnotation.getBegin(),
-                    matchedAnnotation.getEnd());
+    RutaAnnotation heuristicAnnotation = (RutaAnnotation) stream.getCas().createAnnotation(
+            heuristicType, matchedAnnotation.getBegin(), matchedAnnotation.getEnd());
     Annotation newAnnotation = (Annotation) stream.getCas().createAnnotation(
             type.getType(element.getParent()), heuristicAnnotation.getBegin(),
             heuristicAnnotation.getEnd());

@@ -263,7 +263,7 @@ public class ExpressionVerbalizer {
         if (expression.getArg() != null) {
           tail += verbalize(expression.getArg());
         }
-    }
+      }
     }
     return head + tail;
   }
@@ -280,7 +280,8 @@ public class ExpressionVerbalizer {
   }
 
   public String verbalize(FeatureMatchExpression expression) {
-    return verbalize((FeatureExpression)expression) + expression.getOp() + verbalize(expression.getArg());
+    return verbalize((FeatureExpression) expression) + expression.getOp()
+            + verbalize(expression.getArg());
   }
 
 }

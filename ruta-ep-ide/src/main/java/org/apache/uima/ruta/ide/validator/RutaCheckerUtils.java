@@ -31,7 +31,6 @@ import java.util.Stack;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_component.AnalysisComponent;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;

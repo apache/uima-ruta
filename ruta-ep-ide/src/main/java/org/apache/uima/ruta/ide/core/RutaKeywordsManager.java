@@ -52,8 +52,7 @@ public final class RutaKeywordsManager {
     for (int i = 0; i < cfg.length; i++) {
       if (cfg[i].getName().equals("keywords")) {
         try {
-          IRutaKeywords keywords = (IRutaKeywords) cfg[i]
-                  .createExecutableExtension(CLASS);
+          IRutaKeywords keywords = (IRutaKeywords) cfg[i].createExecutableExtension(CLASS);
           if (keywords != null) {
             for (int q = 0; q < IRutaKeywords.END_INDEX; ++q) {
               String[] kw2 = keywords.getKeywords(q);
@@ -77,31 +76,36 @@ public final class RutaKeywordsManager {
             .getRutaConditionExtensions();
     for (IRutaConditionExtension each : conditionExtensions) {
       String[] knownExtensions = each.getKnownExtensions();
-      all[IRutaKeywords.CONDITION] = RutaKeywords.append(all[IRutaKeywords.CONDITION], knownExtensions);
+      all[IRutaKeywords.CONDITION] = RutaKeywords.append(all[IRutaKeywords.CONDITION],
+              knownExtensions);
     }
     IRutaBooleanFunctionExtension[] booleanFunctionExtensions = RutaExtensionManager.getDefault()
             .getRutaBooleanFunctionExtensions();
     for (IRutaBooleanFunctionExtension each : booleanFunctionExtensions) {
       String[] knownExtensions = each.getKnownExtensions();
-      all[IRutaKeywords.BOOLEANFUNCTION] = RutaKeywords.append(all[IRutaKeywords.BOOLEANFUNCTION], knownExtensions);
+      all[IRutaKeywords.BOOLEANFUNCTION] = RutaKeywords.append(all[IRutaKeywords.BOOLEANFUNCTION],
+              knownExtensions);
     }
     IRutaNumberFunctionExtension[] numberFunctionExtensions = RutaExtensionManager.getDefault()
             .getRutaNumberFunctionExtensions();
     for (IRutaNumberFunctionExtension each : numberFunctionExtensions) {
       String[] knownExtensions = each.getKnownExtensions();
-      all[IRutaKeywords.NUMBERFUNCTION] = RutaKeywords.append(all[IRutaKeywords.NUMBERFUNCTION], knownExtensions);
+      all[IRutaKeywords.NUMBERFUNCTION] = RutaKeywords.append(all[IRutaKeywords.NUMBERFUNCTION],
+              knownExtensions);
     }
     IRutaStringFunctionExtension[] stringFunctionExtensions = RutaExtensionManager.getDefault()
             .getRutaStringFunctionExtensions();
     for (IRutaStringFunctionExtension each : stringFunctionExtensions) {
       String[] knownExtensions = each.getKnownExtensions();
-      all[IRutaKeywords.STRINGFUNCTION] = RutaKeywords.append(all[IRutaKeywords.STRINGFUNCTION], knownExtensions);
+      all[IRutaKeywords.STRINGFUNCTION] = RutaKeywords.append(all[IRutaKeywords.STRINGFUNCTION],
+              knownExtensions);
     }
     IRutaTypeFunctionExtension[] typeFunctionExtensions = RutaExtensionManager.getDefault()
             .getRutaTypeFunctionExtensions();
     for (IRutaTypeFunctionExtension each : typeFunctionExtensions) {
       String[] knownExtensions = each.getKnownExtensions();
-      all[IRutaKeywords.TYPEFUNCTION] = RutaKeywords.append(all[IRutaKeywords.TYPEFUNCTION], knownExtensions);
+      all[IRutaKeywords.TYPEFUNCTION] = RutaKeywords.append(all[IRutaKeywords.TYPEFUNCTION],
+              knownExtensions);
     }
   }
 

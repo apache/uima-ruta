@@ -58,7 +58,8 @@ public abstract class AbstractMarkAction extends TypeSensitiveAction {
     return super.toString() + "," + type.getClass().getSimpleName();
   }
 
-  protected List<Integer> getIndexList(RuleElement element, List<NumberExpression> list) {
+  protected List<Integer> getIndexList(RuleElement element, List<NumberExpression> list,
+          RutaStream stream) {
     List<Integer> indexList = new ArrayList<Integer>();
     if (list == null || list.isEmpty()) {
       int self = element.getContainer().getRuleElements().indexOf(element) + 1;
@@ -67,7 +68,7 @@ public abstract class AbstractMarkAction extends TypeSensitiveAction {
     }
     int last = Integer.MAX_VALUE - 1;
     for (NumberExpression each : list) {
-      int value = each.getIntegerValue(element.getParent());
+      int value = each.getIntegerValue(element.getParent(), null, stream);
       for (int i = Math.min(value, last + 1); i < value; i++) {
         indexList.add(i);
       }

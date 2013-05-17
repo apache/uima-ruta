@@ -15,14 +15,15 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.expression.string;
 
 import java.util.List;
 
-import org.apache.uima.ruta.RutaStatement;
-
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
 
 public class RemoveFunction extends StringFunctionExpression {
 
@@ -37,11 +38,11 @@ public class RemoveFunction extends StringFunctionExpression {
   }
 
   @Override
-  public String getStringValue(RutaStatement parent) {
+  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     StringBuilder result = new StringBuilder();
     String value = parent.getEnvironment().getVariableValue(var, String.class);
     for (StringExpression each : list) {
-      String string = each.getStringValue(parent);
+      String string = each.getStringValue(parent, annotation, stream);
       String[] split = value.split(string);
       for (String r : split) {
         result.append(r);

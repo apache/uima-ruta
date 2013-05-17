@@ -96,7 +96,7 @@ public class RutaFunction extends Expression {
   public String toString() {
     return this.getClass().getSimpleName() + " : " + super.toString();
   }
-  
+
   public int getNameStart() {
     return nameStart;
   }

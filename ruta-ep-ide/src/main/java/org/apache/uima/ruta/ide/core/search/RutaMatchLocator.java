@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.core.search;
 
@@ -51,8 +51,8 @@ public class RutaMatchLocator extends MatchLocator {
       return createMethodHandle(type, new String(method.getName()));
     } else if (parent instanceof ISourceModule) {
       if (method.getDeclaringTypeName() != null) {
-        return createMethodHandle((ISourceModule) parent, method.getDeclaringTypeName()
-                + method.getName());
+        return createMethodHandle((ISourceModule) parent,
+                method.getDeclaringTypeName() + method.getName());
       } else {
         return createMethodHandle((ISourceModule) parent, method.getName());
       }

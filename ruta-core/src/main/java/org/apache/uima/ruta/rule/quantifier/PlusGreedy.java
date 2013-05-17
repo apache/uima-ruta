@@ -38,7 +38,7 @@ public class PlusGreedy implements RuleElementQuantifier {
   }
 
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
-          RutaStatement element, InferenceCrowd crowd) {
+          RutaStatement element, RutaStream stream, InferenceCrowd crowd) {
     boolean result = true;
     boolean allEmpty = true;
     if (matches == null) {
@@ -46,7 +46,7 @@ public class PlusGreedy implements RuleElementQuantifier {
     }
     for (RuleElementMatch match : matches) {
       allEmpty &= match.getTextsMatched().isEmpty();
-      result &=  match.matched();
+      result &= match.matched();
     }
     if (!result && matches.size() > 1) {
       matches.remove(matches.size() - 1);
@@ -63,8 +63,8 @@ public class PlusGreedy implements RuleElementQuantifier {
   }
 
   public boolean continueMatch(boolean after, AnnotationFS annotation, RuleElement ruleElement,
-          RuleMatch extendedMatch, ComposedRuleElementMatch containerMatch,
-          RutaStream stream, InferenceCrowd crowd) {
+          RuleMatch extendedMatch, ComposedRuleElementMatch containerMatch, RutaStream stream,
+          InferenceCrowd crowd) {
     List<List<RuleElementMatch>> matchInfo = extendedMatch.getMatchInfo(ruleElement);
     List<RuleElementMatch> matches;
     if (after) {
@@ -93,7 +93,7 @@ public class PlusGreedy implements RuleElementQuantifier {
 
   }
 
-  public boolean isOptional(RutaBlock parent) {
+  public boolean isOptional(RutaBlock parent, RutaStream stream) {
     return false;
   }
 }

@@ -46,8 +46,8 @@ public class TotalCountCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          RutaStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
+          InferenceCrowd crowd) {
     int count = 0;
     Iterator<?> it = stream.getJCas().getAnnotationIndex(type.getType(element.getParent()))
             .iterator();
@@ -58,8 +58,8 @@ public class TotalCountCondition extends TypeSentiveCondition {
     if (var != null) {
       element.getParent().getEnvironment().setVariableValue(var, count);
     }
-    boolean value = count >= min.getIntegerValue(element.getParent())
-            && count <= max.getIntegerValue(element.getParent());
+    boolean value = count >= min.getIntegerValue(element.getParent(), annotation, stream)
+            && count <= max.getIntegerValue(element.getParent(), annotation, stream);
     return new EvaluatedCondition(this, value);
   }
 

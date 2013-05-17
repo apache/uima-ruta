@@ -25,7 +25,7 @@ import org.apache.uima.ruta.RutaStatement;
 public abstract class AbstractRule extends RutaStatement {
 
   private final int id;
-  
+
   public AbstractRule(RutaBlock parent, int id) {
     super(parent);
     this.id = id;
@@ -35,5 +35,4 @@ public abstract class AbstractRule extends RutaStatement {
     return id;
   }
 
-  
 }

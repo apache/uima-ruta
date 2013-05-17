@@ -20,7 +20,9 @@
 package org.apache.uima.ruta.expression.bool;
 
 import org.apache.uima.cas.Type;
-import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 
 public class BooleanTypeExpression extends BooleanExpression {
@@ -39,7 +41,7 @@ public class BooleanTypeExpression extends BooleanExpression {
   }
 
   @Override
-  public boolean getBooleanValue(RutaStatement parent) {
+  public boolean getBooleanValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     Type type1 = getFristExpression().getType(parent);
     String first = type1.getName();
     Type type2 = getSecondExpression().getType(parent);
@@ -69,8 +71,9 @@ public class BooleanTypeExpression extends BooleanExpression {
   }
 
   @Override
-  public String getStringValue(RutaStatement parent) {
-    return e1.getStringValue(parent) + " " + op + " " + e2.getStringValue(parent);
+  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+    return e1.getStringValue(parent, annotation, stream) + " " + op + " "
+            + e2.getStringValue(parent, annotation, stream);
   }
 
 }

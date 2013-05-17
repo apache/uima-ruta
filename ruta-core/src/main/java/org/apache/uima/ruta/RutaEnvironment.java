@@ -363,12 +363,13 @@ public class RutaEnvironment {
   public <T> T getVariableValue(String name, Class<T> type) {
     boolean containsKey = variableValues.containsKey(name);
     Object result = variableValues.get(name);
-    
-    if(result instanceof String && type.equals(Type.class)) {
-      // "cast" string to type, because initial values were set when there was no cas/type system yet
+
+    if (result instanceof String && type.equals(Type.class)) {
+      // "cast" string to type, because initial values were set when there was no cas/type system
+      // yet
       result = types.get(result);
     }
-    
+
     if (containsKey && result == null) {
       // TODO find the problem with the null values!
       // this might now work for word lists in another env.
@@ -396,20 +397,20 @@ public class RutaEnvironment {
       if (value instanceof NumberExpression) {
         NumberExpression ne = (NumberExpression) value;
         if (clazz.equals(Integer.class)) {
-          return ne.getIntegerValue(owner);
+          return ne.getIntegerValue(owner, null, null);
         } else if (clazz.equals(Double.class)) {
-          return ne.getDoubleValue(owner);
+          return ne.getDoubleValue(owner, null, null);
         } else if (clazz.equals(Float.class)) {
-          return ne.getFloatValue(owner);
+          return ne.getFloatValue(owner, null, null);
         } else if (clazz.equals(String.class)) {
-          return ne.getStringValue(owner);
+          return ne.getStringValue(owner, null, null);
         }
       } else if (clazz.equals(String.class) && value instanceof StringExpression) {
         StringExpression se = (StringExpression) value;
-        return se.getStringValue(owner);
+        return se.getStringValue(owner, null, null);
       } else if (clazz.equals(Boolean.class) && value instanceof BooleanExpression) {
         BooleanExpression be = (BooleanExpression) value;
-        return be.getBooleanValue(owner);
+        return be.getBooleanValue(owner, null, null);
       }
       if (clazz.equals(RutaWordList.class) && value instanceof LiteralWordListExpression) {
         LiteralWordListExpression lle = (LiteralWordListExpression) value;

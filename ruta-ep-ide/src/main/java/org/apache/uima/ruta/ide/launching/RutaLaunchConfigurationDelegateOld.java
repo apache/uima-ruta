@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.launching;
 
@@ -28,9 +28,7 @@ import org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate;
 import org.eclipse.dltk.launching.IInterpreterRunner;
 import org.eclipse.dltk.launching.InterpreterConfig;
 
-
-public class RutaLaunchConfigurationDelegateOld extends
-        AbstractScriptLaunchConfigurationDelegate {
+public class RutaLaunchConfigurationDelegateOld extends AbstractScriptLaunchConfigurationDelegate {
 
   @Override
   protected void runRunner(ILaunchConfiguration configuration, IInterpreterRunner runner,

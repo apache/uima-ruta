@@ -18,6 +18,7 @@
  */
 
 package org.apache.uima.ruta.ide.ui.wizards;
+
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.ui.wizards.IBuildpathContainerPage;
@@ -25,19 +26,19 @@ import org.eclipse.dltk.ui.wizards.IBuildpathContainerPageExtension;
 import org.eclipse.dltk.ui.wizards.NewElementWizardPage;
 import org.eclipse.swt.widgets.Composite;
 
-
-public class RutaJavaContainerPage extends NewElementWizardPage implements IBuildpathContainerPage, IBuildpathContainerPageExtension{
+public class RutaJavaContainerPage extends NewElementWizardPage implements IBuildpathContainerPage,
+        IBuildpathContainerPageExtension {
 
   public RutaJavaContainerPage() {
     super("RutaJavaContainerPage");
   }
 
   public void createControl(Composite composite) {
-    
+
   }
 
   public void initialize(IScriptProject project, IBuildpathEntry[] currentEntries) {
-    
+
   }
 
   public boolean finish() {
@@ -51,5 +52,4 @@ public class RutaJavaContainerPage extends NewElementWizardPage implements IBuil
   public void setSelection(IBuildpathEntry containerEntry) {
   }
 
- 
 }

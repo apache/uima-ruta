@@ -50,9 +50,8 @@ public class JavaLocalApplicationLaunchConfigurationDelegate extends JavaLaunchD
     try {
       dbgpService = DLTKDebugPlugin.getDefault().getDbgpService();
 
-      IScriptDebugTarget target = new ScriptDebugTarget(
-              "org.apache.uima.ruta.ide.debug.rutaModel", dbgpService, "hello", launch,
-              null);
+      IScriptDebugTarget target = new ScriptDebugTarget("org.apache.uima.ruta.ide.debug.rutaModel",
+              dbgpService, "hello", launch, null);
       IOConsole cs = new IOConsole("aa", null);
       ScriptStreamProxy proxy = new ScriptStreamProxy(cs);
       target.setStreamProxy(proxy);

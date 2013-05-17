@@ -33,8 +33,8 @@ public class RutaBinaryArithmeticExpression extends Expression {
    */
   private int kind;
 
-  public RutaBinaryArithmeticExpression(int start, int end, Expression exprA,
-          Expression exprB, int kind) {
+  public RutaBinaryArithmeticExpression(int start, int end, Expression exprA, Expression exprB,
+          int kind) {
     super(start, end);
     this.exprA = exprA;
     this.exprB = exprB;

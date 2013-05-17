@@ -36,9 +36,10 @@ public class IfCondition extends AbstractRutaCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          RutaStream stream, InferenceCrowd crowd) {
-    return new EvaluatedCondition(this, expression.getBooleanValue(element.getParent()));
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
+          InferenceCrowd crowd) {
+    return new EvaluatedCondition(this, expression.getBooleanValue(element.getParent(), null,
+            stream));
   }
 
   public BooleanExpression getExpression() {

@@ -38,7 +38,7 @@ public class StarGreedy implements RuleElementQuantifier {
   }
 
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
-          RutaStatement element, InferenceCrowd crowd) {
+          RutaStatement element, RutaStream stream, InferenceCrowd crowd) {
     boolean result = true;
     if (matches == null) {
       return null;
@@ -59,12 +59,12 @@ public class StarGreedy implements RuleElementQuantifier {
   }
 
   public boolean continueMatch(boolean after, AnnotationFS annotation, RuleElement ruleElement,
-          RuleMatch extendedMatch, ComposedRuleElementMatch containerMatch,
-          RutaStream stream, InferenceCrowd crowd) {
+          RuleMatch extendedMatch, ComposedRuleElementMatch containerMatch, RutaStream stream,
+          InferenceCrowd crowd) {
     return true;
   }
 
-  public boolean isOptional(RutaBlock parent) {
+  public boolean isOptional(RutaBlock parent, RutaStream stream) {
     return true;
   }
 }

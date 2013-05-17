@@ -43,8 +43,8 @@ public class IsCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          RutaStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
+          InferenceCrowd crowd) {
     RutaBasic beginAnchor = stream.getBeginAnchor(annotation.getBegin());
     if (!isWorkingOnList()) {
       Set<AnnotationFS> beginAnchors = beginAnchor
@@ -61,7 +61,7 @@ public class IsCondition extends TypeSentiveCondition {
       return new EvaluatedCondition(this, result);
     } else {
       boolean result = false;
-      List<Type> types = getList().getList(element.getParent());
+      List<Type> types = getList().getList(element.getParent(), stream);
       for (Type type : types) {
         Set<AnnotationFS> beginAnchors = beginAnchor.getBeginAnchors(type);
         if (beginAnchors != null) {

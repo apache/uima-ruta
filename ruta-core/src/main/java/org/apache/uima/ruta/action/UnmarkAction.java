@@ -47,15 +47,14 @@ public class UnmarkAction extends TypeSensitiveAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
     Type t = type.getType(element.getParent());
     boolean allAtAnchor = false;
     if (allAnchor != null) {
-      allAtAnchor = allAnchor.getBooleanValue(element.getParent());
+      allAtAnchor = allAnchor.getBooleanValue(element.getParent(), null, stream);
     }
-    List<Integer> indexList = getIndexList(element, list);
-    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(stream, indexList,
+    List<Integer> indexList = getIndexList(element, list, stream);
+    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(indexList,
             element.getContainer());
     for (AnnotationFS annotationFS : matchedAnnotations) {
       RutaBasic beginAnchor = stream.getBeginAnchor(annotationFS.getBegin());
@@ -79,7 +78,8 @@ public class UnmarkAction extends TypeSensitiveAction {
     return allAnchor;
   }
 
-  protected List<Integer> getIndexList(RuleElement element, List<NumberExpression> list) {
+  protected List<Integer> getIndexList(RuleElement element, List<NumberExpression> list,
+          RutaStream stream) {
     List<Integer> indexList = new ArrayList<Integer>();
     if (list == null || list.isEmpty()) {
       int self = element.getContainer().getRuleElements().indexOf(element) + 1;
@@ -88,7 +88,7 @@ public class UnmarkAction extends TypeSensitiveAction {
     }
     int last = Integer.MAX_VALUE - 1;
     for (NumberExpression each : list) {
-      int value = each.getIntegerValue(element.getParent());
+      int value = each.getIntegerValue(element.getParent(), null, stream);
       for (int i = Math.min(value, last + 1); i < value; i++) {
         indexList.add(i);
       }

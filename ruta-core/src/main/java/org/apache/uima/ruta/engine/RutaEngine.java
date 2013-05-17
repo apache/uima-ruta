@@ -50,12 +50,11 @@ import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceManager;
-import org.apache.uima.resource.metadata.ConfigurationParameter;
-import org.apache.uima.resource.metadata.ConfigurationParameterDeclarations;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.FilterManager;
 import org.apache.uima.ruta.RutaBlock;
@@ -72,8 +71,8 @@ import org.apache.uima.ruta.verbalize.RutaVerbalizer;
 import org.apache.uima.ruta.visitor.CreatedByVisitor;
 import org.apache.uima.ruta.visitor.DebugInfoCollectorVisitor;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
-import org.apache.uima.ruta.visitor.StatisticsVisitor;
 import org.apache.uima.ruta.visitor.RutaInferenceVisitor;
+import org.apache.uima.ruta.visitor.StatisticsVisitor;
 import org.apache.uima.ruta.visitor.TimeProfilerVisitor;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
@@ -485,9 +484,11 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
         AnalysisEngine eachEngine = null;
         try {
           @SuppressWarnings("unchecked")
-//          Class clazz = this.getClass().getClassLoader().loadClass(eachUimafitEngine)       ;  
+          // Class clazz = this.getClass().getClassLoader().loadClass(eachUimafitEngine) ;
           Class<? extends AnalysisComponent> uimafitClass = (Class<? extends AnalysisComponent>) Class
                   .forName(eachUimafitEngine);
+          TypeSystemDescription createTypeSystemDescription = TypeSystemDescriptionFactory
+                  .createTypeSystemDescription();
           eachEngine = AnalysisEngineFactory.createPrimitive(uimafitClass);
         } catch (ClassNotFoundException e) {
           throw new AnalysisEngineProcessException(e);

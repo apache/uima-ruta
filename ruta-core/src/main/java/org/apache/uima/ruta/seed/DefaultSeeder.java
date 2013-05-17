@@ -83,7 +83,7 @@ public class DefaultSeeder implements RutaAnnotationSeeder {
       MARKUP markup = new MARKUP(jCas, begin, end);
       markup.addToIndexes();
       FSIterator<AnnotationFS> subiterator = cas.getAnnotationIndex(result).subiterator(markup);
-      while(subiterator.isValid()) {
+      while (subiterator.isValid()) {
         AnnotationFS fs = subiterator.get();
         toRemove.add(fs);
         subiterator.moveToNext();

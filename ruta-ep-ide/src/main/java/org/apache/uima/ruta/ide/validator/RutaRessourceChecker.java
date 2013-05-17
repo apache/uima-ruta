@@ -161,8 +161,8 @@ public class RutaRessourceChecker implements IBuildParticipant, IBuildParticipan
    *           when file not found
    */
   private Set<String> importTypeSystem(String xmlFilePath) throws InvalidXMLException, IOException {
-    IFolder folder = project.getProject().getFolder(
-            RutaProjectUtils.getDefaultDescriptorLocation());
+    IFolder folder = project.getProject()
+            .getFolder(RutaProjectUtils.getDefaultDescriptorLocation());
     String fileExtended = xmlFilePath + ".xml";
     return getTypes(folder, fileExtended);
   }

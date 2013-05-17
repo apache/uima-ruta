@@ -24,8 +24,6 @@ import org.eclipse.osgi.util.NLS;
 public class RutaPreferencesMessages extends NLS {
   private static final String BUNDLE_NAME = "org.apache.uima.ruta.ide.ui.preferences.RutaPreferencesMessages";//$NON-NLS-1$	
 
-
-
   private RutaPreferencesMessages() {
     // Do not instantiate
   }
@@ -75,8 +73,8 @@ public class RutaPreferencesMessages extends NLS {
   public static String BuilderImportByName;
 
   public static String BuilderIgnoreDuplicateShortnames;
-  
+
   public static String ProjectClearOutput;
-  
+
   public static String NoVMInDevMode;
 }

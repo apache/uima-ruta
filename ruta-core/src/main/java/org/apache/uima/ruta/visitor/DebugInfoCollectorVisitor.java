@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.visitor;
 
@@ -27,19 +27,18 @@ import java.util.Stack;
 
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.BlockApply;
-import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.RutaModule;
 import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.rule.AbstractRule;
 import org.apache.uima.ruta.rule.AbstractRuleMatch;
 import org.apache.uima.ruta.rule.RuleApply;
 import org.apache.uima.ruta.rule.RutaRule;
 import org.apache.uima.ruta.type.DebugScriptApply;
 import org.apache.uima.ruta.verbalize.RutaVerbalizer;
-
 
 public class DebugInfoCollectorVisitor implements RutaInferenceVisitor {
 
@@ -187,8 +186,9 @@ public class DebugInfoCollectorVisitor implements RutaInferenceVisitor {
     return null;
   }
 
-  public void annotationAdded(AnnotationFS annotation, AbstractRuleMatch<? extends AbstractRule> creator) {
-    
+  public void annotationAdded(AnnotationFS annotation,
+          AbstractRuleMatch<? extends AbstractRule> creator) {
+
   }
 
 }

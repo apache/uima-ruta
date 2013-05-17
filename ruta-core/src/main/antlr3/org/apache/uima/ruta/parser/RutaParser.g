@@ -1903,8 +1903,9 @@ numberExpressionInPar returns [NumberExpression expr = null]
 	;
 
 simpleNumberExpression returns [NumberExpression expr = null]
-	:	
-	m = MINUS? lit = DecimalLiteral {expr = ExpressionFactory.createIntegerExpression(lit,m);} 
+	:
+	(featureExpression)=> fe = featureExpression {expr = ExpressionFactory.createNumberFeatureExpression(fe);}	
+	| m = MINUS? lit = DecimalLiteral {expr = ExpressionFactory.createIntegerExpression(lit,m);} 
 	// TODO what about float numbers?
 	| m = MINUS? lit = FloatingPointLiteral {expr = ExpressionFactory.createDoubleExpression(lit,m);}
 	| m = MINUS? var = numberVariable {expr = ExpressionFactory.createReferenceNumberExpression(var,m);}
@@ -1919,7 +1920,8 @@ options {
 List<StringExpression> exprs = new ArrayList<StringExpression>();
 }
 	:
-	e = simpleStringExpression {exprs.add(e);} 
+	(featureExpression)=> fe = featureExpression {expr = ExpressionFactory.createStringFeatureExpression(fe);}
+	| e = simpleStringExpression {exprs.add(e);} 
 	(PLUS (e1 = simpleStringExpression {exprs.add(e1);} 
 		| e2 = numberExpressionInPar {exprs.add(e2);}
 		| be = simpleBooleanExpression {exprs.add(be);}
@@ -1960,7 +1962,8 @@ simpleStringExpression returns [StringExpression expr = null]
 
 booleanExpression returns [BooleanExpression expr = null]
 	:
-	(e = composedBooleanExpression)=> e = composedBooleanExpression {expr = e;}
+	(featureExpression)=> fe = featureExpression {expr = ExpressionFactory.createBooleanFeatureExpression(fe);}
+	| (e = composedBooleanExpression)=> e = composedBooleanExpression {expr = e;}
 	|sbE =  simpleBooleanExpression {expr = sbE;}
 	
 	;

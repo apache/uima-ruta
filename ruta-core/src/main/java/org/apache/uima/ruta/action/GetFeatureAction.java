@@ -25,6 +25,7 @@ import java.util.List;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
@@ -47,20 +48,20 @@ public class GetFeatureAction extends AbstractRutaAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
     List<Type> types = new ArrayList<Type>();
+    RutaBlock parent = element.getParent();
     if (element instanceof RutaRuleElement) {
-      types = ((RutaRuleElement) element).getMatcher().getTypes(element.getParent(), stream);
+      types = ((RutaRuleElement) element).getMatcher().getTypes(parent, stream);
     }
     if (types == null)
       return;
 
     for (Type type : types) {
-      String stringValue = featureStringExpression.getStringValue(element.getParent());
+      String stringValue = featureStringExpression.getStringValue(parent, match, element, stream);
       Feature featureByBaseName = type.getFeatureByBaseName(stringValue);
-      RutaEnvironment environment = element.getParent().getEnvironment();
-      List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOf(element, stream);
+      RutaEnvironment environment = parent.getEnvironment();
+      List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOf(element);
       for (AnnotationFS annotationFS : matchedAnnotations) {
         if (annotationFS.getType().getFeatureByBaseName(stringValue) == null) {
           System.out.println("Can't access feature " + stringValue
@@ -74,8 +75,8 @@ public class GetFeatureAction extends AbstractRutaAction {
           Object value = annotationFS.getStringValue(featureByBaseName);
           environment.setVariableValue(variable, value);
         } else if (Number.class.isAssignableFrom(environment.getVariableType(variable))) {
-          Number value = 0;     
-          if(featName.equals(UIMAConstants.TYPE_INTEGER)) {
+          Number value = 0;
+          if (featName.equals(UIMAConstants.TYPE_INTEGER)) {
             value = annotationFS.getIntValue(featureByBaseName);
           } else if (featName.equals(UIMAConstants.TYPE_DOUBLE)) {
             value = annotationFS.getDoubleValue(featureByBaseName);
@@ -87,7 +88,7 @@ public class GetFeatureAction extends AbstractRutaAction {
             value = annotationFS.getShortValue(featureByBaseName);
           } else if (featName.equals(UIMAConstants.TYPE_LONG)) {
             value = annotationFS.getLongValue(featureByBaseName);
-          } 
+          }
           environment.setVariableValue(variable, value);
         } else if (environment.getVariableType(variable).equals(Boolean.class)
                 && featName.equals(UIMAConstants.TYPE_BOOLEAN)) {

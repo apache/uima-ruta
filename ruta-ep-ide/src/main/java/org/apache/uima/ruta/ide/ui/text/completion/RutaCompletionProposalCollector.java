@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.ui.text.completion;
 
@@ -41,14 +41,11 @@ public class RutaCompletionProposalCollector extends ScriptCompletionProposalCol
     super(module);
   }
 
- 
-
   // Specific proposals creation. May be use factory?
   @Override
   protected ScriptCompletionProposal createScriptCompletionProposal(String completion,
           int replaceStart, int length, Image image, String displayString, int i) {
-    return new RutaScriptCompletionProposal(completion, replaceStart, length, image,
-            null, i);
+    return new RutaScriptCompletionProposal(completion, replaceStart, length, image, null, i);
   }
 
   @Override
@@ -62,8 +59,8 @@ public class RutaCompletionProposalCollector extends ScriptCompletionProposalCol
   protected ScriptCompletionProposal createOverrideCompletionProposal(IScriptProject scriptProject,
           ISourceModule compilationUnit, String name, String[] paramTypes, int start, int length,
           String displayName, String completionProposal) {
-    return new RutaOverrideCompletionProposal(scriptProject, compilationUnit, name,
-            paramTypes, start, length, displayName, completionProposal);
+    return new RutaOverrideCompletionProposal(scriptProject, compilationUnit, name, paramTypes,
+            start, length, displayName, completionProposal);
   }
 
   @Override

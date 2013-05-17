@@ -48,9 +48,8 @@ public class ActionFactory extends AbstractFactory {
         bounds[1] = Math.max(bounds[1], lastExpr.sourceEnd());
       }
     }
-    return new RutaAction(bounds[0], bounds[1], exprs,
-            ExpressionConstants.USER_EXPRESSION_START + type.getType(), type.getText(), nameStart,
-            nameEnd);
+    return new RutaAction(bounds[0], bounds[1], exprs, ExpressionConstants.USER_EXPRESSION_START
+            + type.getType(), type.getText(), nameStart, nameEnd);
   }
 
   public static RutaAction createAction(Token type, Expression... exprsArray) {
@@ -71,7 +70,7 @@ public class ActionFactory extends AbstractFactory {
     return new RutaAction(bounds[0], bounds[0], new ArrayList<Expression>(),
             RutaConditionConstants.CONSTANT_OFFSET, "", bounds[0], bounds[0]);
   }
-  
+
   public static RutaAction createAction(Token type, Map<Expression, Expression> map,
           Expression... exprsArray) {
     List<Expression> listOfExpressions = new ArrayList<Expression>();
@@ -91,8 +90,7 @@ public class ActionFactory extends AbstractFactory {
     return createAction(callToken, ref);
   }
 
-  public static RutaAction createCallAction(Token callToken, ComponentReference ref,
-          Expression list) {
+  public static RutaAction createCallAction(Token callToken, ComponentReference ref, Expression list) {
     return createAction(callToken, ref, list);
   }
 
@@ -140,8 +138,8 @@ public class ActionFactory extends AbstractFactory {
     }
     List exprs = new ArrayList();
     exprs.add(logString);
-    return new RutaLogAction(bounds[0], bounds[1], type.getText(), nameBounds[0],
-            nameBounds[1], exprs, levelBounds[0], levelBounds[1]);
+    return new RutaLogAction(bounds[0], bounds[1], type.getText(), nameBounds[0], nameBounds[1],
+            exprs, levelBounds[0], levelBounds[1]);
   }
 
   public static RutaAction createStructureAction(Token type, Expression structure,
@@ -245,10 +243,9 @@ public class ActionFactory extends AbstractFactory {
         }
       }
     }
-    int[] bounds = getBounds(exprL.get(0), exprL.get(exprL.size()-1));
-    return new RutaAction(bounds[0], bounds[1], exprL,
-            ExpressionConstants.USER_EXPRESSION_START, "", bounds[0],
-            bounds[0]);
+    int[] bounds = getBounds(exprL.get(0), exprL.get(exprL.size() - 1));
+    return new RutaAction(bounds[0], bounds[1], exprL, ExpressionConstants.USER_EXPRESSION_START,
+            "", bounds[0], bounds[0]);
   }
 
 }

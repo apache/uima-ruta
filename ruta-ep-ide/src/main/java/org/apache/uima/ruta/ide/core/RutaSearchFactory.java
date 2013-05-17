@@ -15,14 +15,13 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.core;
 
 import org.eclipse.dltk.core.search.AbstractSearchFactory;
 import org.eclipse.dltk.core.search.IMatchLocatorParser;
 import org.eclipse.dltk.core.search.matching.MatchLocator;
-
 
 /**
  * Ruta search factory
@@ -33,11 +32,11 @@ public class RutaSearchFactory extends AbstractSearchFactory {
     return new RutaMatchLocatorParser(locator);
   }
 
-//  public SourceIndexerRequestor createSourceRequestor() {
-//    return new RutaSourceIndexerRequestor();
-//  }
+  // public SourceIndexerRequestor createSourceRequestor() {
+  // return new RutaSourceIndexerRequestor();
+  // }
 
-//  public ISearchPatternProcessor createSearchPatternProcessor() {
-//    return new RutaSearchPatternProcessor();
-//  }
+  // public ISearchPatternProcessor createSearchPatternProcessor() {
+  // return new RutaSearchPatternProcessor();
+  // }
 }

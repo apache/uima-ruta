@@ -85,8 +85,9 @@ public class PlainTextAnnotator extends JCasAnnotator_ImplBase {
         if (wsLine && !lastWasEmpty && lastLineEnd != 0) {
           AnnotationFS newParaFS = cas.createAnnotation(paragraphType, paragraphBegin, lastLineEnd);
           cas.addFsToIndexes(newParaFS);
-        } else if(offsetAfterLine + nlLength == documentText.length()) {
-          AnnotationFS newParaFS = cas.createAnnotation(paragraphType, paragraphBegin, offsetAfterLine);
+        } else if (offsetAfterLine + nlLength == documentText.length()) {
+          AnnotationFS newParaFS = cas.createAnnotation(paragraphType, paragraphBegin,
+                  offsetAfterLine);
           cas.addFsToIndexes(newParaFS);
         }
         if (wsLine) {

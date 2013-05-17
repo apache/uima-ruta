@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.debug.ui.interpreters;
 
@@ -26,20 +26,20 @@ import org.eclipse.dltk.internal.debug.ui.interpreters.IInterpreterComboBlockCon
 
 public class RutaInterpreterTab extends InterpreterTab {
 
-   public RutaInterpreterTab(IMainLaunchConfigurationTab mainTab) {
+  public RutaInterpreterTab(IMainLaunchConfigurationTab mainTab) {
     super(mainTab);
   }
 
   @Override
   protected AbstractInterpreterComboBlock createInterpreterBlock(
-      IInterpreterComboBlockContext context) {
+          IInterpreterComboBlockContext context) {
     return new RutaInterpreterComboBlock(context);
   }
 
   @Override
   protected void refreshInterpreters() {
-//    ((RutaInterpreterComboBlock) fInterpreterBlock)
-//        .initialize(getScriptProject());
+    // ((RutaInterpreterComboBlock) fInterpreterBlock)
+    // .initialize(getScriptProject());
     super.refreshInterpreters();
   }
 }

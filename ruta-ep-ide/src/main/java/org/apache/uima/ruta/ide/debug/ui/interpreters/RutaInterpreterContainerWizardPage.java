@@ -15,16 +15,14 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.debug.ui.interpreters;
 
 import org.apache.uima.ruta.ide.core.RutaNature;
 import org.eclipse.dltk.internal.debug.ui.interpreters.AbstractInterpreterContainerWizardPage;
 
-public class RutaInterpreterContainerWizardPage extends
-        AbstractInterpreterContainerWizardPage {
-
+public class RutaInterpreterContainerWizardPage extends AbstractInterpreterContainerWizardPage {
 
   @Override
   public String getScriptNature() {

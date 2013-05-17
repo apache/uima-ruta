@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.core.extensions;
 
@@ -27,7 +27,8 @@ import org.eclipse.dltk.compiler.problem.IProblemReporter;
 public interface IRutaExtension {
 
   String[] getKnownExtensions();
-  
-  boolean checkSyntax(Expression element, RutaCheckerProblemFactory problemFactory, IProblemReporter rep) throws RecognitionException;
+
+  boolean checkSyntax(Expression element, RutaCheckerProblemFactory problemFactory,
+          IProblemReporter rep) throws RecognitionException;
 
 }

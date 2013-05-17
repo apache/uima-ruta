@@ -50,7 +50,7 @@ public class RutaParseUtils {
       } else if (c == '{') {
         blockStart = true;
       } else if (c == '}' && blockStart) {
-       return true;
+        return true;
       } else {
         return false;
       }

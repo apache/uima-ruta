@@ -15,11 +15,13 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.expression.string;
 
-import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
 
 public class ReferenceStringExpression extends LiteralStringExpression {
 
@@ -31,7 +33,7 @@ public class ReferenceStringExpression extends LiteralStringExpression {
   }
 
   @Override
-  public String getStringValue(RutaStatement parent) {
+  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     String variableValue = parent.getEnvironment().getVariableValue(getVar(), String.class);
     return variableValue;
   }

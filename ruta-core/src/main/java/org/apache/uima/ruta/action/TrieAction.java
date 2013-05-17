@@ -25,6 +25,7 @@ import java.util.Map;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.BooleanExpression;
 import org.apache.uima.ruta.expression.number.NumberExpression;
@@ -66,25 +67,25 @@ public class TrieAction extends AbstractRutaAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
 
     Map<String, Type> typeMap = new HashMap<String, Type>();
+    RutaBlock parent = element.getParent();
     for (StringExpression eachKey : map.keySet()) {
-      String stringValue = eachKey.getStringValue(element.getParent());
+      String stringValue = eachKey.getStringValue(parent, match, element, stream);
       TypeExpression typeExpression = map.get(eachKey);
       if (typeExpression != null) {
-        Type typeValue = typeExpression.getType(element.getParent());
+        Type typeValue = typeExpression.getType(parent);
         typeMap.put(stringValue, typeValue);
       }
     }
-    boolean ignoreCaseValue = ignoreCase.getBooleanValue(element.getParent());
-    int ignoreLengthValue = ignoreLength.getIntegerValue(element.getParent());
-    boolean editValue = edit.getBooleanValue(element.getParent());
-    double distanceValue = distance.getDoubleValue(element.getParent());
-    String ignoreCharValue = ignoreChar.getStringValue(element.getParent());
+    boolean ignoreCaseValue = ignoreCase.getBooleanValue(parent, match, element, stream);
+    int ignoreLengthValue = ignoreLength.getIntegerValue(parent, match, element, stream);
+    boolean editValue = edit.getBooleanValue(parent, match, element, stream);
+    double distanceValue = distance.getDoubleValue(parent, match, element, stream);
+    String ignoreCharValue = ignoreChar.getStringValue(parent, match, element, stream);
 
-    RutaWordList wl = list.getList(element.getParent());
+    RutaWordList wl = list.getList(parent);
     Collection<AnnotationFS> found = wl.find(stream, typeMap, ignoreCaseValue, ignoreLengthValue,
             editValue, distanceValue, ignoreCharValue);
 

@@ -51,8 +51,8 @@ public class ContextCountCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          RutaStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
+          InferenceCrowd crowd) {
     Type contextType = type.getType(element.getParent());
     stream.moveToFirst();
     List<AnnotationFS> visibleContexts = new ArrayList<AnnotationFS>();
@@ -94,8 +94,8 @@ public class ContextCountCondition extends TypeSentiveCondition {
       if (var != null) {
         element.getParent().getEnvironment().setVariableValue(var, index);
       }
-      boolean value = index >= min.getIntegerValue(element.getParent())
-              && index <= max.getIntegerValue(element.getParent());
+      boolean value = index >= min.getIntegerValue(element.getParent(), annotation, stream)
+              && index <= max.getIntegerValue(element.getParent(), annotation, stream);
       result |= value;
       if (result) {
         break;

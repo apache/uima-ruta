@@ -25,7 +25,7 @@ import java.util.List;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
@@ -47,10 +47,9 @@ public class TrimAction extends AbstractRutaAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
-    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element, stream);
-    List<Type> typesToTrim = getTypes(element.getParent());
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element);
+    List<Type> typesToTrim = getTypes(element.getParent(), stream);
     for (AnnotationFS annotationFS : matchedAnnotationsOf) {
       trimAnnotation(annotationFS, typesToTrim, match, stream);
     }
@@ -98,14 +97,14 @@ public class TrimAction extends AbstractRutaAction {
     return false;
   }
 
-  private List<Type> getTypes(RutaStatement parent) {
+  private List<Type> getTypes(RutaBlock parent, RutaStream stream) {
     List<Type> result = new ArrayList<Type>();
     if (types != null) {
       for (TypeExpression each : types) {
         result.add(each.getType(parent));
       }
     } else if (typeList != null) {
-      result = typeList.getList(parent);
+      result = typeList.getList(parent, stream);
     }
     return result;
   }

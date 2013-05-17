@@ -49,23 +49,21 @@ public class MergeAction extends AbstractRutaAction {
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
-    boolean union = unionExpr.getBooleanValue(element.getParent());
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+    boolean union = unionExpr.getBooleanValue(element.getParent(), null, stream);
     List<Object> list = new ArrayList<Object>();
     if (union) {
       for (ListExpression<Object> each : lists) {
-        list.addAll(each.getList(element.getParent()));
+        list.addAll(each.getList(element.getParent(), stream));
       }
     } else {
       List<Object> lastList = null;
       for (int i = 1; i < lists.size(); i++) {
-        List l2 = lists
-                .get(i).getList(element.getParent());
+        List l2 = lists.get(i).getList(element.getParent(), stream);
         if (lastList != null) {
           lastList = ListUtils.intersection(lastList, l2);
         } else {
-          List l1 = lists.get(i - 1).getList(element.getParent());
+          List l1 = lists.get(i - 1).getList(element.getParent(), stream);
           lastList = ListUtils.intersection(l1, l2);
         }
       }

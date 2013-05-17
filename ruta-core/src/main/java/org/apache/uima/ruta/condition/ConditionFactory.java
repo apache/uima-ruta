@@ -25,7 +25,6 @@ import org.antlr.runtime.Token;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.bool.BooleanExpression;
-import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.expression.list.StringListExpression;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
@@ -39,13 +38,13 @@ public class ConditionFactory {
   private ConditionFactory() {
   }
 
-  public static AbstractRutaCondition createConditionAnd(
-          List<AbstractRutaCondition> conds, RutaBlock parent) {
+  public static AbstractRutaCondition createConditionAnd(List<AbstractRutaCondition> conds,
+          RutaBlock parent) {
     return new AndCondition(conds);
   }
 
-  public static AbstractRutaCondition createConditionOr(
-          List<AbstractRutaCondition> conds, RutaBlock parent) {
+  public static AbstractRutaCondition createConditionOr(List<AbstractRutaCondition> conds,
+          RutaBlock parent) {
     return new OrCondition(conds);
   }
 
@@ -55,8 +54,7 @@ public class ConditionFactory {
   }
 
   public static AbstractRutaCondition createConditionContains(TypeExpression typeExpr,
-          NumberExpression min, NumberExpression max, BooleanExpression percent,
-          RutaBlock parent) {
+          NumberExpression min, NumberExpression max, BooleanExpression percent, RutaBlock parent) {
     return new ContainsCondition(typeExpr, min, max, percent);
   }
 
@@ -101,9 +99,8 @@ public class ConditionFactory {
     return new InListCondition(listExpr, dist, rel);
   }
 
-  public static AbstractRutaCondition createConditionMOfN(
-          List<AbstractRutaCondition> conds, NumberExpression min, NumberExpression max,
-          RutaBlock parent) {
+  public static AbstractRutaCondition createConditionMOfN(List<AbstractRutaCondition> conds,
+          NumberExpression min, NumberExpression max, RutaBlock parent) {
     return new MOfNCondition(conds, min, max);
   }
 
@@ -132,11 +129,11 @@ public class ConditionFactory {
     return new RegExpCondition(patternExpr, ignoreCase);
   }
 
-  public static AbstractRutaCondition createConditionRegExp(Token var, StringExpression patternExpr,
-          BooleanExpression ignoreCase, RutaBlock parent) {
+  public static AbstractRutaCondition createConditionRegExp(Token var,
+          StringExpression patternExpr, BooleanExpression ignoreCase, RutaBlock parent) {
     return new RegExpCondition(var == null ? null : var.getText(), patternExpr, ignoreCase);
   }
-  
+
   public static AbstractRutaCondition createConditionScore(NumberExpression min,
           NumberExpression max, Token var, RutaBlock parent) {
     String varString = null;
@@ -151,13 +148,11 @@ public class ConditionFactory {
     return new VoteCondition(type1Expr, type2Expr);
   }
 
-  public static AbstractRutaCondition createConditionLast(TypeExpression typeExpr,
-          RutaBlock parent) {
+  public static AbstractRutaCondition createConditionLast(TypeExpression typeExpr, RutaBlock parent) {
     return new LastCondition(typeExpr);
   }
 
-  public static AbstractRutaCondition createConditionIf(BooleanExpression e,
-          RutaBlock parent) {
+  public static AbstractRutaCondition createConditionIf(BooleanExpression e, RutaBlock parent) {
     return new IfCondition(e);
   }
 
@@ -247,14 +242,13 @@ public class ConditionFactory {
   }
 
   public static AbstractRutaCondition createConditionCount(ListExpression<Object> type,
-          RutaExpression a, NumberExpression min, NumberExpression max, Token var,
-          RutaBlock env) {
+          RutaExpression a, NumberExpression min, NumberExpression max, Token var, RutaBlock env) {
     return new CountCondition(type, a, min, max, var == null ? null : var.getText());
   }
 
   public static AbstractRutaCondition createConditionContains(ListExpression list,
-          RutaExpression a, NumberExpression min, NumberExpression max,
-          BooleanExpression percent, RutaBlock env) {
+          RutaExpression a, NumberExpression min, NumberExpression max, BooleanExpression percent,
+          RutaBlock env) {
     return new ContainsCondition(list, a, min, max, percent);
   }
 

@@ -35,7 +35,7 @@ public class RutaScriptCompletionProcessor extends ScriptCompletionProcessor {
     super(editor, assistant, partition);
   }
 
-   @Override
+  @Override
   protected String getNatureId() {
     return RutaNature.NATURE_ID;
   }
@@ -58,7 +58,6 @@ public class RutaScriptCompletionProcessor extends ScriptCompletionProcessor {
     }
   }
 
- 
   private IContextInformationValidator validator;
 
   @Override

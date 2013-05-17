@@ -49,8 +49,8 @@ public class PositionCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          RutaStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
+          InferenceCrowd crowd) {
     Type t = type.getType(element.getParent());
 
     RutaBasic beginAnchor = stream.getBeginAnchor(annotation.getBegin());
@@ -60,7 +60,8 @@ public class PositionCondition extends TypeSentiveCondition {
       return new EvaluatedCondition(this, false);
     }
 
-    boolean relatively = relative == null ? true : relative.getBooleanValue(element.getParent());
+    boolean relatively = relative == null ? true : relative.getBooleanValue(element.getParent(),
+            annotation, stream);
 
     FSIterator<AnnotationFS> iterator = stream.getCas().getAnnotationIndex(t).iterator(beginAnchor);
     if (!iterator.isValid()) {
@@ -91,7 +92,7 @@ public class PositionCondition extends TypeSentiveCondition {
     if (window == null) {
       return new EvaluatedCondition(this, false);
     }
-    int integerValue = position.getIntegerValue(element.getParent());
+    int integerValue = position.getIntegerValue(element.getParent(), annotation, stream);
     if (relatively) {
       int counter = 0;
       List<RutaBasic> inWindow = stream.getBasicsInWindow(window);

@@ -113,22 +113,23 @@ public class TreeWordList implements RutaWordList {
    * Creates a new Tree in the existing treeWordList from a file with path pathname
    * 
    * @param stream
-   *          Open InputStream containing the word for the treeWordList, this method will close the stream.
+   *          Open InputStream containing the word for the treeWordList, this method will close the
+   *          stream.
    */
   public void buildNewTree(InputStream stream) throws IOException {
-      Scanner scan = new Scanner(stream, "UTF-8");
-      // creating a new tree
-      this.root = new TextNode();
-      while (scan.hasNextLine()) {
-        String s = scan.nextLine().trim();
-    
-        if (s.endsWith("=")) {
-          s = s.substring(0, s.length() - 1);
-          s = s.trim();
-        }
-        addWord(s);
+    Scanner scan = new Scanner(stream, "UTF-8");
+    // creating a new tree
+    this.root = new TextNode();
+    while (scan.hasNextLine()) {
+      String s = scan.nextLine().trim();
+
+      if (s.endsWith("=")) {
+        s = s.substring(0, s.length() - 1);
+        s = s.trim();
       }
-      scan.close();
+      addWord(s);
+    }
+    scan.close();
   }
 
   /**
@@ -290,8 +291,7 @@ public class TreeWordList implements RutaWordList {
     return results;
   }
 
-  public List<AnnotationFS> find(RutaStream stream, boolean ignoreCase, int size,
-          boolean ignoreWS) {
+  public List<AnnotationFS> find(RutaStream stream, boolean ignoreCase, int size, boolean ignoreWS) {
     return find(stream, ignoreCase, size, null, 0, ignoreWS);
   }
 
@@ -373,8 +373,8 @@ public class TreeWordList implements RutaWordList {
     return name;
   }
 
-  public List<AnnotationFS> find(RutaStream stream, Map<String, Type> typeMap,
-          boolean ignoreCase, int ignoreLength, boolean edit, double distance, String ignoreToken) {
+  public List<AnnotationFS> find(RutaStream stream, Map<String, Type> typeMap, boolean ignoreCase,
+          int ignoreLength, boolean edit, double distance, String ignoreToken) {
     return null;
   }
 

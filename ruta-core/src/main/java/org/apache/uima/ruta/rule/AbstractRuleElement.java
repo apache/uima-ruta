@@ -97,9 +97,9 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
     return matchInfo;
   }
 
-  public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
-          RutaBlock parent) {
-    return quantifier.evaluateMatches(matches, parent, emptyCrowd);
+  public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches, RutaBlock parent,
+          RutaStream stream) {
+    return quantifier.evaluateMatches(matches, parent, stream, emptyCrowd);
   }
 
   public List<Integer> getSelfIndexList() {

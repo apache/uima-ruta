@@ -51,7 +51,7 @@ public class ImplicitCondition extends AbstractRutaCondition {
           InferenceCrowd crowd) {
     if (expr instanceof BooleanExpression) {
       BooleanExpression be = (BooleanExpression) expr;
-      return new EvaluatedCondition(this, be.getBooleanValue(element.getParent()));
+      return new EvaluatedCondition(this, be.getBooleanValue(element.getParent(), null, stream));
     } else if (expr instanceof FeatureMatchExpression) {
       FeatureMatchExpression fme = (FeatureMatchExpression) expr;
       TypeExpression typeExpr = fme.getTypeExpr();

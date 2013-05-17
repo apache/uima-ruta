@@ -31,8 +31,7 @@ import org.eclipse.dltk.ui.preferences.PreferenceKey;
 import org.eclipse.dltk.ui.util.IStatusChangeListener;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 
-public class RutaTodoTaskPreferencePage extends
-        AbstractConfigurationBlockPropertyAndPreferencePage {
+public class RutaTodoTaskPreferencePage extends AbstractConfigurationBlockPropertyAndPreferencePage {
 
   static final PreferenceKey CASE_SENSITIVE = AbstractTodoTaskOptionsBlock
           .createCaseSensitiveKey(RutaIdePlugin.PLUGIN_ID);
@@ -105,8 +104,7 @@ public class RutaTodoTaskPreferencePage extends
 
   @Override
   protected void setPreferenceStore() {
-    setPreferenceStore(new PreferencesAdapter(RutaIdePlugin.getDefault()
-            .getPluginPreferences()));
+    setPreferenceStore(new PreferencesAdapter(RutaIdePlugin.getDefault().getPluginPreferences()));
   }
 
   @Override

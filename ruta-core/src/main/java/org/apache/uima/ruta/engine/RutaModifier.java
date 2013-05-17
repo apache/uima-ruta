@@ -65,12 +65,12 @@ public class RutaModifier extends JCasAnnotator_ImplBase {
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
     styleMapLocation = (String) aContext.getConfigParameterValue(StyleMapCreator.STYLE_MAP);
-    descriptorPaths = (String[]) aContext
-            .getConfigParameterValue(RutaEngine.DESCRIPTOR_PATHS);
+    descriptorPaths = (String[]) aContext.getConfigParameterValue(RutaEngine.DESCRIPTOR_PATHS);
     outputLocation = (String) aContext.getConfigParameterValue(RutaModifier.OUTPUT_LOCATION);
     styleMapFactory = new StyleMapFactory();
     modifiedViewName = (String) aContext.getConfigParameterValue(RutaModifier.OUTPUT_VIEW);
-    modifiedViewName = StringUtils.isBlank(modifiedViewName) ? DEFAULT_MODIFIED_VIEW : modifiedViewName;
+    modifiedViewName = StringUtils.isBlank(modifiedViewName) ? DEFAULT_MODIFIED_VIEW
+            : modifiedViewName;
   }
 
   @Override

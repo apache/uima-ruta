@@ -19,7 +19,9 @@
 
 package org.apache.uima.ruta.example.extensions;
 
-import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.NumberFunctionExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 
@@ -36,23 +38,23 @@ public class ExampleNumberFunction extends NumberFunctionExpression {
     return expr;
   }
 
-  public String getStringValue(RutaStatement parent) {
+  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     return expr.getType(parent).getShortName();
   }
 
-  public int getIntegerValue(RutaStatement parent) {
+  public int getIntegerValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     return getFeatureAmount(parent);
   }
 
-  public double getDoubleValue(RutaStatement parent) {
+  public double getDoubleValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     return getFeatureAmount(parent);
   }
 
-  public float getFloatValue(RutaStatement parent) {
+  public float getFloatValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     return getFeatureAmount(parent);
   }
 
-  private int getFeatureAmount(RutaStatement parent) {
+  private int getFeatureAmount(RutaBlock parent) {
     return expr.getType(parent).getFeatures().size();
   }
 

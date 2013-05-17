@@ -37,8 +37,7 @@ import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IMarkerResolution;
 
-final class RutaRequirePackageMarkerResolution implements IMarkerResolution,
-        IAnnotationResolution {
+final class RutaRequirePackageMarkerResolution implements IMarkerResolution, IAnnotationResolution {
   private String pkgName;
 
   private IScriptProject project;

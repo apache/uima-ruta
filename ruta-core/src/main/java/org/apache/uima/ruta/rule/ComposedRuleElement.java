@@ -54,14 +54,14 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
           ComposedRuleElementMatch containerMatch, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
     RuleElement anchorElement = getAnchoringRuleElement(stream);
-    ComposedRuleElementMatch composedMatch = createComposedMatch(ruleMatch, containerMatch);
+    ComposedRuleElementMatch composedMatch = createComposedMatch(ruleMatch, containerMatch, stream);
     anchorElement.startMatch(ruleMatch, ruleApply, composedMatch, entryPoint, stream, crowd);
   }
 
   protected ComposedRuleElementMatch createComposedMatch(RuleMatch ruleMatch,
-          ComposedRuleElementMatch containerMatch) {
+          ComposedRuleElementMatch containerMatch, RutaStream stream) {
     ComposedRuleElementMatch composedMatch = new ComposedRuleElementMatch(this, containerMatch);
-    includeMatch(ruleMatch, containerMatch, composedMatch);
+    includeMatch(ruleMatch, containerMatch, composedMatch, stream);
     return composedMatch;
   }
 
@@ -71,7 +71,8 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
           InferenceCrowd crowd) {
     RuleElement nextElement = getNextElement(after, this);
     if (nextElement != null) {
-      ComposedRuleElementMatch composedMatch = createComposedMatch(ruleMatch, containerMatch);
+      ComposedRuleElementMatch composedMatch = createComposedMatch(ruleMatch, containerMatch,
+              stream);
       nextElement.continueMatch(after, annotation, ruleMatch, ruleApply, composedMatch,
               sideStepOrigin, entryPoint, stream, crowd);
     } else {
@@ -95,13 +96,15 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       while (!stopMatching) {
         RuleElement nextElement = getNextElement(after, this);
         if (nextElement != null) {
-          ComposedRuleElementMatch composedMatch = createComposedMatch(ruleMatch, containerMatch);
+          ComposedRuleElementMatch composedMatch = createComposedMatch(ruleMatch, containerMatch,
+                  stream);
           nextElement.continueMatch(after, nextAnnotation, ruleMatch, ruleApply, composedMatch,
                   sideStepOrigin, this, stream, crowd);
           ComposedRuleElementMatch parentContainerMatch = containerMatch.getContainerMatch();
           List<RuleElementMatch> match = getMatch(ruleMatch, parentContainerMatch);
           int lenghtBefore = match.size();
-          List<RuleElementMatch> evaluateMatches = quantifier.evaluateMatches(match, parent, crowd);
+          List<RuleElementMatch> evaluateMatches = quantifier.evaluateMatches(match, parent,
+                  stream, crowd);
           ruleMatch.setMatched(ruleMatch.matched() && evaluateMatches != null);
           if (evaluateMatches.size() != lenghtBefore) {
             failed = true;
@@ -141,7 +144,8 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       List<RuleElementMatch> match = getMatch(ruleMatch, parentContainerMatch);
       boolean continueMatch = quantifier.continueMatch(after, annotation, this, ruleMatch,
               parentContainerMatch, stream, crowd);
-      List<RuleElementMatch> evaluateMatches = quantifier.evaluateMatches(match, parent, crowd);
+      List<RuleElementMatch> evaluateMatches = quantifier.evaluateMatches(match, parent, stream,
+              crowd);
       ruleMatch.setMatched(ruleMatch.matched() && (evaluateMatches != null || continueMatch));
       if (failed) {
         if (nextElement != null) {
@@ -204,11 +208,11 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
   }
 
   private void includeMatch(RuleMatch ruleMatch, ComposedRuleElementMatch containerMatch,
-          ComposedRuleElementMatch composedMatch) {
+          ComposedRuleElementMatch composedMatch, RutaStream stream) {
     if (containerMatch == null) {
       ruleMatch.setRootMatch(composedMatch);
     } else {
-      containerMatch.addInnerMatch(this, composedMatch, false);
+      containerMatch.addInnerMatch(this, composedMatch, false, stream);
     }
   }
 
@@ -231,7 +235,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       evaluatedConditions.add(eval);
     }
     match.setConditionInfo(evaluatedConditions);
-    match.evaluateInnerMatches(true);
+    match.evaluateInnerMatches(true, stream);
   }
 
   public Collection<AnnotationFS> getAnchors(RutaStream stream) {

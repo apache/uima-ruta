@@ -20,7 +20,7 @@
 package org.apache.uima.ruta;
 
 public class UIMAConstants {
-  
+
   public static final String TYPE_INTEGER = "uima.cas.Integer";
 
   public static final String TYPE_FLOAT = "uima.cas.Float";

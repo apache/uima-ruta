@@ -44,7 +44,7 @@ public final class RutaTypeConstants {
    * float
    */
   public static final int RUTA_TYPE_F = RUTA_TYPE_N | 2 << 28;
-  
+
   /**
    * string
    */

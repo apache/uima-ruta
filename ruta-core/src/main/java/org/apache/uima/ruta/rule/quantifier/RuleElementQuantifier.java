@@ -33,12 +33,13 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public interface RuleElementQuantifier {
 
-  List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
-          RutaStatement element, InferenceCrowd crowd);
+  List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches, RutaStatement element,
+          RutaStream stream, InferenceCrowd crowd);
 
   boolean continueMatch(boolean after, AnnotationFS annotation, RuleElement ruleElement,
-          RuleMatch extendedMatch, ComposedRuleElementMatch containerMatch, RutaStream stream, InferenceCrowd crowd);
+          RuleMatch extendedMatch, ComposedRuleElementMatch containerMatch, RutaStream stream,
+          InferenceCrowd crowd);
 
-  boolean isOptional(RutaBlock parent);
+  boolean isOptional(RutaBlock parent, RutaStream stream);
 
 }

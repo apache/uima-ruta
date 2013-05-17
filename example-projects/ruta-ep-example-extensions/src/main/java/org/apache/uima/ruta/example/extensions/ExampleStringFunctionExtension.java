@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.example.extensions;
 
@@ -38,7 +38,7 @@ public class ExampleStringFunctionExtension implements IRutaStringFunctionExtens
   public String verbalize(RutaElement element, RutaVerbalizer verbalizer) {
     if (element instanceof ExampleTypeFunction) {
       return verbalizeName(element) + "("
-              + verbalizer.verbalize(((ExampleBooleanFunction)element).getExpr()) + ")";
+              + verbalizer.verbalize(((ExampleBooleanFunction) element).getExpr()) + ")";
     } else {
       return "UnknownStringFunction";
     }
@@ -46,7 +46,7 @@ public class ExampleStringFunctionExtension implements IRutaStringFunctionExtens
 
   public ExampleStringFunction createStringFunction(String name, List<RutaExpression> args)
           throws ANTLRException {
-    if(args == null || args.size() != 1 || !(args.get(0) instanceof TypeExpression)) {
+    if (args == null || args.size() != 1 || !(args.get(0) instanceof TypeExpression)) {
       throw new ANTLRException("ExampleStringFunction accepts only one TypeExpression as argument!");
     }
     return new ExampleStringFunction((TypeExpression) args.get(0));

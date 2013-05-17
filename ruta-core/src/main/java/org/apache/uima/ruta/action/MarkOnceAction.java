@@ -40,10 +40,9 @@ public class MarkOnceAction extends MarkAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
-    List<Integer> indexList = getIndexList(element, list);
-    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(stream, indexList,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+    List<Integer> indexList = getIndexList(element, list, stream);
+    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(indexList,
             element.getContainer());
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
 

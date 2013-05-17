@@ -42,7 +42,7 @@ public abstract class RutaAbstractDeclaration extends FieldDeclaration {
   public int getKind() {
     return D_VAR_DECL;
   }
-  
+
   @Override
   public void traverse(ASTVisitor visitor) throws Exception {
     if (visitor.visit(this)) {

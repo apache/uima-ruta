@@ -23,7 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.cas.Type;
-import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 
 public class ReferenceTypeListExpression extends TypeListExpression {
@@ -37,7 +38,7 @@ public class ReferenceTypeListExpression extends TypeListExpression {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Type> getList(RutaStatement parent) {
+  public List<Type> getList(RutaBlock parent, RutaStream stream) {
     List<Object> list = parent.getEnvironment().getVariableValue(var, List.class);
     List<Type> result = new ArrayList<Type>();
     for (Object each : list) {

@@ -50,8 +50,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
     return newVariableReference(ref, RutaTypeConstants.RUTA_TYPE_G);
   }
 
-  public static RutaQuantifierLiteralExpression createQuantifierLiteralExpression(Token q,
-          Token q2) {
+  public static RutaQuantifierLiteralExpression createQuantifierLiteralExpression(Token q, Token q2) {
     int bounds[] = getBounds(q);
     if (q2 != null) {
       bounds[1] = Math.max(bounds[1], getBounds(q2)[1]);
@@ -66,8 +65,8 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
     return new RutaExpression(e.sourceStart(), e.sourceEnd(), e, RutaTypeConstants.RUTA_TYPE_B);
   }
 
-  public static RutaBooleanNumberExpression createBooleanNumberExpression(Expression e1,
-          Token op, Expression e2) {
+  public static RutaBooleanNumberExpression createBooleanNumberExpression(Expression e1, Token op,
+          Expression e2) {
     int lexerOpID = op.getType(); // Integer.valueOf(op.getText());
     int operatorID = 0;
     // convert lexer-opId to dltk-opId:
@@ -93,8 +92,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
       default:
         break;
     }
-    return new RutaBooleanNumberExpression(e1.sourceStart(), e2.sourceEnd(), operatorID, e1,
-            e2);
+    return new RutaBooleanNumberExpression(e1.sourceStart(), e2.sourceEnd(), operatorID, e1, e2);
   }
 
   public static VariableReference createBooleanVariableReference(Token variableId) {
@@ -110,7 +108,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
 
   // =====> TYPE-EXPRESSIONS <======
   public static Expression createTypeExpression(Expression e) {
-    if(e != null) {
+    if (e != null) {
       return new RutaExpression(e.sourceStart(), e.sourceEnd(), e, RutaTypeConstants.RUTA_TYPE_AT);
     }
     return null;
@@ -120,18 +118,22 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
     int bounds[] = getBounds(token);
     return new RutaVariableReference(bounds[0], bounds[0], "", RutaTypeConstants.RUTA_TYPE_AT);
   }
+
   public static Expression createEmptyStringExpression(Token token) {
     int bounds[] = getBounds(token);
     return new RutaVariableReference(bounds[0], bounds[0], "", RutaTypeConstants.RUTA_TYPE_S);
   }
+
   public static Expression createEmptyNumberExpression(Token token) {
     int bounds[] = getBounds(token);
     return new RutaVariableReference(bounds[0], bounds[0], "", RutaTypeConstants.RUTA_TYPE_N);
   }
+
   public static Expression createEmptyBooleanExpression(Token token) {
     int bounds[] = getBounds(token);
     return new RutaVariableReference(bounds[0], bounds[0], "", RutaTypeConstants.RUTA_TYPE_B);
   }
+
   // public static Expression createSimpleTypeExpression(Token at, RutaBlock env) {
   // int bounds[] = getBounds(at);
   // return new RutaSimpleTypeExpression(bounds[0], bounds[1], at.getText());
@@ -253,7 +255,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
     int bounds[] = getBounds(op);
     if (expr != null) {
       bounds[1] = expr.sourceEnd();
-    } 
+    }
     int opID = convertOpToInt(op);
     return new RutaUnaryArithmeticExpression(bounds[0], bounds[1], expr, opID);
   }
@@ -264,8 +266,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
 
   // TODO
   public static Expression createBooleanFunction(Token op, Expression e1, Expression e2) {
-    return new RutaExpression(e1.sourceStart(), e2.sourceEnd(), null,
-            RutaTypeConstants.RUTA_TYPE_B);
+    return new RutaExpression(e1.sourceStart(), e2.sourceEnd(), null, RutaTypeConstants.RUTA_TYPE_B);
   }
 
   public static Expression createListVariableReference(Token id) {
@@ -309,8 +310,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
         break;
     }
     if (e1 != null && e2 != null) {
-      return new RutaBooleanTypeExpression(e1.sourceStart(), e2.sourceEnd(), operatorID, e1,
-              e2);
+      return new RutaBooleanTypeExpression(e1.sourceStart(), e2.sourceEnd(), operatorID, e1, e2);
     }
     return null;
   }
@@ -342,28 +342,31 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
     return createStringFunction(name, list);
   }
 
-
   public static Expression createFeatureMatch(Token feature, Token comp, Expression value) {
     int bounds[] = getBounds(feature);
-    return new FeatureMatchExpression(bounds[0], value.sourceEnd(), feature, comp, value);
+    int end = bounds[1];
+    if (value != null) {
+      end = value.sourceEnd();
+    }
+    return new FeatureMatchExpression(bounds[0], end, feature, comp, value);
   }
 
   public static Expression createBooleanFunction(Token id, List<Expression> args) {
     return createFunction(id, args, RutaTypeConstants.RUTA_TYPE_B);
   }
-  
+
   public static Expression createNumberFunction(Token id, List<Expression> args) {
     return createFunction(id, args, RutaTypeConstants.RUTA_TYPE_N);
   }
-  
+
   public static Expression createStringFunction(Token id, List<Expression> args) {
     return createFunction(id, args, RutaTypeConstants.RUTA_TYPE_S);
   }
-  
+
   public static Expression createTypeFunction(Token id, List<Expression> args) {
     return createFunction(id, args, RutaTypeConstants.RUTA_TYPE_AT);
   }
-  
+
   public static RutaFunction createFunction(Token type, List<Expression> exprsRaw, int kind) {
     int bounds[] = getBounds(type);
     int nameStart = bounds[0];
@@ -381,10 +384,17 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
         bounds[1] = Math.max(bounds[1], lastExpr.sourceEnd());
       }
     }
-    return new RutaFunction(bounds[0], bounds[1], exprs,
-            kind, type.getText(), nameStart,
-            nameEnd);
+    return new RutaFunction(bounds[0], bounds[1], exprs, kind, type.getText(), nameStart, nameEnd);
   }
-  
+
+  public static Expression createFeatureExpression(Token f) {
+    return createFeatureMatch(f, null, null);
+  }
+
+  public static Expression createStringExpression(Expression fe) {
+    List<Expression> list = new ArrayList<Expression>(1);
+    list.add(fe);
+    return createStringExpression(list);
+  }
 
 }

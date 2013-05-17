@@ -36,12 +36,15 @@ import org.apache.uima.util.XMLInputSource;
 
 public abstract class DefaultEngineLoader implements IEngineLoader {
 
-  public AnalysisEngine loadEngine(String location, String viewName) throws InvalidXMLException, ResourceInitializationException, ResourceConfigurationException, IOException, URISyntaxException  {
+  public AnalysisEngine loadEngine(String location, String viewName) throws InvalidXMLException,
+          ResourceInitializationException, ResourceConfigurationException, IOException,
+          URISyntaxException {
     return loadEngineMyself(location, viewName);
   }
 
   protected AnalysisEngine loadEngineMyself(String location, String viewName) throws IOException,
-          InvalidXMLException, ResourceInitializationException, ResourceConfigurationException, URISyntaxException {
+          InvalidXMLException, ResourceInitializationException, ResourceConfigurationException,
+          URISyntaxException {
     URL url = new File(location).toURL();
     AnalysisEngine ae = Ruta.wrapAnalysisEngine(url, viewName);
     return ae;

@@ -20,11 +20,11 @@
 package org.apache.uima.ruta.expression.type;
 
 import org.apache.uima.cas.Type;
-import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.expression.string.StringExpression;
 
 public abstract class TypeExpression extends StringExpression {
 
-  public abstract Type getType(RutaStatement parent);
+  public abstract Type getType(RutaBlock parent);
 
 }

@@ -24,7 +24,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.BooleanExpression;
 import org.apache.uima.ruta.expression.number.NumberExpression;
@@ -49,32 +49,31 @@ public class RemoveDuplicateAction extends AbstractRutaAction {
 
   @SuppressWarnings({ "rawtypes" })
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
-    List list = element.getParent().getEnvironment().getVariableValue(var, List.class);   
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+    List list = element.getParent().getEnvironment().getVariableValue(var, List.class);
     Collection<Object> values = new HashSet<Object>();
     List<Object> result = new ArrayList<Object>();
     for (Object each : list) {
-      Object obj = getValue(each,element.getParent());
-      if(!values.contains(obj)){
+      Object obj = getValue(each, element.getParent(), stream);
+      if (!values.contains(obj)) {
         result.add(each);
         values.add(obj);
       }
     }
-    
+
     element.getParent().getEnvironment().setVariableValue(var, result);
 
   }
 
-  private Object getValue(Object obj, RutaStatement parent) {
-    if(obj instanceof NumberExpression) {
-      return ((NumberExpression)obj).getDoubleValue(parent);
-    } else if(obj instanceof BooleanExpression) {
-      return ((BooleanExpression)obj).getBooleanValue(parent);
-    } else if(obj instanceof TypeExpression) {
-      return ((TypeExpression)obj).getType(parent);
-    } else if(obj instanceof StringExpression) {
-      return ((StringExpression)obj).getStringValue(parent);
+  private Object getValue(Object obj, RutaBlock parent, RutaStream stream) {
+    if (obj instanceof NumberExpression) {
+      return ((NumberExpression) obj).getDoubleValue(parent, null, stream);
+    } else if (obj instanceof BooleanExpression) {
+      return ((BooleanExpression) obj).getBooleanValue(parent, null, stream);
+    } else if (obj instanceof TypeExpression) {
+      return ((TypeExpression) obj).getType(parent);
+    } else if (obj instanceof StringExpression) {
+      return ((StringExpression) obj).getStringValue(parent, null, stream);
     }
     return null;
   }

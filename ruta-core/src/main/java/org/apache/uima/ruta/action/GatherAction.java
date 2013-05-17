@@ -38,6 +38,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.list.NumberListExpression;
@@ -59,20 +60,18 @@ public class GatherAction extends AbstractStructureAction {
 
   private List<NumberExpression> indexes;
 
-  public GatherAction(TypeExpression structureType,
-          Map<StringExpression, RutaExpression> features, List<NumberExpression> indexes) {
+  public GatherAction(TypeExpression structureType, Map<StringExpression, RutaExpression> features,
+          List<NumberExpression> indexes) {
     super();
     this.structureType = structureType;
-    this.features = features == null ? new HashMap<StringExpression, RutaExpression>()
-            : features;
+    this.features = features == null ? new HashMap<StringExpression, RutaExpression>() : features;
     this.indexes = (indexes == null || indexes.isEmpty()) ? null : indexes;
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
-    List<Integer> indexList = getIndexList(match, element);
-    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(stream, indexList,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+    List<Integer> indexList = getIndexList(match, element, stream);
+    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(indexList,
             element.getContainer());
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
       if (matchedAnnotation == null) {
@@ -97,20 +96,20 @@ public class GatherAction extends AbstractStructureAction {
   }
 
   private void gatherFeatures(TOP structure, Map<StringExpression, RutaExpression> features,
-          AnnotationFS matchedAnnotation, RuleElement element, RuleMatch match,
-          RutaStream stream) {
+          AnnotationFS matchedAnnotation, RuleElement element, RuleMatch match, RutaStream stream) {
     Map<String, List<Number>> map = new HashMap<String, List<Number>>();
     for (Entry<StringExpression, RutaExpression> each : features.entrySet()) {
-      String value = each.getKey().getStringValue(element.getParent());
+      RutaBlock parent = element.getParent();
+      String value = each.getKey().getStringValue(parent, match, element, stream);
       RutaExpression expr = each.getValue();
       List<Number> ints = new ArrayList<Number>();
       if (expr instanceof NumberExpression) {
         NumberExpression ne = (NumberExpression) expr;
-        ints.add(ne.getIntegerValue(element.getParent()));
+        ints.add(ne.getIntegerValue(parent, match, element, stream));
         map.put(value, ints);
       } else if (expr instanceof NumberListExpression) {
         NumberListExpression ne = (NumberListExpression) expr;
-        map.put(value, ne.getList(element.getParent()));
+        map.put(value, ne.getList(parent, stream));
       }
     }
 
@@ -140,12 +139,14 @@ public class GatherAction extends AbstractStructureAction {
             } else if (typeSystem.subsumes(range, fs.getType())) {
               structure.setFeatureValue(targetFeature, fs);
             } else {
-              // search for 
-              Set<AnnotationFS> beginAnchors = stream.getBeginAnchor(fs.getBegin()).getBeginAnchors(range);
+              // search for
+              Set<AnnotationFS> beginAnchors = stream.getBeginAnchor(fs.getBegin())
+                      .getBeginAnchors(range);
               Set<AnnotationFS> endAnchors = stream.getEndAnchor(fs.getEnd()).getEndAnchors(range);
               @SuppressWarnings("unchecked")
-              Collection<AnnotationFS> intersection = CollectionUtils.intersection(beginAnchors, endAnchors);
-              if(intersection.size() >= 1) {
+              Collection<AnnotationFS> intersection = CollectionUtils.intersection(beginAnchors,
+                      endAnchors);
+              if (intersection.size() >= 1) {
                 structure.setFeatureValue(targetFeature, intersection.iterator().next());
               }
             }
@@ -204,7 +205,7 @@ public class GatherAction extends AbstractStructureAction {
   }
 
   // TODO refactor duplicate methods -> MarkAction
-  protected List<Integer> getIndexList(RuleMatch match, RuleElement element) {
+  protected List<Integer> getIndexList(RuleMatch match, RuleElement element, RutaStream stream) {
     List<Integer> indexList = new ArrayList<Integer>();
     if (indexes == null || indexes.isEmpty()) {
       int self = element.getContainer().getRuleElements().indexOf(element) + 1;
@@ -213,7 +214,7 @@ public class GatherAction extends AbstractStructureAction {
     }
     int last = Integer.MAX_VALUE - 1;
     for (NumberExpression each : indexes) {
-      int value = each.getIntegerValue(element.getParent());
+      int value = each.getIntegerValue(element.getParent(), null, stream);
       for (int i = Math.min(value, last + 1); i < value; i++) {
         indexList.add(i);
       }

@@ -15,11 +15,13 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.expression.number;
 
-import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
 
 public class NegativeNumberExpression extends NumberExpression {
 
@@ -31,29 +33,27 @@ public class NegativeNumberExpression extends NumberExpression {
   }
 
   @Override
-  public double getDoubleValue(RutaStatement parent) {
-    return -ne.getDoubleValue(parent);
+  public double getDoubleValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+    return -ne.getDoubleValue(parent, annotation, stream);
   }
 
   @Override
-  public float getFloatValue(RutaStatement parent) {
-    return -ne.getFloatValue(parent);
-  }
-  
-  @Override
-  public int getIntegerValue(RutaStatement parent) {
-    return -ne.getIntegerValue(parent);
+  public float getFloatValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+    return -ne.getFloatValue(parent, annotation, stream);
   }
 
   @Override
-  public String getStringValue(RutaStatement parent) {
-    return "-" + ne.getStringValue(parent);
+  public int getIntegerValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+    return -ne.getIntegerValue(parent, annotation, stream);
+  }
+
+  @Override
+  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+    return "-" + ne.getStringValue(parent, annotation, stream);
   }
 
   public NumberExpression getExpression() {
     return ne;
   }
-
-  
 
 }

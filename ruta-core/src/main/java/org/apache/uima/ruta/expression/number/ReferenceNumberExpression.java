@@ -15,11 +15,13 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.expression.number;
 
-import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
 
 public class ReferenceNumberExpression extends NumberExpression {
 
@@ -31,7 +33,7 @@ public class ReferenceNumberExpression extends NumberExpression {
   }
 
   @Override
-  public double getDoubleValue(RutaStatement parent) {
+  public double getDoubleValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     Object value = parent.getEnvironment().getVariableValue(getVar());
     double variableValue = 0;
     if (value instanceof Number) {
@@ -41,7 +43,7 @@ public class ReferenceNumberExpression extends NumberExpression {
   }
 
   @Override
-  public float getFloatValue(RutaStatement parent) {
+  public float getFloatValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     Object value = parent.getEnvironment().getVariableValue(getVar());
     float variableValue = 0;
     if (value instanceof Number) {
@@ -49,9 +51,9 @@ public class ReferenceNumberExpression extends NumberExpression {
     }
     return variableValue;
   }
-  
+
   @Override
-  public int getIntegerValue(RutaStatement parent) {
+  public int getIntegerValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     Object value = parent.getEnvironment().getVariableValue(getVar());
     int variableValue = 0;
     if (value instanceof Number) {
@@ -61,12 +63,12 @@ public class ReferenceNumberExpression extends NumberExpression {
   }
 
   @Override
-  public String getStringValue(RutaStatement parent) {
+  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     Class<?> variableType = parent.getEnvironment().getVariableType(getVar());
     if (variableType.equals(Integer.class)) {
-      return "" + getIntegerValue(parent);
+      return "" + getIntegerValue(parent, null, stream);
     } else {
-      return "" + getDoubleValue(parent);
+      return "" + getDoubleValue(parent, null, stream);
     }
   }
 

@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.parser.ast;
 
@@ -30,7 +30,6 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Statement;
 
-
 public class StatementFactory extends AbstractFactory {
   /**
    * @param impString
@@ -38,8 +37,8 @@ public class StatementFactory extends AbstractFactory {
    *          Antlr-Token (dotted-identifier/id)
    * @return new Import-Statement
    */
-  public static RutaImportStatement createImport(ComponentDeclaration dottedId,
-          Token impString, int type) {
+  public static RutaImportStatement createImport(ComponentDeclaration dottedId, Token impString,
+          int type) {
     int bounds[] = getBounds(impString, dottedId);
     return new RutaImportStatement(bounds[0], bounds[1], dottedId, type);
   }
@@ -69,9 +68,9 @@ public class StatementFactory extends AbstractFactory {
           Token impString) {
     dottedId.setType(ComponentDeclaration.ENGINE);
     int kind = RutaStatementConstants.S_IMPORT_ENGINE;
-    if(impString != null) {
+    if (impString != null) {
       String text = impString.getText();
-      if("UIMAFIT".equals(text)) {
+      if ("UIMAFIT".equals(text)) {
         kind = RutaStatementConstants.S_IMPORT_UIMAFIT_ENGINE;
         dottedId.setType(ComponentDeclaration.UIMAFIT_ENGINE);
       }
@@ -111,10 +110,10 @@ public class StatementFactory extends AbstractFactory {
     int declBounds[] = getBounds(typeToken, id);
     int nameBounds[] = getBounds(id);
     // FieldDeclaration
-    SimpleReference ref = new RutaVariableReference(nameBounds[0], nameBounds[1], id
-            .getText(), type);
-    return new RutaVariableDeclaration(id.getText(), nameBounds[0], nameBounds[1],
-            declBounds[0], declBounds[1], ref, type, expr);
+    SimpleReference ref = new RutaVariableReference(nameBounds[0], nameBounds[1], id.getText(),
+            type);
+    return new RutaVariableDeclaration(id.getText(), nameBounds[0], nameBounds[1], declBounds[0],
+            declBounds[1], ref, type, expr);
   }
 
   /**
@@ -134,7 +133,7 @@ public class StatementFactory extends AbstractFactory {
   public static Object createFloatVariable(Token id, Token type) {
     return createVariable(id, type, RutaTypeConstants.RUTA_TYPE_F);
   }
-  
+
   /**
    * @param id
    * @param type
@@ -176,8 +175,7 @@ public class StatementFactory extends AbstractFactory {
    * @param type
    * @return
    */
-  public static RutaVariableDeclaration createListVariable(Token id, Token type,
-          Expression expr) {
+  public static RutaVariableDeclaration createListVariable(Token id, Token type, Expression expr) {
     return createVariable(id, type, RutaTypeConstants.RUTA_TYPE_WL, expr);
   }
 
@@ -186,8 +184,7 @@ public class StatementFactory extends AbstractFactory {
    * @param type
    * @return
    */
-  public static RutaVariableDeclaration createTableVariable(Token id, Token type,
-          Expression expr) {
+  public static RutaVariableDeclaration createTableVariable(Token id, Token type, Expression expr) {
     return createVariable(id, type, RutaTypeConstants.RUTA_TYPE_WT, expr);
   }
 
@@ -210,8 +207,8 @@ public class StatementFactory extends AbstractFactory {
     int nameBounds[] = getBounds(id);
     // FieldDeclarartion
 
-    SimpleReference ref = new RutaVariableReference(nameBounds[0], nameBounds[1], id
-            .getText(), RutaTypeConstants.RUTA_TYPE_AT);
+    SimpleReference ref = new RutaVariableReference(nameBounds[0], nameBounds[1], id.getText(),
+            RutaTypeConstants.RUTA_TYPE_AT);
     return new RutaTypeDeclaration(id.getText(), nameBounds[0], nameBounds[1], declBounds[0],
             declBounds[1], ref, features);
   }
@@ -220,8 +217,8 @@ public class StatementFactory extends AbstractFactory {
     int declBounds[] = getBounds(declareToken, id);
     int nameBounds[] = getBounds(id);
 
-    SimpleReference ref = new RutaVariableReference(nameBounds[0], nameBounds[1], id
-            .getText(), RutaTypeConstants.RUTA_TYPE_AT);
+    SimpleReference ref = new RutaVariableReference(nameBounds[0], nameBounds[1], id.getText(),
+            RutaTypeConstants.RUTA_TYPE_AT);
     return new RutaTypeDeclaration(id.getText(), nameBounds[0], nameBounds[1], declBounds[0],
             declBounds[1], ref);
   }
@@ -282,8 +279,8 @@ public class StatementFactory extends AbstractFactory {
       int end = decls.get(decls.size() - 1).sourceEnd();
       statementBounds[1] = Math.max(statementBounds[1], end);
     }
-    return new RutaDeclarationsStatement(statementBounds[0], statementBounds[1],
-            declarations, init, declBounds[0], declBounds[1]);
+    return new RutaDeclarationsStatement(statementBounds[0], statementBounds[1], declarations,
+            init, declBounds[0], declBounds[1]);
   }
 
   @SuppressWarnings("unchecked")
@@ -303,8 +300,7 @@ public class StatementFactory extends AbstractFactory {
     return null;
   }
 
-  public static Statement createComposedVariableActionDeclaration(Token id,
-          List<RutaAction> actions) {
+  public static Statement createComposedVariableActionDeclaration(Token id, List<RutaAction> actions) {
     return null;
   }
 
@@ -328,7 +324,5 @@ public class StatementFactory extends AbstractFactory {
     int nameBounds[] = getBounds(ct);
     return new ComponentDeclaration(nameBounds[0], nameBounds[1], ct.getText());
   }
-
-
 
 }

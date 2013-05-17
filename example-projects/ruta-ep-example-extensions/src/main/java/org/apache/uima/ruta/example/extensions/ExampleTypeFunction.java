@@ -15,12 +15,14 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.example.extensions;
 
 import org.apache.uima.cas.Type;
-import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.string.StringExpression;
 import org.apache.uima.ruta.expression.type.TypeFunctionExpression;
 
@@ -37,14 +39,13 @@ public class ExampleTypeFunction extends TypeFunctionExpression {
     return expr;
   }
 
-  public Type getType(RutaStatement parent) {
-    String stringValue = expr.getStringValue(parent);
+  public Type getType(RutaBlock parent) {
+    String stringValue = expr.getStringValue(parent, null, null);
     return parent.getEnvironment().getType(stringValue);
   }
 
-  public String getStringValue(RutaStatement parent) {
-    return expr.getStringValue(parent);
+  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+    return expr.getStringValue(parent, annotation, stream);
   }
-
 
 }

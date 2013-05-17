@@ -15,15 +15,32 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.expression.string;
 
-import org.apache.uima.ruta.RutaStatement;
+import java.util.List;
+
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
 
 public abstract class StringExpression extends RutaExpression {
 
-  public abstract String getStringValue(RutaStatement parent);
+  public String getStringValue(RutaBlock parent, RuleMatch match, RuleElement element,
+          RutaStream stream) {
+    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element);
+    // TODO: do we need to select the correct annotation?
+    AnnotationFS annotation = null;
+    if (!matchedAnnotationsOf.isEmpty()) {
+      annotation = matchedAnnotationsOf.get(0);
+    }
+    return getStringValue(parent, annotation, stream);
+  }
+
+  public abstract String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream);
 
 }

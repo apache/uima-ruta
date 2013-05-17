@@ -26,10 +26,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeSet;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Stack;
+import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UIMAFramework;
@@ -49,17 +49,17 @@ import org.apache.uima.ruta.ide.core.extensions.IIDEStringFunctionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IIDETypeFunctionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IRutaExtension;
 import org.apache.uima.ruta.ide.parser.ast.FeatureMatchExpression;
-import org.apache.uima.ruta.ide.parser.ast.RutaActionConstants;
-import org.apache.uima.ruta.ide.parser.ast.RutaRegExpRule;
-import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaAction;
+import org.apache.uima.ruta.ide.parser.ast.RutaActionConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaBlock;
 import org.apache.uima.ruta.ide.parser.ast.RutaCondition;
 import org.apache.uima.ruta.ide.parser.ast.RutaExpression;
 import org.apache.uima.ruta.ide.parser.ast.RutaFunction;
+import org.apache.uima.ruta.ide.parser.ast.RutaRegExpRule;
 import org.apache.uima.ruta.ide.parser.ast.RutaRuleElement;
 import org.apache.uima.ruta.ide.parser.ast.RutaStringExpression;
 import org.apache.uima.ruta.ide.parser.ast.RutaStructureAction;
+import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaTypeDeclaration;
 import org.apache.uima.ruta.ide.parser.ast.RutaVariableDeclaration;
 import org.apache.uima.ruta.ide.parser.ast.RutaVariableReference;
@@ -111,7 +111,7 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
     private Set<String> completeTypes;
 
     private Set<String> shortTypes;
-    
+
     private Map<String, IIDEActionExtension> actionExtensions;
 
     private Map<String, IIDEConditionExtension> conditionExtensions;
@@ -201,9 +201,7 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
         shortTypes.add(getShortName(typeDescription.getName()));
       }
     }
-    
-  
-    
+
     private String isFeatureMatch(String text) {
       for (String each : shortTypes) {
         String t = checkFeatureMatch(text, each);
@@ -219,8 +217,7 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
       }
       return null;
     }
-    
-    
+
     private String checkFeatureMatch(String name, String type) {
       if (name.startsWith(type)) {
         boolean foundAll = true;
@@ -243,6 +240,7 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
         return null;
       }
     }
+
     private String checkFSFeatureOfType(String feat, String type) {
       if (type.indexOf(".") == -1) {
         for (String each : completeTypes) {
@@ -267,7 +265,7 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
       }
       return null;
     }
-    
+
     private boolean isFeatureStructure(String rangeTypeName) {
       if (rangeTypeName.equals("uima.tcas.Annotation") || rangeTypeName.equals("uima.cas.TOP")) {
         return true;
@@ -283,8 +281,6 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
       return false;
     }
 
-
-    
     @Override
     public boolean endvisit(Expression s) throws Exception {
       if (s instanceof RutaRuleElement) {
@@ -329,8 +325,8 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
         knownLocalVariables.peek().put(newVar.getName(), newVar.getKind());
         return false;
       }
-      if(s instanceof RutaRegExpRule) {
-        RutaRegExpRule rule  = (RutaRegExpRule) s;
+      if (s instanceof RutaRegExpRule) {
+        RutaRegExpRule rule = (RutaRegExpRule) s;
         Map<Expression, Map<Expression, Expression>> faMap = rule.getFeats();
         Set<Entry<Expression, Map<Expression, Expression>>> typeEntrySet = faMap.entrySet();
         for (Entry<Expression, Map<Expression, Expression>> entry : typeEntrySet) {
@@ -342,7 +338,7 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
           Map<Expression, Expression> fmap = entry.getValue();
           Set<Expression> keySet = fmap.keySet();
           for (Expression fkey : keySet) {
-            if(fkey instanceof RutaExpression && fkey.getKind() == RutaTypeConstants.RUTA_TYPE_S) {
+            if (fkey instanceof RutaExpression && fkey.getKind() == RutaTypeConstants.RUTA_TYPE_S) {
               String feat = fkey.toString();
               feat = getFeatureName(fkey, feat);
               boolean findFeature = findFeature(structure, feat);
@@ -728,7 +724,5 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
       e.printStackTrace();
     }
   }
-  
 
-  
 }

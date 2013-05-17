@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.core.codeassist;
 
@@ -29,7 +29,6 @@ import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.parser.ISourceParser;
 import org.eclipse.dltk.codeassist.IAssistParser;
 import org.eclipse.dltk.core.DLTKLanguageManager;
-
 
 public abstract class RutaAssistParser implements IAssistParser {
   public static final int MODULE = 0;// IRutaKeywords.MODULE;
@@ -96,16 +95,16 @@ public abstract class RutaAssistParser implements IAssistParser {
     this.module = unit;
   }
 
-//  public ModuleDeclaration parse(ISourceModule sourceUnit) {
-//    
-//    module = this.parser.parse(sourceUnit., null);
-//    module.rebuild();
-//
-//    // RutaASTUtil.extendStatements(module, sourceUnit
-//    // .getSourceContents());
-//
-//    return module;
-//  }
+  // public ModuleDeclaration parse(ISourceModule sourceUnit) {
+  //
+  // module = this.parser.parse(sourceUnit., null);
+  // module.rebuild();
+  //
+  // // RutaASTUtil.extendStatements(module, sourceUnit
+  // // .getSourceContents());
+  //
+  // return module;
+  // }
 
   public ModuleDeclaration getModule() {
     return this.module;

@@ -15,23 +15,24 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.expression.list;
 
 import java.util.List;
 
-import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.string.StringExpression;
-
 
 public abstract class ListExpression<T> extends StringExpression {
 
-  public abstract List<T> getList(RutaStatement parent);
+  public abstract List<T> getList(RutaBlock parent, RutaStream stream);
 
   @Override
-  public String getStringValue(RutaStatement parent) {
-    return getList(parent).toString();
+  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+    return getList(parent, stream).toString();
   }
 
 }

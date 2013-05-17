@@ -36,9 +36,7 @@ final class RutaProjectWizardSecondPage extends ProjectWizardSecondPage {
     return new RutaBuildPathsBlock(new BusyIndicatorRunnableContext(), listener, 0,
             useNewSourcePage(), null);
   }
- 
 
- 
   // protected BuildpathDetector createBuildpathDetector(
   // IProgressMonitor monitor, IDLTKLanguageToolkit toolkit)
   // throws CoreException {

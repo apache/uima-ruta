@@ -49,13 +49,13 @@ public class ExampleTypeFunctionIDEExtension implements IIDETypeFunctionExtensio
       }
       boolean ok = true;
       List<Expression> childs = f.getChilds();
-      if(childs.size() != 1) {
+      if (childs.size() != 1) {
         IProblem problem = problemFactory.createWrongNumberOfArgumentsProblem(name, element, 1);
         rep.reportProblem(problem);
         ok = false;
       }
       Expression expr = childs.get(0);
-      if(expr.getKind() != RutaTypeConstants.RUTA_TYPE_S) {
+      if (expr.getKind() != RutaTypeConstants.RUTA_TYPE_S) {
         IProblem problem = problemFactory.createWrongArgumentTypeProblem(expr, "NumberExpression");
         rep.reportProblem(problem);
         ok = false;

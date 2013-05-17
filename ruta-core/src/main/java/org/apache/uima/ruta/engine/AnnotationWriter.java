@@ -75,7 +75,6 @@ public class AnnotationWriter extends JCasAnnotator_ImplBase {
       iterator.moveToNext();
     }
 
-
     Type sdiType = cas.getTypeSystem().getType(RutaEngine.SOURCE_DOCUMENT_INFORMATION);
 
     String filename = "output.txt";

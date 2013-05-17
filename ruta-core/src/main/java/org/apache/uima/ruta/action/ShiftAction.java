@@ -41,20 +41,24 @@ public class ShiftAction extends MarkAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
     Type targetType = type.getType(element.getParent());
-    List<Integer> indexList = getIndexList(element, list);
-    List<AnnotationFS> destinationAnnotationSpans = match.getMatchedAnnotations(stream, indexList,
+    List<Integer> indexList = getIndexList(element, list, stream);
+    List<AnnotationFS> destinationAnnotationSpans = match.getMatchedAnnotations(indexList,
             element.getContainer());
-    List<AnnotationFS> annotationsMatchedByRuleElementofAction = match.getMatchedAnnotationsOf(element, stream);
-    int size = Math.min(annotationsMatchedByRuleElementofAction.size(), destinationAnnotationSpans.size());
+    List<AnnotationFS> annotationsMatchedByRuleElementofAction = match
+            .getMatchedAnnotationsOf(element);
+    int size = Math.min(annotationsMatchedByRuleElementofAction.size(),
+            destinationAnnotationSpans.size());
     for (int i = 0; i < size; i++) {
       AnnotationFS eachMatched = annotationsMatchedByRuleElementofAction.get(i);
       AnnotationFS eachDestination = destinationAnnotationSpans.get(i);
-      Set<AnnotationFS> allAnchoredAnnotations = new TreeSet<AnnotationFS>(new AnnotationComparator());
-      Set<AnnotationFS> beginAnchors = stream.getBeginAnchor(eachMatched.getBegin()).getBeginAnchors(targetType);
-      Set<AnnotationFS> endAnchors = stream.getEndAnchor(eachMatched.getEnd()).getEndAnchors(targetType);
+      Set<AnnotationFS> allAnchoredAnnotations = new TreeSet<AnnotationFS>(
+              new AnnotationComparator());
+      Set<AnnotationFS> beginAnchors = stream.getBeginAnchor(eachMatched.getBegin())
+              .getBeginAnchors(targetType);
+      Set<AnnotationFS> endAnchors = stream.getEndAnchor(eachMatched.getEnd()).getEndAnchors(
+              targetType);
       allAnchoredAnnotations.addAll(beginAnchors);
       allAnchoredAnnotations.addAll(endAnchors);
       for (AnnotationFS eachAnchored : allAnchoredAnnotations) {

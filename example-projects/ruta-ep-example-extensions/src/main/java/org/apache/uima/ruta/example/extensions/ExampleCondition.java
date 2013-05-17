@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.example.extensions;
 
@@ -31,28 +31,28 @@ import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class ExampleCondition extends AbstractRutaCondition {
-  
+
   private final StringExpression dateExpr;
 
   private final StringExpression formatExpr;
-  
+
   public ExampleCondition(StringExpression expr, StringExpression format) {
     super();
     this.dateExpr = expr;
     this.formatExpr = format;
   }
-  
+
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          RutaStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
+          InferenceCrowd crowd) {
     String coveredText = annotation.getCoveredText();
-    String dateValue = dateExpr.getStringValue(element.getParent());
-    String formatValue = formatExpr.getStringValue(element.getParent());
-    SimpleDateFormat dateFormat = new SimpleDateFormat(formatValue); 
+    String dateValue = dateExpr.getStringValue(element.getParent(), annotation, stream);
+    String formatValue = formatExpr.getStringValue(element.getParent(), annotation, stream);
+    SimpleDateFormat dateFormat = new SimpleDateFormat(formatValue);
     boolean result = false;
     try {
-      Date matchedDate = dateFormat.parse(coveredText); 
-      Date givenDate = dateFormat.parse(dateValue); 
+      Date matchedDate = dateFormat.parse(coveredText);
+      Date givenDate = dateFormat.parse(dateValue);
       int compareTo = matchedDate.compareTo(givenDate);
       result = compareTo < 0;
     } catch (Exception e) {
@@ -67,7 +67,5 @@ public class ExampleCondition extends AbstractRutaCondition {
   public StringExpression getFormatExpr() {
     return formatExpr;
   }
-
- 
 
 }

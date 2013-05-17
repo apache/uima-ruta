@@ -1,4 +1,3 @@
-
 /* First created by JCasGen Tue Aug 09 16:26:13 CEST 2011 */
 package org.apache.uima.ruta.type;
 
@@ -11,45 +10,52 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.tcas.DocumentAnnotation_Type;
 
-/** 
+/**
  * Updated by JCasGen Wed Jan 11 14:42:26 CET 2012
- * @generated */
+ * 
+ * @generated
+ */
 public class Document_Type extends DocumentAnnotation_Type {
   /** @generated */
-  protected FSGenerator getFSGenerator() {return fsGenerator;}
+  protected FSGenerator getFSGenerator() {
+    return fsGenerator;
+  }
+
   /** @generated */
-  private final FSGenerator fsGenerator = 
-    new FSGenerator() {
-      public FeatureStructure createFS(int addr, CASImpl cas) {
-  			 if (Document_Type.this.useExistingInstance) {
-  			   // Return eq fs instance if already created
-  		     FeatureStructure fs = Document_Type.this.jcas.getJfsFromCaddr(addr);
-  		     if (null == fs) {
-  		       fs = new Document(addr, Document_Type.this);
-  			   Document_Type.this.jcas.putJfsFromCaddr(addr, fs);
-  			   return fs;
-  		     }
-  		     return fs;
-        } else return new Document(addr, Document_Type.this);
-  	  }
-    };
+  private final FSGenerator fsGenerator = new FSGenerator() {
+    public FeatureStructure createFS(int addr, CASImpl cas) {
+      if (Document_Type.this.useExistingInstance) {
+        // Return eq fs instance if already created
+        FeatureStructure fs = Document_Type.this.jcas.getJfsFromCaddr(addr);
+        if (null == fs) {
+          fs = new Document(addr, Document_Type.this);
+          Document_Type.this.jcas.putJfsFromCaddr(addr, fs);
+          return fs;
+        }
+        return fs;
+      } else
+        return new Document(addr, Document_Type.this);
+    }
+  };
+
   /** @generated */
   public final static int typeIndexID = Document.typeIndexID;
-  /** @generated 
-     @modifiable */
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.ruta.type.Document");
 
+  /**
+   * @generated
+   * @modifiable
+   */
+  public final static boolean featOkTst = JCasRegistry
+          .getFeatOkTst("org.apache.uima.ruta.type.Document");
 
-
-  /** initialize variables to correspond with Cas Type and Features
-	* @generated */
+  /**
+   * initialize variables to correspond with Cas Type and Features
+   * 
+   * @generated
+   */
   public Document_Type(JCas jcas, Type casType) {
     super(jcas, casType);
-    casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
+    casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl) this.casType, getFSGenerator());
 
   }
 }
-
-
-
-    

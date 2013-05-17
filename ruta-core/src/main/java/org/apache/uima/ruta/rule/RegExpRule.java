@@ -71,13 +71,13 @@ public class RegExpRule extends AbstractRule {
     RuleApply ruleApply = new RuleApply(this, false);
     crowd.beginVisit(this, ruleApply);
 
-    String regexpString = regexpExpr.getStringValue(getParent());
+    String regexpString = regexpExpr.getStringValue(getParent(), null, stream);
     AnnotationFS documentAnnotation = stream.getDocumentAnnotation();
     String document = documentAnnotation.getCoveredText();
     int delta = documentAnnotation.getBegin();
 
-    Map<Integer, List<Type>> groupTypes = getGroup2Types();
-    Map<Integer, Map<Type, Map<String, Object>>> fa = getFeatureAssignmentMap();
+    Map<Integer, List<Type>> groupTypes = getGroup2Types(stream);
+    Map<Integer, Map<Type, Map<String, Object>>> fa = getFeatureAssignmentMap(stream);
 
     Pattern pattern = Pattern.compile(regexpString, Pattern.MULTILINE | Pattern.DOTALL);
     Matcher matcher = pattern.matcher(document);
@@ -98,7 +98,7 @@ public class RegExpRule extends AbstractRule {
           ruleMatch.addMatched(0, afs);
         }
       }
-      if (!ruleMatch.getMatchedAnnotationsOfRoot(stream).isEmpty()) {
+      if (!ruleMatch.getMatchedAnnotationsOfRoot().isEmpty()) {
         ruleApply.add(ruleMatch);
       }
     }
@@ -107,7 +107,7 @@ public class RegExpRule extends AbstractRule {
     return ruleApply;
   }
 
-  private Map<Integer, Map<Type, Map<String, Object>>> getFeatureAssignmentMap() {
+  private Map<Integer, Map<Type, Map<String, Object>>> getFeatureAssignmentMap(RutaStream stream) {
     Map<Integer, Map<Type, Map<String, Object>>> result = new HashMap<Integer, Map<Type, Map<String, Object>>>();
     Set<Entry<TypeExpression, Map<StringExpression, RutaExpression>>> entrySet = featureAssignments
             .entrySet();
@@ -116,7 +116,7 @@ public class RegExpRule extends AbstractRule {
       Type type = key.getType(getParent());
       Map<StringExpression, RutaExpression> value = entry.getValue();
       NumberExpression cgExpr = typeMap.get(key);
-      int cg = cgExpr.getIntegerValue(getParent());
+      int cg = cgExpr.getIntegerValue(getParent(), null, stream);
       Map<Type, Map<String, Object>> map = result.get(cg);
       if (map == null) {
         map = new HashMap<Type, Map<String, Object>>();
@@ -131,20 +131,20 @@ public class RegExpRule extends AbstractRule {
       for (Entry<StringExpression, RutaExpression> entry2 : entrySet2) {
         StringExpression key2 = entry2.getKey();
         RutaExpression value2 = entry2.getValue();
-        String stringValue = key2.getStringValue(getParent());
+        String stringValue = key2.getStringValue(getParent(), null, stream);
         typeMap.put(stringValue, value2);
       }
     }
     return result;
   }
 
-  private Map<Integer, List<Type>> getGroup2Types() {
+  private Map<Integer, List<Type>> getGroup2Types(RutaStream stream) {
     Map<Integer, List<Type>> groupTypes = new TreeMap<Integer, List<Type>>();
     Set<Entry<TypeExpression, NumberExpression>> entrySet = typeMap.entrySet();
     for (Entry<TypeExpression, NumberExpression> entry : entrySet) {
       Type type = entry.getKey().getType(getParent());
       NumberExpression value = entry.getValue();
-      int group = value == null ? 0 : value.getIntegerValue(getParent());
+      int group = value == null ? 0 : value.getIntegerValue(getParent(), null, stream);
       List<Type> list = groupTypes.get(group);
       if (list == null) {
         list = new ArrayList<Type>();
@@ -192,7 +192,7 @@ public class RegExpRule extends AbstractRule {
             Type range = feature.getRange();
             if (argExpr instanceof NumberExpression) {
               NumberExpression ne = (NumberExpression) argExpr;
-              int cg = ne.getIntegerValue(getParent());
+              int cg = ne.getIntegerValue(getParent(), afs, stream);
               if (range.getName().equals(UIMAConstants.TYPE_STRING)) {
                 String s = matchResult.group(cg);
                 afs.setStringValue(feature, s);
@@ -232,7 +232,7 @@ public class RegExpRule extends AbstractRule {
               } else if (argExpr instanceof StringExpression
                       && range.getName().equals(UIMAConstants.TYPE_STRING)) {
                 afs.setStringValue(feature,
-                        ((StringExpression) argExpr).getStringValue(getParent()));
+                        ((StringExpression) argExpr).getStringValue(getParent(), afs, stream));
                 // numbers are reserved for capturing groups
                 //
                 // } else if (argExpr instanceof NumberExpression) {
@@ -258,7 +258,7 @@ public class RegExpRule extends AbstractRule {
               } else if (argExpr instanceof BooleanExpression
                       && range.getName().equals(UIMAConstants.TYPE_BOOLEAN)) {
                 afs.setBooleanValue(feature,
-                        ((BooleanExpression) argExpr).getBooleanValue(getParent()));
+                        ((BooleanExpression) argExpr).getBooleanValue(getParent(), null, stream));
               } else if (argExpr instanceof TypeExpression) {
                 TypeExpression typeExpr = (TypeExpression) argExpr;
                 List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(afs,
@@ -306,5 +306,5 @@ public class RegExpRule extends AbstractRule {
   public Map<TypeExpression, Map<StringExpression, RutaExpression>> getFeatureAssignments() {
     return featureAssignments;
   }
-  
+
 }

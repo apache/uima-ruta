@@ -46,20 +46,18 @@ public class CreateAction extends AbstractStructureAction {
 
   private List<NumberExpression> indexes;
 
-  public CreateAction(TypeExpression structureType,
-          Map<StringExpression, RutaExpression> features, List<NumberExpression> indexes) {
+  public CreateAction(TypeExpression structureType, Map<StringExpression, RutaExpression> features,
+          List<NumberExpression> indexes) {
     super();
     this.structureType = structureType;
-    this.features = features == null ? new HashMap<StringExpression, RutaExpression>()
-            : features;
+    this.features = features == null ? new HashMap<StringExpression, RutaExpression>() : features;
     this.indexes = (indexes == null || indexes.isEmpty()) ? null : indexes;
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
-    List<Integer> indexList = getIndexList(match, element);
-    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(stream, indexList,
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+    List<Integer> indexList = getIndexList(match, element, stream);
+    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(indexList,
             element.getContainer());
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
 
@@ -84,7 +82,7 @@ public class CreateAction extends AbstractStructureAction {
   }
 
   // TODO refactor duplicate methods -> MarkAction
-  protected List<Integer> getIndexList(RuleMatch match, RuleElement element) {
+  protected List<Integer> getIndexList(RuleMatch match, RuleElement element, RutaStream stream) {
     List<Integer> indexList = new ArrayList<Integer>();
     if (indexes == null || indexes.isEmpty()) {
       int self = element.getContainer().getRuleElements().indexOf(element) + 1;
@@ -93,7 +91,7 @@ public class CreateAction extends AbstractStructureAction {
     }
     int last = Integer.MAX_VALUE - 1;
     for (NumberExpression each : indexes) {
-      int value = each.getIntegerValue(element.getParent());
+      int value = each.getIntegerValue(element.getParent(), null, stream);
       for (int i = Math.min(value, last + 1); i < value; i++) {
         indexList.add(i);
       }

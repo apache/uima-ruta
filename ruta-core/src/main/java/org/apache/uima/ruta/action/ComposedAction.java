@@ -36,8 +36,7 @@ public class ComposedAction extends AbstractRutaAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
     for (AbstractRutaAction each : actions) {
       crowd.beginVisit(each, null);
       each.execute(match, element, stream, crowd);

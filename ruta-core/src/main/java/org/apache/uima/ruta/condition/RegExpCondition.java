@@ -51,11 +51,12 @@ public class RegExpCondition extends TerminalRutaCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          RutaStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
+          InferenceCrowd crowd) {
     Matcher matcher = null;
-    boolean ignore = ignoreCase == null ? false : ignoreCase.getBooleanValue(element.getParent());
-    String stringValue = pattern.getStringValue(element.getParent());
+    boolean ignore = ignoreCase == null ? false : ignoreCase.getBooleanValue(element.getParent(),
+            annotation, stream);
+    String stringValue = pattern.getStringValue(element.getParent(), annotation, stream);
     if (variable == null) {
       String coveredText = annotation.getCoveredText();
       Pattern regularExpPattern = null;
@@ -83,7 +84,7 @@ public class RegExpCondition extends TerminalRutaCondition {
   public StringExpression getPattern() {
     return pattern;
   }
-  
+
   public String getVariable() {
     return variable;
   }

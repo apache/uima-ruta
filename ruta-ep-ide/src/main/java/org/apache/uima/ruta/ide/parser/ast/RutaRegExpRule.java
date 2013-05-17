@@ -28,7 +28,8 @@ public class RutaRegExpRule extends RutaRule {
 
   private Map<Expression, Map<Expression, Expression>> feats;
 
-  public RutaRegExpRule(List<Expression> exprs, Map<Expression, Map<Expression, Expression>> fa, int i) {
+  public RutaRegExpRule(List<Expression> exprs, Map<Expression, Map<Expression, Expression>> fa,
+          int i) {
     super(exprs, i);
     this.feats = fa;
   }

@@ -26,8 +26,7 @@ import org.eclipse.swt.widgets.Shell;
 
 public class RutaOutlineInformationControl extends ScriptOutlineInformationControl {
 
-  public RutaOutlineInformationControl(Shell parent, int shellStyle, int treeStyle,
-          String commandId) {
+  public RutaOutlineInformationControl(Shell parent, int shellStyle, int treeStyle, String commandId) {
     super(parent, shellStyle, treeStyle, commandId);
   }
 

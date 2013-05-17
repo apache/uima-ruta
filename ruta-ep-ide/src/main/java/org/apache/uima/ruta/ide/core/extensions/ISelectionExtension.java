@@ -15,14 +15,13 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.core.extensions;
 
-import org.apache.uima.ruta.ide.core.codeassist.SelectionOnKeywordOrFunction;
 import org.apache.uima.ruta.ide.core.codeassist.RutaSelectionEngine;
+import org.apache.uima.ruta.ide.core.codeassist.SelectionOnKeywordOrFunction;
 import org.eclipse.dltk.ast.ASTNode;
-
 
 public interface ISelectionExtension {
 

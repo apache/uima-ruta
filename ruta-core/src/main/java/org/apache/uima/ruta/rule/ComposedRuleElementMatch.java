@@ -30,6 +30,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaStream;
 
 public class ComposedRuleElementMatch extends RuleElementMatch {
 
@@ -65,12 +66,13 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
     return innerMatches;
   }
 
-  public void addInnerMatch(RuleElement ruleElement, RuleElementMatch ruleElementMatch) {
-    addInnerMatch(ruleElement, ruleElementMatch, true);
+  public void addInnerMatch(RuleElement ruleElement, RuleElementMatch ruleElementMatch,
+          RutaStream stream) {
+    addInnerMatch(ruleElement, ruleElementMatch, true, stream);
   }
 
   public void addInnerMatch(RuleElement ruleElement, RuleElementMatch ruleElementMatch,
-          boolean included) {
+          boolean included, RutaStream stream) {
     List<RuleElementMatch> list = innerMatches.get(ruleElement);
     if (list == null) {
       list = new ArrayList<RuleElementMatch>();
@@ -79,16 +81,16 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
     list.add(ruleElementMatch);
     textsMatched.addAll(ruleElementMatch.getTextsMatched());
 
-    evaluateInnerMatches(included);
+    evaluateInnerMatches(included, stream);
   }
 
-  public void evaluateInnerMatches(boolean included) {
+  public void evaluateInnerMatches(boolean included, RutaStream stream) {
     boolean allDone = true;
     Set<Entry<RuleElement, List<RuleElementMatch>>> entrySet = innerMatches.entrySet();
     for (Entry<RuleElement, List<RuleElementMatch>> entry : entrySet) {
       RuleElement element = entry.getKey();
       List<RuleElementMatch> value = entry.getValue();
-      allDone &= (element.getQuantifier().isOptional(element.getParent()) || value != null);
+      allDone &= (element.getQuantifier().isOptional(element.getParent(), stream) || value != null);
       if (value != null && !value.isEmpty() && included) {
         for (RuleElementMatch ruleElementMatch : value) {
           allDone &= ruleElementMatch.matched();
@@ -181,16 +183,14 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
         if (value != null) {
           for (RuleElementMatch each : value) {
             if (each instanceof ComposedRuleElementMatch) {
-              ((ComposedRuleElementMatch)each).update(extendedContainerMatch);
+              ((ComposedRuleElementMatch) each).update(extendedContainerMatch);
             }
           }
-        } 
+        }
       }
     }
   }
 
-  
-  
   public String toString() {
     return "CREM" + innerMatches.toString();
   }
@@ -217,5 +217,4 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
 
   }
 
- 
 }

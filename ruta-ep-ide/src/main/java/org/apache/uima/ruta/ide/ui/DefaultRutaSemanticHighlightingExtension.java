@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.ui;
 
@@ -36,13 +36,10 @@ import org.eclipse.dltk.ui.editor.highlighting.HighlightedPosition;
 import org.eclipse.dltk.ui.editor.highlighting.ISemanticHighlightingRequestor;
 import org.eclipse.dltk.ui.editor.highlighting.SemanticHighlighting;
 
-
-public class DefaultRutaSemanticHighlightingExtension implements
-        ISemanticHighlightingExtension {
+public class DefaultRutaSemanticHighlightingExtension implements ISemanticHighlightingExtension {
 
   private SemanticHighlighting[] highlightings = new SemanticHighlighting[] {
-      new RutaTextTools.SH(RutaPreferenceConstants.EDITOR_DECLARATION_DEFINITION_COLOR,
-              null, null),
+      new RutaTextTools.SH(RutaPreferenceConstants.EDITOR_DECLARATION_DEFINITION_COLOR, null, null),
       new RutaTextTools.SH(RutaPreferenceConstants.EDITOR_FUNCTION_COLOR, null, null),
       new RutaTextTools.SH(RutaPreferenceConstants.EDITOR_ACTION_COLOR, null, null),
       new RutaTextTools.SH(RutaPreferenceConstants.EDITOR_CONDITION_COLOR, null, null),
@@ -59,13 +56,15 @@ public class DefaultRutaSemanticHighlightingExtension implements
     // Check Ruta procedures
     if (node instanceof MethodDeclaration) {
       MethodDeclaration m = (MethodDeclaration) node;
-      requestor.addPosition(m.getNameStart(), m.getNameEnd(), RutaPreferenceConstants.EDITOR_FUNCTION_COLOR);
+      requestor.addPosition(m.getNameStart(), m.getNameEnd(),
+              RutaPreferenceConstants.EDITOR_FUNCTION_COLOR);
 
     }
 
     if (node instanceof Argument) {
       Argument m = (Argument) node;
-      requestor.addPosition(m.getNameStart(), m.getNameEnd(), RutaPreferenceConstants.EDITOR_VARIABLE_COLOR);
+      requestor.addPosition(m.getNameStart(), m.getNameEnd(),
+              RutaPreferenceConstants.EDITOR_VARIABLE_COLOR);
     }
 
     if (node instanceof TypeDeclaration) {
@@ -81,11 +80,13 @@ public class DefaultRutaSemanticHighlightingExtension implements
         Iterator it = children.iterator();
         while (it.hasNext()) {
           ASTNode n = (ASTNode) it.next();
-          requestor.addPosition(n.sourceStart(), n.sourceEnd(), RutaPreferenceConstants.EDITOR_DECLARATION_DEFINITION_COLOR);
+          requestor.addPosition(n.sourceStart(), n.sourceEnd(),
+                  RutaPreferenceConstants.EDITOR_DECLARATION_DEFINITION_COLOR);
         }
       }
 
-      requestor.addPosition(t.getNameStart(), t.getNameEnd(), RutaPreferenceConstants.EDITOR_VARIABLE_COLOR);
+      requestor.addPosition(t.getNameStart(), t.getNameEnd(),
+              RutaPreferenceConstants.EDITOR_VARIABLE_COLOR);
     }
 
     return null;

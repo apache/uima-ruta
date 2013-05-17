@@ -45,25 +45,24 @@ public class AssignAction extends AbstractRutaAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
     RutaBlock parent = element.getParent();
     RutaEnvironment environment = parent.getEnvironment();
     Class<?> clazz = environment.getVariableType(var);
     if (clazz.equals(Integer.class) && expression instanceof NumberExpression) {
-      int v = ((NumberExpression) expression).getIntegerValue(parent);
+      int v = ((NumberExpression) expression).getIntegerValue(parent, match, element, stream);
       environment.setVariableValue(var, v);
     } else if (clazz.equals(Double.class) && expression instanceof NumberExpression) {
-      double v = ((NumberExpression) expression).getDoubleValue(parent);
+      double v = ((NumberExpression) expression).getDoubleValue(parent, match, element, stream);
       environment.setVariableValue(var, v);
     } else if (clazz.equals(Type.class) && expression instanceof TypeExpression) {
       Type v = ((TypeExpression) expression).getType(parent);
       environment.setVariableValue(var, v);
     } else if (clazz.equals(Boolean.class) && expression instanceof BooleanExpression) {
-      boolean v = ((BooleanExpression) expression).getBooleanValue(parent);
+      boolean v = ((BooleanExpression) expression).getBooleanValue(parent, match, element, stream);
       environment.setVariableValue(var, v);
     } else if (clazz.equals(String.class) && expression instanceof StringExpression) {
-      String v = ((StringExpression) expression).getStringValue(parent);
+      String v = ((StringExpression) expression).getStringValue(parent, match, element, stream);
       environment.setVariableValue(var, v);
     }
   }

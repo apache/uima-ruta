@@ -29,8 +29,7 @@ import org.eclipse.dltk.console.ui.ScriptConsole;
 import org.eclipse.dltk.console.ui.ScriptConsoleFactoryBase;
 import org.eclipse.jface.preference.IPreferenceStore;
 
-public class RutaConsoleFactory extends ScriptConsoleFactoryBase implements
-        IScriptConsoleFactory {
+public class RutaConsoleFactory extends ScriptConsoleFactoryBase implements IScriptConsoleFactory {
   protected IPreferenceStore getPreferenceStore() {
     return RutaIdePlugin.getDefault().getPreferenceStore();
   }

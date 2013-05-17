@@ -22,7 +22,7 @@ package org.apache.uima.ruta.action;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.bool.BooleanExpression;
@@ -56,26 +56,25 @@ public class RemoveAction extends AbstractRutaAction {
 
   @SuppressWarnings({ "rawtypes" })
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
-    RutaStatement parent = element.getParent();
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+    RutaBlock parent = element.getParent();
     List list = parent.getEnvironment().getVariableValue(var, List.class);
     List<Object> toRemove = new ArrayList<Object>();
     for (Object entry : list) {
-      Object value1 = getValue(entry, parent);
+      Object value1 = getValue(entry, parent, stream);
       for (RutaExpression arg : elements) {
-        if(arg instanceof ListExpression) {
+        if (arg instanceof ListExpression) {
           ListExpression l = (ListExpression) arg;
-          List list2 = l.getList(parent);
+          List list2 = l.getList(parent, stream);
           for (Object object : list2) {
-            Object value2 = getValue(object, parent);
-            if(value1.equals(value2)) {
+            Object value2 = getValue(object, parent, stream);
+            if (value1.equals(value2)) {
               toRemove.add(entry);
             }
           }
         } else {
-          Object value2 = getValue(arg, parent);
-          if(value1.equals(value2)) {
+          Object value2 = getValue(arg, parent, stream);
+          if (value1.equals(value2)) {
             toRemove.add(entry);
           }
         }
@@ -87,18 +86,17 @@ public class RemoveAction extends AbstractRutaAction {
     parent.getEnvironment().setVariableValue(var, list);
   }
 
-  private Object getValue(Object obj, RutaStatement parent) {
-    if(obj instanceof NumberExpression) {
-      return ((NumberExpression)obj).getDoubleValue(parent);
-    } else if(obj instanceof BooleanExpression) {
-      return ((BooleanExpression)obj).getBooleanValue(parent);
-    } else if(obj instanceof TypeExpression) {
-      return ((TypeExpression)obj).getType(parent);
-    } else if(obj instanceof StringExpression) {
-      return ((StringExpression)obj).getStringValue(parent);
+  private Object getValue(Object obj, RutaBlock parent, RutaStream stream) {
+    if (obj instanceof NumberExpression) {
+      return ((NumberExpression) obj).getDoubleValue(parent, null, stream);
+    } else if (obj instanceof BooleanExpression) {
+      return ((BooleanExpression) obj).getBooleanValue(parent, null, stream);
+    } else if (obj instanceof TypeExpression) {
+      return ((TypeExpression) obj).getType(parent);
+    } else if (obj instanceof StringExpression) {
+      return ((StringExpression) obj).getStringValue(parent, null, stream);
     }
     return null;
   }
-  
-  
+
 }

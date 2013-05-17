@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.BooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
@@ -70,22 +71,22 @@ public class MarkFastAction extends AbstractMarkAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
-    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element, stream);
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element);
     for (AnnotationFS annotationFS : matchedAnnotationsOf) {
       RutaStream windowStream = stream.getWindowStream(annotationFS, annotationFS.getType());
       RutaWordList wl = null;
+      RutaBlock parent = element.getParent();
       if (list != null) {
-        wl = list.getList(element.getParent());
+        wl = list.getList(parent);
       } else if (stringList != null) {
-        wl = new TreeWordList(stringList.getList(element.getParent()));
+        wl = new TreeWordList(stringList.getList(parent, stream));
       }
       if (wl instanceof TreeWordList) {
         Collection<AnnotationFS> found = wl.find(windowStream,
-                ignore.getBooleanValue(element.getParent()),
-                ignoreLength.getIntegerValue(element.getParent()), null, 0,
-                ignoreWS.getBooleanValue(element.getParent()));
+                ignore.getBooleanValue(parent, match, element, stream),
+                ignoreLength.getIntegerValue(parent, match, element, stream), null, 0,
+                ignoreWS.getBooleanValue(parent, match, element, stream));
         for (AnnotationFS annotation : found) {
           createAnnotation(annotation, element, windowStream, match);
         }

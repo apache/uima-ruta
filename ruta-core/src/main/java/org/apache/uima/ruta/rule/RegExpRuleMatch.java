@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaStream;
 
 public class RegExpRuleMatch extends AbstractRuleMatch<RegExpRule> {
 
@@ -36,7 +35,7 @@ public class RegExpRuleMatch extends AbstractRuleMatch<RegExpRule> {
   }
 
   @Override
-  public List<AnnotationFS> getMatchedAnnotationsOfRoot(RutaStream stream) {
+  public List<AnnotationFS> getMatchedAnnotationsOfRoot() {
     return map.get(0);
   }
 

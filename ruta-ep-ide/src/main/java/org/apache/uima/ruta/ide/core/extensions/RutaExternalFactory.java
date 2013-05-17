@@ -36,7 +36,6 @@ public class RutaExternalFactory {
     super();
   }
 
-
   public RutaCondition createExternalCondition(Token id, List<Expression> args)
           throws RecognitionException {
     return ConditionFactory.createCondition(id, args);

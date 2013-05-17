@@ -15,16 +15,16 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.expression.list;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.BooleanExpression;
-
 
 public class ReferenceBooleanListExpression extends BooleanListExpression {
 
@@ -37,12 +37,12 @@ public class ReferenceBooleanListExpression extends BooleanListExpression {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Boolean> getList(RutaStatement parent) {
+  public List<Boolean> getList(RutaBlock parent, RutaStream stream) {
     List<Object> list = parent.getEnvironment().getVariableValue(var, List.class);
     List<Boolean> result = new ArrayList<Boolean>();
     for (Object each : list) {
       if (each instanceof BooleanExpression) {
-        result.add(((BooleanExpression) each).getBooleanValue(parent));
+        result.add(((BooleanExpression) each).getBooleanValue(parent, null, stream));
       } else if (each instanceof Boolean) {
         result.add((Boolean) each);
       }

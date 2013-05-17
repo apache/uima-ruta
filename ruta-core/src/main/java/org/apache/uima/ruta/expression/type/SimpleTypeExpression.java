@@ -20,7 +20,9 @@
 package org.apache.uima.ruta.expression.type;
 
 import org.apache.uima.cas.Type;
-import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
 
 public class SimpleTypeExpression extends TypeExpression {
 
@@ -32,7 +34,7 @@ public class SimpleTypeExpression extends TypeExpression {
   }
 
   @Override
-  public Type getType(RutaStatement parent) {
+  public Type getType(RutaBlock parent) {
     return parent.getEnvironment().getType(typeString);
   }
 
@@ -42,7 +44,7 @@ public class SimpleTypeExpression extends TypeExpression {
   }
 
   @Override
-  public String getStringValue(RutaStatement parent) {
+  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     return typeString;
   }
 

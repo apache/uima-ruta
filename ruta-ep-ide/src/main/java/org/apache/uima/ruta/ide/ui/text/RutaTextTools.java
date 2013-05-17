@@ -43,8 +43,8 @@ public class RutaTextTools extends ScriptTextTools {
   private SimpleClassDLTKExtensionManager extensions = new SimpleClassDLTKExtensionManager(
           RutaIdePlugin.PLUGIN_ID + ".rutaSemanticHighlighting"); //$NON-NLS-1$
 
-  private final static String[] LEGAL_CONTENT_TYPES = new String[] {
-      RutaPartitions.RUTA_STRING, RutaPartitions.RUTA_COMMENT };
+  private final static String[] LEGAL_CONTENT_TYPES = new String[] { RutaPartitions.RUTA_STRING,
+      RutaPartitions.RUTA_COMMENT };
 
   public RutaTextTools(boolean autoDisposeOnDisplayDispose) {
     super(RutaPartitions.RUTA_PARTITIONING, LEGAL_CONTENT_TYPES, autoDisposeOnDisplayDispose);
@@ -90,12 +90,10 @@ public class RutaTextTools extends ScriptTextTools {
     return ret;
   }
 
+  public ISemanticHighlightingUpdater getSemanticPositionUpdater(String natureId) {
+    return new RutaSemanticPositionUpdater(getExtensions());
+  }
 
-  public ISemanticHighlightingUpdater getSemanticPositionUpdater(
-          String natureId) {
-        return new RutaSemanticPositionUpdater(getExtensions());
-      }
-  
   public final static class SH extends SemanticHighlighting {
 
     private final String preferenceKey;

@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.ui.text;
 
@@ -53,7 +53,6 @@ import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.ui.texteditor.MarkerAnnotation;
 import org.eclipse.ui.texteditor.SimpleMarkerAnnotation;
 
-
 public class RutaCorrectionProcessor implements IQuickAssistProcessor {
   RutaCorrectionAssistant fAssistant;
 
@@ -86,8 +85,8 @@ public class RutaCorrectionProcessor implements IQuickAssistProcessor {
         IMarker marker = mAnnot.getMarker();
         if (isFixable(marker)) {
           final String pkgName = CorrectionEngine.getProblemArguments(marker)[0];
-          proposal = new MarkerResolutionProposal(new RutaRequirePackageMarkerResolution(
-                  pkgName, scriptProject), marker);
+          proposal = new MarkerResolutionProposal(new RutaRequirePackageMarkerResolution(pkgName,
+                  scriptProject), marker);
         }
       } else if (annotation instanceof IScriptAnnotation) {
         if (isFixable((IScriptAnnotation) annotation)) {
@@ -136,20 +135,20 @@ public class RutaCorrectionProcessor implements IQuickAssistProcessor {
   }
 
   public static boolean isFixable(IScriptAnnotation annotation) {
-//    if (annotation.getId() == RutaProblems.UNKNOWN_REQUIRED_PACKAGE) {
-//      final String[] args = annotation.getArguments();
-//      if (args != null && args.length != 0 && args[0] != null) {
-//        final ISourceModule module = annotation.getSourceModule();
-//        if (module != null) {
-//          final IScriptProject project = module.getScriptProject();
-//          if (project != null) {
-//            if (isFixable(args[0], project)) {
-//              return true;
-//            }
-//          }
-//        }
-//      }
-//    }
+    // if (annotation.getId() == RutaProblems.UNKNOWN_REQUIRED_PACKAGE) {
+    // final String[] args = annotation.getArguments();
+    // if (args != null && args.length != 0 && args[0] != null) {
+    // final ISourceModule module = annotation.getSourceModule();
+    // if (module != null) {
+    // final IScriptProject project = module.getScriptProject();
+    // if (project != null) {
+    // if (isFixable(args[0], project)) {
+    // return true;
+    // }
+    // }
+    // }
+    // }
+    // }
     return false;
   }
 

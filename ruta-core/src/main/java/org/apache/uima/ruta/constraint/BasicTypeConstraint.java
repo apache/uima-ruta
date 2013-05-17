@@ -58,19 +58,19 @@ public class BasicTypeConstraint implements FSTypeConstraint {
   public boolean match(FeatureStructure fs) {
     if (fs instanceof RutaBasic) {
       RutaBasic tmb = (RutaBasic) fs;
-      if(tmb.getBeginMap().isEmpty() && tmb.getEndMap().isEmpty()) {
+      if (tmb.getBeginMap().isEmpty() && tmb.getEndMap().isEmpty()) {
         return true;
       }
     }
-    if(constraint.match(fs)) {
-        return true;
+    if (constraint.match(fs)) {
+      return true;
     }
     boolean result = false;
     if (fs instanceof RutaBasic) {
       RutaBasic tmb = (RutaBasic) fs;
       if (types != null) {
         for (Type each : types) {
-          result |= tmb.isPartOf(each)|| tmb.beginsWith(each) || tmb.endsWith(each);
+          result |= tmb.isPartOf(each) || tmb.beginsWith(each) || tmb.endsWith(each);
           if (result)
             break;
         }

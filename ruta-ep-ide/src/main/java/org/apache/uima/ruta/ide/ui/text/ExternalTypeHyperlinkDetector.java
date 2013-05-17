@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.ui.text;
 
@@ -35,8 +35,8 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.ruta.ide.core.codeassist.RutaReferenceVisitor;
 import org.apache.uima.ruta.ide.core.codeassist.RutaSelectionParser;
-import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaModuleDeclaration;
+import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaVariableReference;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
@@ -56,7 +56,6 @@ import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
 import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
 import org.eclipse.ui.texteditor.ITextEditor;
-
 
 public class ExternalTypeHyperlinkDetector implements IHyperlinkDetector {
   private ITextEditor fTextEditor;
@@ -89,8 +88,7 @@ public class ExternalTypeHyperlinkDetector implements IHyperlinkDetector {
         RutaSelectionParser parser = new RutaSelectionParser();
         ModuleDeclaration moduleDeclaration = parser.parse(sm);
         String word = document.get(wordRegion.getOffset(), wordRegion.getLength());
-        RutaReferenceVisitor referenceVisitor = new RutaReferenceVisitor(wordRegion
-                .getOffset());
+        RutaReferenceVisitor referenceVisitor = new RutaReferenceVisitor(wordRegion.getOffset());
         moduleDeclaration.traverse(referenceVisitor);
         ASTNode node = referenceVisitor.getResult();
         if (node instanceof RutaVariableReference
@@ -102,8 +100,8 @@ public class ExternalTypeHyperlinkDetector implements IHyperlinkDetector {
             Collection<String> importedTypeSystems = parsed.descriptorInfo.getImportedTypeSystems();
             List<IHyperlink> result = new ArrayList<IHyperlink>();
             for (String tsString : importedTypeSystems) {
-              IFolder folder = modelElement.getScriptProject().getProject().getFolder(
-                      RutaProjectUtils.getDefaultDescriptorLocation());
+              IFolder folder = modelElement.getScriptProject().getProject()
+                      .getFolder(RutaProjectUtils.getDefaultDescriptorLocation());
               String xmlFilePath = tsString.replaceAll("\\.", "/");
               xmlFilePath = xmlFilePath.substring(0, xmlFilePath.length()) + ".xml";
               Set<String> types = getTypes(folder, xmlFilePath);

@@ -30,9 +30,6 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.compiler.problem.IProblem;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 
-
-
-
 public class ExampleConditionIDEExtension implements IIDEConditionExtension {
   private final String[] strings = new String[] { "ExampleCondition" };
 
@@ -52,14 +49,15 @@ public class ExampleConditionIDEExtension implements IIDEConditionExtension {
       }
       boolean ok = true;
       List<Expression> childs = a.getChilds();
-      if(childs.size() != 2) {
+      if (childs.size() != 2) {
         IProblem problem = problemFactory.createWrongNumberOfArgumentsProblem(name, element, 2);
         rep.reportProblem(problem);
         ok = false;
       }
       for (Expression expression : childs) {
         if (expression.getKind() != RutaTypeConstants.RUTA_TYPE_S) {
-          IProblem problem = problemFactory.createWrongArgumentTypeProblem(expression, "StringExpression");
+          IProblem problem = problemFactory.createWrongArgumentTypeProblem(expression,
+                  "StringExpression");
           rep.reportProblem(problem);
           ok = false;
         }

@@ -15,15 +15,33 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.expression.bool;
 
-import org.apache.uima.ruta.RutaStatement;
+import java.util.List;
+
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
 
 public abstract class BooleanExpression extends StringExpression {
 
-  public abstract boolean getBooleanValue(RutaStatement parent);
+  public boolean getBooleanValue(RutaBlock parent, RuleMatch match, RuleElement element,
+          RutaStream stream) {
+    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element);
+    // TODO: do we need to select the correct annotation?
+    AnnotationFS annotation = null;
+    if (!matchedAnnotationsOf.isEmpty()) {
+      annotation = matchedAnnotationsOf.get(0);
+    }
+    return getBooleanValue(parent, annotation, stream);
+  }
+
+  public abstract boolean getBooleanValue(RutaBlock parent, AnnotationFS annotation,
+          RutaStream stream);
 
 }

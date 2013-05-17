@@ -27,10 +27,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 
 public class RuleMatch extends AbstractRuleMatch<RutaRule> {
@@ -44,8 +44,6 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
       return fs1.getBegin() < fs2.getBegin() ? -1 : 1;
     }
   }
-
-  private RuleMatchComparator ruleElementComparator = new RuleMatchComparator();
 
   private boolean applied = false;
 
@@ -79,28 +77,25 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
     return result;
   }
 
-
-
   public boolean matchedCompletely() {
     return matched && rootMatch.matched();
   }
 
-  public List<AnnotationFS> getMatchedAnnotationsOf(RuleElement element, RutaStream stream) {
-    return getMatchedAnnotations(stream, element.getSelfIndexList(), element.getContainer());
+  public List<AnnotationFS> getMatchedAnnotationsOf(RuleElement element) {
+    return getMatchedAnnotations(element.getSelfIndexList(), element.getContainer());
   }
 
   @Override
-  public List<AnnotationFS> getMatchedAnnotationsOfRoot(RutaStream stream) {
-    return getMatchedAnnotationsOf(((RutaRule)getRule()).getRoot(), stream);
+  public List<AnnotationFS> getMatchedAnnotationsOfRoot() {
+    return getMatchedAnnotationsOf(((RutaRule) getRule()).getRoot());
   }
-  
-  
-  public List<AnnotationFS> getMatchedAnnotations(RutaStream stream, List<Integer> indexes,
+
+  public List<AnnotationFS> getMatchedAnnotations(List<Integer> indexes,
           RuleElementContainer container) {
     List<AnnotationFS> result = new ArrayList<AnnotationFS>();
     indexes = extendIndexes(indexes);
     if (container == null) {
-      container = ((RutaRule)rule).getRoot();
+      container = ((RutaRule) rule).getRoot();
     }
 
     // TODO refactor this!
@@ -146,25 +141,26 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
         i++;
       }
     }
+    CAS cas = null;
     for (List<List<RuleElementMatch>> list : reverseList) {
       int begin = Integer.MAX_VALUE;
       int end = 0;
       for (List<RuleElementMatch> list2 : list) {
         if (list2 != null) {
           for (RuleElementMatch ruleElementMatch : list2) {
-
             List<AnnotationFS> textsMatched = ruleElementMatch.getTextsMatched();
             if (textsMatched != null && !textsMatched.isEmpty()) {
               begin = Math.min(textsMatched.get(0).getBegin(), begin);
               end = Math.max(textsMatched.get(textsMatched.size() - 1).getEnd(), end);
+              if (cas == null) {
+                cas = textsMatched.get(0).getCAS();
+              }
             }
           }
         }
       }
-      if (stream.getJCas() != null && end != 0) {
-        Annotation annotation = new Annotation(stream.getJCas());
-        annotation.setBegin(begin);
-        annotation.setEnd(end);
+      if (cas != null && end != 0) {
+        AnnotationFS annotation = cas.createAnnotation(cas.getAnnotationType(), begin, end);
         result.add(annotation);
       }
     }
@@ -172,13 +168,13 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
   }
 
   public static List<Integer> extendIndexes(List<Integer> indexes) {
-    if(indexes == null || indexes.size() <=1) {
+    if (indexes == null || indexes.size() <= 1) {
       return indexes;
     }
     List<Integer> result = new ArrayList<Integer>();
     int pointer = indexes.get(0);
     for (Integer each : indexes) {
-      while(pointer < each-1) {
+      while (pointer < each - 1) {
         pointer++;
         result.add(pointer);
       }
@@ -222,7 +218,7 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
     copy.setDelegateApply(newDelegateApply);
     return copy;
   }
-  
+
   public void update(ComposedRuleElementMatch extendedContainerMatch) {
     if (extendedContainerMatch.getContainerMatch() == null) {
       setRootMatch(extendedContainerMatch);
@@ -280,6 +276,5 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
     }
     return result;
   }
-
 
 }

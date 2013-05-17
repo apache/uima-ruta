@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.example.extensions;
 
@@ -40,7 +40,8 @@ public class ExampleActionExtension implements IRutaActionExtension {
   public String verbalize(RutaElement element, RutaVerbalizer verbalizer) {
     if (element instanceof ExampleAction) {
       return verbalizeName(element) + "("
-              + verbalizer.verbalizeExpressionList(((ExampleAction) element).getIndexExprList()) + ")";
+              + verbalizer.verbalizeExpressionList(((ExampleAction) element).getIndexExprList())
+              + ")";
     } else {
       return "UnknownAction";
     }

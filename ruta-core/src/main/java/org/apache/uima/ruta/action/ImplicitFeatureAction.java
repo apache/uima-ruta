@@ -60,7 +60,7 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
   public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
     TypeExpression typeExpr = expr.getTypeExpr();
     Type type = typeExpr.getType(element.getParent());
-    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOf(element, stream);
+    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOf(element);
     Collection<AnnotationFS> annotations = new TreeSet<AnnotationFS>(comp);
     for (AnnotationFS annotation : matchedAnnotations) {
       annotations.addAll(getAnnotations(annotation, type, expr, stream));
@@ -86,7 +86,7 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
     if (range.equals(UIMAConstants.TYPE_STRING)) {
       if (argExpr instanceof StringExpression) {
         StringExpression stringExpr = (StringExpression) argExpr;
-        String string = stringExpr.getStringValue(element.getParent());
+        String string = stringExpr.getStringValue(element.getParent(), null, stream);
         a.setStringValue(feature, string);
       }
     } else if (argExpr instanceof NumberExpression
@@ -94,23 +94,23 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
                     || range.equals(UIMAConstants.TYPE_SHORT) || range
                       .equals(UIMAConstants.TYPE_BYTE))) {
       NumberExpression numberExpr = (NumberExpression) argExpr;
-      int v = numberExpr.getIntegerValue(element.getParent());
+      int v = numberExpr.getIntegerValue(element.getParent(), null, stream);
       a.setIntValue(feature, v);
     } else if (argExpr instanceof NumberExpression && (range.equals(UIMAConstants.TYPE_DOUBLE))) {
       NumberExpression numberExpr = (NumberExpression) argExpr;
-      double v = numberExpr.getDoubleValue(element.getParent());
+      double v = numberExpr.getDoubleValue(element.getParent(), null, stream);
       a.setDoubleValue(feature, v);
     } else if (argExpr instanceof NumberExpression && (range.equals(UIMAConstants.TYPE_FLOAT))) {
       NumberExpression numberExpr = (NumberExpression) argExpr;
-      float v = numberExpr.getFloatValue(element.getParent());
+      float v = numberExpr.getFloatValue(element.getParent(), null, stream);
       a.setFloatValue(feature, v);
     } else if (argExpr instanceof BooleanExpression && (range.equals(UIMAConstants.TYPE_BOOLEAN))) {
       BooleanExpression booleanExpr = (BooleanExpression) argExpr;
-      boolean v = booleanExpr.getBooleanValue(element.getParent());
+      boolean v = booleanExpr.getBooleanValue(element.getParent(), null, stream);
       a.setBooleanValue(feature, v);
     } else if (argExpr instanceof BooleanExpression && (range.equals(UIMAConstants.TYPE_BOOLEAN))) {
       BooleanExpression booleanExpr = (BooleanExpression) argExpr;
-      boolean v = booleanExpr.getBooleanValue(element.getParent());
+      boolean v = booleanExpr.getBooleanValue(element.getParent(), null, stream);
       a.setBooleanValue(feature, v);
     } else if (argExpr instanceof TypeExpression && !feature.getRange().isPrimitive()) {
       TypeExpression typeExpr = (TypeExpression) argExpr;

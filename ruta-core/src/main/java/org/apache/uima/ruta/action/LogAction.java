@@ -22,6 +22,7 @@ package org.apache.uima.ruta.action;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.string.StringExpression;
 import org.apache.uima.ruta.rule.RuleElement;
@@ -43,9 +44,9 @@ public class LogAction extends AbstractRutaAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
-    String msg = text.getStringValue(element.getParent());
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+    RutaBlock parent = element.getParent();
+    String msg = text.getStringValue(parent, match, element, stream);
     Logger.getLogger(LOGGER_NAME).log(level, msg);
   }
 

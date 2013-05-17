@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.ui.documentation;
 
@@ -78,7 +78,6 @@ import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Label;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
 
 public class RutaPagesLocationsBlock implements SelectionListener, ISelectionChangedListener {
 

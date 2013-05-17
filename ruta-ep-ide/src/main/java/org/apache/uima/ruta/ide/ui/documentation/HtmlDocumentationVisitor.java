@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.ui.documentation;
 
@@ -36,47 +36,48 @@ public class HtmlDocumentationVisitor extends NodeVisitor {
   private int elementStart = 0;
 
   private String document;
-  
+
   public HtmlDocumentationVisitor(String document) {
     super();
     this.document = document;
     this.map = new TreeMap<String, String>();
   }
-  
+
   public void visitTag(Tag tag) {
     String name = tag.getTagName().toLowerCase();
-    if("div".equals(name)) {
+    if ("div".equals(name)) {
       divDepth++;
-      if(divDepth == 1) {
-        elementStart  = tag.getStartPosition();
+      if (divDepth == 1) {
+        elementStart = tag.getStartPosition();
       }
     }
-    
+
   }
+
   public void visitEndTag(Tag tag) {
     String name = tag.getTagName().toLowerCase();
-    if("div".equals(name)) {
-      if(divDepth == 1) {
+    if ("div".equals(name)) {
+      if (divDepth == 1) {
         String section = document.substring(elementStart, tag.getEndPosition());
         processSection(section);
       }
       divDepth--;
     }
-    
+
   }
-  
+
   private void processSection(String section) {
     Pattern pattern = Pattern.compile("title=\"\\d+\\.\\d+\\.\\d+\\.&nbsp;(\\p{Upper}+)\"");
     Matcher matcher = pattern.matcher(section);
     boolean found = matcher.find();
-    if(found) {
+    if (found) {
       String group = matcher.group(1);
       section = section.trim();
       section = section.replaceAll("</?a.*>", "");
       section = section.replaceAll("\\d+\\.\\d+\\.\\d+.\\d+\\.&nbsp;", "");
       section = section.replaceAll("\\d+\\.\\d+\\.\\d+.&nbsp;", "");
       map.put(group, section);
-    } 
+    }
   }
 
   public Map<String, String> getMap() {

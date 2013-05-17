@@ -85,9 +85,9 @@ public class RuleElementCaretaker implements RuleElementContainer {
 
   private boolean containsLiteralMatcher(List<RuleElement> ruleElements) {
     for (RuleElement each : ruleElements) {
-      if(each instanceof RutaRuleElement) {
+      if (each instanceof RutaRuleElement) {
         RutaRuleElement re = (RutaRuleElement) each;
-        if(re.getMatcher() instanceof RutaLiteralMatcher) {
+        if (re.getMatcher() instanceof RutaLiteralMatcher) {
           return true;
         }
       }

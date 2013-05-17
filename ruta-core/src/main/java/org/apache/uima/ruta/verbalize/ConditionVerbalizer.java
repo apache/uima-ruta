@@ -433,12 +433,12 @@ public class ConditionVerbalizer {
       String max = verbalizeMax(maxE, Integer.MAX_VALUE);
       String var = c.getVarExpr() == null ? "" : ", " + c.getVarExpr();
       ListExpression<?> listExpr = c.getListExpr();
-      if(listExpr == null) {
+      if (listExpr == null) {
         return name + min + max + var + ")";
       } else {
         String l = verbalizer.verbalize(listExpr);
         return name + l + min + max + var + ")";
-      } 
+      }
     } else if (condition instanceof ImplicitCondition) {
       ImplicitCondition c = (ImplicitCondition) condition;
       return verbalizer.verbalize(c.getExpr());

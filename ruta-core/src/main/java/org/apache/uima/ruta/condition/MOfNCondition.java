@@ -43,8 +43,8 @@ public class MOfNCondition extends ComposedRutaCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          RutaStream stream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
+          InferenceCrowd crowd) {
     int result = 0;
     List<EvaluatedCondition> evals = new ArrayList<EvaluatedCondition>();
     for (AbstractRutaCondition each : conditions) {
@@ -56,8 +56,8 @@ public class MOfNCondition extends ComposedRutaCondition {
         result++;
       }
     }
-    boolean value = result >= min.getIntegerValue(element.getParent())
-            && result <= max.getIntegerValue(element.getParent());
+    boolean value = result >= min.getIntegerValue(element.getParent(), annotation, stream)
+            && result <= max.getIntegerValue(element.getParent(), annotation, stream);
     return new EvaluatedCondition(this, value, evals);
   }
 

@@ -19,7 +19,6 @@
 
 package org.apache.uima.ruta.condition;
 
-
 public abstract class TerminalRutaCondition extends AbstractRutaCondition {
 
   public TerminalRutaCondition() {

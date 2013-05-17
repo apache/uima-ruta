@@ -15,12 +15,45 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.expression;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.uima.cas.Type;
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaElement;
+import org.apache.uima.ruta.RutaStream;
+
+import com.google.common.collect.Lists;
 
 public class RutaExpression extends RutaElement {
+
+  protected List<AnnotationFS> getTargetAnnotation(AnnotationFS annotation, Type type,
+          RutaStream stream) {
+    if (annotation == null) {
+      return Collections.emptyList();
+    }
+    if (annotation.getType().equals(type)
+            || stream.getCas().getTypeSystem().subsumes(type, annotation.getType())) {
+      List<AnnotationFS> result = new ArrayList<AnnotationFS>(1);
+      result.add(annotation);
+      return result;
+    } else {
+      Set<AnnotationFS> beginAnchors = stream.getBeginAnchor(annotation.getBegin())
+              .getBeginAnchors(type);
+      Set<AnnotationFS> endAnchors = stream.getEndAnchor(annotation.getEnd()).getEndAnchors(type);
+      @SuppressWarnings("unchecked")
+      Collection<AnnotationFS> intersection = CollectionUtils
+              .intersection(beginAnchors, endAnchors);
+      return Lists.newArrayList(intersection);
+    }
+  }
 
 }

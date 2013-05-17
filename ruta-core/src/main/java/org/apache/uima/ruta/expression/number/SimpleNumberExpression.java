@@ -15,11 +15,13 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.expression.number;
 
-import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
 
 public class SimpleNumberExpression extends NumberExpression {
 
@@ -31,17 +33,17 @@ public class SimpleNumberExpression extends NumberExpression {
   }
 
   @Override
-  public double getDoubleValue(RutaStatement parent) {
+  public double getDoubleValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     return number.doubleValue();
   }
 
   @Override
-  public float getFloatValue(RutaStatement parent) {
+  public float getFloatValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     return number.floatValue();
   }
-  
+
   @Override
-  public int getIntegerValue(RutaStatement parent) {
+  public int getIntegerValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     return number.intValue();
   }
 
@@ -50,12 +52,12 @@ public class SimpleNumberExpression extends NumberExpression {
   }
 
   @Override
-  public String getStringValue(RutaStatement parent) {
+  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     boolean floating = number.intValue() != number.doubleValue();
     if (floating) {
-      return "" + getDoubleValue(parent);
+      return "" + getDoubleValue(parent, null, stream);
     } else {
-      return "" + getIntegerValue(parent);
+      return "" + getIntegerValue(parent, null, stream);
     }
   }
 

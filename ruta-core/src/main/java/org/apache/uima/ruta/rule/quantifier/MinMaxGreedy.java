@@ -54,9 +54,9 @@ public class MinMaxGreedy implements RuleElementQuantifier {
   }
 
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
-          RutaStatement element, InferenceCrowd crowd) {
-    int minValue = min.getIntegerValue(element.getParent());
-    int maxValue = max.getIntegerValue(element.getParent());
+          RutaStatement element, RutaStream stream, InferenceCrowd crowd) {
+    int minValue = min.getIntegerValue(element.getParent(), null, stream);
+    int maxValue = max.getIntegerValue(element.getParent(), null, stream);
 
     if (matches.size() > 0) {
       RuleElementMatch ruleElementMatch = matches.get(matches.size() - 1);
@@ -84,10 +84,10 @@ public class MinMaxGreedy implements RuleElementQuantifier {
   }
 
   public boolean continueMatch(boolean after, AnnotationFS annotation, RuleElement ruleElement,
-          RuleMatch extendedMatch, ComposedRuleElementMatch containerMatch,
-          RutaStream stream, InferenceCrowd crowd) {
-    int minValue = min.getIntegerValue(ruleElement.getParent());
-    int maxValue = max.getIntegerValue(ruleElement.getParent());
+          RuleMatch extendedMatch, ComposedRuleElementMatch containerMatch, RutaStream stream,
+          InferenceCrowd crowd) {
+    int minValue = min.getIntegerValue(ruleElement.getParent(), annotation, stream);
+    int maxValue = max.getIntegerValue(ruleElement.getParent(), annotation, stream);
     List<RuleElementMatch> list = containerMatch.getInnerMatches().get(ruleElement);
     if (list == null && maxValue > 0) {
       return true;
@@ -106,8 +106,8 @@ public class MinMaxGreedy implements RuleElementQuantifier {
             || (!lastMatch.matched() && matchedSize >= minValue && matchedSize <= maxValue);
   }
 
-  public boolean isOptional(RutaBlock parent) {
-    int minValue = min.getIntegerValue(parent);
+  public boolean isOptional(RutaBlock parent, RutaStream stream) {
+    int minValue = min.getIntegerValue(parent, null, stream);
     return minValue == 0;
   }
 }

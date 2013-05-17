@@ -40,8 +40,7 @@ public class TransferAction extends TypeSensitiveAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
     List<List<RuleElementMatch>> list = match.getMatchInfo(element);
     CAS cas = stream.getCas();
     Type t = type.getType(element.getParent());

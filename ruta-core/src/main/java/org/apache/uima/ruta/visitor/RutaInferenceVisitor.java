@@ -15,19 +15,18 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.visitor;
 
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.rule.AbstractRule;
 import org.apache.uima.ruta.rule.AbstractRuleMatch;
-
 
 public interface RutaInferenceVisitor {
 
@@ -38,5 +37,5 @@ public interface RutaInferenceVisitor {
   void finished(RutaStream stream, List<RutaInferenceVisitor> visitors);
 
   void annotationAdded(AnnotationFS annotation, AbstractRuleMatch<? extends AbstractRule> creator);
-  
+
 }

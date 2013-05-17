@@ -43,8 +43,7 @@ public class RetainTypeAction extends AbstractRutaAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
     List<Type> types = new ArrayList<Type>();
     for (TypeExpression each : list) {
       types.add(each.getType(element.getParent()));

@@ -51,7 +51,8 @@ public class ExampleActionIDEExtension implements IIDEActionExtension {
       List<Expression> childs = a.getChilds();
       for (Expression expression : childs) {
         if (expression.getKind() != RutaTypeConstants.RUTA_TYPE_N) {
-          IProblem problem = problemFactory.createWrongArgumentTypeProblem(expression, "NumberExpression");
+          IProblem problem = problemFactory.createWrongArgumentTypeProblem(expression,
+                  "NumberExpression");
           rep.reportProblem(problem);
           ok = false;
         }

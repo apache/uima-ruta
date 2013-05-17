@@ -44,8 +44,7 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 public class WildCardRuleElement extends AbstractRuleElement {
 
   public WildCardRuleElement(List<AbstractRutaCondition> conditions,
-          List<AbstractRutaAction> actions, RuleElementContainer container,
-          RutaBlock parent) {
+          List<AbstractRutaAction> actions, RuleElementContainer container, RutaBlock parent) {
     super(null, conditions, actions, container, parent);
   }
 
@@ -107,7 +106,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
       if (containerMatch == null) {
         ruleMatch.setRootMatch(composedMatch);
       } else {
-        containerMatch.addInnerMatch(this, composedMatch, false);
+        containerMatch.addInnerMatch(this, composedMatch, false, stream);
       }
       tryWithNextRuleElement(nextInnerRuleElement, after, annotation, ruleMatch, ruleApply,
               composedMatch, sideStepOrigin, entryPoint, stream, crowd);
@@ -124,8 +123,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
           RutaRuleElement sideStepOrigin, RutaStream stream, InferenceCrowd crowd) {
     AnnotationFS nextOne = annotation;
     boolean doneHere = false;
-    while (!doneHere
-            && (nextOne = getNextPositionForComposed(cre, after, nextOne, stream)) != null) {
+    while (!doneHere && (nextOne = getNextPositionForComposed(cre, after, nextOne, stream)) != null) {
       RutaBasic endAnchor = stream.getEndAnchor(nextOne.getBegin());
       ComposedRuleElementMatch extendedContainerMatch = containerMatch.copy();
       RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch);
@@ -134,8 +132,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
       doMatch(coveredByWildCard, extendedMatch, extendedContainerMatch, annotation == null, stream,
               crowd);
       if (extendedMatch.matched()) {
-        cre.continueMatch(after, endAnchor, extendedMatch, ruleApply,
-                extendedContainerMatch, sideStepOrigin, cre, stream, crowd);
+        cre.continueMatch(after, endAnchor, extendedMatch, ruleApply, extendedContainerMatch,
+                sideStepOrigin, cre, stream, crowd);
         List<RuleElementMatch> nextList = extendedContainerMatch.getInnerMatches().get(cre);
         boolean matched = hasMatched(nextList);
         if (!matched) {
@@ -156,7 +154,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
   }
 
   private boolean hasMatched(List<RuleElementMatch> nextList) {
-    if(nextList == null || nextList.isEmpty()) {
+    if (nextList == null || nextList.isEmpty()) {
       return false;
     }
     boolean result = true;
@@ -181,14 +179,14 @@ public class WildCardRuleElement extends AbstractRuleElement {
       RutaMatcher matcher = re.getMatcher();
       if (matcher instanceof RutaTypeMatcher) {
         FSIterator<AnnotationFS> iterator = getIterator(after, annotation, re, null, stream);
-//        moveOn(after, iterator);
+        // moveOn(after, iterator);
         if (iterator.isValid()) {
           result = iterator.get();
         }
       } else if (matcher instanceof RutaLiteralMatcher) {
         RutaLiteralMatcher lm = (RutaLiteralMatcher) matcher;
         StringExpression expression = lm.getExpression();
-        String stringValue = expression.getStringValue(parent);
+        String stringValue = expression.getStringValue(parent, annotation, stream);
         AnnotationFS documentAnnotation = stream.getDocumentAnnotation();
         int delta = documentAnnotation.getBegin();
         String document = documentAnnotation.getCoveredText();
@@ -278,7 +276,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
     } else {
       iterator = getIteratorOfType(defaultType, annotation, stream);
     }
-    if(iterator.get().equals(annotation)) {
+    if (iterator.get().equals(annotation)) {
       moveOn(after, iterator);
     }
     return iterator;
@@ -288,9 +286,9 @@ public class WildCardRuleElement extends AbstractRuleElement {
           RutaStream stream) {
     CAS cas = stream.getCas();
     FSIterator<AnnotationFS> result = null;
-    if(stream.getDocumentAnnotation().equals(cas.getDocumentAnnotation())) {
+    if (stream.getDocumentAnnotation().equals(cas.getDocumentAnnotation())) {
       // no windowing needed
-      if(annotation == null) {
+      if (annotation == null) {
         result = cas.getAnnotationIndex(type).iterator();
       } else {
         result = cas.getAnnotationIndex(type).iterator(annotation);
@@ -302,15 +300,16 @@ public class WildCardRuleElement extends AbstractRuleElement {
       } catch (CASException e) {
         e.printStackTrace();
       }
-      RutaFrame window = new RutaFrame(jcas, stream.getDocumentAnnotation().getBegin(), stream.getDocumentAnnotation().getEnd());
-      if(annotation == null) {
+      RutaFrame window = new RutaFrame(jcas, stream.getDocumentAnnotation().getBegin(), stream
+              .getDocumentAnnotation().getEnd());
+      if (annotation == null) {
         result = cas.getAnnotationIndex(type).subiterator(window);
       } else {
         result = cas.getAnnotationIndex(type).subiterator(window);
         result.moveTo(annotation);
       }
     }
-    
+
     return result;
   }
 
@@ -320,12 +319,12 @@ public class WildCardRuleElement extends AbstractRuleElement {
           RutaStream stream, InferenceCrowd crowd) {
     RutaLiteralMatcher matcher = (RutaLiteralMatcher) nextElement.getMatcher();
     StringExpression expression = matcher.getExpression();
-    String stringValue = expression.getStringValue(parent);
+    String stringValue = expression.getStringValue(parent, null, stream);
     AnnotationFS documentAnnotation = stream.getDocumentAnnotation();
     int delta = documentAnnotation.getBegin();
     String document = documentAnnotation.getCoveredText();
     int pointer = 0;
-    if(annotation != null) {
+    if (annotation != null) {
       pointer = annotation.getEnd() - delta;
     }
     int indexOf = 0;
@@ -339,8 +338,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
         doneHere = true;
         break;
       }
-      RutaBasic anchor = stream.getAnchor(after, indexOf+delta);
-      RutaBasic endAnchor = stream.getAnchor(!after, indexOf+delta);
+      RutaBasic anchor = stream.getAnchor(after, indexOf + delta);
+      RutaBasic endAnchor = stream.getAnchor(!after, indexOf + delta);
       ComposedRuleElementMatch extendedContainerMatch = containerMatch.copy();
       RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch);
       AnnotationFS coveredByWildCard = getCoveredByWildCard(after, annotation, anchor, stream);
@@ -403,8 +402,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
     }
   }
 
-  private AnnotationFS getCoveredByWildCard(boolean after, AnnotationFS last,
-          AnnotationFS next, RutaStream stream) {
+  private AnnotationFS getCoveredByWildCard(boolean after, AnnotationFS last, AnnotationFS next,
+          RutaStream stream) {
     CAS cas = stream.getCas();
     Type type = cas.getAnnotationType();
     AnnotationFS documentAnnotation = stream.getDocumentAnnotation();
@@ -412,25 +411,25 @@ public class WildCardRuleElement extends AbstractRuleElement {
     // order like in the index
     AnnotationFS before = last;
     AnnotationFS later = next;
-    if(!after) {
+    if (!after) {
       before = next;
       later = last;
     }
-    
+
     // without any information, match on everything
     int begin = documentAnnotation.getBegin();
     int end = documentAnnotation.getEnd();
-    
+
     // limit offsets
-    if(before != null) {
+    if (before != null) {
       begin = before.getEnd();
     }
-    if(later != null) {
+    if (later != null) {
       end = later.getBegin();
     }
-    
+
     AnnotationFS afs = cas.createAnnotation(type, begin, end);
-    
+
     return afs;
   }
 
@@ -454,7 +453,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
     if (annotation != null) {
       textsMatched.add(annotation);
     }
-    result.setMatchInfo(base, textsMatched, evaluatedConditions);
+    result.setMatchInfo(base, textsMatched, evaluatedConditions, stream);
     ruleMatch.setMatched(ruleMatch.matched() && result.matched());
     List<RuleElementMatch> rems = new ArrayList<RuleElementMatch>();
     rems.add(result);

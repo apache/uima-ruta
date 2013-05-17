@@ -31,8 +31,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 
-public class RutaDebuggerPreferencePage extends
-        AbstractConfigurationBlockPropertyAndPreferencePage {
+public class RutaDebuggerPreferencePage extends AbstractConfigurationBlockPropertyAndPreferencePage {
 
   private static String PREFERENCE_PAGE_ID = "org.apache.uima.ruta.ide.preferences.debug.engines.debugger";
 

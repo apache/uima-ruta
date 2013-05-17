@@ -23,7 +23,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -37,10 +36,10 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaModule;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.type.RutaBasic;
@@ -56,8 +55,7 @@ public class CallAction extends AbstractRutaAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
     RutaModule thisScript = element.getParent().getScript();
     AnalysisEngine targetEngine = thisScript.getEngine(namespace);
     if (targetEngine != null) {
@@ -92,7 +90,7 @@ public class CallAction extends AbstractRutaAction {
     if (block == null) {
       return;
     }
-    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element, stream);
+    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element);
     for (AnnotationFS annotationFS : matchedAnnotationsOf) {
       RutaStream windowStream = stream.getWindowStream(annotationFS,
               stream.getDocumentAnnotationType());
@@ -106,7 +104,7 @@ public class CallAction extends AbstractRutaAction {
           RuleElement element, RutaStream stream) throws ResourceInitializationException,
           AnalysisEngineProcessException {
 
-    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(stream, null,
+    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(null,
             element.getContainer());
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
 
@@ -210,8 +208,8 @@ public class CallAction extends AbstractRutaAction {
   }
 
   private void transform(FeatureStructure each, Map<Integer, Integer> new2oldBegin,
-          Map<Integer, Integer> new2oldEnd, Collection<AnnotationFS> fsToAdd,
-          RutaStream stream, RuleMatch match) {
+          Map<Integer, Integer> new2oldEnd, Collection<AnnotationFS> fsToAdd, RutaStream stream,
+          RuleMatch match) {
     CAS cas = stream.getCas();
     Type newType = cas.getTypeSystem().getType(each.getType().getName());
     if (newType != null && !fsToAdd.contains(each)
@@ -220,7 +218,8 @@ public class CallAction extends AbstractRutaAction {
 
       FeatureStructure newFS = null;
       if (each instanceof AnnotationFS) {
-        newFS = transformAnnotation((AnnotationFS) each, newType, new2oldBegin, new2oldEnd, stream, match);
+        newFS = transformAnnotation((AnnotationFS) each, newType, new2oldBegin, new2oldEnd, stream,
+                match);
       } else {
         newFS = cas.createFS(newType);
         fillFeatures(each, newFS, newFS.getType(), new2oldBegin, new2oldEnd, stream, match);
@@ -230,8 +229,8 @@ public class CallAction extends AbstractRutaAction {
   }
 
   private FeatureStructure transformAnnotation(AnnotationFS annotation, Type newType,
-          Map<Integer, Integer> new2oldBegin, Map<Integer, Integer> new2oldEnd,
-          RutaStream stream, RuleMatch match) {
+          Map<Integer, Integer> new2oldBegin, Map<Integer, Integer> new2oldEnd, RutaStream stream,
+          RuleMatch match) {
     CAS cas = stream.getCas();
     Integer beginOld = annotation.getBegin();
     Integer endOld = annotation.getEnd();
@@ -276,8 +275,8 @@ public class CallAction extends AbstractRutaAction {
   }
 
   private void fillFeatures(FeatureStructure oldFS, FeatureStructure newFS, Type newType,
-          Map<Integer, Integer> new2oldBegin, Map<Integer, Integer> new2oldEnd,
-          RutaStream stream, RuleMatch match) {
+          Map<Integer, Integer> new2oldBegin, Map<Integer, Integer> new2oldEnd, RutaStream stream,
+          RuleMatch match) {
     for (Object obj : newType.getFeatures()) {
       Feature feature = (Feature) obj;
       String sn = feature.getShortName();

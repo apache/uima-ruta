@@ -151,7 +151,7 @@ public class FilterManager {
   public void removeRetainTypes(List<Type> types) {
     currentRetainTypes.removeAll(types);
   }
-  
+
   public Collection<Type> getDefaultFilterTypes() {
     return defaultFilterTypes;
   }
@@ -189,7 +189,5 @@ public class FilterManager {
       return iterator;
     }
   }
-
-  
 
 }

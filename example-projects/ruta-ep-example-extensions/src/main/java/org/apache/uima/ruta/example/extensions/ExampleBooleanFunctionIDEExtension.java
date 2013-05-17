@@ -49,13 +49,13 @@ public class ExampleBooleanFunctionIDEExtension implements IIDEBooleanFunctionEx
       }
       boolean ok = true;
       List<Expression> childs = f.getChilds();
-      if(childs.size() != 1) {
+      if (childs.size() != 1) {
         IProblem problem = problemFactory.createWrongNumberOfArgumentsProblem(name, element, 1);
         rep.reportProblem(problem);
         ok = false;
       }
       Expression expr = childs.get(0);
-      if(expr.getKind() != RutaTypeConstants.RUTA_TYPE_AT) {
+      if (expr.getKind() != RutaTypeConstants.RUTA_TYPE_AT) {
         IProblem problem = problemFactory.createWrongArgumentTypeProblem(expr, "TypeExpression");
         rep.reportProblem(problem);
         ok = false;

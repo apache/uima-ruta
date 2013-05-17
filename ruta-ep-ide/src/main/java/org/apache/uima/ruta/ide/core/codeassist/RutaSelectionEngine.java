@@ -36,8 +36,8 @@ import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.ruta.ide.core.parser.RutaParseUtils;
 import org.apache.uima.ruta.ide.parser.ast.RutaActionConstants;
-import org.apache.uima.ruta.ide.parser.ast.RutaStatementConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaImportStatement;
+import org.apache.uima.ruta.ide.parser.ast.RutaStatementConstants;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
 import org.eclipse.core.resources.IFile;
@@ -144,7 +144,7 @@ public class RutaSelectionEngine extends ScriptSelectionEngine {
             results.add(impFields.get(name));
           }
         }
-        if (s.getKind() == RutaActionConstants.A_CALL) {
+        if (s != null && s.getKind() == RutaActionConstants.A_CALL) {
           SimpleReference sr = (SimpleReference) s.getChilds().get(0);
           if (sr != null) {
             String name = sr.getName();
@@ -414,7 +414,6 @@ public class RutaSelectionEngine extends ScriptSelectionEngine {
 
   protected IDLTKLanguageToolkit toolkit;
 
- 
   public IModelElement[] select(IModuleSource module, final int offset, int i) {
     sourceModule = (org.eclipse.dltk.core.ISourceModule) module.getModelElement();
     ModuleDeclaration moduleDeclaration = this.parser.parse(module);

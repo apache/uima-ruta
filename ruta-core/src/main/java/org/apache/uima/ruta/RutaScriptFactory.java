@@ -93,8 +93,8 @@ public class RutaScriptFactory {
     RutaScriptBlock result = createScriptBlock(module, null, null, null, defaultNamespace);
     List<RuleElement> ruleElements = new ArrayList<RuleElement>();
     RuleElementIsolator container = new RuleElementIsolator();
-    ruleElements.add(createRuleElement(new MatchReference("uima.tcas.DocumentAnnotation", null, null),
-            null, null, null, container, result));
+    ruleElements.add(createRuleElement(new MatchReference("uima.tcas.DocumentAnnotation", null,
+            null), null, null, null, container, result));
     RutaRule createRule = createRule(ruleElements, result);
     container.setContainer(createRule);
 
@@ -116,8 +116,8 @@ public class RutaScriptFactory {
           RuleElementQuantifier quantifier, List<AbstractRutaCondition> conditions,
           List<AbstractRutaAction> actions, RuleElementContainer container, RutaBlock parent) {
     RutaMatcher matcher = null;
-    if(expression instanceof MatchReference) {
-      matcher = new RutaTypeMatcher((MatchReference)expression);
+    if (expression instanceof MatchReference) {
+      matcher = new RutaTypeMatcher((MatchReference) expression);
     } else if (expression instanceof TypeExpression) {
       // e.g., for functions
       MatchReference matchReference = new MatchReference((TypeExpression) expression);

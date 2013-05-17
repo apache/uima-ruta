@@ -62,8 +62,8 @@ public class AnonymousWordList implements RutaWordList {
     return result;
   }
 
-  public List<AnnotationFS> find(RutaStream stream, Map<String, Type> typeMap,
-          boolean ignoreCase, int ignoreLength, boolean edit, double distance, String ignoreToken) {
+  public List<AnnotationFS> find(RutaStream stream, Map<String, Type> typeMap, boolean ignoreCase,
+          int ignoreLength, boolean edit, double distance, String ignoreToken) {
     return new ArrayList<AnnotationFS>();
   }
 

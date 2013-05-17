@@ -61,8 +61,8 @@ public class RutaCheckerProblemFactory {
   }
 
   public IProblem createFileNotFoundProblem(ASTNode node, String localPath) {
-    return new RutaCheckerDefaultProblem(this.fileName,
-            generateFileNotFoundProblemMsg(localPath), node, getLine(node));
+    return new RutaCheckerDefaultProblem(this.fileName, generateFileNotFoundProblemMsg(localPath),
+            node, getLine(node));
   }
 
   public IProblem createFileNotFoundProblem(ASTNode fileNode) {
@@ -83,16 +83,15 @@ public class RutaCheckerProblemFactory {
             getLine(node), severity);
   }
 
-  public IProblem createDuplicateShortName(RutaAbstractDeclaration var,
-          ProblemSeverity severity) {
+  public IProblem createDuplicateShortName(RutaAbstractDeclaration var, ProblemSeverity severity) {
     return new RutaCheckerDefaultProblem(this.fileName, "The type " + var.getName()
             + " conflicts with other types with same short name, but different namespace.", var,
             getLine(var), severity);
   }
 
   public IProblem createXMLProblem(ASTNode node, String localPath) {
-    return new RutaCheckerDefaultProblem(this.fileName, generateXMLProblemMsg(localPath),
-            node, getLine(node));
+    return new RutaCheckerDefaultProblem(this.fileName, generateXMLProblemMsg(localPath), node,
+            getLine(node));
   }
 
   public IProblem createTypeProblem(RutaVariableReference ref, ISourceModule currentFile) {
@@ -101,8 +100,8 @@ public class RutaCheckerProblemFactory {
 
     String errMsgTailDefault = " \" not defined in this script/block!";
     String errMsg = errMsgHead + ref.getName() + errMsgTailDefault;
-    IProblem problem = new RutaCheckerDefaultProblem(currentFile.getElementName(), errMsg,
-            ref, linetracker.getLineNumberOfOffset(ref.sourceStart()));
+    IProblem problem = new RutaCheckerDefaultProblem(currentFile.getElementName(), errMsg, ref,
+            linetracker.getLineNumberOfOffset(ref.sourceStart()));
     return problem;
   }
 

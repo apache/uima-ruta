@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.ui.wizards;
 
@@ -23,7 +23,6 @@ import org.apache.uima.ruta.ide.core.RutaNature;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.ui.wizards.NewSourceModulePage;
-
 
 public class RutaFileCreationPage extends NewSourceModulePage {
 
@@ -37,7 +36,7 @@ public class RutaFileCreationPage extends NewSourceModulePage {
     StringBuilder sb = new StringBuilder();
     sb.append("PACKAGE ");
     IScriptFolder scriptFolder = getScriptFolder();
-    IPath path =  scriptFolder.getPath().removeFirstSegments(1);
+    IPath path = scriptFolder.getPath().removeFirstSegments(1);
     String pathString = "";
     for (int i = 1; i < path.segments().length; i++) {
       pathString += path.segments()[i];

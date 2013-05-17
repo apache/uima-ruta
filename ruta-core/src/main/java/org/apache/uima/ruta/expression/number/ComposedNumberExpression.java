@@ -15,14 +15,15 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.expression.number;
 
 import java.util.List;
 
-import org.apache.uima.ruta.RutaStatement;
-
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
 
 public class ComposedNumberExpression extends AbstractNumberExpression {
 
@@ -37,46 +38,16 @@ public class ComposedNumberExpression extends AbstractNumberExpression {
   }
 
   @Override
-  public double getDoubleValue(RutaStatement parent) {
+  public double getDoubleValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     NumberExpression numberExpression = getExpressions().get(0);
     if (numberExpression == null) {
       return 0;
     }
-    double result = numberExpression.getDoubleValue(parent);
+    double result = numberExpression.getDoubleValue(parent, null, stream);
     for (int i = 0; i < getOperators().size(); i++) {
       double second = 0;
       if (getExpressions().size() > i + 1) {
-        second = getExpressions().get(i + 1).getDoubleValue(parent);
-      }
-      result = calculate(result, second, getOperators().get(i));
-    }
-    return result;
-  }
-  
-  @Override
-  public float getFloatValue(RutaStatement parent) {
-    NumberExpression numberExpression = getExpressions().get(0);
-    if (numberExpression == null) {
-      return 0;
-    }
-    float result = numberExpression.getFloatValue(parent);
-    for (int i = 0; i < getOperators().size(); i++) {
-      float second = 0;
-      if (getExpressions().size() > i + 1) {
-        second = getExpressions().get(i + 1).getFloatValue(parent);
-      }
-      result = calculate(result, second, getOperators().get(i));
-    }
-    return result;
-  }
-  
-  @Override
-  public int getIntegerValue(RutaStatement parent) {
-    int result = getExpressions().get(0).getIntegerValue(parent);
-    for (int i = 0; i < getOperators().size(); i++) {
-      int second = 0;
-      if (getExpressions().size() > i + 1) {
-        second = getExpressions().get(i + 1).getIntegerValue(parent);
+        second = getExpressions().get(i + 1).getDoubleValue(parent, null, stream);
       }
       result = calculate(result, second, getOperators().get(i));
     }
@@ -84,8 +55,38 @@ public class ComposedNumberExpression extends AbstractNumberExpression {
   }
 
   @Override
-  public String getStringValue(RutaStatement parent) {
-    return "" + getDoubleValue(parent);
+  public float getFloatValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+    NumberExpression numberExpression = getExpressions().get(0);
+    if (numberExpression == null) {
+      return 0;
+    }
+    float result = numberExpression.getFloatValue(parent, null, stream);
+    for (int i = 0; i < getOperators().size(); i++) {
+      float second = 0;
+      if (getExpressions().size() > i + 1) {
+        second = getExpressions().get(i + 1).getFloatValue(parent, null, stream);
+      }
+      result = calculate(result, second, getOperators().get(i));
+    }
+    return result;
+  }
+
+  @Override
+  public int getIntegerValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+    int result = getExpressions().get(0).getIntegerValue(parent, null, stream);
+    for (int i = 0; i < getOperators().size(); i++) {
+      int second = 0;
+      if (getExpressions().size() > i + 1) {
+        second = getExpressions().get(i + 1).getIntegerValue(parent, null, stream);
+      }
+      result = calculate(result, second, getOperators().get(i));
+    }
+    return result;
+  }
+
+  @Override
+  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+    return "" + getDoubleValue(parent, null, stream);
   }
 
   public List<NumberExpression> getExpressions() {
@@ -95,7 +96,5 @@ public class ComposedNumberExpression extends AbstractNumberExpression {
   public List<String> getOperators() {
     return ops;
   }
-
- 
 
 }

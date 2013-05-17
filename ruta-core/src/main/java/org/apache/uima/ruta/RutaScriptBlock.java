@@ -33,8 +33,8 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class RutaScriptBlock extends RutaBlock {
 
-  public RutaScriptBlock(String id, RutaRule rule, List<RutaStatement> elements,
-          RutaBlock parent, String defaultNamespace) {
+  public RutaScriptBlock(String id, RutaRule rule, List<RutaStatement> elements, RutaBlock parent,
+          String defaultNamespace) {
     super(id, rule, elements, parent, defaultNamespace);
   }
 
@@ -45,8 +45,8 @@ public class RutaScriptBlock extends RutaBlock {
     RuleApply apply = rule.apply(stream, crowd, true);
     for (AbstractRuleMatch<? extends AbstractRule> eachMatch : apply.getList()) {
       if (eachMatch.matched()) {
-        List<AnnotationFS> matchedAnnotations = ((RuleMatch) eachMatch).getMatchedAnnotations(
-                stream, null, null);
+        List<AnnotationFS> matchedAnnotations = ((RuleMatch) eachMatch).getMatchedAnnotations(null,
+                null);
         if (matchedAnnotations == null || matchedAnnotations.isEmpty()) {
           continue;
         }
@@ -54,8 +54,8 @@ public class RutaScriptBlock extends RutaBlock {
         if (each == null) {
           continue;
         }
-        List<Type> types = ((RutaRuleElement) rule.getRuleElements().get(0)).getMatcher()
-                .getTypes(getParent() == null ? this : getParent(), stream);
+        List<Type> types = ((RutaRuleElement) rule.getRuleElements().get(0)).getMatcher().getTypes(
+                getParent() == null ? this : getParent(), stream);
         for (Type eachType : types) {
           RutaStream window = stream.getWindowStream(each, eachType);
           for (RutaStatement element : getElements()) {

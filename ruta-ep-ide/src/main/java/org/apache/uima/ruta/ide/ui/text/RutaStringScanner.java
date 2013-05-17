@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.ide.ui.text;
 
@@ -29,9 +29,8 @@ import org.eclipse.jface.text.rules.WhitespaceRule;
 
 public class RutaStringScanner extends AbstractScriptScanner {
 
-  private static final String[] tokenProperties = new String[] {
-      RutaColorConstants.RUTA_STRING, RutaColorConstants.RUTA_NUMBER,
-      RutaColorConstants.RUTA_VARIABLE };
+  private static final String[] tokenProperties = new String[] { RutaColorConstants.RUTA_STRING,
+      RutaColorConstants.RUTA_NUMBER, RutaColorConstants.RUTA_VARIABLE };
 
   public RutaStringScanner(IColorManager manager, IPreferenceStore store) {
     super(manager, store);

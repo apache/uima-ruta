@@ -33,26 +33,24 @@ import org.apache.uima.ruta.expression.string.StringExpression;
 
 public class RutaDisjunctiveMatcher implements RutaMatcher {
   private final List<RutaExpression> expressions;
-  
-  private List<RutaMatcher> matchers ;
-  
+
+  private List<RutaMatcher> matchers;
+
   public RutaDisjunctiveMatcher(List<RutaExpression> expressions) {
     super();
     this.expressions = expressions;
     matchers = new ArrayList<RutaMatcher>();
     for (RutaExpression each : expressions) {
-      if(each instanceof MatchReference) {
+      if (each instanceof MatchReference) {
         matchers.add(new RutaTypeMatcher((MatchReference) each));
-      } else if(each instanceof StringExpression) {
+      } else if (each instanceof StringExpression) {
         matchers.add(new RutaLiteralMatcher((StringExpression) each));
       }
     }
-    
-    
+
   }
 
-  public Collection<AnnotationFS> getMatchingAnnotations(RutaStream stream,
-          RutaBlock parent) {
+  public Collection<AnnotationFS> getMatchingAnnotations(RutaStream stream, RutaBlock parent) {
     Collection<AnnotationFS> result = new ArrayList<AnnotationFS>();
     for (RutaMatcher each : matchers) {
       result.addAll(each.getMatchingAnnotations(stream, parent));
@@ -63,7 +61,7 @@ public class RutaDisjunctiveMatcher implements RutaMatcher {
   public boolean match(AnnotationFS annotation, RutaStream stream, RutaBlock parent) {
     for (RutaMatcher each : matchers) {
       boolean match = each.match(annotation, stream, parent);
-      if(match) {
+      if (match) {
         return true;
       }
     }
@@ -115,6 +113,5 @@ public class RutaDisjunctiveMatcher implements RutaMatcher {
   public String toString() {
     return matchers.toString();
   }
-  
- 
+
 }

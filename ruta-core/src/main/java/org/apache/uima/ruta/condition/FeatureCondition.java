@@ -70,14 +70,15 @@ public class FeatureCondition extends AbstractRutaCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          RutaStream stream, InferenceCrowd crowd) {
-    String stringValue = featureStringExpression.getStringValue(element.getParent());
+  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
+          InferenceCrowd crowd) {
+    String stringValue = featureStringExpression.getStringValue(element.getParent(), annotation,
+            stream);
     Feature featureByBaseName = annotation.getType().getFeatureByBaseName(stringValue);
 
     if (stringExpr != null) {
       String value = annotation.getStringValue(featureByBaseName);
-      String string = stringExpr.getStringValue(element.getParent());
+      String string = stringExpr.getStringValue(element.getParent(), null, stream);
       boolean result = string != null && string.equals(value);
       return new EvaluatedCondition(this, result);
     } else if (numberExpr != null) {
@@ -85,33 +86,33 @@ public class FeatureCondition extends AbstractRutaCondition {
       boolean result = false;
       if (range.equals(UIMAConstants.TYPE_INTEGER)) {
         int value = annotation.getIntValue(featureByBaseName);
-        int v = numberExpr.getIntegerValue(element.getParent());
+        int v = numberExpr.getIntegerValue(element.getParent(), annotation, stream);
         result = value == v;
       } else if (range.equals(UIMAConstants.TYPE_DOUBLE)) {
         double value = annotation.getDoubleValue(featureByBaseName);
-        double v = numberExpr.getDoubleValue(element.getParent());
+        double v = numberExpr.getDoubleValue(element.getParent(), annotation, stream);
         result = value == v;
       } else if (range.equals(UIMAConstants.TYPE_FLOAT)) {
         float value = annotation.getFloatValue(featureByBaseName);
-        float v = numberExpr.getFloatValue(element.getParent());
+        float v = numberExpr.getFloatValue(element.getParent(), annotation, stream);
         result = value == v;
       } else if (range.equals(UIMAConstants.TYPE_BYTE)) {
         byte value = annotation.getByteValue(featureByBaseName);
-        byte v = (byte) numberExpr.getIntegerValue(element.getParent());
+        byte v = (byte) numberExpr.getIntegerValue(element.getParent(), annotation, stream);
         result = value == v;
       } else if (range.equals(UIMAConstants.TYPE_SHORT)) {
         short value = annotation.getShortValue(featureByBaseName);
-        short v = (short) numberExpr.getIntegerValue(element.getParent());
+        short v = (short) numberExpr.getIntegerValue(element.getParent(), annotation, stream);
         result = value == v;
       } else if (range.equals(UIMAConstants.TYPE_LONG)) {
         long value = annotation.getLongValue(featureByBaseName);
-        long v = numberExpr.getIntegerValue(element.getParent());
+        long v = numberExpr.getIntegerValue(element.getParent(), annotation, stream);
         result = value == v;
       }
       return new EvaluatedCondition(this, result);
     } else if (booleanExpr != null) {
       boolean value = annotation.getBooleanValue(featureByBaseName);
-      boolean v = booleanExpr.getBooleanValue(element.getParent());
+      boolean v = booleanExpr.getBooleanValue(element.getParent(), annotation, stream);
       boolean result = value == v;
       return new EvaluatedCondition(this, result);
     } else if (typeExpr != null) {

@@ -35,7 +35,7 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 public class QuestionGreedy implements RuleElementQuantifier {
 
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
-          RutaStatement element, InferenceCrowd crowd) {
+          RutaStatement element, RutaStream stream, InferenceCrowd crowd) {
     boolean result = true;
     if (matches == null) {
       return Collections.emptyList();
@@ -56,13 +56,13 @@ public class QuestionGreedy implements RuleElementQuantifier {
   }
 
   public boolean continueMatch(boolean after, AnnotationFS annotation, RuleElement ruleElement,
-          RuleMatch extendedMatch, ComposedRuleElementMatch containerMatch,
-          RutaStream stream, InferenceCrowd crowd) {
+          RuleMatch extendedMatch, ComposedRuleElementMatch containerMatch, RutaStream stream,
+          InferenceCrowd crowd) {
     List<RuleElementMatch> list = containerMatch.getInnerMatches().get(ruleElement);
     return list == null || list.isEmpty();
   }
 
-  public boolean isOptional(RutaBlock parent) {
+  public boolean isOptional(RutaBlock parent, RutaStream stream) {
     return true;
   }
 }

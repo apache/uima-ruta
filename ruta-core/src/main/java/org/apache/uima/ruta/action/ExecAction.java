@@ -34,10 +34,10 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaModule;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
@@ -77,7 +77,7 @@ public class ExecAction extends CallAction {
     targetEngine.process(cas);
 
     if (typeList != null) {
-      List<Type> list = typeList.getList(element.getParent());
+      List<Type> list = typeList.getList(element.getParent(), stream);
       for (Type type : list) {
         Map<RutaBasic, Collection<AnnotationFS>> map = new HashMap<RutaBasic, Collection<AnnotationFS>>();
         AnnotationIndex<AnnotationFS> ai = cas.getAnnotationIndex(type);
@@ -96,7 +96,7 @@ public class ExecAction extends CallAction {
         for (Entry<RutaBasic, Collection<AnnotationFS>> entry : entrySet) {
           for (AnnotationFS each : entry.getValue()) {
             stream.removeAnnotation(each);
-            stream.addAnnotation(each, true, match); 
+            stream.addAnnotation(each, true, match);
           }
         }
       }

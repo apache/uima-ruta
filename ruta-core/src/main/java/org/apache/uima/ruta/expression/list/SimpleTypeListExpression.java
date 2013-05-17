@@ -23,7 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.cas.Type;
-import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 
 public class SimpleTypeListExpression extends TypeListExpression {
@@ -36,7 +37,7 @@ public class SimpleTypeListExpression extends TypeListExpression {
   }
 
   @Override
-  public List<Type> getList(RutaStatement parent) {
+  public List<Type> getList(RutaBlock parent, RutaStream stream) {
     List<Type> result = new ArrayList<Type>();
     for (TypeExpression each : list) {
       result.add(each.getType(parent));
