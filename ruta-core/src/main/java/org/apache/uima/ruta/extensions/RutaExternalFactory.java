@@ -170,4 +170,52 @@ public class RutaExternalFactory {
             || !stringFunctionExtensions.isEmpty() || !typeFunctionExtensions.isEmpty();
   }
 
+  public Map<String, IRutaNumberFunctionExtension> getNumberFunctionExtensions() {
+    return numberFunctionExtensions;
+  }
+
+  public void setNumberFunctionExtensions(Map<String, IRutaNumberFunctionExtension> numberFunctionExtensions) {
+    this.numberFunctionExtensions = numberFunctionExtensions;
+  }
+
+  public Map<String, IRutaStringFunctionExtension> getStringFunctionExtensions() {
+    return stringFunctionExtensions;
+  }
+
+  public void setStringFunctionExtensions(Map<String, IRutaStringFunctionExtension> stringFunctionExtensions) {
+    this.stringFunctionExtensions = stringFunctionExtensions;
+  }
+
+  public Map<String, IRutaBooleanFunctionExtension> getBooleanFunctionExtensions() {
+    return booleanFunctionExtensions;
+  }
+
+  public void setBooleanFunctionExtensions(Map<String, IRutaBooleanFunctionExtension> booleanFunctionExtensions) {
+    this.booleanFunctionExtensions = booleanFunctionExtensions;
+  }
+
+  public Map<String, IRutaTypeFunctionExtension> getTypeFunctionExtensions() {
+    return typeFunctionExtensions;
+  }
+
+  public void setTypeFunctionExtensions(Map<String, IRutaTypeFunctionExtension> typeFunctionExtensions) {
+    this.typeFunctionExtensions = typeFunctionExtensions;
+  }
+
+  public Map<String, IRutaActionExtension> getActionExtensions() {
+    return actionExtensions;
+  }
+
+  public void setActionExtensions(Map<String, IRutaActionExtension> actionExtensions) {
+    this.actionExtensions = actionExtensions;
+  }
+
+  public Map<String, IRutaConditionExtension> getConditionExtensions() {
+    return conditionExtensions;
+  }
+
+  public void setConditionExtensions(Map<String, IRutaConditionExtension> conditionExtensions) {
+    this.conditionExtensions = conditionExtensions;
+  }
+
 }

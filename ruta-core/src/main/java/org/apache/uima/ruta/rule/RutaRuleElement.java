@@ -242,13 +242,18 @@ public class RutaRuleElement extends AbstractRuleElement {
         continueMatchSomewhereElse(after, true, annotation, ruleMatch, ruleApply, containerMatch,
                 sideStepOrigin, entryPoint, stream, crowd);
       } else if (getContainer() instanceof ComposedRuleElement) {
+        ComposedRuleElement cre = (ComposedRuleElement) getContainer();
+        if(cre.getQuantifier().isOptional(parent, stream)) {
+          continueMatchSomewhereElse(after, true, annotation, ruleMatch, ruleApply, containerMatch,
+                  sideStepOrigin, entryPoint, stream, crowd);
+        } else {
         RuleElementMatch failedMatch = new RuleElementMatch(this, containerMatch);
         failedMatch.setBaseConditionMatched(false);
         containerMatch.addInnerMatch(this, failedMatch, stream);
         ComposedRuleElement composed = (ComposedRuleElement) getContainer();
         composed.fallbackContinue(after, true, annotation, ruleMatch, ruleApply, containerMatch,
                 sideStepOrigin, entryPoint, stream, crowd);
-      }
+        }}
     } else {
       List<RuleElementMatch> evaluateMatches = quantifier.evaluateMatches(matchInfo, parent,
               stream, crowd);

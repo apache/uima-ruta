@@ -197,6 +197,27 @@ public void emitErrorMessage(String msg) {
 		this.resourcePaths = resourcePaths;
 	}
 
+	private boolean isBooleanFunctionExtension(String name) {
+      	  return external.getBooleanFunctionExtensions().keySet().contains(name);
+      	}
+      	private boolean isActionExtension(String name) {
+      	  return external.getActionExtensions().keySet().contains(name);
+      	}
+      	private boolean isConditionExtension(String name) {
+      	  return external.getConditionExtensions().keySet().contains(name);
+      	}
+      	private boolean isNumberFunctionExtension(String name) {
+      	  return external.getNumberFunctionExtensions().keySet().contains(name);
+      	}
+      	private boolean isStringFunctionExtension(String name) {
+      	  return external.getStringFunctionExtensions().keySet().contains(name);
+      	}
+      	private boolean isTypeFunctionExtension(String name) {
+      	  return external.getTypeFunctionExtensions().keySet().contains(name);
+      	}
+      	
+
+
 }
 
 @rulecatch {
@@ -882,7 +903,7 @@ typeFunction returns [TypeExpression expr = null]
 // not checked
 externalTypeFunction returns [TypeExpression expr = null]
 	:
-	//{isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "TYPEFUNCTION")}? 
+	{isTypeFunctionExtension(input.LT(1).getText())}? 
 	id = Identifier LPAREN
 	args = varArgumentList?	RPAREN
 	{
@@ -1027,7 +1048,7 @@ condition  returns [AbstractRutaCondition result = null]
 
 externalCondition returns [AbstractRutaCondition condition = null]
 	:		
-	
+	{isConditionExtension(input.LT(1).getText())}? 
 	id = Identifier LPAREN args = varArgumentList?	RPAREN
 	{
 		condition = external.createExternalCondition(id, args);
@@ -1273,7 +1294,7 @@ action  returns [AbstractRutaAction result = null]
 
 externalAction returns [AbstractRutaAction action = null]
 	:		
-	
+	{isActionExtension(input.LT(1).getText())}? 
 	id = Identifier LPAREN args = varArgumentList?	RPAREN
 	{
 		action = external.createExternalAction(id, args);
@@ -1859,7 +1880,7 @@ numberFunction returns [NumberExpression expr = null]
 // not checked
 externalNumberFunction returns [NumberExpression expr = null]
 	:
-	//{isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "NUMBERFUNCTION")}? 
+	{isNumberFunctionExtension(input.LT(1).getText())}? 
 	id = Identifier LPAREN
 	args = varArgumentList? RPAREN
 	{
@@ -1945,7 +1966,7 @@ stringFunction returns [StringExpression expr = null]
 // not checked
 externalStringFunction returns [StringExpression expr = null]
 	:
-	//{isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "STRINGFUNCTION")}? 
+	{isStringFunctionExtension(input.LT(1).getText())}? 
 	id = Identifier LPAREN
 	args = varArgumentList?	RPAREN
 	{
@@ -1997,7 +2018,7 @@ booleanFunction returns [BooleanExpression expr = null]
 // not checked
 externalBooleanFunction returns [BooleanExpression expr = null]
 	:
-	//{isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "BOOLEANFUNCTION")}? 
+	{isBooleanFunctionExtension(input.LT(1).getText())}? 
 	id = Identifier LPAREN
 	args = varArgumentList? RPAREN
 	{
