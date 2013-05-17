@@ -149,7 +149,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       ruleMatch.setMatched(ruleMatch.matched() && (evaluateMatches != null || continueMatch));
       if (failed) {
         if (nextElement != null) {
-          AnnotationFS backtrackedAnnotation = getBacktrackedAnnotation(evaluateMatches);
+          AnnotationFS backtrackedAnnotation = getBacktrackedAnnotation(evaluateMatches, annotation);
           if (backtrackedAnnotation != null) {
             nextElement.continueMatch(after, backtrackedAnnotation, ruleMatch, ruleApply,
                     parentContainerMatch, sideStepOrigin, null, stream, crowd);
@@ -176,9 +176,12 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     }
   }
 
-  private AnnotationFS getBacktrackedAnnotation(List<RuleElementMatch> evaluateMatches) {
+  private AnnotationFS getBacktrackedAnnotation(List<RuleElementMatch> evaluateMatches, AnnotationFS annotation) {
     if (evaluateMatches == null) {
       return null;
+    }
+    if(evaluateMatches.isEmpty()) {
+      return annotation;
     }
     // TODO both directions!
     List<AnnotationFS> textsMatched = evaluateMatches.get(evaluateMatches.size() - 1)
