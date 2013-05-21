@@ -111,6 +111,13 @@ public class RutaTypeMatcher implements RutaMatcher {
     }
     if (stream.isValid()) {
       RutaBasic nextBasic = (RutaBasic) stream.get();
+      // TODO HOTFIX for annotation of length 0
+      while (stream.isValid() && nextBasic.getBegin() < lastBasic.getEnd()) {
+        stream.moveToNext();
+        if (stream.isValid()) {
+          nextBasic = (RutaBasic) stream.get();
+        }
+      }
       List<Type> reTypes = getTypes(parent, stream);
       Collection<AnnotationFS> anchors = new TreeSet<AnnotationFS>(comparator);
       for (Type eachMatchType : reTypes) {
@@ -149,6 +156,13 @@ public class RutaTypeMatcher implements RutaMatcher {
     }
     if (stream.isValid()) {
       RutaBasic nextBasic = (RutaBasic) stream.get();
+      // TODO HOTFIX for annotation of length 0
+      while (stream.isValid() && nextBasic.getEnd() > firstBasic.getBegin()) {
+        stream.moveToPrevious();
+        if (stream.isValid()) {
+          nextBasic = (RutaBasic) stream.get();
+        }
+      }
       List<Type> reTypes = getTypes(parent, stream);
       Collection<AnnotationFS> anchors = new TreeSet<AnnotationFS>(comparator);
       for (Type eachMatchType : reTypes) {

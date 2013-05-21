@@ -533,7 +533,15 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
         moveToPrevious();
       }
       if (isValid()) {
-        return (RutaBasic) get();
+        RutaBasic nextBasic = (RutaBasic) get();
+        // TODO HOTFIX for annotation of length 0
+        while (isValid() && nextBasic.getEnd() > annotation.getBegin()) {
+          moveToNext();
+          if (isValid()) {
+            nextBasic = (RutaBasic) get();
+          }
+        }
+        return nextBasic;
       }
     } else {
       RutaBasic pointer = endAnchors.get(annotation.getEnd());
@@ -542,7 +550,15 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
         moveToNext();
       }
       if (isValid()) {
-        return (RutaBasic) get();
+        RutaBasic nextBasic = (RutaBasic) get();
+        // TODO HOTFIX for annotation of length 0
+        while (isValid() && nextBasic.getBegin() < annotation.getEnd()) {
+          moveToNext();
+          if (isValid()) {
+            nextBasic = (RutaBasic) get();
+          }
+        }
+        return nextBasic;
       }
     }
     return null;
