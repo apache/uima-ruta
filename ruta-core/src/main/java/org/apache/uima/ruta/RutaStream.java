@@ -690,7 +690,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
             simpleGreedyForComposed, crowd);
   }
 
-  public int getHistogram(Type type) {
+  public long getHistogram(Type type) {
     return cas.getAnnotationIndex(type).size();
   }
 

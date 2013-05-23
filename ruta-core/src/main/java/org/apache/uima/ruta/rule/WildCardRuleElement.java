@@ -473,7 +473,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
     return Collections.emptyList();
   }
 
-  public int estimateAnchors(RutaStream stream) {
+  public long estimateAnchors(RutaStream stream) {
     return Integer.MAX_VALUE;
   }
 

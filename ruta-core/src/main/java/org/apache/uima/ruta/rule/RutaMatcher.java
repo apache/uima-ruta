@@ -38,7 +38,7 @@ public interface RutaMatcher {
 
   RutaExpression getExpression();
 
-  int estimateAnchors(RutaBlock parent, RutaStream stream);
+  long estimateAnchors(RutaBlock parent, RutaStream stream);
 
   Collection<AnnotationFS> getAnnotationsAfter(RutaRuleElement ruleElement,
           AnnotationFS annotation, RutaStream stream, RutaBlock parent);

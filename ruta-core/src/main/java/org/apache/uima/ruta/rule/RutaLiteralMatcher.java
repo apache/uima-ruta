@@ -67,7 +67,7 @@ public class RutaLiteralMatcher implements RutaMatcher {
     return expression;
   }
 
-  public int estimateAnchors(RutaBlock parent, RutaStream stream) {
+  public long estimateAnchors(RutaBlock parent, RutaStream stream) {
     return Integer.MAX_VALUE;
   }
 

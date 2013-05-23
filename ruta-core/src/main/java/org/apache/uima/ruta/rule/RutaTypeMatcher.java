@@ -280,7 +280,7 @@ public class RutaTypeMatcher implements RutaMatcher {
     return type;
   }
 
-  public int estimateAnchors(RutaBlock parent, RutaStream stream) {
+  public long estimateAnchors(RutaBlock parent, RutaStream stream) {
     TypeExpression typeExpression = mr.getTypeExpression(parent, stream);
     return stream.getHistogram(getType(typeExpression, parent, stream));
   }

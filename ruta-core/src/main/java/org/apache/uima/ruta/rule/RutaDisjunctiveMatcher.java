@@ -80,8 +80,8 @@ public class RutaDisjunctiveMatcher implements RutaMatcher {
     return null;
   }
 
-  public int estimateAnchors(RutaBlock parent, RutaStream stream) {
-    int result = 0;
+  public long estimateAnchors(RutaBlock parent, RutaStream stream) {
+    long result = 0;
     for (RutaMatcher each : matchers) {
       result += each.estimateAnchors(parent, stream);
     }

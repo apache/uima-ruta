@@ -61,7 +61,7 @@ public interface RuleElement {
 
   RuleElementQuantifier getQuantifier();
 
-  int estimateAnchors(RutaStream stream);
+  long estimateAnchors(RutaStream stream);
 
   List<Integer> getSelfIndexList();
 

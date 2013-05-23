@@ -247,10 +247,14 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     return anchors;
   }
 
-  public int estimateAnchors(RutaStream stream) {
-    int result = 1;
+  public long estimateAnchors(RutaStream stream) {
+    long result = 1;
     for (RuleElement each : elements) {
       result += each.estimateAnchors(stream);
+    }
+    if (quantifier.isOptional(getParent(), stream)) {
+      // three times since sibling elements maybe need to be checked
+      result *= 3 * (int) stream.getIndexPenalty();
     }
     return result;
   }

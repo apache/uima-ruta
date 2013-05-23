@@ -365,9 +365,9 @@ public class RutaRuleElement extends AbstractRuleElement {
     return parent;
   }
 
-  public int estimateAnchors(RutaStream stream) {
+  public long estimateAnchors(RutaStream stream) {
     if (quantifier.isOptional(getParent(), stream)) {
-      return Integer.MAX_VALUE;
+      return matcher.estimateAnchors(parent, stream) + Integer.MAX_VALUE;
     }
     return matcher.estimateAnchors(parent, stream);
   }
