@@ -242,7 +242,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
         nextElement.continueMatch(after, endAnchor, extendedMatch, ruleApply,
                 extendedContainerMatch, sideStepOrigin, nextElement, stream, crowd);
         List<RuleElementMatch> nextList = extendedContainerMatch.getInnerMatches().get(nextElement);
-        if (nextList == null || nextList.isEmpty()) {
+        if (nextList == null || nextList.isEmpty() || !nextList.get(nextList.size() - 1).matched()) {
           moveOn(after, iterator);
         } else {
           doneHere = true;
