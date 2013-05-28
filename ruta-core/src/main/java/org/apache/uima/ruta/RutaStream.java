@@ -71,7 +71,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
 
   private boolean dynamicAnchoring;
 
-  private double indexPenalty = 5;
+  private double indexPenalty = 2;
 
   private double anchoringFactor;
 
