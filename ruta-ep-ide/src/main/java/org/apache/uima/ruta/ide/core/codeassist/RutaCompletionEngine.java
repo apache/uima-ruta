@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.uima.UIMAFramework;
-import org.apache.uima.analysis_component.AnalysisComponent;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
@@ -74,9 +73,6 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.core.SourceField;
 import org.eclipse.dltk.internal.core.SourceMethod;
 import org.eclipse.dltk.internal.core.SourceModule;
-import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
-import org.reflections.util.ConfigurationBuilder;
 
 public class RutaCompletionEngine extends ScriptCompletionEngine {
 
@@ -243,11 +239,7 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
       }
     } else if (type == ComponentDeclaration.UIMAFIT_ENGINE) {
       List<String> engines = new ArrayList<String>();
-      Reflections reflections = new Reflections(new ConfigurationBuilder().addUrls(
-              classloader.getURLs()).setScanners(new SubTypesScanner(true)));
-      Set<String> subTypesOf = reflections.getStore().getSubTypesOf(
-              AnalysisComponent.class.getName());
-      engines.addAll(subTypesOf);
+      // TODO: collect engines
       for (String string : engines) {
         if (match(complString, string)) {
           addProposal(complString, string, CompletionProposal.PACKAGE_REF);

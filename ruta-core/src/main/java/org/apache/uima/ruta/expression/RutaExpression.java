@@ -31,8 +31,6 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.RutaStream;
 
-import com.google.common.collect.Lists;
-
 public class RutaExpression extends RutaElement {
 
   protected List<AnnotationFS> getTargetAnnotation(AnnotationFS annotation, Type type,
@@ -52,7 +50,7 @@ public class RutaExpression extends RutaElement {
       @SuppressWarnings("unchecked")
       Collection<AnnotationFS> intersection = CollectionUtils
               .intersection(beginAnchors, endAnchors);
-      return Lists.newArrayList(intersection);
+      return new ArrayList<AnnotationFS>(intersection);
     }
   }
 
