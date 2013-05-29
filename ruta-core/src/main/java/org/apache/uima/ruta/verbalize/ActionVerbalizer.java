@@ -58,6 +58,7 @@ import org.apache.uima.ruta.action.SetFeatureAction;
 import org.apache.uima.ruta.action.ShiftAction;
 import org.apache.uima.ruta.action.TransferAction;
 import org.apache.uima.ruta.action.TrieAction;
+import org.apache.uima.ruta.action.TrimAction;
 import org.apache.uima.ruta.action.UnmarkAction;
 import org.apache.uima.ruta.action.UnmarkAllAction;
 import org.apache.uima.ruta.expression.RutaExpression;
@@ -154,6 +155,8 @@ public class ActionVerbalizer {
       return "REMOVEDUPLICATE";
     } else if (action instanceof UnmarkAllAction) {
       return "UNMARKALL";
+    } else if (action instanceof TrimAction) {
+      return "TRIM";
     } else if (action instanceof ImplicitMarkAction) {
       return "";
     } else if (action instanceof ImplicitFeatureAction) {
@@ -462,6 +465,16 @@ public class ActionVerbalizer {
       String verbalize = verbalizer.verbalize(a.getType());
       String but = a.getList() == null ? "" : ", " + verbalizer.verbalize(a.getList());
       return name + verbalize + but + ")";
+    } else if (action instanceof TrimAction) {
+      TrimAction a = (TrimAction) action;
+      TypeListExpression typeList = a.getTypeList();
+      String verbalize = "";
+      if(typeList != null) {
+        verbalize = verbalizer.verbalize(typeList);
+      } else if(a.getTypes() != null) {
+        verbalize = verbalizer.verbalizeExpressionList(a.getTypes());
+      }
+      return name + verbalize + ")";
     } else if (action instanceof ImplicitMarkAction) {
       ImplicitMarkAction a = (ImplicitMarkAction) action;
       return verbalizer.verbalize(a.getType());
