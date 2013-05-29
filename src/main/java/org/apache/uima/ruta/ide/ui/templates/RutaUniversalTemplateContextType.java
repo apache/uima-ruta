@@ -25,7 +25,7 @@ import org.eclipse.dltk.ui.templates.ScriptTemplateContextType;
 import org.eclipse.jface.text.IDocument;
 
 public class RutaUniversalTemplateContextType extends ScriptTemplateContextType {
-  public static final String CONTEXT_TYPE_ID = "tmUniversalTemplateContextType";
+  public static final String CONTEXT_TYPE_ID = "rutaUniversalTemplateContextType";
 
   public RutaUniversalTemplateContextType() {
     // empty constructor
