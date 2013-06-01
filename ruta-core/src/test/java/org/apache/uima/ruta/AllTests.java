@@ -42,7 +42,8 @@ import org.junit.runners.Suite.SuiteClasses;
     CurrentCountTest.class, PartOfTest.class, PositionTest.class, DefaultSeederTest.class,
     ConditionVerbalizerTest.class, ActionVerbalizerTest.class, ExpressionVerbalizerTest.class,
     HtmlAnnotatorTest.class, HtmlConverterTest.class, EmptyDocumentTest.class,
-    RutaModifierTest.class, RegExpRuleTest.class, WildCardTest.class, EqualShortNameTest.class })
+    RutaModifierTest.class, RegExpRuleTest.class, WildCardTest.class, WildCardTest2.class,
+    WildCardTest3.class, EqualShortNameTest.class })
 public class AllTests {
 
 }

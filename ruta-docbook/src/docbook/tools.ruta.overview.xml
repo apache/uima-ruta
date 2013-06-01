@@ -255,7 +255,7 @@ PERIOD #{-> MARK(Sentence)} PERIOD;]]></programlisting>
     
     <para>
       This rule annotates everything between two <quote>PERIOD</quote> annotations with the type <quote>Sentence</quote>. Please note that the resulting 
-      annotations are probably invisible, if they start or end with an filtered type.
+      annotations is automatically trimmed using the current filtering settings.
     </para>
 
     <para>

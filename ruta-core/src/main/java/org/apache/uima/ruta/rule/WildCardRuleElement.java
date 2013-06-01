@@ -235,7 +235,6 @@ public class WildCardRuleElement extends AbstractRuleElement {
       RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch);
 
       AnnotationFS coveredByWildCard = getCoveredByWildCard(after, annotation, nextOne, stream);
-
       doMatch(coveredByWildCard, extendedMatch, extendedContainerMatch, annotation == null, stream,
               crowd);
       if (extendedMatch.matched()) {
@@ -429,6 +428,17 @@ public class WildCardRuleElement extends AbstractRuleElement {
       end = later.getBegin();
     }
 
+    RutaBasic beginAnchor = stream.getBeginAnchor(begin);
+    RutaBasic endAnchor = stream.getEndAnchor(end);
+    if(beginAnchor != null && !stream.isVisible(beginAnchor)) {
+      beginAnchor = stream.getBasicNextTo(false, beginAnchor); 
+      begin = beginAnchor.getBegin();
+    }
+    if(endAnchor != null && !stream.isVisible(endAnchor)) {
+      endAnchor = stream.getBasicNextTo(true, endAnchor);      
+      end = endAnchor.getEnd();
+    }
+    
     AnnotationFS afs = cas.createAnnotation(type, begin, end);
 
     return afs;

@@ -58,8 +58,8 @@ public class WildCardTest2 {
     ai = cas.getAnnotationIndex(t);
     assertEquals(2, ai.size());
     iterator = ai.iterator();
-    assertEquals(" ClearTK: A UIMA Toolkit for Statistical Natural Language Processing.", iterator.next().getCoveredText());
-    assertEquals(" Learning Information Extraction Rules for Semi-Structured and Free Text.", iterator.next().getCoveredText());
+    assertEquals("ClearTK: A UIMA Toolkit for Statistical Natural Language Processing.", iterator.next().getCoveredText());
+    assertEquals("Learning Information Extraction Rules for Semi-Structured and Free Text.", iterator.next().getCoveredText());
     
     t = RutaTestUtils.getTestType(cas, 3);
     ai = cas.getAnnotationIndex(t);

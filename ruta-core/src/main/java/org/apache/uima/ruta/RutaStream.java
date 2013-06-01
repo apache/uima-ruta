@@ -536,7 +536,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
         RutaBasic nextBasic = (RutaBasic) get();
         // TODO HOTFIX for annotation of length 0
         while (isValid() && nextBasic.getEnd() > annotation.getBegin()) {
-          moveToNext();
+          moveToPrevious();
           if (isValid()) {
             nextBasic = (RutaBasic) get();
           }
