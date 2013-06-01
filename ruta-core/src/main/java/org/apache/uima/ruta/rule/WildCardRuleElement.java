@@ -266,7 +266,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
         RutaTypeMatcher typeMatcher = (RutaTypeMatcher) re.getMatcher();
         List<Type> types = typeMatcher.getTypes(parent, stream);
         Type type = types.get(0);
-        iterator = getIteratorOfType(type, annotation, stream);
+        iterator = getIteratorOfType(after, type, annotation, stream);
       } else if (matcher instanceof RutaDisjunctiveMatcher) {
         List<Type> types = matcher.getTypes(parent, stream);
         iterator = getIteratorForDisjunctive(cas, types, after, annotation, stream);
@@ -274,7 +274,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
         // should not happen
       }
     } else {
-      iterator = getIteratorOfType(defaultType, annotation, stream);
+      iterator = getIteratorOfType(after, defaultType, annotation, stream);
     }
     if (iterator.isValid() && iterator.get().equals(annotation)) {
       moveOn(after, iterator);
@@ -282,7 +282,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
     return iterator;
   }
 
-  private FSIterator<AnnotationFS> getIteratorOfType(Type type, AnnotationFS annotation,
+  private FSIterator<AnnotationFS> getIteratorOfType(boolean after, Type type, AnnotationFS annotation,
           RutaStream stream) {
     CAS cas = stream.getCas();
     FSIterator<AnnotationFS> result = null;
@@ -291,7 +291,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
       if (annotation == null) {
         result = cas.getAnnotationIndex(type).iterator();
       } else {
-        result = cas.getAnnotationIndex(type).iterator(annotation);
+        AnnotationFS pointer = stream.getAnchor(after, annotation);
+        result = cas.getAnnotationIndex(type).iterator(pointer);
       }
     } else {
       JCas jcas = null;

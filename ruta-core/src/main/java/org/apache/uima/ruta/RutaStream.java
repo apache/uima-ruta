@@ -753,4 +753,12 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     }
   }
 
+  public RutaBasic getAnchor(boolean direction, AnnotationFS annotation) {
+    if (direction) {
+      return getEndAnchor(annotation.getEnd());
+    } else {
+      return getBeginAnchor(annotation.getBegin());
+    }
+  }
+  
 }
