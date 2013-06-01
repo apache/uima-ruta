@@ -1179,7 +1179,10 @@ conditionPosition returns [RutaCondition cond = null]
     ;
 conditionRegExp returns [RutaCondition cond = null]
     :
-    name = REGEXP LPAREN (v = variable COMMA)? pattern = stringExpression (COMMA caseSensitive = booleanExpression)? 
+    name = REGEXP LPAREN 
+    ((stringExpression COMMA stringExpression)=> v = stringExpression COMMA pattern = stringExpression
+    | pattern = stringExpression
+    ) (COMMA caseSensitive = booleanExpression)? 
     {cond = ConditionFactory.createCondition(name, v, pattern, caseSensitive);}   
     RPAREN 
     ;

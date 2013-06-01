@@ -77,6 +77,7 @@ public class ConditionVerbalizerTest {
     List<TypeExpression> typeExprList = new ArrayList<TypeExpression>();
     List<StringExpression> stringExprList = new ArrayList<StringExpression>();
     String var = "anyVar";
+    StringExpression varExpr = new ReferenceNumberExpression(var);
     TypeExpression typeExpr1 = new SimpleTypeExpression("Type1");
     TypeExpression typeExpr2 = new ReferenceTypeExpression("typeVar");
     typeExprList.add(typeExpr1);
@@ -250,7 +251,7 @@ public class ConditionVerbalizerTest {
     s = v.verbalize(c);
     assertEquals("REGEXP(\"string\", true)", s);
 
-    c = new RegExpCondition(var, stringExpr, boolExpr1);
+    c = new RegExpCondition(varExpr, stringExpr, boolExpr1);
     s = v.verbalize(c);
     assertEquals("REGEXP(anyVar, \"string\", true)", s);
 

@@ -129,9 +129,9 @@ public class ConditionFactory {
     return new RegExpCondition(patternExpr, ignoreCase);
   }
 
-  public static AbstractRutaCondition createConditionRegExp(Token var,
+  public static AbstractRutaCondition createConditionRegExp(StringExpression v,
           StringExpression patternExpr, BooleanExpression ignoreCase, RutaBlock parent) {
-    return new RegExpCondition(var == null ? null : var.getText(), patternExpr, ignoreCase);
+    return new RegExpCondition(v, patternExpr, ignoreCase);
   }
 
   public static AbstractRutaCondition createConditionScore(NumberExpression min,

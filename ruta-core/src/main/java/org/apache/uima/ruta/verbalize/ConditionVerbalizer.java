@@ -54,6 +54,7 @@ import org.apache.uima.ruta.condition.VoteCondition;
 import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.expression.number.NumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
+import org.apache.uima.ruta.expression.string.StringExpression;
 
 public class ConditionVerbalizer {
 
@@ -334,12 +335,12 @@ public class ConditionVerbalizer {
               + verbalizer.verbalize(c.getPosition()) + relative + ")";
     } else if (condition instanceof RegExpCondition) {
       RegExpCondition c = (RegExpCondition) condition;
-      String variable = c.getVariable();
+      StringExpression variable = c.getVariable();
       String ic = verbalizer.verbalize(c.getIgnoreCase());
       if (variable == null) {
         return name + verbalizer.verbalize(c.getPattern()) + ", " + ic + ")";
       } else {
-        return name + variable + ", " + verbalizer.verbalize(c.getPattern()) + ", " + ic + ")";
+        return name + verbalizer.verbalize(variable) + ", " + verbalizer.verbalize(c.getPattern()) + ", " + ic + ")";
       }
     } else if (condition instanceof ScoreCondition) {
       ScoreCondition c = (ScoreCondition) condition;

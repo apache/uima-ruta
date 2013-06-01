@@ -1159,7 +1159,11 @@ conditionPosition returns [AbstractRutaCondition cond = null]
     ;
 conditionRegExp returns [AbstractRutaCondition cond = null]
     :
-    REGEXP LPAREN (v = variable COMMA)? pattern = stringExpression (COMMA caseSensitive = booleanExpression)? RPAREN
+    REGEXP LPAREN 
+    ((stringExpression COMMA stringExpression)=> v = stringExpression COMMA pattern = stringExpression
+    | pattern = stringExpression
+    )
+    (COMMA caseSensitive = booleanExpression)? RPAREN
     {cond = ConditionFactory.createConditionRegExp(v, pattern, caseSensitive, $blockDeclaration::env);}    
     ;
 

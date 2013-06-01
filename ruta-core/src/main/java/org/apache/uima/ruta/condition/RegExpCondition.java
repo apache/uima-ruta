@@ -37,7 +37,7 @@ public class RegExpCondition extends TerminalRutaCondition {
 
   private final BooleanExpression ignoreCase;
 
-  private String variable;
+  private StringExpression variable;
 
   public RegExpCondition(StringExpression pattern, BooleanExpression ignoreCase) {
     super();
@@ -45,9 +45,9 @@ public class RegExpCondition extends TerminalRutaCondition {
     this.ignoreCase = ignoreCase == null ? new SimpleBooleanExpression(false) : ignoreCase;
   }
 
-  public RegExpCondition(String variable, StringExpression pattern, BooleanExpression ignoreCase) {
+  public RegExpCondition(StringExpression v, StringExpression pattern, BooleanExpression ignoreCase) {
     this(pattern, ignoreCase);
-    this.variable = variable;
+    this.variable = v;
   }
 
   @Override
@@ -67,8 +67,7 @@ public class RegExpCondition extends TerminalRutaCondition {
       }
       matcher = regularExpPattern.matcher(coveredText);
     } else {
-      RutaEnvironment environment = element.getParent().getEnvironment();
-      String variableValue = environment.getVariableValue(variable, String.class);
+      String variableValue = variable.getStringValue(element.getParent(), annotation, stream);
       Pattern regularExpPattern = null;
       if (ignore) {
         regularExpPattern = Pattern.compile(stringValue, Pattern.CASE_INSENSITIVE);
@@ -85,7 +84,7 @@ public class RegExpCondition extends TerminalRutaCondition {
     return pattern;
   }
 
-  public String getVariable() {
+  public StringExpression getVariable() {
     return variable;
   }
 

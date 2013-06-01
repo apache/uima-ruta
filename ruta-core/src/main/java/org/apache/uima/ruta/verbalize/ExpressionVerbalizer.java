@@ -25,6 +25,7 @@ import java.util.List;
 import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.bool.BooleanFeatureExpression;
 import org.apache.uima.ruta.expression.bool.BooleanNumberExpression;
 import org.apache.uima.ruta.expression.bool.BooleanTypeExpression;
 import org.apache.uima.ruta.expression.bool.ReferenceBooleanExpression;
@@ -43,6 +44,7 @@ import org.apache.uima.ruta.expression.list.SimpleTypeListExpression;
 import org.apache.uima.ruta.expression.number.ComposedNumberExpression;
 import org.apache.uima.ruta.expression.number.NegativeNumberExpression;
 import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.NumberFeatureExpression;
 import org.apache.uima.ruta.expression.number.ReferenceNumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
 import org.apache.uima.ruta.expression.resource.ReferenceWordListExpression;
@@ -54,6 +56,7 @@ import org.apache.uima.ruta.expression.string.LiteralStringExpression;
 import org.apache.uima.ruta.expression.string.ReferenceStringExpression;
 import org.apache.uima.ruta.expression.string.SimpleStringExpression;
 import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.string.StringFeatureExpression;
 import org.apache.uima.ruta.expression.type.ReferenceTypeExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
@@ -80,14 +83,14 @@ public class ExpressionVerbalizer {
       return verbalize((WordTableExpression) expression);
     } else if (expression instanceof ListExpression<?>) {
       return verbalize((ListExpression<?>) expression);
+    } else if (expression instanceof FeatureExpression) {
+      return verbalize((FeatureExpression) expression);
     } else if (expression instanceof StringExpression) {
       return verbalize((StringExpression) expression);
     } else if (expression instanceof MatchReference) {
       return verbalize((MatchReference) expression);
     } else if (expression instanceof FeatureMatchExpression) {
       return verbalize((FeatureMatchExpression) expression);
-    } else if (expression instanceof FeatureExpression) {
-      return verbalize((FeatureExpression) expression);
     }
     return expression.getClass().getSimpleName();
   }
@@ -163,6 +166,8 @@ public class ExpressionVerbalizer {
         }
       }
       return result.toString();
+    } else if (expression instanceof NumberFeatureExpression) {
+      return verbalize(((NumberFeatureExpression) expression).getFe());
     }
     return expression.getClass().getSimpleName();
   }
@@ -184,6 +189,8 @@ public class ExpressionVerbalizer {
     } else if (expression instanceof SimpleBooleanExpression) {
       SimpleBooleanExpression e = (SimpleBooleanExpression) expression;
       return e.getPrimitiveValue() ? "true" : "false";
+    } else if (expression instanceof BooleanFeatureExpression) {
+      return verbalize(((BooleanFeatureExpression) expression).getFe());
     }
     return expression.getClass().getSimpleName();
   }
@@ -201,6 +208,8 @@ public class ExpressionVerbalizer {
       return verbalize((ListExpression) expression);
     } else if (expression instanceof LiteralStringExpression) {
       return verbalize((LiteralStringExpression) expression);
+    } else if (expression instanceof StringFeatureExpression) {
+      return verbalize(((StringFeatureExpression) expression).getFe());
     }
     return expression.getClass().getSimpleName();
   }
