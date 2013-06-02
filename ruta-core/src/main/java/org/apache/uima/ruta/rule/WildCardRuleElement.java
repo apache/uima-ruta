@@ -446,7 +446,9 @@ public class WildCardRuleElement extends AbstractRuleElement {
     RutaBasic endAnchor = stream.getEndAnchor(end);
     if (beginAnchor != null && !stream.isVisible(beginAnchor)) {
       beginAnchor = stream.getBasicNextTo(false, beginAnchor);
-      begin = beginAnchor.getBegin();
+      if(beginAnchor != null) {
+        begin = beginAnchor.getBegin();
+      }
     }
     if (endAnchor != null && !stream.isVisible(endAnchor)) {
       endAnchor = stream.getBasicNextTo(true, endAnchor);
