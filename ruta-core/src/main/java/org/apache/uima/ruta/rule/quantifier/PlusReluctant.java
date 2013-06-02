@@ -72,7 +72,7 @@ public class PlusReluctant implements RuleElementQuantifier {
     nextElement.continueMatch(after, annotation, extendedMatch, null, extendedContainerMatch, null,
             nextElement, stream, crowd);
     List<RuleElementMatch> nextList = extendedContainerMatch.getInnerMatches().get(nextElement);
-    return nextList == null || nextList.isEmpty();
+    return nextList == null || nextList.isEmpty() || !nextList.get(nextList.size() - 1).matched();
   }
 
   public boolean isOptional(RutaBlock parent, RutaStream stream) {

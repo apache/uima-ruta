@@ -132,8 +132,12 @@ public class WildCardRuleElement extends AbstractRuleElement {
       doMatch(coveredByWildCard, extendedMatch, extendedContainerMatch, annotation == null, stream,
               crowd);
       if (extendedMatch.matched()) {
-        cre.continueMatch(after, endAnchor, extendedMatch, ruleApply, extendedContainerMatch,
-                sideStepOrigin, cre, stream, crowd);
+        if (endAnchor == null) {
+          cre.startMatch(extendedMatch, ruleApply, extendedContainerMatch, cre, stream, crowd);
+        } else {
+          cre.continueMatch(after, endAnchor, extendedMatch, ruleApply, extendedContainerMatch,
+                  sideStepOrigin, cre, stream, crowd);
+        }
         List<RuleElementMatch> nextList = extendedContainerMatch.getInnerMatches().get(cre);
         boolean matched = hasMatched(nextList);
         if (!matched) {
@@ -238,8 +242,13 @@ public class WildCardRuleElement extends AbstractRuleElement {
       doMatch(coveredByWildCard, extendedMatch, extendedContainerMatch, annotation == null, stream,
               crowd);
       if (extendedMatch.matched()) {
-        nextElement.continueMatch(after, endAnchor, extendedMatch, ruleApply,
-                extendedContainerMatch, sideStepOrigin, nextElement, stream, crowd);
+        if (endAnchor == null) {
+          nextElement.startMatch(extendedMatch, ruleApply, extendedContainerMatch, nextElement,
+                  stream, crowd);
+        } else {
+          nextElement.continueMatch(after, endAnchor, extendedMatch, ruleApply,
+                  extendedContainerMatch, sideStepOrigin, nextElement, stream, crowd);
+        }
         List<RuleElementMatch> nextList = extendedContainerMatch.getInnerMatches().get(nextElement);
         if (nextList == null || nextList.isEmpty() || !nextList.get(nextList.size() - 1).matched()) {
           moveOn(after, iterator);
@@ -281,8 +290,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
     return iterator;
   }
 
-  private FSIterator<AnnotationFS> getIteratorOfType(boolean after, Type type, AnnotationFS annotation,
-          RutaStream stream) {
+  private FSIterator<AnnotationFS> getIteratorOfType(boolean after, Type type,
+          AnnotationFS annotation, RutaStream stream) {
     CAS cas = stream.getCas();
     FSIterator<AnnotationFS> result = null;
     if (stream.getDocumentAnnotation().equals(cas.getDocumentAnnotation())) {
@@ -346,8 +355,13 @@ public class WildCardRuleElement extends AbstractRuleElement {
       doMatch(coveredByWildCard, extendedMatch, extendedContainerMatch, annotation == null, stream,
               crowd);
       if (extendedMatch.matched()) {
-        nextElement.continueMatch(after, endAnchor, extendedMatch, ruleApply,
-                extendedContainerMatch, sideStepOrigin, nextElement, stream, crowd);
+        if (endAnchor == null) {
+          nextElement.startMatch(extendedMatch, ruleApply, extendedContainerMatch, nextElement,
+                  stream, crowd);
+        } else {
+          nextElement.continueMatch(after, endAnchor, extendedMatch, ruleApply,
+                  extendedContainerMatch, sideStepOrigin, nextElement, stream, crowd);
+        }
         List<RuleElementMatch> nextList = extendedContainerMatch.getInnerMatches().get(nextElement);
         if (nextList == null || nextList.isEmpty()) {
           pointer = getNextPointer(after, anchor);
@@ -430,15 +444,15 @@ public class WildCardRuleElement extends AbstractRuleElement {
 
     RutaBasic beginAnchor = stream.getBeginAnchor(begin);
     RutaBasic endAnchor = stream.getEndAnchor(end);
-    if(beginAnchor != null && !stream.isVisible(beginAnchor)) {
-      beginAnchor = stream.getBasicNextTo(false, beginAnchor); 
+    if (beginAnchor != null && !stream.isVisible(beginAnchor)) {
+      beginAnchor = stream.getBasicNextTo(false, beginAnchor);
       begin = beginAnchor.getBegin();
     }
-    if(endAnchor != null && !stream.isVisible(endAnchor)) {
-      endAnchor = stream.getBasicNextTo(true, endAnchor);      
+    if (endAnchor != null && !stream.isVisible(endAnchor)) {
+      endAnchor = stream.getBasicNextTo(true, endAnchor);
       end = endAnchor.getEnd();
     }
-    
+
     AnnotationFS afs = cas.createAnnotation(type, begin, end);
 
     return afs;

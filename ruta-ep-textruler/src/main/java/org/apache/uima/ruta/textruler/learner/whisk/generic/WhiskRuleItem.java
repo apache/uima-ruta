@@ -195,8 +195,12 @@ public class WhiskRuleItem implements TextRulerRuleItem {
         result += ", " + (numberInRule + 1) + ", " + (numberInRule + patternSize);
       result += ")}";
     }
-    if (isStarWildCard)
+    if (isStarWildCard) {
       anchor += "*?";
+      if(anchor.equals("ALL*?")) {
+        anchor = "#";
+      }
+    }
     return anchor + result;
   }
 

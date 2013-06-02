@@ -635,6 +635,7 @@ public class Whisk extends TextRulerBasicLearner {
       // create base 1 and base 2:
       WhiskRule base1 = rule.copy(); // slot filler rule
       TextRulerSlotPattern slotPattern = base1.getPatterns().get(slotIndex);
+      // questionable restriction:
       for (int i = 0; i < inside.size(); i++)
         if (i == 0 || (i == inside.size() - 1))
           slotPattern.fillerPattern.add(inside.get(i).copy());
@@ -644,18 +645,60 @@ public class Whisk extends TextRulerBasicLearner {
 
       List<WhiskRuleItem> beforeList = getTermsBefore(inside.get(0), example);
       List<WhiskRuleItem> afterList = getTermsAfter(inside.get(inside.size() - 1), example);
+      beforeList.add(null);
+      afterList.add(null);
       Collection<WhiskRule> tempRules = new HashSet<WhiskRule>();
 
+      // workaround for better rules:
+      // only inner begin
+      for (WhiskRuleItem eachBefore : beforeList) {
+        for (WhiskRuleItem eachAfter : afterList) {
+          WhiskRule copy = rule.copy();
+          TextRulerSlotPattern textRulerSlotPattern = copy.getPatterns().get(slotIndex);
+          if(eachBefore != null) {
+            textRulerSlotPattern.preFillerPattern.add(eachBefore);
+          }
+          textRulerSlotPattern.fillerPattern.add(inside.get(0).copy());
+          textRulerSlotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem(0));
+          if(eachAfter != null) {
+            textRulerSlotPattern.postFillerPattern.add(eachAfter);
+          }
+          tempRules.add(copy);
+        }
+      }
+      // onnly inner end
+      for (WhiskRuleItem eachBefore : beforeList) {
+        for (WhiskRuleItem eachAfter : afterList) {
+          WhiskRule copy = rule.copy();
+          TextRulerSlotPattern textRulerSlotPattern = copy.getPatterns().get(slotIndex);
+          if(eachBefore != null) {
+            textRulerSlotPattern.preFillerPattern.add(eachBefore);
+          }
+          textRulerSlotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem(0));
+          textRulerSlotPattern.fillerPattern.add(inside.get(inside.size()-1).copy());
+          if(eachAfter != null) {
+            textRulerSlotPattern.postFillerPattern.add(eachAfter);
+          }
+          tempRules.add(copy);
+        }
+      }
+      
+      
+      
       if (!beforeList.isEmpty()) {
         if (!afterList.isEmpty()) {
           for (WhiskRuleItem eachBefore : beforeList) {
             for (WhiskRuleItem eachAfter : afterList) {
               WhiskRule copy = rule.copy();
               TextRulerSlotPattern textRulerSlotPattern = copy.getPatterns().get(slotIndex);
-              textRulerSlotPattern.preFillerPattern.add(eachBefore);
+              if(eachBefore != null ) {
+                textRulerSlotPattern.preFillerPattern.add(eachBefore);
+              }
               textRulerSlotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem(getElementIndex(
                       copy, inside.get(0))));
-              textRulerSlotPattern.postFillerPattern.add(eachAfter);
+             if(eachAfter != null) {
+               textRulerSlotPattern.postFillerPattern.add(eachAfter);
+             }
               tempRules.add(copy);
             }
           }
@@ -665,7 +708,9 @@ public class Whisk extends TextRulerBasicLearner {
             TextRulerSlotPattern textRulerSlotPattern = copy.getPatterns().get(slotIndex);
             textRulerSlotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem(getElementIndex(
                     copy, inside.get(0))));
-            textRulerSlotPattern.preFillerPattern.add(eachBefore);
+            if(eachBefore != null) {
+              textRulerSlotPattern.preFillerPattern.add(eachBefore);
+            }
             tempRules.add(copy);
           }
         }
@@ -675,7 +720,9 @@ public class Whisk extends TextRulerBasicLearner {
           TextRulerSlotPattern textRulerSlotPattern = copy.getPatterns().get(slotIndex);
           textRulerSlotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem(getElementIndex(
                   copy, inside.get(0))));
-          textRulerSlotPattern.postFillerPattern.add(eachAfter);
+          if(eachAfter!= null) {
+            textRulerSlotPattern.postFillerPattern.add(eachAfter);
+          }
           tempRules.add(copy);
         }
       }
@@ -693,24 +740,35 @@ public class Whisk extends TextRulerBasicLearner {
         }
       }
       WhiskRule base2 = (WhiskRule) best;
-
-      TextRulerToolkit.log("base1: " + base1.getRuleString());
-      TextRulerToolkit.log("base2: " + base2.getRuleString());
       List<TextRulerRule> testRules = new ArrayList<TextRulerRule>();
-      testRules.add(base1);
-      testRules.add(base2);
+      if (base1 != null) {
+        TextRulerToolkit.log("base1: " + base1.getRuleString());
+        testRules.add(base1);
+      }
+      if (base2 != null) {
+        TextRulerToolkit.log("base2: " + base2.getRuleString());
+        testRules.add(base2);
+      }
       testRulesIfNotCached(testRules);
-      if (shouldAbort())
+      if (shouldAbort()) {
         return null;
-      TextRulerToolkit.log("\tbase1: " + base1.getCoveringStatistics() + " --> laplacian = "
-              + base1.getLaplacian());
-      TextRulerToolkit.log("\tbase2: " + base2.getCoveringStatistics() + " --> laplacian = "
-              + base2.getLaplacian());
-      if (base2.getCoveringStatistics().getCoveredPositivesCount() > base1.getCoveringStatistics()
-              .getCoveredPositivesCount())
-        result.add(base2);
-      else
+      }
+      if (base1 != null && base2 == null) {
+        TextRulerToolkit.log("\tbase1: " + base1.getCoveringStatistics() + " --> laplacian = "
+                + base1.getLaplacian());
         result.add(base1);
+      } else {
+        TextRulerToolkit.log("\tbase1: " + base1.getCoveringStatistics() + " --> laplacian = "
+                + base1.getLaplacian());
+        TextRulerToolkit.log("\tbase2: " + base2.getCoveringStatistics() + " --> laplacian = "
+                + base2.getLaplacian());
+        if (base2.getCoveringStatistics().getCoveredPositivesCount() > base1
+                .getCoveringStatistics().getCoveredPositivesCount()) {
+          result.add(base2);
+        } else {
+          result.add(base1);
+        }
+      }
     }
     TextRulerRule best = null;
     for (TextRulerRule each : result) {
@@ -891,7 +949,6 @@ public class Whisk extends TextRulerBasicLearner {
       String key = r.getRuleString();
       if (cachedTestedRuleStatistics.containsKey(key)) {
         r.setCoveringStatistics(cachedTestedRuleStatistics.get(key).copy());
-        TextRulerToolkit.log("CACHE HIT !");
       } else
         rulesToTest.add(r);
     }

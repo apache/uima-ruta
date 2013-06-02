@@ -53,7 +53,7 @@ public class TextRulerMultiSlotRule extends TextRulerRule {
   }
 
   protected String getInterslotWildCard() {
-    return "ALL*? ";
+    return "# ";
   }
 
   @Override
