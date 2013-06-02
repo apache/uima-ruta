@@ -52,6 +52,8 @@ public class FilterManager {
 
   private ConstraintFactory cf;
 
+  private final CAS cas;
+
   public FilterManager(Collection<Type> filterTypes, CAS cas) {
     super();
     this.defaultFilterTypes = filterTypes;
@@ -64,6 +66,8 @@ public class FilterManager {
     this.windowAnnotation = null;
     this.windowType = null;
     this.additionalWindow = null;
+
+    this.cas = cas;
   }
 
   public FilterManager(Collection<Type> defaultFilterTypes, Collection<Type> filterTypes,
@@ -79,6 +83,8 @@ public class FilterManager {
     this.windowAnnotation = windowAnnotation;
     this.windowType = windowType;
     this.additionalWindow = createWindowConstraint(windowAnnotation, cas);
+
+    this.cas = cas;
   }
 
   private FSMatchConstraint createWindowConstraint(AnnotationFS windowAnnotation, CAS cas) {
@@ -110,6 +116,12 @@ public class FilterManager {
     filterTypes.addAll(defaultFilterTypes);
     filterTypes.addAll(currentFilterTypes);
     filterTypes.removeAll(currentRetainTypes);
+    for (Type type : currentRetainTypes) {
+      if (type != null) {
+        List<Type> subsumedTypes = cas.getTypeSystem().getProperlySubsumedTypes(type);
+        filterTypes.removeAll(subsumedTypes);
+      }
+    }
 
     FSMatchConstraint typeConstraint = createTypeConstraint(filterTypes);
 
