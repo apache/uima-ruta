@@ -66,8 +66,8 @@ public class Wien extends TextRulerBasicLearner {
   };
 
   public Wien(String inputDir, String prePropTmFile, String tmpDir, String[] slotNames,
-          Set<String> filterSet, TextRulerLearnerDelegate delegate) {
-    super(inputDir, prePropTmFile, tmpDir, slotNames, filterSet, delegate);
+          Set<String> filterSet, boolean skip, TextRulerLearnerDelegate delegate) {
+    super(inputDir, prePropTmFile, tmpDir, slotNames, filterSet, skip, delegate);
   }
 
   @Override
@@ -693,7 +693,7 @@ public class Wien extends TextRulerBasicLearner {
   public String getResultString() {
     if (theRule == null)
       return "<no results yet>";
-    String result = getTMFileHeaderString() + "DECLARE wien_tail;\n" + "DECLARE wien_rulemark;\n"
+    String result = getFileHeaderString(true) + "DECLARE wien_tail;\n" + "DECLARE wien_rulemark;\n"
             + "DECLARE wien_content;\n" + "BOOLEAN wien_redo;\n\n"
             + "// tail/head/content area stuff:\n";
 

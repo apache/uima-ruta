@@ -35,12 +35,16 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.ruta.textruler.TextRulerPlugin;
 import org.apache.uima.ruta.textruler.core.TextRulerTarget.MLTargetType;
 import org.apache.uima.ruta.textruler.extension.TextRulerLearner;
 import org.apache.uima.ruta.textruler.extension.TextRulerLearnerDelegate;
 import org.apache.uima.ruta.textruler.tools.MemoryWatch;
 import org.apache.uima.util.FileUtils;
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 
@@ -74,13 +78,16 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
 
   protected CAS algTestCAS;
 
+  private boolean skip;
+
   public TextRulerBasicLearner(String inputDir, String prePropTMFile, String tmpDir,
-          String[] slotNames, Set<String> filterSet, TextRulerLearnerDelegate delegate) {
+          String[] slotNames, Set<String> filterSet, boolean skip, TextRulerLearnerDelegate delegate) {
     super();
     this.preprocessorTMFile = prePropTMFile;
     this.tempDirectory = tmpDir;
     this.slotNames = slotNames;
     this.inputDirectory = inputDir;
+    this.skip = skip;
     this.delegate = delegate;
     this.filterSet = filterSet;
     filterSetWithSlotNames = new HashSet<String>(filterSet);
@@ -415,25 +422,39 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
       rules.get(ruleIndex).setCoveringStatistics(sums.get(ruleIndex));
   }
 
-  public String getTMFileHeaderString() {
-    return getTMPackageString() + getTypeSystemImport() + getTMFilterCommandString();
+  public String getFileHeaderString(boolean complete) {
+    return getPackageString() + getTypeSystemImport(complete) + getFilterCommandString();
   }
 
-  private String getTypeSystemImport() {
-    return "TYPESYSTEM " + getTypeSystemString(preprocessorTMFile) + ";\n\n";
+  private String getTypeSystemImport(boolean complete) {
+    if(complete) {
+    IPath path = Path.fromOSString(preprocessorTMFile);
+    IPath removeLastSegments = path.removeLastSegments(1);
+    IContainer containerForLocation = ResourcesPlugin.getWorkspace().getRoot().getContainerForLocation(removeLastSegments);
+    IProject project = containerForLocation.getProject();
+    IPath scriptRootPath = RutaProjectUtils.getScriptRootPath(project);
+    String moduleName = RutaProjectUtils.getModuleName(path);
+    IPath makeRelativeTo = path.makeRelativeTo(scriptRootPath);
+    String m = makeRelativeTo.removeFileExtension().toPortableString().replaceAll("/", ".");
+    String importString = "SCRIPT " + m + ";\n";
+    if (!skip) {
+        importString += "Document{-> CALL(" + moduleName + ")};\n";
+    }
+    return importString;
+    }
+    return "";
   }
 
-  private String getTypeSystemString(String fileString) {
-    File file = new File(fileString);
-    // TODO which type system?
-    return "org.apache.uima.CompleteTypeSystemTypeSystem";
+  public String getPackageString() {
+    IPath path = Path.fromOSString(preprocessorTMFile);
+    IPath removeLastSegments = path.removeLastSegments(1);
+    IContainer containerForLocation = ResourcesPlugin.getWorkspace().getRoot().getContainerForLocation(removeLastSegments);
+    IPath removeFirstSegments = containerForLocation.getProjectRelativePath().removeFirstSegments(1);
+    String replaceAll = removeFirstSegments.toPortableString().replaceAll("/", ".");
+    return "PACKAGE " + replaceAll + ";\n\n";
   }
 
-  public String getTMPackageString() {
-    return "PACKAGE org.apache.uima;\n\n";
-  }
-
-  public String getTMFilterCommandString() {
+  public String getFilterCommandString() {
     if (filterSet != null && filterSet.size() > 0) {
       String fs = "";
       for (String s : filterSet)

@@ -42,6 +42,7 @@ public interface TextRulerLearnerFactory {
    *          you want to use it!)
    * @param fullSlotTypeNames
    *          an array with the slot-names to learn (full qualified UIMA type names)
+   * @param skip TODO
    * @param delegate
    *          a delegate that can be notified for status updates and asked for aborting the
    *          algorithm
@@ -51,7 +52,7 @@ public interface TextRulerLearnerFactory {
    */
   public TextRulerLearner createAlgorithm(String inputFolderPath, String additionalFolderPath,
           String preprocessorTMfile, String tempFolderPath, String[] fullSlotTypeNames,
-          Set<String> filterSet, TextRulerLearnerDelegate delegate);
+          Set<String> filterSet, boolean skip, TextRulerLearnerDelegate delegate);
 
   /**
    * @return null or an array with MLAlgorithmParameters your TextRulerLearner wants to get from the

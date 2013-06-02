@@ -108,8 +108,8 @@ public class Rapier extends TextRulerBasicLearner {
   private String currentSlotName;
 
   public Rapier(String inputDir, String prePropTMFile, String tmpDir, String[] slotNames,
-          Set<String> filterSet, TextRulerLearnerDelegate delegate) {
-    super(inputDir, prePropTMFile, tmpDir, slotNames, filterSet, delegate);
+          Set<String> filterSet, boolean skip, TextRulerLearnerDelegate delegate) {
+    super(inputDir, prePropTMFile, tmpDir, slotNames, filterSet, skip, delegate);
   }
 
   @Override
@@ -139,7 +139,7 @@ public class Rapier extends TextRulerBasicLearner {
       updateCompressionStatusString();
 
       if (TextRulerToolkit.DEBUG) {
-        slotRules.saveToRulesFile(getIntermediateRulesFileName(), getTMFileHeaderString());
+        slotRules.saveToRulesFile(getIntermediateRulesFileName(), getFileHeaderString(true));
       }
 
       while (compressionFailCount < compressionFailMaxCount) {
@@ -154,14 +154,14 @@ public class Rapier extends TextRulerBasicLearner {
                 && (bestRule.noiseValue() >= noiseThreshold) && (!slotRules.contains(bestRule))) {
           addRuleAndRemoveEmpiricallySubsumedRules(bestRule);
           if (TextRulerToolkit.DEBUG)
-            slotRules.saveToRulesFile(getIntermediateRulesFileName(), getTMFileHeaderString());
+            slotRules.saveToRulesFile(getIntermediateRulesFileName(), getFileHeaderString(true));
         } else {
           compressionFailCount++;
         }
       }
 
       if (TextRulerToolkit.DEBUG) {
-        slotRules.saveToRulesFile(getIntermediateRulesFileName(), getTMFileHeaderString());
+        slotRules.saveToRulesFile(getIntermediateRulesFileName(), getFileHeaderString(true));
       }
     }
 
@@ -641,7 +641,7 @@ public class Rapier extends TextRulerBasicLearner {
 
   public String getResultString() {
     if (slotRules != null)
-      return slotRules.getTMFileString(getTMFileHeaderString(), 1000); // if
+      return slotRules.getTMFileString(getFileHeaderString(true), 1000); // if
     // a
     // rule
     // is

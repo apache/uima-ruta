@@ -56,8 +56,8 @@ public class OptimizedLP2 extends BasicLP2 {
   private long cachedTestedStartRuleStatisticsHitCounter = 0;
 
   public OptimizedLP2(String inputDir, String prePropTMFile, String tmpDir, String[] slotNames,
-          Set<String> filterSet, TextRulerLearnerDelegate delegate) {
-    super(inputDir, prePropTMFile, tmpDir, slotNames, filterSet, delegate);
+          Set<String> filterSet, boolean skip, TextRulerLearnerDelegate delegate) {
+    super(inputDir, prePropTMFile, tmpDir, slotNames, filterSet, skip, delegate);
   }
 
   @Override
@@ -560,7 +560,7 @@ public class OptimizedLP2 extends BasicLP2 {
       // add using them with the CONTAINS constraint. but our
       // MLLP2OtherConstraint is not yet capable of this!
 
-      List<AnnotationFS> featureAnnotations = TextRulerToolkit.getNonTMAnnoationsOverToken(docCas,
+      List<AnnotationFS> featureAnnotations = TextRulerToolkit.getOtherAnnotationsOverToken(docCas,
               tokenAFS, filterSetWithSlotNames);
       if (TextRulerToolkit.DEBUG && featureAnnotations.size() > 1) {
         TextRulerToolkit.log("FOUND MORE THAN ONE EXTRA TOKEN FEATURE ANNOTATION !");

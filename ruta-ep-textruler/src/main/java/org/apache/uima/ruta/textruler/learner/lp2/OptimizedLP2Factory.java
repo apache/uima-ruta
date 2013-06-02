@@ -33,9 +33,9 @@ public class OptimizedLP2Factory implements TextRulerLearnerFactory {
 
   public TextRulerLearner createAlgorithm(String inputFolderPath, String additionalFolderPath,
           String prePropTMFile, String tempFolderPath, String[] fullSlotTypeNames,
-          Set<String> filterSet, TextRulerLearnerDelegate delegate) {
+          Set<String> filterSet, boolean skip, TextRulerLearnerDelegate delegate) {
     return new OptimizedLP2(inputFolderPath, prePropTMFile, tempFolderPath, fullSlotTypeNames,
-            filterSet, delegate);
+            filterSet,skip, delegate);
   }
 
   public TextRulerLearnerParameter[] getAlgorithmParameters() {

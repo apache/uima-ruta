@@ -283,7 +283,7 @@ public class TextRulerToolkit {
     return getAnnotationWithinBounds(aCas, start, end, filterSet, rootType);
   }
 
-  public static List<AnnotationFS> getNonTMAnnoationsOverToken(CAS aCas,
+  public static List<AnnotationFS> getOtherAnnotationsOverToken(CAS aCas,
           AnnotationFS tmTokenAnnotation, Set<String> filterSet) {
     List<AnnotationFS> result = new ArrayList<AnnotationFS>();
     // filter out document annotation!!
@@ -300,8 +300,6 @@ public class TextRulerToolkit {
       allFilters.addAll(filterSet);
     for (; it.isValid(); it.moveToNext()) {
       AnnotationFS fs = (AnnotationFS) it.get();
-      // System.out.println(fs.getBegin() + " " + tmTokenAnnotation.getBegin() + " " + fs.getEnd()
-      // + " " + tmTokenAnnotation.getEnd() + " " + fs.getType() + " " + tokenType);
       if (fs.getBegin() == tmTokenAnnotation.getBegin()
               && fs.getEnd() == tmTokenAnnotation.getEnd() && fs.getType().equals(tokenType)) {
         leftIt = it;

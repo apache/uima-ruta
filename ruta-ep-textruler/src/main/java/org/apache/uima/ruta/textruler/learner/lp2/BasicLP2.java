@@ -109,8 +109,8 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
   protected Map<String, String> rightBoundaryContextualRulesMap = new TreeMap<String, String>();
 
   public BasicLP2(String inputDir, String prePropTMFile, String tmpDir, String[] slotNames,
-          Set<String> filterSet, TextRulerLearnerDelegate delegate) {
-    super(inputDir, prePropTMFile, tmpDir, slotNames, filterSet, delegate);
+          Set<String> filterSet, boolean skip, TextRulerLearnerDelegate delegate) {
+    super(inputDir, prePropTMFile, tmpDir, slotNames, filterSet, skip, delegate);
   }
 
   protected TextRulerRuleList learnTaggingRules(TextRulerTarget target,
@@ -176,7 +176,7 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
         sendStatusUpdateToDelegate("New Rules added.", TextRulerLearnerState.ML_RUNNING, true);
       }
     if (TextRulerToolkit.DEBUG) {
-      bestRulesPool.saveToRulesFile(getIntermediateRulesFileName(), getTMFileHeaderString());
+      bestRulesPool.saveToRulesFile(getIntermediateRulesFileName(), getFileHeaderString(true));
       // for (TextRulerRule r : bestRulesPool)
       // {
       // TextRulerToolkit.log("p="+r.getCoveringStatistics().getCoveredPositivesCount()+"; n="+r.getCoveringStatistics().getCoveredNegativesCount()+";  "+r.getRuleString());
@@ -329,7 +329,7 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
       coveredExamples.addAll(rule.getCoveringStatistics().getCoveredPositiveExamples());
       if (TextRulerToolkit.DEBUG)
         bestRulesPoolMap.get(slotName).saveToRulesFile(getIntermediateRulesFileName(),
-                getTMFileHeaderString());
+                getFileHeaderString(false));
     } else {
       if (TextRulerToolkit.DEBUG && false) {
         TextRulerToolkit.log("KANN SOWAS PASSIEREN ??");
@@ -342,7 +342,7 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
 
   public String getResultString() {
     StringBuilder sb = new StringBuilder();
-    String header = getTMFileHeaderString();
+    String header = getFileHeaderString(true);
     sb.append(header);
 
     for (String eachSlot : slotNames) {
@@ -564,8 +564,8 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
   }
 
   @Override
-  public String getTMFileHeaderString() {
-    return super.getTMFileHeaderString() + "BOOLEAN redoContextualRules;\n\n";
+  public String getFileHeaderString(boolean complete) {
+    return super.getFileHeaderString(complete) + "BOOLEAN redoContextualRules;\n\n";
   }
 
   @Override

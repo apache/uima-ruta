@@ -48,8 +48,8 @@ import org.apache.uima.util.FileUtils;
 public class NaiveLP2 extends BasicLP2 {
 
   public NaiveLP2(String inputDir, String prePropTMFile, String tmpDir, String[] slotNames,
-          Set<String> filterSet, TextRulerLearnerDelegate delegate) {
-    super(inputDir, prePropTMFile, tmpDir, slotNames, filterSet, delegate);
+          Set<String> filterSet, boolean skip, TextRulerLearnerDelegate delegate) {
+    super(inputDir, prePropTMFile, tmpDir, slotNames, filterSet, skip, delegate);
   }
 
   public static final boolean SAVE_DEBUG_INFO_IN_TEMPFOLDER = false;

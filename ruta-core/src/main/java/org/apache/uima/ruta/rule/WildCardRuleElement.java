@@ -450,7 +450,9 @@ public class WildCardRuleElement extends AbstractRuleElement {
     }
     if (endAnchor != null && !stream.isVisible(endAnchor)) {
       endAnchor = stream.getBasicNextTo(true, endAnchor);
-      end = endAnchor.getEnd();
+      if(endAnchor != null) {
+        end = endAnchor.getEnd();
+      }
     }
 
     AnnotationFS afs = cas.createAnnotation(type, begin, end);

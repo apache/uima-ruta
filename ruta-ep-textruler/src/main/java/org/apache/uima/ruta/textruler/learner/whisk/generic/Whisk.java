@@ -79,8 +79,8 @@ public class Whisk extends TextRulerBasicLearner {
   private Map<String, TextRulerStatisticsCollector> cachedTestedRuleStatistics = new HashMap<String, TextRulerStatisticsCollector>();
 
   public Whisk(String inputDir, String prePropTmFile, String tmpDir, String[] slotNames,
-          Set<String> filterSet, TextRulerLearnerDelegate delegate) {
-    super(inputDir, prePropTmFile, tmpDir, slotNames, filterSet, delegate);
+          Set<String> filterSet, boolean skip, TextRulerLearnerDelegate delegate) {
+    super(inputDir, prePropTmFile, tmpDir, slotNames, filterSet, skip, delegate);
   }
 
   @Override
@@ -854,7 +854,7 @@ public class Whisk extends TextRulerBasicLearner {
 
   public String getResultString() {
     if (ruleList != null)
-      return getTMFileHeaderString() + ruleList.getRulesString("");
+      return getFileHeaderString(true) + ruleList.getRulesString("");
     else
       return "No results available yet!";
   }

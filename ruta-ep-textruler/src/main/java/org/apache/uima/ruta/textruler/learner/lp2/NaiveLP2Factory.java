@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.textruler.learner.lp2;
 
@@ -33,9 +33,9 @@ public class NaiveLP2Factory implements TextRulerLearnerFactory {
 
   public TextRulerLearner createAlgorithm(String inputFolderPath, String additionalFolderPath,
           String prePropTMFile, String tempFolderPath, String[] fullSlotTypeNames,
-          Set<String> filterSet, TextRulerLearnerDelegate delegate) {
+          Set<String> filterSet, boolean skip, TextRulerLearnerDelegate delegate) {
     return new NaiveLP2(inputFolderPath, prePropTMFile, tempFolderPath, fullSlotTypeNames,
-            filterSet, delegate);
+            filterSet, skip, delegate);
   }
 
   public TextRulerLearnerParameter[] getAlgorithmParameters() {
@@ -58,9 +58,7 @@ public class NaiveLP2Factory implements TextRulerLearnerFactory {
   public Map<String, Object> getAlgorithmParameterStandardValues() {
     Map<String, Object> result = new HashMap<String, Object>();
     result.put(BasicLP2.WINDOW_SIZE_KEY, BasicLP2.STANDARD_WINDOW_SIZE);
-    result
-            .put(BasicLP2.CURRENT_BEST_RULES_SIZE_KEY,
-                    BasicLP2.STANDARD_MAX_CURRENT_BEST_RULES_COUNT);
+    result.put(BasicLP2.CURRENT_BEST_RULES_SIZE_KEY, BasicLP2.STANDARD_MAX_CURRENT_BEST_RULES_COUNT);
     result.put(BasicLP2.MIN_COVERED_POSITIVES_PER_RULE_KEY,
             BasicLP2.STANDARD_MIN_COVERED_POSITIVES_PER_RULE);
     result.put(BasicLP2.MAX_ERROR_THRESHOLD_KEY, BasicLP2.STANDARD_MAX_ERROR_THRESHOLD);

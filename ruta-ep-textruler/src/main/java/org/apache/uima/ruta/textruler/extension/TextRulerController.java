@@ -58,6 +58,8 @@ public class TextRulerController {
   protected static boolean shouldAbort = false;
 
   protected static String currentPreprocessorTMFile = null;
+  
+  protected static boolean skip;
 
   protected static Map<String, Map<String, Object>> currentAlgorithmParams;
 
@@ -91,7 +93,7 @@ public class TextRulerController {
       for (TextRulerLearnerController c : learners) {
         if (c.isEnabled())
           c.runInNewThread(algorithmsInputFolder, additionalFolder, currentPreprocessorTMFile,
-                  currentSlotNames, currentFilters, currentTempDir, currentDelegate,
+                  currentSlotNames, currentFilters, currentTempDir, currentDelegate, skip,
                   currentAlgorithmParams.get(c.getID()));
       }
 
@@ -156,7 +158,8 @@ public class TextRulerController {
     currentFilters = filters;
     currentDelegate = delegate;
     currentAlgorithmParams = algParams;
-
+    skip = skipPreprocessing;
+    
     saveParametersToTempFolder(inFolder, skipPreprocessing);
     for (TextRulerLearnerController c : learners)
       c.resetStatusString();

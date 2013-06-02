@@ -315,7 +315,7 @@ public class RapierRule extends TextRulerSingleSlotRule {
     } else
       theString = getRuleString() + "\n";
     ;
-    return algorithm.getTMFileHeaderString() + theString;
+    return algorithm.getFileHeaderString(false) + theString;
   }
 
   public boolean isInitialRule() {

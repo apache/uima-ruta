@@ -33,9 +33,9 @@ public class WhiskFactory implements TextRulerLearnerFactory {
 
   public TextRulerLearner createAlgorithm(String inputFolderPath, String additionalFolderPath,
           String preprocessorTMfile, String tempFolderPath, String[] fullSlotTypeNames,
-          Set<String> filterSet, TextRulerLearnerDelegate delegate) {
+          Set<String> filterSet, boolean skip, TextRulerLearnerDelegate delegate) {
     return new Whisk(inputFolderPath, preprocessorTMfile, tempFolderPath, fullSlotTypeNames,
-            filterSet, delegate);
+            filterSet, skip, delegate);
   }
 
   public Map<String, Object> getAlgorithmParameterStandardValues() {

@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.textruler.learner.rapier;
 
@@ -33,9 +33,9 @@ public class RapierFactory implements TextRulerLearnerFactory {
 
   public TextRulerLearner createAlgorithm(String inputFolderPath, String additionalFolderPath,
           String prePropTMFile, String tempFolderPath, String[] fullSlotTypeNames,
-          Set<String> filterSet, TextRulerLearnerDelegate delegate) {
+          Set<String> filterSet, boolean skip, TextRulerLearnerDelegate delegate) {
     return new Rapier(inputFolderPath, prePropTMFile, tempFolderPath, fullSlotTypeNames, filterSet,
-            delegate);
+            skip, delegate);
   }
 
   public TextRulerLearnerParameter[] getAlgorithmParameters() {

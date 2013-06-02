@@ -137,7 +137,7 @@ public class TextRulerLearnerController implements TextRulerLearnerDelegate {
 
   public boolean runInNewThread(final String inputFolderPath, final String additionalFolderPath,
           final String preprocessorTMfile, final String[] slotNames, final Set<String> filters,
-          final String tempBaseDirectory, TextRulerControllerDelegate delegate,
+          final String tempBaseDirectory, TextRulerControllerDelegate delegate, final boolean skip,
           final Map<String, Object> algorithmParams) {
     if (thread == null) {
       final TextRulerLearnerDelegate algDelegate = this;
@@ -146,7 +146,7 @@ public class TextRulerLearnerController implements TextRulerLearnerDelegate {
         public void run() {
           String tmpDir = TextRulerToolkit.addTrailingSlashToPath(tempBaseDirectory + getID());
           algorithm = algoritmFactory.createAlgorithm(inputFolderPath, additionalFolderPath,
-                  preprocessorTMfile, tmpDir, slotNames, filters, algDelegate);
+                  preprocessorTMfile, tmpDir, slotNames, filters, skip, algDelegate);
           algorithm.setParameters(algorithmParams);
           algorithm.run();
           algorithmDidEnd();

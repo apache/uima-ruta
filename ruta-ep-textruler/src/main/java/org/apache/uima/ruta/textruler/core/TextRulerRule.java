@@ -80,7 +80,7 @@ public abstract class TextRulerRule {
   }
 
   public String getRulesFileContent() {
-    return algorithm.getTMFileHeaderString() + getRuleString() + "\n";
+    return algorithm.getFileHeaderString(false) + getRuleString() + "\n";
   }
 
   public void saveToRulesFile(String filename) {
