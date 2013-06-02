@@ -103,7 +103,7 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
       if (arg instanceof StringExpression) {
         StringExpression expr = (StringExpression) arg;
         String v2 = expr.getStringValue(parent, afs, stream);
-        return v1.equals(v2);
+        return v1 != null && v1.equals(v2);
       }
     }
     return false;
