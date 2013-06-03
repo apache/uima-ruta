@@ -24,7 +24,8 @@
   <description>The top project for Apache UIMA Ruta</description>
   <url>${uimaWebsiteUrl}</url>
   <properties>
-    <jiraVersion>12324120</jiraVersion>
+    <jiraVersion>12324396</jiraVersion>
+    
     <!-- 
      <assembly.attach>false</assembly.attach>
      -->
