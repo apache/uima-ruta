@@ -28,6 +28,8 @@ import java.util.NoSuchElementException;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import javax.management.timer.TimerMBean;
+
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.ConstraintFactory;
@@ -178,6 +180,14 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
           cas.addFsToIndexes(newTMB);
         }
       }
+    } else {
+      RutaBasic firstBasic = (RutaBasic) basicIndex.iterator().get();
+      if(firstBasic.isLowMemoryProfile() != lowMemoryProfile) {
+        for (AnnotationFS each : basicIndex) {
+          RutaBasic eachBasic = (RutaBasic) each;
+          eachBasic.setLowMemoryProfile(lowMemoryProfile);
+        }
+      }
     }
     for (AnnotationFS a : allAnnotations) {
       if (!a.getType().equals(basicType)) {
@@ -265,6 +275,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       cas.removeFsFromIndexes(toSplit);
       toSplit.setEnd(anchor);
       RutaBasic newTMB = new RutaBasic(getJCas(), anchor, newEnd);
+      newTMB.setLowMemoryProfile(lowMemoryProfile);
       cas.addFsToIndexes(toSplit);
       cas.addFsToIndexes(newTMB);
       beginAnchors.put(floor.getBegin(), floor);

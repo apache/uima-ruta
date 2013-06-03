@@ -28,7 +28,7 @@ public class RutaBasic extends Annotation {
 
   private static final int INITIAL_CAPACITY = 2;
 
-  private boolean lowMemoryProfile = true;
+  private boolean lowMemoryProfile = false;
 
   private Map<String, Integer> partOf = new TreeMap<String, Integer>();
 
