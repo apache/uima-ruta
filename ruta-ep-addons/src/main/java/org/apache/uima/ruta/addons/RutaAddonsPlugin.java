@@ -23,10 +23,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.ruta.testing.evaluator.ICasEvaluatorFactory;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -144,4 +149,11 @@ public class RutaAddonsPlugin extends AbstractUIPlugin {
     plugin.getLog().log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.OK, t.getMessage(), t));
   }
 
+  public static IFile getIFile(String location) {
+    IPath s = Path.fromOSString(location);
+    IWorkspace workspace = ResourcesPlugin.getWorkspace();
+    IFile ifile = workspace.getRoot().getFileForLocation(s);
+    return ifile;
+  }
+  
 }

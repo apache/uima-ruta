@@ -152,7 +152,7 @@ licensed under the Common Public License.</postNoticeText>
                   org.apache.commons.lang3.*,
                   org.apache.commons.io.*,
                   org.apache.uima.fit.*,
-                  org.reflections.*
+                  org.apache.commons.math3.*
                 </_exportcontents>
                 <Require-Bundle>
                   org.apache.uima.runtime

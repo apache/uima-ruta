@@ -625,4 +625,110 @@ under the License.
             priority="5">
       </searchStrategy>
    </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="false"
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.cde.ui.DocumentView"
+            icon="icons/chart_organisation.png"
+            id="org.apache.uima.ruta.cde.ui.DocumentView"
+            name="CDE Documents"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="false"
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.cde.ui.ConstraintSelectView"
+            icon="icons/bullet_blue.png"
+            id="org.apache.uima.ruta.cde.ui.ConstraintSelectView"
+            name="CDE Constraints"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="false"
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.cde.ui.ResultView"
+            icon="icons/failed_ovr.gif"
+            id="org.apache.uima.ruta.cde.ui.ResultView"
+            name="CDE Result"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.apache.uima.ruta.cde.ui.DocumentView">
+         <command
+               commandId="org.apache.uima.ruta.cde.ui.DocumentView.run"
+               icon="icons/run.gif"
+               id="org.apache.uima.ruta.cde.ui.DocumentView.toolbar.run"
+               label="run"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.apache.uima.ruta.cde.ui.ConstraintSelectView">
+         <command
+               commandId="toolbar:org.apache.uima.ruta.cde.ui.ConstraintSelectView.exportall"
+               icon="icons/disk.png"
+               id="toolbar:org.apache.uima.ruta.cde.ui.ConstraintSelectView.toolbar.exportall"
+               label="Export all Constraints"
+               style="push">
+         </command>
+         <command
+               commandId="toolbar:org.apache.uima.ruta.cde.ui.ConstraintSelectView.importall"
+               icon="icons/folder_page.png"
+               label="Import Constraints"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="org.apache.uima.ruta.cde.ui.CDEPerspectiveFactory"
+            icon="icons/explain.png"
+            id="org.apache.uima.ruta.cde.perspective"
+            name="UIMA Ruta CDE">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.apache.uima.ruta.cde.ui.DocumentViewRunHandler"
+            id="org.apache.uima.ruta.cde.ui.DocumentView.run"
+            name="RunFromDocumentView">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.ruta.cde.ui.ExportAllConstraintsHandler"
+            id="toolbar:org.apache.uima.ruta.cde.ui.ConstraintSelectView.exportall"
+            name="ExportAllConstraints">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.ruta.cde.ui.ImportConstraintsHandler"
+            id="toolbar:org.apache.uima.ruta.cde.ui.ConstraintSelectView.importall"
+            name="ImportConstraints">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            default="false"
+            icon="icons/bullet_pink.png"
+            id="org.apache.uima.ruta.cde.constrainteditor"
+            name="CDE Editor">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.apache.uima.ruta.ide.preferences"
+            class="org.apache.uima.ruta.cde.ui.CDEPreferencePage"
+            id="org.apache.uima.ruta.cde.preferences"
+            name="CDE">
+      </page>
+   </extension>
 </plugin>
