@@ -25,7 +25,9 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import org.apache.commons.math3.linear.ArrayRealVector;
+import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
 import org.apache.commons.math3.stat.correlation.SpearmansCorrelation;
+import org.apache.commons.math3.stat.inference.ChiSquareTest;
 import org.apache.commons.math3.stat.inference.TestUtils;
 
 public class EvaluationMeasures {
@@ -39,14 +41,17 @@ public class EvaluationMeasures {
       y[index] = resultPair[1];
       index++;
     }
+    double mse = meanSquareError(x, y);
     double spearmans = new SpearmansCorrelation().correlation(x, y);
-    double pairedT = TestUtils.pairedT(x, y);
+    double pearsons = new PearsonsCorrelation().correlation(x, y);
     double cosine = cosine(x, y);
+    mse = round(mse);
     spearmans = round(spearmans);
-    pairedT = round(pairedT);
+    pearsons = round(pearsons);
     cosine = round(cosine);
 
-    String report = "cosine=" + cosine + "  spearmans=" + spearmans + "  pairedT=" + pairedT;
+    String report = "mse=" + mse + "  spearmans=" + spearmans + "  pearsons=" + pearsons + "  cosine="
+            + cosine;
     return report;
   }
 
@@ -74,4 +79,16 @@ public class EvaluationMeasures {
     }
     return cosine(x, y);
   }
+
+  public static double meanSquareError(double[] x, double[] y) {
+    double sum = 0;
+    for (int i = 0; i < x.length; i++) {
+      double xi = x[i];
+      double yi = y[i];
+      double diff = xi - yi;
+      sum += (diff * diff);
+    }
+    return sum / x.length;
+  }
+
 }
