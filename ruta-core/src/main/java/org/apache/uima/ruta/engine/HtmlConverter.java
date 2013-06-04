@@ -305,11 +305,16 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
         if (mappedEnd > fromJcas.getCas().getDocumentAnnotation().getEnd()) {
           getContext().getLogger().log(Level.WARNING, "illegal annotation offset mapping");
         } else {
-          clone.setBegin(mappedBegin);
-          clone.setEnd(mappedEnd);
-          // TODO handle nested annotation features
-          modview.addFsToIndexes(clone);
-          indexedFs.add(clone);
+          int max = modview.getCas().getDocumentAnnotation().getEnd();
+          if (mappedBegin < max && mappedEnd <= max && mappedBegin >= 0 && mappedEnd > 0) {
+            clone.setBegin(mappedBegin);
+            clone.setEnd(mappedEnd);
+            // TODO handle nested annotation features
+            modview.addFsToIndexes(clone);
+            indexedFs.add(clone);
+          } else {
+            getContext().getLogger().log(Level.WARNING, "illegal annotation offset mapping");
+          }
         }
       }
     }
