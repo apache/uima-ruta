@@ -292,23 +292,23 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   private RutaBasic getCeiling(TreeMap<Integer, RutaBasic> anchors, int anchor) {
-    RutaBasic basic = anchors.get(anchor);
-    if (basic != null) {
-      return basic;
-    } else if (anchor <= anchors.lastKey()) {
+    while(anchor <= anchors.lastKey()) {
+      RutaBasic basic = anchors.get(anchor);
+      if (basic != null) {
+        return basic;
+      }
       anchor++;
-      return getCeiling(anchors, anchor);
     }
     return null;
   }
 
   private RutaBasic getFloor(TreeMap<Integer, RutaBasic> anchors, int anchor) {
-    RutaBasic basic = anchors.get(anchor);
-    if (basic != null) {
-      return basic;
-    } else if (anchor >= 0) {
+    while(anchor >= 0) {
+      RutaBasic basic = anchors.get(anchor);
+      if (basic != null) {
+        return basic;
+      }
       anchor--;
-      return getFloor(anchors, anchor);
     }
     return null;
   }
