@@ -24,6 +24,7 @@ import java.io.FileInputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.cas.CAS;
@@ -103,15 +104,15 @@ public class DocumentViewRunHandler implements IHandler {
 
   private class DocumentViewRunHandlerJob extends Job {
 
-    private ArrayList<ConstraintData> constraints;
+    private List<ConstraintData> constraints;
 
-    private ArrayList<DocumentData> documents;
+    private List<DocumentData> documents;
 
     private File typeSystem;
 
     private String testDataPath;
 
-    DocumentViewRunHandlerJob(ExecutionEvent event, ArrayList<ConstraintData> constraints,
+    DocumentViewRunHandlerJob(ExecutionEvent event, List<ConstraintData> constraints,
             ArrayList<DocumentData> documents, File typeSystem, String testDataPath) {
       super("UIMA Ruta CDE");
       this.constraints = constraints;
@@ -213,7 +214,7 @@ public class DocumentViewRunHandler implements IHandler {
               .showView("org.apache.uima.ruta.cde.ui.ConstraintSelectView");
       ConstraintSelectComposite composite = (ConstraintSelectComposite) constraintView
               .getComposite();
-      ArrayList<ConstraintData> constraintList = composite.getConstraintList();
+      List<ConstraintData> constraintList = composite.getConstraintList();
       DocumentView docView = (DocumentView) HandlerUtil.getActiveWorkbenchWindow(event).getWorkbench()
               .getActiveWorkbenchWindow().getActivePage()
               .showView("org.apache.uima.ruta.cde.ui.DocumentView");

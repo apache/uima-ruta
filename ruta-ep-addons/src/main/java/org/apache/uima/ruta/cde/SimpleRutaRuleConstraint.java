@@ -174,14 +174,6 @@ public class SimpleRutaRuleConstraint implements IRutaRuleConstraint {
     }
   }
 
-  public String getRule() {
-    return rule;
-  }
-  
-  public void setRule(String rule) {
-    this.rule=rule;
-  }
-
   public String getDescription() {
     return StringUtils.isBlank(description) ? rule : description;
   }
@@ -197,4 +189,13 @@ public class SimpleRutaRuleConstraint implements IRutaRuleConstraint {
   public String getTypeSystemLocation() {
     return typeSystemLocation;
   }
+
+  public String getData() {
+    return rule;
+  }
+
+  public void setData(String data) {
+    this.rule = data;    
+  }
+
 }

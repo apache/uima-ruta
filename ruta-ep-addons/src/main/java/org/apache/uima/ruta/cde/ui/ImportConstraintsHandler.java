@@ -19,18 +19,16 @@
 
 package org.apache.uima.ruta.cde.ui;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.uima.ruta.cde.utils.ConstraintData;
-import org.apache.uima.ruta.cde.utils.ConstraintXMLImporter;
+import org.apache.uima.ruta.cde.utils.ConstraintXMLUtils;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.SWT;
@@ -41,26 +39,22 @@ public class ImportConstraintsHandler implements IHandler {
   
   private class ImportJob extends Job {
    
-    IPath inputPath;
+    String inputLocation;
     ConstraintSelectComposite composite;
-    ArrayList<ConstraintData> constraints;
     
-    public ImportJob(ExecutionEvent event, ConstraintSelectComposite composite, IPath inputPath) {
+    public ImportJob(ExecutionEvent event, ConstraintSelectComposite composite, String inputLocation) {
       super("Importing constraints");
-      this.inputPath = inputPath; 
+      this.inputLocation = inputLocation; 
       this.composite = composite;
-      constraints = new ArrayList<ConstraintData>();
     }
 
     protected IStatus run(IProgressMonitor monitor) {
-      ConstraintXMLImporter importer = new ConstraintXMLImporter();
       try {
-        constraints = importer.readXML(inputPath);
-        composite.setConstraints(constraints);
+        final List<ConstraintData> constraints = ConstraintXMLUtils.readConstraints(inputLocation);
         composite.getDisplay().asyncExec(new Runnable() {
           public void run() {
-            composite.setConstraints(constraints);
-            composite.getViewer().setInput(constraints);
+            composite.getConstraintList().addAll(constraints);
+            composite.getViewer().setInput(composite.getConstraintList());
             composite.getViewer().refresh();
             composite.update();
           } 
@@ -95,9 +89,7 @@ public class ImportConstraintsHandler implements IHandler {
     dlg.setFilterExtensions(extensions);
     String s = dlg.open();
     if (s != null) {
-      IPath path = Path.fromPortableString(s);
-      ImportJob job = new ImportJob(event, composite, path);
-      
+      ImportJob job = new ImportJob(event, composite, s);
       job.schedule();
     } else {
       return Status.CANCEL_STATUS;

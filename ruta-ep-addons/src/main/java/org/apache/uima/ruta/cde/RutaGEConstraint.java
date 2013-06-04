@@ -59,7 +59,6 @@ public class RutaGEConstraint implements IRutaConstraint {
   }
 
   public Double processConstraint(CAS cas) throws Exception {
-    // TODO Auto-generated method stub
     // Constraint Format: "Peter":Author 0.44, Editor 0.50
     // counts for sysouts, remove later
     int runCount = 0;
@@ -113,10 +112,8 @@ public class RutaGEConstraint implements IRutaConstraint {
 
     Type matchedType = cas.getTypeSystem().getType(
             "org.apache.uima.ruta.type.DebugMatchedRuleMatch");
-    Type ruleApplyType = cas.getTypeSystem().getType(
-            "org.apache.uima.ruta.type.DebugRuleApply");
-    Type blockApplyType = cas.getTypeSystem().getType(
-            "org.apache.uima.ruta.type.DebugBlockApply");
+    Type ruleApplyType = cas.getTypeSystem().getType("org.apache.uima.ruta.type.DebugRuleApply");
+    Type blockApplyType = cas.getTypeSystem().getType("org.apache.uima.ruta.type.DebugBlockApply");
 
     removeDebugAnnotations(cas, matchedType, ruleApplyType, blockApplyType);
     double applyAmount = 0;
@@ -172,7 +169,6 @@ public class RutaGEConstraint implements IRutaConstraint {
 
     // calculate cosinus similarity for result values:
     return EvaluationMeasures.cosine(results);
-//    return getCosineSimilarity(results);
   }
 
   private void removeDebugAnnotations(CAS cas, Type matchedType, Type ruleApplyType,
@@ -199,44 +195,6 @@ public class RutaGEConstraint implements IRutaConstraint {
     return this.description;
   }
 
-  public double getCosineSimilarity(ArrayList<Double[]> results) {
-
-    if (results.size() == 0) {
-      return 0;
-    }
-
-    double sumATimesB = 0;
-    double sumA = 0;
-    double sumB = 0;
-
-    for (Double[] resultPair : results) {
-
-      double a = resultPair[0];
-      double b = resultPair[1];
-
-      sumATimesB += (a * b);
-      sumA += Math.pow(a, 2);
-      sumB += Math.pow(b, 2);
-    }
-
-    if (sumATimesB != 0) {
-      double sqrtA = Math.sqrt(sumA);
-      double sqrtB = Math.sqrt(sumB);
-      double result = sumATimesB / (sqrtA * sqrtB);
-      return result;
-    }
-    return 0;
-
-  }
-
-  public String getConstraintText() {
-    return this.constraintText;
-  }
-
-  public void setConstraintText(String constraintText) {
-    this.constraintText = constraintText;
-  }
-
   public void setDescription(String description) {
     this.description = description;
   }
@@ -244,38 +202,44 @@ public class RutaGEConstraint implements IRutaConstraint {
   public HashMap<String, Double> createRuleSet() {
     HashMap<String, Double> rulesMap = new HashMap<String, Double>();
     try {
-    String content = FileUtils.file2String(new File(constraintText));
-    
-//    System.out.println(content);
-    
-    String[] constraintTextArray = content.split("\n");
-    for (String constraintLine : constraintTextArray) {
+      String content = FileUtils.file2String(new File(constraintText));
 
-      String[] patternAndEstimates = constraintLine.split(":");
-      String pattern = patternAndEstimates[0];
-      pattern = pattern.trim();
-      String estimates = patternAndEstimates[1];
-      String[] singleEstimates = estimates.split(",");
+      String[] constraintTextArray = content.split("\n");
+      for (String constraintLine : constraintTextArray) {
 
-      for (String singleEstimate : singleEstimates) {
-        singleEstimate = singleEstimate.trim();
-        String[] typeAndRatio = singleEstimate.split("\\s+");
-        String typeName = typeAndRatio[0];
-        String ratio = typeAndRatio[1];
-        ratio.trim();
-        String rule = "";
+        String[] patternAndEstimates = constraintLine.split(":");
+        String pattern = patternAndEstimates[0];
+        pattern = pattern.trim();
+        String estimates = patternAndEstimates[1];
+        String[] singleEstimates = estimates.split(",");
 
-        if (pattern.startsWith("\"")) {
-          rule = pattern + "{PARTOF(" + typeName + ")};";
-        } else {
-          rule = pattern + "{PARTOF(" + typeName + ")};";
+        for (String singleEstimate : singleEstimates) {
+          singleEstimate = singleEstimate.trim();
+          String[] typeAndRatio = singleEstimate.split("\\s+");
+          String typeName = typeAndRatio[0];
+          String ratio = typeAndRatio[1];
+          ratio.trim();
+          String rule = "";
+
+          if (pattern.startsWith("\"")) {
+            rule = pattern + "{PARTOF(" + typeName + ")};";
+          } else {
+            rule = pattern + "{PARTOF(" + typeName + ")};";
+          }
+          rulesMap.put(rule, Double.valueOf(ratio));
         }
-        rulesMap.put(rule, Double.valueOf(ratio));
       }
-    }
-    }catch(IOException e) {
+    } catch (IOException e) {
       e.printStackTrace();
     }
     return rulesMap;
+  }
+
+  public String getData() {
+    return constraintText;
+  }
+
+  public void setData(String data) {
+    this.constraintText = data;
   }
 }

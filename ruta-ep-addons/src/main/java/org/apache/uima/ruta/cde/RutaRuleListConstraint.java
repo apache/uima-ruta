@@ -186,16 +186,7 @@ public class RutaRuleListConstraint implements IRutaRuleConstraint {
     }
   }
   
-  public String getRule() {
-    return rules;
-  }
-
-  public void setRule(String rule) {
-    this.rules=rule;
-  }
-  
   public String getDescription() {
-    // TODO Auto-generated method stub
     return description;
   }
   
@@ -209,6 +200,14 @@ public class RutaRuleListConstraint implements IRutaRuleConstraint {
 
   public String getTypeSystemLocation() {
     return typeSystemLocation;
+  }
+
+  public String getData() {
+    return rules;
+  }
+
+  public void setData(String data) {
+   this.rules = data;
   }
 
 }

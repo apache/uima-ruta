@@ -57,7 +57,7 @@ public class ConstraintDialog extends Dialog {
 
   public void create(SimpleRutaRuleConstraint constraint) {
     super.create();
-    rule = constraint.getRule();
+    rule = constraint.getData();
     description = constraint.getDescription();
 
     ruleText.setText(rule);
@@ -66,7 +66,7 @@ public class ConstraintDialog extends Dialog {
 
   public void create(RutaRuleListConstraint constraint) {
     super.create();
-    rule = constraint.getRule();
+    rule = constraint.getData();
     description = constraint.getDescription();
 
     ruleText.setText(rule);
@@ -75,7 +75,7 @@ public class ConstraintDialog extends Dialog {
   
   public void create (RutaGEConstraint constraint) {
     super.create();
-    rule = constraint.getConstraintText();
+    rule = constraint.getData();
     description = constraint.getDescription();
 
     ruleText.setText(rule);
@@ -87,52 +87,6 @@ public class ConstraintDialog extends Dialog {
     GridLayout layout = new GridLayout();
     layout.numColumns = 3;
     parent.setLayout(layout);
-    // Label label0 = new Label(parent, SWT.FILL);
-    // label0.setText("TypeSystem :");
-    //
-    // GridData label0GridData = new GridData();
-    // label0GridData.grabExcessVerticalSpace = true;
-    // label0GridData.horizontalAlignment = GridData.CENTER;
-    // label0GridData.verticalAlignment = GridData.CENTER;
-    // label0GridData.minimumHeight = 25;
-    // label0GridData.horizontalSpan = 1;
-    // label0GridData.verticalIndent = 5;
-    // label0.setLayoutData(label0GridData);
-    //
-    // dirText = new Text(parent, SWT.SINGLE | SWT.BORDER);
-    //
-    //
-    //
-    // dirButton = new Button(parent, SWT.PUSH);
-    // dirButton.setSize(25, 25);
-    // GridData buttonGridData = new GridData();
-    // buttonGridData.horizontalAlignment = GridData.CENTER;
-    // buttonGridData.verticalAlignment = GridData.CENTER;
-    // buttonGridData.horizontalSpan = 1;
-    // Image folderIcon = getImage("folder");
-    // dirButton.setImage(folderIcon);
-    // buttonGridData.minimumHeight = 25;
-    // buttonGridData.minimumWidth = 25;
-    // dirButton.setLayoutData(buttonGridData);
-    // dirButton.addSelectionListener(new SelectionAdapter() {
-    // @Override
-    // public void widgetSelected(SelectionEvent event) {
-    // FileDialog dlg = new FileDialog(getShell());
-    // dlg.setText("Input Directory");
-    // String dir = dlg.open();
-    // if (dir != null) {
-    // File f = new File(dir);
-    // dirText.setText(f.getAbsolutePath());
-    // }
-    // }
-    // });
-    //
-    // GridData dirTextGridData = new GridData();
-    // dirTextGridData.grabExcessHorizontalSpace = true;
-    // dirTextGridData.horizontalAlignment = GridData.FILL;
-    // dirTextGridData.horizontalSpan = 1;
-    // dirTextGridData.minimumHeight = 25;
-    // dirText.setLayoutData(dirTextGridData);
 
     Label label1 = new Label(parent, SWT.FILL);
     label1.setText("Constraint Rule :");

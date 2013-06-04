@@ -23,8 +23,14 @@ import org.apache.uima.cas.CAS;
 
 public interface IRutaConstraint {
 
-	public Double processConstraint (CAS input) throws Exception;
-	
-	public String getDescription ();
-	
+  Double processConstraint(CAS input) throws Exception;
+
+  String getDescription();
+
+  void setDescription(String description);
+
+  String getData();
+
+  void setData(String data);
+
 }

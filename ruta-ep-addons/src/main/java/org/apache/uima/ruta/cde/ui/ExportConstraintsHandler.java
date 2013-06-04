@@ -19,77 +19,56 @@
 
 package org.apache.uima.ruta.cde.ui;
 
-import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.apache.uima.ruta.cde.utils.ConstraintData;
-import org.apache.uima.ruta.cde.utils.ConstraintXMLExporter;
+import org.apache.uima.ruta.cde.utils.ConstraintXMLUtils;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-public class ExportAllConstraintsHandler implements IHandler {
+public class ExportConstraintsHandler implements IHandler {
 
   private class ExportAllConstraintsJob extends Job {
 
-    private IPath outputPath;
+    private String outputLocation;
 
-    private ArrayList<ConstraintData> constraints;
+    private List<ConstraintData> constraints;
 
-    ExportAllConstraintsJob(IPath outputPath, ArrayList<ConstraintData> constraints) {
-      super("Exporting all the constraints");
-      this.outputPath = outputPath;
+    ExportAllConstraintsJob(String outputLocation, List<ConstraintData> constraints) {
+      super("Exporting constraints");
+      this.outputLocation = outputLocation;
       this.constraints = constraints;
-
     }
 
     public IStatus run(IProgressMonitor monitor) {
-      ConstraintXMLExporter exporter = new ConstraintXMLExporter(constraints);
       try {
-        exporter.saveConstraints(outputPath);
-        
-        //ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(outputPath).getParent().refreshLocal(1, monitor);
-        
-        
+        ConstraintXMLUtils.writeConstraints(outputLocation, constraints);
+        IPath path = Path.fromPortableString(outputLocation);
+        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+        IFile ifile = root.getFileForLocation(path);
+        if(ifile != null) {
+          ifile.getParent().refreshLocal(IResource.DEPTH_INFINITE, monitor);
+        }
       } catch (Exception e) {
-        e.printStackTrace();
+        RutaAddonsPlugin.error(e);
       }
       return Status.OK_STATUS;
-    }
-  }
-
-  private class ExportAllConstraintsJobAdapter extends JobChangeAdapter {
-
-    private ConstraintSelectComposite composite;
-
-    ExportAllConstraintsJobAdapter(ConstraintSelectComposite composite) {
-      super();
-      this.composite = composite;
-    }
-
-    public void done(IJobChangeEvent event) {
-      if (event.getResult().isOK()) {
-        composite.getDisplay().asyncExec(new Runnable() {
-          public void run() {
-            try {
-
-            } catch (Exception e) {
-
-            }
-          }
-        });
-      }
     }
   }
 
@@ -104,12 +83,8 @@ public class ExportAllConstraintsHandler implements IHandler {
     FileDialog dlg = new FileDialog(HandlerUtil.getActiveShell(event), SWT.SAVE);
     String[] extensions = new String[] { "*.xml" };
     dlg.setFilterExtensions(extensions);
-//    String test = dlg.open();
     String s = dlg.open();
-    IPath outputPath = null;
-    if (s != null) {
-      outputPath = Path.fromPortableString(s);
-    } else {
+    if (s == null) {
       return Status.CANCEL_STATUS;
     }
     ConstraintSelectView constraintView;
@@ -123,15 +98,11 @@ public class ExportAllConstraintsHandler implements IHandler {
               .showView("org.apache.uima.ruta.cde.ui.ConstraintSelectView");
       ConstraintSelectComposite composite = (ConstraintSelectComposite) constraintView
               .getComposite();
-      ArrayList<ConstraintData> constraintList = composite.getConstraintList();
-      
-
-      
-      ExportAllConstraintsJob job = new ExportAllConstraintsJob(outputPath, constraintList);
+      List<ConstraintData> constraintList = composite.getConstraintList();
+      ExportAllConstraintsJob job = new ExportAllConstraintsJob(s, constraintList);
       job.schedule();
-
     } catch (Exception e) {
-      e.printStackTrace();
+      RutaAddonsPlugin.error(e);
     }
     return null;
   }

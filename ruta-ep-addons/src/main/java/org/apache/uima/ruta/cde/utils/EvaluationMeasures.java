@@ -20,15 +20,12 @@
 package org.apache.uima.ruta.cde.utils;
 
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
 import org.apache.commons.math3.stat.correlation.SpearmansCorrelation;
-import org.apache.commons.math3.stat.inference.ChiSquareTest;
-import org.apache.commons.math3.stat.inference.TestUtils;
 
 public class EvaluationMeasures {
 

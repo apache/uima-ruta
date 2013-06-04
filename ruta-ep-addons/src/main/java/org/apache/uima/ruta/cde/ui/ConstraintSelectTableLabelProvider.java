@@ -52,7 +52,7 @@ public class ConstraintSelectTableLabelProvider implements ITableLabelProvider {
 			if(columnIndex == 0) {
 			  if(StringUtils.isBlank(data.getDescription()) && data.getConstraint() instanceof SimpleRutaRuleConstraint) {
 			    SimpleRutaRuleConstraint c = (SimpleRutaRuleConstraint) data.getConstraint();
-			    return c.getRule();
+			    return c.getData();
 			  } else {
 			    return data.getDescription();
 			  }

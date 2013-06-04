@@ -20,18 +20,15 @@
 package org.apache.uima.ruta.cde;
 
 public class RutaConstraintFactory {
-  
-  public RutaConstraintFactory () {
-    super();
-  }
 
-  public IRutaRuleConstraint createConstraint(String type) {
-    if (type.equals("SimpleTextMarkerConstraint")) {
-      return new SimpleRutaRuleConstraint("","");
+  public static IRutaConstraint createConstraint(String type) {
+    if (type.equals("SimpleRutaRuleConstraint")) {
+      return new SimpleRutaRuleConstraint("", "");
+    } else if (type.equals("RutaRuleListConstraint")) {
+      return new RutaRuleListConstraint("", "");
+    } else if(type.equals("RutaGEConstraint")) {
+      return new RutaGEConstraint("", "");
     }
-    if (type.equals("ListTextMarkerConstraint")) {
-      return new RutaRuleListConstraint("","");
-    }
-  return null;
+    return null;
   }
 }

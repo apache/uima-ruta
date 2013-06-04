@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.apache.uima.ruta.cde.IRutaConstraint;
@@ -91,7 +92,7 @@ public class ConstraintSelectComposite extends Composite implements ISelectionCh
 
   private TableEditor editor;
 
-  private ArrayList<ConstraintData> constraintList;
+  private List<ConstraintData> constraintList;
 
   private int EDITABLECOLUMN = 1;
 
@@ -438,7 +439,7 @@ public class ConstraintSelectComposite extends Composite implements ISelectionCh
     return images.get(name);
   }
 
-  public ArrayList<ConstraintData> getConstraintList() {
+  public List<ConstraintData> getConstraintList() {
     return this.constraintList;
   }
 
@@ -452,7 +453,7 @@ public class ConstraintSelectComposite extends Composite implements ISelectionCh
         IMemento currentMemento = memento.createChild("constraint", "SimpleRutaConstraint");
         SimpleRutaRuleConstraint constraint = (SimpleRutaRuleConstraint) constraintData
                 .getConstraint();
-        currentMemento.createChild("Rule", constraint.getRule());
+        currentMemento.createChild("Rule", constraint.getData());
         currentMemento.createChild("Description", constraint.getDescription());
       }
 
@@ -460,14 +461,14 @@ public class ConstraintSelectComposite extends Composite implements ISelectionCh
         IMemento currentMemento = memento.createChild("constraint", "ListRutaConstraint");
         RutaRuleListConstraint constraint = (RutaRuleListConstraint) constraintData
                 .getConstraint();
-        currentMemento.createChild("Rule", constraint.getRule());
+        currentMemento.createChild("Rule", constraint.getData());
         currentMemento.createChild("Description", constraint.getDescription());
       }
 
       if (constraintData.getConstraint() instanceof RutaGEConstraint) {
         IMemento currentMemento = memento.createChild("constraint", "GEConstraint");
         RutaGEConstraint constraint = (RutaGEConstraint) constraintData.getConstraint();
-        currentMemento.createChild("Rule", constraint.getConstraintText());
+        currentMemento.createChild("Rule", constraint.getData());
         currentMemento.createChild("Description", constraint.getDescription());
       }
     }
@@ -505,12 +506,7 @@ public class ConstraintSelectComposite extends Composite implements ISelectionCh
     return RutaAddonsPlugin.getImageDescriptor(path).createImage();
   }
 
-  // public void exportConstraint (ConstraintData data) {
-  // String type = "";
-  // String ruleText = "";
-  // String description = "";
-  // }
-  public void setConstraints(ArrayList<ConstraintData> constraints) {
+  public void setConstraints(List<ConstraintData> constraints) {
     this.constraintList = constraints;
   }
   

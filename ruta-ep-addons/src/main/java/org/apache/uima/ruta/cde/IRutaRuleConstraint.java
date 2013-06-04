@@ -21,15 +21,9 @@ package org.apache.uima.ruta.cde;
 
 public interface IRutaRuleConstraint extends IRutaConstraint {
   
-  public String getRule();
-  
-  public void setRule(String rule);
-  
-  
   public String getDescription();
   
   public void setDescription(String s);
-  
   
   public String getTypeSystemLocation();
   

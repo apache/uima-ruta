@@ -22,35 +22,54 @@ package org.apache.uima.ruta.cde.utils;
 import org.apache.uima.ruta.cde.IRutaConstraint;
 
 public class ConstraintData {
-	
-	private IRutaConstraint constraint;
-	
-	private int weight;
 
-	public ConstraintData (IRutaConstraint constraint) {
-		this.constraint = constraint;
-		weight  =  1;
-	}
+  private IRutaConstraint constraint;
 
-	public int getWeight() {
-		return weight;
-	}
+  private int weight;
 
-	public void setWeight(int weight) {
-		this.weight = weight;
-	}
+  public ConstraintData(IRutaConstraint constraint) {
+    this.constraint = constraint;
+    weight = 1;
+  }
 
-	public IRutaConstraint getConstraint () {
-		return constraint;
-	}
-	
-	public void setConstraint (IRutaConstraint constraint) {
-		this.constraint= constraint;
-	}
-	
-	public String getDescription () {
-		return constraint.getDescription();
-	}
-	
+  public int getWeight() {
+    return weight;
+  }
+
+  public void setWeight(int weight) {
+    this.weight = weight;
+  }
+
+  public IRutaConstraint getConstraint() {
+    return constraint;
+  }
+
+  public void setConstraint(IRutaConstraint constraint) {
+    this.constraint = constraint;
+  }
+
+  public String getDescription() {
+    return constraint.getDescription();
+  }
+
+  public String toXML() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("<constraint type=\"" + constraint.getClass().getSimpleName() + "\" weight=\""+weight+"\">");
+    sb.append("\n");
+    sb.append("<data>");
+    sb.append("<![CDATA[");
+    sb.append(constraint.getData());
+    sb.append("]]>");
+    sb.append("</data>");
+    sb.append("\n");
+    sb.append("<description>");
+    sb.append("<![CDATA[");
+    sb.append(getDescription());
+    sb.append("]]>");
+    sb.append("</description>");
+    sb.append("\n");
+    sb.append("</constraint>");
+    return sb.toString();
+  }
 
 }

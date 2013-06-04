@@ -703,7 +703,7 @@ under the License.
             name="RunFromDocumentView">
       </command>
       <command
-            defaultHandler="org.apache.uima.ruta.cde.ui.ExportAllConstraintsHandler"
+            defaultHandler="org.apache.uima.ruta.cde.ui.ExportConstraintsHandler"
             id="toolbar:org.apache.uima.ruta.cde.ui.ConstraintSelectView.exportall"
             name="ExportAllConstraints">
       </command>
