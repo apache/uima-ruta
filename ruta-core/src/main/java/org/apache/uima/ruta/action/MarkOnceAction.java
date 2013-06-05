@@ -21,8 +21,6 @@ package org.apache.uima.ruta.action;
 
 import java.util.List;
 
-import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
@@ -30,6 +28,7 @@ import org.apache.uima.ruta.expression.number.NumberExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class MarkOnceAction extends MarkAction {
@@ -44,28 +43,18 @@ public class MarkOnceAction extends MarkAction {
     List<Integer> indexList = getIndexList(element, list, stream);
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(indexList,
             element.getContainer());
+    Type targetType = type.getType(element.getParent());
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
-
-      CAS cas = stream.getCas();
-      if (matchedAnnotation == null)
-        return;
-      Type t = type.getType(element.getParent());
-      AnnotationFS createAnnotation = cas.createAnnotation(t, matchedAnnotation.getBegin(),
-              matchedAnnotation.getEnd());
-      boolean contains = false;
-      FSIterator<AnnotationFS> iterator = cas.getAnnotationIndex(t).iterator(createAnnotation);
-      while (iterator.isValid()
-              && ((AnnotationFS) iterator.get()).getEnd() == createAnnotation.getEnd()) {
-        AnnotationFS a = (AnnotationFS) iterator.get();
-        if (a.getBegin() == createAnnotation.getBegin() && a.getEnd() == createAnnotation.getEnd()
-                && a.getType().getName().equals(createAnnotation.getType().getName())) {
-          contains = true;
+      boolean partof = false;
+      List<RutaBasic> basicsInWindow = stream.getBasicsInWindow(matchedAnnotation);
+      for (RutaBasic rutaBasic : basicsInWindow) {
+        if (rutaBasic.isPartOf(targetType)) {
+          partof = true;
           break;
         }
-        iterator.moveToNext();
       }
-      if (!contains) {
-        super.execute(match, element, stream, crowd);
+      if (!partof) {
+        createAnnotation(matchedAnnotation, element, stream, match);
       }
     }
   }

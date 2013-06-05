@@ -790,7 +790,8 @@ Document{-> MARKFAST(FirstName, FirstNameList, true, 2)};]]></programlisting>
     <title>MARKONCE</title>
     <para>
       The MARKONCE action has the same functionality as the MARK
-      action, but creates a new annotation only, if it is not yet existing.
+      action, but creates a new annotation only, 
+      if each part of the matched annotation is not yet part of the given type.
     </para>
     <section>
       <title>
@@ -809,7 +810,7 @@ Document{-> MARKFAST(FirstName, FirstNameList, true, 2)};]]></programlisting>
       </para>
       <para>
         This rule matches on a free line followed by a Paragraph and
-        annotates both in a single ParagraphAfterFreeline annotation, if it
+        annotates both in a single ParagraphAfterFreeline annotation, if no part 
         is not already annotated with ParagraphAfterFreeline annotation. The
         two numerical expressions at the end of the MARKONCE action state
         that the matched text of the first and the second rule elements are
