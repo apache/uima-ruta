@@ -20,6 +20,7 @@
 package org.apache.uima.ruta.testing.ui.views;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.EditorPart;
@@ -50,15 +51,18 @@ public class TestPageBookView extends PageBookView {
   protected PageRec doCreatePage(IWorkbenchPart part) {
     // getPageBook().dispose();
     EditorPart source = (EditorPart) part;
+    IEditorInput editorInput = source.getEditorInput();
+    if (editorInput instanceof FileEditorInput) {
+      FileEditorInput fileInput = (FileEditorInput) editorInput;
+      IResource r = fileInput.getFile();
 
-    FileEditorInput fileInput = (FileEditorInput) source.getEditorInput();
-    IResource r = fileInput.getFile();
-
-    TestViewPage testPage = new TestViewPage(r);
-    initPage(testPage);
-    testPage.createControl(getPageBook());
-    PageRec result = new PageRec(part, testPage);
-    return result;
+      TestViewPage testPage = new TestViewPage(r);
+      initPage(testPage);
+      testPage.createControl(getPageBook());
+      PageRec result = new PageRec(part, testPage);
+      return result;
+    }
+    return null;
   }
 
   @Override
@@ -82,8 +86,7 @@ public class TestPageBookView extends PageBookView {
 
   @Override
   protected boolean isImportant(IWorkbenchPart part) {
-    return part.getSite().getId()
-            .equals("org.apache.uima.ruta.ide.ui.editor.RutaEditor");
+    return part.getSite().getId().equals("org.apache.uima.ruta.ide.ui.editor.RutaEditor");
   }
 
 }
