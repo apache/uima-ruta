@@ -33,14 +33,8 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.CASRuntimeException;
-import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.resource.ResourceConfigurationException;
-import org.apache.uima.resource.ResourceInitializationException;
-import org.apache.uima.resource.metadata.TypeDescription;
-import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.apache.uima.resource.metadata.impl.TypeDescription_impl;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.ruta.textruler.TextRulerPlugin;
@@ -153,10 +147,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     sendStatusUpdateToDelegate("loading AE...", TextRulerLearnerState.ML_INITIALIZING, false);
     
     AnalysisEngineDescription description = TextRulerToolkit.getAnalysisEngineDescription(descriptorFile);
-    if(supportBoundaries) {
-      TextRulerToolkit.addBoundaryTypes(description, slotNames);
-    }
-    
+    TextRulerToolkit.addBoundaryTypes(description, slotNames);
     ae = TextRulerToolkit.loadAnalysisEngine(description);
 
     // set filters to NO filtering so that we can add it manually with

@@ -152,7 +152,7 @@ public class TextRulerView extends ViewPart implements TextRulerControllerDelega
           ((TextRulerResultsView) resultView).setViewTitle(c.getName() + " - Results");
         }
       }
-
+      
       if (TextRulerController.enabledAlgorithmsCount() > 0) {
         TextRulerController.start(inputDir, additionalDir, preProcTMFile, slotNames, filters, this,
                 viewContent.getCurrentAlgorithmParameters(), viewContent.getSkipPreprocessing());
