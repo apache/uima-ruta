@@ -81,6 +81,7 @@ public class Whisk extends TextRulerBasicLearner {
   public Whisk(String inputDir, String prePropTmFile, String tmpDir, String[] slotNames,
           Set<String> filterSet, boolean skip, TextRulerLearnerDelegate delegate) {
     super(inputDir, prePropTmFile, tmpDir, slotNames, filterSet, skip, delegate);
+    // useDynamicAnchoring = true;
   }
 
   @Override
@@ -180,6 +181,7 @@ public class Whisk extends TextRulerBasicLearner {
     if (theRule != null) {
       double oldLaplacian = theRule.getLaplacian();
       int subRoundNumber = 0;
+
       // repeat while we still make errors...
       while (theRule.getCoveringStatistics().getCoveredNegativesCount() > 0) {
         WhiskRule extendedRule = extendRule(theRule, doc, example, subRoundNumber);
@@ -237,14 +239,14 @@ public class Whisk extends TextRulerBasicLearner {
         if (!rulesToTest.contains(proposedRule))
           rulesToTest.add(proposedRule);
 
-        // add a second version where we remove the exact token content if
+        // add a second version where we add the exact token content if
         // it is a regexp item:
         WhiskRule proposedRule2 = null;
         WhiskRuleItem t2 = null;
         if (t.getWordConstraint().isRegExpConstraint()) {
           proposedRule2 = proposedRule.copy();
           t2 = term;
-          t2.setHideRegExp(true);
+          t2.setHideRegExp(false);
           proposedRule2.setNeedsCompile(true);
           if (!rulesToTest.contains(proposedRule2)) {
             rulesToTest.add(proposedRule2);
@@ -636,13 +638,16 @@ public class Whisk extends TextRulerBasicLearner {
       WhiskRule base1 = rule.copy(); // slot filler rule
       TextRulerSlotPattern slotPattern = base1.getPatterns().get(slotIndex);
       // questionable restriction:
-      for (int i = 0; i < inside.size(); i++)
-        if (i == 0 || (i == inside.size() - 1))
-          slotPattern.fillerPattern.add(inside.get(i).copy());
-        else if (inside.size() > 2 && i < 2)
-          slotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem(getElementIndex(base1,
-                  inside.get(i))));
-
+      if (inside.size() <= windowSize) { // TODO add parameter for this!
+        slotPattern.fillerPattern.addAll(inside);
+      } else {
+        for (int i = 0; i < inside.size(); i++)
+          if (i == 0 || (i == inside.size() - 1))
+            slotPattern.fillerPattern.add(inside.get(i).copy());
+          else if (inside.size() > 2 && i < 2)
+            slotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem(getElementIndex(base1,
+                    inside.get(i))));
+      }
       List<WhiskRuleItem> beforeList = getTermsBefore(inside.get(0), example);
       List<WhiskRuleItem> afterList = getTermsAfter(inside.get(inside.size() - 1), example);
       beforeList.add(null);
@@ -655,50 +660,48 @@ public class Whisk extends TextRulerBasicLearner {
         for (WhiskRuleItem eachAfter : afterList) {
           WhiskRule copy = rule.copy();
           TextRulerSlotPattern textRulerSlotPattern = copy.getPatterns().get(slotIndex);
-          if(eachBefore != null) {
+          if (eachBefore != null) {
             textRulerSlotPattern.preFillerPattern.add(eachBefore);
           }
           textRulerSlotPattern.fillerPattern.add(inside.get(0).copy());
           textRulerSlotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem(0));
-          if(eachAfter != null) {
+          if (eachAfter != null) {
             textRulerSlotPattern.postFillerPattern.add(eachAfter);
           }
           tempRules.add(copy);
         }
       }
-      // onnly inner end
+      // only inner end
       for (WhiskRuleItem eachBefore : beforeList) {
         for (WhiskRuleItem eachAfter : afterList) {
           WhiskRule copy = rule.copy();
           TextRulerSlotPattern textRulerSlotPattern = copy.getPatterns().get(slotIndex);
-          if(eachBefore != null) {
+          if (eachBefore != null) {
             textRulerSlotPattern.preFillerPattern.add(eachBefore);
           }
           textRulerSlotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem(0));
-          textRulerSlotPattern.fillerPattern.add(inside.get(inside.size()-1).copy());
-          if(eachAfter != null) {
+          textRulerSlotPattern.fillerPattern.add(inside.get(inside.size() - 1).copy());
+          if (eachAfter != null) {
             textRulerSlotPattern.postFillerPattern.add(eachAfter);
           }
           tempRules.add(copy);
         }
       }
-      
-      
-      
+
       if (!beforeList.isEmpty()) {
         if (!afterList.isEmpty()) {
           for (WhiskRuleItem eachBefore : beforeList) {
             for (WhiskRuleItem eachAfter : afterList) {
               WhiskRule copy = rule.copy();
               TextRulerSlotPattern textRulerSlotPattern = copy.getPatterns().get(slotIndex);
-              if(eachBefore != null ) {
+              if (eachBefore != null) {
                 textRulerSlotPattern.preFillerPattern.add(eachBefore);
               }
               textRulerSlotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem(getElementIndex(
                       copy, inside.get(0))));
-             if(eachAfter != null) {
-               textRulerSlotPattern.postFillerPattern.add(eachAfter);
-             }
+              if (eachAfter != null) {
+                textRulerSlotPattern.postFillerPattern.add(eachAfter);
+              }
               tempRules.add(copy);
             }
           }
@@ -708,7 +711,7 @@ public class Whisk extends TextRulerBasicLearner {
             TextRulerSlotPattern textRulerSlotPattern = copy.getPatterns().get(slotIndex);
             textRulerSlotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem(getElementIndex(
                     copy, inside.get(0))));
-            if(eachBefore != null) {
+            if (eachBefore != null) {
               textRulerSlotPattern.preFillerPattern.add(eachBefore);
             }
             tempRules.add(copy);
@@ -720,7 +723,7 @@ public class Whisk extends TextRulerBasicLearner {
           TextRulerSlotPattern textRulerSlotPattern = copy.getPatterns().get(slotIndex);
           textRulerSlotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem(getElementIndex(
                   copy, inside.get(0))));
-          if(eachAfter!= null) {
+          if (eachAfter != null) {
             textRulerSlotPattern.postFillerPattern.add(eachAfter);
           }
           tempRules.add(copy);
@@ -801,6 +804,8 @@ public class Whisk extends TextRulerBasicLearner {
         if (!filterSetWithSlotNames.contains(a.getType().getName())) {
           if (nextBegin == -1) {
             nextBegin = a.getBegin();
+          } else if (nextBegin != a.getBegin()) {
+            break;
           }
           if (a.getBegin() <= nextBegin && a.getBegin() >= end) {
             WhiskRuleItem term = new WhiskRuleItem(
@@ -839,6 +844,8 @@ public class Whisk extends TextRulerBasicLearner {
           }
           if (nextEnd == -1) {
             nextEnd = a.getEnd();
+          } else if (nextEnd != a.getEnd()) {
+            break;
           }
           if (a.getEnd() >= nextEnd && a.getEnd() <= begin) {
             WhiskRuleItem term = new WhiskRuleItem(
@@ -894,6 +901,8 @@ public class Whisk extends TextRulerBasicLearner {
         if (!filterSetWithSlotNames.contains(a.getType().getName())) {
           if (firstBegin == -1) {
             firstBegin = a.getBegin();
+          } else if (firstBegin != a.getBegin()) {
+            break;
           }
           if (a.getBegin() == firstBegin)
             startAs.add(a);

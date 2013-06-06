@@ -36,7 +36,7 @@ public class WhiskRuleItem implements TextRulerRuleItem {
 
   // private int termNumberInExample = -1;
 
-  private boolean hideRegExp = false;
+  private boolean hideRegExp = true;
 
   protected List<MLWhiskOtherConstraint> otherConstraints = new ArrayList<MLWhiskOtherConstraint>();
 

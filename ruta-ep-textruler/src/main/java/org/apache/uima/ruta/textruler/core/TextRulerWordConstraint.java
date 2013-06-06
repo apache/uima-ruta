@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.textruler.core;
 
@@ -28,6 +28,9 @@ import org.apache.uima.cas.TypeSystem;
  * almost every algorithm. It encapsulates the word constraint e.g. of a Ruta rule item.
  */
 public class TextRulerWordConstraint {
+
+  // TODO add a preference for it or include it in the learner
+  private static final boolean AUTO_REGEXP = true;
 
   protected TextRulerAnnotation tokenAnnotation;
 
@@ -47,15 +50,17 @@ public class TextRulerWordConstraint {
   public TextRulerWordConstraint(TextRulerAnnotation tokenAnnotation) {
     super();
     this.tokenAnnotation = tokenAnnotation;
-    TypeSystem ts = tokenAnnotation.getDocument().getCAS().getTypeSystem();
-    Type wType = ts.getType(TextRulerToolkit.RUTA_WORD_TYPE_NAME);
-    Type numType = ts.getType(TextRulerToolkit.RUTA_NUM_TYPE_NAME);
-    Type markupType = ts.getType(TextRulerToolkit.RUTA_MARKUP_TYPE_NAME);
-    isRegExpType = ts.subsumes(wType, tokenAnnotation.getType())
-            || ts.subsumes(markupType, tokenAnnotation.getType())
-            || ts.subsumes(numType, tokenAnnotation.getType())
-    // || ts.subsumes(specialType, tokenAnnotation.getType()
-    ;
+    if (AUTO_REGEXP) {
+      TypeSystem ts = tokenAnnotation.getDocument().getCAS().getTypeSystem();
+      Type wType = ts.getType(TextRulerToolkit.RUTA_WORD_TYPE_NAME);
+      Type numType = ts.getType(TextRulerToolkit.RUTA_NUM_TYPE_NAME);
+      Type markupType = ts.getType(TextRulerToolkit.RUTA_MARKUP_TYPE_NAME);
+      Type specialType = ts.getType(TextRulerToolkit.RUTA_SPECIAL_TYPE_NAME);
+      isRegExpType = ts.subsumes(wType, tokenAnnotation.getType())
+              || ts.subsumes(markupType, tokenAnnotation.getType())
+              || ts.subsumes(numType, tokenAnnotation.getType())
+              || ts.subsumes(specialType, tokenAnnotation.getType());
+    }
   }
 
   protected TextRulerWordConstraint(TextRulerAnnotation tokenAnnotation, boolean isRegExpType) {

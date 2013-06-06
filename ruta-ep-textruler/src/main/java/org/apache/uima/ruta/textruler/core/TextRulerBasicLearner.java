@@ -80,6 +80,10 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
 
   private boolean skip;
 
+  protected boolean useDynamicAnchoring = false;
+
+  private boolean useDefaultFiltering;
+
   public TextRulerBasicLearner(String inputDir, String prePropTMFile, String tmpDir,
           String[] slotNames, Set<String> filterSet, boolean skip, TextRulerLearnerDelegate delegate) {
     super();
@@ -100,6 +104,13 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
               MLTargetType.SINGLE_RIGHT_BOUNDARY, s));
     }
 
+    useDefaultFiltering = true;
+    useDefaultFiltering &= filterSet.size() == 4;
+    useDefaultFiltering &= filterSet.contains("org.apache.uima.ruta.type.SPACE");
+    useDefaultFiltering &= filterSet.contains("org.apache.uima.ruta.type.BREAK");
+    useDefaultFiltering &= filterSet.contains("org.apache.uima.ruta.type.NBSP");
+    useDefaultFiltering &= filterSet.contains("org.apache.uima.ruta.type.MARKUP");
+    
     this.casCache = new CasCache(100, this); // TODO make size configurable
     // !? share e.g. 100 places for
     // all running algoritghms ?
@@ -138,6 +149,9 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { portableString });
     ae.setConfigParameterValue(RutaEngine.ADDITIONAL_SCRIPTS, new String[0]);
     ae.setConfigParameterValue(RutaEngine.RELOAD_SCRIPT, true);
+    if(useDynamicAnchoring) {
+      ae.setConfigParameterValue(RutaEngine.DYNAMIC_ANCHORING, true);
+    }
 
     try {
       ae.reconfigure();
@@ -423,7 +437,15 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
   }
 
   public String getFileHeaderString(boolean complete) {
-    return getPackageString() + getTypeSystemImport(complete) + getFilterCommandString();
+    return getPackageString() + getTypeSystemImport(complete) + getFilterCommandString() + getUseDynamicAnchoring(complete);
+  }
+
+  private String getUseDynamicAnchoring(boolean complete) {
+    if(useDynamicAnchoring && complete) {
+      return "Document{-> DYNAMICANCHORING(true)};\n";
+    } else {
+      return "";
+    }
   }
 
   private String getTypeSystemImport(boolean complete) {
@@ -455,7 +477,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
   }
 
   public String getFilterCommandString() {
-    if (filterSet != null && filterSet.size() > 0) {
+    if (filterSet != null && filterSet.size() > 0 && !isDefaultFiltering()) {
       String fs = "";
       for (String s : filterSet)
         if (fs.length() == 0)
@@ -466,6 +488,10 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
       return "Document{->FILTERTYPE(" + fs + ")};\n\n";
     } else
       return "";
+  }
+
+  private boolean isDefaultFiltering() {
+    return useDefaultFiltering;
   }
 
   public CAS getTestCAS() {
