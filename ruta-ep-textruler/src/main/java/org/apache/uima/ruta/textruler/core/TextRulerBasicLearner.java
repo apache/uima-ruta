@@ -30,10 +30,17 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.CASRuntimeException;
+import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.resource.ResourceConfigurationException;
+import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.resource.metadata.TypeDescription;
+import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.apache.uima.resource.metadata.impl.TypeDescription_impl;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.ruta.textruler.TextRulerPlugin;
@@ -86,6 +93,8 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
 
   private boolean configChanged = false;
 
+  protected boolean supportBoundaries = false;
+
   public TextRulerBasicLearner(String inputDir, String prePropTMFile, String tmpDir,
           String[] slotNames, Set<String> filterSet, boolean skip, TextRulerLearnerDelegate delegate) {
     super();
@@ -112,9 +121,9 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     useDefaultFiltering &= filterSet.contains("org.apache.uima.ruta.type.BREAK");
     useDefaultFiltering &= filterSet.contains("org.apache.uima.ruta.type.NBSP");
     useDefaultFiltering &= filterSet.contains("org.apache.uima.ruta.type.MARKUP");
-    
+
     configChanged = true;
-    
+
     this.casCache = new CasCache(100, this); // TODO make size configurable
     // !? share e.g. 100 places for
     // all running algoritghms ?
@@ -142,7 +151,13 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     String descriptorFile = TextRulerToolkit.getEngineDescriptorFromTMSourceFile(new Path(
             preprocessorTMFile));
     sendStatusUpdateToDelegate("loading AE...", TextRulerLearnerState.ML_INITIALIZING, false);
-    ae = TextRulerToolkit.loadAnalysisEngine(descriptorFile);
+    
+    AnalysisEngineDescription description = TextRulerToolkit.getAnalysisEngineDescription(descriptorFile);
+    if(supportBoundaries) {
+      TextRulerToolkit.addBoundaryTypes(description, slotNames);
+    }
+    
+    ae = TextRulerToolkit.loadAnalysisEngine(description);
 
     // set filters to NO filtering so that we can add it manually with
     // the FILTERTYPE expression!
@@ -154,16 +169,18 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     ae.setConfigParameterValue(RutaEngine.ADDITIONAL_SCRIPTS, new String[0]);
     ae.setConfigParameterValue(RutaEngine.RELOAD_SCRIPT, true);
     ae.setConfigParameterValue(RutaEngine.REMOVE_BASICS, true);
-    if(useDynamicAnchoring) {
+    if (useDynamicAnchoring) {
       ae.setConfigParameterValue(RutaEngine.DYNAMIC_ANCHORING, true);
     }
-
     try {
       ae.reconfigure();
     } catch (ResourceConfigurationException e) {
       TextRulerPlugin.error(e);
     }
+    configChanged = true;
   }
+
+ 
 
   protected boolean checkForMandatoryTypes() {
     // check if all passed slot types are present:
@@ -442,11 +459,36 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
   }
 
   public String getFileHeaderString(boolean complete) {
-    return getPackageString() + getTypeSystemImport(complete) + getFilterCommandString() + getUseDynamicAnchoring(complete);
+    return getPackageString() + getTypeSystemImport(complete) + getFilterCommandString()
+            + getUseDynamicAnchoring(complete) + getBoundaryDeclarations(complete);
+  }
+
+  private String getBoundaryDeclarations(boolean complete) {
+    if (complete && supportBoundaries && slotNames.length > 0) {
+      StringBuilder sb = new StringBuilder();
+      sb.append("DECLARE ");
+      int count = 0;
+      for (String slot : slotNames) {
+        String[] split = slot.split("[.]");
+        String shortName = split[split.length - 1];
+        sb.append(shortName);
+        sb.append("START");
+        sb.append(", ");
+        sb.append(shortName);
+        sb.append("END");
+        if (count < slotNames.length - 1) {
+          sb.append(", ");
+        }
+        count++;
+      }
+      sb.append(";\n");
+      return sb.toString();
+    }
+    return "";
   }
 
   private String getUseDynamicAnchoring(boolean complete) {
-    if(useDynamicAnchoring && complete) {
+    if (useDynamicAnchoring && complete) {
       return "Document{-> DYNAMICANCHORING(true)};\n";
     } else {
       return "";
@@ -454,20 +496,21 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
   }
 
   private String getTypeSystemImport(boolean complete) {
-    if(complete) {
-    IPath path = Path.fromOSString(preprocessorTMFile);
-    IPath removeLastSegments = path.removeLastSegments(1);
-    IContainer containerForLocation = ResourcesPlugin.getWorkspace().getRoot().getContainerForLocation(removeLastSegments);
-    IProject project = containerForLocation.getProject();
-    IPath scriptRootPath = RutaProjectUtils.getScriptRootPath(project);
-    String moduleName = RutaProjectUtils.getModuleName(path);
-    IPath makeRelativeTo = path.makeRelativeTo(scriptRootPath);
-    String m = makeRelativeTo.removeFileExtension().toPortableString().replaceAll("/", ".");
-    String importString = "SCRIPT " + m + ";\n";
-    if (!skip) {
+    if (complete) {
+      IPath path = Path.fromOSString(preprocessorTMFile);
+      IPath removeLastSegments = path.removeLastSegments(1);
+      IContainer containerForLocation = ResourcesPlugin.getWorkspace().getRoot()
+              .getContainerForLocation(removeLastSegments);
+      IProject project = containerForLocation.getProject();
+      IPath scriptRootPath = RutaProjectUtils.getScriptRootPath(project);
+      String moduleName = RutaProjectUtils.getModuleName(path);
+      IPath makeRelativeTo = path.makeRelativeTo(scriptRootPath);
+      String m = makeRelativeTo.removeFileExtension().toPortableString().replaceAll("/", ".");
+      String importString = "SCRIPT " + m + ";\n";
+      if (!skip) {
         importString += "Document{-> CALL(" + moduleName + ")};\n";
-    }
-    return importString;
+      }
+      return importString;
     }
     return "";
   }
@@ -475,8 +518,10 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
   public String getPackageString() {
     IPath path = Path.fromOSString(preprocessorTMFile);
     IPath removeLastSegments = path.removeLastSegments(1);
-    IContainer containerForLocation = ResourcesPlugin.getWorkspace().getRoot().getContainerForLocation(removeLastSegments);
-    IPath removeFirstSegments = containerForLocation.getProjectRelativePath().removeFirstSegments(1);
+    IContainer containerForLocation = ResourcesPlugin.getWorkspace().getRoot()
+            .getContainerForLocation(removeLastSegments);
+    IPath removeFirstSegments = containerForLocation.getProjectRelativePath()
+            .removeFirstSegments(1);
     String replaceAll = removeFirstSegments.toPortableString().replaceAll("/", ".");
     return "PACKAGE " + replaceAll + ";\n\n";
   }
@@ -509,8 +554,8 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     // them works without leaking, so we prefer this now since it also
     // brought a performance
     // boost!
-    
-    if(configChanged && algTestCAS != null) { // type system maybe changed
+
+    if (configChanged && algTestCAS != null) { // type system maybe changed
       GlobalCASSource.releaseCAS(algTestCAS);
       algTestCAS = null;
     }

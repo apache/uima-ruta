@@ -37,6 +37,7 @@ import java.util.Set;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Feature;
@@ -45,7 +46,8 @@ import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.impl.XmiCasDeserializer;
 import org.apache.uima.cas.impl.XmiCasSerializer;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.resource.ResourceSpecifier;
+import org.apache.uima.resource.metadata.TypeDescription;
+import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.ruta.textruler.TextRulerPlugin;
@@ -108,13 +110,11 @@ public class TextRulerToolkit {
     return FileLocator.find(TextRulerPlugin.getDefault().getBundle(), new Path(name), null);
   }
 
-
-  public static AnalysisEngine loadAnalysisEngine(String descFile) {
-    AnalysisEngine result = null;
+  public static AnalysisEngineDescription getAnalysisEngineDescription(String descFile) {
+    AnalysisEngineDescription result = null;
     try {
-      XMLInputSource in = new XMLInputSource(new File(descFile));
-      ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
-      result = UIMAFramework.produceAnalysisEngine(specifier);
+      XMLInputSource in = new XMLInputSource(descFile);
+      result = (AnalysisEngineDescription) UIMAFramework.getXMLParser().parseResourceSpecifier(in);
     } catch (Exception e) {
       TextRulerPlugin.error(e);
       result = null;
@@ -122,17 +122,42 @@ public class TextRulerToolkit {
     return result;
   }
 
-  public static AnalysisEngine loadAnalysisEngine(URL fileURL) {
-    AnalysisEngine result = null;
+  public static AnalysisEngineDescription getAnalysisEngineDescription(URL fileURL) {
+    AnalysisEngineDescription result = null;
     try {
       XMLInputSource in = new XMLInputSource(fileURL);
-      ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
-      result = UIMAFramework.produceAnalysisEngine(specifier);
+      result = (AnalysisEngineDescription) UIMAFramework.getXMLParser().parseResourceSpecifier(in);
     } catch (Exception e) {
       TextRulerPlugin.error(e);
       result = null;
     }
     return result;
+  }
+
+  public static AnalysisEngine loadAnalysisEngine(AnalysisEngineDescription desc) {
+    AnalysisEngine result = null;
+    try {
+      result = UIMAFramework.produceAnalysisEngine(desc);
+    } catch (Exception e) {
+      TextRulerPlugin.error(e);
+      result = null;
+    }
+    return result;
+  }
+
+  public static void addBoundaryTypes(AnalysisEngineDescription description, String[] slotNames) {
+    List<String> list = new ArrayList<String>();
+    for (String eachSlot : slotNames) {
+      list.add(eachSlot + TextRulerToolkit.LEFT_BOUNDARY_EXTENSION);
+      list.add(eachSlot + TextRulerToolkit.RIGHT_BOUNDARY_EXTENSION);
+    }
+    TypeSystemDescription typeSystem = description.getAnalysisEngineMetaData().getTypeSystem();
+    for (String string : list) {
+      TypeDescription type = typeSystem.getType(string);
+      if (type == null) {
+        typeSystem.addType(string, "", "uima.tcas.Annotation");
+      }
+    }
   }
 
   public static CAS readCASfromXMIFile(String filename, AnalysisEngine ae, CAS reuseCAS) {

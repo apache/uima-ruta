@@ -111,6 +111,7 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
   public BasicLP2(String inputDir, String prePropTMFile, String tmpDir, String[] slotNames,
           Set<String> filterSet, boolean skip, TextRulerLearnerDelegate delegate) {
     super(inputDir, prePropTMFile, tmpDir, slotNames, filterSet, skip, delegate);
+    supportBoundaries = true;
   }
 
   protected TextRulerRuleList learnTaggingRules(TextRulerTarget target,

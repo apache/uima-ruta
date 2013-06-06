@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.textruler.TextRulerPlugin;
 import org.apache.uima.ruta.textruler.core.GlobalCASSource;
@@ -37,10 +38,13 @@ import org.eclipse.core.runtime.Path;
  */
 public class TextRulerPreprocessor {
 
-  public String run(String inFolder, String tmFile, String tmpDir,
+  public String run(String inFolder, String tmFile, String tmpDir, String[] currentSlotNames,
           TextRulerPreprocessorDelegate delegate) {
-    AnalysisEngine ae = TextRulerToolkit.loadAnalysisEngine(TextRulerToolkit
+    AnalysisEngineDescription analysisEngineDescription = TextRulerToolkit.getAnalysisEngineDescription(TextRulerToolkit
             .getEngineDescriptorFromTMSourceFile(new Path(tmFile)));
+    // we want to reuse these cases, so extend the type system in case a boundary-based learner is called
+    TextRulerToolkit.addBoundaryTypes(analysisEngineDescription, currentSlotNames);
+    AnalysisEngine ae = TextRulerToolkit.loadAnalysisEngine(analysisEngineDescription);
 
     // preprocess input XMIs
     File inputFolder = new File(inFolder);

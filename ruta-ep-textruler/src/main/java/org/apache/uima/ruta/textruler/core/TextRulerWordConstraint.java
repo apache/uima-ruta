@@ -19,6 +19,7 @@
 
 package org.apache.uima.ruta.textruler.core;
 
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 
@@ -51,7 +52,8 @@ public class TextRulerWordConstraint {
     super();
     this.tokenAnnotation = tokenAnnotation;
     if (AUTO_REGEXP) {
-      TypeSystem ts = tokenAnnotation.getDocument().getCAS().getTypeSystem();
+      CAS cas = tokenAnnotation.getDocument().getCAS();
+      TypeSystem ts = cas.getTypeSystem();
       Type wType = ts.getType(TextRulerToolkit.RUTA_WORD_TYPE_NAME);
       Type numType = ts.getType(TextRulerToolkit.RUTA_NUM_TYPE_NAME);
       Type markupType = ts.getType(TextRulerToolkit.RUTA_MARKUP_TYPE_NAME);

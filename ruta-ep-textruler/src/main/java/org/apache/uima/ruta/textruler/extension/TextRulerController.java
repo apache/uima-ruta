@@ -58,7 +58,7 @@ public class TextRulerController {
   protected static boolean shouldAbort = false;
 
   protected static String currentPreprocessorTMFile = null;
-  
+
   protected static boolean skip;
 
   protected static Map<String, Map<String, Object>> currentAlgorithmParams;
@@ -159,7 +159,7 @@ public class TextRulerController {
     currentDelegate = delegate;
     currentAlgorithmParams = algParams;
     skip = skipPreprocessing;
-    
+
     saveParametersToTempFolder(inFolder, skipPreprocessing);
     for (TextRulerLearnerController c : learners)
       c.resetStatusString();
@@ -172,7 +172,7 @@ public class TextRulerController {
         public void run() {
           TextRulerPreprocessor p = new TextRulerPreprocessor();
           String algorithmsInputFolder = p.run(inFolder, currentPreprocessorTMFile, currentTempDir,
-                  new TextRulerPreprocessorDelegate() {
+                  currentSlotNames, new TextRulerPreprocessorDelegate() {
 
                     public void preprocessorStatusUpdate(TextRulerPreprocessor p,
                             String statusString) {

@@ -74,7 +74,7 @@ public class TextRulerAnnotation {
   }
 
   public TextRulerAnnotation(AnnotationFS afs, TextRulerExampleDocument document) {
-    this(afs, null, null);
+    this(afs, document, null);
   }
 
   public TextRulerAnnotation(AnnotationFS afs) {
