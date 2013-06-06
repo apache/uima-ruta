@@ -45,18 +45,23 @@ public class GlobalCASSource {
 
   private static List<CAS> inUsage = new ArrayList<CAS>();
 
-  private static int count = 0;
-
-  public static synchronized CAS allocCAS(AnalysisEngine ae) {
-    if (free.size() > 0) {
+  public static synchronized CAS allocCAS(AnalysisEngine ae, boolean configChanged) {
+    if(configChanged) {
+      try {
+        CAS newCas = ae.newCAS();
+        inUsage.add(newCas);
+        return newCas;
+      } catch (Exception e) {
+        TextRulerPlugin.error(e);
+        return null;
+      }
+    } else if (free.size() > 0) {
       CAS result = free.get(free.size() - 1);
       free.remove(free.size() - 1);
       inUsage.add(result);
       return result;
     } else {
       try {
-        count++;
-        // TextRulerToolkit.log("[GlobalCASSource] CREATE NEW CAS: "+count);
         CAS newCas = ae.newCAS();
         inUsage.add(newCas);
         return newCas;

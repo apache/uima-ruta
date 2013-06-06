@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.FeatureStructure;
@@ -45,6 +46,7 @@ import org.apache.uima.ruta.textruler.core.TextRulerSlotPattern;
 import org.apache.uima.ruta.textruler.core.TextRulerStatisticsCollector;
 import org.apache.uima.ruta.textruler.core.TextRulerTarget;
 import org.apache.uima.ruta.textruler.core.TextRulerToolkit;
+import org.apache.uima.ruta.textruler.core.TextRulerWordConstraint;
 import org.apache.uima.ruta.textruler.extension.TextRulerLearnerDelegate;
 import org.apache.uima.ruta.textruler.learner.whisk.generic.WhiskRuleItem.MLWhiskOtherConstraint;
 
@@ -62,6 +64,10 @@ public class Whisk extends TextRulerBasicLearner {
 
   public final static String STANDARD_POSTAG_ROOTTYPE = "org.apache.uima.ml.ML.postag";
 
+  public static final String CONSIDERED_FEATURES = "consideredFeatures";
+
+  public static final String STANDARD_CONSIDERED_FEATURES = "";
+
   TextRulerRuleList ruleList;
 
   protected Set<TextRulerExample> coveredExamples;
@@ -75,6 +81,8 @@ public class Whisk extends TextRulerBasicLearner {
   int roundNumber = 0;
 
   int allExamplesCount = 0;
+
+  private List<String> consideredFeatures = new ArrayList<String>();
 
   private Map<String, TextRulerStatisticsCollector> cachedTestedRuleStatistics = new HashMap<String, TextRulerStatisticsCollector>();
 
@@ -218,12 +226,49 @@ public class Whisk extends TextRulerBasicLearner {
       bestRule = rule;
       bestL = rule.getLaplacian();
     }
+    List<TextRulerRule> rulesToTest = new ArrayList<TextRulerRule>();
+
+    // first only add conditions, e.g., for features
+
+    List<TextRulerSlotPattern> patterns = rule.getPatterns();
+    for (TextRulerSlotPattern eachPattern : patterns) {
+      for (TextRulerRuleItem item : eachPattern.fillerPattern) {
+        if (item instanceof WhiskRuleItem) {
+          WhiskRuleItem wri = (WhiskRuleItem) item;
+          WhiskRule proposedRule = rule;
+          TextRulerWordConstraint wordConstraint = wri.getWordConstraint();
+          for (String eachFeature : consideredFeatures) {
+            if (wordConstraint != null) {
+              Map<String, String> featureMap = wordConstraint.getTokenAnnotation().getFeatureMap();
+              String stringValue = featureMap.get(eachFeature);
+              if (stringValue != null && !wri.getActivatedFeatures().contains(eachFeature)) {
+                wri.activateFeature(eachFeature);
+                WhiskRule proposedRuleF = proposedRule.copy();
+                wri.deactivateFeature(eachFeature);
+                proposedRuleF.setNeedsCompile(true);
+                if (!rulesToTest.contains(proposedRuleF)) {
+                  rulesToTest.add(proposedRuleF);
+                }
+              }
+            }
+          }
+          if (wordConstraint != null && wordConstraint.isRegExpConstraint() && wri.isHideRegExp()) {
+            wri.setHideRegExp(false);
+            WhiskRule proposedRuleF = proposedRule.copy();
+            wri.setHideRegExp(true);
+            proposedRuleF.setNeedsCompile(true);
+            if (!rulesToTest.contains(proposedRuleF)) {
+              rulesToTest.add(proposedRuleF);
+            }
+          }
+        }
+      }
+    }
 
     List<List<WhiskRuleItem>> slotTerms = getTermsWithinBounds(
             example.getAnnotations()[0].getBegin(), example.getAnnotations()[0].getEnd(), example);
     List<List<WhiskRuleItem>> windowTerms = getTermsWithinWindow(slotTerms, example, 0);
 
-    List<TextRulerRule> rulesToTest = new ArrayList<TextRulerRule>();
     for (List<WhiskRuleItem> eachList : windowTerms) {
       for (WhiskRuleItem term : eachList) {
 
@@ -253,6 +298,24 @@ public class Whisk extends TextRulerBasicLearner {
           }
         }
 
+        // expend with feature conditions
+        WhiskRule proposedRuleF = null;
+        WhiskRuleItem tf = null;
+        for (String eachFeature : consideredFeatures) {
+          Map<String, String> featureMap = t.getWordConstraint().getTokenAnnotation()
+                  .getFeatureMap();
+          String stringValue = featureMap.get(eachFeature);
+          if (stringValue != null) {
+            proposedRuleF = proposedRule.copy();
+            tf = term;
+            tf.activateFeature(stringValue);
+            proposedRuleF.setNeedsCompile(true);
+            if (!rulesToTest.contains(proposedRuleF)) {
+              rulesToTest.add(proposedRuleF);
+            }
+          }
+        }
+
         // and now, for WHISK performance testing purposes, we also add POS
         // tags:
         // this is not very nice code and not dynamic feature capable, but
@@ -271,7 +334,8 @@ public class Whisk extends TextRulerBasicLearner {
               AnnotationFS posTag = posTagAnnotations.get(0);
               if (posTag.getBegin() == tokenAnnotation.getBegin()
                       && posTag.getEnd() == tokenAnnotation.getEnd()) {
-                TextRulerAnnotation posTagAnnotation = new TextRulerAnnotation(posTag, doc);
+                TextRulerAnnotation posTagAnnotation = new TextRulerAnnotation(posTag, doc,
+                        consideredFeatures);
 
                 // 1. most specific term with all constraints we
                 // have:
@@ -300,8 +364,10 @@ public class Whisk extends TextRulerBasicLearner {
                 t5.addOtherConstraint(new MLWhiskOtherConstraint(tokenAnnotation, posTagAnnotation));
                 t5.setWordConstraint(null);
                 proposedRule5.setNeedsCompile(true);
-                if (!rulesToTest.contains(proposedRule5))
+                if (!rulesToTest.contains(proposedRule5)) {
                   rulesToTest.add(proposedRule5);
+                }
+
               }
             }
           }
@@ -581,8 +647,7 @@ public class Whisk extends TextRulerBasicLearner {
           // so insert a wildcard between us!
           boolean isValid = isNextValidNeighbor(left, newTerm, newRule.getSeedExample());
           if (!isValid) {
-            targetPattern.add(indexInPattern,
-                    WhiskRuleItem.newWildCardItem(getElementIndex(newRule, left) + 1));
+            targetPattern.add(indexInPattern, WhiskRuleItem.newWildCardItem());
             indexInPattern++;
           }
         }
@@ -600,7 +665,7 @@ public class Whisk extends TextRulerBasicLearner {
           // so insert a wildcard between us!
           boolean isValid = isNextValidNeighbor(newTerm, right, newRule.getSeedExample());
           if (!isValid) {
-            WhiskRuleItem wc = WhiskRuleItem.newWildCardItem(getElementIndex(newRule, newTerm) + 1);
+            WhiskRuleItem wc = WhiskRuleItem.newWildCardItem();
             if (indexInPattern + 1 < targetPattern.size())
               targetPattern.add(indexInPattern + 1, wc);
             else
@@ -645,8 +710,7 @@ public class Whisk extends TextRulerBasicLearner {
           if (i == 0 || (i == inside.size() - 1))
             slotPattern.fillerPattern.add(inside.get(i).copy());
           else if (inside.size() > 2 && i < 2)
-            slotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem(getElementIndex(base1,
-                    inside.get(i))));
+            slotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem());
       }
       List<WhiskRuleItem> beforeList = getTermsBefore(inside.get(0), example);
       List<WhiskRuleItem> afterList = getTermsAfter(inside.get(inside.size() - 1), example);
@@ -664,7 +728,7 @@ public class Whisk extends TextRulerBasicLearner {
             textRulerSlotPattern.preFillerPattern.add(eachBefore);
           }
           textRulerSlotPattern.fillerPattern.add(inside.get(0).copy());
-          textRulerSlotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem(0));
+          textRulerSlotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem());
           if (eachAfter != null) {
             textRulerSlotPattern.postFillerPattern.add(eachAfter);
           }
@@ -679,7 +743,7 @@ public class Whisk extends TextRulerBasicLearner {
           if (eachBefore != null) {
             textRulerSlotPattern.preFillerPattern.add(eachBefore);
           }
-          textRulerSlotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem(0));
+          textRulerSlotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem());
           textRulerSlotPattern.fillerPattern.add(inside.get(inside.size() - 1).copy());
           if (eachAfter != null) {
             textRulerSlotPattern.postFillerPattern.add(eachAfter);
@@ -697,8 +761,7 @@ public class Whisk extends TextRulerBasicLearner {
               if (eachBefore != null) {
                 textRulerSlotPattern.preFillerPattern.add(eachBefore);
               }
-              textRulerSlotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem(getElementIndex(
-                      copy, inside.get(0))));
+              textRulerSlotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem());
               if (eachAfter != null) {
                 textRulerSlotPattern.postFillerPattern.add(eachAfter);
               }
@@ -709,8 +772,7 @@ public class Whisk extends TextRulerBasicLearner {
           for (WhiskRuleItem eachBefore : beforeList) {
             WhiskRule copy = rule.copy();
             TextRulerSlotPattern textRulerSlotPattern = copy.getPatterns().get(slotIndex);
-            textRulerSlotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem(getElementIndex(
-                    copy, inside.get(0))));
+            textRulerSlotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem());
             if (eachBefore != null) {
               textRulerSlotPattern.preFillerPattern.add(eachBefore);
             }
@@ -721,8 +783,7 @@ public class Whisk extends TextRulerBasicLearner {
         for (WhiskRuleItem eachAfter : afterList) {
           WhiskRule copy = rule.copy();
           TextRulerSlotPattern textRulerSlotPattern = copy.getPatterns().get(slotIndex);
-          textRulerSlotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem(getElementIndex(
-                  copy, inside.get(0))));
+          textRulerSlotPattern.fillerPattern.add(WhiskRuleItem.newWildCardItem());
           if (eachAfter != null) {
             textRulerSlotPattern.postFillerPattern.add(eachAfter);
           }
@@ -808,8 +869,8 @@ public class Whisk extends TextRulerBasicLearner {
             break;
           }
           if (a.getBegin() <= nextBegin && a.getBegin() >= end) {
-            WhiskRuleItem term = new WhiskRuleItem(
-                    new TextRulerAnnotation(a, example.getDocument()));
+            WhiskRuleItem term = new WhiskRuleItem(new TextRulerAnnotation(a,
+                    example.getDocument(), consideredFeatures));
             result.add(term);
           }
         }
@@ -848,8 +909,8 @@ public class Whisk extends TextRulerBasicLearner {
             break;
           }
           if (a.getEnd() >= nextEnd && a.getEnd() <= begin) {
-            WhiskRuleItem term = new WhiskRuleItem(
-                    new TextRulerAnnotation(a, example.getDocument()));
+            WhiskRuleItem term = new WhiskRuleItem(new TextRulerAnnotation(a,
+                    example.getDocument(), consideredFeatures));
             result.add(term);
           }
         }
@@ -879,6 +940,19 @@ public class Whisk extends TextRulerBasicLearner {
 
     if (params.containsKey(POSTAG_ROOTTYPE_KEY))
       posTagRootTypeName = (String) params.get(POSTAG_ROOTTYPE_KEY);
+
+    if (params.containsKey(CONSIDERED_FEATURES)) {
+      String list = (String) params.get(CONSIDERED_FEATURES);
+      if (!StringUtils.isBlank(list)) {
+        String[] split = list.split(",");
+        for (String string : split) {
+          String trim = string.trim();
+          if (!StringUtils.isBlank(trim)) {
+            consideredFeatures.add(trim);
+          }
+        }
+      }
+    }
 
   }
 
@@ -916,7 +990,7 @@ public class Whisk extends TextRulerBasicLearner {
     for (AnnotationFS annotation : startAs) {
       List<WhiskRuleItem> startList = new ArrayList<WhiskRuleItem>();
       WhiskRuleItem term = new WhiskRuleItem(new TextRulerAnnotation(annotation,
-              example.getDocument()));
+              example.getDocument(), consideredFeatures));
       startList.add(term);
       result.add(startList);
     }

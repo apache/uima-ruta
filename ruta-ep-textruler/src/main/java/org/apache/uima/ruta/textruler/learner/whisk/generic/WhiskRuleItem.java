@@ -34,12 +34,14 @@ public class WhiskRuleItem implements TextRulerRuleItem {
 
   private boolean isStarWildCard = false;
 
-  // private int termNumberInExample = -1;
-
   private boolean hideRegExp = true;
+  
+  private boolean hideFeature = true;
 
   protected List<MLWhiskOtherConstraint> otherConstraints = new ArrayList<MLWhiskOtherConstraint>();
 
+  private List<String> activeFeatures = new ArrayList<String>();
+  
   public static class MLWhiskOtherConstraint {
 
     TextRulerAnnotation tokenAnnotation;
@@ -94,13 +96,11 @@ public class WhiskRuleItem implements TextRulerRuleItem {
   public WhiskRuleItem() {
     super();
     wordConstraint = null;
-    // termNumberInExample = -1;
   }
 
-  public static WhiskRuleItem newWildCardItem(int startTermNumber) {
+  public static WhiskRuleItem newWildCardItem() {
     WhiskRuleItem i = new WhiskRuleItem();
     i.setIsStarWildCard(true);
-    // i.setTermNumberInExample(startTermNumber);
     return i;
   }
 
@@ -111,8 +111,10 @@ public class WhiskRuleItem implements TextRulerRuleItem {
     isStarWildCard = copyFrom.isStarWildCard;
     // termNumberInExample = copyFrom.termNumberInExample;
     hideRegExp = copyFrom.hideRegExp;
-    for (MLWhiskOtherConstraint c : copyFrom.otherConstraints)
+    for (MLWhiskOtherConstraint c : copyFrom.otherConstraints) {
       otherConstraints.add(c.copy());
+    }
+    this.activeFeatures = new ArrayList<String>(copyFrom.getActivatedFeatures());
   }
 
   public WhiskRuleItem(TextRulerAnnotation tokenAnnotation) {
@@ -175,6 +177,14 @@ public class WhiskRuleItem implements TextRulerRuleItem {
         anchor = "ALL";
     }
 
+    for (String featureString : activeFeatures) {
+      String stringValue = wordConstraint.getTokenAnnotation().getFeatureMap().get(featureString);
+      if(stringValue != null) {
+        constraints.add("FEATURE(\"" + featureString + "\", "+stringValue+")");
+      }
+    }
+    
+    
     if (constraints.size() > 0) {
       String cStr = "";
       for (String constraintStr : constraints) {
@@ -238,6 +248,11 @@ public class WhiskRuleItem implements TextRulerRuleItem {
     hideRegExp = flag;
   }
 
+  public boolean isHideRegExp() {
+    return hideRegExp;
+  }
+
+  
   public void addOtherConstraint(MLWhiskOtherConstraint c) {
     if (!otherConstraints.contains(c))
       otherConstraints.add(c);
@@ -252,8 +267,28 @@ public class WhiskRuleItem implements TextRulerRuleItem {
     if (wordConstraint != null)
       result += hideRegExp ? 1 : 3; // a regexp constraint is less general
     // so point it bad here!
+    if (wordConstraint != null)
+      result += hideFeature ? 1 : 3;
     result += otherConstraints.size();
     return result;
+  }
+
+  public boolean isHideFeature() {
+    return hideFeature;
+  }
+
+  public void setHideFeature(boolean hideFeature) {
+    this.hideFeature = hideFeature;
+  }
+
+  public void activateFeature(String stringValue) {
+    activeFeatures.add(stringValue);    
+  }
+  public void deactivateFeature(String stringValue) {
+    activeFeatures.remove(stringValue);    
+  }
+  public List<String> getActivatedFeatures() {
+    return activeFeatures;    
   }
 
 }

@@ -84,6 +84,8 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
 
   private boolean useDefaultFiltering;
 
+  private boolean configChanged = false;
+
   public TextRulerBasicLearner(String inputDir, String prePropTMFile, String tmpDir,
           String[] slotNames, Set<String> filterSet, boolean skip, TextRulerLearnerDelegate delegate) {
     super();
@@ -110,6 +112,8 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     useDefaultFiltering &= filterSet.contains("org.apache.uima.ruta.type.BREAK");
     useDefaultFiltering &= filterSet.contains("org.apache.uima.ruta.type.NBSP");
     useDefaultFiltering &= filterSet.contains("org.apache.uima.ruta.type.MARKUP");
+    
+    configChanged = true;
     
     this.casCache = new CasCache(100, this); // TODO make size configurable
     // !? share e.g. 100 places for
@@ -149,6 +153,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { portableString });
     ae.setConfigParameterValue(RutaEngine.ADDITIONAL_SCRIPTS, new String[0]);
     ae.setConfigParameterValue(RutaEngine.RELOAD_SCRIPT, true);
+    ae.setConfigParameterValue(RutaEngine.REMOVE_BASICS, true);
     if(useDynamicAnchoring) {
       ae.setConfigParameterValue(RutaEngine.DYNAMIC_ANCHORING, true);
     }
@@ -504,9 +509,15 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     // them works without leaking, so we prefer this now since it also
     // brought a performance
     // boost!
+    
+    if(configChanged && algTestCAS != null) { // type system maybe changed
+      GlobalCASSource.releaseCAS(algTestCAS);
+      algTestCAS = null;
+    }
     if (algTestCAS == null) {
       try {
-        algTestCAS = GlobalCASSource.allocCAS(ae);
+        algTestCAS = GlobalCASSource.allocCAS(ae, configChanged);
+        configChanged = false;
       } catch (Exception e) {
         TextRulerPlugin.error(e);
         return null;

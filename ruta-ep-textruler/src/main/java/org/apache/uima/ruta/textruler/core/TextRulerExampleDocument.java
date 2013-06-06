@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.textruler.core;
 
@@ -29,11 +29,12 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
+import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.textruler.core.TextRulerTarget.MLTargetType;
-
+import org.apache.uima.util.CasCopier;
 
 /**
  * 
@@ -56,7 +57,7 @@ import org.apache.uima.ruta.textruler.core.TextRulerTarget.MLTargetType;
  * casCache, you have to call createBoundaryAnnotationsForCas again, so your casLoader must be aware
  * of that (see BasicLP2 for an example) !
  * 
- *         hint: this could be renamed to MLDocument instead of TextRulerExampleDocument ?
+ * hint: this could be renamed to MLDocument instead of TextRulerExampleDocument ?
  */
 public class TextRulerExampleDocument {
 
@@ -153,8 +154,8 @@ public class TextRulerExampleDocument {
       createExamplesForTarget(newTarget);
       learner.compareOriginalDocumentWithTestCAS(this, testCAS, newTarget, c, true);
       List<TextRulerExample> correctTags = getPositiveExamples();
-      List<TextRulerExample> wrongTags = new ArrayList<TextRulerExample>(c
-              .getCoveredNegativeExamples());
+      List<TextRulerExample> wrongTags = new ArrayList<TextRulerExample>(
+              c.getCoveredNegativeExamples());
       for (TextRulerExample wrongTag : wrongTags) {
         // test, if there's a corresponding positive example
         // somewhere around (within maxDistance)
@@ -212,14 +213,15 @@ public class TextRulerExampleDocument {
 
         if (theCorrectTag != null) {
           TextRulerToolkit.log("FOUND BAD EXAMPLE FOR SHIFTING !!");
-          TextRulerShiftExample shiftExample = new TextRulerShiftExample(this, wrongTag
-                  .getAnnotation(), theCorrectTag.getAnnotation(), true, target);
+          TextRulerShiftExample shiftExample = new TextRulerShiftExample(this,
+                  wrongTag.getAnnotation(), theCorrectTag.getAnnotation(), true, target);
           result.add(shiftExample);
         }
       }
 
     } else {
-      List<AnnotationFS> slots = TextRulerToolkit.extractAnnotationsForSlotName(aCas,
+      List<AnnotationFS> slots = TextRulerToolkit.extractAnnotationsForSlotName(
+              aCas,
               createFromRawTypeName ? target.getSingleSlotRawTypeName() : target
                       .getSingleSlotTypeName()); // do not use
       // boundary type
@@ -259,6 +261,8 @@ public class TextRulerExampleDocument {
   public void resetAndFillTestCAS(CAS testCas, TextRulerTarget target) {
     testCas.reset();
     CAS docCas = getCAS();
+
+    CasCopier cc = new CasCopier(docCas, testCas);
     testCas.setDocumentText(docCas.getDocumentText());
 
     // copy all annotations except the target-annotations:
@@ -275,17 +279,10 @@ public class TextRulerExampleDocument {
         slotTypes.add(ts.getType(s));
     }
 
-    for (FSIterator<AnnotationFS> it = docCas.getAnnotationIndex().iterator(true); it.isValid(); it
-            .moveToNext()) {
-      AnnotationFS fs = it.get();
-      if (!slotTypes.contains(fs.getType())) {
-        Type t = testCas.getTypeSystem().getType(fs.getType().getName());
-        if (t != null) {
-          AnnotationFS createAnnotation = testCas.createAnnotation(t, fs.getBegin(), fs.getEnd());
-          testCas.addFsToIndexes(createAnnotation);
-        } else {
-          TextRulerToolkit.log("Type " + fs.getType().getName() + "is unknown in test CAS");
-        }
+    for(AnnotationFS fs: docCas.getAnnotationIndex()) {
+      if (!slotTypes.contains(fs.getType()) && !fs.getType().equals(docCas.getDocumentAnnotation().getType())) {
+        FeatureStructure copyFs = cc.copyFs(fs);
+        testCas.addFsToIndexes(copyFs);
       }
     }
   }
@@ -300,9 +297,10 @@ public class TextRulerExampleDocument {
     TypeSystem ts = aCas.getTypeSystem();
     for (AnnotationFS a : slots) {
 
-      List<AnnotationFS> slotTokens = TextRulerToolkit.getAnnotationsWithinBounds(aCas, a
-              .getBegin(), a.getEnd(), TextRulerToolkit.getFilterSetWithSlotName(slotName,
-              tokenFilterSet), ts.getType(TextRulerToolkit.RUTA_ANY_TYPE_NAME));
+      List<AnnotationFS> slotTokens = TextRulerToolkit.getAnnotationsWithinBounds(aCas,
+              a.getBegin(), a.getEnd(),
+              TextRulerToolkit.getFilterSetWithSlotName(slotName, tokenFilterSet),
+              ts.getType(TextRulerToolkit.RUTA_ANY_TYPE_NAME));
       AnnotationFS first = slotTokens.get(0);
       AnnotationFS last = slotTokens.get(slotTokens.size() - 1);
       Type typeLB = ts.getType(slotName + TextRulerToolkit.LEFT_BOUNDARY_EXTENSION);

@@ -43,11 +43,12 @@ public class WhiskFactory implements TextRulerLearnerFactory {
     result.put(Whisk.WINDOWSIZE_KEY, Whisk.STANDARD_WINDOWSIZE);
     result.put(Whisk.ERROR_THRESHOLD_KEY, Whisk.STANDARD_ERROR_THRESHOLD);
     result.put(Whisk.POSTAG_ROOTTYPE_KEY, Whisk.STANDARD_POSTAG_ROOTTYPE);
+    result.put(Whisk.CONSIDERED_FEATURES, Whisk.STANDARD_CONSIDERED_FEATURES);
     return result;
   }
 
   public TextRulerLearnerParameter[] getAlgorithmParameters() {
-    TextRulerLearnerParameter[] result = new TextRulerLearnerParameter[3];
+    TextRulerLearnerParameter[] result = new TextRulerLearnerParameter[4];
 
     result[0] = new TextRulerLearnerParameter(Whisk.WINDOWSIZE_KEY, "Window Size",
             MLAlgorithmParamType.ML_INT_PARAM);
@@ -55,7 +56,8 @@ public class WhiskFactory implements TextRulerLearnerFactory {
             MLAlgorithmParamType.ML_FLOAT_PARAM);
     result[2] = new TextRulerLearnerParameter(Whisk.POSTAG_ROOTTYPE_KEY, "PosTag Root Type",
             MLAlgorithmParamType.ML_STRING_PARAM);
-
+    result[3] = new TextRulerLearnerParameter(Whisk.CONSIDERED_FEATURES, "Considered Features (comma-separated)",
+            MLAlgorithmParamType.ML_STRING_PARAM);
     return result;
   }
 
