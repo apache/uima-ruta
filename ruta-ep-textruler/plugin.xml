@@ -158,6 +158,7 @@ under the License.
             name="LP2 (optimized)">
       </page>
    </extension>
+   <!--
    <extension
          point="org.apache.uima.ruta.textruler.learners">
       <learner
@@ -166,6 +167,7 @@ under the License.
             name="WIEN">
       </learner>
    </extension>
+   -->
       <extension
          point="org.apache.uima.ruta.textruler.learners">
       <learner
@@ -194,6 +196,7 @@ under the License.
             name="Whisk (token)">
       </page>
    </extension>
+   <!--
    <extension
          point="org.apache.uima.ruta.textruler.learners">
       <learner
@@ -211,6 +214,7 @@ under the License.
             name="Rapier">
       </page>
    </extension>
+   -->
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer
