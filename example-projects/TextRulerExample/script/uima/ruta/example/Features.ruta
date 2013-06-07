@@ -24,7 +24,7 @@ Document{ -> MARKFAST(PublisherInd, PublisherList)};
 
 
 DECLARE Reference;
-Document{-> EXEC(PlainTextAnnotator, {Line})};
+Document{-> EXEC(PlainTextAnnotator, {Line, Paragraph})};
 Document{-> RETAINTYPE(SPACE, BREAK)};
 Line{-REGEXP("CORA:.*") -> MARK(Reference)};
 Reference{-> TRIM(SPACE, BREAK)};

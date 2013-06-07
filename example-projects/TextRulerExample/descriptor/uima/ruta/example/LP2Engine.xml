@@ -136,6 +136,12 @@
                 <multiValued>false</multiValued>
                 <mandatory>false</mandatory>
             </configurationParameter>
+            <configurationParameter>
+                <name>additionalUimafitEngines</name>
+                <type>String</type>
+                <multiValued>true</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
         </configurationParameters>
         <configurationParameterSettings>
             <nameValuePair>
@@ -190,7 +196,7 @@
             <nameValuePair>
                 <name>mainScript</name>
                 <value>
-                    <string>uima.ruta.example.Features</string>
+                    <string>uima.ruta.example.LP2</string>
                 </value>
             </nameValuePair>
             <nameValuePair>
@@ -221,16 +227,20 @@
                 <name>additionalScripts</name>
                 <value>
                     <array>
-                        <string>uima.ruta.example.Base</string>
+                        <string>uima.ruta.example.Features</string>
                     </array>
                 </value>
             </nameValuePair>
             <nameValuePair>
                 <name>additionalEngines</name>
                 <value>
-                    <array>
-                        <string>utils.PlainTextAnnotator</string>
-                    </array>
+                    <array/>
+                </value>
+            </nameValuePair>
+            <nameValuePair>
+                <name>additionalUimafitEngines</name>
+                <value>
+                    <array/>
                 </value>
             </nameValuePair>
             <nameValuePair>
@@ -239,6 +249,10 @@
                     <array>
                         <string>org.apache.uima.ruta.example.extensions.ExampleConditionExtension</string>
                         <string>org.apache.uima.ruta.example.extensions.ExampleActionExtension</string>
+                        <string>org.apache.uima.ruta.example.extensions.ExampleBooleanFunctionExtension</string>
+                        <string>org.apache.uima.ruta.example.extensions.ExampleNumberFunctionExtension</string>
+                        <string>org.apache.uima.ruta.example.extensions.ExampleStringFunctionExtension</string>
+                        <string>org.apache.uima.ruta.example.extensions.ExampleTypeFunctionExtension</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -250,141 +264,140 @@
             </nameValuePair>
         </configurationParameterSettings>
         <typeSystemDescription>
-            <name>uima.ruta.example.FeaturesTypeSystem</name>
+            <name>uima.ruta.example.LP2TypeSystem</name>
             <imports>
                 <import location="../../../BasicTypeSystem.xml"/>
-                <import location="../../../utils/PlainTextTypeSystem.xml"/>
-                <import location="BaseTypeSystem.xml"/>
+                <import location="FeaturesTypeSystem.xml"/>
             </imports>
             <types>
                 <typeDescription>
-                    <name>uima.ruta.example.Features.EditorMarker</name>
-                    <description>Type defined in uima.ruta.example.Features</description>
+                    <name>uima.ruta.example.LP2.AuthorSTART</name>
+                    <description>Type defined in uima.ruta.example.LP2</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.ruta.example.Features.EnglishStopWord</name>
-                    <description>Type defined in uima.ruta.example.Features</description>
+                    <name>uima.ruta.example.LP2.AuthorEND</name>
+                    <description>Type defined in uima.ruta.example.LP2</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.ruta.example.Features.FirstName</name>
-                    <description>Type defined in uima.ruta.example.Features</description>
+                    <name>uima.ruta.example.LP2.DateSTART</name>
+                    <description>Type defined in uima.ruta.example.LP2</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.ruta.example.Features.JournalVolumeMarker</name>
-                    <description>Type defined in uima.ruta.example.Features</description>
+                    <name>uima.ruta.example.LP2.DateEND</name>
+                    <description>Type defined in uima.ruta.example.LP2</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.ruta.example.Features.Month</name>
-                    <description>Type defined in uima.ruta.example.Features</description>
+                    <name>uima.ruta.example.LP2.PagesSTART</name>
+                    <description>Type defined in uima.ruta.example.LP2</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.ruta.example.Features.PagesMarker</name>
-                    <description>Type defined in uima.ruta.example.Features</description>
+                    <name>uima.ruta.example.LP2.PagesEND</name>
+                    <description>Type defined in uima.ruta.example.LP2</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.ruta.example.Features.PublisherInd</name>
-                    <description>Type defined in uima.ruta.example.Features</description>
+                    <name>uima.ruta.example.LP2.PublisherSTART</name>
+                    <description>Type defined in uima.ruta.example.LP2</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.ruta.example.Features.Reference</name>
-                    <description>Type defined in uima.ruta.example.Features</description>
+                    <name>uima.ruta.example.LP2.PublisherEND</name>
+                    <description>Type defined in uima.ruta.example.LP2</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.ruta.example.Features.LParen</name>
-                    <description>Type defined in uima.ruta.example.Features</description>
+                    <name>uima.ruta.example.LP2.InstitutionSTART</name>
+                    <description>Type defined in uima.ruta.example.LP2</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.ruta.example.Features.RParen</name>
-                    <description>Type defined in uima.ruta.example.Features</description>
+                    <name>uima.ruta.example.LP2.InstitutionEND</name>
+                    <description>Type defined in uima.ruta.example.LP2</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.ruta.example.Features.YearInd</name>
-                    <description>Type defined in uima.ruta.example.Features</description>
+                    <name>uima.ruta.example.LP2.VolumeSTART</name>
+                    <description>Type defined in uima.ruta.example.LP2</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.ruta.example.Features.NameLinker</name>
-                    <description>Type defined in uima.ruta.example.Features</description>
+                    <name>uima.ruta.example.LP2.VolumeEND</name>
+                    <description>Type defined in uima.ruta.example.LP2</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.ruta.example.Features.FirstNameInd</name>
-                    <description>Type defined in uima.ruta.example.Features</description>
+                    <name>uima.ruta.example.LP2.EditorSTART</name>
+                    <description>Type defined in uima.ruta.example.LP2</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.ruta.example.Features.FirstNameInitial</name>
-                    <description>Type defined in uima.ruta.example.Features</description>
+                    <name>uima.ruta.example.LP2.EditorEND</name>
+                    <description>Type defined in uima.ruta.example.LP2</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.ruta.example.Features.SingleChar</name>
-                    <description>Type defined in uima.ruta.example.Features</description>
+                    <name>uima.ruta.example.LP2.TitleSTART</name>
+                    <description>Type defined in uima.ruta.example.LP2</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.ruta.example.Features.Quote</name>
-                    <description>Type defined in uima.ruta.example.Features</description>
+                    <name>uima.ruta.example.LP2.TitleEND</name>
+                    <description>Type defined in uima.ruta.example.LP2</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.ruta.example.Features.QuotedStuff</name>
-                    <description>Type defined in uima.ruta.example.Features</description>
+                    <name>uima.ruta.example.LP2.BooktitleSTART</name>
+                    <description>Type defined in uima.ruta.example.LP2</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.ruta.example.Features.InInd</name>
-                    <description>Type defined in uima.ruta.example.Features</description>
+                    <name>uima.ruta.example.LP2.BooktitleEND</name>
+                    <description>Type defined in uima.ruta.example.LP2</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.ruta.example.Features.FirstToken</name>
-                    <description>Type defined in uima.ruta.example.Features</description>
+                    <name>uima.ruta.example.LP2.NoteSTART</name>
+                    <description>Type defined in uima.ruta.example.LP2</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.ruta.example.Features.LastToken</name>
-                    <description>Type defined in uima.ruta.example.Features</description>
+                    <name>uima.ruta.example.LP2.NoteEND</name>
+                    <description>Type defined in uima.ruta.example.LP2</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.ruta.example.Features.NumPeriod</name>
-                    <description>Type defined in uima.ruta.example.Features</description>
+                    <name>uima.ruta.example.LP2.JournalSTART</name>
+                    <description>Type defined in uima.ruta.example.LP2</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.ruta.example.Features.NumComma</name>
-                    <description>Type defined in uima.ruta.example.Features</description>
+                    <name>uima.ruta.example.LP2.JournalEND</name>
+                    <description>Type defined in uima.ruta.example.LP2</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.ruta.example.Features.NumColon</name>
-                    <description>Type defined in uima.ruta.example.Features</description>
+                    <name>uima.ruta.example.LP2.LocationSTART</name>
+                    <description>Type defined in uima.ruta.example.LP2</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.ruta.example.Features.PeriodSep</name>
-                    <description>Type defined in uima.ruta.example.Features</description>
+                    <name>uima.ruta.example.LP2.LocationEND</name>
+                    <description>Type defined in uima.ruta.example.LP2</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.ruta.example.Features.CommaSep</name>
-                    <description>Type defined in uima.ruta.example.Features</description>
+                    <name>uima.ruta.example.LP2.TechSTART</name>
+                    <description>Type defined in uima.ruta.example.LP2</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
                 <typeDescription>
-                    <name>uima.ruta.example.Features.ColonSep</name>
-                    <description>Type defined in uima.ruta.example.Features</description>
+                    <name>uima.ruta.example.LP2.TechEND</name>
+                    <description>Type defined in uima.ruta.example.LP2</description>
                     <supertypeName>uima.tcas.Annotation</supertypeName>
                 </typeDescription>
             </types>
@@ -405,60 +418,60 @@
             </capability>
             <capability>
                 <inputs>
-                    <type>uima.ruta.example.Features.EditorMarker</type>
-                    <type>uima.ruta.example.Features.EnglishStopWord</type>
-                    <type>uima.ruta.example.Features.FirstName</type>
-                    <type>uima.ruta.example.Features.JournalVolumeMarker</type>
-                    <type>uima.ruta.example.Features.Month</type>
-                    <type>uima.ruta.example.Features.PagesMarker</type>
-                    <type>uima.ruta.example.Features.PublisherInd</type>
-                    <type>uima.ruta.example.Features.Reference</type>
-                    <type>uima.ruta.example.Features.LParen</type>
-                    <type>uima.ruta.example.Features.RParen</type>
-                    <type>uima.ruta.example.Features.YearInd</type>
-                    <type>uima.ruta.example.Features.NameLinker</type>
-                    <type>uima.ruta.example.Features.FirstNameInd</type>
-                    <type>uima.ruta.example.Features.FirstNameInitial</type>
-                    <type>uima.ruta.example.Features.SingleChar</type>
-                    <type>uima.ruta.example.Features.Quote</type>
-                    <type>uima.ruta.example.Features.QuotedStuff</type>
-                    <type>uima.ruta.example.Features.InInd</type>
-                    <type>uima.ruta.example.Features.FirstToken</type>
-                    <type>uima.ruta.example.Features.LastToken</type>
-                    <type>uima.ruta.example.Features.NumPeriod</type>
-                    <type>uima.ruta.example.Features.NumComma</type>
-                    <type>uima.ruta.example.Features.NumColon</type>
-                    <type>uima.ruta.example.Features.PeriodSep</type>
-                    <type>uima.ruta.example.Features.CommaSep</type>
-                    <type>uima.ruta.example.Features.ColonSep</type>
+                    <type>uima.ruta.example.LP2.AuthorSTART</type>
+                    <type>uima.ruta.example.LP2.AuthorEND</type>
+                    <type>uima.ruta.example.LP2.DateSTART</type>
+                    <type>uima.ruta.example.LP2.DateEND</type>
+                    <type>uima.ruta.example.LP2.PagesSTART</type>
+                    <type>uima.ruta.example.LP2.PagesEND</type>
+                    <type>uima.ruta.example.LP2.PublisherSTART</type>
+                    <type>uima.ruta.example.LP2.PublisherEND</type>
+                    <type>uima.ruta.example.LP2.InstitutionSTART</type>
+                    <type>uima.ruta.example.LP2.InstitutionEND</type>
+                    <type>uima.ruta.example.LP2.VolumeSTART</type>
+                    <type>uima.ruta.example.LP2.VolumeEND</type>
+                    <type>uima.ruta.example.LP2.EditorSTART</type>
+                    <type>uima.ruta.example.LP2.EditorEND</type>
+                    <type>uima.ruta.example.LP2.TitleSTART</type>
+                    <type>uima.ruta.example.LP2.TitleEND</type>
+                    <type>uima.ruta.example.LP2.BooktitleSTART</type>
+                    <type>uima.ruta.example.LP2.BooktitleEND</type>
+                    <type>uima.ruta.example.LP2.NoteSTART</type>
+                    <type>uima.ruta.example.LP2.NoteEND</type>
+                    <type>uima.ruta.example.LP2.JournalSTART</type>
+                    <type>uima.ruta.example.LP2.JournalEND</type>
+                    <type>uima.ruta.example.LP2.LocationSTART</type>
+                    <type>uima.ruta.example.LP2.LocationEND</type>
+                    <type>uima.ruta.example.LP2.TechSTART</type>
+                    <type>uima.ruta.example.LP2.TechEND</type>
                 </inputs>
                 <outputs>
-                    <type>uima.ruta.example.Features.EditorMarker</type>
-                    <type>uima.ruta.example.Features.EnglishStopWord</type>
-                    <type>uima.ruta.example.Features.FirstName</type>
-                    <type>uima.ruta.example.Features.JournalVolumeMarker</type>
-                    <type>uima.ruta.example.Features.Month</type>
-                    <type>uima.ruta.example.Features.PagesMarker</type>
-                    <type>uima.ruta.example.Features.PublisherInd</type>
-                    <type>uima.ruta.example.Features.Reference</type>
-                    <type>uima.ruta.example.Features.LParen</type>
-                    <type>uima.ruta.example.Features.RParen</type>
-                    <type>uima.ruta.example.Features.YearInd</type>
-                    <type>uima.ruta.example.Features.NameLinker</type>
-                    <type>uima.ruta.example.Features.FirstNameInd</type>
-                    <type>uima.ruta.example.Features.FirstNameInitial</type>
-                    <type>uima.ruta.example.Features.SingleChar</type>
-                    <type>uima.ruta.example.Features.Quote</type>
-                    <type>uima.ruta.example.Features.QuotedStuff</type>
-                    <type>uima.ruta.example.Features.InInd</type>
-                    <type>uima.ruta.example.Features.FirstToken</type>
-                    <type>uima.ruta.example.Features.LastToken</type>
-                    <type>uima.ruta.example.Features.NumPeriod</type>
-                    <type>uima.ruta.example.Features.NumComma</type>
-                    <type>uima.ruta.example.Features.NumColon</type>
-                    <type>uima.ruta.example.Features.PeriodSep</type>
-                    <type>uima.ruta.example.Features.CommaSep</type>
-                    <type>uima.ruta.example.Features.ColonSep</type>
+                    <type>uima.ruta.example.LP2.AuthorSTART</type>
+                    <type>uima.ruta.example.LP2.AuthorEND</type>
+                    <type>uima.ruta.example.LP2.DateSTART</type>
+                    <type>uima.ruta.example.LP2.DateEND</type>
+                    <type>uima.ruta.example.LP2.PagesSTART</type>
+                    <type>uima.ruta.example.LP2.PagesEND</type>
+                    <type>uima.ruta.example.LP2.PublisherSTART</type>
+                    <type>uima.ruta.example.LP2.PublisherEND</type>
+                    <type>uima.ruta.example.LP2.InstitutionSTART</type>
+                    <type>uima.ruta.example.LP2.InstitutionEND</type>
+                    <type>uima.ruta.example.LP2.VolumeSTART</type>
+                    <type>uima.ruta.example.LP2.VolumeEND</type>
+                    <type>uima.ruta.example.LP2.EditorSTART</type>
+                    <type>uima.ruta.example.LP2.EditorEND</type>
+                    <type>uima.ruta.example.LP2.TitleSTART</type>
+                    <type>uima.ruta.example.LP2.TitleEND</type>
+                    <type>uima.ruta.example.LP2.BooktitleSTART</type>
+                    <type>uima.ruta.example.LP2.BooktitleEND</type>
+                    <type>uima.ruta.example.LP2.NoteSTART</type>
+                    <type>uima.ruta.example.LP2.NoteEND</type>
+                    <type>uima.ruta.example.LP2.JournalSTART</type>
+                    <type>uima.ruta.example.LP2.JournalEND</type>
+                    <type>uima.ruta.example.LP2.LocationSTART</type>
+                    <type>uima.ruta.example.LP2.LocationEND</type>
+                    <type>uima.ruta.example.LP2.TechSTART</type>
+                    <type>uima.ruta.example.LP2.TechEND</type>
                 </outputs>
                 <languagesSupported/>
             </capability>

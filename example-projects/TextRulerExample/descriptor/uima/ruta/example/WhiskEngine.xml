@@ -136,6 +136,12 @@
                 <multiValued>false</multiValued>
                 <mandatory>false</mandatory>
             </configurationParameter>
+            <configurationParameter>
+                <name>additionalUimafitEngines</name>
+                <type>String</type>
+                <multiValued>true</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
         </configurationParameters>
         <configurationParameterSettings>
             <nameValuePair>
@@ -190,7 +196,7 @@
             <nameValuePair>
                 <name>mainScript</name>
                 <value>
-                    <string>uima.ruta.example.Base</string>
+                    <string>uima.ruta.example.Whisk</string>
                 </value>
             </nameValuePair>
             <nameValuePair>
@@ -220,11 +226,19 @@
             <nameValuePair>
                 <name>additionalScripts</name>
                 <value>
-                    <array/>
+                    <array>
+                        <string>uima.ruta.example.Features</string>
+                    </array>
                 </value>
             </nameValuePair>
             <nameValuePair>
                 <name>additionalEngines</name>
+                <value>
+                    <array/>
+                </value>
+            </nameValuePair>
+            <nameValuePair>
+                <name>additionalUimafitEngines</name>
                 <value>
                     <array/>
                 </value>
@@ -235,6 +249,10 @@
                     <array>
                         <string>org.apache.uima.ruta.example.extensions.ExampleConditionExtension</string>
                         <string>org.apache.uima.ruta.example.extensions.ExampleActionExtension</string>
+                        <string>org.apache.uima.ruta.example.extensions.ExampleBooleanFunctionExtension</string>
+                        <string>org.apache.uima.ruta.example.extensions.ExampleNumberFunctionExtension</string>
+                        <string>org.apache.uima.ruta.example.extensions.ExampleStringFunctionExtension</string>
+                        <string>org.apache.uima.ruta.example.extensions.ExampleTypeFunctionExtension</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -246,11 +264,10 @@
             </nameValuePair>
         </configurationParameterSettings>
         <typeSystemDescription>
-            <name>uima.ruta.example.BaseTypeSystem</name>
+            <name>uima.ruta.example.WhiskTypeSystem</name>
             <imports>
                 <import location="../../../BasicTypeSystem.xml"/>
-                <import location="../../../types/Boundaries.xml"/>
-                <import location="../../../types/Bibtex.xml"/>
+                <import location="FeaturesTypeSystem.xml"/>
             </imports>
         </typeSystemDescription>
         <typePriorities>

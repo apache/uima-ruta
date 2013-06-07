@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
-    <name>uima.ruta.example.kep.KEP_Base_SingleTypeSystem</name>
-    <imports>
-        <import location="../../../../BasicTypeSystem.xml"/>
-        <import location="../../../textmarker/example/BaseTypeSystem.xml"/>
-    </imports>
-</typeSystemDescription>
