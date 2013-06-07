@@ -184,7 +184,20 @@ public class TextRulerController {
                     }
 
                   });
-          preprocessorDidEnd(algorithmsInputFolder, additionalFolder);
+          String algorithmsAdditionalFolder = p.run(additionalFolder, "additional", currentPreprocessorTMFile, currentTempDir,
+                  currentSlotNames, new TextRulerPreprocessorDelegate() {
+
+                    public void preprocessorStatusUpdate(TextRulerPreprocessor p,
+                            String statusString) {
+                      currentDelegate.preprocessorStatusUpdate(p, statusString);
+                    }
+
+                    public boolean shouldAbort() {
+                      return TextRulerController.shouldAbort();
+                    }
+
+                  });
+          preprocessorDidEnd(algorithmsInputFolder, algorithmsAdditionalFolder);
         }
       });
       if (currentDelegate != null)

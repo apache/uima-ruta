@@ -216,6 +216,23 @@ under the License.
    </extension>
    -->
    <extension
+         point="org.apache.uima.ruta.textruler.learners">
+      <learner
+            class="org.apache.uima.ruta.textruler.learner.trabal.TrabalFactory"
+            id="org.apache.uima.ruta.textruler.trabal"
+            name="TraBaL">
+      </learner>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.apache.uima.ruta.textruler"
+            class="org.apache.uima.ruta.textruler.learner.trabal.TrabalPreferencePage"
+            id="org.apache.uima.ruta.textruler.trabal"
+            name="TraBaL">
+      </page>
+   </extension>
+   <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer
             class="org.apache.uima.ruta.textruler.preferences.TextRulerPreferenceInitializer">

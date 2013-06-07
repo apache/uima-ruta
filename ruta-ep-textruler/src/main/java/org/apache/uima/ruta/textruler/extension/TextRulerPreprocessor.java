@@ -32,23 +32,30 @@ import org.eclipse.core.runtime.Path;
 
 /**
  * This "algorithm" gets executed right before the real algorithms get started. It preprocesses the
- * input XMI files with the given Ruta preprocessing file and stores the results in a
- * temporary folder. Those new XMI files are then passed as input documents to the MLAlgorithms.
+ * input XMI files with the given Ruta preprocessing file and stores the results in a temporary
+ * folder. Those new XMI files are then passed as input documents to the MLAlgorithms.
  * 
  */
 public class TextRulerPreprocessor {
 
   public String run(String inFolder, String tmFile, String tmpDir, String[] currentSlotNames,
           TextRulerPreprocessorDelegate delegate) {
-    AnalysisEngineDescription analysisEngineDescription = TextRulerToolkit.getAnalysisEngineDescription(TextRulerToolkit
-            .getEngineDescriptorFromTMSourceFile(new Path(tmFile)));
-    // we want to reuse these cases, so extend the type system in case a boundary-based learner is called
+    return run(inFolder, "input", tmFile, tmpDir, currentSlotNames, delegate);
+  }
+
+  public String run(String inFolder, String docType, String tmFile, String tmpDir,
+          String[] currentSlotNames, TextRulerPreprocessorDelegate delegate) {
+    AnalysisEngineDescription analysisEngineDescription = TextRulerToolkit
+            .getAnalysisEngineDescription(TextRulerToolkit
+                    .getEngineDescriptorFromTMSourceFile(new Path(tmFile)));
+    // we want to reuse these cases, so extend the type system in case a boundary-based learner is
+    // called
     TextRulerToolkit.addBoundaryTypes(analysisEngineDescription, currentSlotNames);
     AnalysisEngine ae = TextRulerToolkit.loadAnalysisEngine(analysisEngineDescription);
 
     // preprocess input XMIs
     File inputFolder = new File(inFolder);
-    File outputFolder = new File(tmpDir + "input");
+    File outputFolder = new File(tmpDir + docType);
     File[] files = inputFolder.listFiles(new FilenameFilter() {
       public boolean accept(File dir, String name) {
         return (name.endsWith(".xmi"));
@@ -70,7 +77,8 @@ public class TextRulerPreprocessor {
       }
       TextRulerToolkit.log("Load INPUT XMI file: " + file.getName());
       if (delegate != null)
-        delegate.preprocessorStatusUpdate(this, "Loading input XMI file: " + file.getName());
+        delegate.preprocessorStatusUpdate(this,
+                "Loading input XMI file (" + docType + "): " + file.getName());
       cas = TextRulerToolkit.readCASfromXMIFile(file, ae, cas);
       System.out.print("Processing...");
       try {
@@ -89,7 +97,7 @@ public class TextRulerPreprocessor {
       cas.reset();
       GlobalCASSource.releaseCAS(cas);
     }
-    return tmpDir + "input";
+    return tmpDir + docType;
   }
 
 }
