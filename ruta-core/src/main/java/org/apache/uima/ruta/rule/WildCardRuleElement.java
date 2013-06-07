@@ -315,7 +315,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
         result = cas.getAnnotationIndex(type).subiterator(window);
       } else {
         result = cas.getAnnotationIndex(type).subiterator(window);
-        result.moveTo(annotation);
+        AnnotationFS pointer = stream.getAnchor(after, annotation);
+        result.moveTo(pointer);
       }
     }
 
