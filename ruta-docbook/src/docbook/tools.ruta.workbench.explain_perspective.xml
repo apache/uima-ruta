@@ -17,7 +17,7 @@
   language governing permissions and limitations under the License. -->
 
 <section id="section.ugr.tools.ruta.workbench.explain_perspective">
-  <title>Explain Perspective</title>
+  <title>UIMA Ruta Explain Perspective</title>
   <para>
     Writing new rules is laborious, especially if the newly written
     rules do not behave as expected. The UIMA Ruta system is able to
