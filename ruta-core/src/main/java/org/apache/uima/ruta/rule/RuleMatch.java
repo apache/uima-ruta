@@ -32,6 +32,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.action.AbstractRutaAction;
+import org.apache.uima.ruta.engine.RutaEngine;
 
 public class RuleMatch extends AbstractRuleMatch<RutaRule> {
 
@@ -150,10 +151,16 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
           for (RuleElementMatch ruleElementMatch : list2) {
             List<AnnotationFS> textsMatched = ruleElementMatch.getTextsMatched();
             if (textsMatched != null && !textsMatched.isEmpty()) {
-              begin = Math.min(textsMatched.get(0).getBegin(), begin);
-              end = Math.max(textsMatched.get(textsMatched.size() - 1).getEnd(), end);
-              if (cas == null) {
-                cas = textsMatched.get(0).getCAS();
+              AnnotationFS first = getFirstNormal(textsMatched);
+              if (first != null) {
+                begin = Math.min(first.getBegin(), begin);
+              }
+              AnnotationFS last = getLastNormal(textsMatched);
+              if (last != null) {
+                end = Math.max(last.getEnd(), end);
+              }
+              if (cas == null && first != null) {
+                cas = first.getCAS();
               }
             }
           }
@@ -165,6 +172,34 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
       }
     }
     return result;
+  }
+
+  private AnnotationFS getFirstNormal(List<AnnotationFS> textsMatched) {
+    // hotfix for invisible dummy matches
+    int pointer = 0;
+    AnnotationFS annotationFS = null;
+    while (pointer < textsMatched.size() && (annotationFS = textsMatched.get(pointer)) != null
+            && annotationFS.getType().getName().equals(RutaEngine.OPTIONAL_TYPE)) {
+      pointer++;
+    }
+    if (pointer < textsMatched.size()) {
+      return annotationFS;
+    }
+    return null;
+  }
+
+  private AnnotationFS getLastNormal(List<AnnotationFS> textsMatched) {
+    // hotfix for invisible dummy matches
+    int pointer = textsMatched.size() - 1;
+    AnnotationFS annotationFS = null;
+    while (pointer >= 0 && (annotationFS = textsMatched.get(pointer)) != null
+            && annotationFS.getType().getName().equals(RutaEngine.OPTIONAL_TYPE)) {
+      pointer--;
+    }
+    if (pointer >= 0) {
+      return annotationFS;
+    }
+    return null;
   }
 
   public static List<Integer> extendIndexes(List<Integer> indexes) {

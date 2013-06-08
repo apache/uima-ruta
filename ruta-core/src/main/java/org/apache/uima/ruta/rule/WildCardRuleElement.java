@@ -36,6 +36,7 @@ import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.expression.string.StringExpression;
 import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.ruta.type.RutaFrame;
@@ -443,23 +444,30 @@ public class WildCardRuleElement extends AbstractRuleElement {
       end = later.getBegin();
     }
 
+    int filteredBegin = begin;
+    int filteredEnd = end;
     RutaBasic beginAnchor = stream.getBeginAnchor(begin);
     RutaBasic endAnchor = stream.getEndAnchor(end);
     if (beginAnchor != null && !stream.isVisible(beginAnchor)) {
       beginAnchor = stream.getBasicNextTo(false, beginAnchor);
-      if(beginAnchor != null) {
-        begin = beginAnchor.getBegin();
+      if (beginAnchor != null) {
+        filteredBegin = beginAnchor.getBegin();
       }
     }
     if (endAnchor != null && !stream.isVisible(endAnchor)) {
       endAnchor = stream.getBasicNextTo(true, endAnchor);
-      if(endAnchor != null) {
-        end = endAnchor.getEnd();
+      if (endAnchor != null) {
+        filteredEnd = endAnchor.getEnd();
       }
     }
 
+    if(filteredBegin < filteredEnd) {
+      begin = filteredBegin;
+      end = filteredEnd;
+    } else {
+      type = cas.getTypeSystem().getType(RutaEngine.OPTIONAL_TYPE);
+    }
     AnnotationFS afs = cas.createAnnotation(type, begin, end);
-
     return afs;
   }
 

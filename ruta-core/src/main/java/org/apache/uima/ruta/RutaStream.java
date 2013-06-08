@@ -199,10 +199,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
 
   public void addAnnotation(AnnotationFS annotation, boolean addToIndex,
           AbstractRuleMatch<? extends AbstractRule> creator) {
-    if (addToIndex) {
-      cas.addFsToIndexes(annotation);
-    }
-    addAnnotation(annotation, creator);
+    addAnnotation(annotation, true, true, creator);
   }
 
   public void addAnnotation(AnnotationFS annotation,
@@ -232,6 +229,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     }
     crowd.annotationAdded(annotation, creator);
   }
+
 
   private boolean checkSpan(AnnotationFS annotation) {
     boolean result = false;

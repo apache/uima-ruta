@@ -85,6 +85,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   public static final String BASIC_TYPE = "org.apache.uima.ruta.type.RutaBasic";
 
+  public static final String OPTIONAL_TYPE = "org.apache.uima.ruta.type.RutaOptional";
+  
   public static final String SEEDERS = "seeders";
 
   public static final String REMOVE_BASICS = "removeBasics";
@@ -130,6 +132,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   public static final String LOW_MEMORY_PROFILE = "lowMemoryProfile";
 
   public static final String SIMPLE_GREEDY_FOR_COMPOSED = "simpleGreedyForComposed";
+
+
 
   private String[] seeders;
 
