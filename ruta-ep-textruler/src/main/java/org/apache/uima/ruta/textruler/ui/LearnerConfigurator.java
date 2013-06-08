@@ -158,6 +158,10 @@ public class LearnerConfigurator {
             result.put(p.id, store.getFloat(id));
             break;
           }
+          case ML_DOUBLE_PARAM: {
+            result.put(p.id, store.getDouble(id));
+            break;
+          }
           case ML_INT_PARAM: {
             result.put(p.id, store.getInt(id));
             break;
