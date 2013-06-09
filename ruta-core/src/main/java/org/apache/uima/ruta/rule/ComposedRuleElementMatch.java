@@ -154,6 +154,7 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
         if (value != null) {
           List<RuleElementMatch> newValue = new ArrayList<RuleElementMatch>();
           for (RuleElementMatch each : value) {
+            each.setContainerMatch(copy);
             if (each instanceof ComposedRuleElementMatch) {
               newValue.add(((ComposedRuleElementMatch) each).copy(extendedContainerMatch));
             } else {

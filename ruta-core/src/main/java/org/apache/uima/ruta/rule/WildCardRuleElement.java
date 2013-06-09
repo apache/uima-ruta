@@ -59,16 +59,30 @@ public class WildCardRuleElement extends AbstractRuleElement {
           RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
           RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
-    RuleElement nextElement = getContainer().getNextElement(after, this);
-
+    RuleElement nextElement = null;
+    RuleElement current = this;
+    int nextDepth = -1;
+    while (nextElement == null && current != null && current.getContainer() != null) {
+      nextElement = current.getContainer().getNextElement(after, current);
+      RuleElementContainer container = current.getContainer();
+      if (container instanceof RuleElement) {
+        current = (RuleElement) container;
+        nextDepth++;
+      } else {
+        break;
+      }
+    }
+    if(nextElement == null) {
+      nextDepth =0;
+    }
     tryWithNextRuleElement(nextElement, after, annotation, ruleMatch, ruleApply, containerMatch,
-            sideStepOrigin, entryPoint, stream, crowd);
+            nextDepth, sideStepOrigin, entryPoint, stream, crowd);
 
   }
 
   private void tryWithNextRuleElement(RuleElement nextElement, boolean after,
           AnnotationFS annotation, RuleMatch ruleMatch, RuleApply ruleApply,
-          ComposedRuleElementMatch containerMatch, RutaRuleElement sideStepOrigin,
+          ComposedRuleElementMatch containerMatch, int nextDepth, RutaRuleElement sideStepOrigin,
           RuleElement entryPoint, RutaStream stream, InferenceCrowd crowd) {
     // what is the next stuff that should match?
     if (nextElement == null) {
@@ -81,46 +95,46 @@ public class WildCardRuleElement extends AbstractRuleElement {
       RutaRuleElement re = (RutaRuleElement) nextElement;
       RutaMatcher matcher = re.getMatcher();
       if (matcher instanceof RutaTypeMatcher) {
-        tryWithNextType(after, annotation, nextElement, null, ruleMatch, ruleApply, containerMatch,
+        tryWithNextType(after, annotation, nextElement, null, ruleMatch, ruleApply, containerMatch, nextDepth,
                 sideStepOrigin, stream, crowd);
       } else if (matcher instanceof RutaLiteralMatcher) {
-        tryWithNextLiteral(after, annotation, re, ruleMatch, ruleApply, containerMatch,
+        tryWithNextLiteral(after, annotation, re, ruleMatch, ruleApply, containerMatch, nextDepth,
                 sideStepOrigin, stream, crowd);
       } else if (matcher instanceof RutaDisjunctiveMatcher) {
-        tryWithNextType(after, annotation, re, null, ruleMatch, ruleApply, containerMatch,
+        tryWithNextType(after, annotation, re, null, ruleMatch, ruleApply, containerMatch, nextDepth,
                 sideStepOrigin, stream, crowd);
       }
 
     } else if (nextElement instanceof ComposedRuleElement) {
-
       ComposedRuleElement cre = ((ComposedRuleElement) nextElement);
       tryWithNextComposed(after, annotation, cre, ruleMatch, ruleApply, containerMatch,
-              sideStepOrigin, stream, crowd);
-      RuleElement nextInnerRuleElement = null;
-      if (after) {
-        nextInnerRuleElement = cre.getFirstElement();
-      } else {
-        nextInnerRuleElement = cre.getLastElement();
-      }
-      // TODO won't work ...!!!
-      ComposedRuleElementMatch composedMatch = new ComposedRuleElementMatch(cre, containerMatch);
-      if (containerMatch == null) {
-        ruleMatch.setRootMatch(composedMatch);
-      } else {
-        containerMatch.addInnerMatch(this, composedMatch, false, stream);
-      }
-      tryWithNextRuleElement(nextInnerRuleElement, after, annotation, ruleMatch, ruleApply,
-              composedMatch, sideStepOrigin, entryPoint, stream, crowd);
+              nextDepth, sideStepOrigin, stream, crowd);
+//      RuleElement nextInnerRuleElement = null;
+//      if (after) {
+//        nextInnerRuleElement = cre.getFirstElement();
+//      } else {
+//        nextInnerRuleElement = cre.getLastElement();
+//      }
+//      // TODO won't work ...!!!
+//      ComposedRuleElementMatch nextContainerMatch = getContainerMatchOfNextElement(containerMatch, nextDepth);
+//      ComposedRuleElementMatch composedMatch = new ComposedRuleElementMatch(cre, nextContainerMatch);
+//      if (containerMatch == null) {
+//        ruleMatch.setRootMatch(composedMatch);
+//      } else {
+//        nextContainerMatch.addInnerMatch(this, composedMatch, false, stream);
+//      }
+//      tryWithNextRuleElement(nextInnerRuleElement, after, annotation, ruleMatch, ruleApply,
+//              composedMatch, nextDepth, sideStepOrigin, entryPoint, stream, crowd);
     } else if (nextElement instanceof WildCardRuleElement) {
       // another wildcard? seriously? then just assume its an "Annotation" type
       CAS cas = stream.getCas();
       tryWithNextType(after, annotation, nextElement, cas.getAnnotationType(), ruleMatch,
-              ruleApply, containerMatch, sideStepOrigin, stream, crowd);
+              ruleApply, containerMatch, nextDepth, sideStepOrigin, stream, crowd);
     }
   }
 
   private void tryWithNextComposed(boolean after, AnnotationFS annotation, ComposedRuleElement cre,
-          RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
+          RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch, int nextDepth,
           RutaRuleElement sideStepOrigin, RutaStream stream, InferenceCrowd crowd) {
     AnnotationFS nextOne = annotation;
     boolean doneHere = false;
@@ -133,13 +147,14 @@ public class WildCardRuleElement extends AbstractRuleElement {
       doMatch(coveredByWildCard, extendedMatch, extendedContainerMatch, annotation == null, stream,
               crowd);
       if (extendedMatch.matched()) {
+        ComposedRuleElementMatch nextContainerMatch = getContainerMatchOfNextElement(extendedContainerMatch, nextDepth);
         if (endAnchor == null) {
-          cre.startMatch(extendedMatch, ruleApply, extendedContainerMatch, cre, stream, crowd);
+          cre.startMatch(extendedMatch, ruleApply, nextContainerMatch, cre, stream, crowd);
         } else {
-          cre.continueMatch(after, endAnchor, extendedMatch, ruleApply, extendedContainerMatch,
+          cre.continueMatch(after, endAnchor, extendedMatch, ruleApply, nextContainerMatch,
                   sideStepOrigin, cre, stream, crowd);
         }
-        List<RuleElementMatch> nextList = extendedContainerMatch.getInnerMatches().get(cre);
+        List<RuleElementMatch> nextList = nextContainerMatch.getInnerMatches().get(cre);
         boolean matched = hasMatched(nextList);
         if (!matched) {
           nextOne = stream.getAnchor(after, getNextPointer(!after, nextOne));
@@ -153,7 +168,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
       }
     }
     if (!doneHere) {
-      cre.continueMatch(after, annotation, ruleMatch, ruleApply, containerMatch, sideStepOrigin,
+      ComposedRuleElementMatch nextContainerMatch = getContainerMatchOfNextElement(containerMatch, nextDepth);
+      cre.continueMatch(after, annotation, ruleMatch, ruleApply, nextContainerMatch, sideStepOrigin,
               null, stream, crowd);
     }
   }
@@ -228,7 +244,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
 
   private void tryWithNextType(boolean after, AnnotationFS annotation, RuleElement nextElement,
           Type defaultType, RuleMatch ruleMatch, RuleApply ruleApply,
-          ComposedRuleElementMatch containerMatch, RutaRuleElement sideStepOrigin,
+          ComposedRuleElementMatch containerMatch, int nextDepth, RutaRuleElement sideStepOrigin,
           RutaStream stream, InferenceCrowd crowd) {
     FSIterator<AnnotationFS> iterator = getIterator(after, annotation, nextElement, defaultType,
             stream);
@@ -243,14 +259,16 @@ public class WildCardRuleElement extends AbstractRuleElement {
       doMatch(coveredByWildCard, extendedMatch, extendedContainerMatch, annotation == null, stream,
               crowd);
       if (extendedMatch.matched()) {
+        ComposedRuleElementMatch nextContainerMatch = getContainerMatchOfNextElement(extendedContainerMatch, nextDepth);
         if (endAnchor == null) {
-          nextElement.startMatch(extendedMatch, ruleApply, extendedContainerMatch, nextElement,
+          nextElement.startMatch(extendedMatch, ruleApply, nextContainerMatch, nextElement,
                   stream, crowd);
         } else {
+          // TODO match and containermatch should be on the correct level!
           nextElement.continueMatch(after, endAnchor, extendedMatch, ruleApply,
-                  extendedContainerMatch, sideStepOrigin, nextElement, stream, crowd);
+                  nextContainerMatch, sideStepOrigin, nextElement, stream, crowd);
         }
-        List<RuleElementMatch> nextList = extendedContainerMatch.getInnerMatches().get(nextElement);
+        List<RuleElementMatch> nextList = nextContainerMatch.getInnerMatches().get(nextElement);
         if (nextList == null || nextList.isEmpty() || !nextList.get(nextList.size() - 1).matched()) {
           moveOn(after, iterator);
         } else {
@@ -262,6 +280,15 @@ public class WildCardRuleElement extends AbstractRuleElement {
         moveOn(after, iterator);
       }
     }
+  }
+
+  private ComposedRuleElementMatch getContainerMatchOfNextElement(
+          ComposedRuleElementMatch extendedContainerMatch, int nextDepth) {
+    ComposedRuleElementMatch result = extendedContainerMatch;
+    for (int i = 0; i < nextDepth; i++) {
+      result = result.getContainerMatch();
+    }
+    return result;
   }
 
   private FSIterator<AnnotationFS> getIterator(boolean after, AnnotationFS annotation,
@@ -326,7 +353,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
 
   private void tryWithNextLiteral(boolean after, AnnotationFS annotation,
           RutaRuleElement nextElement, RuleMatch ruleMatch, RuleApply ruleApply,
-          ComposedRuleElementMatch containerMatch, RutaRuleElement sideStepOrigin,
+          ComposedRuleElementMatch containerMatch, int nextDepth, RutaRuleElement sideStepOrigin,
           RutaStream stream, InferenceCrowd crowd) {
     RutaLiteralMatcher matcher = (RutaLiteralMatcher) nextElement.getMatcher();
     StringExpression expression = matcher.getExpression();
@@ -344,7 +371,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
     while (!doneHere && (indexOf = document.indexOf(stringValue, pointer)) < document.length()) {
       if (indexOf < 0) {
         // can't match, the next next element will see it.
-        nextElement.continueMatch(after, annotation, ruleMatch, ruleApply, containerMatch,
+        ComposedRuleElementMatch nextContainerMatch = getContainerMatchOfNextElement(containerMatch, nextDepth);
+        nextElement.continueMatch(after, annotation, ruleMatch, ruleApply, nextContainerMatch,
                 sideStepOrigin, null, stream, crowd);
         doneHere = true;
         break;
@@ -357,14 +385,15 @@ public class WildCardRuleElement extends AbstractRuleElement {
       doMatch(coveredByWildCard, extendedMatch, extendedContainerMatch, annotation == null, stream,
               crowd);
       if (extendedMatch.matched()) {
+        ComposedRuleElementMatch nextContainerMatch = getContainerMatchOfNextElement(extendedContainerMatch, nextDepth);
         if (endAnchor == null) {
-          nextElement.startMatch(extendedMatch, ruleApply, extendedContainerMatch, nextElement,
+          nextElement.startMatch(extendedMatch, ruleApply, nextContainerMatch, nextElement,
                   stream, crowd);
         } else {
           nextElement.continueMatch(after, endAnchor, extendedMatch, ruleApply,
-                  extendedContainerMatch, sideStepOrigin, nextElement, stream, crowd);
+                  nextContainerMatch, sideStepOrigin, nextElement, stream, crowd);
         }
-        List<RuleElementMatch> nextList = extendedContainerMatch.getInnerMatches().get(nextElement);
+        List<RuleElementMatch> nextList = nextContainerMatch.getInnerMatches().get(nextElement);
         if (nextList == null || nextList.isEmpty()) {
           pointer = getNextPointer(after, anchor);
         } else {
@@ -461,7 +490,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
       }
     }
 
-    if(filteredBegin < filteredEnd) {
+    if (filteredBegin < filteredEnd) {
       begin = filteredBegin;
       end = filteredEnd;
     } else {

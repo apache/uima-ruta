@@ -53,6 +53,43 @@ public class WildCardTest3 {
     iterator = ai.iterator();
     assertEquals("Peter Kluegl, Joern Kottmann, Marshall Schor,", iterator.next().getCoveredText());
    
+    t = RutaTestUtils.getTestType(cas, 3);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    assertEquals("Peter Kluegl, Joern Kottmann, Marshall Schor,", iterator.next().getCoveredText());
+   
+    t = RutaTestUtils.getTestType(cas, 4);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    assertEquals("Peter Kluegl, Joern Kottmann, Marshall", iterator.next().getCoveredText());
+   
+    t = RutaTestUtils.getTestType(cas, 5);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    assertEquals("Peter Kluegl, Joern Kottmann, Marshall Schor, and", iterator.next().getCoveredText());
+   
+    t = RutaTestUtils.getTestType(cas, 6);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    assertEquals("Peter Kluegl, Joern Kottmann, Marshall Schor", iterator.next().getCoveredText());
+   
+    t = RutaTestUtils.getTestType(cas, 7);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    assertEquals("Peter Kluegl, Joern Kottmann, Marshall Schor,", iterator.next().getCoveredText());
+   
+    t = RutaTestUtils.getTestType(cas, 8);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    assertEquals("Peter Kluegl, Joern Kottmann, Marshall Schor, and others.", iterator.next().getCoveredText());
+   
+    
     if (cas != null) {
       cas.release();
     }
