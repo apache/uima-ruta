@@ -64,20 +64,20 @@ public abstract class AbstractLanguageElementDocumentationProvider implements
 
   private void fillMap(String documentationFile) throws IOException {
     InputStream resourceAsStream = getClass().getResourceAsStream(documentationFile);
-    BufferedReader reader = new BufferedReader(new InputStreamReader(resourceAsStream));
-    StringBuilder sb = new StringBuilder();
-    while (true) {
-      String line;
-      line = reader.readLine();
-      if (line == null) {
-        break;
-      }
-      sb.append(line + "\n");
-    }
-
-    String document = sb.toString();
-
     try {
+      BufferedReader reader = new BufferedReader(new InputStreamReader(resourceAsStream));
+      StringBuilder sb = new StringBuilder();
+      while (true) {
+        String line;
+        line = reader.readLine();
+        if (line == null) {
+          break;
+        }
+        sb.append(line + "\n");
+      }
+
+      String document = sb.toString();
+
       Parser parser = new Parser(document);
       NodeList list = parser.parse(null);
       HtmlDocumentationVisitor visitor = new HtmlDocumentationVisitor(document);
