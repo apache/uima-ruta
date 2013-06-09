@@ -124,6 +124,48 @@ under the License.
       </itemizedlist>
       </para>
     </section>  
+    <section id="section.tools.ruta.workbench.textruler.trabal">
+      <title>WHISK</title>
+      <note>
+      <para>
+        This rule learner is an implementation of the ideas and algorithms published in:
+        Benjamin Eckstein, Peter Kluegl, and Frank Puppe. Towards Learning Error-Driven 
+        Transformations for Information Extraction. Workshop Notes of the LWA 2011 - 
+        Learning, Knowledge, Adaptation, 2011.
+      </para>
+      </note>
+      <para>
+        The TraBal rule learner induces rules that try to correct annotations error and relies on two set of documents. A set of 
+        documents with gold standard annotation and an additional set of annotated documents with the same text that possibly contain erroneous
+        annotations, for which correction rules should be learnt. First, the algorithm compares the two sets of documents and 
+        identifies the present errors. Then, rules for each error are induced and extended. This process can be iterated in order 
+        to incrementally remove all errors. The following parameters are available. For a more detailed description of the parameters, 
+        please refer to the implementation and the publication.
+      </para>
+      <para>
+      <itemizedlist>
+        <listitem>
+          <para>Number of times, the algorithm iterates.</para>
+        </listitem>
+        <listitem>
+          <para>Number of basic rules to be created for one example.</para>
+        </listitem>
+        <listitem>
+          <para>Number of optimized rules to be created for one example.</para>
+        </listitem>
+        <listitem>
+          <para>Maximum number of iterations, when optimizing rules.</para>
+        </listitem>
+        <listitem>
+          <para>Maximum allowed error rate.</para>
+        </listitem>
+        <listitem>
+          <para>Correct features in rules and conditions. (not yet available)</para>
+        </listitem>
+      </itemizedlist>
+      </para>
+    </section>
+    
   </section>  
    <section id="section.tools.ruta.workbench.textruler.ui">
    <title>The TextRuler view</title>
