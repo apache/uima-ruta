@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
+<!ENTITY imgroot "images/tools/ruta/language/" >
+<!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
+%uimaents;
+]>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
+  license agreements. See the NOTICE file distributed with this work for additional 
+  information regarding copyright ownership. The ASF licenses this file to 
+  you under the Apache License, Version 2.0 (the "License"); you may not use 
+  this file except in compliance with the License. You may obtain a copy of 
+  the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+  by applicable law or agreed to in writing, software distributed under the 
+  License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+  OF ANY KIND, either express or implied. See the License for the specific 
+  language governing permissions and limitations under the License. -->
+
+<section id="ugr.tools.ruta.language.anchoring">
+  <title>Matching order</title>
+  <para>
+    If not specified otherwise, then the UIMA Ruta rules normally start the matching 
+    process with their first rule element. The first rule element searches for possible positions for its matching
+    condition and then will advise the next rule element to continue the matching process.
+    For that reason, writing rules that contain a first rule element with an optional quantifier is discouraged 
+    and will result in ignoring the optional attribute of the quantifier.
+  </para>
+  <para>
+    The starting rule element can also be manually specified by adding <quote>@</quote> directly in front of the matching condition.
+    In the following example, the rule first searches for capitalized words (CW) and then checks whether 
+    there is a period in front of the matched word.
+    <programlisting><![CDATA[PERIOD @CW;]]></programlisting>
+    This functionality can also be used for rules that start with an optional rule element by manually specifying a later
+    rule element to start the matching process.
+  </para>
+  <para>
+    The choice of the starting rule element can greatly influence the performance speed of the rule execution. 
+    This circumstance is illustrated with the following example that contains two rules, whereas already an annotation 
+    of the type <quote>LastToken</quote> was added to the last token of the document:
+    <programlisting><![CDATA[ANY LastToken;
+ANY @LastToken;]]></programlisting>
+    The first rule matches on each token of the document and checks whether the next annotation is the last token of the document.
+    This will result in many index operations because all tokens of the document are considered. 
+    The second rule, however, matches on the last token and then checks if there is any token in front of it. This
+    rule, therefore, considers only one token. 
+  </para>
+  <para>
+    The UIMA Ruta language provides also a concept for automatically selecting the starting rule element called dynamic anchoring.
+    Here, a simple heuristic concerning the position of the rule element and the involved types is applied in order to identify
+    the favorable rule element. This functionality can be activated in the <link linkend="ugr.tools.ruta.ae.basic.parameter">configuration parameters</link> of the analysis engine or 
+    directly in the script file with the <link linkend="ugr.tools.ruta.language.actions.dynamicanchoring">DYNAMICANCHORING</link> action. 
+  </para>
+</section>

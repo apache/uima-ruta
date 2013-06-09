@@ -33,7 +33,8 @@ under the License.
 
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
     href="tools.ruta.language.syntax.xml" />
-
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+    href="tools.ruta.language.anchoring.xml" />
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
     href="tools.ruta.language.basic_annotations.xml" />
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
