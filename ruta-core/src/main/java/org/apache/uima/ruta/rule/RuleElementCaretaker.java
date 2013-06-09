@@ -60,7 +60,12 @@ public class RuleElementCaretaker implements RuleElementContainer {
     if (ruleElements.size() == 1 || containsLiteralMatcher(ruleElements)) {
       return ruleElements.get(0);
     }
-
+    for (RuleElement ruleElement : ruleElements) {
+      if(ruleElement.isStartAnchor()) {
+        return ruleElement;
+      }
+    }
+    
     if (stream.isDynamicAnchoring()) {
       long min = Long.MAX_VALUE;
       RuleElement minElement = null;

@@ -70,4 +70,9 @@ public interface RuleElement {
   List<AbstractRutaAction> getActions();
 
   boolean hasAncestor(boolean after);
+
+  void setStartAnchor(boolean start);
+  
+  boolean isStartAnchor();
+  
 }

@@ -73,7 +73,7 @@ public class ElementTreeLabelProvider extends LabelProvider implements ILabelPro
         Feature fanchor = type.getFeatureByBaseName(ExplainConstants.RULE_ANCHOR);
         if (f != null && fanchor != null) {
           String v = fs.getStringValue(f);
-          String ruleAnchor = fs.getBooleanValue(fanchor) ? "'" : "";
+          String ruleAnchor = fs.getBooleanValue(fanchor) ? "@" : "";
           return ruleAnchor + v;
         }
       } else if (element instanceof RuleElementMatchNode) {

@@ -635,10 +635,13 @@ blockRuleElement returns [RutaRuleElement rElement = null] //[List<RutaRuleEleme
 	
 ruleElement returns [Expression re = null]
 	:
+	STARTANCHOR?
+	(
 	re1 = ruleElementType {re = re1;}
 	| re2 = ruleElementLiteral {re = re2;}
 	| re3 = ruleElementComposed {re = re3;}
 	| re4 = ruleElementWildCard {re = re4;}
+	)
 	;
 
 ruleElementWildCard returns [RutaRuleElement re = null] 
@@ -713,6 +716,7 @@ List<RutaCondition> dummyConds = new ArrayList<RutaCondition>();
 
 ruleElementLiteral returns [RutaRuleElement re = null] 
     :
+    
     (simpleStringExpression)=>idRef=simpleStringExpression quantifier = quantifierPart? 
         (LCURLY 
 
@@ -875,11 +879,13 @@ options {
 expr = ExpressionFactory.createEmptyTypeExpression(input.LT(1));
 }
 	:
+	(
 	(featureTypeExpression)=> ft = featureTypeExpression {expr = ft;}
 	| 
-	tf = typeFunction {expr = tf;}
+	(typeFunction)=> tf = typeFunction {expr = tf;}
 	| 
 	st = simpleTypeExpression 
+	)
 	{expr = ExpressionFactory.createTypeExpression(st);
 	 }
 	

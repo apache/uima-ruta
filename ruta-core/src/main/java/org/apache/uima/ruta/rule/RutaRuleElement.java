@@ -78,7 +78,7 @@ public class RutaRuleElement extends AbstractRuleElement {
             sideStepOrigin = hasAncestor(false) ? this : null;
             after.continueMatch(true, eachAnchor, extendedMatch, ruleApply, extendedContainerMatch,
                     sideStepOrigin, null, stream, crowd);
-          } else if (stream.isDynamicAnchoring() && before != null) {
+          } else if ((stream.isDynamicAnchoring() || isStartAnchor()) && before != null) {
             sideStepOrigin = hasAncestor(true) ? this : null;
             before.continueMatch(false, eachAnchor, extendedMatch, ruleApply,
                     extendedContainerMatch, sideStepOrigin, null, stream, crowd);

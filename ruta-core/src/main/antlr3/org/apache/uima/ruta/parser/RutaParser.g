@@ -603,11 +603,14 @@ ruleElements[RuleElementContainer container] returns [List<RuleElement> elements
 
 ruleElement[RuleElementContainer container] returns [RuleElement re = null]
 	:
+	start = STARTANCHOR? (
 	re1 = ruleElementType[container] {re = re1;}
 	| re2 = ruleElementLiteral[container] {re = re2;}
 	| (ruleElementComposed[null])=>re3 = ruleElementComposed[container] {re = re3;}
 	| (ruleElementDisjunctive[null])=> re4 = ruleElementDisjunctive[container] {re = re4;}
 	| (ruleElementWildCard[null])=> re5 = ruleElementWildCard[container] {re = re5;}
+	)
+	{re.setStartAnchor(start != null);}
 	;	
 
 ruleElementWildCard [RuleElementContainer container] returns [AbstractRuleElement re = null]

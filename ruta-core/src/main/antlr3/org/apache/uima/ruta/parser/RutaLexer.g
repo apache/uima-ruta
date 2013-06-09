@@ -355,6 +355,10 @@ XOR	: 	'XOR';
 TRUE 	:	'true';
 FALSE 	:	'false';
 
+
+STARTANCHOR 
+	:	 '@';
+
 HexLiteral : '0' ('x'|'X') HexDigit+ IntegerTypeSuffix? ;
 
 DecimalLiteral : ('0' | '1'..'9' '0'..'9'*) IntegerTypeSuffix? ;
@@ -468,8 +472,6 @@ LCURLY	: '{' {implicitLineJoiningLevel++;} ;
 RCURLY	: '}' {implicitLineJoiningLevel--;} ;
 
 CIRCUMFLEX	: '^' ;
-
-AT : '@' ;
 
 DOT : '.' ;
 
