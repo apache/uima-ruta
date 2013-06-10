@@ -125,7 +125,7 @@ under the License.
       </para>
     </section>  
     <section id="section.tools.ruta.workbench.textruler.trabal">
-      <title>WHISK</title>
+      <title>TraBaL</title>
       <note>
       <para>
         This rule learner is an implementation of the ideas and algorithms published in:
@@ -165,7 +165,34 @@ under the License.
       </itemizedlist>
       </para>
     </section>
-    
+        <section id="section.tools.ruta.workbench.textruler.kep">
+      <title>KEP</title>
+      <!-- 
+      <note>
+      <para>
+      </para>
+      </note>
+       -->
+      <para>
+        The name of the rule learner KEP (knowledge engineering patterns) is derived from the idea that humans use different engineering patterns 
+        to write annotation rules. This algorithms implements simple rule induction methods for some patterns, such as boundary detection 
+        or annotation-based restriction of the window. The results are then combined in order to take adavantage of the combination of 
+        the different kinds of induced rules. Since the single rules are constructed according to how humans engineer the annotations rules, 
+        the resulting rule set should resemble more a handcrafted rule set. Furthermore, by exploiting the synergy of the patterns, solutions for 
+        some annotation are much simplier. The following parameters are available. For a more detailed description of the parameters, 
+        please refer to the implementation.
+      </para>
+      <para>
+      <itemizedlist>
+        <listitem>
+          <para>Maximum number of <quote>Expand Rules</quote></para>
+        </listitem>
+        <listitem>
+          <para>Maximum number of <quote>Infiller Rules</quote></para>
+        </listitem>
+      </itemizedlist>
+      </para>
+    </section>
   </section>  
    <section id="section.tools.ruta.workbench.textruler.ui">
    <title>The TextRuler view</title>
