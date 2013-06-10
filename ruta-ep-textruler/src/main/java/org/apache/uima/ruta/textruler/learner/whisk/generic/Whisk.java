@@ -286,29 +286,27 @@ public class Whisk extends TextRulerBasicLearner {
 
         // add a second version where we add the exact token content if
         // it is a regexp item:
-        WhiskRule proposedRule2 = null;
-        WhiskRuleItem t2 = null;
+        WhiskRule proposedRule2 = proposedRule;
         if (t.getWordConstraint().isRegExpConstraint()) {
-          proposedRule2 = proposedRule.copy();
-          t2 = term;
-          t2.setHideRegExp(false);
-          proposedRule2.setNeedsCompile(true);
-          if (!rulesToTest.contains(proposedRule2)) {
-            rulesToTest.add(proposedRule2);
+          t.setHideRegExp(false);
+          WhiskRule proposedRuleF = proposedRule.copy();
+          t.setHideRegExp(true);
+          proposedRuleF.setNeedsCompile(true);
+          if (!rulesToTest.contains(proposedRuleF)) {
+            rulesToTest.add(proposedRuleF);
           }
         }
 
-        // expend with feature conditions
+        // extend with feature conditions
         WhiskRule proposedRuleF = null;
-        WhiskRuleItem tf = null;
         for (String eachFeature : consideredFeatures) {
           Map<String, String> featureMap = t.getWordConstraint().getTokenAnnotation()
                   .getFeatureMap();
           String stringValue = featureMap.get(eachFeature);
           if (stringValue != null) {
+            t.activateFeature(eachFeature);
             proposedRuleF = proposedRule.copy();
-            tf = term;
-            tf.activateFeature(stringValue);
+            t.deactivateFeature(eachFeature);
             proposedRuleF.setNeedsCompile(true);
             if (!rulesToTest.contains(proposedRuleF)) {
               rulesToTest.add(proposedRuleF);
