@@ -90,6 +90,7 @@ public class KEPLearner extends TextRulerBasicLearner {
   public KEPLearner(String inputDir, String prePropTMFile, String tmpDir, String[] slotNames,
           Set<String> filterSet, boolean skip, TextRulerLearnerDelegate delegate) {
     super(inputDir, prePropTMFile, tmpDir, slotNames, filterSet, skip, delegate);
+    supportBoundaries = true;
   }
 
   @Override

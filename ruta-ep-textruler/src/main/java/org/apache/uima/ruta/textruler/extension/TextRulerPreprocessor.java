@@ -22,6 +22,7 @@ package org.apache.uima.ruta.textruler.extension;
 import java.io.File;
 import java.io.FilenameFilter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;
@@ -45,6 +46,10 @@ public class TextRulerPreprocessor {
 
   public String run(String inFolder, String docType, String tmFile, String tmpDir,
           String[] currentSlotNames, TextRulerPreprocessorDelegate delegate) {
+    if(StringUtils.isBlank(inFolder)) {
+      return inFolder;
+    }
+    
     AnalysisEngineDescription analysisEngineDescription = TextRulerToolkit
             .getAnalysisEngineDescription(TextRulerToolkit
                     .getEngineDescriptorFromTMSourceFile(new Path(tmFile)));
