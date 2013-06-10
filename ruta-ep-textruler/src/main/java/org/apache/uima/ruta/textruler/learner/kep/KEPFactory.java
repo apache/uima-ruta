@@ -57,9 +57,9 @@ public class KEPFactory implements TextRulerLearnerFactory {
 //    result[1] = new TextRulerLearnerParameter(KEPLearner.MAX_FILLER_LENGTH,
 //            "maxFillerLength", MLAlgorithmParamType.ML_INT_PARAM);
     result[0] = new TextRulerLearnerParameter(KEPLearner.MAX_EXPAND_RULES,
-            "maxExpandRules", MLAlgorithmParamType.ML_INT_PARAM);
+            "Maximum number of \"Expand Rules\"", MLAlgorithmParamType.ML_INT_PARAM);
     result[1] = new TextRulerLearnerParameter(KEPLearner.MAX_INFILLER_RULES,
-            "maxInfillerRules", MLAlgorithmParamType.ML_INT_PARAM);
+            "Maximum number of \"Infiller Rules\"", MLAlgorithmParamType.ML_INT_PARAM);
     return result;
   }
 
