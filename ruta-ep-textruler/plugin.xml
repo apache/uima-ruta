@@ -233,6 +233,23 @@ under the License.
       </page>
    </extension>
    <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.apache.uima.ruta.textruler"
+            class="org.apache.uima.ruta.textruler.learner.kep.KEPPreferencePage"
+            id="org.apache.uima.ruta.textruler.kep"
+            name="KEP">
+      </page>
+   </extension>
+   <extension
+         point="org.apache.uima.ruta.textruler.learners">
+      <learner
+            class="org.apache.uima.ruta.textruler.learner.kep.KEPFactory"
+            id="org.apache.uima.ruta.textruler.kep"
+            name="KEP">
+      </learner>
+   </extension>
+   <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer
             class="org.apache.uima.ruta.textruler.preferences.TextRulerPreferenceInitializer">
