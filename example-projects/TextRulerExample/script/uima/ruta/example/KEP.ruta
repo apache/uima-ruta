@@ -1,0 +1,179 @@
+PACKAGE uima.ruta.example;
+
+SCRIPT uima.ruta.example.Features;
+Document{-> CALL(Features)};
+DECLARE AuthorSTART, AuthorEND, DateSTART, DateEND, PagesSTART, PagesEND, PublisherSTART, PublisherEND, InstitutionSTART, InstitutionEND, VolumeSTART, VolumeEND, EditorSTART, EditorEND, TitleSTART, TitleEND, BooktitleSTART, BooktitleEND, NoteSTART, NoteEND, JournalSTART, JournalEND, LocationSTART, LocationEND, TechSTART, TechEND;
+BLOCK(Reference) Reference{} { 
+// uima.ruta.example.Author RULES 
+    FirstToken{->MARKONCE(Author, 1, 7)} COMMA FirstNameInitial[1,2]? NameLinker[1,2]? CW CommaSep FirstNameInitial[1,2]? LParen;   // p=7; n=0
+    FirstToken{->MARKONCE(Author, 1, 4)} CommaSep CW[1,2]? PERIOD LParen;   // p=4; n=0
+    FirstToken{->MARKONCE(Author, 1, 5)} CommaSep FirstNameInitial[1,2]? CW PERIOD SPECIAL; // p=2; n=0
+    FirstToken{->MARKONCE(Author, 1, 15)} CommaSep FirstNameInitial COMMA CW NameLinker FirstNameInitial COMMA CW CommaSep FirstNameInitial NameLinker[1,2]? CW COMMA FirstNameInitial; // p=1; n=0
+
+// uima.ruta.example.AuthorSTART RULES 
+    FirstToken{->MARKONCE(AuthorSTART)};    // p=20; n=0
+
+// uima.ruta.example.AuthorEND RULES 
+    PERIOD{->MARKONCE(AuthorEND)} LParen;   // p=20; n=0
+
+// uima.ruta.example.Date RULES 
+    SPECIAL{->MARKONCE(Date, 1, 4)} YearInd SPECIAL PERIOD; // p=20; n=0
+
+// uima.ruta.example.DateSTART RULES 
+    LParen{->MARKONCE(DateSTART)} YearInd;  // p=20; n=0
+
+// uima.ruta.example.DateEND RULES 
+    SPECIAL PeriodSep{->MARKONCE(DateEND)} CW;  // p=20; n=0
+}
+BLOCK(Paragraph) Paragraph{} { 
+// uima.ruta.example.Pages RULES 
+    NUM{->MARKONCE(Pages, 1, 4)} SPECIAL NUM PeriodSep; // p=15; n=0
+
+// uima.ruta.example.PagesSTART RULES 
+    COMMA NUM{->MARKONCE(PagesSTART)} SPECIAL NUM PERIOD;   // p=15; n=0
+
+// uima.ruta.example.PagesEND RULES 
+    NUM LastToken{->MARKONCE(PagesEND)};    // p=15; n=0
+
+// uima.ruta.example.Publisher RULES 
+    CW{->MARKONCE(Publisher, 1, 4)} SPECIAL CW NameLinker;  // p=1; n=0
+    CW{->MARKONCE(Publisher, 1, 4)} SW CW[1,2]? CommaSep FirstName; // p=1; n=0
+    PERIOD FirstName{->MARKONCE(Publisher, 2, 3)} COMMA;    // p=1; n=0
+
+// uima.ruta.example.PublisherSTART RULES 
+    CW PeriodSep CW{->MARKONCE(PublisherSTART)};    // p=3; n=5
+    PeriodSep CW{->MARKONCE(PublisherSTART)} SPECIAL;   // p=1; n=0
+    PERIOD CW[1,3]? PeriodSep CW{->MARKONCE(PublisherSTART)};   // p=1; n=0
+
+// uima.ruta.example.PublisherEND RULES 
+    PublisherInd CommaSep{->MARKONCE(PublisherEND)} CW; // p=1; n=0
+    CW CommaSep{->MARKONCE(PublisherEND)} FirstName NameLinker; // p=1; n=0
+    PeriodSep FirstName CommaSep{->MARKONCE(PublisherEND)} CW;  // p=1; n=0
+
+// uima.ruta.example.Institution RULES 
+    CW{->MARKONCE(Institution, 1, 8)} EnglishStopWord CW CommaSep FirstNameInitial EnglishStopWord CW PERIOD;   // p=1; n=0
+
+// uima.ruta.example.InstitutionSTART RULES 
+    CommaSep CW{->MARKONCE(InstitutionSTART)} EnglishStopWord;  // p=1; n=0
+
+// uima.ruta.example.InstitutionEND RULES 
+    EnglishStopWord CW LastToken{->MARKONCE(InstitutionEND)};   // p=1; n=0
+
+// uima.ruta.example.Volume RULES 
+    COMMA NUM{->MARKONCE(Volume, 2, 3)} NameLinker Pages;   // p=8; n=0
+    NUM{->MARKONCE(Volume, 1, 5)} SPECIAL NUM RParen NameLinker;    // p=5; n=0
+    NUM{->MARKONCE(Volume, 1, 9)} LParen NUM COMMA NUM NameLinker NUM RParen NameLinker;    // p=1; n=0
+
+// uima.ruta.example.VolumeSTART RULES 
+    COMMA NUM{->MARKONCE(VolumeSTART)} CommaSep Pages;  // p=8; n=0
+    NUM{->MARKONCE(VolumeSTART)} LParen;    // p=6; n=0
+
+// uima.ruta.example.VolumeEND RULES 
+    CommaSep{->MARKONCE(VolumeEND)} PagesSTART; // p=14; n=1
+    SPECIAL CommaSep{->MARKONCE(VolumeEND)} PagesSTART; // p=6; n=0
+}
+BLOCK(Reference) Reference{} { 
+// uima.ruta.example.Title RULES 
+    DateEND CW{->MARKONCE(Title, 2, 4)} SW[1,9]? PeriodSep; // p=10; n=0
+    CW{->MARKONCE(Title, 1, 5)} SW[1,5]? SPECIAL SW[1,5]? PeriodSep;    // p=2; n=0
+    CW[1,2]?{->MARKONCE(Title, 1, 4)} SW[1,2]? CW[1,3]? PeriodSep;  // p=2; n=0
+    CW{->MARKONCE(Title, 1, 8)} NameLinker EnglishStopWord CW SPECIAL CW SW PeriodSep;  // p=1; n=0
+    CW{->MARKONCE(Title, 1, 6)} SW[1,3]? NUM SPECIAL SW[1,3]? PeriodSep;    // p=1; n=0
+    CW{->MARKONCE(Title, 1, 6)} NameLinker SW[1,5]? CAP SW PeriodSep;   // p=1; n=0
+    CW{->MARKONCE(Title, 1, 7)} COMMA CW COMMA EnglishStopWord CW PERIOD;   // p=1; n=0
+    CW{->MARKONCE(Title, 1, 8)} SW[1,8]? COLON CW SW[1,2]? FirstName SW PeriodSep;  // p=1; n=0
+    CW[1,3]?{->MARKONCE(Title, 1, 2)} PeriodSep FirstName;  // p=1; n=0
+
+// uima.ruta.example.TitleSTART RULES 
+    Date CW{->MARKONCE(TitleSTART)};    // p=20; n=0
+
+// uima.ruta.example.TitleEND RULES 
+    PeriodSep{->MARKONCE(TitleEND)} CW; // p=20; n=38
+    SW PeriodSep{->MARKONCE(TitleEND)} CW;  // p=16; n=0
+    PeriodSep{->MARKONCE(TitleEND)} Publisher;  // p=3; n=0
+}
+BLOCK(Paragraph) Paragraph{} { 
+// uima.ruta.example.Booktitle RULES 
+    CW{->MARKONCE(Booktitle, 1, 6)} EnglishStopWord CAP SPECIAL NUM COMMA;  // p=1; n=0
+
+// uima.ruta.example.BooktitleSTART RULES 
+    Title CW{->MARKONCE(BooktitleSTART)} EnglishStopWord CAP;   // p=1; n=0
+
+// uima.ruta.example.BooktitleEND RULES 
+    SPECIAL NUM COMMA{->MARKONCE(BooktitleEND)} PagesSTART SPECIAL; // p=1; n=0
+}
+BLOCK(Paragraph) Paragraph{} { 
+// uima.ruta.example.Journal RULES 
+    PeriodSep CW[1,3]?{->MARKONCE(Journal, 2, 3)} COMMA VolumeSTART;    // p=7; n=0
+    CW{->MARKONCE(Journal, 1, 4)} SW[1,2]? CW[1,3]? COMMA NUM;  // p=4; n=0
+    CW{->MARKONCE(Journal, 1, 4)} EnglishStopWord[1,2]? CAP COMMA;  // p=1; n=0
+    FirstNameInitial{->MARKONCE(Journal, 1, 3)} CAP COMMA;  // p=1; n=0
+    CW{->MARKONCE(Journal, 1, 8)} EnglishStopWord CW[1,2]? NameLinker CW PeriodSep CAP NameLinker;  // p=1; n=0
+
+// uima.ruta.example.JournalSTART RULES 
+    Title CW{->MARKONCE(JournalSTART)}; // p=14; n=6
+    Title CW{->MARKONCE(JournalSTART)} CW;  // p=6; n=0
+    Title CW{->MARKONCE(JournalSTART)} InInd;   // p=1; n=0
+
+// uima.ruta.example.JournalEND RULES 
+    COMMA{->MARKONCE(JournalEND)} Volume;   // p=14; n=0
+
+// uima.ruta.example.Location RULES 
+    CW{->MARKONCE(Location, 1, 3)} FirstName PeriodSep; // p=2; n=0
+    CW{->MARKONCE(Location, 1, 4)} NameLinker CW LastToken; // p=1; n=0
+
+// uima.ruta.example.LocationSTART RULES 
+    PublisherEND CW{->MARKONCE(LocationSTART)}; // p=3; n=0
+
+// uima.ruta.example.LocationEND RULES 
+    CommaSep CW[1,2]? LastToken{->MARKONCE(LocationEND)};   // p=3; n=0
+
+// uima.ruta.example.Tech RULES 
+    CW{->MARKONCE(Tech, 1, 5)} PERIOD SW PeriodSep CommaSep;    // p=1; n=0
+
+// uima.ruta.example.TechSTART RULES 
+    PERIOD CW{->MARKONCE(TechSTART)} PeriodSep; // p=1; n=0
+
+// uima.ruta.example.TechEND RULES 
+    CommaSep{->MARKONCE(TechEND)} Institution;  // p=1; n=0
+}
+
+ // BOUNDARY CORRECTION RULES: 
+     PublisherSTART{OR(CONTAINS(Reference), CONTAINS(AuthorSTART), CONTAINS(FirstToken), CONTAINS(Booktitle), CONTAINS(BooktitleSTART))->UNMARK(PublisherSTART)};    // p=0; n=5
+VolumeEND{CONTAINS(BooktitleEND)->UNMARK(VolumeEND)};   // p=0; n=1
+TitleEND{CONTAINS(DateEND)->UNMARK(TitleEND)};  // p=0; n=20
+JournalSTART{OR(CONTAINS(Reference), CONTAINS(AuthorSTART), CONTAINS(FirstToken), CONTAINS(Publisher), CONTAINS(FirstName), CONTAINS(Booktitle), CONTAINS(BooktitleSTART), CONTAINS(Tech), CONTAINS(TechSTART), CONTAINS(PublisherInd))->UNMARK(JournalSTART)}; // p=0; n=6
+
+ // CONNECTORS: 
+     BLOCK(ReferenceConnectors) Reference{} { 
+    AuthorSTART{->MARKONCE(Author,1,3)} ANY*? AuthorEND;
+    AuthorSTART{IS(AuthorEND)->MARKONCE(Author)} ;
+    DateSTART{->MARKONCE(Date,1,3)} ANY*? DateEND;
+    DateSTART{IS(DateEND)->MARKONCE(Date)} ;
+    TitleSTART{->MARKONCE(Title,1,3)} ANY*? TitleEND;
+    TitleSTART{IS(TitleEND)->MARKONCE(Title)} ;
+} 
+BLOCK(ParagraphConnectors) Paragraph{} { 
+    PagesSTART{->MARKONCE(Pages,1,3)} ANY*? PagesEND;
+    PagesSTART{IS(PagesEND)->MARKONCE(Pages)} ;
+    PublisherSTART{->MARKONCE(Publisher,1,3)} ANY*? PublisherEND;
+    PublisherSTART{IS(PublisherEND)->MARKONCE(Publisher)} ;
+    InstitutionSTART{->MARKONCE(Institution,1,3)} ANY*? InstitutionEND;
+    InstitutionSTART{IS(InstitutionEND)->MARKONCE(Institution)} ;
+    VolumeSTART{->MARKONCE(Volume,1,3)} ANY*? VolumeEND;
+    VolumeSTART{IS(VolumeEND)->MARKONCE(Volume)} ;
+    BooktitleSTART{->MARKONCE(Booktitle,1,3)} ANY*? BooktitleEND;
+    BooktitleSTART{IS(BooktitleEND)->MARKONCE(Booktitle)} ;
+    JournalSTART{->MARKONCE(Journal,1,3)} ANY*? JournalEND;
+    JournalSTART{IS(JournalEND)->MARKONCE(Journal)} ;
+    LocationSTART{->MARKONCE(Location,1,3)} ANY*? LocationEND;
+    LocationSTART{IS(LocationEND)->MARKONCE(Location)} ;
+    TechSTART{->MARKONCE(Tech,1,3)} ANY*? TechEND;
+    TechSTART{IS(TechEND)->MARKONCE(Tech)} ;
+} 
+EditorSTART{->MARKONCE(Editor,1,3)} ANY*? EditorEND;
+EditorSTART{IS(EditorEND)->MARKONCE(Editor)} ;
+NoteSTART{->MARKONCE(Note,1,3)} ANY*? NoteEND;
+NoteSTART{IS(NoteEND)->MARKONCE(Note)} ;
+
+ // CORRECTION RULES: 
