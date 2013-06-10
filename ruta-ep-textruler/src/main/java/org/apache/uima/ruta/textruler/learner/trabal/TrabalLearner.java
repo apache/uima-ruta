@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Feature;
@@ -141,6 +142,8 @@ public class TrabalLearner extends TextRulerBasicLearner {
     try {
       getAnalysisEngine();
       getAdditionalDocuments();
+      if (additionalDocuments == null)
+        throw new Exception("Error: Additional data is missing!");
       if (exampleDocuments.getDocuments().size() != additionalDocuments.getDocuments().size())
         throw new Exception("Error: Training data doesn't match additional data!");
       sendStatusUpdateToDelegate("Loading documents...", TextRulerLearnerState.ML_INITIALIZING,
@@ -1957,7 +1960,9 @@ public class TrabalLearner extends TextRulerBasicLearner {
    */
   public TextRulerExampleDocumentSet getAdditionalDocuments() {
     if (additionalDocuments == null) {
-      additionalDocuments = new TextRulerExampleDocumentSet(additionalFolderPath, casCache);
+      if(!StringUtils.isBlank(additionalFolderPath)) {
+        additionalDocuments = new TextRulerExampleDocumentSet(additionalFolderPath, casCache);
+      }
     }
     return additionalDocuments;
   }
