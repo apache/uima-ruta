@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -103,12 +105,16 @@ public class RerunActionHandler implements IHandler {
   private class RerunHandlerJob extends Job {
     ExecutionEvent event;
 
-    String viewCasName;
+    private final String viewCasName;
 
-    RerunHandlerJob(ExecutionEvent event, String scriptName, String viewCasName) {
+    private final List<String> excludedTypes;
+
+    RerunHandlerJob(ExecutionEvent event, String scriptName, String viewCasName,
+            List<String> excludedTypes) {
       super("Testing " + scriptName + "...");
       this.event = event;
       this.viewCasName = viewCasName;
+      this.excludedTypes = excludedTypes;
       setUser(true);
     }
 
@@ -133,10 +139,12 @@ public class RerunActionHandler implements IHandler {
         desc = engineDescriptorPath.toPortableString();
         XMLInputSource in2 = new XMLInputSource(desc);
         Object descriptor = UIMAFramework.getXMLParser().parse(in2);
-        CAS runCas = ae.newCAS();
+        CAS runCas = getEmptyCas(descriptor);
+        CAS testCas = getEmptyCas(descriptor);
 
         for (TestCasData td : testCasData) {
           runCas.reset();
+          testCas.reset();
           String elementName = r.getLocation().lastSegment();
           monitor.setTaskName("Evaluating " + td.getPath().lastSegment());
           int lastIndexOf = elementName.lastIndexOf(RutaEngine.SCRIPT_FILE_EXTENSION);
@@ -144,31 +152,42 @@ public class RerunActionHandler implements IHandler {
             elementName = elementName.substring(0, lastIndexOf);
           }
 
-          CAS testCas = getTestCas(descriptor);
-          FileInputStream inputStream = null;
+          FileInputStream inputStreamTest = null;
           try {
-            inputStream = new FileInputStream(new File(td.getPath().toPortableString()));
-            XmiCasDeserializer.deserialize(inputStream, testCas, true);
+            inputStreamTest = new FileInputStream(new File(td.getPath().toPortableString()));
+            XmiCasDeserializer.deserialize(inputStreamTest, testCas, true);
           } finally {
-            if (inputStream != null) {
-              inputStream.close();
+            if (inputStreamTest != null) {
+              inputStreamTest.close();
             }
           }
-
-          for (Iterator<CAS> iterator = testCas.getViewIterator(); iterator.hasNext();) {
-            CAS each = iterator.next();
-            String viewName = each.getViewName();
-            try {
-              CAS view = runCas.getView(viewName);
-              view.setDocumentText(each.getDocumentText());
-
-            } catch (Exception e) {
-              RutaAddonsPlugin.error(e);
+          FileInputStream inputStreamRun = null;
+          try {
+            inputStreamRun = new FileInputStream(new File(td.getPath().toPortableString()));
+            XmiCasDeserializer.deserialize(inputStreamRun, runCas, true);
+          } finally {
+            if (inputStreamRun != null) {
+              inputStreamRun.close();
             }
           }
-
           testCas = testCas.getView(viewCasName);
           runCas = runCas.getView(viewCasName);
+
+          if (excludedTypes != null && !excludedTypes.isEmpty()) {
+            List<AnnotationFS> toRemove = new LinkedList<AnnotationFS>();
+            for (String eachType : excludedTypes) {
+              Type type = runCas.getTypeSystem().getType(eachType);
+              if (type != null && runCas.getTypeSystem().subsumes(runCas.getAnnotationType(), type)) {
+                AnnotationIndex<AnnotationFS> annotationIndex = runCas.getAnnotationIndex(type);
+                for (AnnotationFS annotationFS : annotationIndex) {
+                  toRemove.add(annotationFS);
+                }
+              }
+            }
+            for (AnnotationFS annotationFS : toRemove) {
+              runCas.removeFsFromIndexes(annotationFS);
+            }
+          }
 
           IPreferenceStore store = RutaAddonsPlugin.getDefault().getPreferenceStore();
           String factoryName = store.getString(TestingPreferenceConstants.EVALUATOR_FACTORY);
@@ -176,7 +195,7 @@ public class RerunActionHandler implements IHandler {
                   .createEvaluator();
 
           ae.process(runCas);
-          CAS resultCas = evaluator.evaluate(testCas, runCas, debugPage.getExcludedTypes());
+          CAS resultCas = evaluator.evaluate(testCas, runCas, excludedTypes);
 
           IPath path2Test = td.getPath().removeLastSegments(1);
 
@@ -193,8 +212,7 @@ public class RerunActionHandler implements IHandler {
                   + ".result.xmi");
 
           if (!path2Test.toOSString().contains(estimatedTestFolderPath.toOSString())) {
-            path2Result = project.getLocation()
-                    .append(RutaProjectUtils.getDefaultTestLocation())
+            path2Result = project.getLocation().append(RutaProjectUtils.getDefaultTestLocation())
                     .append(RutaProjectUtils.getDefaultTempTestLocation());
             path2ResultFile = path2Result.append(td.getPath().removeFileExtension().lastSegment()
                     + ".result.xmi");
@@ -234,7 +252,7 @@ public class RerunActionHandler implements IHandler {
 
     }
 
-    private CAS getTestCas(Object descriptor) throws ResourceInitializationException,
+    private CAS getEmptyCas(Object descriptor) throws ResourceInitializationException,
             InvalidXMLException {
       CAS testCas = null;
       if (descriptor instanceof AnalysisEngineDescription) {
@@ -243,7 +261,6 @@ public class RerunActionHandler implements IHandler {
         TypeSystemDescription tsDesc = (TypeSystemDescription) descriptor;
         tsDesc.resolveImports();
         testCas = CasCreationUtils.createCas(tsDesc, null, new FsIndexDescription[0]);
-        // TODO: where are the type priorities?
       }
       return testCas;
     }
@@ -264,7 +281,8 @@ public class RerunActionHandler implements IHandler {
 
     String viewCasName = debugPage.getSelectedViewCasName();
     String scriptName = debugPage.getResource().getLocation().lastSegment();
-    RerunHandlerJob job = new RerunHandlerJob(event, scriptName, viewCasName);
+    RerunHandlerJob job = new RerunHandlerJob(event, scriptName, viewCasName,
+            debugPage.getExcludedTypes());
 
     job.addJobChangeListener(new DebugJobChangeAdapter(debugPage) {
     });

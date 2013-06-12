@@ -205,7 +205,7 @@ public class SelectTypesDialog extends Dialog implements Listener {
   }
 
   protected Table newTable(Composite parent, int style) {
-    Table table = new Table(parent, style | SWT.BORDER);
+    Table table = new Table(parent, style | SWT.BORDER | SWT.MULTI);
     GridData gd = new GridData(GridData.FILL_BOTH);
     table.setLayoutData(gd);
     table.addListener(SWT.Selection, this);
