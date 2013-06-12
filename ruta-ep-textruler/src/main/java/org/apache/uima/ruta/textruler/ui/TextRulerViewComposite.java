@@ -332,7 +332,9 @@ public class TextRulerViewComposite extends org.eclipse.swt.widgets.Composite {
           t.getText();
         }
       });
-
+      testDirectoryText.setEnabled(false);
+      
+      
       testButton = new Button(this, SWT.PUSH | SWT.CENTER);
       FormData testButtoLData = new FormData();
       testButtoLData.width = 25;
@@ -355,6 +357,7 @@ public class TextRulerViewComposite extends org.eclipse.swt.widgets.Composite {
           }
         }
       });
+      testButton.setEnabled(false);
 
       showTestsButton = new Button(this, SWT.CHECK | SWT.LEFT);
       FormData showTestsButtoLData = new FormData();
@@ -364,7 +367,8 @@ public class TextRulerViewComposite extends org.eclipse.swt.widgets.Composite {
       showTestsButtoLData.right = new FormAttachment(1000, 1000, -25);
       showTestsButton.setLayoutData(showTestsButtoLData);
       showTestsButton.setText("eval");
-
+      showTestsButton.setEnabled(false);
+            
       label3 = new Label(this, SWT.NONE);
       FormData label3LData = new FormData();
       label3LData.width = 103;

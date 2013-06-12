@@ -618,6 +618,7 @@ public class TrabalLearner extends TextRulerBasicLearner {
         conditions = createConditions(learntRules);
       for (int i = 0; i < learntRules.size(); i++) {
         rules.add(learntRules.get(i));
+//        TODO amount of conditions? parameter for 50!
         for (int j = 0; j < conditions.size() && j < 50; j++) {
           TrabalRule newRule = learntRules.get(i).copy();
           if (!newRule.getConditions().contains(conditions.get(j))) {
@@ -632,114 +633,12 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return learntRules;
   }
 
-  // private List<Condition> getBestConditions(List<Condition> negExampleConditions,
-  // List<Condition> posExampleConditions) {
-  // List<Condition> result = new ArrayList<Condition>();
-  // RankedList<Condition> negExampleCounter = new RankedList<Condition>();
-  // RankedList<Condition> posExampleCounter = new RankedList<Condition>();
-  // Map<Condition, Double> conditionValues = new HashMap<Condition, Double>();
-  // negExampleCounter.addAll(negExampleConditions);
-  // posExampleCounter.addAll(posExampleConditions);
-  // for (Condition c : negExampleConditions) {
-  // int p = 1;
-  // if (posExampleCounter.containsKey(c)) {
-  // p += posExampleCounter.get(c).intValue();
-  // }
-  // conditionValues.put(c, new Double(negExampleCounter.get(c).doubleValue() / p));
-  // }
-  // while (conditionValues.size() > 0) {
-  // Double max = 0.0;
-  // Condition c = null;
-  // for (int i = 0; i < conditionValues.size(); i++) {
-  // if (conditionValues.get(i) > max) {
-  // max = conditionValues.get(i);
-  // c = (Condition) conditionValues.keySet().toArray()[i];
-  // }
-  // }
-  // if (max < 1 || c == null)
-  // break;
-  // result.add(c);
-  // conditionValues.remove(c);
-  // }
-  // return result;
-  // }
-
-  // /**
-  // * Takes a list of rules with conditions and chooses those, which are expected to create the
-  // best
-  // * results.
-  // *
-  // * @param rules
-  // * @return
-  // */
-  // private List<TrabalRule> getBestConditions(List<TrabalRule> rules) {
-  // sendStatusUpdateToDelegate("Choosing conditions... ", TextRulerLearnerState.ML_RUNNING, false);
-  // if (rules.size() < maxNumberOfRules)
-  // return rules;
-  // List<TrabalRule> result = new ArrayList<TrabalRule>();
-  // Map<String, Integer> distribution = new HashMap<String, Integer>();
-  // for (TrabalRule rule : rules) {
-  // String key = "";
-  // List<Condition> conditions = rule.getConditions();
-  // Collections.sort(conditions);
-  // for (Condition c : conditions) {
-  // key += c;
-  // }
-  // if (distribution.containsKey(key)) {
-  // distribution.put(key, new Integer(distribution.get(key).intValue() + 1));
-  // } else {
-  // distribution.put(key, new Integer(1));
-  // }
-  // }
-  // List<TrabalRule> newRules;
-  // while (result.size() < maxNumberOfRules && distribution.size() > 0) {
-  // if (shouldAbort())
-  // break;
-  // int max = 0;
-  // String maxKey = "";
-  // for (String key : distribution.keySet()) {
-  // if (distribution.get(key).intValue() > max) {
-  // max = distribution.get(key).intValue();
-  // maxKey = key;
-  // }
-  // }
-  // distribution.remove(maxKey);
-  // newRules = new ArrayList<TrabalRule>();
-  // TrabalRule example = null;
-  // for (TrabalRule rule : rules) {
-  // String key = "";
-  // List<Condition> conditions = rule.getConditions();
-  // Collections.sort(conditions);
-  // for (Condition c : conditions) {
-  // key += c;
-  // }
-  // if (distribution.containsKey(key)) {
-  // if (distribution.get(key).intValue() == max) {
-  // result.add(rule);
-  // if (example == null)
-  // example = rule;
-  // }
-  // }
-  // }
-  // if (example != null) {
-  // for (TrabalRule rule : rules) {
-  // if (!rule.hasSameBasicRule(example)) {
-  // newRules.add(rule);
-  // }
-  // }
-  // }
-  // rules = newRules;
-  // }
-  // if (result.size() > maxNumberOfRules)
-  // return result.subList(0, maxNumberOfRules);
-  // return result;
-  // }
+ 
 
   /**
    * Chooses the best final rules from the results of runAlgorithm().
    * 
    * @param rules
-   * @param isFirstHalf
    * @return A non redundant list of correction rules.
    */
   private List<TrabalRule> getBest(List<TrabalRule> rules) {
