@@ -482,6 +482,7 @@ public class DocumentSelectComposite extends Composite {
         if (fileList.length == 1) {
           String string = fileList[0];
           inputDirectoryText.setText(string);
+          setDocumentsByDir();
         }
       }
     });
