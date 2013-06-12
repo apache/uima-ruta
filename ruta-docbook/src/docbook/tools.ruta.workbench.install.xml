@@ -120,14 +120,7 @@ under the License.
     Several times within this chapter we use a UIMA Ruta example
     project
     to illustrate the use of the UIMA Ruta Workbench.
-    The example project
-    can be downloaded per
-    <emphasis>svn</emphasis>
-    from
-    <ulink
-      url="https://svn.apache.org/repos/asf/uima/sandbox/ruta/trunk/example-projects/ExampleProject">https://svn.apache.org/repos/asf/uima/sandbox/ruta/trunk/example-projects/ExampleProject
-    </ulink>
-    .
+    The <quote>ExampleProject</quote> project is part of the source release of UIMA Ruta (example-projects folder).
   </para>
   <para>
     To import this project into the workbench do

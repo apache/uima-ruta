@@ -69,8 +69,8 @@ under the License.
       UIMA Ruta rules can also be applied on CAS without using the UIMA Ruta Workbench. 
       <xref linkend="ugr.tools.ruta.ae.basic.apply"/> contains examples how to execute UIMA Ruta rules in plain java.
       A good way to get started with UIMA Ruta is to play around with an exemplary UIMA Ruta project, e.g., 
-      <uri>https://svn.apache.org/repos/asf/uima/sandbox/ruta/trunk/example-projects/ExampleProject</uri>. This UIMA Ruta project 
-      contains some simple rules for processing citation metadata.
+      <quote>ExampleProject</quote> in the example-projects of the UIMA Ruta source release.
+      This UIMA Ruta project contains some simple rules for processing citation metadata.
     </para>  
     <para>    
       <xref linkend="ugr.tools.ruta.language.language"/> and <xref linkend="ugr.tools.ruta.workbench"/> provide 
