@@ -185,15 +185,15 @@ public class RerunActionHandler implements IHandler {
             }
           }
           
-          
           if (excludedTypes != null && !excludedTypes.isEmpty()) {
             List<AnnotationFS> toRemove = new LinkedList<AnnotationFS>();
-            for (String eachType : excludedTypes) {
-              Type type = runCas.getTypeSystem().getType(eachType);
-              if (type != null && runCas.getTypeSystem().subsumes(runCas.getAnnotationType(), type)) {
-                AnnotationIndex<AnnotationFS> annotationIndex = runCas.getAnnotationIndex(type);
-                for (AnnotationFS annotationFS : annotationIndex) {
-                  toRemove.add(annotationFS);
+            AnnotationIndex<AnnotationFS> annotationIndex = runCas.getAnnotationIndex();
+            for (AnnotationFS annotationFS : annotationIndex) {
+              Type type = annotationFS.getType();
+              String typeName = type.getName();
+              if(includedTypes.contains(typeName)|| !excludedTypes.contains(typeName)) {
+                if (type != null && runCas.getTypeSystem().subsumes(runCas.getAnnotationType(), type)) {
+                    toRemove.add(annotationFS);
                 }
               }
             }
