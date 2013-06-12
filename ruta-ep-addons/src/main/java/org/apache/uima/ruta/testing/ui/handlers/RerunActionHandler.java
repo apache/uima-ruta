@@ -25,7 +25,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -107,14 +106,17 @@ public class RerunActionHandler implements IHandler {
 
     private final String viewCasName;
 
-    private final List<String> excludedTypes;
+    private List<String> excludedTypes;
+
+    private List<String> includedTypes;
 
     RerunHandlerJob(ExecutionEvent event, String scriptName, String viewCasName,
-            List<String> excludedTypes) {
+            List<String> excludedTypes,  List<String> includedTypes) {
       super("Testing " + scriptName + "...");
       this.event = event;
       this.viewCasName = viewCasName;
       this.excludedTypes = excludedTypes;
+      this.includedTypes = includedTypes;
       setUser(true);
     }
 
@@ -173,6 +175,17 @@ public class RerunActionHandler implements IHandler {
           testCas = testCas.getView(viewCasName);
           runCas = runCas.getView(viewCasName);
 
+          if(includedTypes != null && !includedTypes.isEmpty()) {
+            excludedTypes = new ArrayList<String>();
+            List<Type> types = runCas.getTypeSystem().getProperlySubsumedTypes(runCas.getAnnotationType());
+            for (Type type : types) {
+              if(!includedTypes.contains(type.getName())) {
+                excludedTypes.add(type.getName());
+              }
+            }
+          }
+          
+          
           if (excludedTypes != null && !excludedTypes.isEmpty()) {
             List<AnnotationFS> toRemove = new LinkedList<AnnotationFS>();
             for (String eachType : excludedTypes) {
@@ -282,7 +295,7 @@ public class RerunActionHandler implements IHandler {
     String viewCasName = debugPage.getSelectedViewCasName();
     String scriptName = debugPage.getResource().getLocation().lastSegment();
     RerunHandlerJob job = new RerunHandlerJob(event, scriptName, viewCasName,
-            debugPage.getExcludedTypes());
+            debugPage.getExcludedTypes(),debugPage.getIncludedTypes());
 
     job.addJobChangeListener(new DebugJobChangeAdapter(debugPage) {
     });

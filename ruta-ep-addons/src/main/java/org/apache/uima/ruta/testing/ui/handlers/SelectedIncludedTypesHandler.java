@@ -49,7 +49,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-public class SelectedExcludedTypesHandler implements IHandler {
+public class SelectedIncludedTypesHandler implements IHandler {
 
   public void addHandlerListener(IHandlerListener handlerListener) {
 
@@ -91,8 +91,8 @@ public class SelectedExcludedTypesHandler implements IHandler {
     }
     Display display = Display.getDefault();
     Shell shell = new Shell(display, SWT.RESIZE | SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
-    shell.setText("Excluded types");
-    new SelectTypesDialog(shell, types, true, activePage);
+    shell.setText("Included types");
+    new SelectTypesDialog(shell, types, false, activePage);
     return null;
   }
 

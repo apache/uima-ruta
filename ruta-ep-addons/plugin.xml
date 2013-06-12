@@ -109,43 +109,28 @@ under the License.
                commandId="org.apache.uima.ruta.testing.rerun"
                icon="icons/13555.actionengine_play.gif"
                label="Rerun Tests"
-               style="push">
-            <visibleWhen
-                  checkEnabled="true">
-            </visibleWhen>
-         </command>
-         <command
-               commandId="org.apache.uima.ruta.testing.PreviousTestCase"
-               icon="icons/back.gif"
-               label="Previous Test Case"
-               style="push">
-            <visibleWhen
-                  checkEnabled="true">
-            </visibleWhen>
-         </command>
-         <command
-               commandId="org.apache.uima.ruta.testing.nextTestCase"
-               icon="icons/forward.gif"
-               label="Next Test Case"
-               style="push">
-            <visibleWhen
-                  checkEnabled="true">
-            </visibleWhen>
-         </command>
-         <command
-               commandId="org.apache.uima.ruta.testing.LoadFolderCommand"
-               icon="icons/add.gif"
-               label="Load all test files from selected folder"
-               style="push">
+               style="push"
+               tooltip="Rerun Tests">
             <visibleWhen
                   checkEnabled="true">
             </visibleWhen>
          </command>
          <command
                commandId="org.apache.uima.ruta.testing.excludeTypes"
-               icon="icons/exclamation.png"
+               icon="icons/thumb_down.png"
                label="Select excluded types"
-               style="push">
+               style="push"
+               tooltip="Select excluded types">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.apache.uima.ruta.testing.includeTypes"
+               icon="icons/thumb_up.png"
+               label="Select included types"
+               style="push"
+               tooltip="Select included types">
             <visibleWhen
                   checkEnabled="true">
             </visibleWhen>
@@ -154,7 +139,8 @@ under the License.
                commandId="org.apache.uima.ruta.testing.selectEvaluator"
                icon="icons/evaluator.gif"
                label="Select Evaluator"
-               style="push">
+               style="push"
+               tooltip="Select evaluator">
             <visibleWhen
                   checkEnabled="true">
             </visibleWhen>
@@ -162,6 +148,7 @@ under the License.
          <command
                commandId="org.apache.uima.ruta.testing.ExportTabel"
                icon="icons/10892.resource_persp.gif"
+               label="to CSV"
                style="push">
             <visibleWhen
                   checkEnabled="true">
@@ -205,6 +192,11 @@ under the License.
             defaultHandler="org.apache.uima.ruta.testing.ui.handlers.SelectedExcludedTypesHandler"
             id="org.apache.uima.ruta.testing.excludeTypes"
             name="Select excluded types">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.ruta.testing.ui.handlers.SelectedIncludedTypesHandler"
+            id="org.apache.uima.ruta.testing.includeTypes"
+            name="Select included types">
       </command>
       <command
             defaultHandler="org.apache.uima.ruta.testing.ui.handlers.SelectEvaluatorHandler"

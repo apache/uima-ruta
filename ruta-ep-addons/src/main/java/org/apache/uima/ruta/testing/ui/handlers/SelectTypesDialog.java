@@ -67,14 +67,21 @@ public class SelectTypesDialog extends Dialog implements Listener {
 
   private List<String> types;
 
-  private List<String> excluded;
+  private List<String> selectedTypes;
 
-  public SelectTypesDialog(Shell shell, List<String> types, TestViewPage owner) {
+  private boolean excluded;
+
+  public SelectTypesDialog(Shell shell, List<String> types, boolean excluded, TestViewPage owner) {
     super(shell);
     this.shell = shell;
     this.types = types;
     this.owner = owner;
-    this.excluded = owner.getExcludedTypes();
+    if(excluded) {
+      this.selectedTypes = owner.getExcludedTypes();
+    } else {
+      this.selectedTypes = owner.getIncludedTypes();
+    }
+    this.excluded = excluded;
     createDialogArea();
     init();
   }
@@ -140,7 +147,7 @@ public class SelectTypesDialog extends Dialog implements Listener {
 
     TableItem[] items = matchingTypesUI.getItems();
     for (TableItem tableItem : items) {
-      if (excluded.contains(tableItem.getText())) {
+      if (selectedTypes.contains(tableItem.getText())) {
         tableItem.setChecked(true);
       }
     }
@@ -155,7 +162,11 @@ public class SelectTypesDialog extends Dialog implements Listener {
             selection.add(tableItem.getText());
           }
         }
-        owner.setExcludedTypes(selection);
+        if(excluded) {
+          owner.setExcludedTypes(selection);
+        } else {
+          owner.setIncludedTypes(selection);
+        }
         shell.dispose();
       }
     });
@@ -227,7 +238,7 @@ public class SelectTypesDialog extends Dialog implements Listener {
         }
         TableItem item = new TableItem(matchingTypesUI, SWT.NULL);
         item.setText(type);
-        if (excluded.contains(item.getText())) {
+        if (selectedTypes.contains(item.getText())) {
           item.setChecked(true);
         }
 
@@ -244,9 +255,9 @@ public class SelectTypesDialog extends Dialog implements Listener {
       if (item instanceof TableItem) {
         TableItem ti = (TableItem) item;
         if (ti.getChecked()) {
-          excluded.add(ti.getText());
+          selectedTypes.add(ti.getText());
         } else {
-          excluded.remove(ti.getText());
+          selectedTypes.remove(ti.getText());
         }
       }
     }

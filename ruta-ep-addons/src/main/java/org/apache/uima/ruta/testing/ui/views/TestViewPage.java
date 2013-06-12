@@ -58,7 +58,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.dnd.DND;
@@ -73,7 +72,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.IActionBars;
@@ -86,15 +84,11 @@ import org.eclipse.ui.part.Page;
 
 public class TestViewPage extends Page implements IPageBookViewPage {
 
-  private Display display;
-
   private Caretaker caretaker;
 
   private Composite overlay;
 
   private IResource script = null;
-
-  private TreeViewer fpViewer;
 
   private InfoPanel tInfoPanel;
 
@@ -102,16 +96,14 @@ public class TestViewPage extends Page implements IPageBookViewPage {
 
   private SashForm sash;
 
-  private SashForm innerSash;
-
   private TableViewer tableViewer;
 
   private IPropertyChangeListener propertyChangeListener;
 
-  private List<IResource> tempFiles;
-
   private List<String> excludedTypes = new ArrayList<String>();
 
+  private List<String> includedTypes = new ArrayList<String>();
+  
   private ListLabelProvider labelProvider;
 
   public TestViewPage(Composite parent, IResource r) {
@@ -119,7 +111,6 @@ public class TestViewPage extends Page implements IPageBookViewPage {
     this.script = r;
     this.overlay = new Composite(parent, 0);
     this.caretaker = new Caretaker();
-    this.display = parent.getDisplay();
     this.propertyChangeListener = null;
   }
 
@@ -201,7 +192,7 @@ public class TestViewPage extends Page implements IPageBookViewPage {
         Object obj = event.getSelection();
         if (obj instanceof IStructuredSelection) {
           StructuredSelection selection = (StructuredSelection) obj;
-          Iterator iterator = selection.iterator();
+          Iterator<?> iterator = selection.iterator();
           while (iterator.hasNext()) {
             Object element = iterator.next();
             if (element instanceof TestCasData) {
@@ -220,7 +211,7 @@ public class TestViewPage extends Page implements IPageBookViewPage {
         Object obj = event.getSelection();
         if (obj instanceof IStructuredSelection) {
           StructuredSelection selection = (StructuredSelection) obj;
-          Iterator iterator = selection.iterator();
+          Iterator<?>iterator = selection.iterator();
           while (iterator.hasNext()) {
             Object element = iterator.next();
             if (element instanceof TestCasData) {
@@ -466,8 +457,6 @@ public class TestViewPage extends Page implements IPageBookViewPage {
 
     IFolder testFolder = project.getFolder(testFolderPackagePath);
     IResource[] resourceArray;
-    ArrayList<String> viewNames = new ArrayList<String>();
-
     try {
       resourceArray = testFolder.members();
 
@@ -539,15 +528,19 @@ public class TestViewPage extends Page implements IPageBookViewPage {
     return tInfoPanel.getSelectedViewCasName();
   }
 
-  private List<IResource> getTempFiles() {
-    return tempFiles;
-  }
-
   public void setExcludedTypes(List<String> excludedTypes) {
     this.excludedTypes = excludedTypes;
   }
 
   public List<String> getExcludedTypes() {
     return excludedTypes;
+  }
+
+  public void setIncludedTypes(List<String> includedTypes) {
+    this.includedTypes = includedTypes;
+  }
+  
+  public List<String> getIncludedTypes() {
+    return includedTypes;
   }
 }
