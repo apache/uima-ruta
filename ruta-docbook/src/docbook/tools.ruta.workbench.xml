@@ -45,6 +45,8 @@ under the License.
   
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.workbench.explain_perspective.xml" />
   
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.workbench.cde.xml" />
+  
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.workbench.query.xml" />
   
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.workbench.testing.xml" />
