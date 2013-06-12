@@ -867,8 +867,8 @@ public class TextRulerViewComposite extends org.eclipse.swt.widgets.Composite {
     inputDirectoryText.setEnabled(flag);
     additionalDirectoryText.setEnabled(flag);
     additionalButton.setEnabled(flag);
-    testDirectoryText.setEnabled(flag);
-    testButton.setEnabled(flag);
+    //testDirectoryText.setEnabled(flag);
+    //testButton.setEnabled(flag);
   }
 
   public static String getScriptPath() {
