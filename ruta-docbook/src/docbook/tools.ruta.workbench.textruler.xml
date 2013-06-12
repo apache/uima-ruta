@@ -38,7 +38,8 @@ under the License.
   <para>
     This section gives a short introduction about the included features and learners, and how to use the framework to learn UIMA Ruta rules. First, the 
     available rule learning algorithms are introduced in <xref linkend="section.tools.ruta.workbench.textruler.learner"/>. Then, 
-    the user interface and the usage is explained in <xref linkend="section.tools.ruta.workbench.textruler.ui"/> using an exemplary UIMA Ruat project.
+    the user interface and the usage is explained in <xref linkend="section.tools.ruta.workbench.textruler.ui"/> and 
+    <xref linkend="section.tools.ruta.workbench.textruler.example"/> illustrates the usage with an exemplary UIMA Ruta project.
   </para>
    <section id="section.tools.ruta.workbench.textruler.learner">
     <title>Included rule learning algorithms</title>
@@ -176,10 +177,10 @@ under the License.
       <para>
         The name of the rule learner KEP (knowledge engineering patterns) is derived from the idea that humans use different engineering patterns 
         to write annotation rules. This algorithms implements simple rule induction methods for some patterns, such as boundary detection 
-        or annotation-based restriction of the window. The results are then combined in order to take adavantage of the combination of 
+        or annotation-based restriction of the window. The results are then combined in order to take advantage of the combination of 
         the different kinds of induced rules. Since the single rules are constructed according to how humans engineer the annotations rules, 
         the resulting rule set should resemble more a handcrafted rule set. Furthermore, by exploiting the synergy of the patterns, solutions for 
-        some annotation are much simplier. The following parameters are available. For a more detailed description of the parameters, 
+        some annotation are much simpler. The following parameters are available. For a more detailed description of the parameters, 
         please refer to the implementation.
       </para>
       <para>
@@ -197,6 +198,23 @@ under the License.
    <section id="section.tools.ruta.workbench.textruler.ui">
    <title>The TextRuler view</title>
       <para> 
+        The TextRuler view is normally located in the lower center of the UIMA Ruta perspective and is the main
+        user interface to configure and start the rule learning algorithms. The view consists of four parts (cf. <xref linkend="figure.tools.ruta.workbench.textruler.main"/>): 
+        The toolbar contains buttons for starting (green button) and stopping (red button) the learning process, 
+        and one button that opening the preference page (blue gears) for configuring the rule induction algorithms cf. <xref linkend="figure.tools.ruta.workbench.textruler.pref"/>.
+        The upper part of the view contains text fields for defining the set of utilized documents. <quote>Training Data</quote>
+        points to the absolute location of the folder containing the gold standard documents. <quote>Additional Data</quote> points
+        to the absolute location of documents that can be additionally used by the algorithms. These documents are currently only needed
+        by the TraBal algorithm, which tries to learn correction rules for the error in those documents. <quote>Test Data</quote> is not yet available.
+        Finally, <quote>Preprocess Script</quote> points to the absolute location of a UIMA Ruta script, which contains all necessary types and can be applied
+        on the documents before the algorithms start in order to add additional annotations as learning features. The preprocessing can be skipped.
+        All text fields support drag and drop: the user can drag a file in the script explorer and drop it in the respective text field.
+        In the center of the view, the target types, for which rule should be induced, can be specified in the <quote>Information Types</quote> list.
+        The list <quote>Featured Feature Types</quote> specify the filtering settings, but it is discourage to change these settings. The user is able to drop
+        a simple text file, which contains a type with complete namespace in each line, to the <quote>Information Types</quote> list in order to add all those types.
+        The lower part of the view contains the list of available algorithms. All checked algorithms will be started, if the start button in the toolbar of the view is pressed.
+        When the algorithms are started, they display their current action after their name, and a result view with the currently induced rules is displayed 
+        in the right part of the perspective.
       </para>
       <figure id="figure.tools.ruta.workbench.textruler.main">
       <title>The UIMA Ruta TextRuler framework
@@ -232,6 +250,40 @@ under the License.
         </textobject>
       </mediaobject>
     </figure>
-    
    </section>
+   
+   <section id="section.tools.ruta.workbench.textruler.example">
+   <title>Example</title>
+      <para> 
+      This section gives a short example how the TextRuler framework is applied in order to induce annotation rules. We refer to the screenshot in <xref linkend="figure.tools.ruta.workbench.textruler.main"/>
+      for the configuration and are using the exemplary UIMA Ruta project <quote>TextRulerExample</quote>, which is part of the source release of UIMA Ruta.
+      </para>
+      <para> 
+        In this example, we are using the <quote>KEP</quote> algorithm for learning annotation rules for identifying Bibtex entries in the reference section of scientific publications:
+        <orderedlist>
+        <listitem>
+          <para>Select the folder <quote>single</quote> and drag and drop it to the <quote>Training Data</quote> text field. This folder contains one file with 
+          correct annotations and serves as gold standard data in our example.</para>
+        </listitem>
+        <listitem>
+          <para>Select the file <quote>Feature.ruta</quote> and drag and drop it to the <quote>Preprocess Script</quote> text field. This UIMA Ruta script knows all necessary types, especially the types
+          of the annotations we try the learn rules for, and additionally it contains rules that create useful annotations, which can be used by the algorithm in order to learn better rules.</para>
+        </listitem>
+        <listitem>
+          <para>Select the file <quote>InfoTypes.txt</quote> and drag and drop it to the <quote>Information Types</quote> list. This specifies the goal of the learning process, 
+          which types of annotations should be annotated by the induced rules, respectively.</para>
+        </listitem>
+        <listitem>
+          <para>Check the checkbox of the <quote>KEP</quote> algorithm and press the start button in the toolbar fo the view.</para>
+        </listitem>
+        <listitem>
+          <para>The algorithm now tries to induce rules for the targeted types. The current result is displayed in the view <quote>KEP Results</quote> in the right part of the perspective.</para>
+        </listitem>
+        <listitem>
+          <para>After the algorithms finished the learning process, create a new UIMA Ruta file in the <quote>uima.ruta.example</quote> package and copy the content of the result view
+          to the new file. Now, the induced rules can be applied as a normal UIMA Ruta script file.</para>
+        </listitem>
+      </orderedlist>
+      </para>
+    </section>
 </section>
