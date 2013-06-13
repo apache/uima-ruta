@@ -36,6 +36,7 @@ public class RutaPreferenceInitializer extends AbstractPreferenceInitializer {
     store.setDefault(RutaCorePreferences.BUILDER_IGNORE_DUPLICATE_SHORTNAMES, false);
     store.setDefault(RutaCorePreferences.PROJECT_CLEAR_OUTPUT, false);
     store.setDefault(RutaCorePreferences.NO_VM_IN_DEV_MODE, false);
+    store.setDefault(RutaCorePreferences.ADD_SDI, false);
   }
 
 }
