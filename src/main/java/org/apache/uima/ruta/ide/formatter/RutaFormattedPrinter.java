@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.antlr.runtime.CommonToken;
+import org.apache.uima.ruta.ide.core.RutaConstants;
 import org.apache.uima.ruta.ide.parser.ast.ActionFactory;
 import org.apache.uima.ruta.ide.parser.ast.ComposedRuleElement;
 import org.apache.uima.ruta.ide.parser.ast.ConditionFactory;
@@ -44,10 +45,12 @@ import org.apache.uima.ruta.ide.parser.ast.RutaListExpression;
 import org.apache.uima.ruta.ide.parser.ast.RutaLogAction;
 import org.apache.uima.ruta.ide.parser.ast.RutaPackageDeclaration;
 import org.apache.uima.ruta.ide.parser.ast.RutaQuantifierLiteralExpression;
+import org.apache.uima.ruta.ide.parser.ast.RutaRegExpRule;
 import org.apache.uima.ruta.ide.parser.ast.RutaRule;
 import org.apache.uima.ruta.ide.parser.ast.RutaRuleElement;
 import org.apache.uima.ruta.ide.parser.ast.RutaStringExpression;
 import org.apache.uima.ruta.ide.parser.ast.RutaStructureAction;
+import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaTypeDeclaration;
 import org.apache.uima.ruta.ide.parser.ast.RutaVariableReference;
 import org.eclipse.dltk.ast.ASTListNode;
@@ -187,6 +190,47 @@ public class RutaFormattedPrinter extends ASTVisitor {
       appendStatementEnd();
       return false;
     }
+    if (s instanceof RutaRegExpRule) {
+      // traverse into container RutaRule to format RuleElements
+      if (!inBlockDeclaration) {
+        appendNewLine();
+      }
+      // Rules always just consists of RuleElements: whitespace separation
+      if (s.sourceEnd() - s.sourceStart() > 2 * maxLineLength) {
+        inLargeRule = 1;
+        indentLevel++;
+      }
+      RutaRule rule = (RutaRule) s;
+      List<Expression> expressions = rule.getExpressions();
+      if (expressions != null && !expressions.isEmpty()) {
+        append(expressions.get(0));
+        append(" " + THEN + " ");
+        if (expressions.size() > 1) {
+          for (int i = 1; i < expressions.size(); i++) {
+            Expression expression = expressions.get(i);
+            if (expression.getKind() == RutaTypeConstants.RUTA_TYPE_N && i < expressions.size() - 1) {
+              append(expression);
+              append(EQUALS);
+              append(expressions.get(++i));
+            } else {
+              append(expression);
+            }
+            if (i < expressions.size() - 1) {
+              append(COMMA + " ");
+            }
+          }
+        }
+      }
+      if (!inBlockDeclaration) {
+        appendStatementEnd();
+      }
+      if (inLargeRule > 0) {
+        indentLevel--;
+        inLargeRule = 0;
+      }
+      return false;
+    }
+
     if (s instanceof RutaRule) {
       // traverse into container RutaRule to format RuleElements
       if (!inBlockDeclaration) {
@@ -199,7 +243,8 @@ public class RutaFormattedPrinter extends ASTVisitor {
       }
       RutaRule rule = (RutaRule) s;
       List<Expression> expressions = rule.getExpressions();
-      traverseAstNodes(expressions, "");
+      String sep = "";
+      traverseAstNodes(expressions, sep);
       if (!inBlockDeclaration) {
         appendStatementEnd();
       }
@@ -334,7 +379,7 @@ public class RutaFormattedPrinter extends ASTVisitor {
       List<? extends ASTNode> childs = a.getChilds();
       if (childs != null && !childs.isEmpty()) {
         boolean addPar = !a.getName().equals(ActionFactory.IMPLICIT);
-        if(addPar) {
+        if (addPar) {
           append(PAR_OPEN);
         }
         // special format for create
@@ -353,7 +398,7 @@ public class RutaFormattedPrinter extends ASTVisitor {
           RutaLogAction logAction = (RutaLogAction) a;
           append(logAction.getLogLevelStart(), logAction.getLogLevelEnd());
         }
-        if(addPar) {
+        if (addPar) {
           append(PAR_CLOSE);
         }
       }
@@ -365,7 +410,9 @@ public class RutaFormattedPrinter extends ASTVisitor {
       append(document.get(c.getNameStart(), c.getNameEnd()));
       List<? extends ASTNode> childs = c.getChilds();
       // minus is a condition without parameter parantheses:
-      boolean addPar = !c.getName().equals(ConditionFactory.IMPLICIT) && s.getKind() != RutaConditionConstants.COND_MINUS && childs != null && !childs.isEmpty();
+      boolean addPar = !c.getName().equals(ConditionFactory.IMPLICIT)
+              && s.getKind() != RutaConditionConstants.COND_MINUS && childs != null
+              && !childs.isEmpty();
       if (addPar) {
         append(PAR_OPEN);
       }
