@@ -922,12 +922,12 @@ externalTypeFunction returns [Expression expr = null]
 
 featureAssignmentExpression returns [Expression expr = null]
 	:
-	feature = dottedId comp = ASSIGN_EQUAL value = primitiveArgument {expr = ExpressionFactory.createFeatureMatch(feature, comp, value);}
+	feature = dottedId comp = ASSIGN_EQUAL value = argument {expr = ExpressionFactory.createFeatureMatch(feature, comp, value);}
 	;
 
 featureTypeExpression returns [Expression expr = null]
 	:
-	feature = dottedId (comp = EQUAL | comp = NOTEQUAL) value = primitiveArgument {expr = ExpressionFactory.createFeatureMatch(feature, comp, value);}
+	feature = dottedId (comp = EQUAL | comp = NOTEQUAL) value = argument {expr = ExpressionFactory.createFeatureMatch(feature, comp, value);}
 	;
 
 featureExpression returns [Expression expr = null]
@@ -2090,14 +2090,14 @@ expr = ExpressionFactory.createEmptyNumberExpression(input.LT(1));
 //seems OK
 additiveExpression returns [Expression root = null]
     :   expr1=multiplicativeExpression {root=expr1;}
-	( op=(PLUS | MINUS) expr2=multiplicativeExpression {root=ExpressionFactory.createBinaryArithmeticExpr(root,expr2,op);})*
+	((PLUS | MINUS)=> op=(PLUS | MINUS) expr2=multiplicativeExpression {root=ExpressionFactory.createBinaryArithmeticExpr(root,expr2,op);})*
 	;
 
 //NOT OK TODO
 multiplicativeExpression returns [Expression root = null]
     :
-	(expr1 = simpleNumberExpression {root=expr1;}
-	( op=( STAR | SLASH | PERCENT ) sNE = simpleNumberExpression {root=ExpressionFactory.createBinaryArithmeticExpr(root,sNE,op);} )*
+	((simpleNumberExpression)=> expr1 = simpleNumberExpression {root=expr1;}
+	( ( STAR | SLASH | PERCENT )=> op=( STAR | SLASH | PERCENT ) sNE = simpleNumberExpression {root=ExpressionFactory.createBinaryArithmeticExpr(root,sNE,op);} )*
 	|   e1 = numberFunction {root = e1;})
 	;
 
@@ -2170,7 +2170,7 @@ List<Expression> exprList = new ArrayList<Expression>();
 	e = stringFunction {expr = e;} 
 	|
 	strExpr1 = simpleStringExpression {if (strExpr1!=null) exprList.add(strExpr1);}
-	(PLUS (nextstrExpr = simpleStringExpression {if (nextstrExpr!=null) exprList.add(nextstrExpr);}
+	((PLUS)=> PLUS (nextstrExpr = simpleStringExpression {if (nextstrExpr!=null) exprList.add(nextstrExpr);}
 		| ne = numberExpressionInPar {if (ne!=null) exprList.add(ne);}
 		| be = simpleBooleanExpression {if (be!=null) exprList.add(be);}
 		| (listExpression)=> le = listExpression {if (le!=null) exprList.add(le);}
