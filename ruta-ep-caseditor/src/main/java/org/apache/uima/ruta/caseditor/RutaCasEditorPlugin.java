@@ -21,6 +21,7 @@ package org.apache.uima.ruta.caseditor;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -78,4 +79,9 @@ public class RutaCasEditorPlugin extends AbstractUIPlugin {
     error(t.getMessage(), t);
   }
 
+  public static ImageDescriptor getImageDescriptor(String path) {
+    return imageDescriptorFromPlugin(PLUGIN_ID, path);
+  }
+
+  
 }

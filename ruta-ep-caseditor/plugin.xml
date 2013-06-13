@@ -37,12 +37,32 @@ under the License.
       </view>
    </extension>
    <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="org.apache.uima.caseditor.ui.views"
+            class="org.apache.uima.ruta.caseditor.view.html.HtmlView"
+            id="org.apache.uima.caseditor.html"
+            icon="icons/views.png"
+            name="Html View"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
          point="org.eclipse.ui.preferencePages">
          <page
            category="org.apache.uima.caseditor.ide.CasEditorPreference"
            class="org.apache.uima.ruta.caseditor.view.preferences.CasEditorViewPreferencePage"
            id="org.apache.uima.ruta.caseditor.view.preferences"
            name="Cas Editor Views">
+     </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+         <page
+           category="org.apache.uima.caseditor.ide.CasEditorPreference"
+           class="org.apache.uima.ruta.caseditor.view.html.HtmlViewPreferencePage"
+           id="org.apache.uima.ruta.caseditor.view.html.preferences"
+           name="Cas Editor Html View">
      </page>
    </extension>
    <extension

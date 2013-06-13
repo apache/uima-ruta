@@ -51,6 +51,12 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>org.eclipse.core</groupId>
+      <artifactId>resources</artifactId>
+      <version>[3.3.0,5.0.0)</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.eclipse</groupId>
       <artifactId>ui</artifactId>
       <version>[3.3.0,5.0.0)</version>
@@ -77,6 +83,12 @@
     <dependency>
       <groupId>org.eclipse.ui.workbench</groupId>
       <artifactId>texteditor</artifactId>
+      <version>[3.3.0.0,5.0.0)</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.ui</groupId>
+      <artifactId>workbench</artifactId>
       <version>[3.3.0.0,5.0.0)</version>
       <scope>provided</scope>
     </dependency>
@@ -161,6 +173,7 @@
                   org.eclipse.ui.editors,
                   org.eclipse.ui.workbench.texteditor,
                   org.eclipse.ui,
+                  org.eclipse.ui.ide,
                   org.eclipse.ui.workbench,
                   org.eclipse.core.runtime,
                   org.eclipse.core.resources,
