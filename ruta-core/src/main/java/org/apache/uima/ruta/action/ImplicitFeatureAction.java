@@ -94,23 +94,23 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
                     || range.equals(UIMAConstants.TYPE_SHORT) || range
                       .equals(UIMAConstants.TYPE_BYTE))) {
       NumberExpression numberExpr = (NumberExpression) argExpr;
-      int v = numberExpr.getIntegerValue(element.getParent(), null, stream);
+      int v = numberExpr.getIntegerValue(element.getParent(), a, stream);
       a.setIntValue(feature, v);
     } else if (argExpr instanceof NumberExpression && (range.equals(UIMAConstants.TYPE_DOUBLE))) {
       NumberExpression numberExpr = (NumberExpression) argExpr;
-      double v = numberExpr.getDoubleValue(element.getParent(), null, stream);
+      double v = numberExpr.getDoubleValue(element.getParent(), a, stream);
       a.setDoubleValue(feature, v);
     } else if (argExpr instanceof NumberExpression && (range.equals(UIMAConstants.TYPE_FLOAT))) {
       NumberExpression numberExpr = (NumberExpression) argExpr;
-      float v = numberExpr.getFloatValue(element.getParent(), null, stream);
+      float v = numberExpr.getFloatValue(element.getParent(), a, stream);
       a.setFloatValue(feature, v);
     } else if (argExpr instanceof BooleanExpression && (range.equals(UIMAConstants.TYPE_BOOLEAN))) {
       BooleanExpression booleanExpr = (BooleanExpression) argExpr;
-      boolean v = booleanExpr.getBooleanValue(element.getParent(), null, stream);
+      boolean v = booleanExpr.getBooleanValue(element.getParent(), a, stream);
       a.setBooleanValue(feature, v);
     } else if (argExpr instanceof BooleanExpression && (range.equals(UIMAConstants.TYPE_BOOLEAN))) {
       BooleanExpression booleanExpr = (BooleanExpression) argExpr;
-      boolean v = booleanExpr.getBooleanValue(element.getParent(), null, stream);
+      boolean v = booleanExpr.getBooleanValue(element.getParent(), a, stream);
       a.setBooleanValue(feature, v);
     } else if (argExpr instanceof TypeExpression && !feature.getRange().isPrimitive()) {
       TypeExpression typeExpr = (TypeExpression) argExpr;
