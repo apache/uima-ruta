@@ -26,7 +26,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.antlr.runtime.CommonToken;
+import org.apache.uima.ruta.ide.parser.ast.ActionFactory;
 import org.apache.uima.ruta.ide.parser.ast.ComposedRuleElement;
+import org.apache.uima.ruta.ide.parser.ast.ConditionFactory;
 import org.apache.uima.ruta.ide.parser.ast.RutaAbstractDeclaration;
 import org.apache.uima.ruta.ide.parser.ast.RutaAction;
 import org.apache.uima.ruta.ide.parser.ast.RutaBinaryArithmeticExpression;
@@ -331,7 +333,10 @@ public class RutaFormattedPrinter extends ASTVisitor {
       append(name);
       List<? extends ASTNode> childs = a.getChilds();
       if (childs != null && !childs.isEmpty()) {
-        append(PAR_OPEN);
+        boolean addPar = !a.getName().equals(ActionFactory.IMPLICIT);
+        if(addPar) {
+          append(PAR_OPEN);
+        }
         // special format for create
         if (a instanceof RutaStructureAction) {
           if (name.equals("TRIE")) {
@@ -348,7 +353,9 @@ public class RutaFormattedPrinter extends ASTVisitor {
           RutaLogAction logAction = (RutaLogAction) a;
           append(logAction.getLogLevelStart(), logAction.getLogLevelEnd());
         }
-        append(PAR_CLOSE);
+        if(addPar) {
+          append(PAR_CLOSE);
+        }
       }
       return false;
     }
@@ -358,11 +365,12 @@ public class RutaFormattedPrinter extends ASTVisitor {
       append(document.get(c.getNameStart(), c.getNameEnd()));
       List<? extends ASTNode> childs = c.getChilds();
       // minus is a condition without parameter parantheses:
-      if (s.getKind() != RutaConditionConstants.COND_MINUS && childs != null && !childs.isEmpty()) {
+      boolean addPar = !c.getName().equals(ConditionFactory.IMPLICIT) && s.getKind() != RutaConditionConstants.COND_MINUS && childs != null && !childs.isEmpty();
+      if (addPar) {
         append(PAR_OPEN);
       }
       traverseAstNodes(childs);
-      if (s.getKind() != RutaConditionConstants.COND_MINUS && childs != null && !childs.isEmpty()) {
+      if (addPar) {
         append(PAR_CLOSE);
       }
       return false;
