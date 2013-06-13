@@ -31,6 +31,8 @@ import org.eclipse.dltk.ast.expressions.ExpressionConstants;
 
 public class ActionFactory extends AbstractFactory {
 
+  public static final String IMPLICIT = "Implicit";
+  
   public static RutaAction createAction(Token type, List exprsRaw) {
     int bounds[] = getBounds(type);
     int nameStart = bounds[0];
@@ -245,7 +247,7 @@ public class ActionFactory extends AbstractFactory {
     }
     int[] bounds = getBounds(exprL.get(0), exprL.get(exprL.size() - 1));
     return new RutaAction(bounds[0], bounds[1], exprL, ExpressionConstants.USER_EXPRESSION_START,
-            "", bounds[0], bounds[0]);
+            IMPLICIT, bounds[0], bounds[0]);
   }
 
 }

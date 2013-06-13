@@ -27,6 +27,8 @@ import org.eclipse.dltk.ast.expressions.Expression;
 
 public class ConditionFactory extends AbstractFactory {
 
+  public static final String IMPLICIT = "Implicit";
+
   public static RutaCondition createCondition(Token type, List exprs) {
     int wholeConditionBounds[] = getBounds(type);
     int nameStart = wholeConditionBounds[0];
@@ -57,7 +59,7 @@ public class ConditionFactory extends AbstractFactory {
     }
     int[] bounds = getBounds(exprL.get(0), exprL.get(exprL.size() - 1));
     return new RutaCondition(bounds[0], bounds[1], exprL, RutaConditionConstants.CONSTANT_OFFSET,
-            "IF", bounds[0], bounds[0]);
+            IMPLICIT, bounds[0], bounds[0]);
   }
 
   public static RutaCondition createCondition(Token type, Expression... exprsArray) {
@@ -78,131 +80,5 @@ public class ConditionFactory extends AbstractFactory {
     return new RutaCondition(bounds[0], bounds[0], new ArrayList<Expression>(),
             RutaConditionConstants.CONSTANT_OFFSET, "", bounds[0], bounds[0]);
   }
-
-  // public static RutaCondition createConditionAnd(int start, int end,
-  // DLTKToken token, List<RutaCondition> conds,
-  // RutaBlock parent) {
-  // return new RutaCondition(start, end);
-  // }
-
-  // public static RutaCondition createConditionContains(
-  // Expression typeExpr, Token name, Expression min, Expression max,
-  // Expression percent) {
-  // int bounds[];
-  // bounds = getBounds(name);
-  // List<Expression> list = new ArrayList<Expression>();
-  // if (min != null && max != null) {
-  // list.add(min);
-  // list.add(max);
-  // bounds[1] = max.sourceEnd();
-  // }
-  // boolean percentSet;
-  // if (percent == null) {
-  // percentSet = false;
-  // } else {
-  // percentSet = true;
-  // bounds[1] = percent.sourceEnd();
-  // }
-  // return new RutaContainsCondition(bounds[0], bounds[1], list,
-  // percentSet);
-  // }
-  //
-  // public static RutaCondition createConditionCount(int start, int end,
-  // String text, Expression text2, Expression text3,
-  // RutaBlock parent) {
-  // return new RutaCondition(start, end);
-  // }
-  //
-  // public static RutaCondition createConditionContextCount(int start,
-  // int end, String text, Expression text2, Expression text3,
-  // RutaBlock parent) {
-  // return new RutaCondition(start, end);
-  // }
-  //
-  // public static RutaCondition createConditionInList(int start, int end,
-  // String wordList, Expression text, Expression text2,
-  // RutaBlock parent) {
-  // return new RutaCondition(start, end);
-  // }
-  //
-  // public static RutaCondition createConditionInList(int start, int end,
-  // List<String> list, Expression text, Expression text2,
-  // RutaBlock parent) {
-  // return new RutaCondition(start, end);
-  // }
-  //
-  // public static RutaCondition createConditionIsInTag(int start,
-  // int end, Expression text, List<Expression> list1,
-  // List<Expression> list2, RutaBlock parent) {
-  // return new RutaCondition(start, end);
-  // }
-  //
-  // public static RutaCondition createConditionMOfN(int start, int end,
-  // List<RutaCondition> conds, Expression text, Expression text2,
-  // RutaBlock parent) {
-  // return new RutaCondition(start, end);
-  // }
-  //
-  // public static RutaCondition createConditionNear(int start, int end,
-  // Expression text, Expression text2, Expression text3,
-  // RutaBlock parent) {
-  // return new RutaCondition(start, end);
-  // }
-  //
-  // public static RutaCondition createConditionNot(int start, int end,
-  // RutaCondition c, RutaBlock parent) {
-  // return new RutaCondition(start, end);
-  // }
-  //
-  // public static RutaCondition createConditionOr(int start, int end,
-  // List<RutaCondition> conds, RutaBlock parent) {
-  // return new RutaCondition(start, end);
-  // }
-  //
-  // public static RutaCondition createConditionPartOf(int start, int end,
-  // String text, RutaBlock parent) {
-  // return new RutaCondition(start, end);
-  // }
-  //
-  // public static RutaCondition createConditionPosition(int start,
-  // int end, String text, Expression text2, RutaBlock parent) {
-  // return new RutaCondition(start, end);
-  // }
-  //
-  // public static RutaCondition createConditionRegExp(int start, int end,
-  // Expression text, RutaBlock parent) {
-  // return new RutaCondition(start, end);
-  // }
-  //
-  // public static RutaCondition createConditionScore(int start, int end,
-  // String text, Expression text2, Expression text3,
-  // RutaBlock parent) {
-  // return new RutaCondition(start, end);
-  // }
-  //
-  // public static RutaCondition createConditionVote(int start, int end,
-  // String text, String text2, RutaBlock parent) {
-  // return new RutaCondition(start, end);
-  // }
-  //
-  // public static RutaCondition createConditionLast(int start, int end,
-  // String text, RutaBlock parent) {
-  // return new RutaCondition(start, end);
-  // }
-  //
-  // public static RutaCondition createConditionIf(int start, int end,
-  // Expression e, RutaBlock parent) {
-  // return new RutaCondition(start, end);
-  // }
-  //
-  // public static RutaCondition createConditionFeature(int start,
-  // int end, RutaBlock parent) {
-  // return new RutaCondition(start, end);
-  // }
-  //
-  // public static RutaCondition createConditionParse(int start, int end,
-  // RutaBlock env) {
-  // return new RutaCondition(start, end);
-  // }
 
 }
