@@ -73,11 +73,11 @@ public class ComposedNumberExpression extends AbstractNumberExpression {
 
   @Override
   public int getIntegerValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    int result = getExpressions().get(0).getIntegerValue(parent, null, stream);
+    int result = getExpressions().get(0).getIntegerValue(parent, annotation, stream);
     for (int i = 0; i < getOperators().size(); i++) {
       int second = 0;
       if (getExpressions().size() > i + 1) {
-        second = getExpressions().get(i + 1).getIntegerValue(parent, null, stream);
+        second = getExpressions().get(i + 1).getIntegerValue(parent, annotation, stream);
       }
       result = calculate(result, second, getOperators().get(i));
     }

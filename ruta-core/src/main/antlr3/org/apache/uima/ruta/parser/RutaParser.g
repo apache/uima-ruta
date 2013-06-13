@@ -104,9 +104,48 @@ public void setExternalFactory(RutaExternalFactory factory) {
 	external = factory;
 }
 
-public void emitErrorMessage(String msg) {
+	public void emitErrorMessage(String msg) {
 		System.out.println(msg);
 	}
+	 public void emitErrorMessage(RecognitionException e) {
+	    int foundInt = e.c;
+	    String stringFound = getTokenNames()[foundInt];
+	    int line = e.line;
+	    String text = e.token.getText();
+	
+   	    if (e instanceof NoViableAltException) {
+	      NoViableAltException nvae = (NoViableAltException) e;
+	      String msg = "Error in line " + nvae.line + ", \"" + text + "\": found no viable alternative";
+	      emitErrorMessage(msg);
+	    } else if (e instanceof MismatchedTokenException) {
+	      MismatchedTokenException mte = (MismatchedTokenException) e;
+	      int expectedInt = mte.expecting;
+	      String stringExpected = getTokenNames()[expectedInt];
+	      String msg = "Error in line " + line + ", \"" + text + "\": expected " + stringExpected
+	              + ", but found " + stringFound;
+	      emitErrorMessage(msg);
+	    } else if (e instanceof MissingTokenException) {
+	      MissingTokenException mte = (MissingTokenException) e;
+    	      int missingType = mte.getMissingType();
+    	      String stringMissing = getTokenNames()[missingType];
+    	      String msg = "Error in line " + line + ", \"" + text + "\": missing " + stringMissing
+                    + ", but found " + stringFound;
+    	      emitErrorMessage(msg);
+	    } else {
+	      emitErrorMessage(e.getMessage());
+	    }
+	  }
+	    
+	public void emitErrorMessage(Throwable e) {
+	      if(e instanceof MismatchedTokenException) {
+	        MismatchedTokenException mte = (MismatchedTokenException) e;
+	        String localizedMessage = mte.getLocalizedMessage();
+	      } else {
+	      
+	      }
+	      emitErrorMessage(e.getMessage());
+	    }
+	
 	public void reportError(RecognitionException e) {
 		System.out.println(e);
 	}
@@ -222,10 +261,10 @@ public void emitErrorMessage(String msg) {
 
 @rulecatch {
 	catch (RecognitionException exception1) {
-		emitErrorMessage(exception1.toString());
+		emitErrorMessage(exception1);
 	}
 	catch (Throwable exception2) {
-		emitErrorMessage(exception2.toString());
+		emitErrorMessage(exception2);
 	}
 }
 
@@ -597,7 +636,8 @@ regexpRule returns [RegExpRule stmt = null]
 	
 ruleElements[RuleElementContainer container] returns [List<RuleElement> elements = new ArrayList<RuleElement>()]
 	:
-	re = ruleElement[container] {elements.add(re);} (re = ruleElement[container] {elements.add(re);})*
+	re = ruleElement[container]  {if(re == null) {return elements;} elements.add(re);} 
+	(re = ruleElement[container] {if(re == null) {return elements;} elements.add(re);})*
 	;
 		
 
@@ -883,7 +923,7 @@ options {
 
 matchReference returns [MatchReference mr = null]
 	:
-	ref = dottedId (op = EQUAL arg = primitiveArgument)?
+	ref = dottedId (op = EQUAL arg = argument)?
 	{mr = ExpressionFactory.createMatchReference(ref, op, arg);}
 	;
 
@@ -936,20 +976,20 @@ TypeExpression te = null;
 
 featureMatchExpression returns [FeatureMatchExpression fme = null]
 	:
-	f = featureExpression (op = EQUAL arg = primitiveArgument)?
+	f = featureExpression (op = EQUAL arg = argument)?
 	{fme = ExpressionFactory.createFeatureMatchExpression(f, op, arg, $blockDeclaration::env);}
 	;
 
 featureMatchExpression2 returns [FeatureMatchExpression fme = null]
 	:
-	f = featureExpression op = EQUAL arg = primitiveArgument
+	f = featureExpression op = EQUAL arg = argument
 	{fme = ExpressionFactory.createFeatureMatchExpression(f, op, arg, $blockDeclaration::env);}
 	;
 
 
 featureAssignmentExpression returns [FeatureMatchExpression fme = null]
 	:
-	f = featureExpression op = ASSIGN_EQUAL arg = primitiveArgument
+	f = featureExpression op = ASSIGN_EQUAL arg = argument
 	{fme = ExpressionFactory.createFeatureMatchExpression(f, op, arg, $blockDeclaration::env);}
 	;
 	
@@ -1032,9 +1072,11 @@ condition  returns [AbstractRutaCondition result = null]
 	| c = conditionEndsWith
 	| c = conditionPartOfNeq
 	| c = conditionSize	
-	| (c = externalCondition)=> c = externalCondition
-	| (booleanExpression)=> b = booleanExpression {c = ConditionFactory.createImplicitCondition(b);}
+	
 	| (featureMatchExpression2)=> f = featureMatchExpression2 {c = ConditionFactory.createImplicitCondition(f);}
+	| (booleanExpression)=> b = booleanExpression {c = ConditionFactory.createImplicitCondition(b);}
+	| (c = externalCondition)=> c = externalCondition
+	
 //	| c = variableCondition
 	) {result = c;}
 	;
@@ -1907,7 +1949,7 @@ additiveExpression returns [NumberExpression expr = null]
 @init{List<NumberExpression> exprs = new ArrayList<NumberExpression>();
 	List<Token> ops = new ArrayList<Token>();}
 	:   
-	e = multiplicativeExpression{exprs.add(e);} ( op = (PLUS | MINUS){ops.add(op);} e = multiplicativeExpression{exprs.add(e);} )*
+	e = multiplicativeExpression{exprs.add(e);} ((PLUS | MINUS)=> op = (PLUS | MINUS){ops.add(op);} e = multiplicativeExpression{exprs.add(e);} )*
 	{expr = ExpressionFactory.createComposedNumberExpression(exprs,ops);}
 	;
 
@@ -1915,7 +1957,7 @@ multiplicativeExpression returns [NumberExpression expr = null]
 @init{List<NumberExpression> exprs = new ArrayList<NumberExpression>();
 	List<Token> ops = new ArrayList<Token>();}
 	:	
-	(e = simpleNumberExpression{exprs.add(e);} ( op = ( STAR | SLASH | PERCENT ){ops.add(op);} e = simpleNumberExpression{exprs.add(e);} )*
+	(e = simpleNumberExpression{exprs.add(e);} (( STAR | SLASH | PERCENT )=> op = ( STAR | SLASH | PERCENT ){ops.add(op);} e = simpleNumberExpression{exprs.add(e);} )*
 	{expr = ExpressionFactory.createComposedNumberExpression(exprs,ops);}
 	|   e1 = numberFunction {expr = e1;})
 	;
@@ -1950,7 +1992,7 @@ List<StringExpression> exprs = new ArrayList<StringExpression>();
 	:
 	(featureExpression)=> fe = featureExpression {expr = ExpressionFactory.createStringFeatureExpression(fe);}
 	| e = simpleStringExpression {exprs.add(e);} 
-	(PLUS (e1 = simpleStringExpression {exprs.add(e1);} 
+	((PLUS)=>PLUS (e1 = simpleStringExpression {exprs.add(e1);} 
 		| e2 = numberExpressionInPar {exprs.add(e2);}
 		| be = simpleBooleanExpression {exprs.add(be);}
 		| te = typeExpression {exprs.add(te);}
@@ -2066,3 +2108,4 @@ booleanNumberExpression  returns  [BooleanExpression expr = null]
 	RPAREN
 	{expr = ExpressionFactory.createBooleanNumberExpression(e1,op,e2);}
 	;
+	
