@@ -51,6 +51,8 @@ public class RutaLauncher {
 
   private static boolean inputRecursive = false;
 
+  private static boolean addSDI = false;
+
   private static String inputEncoding = java.nio.charset.Charset.defaultCharset().name();
 
   private static String launchMode = "run";
@@ -84,6 +86,11 @@ public class RutaLauncher {
           return false;
         }
         inputRecursive = Boolean.parseBoolean(args[index++]);
+      } else if (RutaLaunchConstants.ARG_ADD_SDI.equals(each)) {
+        if (index >= args.length) {
+          return false;
+        }
+        addSDI = Boolean.parseBoolean(args[index++]);
       } else if (RutaLaunchConstants.ARG_RECURSIVE.equals(each)) {
         if (index >= args.length) {
           return false;
@@ -147,6 +154,11 @@ public class RutaLauncher {
     } else {
       String document = FileUtils.file2String(file, inputEncoding);
       cas.setDocumentText(document);
+    }
+
+    if (addSDI) {
+      RutaEngine.removeSourceDocumentInformation(cas);
+      RutaEngine.addSourceDocumentInformation(cas, file);
     }
     ae.process(cas);
     if (outputFolder != null) {

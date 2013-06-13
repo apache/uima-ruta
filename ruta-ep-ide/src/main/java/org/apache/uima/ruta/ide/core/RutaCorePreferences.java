@@ -29,4 +29,6 @@ public class RutaCorePreferences {
   public static final String PROJECT_CLEAR_OUTPUT = "ProjectClearOutput";
 
   public static final String NO_VM_IN_DEV_MODE = "NoVMInDevMode";
+
+  public static final String ADD_SDI = "AddSDI";
 }

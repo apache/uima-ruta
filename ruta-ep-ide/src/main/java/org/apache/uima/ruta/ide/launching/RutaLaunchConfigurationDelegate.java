@@ -80,6 +80,10 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     }
     boolean recursive = configuration.getAttribute(RutaLaunchConstants.RECURSIVE, false);
 
+    IPreferenceStore preferenceStore = RutaIdePlugin.getDefault().getPreferenceStore();
+    boolean addSDI = preferenceStore.getBoolean(RutaCorePreferences.ADD_SDI);
+    
+    
     IResource member = proj.getProject().findMember(mainScriptAttribute);
     IPath projectPath = proj.getResource().getLocation();
     IPath inputDirPath = projectPath.append(RutaProjectUtils.getDefaultInputLocation());
@@ -118,6 +122,9 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     cmdline.append(RutaLaunchConstants.ARG_RECURSIVE + " ");
     cmdline.append(recursive + " ");
 
+    cmdline.append(RutaLaunchConstants.ARG_ADD_SDI + " ");
+    cmdline.append(addSDI + " ");
+    
     return cmdline.toString();
   }
 

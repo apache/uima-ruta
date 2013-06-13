@@ -36,6 +36,8 @@ public class RutaProjectPreferencePage extends FieldEditorPreferencePage impleme
 
   private BooleanFieldEditor noVM;
 
+  private BooleanFieldEditor addSDI;
+
   public RutaProjectPreferencePage() {
     setPreferenceStore(RutaIdePlugin.getDefault().getPreferenceStore());
     setDescription("Project Management");
@@ -50,6 +52,10 @@ public class RutaProjectPreferencePage extends FieldEditorPreferencePage impleme
     noVM = new BooleanFieldEditor(RutaCorePreferences.NO_VM_IN_DEV_MODE,
             RutaPreferencesMessages.NoVMInDevMode, getFieldEditorParent());
     addField(noVM);
+    
+    addSDI = new BooleanFieldEditor(RutaCorePreferences.NO_VM_IN_DEV_MODE,
+            RutaPreferencesMessages.AddSDI, getFieldEditorParent());
+    addField(addSDI);
 
   }
 
