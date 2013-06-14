@@ -181,8 +181,6 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   private Boolean removeBasics;
 
-  private Map<String, TypeSystemDescription> localTSDMap;
-
   private Boolean dynamicAnchoring;
 
   private Boolean reloadScript;
@@ -252,8 +250,6 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     factory = new RutaExternalFactory();
     engineLoader = new RutaEngineLoader();
     verbalizer = new RutaVerbalizer();
-
-    localTSDMap = new HashMap<String, TypeSystemDescription>();
 
     if (!factory.isInitialized()) {
       initializeExtensionWithClassPath();
@@ -491,8 +487,6 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
           // Class clazz = this.getClass().getClassLoader().loadClass(eachUimafitEngine) ;
           Class<? extends AnalysisComponent> uimafitClass = (Class<? extends AnalysisComponent>) Class
                   .forName(eachUimafitEngine);
-          TypeSystemDescription createTypeSystemDescription = TypeSystemDescriptionFactory
-                  .createTypeSystemDescription();
           eachEngine = AnalysisEngineFactory.createPrimitive(uimafitClass);
         } catch (ClassNotFoundException e) {
           throw new AnalysisEngineProcessException(e);
@@ -669,46 +663,6 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     }
   }
 
-  private TypeSystemDescription getLocalTSD(String toLoad) throws InvalidXMLException, IOException {
-    TypeSystemDescription localTSD = localTSDMap.get(toLoad);
-    if (localTSD == null) {
-      String locateTSD = locate(toLoad, descriptorPaths, "TypeSystem.xml", true);
-      if (locateTSD != null) {
-        localTSD = UIMAFramework.getXMLParser().parseTypeSystemDescription(
-                new XMLInputSource(locateTSD));
-      } else {
-        // TODO this won't work for lazy applies
-        try {
-          // cannot load it with descriptor paths
-          String typeSystemLocation = toLoad.replaceAll("\\.", "/") + "TypeSystem.xml";
-          InputStream tsInputStream = getClass().getClassLoader().getResourceAsStream(
-                  typeSystemLocation);
-          localTSD = UIMAFramework.getXMLParser().parseTypeSystemDescription(
-                  new XMLInputSource(tsInputStream, null));
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-      if (localTSD != null) {
-        ResourceManager resMgr = UIMAFramework.newDefaultResourceManager();
-        resMgr.setDataPath(getDataPath());
-        localTSD.resolveImports(resMgr);
-        localTSDMap.put(toLoad, localTSD);
-      }
-    }
-    return localTSD;
-  }
-
-  private String getDataPath() {
-    String result = "";
-    String sep = System.getProperty("path.separator");
-    for (String each : descriptorPaths) {
-      result += each + sep;
-    }
-    result = result.substring(0, result.length() - 1);
-    return result;
-  }
-
   private RutaModule loadScript(String scriptLocation) throws IOException, RecognitionException {
     File scriptFile = new File(scriptLocation);
     CharStream st = new ANTLRFileStream(scriptLocation, scriptEncoding);
@@ -747,7 +701,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     return engineLoader;
   }
 
-  private String collectionToString(Collection collection) {
+  private String collectionToString(Collection<?> collection) {
     StringBuilder collectionSB = new StringBuilder();
     collectionSB.append("{");
     for (Object element : collection) {
@@ -760,4 +714,23 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private String collectionToString(Object[] collection) {
     return collectionToString(Arrays.asList(collection));
   }
+  
+  public void batchProcessComplete() throws AnalysisEngineProcessException {
+    super.batchProcessComplete();
+    Collection<AnalysisEngine> values = script.getEngines().values();
+    for (AnalysisEngine each : values) {
+      each.batchProcessComplete();
+    }
+  }
+
+  public void collectionProcessComplete() throws AnalysisEngineProcessException {
+    super.collectionProcessComplete();
+    Collection<AnalysisEngine> values = script.getEngines().values();
+    for (AnalysisEngine each : values) {
+      each.collectionProcessComplete();
+    }
+  }
+  
+  
+  
 }
