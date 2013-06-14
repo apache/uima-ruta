@@ -53,7 +53,7 @@ public class RutaProjectPreferencePage extends FieldEditorPreferencePage impleme
             RutaPreferencesMessages.NoVMInDevMode, getFieldEditorParent());
     addField(noVM);
     
-    addSDI = new BooleanFieldEditor(RutaCorePreferences.NO_VM_IN_DEV_MODE,
+    addSDI = new BooleanFieldEditor(RutaCorePreferences.ADD_SDI,
             RutaPreferencesMessages.AddSDI, getFieldEditorParent());
     addField(addSDI);
 
