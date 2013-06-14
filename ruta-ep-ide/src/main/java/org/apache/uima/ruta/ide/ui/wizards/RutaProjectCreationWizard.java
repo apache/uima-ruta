@@ -155,6 +155,8 @@ public class RutaProjectCreationWizard extends ProjectWizard {
     copy(utilsDir, "HtmlAnnotator.xml");
     copy(utilsDir, "HtmlTypeSystem.xml");
     copy(utilsDir, "HtmlConverter.xml");
+    copy(utilsDir, "Cutter.xml");
+//    copy(utilsDir, "ViewWriter.xml");
   }
 
   private static void copy(File dir, String fileName) {
