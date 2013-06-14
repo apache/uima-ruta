@@ -125,6 +125,7 @@ public class RutaLauncher {
       processFile(file, ae, cas);
     }
 
+    ae.batchProcessComplete(new ProcessTrace_impl());
     ae.collectionProcessComplete(new ProcessTrace_impl());
     cas.release();
     ae.destroy();
