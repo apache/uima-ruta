@@ -151,6 +151,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
       if (extendedMatch.matched()) {
         ComposedRuleElementMatch nextContainerMatch = getContainerMatchOfNextElement(
                 extendedContainerMatch, nextDepth);
+        // Hotfix for UIMA-3002
+        int applied = ruleApply.getApplied();
         if (endAnchor == null) {
           cre.startMatch(extendedMatch, ruleApply, nextContainerMatch, cre, stream, crowd);
         } else {
@@ -160,6 +162,11 @@ public class WildCardRuleElement extends AbstractRuleElement {
         List<RuleElementMatch> nextList = nextContainerMatch.getInnerMatches().get(cre);
         boolean matched = hasMatched(nextList);
         if (!matched) {
+          // Hotfix for UIMA-3002
+          if (ruleApply.getApplied() > applied) {
+            doneHere = true;
+          }
+          // end hotfix
           nextOne = stream.getAnchor(after, getNextPointer(!after, nextOne));
         } else {
           doneHere = true;
