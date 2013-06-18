@@ -144,6 +144,7 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
     document.addChangeListener(this);
     
     ExplainTree tree = new ExplainTree(document.getCAS());
+    viewer.setAutoExpandLevel(2);
     viewer.setInput(tree.getRoot());
     viewer.addDoubleClickListener(this);
     getSite().setSelectionProvider(viewer);
