@@ -100,6 +100,7 @@ public class HtmlViewPage extends Page implements ICasEditorInputListener {
   @Override
   public void dispose() {
     browser.dispose();
+    editor.removeCasEditorInputListener(this);
   }
 
   public void casDocumentChanged(IEditorInput oldInput, ICasDocument oldDocument,
