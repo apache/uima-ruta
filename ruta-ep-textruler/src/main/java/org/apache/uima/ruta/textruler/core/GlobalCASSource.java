@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.textruler.core;
 
@@ -41,21 +41,14 @@ import org.apache.uima.ruta.textruler.TextRulerPlugin;
  */
 public class GlobalCASSource {
 
+  public static int CAS = 0;
+
   private static List<CAS> free = new ArrayList<CAS>();
 
   private static List<CAS> inUsage = new ArrayList<CAS>();
 
   public static synchronized CAS allocCAS(AnalysisEngine ae, boolean configChanged) {
-    if(configChanged) {
-      try {
-        CAS newCas = ae.newCAS();
-        inUsage.add(newCas);
-        return newCas;
-      } catch (Exception e) {
-        TextRulerPlugin.error(e);
-        return null;
-      }
-    } else if (free.size() > 0) {
+    if (free.size() > 0) {
       CAS result = free.get(free.size() - 1);
       free.remove(free.size() - 1);
       inUsage.add(result);
@@ -63,6 +56,8 @@ public class GlobalCASSource {
     } else {
       try {
         CAS newCas = ae.newCAS();
+        CAS++;
+        System.out.println("####### CAS: " + CAS);
         inUsage.add(newCas);
         return newCas;
       } catch (Exception e) {
@@ -79,10 +74,14 @@ public class GlobalCASSource {
       free.add(cas);
       // TextRulerToolkit.log("[GlobalCASSource] RELEASED CAS, total CAS count = "+count);
     } else {
-      TextRulerToolkit
-              .log("[GlobalCASSource.release] Error, tried to release an unknown CAS object!");
+      if (free.contains(cas)) {
+        cas.reset();
+      } else {
+        cas.release();
+        TextRulerToolkit
+                .log("[GlobalCASSource.release] Error, tried to release an unknown CAS object!");
+      }
     }
-
   }
 
 }

@@ -38,6 +38,7 @@ import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.ruta.textruler.core.GlobalCASSource;
 import org.apache.uima.ruta.textruler.core.TextRulerBasicLearner;
 import org.apache.uima.ruta.textruler.core.TextRulerExample;
 import org.apache.uima.ruta.textruler.core.TextRulerExampleDocument;
@@ -1062,6 +1063,7 @@ public class KEPLearner extends TextRulerBasicLearner {
         }
         cRule.getCoveringStatistics().reflectCountsFromCoveredExamples();
       }
+      GlobalCASSource.releaseCAS(processedCAS);
     }
   }
 

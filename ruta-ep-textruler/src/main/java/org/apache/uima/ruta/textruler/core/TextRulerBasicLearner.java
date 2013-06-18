@@ -177,6 +177,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     // check if all passed slot types are present:
     CAS someCas = getTestCAS();
     TypeSystem ts = someCas.getTypeSystem();
+    GlobalCASSource.releaseCAS(someCas);
     boolean result = true;
     List<String> missingTypes = new ArrayList<String>();
     for (String s : slotNames) {
@@ -321,6 +322,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     doc.resetAndFillTestCAS(testCAS, rule.getTarget());
     testRuleOnDocument(rule, doc, c, testCAS);
     testCAS.reset();
+    GlobalCASSource.releaseCAS(testCAS);
   }
 
   public void testRuleOnDocument(final TextRulerRule rule, final TextRulerExampleDocument doc,
@@ -409,6 +411,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
       }
     }
     theTestCAS.reset();
+    GlobalCASSource.releaseCAS(theTestCAS);
     // do not release the shared test-cas ! only reset it ! it gets released
     // at the end of the
     // whole algorithm !
@@ -442,6 +445,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
         return;
     }
     theTestCAS.reset();
+    GlobalCASSource.releaseCAS(theTestCAS);
     // do not release the shared test-cas ! only reset it ! it gets released
     // at the end of the
     // whole algorithm !

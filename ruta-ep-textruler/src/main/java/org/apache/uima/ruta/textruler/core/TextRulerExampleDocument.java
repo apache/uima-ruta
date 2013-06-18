@@ -218,7 +218,7 @@ public class TextRulerExampleDocument {
           result.add(shiftExample);
         }
       }
-
+      GlobalCASSource.releaseCAS(testCAS);
     } else {
       List<AnnotationFS> slots = TextRulerToolkit.extractAnnotationsForSlotName(
               aCas,
