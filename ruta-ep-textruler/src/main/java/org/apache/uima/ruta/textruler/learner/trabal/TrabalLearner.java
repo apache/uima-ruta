@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.textruler.learner.trabal;
 
@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.CAS;
@@ -40,6 +41,7 @@ import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.ruta.textruler.core.GlobalCASSource;
 import org.apache.uima.ruta.textruler.core.TextRulerBasicLearner;
 import org.apache.uima.ruta.textruler.core.TextRulerExample;
 import org.apache.uima.ruta.textruler.core.TextRulerExampleDocument;
@@ -126,11 +128,13 @@ public class TrabalLearner extends TextRulerBasicLearner {
 
   private Map<String, Double> idf;
 
+  private Map<String, TextRulerStatisticsCollector> inducedRules = new TreeMap<String, TextRulerStatisticsCollector>();
+
   public TrabalLearner(String inputFolderPath, String additionalFolderPath,
           String preprocessorTMfile, String tempFolderPath, String[] fullSlotTypeNames,
           Set<String> filterSet, boolean skip, TextRulerLearnerDelegate delegate) {
-    super(inputFolderPath, preprocessorTMfile, tempFolderPath, fullSlotTypeNames, filterSet,
-            skip, delegate);
+    super(inputFolderPath, preprocessorTMfile, tempFolderPath, fullSlotTypeNames, filterSet, skip,
+            delegate);
     this.inputDirectory = inputFolderPath;
     this.additionalFolderPath = additionalFolderPath;
   }
@@ -515,6 +519,8 @@ public class TrabalLearner extends TextRulerBasicLearner {
    */
   private List<TrabalRule> runAlgorithm(Map<String, List<AnnotationError>> errorGrps) {
     removeBasics();
+    inducedRules.clear();
+
     List<TrabalRule> rules = new ArrayList<TrabalRule>();
     bestRulesForStatus.clear();
     int i = 1;
@@ -618,11 +624,12 @@ public class TrabalLearner extends TextRulerBasicLearner {
         conditions = createConditions(learntRules);
       for (int i = 0; i < learntRules.size(); i++) {
         rules.add(learntRules.get(i));
-//        TODO amount of conditions? parameter for 50!
+        // TODO amount of conditions? parameter for 50!
         for (int j = 0; j < conditions.size() && j < 50; j++) {
           TrabalRule newRule = learntRules.get(i).copy();
           if (!newRule.getConditions().contains(conditions.get(j))) {
             newRule.addCondition(conditions.get(j), (j + 1));
+            newRule.getRuleString();
             newRules.add(newRule);
           }
         }
@@ -632,8 +639,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     }
     return learntRules;
   }
-
- 
 
   /**
    * Chooses the best final rules from the results of runAlgorithm().
@@ -1560,55 +1565,78 @@ public class TrabalLearner extends TextRulerBasicLearner {
       return rules;
 
     List<TextRulerStatisticsCollector> sums = new ArrayList<TextRulerStatisticsCollector>();
+    for (TrabalRule each : rules) {
+      sums.add(new TextRulerStatisticsCollector());
+    }
     List<TextRulerExampleDocument> goldDocs;
     List<TextRulerExampleDocument> additionalDocs;
     goldDocs = documents.getDocuments();
     additionalDocs = additionalDocuments.getDocuments();
     CAS theTestCAS = getTestCAS();
-    for (int ruleIndex = 0; ruleIndex < rules.size(); ruleIndex++) {
-      for (int i = 0; i < goldDocs.size(); i++) {
-        String ruleInfo;
-        if (rules.get(ruleIndex).getAnnotation() != null
-                && rules.get(ruleIndex).getTargetAnnotation() != null) {
-          ruleInfo = " " + rules.get(ruleIndex).getAnnotation().getType().getShortName() + "("
-                  + rules.get(ruleIndex).getAnnotation().getBegin() + ","
-                  + rules.get(ruleIndex).getAnnotation().getEnd() + ") -> "
-                  + rules.get(ruleIndex).getTargetAnnotation().getType().getShortName() + "("
-                  + rules.get(ruleIndex).getTargetAnnotation().getBegin() + ","
-                  + rules.get(ruleIndex).getTargetAnnotation().getEnd() + ")";
-        } else if (rules.get(ruleIndex).getTargetAnnotation() != null) {
-          ruleInfo = " Annotate "
-                  + rules.get(ruleIndex).getTargetAnnotation().getType().getShortName() + "("
-                  + rules.get(ruleIndex).getTargetAnnotation().getBegin() + ","
-                  + rules.get(ruleIndex).getTargetAnnotation().getEnd() + ")";
-        } else {
-          ruleInfo = " Delete " + rules.get(ruleIndex).getAnnotation().getType().getShortName()
-                  + "(" + rules.get(ruleIndex).getAnnotation().getBegin() + ","
-                  + rules.get(ruleIndex).getAnnotation().getEnd() + ")";
+    int counter = 0;
+    for (TrabalRule rule : rules) {
+      counter++;
+      String ruleString = rule.getRuleString();
+      String ruleInfo = getRuleInfo(rule);
+      System.out.println("testing: " + ruleString);
+      if (inducedRules.containsKey(ruleString)) {
+        rule.setCoveringStatistics(inducedRules.get(ruleString));
+        System.out.println("skipped...");
+      } else {
+        for (int i = 0; i < goldDocs.size(); i++) {
+          TextRulerExampleDocument goldDoc = goldDocs.get(i);
+          TextRulerExampleDocument additionalDoc = additionalDocs.get(i);
+          sendStatusUpdateToDelegate("Testing " + ruleSet + ruleInfo + " on document " + (i + 1)
+                  + " of " + goldDocs.size() + " : rule " + counter + " of " + rules.size(),
+                  TextRulerLearnerState.ML_RUNNING, false);
+          TextRulerStatisticsCollector sumC = new TextRulerStatisticsCollector();
+          prepareTestCas(theTestCAS, goldDoc, additionalDoc);
+          testRuleOnDocument(rule, goldDoc, additionalDoc, sumC, theTestCAS);
+          sums.get(counter - 1).add(sumC);
+          int n = sumC.getCoveredNegativesCount();
+          int p = sumC.getCoveredPositivesCount();
+          int pnorm = p;
+          if (pnorm == 0) {
+            pnorm = 1;
+          }
+          if (n / pnorm > maxErrorRate) {
+            System.out.println("stopped:" + sumC);
+            break;
+          }
+
+          if (shouldAbort())
+            return rules;
         }
-        TextRulerExampleDocument goldDoc = goldDocs.get(i);
-        TextRulerExampleDocument additionalDoc = additionalDocs.get(i);
-        sendStatusUpdateToDelegate("Testing " + ruleSet + ruleInfo + " on document " + (i + 1)
-                + " of " + goldDocs.size() + " : rule " + (ruleIndex + 1) + " of " + rules.size(),
-                TextRulerLearnerState.ML_RUNNING, false);
-        TextRulerStatisticsCollector sumC = new TextRulerStatisticsCollector();
-        prepareTestCas(theTestCAS, goldDoc, additionalDoc);
-        testRuleOnDocument((TrabalRule) rules.get(ruleIndex), goldDoc, additionalDoc, sumC,
-                theTestCAS);
-        if (sums.size() > ruleIndex) {
-          sums.get(ruleIndex).add(sumC);
-        } else {
-          sums.add(sumC);
-        }
-        if (shouldAbort())
-          return rules;
+        TextRulerStatisticsCollector c = sums.get(counter - 1);
+        rule.setCoveringStatistics(sums.get(counter - 1));
+        inducedRules.put(ruleString, c);
       }
     }
     for (int ruleIndex = 0; ruleIndex < rules.size(); ruleIndex++) {
       rules.get(ruleIndex).setCoveringStatistics(sums.get(ruleIndex));
     }
+    GlobalCASSource.releaseCAS(theTestCAS);
     sums.clear();
     return rules;
+  }
+
+  private String getRuleInfo(TrabalRule rule) {
+    String ruleInfo;
+    if (rule.getAnnotation() != null && rule.getTargetAnnotation() != null) {
+      ruleInfo = " " + rule.getAnnotation().getType().getShortName() + "("
+              + rule.getAnnotation().getBegin() + "," + rule.getAnnotation().getEnd() + ") -> "
+              + rule.getTargetAnnotation().getType().getShortName() + "("
+              + rule.getTargetAnnotation().getBegin() + "," + rule.getTargetAnnotation().getEnd()
+              + ")";
+    } else if (rule.getTargetAnnotation() != null) {
+      ruleInfo = " Annotate " + rule.getTargetAnnotation().getType().getShortName() + "("
+              + rule.getTargetAnnotation().getBegin() + "," + rule.getTargetAnnotation().getEnd()
+              + ")";
+    } else {
+      ruleInfo = " Delete " + rule.getAnnotation().getType().getShortName() + "("
+              + rule.getAnnotation().getBegin() + "," + rule.getAnnotation().getEnd() + ")";
+    }
+    return ruleInfo;
   }
 
   /**
@@ -1628,6 +1656,7 @@ public class TrabalLearner extends TextRulerBasicLearner {
     for (AnnotationFS fs : additionalCas.getAnnotationIndex()) {
       Type t = testCas.getTypeSystem().getType(fs.getType().getName());
       if (t != null) {
+        // TODO what about the features!!
         AnnotationFS createAnnotation = testCas.createAnnotation(t, fs.getBegin(), fs.getEnd());
         testCas.addFsToIndexes(createAnnotation);
       } else {
@@ -1823,7 +1852,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return getFileHeaderString(true) + result;
   }
 
-
   // // @Override
   // public AnalysisEngine getAnalysisEngine() {
   // if (ae == null) {
@@ -1859,7 +1887,7 @@ public class TrabalLearner extends TextRulerBasicLearner {
    */
   public TextRulerExampleDocumentSet getAdditionalDocuments() {
     if (additionalDocuments == null) {
-      if(!StringUtils.isBlank(additionalFolderPath)) {
+      if (!StringUtils.isBlank(additionalFolderPath)) {
         additionalDocuments = new TextRulerExampleDocumentSet(additionalFolderPath, casCache);
       }
     }

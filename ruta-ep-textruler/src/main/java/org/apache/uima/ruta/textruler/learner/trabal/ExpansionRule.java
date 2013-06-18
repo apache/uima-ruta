@@ -89,9 +89,10 @@ public class ExpansionRule extends ShiftingRule {
       ruleString += frontBoundaryItem + after + " (";
 
     // We include all tokens between the boundaries.
-    ruleString += "ANY*{-PARTOF(" + annotation.getType().getShortName() + ")} "; // like ANY*? but
+    //ruleString += "ANY*{-PARTOF(" + annotation.getType().getShortName() + ")} "; // like ANY*? but
     // faster
-
+    ruleString += "#{-CONTAINS(" + annotation.getType().getShortName() + ")} ";
+    
     // these strings will be attached to the brackets
     String mark;
     if (((TrabalLearner) algorithm).getEnableFeatures())
@@ -133,8 +134,9 @@ public class ExpansionRule extends ShiftingRule {
     ruleString += "(" + annotation.getType().getShortName() + unmark + " ";
 
     // We include all tokens between the boundaries.
-    ruleString += "ANY*{-PARTOF(" + rearBoundaryItem + ")}"; // like ANY*? but faster
-
+//    ruleString += "ANY*{-PARTOF(" + rearBoundaryItem + ")}"; // like ANY*? but faster
+    ruleString += "#{-CONTAINS(" + rearBoundaryItem + ")}"; // like ... but faster
+    
     // these strings will be attached to the brackets
     String mark;
     if (((TrabalLearner) algorithm).getEnableFeatures())

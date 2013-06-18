@@ -100,8 +100,10 @@ public class AnnotationRule extends TrabalRule {
       ruleString += frontBoundaryItem + after + " (";
 
     // We include all tokens between the boundaries.
-    ruleString += "ANY*{-PARTOF(" + rearBoundaryItem + ")}"; // like ANY*? but faster
-
+    //ruleString += "ANY*{-PARTOF(" + rearBoundaryItem + ")}"; // like ANY*? but faster
+    ruleString += "#{-CONTAINS(" + rearBoundaryItem + ")}"; // like ... but faster
+    
+    
     // Check, if the rear item should be included and mark all tokens between the brackets as the
     // new annotation.
     if (rearItemInBorders)
