@@ -51,6 +51,7 @@ import org.apache.uima.ruta.textruler.core.TextRulerTarget;
 import org.apache.uima.ruta.textruler.core.TextRulerToolkit;
 import org.apache.uima.ruta.textruler.extension.TextRulerLearnerDelegate;
 import org.apache.uima.ruta.textruler.tools.MemoryWatch;
+import org.apache.uima.util.CasCopier;
 
 public class TrabalLearner extends TextRulerBasicLearner {
 
@@ -1581,7 +1582,7 @@ public class TrabalLearner extends TextRulerBasicLearner {
       System.out.println("testing: " + ruleString);
       if (inducedRules.containsKey(ruleString)) {
         rule.setCoveringStatistics(inducedRules.get(ruleString));
-        System.out.println("skipped...");
+        System.out.println("skipped with " + inducedRules.get(ruleString));
       } else {
         for (int i = 0; i < goldDocs.size(); i++) {
           TextRulerExampleDocument goldDoc = goldDocs.get(i);
@@ -1653,16 +1654,18 @@ public class TrabalLearner extends TextRulerBasicLearner {
     CAS additionalCas = additionalDoc.getCAS();
     testCas.setDocumentText(goldCas.getDocumentText());
 
-    for (AnnotationFS fs : additionalCas.getAnnotationIndex()) {
-      Type t = testCas.getTypeSystem().getType(fs.getType().getName());
-      if (t != null) {
-        // TODO what about the features!!
-        AnnotationFS createAnnotation = testCas.createAnnotation(t, fs.getBegin(), fs.getEnd());
-        testCas.addFsToIndexes(createAnnotation);
-      } else {
-        TextRulerToolkit.log("Type " + fs.getType().getName() + "is unknown in test CAS");
-      }
-    }
+    CasCopier.copyCas(additionalCas, testCas, testCas.getDocumentText() == null);
+    
+//    for (AnnotationFS fs : additionalCas.getAnnotationIndex()) {
+//      Type t = testCas.getTypeSystem().getType(fs.getType().getName());
+//      if (t != null) {
+//        // TODO what about the features!!
+//        AnnotationFS createAnnotation = testCas.createAnnotation(t, fs.getBegin(), fs.getEnd());
+//        testCas.addFsToIndexes(createAnnotation);
+//      } else {
+//        TextRulerToolkit.log("Type " + fs.getType().getName() + "is unknown in test CAS");
+//      }
+//    }
   }
 
   /**

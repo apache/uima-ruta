@@ -218,7 +218,7 @@ public class TextRulerExampleDocument {
           result.add(shiftExample);
         }
       }
-//      GlobalCASSource.releaseCAS(testCAS);
+      // GlobalCASSource.releaseCAS(testCAS);
     } else {
       List<AnnotationFS> slots = TextRulerToolkit.extractAnnotationsForSlotName(
               aCas,
@@ -279,8 +279,9 @@ public class TextRulerExampleDocument {
         slotTypes.add(ts.getType(s));
     }
 
-    for(AnnotationFS fs: docCas.getAnnotationIndex()) {
-      if (!slotTypes.contains(fs.getType()) && !fs.getType().equals(docCas.getDocumentAnnotation().getType())) {
+    for (AnnotationFS fs : docCas.getAnnotationIndex()) {
+      if (!slotTypes.contains(fs.getType())
+              && !fs.getType().equals(docCas.getDocumentAnnotation().getType())) {
         FeatureStructure copyFs = cc.copyFs(fs);
         testCas.addFsToIndexes(copyFs);
       }
@@ -301,12 +302,14 @@ public class TextRulerExampleDocument {
               a.getBegin(), a.getEnd(),
               TextRulerToolkit.getFilterSetWithSlotName(slotName, tokenFilterSet),
               ts.getType(TextRulerToolkit.RUTA_ANY_TYPE_NAME));
-      AnnotationFS first = slotTokens.get(0);
-      AnnotationFS last = slotTokens.get(slotTokens.size() - 1);
-      Type typeLB = ts.getType(slotName + TextRulerToolkit.LEFT_BOUNDARY_EXTENSION);
-      aCas.addFsToIndexes(aCas.createAnnotation(typeLB, first.getBegin(), first.getEnd()));
-      Type typeRB = ts.getType(slotName + TextRulerToolkit.RIGHT_BOUNDARY_EXTENSION);
-      aCas.addFsToIndexes(aCas.createAnnotation(typeRB, last.getBegin(), last.getEnd()));
+      if (!slotTokens.isEmpty()) {
+        AnnotationFS first = slotTokens.get(0);
+        AnnotationFS last = slotTokens.get(slotTokens.size() - 1);
+        Type typeLB = ts.getType(slotName + TextRulerToolkit.LEFT_BOUNDARY_EXTENSION);
+        aCas.addFsToIndexes(aCas.createAnnotation(typeLB, first.getBegin(), first.getEnd()));
+        Type typeRB = ts.getType(slotName + TextRulerToolkit.RIGHT_BOUNDARY_EXTENSION);
+        aCas.addFsToIndexes(aCas.createAnnotation(typeRB, last.getBegin(), last.getEnd()));
+      }
     }
   }
 

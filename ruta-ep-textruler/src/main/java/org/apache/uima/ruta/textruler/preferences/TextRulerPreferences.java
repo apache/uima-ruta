@@ -23,5 +23,7 @@ public class TextRulerPreferences {
 
   public static final String LOW_MEMORY_PROFILE =  ConfigPreferencePage.ID + ".lowMemoryProfile";
   public static final String REMOVE_BASICS = ConfigPreferencePage.ID + ".removeBasics";
+  public static final String MAX_ERROR_RATE = ConfigPreferencePage.ID + ".maxErrorRate";
+  public static final String CAS_CACHE = ConfigPreferencePage.ID + ".casCache";
   
 }

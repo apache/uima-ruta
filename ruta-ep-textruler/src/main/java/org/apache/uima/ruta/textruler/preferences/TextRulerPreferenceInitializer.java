@@ -39,6 +39,8 @@ public class TextRulerPreferenceInitializer extends AbstractPreferenceInitialize
     IPreferenceStore store = TextRulerPlugin.getDefault().getPreferenceStore();
     store.setDefault(TextRulerPreferences.REMOVE_BASICS, true);
     store.setDefault(TextRulerPreferences.LOW_MEMORY_PROFILE, false);
+    store.setDefault(TextRulerPreferences.MAX_ERROR_RATE, 10);
+    store.setDefault(TextRulerPreferences.CAS_CACHE, 50);
     
     List<TextRulerLearnerController> availableControllers = TextRulerController.getAvailableControllers();
     for (TextRulerLearnerController each : availableControllers) {

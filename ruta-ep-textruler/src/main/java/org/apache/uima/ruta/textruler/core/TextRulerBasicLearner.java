@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -89,6 +90,10 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
 
   protected boolean supportBoundaries = false;
 
+  private double maxErrorRate = 5;
+
+  private Map<String, TextRulerStatisticsCollector> inducedRules = new TreeMap<String, TextRulerStatisticsCollector>();
+
   public TextRulerBasicLearner(String inputDir, String prePropTMFile, String tmpDir,
           String[] slotNames, Set<String> filterSet, boolean skip, TextRulerLearnerDelegate delegate) {
     super();
@@ -116,9 +121,10 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     useDefaultFiltering &= filterSet.contains("org.apache.uima.ruta.type.NBSP");
     useDefaultFiltering &= filterSet.contains("org.apache.uima.ruta.type.MARKUP");
 
-    this.casCache = new CasCache(100, this); // TODO make size configurable
-    // !? share e.g. 100 places for
-    // all running algoritghms ?
+    IPreferenceStore store = TextRulerPlugin.getDefault().getPreferenceStore();
+    maxErrorRate = store.getInt(TextRulerPreferences.MAX_ERROR_RATE);
+    int casChacheSize = store.getInt(TextRulerPreferences.CAS_CACHE);
+    this.casCache = new CasCache(casChacheSize, this);
   }
 
   protected String tempDirectory() {
@@ -178,7 +184,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     // check if all passed slot types are present:
     CAS someCas = getTestCAS();
     TypeSystem ts = someCas.getTypeSystem();
-//    GlobalCASSource.releaseCAS(someCas);
+    // GlobalCASSource.releaseCAS(someCas);
     boolean result = true;
     List<String> missingTypes = new ArrayList<String>();
     for (String s : slotNames) {
@@ -212,7 +218,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
   public void run() {
     if (createTempDirIfNeccessary()) {
       updateAE();
-
+      inducedRules.clear();
       if (!checkForMandatoryTypes()) {
 
       } else {
@@ -323,7 +329,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     doc.resetAndFillTestCAS(testCAS, rule.getTarget());
     testRuleOnDocument(rule, doc, c, testCAS);
     testCAS.reset();
-//    GlobalCASSource.releaseCAS(testCAS);
+    // GlobalCASSource.releaseCAS(testCAS);
   }
 
   public void testRuleOnDocument(final TextRulerRule rule, final TextRulerExampleDocument doc,
@@ -396,23 +402,31 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     }
 
     CAS theTestCAS = getTestCAS();
-    for (TextRulerExampleDocument theDoc : sortedDocs) {
-      for (int ruleIndex = 0; ruleIndex < rules.size(); ruleIndex++) {
-        TextRulerRule theRule = rules.get(ruleIndex);
-        TextRulerStatisticsCollector sumC = sums.get(ruleIndex);
-
-        if (TextRulerToolkit.DEBUG && !target.equals(theRule.getTarget())) {
-          TextRulerToolkit
-                  .log("[TextRulerBasicLearner.testRulesOnTrainingsSet] ERROR, ALL RULES MUST HAVE THE SAME LEARNING TARGET !");
-        }
+    for (int ruleIndex = 0; ruleIndex < rules.size(); ruleIndex++) {
+      TextRulerRule theRule = rules.get(ruleIndex);
+      String ruleString = theRule.getRuleString();
+      System.out.println("testing: " + ruleString);
+      if (inducedRules.containsKey(ruleString)) {
+        theRule.setCoveringStatistics(inducedRules.get(ruleString));
+        System.out.println("skipped with " + inducedRules.get(ruleString));
+      } else {
+      TextRulerStatisticsCollector sumC = sums.get(ruleIndex);
+      for (TextRulerExampleDocument theDoc : sortedDocs) {
         theDoc.resetAndFillTestCAS(theTestCAS, target);
         testRuleOnDocument(theRule, theDoc, sumC, theTestCAS);
+        double errorRate = sumC.n / Math.max(sumC.p, 1);
+        if (errorRate > maxErrorRate) {
+          System.out.println("stopped:" + sumC);
+          break;
+        }
         if (shouldAbort())
           return;
       }
+      inducedRules.put(ruleString, sumC);
+      }
     }
     theTestCAS.reset();
-//    GlobalCASSource.releaseCAS(theTestCAS);
+    // GlobalCASSource.releaseCAS(theTestCAS);
     // do not release the shared test-cas ! only reset it ! it gets released
     // at the end of the
     // whole algorithm !
@@ -446,7 +460,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
         return;
     }
     theTestCAS.reset();
-//    GlobalCASSource.releaseCAS(theTestCAS);
+    // GlobalCASSource.releaseCAS(theTestCAS);
     // do not release the shared test-cas ! only reset it ! it gets released
     // at the end of the
     // whole algorithm !

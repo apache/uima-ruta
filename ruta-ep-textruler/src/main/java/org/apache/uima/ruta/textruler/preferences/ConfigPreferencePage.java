@@ -22,6 +22,7 @@ package org.apache.uima.ruta.textruler.preferences;
 import org.apache.uima.ruta.textruler.TextRulerPlugin;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -30,6 +31,8 @@ public class ConfigPreferencePage extends FieldEditorPreferencePage implements I
   public static String ID = "org.apache.uima.ruta.textruler.config";
   private BooleanFieldEditor removeBasics;
   private BooleanFieldEditor lowMemoryProfile;
+  private IntegerFieldEditor maxErrorRate;
+  private IntegerFieldEditor casCache;
 
 
   public ConfigPreferencePage() {
@@ -50,6 +53,14 @@ public class ConfigPreferencePage extends FieldEditorPreferencePage implements I
     lowMemoryProfile = new BooleanFieldEditor(TextRulerPreferences.LOW_MEMORY_PROFILE,
             "Use low memory profile.", getFieldEditorParent());
     addField(lowMemoryProfile);
+    
+    maxErrorRate = new IntegerFieldEditor(TextRulerPreferences.MAX_ERROR_RATE,
+            "Maximum error rate during testing.", getFieldEditorParent());
+    addField(maxErrorRate);
+    
+    casCache = new IntegerFieldEditor(TextRulerPreferences.CAS_CACHE,
+            "CAS cache size.", getFieldEditorParent());
+    addField(casCache);
     
   }
 }

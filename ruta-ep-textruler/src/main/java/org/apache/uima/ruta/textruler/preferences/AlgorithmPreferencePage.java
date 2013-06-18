@@ -96,43 +96,6 @@ public class AlgorithmPreferencePage extends FieldEditorPreferencePage implement
     }
   }
 
-  // public Map<String, Object> getCurrentAlgorithmParameters() {
-  // // Map<String, Map<String, Object>> results = new HashMap<String, Map<String, Object>>();
-  // Map<String, Object> result = new HashMap<String, Object>();
-  //
-  // TextRulerLearnerFactory f = algorithmController.getFactory();
-  // TextRulerLearnerParameter[] params = f.getAlgorithmParameters();
-  // if (params != null) {
-  // for (int i = 0; i < params.length; i++) {
-  // TextRulerLearnerParameter p = params[i];
-  // String id = algorithmController.getID() + "." + p.id;
-  // switch (p.type) {
-  // case ML_BOOL_PARAM: {
-  // // Map<String, Object> result = new HashMap<String, Object>();
-  // result.put(p.id, store.getBoolean(id));
-  // // results.put(p.id, result);
-  // break;
-  // }
-  //
-  // case ML_FLOAT_PARAM:
-  // case ML_INT_PARAM:
-  // case ML_STRING_PARAM: {
-  // // Map<String, Object> result = new HashMap<String, Object>();
-  // result.put(p.id, store.getString(id));
-  // // results.put(p.id, result);
-  // break;
-  // }
-  // // case ML_SELECT_PARAM: {
-  // // break;
-  // // }
-  // case ML_SELECT_PARAM:
-  // break;
-  // }
-  // }
-  // }
-  // return result;
-  // }
-
   @Override
   protected void performDefaults() {
     for (FieldEditor f : fields)
