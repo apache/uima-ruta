@@ -1615,7 +1615,7 @@ public class TrabalLearner extends TextRulerBasicLearner {
     for (int ruleIndex = 0; ruleIndex < rules.size(); ruleIndex++) {
       rules.get(ruleIndex).setCoveringStatistics(sums.get(ruleIndex));
     }
-    GlobalCASSource.releaseCAS(theTestCAS);
+//    GlobalCASSource.releaseCAS(theTestCAS);
     sums.clear();
     return rules;
   }

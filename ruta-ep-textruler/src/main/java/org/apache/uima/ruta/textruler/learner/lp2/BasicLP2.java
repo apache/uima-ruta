@@ -578,7 +578,7 @@ public abstract class BasicLP2 extends TextRulerBasicLearner {
 
     CAS someCas = getTestCAS();
     TypeSystem ts = someCas.getTypeSystem();
-    GlobalCASSource.releaseCAS(someCas);
+//    GlobalCASSource.releaseCAS(someCas);
     // check if all helper types are present:
     List<String> list = new ArrayList<String>();
 

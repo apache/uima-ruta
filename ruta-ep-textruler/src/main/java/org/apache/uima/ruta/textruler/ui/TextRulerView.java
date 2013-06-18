@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.uima.ruta.textruler.TextRulerPlugin;
+import org.apache.uima.ruta.textruler.core.GlobalCASSource;
 import org.apache.uima.ruta.textruler.extension.TextRulerController;
 import org.apache.uima.ruta.textruler.extension.TextRulerControllerDelegate;
 import org.apache.uima.ruta.textruler.extension.TextRulerLearner.TextRulerLearnerState;
@@ -154,16 +155,9 @@ public class TextRulerView extends ViewPart implements TextRulerControllerDelega
       }
       
       if (TextRulerController.enabledAlgorithmsCount() > 0) {
+//        GlobalCASSource.releaseAll();
         TextRulerController.start(inputDir, additionalDir, preProcTMFile, slotNames, filters, this,
                 viewContent.getCurrentAlgorithmParameters(), viewContent.getSkipPreprocessing());
-
-        // BATCH_STUFF
-        // preprocessorTMFile = preProcTMFile;
-        // TextRulerView.slotNames = slotNames;
-        // TextRulerView.filters = filters;
-        // algParams = viewContent.getCurrentAlgorithmParameters();
-        // skipPreprocessing = viewContent.getSkipPreprocessing();
-        // batchNext();
       } else
         errorAlert("No algorithm has been activated for learning!");
     }

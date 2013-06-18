@@ -173,7 +173,7 @@ public class TextRulerToolkit {
         reuseCAS.reset();
         resultCas = reuseCAS;
       } else {
-        resultCas = GlobalCASSource.allocCAS(ae, false); // ae.newCAS();
+        resultCas = GlobalCASSource.allocCAS(ae); // ae.newCAS();
       }
       XmiCasDeserializer.deserialize(inputStream, resultCas, true);
       return resultCas;

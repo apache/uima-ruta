@@ -1063,7 +1063,6 @@ public class KEPLearner extends TextRulerBasicLearner {
         }
         cRule.getCoveringStatistics().reflectCountsFromCoveredExamples();
       }
-      GlobalCASSource.releaseCAS(processedCAS);
     }
   }
 

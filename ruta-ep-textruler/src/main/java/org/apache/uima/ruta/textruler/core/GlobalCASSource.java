@@ -47,7 +47,7 @@ public class GlobalCASSource {
 
   private static List<CAS> inUsage = new ArrayList<CAS>();
 
-  public static synchronized CAS allocCAS(AnalysisEngine ae, boolean configChanged) {
+  public static synchronized CAS allocCAS(AnalysisEngine ae) {
     if (free.size() > 0) {
       CAS result = free.get(free.size() - 1);
       free.remove(free.size() - 1);
@@ -82,6 +82,20 @@ public class GlobalCASSource {
                 .log("[GlobalCASSource.release] Error, tried to release an unknown CAS object!");
       }
     }
+  }
+
+  public static void clear() {
+    for (CAS each : free) {
+      each.release();
+      each = null;
+    }
+    free.clear();
+    for (CAS each : inUsage) {
+      each.release();
+      each = null;
+    }
+    inUsage.clear();
+    CAS = 0;
   }
 
 }

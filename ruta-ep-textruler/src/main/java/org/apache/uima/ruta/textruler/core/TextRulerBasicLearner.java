@@ -41,6 +41,7 @@ import org.apache.uima.ruta.textruler.TextRulerPlugin;
 import org.apache.uima.ruta.textruler.core.TextRulerTarget.MLTargetType;
 import org.apache.uima.ruta.textruler.extension.TextRulerLearner;
 import org.apache.uima.ruta.textruler.extension.TextRulerLearnerDelegate;
+import org.apache.uima.ruta.textruler.preferences.TextRulerPreferences;
 import org.apache.uima.ruta.textruler.tools.MemoryWatch;
 import org.apache.uima.util.FileUtils;
 import org.eclipse.core.resources.IContainer;
@@ -48,6 +49,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jface.preference.IPreferenceStore;
 
 /**
  * 
@@ -85,8 +87,6 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
 
   private boolean useDefaultFiltering;
 
-  private boolean configChanged = false;
-
   protected boolean supportBoundaries = false;
 
   public TextRulerBasicLearner(String inputDir, String prePropTMFile, String tmpDir,
@@ -116,8 +116,6 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     useDefaultFiltering &= filterSet.contains("org.apache.uima.ruta.type.NBSP");
     useDefaultFiltering &= filterSet.contains("org.apache.uima.ruta.type.MARKUP");
 
-    configChanged = true;
-
     this.casCache = new CasCache(100, this); // TODO make size configurable
     // !? share e.g. 100 places for
     // all running algoritghms ?
@@ -145,8 +143,9 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     String descriptorFile = TextRulerToolkit.getEngineDescriptorFromTMSourceFile(new Path(
             preprocessorTMFile));
     sendStatusUpdateToDelegate("loading AE...", TextRulerLearnerState.ML_INITIALIZING, false);
-    
-    AnalysisEngineDescription description = TextRulerToolkit.getAnalysisEngineDescription(descriptorFile);
+
+    AnalysisEngineDescription description = TextRulerToolkit
+            .getAnalysisEngineDescription(descriptorFile);
     TextRulerToolkit.addBoundaryTypes(description, slotNames);
     ae = TextRulerToolkit.loadAnalysisEngine(description);
 
@@ -159,25 +158,27 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { portableString });
     ae.setConfigParameterValue(RutaEngine.ADDITIONAL_SCRIPTS, new String[0]);
     ae.setConfigParameterValue(RutaEngine.RELOAD_SCRIPT, true);
-    ae.setConfigParameterValue(RutaEngine.REMOVE_BASICS, true);
     if (useDynamicAnchoring) {
       ae.setConfigParameterValue(RutaEngine.DYNAMIC_ANCHORING, true);
     }
+    IPreferenceStore store = TextRulerPlugin.getDefault().getPreferenceStore();
+    boolean lowMemoryProfile = store.getBoolean(TextRulerPreferences.LOW_MEMORY_PROFILE);
+    boolean removeBasics = store.getBoolean(TextRulerPreferences.REMOVE_BASICS);
+    ae.setConfigParameterValue(RutaEngine.LOW_MEMORY_PROFILE, lowMemoryProfile);
+    ae.setConfigParameterValue(RutaEngine.REMOVE_BASICS, removeBasics);
+
     try {
       ae.reconfigure();
     } catch (ResourceConfigurationException e) {
       TextRulerPlugin.error(e);
     }
-    configChanged = true;
   }
-
- 
 
   protected boolean checkForMandatoryTypes() {
     // check if all passed slot types are present:
     CAS someCas = getTestCAS();
     TypeSystem ts = someCas.getTypeSystem();
-    GlobalCASSource.releaseCAS(someCas);
+//    GlobalCASSource.releaseCAS(someCas);
     boolean result = true;
     List<String> missingTypes = new ArrayList<String>();
     for (String s : slotNames) {
@@ -322,7 +323,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     doc.resetAndFillTestCAS(testCAS, rule.getTarget());
     testRuleOnDocument(rule, doc, c, testCAS);
     testCAS.reset();
-    GlobalCASSource.releaseCAS(testCAS);
+//    GlobalCASSource.releaseCAS(testCAS);
   }
 
   public void testRuleOnDocument(final TextRulerRule rule, final TextRulerExampleDocument doc,
@@ -411,7 +412,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
       }
     }
     theTestCAS.reset();
-    GlobalCASSource.releaseCAS(theTestCAS);
+//    GlobalCASSource.releaseCAS(theTestCAS);
     // do not release the shared test-cas ! only reset it ! it gets released
     // at the end of the
     // whole algorithm !
@@ -445,7 +446,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
         return;
     }
     theTestCAS.reset();
-    GlobalCASSource.releaseCAS(theTestCAS);
+//    GlobalCASSource.releaseCAS(theTestCAS);
     // do not release the shared test-cas ! only reset it ! it gets released
     // at the end of the
     // whole algorithm !
@@ -550,14 +551,9 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     // brought a performance
     // boost!
 
-    if (configChanged && algTestCAS != null) { // type system maybe changed
-      GlobalCASSource.releaseCAS(algTestCAS);
-      algTestCAS = null;
-    }
     if (algTestCAS == null) {
       try {
-        algTestCAS = GlobalCASSource.allocCAS(ae, configChanged);
-        configChanged = false;
+        algTestCAS = GlobalCASSource.allocCAS(ae);
       } catch (Exception e) {
         TextRulerPlugin.error(e);
         return null;

@@ -19,39 +19,37 @@
 
 package org.apache.uima.ruta.textruler.preferences;
 
-import org.eclipse.jface.preference.PreferencePage;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
+import org.apache.uima.ruta.textruler.TextRulerPlugin;
+import org.eclipse.jface.preference.BooleanFieldEditor;
+import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-public class ConfigPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
+public class ConfigPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
   public static String ID = "org.apache.uima.ruta.textruler.config";
+  private BooleanFieldEditor removeBasics;
+  private BooleanFieldEditor lowMemoryProfile;
 
-  private Label evalHeadline;
 
   public ConfigPreferencePage() {
-
-  }
-
-  @Override
-  protected Control createContents(Composite parent) {
-    Composite top = new Composite(parent, SWT.LEFT);
-    top.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    top.setLayout(new GridLayout());
-
-    evalHeadline = new Label(top, SWT.NULL);
-    evalHeadline.setText("General settings for the different TextRuler methods.");
-
-    return top;
+    setPreferenceStore(TextRulerPlugin.getDefault().getPreferenceStore());
+    setDescription("General settings for the different TextRuler methods.");
   }
 
   public void init(IWorkbench workbench) {
 
+  }
+
+  @Override
+  protected void createFieldEditors() {
+    removeBasics = new BooleanFieldEditor(TextRulerPreferences.REMOVE_BASICS,
+            "Remove basic annotations after testing rules.", getFieldEditorParent());
+    addField(removeBasics);
+
+    lowMemoryProfile = new BooleanFieldEditor(TextRulerPreferences.LOW_MEMORY_PROFILE,
+            "Use low memory profile.", getFieldEditorParent());
+    addField(lowMemoryProfile);
+    
   }
 }
