@@ -96,10 +96,10 @@ public class ShiftAllRule extends ShiftingRule {
       ruleString += frontBoundaryItem + after + " (";
 
     // We include all tokens between the boundaries.
-//    ruleString += "ANY*{-PARTOF(" + errorBoundaryItem + ")} " + unmark + " ANY*{-PARTOF("
-//            + rearBoundaryItem + ")}"; // like ANY*? but faster
-    ruleString += "#{-CONTAINS(" + errorBoundaryItem + ")} " + unmark + " #{-CONTAINS("
+    ruleString += "ANY*{-PARTOF(" + errorBoundaryItem + ")} " + unmark + " ANY*{-PARTOF("
             + rearBoundaryItem + ")}"; // like ANY*? but faster
+//    ruleString += "#{-CONTAINS(" + errorBoundaryItem + ")} " + unmark + " #{-CONTAINS("
+//            + rearBoundaryItem + ")}"; // like ANY*? but faster
     
     
     // Check, if the rear item should be included and mark all tokens between the brackets as
@@ -114,8 +114,8 @@ public class ShiftAllRule extends ShiftingRule {
   private void compileShiftToRight(boolean frontItemInBorders, boolean rearItemInBorders,
           String before, String after, String action, String unmark) {
     // The old annotation begins before the new annotation
-//    ruleString += unmark + " ANY*{-PARTOF(" + frontBoundaryItem + ")} ";
-    ruleString += unmark + " #{-CONTAINS(" + frontBoundaryItem + ")} ";
+    ruleString += unmark + " ANY*{-PARTOF(" + frontBoundaryItem + ")} ";
+//    ruleString += unmark + " #{-CONTAINS(" + frontBoundaryItem + ")} ";
 
     // If the front item is part of the future annotation, it has to be included in the
     // brackets.
@@ -125,8 +125,8 @@ public class ShiftAllRule extends ShiftingRule {
       ruleString += frontBoundaryItem + after + " (";
 
     // We include all tokens between the boundaries.
-//    ruleString += "ANY*{-PARTOF(" + rearBoundaryItem + ")}"; // like ANY*? but faster
-    ruleString += "#{-CONTAINS(" + rearBoundaryItem + ")}"; // like ANY*? but faster
+    ruleString += "ANY*{-PARTOF(" + rearBoundaryItem + ")}"; // like ANY*? but faster
+//    ruleString += "#{-CONTAINS(" + rearBoundaryItem + ")}"; // like ANY*? but faster
 
     
     
@@ -155,8 +155,8 @@ public class ShiftAllRule extends ShiftingRule {
     else
       ruleString += frontBoundaryItem + unmark + " (";
 
-//    ruleString += "ANY*{-PARTOF(" + rearBoundaryItem + ")}"; // like ANY*? but faster
-    ruleString += "#{-CONTAINS(" + rearBoundaryItem + ")}"; // like ANY*? but faster
+    ruleString += "ANY*{-PARTOF(" + rearBoundaryItem + ")}"; // like ANY*? but faster
+//    ruleString += "#{-CONTAINS(" + rearBoundaryItem + ")}"; // like ANY*? but faster
 
     // Check, if the rear item should be included and mark all tokens between the brackets as the
     // new annotation.
