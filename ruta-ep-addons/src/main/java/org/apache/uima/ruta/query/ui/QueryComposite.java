@@ -507,7 +507,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
         if (editorInput instanceof FileEditorInput) {
           FileEditorInput fei = (FileEditorInput) editorInput;
           IFile file = fei.getFile();
-          if (file.getLocationURI().equals(data.getFile().toURI())) {
+          if (data != null && file.getLocationURI().equals(data.getFile().toURI())) {
             int begin = data.getBegin();
             int end = data.getEnd();
             ae.selectAndReveal(begin, end - begin);

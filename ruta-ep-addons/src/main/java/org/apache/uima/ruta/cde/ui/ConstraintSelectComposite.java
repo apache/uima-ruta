@@ -25,6 +25,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.apache.uima.ruta.cde.IRutaConstraint;
 import org.apache.uima.ruta.cde.RutaGEConstraint;
@@ -453,23 +454,26 @@ public class ConstraintSelectComposite extends Composite implements ISelectionCh
         IMemento currentMemento = memento.createChild("constraint", "SimpleRutaConstraint");
         SimpleRutaRuleConstraint constraint = (SimpleRutaRuleConstraint) constraintData
                 .getConstraint();
-        currentMemento.createChild("Rule", constraint.getData());
+        currentMemento.createChild("Data", constraint.getData());
         currentMemento.createChild("Description", constraint.getDescription());
+        currentMemento.createChild("Weight", ""+constraintData.getWeight());
       }
 
       if (constraintData.getConstraint() instanceof RutaRuleListConstraint) {
         IMemento currentMemento = memento.createChild("constraint", "ListRutaConstraint");
         RutaRuleListConstraint constraint = (RutaRuleListConstraint) constraintData
                 .getConstraint();
-        currentMemento.createChild("Rule", constraint.getData());
+        currentMemento.createChild("Data", constraint.getData());
         currentMemento.createChild("Description", constraint.getDescription());
+        currentMemento.createChild("Weight", ""+constraintData.getWeight());
       }
 
       if (constraintData.getConstraint() instanceof RutaGEConstraint) {
         IMemento currentMemento = memento.createChild("constraint", "GEConstraint");
         RutaGEConstraint constraint = (RutaGEConstraint) constraintData.getConstraint();
-        currentMemento.createChild("Rule", constraint.getData());
+        currentMemento.createChild("Data", constraint.getData());
         currentMemento.createChild("Description", constraint.getDescription());
+        currentMemento.createChild("Weight", ""+constraintData.getWeight());
       }
     }
   }
@@ -477,24 +481,36 @@ public class ConstraintSelectComposite extends Composite implements ISelectionCh
   public void restoreState(IMemento memento) {
     for (IMemento constraintMemento : memento.getChildren("constraint")) {
       if (constraintMemento.getID().equals("SimpleRutaConstraint")) {
-        String rule = constraintMemento.getChild("Rule").getID();
+        String rule = constraintMemento.getChild("Data").getID();
         String description = constraintMemento.getChild("Description").getID();
         SimpleRutaRuleConstraint constraint = new SimpleRutaRuleConstraint(rule, description);
         ConstraintData data = new ConstraintData(constraint);
+        String weightString = constraintMemento.getChild("Weight").getID();
+        if(!StringUtils.isBlank(weightString)) {
+          data.setWeight(Integer.parseInt(weightString));
+        }
         constraintList.add(data);
       }
       if (constraintMemento.getID().equals("ListRutaConstraint")) {
-        String rule = constraintMemento.getChild("Rule").getID();
+        String rule = constraintMemento.getChild("Data").getID();
         String description = constraintMemento.getChild("Description").getID();
         RutaRuleListConstraint constraint = new RutaRuleListConstraint(rule, description);
         ConstraintData data = new ConstraintData(constraint);
+        String weightString = constraintMemento.getChild("Weight").getID();
+        if(!StringUtils.isBlank(weightString)) {
+          data.setWeight(Integer.parseInt(weightString));
+        }
         constraintList.add(data);
       }
       if (constraintMemento.getID().equals("GEConstraint")) {
-        String rule = constraintMemento.getChild("Rule").getID();
+        String rule = constraintMemento.getChild("Data").getID();
         String description = constraintMemento.getChild("Description").getID();
         RutaGEConstraint constraint = new RutaGEConstraint(rule, description);
         ConstraintData data = new ConstraintData(constraint);
+        String weightString = constraintMemento.getChild("Weight").getID();
+        if(!StringUtils.isBlank(weightString)) {
+          data.setWeight(Integer.parseInt(weightString));
+        }
         constraintList.add(data);
       }
     }
