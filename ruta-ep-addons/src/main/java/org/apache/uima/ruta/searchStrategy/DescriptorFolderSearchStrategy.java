@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.uima.caseditor.ide.TypeSystemLocationPropertyPage;
 import org.apache.uima.caseditor.ide.searchstrategy.ITypeSystemSearchStrategy;
 import org.apache.uima.ruta.ide.core.RutaNature;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
@@ -56,6 +57,12 @@ public class DescriptorFolderSearchStrategy implements ITypeSystemSearchStrategy
   public IFile findTypeSystem(IFile casFile) {
     IProject project = casFile.getProject();
 
+    IFile typeSystemLocation = TypeSystemLocationPropertyPage.getTypeSystemLocation(project);
+    if(typeSystemLocation != null) {
+      // do not override the properties!
+      return null;
+    }
+    
     try {
       IProjectNature nature = project.getNature(RutaNature.NATURE_ID);
       if (!(nature instanceof RutaNature)) {
