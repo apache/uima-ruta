@@ -47,7 +47,12 @@
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-ep-cas-editor-ide</artifactId>
-      <version>${uimaVersion}</version>
+      <version>2.4.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimaj-ep-cas-editor</artifactId>
+      <version>2.4.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
@@ -235,9 +240,9 @@
                   org.eclipse.ui.editors,
                   org.eclipse.dltk.launching;bundle-version="[3.0.0,5.0.0)",
                   org.eclipse.debug.ui;bundle-version="3.5.0",
-                  org.apache.uima.caseditor;bundle-version="2.4.0",
+                  org.apache.uima.caseditor;bundle-version="2.4.1.SNAPSHOT",
                   org.apache.uima.ruta.caseditor;bundle-version="1.0.0",
-                  org.apache.uima.caseditor.ide;bundle-version="2.4.0",
+                  org.apache.uima.caseditor.ide;bundle-version="2.4.1.SNAPSHOT",
                   org.junit4;bundle-version="4.5.0";resolution:=optional
                 </Require-Bundle>
                 <Import-Package>
