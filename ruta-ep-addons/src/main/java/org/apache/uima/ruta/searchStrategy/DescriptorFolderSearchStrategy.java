@@ -58,7 +58,7 @@ public class DescriptorFolderSearchStrategy implements ITypeSystemSearchStrategy
     IProject project = casFile.getProject();
 
     IFile typeSystemLocation = TypeSystemLocationPropertyPage.getTypeSystemLocation(project);
-    if(typeSystemLocation != null) {
+    if(typeSystemLocation != null && !typeSystemLocation.getName().equals("TypeSystem.xml")) {
       // do not override the properties!
       return null;
     }

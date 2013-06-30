@@ -80,7 +80,7 @@ public class SimpleRutaRuleConstraint implements IRutaRuleConstraint {
       String tsLocation = typeSystemLocation;
       Collection<TypeSystemDescription> tsds = new ArrayList<TypeSystemDescription>();
       tsds.add(basicTypeSystem);
-      if (typeSystemLocation.endsWith(".tm")) {
+      if (typeSystemLocation.endsWith(".ruta")) {
         IFile iFile = RutaAddonsPlugin.getIFile(typeSystemLocation);
         IPath scriptPath = iFile.getLocation();
         IProject project = iFile.getProject();
