@@ -44,6 +44,11 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
+import org.eclipse.swt.dnd.Clipboard;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -63,6 +68,8 @@ import org.eclipse.ui.IMemento;
 
 public class ConstraintSelectComposite extends Composite implements ISelectionChangedListener {
 
+  private Clipboard clipboard;
+  
   private Button constraintButtonRuta;
 
   private Button constraintButtonRutaList;
@@ -102,6 +109,7 @@ public class ConstraintSelectComposite extends Composite implements ISelectionCh
   public ConstraintSelectComposite(Composite parent, int style) {
     super(parent, style);
     initGui();
+    clipboard = new Clipboard(parent.getDisplay());
     comparatorFactory = new CDEComparatorFactory();
   }
 
@@ -243,6 +251,25 @@ public class ConstraintSelectComposite extends Composite implements ISelectionCh
     tableFormData.bottom = new FormAttachment(100, 0);
     table.setLayoutData(tableFormData);
 
+    table.addKeyListener(new KeyListener() {
+
+      public void keyPressed(KeyEvent e) {
+        if (((e.stateMask & SWT.CTRL) == SWT.CTRL) && (e.keyCode == 'c')) {
+          String output = "";
+          TableItem[] items = table.getSelection();
+          for (TableItem item : items) {
+            ConstraintData data = (ConstraintData) item.getData();
+            output = output + data.getConstraint().getData() + "\n";
+          }
+          clipboard.setContents(new Object[] { output },
+                  new Transfer[] { TextTransfer.getInstance() });
+        }
+      }
+
+      public void keyReleased(KeyEvent arg0) {
+      }
+    });
+    
     tableViewer.addDoubleClickListener(new IDoubleClickListener() {
       public void doubleClick(DoubleClickEvent event) {
         IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();

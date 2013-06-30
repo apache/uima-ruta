@@ -56,7 +56,11 @@ public class EvaluationMeasures {
     DecimalFormat instance = (DecimalFormat) DecimalFormat.getInstance(Locale.US);
     instance.applyPattern("#.####");
     String format = instance.format(d);
-    return Double.valueOf(format);
+    try {
+      return Double.valueOf(format);
+    } catch (Exception e) {
+    }
+    return d;
   }
 
   public static double cosine(double[] a1, double[] a2) {

@@ -111,7 +111,7 @@ public class RerunActionHandler implements IHandler {
     private List<String> includedTypes;
 
     RerunHandlerJob(ExecutionEvent event, String scriptName, String viewCasName,
-            List<String> excludedTypes,  List<String> includedTypes) {
+            List<String> excludedTypes, List<String> includedTypes) {
       super("Testing " + scriptName + "...");
       this.event = event;
       this.viewCasName = viewCasName;
@@ -175,30 +175,41 @@ public class RerunActionHandler implements IHandler {
           testCas = testCas.getView(viewCasName);
           runCas = runCas.getView(viewCasName);
 
-          if(includedTypes != null && !includedTypes.isEmpty()) {
+          if (includedTypes != null && !includedTypes.isEmpty()) {
             excludedTypes = new ArrayList<String>();
-            List<Type> types = runCas.getTypeSystem().getProperlySubsumedTypes(runCas.getAnnotationType());
+            List<Type> types = runCas.getTypeSystem().getProperlySubsumedTypes(
+                    runCas.getAnnotationType());
             for (Type type : types) {
-              if(!includedTypes.contains(type.getName())) {
+              if (!includedTypes.contains(type.getName())) {
                 excludedTypes.add(type.getName());
               }
             }
           }
-          
+
+          List<AnnotationFS> toRemove = new LinkedList<AnnotationFS>();
           if (excludedTypes != null && !excludedTypes.isEmpty()) {
-            List<AnnotationFS> toRemove = new LinkedList<AnnotationFS>();
             AnnotationIndex<AnnotationFS> annotationIndex = runCas.getAnnotationIndex();
             for (AnnotationFS annotationFS : annotationIndex) {
               Type type = annotationFS.getType();
               String typeName = type.getName();
-              if(includedTypes.contains(typeName)|| !excludedTypes.contains(typeName)) {
-                if (type != null && runCas.getTypeSystem().subsumes(runCas.getAnnotationType(), type)) {
-                    toRemove.add(annotationFS);
+              if (includedTypes.contains(typeName) || !excludedTypes.contains(typeName)) {
+                if (type != null
+                        && runCas.getTypeSystem().subsumes(runCas.getAnnotationType(), type)) {
+                  toRemove.add(annotationFS);
                 }
               }
             }
-            for (AnnotationFS annotationFS : toRemove) {
-              runCas.removeFsFromIndexes(annotationFS);
+          }
+          if (excludedTypes != null && excludedTypes.isEmpty() && includedTypes != null
+                  && includedTypes.isEmpty()) {
+            AnnotationIndex<AnnotationFS> annotationIndex = runCas.getAnnotationIndex();
+            for (AnnotationFS each : annotationIndex) {
+              toRemove.add(each);
+            }
+          }
+          for (AnnotationFS each : toRemove) {
+            if(!runCas.getDocumentAnnotation().equals(each)) {
+              runCas.removeFsFromIndexes(each);
             }
           }
 
@@ -295,7 +306,7 @@ public class RerunActionHandler implements IHandler {
     String viewCasName = debugPage.getSelectedViewCasName();
     String scriptName = debugPage.getResource().getLocation().lastSegment();
     RerunHandlerJob job = new RerunHandlerJob(event, scriptName, viewCasName,
-            debugPage.getExcludedTypes(),debugPage.getIncludedTypes());
+            debugPage.getExcludedTypes(), debugPage.getIncludedTypes());
 
     job.addJobChangeListener(new DebugJobChangeAdapter(debugPage) {
     });
