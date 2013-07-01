@@ -208,6 +208,9 @@ public class RutaGEConstraint implements IRutaConstraint {
       for (String constraintLine : constraintTextArray) {
 
         String[] patternAndEstimates = constraintLine.split(":");
+        if(patternAndEstimates.length < 2) {
+          continue;
+        }
         String pattern = patternAndEstimates[0];
         pattern = pattern.trim();
         String estimates = patternAndEstimates[1];

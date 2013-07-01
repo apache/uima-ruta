@@ -254,16 +254,16 @@ public class ConstraintSelectComposite extends Composite implements ISelectionCh
     table.addKeyListener(new KeyListener() {
 
       public void keyPressed(KeyEvent e) {
-        if (((e.stateMask & SWT.CTRL) == SWT.CTRL) && (e.keyCode == 'c')) {
-          String output = "";
-          TableItem[] items = table.getSelection();
-          for (TableItem item : items) {
-            ConstraintData data = (ConstraintData) item.getData();
-            output = output + data.getConstraint().getData() + "\n";
-          }
-          clipboard.setContents(new Object[] { output },
-                  new Transfer[] { TextTransfer.getInstance() });
-        }
+//        if (((e.stateMask & SWT.CTRL) == SWT.CTRL) && (e.keyCode == 'c')) {
+//          String output = "";
+//          TableItem[] items = table.getSelection();
+//          for (TableItem item : items) {
+//            ConstraintData data = (ConstraintData) item.getData();
+//            output = output + data.getConstraint().getData() + "\n";
+//          }
+//          clipboard.setContents(new Object[] { output },
+//                  new Transfer[] { TextTransfer.getInstance() });
+//        }
       }
 
       public void keyReleased(KeyEvent arg0) {

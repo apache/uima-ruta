@@ -64,9 +64,9 @@ public class DocumentViewRunHandler implements IHandler {
   private class DocumentViewRunJobChangeAdapter extends JobChangeAdapter {
 
     // Composite of the ConstraintSelectView
-    private ConstraintSelectComposite composite;
+    private DocumentSelectComposite composite;
 
-    DocumentViewRunJobChangeAdapter(ConstraintSelectComposite composite) {
+    DocumentViewRunJobChangeAdapter(DocumentSelectComposite composite) {
       super();
       this.composite = composite;
     }
@@ -74,32 +74,34 @@ public class DocumentViewRunHandler implements IHandler {
     @Override
     public void done(IJobChangeEvent event) {
       if (event.getResult().isOK()) {
-        composite.getDisplay().asyncExec(new Runnable() {
-          public void run() {
-            try {
-              DocumentView docView = (DocumentView) Workbench.getInstance()
-                      .getActiveWorkbenchWindow().getActivePage()
-                      .showView("org.apache.uima.ruta.cde.ui.DocumentView");
-              docView.getDocComposite().getViewer().refresh();
-              ArrayList<Double[]> results = new ArrayList<Double[]>();
-              if (docView.getDocComposite().getTestDataPath() != null) {
-                for (DocumentData data : docView.getDocComposite().getDocumentList()) {
-                  double result = data.getAugmentedResult();
-                  double score = data.getFMeasure();
-                  results.add(new Double[] { result, score });
-                }
-              }
-              docView.getDocComposite().updateMeasureReport(""+
-                      EvaluationMeasures.getMeasureReport(results));
-            } catch (Exception e) {
-             RutaAddonsPlugin.error(e);
-            }
-            composite.getViewer().refresh();
-            composite.update();
-          }
-        });
+        updateUI(composite);
       }
     }
+
+  }
+
+  private void updateUI(final DocumentSelectComposite composite) {
+    composite.getDisplay().asyncExec(new Runnable() {
+      public void run() {
+        try {
+          composite.getViewer().refresh();
+          ArrayList<Double[]> results = new ArrayList<Double[]>();
+          if (composite.getTestDataPath() != null) {
+            for (DocumentData data : composite.getDocumentList()) {
+              double result = data.getAugmentedResult();
+              double score = data.getFMeasure();
+              results.add(new Double[] { result, score });
+            }
+          }
+          composite.updateMeasureReport(
+                  "" + EvaluationMeasures.getMeasureReport(results));
+        } catch (Exception e) {
+          RutaAddonsPlugin.error(e);
+        }
+        composite.getViewer().refresh();
+        composite.update();
+      }
+    });
   }
 
   private class DocumentViewRunHandlerJob extends Job {
@@ -112,19 +114,23 @@ public class DocumentViewRunHandler implements IHandler {
 
     private String testDataPath;
 
+    private final DocumentSelectComposite composite;
+
     DocumentViewRunHandlerJob(ExecutionEvent event, List<ConstraintData> constraints,
-            ArrayList<DocumentData> documents, File typeSystem, String testDataPath) {
+            ArrayList<DocumentData> documents, File typeSystem, String testDataPath,
+            DocumentSelectComposite composite) {
       super("UIMA Ruta CDE");
       this.constraints = constraints;
       this.documents = documents;
       this.typeSystem = typeSystem;
       this.testDataPath = testDataPath;
+      this.composite = composite;
     }
 
     public IStatus run(IProgressMonitor monitor) {
 
       monitor.beginTask("UIMA Ruta CDE", constraints.size() * documents.size());
-      
+
       for (DocumentData document : documents) {
         double count = 0;
         double augResult = 0;
@@ -134,8 +140,9 @@ public class DocumentViewRunHandler implements IHandler {
           try {
             TypeSystemDescription descriptor = (TypeSystemDescription) UIMAFramework.getXMLParser()
                     .parse(new XMLInputSource(typeSystem));
-            
-            URL tpUrl = this.getClass().getResource("/org/apache/uima/ruta/engine/TypePriorities.xml");
+
+            URL tpUrl = this.getClass().getResource(
+                    "/org/apache/uima/ruta/engine/TypePriorities.xml");
             TypePriorities typePriorities = UIMAFramework.getXMLParser().parseTypePriorities(
                     new XMLInputSource(tpUrl));
             CAS inputCAS = CasCreationUtils.createCas(descriptor, typePriorities,
@@ -161,6 +168,7 @@ public class DocumentViewRunHandler implements IHandler {
                 // inputCAS.release();
                 document.getResults().add(partialResult);
               }
+
               monitor.worked(1);
             }
 
@@ -192,6 +200,7 @@ public class DocumentViewRunHandler implements IHandler {
           augResult = augResult / count;
         }
         document.setAugmentedResult(augResult);
+        updateUI(composite);
       }
       monitor.done();
       return Status.OK_STATUS;
@@ -215,18 +224,18 @@ public class DocumentViewRunHandler implements IHandler {
       ConstraintSelectComposite composite = (ConstraintSelectComposite) constraintView
               .getComposite();
       List<ConstraintData> constraintList = composite.getConstraintList();
-      DocumentView docView = (DocumentView) HandlerUtil.getActiveWorkbenchWindow(event).getWorkbench()
-              .getActiveWorkbenchWindow().getActivePage()
+      DocumentView docView = (DocumentView) HandlerUtil.getActiveWorkbenchWindow(event)
+              .getWorkbench().getActiveWorkbenchWindow().getActivePage()
               .showView("org.apache.uima.ruta.cde.ui.DocumentView");
       DocumentSelectComposite docComposite = docView.getDocComposite();
       ArrayList<DocumentData> documents = docComposite.getDocumentList();
-      if(documents.isEmpty()) {
+      if (documents.isEmpty()) {
         docComposite.setDocumentsByDir();
       }
       File typeSystem = docComposite.getTypeSystem();
       DocumentViewRunHandlerJob job = new DocumentViewRunHandlerJob(event, constraintList,
-              documents, typeSystem, docComposite.getTestDataPath());
-      job.addJobChangeListener(new DocumentViewRunJobChangeAdapter(composite));
+              documents, typeSystem, docComposite.getTestDataPath(), docComposite);
+      job.addJobChangeListener(new DocumentViewRunJobChangeAdapter(docComposite));
       job.schedule();
     } catch (PartInitException e) {
       RutaAddonsPlugin.error(e);
