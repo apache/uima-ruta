@@ -305,6 +305,11 @@ under the License.
             id="org.apache.uima.ruta.utils.update"
             name="Update Project">
       </command>
+      <command
+            defaultHandler="org.apache.uima.ruta.utils.update.ConvertProjectHandler"
+            id="org.apache.uima.ruta.utils.convert"
+            name="Convert to UIMA Ruta project">
+      </command>
    </extension>   <extension
          point="org.eclipse.ui.menus">
       <menuContribution
@@ -444,6 +449,25 @@ under the License.
               </visibleWhen>
          </command>
       </menuContribution>
+      <menuContribution
+            locationURI="popup:org.apache.uima.ruta.utils.popup.submenu">
+         <command
+               commandId="org.apache.uima.ruta.utils.convert"
+               disabledIcon="icons/ruta_obj.png"
+               hoverIcon="icons/ruta_obj.png"
+               icon="icons/ruta_obj.png"
+               id="org.apache.uima.ruta.utils.convert.popup"
+               label="Convert to UIMA Ruta project"
+               style="push"
+               tooltip="Convert to UIMA Ruta project">
+            <visibleWhen
+                  checkEnabled="true">
+               <reference
+                     definitionId="org.apache.uima.ruta.utils.convert.definition">
+               </reference>
+            </visibleWhen>
+         </command>
+      </menuContribution>
    </extension>   <extension
          point="org.eclipse.core.expressions.definitions">
       <definition
@@ -487,6 +511,23 @@ under the License.
       </definition>
       <definition
             id="org.apache.uima.ruta.utils.update.definition">
+         <with
+               variable="selection">
+            <iterate
+                  ifEmpty="true">
+               <or>
+                  <instanceof
+                        value="org.eclipse.dltk.core.IScriptProject ">
+                  </instanceof>
+                  <instanceof
+                        value="org.eclipse.core.resources.IProject ">
+                  </instanceof>
+               </or>
+            </iterate>
+         </with>
+      </definition>
+      <definition
+            id="org.apache.uima.ruta.utils.convert.definition">
          <with
                variable="selection">
             <iterate
