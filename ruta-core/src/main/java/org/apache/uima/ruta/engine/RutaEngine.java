@@ -37,7 +37,6 @@ import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
-import org.apache.uima.UIMAFramework;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.AnalysisComponent;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
@@ -50,12 +49,9 @@ import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
-import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.apache.uima.resource.ResourceManager;
-import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.FilterManager;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaModule;
@@ -75,7 +71,6 @@ import org.apache.uima.ruta.visitor.RutaInferenceVisitor;
 import org.apache.uima.ruta.visitor.StatisticsVisitor;
 import org.apache.uima.ruta.visitor.TimeProfilerVisitor;
 import org.apache.uima.util.InvalidXMLException;
-import org.apache.uima.util.XMLInputSource;
 
 public class RutaEngine extends JCasAnnotator_ImplBase {
 
