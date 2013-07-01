@@ -41,6 +41,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.ui.util.CoreUtility;
 import org.eclipse.dltk.internal.ui.wizards.buildpath.BPListElement;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
@@ -85,7 +86,13 @@ public class RutaProjectCreationWizard extends ProjectWizard {
   }
 
   public void createProject(IProgressMonitor monitor) throws CoreException {
-    IProject project = fSecondPage.getScriptProject().getProject();
+    IScriptProject scriptProject = fSecondPage.getScriptProject();
+    createRutaProject(scriptProject, fSecondPage.getRawBuildPath(), monitor);
+  }
+
+  public static void createRutaProject(IScriptProject scriptProject, IBuildpathEntry[] buildPath,
+          IProgressMonitor monitor) throws CoreException {
+    IProject project = scriptProject.getProject();
     IFolder folder = project.getFolder(RutaProjectUtils.getDefaultInputLocation());
     if (!folder.exists()) {
       CoreUtility.createFolder(folder, true, true, new SubProgressMonitor(monitor, 1));
@@ -117,24 +124,24 @@ public class RutaProjectCreationWizard extends ProjectWizard {
     }
 
     List<BPListElement> buildpathEntries = new ArrayList<BPListElement>();
-    for (IBuildpathEntry buildpathEntry : fSecondPage.getRawBuildPath()) {
-      BPListElement createFromExisting = BPListElement.createFromExisting(buildpathEntry,
-              fSecondPage.getScriptProject());
-      if (createFromExisting.getBuildpathEntry().getEntryKind() != IBuildpathEntry.BPE_SOURCE) {
-        buildpathEntries.add(createFromExisting);
+    if (buildPath != null) {
+      for (IBuildpathEntry buildpathEntry : buildPath) {
+        BPListElement createFromExisting = BPListElement.createFromExisting(buildpathEntry,
+                scriptProject);
+        if (createFromExisting.getBuildpathEntry().getEntryKind() != IBuildpathEntry.BPE_SOURCE) {
+          buildpathEntries.add(createFromExisting);
+        }
       }
     }
     IBuildpathEntry newSourceEntry = DLTKCore.newSourceEntry(srcFolder.getFullPath());
-    buildpathEntries.add(BPListElement.createFromExisting(newSourceEntry,
-            fSecondPage.getScriptProject()));
+    buildpathEntries.add(BPListElement.createFromExisting(newSourceEntry, scriptProject));
 
-    BuildpathsBlock.flush(buildpathEntries, fSecondPage.getScriptProject(), monitor);
+    BuildpathsBlock.flush(buildpathEntries, scriptProject, monitor);
     copyDescriptors(descFolder);
 
     RutaProjectUtils.addProjectDataPath(project, descFolder);
 
     descFolder.refreshLocal(IResource.DEPTH_INFINITE, monitor);
-
   }
 
   public static void copyDescriptors(IFolder descFolder) {
@@ -156,7 +163,7 @@ public class RutaProjectCreationWizard extends ProjectWizard {
     copy(utilsDir, "HtmlTypeSystem.xml");
     copy(utilsDir, "HtmlConverter.xml");
     copy(utilsDir, "Cutter.xml");
-//    copy(utilsDir, "ViewWriter.xml");
+    copy(utilsDir, "ViewWriter.xml");
   }
 
   private static void copy(File dir, String fileName) {
