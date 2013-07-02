@@ -292,7 +292,8 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
           } else if (element instanceof CheckDocument) {
             newDoc = ((CheckDocument) element);
           }
-          if (casEditor != null && casEditor.getDocument() != null) {
+          if (casEditor != null && casEditor.getDocumentProvider() != null
+                  && casEditor.getDocument() != null) {
             IFile file = ((FileEditorInput) casEditor.getEditorInput()).getFile();
             if (!newDoc.source.equals(file.getLocation().toOSString())) {
               casEditor.getDocument().removeChangeListener(annotationListener);
@@ -545,7 +546,7 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
           RutaAddonsPlugin.error(e);
         }
         cd.checkedTypes.addAll(selectedTypes);
-        if(!docs.contains(cd)) {
+        if (!docs.contains(cd)) {
           docs.add(cd);
         }
       }
@@ -597,7 +598,8 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
         for (AnnotationCheckTreeNode anode : achildren) {
           CheckAnnotation e = (CheckAnnotation) anode.getElement();
           for (AnnotationFS eachAnnotation : annotations) {
-            if(eachAnnotation.getBegin() == e.begin && eachAnnotation.getEnd() ==  e.end && eachAnnotation.getType().getName().equals(e.type)) {
+            if (eachAnnotation.getBegin() == e.begin && eachAnnotation.getEnd() == e.end
+                    && eachAnnotation.getType().getName().equals(e.type)) {
               e.checked = true;
               e.keep = false;
             }
@@ -614,7 +616,7 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
 
   public void setOldDocs(List<CheckDocument> docs) {
     this.oldDocs = docs;
-    
+
   }
 
 }
