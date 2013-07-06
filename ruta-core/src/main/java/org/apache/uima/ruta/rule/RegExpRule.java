@@ -98,7 +98,8 @@ public class RegExpRule extends AbstractRule {
           ruleMatch.addMatched(0, afs);
         }
       }
-      if (!ruleMatch.getMatchedAnnotationsOfRoot().isEmpty()) {
+      List<AnnotationFS> matchedAnnotationsOfRoot = ruleMatch.getMatchedAnnotationsOfRoot();
+      if (matchedAnnotationsOfRoot != null && !matchedAnnotationsOfRoot.isEmpty()) {
         ruleApply.add(ruleMatch);
       }
     }
