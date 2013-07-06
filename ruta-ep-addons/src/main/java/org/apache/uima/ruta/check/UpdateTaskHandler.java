@@ -51,6 +51,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -69,23 +70,26 @@ public class UpdateTaskHandler implements IHandler {
 
     private String documentSink;
 
+    private AnnotationCheckTreeNode previousSelection;
+
     CheckAnnotationUpdateTaskJob(String documentSource, String documentSink, String typeSystem,
-            AnnotationCheckComposite composite) {
+            AnnotationCheckComposite composite, AnnotationCheckTreeNode previousSelection) {
       super("Update annotation check task...");
       this.documentSource = documentSource;
       this.documentSink = documentSink;
       this.typeSystem = typeSystem;
       this.composite = composite;
+      this.previousSelection = previousSelection;
     }
 
-    CheckAnnotationUpdateTaskJob(AnnotationCheckComposite composite) {
+    CheckAnnotationUpdateTaskJob(AnnotationCheckComposite composite, AnnotationCheckTreeNode previousSelection ) {
       this(composite.getDocumentSource(), composite.getDocumentSink(), composite.getTypeSystem(),
-              composite);
+              composite, previousSelection);
     }
 
     public IStatus run(IProgressMonitor monitor) {
       List<String> selectedTypes = composite.getSelectedTypes();
-
+      
       File dir = new File(documentSource);
       File[] listFiles = dir.listFiles(new FilenameFilter() {
         public boolean accept(File file, String string) {
@@ -162,7 +166,15 @@ public class UpdateTaskHandler implements IHandler {
           }
         }
       }
+      if(previousSelection != null) {
+        CheckElement element = previousSelection.getElement();
+        TreePath oldPath = getPathTo(element, root);
+        if(oldPath != null) {
+          treePath = oldPath;
+        }
+      }
       final TreeSelection firstSelection = new TreeSelection(treePath);
+      
       cas.release();
       composite.setOldDocs(docs);
       composite.getDisplay().asyncExec(new Runnable() {
@@ -174,6 +186,43 @@ public class UpdateTaskHandler implements IHandler {
       });
 
       return Status.OK_STATUS;
+    }
+
+    private TreePath getPathTo(CheckElement element, IAnnotationCheckTreeNode root) {
+      AnnotationCheckTreeNode[] children = root.getChildren();
+      for (AnnotationCheckTreeNode eachDocNode : children) {
+        if(element instanceof CheckAnnotation) {
+          AnnotationCheckTreeNode[] children2 = eachDocNode.getChildren();
+          for (AnnotationCheckTreeNode eachANode : children2) {
+            if(isSameElement(eachANode.getElement(), element)) {
+              return new TreePath(new Object[] { root, eachDocNode, eachANode});
+            }
+          }
+        } else {
+          if(isSameElement(eachDocNode.getElement(), element)) {
+            return new TreePath(new Object[] { root, eachDocNode});
+          }
+        }
+        
+      }
+      return null;
+    }
+
+    private boolean isSameElement(CheckElement e1, CheckElement e2) {
+      if(e1 == null || e2 == null) {
+        return false;
+      }
+      if(e1 instanceof CheckAnnotation && e2  instanceof CheckAnnotation) {
+        CheckAnnotation ca1 = (CheckAnnotation) e1;
+        CheckAnnotation ca2 = (CheckAnnotation) e2;
+        return ca1.begin == ca2.begin && ca1.end == ca2.end && ca1.type.equals(ca2.type);
+      }
+      if(e1 instanceof CheckDocument && e2 instanceof CheckDocument) {
+        CheckDocument cd1 = (CheckDocument) e1;
+        CheckDocument cd2 = (CheckDocument) e2;
+        return cd1.source.equals(cd2.source);
+      }
+      return false;
     }
 
     private boolean documentAlreadyDoneforTypes(CheckDocument element, List<String> selectedTypes) {
@@ -228,7 +277,9 @@ public class UpdateTaskHandler implements IHandler {
       acView = (AnnotationCheckView) HandlerUtil.getActiveWorkbenchWindow(event).getWorkbench()
               .getActiveWorkbenchWindow().getActivePage().showView(AnnotationCheckView.ID);
       AnnotationCheckComposite composite = (AnnotationCheckComposite) acView.getComposite();
-      CheckAnnotationUpdateTaskJob job = new CheckAnnotationUpdateTaskJob(composite);
+      TreeSelection selection = (TreeSelection) composite.getTreeViewer().getSelection();
+      AnnotationCheckTreeNode previousSelection = (AnnotationCheckTreeNode) selection.getFirstElement();
+      CheckAnnotationUpdateTaskJob job = new CheckAnnotationUpdateTaskJob(composite, previousSelection);
       job.schedule();
     } catch (Exception e) {
       RutaAddonsPlugin.error(e);

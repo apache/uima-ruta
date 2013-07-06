@@ -254,6 +254,18 @@ public class SelectTypesDialog extends Dialog implements Listener {
       Widget item = event.item;
       if (item instanceof TableItem) {
         TableItem ti = (TableItem) item;
+        TableItem[] selection = matchingTypesUI.getSelection();
+        for (TableItem tableItem : selection) {
+          if(tableItem != ti) {
+            if (ti.getChecked()) {
+              tableItem.setChecked(true);
+              selectedTypes.add(tableItem.getText());
+            } else {
+              selectedTypes.remove(tableItem.getText());
+              tableItem.setChecked(false);
+            }           
+          }
+        }
         if (ti.getChecked()) {
           selectedTypes.add(ti.getText());
         } else {
