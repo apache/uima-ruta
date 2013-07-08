@@ -28,7 +28,7 @@ import org.eclipse.ui.part.ViewPart;
 
 public class QueryView extends ViewPart {
 
-  public static final String ID = "org.apache.uima.ruta.query.ui.QueryView";
+  public static final String ID = "org.apache.uima.ruta.query.ui.ScriptQueryView";
 
   private QueryComposite viewContent;
 
