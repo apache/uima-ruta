@@ -517,4 +517,13 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
     }
   }
 
+  public void setInputDirectory(String absolutePath) {
+    inputDirectoryText.setText(absolutePath);
+  }
+  
+  public void setTypeSystem(String typeSystemLocation) {
+    typeSystemFileText.setText(typeSystemLocation);
+  }
+  
+  
 }
