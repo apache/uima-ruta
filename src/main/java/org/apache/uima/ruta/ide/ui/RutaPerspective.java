@@ -52,6 +52,8 @@ public class RutaPerspective implements IPerspectiveFactory {
 
   public static final String ID_NEW_PACKAGE_WIZARD = "org.apache.uima.ruta.ide.ui.wizards.NewPackageCreationWizard";
 
+  private static final String CHECK_ANNOTATIONS = "org.apache.uima.ruta.check";
+
   protected void addNewWizardShortcuts(IPageLayout layout) {
     layout.addNewWizardShortcut(RutaProjectCreationWizard.ID_WIZARD);
     layout.addNewWizardShortcut(RutaFileCreationWizard.ID_WIZARD);
@@ -92,6 +94,7 @@ public class RutaPerspective implements IPerspectiveFactory {
             editorArea);
     rightFolder.addView(IPageLayout.ID_OUTLINE);
     rightFolder.addView(TYPE_BROWSER);
+    rightFolder.addView(CHECK_ANNOTATIONS);
 
     // Folder
     IFolderLayout folder = layout.createFolder("left", IPageLayout.LEFT, (float) 0.2, editorArea); //$NON-NLS-1$		
