@@ -91,6 +91,13 @@
             </entry>
           </row>
           <row>
+            <entry>Check Annotations</entry>
+            <entry>
+              See
+              <xref linkend='section.tools.ruta.workbench.check' />
+            </entry>
+          </row>
+          <row>
             <entry>Covering Rules</entry>
             <entry>
               See
@@ -164,14 +171,14 @@
             <entry>TextRuler</entry>
             <entry>
               See
-              <xref linkend='section.ugr.tools.ruta.workbench.textruler' />
+              <xref linkend='section.tools.ruta.workbench.textruler' />
             </entry>
           </row>
           <row>
             <entry>TextRuler Results</entry>
             <entry>
               See
-              <xref linkend='section.ugr.tools.ruta.workbench.textruler' />
+              <xref linkend='section.tools.ruta.workbench.textruler' />
             </entry>
           </row>
           <row>

@@ -25,7 +25,7 @@ under the License.
 -->
 
 <section id="section.ugr.tools.ruta.workbench.ruta_query">
-  <title>Query View</title>
+  <title>Ruta Query View</title>
   <para> With the Query View, the UIMA Ruta language can be used to write queries on a set of
     documents. A query is simply a set of UIMA Ruta rules. Each query returns a list of all text
     passages the query applies to. For example, if you have a set of annotated documents containing

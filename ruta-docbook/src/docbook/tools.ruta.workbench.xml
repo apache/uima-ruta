@@ -52,6 +52,8 @@ under the License.
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.workbench.testing.xml" />
   
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.workbench.textruler.xml" />
+
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.workbench.check.xml" />
   
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.workbench.create_dictionaries.xml" />
   
