@@ -373,17 +373,25 @@ Document{->CONFIGURE(HtmlAnnotator, "onlyContent" = false)};]]></programlisting>
     <para>
       The EXEC action initiates the execution of a different script
       file or analysis engine on the complete input document, independent from
-      the matched text and the current filtering settings. If the argument
+      the matched text and the current filtering settings. If the first argument
       refers to another script file, a new view on the document is created:
       the complete text of the original CAS with the default filtering
-      settings of the UIMA Ruta analysis engine.
+      settings of the UIMA Ruta analysis engine. If the first argument refers to an 
+      external analysis engine, then it is applied on the complete document. 
+      The optinal, second argument is a list of types, which should be reindexed by Ruta (not UIMA itself).
     </para>
+    <note>
+    <para>
+      Annotations created by the external analysis engine are not accessible for UIMA Ruta rules in the same script. 
+      The types of these annoations need to be provided in the second argument in order to be visible to the Ruta rules.
+    </para>
+    </note>
     <section>
       <title>
         <emphasis role="bold">Definition:</emphasis>
       </title>
       <para>
-        <programlisting><![CDATA[EXEC(DifferentFile)]]></programlisting>
+        <programlisting><![CDATA[EXEC(DifferentFile(, TypeListExpression)?)]]></programlisting>
       </para>
     </section>
     <section>
@@ -392,11 +400,12 @@ Document{->CONFIGURE(HtmlAnnotator, "onlyContent" = false)};]]></programlisting>
       </title>
       <para>
         <programlisting><![CDATA[ENGINE NamedEntities;
-Document{->EXEC(NamedEntities)};]]></programlisting>
+Document{->EXEC(NamedEntities, {Person, Location})};]]></programlisting>
       </para>
       <para>
         Here, an analysis engine for named entity recognition is
-        executed once on the complete document.
+        executed once on the complete document and the annotations of the types Person and Location (and all subtypes) 
+        are reindexed in UIMA Ruta. Wihtout this list of types, the annoations are added to the CAS, but cannot be accessed by Ruta rules.
       </para>
     </section>
   </section>

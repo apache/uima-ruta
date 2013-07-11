@@ -540,11 +540,12 @@ Document{-> EXEC(Modifier)};
     whereas the given class name has to be present in the classpath. In the UIMA Ruta Workbench, you can add a dependency to a java project, which contains the 
     implementation, to the UIMA Ruta project. If the UIMA Ruta script is applied in a UIMA Pipeline, then the configuration parameter 
     <link linkend="ugr.tools.ruta.ae.basic.parameter.additionalUimafitEngines">additionalUimafitEngines</link> has to list the class of the analysis engine. 
-    The following example loads an analysis engine without an descriptor and applies it on the document.
+    The following example loads an analysis engine without an descriptor and applies it on the document. The additional list of types states that
+    the annoations of those types created by the analysis engine should be available to the following Ruta rules.
     
   </para>
       <programlisting><![CDATA[UIMAFIT my.package.impl.MyAnalysisEngine;
-Document{-> EXEC(MyAnalysisEngine)};
+Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
 ]]></programlisting>
   
   </section>
