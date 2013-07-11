@@ -81,7 +81,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   public static final String BASIC_TYPE = "org.apache.uima.ruta.type.RutaBasic";
 
   public static final String OPTIONAL_TYPE = "org.apache.uima.ruta.type.RutaOptional";
-  
+
   public static final String SEEDERS = "seeders";
 
   public static final String REMOVE_BASICS = "removeBasics";
@@ -127,8 +127,6 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   public static final String LOW_MEMORY_PROFILE = "lowMemoryProfile";
 
   public static final String SIMPLE_GREEDY_FOR_COMPOSED = "simpleGreedyForComposed";
-
-
 
   private String[] seeders;
 
@@ -327,17 +325,21 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     mainRootBlock.getEnvironment().initializeTypes(cas);
     Collection<RutaModule> values = script.getScripts().values();
     for (RutaModule eachModule : values) {
-      relinkEnvironments(eachModule, mainRootBlock);
+      relinkEnvironments(eachModule, mainRootBlock, new ArrayList<RutaModule>());
       // initializeTypes(eachModule, cas);
     }
   }
 
-  private void relinkEnvironments(RutaModule script, RutaBlock mainRootBlock) {
-    RutaBlock block = script.getBlock(null);
-    block.setParent(mainRootBlock);
-    Collection<RutaModule> innerScripts = script.getScripts().values();
-    for (RutaModule module : innerScripts) {
-      relinkEnvironments(module, mainRootBlock);
+  private void relinkEnvironments(RutaModule script, RutaBlock mainRootBlock,
+          Collection<RutaModule> processed) {
+    if (!processed.contains(script)) {
+      processed.add(script);
+      RutaBlock block = script.getBlock(null);
+      block.setParent(mainRootBlock);
+      Collection<RutaModule> innerScripts = script.getScripts().values();
+      for (RutaModule module : innerScripts) {
+        relinkEnvironments(module, mainRootBlock, processed);
+      }
     }
   }
 
@@ -709,7 +711,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private String collectionToString(Object[] collection) {
     return collectionToString(Arrays.asList(collection));
   }
-  
+
   public void batchProcessComplete() throws AnalysisEngineProcessException {
     super.batchProcessComplete();
     Collection<AnalysisEngine> values = script.getEngines().values();
@@ -725,7 +727,5 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       each.collectionProcessComplete();
     }
   }
-  
-  
-  
+
 }
