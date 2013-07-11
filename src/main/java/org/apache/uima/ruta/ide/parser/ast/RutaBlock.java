@@ -38,8 +38,6 @@ public class RutaBlock extends MethodDeclaration {
     this.namespace = StringUtils.isEmpty(namespace) ? name : namespace + "." + name;
   }
 
-  public void setElements(List<Statement> body) {
-  }
 
   public String getNamespace() {
     return namespace;

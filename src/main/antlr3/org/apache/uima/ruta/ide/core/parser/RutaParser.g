@@ -236,9 +236,9 @@ RutaScriptBlock rootBlock = null;
 List<Statement> stmts = new ArrayList<Statement>();
 }
 	:	
-	p = packageDeclaration
+	p = packageDeclaration?
 	{
-	String packageName = "org.apache.uima.ruta";
+	String packageName = "";
 	if(p != null) {packageName = p.getName();}
 	rootBlock = scriptFactory.createScriptBlock(0,0,0,0,module, null, null, packageName);
 	stmts.add(p);
