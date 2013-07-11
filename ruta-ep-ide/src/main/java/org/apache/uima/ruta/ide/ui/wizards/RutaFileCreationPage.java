@@ -19,9 +19,19 @@
 
 package org.apache.uima.ruta.ide.ui.wizards;
 
+import java.util.List;
+
+import org.apache.uima.ruta.ide.RutaIdePlugin;
 import org.apache.uima.ruta.ide.core.RutaNature;
+import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.dltk.core.IBuildpathEntry;
+import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IScriptFolder;
+import org.eclipse.dltk.core.IScriptProject;
+import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.ui.wizards.NewSourceModulePage;
 
 public class RutaFileCreationPage extends NewSourceModulePage {
@@ -34,19 +44,51 @@ public class RutaFileCreationPage extends NewSourceModulePage {
   @Override
   protected String getFileContent() {
     StringBuilder sb = new StringBuilder();
-    sb.append("PACKAGE ");
     IScriptFolder scriptFolder = getScriptFolder();
-    IPath path = scriptFolder.getPath().removeFirstSegments(1);
+    IScriptProject scriptProject = scriptFolder.getScriptProject();
+
+    
+    IFolder folder = null;
+    try {
+      folder = getScriptFolderOf(scriptFolder, scriptProject);
+    } catch (ModelException e) {
+      RutaIdePlugin.error(e);
+    }
+    if(folder == null)  {
+      return "";
+    }
+    
+    IPath path = scriptFolder.getPath();
+    IPath fullPath = folder.getFullPath();
+    IPath relativeTo = path.makeRelativeTo(fullPath);
+    if(!relativeTo.isEmpty()) {
+    sb.append("PACKAGE ");
     String pathString = "";
-    for (int i = 1; i < path.segments().length; i++) {
-      pathString += path.segments()[i];
-      if (i < path.segments().length - 1) {
+    for (int i = 0; i < relativeTo.segments().length; i++) {
+      pathString += relativeTo.segments()[i];
+      if (i < relativeTo.segments().length - 1) {
         pathString += ".";
       }
     }
     sb.append(pathString);
     sb.append(";\n");
+    }
     return sb.toString();
+  }
+
+  private IFolder getScriptFolderOf(IScriptFolder scriptFolder, IScriptProject scriptProject) throws ModelException {
+    List<IFolder> scriptFolders = RutaProjectUtils.getScriptFolders(scriptProject);
+    for (IFolder each : scriptFolders) {
+      if(each.equals(scriptFolder.getResource())) {
+        return each;
+      }
+      IPath path = scriptFolder.getPath().makeRelativeTo(each.getFullPath());
+      IResource findMember = each.findMember(path);
+      if(findMember != null && findMember instanceof IFolder) {
+        return each;
+      }
+    }
+    return null;
   }
 
   @Override

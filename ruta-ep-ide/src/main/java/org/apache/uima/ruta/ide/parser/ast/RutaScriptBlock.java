@@ -19,20 +19,12 @@
 
 package org.apache.uima.ruta.ide.parser.ast;
 
-import java.util.List;
-
-import org.eclipse.dltk.ast.statements.Statement;
 
 public class RutaScriptBlock extends RutaBlock {
 
   public RutaScriptBlock(String name, String namespace, int nameStart, int nameEnd, int declStart,
           int declEnd) {
     super(name, namespace, nameStart, nameEnd, declStart, declEnd);
-  }
-
-  @Override
-  public void setElements(List<Statement> stmts) {
-
   }
 
 }

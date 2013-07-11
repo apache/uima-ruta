@@ -275,7 +275,7 @@ RutaScriptBlock rootBlock = null;
 List<RutaStatement> stmts = new ArrayList<RutaStatement>();
 }
 	:
-	p = packageDeclaration	
+	p = packageDeclaration?
 	{
 	rootBlock = factory.createRootScriptBlock(moduleName, p);
         rootBlock.getEnvironment().setResourcePaths(resourcePaths);

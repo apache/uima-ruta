@@ -89,7 +89,10 @@ public class RutaScriptFactory {
   }
 
   public RutaScriptBlock createRootScriptBlock(String module, String pack) {
-    String defaultNamespace = pack + "." + module;
+    String defaultNamespace = module;
+    if(pack != null) {
+      defaultNamespace = pack + "." + module;
+    }
     RutaScriptBlock result = createScriptBlock(module, null, null, null, defaultNamespace);
     List<RuleElement> ruleElements = new ArrayList<RuleElement>();
     RuleElementIsolator container = new RuleElementIsolator();
