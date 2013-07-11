@@ -151,14 +151,10 @@ under the License.
       is given <link linkend="section.ugr.tools.ruta.workbench.install">here</link>. The following examples make use of the 
       annotations added by the default seeding of the UIMA Ruta Analysis Engine. Their meaning is explained along with the examples. 
     </para>
-    <note><para>
-      The examples in this section are not valid script files as they are missing at least a package declaration. 
-      In order to obtain a valid script file, please ensure that all used types are imported or declared and 
-      that a package declaration like <quote>PACKAGE uima.ruta.example;</quote> is added in the first line of the script.
-    </para></note>
     <para>
       The first example consists of a declaration of a type followed by a simple rule. Type declarations always start with the keyword 
       <quote>DECLARE</quote> followed by the short name of the new type. The namespace of the type is equal to the package declaration of the script file.
+      If there is no package declaration, then the types declared in the script file have no namespace.
       There is also the possibility to create more complex types with features or specific parent types, but this will be neglected for now.
       In the example, a simple annotation type with the short name <quote>Animal</quote> is defined.
       After the declaration of the type, a rule with one rule element is given. 

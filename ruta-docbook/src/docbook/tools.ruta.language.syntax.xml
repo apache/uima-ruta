@@ -26,7 +26,7 @@
     Structure: The overall structure of a UIMA Ruta
     script is defined by
     the following syntax.
-    <programlisting><![CDATA[Script              -> PackageDeclaration GlobalStatements Statements
+    <programlisting><![CDATA[Script              -> PackageDeclaration? GlobalStatements Statements
 PackageDeclaration  -> "PACKAGE" DottedIdentifier ";"
 GlobalStatments     -> GlobalStatement*   
 GlobalStatment      -> ("TYPESYSTEM" | "SCRIPT" | "ENGINE" | "UIMAFIT") 
