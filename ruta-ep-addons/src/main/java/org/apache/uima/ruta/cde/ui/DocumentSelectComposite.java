@@ -119,7 +119,6 @@ public class DocumentSelectComposite extends Composite {
 
   private TableColumn tc3;
 
-
   private Text measuresText;
 
   private CDEComparatorFactory compareFactory;
@@ -666,7 +665,7 @@ public class DocumentSelectComposite extends Composite {
   }
 
   public void setDocumentsByDir() {
-    File file = new File(inputDirectoryText.getText());    
+    File file = new File(inputDirectoryText.getText());
     setDocumentsByDir(file);
   }
 

@@ -28,38 +28,37 @@ import org.eclipse.ui.part.ViewPart;
 
 public class ConstraintSelectView extends ViewPart {
 
-	
-	private ConstraintSelectComposite consSelectComp; 
-	
+  private ConstraintSelectComposite consSelectComp;
+
   private IMemento memento;
-	
-	
-	public ConstraintSelectView() {
-		super();
-	}
-	@Override
-	public void createPartControl(Composite parent) {
-		consSelectComp =  new ConstraintSelectComposite(parent, SWT.FILL);
-		if (memento != null) {
-		  consSelectComp.restoreState(memento);
+
+  public ConstraintSelectView() {
+    super();
+  }
+
+  @Override
+  public void createPartControl(Composite parent) {
+    consSelectComp = new ConstraintSelectComposite(parent, SWT.FILL);
+    if (memento != null) {
+      consSelectComp.restoreState(memento);
       memento = null;
     }
-	}
-
-	@Override
-	public void setFocus() {
-		// TODO Auto-generated method stub
-		this.consSelectComp.setFocus();
-	}
-	
-	public ConstraintSelectComposite getComposite() {
-		return consSelectComp;
-	}
-	
-	public void saveState(IMemento memento) {
-	  consSelectComp.saveState(memento);
   }
-	
+
+  @Override
+  public void setFocus() {
+    // TODO Auto-generated method stub
+    this.consSelectComp.setFocus();
+  }
+
+  public ConstraintSelectComposite getComposite() {
+    return consSelectComp;
+  }
+
+  public void saveState(IMemento memento) {
+    consSelectComp.saveState(memento);
+  }
+
   public void init(IViewSite site, IMemento memento) throws PartInitException {
     this.memento = memento;
     super.init(site, memento);

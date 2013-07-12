@@ -36,15 +36,16 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 public class ImportConstraintsHandler implements IHandler {
-  
+
   private class ImportJob extends Job {
-   
+
     String inputLocation;
+
     ConstraintSelectComposite composite;
-    
+
     public ImportJob(ExecutionEvent event, ConstraintSelectComposite composite, String inputLocation) {
       super("Importing constraints");
-      this.inputLocation = inputLocation; 
+      this.inputLocation = inputLocation;
       this.composite = composite;
     }
 
@@ -57,16 +58,16 @@ public class ImportConstraintsHandler implements IHandler {
             composite.getViewer().setInput(composite.getConstraintList());
             composite.getViewer().refresh();
             composite.update();
-          } 
-        }); 
-      
+          }
+        });
+
       } catch (Exception e) {
         e.printStackTrace();
       }
       return Status.OK_STATUS;
     }
   }
-  
+
   public void addHandlerListener(IHandlerListener arg0) {
   }
 
@@ -76,25 +77,22 @@ public class ImportConstraintsHandler implements IHandler {
   public Object execute(ExecutionEvent event) throws ExecutionException {
     ConstraintSelectView constraintView;
     try {
-    constraintView = (ConstraintSelectView) HandlerUtil
-            .getActiveWorkbenchWindow(event)
-            .getWorkbench()
-            .getActiveWorkbenchWindow()
-            .getActivePage()
-            .showView("org.apache.uima.ruta.cde.ui.ConstraintSelectView");
-    ConstraintSelectComposite composite = (ConstraintSelectComposite) constraintView
-            .getComposite();
-    FileDialog dlg = new FileDialog(HandlerUtil.getActiveShell(event), SWT.OPEN);
-    String [] extensions = {"*.xml"};
-    dlg.setFilterExtensions(extensions);
-    String s = dlg.open();
-    if (s != null) {
-      ImportJob job = new ImportJob(event, composite, s);
-      job.schedule();
-    } else {
-      return Status.CANCEL_STATUS;
-    }
-    }catch (Exception e) {
+      constraintView = (ConstraintSelectView) HandlerUtil.getActiveWorkbenchWindow(event)
+              .getWorkbench().getActiveWorkbenchWindow().getActivePage()
+              .showView("org.apache.uima.ruta.cde.ui.ConstraintSelectView");
+      ConstraintSelectComposite composite = (ConstraintSelectComposite) constraintView
+              .getComposite();
+      FileDialog dlg = new FileDialog(HandlerUtil.getActiveShell(event), SWT.OPEN);
+      String[] extensions = { "*.xml" };
+      dlg.setFilterExtensions(extensions);
+      String s = dlg.open();
+      if (s != null) {
+        ImportJob job = new ImportJob(event, composite, s);
+        job.schedule();
+      } else {
+        return Status.CANCEL_STATUS;
+      }
+    } catch (Exception e) {
       e.printStackTrace();
     }
     return Status.OK_STATUS;

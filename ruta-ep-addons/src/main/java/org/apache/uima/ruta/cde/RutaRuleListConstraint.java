@@ -57,14 +57,17 @@ public class RutaRuleListConstraint implements IRutaRuleConstraint {
 
   private String typeSystemLocation;
 
+  private AnalysisEngine ae;
+
+  private boolean initalized = false;
+
   public RutaRuleListConstraint(String rules, String description) {
     this.rules = rules;
     this.description = description;
     this.typeSystemLocation = "";
   }
 
-  public Double processConstraint(CAS cas) throws Exception {
-
+  public void initialize() throws Exception {
     String script = "PACKAGE org.apache.uima.ruta;\n\n";
     if (!rules.endsWith(";")) {
       rules = rules + ";";
@@ -99,7 +102,7 @@ public class RutaRuleListConstraint implements IRutaRuleConstraint {
       aed.getAnalysisEngineMetaData().setTypeSystem(mergeTypeSystems);
     }
     aed.resolveImports(resMgr);
-    AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed, resMgr, null);
+    ae = UIMAFramework.produceAnalysisEngine(aed, resMgr, null);
     File tempFile = File.createTempFile("RutaCDE", RutaEngine.SCRIPT_FILE_EXTENSION);
     tempFile.deleteOnExit();
     FileUtils.saveString2File(script, tempFile, "UTF-8");
@@ -114,13 +117,17 @@ public class RutaRuleListConstraint implements IRutaRuleConstraint {
     ae.setConfigParameterValue(RutaEngine.CREATE_PROFILING_INFO, false);
     ae.setConfigParameterValue(RutaEngine.CREATE_STATISTIC_INFO, false);
     ae.reconfigure();
+  }
+
+  public Double processConstraint(CAS cas) throws Exception {
+    if (!initalized) {
+      initialize();
+    }
 
     Type matchedType = cas.getTypeSystem().getType(
             "org.apache.uima.ruta.type.DebugMatchedRuleMatch");
-    Type ruleApplyType = cas.getTypeSystem().getType(
-            "org.apache.uima.ruta.type.DebugRuleApply");
-    Type blockApplyType = cas.getTypeSystem().getType(
-            "org.apache.uima.ruta.type.DebugBlockApply");
+    Type ruleApplyType = cas.getTypeSystem().getType("org.apache.uima.ruta.type.DebugRuleApply");
+    Type blockApplyType = cas.getTypeSystem().getType("org.apache.uima.ruta.type.DebugBlockApply");
 
     removeDebugAnnotations(cas, matchedType, ruleApplyType, blockApplyType);
 
@@ -185,11 +192,11 @@ public class RutaRuleListConstraint implements IRutaRuleConstraint {
       cas.removeFsFromIndexes(annotationFS);
     }
   }
-  
+
   public String getDescription() {
     return description;
   }
-  
+
   public void setDescription(String description) {
     this.description = description;
   }
@@ -207,7 +214,7 @@ public class RutaRuleListConstraint implements IRutaRuleConstraint {
   }
 
   public void setData(String data) {
-   this.rules = data;
+    this.rules = data;
   }
 
 }

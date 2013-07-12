@@ -72,8 +72,8 @@ public class ConstraintDialog extends Dialog {
     ruleText.setText(rule);
     descriptionText.setText(description);
   }
-  
-  public void create (RutaGEConstraint constraint) {
+
+  public void create(RutaGEConstraint constraint) {
     super.create();
     rule = constraint.getData();
     description = constraint.getDescription();
@@ -106,7 +106,7 @@ public class ConstraintDialog extends Dialog {
     TextGridData.horizontalSpan = 3;
     TextGridData.minimumHeight = 100;
     TextGridData.minimumWidth = 400;
-    ruleText = new Text(parent, SWT.MULTI | SWT.BORDER| SWT.V_SCROLL | SWT.H_SCROLL);
+    ruleText = new Text(parent, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
     ruleText.setLayoutData(TextGridData);
 
     Label label2 = new Label(parent, SWT.FILL);
@@ -120,7 +120,7 @@ public class ConstraintDialog extends Dialog {
   }
 
   private boolean isValidInput() {
-   return !StringUtils.isBlank(ruleText.getText());
+    return !StringUtils.isBlank(ruleText.getText());
   }
 
   protected boolean isResizable() {

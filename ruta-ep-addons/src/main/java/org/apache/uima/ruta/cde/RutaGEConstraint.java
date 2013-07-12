@@ -53,19 +53,21 @@ public class RutaGEConstraint implements IRutaConstraint {
 
   private String description;
 
+  private AnalysisEngine ae;
+
+  private boolean initalized = false;
+
+  private HashMap<String, Double> rulesMap;;
+
   public RutaGEConstraint(String constraintText, String description) {
     this.constraintText = constraintText;
     this.description = description;
   }
 
-  public Double processConstraint(CAS cas) throws Exception {
+  public void initialize() throws Exception {
     // Constraint Format: "Peter":Author 0.44, Editor 0.50
-    // counts for sysouts, remove later
-    int runCount = 0;
-    int printCount = 0;
 
-    HashMap<String, Double> rulesMap = createRuleSet();
-    ArrayList<Double[]> results = new ArrayList<Double[]>();
+    rulesMap = createRuleSet();
 
     Iterator<Entry<String, Double>> rulesIterator = rulesMap.entrySet().iterator();
     StringBuilder sb = new StringBuilder();
@@ -94,7 +96,7 @@ public class RutaGEConstraint implements IRutaConstraint {
     ResourceManager resMgr = UIMAFramework.newDefaultResourceManager();
     AnalysisEngineDescription aed = (AnalysisEngineDescription) specifier;
 
-    AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed, resMgr, null);
+    ae = UIMAFramework.produceAnalysisEngine(aed, resMgr, null);
     File tempFile = File.createTempFile("RutaCDE", RutaEngine.SCRIPT_FILE_EXTENSION);
     tempFile.deleteOnExit();
     FileUtils.saveString2File(sb.toString(), tempFile, "UTF-8");
@@ -109,7 +111,15 @@ public class RutaGEConstraint implements IRutaConstraint {
     ae.setConfigParameterValue(RutaEngine.CREATE_PROFILING_INFO, false);
     ae.setConfigParameterValue(RutaEngine.CREATE_STATISTIC_INFO, false);
     ae.reconfigure();
+  }
 
+  public Double processConstraint(CAS cas) throws Exception {
+    if (!initalized) {
+      initialize();
+    }
+    int runCount = 0;
+    int printCount = 0;
+    ArrayList<Double[]> results = new ArrayList<Double[]>();
     Type matchedType = cas.getTypeSystem().getType(
             "org.apache.uima.ruta.type.DebugMatchedRuleMatch");
     Type ruleApplyType = cas.getTypeSystem().getType("org.apache.uima.ruta.type.DebugRuleApply");
@@ -208,7 +218,7 @@ public class RutaGEConstraint implements IRutaConstraint {
       for (String constraintLine : constraintTextArray) {
 
         String[] patternAndEstimates = constraintLine.split(":");
-        if(patternAndEstimates.length < 2) {
+        if (patternAndEstimates.length < 2) {
           continue;
         }
         String pattern = patternAndEstimates[0];

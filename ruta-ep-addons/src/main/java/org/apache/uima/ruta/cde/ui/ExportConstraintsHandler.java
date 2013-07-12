@@ -62,7 +62,7 @@ public class ExportConstraintsHandler implements IHandler {
         IPath path = Path.fromPortableString(outputLocation);
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
         IFile ifile = root.getFileForLocation(path);
-        if(ifile != null) {
+        if (ifile != null) {
           ifile.getParent().refreshLocal(IResource.DEPTH_INFINITE, monitor);
         }
       } catch (Exception e) {
@@ -90,11 +90,8 @@ public class ExportConstraintsHandler implements IHandler {
     ConstraintSelectView constraintView;
 
     try {
-      constraintView = (ConstraintSelectView) HandlerUtil
-              .getActiveWorkbenchWindow(event)
-              .getWorkbench()
-              .getActiveWorkbenchWindow()
-              .getActivePage()
+      constraintView = (ConstraintSelectView) HandlerUtil.getActiveWorkbenchWindow(event)
+              .getWorkbench().getActiveWorkbenchWindow().getActivePage()
               .showView("org.apache.uima.ruta.cde.ui.ConstraintSelectView");
       ConstraintSelectComposite composite = (ConstraintSelectComposite) constraintView
               .getComposite();

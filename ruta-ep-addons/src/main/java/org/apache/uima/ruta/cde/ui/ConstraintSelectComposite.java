@@ -45,8 +45,6 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.dnd.Clipboard;
-import org.eclipse.swt.dnd.TextTransfer;
-import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.ModifyEvent;
@@ -69,7 +67,7 @@ import org.eclipse.ui.IMemento;
 public class ConstraintSelectComposite extends Composite implements ISelectionChangedListener {
 
   private Clipboard clipboard;
-  
+
   private Button constraintButtonRuta;
 
   private Button constraintButtonRutaList;
@@ -134,8 +132,8 @@ public class ConstraintSelectComposite extends Composite implements ISelectionCh
         ConstraintDialog cdialog = new ConstraintDialog(getShell());
         cdialog.create();
         if (cdialog.open() == Window.OK) {
-          SimpleRutaRuleConstraint newConstraint = new SimpleRutaRuleConstraint(cdialog
-                  .getRule(), cdialog.getDescription());
+          SimpleRutaRuleConstraint newConstraint = new SimpleRutaRuleConstraint(cdialog.getRule(),
+                  cdialog.getDescription());
           ConstraintData newConstraintData = new ConstraintData(newConstraint);
           constraintList.add(newConstraintData);
           tableViewer.setInput(constraintList);
@@ -190,7 +188,8 @@ public class ConstraintSelectComposite extends Composite implements ISelectionCh
         ConstraintDialog cdialog = new ConstraintDialog(getShell());
         cdialog.create();
         if (cdialog.open() == Window.OK) {
-          RutaGEConstraint newConstraint = new RutaGEConstraint(cdialog.getRule(), cdialog.getDescription());
+          RutaGEConstraint newConstraint = new RutaGEConstraint(cdialog.getRule(), cdialog
+                  .getDescription());
           ConstraintData newConstraintData = new ConstraintData(newConstraint);
           constraintList.add(newConstraintData);
           tableViewer.setInput(constraintList);
@@ -254,22 +253,22 @@ public class ConstraintSelectComposite extends Composite implements ISelectionCh
     table.addKeyListener(new KeyListener() {
 
       public void keyPressed(KeyEvent e) {
-//        if (((e.stateMask & SWT.CTRL) == SWT.CTRL) && (e.keyCode == 'c')) {
-//          String output = "";
-//          TableItem[] items = table.getSelection();
-//          for (TableItem item : items) {
-//            ConstraintData data = (ConstraintData) item.getData();
-//            output = output + data.getConstraint().getData() + "\n";
-//          }
-//          clipboard.setContents(new Object[] { output },
-//                  new Transfer[] { TextTransfer.getInstance() });
-//        }
+        // if (((e.stateMask & SWT.CTRL) == SWT.CTRL) && (e.keyCode == 'c')) {
+        // String output = "";
+        // TableItem[] items = table.getSelection();
+        // for (TableItem item : items) {
+        // ConstraintData data = (ConstraintData) item.getData();
+        // output = output + data.getConstraint().getData() + "\n";
+        // }
+        // clipboard.setContents(new Object[] { output },
+        // new Transfer[] { TextTransfer.getInstance() });
+        // }
       }
 
       public void keyReleased(KeyEvent arg0) {
       }
     });
-    
+
     tableViewer.addDoubleClickListener(new IDoubleClickListener() {
       public void doubleClick(DoubleClickEvent event) {
         IStructuredSelection selection = (IStructuredSelection) tableViewer.getSelection();
@@ -296,8 +295,8 @@ public class ConstraintSelectComposite extends Composite implements ISelectionCh
             ConstraintDialog cdialog = new ConstraintDialog(getShell());
             cdialog.create((RutaRuleListConstraint) constraint);
             if (cdialog.open() == Window.OK) {
-              RutaRuleListConstraint newConstraint = new RutaRuleListConstraint(cdialog
-                      .getRule(), cdialog.getDescription());
+              RutaRuleListConstraint newConstraint = new RutaRuleListConstraint(cdialog.getRule(),
+                      cdialog.getDescription());
               data.setConstraint(newConstraint);
               tableViewer.setInput(constraintList);
               tableViewer.refresh();
@@ -483,16 +482,15 @@ public class ConstraintSelectComposite extends Composite implements ISelectionCh
                 .getConstraint();
         currentMemento.createChild("Data", constraint.getData());
         currentMemento.createChild("Description", constraint.getDescription());
-        currentMemento.createChild("Weight", ""+constraintData.getWeight());
+        currentMemento.createChild("Weight", "" + constraintData.getWeight());
       }
 
       if (constraintData.getConstraint() instanceof RutaRuleListConstraint) {
         IMemento currentMemento = memento.createChild("constraint", "ListRutaConstraint");
-        RutaRuleListConstraint constraint = (RutaRuleListConstraint) constraintData
-                .getConstraint();
+        RutaRuleListConstraint constraint = (RutaRuleListConstraint) constraintData.getConstraint();
         currentMemento.createChild("Data", constraint.getData());
         currentMemento.createChild("Description", constraint.getDescription());
-        currentMemento.createChild("Weight", ""+constraintData.getWeight());
+        currentMemento.createChild("Weight", "" + constraintData.getWeight());
       }
 
       if (constraintData.getConstraint() instanceof RutaGEConstraint) {
@@ -500,7 +498,7 @@ public class ConstraintSelectComposite extends Composite implements ISelectionCh
         RutaGEConstraint constraint = (RutaGEConstraint) constraintData.getConstraint();
         currentMemento.createChild("Data", constraint.getData());
         currentMemento.createChild("Description", constraint.getDescription());
-        currentMemento.createChild("Weight", ""+constraintData.getWeight());
+        currentMemento.createChild("Weight", "" + constraintData.getWeight());
       }
     }
   }
@@ -513,7 +511,7 @@ public class ConstraintSelectComposite extends Composite implements ISelectionCh
         SimpleRutaRuleConstraint constraint = new SimpleRutaRuleConstraint(rule, description);
         ConstraintData data = new ConstraintData(constraint);
         String weightString = constraintMemento.getChild("Weight").getID();
-        if(!StringUtils.isBlank(weightString)) {
+        if (!StringUtils.isBlank(weightString)) {
           data.setWeight(Integer.parseInt(weightString));
         }
         constraintList.add(data);
@@ -524,7 +522,7 @@ public class ConstraintSelectComposite extends Composite implements ISelectionCh
         RutaRuleListConstraint constraint = new RutaRuleListConstraint(rule, description);
         ConstraintData data = new ConstraintData(constraint);
         String weightString = constraintMemento.getChild("Weight").getID();
-        if(!StringUtils.isBlank(weightString)) {
+        if (!StringUtils.isBlank(weightString)) {
           data.setWeight(Integer.parseInt(weightString));
         }
         constraintList.add(data);
@@ -535,7 +533,7 @@ public class ConstraintSelectComposite extends Composite implements ISelectionCh
         RutaGEConstraint constraint = new RutaGEConstraint(rule, description);
         ConstraintData data = new ConstraintData(constraint);
         String weightString = constraintMemento.getChild("Weight").getID();
-        if(!StringUtils.isBlank(weightString)) {
+        if (!StringUtils.isBlank(weightString)) {
           data.setWeight(Integer.parseInt(weightString));
         }
         constraintList.add(data);
@@ -552,5 +550,5 @@ public class ConstraintSelectComposite extends Composite implements ISelectionCh
   public void setConstraints(List<ConstraintData> constraints) {
     this.constraintList = constraints;
   }
-  
+
 }

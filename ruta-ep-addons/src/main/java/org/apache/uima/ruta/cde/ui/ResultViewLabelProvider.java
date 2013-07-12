@@ -44,12 +44,12 @@ public class ResultViewLabelProvider implements ITableLabelProvider {
   }
 
   public String getColumnText(Object input, int column) {
-    if(input instanceof String[]) {
-      String[] results = (String[])input;
-      switch(column) {
-        case 0 :
+    if (input instanceof String[]) {
+      String[] results = (String[]) input;
+      switch (column) {
+        case 0:
           return results[0];
-        case 1 : 
+        case 1:
           return results[1];
       }
     }

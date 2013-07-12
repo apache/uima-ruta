@@ -35,11 +35,9 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class CDEPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
   private IntegerFieldEditor editor1;
-  
+
   private IntegerFieldEditor editor2;
-  
-  
-  
+
   public CDEPreferencePage() {
     IPreferenceStore store = RutaAddonsPlugin.getDefault().getPreferenceStore();
     setPreferenceStore(store);
@@ -54,7 +52,6 @@ public class CDEPreferencePage extends PreferencePage implements IWorkbenchPrefe
     super(title, image);
     // TODO Auto-generated constructor stub
   }
-  
 
   public void init(IWorkbench arg0) {
 
@@ -65,20 +62,22 @@ public class CDEPreferencePage extends PreferencePage implements IWorkbenchPrefe
     Composite top = new Composite(parent, SWT.LEFT);
     top.setLayout(new GridLayout());
     top.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    
-    editor1 = new IntegerFieldEditor(CDEPreferenceConstants.GOOD_RESULT_THRESHOLD, "Good result threshold", top);
+
+    editor1 = new IntegerFieldEditor(CDEPreferenceConstants.GOOD_RESULT_THRESHOLD,
+            "Good result threshold", top);
     editor1.setPage(this);
     editor1.setPreferenceStore(getPreferenceStore());
     editor1.load();
 
-    editor2 = new IntegerFieldEditor(CDEPreferenceConstants.AVERAGE_RESULT_THRESHOLD, "Average result threshold", top);
+    editor2 = new IntegerFieldEditor(CDEPreferenceConstants.AVERAGE_RESULT_THRESHOLD,
+            "Average result threshold", top);
     editor2.setPage(this);
     editor2.setPreferenceStore(getPreferenceStore());
     editor2.load();
 
     return top;
   }
-  
+
   public boolean performOk() {
     editor1.store();
     editor2.store();

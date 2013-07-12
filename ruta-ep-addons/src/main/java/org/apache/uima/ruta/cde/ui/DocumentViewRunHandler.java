@@ -57,7 +57,6 @@ import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
-import org.eclipse.ui.internal.Workbench;
 
 public class DocumentViewRunHandler implements IHandler {
 
@@ -93,8 +92,7 @@ public class DocumentViewRunHandler implements IHandler {
               results.add(new Double[] { result, score });
             }
           }
-          composite.updateMeasureReport(
-                  "" + EvaluationMeasures.getMeasureReport(results));
+          composite.updateMeasureReport("" + EvaluationMeasures.getMeasureReport(results));
         } catch (Exception e) {
           RutaAddonsPlugin.error(e);
         }
@@ -130,33 +128,45 @@ public class DocumentViewRunHandler implements IHandler {
     public IStatus run(IProgressMonitor monitor) {
 
       monitor.beginTask("UIMA Ruta CDE", constraints.size() * documents.size());
-
+      CAS inputCAS = null;
+      CAS testCas = null;
+      try {
+        URL tpUrl = this.getClass().getResource("/org/apache/uima/ruta/engine/TypePriorities.xml");
+        TypePriorities typePriorities = UIMAFramework.getXMLParser().parseTypePriorities(
+                new XMLInputSource(tpUrl));
+        TypeSystemDescription descriptor = (TypeSystemDescription) UIMAFramework.getXMLParser()
+                .parse(new XMLInputSource(typeSystem));
+        inputCAS = CasCreationUtils
+                .createCas(descriptor, typePriorities, new FsIndexDescription[0]);
+        testCas = CasCreationUtils.createCas(descriptor, null, new FsIndexDescription[0]);
+      } catch (Exception e) {
+        RutaAddonsPlugin.error(e);
+      }
       for (DocumentData document : documents) {
+        if (monitor.isCanceled()) {
+          return Status.CANCEL_STATUS;
+        }
         double count = 0;
         double augResult = 0;
         document.setResults(new ArrayList<String[]>());
         if (constraints.size() > 0) {
           monitor.setTaskName("UIMA Ruta CDE: " + document.getDocument().getName());
           try {
-            TypeSystemDescription descriptor = (TypeSystemDescription) UIMAFramework.getXMLParser()
-                    .parse(new XMLInputSource(typeSystem));
-
-            URL tpUrl = this.getClass().getResource(
-                    "/org/apache/uima/ruta/engine/TypePriorities.xml");
-            TypePriorities typePriorities = UIMAFramework.getXMLParser().parseTypePriorities(
-                    new XMLInputSource(tpUrl));
-            CAS inputCAS = CasCreationUtils.createCas(descriptor, typePriorities,
-                    new FsIndexDescription[0]);
+            inputCAS.reset();
             XmiCasDeserializer.deserialize(new FileInputStream(document.getDocument()), inputCAS,
                     true);
             for (ConstraintData constraintData : constraints) {
+              if (monitor.isCanceled()) {
+                return Status.CANCEL_STATUS;
+              }
               String[] partialResult = new String[2];
               IRutaConstraint constraint = constraintData.getConstraint();
               if (constraint instanceof IRutaRuleConstraint) {
                 ((IRutaRuleConstraint) constraint).setTypeSystemLocation(typeSystem
                         .getAbsolutePath());
               }
-              // Calculating and adding results to the documentData object
+              // Calculating and adding results to the
+              // documentData object
               Double partResult = constraint.processConstraint(inputCAS);
               if (partResult != null) {
                 partialResult[0] = constraint.getDescription();
@@ -173,15 +183,15 @@ public class DocumentViewRunHandler implements IHandler {
             }
 
             if (testDataPath != null) {
-              // Hashmap to save all the FileNames without fileExtension and FullPath, both as
+              // Hashmap to save all the FileNames without
+              // fileExtension and FullPath, both as
               // strings
               HashMap<String, String> testFilesMap = createFileMap(testDataPath);
               String documentFileName = getFileNameWithoutExtensions(document.getDocument()
                       .getAbsolutePath());
               if (testFilesMap.get(documentFileName) != null) {
                 File testFile = new File(testFilesMap.get(documentFileName));
-                CAS testCas = CasCreationUtils.createCas(descriptor, null,
-                        new FsIndexDescription[0]);
+                testCas.reset();
                 XmiCasDeserializer.deserialize(new FileInputStream(testFile), testCas, true);
                 IPreferenceStore store = RutaAddonsPlugin.getDefault().getPreferenceStore();
                 String factoryName = store.getString(TestingPreferenceConstants.EVALUATOR_FACTORY);
@@ -202,6 +212,8 @@ public class DocumentViewRunHandler implements IHandler {
         document.setAugmentedResult(augResult);
         updateUI(composite);
       }
+      inputCAS.release();
+      testCas.release();
       monitor.done();
       return Status.OK_STATUS;
     }
@@ -301,10 +313,12 @@ public class DocumentViewRunHandler implements IHandler {
   public String getFileNameWithoutExtensions(String path) {
     File f = new File(path);
     String fileNameNoExtension = "";
-    // Check if the file for the given Path exists on the systems filesystem and
+    // Check if the file for the given Path exists on the systems filesystem
+    // and
     // if it is a file
     if (f.exists() && f.isFile()) {
-      // get the filename between the last separator and the file extension
+      // get the filename between the last separator and the file
+      // extension
       if (path.contains(".")) {
         int beginOfFileName = path.lastIndexOf(System.getProperty("file.separator")) + 1;
         int endOfFileName = path.indexOf(".");

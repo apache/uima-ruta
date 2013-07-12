@@ -26,7 +26,7 @@ public class RutaConstraintFactory {
       return new SimpleRutaRuleConstraint("", "");
     } else if (type.equals("RutaRuleListConstraint")) {
       return new RutaRuleListConstraint("", "");
-    } else if(type.equals("RutaGEConstraint")) {
+    } else if (type.equals("RutaGEConstraint")) {
       return new RutaGEConstraint("", "");
     }
     return null;

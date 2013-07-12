@@ -26,21 +26,21 @@ import org.eclipse.ui.part.ViewPart;
 
 public class ResultView extends ViewPart {
 
-	private ResultViewComposite resultViewComposite;
-	
-	@Override
-	public void createPartControl(Composite parent) {
-		this.resultViewComposite = new ResultViewComposite (parent, SWT.FILL);
-		getSite().getPage().addSelectionListener((ISelectionListener) resultViewComposite);
-	}
-	
-	public ResultViewComposite getResultComposite () {
-	  return this.resultViewComposite;
-	}
+  private ResultViewComposite resultViewComposite;
 
-	@Override
-	public void setFocus() {
-		this.resultViewComposite.setFocus();
+  @Override
+  public void createPartControl(Composite parent) {
+    this.resultViewComposite = new ResultViewComposite(parent, SWT.FILL);
+    getSite().getPage().addSelectionListener((ISelectionListener) resultViewComposite);
+  }
 
-	}
+  public ResultViewComposite getResultComposite() {
+    return this.resultViewComposite;
+  }
+
+  @Override
+  public void setFocus() {
+    this.resultViewComposite.setFocus();
+
+  }
 }

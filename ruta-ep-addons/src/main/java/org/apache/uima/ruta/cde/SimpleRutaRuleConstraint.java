@@ -58,12 +58,16 @@ public class SimpleRutaRuleConstraint implements IRutaRuleConstraint {
 
   private String typeSystemLocation;
 
+  private AnalysisEngine ae;
+
+  private boolean initalized = false;
+
   public SimpleRutaRuleConstraint(String rule, String description) {
     this.rule = rule;
     this.description = description;
   }
 
-  public Double processConstraint(CAS cas) throws Exception {
+  public void initialize() throws Exception {
 
     String script = "PACKAGE org.apache.uima.ruta;\n\n";
     if (!rule.endsWith(";")) {
@@ -99,7 +103,7 @@ public class SimpleRutaRuleConstraint implements IRutaRuleConstraint {
       aed.getAnalysisEngineMetaData().setTypeSystem(mergeTypeSystems);
     }
     aed.resolveImports(resMgr);
-    AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed, resMgr, null);
+    ae = UIMAFramework.produceAnalysisEngine(aed, resMgr, null);
     File tempFile = File.createTempFile("RutaRuta", RutaEngine.SCRIPT_FILE_EXTENSION);
     tempFile.deleteOnExit();
     FileUtils.saveString2File(script, tempFile, "UTF-8");
@@ -115,13 +119,18 @@ public class SimpleRutaRuleConstraint implements IRutaRuleConstraint {
     ae.setConfigParameterValue(RutaEngine.CREATE_STATISTIC_INFO, false);
     ae.reconfigure();
 
+  }
+
+  public Double processConstraint(CAS cas) throws Exception {
+
+    if (!initalized) {
+      initialize();
+    }
+
     Type matchedType = cas.getTypeSystem().getType(
             "org.apache.uima.ruta.type.DebugMatchedRuleMatch");
-    Type ruleApplyType = cas.getTypeSystem().getType(
-            "org.apache.uima.ruta.type.DebugRuleApply");
-    Type blockApplyType = cas.getTypeSystem().getType(
-            "org.apache.uima.ruta.type.DebugBlockApply");
-
+    Type ruleApplyType = cas.getTypeSystem().getType("org.apache.uima.ruta.type.DebugRuleApply");
+    Type blockApplyType = cas.getTypeSystem().getType("org.apache.uima.ruta.type.DebugBlockApply");
     removeDebugAnnotations(cas, matchedType, ruleApplyType, blockApplyType);
     double applyAmount = 0;
     double triedAmount = 0;
@@ -136,18 +145,17 @@ public class SimpleRutaRuleConstraint implements IRutaRuleConstraint {
         FeatureStructure featureValue = fs.getFeatureValue(innerApplyFeature);
         FSArray array = (FSArray) featureValue;
         AnnotationFS ruleApply = (AnnotationFS) array.get(0);
-        
+
         if (ruleApply.getType().equals(ruleApplyType)) {
           applyAmount = ruleApply.getIntValue(appliedFeature);
           triedAmount = ruleApply.getIntValue(triedFeature);
         }
       }
     }
-    
+
     removeDebugAnnotations(cas, matchedType, ruleApplyType, blockApplyType);
     ae.destroy();
 
-    
     if (triedAmount == 0) {
       return null;
     }
@@ -177,7 +185,7 @@ public class SimpleRutaRuleConstraint implements IRutaRuleConstraint {
   public String getDescription() {
     return StringUtils.isBlank(description) ? rule : description;
   }
-  
+
   public void setDescription(String description) {
     this.description = description;
   }
@@ -195,7 +203,7 @@ public class SimpleRutaRuleConstraint implements IRutaRuleConstraint {
   }
 
   public void setData(String data) {
-    this.rule = data;    
+    this.rule = data;
   }
 
 }

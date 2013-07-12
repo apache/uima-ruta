@@ -27,13 +27,12 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 public class DocumentTableLabelProvider implements ITableLabelProvider {
-  
-  private final Image green = ConstraintSelectComposite.createImage("/icons/bullet_green.png"); 
 
-  private final Image yellow = ConstraintSelectComposite.createImage("/icons/bullet_yellow.png"); 
+  private final Image green = ConstraintSelectComposite.createImage("/icons/bullet_green.png");
 
-  private final Image red = ConstraintSelectComposite.createImage("/icons/bullet_red.png"); 
+  private final Image yellow = ConstraintSelectComposite.createImage("/icons/bullet_yellow.png");
 
+  private final Image red = ConstraintSelectComposite.createImage("/icons/bullet_red.png");
 
   public void addListener(ILabelProviderListener arg0) {
   }
@@ -52,13 +51,13 @@ public class DocumentTableLabelProvider implements ITableLabelProvider {
     if (element instanceof DocumentData && columnIndex == 0) {
       DocumentData data = (DocumentData) element;
       Image image = red;
-      
-      if (data.getAugmentedResult() * 100 > RutaAddonsPlugin.getDefault().getPreferenceStore().
-              getInt(CDEPreferenceConstants.AVERAGE_RESULT_THRESHOLD)) {
+
+      if (data.getAugmentedResult() * 100 > RutaAddonsPlugin.getDefault().getPreferenceStore()
+              .getInt(CDEPreferenceConstants.AVERAGE_RESULT_THRESHOLD)) {
         image = yellow;
       }
-      if (data.getAugmentedResult() * 100 > RutaAddonsPlugin.getDefault().getPreferenceStore().
-              getInt(CDEPreferenceConstants.GOOD_RESULT_THRESHOLD)) {
+      if (data.getAugmentedResult() * 100 > RutaAddonsPlugin.getDefault().getPreferenceStore()
+              .getInt(CDEPreferenceConstants.GOOD_RESULT_THRESHOLD)) {
         image = green;
       }
       return image;

@@ -26,41 +26,41 @@ import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-
 public class ConstraintSelectTableLabelProvider implements ITableLabelProvider {
 
-	public void addListener(ILabelProviderListener arg0) {
-	}
+  public void addListener(ILabelProviderListener arg0) {
+  }
 
-	public void dispose() {
-	}
+  public void dispose() {
+  }
 
-	public boolean isLabelProperty(Object arg0, String arg1) {
-		return false;
-	}
+  public boolean isLabelProperty(Object arg0, String arg1) {
+    return false;
+  }
 
-	public void removeListener(ILabelProviderListener arg0) {
-	}
+  public void removeListener(ILabelProviderListener arg0) {
+  }
 
-	public Image getColumnImage(Object element, int columnIndex) {
-		return null;
-	}
+  public Image getColumnImage(Object element, int columnIndex) {
+    return null;
+  }
 
-	public String getColumnText(Object element, int columnIndex) {
-		if (element instanceof ConstraintData) {
-			ConstraintData data = (ConstraintData) element;
-			if(columnIndex == 0) {
-			  if(StringUtils.isBlank(data.getDescription()) && data.getConstraint() instanceof SimpleRutaRuleConstraint) {
-			    SimpleRutaRuleConstraint c = (SimpleRutaRuleConstraint) data.getConstraint();
-			    return c.getData();
-			  } else {
-			    return data.getDescription();
-			  }
-			} else if(columnIndex == 1) {
-			  return String.valueOf(data.getWeight());
-			}
-		}
-		return null;
-	}
+  public String getColumnText(Object element, int columnIndex) {
+    if (element instanceof ConstraintData) {
+      ConstraintData data = (ConstraintData) element;
+      if (columnIndex == 0) {
+        if (StringUtils.isBlank(data.getDescription())
+                && data.getConstraint() instanceof SimpleRutaRuleConstraint) {
+          SimpleRutaRuleConstraint c = (SimpleRutaRuleConstraint) data.getConstraint();
+          return c.getData();
+        } else {
+          return data.getDescription();
+        }
+      } else if (columnIndex == 1) {
+        return String.valueOf(data.getWeight());
+      }
+    }
+    return null;
+  }
 
 }

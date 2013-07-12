@@ -47,104 +47,99 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 
-
-
 public class ResultViewComposite extends Composite implements ISelectionListener {
-  
-  private Clipboard clipboard;
-	
-	private TableViewer tableViewer;
-	
-	private Table table;
-	
-	private TableColumn tc1;
-	
-	private TableColumn tc2;
-	
-	private CDEComparatorFactory comparatorFactory;
-	
-	public ResultViewComposite(Composite parent, int style) {
-		super(parent, style);
-		initGui();
-		comparatorFactory = new CDEComparatorFactory();
-		clipboard = new Clipboard(parent.getDisplay());
-	}
-	
-	public void initGui() {
-		this.setLayout(new FormLayout());
-		tableViewer = new TableViewer (this, SWT.MULTI |  SWT.BORDER
-				| SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
-		tableViewer.setContentProvider(new ResultViewContentProvder());
-		tableViewer.setLabelProvider(new ResultViewLabelProvider());
-		table = tableViewer.getTable();
 
-		FormData tableFormData = new FormData();
-		tableFormData.top = new FormAttachment(0, 5);
-		tableFormData.left = new FormAttachment(0, 5);
-		tableFormData.bottom = new FormAttachment(100, -5);
-		tableFormData.right = new FormAttachment(100, -5);
-		table.setLayoutData(tableFormData);
-		
-		table.addKeyListener(new KeyListener() {
+  private Clipboard clipboard;
+
+  private TableViewer tableViewer;
+
+  private Table table;
+
+  private TableColumn tc1;
+
+  private TableColumn tc2;
+
+  private CDEComparatorFactory comparatorFactory;
+
+  public ResultViewComposite(Composite parent, int style) {
+    super(parent, style);
+    initGui();
+    comparatorFactory = new CDEComparatorFactory();
+    clipboard = new Clipboard(parent.getDisplay());
+  }
+
+  public void initGui() {
+    this.setLayout(new FormLayout());
+    tableViewer = new TableViewer(this, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL
+            | SWT.FULL_SELECTION);
+    tableViewer.setContentProvider(new ResultViewContentProvder());
+    tableViewer.setLabelProvider(new ResultViewLabelProvider());
+    table = tableViewer.getTable();
+
+    FormData tableFormData = new FormData();
+    tableFormData.top = new FormAttachment(0, 5);
+    tableFormData.left = new FormAttachment(0, 5);
+    tableFormData.bottom = new FormAttachment(100, -5);
+    tableFormData.right = new FormAttachment(100, -5);
+    table.setLayoutData(tableFormData);
+
+    table.addKeyListener(new KeyListener() {
       public void keyPressed(KeyEvent e) {
-        if(((e.stateMask & SWT.CTRL) == SWT.CTRL) && (e.keyCode == 'c')) {
+        if (((e.stateMask & SWT.CTRL) == SWT.CTRL) && (e.keyCode == 'c')) {
           String output = "";
-          TableItem[] items = table.getSelection();         
-          for(TableItem item : items) {
-            String[] data = (String[])item.getData();
-            output = output + data[0] + ", " + data[1] + ", \n"; 
+          TableItem[] items = table.getSelection();
+          for (TableItem item : items) {
+            String[] data = (String[]) item.getData();
+            output = output + data[0] + ", " + data[1] + ", \n";
           }
           clipboard.setContents(new Object[] { output },
                   new Transfer[] { TextTransfer.getInstance() });
         }
       }
+
       public void keyReleased(KeyEvent arg0) {
         // TODO Auto-generated method stub
       }
     });
-		
 
-		
-		tc1 = new TableColumn(table, SWT.LEFT);
-		tc1.setText("Constraint ");
-		tc1.setWidth(160);
-		tc1.addSelectionListener(new SelectionAdapter() {
-      public void widgetSelected (SelectionEvent event) {
+    tc1 = new TableColumn(table, SWT.LEFT);
+    tc1.setText("Constraint ");
+    tc1.setWidth(160);
+    tc1.addSelectionListener(new SelectionAdapter() {
+      public void widgetSelected(SelectionEvent event) {
         ArrayList<String[]> data = (ArrayList<String[]>) tableViewer.getInput();
         Comparator comparator = comparatorFactory.getComparator(tc1);
         Collections.sort(data, comparator);
         tableViewer.refresh();
       }
     });
-		
-		tc2 = new TableColumn(table, SWT.LEFT);
-		tc2.setText("Result");
-		tc2.setWidth(120);
-		tc2.addSelectionListener(new SelectionAdapter() {
-      public void widgetSelected (SelectionEvent event) {
+
+    tc2 = new TableColumn(table, SWT.LEFT);
+    tc2.setText("Result");
+    tc2.setWidth(120);
+    tc2.addSelectionListener(new SelectionAdapter() {
+      public void widgetSelected(SelectionEvent event) {
         ArrayList<String[]> data = (ArrayList<String[]>) tableViewer.getInput();
         Comparator comparator = comparatorFactory.getComparator(tc2);
         Collections.sort(data, comparator);
         tableViewer.refresh();
       }
     });
-		
-		tableViewer.refresh();
-		table.setHeaderVisible(true);
-		table.setLinesVisible(true);
 
-		
-	
-	}
+    tableViewer.refresh();
+    table.setHeaderVisible(true);
+    table.setLinesVisible(true);
 
-	public void updateInput(Object input) {
-		tableViewer.setInput(input);
-		tableViewer.refresh();
-	}
+  }
+
+  public void updateInput(Object input) {
+    tableViewer.setInput(input);
+    tableViewer.refresh();
+  }
 
   public void selectionChanged(IWorkbenchPart part, ISelection selection) {
     if (selection instanceof IStructuredSelection) {
-      IStructuredSelection strucSel = (IStructuredSelection)  selection;
+      IStructuredSelection strucSel = (IStructuredSelection) selection;
       Iterator<?> iter = strucSel.iterator();
       if (iter.hasNext()) {
         Object o = iter.next();
@@ -153,13 +148,13 @@ public class ResultViewComposite extends Composite implements ISelectionListener
           ArrayList<String[]> results = data.getResults();
           tableViewer.setInput(results);
           tableViewer.refresh();
-        }     
+        }
       }
     }
   }
-  
+
   public TableViewer getViewer() {
     return tableViewer;
   }
-  
+
 }

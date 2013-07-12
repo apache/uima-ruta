@@ -20,11 +20,11 @@
 package org.apache.uima.ruta.cde.ui;
 
 public class CDEPreferenceConstants {
-  
+
   public static final String GOOD_RESULT_THRESHOLD = "GOOD_RESULT_THRESHOLD";
-  
+
   public static final String AVERAGE_RESULT_THRESHOLD = "AVERAGE_RESULT_THRESHOLD";
-  
+
   public static final String BAD_RESULT_THRESHOLD = "BAD_RESULT_THRESHOLD";
 
 }

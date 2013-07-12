@@ -41,13 +41,13 @@ public class DocumentTableContentProvider implements IStructuredContentProvider 
       return documentList.toArray();
     }
     /*
-     * TODO Not sure if the following code will be needed in future. Keep it for now, delete once it's clear if 
-     * DocumentData will be used
+     * TODO Not sure if the following code will be needed in future. Keep it for now, delete once
+     * it's clear if DocumentData will be used
      */
     if (inputElement instanceof File[]) {
       return (Object[]) inputElement;
     }
-    
+
     return o;
   }
 }
