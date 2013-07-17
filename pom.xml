@@ -87,6 +87,7 @@
 
     <module>ruta-ep-engine</module>
     <module>ruta-ep-ide</module>
+    <module>ruta-ep-ide-ui</module>
     <module>ruta-ep-caseditor</module>
     <module>ruta-ep-addons</module>
     <module>ruta-ep-textruler</module>
