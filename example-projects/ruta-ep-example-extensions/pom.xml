@@ -44,6 +44,11 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>ruta-ep-ide-ui</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.eclipse.dltk</groupId>
       <artifactId>core</artifactId>
       <version>[3.0.1,5.0.0)</version>
@@ -118,6 +123,7 @@
                   org.apache.uima.runtime,
                   org.apache.uima.ruta.engine,
                   org.apache.uima.ruta.ide,
+                  org.apache.uima.ruta.ide.ui,
                   org.eclipse.dltk.core;bundle-version="[3.0.0,5.0.0)"
                 </Require-Bundle>
                 <Import-Package>

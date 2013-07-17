@@ -46,6 +46,11 @@
       <version>${project.parent.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>ruta-ep-ide-ui</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.eclipse.equinox</groupId>
       <artifactId>app</artifactId>
       <version>[1.1.0,2.0.0)</version>
@@ -206,6 +211,7 @@
                 <Require-Bundle>
                   org.apache.uima.runtime,
                   org.apache.uima.ruta.ide,
+                  org.apache.uima.ruta.ide.ui,
                   org.apache.uima.ruta.engine,
                   org.eclipse.core.runtime,
                   org.eclipse.core.resources,

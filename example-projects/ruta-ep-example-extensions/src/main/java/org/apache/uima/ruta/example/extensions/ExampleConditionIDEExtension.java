@@ -23,9 +23,9 @@ import java.util.List;
 
 import org.antlr.runtime.RecognitionException;
 import org.apache.uima.ruta.ide.core.extensions.IIDEConditionExtension;
+import org.apache.uima.ruta.ide.core.extensions.IRutaCheckerProblemFactory;
 import org.apache.uima.ruta.ide.parser.ast.RutaCondition;
 import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
-import org.apache.uima.ruta.ide.validator.RutaCheckerProblemFactory;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.compiler.problem.IProblem;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
@@ -37,7 +37,7 @@ public class ExampleConditionIDEExtension implements IIDEConditionExtension {
     return strings;
   }
 
-  public boolean checkSyntax(Expression element, RutaCheckerProblemFactory problemFactory,
+  public boolean checkSyntax(Expression element, IRutaCheckerProblemFactory problemFactory,
           IProblemReporter rep) throws RecognitionException {
     if (element instanceof RutaCondition) {
       RutaCondition a = (RutaCondition) element;

@@ -34,8 +34,8 @@ import org.apache.uima.cas.impl.XmiCasDeserializer;
 import org.apache.uima.cas.impl.XmiCasSerializer;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.ResourceSpecifier;
+import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.apache.uima.ruta.engine.RutaEngine;
-import org.apache.uima.ruta.ide.RutaIdePlugin;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.XMLInputSource;
@@ -195,7 +195,7 @@ public abstract class AbstractApplyScriptHandlerJob extends Job {
       XMLSerializer xmlSer = new XMLSerializer(out, false);
       ser.serialize(aCas, xmlSer.getContentHandler());
     } catch (Exception e) {
-      RutaIdePlugin.error(e);
+      RutaAddonsPlugin.error(e);
     } finally {
       if (out != null) {
         out.close();

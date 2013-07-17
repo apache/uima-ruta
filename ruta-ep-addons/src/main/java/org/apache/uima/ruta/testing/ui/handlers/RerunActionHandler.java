@@ -46,7 +46,6 @@ import org.apache.uima.resource.metadata.FsIndexDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.apache.uima.ruta.engine.RutaEngine;
-import org.apache.uima.ruta.ide.RutaIdePlugin;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.ruta.testing.evaluator.ICasEvaluator;
 import org.apache.uima.ruta.testing.preferences.TestingPreferenceConstants;
@@ -267,7 +266,7 @@ public class RerunActionHandler implements IHandler {
             return Status.CANCEL_STATUS;
         }
       } catch (Exception e) {
-        RutaIdePlugin.error(e);
+        RutaAddonsPlugin.error(e);
       }
 
       monitor.done();
@@ -328,7 +327,7 @@ public class RerunActionHandler implements IHandler {
       XMLSerializer xmlSer = new XMLSerializer(out, false);
       ser.serialize(aCas, xmlSer.getContentHandler());
     } catch (Exception e) {
-      RutaIdePlugin.error(e);
+      RutaAddonsPlugin.error(e);
     } finally {
       if (out != null) {
         out.close();

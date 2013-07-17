@@ -25,7 +25,6 @@ import java.util.List;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
-import org.apache.uima.ruta.ide.RutaIdePlugin;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.ruta.testing.preferences.TestingPreferenceConstants;
 import org.apache.uima.ruta.testing.ui.views.evalDataTable.EvalTableContentProvider;
@@ -475,7 +474,7 @@ public class TestViewPage extends Page implements IPageBookViewPage {
       }
       // tInfoPanel.addCASViewNamesToCombo(viewNames);
     } catch (CoreException e) {
-      RutaIdePlugin.error(e);
+      RutaAddonsPlugin.error(e);
     }
     listviewer.setInput(viewerInput);
     listviewer.refresh();
@@ -500,7 +499,7 @@ public class TestViewPage extends Page implements IPageBookViewPage {
       try {
         CoreUtility.createFolder(resultFolder, true, true, new NullProgressMonitor());
       } catch (CoreException e) {
-        RutaIdePlugin.error(e);
+        RutaAddonsPlugin.error(e);
       }
     }
 
@@ -508,7 +507,7 @@ public class TestViewPage extends Page implements IPageBookViewPage {
       try {
         CoreUtility.createFolder(tempTestFolder, true, true, new NullProgressMonitor());
       } catch (CoreException e) {
-        RutaIdePlugin.error(e);
+        RutaAddonsPlugin.error(e);
       }
     }
   }
