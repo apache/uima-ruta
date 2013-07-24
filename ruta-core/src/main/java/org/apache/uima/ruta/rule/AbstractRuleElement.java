@@ -41,7 +41,7 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
   protected List<AbstractRutaAction> actions;
 
   private boolean startAnchor;
-  
+
   private RuleElementContainer container;
 
   protected RutaBlock parent;
@@ -68,8 +68,6 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
 
   @SuppressWarnings("unchecked")
   protected final InferenceCrowd emptyCrowd = new InferenceCrowd(Collections.EMPTY_LIST);
-
-  
 
   protected void doneMatching(RuleMatch ruleMatch, RuleApply ruleApply, RutaStream stream,
           InferenceCrowd crowd) {
@@ -167,7 +165,11 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
     return container;
   }
 
-  public  void setStartAnchor(boolean start) {
+  public void setContainer(RuleElementContainer container) {
+    this.container = container;
+  }
+
+  public void setStartAnchor(boolean start) {
     this.startAnchor = start;
   }
 

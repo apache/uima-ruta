@@ -50,47 +50,51 @@ public class RutaRuleElement extends AbstractRuleElement {
     return matcher.getMatchingAnnotations(stream, getParent());
   }
 
-  public void startMatch(RuleMatch ruleMatch, RuleApply ruleApply,
+  public List<RuleMatch> startMatch(RuleMatch ruleMatch, RuleApply ruleApply,
           ComposedRuleElementMatch containerMatch, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
+    List<RuleMatch> result = new ArrayList<RuleMatch>();
     Collection<AnnotationFS> anchors = getAnchors(stream);
-    boolean useAlternatives = entryPoint == null && !(anchors.size() == 1);
+    boolean useAlternatives = anchors.size() != 1;
     for (AnnotationFS eachAnchor : anchors) {
       ComposedRuleElementMatch extendedContainerMatch = containerMatch;
       RuleMatch extendedMatch = ruleMatch;
       if (useAlternatives) {
         extendedContainerMatch = containerMatch.copy();
         extendedMatch = ruleMatch.copy(extendedContainerMatch);
-      } else {
-        extendedMatch.update(extendedContainerMatch);
       }
       doMatch(eachAnchor, extendedMatch, extendedContainerMatch, true, stream, crowd);
-      if (extendedMatch.matched()) {
+      if (this.equals(entryPoint) && ruleApply == null) {
+        result.add(extendedMatch);
+      } else if (extendedMatch.matched()) {
         RuleElement after = getContainer().getNextElement(true, this);
         RuleElement before = getContainer().getNextElement(false, this);
         RutaRuleElement sideStepOrigin = hasAncestor(false) ? this : null;
         if (quantifier.continueMatch(true, eachAnchor, this, extendedMatch, extendedContainerMatch,
                 stream, crowd)) {
-          continueOwnMatch(true, eachAnchor, extendedMatch, ruleApply, extendedContainerMatch,
-                  sideStepOrigin, null, stream, crowd);
+          List<RuleMatch> continueOwnMatch = continueOwnMatch(true, eachAnchor, extendedMatch, ruleApply,
+                  extendedContainerMatch, sideStepOrigin, null, stream, crowd);
+          result.addAll(continueOwnMatch);
         } else {
           if (after != null) {
             sideStepOrigin = hasAncestor(false) ? this : null;
-            after.continueMatch(true, eachAnchor, extendedMatch, ruleApply, extendedContainerMatch,
-                    sideStepOrigin, null, stream, crowd);
+            List<RuleMatch> continueMatch = after.continueMatch(true, eachAnchor, extendedMatch, ruleApply,
+                    extendedContainerMatch, sideStepOrigin, entryPoint, stream, crowd);
+            result.addAll(continueMatch);
           } else if ((stream.isDynamicAnchoring() || isStartAnchor()) && before != null) {
             sideStepOrigin = hasAncestor(true) ? this : null;
-            before.continueMatch(false, eachAnchor, extendedMatch, ruleApply,
-                    extendedContainerMatch, sideStepOrigin, null, stream, crowd);
+            List<RuleMatch> continueMatch = before.continueMatch(false, eachAnchor, extendedMatch, ruleApply,
+                    extendedContainerMatch, sideStepOrigin, entryPoint, stream, crowd);
+            result.addAll(continueMatch);
           }
 
           if (after == null && before == null) {
             if (getContainer() instanceof ComposedRuleElement) {
               sideStepOrigin = hasAncestor(false) ? this : null;
               ComposedRuleElement composed = (ComposedRuleElement) getContainer();
-              composed.fallbackContinue(true, false, eachAnchor, extendedMatch, ruleApply,
+              List<RuleMatch> fallbackContinue = composed.fallbackContinue(true, false, eachAnchor, extendedMatch, ruleApply,
                       extendedContainerMatch, sideStepOrigin, entryPoint, stream, crowd);
-
+result.addAll(fallbackContinue);
             } else if (getContainer() instanceof RuleElementIsolator) {
               // TODO move and refactor this:
               doneMatching(extendedMatch, ruleApply, stream, crowd);
@@ -100,26 +104,26 @@ public class RutaRuleElement extends AbstractRuleElement {
       } else {
         if (getContainer() instanceof ComposedRuleElement) {
           ComposedRuleElement composed = (ComposedRuleElement) getContainer();
-          composed.fallbackContinue(true, true, eachAnchor, extendedMatch, ruleApply,
+          List<RuleMatch> fallbackContinue = composed.fallbackContinue(true, true, eachAnchor, extendedMatch, ruleApply,
                   extendedContainerMatch, null, null, stream, crowd);
-
+          result.addAll(fallbackContinue);
         }
       }
-
     }
+    return result;
   }
 
-  public void continueOwnMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
-          RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
+  public List<RuleMatch> continueOwnMatch(boolean after, AnnotationFS annotation,
+          RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
           RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
+    List<RuleMatch> result = new ArrayList<RuleMatch>();
     if (quantifier.continueMatch(after, annotation, this, ruleMatch, containerMatch, stream, crowd)) {
       boolean stopMatching = false;
       AnnotationFS eachAnchor = annotation;
       AnnotationFS lastAnchor = annotation;
       ComposedRuleElementMatch extendedContainerMatch = containerMatch;
       RuleMatch extendedMatch = ruleMatch;
-      extendedMatch.update(extendedContainerMatch);
       while (!stopMatching) {
         if (!quantifier.continueMatch(after, eachAnchor, this, extendedMatch,
                 extendedContainerMatch, stream, crowd)) {
@@ -131,147 +135,155 @@ public class RutaRuleElement extends AbstractRuleElement {
         Collection<AnnotationFS> nextAnnotations = getNextAnnotations(after, eachAnchor, stream);
         if (nextAnnotations.size() == 0) {
           stopMatching = true;
-          stepbackMatch(after, eachAnchor, extendedMatch, ruleApply, extendedContainerMatch,
-                  sideStepOrigin, stream, crowd, entryPoint);
+          result = stepbackMatch(after, eachAnchor, extendedMatch, ruleApply,
+                  extendedContainerMatch, sideStepOrigin, stream, crowd, entryPoint);
         } else if (nextAnnotations.size() == 1) {
           lastAnchor = eachAnchor;
           eachAnchor = nextAnnotations.iterator().next();
           doMatch(eachAnchor, extendedMatch, extendedContainerMatch, false, stream, crowd);
           if (this.equals(entryPoint)) {
-            return;
-          }
+             result.add(extendedMatch);
+          } else 
           if (extendedMatch.matched()) {
             if (quantifier.continueMatch(after, eachAnchor, this, extendedMatch,
                     extendedContainerMatch, stream, crowd)) {
               // continue in while loop
             } else {
               stopMatching = true;
-              continueMatchSomewhereElse(after, false, eachAnchor, extendedMatch, ruleApply,
-                      extendedContainerMatch, sideStepOrigin, entryPoint, stream, crowd);
+              result = continueMatchSomewhereElse(after, false, eachAnchor, extendedMatch,
+                      ruleApply, extendedContainerMatch, sideStepOrigin, entryPoint, stream, crowd);
             }
           } else {
             stopMatching = true;
-            stepbackMatch(after, lastAnchor, extendedMatch, ruleApply, extendedContainerMatch,
-                    sideStepOrigin, stream, crowd, entryPoint);
+            result = stepbackMatch(after, lastAnchor, extendedMatch, ruleApply,
+                    extendedContainerMatch, sideStepOrigin, stream, crowd, entryPoint);
           }
         } else {
           stopMatching = true;
-          continueMatch(after, lastAnchor, extendedMatch, ruleApply, extendedContainerMatch,
-                  sideStepOrigin, entryPoint, stream, crowd);
+          result = continueMatch(after, lastAnchor, extendedMatch, ruleApply,
+                  extendedContainerMatch, sideStepOrigin, entryPoint, stream, crowd);
         }
       }
     } else {
-      stepbackMatch(after, annotation, ruleMatch, ruleApply, containerMatch, sideStepOrigin,
-              stream, crowd, entryPoint);
+      result = stepbackMatch(after, annotation, ruleMatch, ruleApply, containerMatch,
+              sideStepOrigin, stream, crowd, entryPoint);
     }
+    return result;
   }
 
-  private void continueMatchSomewhereElse(boolean after, boolean failed, AnnotationFS eachAnchor,
-          RuleMatch extendedMatch, RuleApply ruleApply,
+  private List<RuleMatch> continueMatchSomewhereElse(boolean after, boolean failed,
+          AnnotationFS eachAnchor, RuleMatch extendedMatch, RuleApply ruleApply,
           ComposedRuleElementMatch extendedContainerMatch, RutaRuleElement sideStepOrigin,
           RuleElement entryPoint, RutaStream stream, InferenceCrowd crowd) {
+    List<RuleMatch> result = new ArrayList<RuleMatch>();
     RuleElement nextRuleElement = getContainer().getNextElement(after, this);
     if (nextRuleElement != null) {
-      nextRuleElement.continueMatch(after, eachAnchor, extendedMatch, ruleApply,
+      result = nextRuleElement.continueMatch(after, eachAnchor, extendedMatch, ruleApply,
               extendedContainerMatch, sideStepOrigin, entryPoint, stream, crowd);
     } else if (getContainer() instanceof ComposedRuleElement) {
       ComposedRuleElement composed = (ComposedRuleElement) getContainer();
-      composed.fallbackContinue(after, failed, eachAnchor, extendedMatch, ruleApply,
+      result = composed.fallbackContinue(after, failed, eachAnchor, extendedMatch, ruleApply,
               extendedContainerMatch, sideStepOrigin, entryPoint, stream, crowd);
     }
-
+    return result;
   }
 
-  public void continueMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
+  public List<RuleMatch> continueMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
           RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
           RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
+    List<RuleMatch> result = new ArrayList<RuleMatch>();
     // if() for really lazy quantifiers
     if (quantifier.continueMatch(after, annotation, this, ruleMatch, containerMatch, stream, crowd)) {
       Collection<AnnotationFS> nextAnnotations = getNextAnnotations(after, annotation, stream);
       if (nextAnnotations.isEmpty()) {
-        stepbackMatch(after, annotation, ruleMatch, ruleApply, containerMatch, sideStepOrigin,
-                stream, crowd, entryPoint);
+        result = stepbackMatch(after, annotation, ruleMatch, ruleApply, containerMatch,
+                sideStepOrigin, stream, crowd, entryPoint);
       }
-      boolean useAlternatives = entryPoint == null && !(nextAnnotations.size() == 1);
+      boolean useAlternatives = nextAnnotations.size() != 1;
       for (AnnotationFS eachAnchor : nextAnnotations) {
         ComposedRuleElementMatch extendedContainerMatch = containerMatch;
         RuleMatch extendedMatch = ruleMatch;
         if (useAlternatives) {
           extendedContainerMatch = containerMatch.copy();
           extendedMatch = ruleMatch.copy(extendedContainerMatch);
-        } else {
-          extendedMatch.update(extendedContainerMatch);
-        }
-
+        } 
         doMatch(eachAnchor, extendedMatch, extendedContainerMatch, false, stream, crowd);
 
         if (this.equals(entryPoint) && ruleApply == null) {
-          return;
-        }
+          result.add(extendedMatch);
+        } else 
         if (extendedMatch.matched()) {
           if (quantifier.continueMatch(after, annotation, this, extendedMatch,
                   extendedContainerMatch, stream, crowd)) {
-            continueOwnMatch(after, eachAnchor, extendedMatch, ruleApply, extendedContainerMatch,
-                    sideStepOrigin, entryPoint, stream, crowd);
-          } else {
-            continueMatchSomewhereElse(after, false, eachAnchor, extendedMatch, ruleApply,
+             List<RuleMatch> continueOwnMatch = continueOwnMatch(after, eachAnchor, extendedMatch, ruleApply,
                     extendedContainerMatch, sideStepOrigin, entryPoint, stream, crowd);
+             result.addAll(continueOwnMatch);
+          } else {
+             List<RuleMatch> continueMatchSomewhereElse = continueMatchSomewhereElse(after, false, eachAnchor, extendedMatch, ruleApply,
+                    extendedContainerMatch, sideStepOrigin, entryPoint, stream, crowd);
+             result.addAll(continueMatchSomewhereElse);
           }
         } else {
-          stepbackMatch(after, annotation, extendedMatch, ruleApply, extendedContainerMatch,
-                  sideStepOrigin, stream, crowd, entryPoint);
+           List<RuleMatch> stepbackMatch = stepbackMatch(after, annotation, extendedMatch, ruleApply,
+                  extendedContainerMatch, sideStepOrigin, stream, crowd, entryPoint);
+           result.addAll(stepbackMatch);
         }
       }
     } else {
-      stepbackMatch(after, annotation, ruleMatch, ruleApply, containerMatch, sideStepOrigin,
-              stream, crowd, entryPoint);
+      result = stepbackMatch(after, annotation, ruleMatch, ruleApply, containerMatch,
+              sideStepOrigin, stream, crowd, entryPoint);
     }
+    return result;
   }
 
-  private void stepbackMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
-          RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
+  private List<RuleMatch> stepbackMatch(boolean after, AnnotationFS annotation,
+          RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
           RutaRuleElement sideStepOrigin, RutaStream stream, InferenceCrowd crowd,
           RuleElement entryPoint) {
+    List<RuleMatch> result = new ArrayList<RuleMatch>();
     if (ruleApply == null) {
-      return;
+      result.add(ruleMatch);
+      return result;
     }
     List<RuleElementMatch> matchInfo = getMatch(ruleMatch, containerMatch);
     if (matchInfo == null) {
       if (quantifier.isOptional(parent, stream)) {
-        continueMatchSomewhereElse(after, true, annotation, ruleMatch, ruleApply, containerMatch,
-                sideStepOrigin, entryPoint, stream, crowd);
+        result = continueMatchSomewhereElse(after, true, annotation, ruleMatch, ruleApply,
+                containerMatch, sideStepOrigin, entryPoint, stream, crowd);
       } else if (getContainer() instanceof ComposedRuleElement) {
         ComposedRuleElement cre = (ComposedRuleElement) getContainer();
-        if(cre.getQuantifier().isOptional(parent, stream)) {
-          continueMatchSomewhereElse(after, true, annotation, ruleMatch, ruleApply, containerMatch,
-                  sideStepOrigin, entryPoint, stream, crowd);
+        if (cre.getQuantifier().isOptional(parent, stream)) {
+          result = continueMatchSomewhereElse(after, true, annotation, ruleMatch, ruleApply,
+                  containerMatch, sideStepOrigin, entryPoint, stream, crowd);
         } else {
-        RuleElementMatch failedMatch = new RuleElementMatch(this, containerMatch);
-        failedMatch.setBaseConditionMatched(false);
-        containerMatch.addInnerMatch(this, failedMatch, stream);
-        ComposedRuleElement composed = (ComposedRuleElement) getContainer();
-        composed.fallbackContinue(after, true, annotation, ruleMatch, ruleApply, containerMatch,
-                sideStepOrigin, entryPoint, stream, crowd);
-        }}
+          RuleElementMatch failedMatch = new RuleElementMatch(this, containerMatch);
+          failedMatch.setBaseConditionMatched(false);
+          containerMatch.addInnerMatch(this, failedMatch, stream);
+          ComposedRuleElement composed = (ComposedRuleElement) getContainer();
+          result = composed.fallbackContinue(after, true, annotation, ruleMatch, ruleApply,
+                  containerMatch, sideStepOrigin, entryPoint, stream, crowd);
+        }
+      }
     } else {
       List<RuleElementMatch> evaluateMatches = quantifier.evaluateMatches(matchInfo, parent,
               stream, crowd);
       ruleMatch.setMatched(evaluateMatches != null);
       if (ruleMatch.matched()) {
-        continueMatchSomewhereElse(after, true, annotation, ruleMatch, ruleApply, containerMatch,
-                sideStepOrigin, null, stream, crowd);
+        result = continueMatchSomewhereElse(after, true, annotation, ruleMatch, ruleApply,
+                containerMatch, sideStepOrigin, null, stream, crowd);
       } else {
         doneMatching(ruleMatch, ruleApply, stream, crowd);
       }
     }
+    return result;
   }
 
-  public void continueSideStep(boolean after, RuleMatch ruleMatch, RuleApply ruleApply,
+  public List<RuleMatch> continueSideStep(boolean after, RuleMatch ruleMatch, RuleApply ruleApply,
           ComposedRuleElementMatch containerMatch, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
+    List<RuleMatch> result = new ArrayList<RuleMatch>();
     boolean newDirection = !after;
-
     List<AnnotationFS> matchedAnnotationsOf = ruleMatch.getMatchedAnnotationsOf(this);
     AnnotationFS annotation = null;
     if (newDirection) {
@@ -299,15 +311,15 @@ public class RutaRuleElement extends AbstractRuleElement {
     } else {
       RuleElement nextRuleElement = getContainer().getNextElement(newDirection, this);
       if (nextRuleElement != null) {
-        nextRuleElement.continueMatch(newDirection, annotation, ruleMatch, ruleApply,
+        result = nextRuleElement.continueMatch(newDirection, annotation, ruleMatch, ruleApply,
                 sideStepContainerMatch, null, null, stream, crowd);
       } else if (getContainer() instanceof ComposedRuleElement) {
         ComposedRuleElement composed = (ComposedRuleElement) getContainer();
-        composed.fallbackContinue(newDirection, false, annotation, ruleMatch, ruleApply,
+        result = composed.fallbackContinue(newDirection, false, annotation, ruleMatch, ruleApply,
                 sideStepContainerMatch, null, entryPoint, stream, crowd);
       }
     }
-
+    return result;
   }
 
   private void doMatch(AnnotationFS annotation, RuleMatch ruleMatch,
@@ -338,15 +350,15 @@ public class RutaRuleElement extends AbstractRuleElement {
     ruleMatch.setMatched(ruleMatch.matched() && result.matched());
     List<RuleElementMatch> rems = new ArrayList<RuleElementMatch>();
     rems.add(result);
-    ruleMatch.processMatchInfo(this, rems, stream);
   }
 
   @Override
   public String toString() {
     String simpleName = getQuantifier().getClass().getSimpleName();
     return matcher.toString() + " " + (simpleName.equals("NormalQuantifier") ? "" : simpleName)
-            + (conditions.isEmpty() ? "" : "(" + conditions.toString() + ")" + "\\n")
-            + (actions.isEmpty() ? "" : "{" + actions.toString() + "}");
+//            + (conditions.isEmpty() ? "" : "(" + conditions.toString() + ")" + "\\n")
+//            + (actions.isEmpty() ? "" : "{" + actions.toString() + "}")
+            ;
   }
 
   public RutaMatcher getMatcher() {

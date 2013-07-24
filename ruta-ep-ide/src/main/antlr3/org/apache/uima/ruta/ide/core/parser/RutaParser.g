@@ -576,7 +576,7 @@ simpleStatement returns [RutaRule stmt = null]
 	: 
 	(regexpRule)=> rer = regexpRule {stmt = rer;}
 	|
-	elements=ruleElements 
+	elements=ruleElementsRoot
 		s = SEMI 
 		{stmt = scriptFactory.createRule(elements, s);}
 		
@@ -623,10 +623,15 @@ regexpRule returns [RutaRule stmt = null]
 
 
 
+ruleElementsRoot returns [List<Expression> elements = new ArrayList<Expression>()]
+	:
+	re = ruleElement {if(re!=null) elements.add(re);} PERCENT? (re = ruleElement {if(re!=null) elements.add(re);})*
+	;	
+
 ruleElements returns [List<Expression> elements = new ArrayList<Expression>()]
 	:
 	re = ruleElement {if(re!=null) elements.add(re);} (re = ruleElement {if(re!=null) elements.add(re);})*
-	;	
+	;
 	
 blockRuleElement returns [RutaRuleElement rElement = null] //[List<RutaRuleElement> elements = new ArrayList<RutaRuleElement>()]
 	:
@@ -671,23 +676,20 @@ List<RutaCondition> dummyConds = new ArrayList<RutaCondition>();
 	
 ruleElementComposed returns [ComposedRuleElement re = null] 
 @init{
-	boolean disjunctive = false;
+	Boolean disjunctive = null;
+	List<Expression> res = new ArrayList<Expression>();
 }
 	:
 	ft = LPAREN
-	 
-	(((ruleElementType | ruleElementLiteral) VBAR)=>  (re11 =ruleElementType| re12 = ruleElementLiteral) 
-	{disjunctive = true; res = new ArrayList<Expression>(); if(re11!=null) res.add(re11);if(re12!=null) res.add(re12);} 
-	VBAR (re21 = ruleElementType| re22 = ruleElementLiteral) 
-	{ if(re21!=null) res.add(re21);if(re22!=null) res.add(re22);}
 	(
-	VBAR (re31 = ruleElementType| re32 = ruleElementLiteral) 
-	{ if(re31!=null) res.add(re31);if(re32!=null) res.add(re32);}
-	)*
-	 |(ruleElements)=>res = ruleElements)
-	
+	(ruleElement VBAR)=> re1 = ruleElement {res.add(re1);} (VBAR re1 = ruleElement {disjunctive = true; res.add(re1);})+
+	|
+	(ruleElement AMPER)=> re2 = ruleElement {res.add(re2);} (AMPER re2 = ruleElement {disjunctive = false; res.add(re2);})+
+	|
+	res2 = ruleElements {res = res2;}
+	)
 	lt1 = RPAREN q = quantifierPart? (LCURLY c = conditions? (THEN a = actions)? lt2 = RCURLY)?
-	{re = scriptFactory.createComposedRuleElement(res, q, c, a, disjunctive,$blockDeclaration::env, ft, lt1, lt2);}
+	{re = scriptFactory.createComposedRuleElement(res, q, c, a, disjunctive, $blockDeclaration::env, ft, lt1, lt2);}
 	;
 
 ruleElementType returns [RutaRuleElement re = null] 

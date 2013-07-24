@@ -36,7 +36,6 @@ import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.ComposedRuleElement;
 import org.apache.uima.ruta.rule.RegExpRule;
 import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RutaDisjunctiveMatcher;
 import org.apache.uima.ruta.rule.RutaMatcher;
 import org.apache.uima.ruta.rule.RutaRule;
 import org.apache.uima.ruta.rule.RutaRuleElement;
@@ -145,9 +144,18 @@ public class ScriptVerbalizer {
     StringBuilder result = new StringBuilder();
     List<RuleElement> ruleElements = cre.getRuleElements();
     result.append("(");
+    String sep = " ";
+    Boolean conjunct = cre.getConjunct();
+    if(conjunct != null) {
+      if(conjunct) {
+        sep = " & ";
+      } else {
+        sep = " | ";
+      }
+    }
     for (RuleElement each : ruleElements) {
       if (cre.getRuleElements().indexOf(each) != 0) {
-        result.append(" ");
+        result.append(sep);
       }
       result.append(verbalizeRuleElement(each));
     }
@@ -158,20 +166,7 @@ public class ScriptVerbalizer {
   public String verbalizeMatcher(RutaRuleElement tmre) {
     StringBuilder result = new StringBuilder();
     RutaMatcher matcher = tmre.getMatcher();
-    if (matcher instanceof RutaDisjunctiveMatcher) {
-      RutaDisjunctiveMatcher dmatcher = (RutaDisjunctiveMatcher) matcher;
-      List<RutaExpression> expressions = dmatcher.getExpressions();
-      result.append("(");
-      for (RutaExpression each : expressions) {
-        if (expressions.indexOf(each) != 0) {
-          result.append(" | ");
-        }
-        result.append(verbalizer.verbalize(each));
-      }
-      result.append(")");
-    } else {
-      result.append(verbalizer.verbalize(matcher.getExpression()));
-    }
+    result.append(verbalizer.verbalize(matcher.getExpression()));
     return result.toString();
   }
 

@@ -61,11 +61,11 @@ public class RuleElementCaretaker implements RuleElementContainer {
       return ruleElements.get(0);
     }
     for (RuleElement ruleElement : ruleElements) {
-      if(ruleElement.isStartAnchor()) {
+      if (ruleElement.isStartAnchor()) {
         return ruleElement;
       }
     }
-    
+
     if (stream.isDynamicAnchoring()) {
       long min = Long.MAX_VALUE;
       RuleElement minElement = null;

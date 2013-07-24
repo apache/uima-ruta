@@ -582,7 +582,7 @@ options {
 	|
 	
 	{stmt = factory.createRule(elements, $blockDeclaration::env);}
-	elements = ruleElements[((RutaRule)stmt).getRoot()] SEMI 
+	elements = ruleElementsRoot[((RutaRule)stmt).getRoot()] SEMI 
 	{((RutaRule)stmt).setRuleElements(elements);}
 	;
 
@@ -634,10 +634,27 @@ regexpRule returns [RegExpRule stmt = null]
 
 
 	
-ruleElements[RuleElementContainer container] returns [List<RuleElement> elements = new ArrayList<RuleElement>()]
+ruleElementsRoot[RuleElementContainer container] returns [List<RuleElement> elements = new ArrayList<RuleElement>()]
+@init{
+	List<RuleElement> reList = new ArrayList<RuleElement>();
+	List<Token> conList = new ArrayList<Token>();
+}
 	:
-	re = ruleElement[container]  {if(re == null) {return elements;} elements.add(re);} 
-	(re = ruleElement[container] {if(re == null) {return elements;} elements.add(re);})*
+	re = ruleElement[container] {if(re!=null){ reList.add(re); conList.add(null);}} 
+	(
+	(con = PERCENT {conList.add(con);})? 
+	re = ruleElement[container] {if(re!=null){ reList.add(re); conList.add(null);}}
+	)*
+	{elements = factory.processConjunctRules(reList, conList, container, $blockDeclaration::env);}
+	;
+
+ruleElements[RuleElementContainer container] returns [List<RuleElement> elements = new ArrayList<RuleElement>()]
+@init{
+	List<RuleElement> reList = new ArrayList<RuleElement>();
+}
+	:
+	re = ruleElement[container] {if(re!=null){ elements.add(re);}} 
+	(re = ruleElement[container] {if(re!=null){ elements.add(re);}})*
 	;
 		
 
@@ -647,7 +664,6 @@ ruleElement[RuleElementContainer container] returns [RuleElement re = null]
 	re1 = ruleElementType[container] {re = re1;}
 	| re2 = ruleElementLiteral[container] {re = re2;}
 	| (ruleElementComposed[null])=>re3 = ruleElementComposed[container] {re = re3;}
-	| (ruleElementDisjunctive[null])=> re4 = ruleElementDisjunctive[container] {re = re4;}
 	| (ruleElementWildCard[null])=> re5 = ruleElementWildCard[container] {re = re5;}
 	)
 	{re.setStartAnchor(start != null);}
@@ -670,63 +686,32 @@ ruleElementWildCard [RuleElementContainer container] returns [AbstractRuleElemen
     ;
 
 
-ruleElementDisjunctive [RuleElementContainer container] returns [RutaRuleElement re = null]
-@init{
-	List<RutaExpression> exprs = new ArrayList<RutaExpression>();
-}
-    :
-    LPAREN
-    ((typeMatchExpression | simpleStringExpression) VBAR)=>  (e11 =typeMatchExpression | e12 =simpleStringExpression) 
-    {if(e11 != null) exprs.add(e11);if(e12 != null) exprs.add(e12);} 
-    VBAR (e21 =typeMatchExpression | e22 =simpleStringExpression) 
-    {if(e21 != null) exprs.add(e21);if(e22 != null) exprs.add(e22);} 
-    (
-    VBAR  (e31 =typeMatchExpression | e32 =simpleStringExpression) 
-    {if(e31 != null) exprs.add(e31);if(e32 != null) exprs.add(e32);} 
-    )*
-    RPAREN
-     { re = factory.createRuleElement(exprs, null, null, null, container, $blockDeclaration::env);}   
-    
-     q = quantifierPart? 
-        (LCURLY c = conditions? (THEN a = actions)? RCURLY)?
-    {
-	if(q != null) {
-		re.setQuantifier(q);
-	}
-	if(c!= null) {
-		re.setConditions(c);
-	}
-	if(a != null) {
-		re.setActions(a);
-	}
-	}
-    ;
 
 ruleElementComposed [RuleElementContainer container] returns [ComposedRuleElement re = null]
 scope {
 	RuleElementContainer con;
 }
 @init{
-
+	Boolean conjunct = null;
+	List<RuleElement> res = new ArrayList<RuleElement>();
 }	
 	:
 	{re = factory.createComposedRuleElement(container, $blockDeclaration::env);
-	// dre = factory.createDisjunctiveRuleElement(container, $blockDeclaration::env);
 	$ruleElementComposed::con = re;}
+	
 	LPAREN 
-	
 	(
-	//((ruleElement[$ruleElementComposed::con] VBAR)=>re1 = ruleElement[dre]
-	// {disjunctive = true; res = new ArrayList<RuleElement>();res.add(re1);} 
-	// VBAR re2 = ruleElement[dre] {res.add(re2);}
-	//(VBAR re3 = ruleElement[dre] {res.add(re3);})*)
-	//|
-	(ruleElements[$ruleElementComposed::con])=>res = ruleElements[$ruleElementComposed::con] 
+	(ruleElement[$ruleElementComposed::con] VBAR)=> re1 = ruleElement[$ruleElementComposed::con] {res.add(re1);} (VBAR re1 = ruleElement[$ruleElementComposed::con] {conjunct = false; res.add(re1);})+
+	|
+	(ruleElement[$ruleElementComposed::con] AMPER)=> re2 = ruleElement[$ruleElementComposed::con] {res.add(re2);} (AMPER re2 = ruleElement[$ruleElementComposed::con] {conjunct = true; res.add(re2);})+
+	|
+	res2 = ruleElements[$ruleElementComposed::con] {res = res2;}
 	)
-	
+
 	RPAREN q = quantifierPart? (LCURLY c = conditions? (THEN a = actions)? RCURLY)?
 	{
 	re.setRuleElements(res);
+	re.setConjunct(conjunct);
 	if(q != null) {
 		re.setQuantifier(q);
 	}

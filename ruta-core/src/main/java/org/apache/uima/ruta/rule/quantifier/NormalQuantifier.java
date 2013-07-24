@@ -45,7 +45,9 @@ public class NormalQuantifier implements RuleElementQuantifier {
       return null;
     }
     boolean result = true;
+    boolean resultOr = false;
     boolean allEmpty = true;
+    
     for (RuleElementMatch match : matches) {
       result &= match.matched();
       allEmpty &= match.getTextsMatched().isEmpty();

@@ -21,6 +21,8 @@ package org.apache.uima.ruta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.antlr.runtime.Token;
 import org.apache.uima.ruta.action.AbstractRutaAction;
@@ -32,11 +34,11 @@ import org.apache.uima.ruta.expression.string.StringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.AbstractRuleElement;
 import org.apache.uima.ruta.rule.ComposedRuleElement;
+import org.apache.uima.ruta.rule.ConjunctRulesRuleElement;
 import org.apache.uima.ruta.rule.RegExpRule;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleElementContainer;
 import org.apache.uima.ruta.rule.RuleElementIsolator;
-import org.apache.uima.ruta.rule.RutaDisjunctiveMatcher;
 import org.apache.uima.ruta.rule.RutaLiteralMatcher;
 import org.apache.uima.ruta.rule.RutaMatcher;
 import org.apache.uima.ruta.rule.RutaRule;
@@ -90,7 +92,7 @@ public class RutaScriptFactory {
 
   public RutaScriptBlock createRootScriptBlock(String module, String pack) {
     String defaultNamespace = module;
-    if(pack != null) {
+    if (pack != null) {
       defaultNamespace = pack + "." + module;
     }
     RutaScriptBlock result = createScriptBlock(module, null, null, null, defaultNamespace);
@@ -136,17 +138,9 @@ public class RutaScriptFactory {
     return new WildCardRuleElement(conditions, actions, container, parent);
   }
 
-  public RutaRuleElement createRuleElement(List<RutaExpression> exprs,
-          RuleElementQuantifier quantifier, List<AbstractRutaCondition> conditions,
-          List<AbstractRutaAction> actions, RuleElementContainer container, RutaBlock parent) {
-    RutaDisjunctiveMatcher matcher = new RutaDisjunctiveMatcher(exprs);
-    return new RutaRuleElement(matcher, quantifier, conditions, actions, container, parent);
-  }
-
   public ComposedRuleElement createComposedRuleElement(List<RuleElement> res,
           RuleElementQuantifier quantifier, List<AbstractRutaCondition> conditions,
           List<AbstractRutaAction> actions, RuleElementContainer container, RutaBlock parent) {
-
     return new ComposedRuleElement(res, quantifier, conditions, actions, container, parent);
   }
 
@@ -196,6 +190,53 @@ public class RutaScriptFactory {
 
   public RegExpRule createRegExpRule(RutaBlock env) {
     return new RegExpRule(null, null, idCounter++, env);
+  }
+
+  public List<RuleElement> processConjunctRules(List<RuleElement> reList,
+          List<Token> conList, RuleElementContainer container, RutaBlock env) {
+    boolean isConjunct = false;
+    for (Token token : conList) {
+      if (token != null) {
+        isConjunct = true;
+        break;
+      }
+    }
+    if (!isConjunct) {
+      return reList;
+    }
+    Map<Integer, List<RuleElement>> map = new TreeMap<Integer, List<RuleElement>>();
+    List<String> connectors = new ArrayList<String>();
+    int reCounter = 0;
+    int conCounter = 0;
+    for (Token token : conList) {
+      if (token == null) {
+        List<RuleElement> list = map.get(conCounter);
+        if (list == null) {
+          list = new ArrayList<RuleElement>();
+          map.put(conCounter, list);
+        }
+        RuleElement e = reList.get(reCounter);
+        list.add(e);
+        reCounter++;
+      } else {
+        connectors.add(token.getText());
+        conCounter++;
+      }
+    }
+    List<RuleElement> elements = new ArrayList<RuleElement>();
+    
+    ConjunctRulesRuleElement cr = new ConjunctRulesRuleElement(null, container, env); 
+    for (List<RuleElement> each : map.values()) {
+      ComposedRuleElement cre = createComposedRuleElement(each, null, null, null, cr, env);
+      for (RuleElement ruleElement : each) {
+        ruleElement.setContainer(cre);
+      }
+      elements.add(cre);
+    }
+    cr.setElements(elements);
+    List<RuleElement> result = new ArrayList<RuleElement>();
+    result.add(cr);
+    return result;
   }
 
 }

@@ -64,7 +64,12 @@ public class RutaRule extends AbstractRule {
   }
 
   public void setRuleElements(List<RuleElement> elements) {
-    root.setRuleElements(elements);
+    if (elements != null && elements.size() == 1
+            && elements.get(0) instanceof ConjunctRulesRuleElement) {
+      root = (ComposedRuleElement) elements.get(0);
+    } else {
+      root.setRuleElements(elements);
+    }
   }
 
   public ComposedRuleElement getRoot() {

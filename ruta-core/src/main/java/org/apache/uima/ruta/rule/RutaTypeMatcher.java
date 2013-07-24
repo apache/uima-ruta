@@ -102,17 +102,27 @@ public class RutaTypeMatcher implements RutaMatcher {
   public Collection<AnnotationFS> getAnnotationsAfter(RutaRuleElement ruleElement,
           AnnotationFS annotation, RutaStream stream, RutaBlock parent) {
     RutaBasic lastBasic = stream.getEndAnchor(annotation.getEnd());
+    int end = 0;
     if (lastBasic == null) {
-      return Collections.emptyList();
+      if (annotation.getEnd() != 0) {
+        return Collections.emptyList();
+      }
+    } else {
+      end = lastBasic.getEnd();
     }
-    stream.moveTo(lastBasic);
-    if (stream.isVisible(lastBasic)) {
-      stream.moveToNext();
+    if (annotation.getEnd() > 0) {
+      stream.moveTo(lastBasic);
+      if (stream.isVisible(lastBasic)) {
+        stream.moveToNext();
+      }
+    } else {
+      stream.moveToFirst();
     }
+
     if (stream.isValid()) {
       RutaBasic nextBasic = (RutaBasic) stream.get();
       // TODO HOTFIX for annotation of length 0
-      while (stream.isValid() && nextBasic.getBegin() < lastBasic.getEnd()) {
+      while (stream.isValid() && nextBasic.getBegin() < end) {
         stream.moveToNext();
         if (stream.isValid()) {
           nextBasic = (RutaBasic) stream.get();

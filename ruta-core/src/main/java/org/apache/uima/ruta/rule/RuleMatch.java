@@ -29,7 +29,6 @@ import java.util.Set;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.engine.RutaEngine;
@@ -61,29 +60,24 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
     delegateApply = new HashMap<AbstractRutaAction, ScriptApply>(0);
   }
 
-  public boolean processMatchInfo(RuleElement ruleElement,
-          List<RuleElementMatch> ruleElementMatches, RutaStream stream) {
-    // return true, if you changed the matches -> current basic needs to be set correctly
-    // TODO remove this here?!
-    boolean result = false;
-    // List<RuleElementMatch> evaluatedMatches = ruleElement.evaluateMatches(ruleElementMatches,
-    // ruleElement.getParent());
-    // if (evaluatedMatches != null) {
-    // ruleElementMatches = evaluatedMatches;
-    // result = true;
-    // }
-    //
-    // matched = evaluatedMatches != null;
-
-    return result;
-  }
-
   public boolean matchedCompletely() {
     return matched && rootMatch.matched();
   }
 
   public List<AnnotationFS> getMatchedAnnotationsOf(RuleElement element) {
     return getMatchedAnnotations(element.getSelfIndexList(), element.getContainer());
+  }
+
+  public AnnotationFS getLastMatchedAnnotation(RuleElement element, boolean direction) {
+    List<AnnotationFS> matchedAnnotations = getMatchedAnnotationsOf(element);
+    if (matchedAnnotations.isEmpty()) {
+      return null;
+    }
+    if (direction) {
+      return matchedAnnotations.get(matchedAnnotations.size() - 1);
+    } else {
+      return matchedAnnotations.get(0);
+    }
   }
 
   @Override
@@ -254,6 +248,16 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
     return copy;
   }
 
+  public RuleMatch copy() {
+    RuleMatch copy = new RuleMatch(rule);
+    copy.setMatched(matched);
+    copy.setRootMatch(rootMatch.copy());
+    Map<AbstractRutaAction, ScriptApply> newDelegateApply = new HashMap<AbstractRutaAction, ScriptApply>(
+            delegateApply);
+    copy.setDelegateApply(newDelegateApply);
+    return copy;
+  }
+
   public void update(ComposedRuleElementMatch extendedContainerMatch) {
     if (extendedContainerMatch.getContainerMatch() == null) {
       setRootMatch(extendedContainerMatch);
@@ -310,6 +314,25 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
       }
     }
     return result;
+  }
+
+  public RuleElementMatch getLastMatch(RuleElement ruleElement, boolean direction) {
+    List<List<RuleElementMatch>> matchInfo = getMatchInfo(ruleElement);
+    if (matchInfo == null || matchInfo.isEmpty()) {
+      return null;
+    }
+    if (direction) {
+      List<RuleElementMatch> list = matchInfo.get(matchInfo.size() - 1);
+      if (list != null && !list.isEmpty()) {
+        return list.get(list.size() - 1);
+      }
+    } else {
+      List<RuleElementMatch> list = matchInfo.get(0);
+      if (list != null && !list.isEmpty()) {
+        return list.get(0);
+      }
+    }
+    return null;
   }
 
 }

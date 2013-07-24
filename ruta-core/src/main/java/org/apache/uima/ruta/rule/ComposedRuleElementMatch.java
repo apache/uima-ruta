@@ -36,7 +36,8 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
 
   private Map<RuleElement, List<RuleElementMatch>> innerMatches;
 
-  public ComposedRuleElementMatch(RuleElement ruleElement, ComposedRuleElementMatch containerMatch) {
+  public ComposedRuleElementMatch(ComposedRuleElement ruleElement,
+          ComposedRuleElementMatch containerMatch) {
     super(ruleElement, containerMatch);
     baseConditionMatched = false;
     ComposedRuleElement cre = (ComposedRuleElement) ruleElement;
@@ -49,17 +50,6 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
 
   private void setInnerMatches(Map<RuleElement, List<RuleElementMatch>> innerMatches) {
     this.innerMatches = innerMatches;
-    // textsMatched = new ArrayList<AnnotationFS>();
-    // boolean matched = true;
-    // for (Entry<RuleElement, List<RuleElementMatch>> entry : innerMatches.entrySet()) {
-    // for (RuleElementMatch ruleElementMatch : entry.getValue()) {
-    // List<AnnotationFS> list = ruleElementMatch.getTextsMatched();
-    // textsMatched.addAll(list);
-    // matched &= ruleElementMatch.matched();
-    // }
-    // }
-    // baseConditionMatched = matched;
-    // conditionsMatched = matched;
   }
 
   public Map<RuleElement, List<RuleElementMatch>> getInnerMatches() {
@@ -86,6 +76,7 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
 
   public void evaluateInnerMatches(boolean included, RutaStream stream) {
     boolean allDone = true;
+    boolean oneDone = false;
     Set<Entry<RuleElement, List<RuleElementMatch>>> entrySet = innerMatches.entrySet();
     for (Entry<RuleElement, List<RuleElementMatch>> entry : entrySet) {
       RuleElement element = entry.getKey();
@@ -94,14 +85,21 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
       if (value != null && !value.isEmpty() && included) {
         for (RuleElementMatch ruleElementMatch : value) {
           allDone &= ruleElementMatch.matched();
+          oneDone |= ruleElementMatch.matched();
         }
       }
     }
-    baseConditionMatched = allDone;
+    ComposedRuleElement cre = (ComposedRuleElement) ruleElement;
+    if (cre.getConjunct() != null && !cre.getConjunct()) {
+      baseConditionMatched = oneDone;
+    } else {
+      baseConditionMatched = allDone;
+    }
   }
 
   public ComposedRuleElementMatch copy() {
-    ComposedRuleElementMatch copy = new ComposedRuleElementMatch(ruleElement, containerMatch);
+    ComposedRuleElementMatch copy = new ComposedRuleElementMatch((ComposedRuleElement) ruleElement,
+            containerMatch);
     copy.setBaseConditionMatched(baseConditionMatched);
     copy.setConditions(conditions);
     copy.setConditionsMatched(conditionsMatched);
@@ -125,7 +123,8 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
   }
 
   public ComposedRuleElementMatch copy(ComposedRuleElementMatch extendedContainerMatch) {
-    ComposedRuleElementMatch copy = new ComposedRuleElementMatch(ruleElement, containerMatch);
+    ComposedRuleElementMatch copy = new ComposedRuleElementMatch((ComposedRuleElement) ruleElement,
+            containerMatch);
     copy.setBaseConditionMatched(baseConditionMatched);
     copy.setConditions(conditions);
     copy.setConditionsMatched(conditionsMatched);

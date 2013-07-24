@@ -34,16 +34,16 @@ public interface RuleElement {
 
   void apply(RuleMatch match, RutaStream stream, InferenceCrowd crowd);
 
-  void startMatch(RuleMatch ruleMatch, RuleApply ruleApply,
+  List<RuleMatch> startMatch(RuleMatch ruleMatch, RuleApply ruleApply,
           ComposedRuleElementMatch containerMatch, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd);
 
-  void continueMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
+  List<RuleMatch> continueMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
           RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
           RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd);
 
-  void continueOwnMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
+  List<RuleMatch> continueOwnMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
           RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
           RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd);
@@ -59,6 +59,8 @@ public interface RuleElement {
 
   RuleElementContainer getContainer();
 
+  void setContainer(RuleElementContainer container);
+
   RuleElementQuantifier getQuantifier();
 
   long estimateAnchors(RutaStream stream);
@@ -72,7 +74,7 @@ public interface RuleElement {
   boolean hasAncestor(boolean after);
 
   void setStartAnchor(boolean start);
-  
+
   boolean isStartAnchor();
-  
+
 }
