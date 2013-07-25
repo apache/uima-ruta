@@ -27,7 +27,6 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
-import org.apache.uima.ruta.engine.RutaEngine;
 import org.junit.Test;
 
 public class ConjunctiveRuleElementTest {
@@ -51,12 +50,8 @@ public class ConjunctiveRuleElementTest {
 
     t = RutaTestUtils.getTestType(cas, 1);
     ai = cas.getAnnotationIndex(t);
-    assertEquals(4, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Peter", iterator.next().getCoveredText());
-    assertEquals("Jochen", iterator.next().getCoveredText());
-    assertEquals("Flo", iterator.next().getCoveredText());
-    assertEquals("Georg", iterator.next().getCoveredText());
+    assertEquals(0, ai.size());
+
     
     
     if (cas != null) {
