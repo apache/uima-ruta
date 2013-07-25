@@ -21,7 +21,9 @@ package org.apache.uima.ruta.rule;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
@@ -44,11 +46,30 @@ public class ConjunctRulesRuleElement extends ComposedRuleElement {
           InferenceCrowd crowd) {
     List<RuleMatch> result = new ArrayList<RuleMatch>();
     ComposedRuleElementMatch composedMatch = createComposedMatch(ruleMatch, containerMatch, stream);
+    boolean allMatched = true;
     for (RuleElement each : elements) {
-      List<RuleMatch> match = each.startMatch(ruleMatch, null, composedMatch, each, stream, crowd);
-      result.addAll(match);
+      List<RuleMatch> startMatch = each.startMatch(ruleMatch, null, composedMatch, each, stream, crowd);
+      boolean oneMatched = false;;
+      for (RuleMatch eachRuleMatch : startMatch) {
+        boolean matched = eachRuleMatch.matched();
+        if(matched) {
+          oneMatched = true;
+          break;
+        }
+      }
+      allMatched &= oneMatched;
+      result.addAll(startMatch);
     }
-    doneMatching(ruleMatch, ruleApply, stream, crowd);
+    
+    for (RuleMatch each : result) {
+      if (!each.isApplied()) {
+        ruleApply.add(each);
+        if (each.matched() && allMatched) {
+          each.getRule().getRoot().applyRuleElements(each, stream, crowd);
+        }
+        each.setApplied(true);
+      }
+    }
     return result;
   }
 

@@ -234,6 +234,7 @@ public class RutaScriptFactory {
       elements.add(cre);
     }
     cr.setElements(elements);
+    cr.setContainer(null);
     List<RuleElement> result = new ArrayList<RuleElement>();
     result.add(cr);
     return result;

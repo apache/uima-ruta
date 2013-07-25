@@ -109,8 +109,7 @@ public class RutaTestUtils {
     }
     URL url = RutaEngine.class.getClassLoader().getResource("BasicEngine.xml");
     if (url == null) {
-      url = RutaTestUtils.class.getClassLoader().getResource(
-              "org/apache/uima/ruta/TestEngine.xml");
+      url = RutaTestUtils.class.getClassLoader().getResource("org/apache/uima/ruta/TestEngine.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
@@ -142,8 +141,8 @@ public class RutaTestUtils {
     aed.getAnalysisEngineMetaData().setTypeSystem(mergeTypeSystems);
 
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
-    ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { ruleFile
-            .getParentFile().getPath() });
+    ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { ruleFile.getParentFile()
+            .getPath() });
     String name = ruleFile.getName();
     if (name.endsWith(RutaEngine.SCRIPT_FILE_EXTENSION)) {
       name = name.substring(0, name.length() - 5);
@@ -152,8 +151,7 @@ public class RutaTestUtils {
     ae.setConfigParameterValue(RutaEngine.DYNAMIC_ANCHORING, dynamicAnchoring);
     ae.setConfigParameterValue(RutaEngine.SIMPLE_GREEDY_FOR_COMPOSED, simpleGreedyForComposed);
     if (resourceFile != null) {
-      ae.setConfigParameterValue(RutaEngine.RESOURCE_PATHS,
-              new String[] { resourceFile.getPath() });
+      ae.setConfigParameterValue(RutaEngine.RESOURCE_PATHS, new String[] { resourceFile.getPath() });
     }
 
     ae.reconfigure();
@@ -172,4 +170,49 @@ public class RutaTestUtils {
       return null;
     return cas.getTypeSystem().getType(TYPE + i);
   }
+
+  public static CAS getCAS(String document) throws ResourceInitializationException, IOException,
+          InvalidXMLException {
+    return getCAS(document, null, null);
+  }
+
+  public static CAS getCAS(String document, Map<String, String> complexTypes,
+          Map<String, List<TestFeature>> features) throws ResourceInitializationException,
+          IOException, InvalidXMLException {
+    URL url = RutaEngine.class.getClassLoader().getResource("BasicEngine.xml");
+    if (url == null) {
+      url = RutaTestUtils.class.getClassLoader().getResource("org/apache/uima/ruta/TestEngine.xml");
+    }
+    XMLInputSource in = new XMLInputSource(url);
+    ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
+    AnalysisEngineDescription aed = (AnalysisEngineDescription) specifier;
+    TypeSystemDescription basicTypeSystem = aed.getAnalysisEngineMetaData().getTypeSystem();
+    for (int i = 1; i <= 50; i++) {
+      basicTypeSystem.addType("org.apache.uima.T" + i, "Type for Testing", "uima.tcas.Annotation");
+    }
+    if (complexTypes != null) {
+      Set<Entry<String, String>> entrySet = complexTypes.entrySet();
+      for (Entry<String, String> entry : entrySet) {
+        String name = entry.getKey();
+        TypeDescription addType = basicTypeSystem.addType(name, "Type for Testing",
+                entry.getValue());
+        if (features != null) {
+          List<TestFeature> list = features.get(name);
+          for (TestFeature f : list) {
+            addType.addFeature(f.name, f.description, f.range);
+          }
+        }
+      }
+    }
+    Collection<TypeSystemDescription> tsds = new ArrayList<TypeSystemDescription>();
+    tsds.add(basicTypeSystem);
+    TypeSystemDescription mergeTypeSystems = CasCreationUtils.mergeTypeSystems(tsds);
+
+    aed.getAnalysisEngineMetaData().setTypeSystem(mergeTypeSystems);
+    AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
+    CAS cas = ae.newCAS();
+    cas.setDocumentText(document);
+    return cas;
+  }
+
 }

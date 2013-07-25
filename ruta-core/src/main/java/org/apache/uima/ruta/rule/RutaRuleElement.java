@@ -105,7 +105,7 @@ result.addAll(fallbackContinue);
         if (getContainer() instanceof ComposedRuleElement) {
           ComposedRuleElement composed = (ComposedRuleElement) getContainer();
           List<RuleMatch> fallbackContinue = composed.fallbackContinue(true, true, eachAnchor, extendedMatch, ruleApply,
-                  extendedContainerMatch, null, null, stream, crowd);
+                  extendedContainerMatch, null, entryPoint, stream, crowd);
           result.addAll(fallbackContinue);
         }
       }

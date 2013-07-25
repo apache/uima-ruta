@@ -21,48 +21,43 @@ package org.apache.uima.ruta;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.ruta.RutaTestUtils.TestFeature;
+import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.junit.Test;
 
-public class ConjunctRuleTest {
+public class ConjunctiveRuleElementTest {
 
   @Test
   public void test() {
-    String name = this.getClass().getSimpleName();
-    String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
+    String document = "Peter Kluegl, Joern Kottmann, Marshall Schor.";
+    String script = "DECLARE T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T14, T15, T16, T17, T18;\n";
+    script += "(W & SW & ANY){->MARK(T1)};";
     CAS cas = null;
     try {
-      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
-              + ".txt", 50);
+      cas = RutaTestUtils.getCAS(document);
+      Ruta.apply(cas, script);
     } catch (Exception e) {
       e.printStackTrace();
-      assert (false);
     }
+
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
 
     t = RutaTestUtils.getTestType(cas, 1);
     ai = cas.getAnnotationIndex(t);
-//    assertEquals(4, ai.size());
-//    iterator = ai.iterator();
-//    assertEquals("Peter", iterator.next().getCoveredText());
-//    assertEquals("Jochen", iterator.next().getCoveredText());
-//    assertEquals("Flo", iterator.next().getCoveredText());
-//    assertEquals("Georg", iterator.next().getCoveredText());
-
+    assertEquals(4, ai.size());
+    iterator = ai.iterator();
+    assertEquals("Peter", iterator.next().getCoveredText());
+    assertEquals("Jochen", iterator.next().getCoveredText());
+    assertEquals("Flo", iterator.next().getCoveredText());
+    assertEquals("Georg", iterator.next().getCoveredText());
+    
     
     if (cas != null) {
       cas.release();

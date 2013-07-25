@@ -1,4 +1,0 @@
-DECLARE T1, T2, T3, T4, T5, T6;
-
-(CW & W){-> T1};
-(CW | SW){-> T2};
