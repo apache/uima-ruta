@@ -5,16 +5,16 @@ package org.apache.uima.ruta.type;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
+import org.apache.uima.jcas.tcas.Annotation;
+
+
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 
-/**
- * Updated by JCasGen Wed Jan 11 14:42:26 CET 2012 XML source:
- * D:/work/workspace-uima3/uimaj-ep-ruta-
- * engine/src/main/java/org/apache/uima/ruta/engine/BasicTypeSystem.xml
- * 
- * @generated
- */
-public class Document extends DocumentAnnotation {
+/** 
+ * Updated by JCasGen Fri Jul 26 17:02:04 CEST 2013
+ * XML source: D:/work/workspace-uima-ruta/ruta/ruta-core/src/main/resources/org/apache/uima/ruta/engine/BasicTypeSystem.xml
+ * @generated */
+public class Document extends Annotation {
   /**
    * @generated
    * @ordered
@@ -28,18 +28,15 @@ public class Document extends DocumentAnnotation {
   public final static int type = typeIndexID;
 
   /** @generated */
-  public int getTypeIndexID() {
-    return typeIndexID;
-  }
-
+  public int getTypeIndexID() {return typeIndexID;}
+ 
   /**
    * Never called. Disable default constructor
    * 
    * @generated
    */
-  protected Document() {
-  }
-
+  protected Document() {/* intentionally empty block */}
+    
   /**
    * Internal - constructor used by generator
    * 
@@ -49,12 +46,12 @@ public class Document extends DocumentAnnotation {
     super(addr, type);
     readObject();
   }
-
+  
   /** @generated */
   public Document(JCas jcas) {
     super(jcas);
-    readObject();
-  }
+    readObject();   
+  } 
 
   /** @generated */
   public Document(JCas jcas, int begin, int end) {
@@ -62,13 +59,10 @@ public class Document extends DocumentAnnotation {
     setBegin(begin);
     setEnd(end);
     readObject();
-  }
+  }   
 
-  /**
-   * <!-- begin-user-doc --> Write your own initialization here <!-- end-user-doc -->
-   * 
-   * @generated modifiable
-   */
+  /** <!-- begin-user-doc --> Write your own initialization here <!-- end-user-doc -->
+  @generated modifiable */
   private void readObject() {
   }
 

@@ -37,7 +37,6 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.cas.TOP;
-import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.expression.bool.BooleanExpression;
@@ -136,7 +135,7 @@ public class RutaEnvironment {
           addType(type);
         }
       }
-      Type documentType = cas.getJCas().getCasType(DocumentAnnotation.type);
+      Type documentType = cas.getTypeSystem().getType(UIMAConstants.TYPE_DOCUMENT);
       addType("Document", documentType);
       Type annotationType = cas.getJCas().getCasType(org.apache.uima.jcas.tcas.Annotation.type);
       addType("Annotation", annotationType);

@@ -28,8 +28,6 @@ import java.util.NoSuchElementException;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import javax.management.timer.TimerMBean;
-
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.ConstraintFactory;
@@ -42,7 +40,6 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.ruta.rule.AbstractRule;
 import org.apache.uima.ruta.rule.AbstractRuleMatch;
 import org.apache.uima.ruta.type.RutaAnnotation;
@@ -97,7 +94,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     updateIterators(cas, basicType, filter, additionalWindow);
     // really an if? sub it of basic should fix this
     if (additionalWindow == null) {
-      documentAnnotation = (DocumentAnnotation) getJCas().getDocumentAnnotationFs();
+      documentAnnotation = cas.getDocumentAnnotation();
       documentAnnotationType = getCas().getDocumentAnnotation().getType();
       basicIt.moveToFirst();
     } else {

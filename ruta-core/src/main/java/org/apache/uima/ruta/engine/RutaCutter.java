@@ -37,8 +37,8 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.util.CasCopier;
 import org.apache.uima.util.Level;
 
@@ -189,10 +189,11 @@ public class RutaCutter extends JCasAnnotator_ImplBase {
     Set<Annotation> indexedFs = new HashSet<Annotation>();
     AnnotationIndex<Annotation> annotationIndex = fromJcas.getAnnotationIndex();
 
+    TypeSystem typeSystem = fromJcas.getTypeSystem();
+    Type docType = typeSystem.getType(UIMAConstants.TYPE_DOCUMENT);
     CasCopier casCopier = new CasCopier(fromJcas.getCas(), modview.getCas());
     for (Annotation annotation : annotationIndex) {
-      // TODO be careful here, because some people inherit from DocumentAnnotation
-      if (annotation instanceof DocumentAnnotation) {
+      if (typeSystem.subsumes(docType, annotation.getType())) {
         continue;
       }
       Annotation clone = (Annotation) casCopier.copyFs(annotation);
