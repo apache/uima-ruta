@@ -124,7 +124,7 @@
                   org.apache.uima.ruta.engine,
                   org.apache.uima.ruta.ide,
                   org.apache.uima.ruta.ide.ui,
-                  org.eclipse.dltk.core;bundle-version="[3.0.0,5.0.0)"
+                  org.eclipse.dltk.core;bundle-version="3.0.0"
                 </Require-Bundle>
                 <Import-Package>
                 </Import-Package>
