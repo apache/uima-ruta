@@ -42,7 +42,7 @@ and NOTICE files
 
    <requires>
       <import feature="org.apache.uima.tools" version="2.4"/>
-      <import feature="org.eclipse.dltk.core" version="3.0.0"/>
+      <import feature="org.eclipse.dltk.core" version="3.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
@@ -68,6 +68,13 @@ and NOTICE files
 
    <plugin
          id="org.apache.uima.ruta.ide"
+         download-size="0"
+         install-size="0"
+         version="${parsedVersion.osgiVersion}"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.uima.ruta.ide.ui"
          download-size="0"
          install-size="0"
          version="${parsedVersion.osgiVersion}"
