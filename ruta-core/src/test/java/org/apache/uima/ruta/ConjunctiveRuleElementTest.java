@@ -35,7 +35,11 @@ public class ConjunctiveRuleElementTest {
   public void test() {
     String document = "Peter Kluegl, Joern Kottmann, Marshall Schor.";
     String script = "DECLARE T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T14, T15, T16, T17, T18;\n";
-    script += "(W & SW & ANY){->MARK(T1)};";
+    script += "(W & SW & ANY){->MARK(T1)};\n";
+    script += "((CW ANY{REGEXP(\"K.*\")}) & ANY{REGEXP(\"P.*\")}){->MARK(T2)};\n";
+    script += "(ALL & ANY & W & CW{REGEXP(\"Schor\")}){->T3};\n";
+    script += "((ALL ALL) & ANY & (W PERIOD) & CW{REGEXP(\"Schor\")}){->T4};\n";
+    script += "((ALL ALL) & ANY & (W W) & (ANY CW{REGEXP(\"Schor\")})){->T5};\n";
     CAS cas = null;
     try {
       cas = RutaTestUtils.getCAS(document);
@@ -52,7 +56,29 @@ public class ConjunctiveRuleElementTest {
     ai = cas.getAnnotationIndex(t);
     assertEquals(0, ai.size());
 
+    t = RutaTestUtils.getTestType(cas, 2);
+    ai = cas.getAnnotationIndex(t);
+    iterator = ai.iterator();
+    assertEquals(1, ai.size());
+    assertEquals("Peter Kluegl", iterator.next().getCoveredText());
     
+    t = RutaTestUtils.getTestType(cas, 3);
+    ai = cas.getAnnotationIndex(t);
+    iterator = ai.iterator();
+    assertEquals(1, ai.size());
+    assertEquals("Schor", iterator.next().getCoveredText());
+    
+    t = RutaTestUtils.getTestType(cas, 4);
+    ai = cas.getAnnotationIndex(t);
+    iterator = ai.iterator();
+    assertEquals(1, ai.size());
+    assertEquals("Schor.", iterator.next().getCoveredText());
+    
+    t = RutaTestUtils.getTestType(cas, 5);
+    ai = cas.getAnnotationIndex(t);
+    iterator = ai.iterator();
+    assertEquals(1, ai.size());
+    assertEquals("Marshall Schor", iterator.next().getCoveredText());
     
     if (cas != null) {
       cas.release();

@@ -43,7 +43,7 @@ import org.junit.runners.Suite.SuiteClasses;
     ConditionVerbalizerTest.class, ActionVerbalizerTest.class, ExpressionVerbalizerTest.class,
     HtmlAnnotatorTest.class, HtmlConverterTest.class, EmptyDocumentTest.class,
     RutaModifierTest.class, RegExpRuleTest.class, WildCardTest.class, WildCardTest2.class,
-    WildCardTest3.class, EqualShortNameTest.class })
+    WildCardTest3.class, EqualShortNameTest.class, ConjunctiveRuleElementTest.class, ConjunctRulesTest.class })
 public class AllTests {
 
 }

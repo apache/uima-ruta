@@ -147,7 +147,7 @@ public void setExternalFactory(RutaExternalFactory factory) {
 	    }
 	
 	public void reportError(RecognitionException e) {
-		System.out.println(e);
+		emitErrorMessage(e);
 	}
 
 	//public void addVariable(String var, IntStream input) throws NoViableAltException {
@@ -261,6 +261,7 @@ public void setExternalFactory(RutaExternalFactory factory) {
 
 @rulecatch {
 	catch (RecognitionException exception1) {
+	state.failed = true;
 		emitErrorMessage(exception1);
 	}
 	catch (Throwable exception2) {
@@ -583,7 +584,7 @@ options {
 	
 	{stmt = factory.createRule(elements, $blockDeclaration::env);}
 	elements = ruleElementsRoot[((RutaRule)stmt).getRoot()] SEMI 
-	{((RutaRule)stmt).setRuleElements(elements);}
+	{if(elements != null){((RutaRule)stmt).setRuleElements(elements);} else {}}
 	;
 
 
@@ -640,10 +641,10 @@ ruleElementsRoot[RuleElementContainer container] returns [List<RuleElement> elem
 	List<Token> conList = new ArrayList<Token>();
 }
 	:
-	re = ruleElement[container] {if(re!=null){ reList.add(re); conList.add(null);}} 
+	re = ruleElement[container] {if(re!=null){ reList.add(re); conList.add(null);} else {}} 
 	(
 	(con = PERCENT {conList.add(con);})? 
-	re = ruleElement[container] {if(re!=null){ reList.add(re); conList.add(null);}}
+	re = ruleElement[container] {if(re!=null){ reList.add(re); conList.add(null);} else {}}
 	)*
 	{elements = factory.processConjunctRules(reList, conList, container, $blockDeclaration::env);}
 	;
@@ -653,8 +654,8 @@ ruleElements[RuleElementContainer container] returns [List<RuleElement> elements
 	List<RuleElement> reList = new ArrayList<RuleElement>();
 }
 	:
-	re = ruleElement[container] {if(re!=null){ elements.add(re);}} 
-	(re = ruleElement[container] {if(re!=null){ elements.add(re);}})*
+	re = ruleElement[container] {if(re!=null){ elements.add(re);}else {}} 
+	(re = ruleElement[container] {if(re!=null){ elements.add(re);}else {}})*
 	;
 		
 
