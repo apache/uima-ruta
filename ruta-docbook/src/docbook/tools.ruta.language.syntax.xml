@@ -83,23 +83,26 @@ BlockDeclaration    -> "BLOCK" "(" Identifier ")" RuleElementWithCA
                                                        "{" Statements "}"]]></programlisting>
 
     Syntax of statements and rule elements:
-    <programlisting><![CDATA[SimpleStatement        -> RuleElements ";" | RegExpRule ";"
+    <programlisting><![CDATA[SimpleStatement        -> SimpleRule | RegExpRule | ConjunctRules
+SimpleRule             -> RuleElements ";"
 RegExpRule             -> StringExpression "->" GroupAssignment 
-                          ("," GroupAssignment)*
+                          ("," GroupAssignment)* ";"
+ConjunctRules          -> RuleElements ("%" RuleElements)+ ";"
 GroupAssignment        -> TypeExpression 
                         | NumberEpxression "=" TypeExpression
 RuleElements           -> RuleElement+
 RuleElement            -> RuleElementType | RuleElementLiteral
-                        | RuleElementComposed | RuleElementDisjunctive
-                        | RuleElementWildCard
+                        | RuleElementComposed | RuleElementWildCard
 RuleElementType        ->  TypeExpression QuantifierPart?
                                          ("{" Conditions?  Actions? "}")?
 RuleElementWithCA      ->  TypeExpression QuantifierPart?
                                             "{" Conditions?  Actions? "}"
 RuleElementLiteral     ->  SimpleStringExpression QuantifierPart?
                                           ("{" Conditions?  Actions? "}")?
-RuleElementComposed    -> "(" RuleElements ")" QuantifierPart?
-                                          ("{" Conditions?  Actions? "}")?
+RuleElementComposed    -> ( RuleElement ("&" RuleElement)+
+                          | RuleElement ("|" RuleElement)+
+                          | "(" RuleElements ")") 
+                          QuantifierPart? ("{" Conditions?  Actions? "}")?
 RuleElementDisjunctive -> "(" (TypeExpression | SimpleStringExpression)
                         ("|" (TypeExpression | SimpleStringExpression) )+
                         (")" QuantifierPart? "{" Conditions?  Actions? }")?

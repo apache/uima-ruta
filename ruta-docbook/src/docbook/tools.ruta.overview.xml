@@ -243,6 +243,17 @@ Document{-> MARKFAST(Animal, AnimalsList)};
     <programlisting><![CDATA[(Animal (COMMA | SEMICOLON))+{-> MARK(AnimalEnum,1,2)} Animal;]]></programlisting>
 
     <para>
+      There two more special symbols that can be used to link rule elements. If the symbol <quote>|</quote> is replaced by the
+      symbol <quote><![CDATA[&]]></quote> in the last exmaple, then the token after the animal need to be a comma and a semicolon, which is of course not possible.
+      Another symbol with a special meaning is <quote>%</quote>, which cannot only be used within a composed rule element (parentheses).
+      This symbol can be interpreted as a global <quote>and</quote>: It links several rules, which only fire, if all rules have sucessfully matched. 
+      In the following example, an annoations of the type <quote>FoundIt</quote> is created, if the document contains two periods in a row and two commas in a row:
+    </para>
+    
+    <programlisting><![CDATA[PERIOD PERIOD % COMMA COMMA{-> FoundIt};]]></programlisting>
+
+
+    <para>
       There is a <quote>wild card</quote> rule element, which can be used to skip some text or annotations until the next rule element is able to match.
     </para>
     
