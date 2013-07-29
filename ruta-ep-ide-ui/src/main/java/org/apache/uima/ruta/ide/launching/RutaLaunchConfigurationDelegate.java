@@ -167,6 +167,29 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
         // (maybe a different version) should appear first on the class path
         extendedClasspath.add(d.pluginIdToJarPath("org.apache.uima.runtime"));
         extendedClasspath.add(d.pluginIdToJarPath("org.apache.uima.ruta.engine"));
+        
+        // for inlined jars?  
+        Bundle bundle = RutaIdeUIPlugin.getDefault().getBundle("org.apache.uima.runtime");
+        if (bundle != null) {
+          Enumeration<?> jarEnum = bundle.findEntries("/", "*.jar", true);
+          if (jarEnum == null) {
+            extendedClasspath.add(d.pluginIdToJarPath("org.apache.uima.runtime"));
+          }
+          while (jarEnum != null && jarEnum.hasMoreElements()) {
+            URL element = (URL) jarEnum.nextElement();
+            extendedClasspath.add(FileLocator.toFileURL(element).getFile());
+          }
+        }
+
+        Bundle bundle2 = RutaIdeUIPlugin.getDefault().getBundle("org.apache.uima.ruta.engine");
+        if (bundle2 != null) {
+          Enumeration<?> jarEnum = bundle2.findEntries("/", "*.jar", true);
+          while (jarEnum != null && jarEnum.hasMoreElements()) {
+            URL element = (URL) jarEnum.nextElement();
+            extendedClasspath.add(FileLocator.toFileURL(element).getFile());
+          }
+        }
+        
       } catch (IOException e) {
         throw new CoreException(new Status(IStatus.ERROR, RutaIdeUIPlugin.PLUGIN_ID, IStatus.OK,
                 "Failed to compose classpath!", e));
