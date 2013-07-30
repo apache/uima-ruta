@@ -104,8 +104,7 @@ public class ViewWriter extends JCasMultiplier_ImplBase {
     }
     outView.reset();
     CasCopier cc = new CasCopier(inView, outView);
-    // uncomment for uimaj-2.4.1
-//    cc.copyCasView(inView, outputView, true);
+    cc.copyCasView(inView, outputView, true);
     try {
       writeXmi(outView, file);
     } catch (Exception e) {

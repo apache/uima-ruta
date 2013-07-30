@@ -563,8 +563,7 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
     this.annotationMode = typeString;
     if (casEditor != null && casEditor.getDocument() != null && typeString != null) {
       Type type = casEditor.getDocument().getCAS().getTypeSystem().getType(typeString);
-      // TODO activate it again for 2.4.1
-      //casEditor.setAnnotationMode(type);
+      casEditor.setAnnotationMode(type);
     }
   }
 
