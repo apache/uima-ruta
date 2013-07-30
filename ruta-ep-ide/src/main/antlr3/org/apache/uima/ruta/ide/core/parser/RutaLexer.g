@@ -307,7 +307,9 @@ CLEAR 	:	 'CLEAR';
 THEN 
 	: 	'->'
 	;
-
+THEN2 
+	: 	'<-'
+	;
 	
 LogLevel:
 	'finest' | 'finer' | 'fine' | 'config' | 'info' | 'warning' | 'severe'

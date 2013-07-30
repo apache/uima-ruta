@@ -638,7 +638,10 @@ blockRuleElement returns [RutaRuleElement rElement = null] //[List<RutaRuleEleme
 	re = ruleElementType {rElement = re;}
 	;	
 	
-ruleElement returns [Expression re = null]
+ruleElement returns [RutaRuleElement re = null]
+@init{
+List<RutaRule> innerRules = new ArrayList<RutaRule>();
+}
 	:
 	STARTANCHOR?
 	(
@@ -647,6 +650,8 @@ ruleElement returns [Expression re = null]
 	| re3 = ruleElementComposed {re = re3;}
 	| re4 = ruleElementWildCard {re = re4;}
 	)
+	((THEN | THEN2) LCURLY (rule = simpleStatement {innerRules.add(rule);})+ 
+	RCURLY {re.setInlinedRules(innerRules);})?
 	;
 
 ruleElementWildCard returns [RutaRuleElement re = null] 

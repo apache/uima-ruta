@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaElement;
+import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
@@ -46,6 +47,13 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
 
   protected RutaBlock parent;
 
+  @SuppressWarnings("unchecked")
+  protected final InferenceCrowd emptyCrowd = new InferenceCrowd(Collections.EMPTY_LIST);
+
+  protected List<RutaStatement> inlinedRules;
+
+  protected boolean inlineMode;
+  
   public AbstractRuleElement(RuleElementQuantifier quantifier,
           List<AbstractRutaCondition> conditions, List<AbstractRutaAction> actions,
           RuleElementContainer container, RutaBlock parent) {
@@ -65,9 +73,6 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
       this.quantifier = new NormalQuantifier();
     }
   }
-
-  @SuppressWarnings("unchecked")
-  protected final InferenceCrowd emptyCrowd = new InferenceCrowd(Collections.EMPTY_LIST);
 
   protected void doneMatching(RuleMatch ruleMatch, RuleApply ruleApply, RutaStream stream,
           InferenceCrowd crowd) {
@@ -177,4 +182,20 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
     return startAnchor;
   }
 
+  public void setInlinedRules(List<RutaStatement> innerRules) {
+    this.inlinedRules = innerRules;
+  }
+
+  public void setInlineMode(boolean blockMode) {
+    this.inlineMode = blockMode;
+  }
+  
+  public List<RutaStatement> getInlinedRules() {
+    return inlinedRules;
+  }
+
+  public boolean getInlineMode() {
+    return inlineMode;
+  }
+  
 }

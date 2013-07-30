@@ -34,6 +34,8 @@ public class RutaRuleElement extends Expression {
   protected Expression head;
 
   protected List<Expression> quantifierExpressions;
+  
+  private List<RutaRule> inlinedRules;
 
   // TODO to be removed
   public RutaRuleElement(int start, int end) {
@@ -88,6 +90,11 @@ public class RutaRuleElement extends Expression {
           action.traverse(visitor);
         }
       }
+      if(inlinedRules != null) {
+        for (RutaRule rule : inlinedRules) {
+          rule.traverse(visitor);
+        }
+      }
     }
   }
 
@@ -109,6 +116,14 @@ public class RutaRuleElement extends Expression {
 
   public String toString() {
     return this.getClass().getSimpleName() + " : " + super.toString();
+  }
+
+  public List<RutaRule> getInlinedRules() {
+    return inlinedRules;
+  }
+
+  public void setInlinedRules(List<RutaRule> inlinedRules) {
+    this.inlinedRules = inlinedRules;
   }
 
 }

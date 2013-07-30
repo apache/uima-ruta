@@ -660,6 +660,9 @@ ruleElements[RuleElementContainer container] returns [List<RuleElement> elements
 		
 
 ruleElement[RuleElementContainer container] returns [RuleElement re = null]
+@init{
+List<RutaStatement> innerRules = new ArrayList<RutaStatement>();
+}
 	:
 	start = STARTANCHOR? (
 	re1 = ruleElementType[container] {re = re1;}
@@ -668,6 +671,13 @@ ruleElement[RuleElementContainer container] returns [RuleElement re = null]
 	| (ruleElementWildCard[null])=> re5 = ruleElementWildCard[container] {re = re5;}
 	)
 	{re.setStartAnchor(start != null);}
+	(t = (THEN | THEN2) 
+	LCURLY 
+	(rule = simpleStatement {innerRules.add(rule);})+ 
+	RCURLY 
+	{re.setInlinedRules(innerRules);
+	boolean block = t != null && t.getText().equals("->"); 
+	re.setInlineMode(block);})?
 	;	
 
 ruleElementWildCard [RuleElementContainer container] returns [AbstractRuleElement re = null]
