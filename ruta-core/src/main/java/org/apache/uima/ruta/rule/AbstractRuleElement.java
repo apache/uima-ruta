@@ -28,6 +28,7 @@ import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.rule.quantifier.NormalQuantifier;
@@ -86,16 +87,34 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
     }
   }
 
-  protected void processInlinedRules(RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd) {
-    if (inlineMode) {
-      List<AnnotationFS> matchedAnnotationsOf = ruleMatch.getMatchedAnnotationsOf(this);
-      for (AnnotationFS annotationFS : matchedAnnotationsOf) {
-        RutaStream windowStream = stream.getWindowStream(annotationFS, annotationFS.getType());
-        for (RutaStatement each : inlinedRules) {
-          each.apply(windowStream, crowd);
-        }
+  protected List<ScriptApply> processInlinedBlockRules(RuleMatch ruleMatch, RutaStream stream,
+          InferenceCrowd crowd) {
+    if (inlineMode && inlinedRules != null && !inlinedRules.isEmpty()) {
+      return processInlinedRules(ruleMatch, stream, crowd);
+    }
+    return null;
+  }
+
+  protected List<ScriptApply> processInlinedRules(RuleMatch ruleMatch, RutaStream stream,
+          InferenceCrowd crowd) {
+    List<ScriptApply> result = new ArrayList<ScriptApply>();
+    List<AnnotationFS> matchedAnnotationsOf = ruleMatch.getMatchedAnnotationsOf(this);
+    for (AnnotationFS annotationFS : matchedAnnotationsOf) {
+      RutaStream windowStream = stream.getWindowStream(annotationFS, annotationFS.getType());
+      for (RutaStatement each : inlinedRules) {
+        ScriptApply apply = each.apply(windowStream, crowd);
+        result.add(apply);
       }
     }
+    return result;
+  }
+
+  protected List<ScriptApply> processInlinedConditionRules(RuleMatch ruleMatch, RutaStream stream,
+          InferenceCrowd crowd) {
+    if (!inlineMode && inlinedRules != null && !inlinedRules.isEmpty()) {
+      return processInlinedRules(ruleMatch, stream, crowd);
+    }
+    return null;
   }
 
   public void apply(RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd) {
@@ -104,9 +123,26 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
       action.execute(ruleMatch, this, stream, crowd);
       crowd.endVisit(action, null);
     }
-    processInlinedRules(ruleMatch, stream, crowd);
+    processInlinedBlockRules(ruleMatch, stream, crowd);
   }
 
+  protected boolean matchInnerRules(RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd) {
+    boolean inlinedRulesMatched = true;
+    List<ScriptApply> list = processInlinedConditionRules(ruleMatch, stream, crowd);
+    if(list != null) {
+      inlinedRulesMatched = false;
+      for (ScriptApply scriptApply : list) {
+        if(scriptApply instanceof RuleApply) {
+          RuleApply ra = (RuleApply) scriptApply;
+          if(ra.applied > 0) {
+            inlinedRulesMatched = true;
+          }
+        }
+      }
+    }
+    return inlinedRulesMatched;
+  }
+  
   protected List<RuleElementMatch> getMatch(RuleMatch ruleMatch,
           ComposedRuleElementMatch containerMatch) {
     List<RuleElementMatch> matchInfo;

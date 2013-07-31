@@ -35,6 +35,8 @@ public class RuleElementMatch {
 
   protected boolean baseConditionMatched = true;
 
+  private boolean inlinedRulesMatched = true;
+  
   protected List<EvaluatedCondition> conditions;
 
   protected ComposedRuleElementMatch containerMatch;
@@ -65,7 +67,7 @@ public class RuleElementMatch {
   }
 
   public boolean matched() {
-    return baseConditionMatched && conditionsMatched;
+    return baseConditionMatched && conditionsMatched && inlinedRulesMatched;
   }
 
   public RuleElement getRuleElement() {
@@ -138,5 +140,13 @@ public class RuleElementMatch {
 
   public void setRuleAnchor(boolean ruleAnchor) {
     this.ruleAnchor = ruleAnchor;
+  }
+
+  public boolean isInlinedRulesMatched() {
+    return inlinedRulesMatched;
+  }
+
+  public void setInlinedRulesMatched(boolean inlinedRulesMatched) {
+    this.inlinedRulesMatched = inlinedRulesMatched;
   }
 }

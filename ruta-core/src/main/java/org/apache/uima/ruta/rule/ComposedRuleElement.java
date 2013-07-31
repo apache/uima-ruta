@@ -365,7 +365,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
           InferenceCrowd crowd) {
     List<RuleMatch> result = new ArrayList<RuleMatch>();
     RuleElementContainer container = getContainer();
-    doMatch(containerMatch, stream, crowd);
+    doMatch(containerMatch, ruleMatch, stream, crowd);
     if (this.equals(entryPoint) && ruleApply == null) {
       result.add(ruleMatch);
     } else if (container == null) {
@@ -461,7 +461,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     }
   }
 
-  private void doMatch(ComposedRuleElementMatch match, RutaStream stream, InferenceCrowd crowd) {
+  private void doMatch(ComposedRuleElementMatch match, RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd) {
     List<AnnotationFS> textsMatched = match.getTextsMatched();
     if (textsMatched == null || textsMatched.isEmpty()) {
       return;
@@ -481,6 +481,8 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     }
     match.setConditionInfo(evaluatedConditions);
     match.evaluateInnerMatches(true, stream);
+    boolean inlinedRulesMatched = matchInnerRules(ruleMatch, stream, crowd);
+    match.setInlinedRulesMatched(inlinedRulesMatched);
   }
 
   public Collection<AnnotationFS> getAnchors(RutaStream stream) {

@@ -325,7 +325,6 @@ result.addAll(fallbackContinue);
   private void doMatch(AnnotationFS annotation, RuleMatch ruleMatch,
           ComposedRuleElementMatch containerMatch, boolean ruleAnchor, RutaStream stream,
           InferenceCrowd crowd) {
-    // TODO rewite this method!
     RuleElementMatch result = new RuleElementMatch(this, containerMatch);
     result.setRuleAnchor(ruleAnchor);
     List<EvaluatedCondition> evaluatedConditions = new ArrayList<EvaluatedCondition>(
@@ -337,20 +336,19 @@ result.addAll(fallbackContinue);
         crowd.beginVisit(condition, null);
         EvaluatedCondition eval = condition.eval(annotation, this, stream, crowd);
         crowd.endVisit(condition, null);
-        // matched &= eval.isValue();
         evaluatedConditions.add(eval);
       }
     }
-
     if (annotation != null) {
       textsMatched.add(annotation);
     }
-
     result.setMatchInfo(base, textsMatched, evaluatedConditions, stream);
+    boolean inlinedRulesMatched = matchInnerRules(ruleMatch, stream, crowd);
+    result.setInlinedRulesMatched(inlinedRulesMatched);
     ruleMatch.setMatched(ruleMatch.matched() && result.matched());
-    List<RuleElementMatch> rems = new ArrayList<RuleElementMatch>();
-    rems.add(result);
   }
+
+  
 
   @Override
   public String toString() {

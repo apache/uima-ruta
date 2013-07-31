@@ -43,7 +43,9 @@ public class InlinedRulesTest {
     script += "(COLON # COMMA)->{ANY{REGEXP(\"a.*\", true)-> T5};};";
     // inlined as condition
     script += "T1{->T6}<-{ANY COLON ANY{->T6};};\n";
-    script += "T1{->T7}<-{CW COLON CW{->T8};};\n";
+    script += "T1{->T7}<-{CW COLON CW{->T7};};\n";
+    script += "(T1 PERIOD{ -> T8} T1){CONTAINS(COLON)}<-{CW COLON CW{->T9}; COLON ANY{-> T10};};\n";
+    script += "(T1 PERIOD{ -> T11} T1){CONTAINS(COLON)}<-{CW COLON CW{->T11};};\n";
     CAS cas = null;
     try {
       cas = RutaTestUtils.getCAS(document);
@@ -85,26 +87,41 @@ public class InlinedRulesTest {
     assertEquals(1, ai.size());
     assertEquals("A", iterator.next().getCoveredText());
 
-//    for (AnnotationFS a : ai) {
-//      System.out.println(a.getCoveredText());
-//    }
-//    t = RutaTestUtils.getTestType(cas, 6);
-//    ai = cas.getAnnotationIndex(t);
-//    iterator = ai.iterator();
-//    assertEquals(2, ai.size());
-//    assertEquals("A rule is composed of a sequence of rule elements and a rule element essentially consists of four parts: A matching condition, an optional quantifier, a list of conditions and a list of actions", iterator.next().getCoveredText());
-//    assertEquals("A", iterator.next().getCoveredText());
-//    
-//    t = RutaTestUtils.getTestType(cas, 7);
-//    ai = cas.getAnnotationIndex(t);
-//    iterator = ai.iterator();
-//    assertEquals(0, ai.size());
-//    
-//    t = RutaTestUtils.getTestType(cas, 8);
-//    ai = cas.getAnnotationIndex(t);
-//    iterator = ai.iterator();
-//    assertEquals(1, ai.size());
-//    assertEquals("A", iterator.next().getCoveredText());
+    t = RutaTestUtils.getTestType(cas, 6);
+    ai = cas.getAnnotationIndex(t);
+    iterator = ai.iterator();
+    assertEquals(2, ai.size());
+    assertEquals("A rule is composed of a sequence of rule elements and a rule element essentially consists of four parts: A matching condition, an optional quantifier, a list of conditions and a list of actions", iterator.next().getCoveredText());
+    assertEquals("A", iterator.next().getCoveredText());
+    
+    t = RutaTestUtils.getTestType(cas, 7);
+    ai = cas.getAnnotationIndex(t);
+    iterator = ai.iterator();
+    assertEquals(0, ai.size());
+    
+    t = RutaTestUtils.getTestType(cas, 8);
+    ai = cas.getAnnotationIndex(t);
+    iterator = ai.iterator();
+    assertEquals(2, ai.size());
+    assertEquals(".", iterator.next().getCoveredText());
+    assertEquals(".", iterator.next().getCoveredText());
+    
+    t = RutaTestUtils.getTestType(cas, 9);
+    ai = cas.getAnnotationIndex(t);
+    iterator = ai.iterator();
+    assertEquals(0, ai.size());
+    
+    t = RutaTestUtils.getTestType(cas, 10);
+    ai = cas.getAnnotationIndex(t);
+    iterator = ai.iterator();
+    assertEquals(2, ai.size());
+    assertEquals("A", iterator.next().getCoveredText());
+    assertEquals("A", iterator.next().getCoveredText());
+    
+    t = RutaTestUtils.getTestType(cas, 11);
+    ai = cas.getAnnotationIndex(t);
+    iterator = ai.iterator();
+    assertEquals(0, ai.size());
     
     if (cas != null) {
       cas.release();
