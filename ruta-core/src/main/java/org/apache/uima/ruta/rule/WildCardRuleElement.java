@@ -295,7 +295,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
     boolean doneHere = false;
     while (!doneHere && iterator.isValid() && stream.isVisible(iterator.get())) {
       AnnotationFS nextOne = iterator.get();
-      RutaBasic endAnchor = stream.getEndAnchor(nextOne.getBegin());
+      int pointer = after? nextOne.getBegin() : nextOne.getEnd();
+      RutaBasic anchor = stream.getAnchor(!after, pointer);
       ComposedRuleElementMatch extendedContainerMatch = containerMatch.copy();
       RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch);
 
@@ -305,12 +306,12 @@ public class WildCardRuleElement extends AbstractRuleElement {
       if (extendedMatch.matched()) {
         ComposedRuleElementMatch nextContainerMatch = getContainerMatchOfNextElement(
                 extendedContainerMatch, nextDepth);
-        if (endAnchor == null) {
+        if (anchor == null) {
           result = nextElement.startMatch(extendedMatch, ruleApply, nextContainerMatch,
                   nextElement, stream, crowd);
         } else {
           // TODO match and containermatch should be on the correct level!
-          result = nextElement.continueMatch(after, endAnchor, extendedMatch, ruleApply,
+          result = nextElement.continueMatch(after, anchor, extendedMatch, ruleApply,
                   nextContainerMatch, sideStepOrigin, nextElement, stream, crowd);
         }
         List<RuleElementMatch> nextList = nextContainerMatch.getInnerMatches().get(nextElement);

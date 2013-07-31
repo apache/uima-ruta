@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.RutaStatement;
@@ -53,7 +54,7 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
   protected List<RutaStatement> inlinedRules;
 
   protected boolean inlineMode;
-  
+
   public AbstractRuleElement(RuleElementQuantifier quantifier,
           List<AbstractRutaCondition> conditions, List<AbstractRutaAction> actions,
           RuleElementContainer container, RutaBlock parent) {
@@ -85,12 +86,25 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
     }
   }
 
+  protected void processInlinedRules(RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd) {
+    if (inlineMode) {
+      List<AnnotationFS> matchedAnnotationsOf = ruleMatch.getMatchedAnnotationsOf(this);
+      for (AnnotationFS annotationFS : matchedAnnotationsOf) {
+        RutaStream windowStream = stream.getWindowStream(annotationFS, annotationFS.getType());
+        for (RutaStatement each : inlinedRules) {
+          each.apply(windowStream, crowd);
+        }
+      }
+    }
+  }
+
   public void apply(RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd) {
     for (AbstractRutaAction action : actions) {
       crowd.beginVisit(action, null);
       action.execute(ruleMatch, this, stream, crowd);
       crowd.endVisit(action, null);
     }
+    processInlinedRules(ruleMatch, stream, crowd);
   }
 
   protected List<RuleElementMatch> getMatch(RuleMatch ruleMatch,
@@ -189,7 +203,7 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
   public void setInlineMode(boolean blockMode) {
     this.inlineMode = blockMode;
   }
-  
+
   public List<RutaStatement> getInlinedRules() {
     return inlinedRules;
   }
@@ -197,5 +211,5 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
   public boolean getInlineMode() {
     return inlineMode;
   }
-  
+
 }
