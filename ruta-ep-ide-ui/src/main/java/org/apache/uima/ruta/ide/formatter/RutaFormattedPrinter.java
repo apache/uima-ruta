@@ -352,7 +352,15 @@ public class RutaFormattedPrinter extends ASTVisitor {
         inLargeRule = 4;
       }
       append(PAR_OPEN);
-      traverseAstNodes(elements, cre.isDisjunctive() ? " |" : "");
+      String sep = "";
+      if (cre.isDisjunctive() != null) {
+        if (cre.isDisjunctive()) {
+          sep = " |";
+        } else {
+          sep = " &";
+        }
+      }
+      traverseAstNodes(elements, sep);
       append(PAR_CLOSE);
       appendRuleElement(cre);
       if (inLargeRule == 4) {

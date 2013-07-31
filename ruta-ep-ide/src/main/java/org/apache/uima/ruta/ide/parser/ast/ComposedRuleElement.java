@@ -28,11 +28,11 @@ import org.eclipse.dltk.ast.expressions.ExpressionConstants;
 public class ComposedRuleElement extends RutaRuleElement {
   List<Expression> elements;
 
-  private boolean disjunctive;
+  private Boolean disjunctive;
 
   public ComposedRuleElement(int start, int end, List<Expression> elements,
           List<Expression> quantifierExpressions, List<RutaCondition> conditionExpressions,
-          List<RutaAction> actionExpressions, boolean disjunctive) {
+          List<RutaAction> actionExpressions, Boolean disjunctive) {
     super(start, end, null, quantifierExpressions, conditionExpressions, actionExpressions);
     if (elements != null) {
       this.elements = elements;
@@ -80,11 +80,11 @@ public class ComposedRuleElement extends RutaRuleElement {
     return elements;
   }
 
-  public boolean isDisjunctive() {
+  public Boolean isDisjunctive() {
     return disjunctive;
   }
 
-  public void setDisjunctive(boolean disjunctive) {
+  public void setDisjunctive(Boolean disjunctive) {
     this.disjunctive = disjunctive;
   }
 

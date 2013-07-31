@@ -76,7 +76,7 @@ public class ScriptFactory extends AbstractFactory {
   }
 
   public ComposedRuleElement createComposedRuleElement(List<Expression> res, List<Expression> q,
-          List<RutaCondition> c, List<RutaAction> a, boolean disjunctive, RutaBlock env,
+          List<RutaCondition> c, List<RutaAction> a, Boolean disjunctive, RutaBlock env,
           Token... tokens) {
     int bounds[] = getSurroundingBounds((ASTNode) null, res);
     // taking care of null statements - errors should have been recognized
