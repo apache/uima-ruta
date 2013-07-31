@@ -83,6 +83,8 @@ public class RutaFormattedPrinter extends ASTVisitor {
 
   private static final String CONCAT = " + ";
 
+  private static final String CONCAT_RULES = "% ";
+  
   private static final String COMMA = ",";
 
   private static final int NL_DECLS_COUNT = 2;
@@ -351,6 +353,9 @@ public class RutaFormattedPrinter extends ASTVisitor {
       if (inLargeRule == 2) {
         inLargeRule = 4;
       }
+      if(cre.isAfterConcat()) {
+        append(CONCAT_RULES);
+      }
       append(PAR_OPEN);
       String sep = "";
       if (cre.isDisjunctive() != null) {
@@ -375,6 +380,9 @@ public class RutaFormattedPrinter extends ASTVisitor {
         appendNewLine();
       } else if (inLargeRule == 1) {
         inLargeRule = 2;
+      }
+      if(ruleEl.isAfterConcat()) {
+        append(CONCAT_RULES);
       }
       appendRuleElement(ruleEl);
       return false;

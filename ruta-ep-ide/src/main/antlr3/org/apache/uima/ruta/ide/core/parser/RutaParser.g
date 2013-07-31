@@ -625,7 +625,7 @@ regexpRule returns [RutaRule stmt = null]
 
 ruleElementsRoot returns [List<Expression> elements = new ArrayList<Expression>()]
 	:
-	re = ruleElement {if(re!=null) elements.add(re);} PERCENT? (re = ruleElement {if(re!=null) elements.add(re);})*
+	re = ruleElement {if(re!=null) elements.add(re);} (p = PERCENT? re = ruleElement {if(re!=null) {elements.add(re);re.setAfterConcat(p);}})*
 	;	
 
 ruleElements returns [List<Expression> elements = new ArrayList<Expression>()]

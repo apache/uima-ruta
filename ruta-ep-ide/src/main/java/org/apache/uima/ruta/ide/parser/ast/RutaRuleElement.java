@@ -22,6 +22,7 @@ package org.apache.uima.ruta.ide.parser.ast;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.antlr.runtime.Token;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.ExpressionConstants;
@@ -38,6 +39,8 @@ public class RutaRuleElement extends Expression {
   protected List<RutaRule> inlinedRules;
 
   private String inlineMode;
+
+  private boolean afterConcat;
 
   // TODO to be removed
   public RutaRuleElement(int start, int end) {
@@ -127,7 +130,9 @@ public class RutaRuleElement extends Expression {
   public void setInlinedRules(List<RutaRule> inlinedRules) {
     if(inlinedRules != null && !inlinedRules.isEmpty()) {
       RutaRule last = inlinedRules.get(inlinedRules.size()-1);
-      setEnd(last.sourceEnd());
+      if(last != null) {
+        setEnd(last.sourceEnd());
+      }
     }
     this.inlinedRules = inlinedRules;
   }
@@ -138,6 +143,18 @@ public class RutaRuleElement extends Expression {
 
   public String getInlineMode() {
     return inlineMode;
+  }
+
+  public void setAfterConcat(Token p) {
+    this.afterConcat = p != null;
+  }
+
+  public boolean isAfterConcat() {
+    return afterConcat;
+  }
+
+  public void setAfterConcat(boolean afterConcat) {
+    this.afterConcat = afterConcat;
   }
   
 }
