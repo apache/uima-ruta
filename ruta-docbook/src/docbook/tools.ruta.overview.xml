@@ -1075,8 +1075,10 @@ ae.process(cas);]]></programlisting>
           <para>
             This string parameter specifies the absolute path of the resulting file named <quote>output.txt</quote>. However, if an annotation of the 
             type <quote>org.apache.uima.examples.SourceDocumentInformation</quote> is given, then the value of this parameter is interpreted to be relative
-            to the URI stored in the annotation and the name of the file will be adapted to the name of the source file. The UIMA Ruta Workbench automatically adds
-            the SourceDocumentInformation annotation when the user launches a script file. The default value of this parameter is <quote>/../output/</quote>.
+            to the URI stored in the annotation and the name of the file will be adapted to the name of the source file. If this functionality is activated in the preferences, 
+            then the UIMA Ruta Workbench adds
+            the SourceDocumentInformation annotation when the user launches a script file.
+             The default value of this parameter is <quote>/../output/</quote>.
           </para>
         </section>
         <section id="ugr.tools.ruta.ae.annotationwriter.parameter.encoding">
@@ -1132,8 +1134,10 @@ ae.process(cas);]]></programlisting>
           <para>
             This optional string parameter specifies the absolute path of the resulting file named <quote>output.modified.html</quote>. However, if an annotation of the 
             type <quote>org.apache.uima.examples.SourceDocumentInformation</quote> is given, then the value of this parameter is interpreted to be relative
-            to the URI stored in the annotation and the name of the file will be adapted to the name of the source file. The UIMA Ruta Workbench automatically adds
-            the SourceDocumentInformation annotation when the user launches a script file. The default value of this parameter is empty. 
+            to the URI stored in the annotation and the name of the file will be adapted to the name of the source file. If this functionality is activated in the preferences, 
+            then the UIMA Ruta Workbench adds
+            the SourceDocumentInformation annotation when the user launches a script file.
+            The default value of this parameter is empty. 
             In this case no additional html file will be created.
           </para>
         </section>
@@ -1273,6 +1277,70 @@ ae.process(cas);]]></programlisting>
         </section>
       </section>
     </section>
+    <section id="ugr.tools.ruta.ae.cutter">
+      <title>View Writer</title>
+      <para>
+        This Analysis Engine is able to cut the doucment of the CAS. Only the text covered by annotations of the specified type will be retained and all other parts of the documents will be removed.
+            The offsets of annotations in the index will be updated, but not feature structures nested as feature values.
+      </para>
+      <section id="ugr.tools.ruta.ae.cutter.parameter">
+        <title>Configuration Parameters</title>
+        <para>
+        </para>
+        <section id="ugr.tools.ruta.ae.cutter.parameter.keep">
+          <title>keep</title>
+          <para>
+            This string parameter specifies the complete name of a type. Only the text covered by annotations of this type will be retained and all other parts of the documents will be removed.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.cutter.parameter.inputView">
+          <title>inputView</title>
+          <para>
+            The name of the view that should be processed.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.cutter.parameter.outputView">
+          <title>outputView</title>
+          <para>
+            The name of the view, which will contain the modified CAS. 
+          </para>
+        </section>
+      </section>
+    </section>
+    <section id="ugr.tools.ruta.ae.view">
+      <title>View Writer</title>
+      <para>
+        This Analysis Engine is able to serialize the processed CAS to an XMI file whereas the the source and destination view can be specified 
+        A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a UIMA Ruta project.
+      </para>
+      <section id="ugr.tools.ruta.ae.view.parameter">
+        <title>Configuration Parameters</title>
+        <para>
+        </para>
+        <section id="ugr.tools.ruta.ae.view.parameter.output">
+          <title>output</title>
+          <para>
+            This string parameter specifies the absolute path of the resulting file named <quote>output.xmi</quote>. However, if an annotation of the 
+            type <quote>org.apache.uima.examples.SourceDocumentInformation</quote> is given, then the value of this parameter is interpreted to be relative
+            to the URI stored in the annotation and the name of the file will be adapted to the name of the source file. If this functionality is activated in the preferences, 
+            then the UIMA Ruta Workbench adds
+            the SourceDocumentInformation annotation when the user launches a script file.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.view.parameter.inputView">
+          <title>inputView</title>
+          <para>
+            The name of the view that should be stored in a file.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.view.parameter.outputView">
+          <title>outputView</title>
+          <para>
+            The name, which should be used, to store the view in the file. 
+          </para>
+        </section>
+      </section>
+    </section>
     <section id="ugr.tools.ruta.ae.xmi">
       <title>XMI Writer</title>
       <para>
@@ -1289,7 +1357,8 @@ ae.process(cas);]]></programlisting>
           <para>
             This string parameter specifies the absolute path of the resulting file named <quote>output.xmi</quote>. However, if an annotation of the 
             type <quote>org.apache.uima.examples.SourceDocumentInformation</quote> is given, then the value of this parameter is interpreted to be relative
-            to the URI stored in the annotation and the name of the file will be adapted to the name of the source file. The UIMA Ruta Workbench automatically adds
+            to the URI stored in the annotation and the name of the file will be adapted to the name of the source file. If this functionality is activated in the preferences, 
+            then the UIMA Ruta Workbench adds
             the SourceDocumentInformation annotation when the user launches a script file.
             The default value is <quote>/../output/</quote>
           </para>
