@@ -486,7 +486,10 @@ public class RutaTypeChecker implements IBuildParticipant, IBuildParticipantExte
       if (structure == null) {
         return false;
       }
-
+      // TODO HOTFIX
+      if("begin".equals(feat)|| "end".equals(feat)) {
+        return true;
+      }
       // TODO HOTFIX
       if (structure.equals("Document") || structure.equals("DocumentAnnotation")
               || structure.equals("uima.tcas.DocumentAnnotation")) {
