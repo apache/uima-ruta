@@ -603,8 +603,9 @@ public class RutaFormattedPrinter extends ASTVisitor {
    * @param ruleEl
    * @param conditions
    * @param actions
+   * @throws Exception 
    */
-  private void appendRuleElement(RutaRuleElement ruleEl) {
+  private void appendRuleElement(RutaRuleElement ruleEl) throws Exception {
     // if (ruleEl instanceof ComposedRuleElement) {
     // ComposedRuleElement cre = (ComposedRuleElement) ruleEl;
     // List<Expression> elements = cre.getElements();
@@ -689,6 +690,18 @@ public class RutaFormattedPrinter extends ASTVisitor {
       traverseAstNodes(actions);
     }
     append(CURLY_CLOSE);
+    if(ruleEl.getInlinedRules()!= null && !ruleEl.getInlinedRules().isEmpty()) {
+      String inlineMode = ruleEl.getInlineMode();
+      append(inlineMode);
+      append(CURLY_OPEN);
+      indentLevel++;
+      List<RutaRule> inlinedRules = ruleEl.getInlinedRules();
+      for (RutaRule rutaRule : inlinedRules) {
+        visit(rutaRule);
+      }
+      indentLevel--;
+      appendIntoNewLine(CURLY_CLOSE);
+    }
   }
 
   /**

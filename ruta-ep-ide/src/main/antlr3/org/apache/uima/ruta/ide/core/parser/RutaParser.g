@@ -650,8 +650,8 @@ List<RutaRule> innerRules = new ArrayList<RutaRule>();
 	| re3 = ruleElementComposed {re = re3;}
 	| re4 = ruleElementWildCard {re = re4;}
 	)
-	((THEN | THEN2) LCURLY (rule = simpleStatement {innerRules.add(rule);})+ 
-	RCURLY {re.setInlinedRules(innerRules);})?
+	(t = (THEN | THEN2) LCURLY (rule = simpleStatement {innerRules.add(rule);})+ 
+	RCURLY {re.setInlinedRules(innerRules);re.setInlineMode(t == null ? null : t.getText());})?
 	;
 
 ruleElementWildCard returns [RutaRuleElement re = null] 

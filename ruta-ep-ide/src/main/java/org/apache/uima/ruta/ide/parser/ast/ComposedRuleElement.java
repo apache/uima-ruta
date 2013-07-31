@@ -68,6 +68,11 @@ public class ComposedRuleElement extends RutaRuleElement {
           action.traverse(visitor);
         }
       }
+      if(inlinedRules != null) {
+        for (RutaRule rule : inlinedRules) {
+          rule.traverse(visitor);
+        }
+      }
     }
   }
 

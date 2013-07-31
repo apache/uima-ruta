@@ -35,7 +35,9 @@ public class RutaRuleElement extends Expression {
 
   protected List<Expression> quantifierExpressions;
   
-  private List<RutaRule> inlinedRules;
+  protected List<RutaRule> inlinedRules;
+
+  private String inlineMode;
 
   // TODO to be removed
   public RutaRuleElement(int start, int end) {
@@ -123,7 +125,19 @@ public class RutaRuleElement extends Expression {
   }
 
   public void setInlinedRules(List<RutaRule> inlinedRules) {
+    if(inlinedRules != null && !inlinedRules.isEmpty()) {
+      RutaRule last = inlinedRules.get(inlinedRules.size()-1);
+      setEnd(last.sourceEnd());
+    }
     this.inlinedRules = inlinedRules;
   }
 
+  public void setInlineMode(String mode) {
+    this.inlineMode = mode;
+  }
+
+  public String getInlineMode() {
+    return inlineMode;
+  }
+  
 }
