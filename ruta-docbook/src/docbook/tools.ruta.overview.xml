@@ -1278,10 +1278,10 @@ ae.process(cas);]]></programlisting>
       </section>
     </section>
     <section id="ugr.tools.ruta.ae.cutter">
-      <title>View Writer</title>
+      <title>Cutter</title>
       <para>
-        This Analysis Engine is able to cut the doucment of the CAS. Only the text covered by annotations of the specified type will be retained and all other parts of the documents will be removed.
-            The offsets of annotations in the index will be updated, but not feature structures nested as feature values.
+        This Analysis Engine is able to cut the document of the CAS. Only the text covered by annotations of the specified type will be retained and all other parts of the documents will be removed.
+        The offsets of annotations in the index will be updated, but not feature structures nested as feature values.
       </para>
       <section id="ugr.tools.ruta.ae.cutter.parameter">
         <title>Configuration Parameters</title>
