@@ -34,6 +34,7 @@ import org.apache.uima.ruta.expression.number.NumberExpression;
 import org.apache.uima.ruta.expression.string.StringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.ComposedRuleElement;
+import org.apache.uima.ruta.rule.ConjunctRulesRuleElement;
 import org.apache.uima.ruta.rule.RegExpRule;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RutaMatcher;
@@ -104,7 +105,9 @@ public class ScriptVerbalizer {
     List<AbstractRutaAction> actions = re.getActions();
     RuleElementQuantifier quantifier = re.getQuantifier();
     StringBuilder result = new StringBuilder();
-    if (re instanceof ComposedRuleElement) {
+    if(re instanceof ConjunctRulesRuleElement) {
+      result.append(verbalizeConjunct((ConjunctRulesRuleElement) re));
+    } else if (re instanceof ComposedRuleElement) {
       result.append(verbalizeComposed((ComposedRuleElement) re));
     } else if (re instanceof RutaRuleElement) {
       RutaRuleElement tmre = (RutaRuleElement) re;
@@ -136,6 +139,19 @@ public class ScriptVerbalizer {
         }
       }
       result.append("}");
+    }
+    return result.toString();
+  }
+
+  private String verbalizeConjunct(ConjunctRulesRuleElement re) {
+    StringBuilder result = new StringBuilder();
+    String sep = " % ";
+    List<RuleElement> ruleElements = re.getRuleElements();
+    for (RuleElement each : ruleElements) {
+      if (re.getRuleElements().indexOf(each) != 0) {
+        result.append(sep);
+      }
+      result.append(verbalizeRuleElement(each));
     }
     return result.toString();
   }
