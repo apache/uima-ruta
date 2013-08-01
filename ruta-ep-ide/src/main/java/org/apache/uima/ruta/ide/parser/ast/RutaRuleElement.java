@@ -42,6 +42,8 @@ public class RutaRuleElement extends Expression {
 
   private boolean afterConcat;
 
+  private boolean wildcard;
+
   // TODO to be removed
   public RutaRuleElement(int start, int end) {
     super(start, end);
@@ -155,6 +157,14 @@ public class RutaRuleElement extends Expression {
 
   public void setAfterConcat(boolean afterConcat) {
     this.afterConcat = afterConcat;
+  }
+
+  public boolean isWildcard() {
+    return wildcard;
+  }
+
+  public void setWildcard(boolean wildcard) {
+    this.wildcard = wildcard;
   }
   
 }

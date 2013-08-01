@@ -139,7 +139,11 @@ public class ScriptFactory extends AbstractFactory {
     setMinBegin(bounds, w);
     filterNullObjects(c);
     filterNullObjects(a);
-    return new RutaRuleElement(bounds[0], bounds[1], null, null, c, a);
+    RutaRuleElement rutaRuleElement = new RutaRuleElement(bounds[0], bounds[1], null, null, c, a);
+    if(w != null && w.getText().equals("#")) {
+      rutaRuleElement.setWildcard(true);
+    }
+    return rutaRuleElement;
   }
 
   /**

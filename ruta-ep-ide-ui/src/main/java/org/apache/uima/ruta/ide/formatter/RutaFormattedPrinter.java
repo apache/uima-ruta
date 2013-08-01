@@ -634,6 +634,9 @@ public class RutaFormattedPrinter extends ASTVisitor {
     if (ruleEl.getHead() != null) {
       append(ruleEl.getHead());
     }
+    if(ruleEl.isWildcard()) {
+      append("#");
+    }
     List<RutaCondition> conditions = ruleEl.getConditions();
     List<RutaAction> actions = ruleEl.getActions();
     // don't print {->} for empty rule elements
