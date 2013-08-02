@@ -23,11 +23,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.ruta.rule.RuleApply;
+import org.apache.uima.ruta.rule.RuleElement;
 
 public class BlockApply extends ScriptApply {
 
-  public BlockApply(RutaStatement tme) {
-    super(tme);
+  public BlockApply(RutaElement element) {
+    super(element);
   }
 
   private List<ScriptApply> innerApplies = new ArrayList<ScriptApply>();

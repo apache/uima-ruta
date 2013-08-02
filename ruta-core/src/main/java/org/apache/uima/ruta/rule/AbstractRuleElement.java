@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.BlockApply;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.RutaStatement;
@@ -99,13 +100,28 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
           InferenceCrowd crowd) {
     List<ScriptApply> result = new ArrayList<ScriptApply>();
     List<AnnotationFS> matchedAnnotationsOf = ruleMatch.getMatchedAnnotationsOf(this);
+    // TODO where to implement the explanation of inlined rules?
+//    BlockApply blockApply = new BlockApply(this);
+//    RuleApply dummyRuleApply = getDummyRuleApply(ruleMatch);
+//    blockApply.setRuleApply(dummyRuleApply);
+//    ruleMatch.addDelegateApply(this, blockApply);
     for (AnnotationFS annotationFS : matchedAnnotationsOf) {
       RutaStream windowStream = stream.getWindowStream(annotationFS, annotationFS.getType());
       for (RutaStatement each : inlinedRules) {
         ScriptApply apply = each.apply(windowStream, crowd);
+//        blockApply.add(apply);
+        ruleMatch.addDelegateApply(this, apply);
         result.add(apply);
       }
     }
+    return result;
+  }
+
+  private RuleApply getDummyRuleApply(RuleMatch ruleMatch) {
+    List<RuleElement> list = new ArrayList<RuleElement>(1);
+    list.add(this);
+    RutaRule dummyRule = new RutaRule(list, parent, -1);
+    RuleApply result = new RuleApply(dummyRule, true);
     return result;
   }
 

@@ -29,6 +29,7 @@ import java.util.Set;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.engine.RutaEngine;
@@ -47,7 +48,7 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
 
   private boolean applied = false;
 
-  private Map<AbstractRutaAction, ScriptApply> delegateApply;
+  private Map<RutaElement, ScriptApply> delegateApply;
 
   // private Map<RuleElement, List<RuleElementMatch>> map;
 
@@ -57,7 +58,7 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
     super(rule);
     // map = new TreeMap<RuleElement, List<RuleElementMatch>>(
     // new RuleElementComparator(rule.getRoot()));
-    delegateApply = new HashMap<AbstractRutaAction, ScriptApply>(0);
+    delegateApply = new HashMap<RutaElement, ScriptApply>(0);
   }
 
   public boolean matchedCompletely() {
@@ -221,12 +222,12 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
     return result.toString();
   }
 
-  public Map<AbstractRutaAction, ScriptApply> getDelegateApply() {
+  public Map<RutaElement, ScriptApply> getDelegateApply() {
     return delegateApply;
   }
 
-  public void addDelegateApply(AbstractRutaAction action, ScriptApply scriptApply) {
-    delegateApply.put(action, scriptApply);
+  public void addDelegateApply(RutaElement element, ScriptApply scriptApply) {
+    delegateApply.put(element, scriptApply);
   }
 
   public void setMatched(boolean matched) {
@@ -242,7 +243,7 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
       copy.setRootMatch(rootMatch.copy(extendedContainerMatch));
     }
 
-    Map<AbstractRutaAction, ScriptApply> newDelegateApply = new HashMap<AbstractRutaAction, ScriptApply>(
+    Map<RutaElement, ScriptApply> newDelegateApply = new HashMap<RutaElement, ScriptApply>(
             delegateApply);
     copy.setDelegateApply(newDelegateApply);
     return copy;
@@ -252,7 +253,7 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
     RuleMatch copy = new RuleMatch(rule);
     copy.setMatched(matched);
     copy.setRootMatch(rootMatch.copy());
-    Map<AbstractRutaAction, ScriptApply> newDelegateApply = new HashMap<AbstractRutaAction, ScriptApply>(
+    Map<RutaElement, ScriptApply> newDelegateApply = new HashMap<RutaElement, ScriptApply>(
             delegateApply);
     copy.setDelegateApply(newDelegateApply);
     return copy;
@@ -266,7 +267,7 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
     }
   }
 
-  public void setDelegateApply(Map<AbstractRutaAction, ScriptApply> delegateApply) {
+  public void setDelegateApply(Map<RutaElement, ScriptApply> delegateApply) {
     this.delegateApply = delegateApply;
   }
 

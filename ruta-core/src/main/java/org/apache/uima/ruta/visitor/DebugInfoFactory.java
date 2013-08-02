@@ -31,9 +31,11 @@ import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.ruta.BlockApply;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaElement;
+import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.rule.AbstractRule;
+import org.apache.uima.ruta.rule.AbstractRuleElement;
 import org.apache.uima.ruta.rule.AbstractRuleMatch;
 import org.apache.uima.ruta.rule.ComposedRuleElement;
 import org.apache.uima.ruta.rule.ComposedRuleElementMatch;
@@ -86,6 +88,13 @@ public class DebugInfoFactory {
     List<DebugScriptApply> innerApply = new ArrayList<DebugScriptApply>();
     // TODO refactor and remove counting hotfix
     int applied = blockApply.getRuleApply().getApplied();
+    RutaElement element = blockApply.getElement();
+    String verbalize = "";
+    if(element instanceof RutaBlock) {
+      verbalize = verbalizer.verbalize((RutaBlock) element, false);
+    } else {
+      verbalize = verbalizer.verbalize(element);
+    }
     if (applied > 1) {
       List<ScriptApply> innerApplies = blockApply.getInnerApplies();
       List<List<ScriptApply>> loops = new ArrayList<List<ScriptApply>>();
@@ -123,7 +132,7 @@ public class DebugInfoFactory {
         counter++;
       }
       dba.setInnerApply(UIMAUtils.toFSArray(cas, innerApply));
-      dba.setElement(verbalizer.verbalize((RutaBlock) blockApply.getElement(), false));
+      dba.setElement(verbalize);
       DebugRuleApply ruleApply = createDebugRuleApply(blockApply.getRuleApply(), stream,
               addToIndex, withMatches, timeInfo);
       dba.setApplied(ruleApply.getApplied());
@@ -132,7 +141,7 @@ public class DebugInfoFactory {
       dba.setBegin(ruleApply.getBegin());
       dba.setEnd(ruleApply.getEnd());
       if (timeInfo != null) {
-        long time = timeInfo.get(blockApply.getElement());
+        long time = timeInfo.get(element);
         dba.setTime(time);
       }
       if (addToIndex)
@@ -144,7 +153,7 @@ public class DebugInfoFactory {
         innerApply.add(createDebugScriptApply(each, stream, addToIndex, withMatches, timeInfo));
       }
       dba.setInnerApply(UIMAUtils.toFSArray(cas, innerApply));
-      dba.setElement(verbalizer.verbalize((RutaBlock) blockApply.getElement(), false));
+      dba.setElement(verbalize);
       DebugRuleApply ruleApply = createDebugRuleApply(blockApply.getRuleApply(), stream,
               addToIndex, withMatches, timeInfo);
       dba.setApplied(ruleApply.getApplied());
@@ -153,8 +162,10 @@ public class DebugInfoFactory {
       dba.setBegin(ruleApply.getBegin());
       dba.setEnd(ruleApply.getEnd());
       if (timeInfo != null) {
-        long time = timeInfo.get(blockApply.getElement());
-        dba.setTime(time);
+        Long time = timeInfo.get(element);
+        if(time != null) {
+          dba.setTime(time);
+        }
       }
       if (addToIndex)
         dba.addToIndexes();
@@ -182,16 +193,27 @@ public class DebugInfoFactory {
       begin = end;
     }
     dra.setRules(UIMAUtils.toFSArray(cas, ruleMatches));
-    dra.setElement(verbalizer.verbalize(ruleApply.getElement()));
+    RutaElement element = ruleApply.getElement();
+    String namespace = "";
+    if(element instanceof RutaStatement) {
+      RutaStatement rs = (RutaStatement) element;
+      namespace = rs.getParent().getScript().getRootBlock().getNamespace();
+    } else if(element instanceof AbstractRuleElement) {
+      AbstractRuleElement are = (AbstractRuleElement) element;
+      are.getRule().getParent().getScript().getRootBlock().getNamespace();
+    }
+    dra.setElement(verbalizer.verbalize(element));
     dra.setApplied(ruleApply.getApplied());
     dra.setTried(ruleApply.getTried());
-    dra.setId(((AbstractRule) ruleApply.getElement()).getId());
-    dra.setScript(ruleApply.getElement().getParent().getScript().getRootBlock().getNamespace());
+    dra.setId(((AbstractRule) element).getId());
+    dra.setScript(namespace);
     dra.setBegin(begin);
     dra.setEnd(end);
     if (timeInfo != null) {
-      long time = timeInfo.get(ruleApply.getElement());
-      dra.setTime(time);
+      Long time = timeInfo.get(element);
+      if(time != null) {
+        dra.setTime(time);
+      }
     }
     if (addToIndex)
       dra.addToIndexes();
@@ -212,13 +234,13 @@ public class DebugInfoFactory {
     if (match instanceof RuleMatch) {
       ComposedRuleElementMatch rootMatch = ((RuleMatch) match).getRootMatch();
       setInnerMatches(stream, addToIndex, cas, drm, rootMatch);
-      if (match.matched()) {
+//      if (match.matched()) {
         List<DebugScriptApply> delegates = new ArrayList<DebugScriptApply>();
         for (ScriptApply rem : ((RuleMatch) match).getDelegateApply().values()) {
           delegates.add(createDebugScriptApply(rem, stream, addToIndex, withMatches, timeInfo));
         }
         drm.setDelegates(UIMAUtils.toFSArray(cas, delegates));
-      }
+//      }
     } else if (match instanceof RegExpRuleMatch) {
       RegExpRuleMatch rerm = (RegExpRuleMatch) match;
       Map<Integer, List<AnnotationFS>> map = rerm.getMap();

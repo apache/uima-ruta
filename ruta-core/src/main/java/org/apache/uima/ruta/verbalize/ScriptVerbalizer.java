@@ -33,6 +33,7 @@ import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.number.NumberExpression;
 import org.apache.uima.ruta.expression.string.StringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.AbstractRuleElement;
 import org.apache.uima.ruta.rule.ComposedRuleElement;
 import org.apache.uima.ruta.rule.ConjunctRulesRuleElement;
 import org.apache.uima.ruta.rule.RegExpRule;
@@ -54,8 +55,14 @@ import org.apache.uima.ruta.rule.quantifier.StarReluctant;
 
 public class ScriptVerbalizer {
 
+  private static final String CBCLOSE = "}";
+
+  private static final String CBOPEN = "{";
+
   private static final String THEN = " -> ";
 
+  private static final String THEN2 = " <- ";
+  
   private RutaVerbalizer verbalizer;
 
   public ScriptVerbalizer(RutaVerbalizer verbalizer) {
@@ -118,7 +125,7 @@ public class ScriptVerbalizer {
     result.append(verbalizeQuantifier(quantifier));
 
     if (!conditions.isEmpty() || !actions.isEmpty()) {
-      result.append("{");
+      result.append(CBOPEN);
       Iterator<AbstractRutaCondition> cit = conditions.iterator();
       while (cit.hasNext()) {
         AbstractRutaCondition each = cit.next();
@@ -138,7 +145,26 @@ public class ScriptVerbalizer {
           }
         }
       }
-      result.append("}");
+      result.append(CBCLOSE);
+    }
+    if(re instanceof AbstractRuleElement) {
+      AbstractRuleElement are = (AbstractRuleElement) re;
+      boolean blockMode = are.getInlineMode();
+      List<RutaStatement> inlinedRules = are.getInlinedRules();
+      if(inlinedRules != null && !inlinedRules.isEmpty()) {
+        if(blockMode) {
+          result.append(THEN);
+        } else {
+          result.append(THEN2);
+        }
+        result.append(CBOPEN);
+        for (RutaStatement rutaStatement : inlinedRules) {
+          result.append(verbalize(rutaStatement));
+          result.append(";");
+//          result.append("\n");
+        }
+        result.append(CBCLOSE);
+      }
     }
     return result.toString();
   }

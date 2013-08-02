@@ -46,6 +46,7 @@ public class InlinedRulesTest {
     script += "T1{->T7}<-{CW COLON CW{->T7};};\n";
     script += "(T1 PERIOD{ -> T8} T1){CONTAINS(COLON)}<-{CW COLON CW{->T9}; COLON ANY{-> T10};};\n";
     script += "(T1 PERIOD{ -> T11} T1){CONTAINS(COLON)}<-{CW COLON CW{->T11};};\n";
+    script += "(T1 PERIOD T1{-> T12}){CONTAINS(COLON)}<-{W COLON (W W)<-{ANY{REGEXP(\"match.*\")};};};\n";
     CAS cas = null;
     try {
       cas = RutaTestUtils.getCAS(document);
@@ -122,6 +123,14 @@ public class InlinedRulesTest {
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(0, ai.size());
+    
+    t = RutaTestUtils.getTestType(cas, 12);
+    ai = cas.getAnnotationIndex(t);
+    iterator = ai.iterator();
+    assertEquals(2, ai.size());
+    assertEquals("A rule is composed of a sequence of rule elements and a rule element essentially consists of four parts: A matching condition, an optional quantifier, a list of conditions and a list of actions", iterator.next().getCoveredText());
+    assertEquals("The matching condition is typically a type of an annotation by which the rule element matches on the covered text of one of those annotations", iterator.next().getCoveredText());
+    
     
     if (cas != null) {
       cas.release();
