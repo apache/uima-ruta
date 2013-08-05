@@ -53,7 +53,7 @@ public class RutaLauncher {
 
   private static boolean addSDI = false;
 
-  private static String inputEncoding = java.nio.charset.Charset.defaultCharset().name();
+  private static String inputEncoding = "UTF-8";
 
   private static String launchMode = "run";
 

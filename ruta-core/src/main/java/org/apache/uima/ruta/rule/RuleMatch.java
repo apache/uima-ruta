@@ -114,7 +114,10 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
         if (list != null && list.size() == 1) {
           List<AnnotationFS> textsMatched = list.get(0).getTextsMatched();
           if (textsMatched.size() == 1) {
-            return textsMatched;
+            AnnotationFS firstNormal = getFirstNormal(textsMatched);
+            if (firstNormal != null) {
+              return textsMatched;
+            }
           }
         }
       }
