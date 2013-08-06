@@ -270,7 +270,7 @@ result.addAll(fallbackContinue);
               stream, crowd);
       ruleMatch.setMatched(evaluateMatches != null);
       if (ruleMatch.matched()) {
-        result = continueMatchSomewhereElse(after, true, annotation, ruleMatch, ruleApply,
+        result = continueMatchSomewhereElse(after, false, annotation, ruleMatch, ruleApply,
                 containerMatch, sideStepOrigin, null, stream, crowd);
       } else {
         doneMatching(ruleMatch, ruleApply, stream, crowd);
