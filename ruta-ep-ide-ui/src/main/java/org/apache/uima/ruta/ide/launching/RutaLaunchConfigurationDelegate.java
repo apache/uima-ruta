@@ -36,6 +36,7 @@ import org.apache.uima.ruta.ide.RutaIdeUIPlugin;
 import org.apache.uima.ruta.ide.core.RutaCorePreferences;
 import org.apache.uima.ruta.ide.core.RutaNature;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
+import org.eclipse.core.internal.resources.Folder;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectNature;
@@ -324,14 +325,21 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     IScriptProject proj = AbstractScriptLaunchConfigurationDelegate.getScriptProject(configuration);
     IPath projectPath = proj.getResource().getLocation();
     IPath outputDirPath = projectPath.append(RutaProjectUtils.getDefaultOutputLocation());
-    String outputFolderPath = configuration.getAttribute(RutaLaunchConstants.ARG_OUTPUT_FOLDER,
+    String outputFolderPath = configuration.getAttribute(RutaLaunchConstants.OUTPUT_FOLDER,
             outputDirPath.toPortableString());
     if (outputFolderPath.length() != 0) {
       IPath path = Path.fromPortableString(outputFolderPath);
-      ouputFolder = ResourcesPlugin.getWorkspace().getRoot().getContainerForLocation(path);
+      IResource member = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
+      if (member instanceof Folder) {
+        ouputFolder = member;
+      } else {
+        ouputFolder = ResourcesPlugin.getWorkspace().getRoot().getContainerForLocation(path);
+      }
     }
     boolean recursive = configuration.getAttribute(RutaLaunchConstants.RECURSIVE, false);
-    clearOutputFolder(new File(ouputFolder.getLocation().toPortableString()), recursive);
+    if(ouputFolder != null) {
+      clearOutputFolder(new File(ouputFolder.getLocation().toPortableString()), recursive);
+    }
 
     IPreferenceStore preferenceStore = RutaIdeUIPlugin.getDefault().getPreferenceStore();
     boolean noVM = preferenceStore.getBoolean(RutaCorePreferences.NO_VM_IN_DEV_MODE);
