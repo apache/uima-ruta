@@ -34,6 +34,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.ide.RutaIdeUIPlugin;
 import org.apache.uima.ruta.ide.core.RutaCorePreferences;
+import org.apache.uima.ruta.ide.core.RutaNature;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -227,7 +228,7 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
                 "Failed to compose classpath!", e));
       }
     }
-    Collection<String> dependencies = getDependencies(project);
+    Collection<String> dependencies = getDependencies(project.getProject());
     extendedClasspath.addAll(dependencies);
 
     Collection<String> extensions = getExtensions();
@@ -257,13 +258,17 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     return result;
   }
 
-  private static Collection<String> getDependencies(IScriptProject scriptProject)
+  private static Collection<String> getDependencies(IProject project)
           throws CoreException {
     Collection<String> result = new TreeSet<String>();
-    IProject[] referencedProjects = scriptProject.getProject().getReferencedProjects();
+    IProject[] referencedProjects = project.getReferencedProjects();
     for (IProject eachProject : referencedProjects) {
       // for each java project
       extendClasspathWithProject(result, eachProject, new HashSet<IProject>());
+      IProjectNature nature = eachProject.getNature(RutaNature.NATURE_ID);
+      if(nature != null) {
+        result.addAll(getDependencies(eachProject));
+      }
     }
     return result;
   }

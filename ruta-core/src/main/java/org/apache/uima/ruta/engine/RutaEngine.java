@@ -484,7 +484,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
           // Class clazz = this.getClass().getClassLoader().loadClass(eachUimafitEngine) ;
           Class<? extends AnalysisComponent> uimafitClass = (Class<? extends AnalysisComponent>) Class
                   .forName(eachUimafitEngine);
-          eachEngine = AnalysisEngineFactory.createPrimitive(uimafitClass);
+          eachEngine = AnalysisEngineFactory.createEngine(uimafitClass);
         } catch (ClassNotFoundException e) {
           throw new AnalysisEngineProcessException(e);
         } catch (ResourceInitializationException e) {
@@ -645,12 +645,31 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       for (String eachEngineLocation : engineKeySet) {
         if (!additionalEngines.containsKey(eachEngineLocation)) {
           String engineLocation = locate(eachEngineLocation, descriptorPaths, ".xml");
-          try {
-            AnalysisEngine eachEngine = engineLoader.loadEngine(engineLocation, viewName);
-            additionalEngines.put(eachEngineLocation, eachEngine);
-          } catch (Exception e) {
-            throw new AnalysisEngineProcessException(e);
-          }
+          if (engineLocation == null) {
+            String engineLocationIS = locateIS(eachEngineLocation, descriptorPaths, ".xml");
+            try {
+              AnalysisEngine eachEngine = engineLoader.loadEngineIS(engineLocationIS, viewName);
+              additionalEngines.put(eachEngineLocation, eachEngine);
+            } catch (Exception e) {
+              // uimaFit engine?
+              try {
+                @SuppressWarnings("unchecked")
+                Class<? extends AnalysisComponent> uimafitClass = (Class<? extends AnalysisComponent>) Class
+                        .forName(eachEngineLocation);
+                AnalysisEngine eachEngine = AnalysisEngineFactory.createEngine(uimafitClass);
+                additionalEngines.put(eachEngineLocation, eachEngine);
+              } catch (Exception e1) {
+                throw new AnalysisEngineProcessException(e1);
+              }
+            }
+          } else {
+            try {
+              AnalysisEngine eachEngine = engineLoader.loadEngine(engineLocation, viewName);
+              additionalEngines.put(eachEngineLocation, eachEngine);
+            } catch (Exception e) {
+              throw new AnalysisEngineProcessException(e);
+            }
+          } 
         }
       }
     } catch (IOException e) {
