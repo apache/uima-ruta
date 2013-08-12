@@ -166,6 +166,7 @@ public class ViewWriterTest {
     assertEquals("This is a new view.", cas.getDocumentText());
     type = cas.getTypeSystem().getType(TEST_TYPE);
     AnnotationIndex<AnnotationFS> ai = cas.getAnnotationIndex(type);
+    assertEquals(1, ai.size());
     AnnotationFS next = ai.iterator().next();
     assertEquals("new", next.getCoveredText());
 
