@@ -49,7 +49,7 @@ import org.xml.sax.SAXException;
 
 public class ViewWriterTest {
 
-  private static final String TEST_TYPE = "uima.ruta.text.T1";
+  private static final String TEST_TYPE = "uima.ruta.test.T1";
 
   private static final String NEW_VIEW = "newView";
 
@@ -65,9 +65,6 @@ public class ViewWriterTest {
     File tempFile = File.createTempFile("ViewWriterTest", ".xmi");
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
-    AnalysisEngineDescription aed = (AnalysisEngineDescription) specifier;
-    TypeSystemDescription tsd = aed.getAnalysisEngineMetaData().getTypeSystem();
-    tsd.addType(TEST_TYPE, "Type for Testing", "uima.tcas.Annotation");
 
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
     ae.setConfigParameterValue(ViewWriter.INPUT_VIEW, NEW_VIEW);
