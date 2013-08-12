@@ -39,9 +39,9 @@ import org.apache.uima.util.XMLSerializer;
 
 public class ViewWriter extends JCasMultiplier_ImplBase {
 
-  private static final String OUTPUT = "output";
-  private static final String INPUT_VIEW = "inputView";
-  private static final String OUTPUT_VIEW = "outputView";
+  public static final String OUTPUT = "output";
+  public static final String INPUT_VIEW = "inputView";
+  public static final String OUTPUT_VIEW = "outputView";
   
   private String outputLocation;
   private String inputView;
@@ -79,8 +79,11 @@ public class ViewWriter extends JCasMultiplier_ImplBase {
     CAS cas = jcas.getCas();
     Type sdiType = cas.getTypeSystem().getType(RutaEngine.SOURCE_DOCUMENT_INFORMATION);
 
-    String filename = "output.xmi";
-    File file = new File(outputLocation, filename);
+    File file = new File(outputLocation);
+    if(file.isDirectory()) {
+      String filename = "output.xmi";
+      file = new File(outputLocation, filename);
+    }
     if (sdiType != null) {
       FSIterator<AnnotationFS> sdiit = cas.getAnnotationIndex(sdiType).iterator();
       if (sdiit.isValid()) {
@@ -103,7 +106,7 @@ public class ViewWriter extends JCasMultiplier_ImplBase {
       outView = getContext().getEmptyCas(CAS.class);
     }
     outView.reset();
-    CasCopier cc = new CasCopier(inView, outView);
+    CasCopier cc = new CasCopier(inView, outView, true);
     cc.copyCasView(inView, outputView, true);
     try {
       writeXmi(outView, file);
@@ -114,7 +117,9 @@ public class ViewWriter extends JCasMultiplier_ImplBase {
   
   @Override
   public void collectionProcessComplete() {
-    outView.release();
+    if(outView != null) {
+      outView.release();
+    }
     outView = null;
   }
   
