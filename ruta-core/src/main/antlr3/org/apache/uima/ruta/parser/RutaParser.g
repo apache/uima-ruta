@@ -1577,8 +1577,8 @@ actionConfigure returns [AbstractRutaAction action = null]
 
 actionExec returns [AbstractRutaAction action = null]
     :
-    EXEC LPAREN ns = dottedIdentifier (COMMA tl = typeListExpression)? RPAREN
-    {action = ActionFactory.createExecAction(ns, tl, $blockDeclaration::env);}
+    EXEC LPAREN ((stringExpression)=> view = stringExpression COMMA)? ns = dottedIdentifier (COMMA tl = typeListExpression)? RPAREN
+    {action = ActionFactory.createExecAction(ns, tl, view, $blockDeclaration::env);}
     ;    
     
 actionAssign returns [AbstractRutaAction action = null]

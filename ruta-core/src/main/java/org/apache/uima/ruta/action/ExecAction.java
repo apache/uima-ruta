@@ -27,34 +27,43 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.analysis_engine.metadata.AnalysisEngineMetaData;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaModule;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
+import org.apache.uima.ruta.expression.string.StringExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
+import org.apache.uima.util.XMLInputSource;
 
 public class ExecAction extends CallAction {
 
   private TypeListExpression typeList;
 
+  private StringExpression view;
+
   public ExecAction(String namespace) {
     super(namespace);
   }
 
-  public ExecAction(String ns, TypeListExpression tl) {
+  public ExecAction(String ns, TypeListExpression tl, StringExpression view) {
     this(ns);
     this.typeList = tl;
+    this.view = view;
   }
 
   @Override
@@ -74,9 +83,27 @@ public class ExecAction extends CallAction {
           RuleElement element, RutaStream stream) throws ResourceInitializationException,
           AnalysisEngineProcessException {
     CAS cas = stream.getCas();
+    if (view != null) {
+      String viewName = view.getStringValue(element.getParent(), match, element, stream);
+      if (!viewName.equals(CAS.NAME_DEFAULT_SOFA)) {
+        cas = cas.getView(viewName);
+        AnalysisEngineMetaData metaData = targetEngine.getAnalysisEngineMetaData();
+        try {
+          String sourceUrlString = metaData.getSourceUrlString();
+          if(sourceUrlString != null) {
+            AnalysisEngineDescription aed = (AnalysisEngineDescription) UIMAFramework.getXMLParser().parseResourceSpecifier(new XMLInputSource(sourceUrlString));
+            AnalysisEngine createEngine = AnalysisEngineFactory.createEngine(
+                    aed, viewName);
+            targetEngine = createEngine;
+          }
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+    }
     targetEngine.process(cas);
 
-    if (typeList != null) {
+    if (typeList != null && view == null) {
       List<Type> list = typeList.getList(element.getParent(), stream);
       for (Type type : list) {
         Map<RutaBasic, Collection<AnnotationFS>> map = new HashMap<RutaBasic, Collection<AnnotationFS>>();
@@ -105,6 +132,14 @@ public class ExecAction extends CallAction {
 
   public TypeListExpression getTypeList() {
     return typeList;
+  }
+
+  public StringExpression getView() {
+    return view;
+  }
+
+  public void setView(StringExpression view) {
+    this.view = view;
   }
 
 }

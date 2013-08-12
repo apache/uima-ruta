@@ -1686,10 +1686,12 @@ String string = "";
     :
     name = EXEC lp = LPAREN 
      {   action = ActionFactory.createCallAction(name, StatementFactory.createEmtpyComponentReference(lp));}
+     (view = stringExpression COMMA)?
+     {   if(view != null) {action = ActionFactory.createCallAction(name, ns, null, view);}}
     ns = dottedComponentReference 
-     {   if(ns != null) {action = ActionFactory.createCallAction(name, ns, null);}}
+     {   if(ns != null) {action = ActionFactory.createCallAction(name, ns, null, view);}}
      (COMMA tl = typeListExpression)?
-      {   if(ns != null) {action = ActionFactory.createCallAction(name, ns, tl);}}
+     {   if(ns != null) {action = ActionFactory.createCallAction(name, ns, tl, view);}}
     RPAREN
     ;
 

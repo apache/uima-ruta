@@ -92,8 +92,8 @@ public class ActionFactory extends AbstractFactory {
     return createAction(callToken, ref);
   }
 
-  public static RutaAction createCallAction(Token callToken, ComponentReference ref, Expression list) {
-    return createAction(callToken, ref, list);
+  public static RutaAction createCallAction(Token callToken, ComponentReference ref, Expression list, Expression view) {
+    return createAction(callToken, ref, list, view);
   }
 
   public static RutaAction createStructureAction(Token type, Expression structure,

@@ -191,8 +191,8 @@ public class ActionFactory {
     return new TrieAction(list, map, ignoreCase, ignoreLength, edit, distance, ignoreChar);
   }
 
-  public static AbstractRutaAction createExecAction(String ns, TypeListExpression tl, RutaBlock env) {
-    return new ExecAction(ns, tl);
+  public static AbstractRutaAction createExecAction(String ns, TypeListExpression tl, StringExpression view, RutaBlock env) {
+    return new ExecAction(ns, tl, view);
   }
 
   public static AbstractRutaAction createMarkTableAction(TypeExpression structure,

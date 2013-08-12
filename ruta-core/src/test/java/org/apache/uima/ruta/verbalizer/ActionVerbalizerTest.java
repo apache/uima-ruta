@@ -171,9 +171,9 @@ public class ActionVerbalizerTest {
     assertEquals("DYNAMICANCHORING(true, 4, numVar)", s);
 
     // EXEC
-    a = new ExecAction(var, typeListExpr);
+    a = new ExecAction(var, typeListExpr, stringExpr);
     s = v.verbalize(a);
-    assertEquals("EXEC(anyVar, {Type1, typeVar})", s);
+    assertEquals("EXEC(\"string\", anyVar, {Type1, typeVar})", s);
 
     // FILL
     a = new FillAction(typeExpr1, stringExprMap);

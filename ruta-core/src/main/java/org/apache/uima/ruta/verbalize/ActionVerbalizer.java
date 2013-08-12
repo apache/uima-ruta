@@ -175,7 +175,8 @@ public class ActionVerbalizer {
       ExecAction a = (ExecAction) action;
       TypeListExpression typeList = a.getTypeList();
       String types = typeList == null ? "" : ", " + verbalizer.verbalize(typeList);
-      return name + a.getNamespace() + types + ")";
+      String view = a.getView() == null ? "" : verbalizer.verbalize(a.getView()) + ", ";
+      return name + view + a.getNamespace() + types + ")";
     } else if (action instanceof CallAction) {
       CallAction a = (CallAction) action;
       return name + a.getNamespace() + ")";

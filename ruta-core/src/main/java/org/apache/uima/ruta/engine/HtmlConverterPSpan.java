@@ -86,7 +86,7 @@ public class HtmlConverterPSpan implements Comparable<HtmlConverterPSpan> {
 
   @Override
   public String toString() {
-    String shortTxt = this.txt.length() > 10 ? this.txt.substring(0, 10) + "..." : this.txt;
+    String shortTxt = this.txt.length() > 100 ? this.txt.substring(0, 100) + "..." : this.txt;
     return String.format("[%d-%d : %s]", begin, end, shortTxt);
   }
 }
