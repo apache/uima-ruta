@@ -373,17 +373,18 @@ Document{->CONFIGURE(HtmlAnnotator, "onlyContent" = false)};]]></programlisting>
     <para>
       The EXEC action initiates the execution of a different script
       file or analysis engine on the complete input document, independent from
-      the matched text and the current filtering settings. If the first argument
-      refers to another script file, a new view on the document is created:
+      the matched text and the current filtering settings. If the imported component (DifferentFile)
+      refers to another script file, it is applied on a new representation of the document:
       the complete text of the original CAS with the default filtering
-      settings of the UIMA Ruta analysis engine. If the first argument refers to an 
+      settings of the UIMA Ruta analysis engine. If it refers to an 
       external analysis engine, then it is applied on the complete document. 
-      The optinal, second argument is a list of types, which should be reindexed by Ruta (not UIMA itself).
+      The optional, first argument is is a string expression, which specifies the view the component should be applied on.
+      The optional, third argument is a list of types, which should be reindexed by Ruta (not UIMA itself).
     </para>
     <note>
     <para>
       Annotations created by the external analysis engine are not accessible for UIMA Ruta rules in the same script. 
-      The types of these annoations need to be provided in the second argument in order to be visible to the Ruta rules.
+      The types of these annotations need to be provided in the second argument in order to be visible to the Ruta rules.
     </para>
     </note>
     <section>
@@ -391,7 +392,7 @@ Document{->CONFIGURE(HtmlAnnotator, "onlyContent" = false)};]]></programlisting>
         <emphasis role="bold">Definition:</emphasis>
       </title>
       <para>
-        <programlisting><![CDATA[EXEC(DifferentFile(, TypeListExpression)?)]]></programlisting>
+        <programlisting><![CDATA[EXEC((StringExpression,)? DifferentFile(, TypeListExpression)?)]]></programlisting>
       </para>
     </section>
     <section>
@@ -405,7 +406,7 @@ Document{->EXEC(NamedEntities, {Person, Location})};]]></programlisting>
       <para>
         Here, an analysis engine for named entity recognition is
         executed once on the complete document and the annotations of the types Person and Location (and all subtypes) 
-        are reindexed in UIMA Ruta. Wihtout this list of types, the annoations are added to the CAS, but cannot be accessed by Ruta rules.
+        are reindexed in UIMA Ruta. Without this list of types, the annotations are added to the CAS, but cannot be accessed by Ruta rules.
       </para>
     </section>
   </section>
