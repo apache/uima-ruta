@@ -32,6 +32,7 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.ruta.ide.RutaIdeCorePlugin;
 import org.apache.uima.ruta.ide.RutaIdeUIPlugin;
 import org.apache.uima.ruta.ide.core.RutaCorePreferences;
 import org.apache.uima.ruta.ide.core.RutaNature;
@@ -208,22 +209,22 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     Collection<String> result = new TreeSet<String>();
     IExtension[] extensions = null;
     extensions = Platform.getExtensionRegistry()
-            .getExtensionPoint(RutaIdeUIPlugin.PLUGIN_ID, "actionExtension").getExtensions();
+            .getExtensionPoint(RutaIdeCorePlugin.PLUGIN_ID, "actionExtension").getExtensions();
     extensionToClassPath(d, result, extensions);
     extensions = Platform.getExtensionRegistry()
-            .getExtensionPoint(RutaIdeUIPlugin.PLUGIN_ID, "conditionExtension").getExtensions();
+            .getExtensionPoint(RutaIdeCorePlugin.PLUGIN_ID, "conditionExtension").getExtensions();
     extensionToClassPath(d, result, extensions);
     extensions = Platform.getExtensionRegistry()
-            .getExtensionPoint(RutaIdeUIPlugin.PLUGIN_ID, "booleanFunctionExtension").getExtensions();
+            .getExtensionPoint(RutaIdeCorePlugin.PLUGIN_ID, "booleanFunctionExtension").getExtensions();
     extensionToClassPath(d, result, extensions);
     extensions = Platform.getExtensionRegistry()
-            .getExtensionPoint(RutaIdeUIPlugin.PLUGIN_ID, "numberFunctionExtension").getExtensions();
+            .getExtensionPoint(RutaIdeCorePlugin.PLUGIN_ID, "numberFunctionExtension").getExtensions();
     extensionToClassPath(d, result, extensions);
     extensions = Platform.getExtensionRegistry()
-            .getExtensionPoint(RutaIdeUIPlugin.PLUGIN_ID, "stringFunctionExtension").getExtensions();
+            .getExtensionPoint(RutaIdeCorePlugin.PLUGIN_ID, "stringFunctionExtension").getExtensions();
     extensionToClassPath(d, result, extensions);
     extensions = Platform.getExtensionRegistry()
-            .getExtensionPoint(RutaIdeUIPlugin.PLUGIN_ID, "typeFunctionExtension").getExtensions();
+            .getExtensionPoint(RutaIdeCorePlugin.PLUGIN_ID, "typeFunctionExtension").getExtensions();
     extensionToClassPath(d, result, extensions);
     return result;
   }
