@@ -210,6 +210,21 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     extensions = Platform.getExtensionRegistry()
             .getExtensionPoint(RutaIdeUIPlugin.PLUGIN_ID, "actionExtension").getExtensions();
     extensionToClassPath(d, result, extensions);
+    extensions = Platform.getExtensionRegistry()
+            .getExtensionPoint(RutaIdeUIPlugin.PLUGIN_ID, "conditionExtension").getExtensions();
+    extensionToClassPath(d, result, extensions);
+    extensions = Platform.getExtensionRegistry()
+            .getExtensionPoint(RutaIdeUIPlugin.PLUGIN_ID, "booleanFunctionExtension").getExtensions();
+    extensionToClassPath(d, result, extensions);
+    extensions = Platform.getExtensionRegistry()
+            .getExtensionPoint(RutaIdeUIPlugin.PLUGIN_ID, "numberFunctionExtension").getExtensions();
+    extensionToClassPath(d, result, extensions);
+    extensions = Platform.getExtensionRegistry()
+            .getExtensionPoint(RutaIdeUIPlugin.PLUGIN_ID, "stringFunctionExtension").getExtensions();
+    extensionToClassPath(d, result, extensions);
+    extensions = Platform.getExtensionRegistry()
+            .getExtensionPoint(RutaIdeUIPlugin.PLUGIN_ID, "typeFunctionExtension").getExtensions();
+    extensionToClassPath(d, result, extensions);
     return result;
   }
 
