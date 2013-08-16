@@ -84,8 +84,7 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
 
     IPreferenceStore preferenceStore = RutaIdeUIPlugin.getDefault().getPreferenceStore();
     boolean addSDI = preferenceStore.getBoolean(RutaCorePreferences.ADD_SDI);
-    
-    
+
     IResource member = proj.getProject().findMember(mainScriptAttribute);
     IPath projectPath = proj.getResource().getLocation();
     IPath inputDirPath = projectPath.append(RutaProjectUtils.getDefaultInputLocation());
@@ -126,7 +125,7 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
 
     cmdline.append(RutaLaunchConstants.ARG_ADD_SDI + " ");
     cmdline.append(addSDI + " ");
-    
+
     return cmdline.toString();
   }
 
@@ -159,76 +158,43 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
   public static List<String> getClassPath(IScriptProject project) throws CoreException {
     RutaIdeUIPlugin d = RutaIdeUIPlugin.getDefault();
     List<String> extendedClasspath = new ArrayList<String>();
+
     // Normal mode, add the launcher plugin and uima runtime jar to the classpath
-    if (!Platform.inDevelopmentMode()) {
-      try {
+    try {
+      if (!Platform.inDevelopmentMode()) {
         // Add this plugin jar to the classpath
         extendedClasspath.add(d.pluginIdToJarPath(RutaIdeUIPlugin.PLUGIN_ID));
-
-        // UIMA jar should be added the end of the class path, because user uima jars
-        // (maybe a different version) should appear first on the class path
-        extendedClasspath.add(d.pluginIdToJarPath("org.apache.uima.runtime"));
-        extendedClasspath.add(d.pluginIdToJarPath("org.apache.uima.ruta.engine"));
-        
-        // for inlined jars?  
-        Bundle bundle = RutaIdeUIPlugin.getDefault().getBundle("org.apache.uima.runtime");
-        if (bundle != null) {
-          Enumeration<?> jarEnum = bundle.findEntries("/", "*.jar", true);
-          if (jarEnum == null) {
-            extendedClasspath.add(d.pluginIdToJarPath("org.apache.uima.runtime"));
-          }
-          while (jarEnum != null && jarEnum.hasMoreElements()) {
-            URL element = (URL) jarEnum.nextElement();
-            extendedClasspath.add(FileLocator.toFileURL(element).getFile());
-          }
-        }
-
-        Bundle bundle2 = RutaIdeUIPlugin.getDefault().getBundle("org.apache.uima.ruta.engine");
-        if (bundle2 != null) {
-          Enumeration<?> jarEnum = bundle2.findEntries("/", "*.jar", true);
-          while (jarEnum != null && jarEnum.hasMoreElements()) {
-            URL element = (URL) jarEnum.nextElement();
-            extendedClasspath.add(FileLocator.toFileURL(element).getFile());
-          }
-        }
-        
-      } catch (IOException e) {
-        throw new CoreException(new Status(IStatus.ERROR, RutaIdeUIPlugin.PLUGIN_ID, IStatus.OK,
-                "Failed to compose classpath!", e));
-      }
-    }
-    // When running inside eclipse with PDE in development mode the plugins
-    // are not installed inform of jar files and the classes must be loaded
-    // from the target/classes folder or target/org.apache.uima.runtime.*.jar file
-    else {
-      try {
+      } else {
         extendedClasspath.add(d.pluginIdToJarPath(RutaIdeUIPlugin.PLUGIN_ID) + "target/classes");
-        Bundle bundle = RutaIdeUIPlugin.getDefault().getBundle("org.apache.uima.runtime");
-        if (bundle != null) {
-          Enumeration<?> jarEnum = bundle.findEntries("/", "*.jar", true);
-          if (jarEnum == null) {
-            extendedClasspath.add(d.pluginIdToJarPath("org.apache.uima.runtime"));
-          }
-          while (jarEnum != null && jarEnum.hasMoreElements()) {
-            URL element = (URL) jarEnum.nextElement();
-            extendedClasspath.add(FileLocator.toFileURL(element).getFile());
-          }
-        }
-
-        Bundle bundle2 = RutaIdeUIPlugin.getDefault().getBundle("org.apache.uima.ruta.engine");
-        if (bundle2 != null) {
-          Enumeration<?> jarEnum = bundle2.findEntries("/", "*.jar", true);
-          while (jarEnum != null && jarEnum.hasMoreElements()) {
-            URL element = (URL) jarEnum.nextElement();
-            extendedClasspath.add(FileLocator.toFileURL(element).getFile());
-          }
-        }
-
-      } catch (IOException e) {
-        throw new CoreException(new Status(IStatus.ERROR, RutaIdeUIPlugin.PLUGIN_ID, IStatus.OK,
-                "Failed to compose classpath!", e));
       }
+
+      // uima
+      Bundle bundle = RutaIdeUIPlugin.getDefault().getBundle("org.apache.uima.runtime");
+      if (bundle != null) {
+        Enumeration<?> jarEnum = bundle.findEntries("/", "uimaj-core*.jar",
+                Platform.inDevelopmentMode());
+        while (jarEnum != null && jarEnum.hasMoreElements()) {
+          URL element = (URL) jarEnum.nextElement();
+          extendedClasspath.add(FileLocator.toFileURL(element).getFile());
+        }
+      }
+      extendedClasspath.add(d.pluginIdToJarPath("org.apache.uima.runtime"));
+
+      // ruta
+      bundle = RutaIdeUIPlugin.getDefault().getBundle("org.apache.uima.ruta.engine");
+      if (bundle != null) {
+        Enumeration<?> jarEnum = bundle.findEntries("/", "*.jar", Platform.inDevelopmentMode());
+        while (jarEnum != null && jarEnum.hasMoreElements()) {
+          URL element = (URL) jarEnum.nextElement();
+          extendedClasspath.add(FileLocator.toFileURL(element).getFile());
+        }
+      }
+      extendedClasspath.add(d.pluginIdToJarPath("org.apache.uima.ruta.engine"));
+    } catch (IOException e) {
+      throw new CoreException(new Status(IStatus.ERROR, RutaIdeUIPlugin.PLUGIN_ID, IStatus.OK,
+              "Failed to compose classpath!", e));
     }
+
     Collection<String> dependencies = getDependencies(project.getProject());
     extendedClasspath.addAll(dependencies);
 
@@ -240,8 +206,15 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
   private static Collection<String> getExtensions() throws CoreException {
     RutaIdeUIPlugin d = RutaIdeUIPlugin.getDefault();
     Collection<String> result = new TreeSet<String>();
-    IExtension[] extensions = Platform.getExtensionRegistry()
+    IExtension[] extensions = null;
+    extensions = Platform.getExtensionRegistry()
             .getExtensionPoint(RutaIdeUIPlugin.PLUGIN_ID, "actionExtension").getExtensions();
+    extensionToClassPath(d, result, extensions);
+    return result;
+  }
+
+  private static void extensionToClassPath(RutaIdeUIPlugin d, Collection<String> result,
+          IExtension[] extensions) throws CoreException {
     for (IExtension each : extensions) {
       String namespaceIdentifier = each.getNamespaceIdentifier();
       try {
@@ -256,18 +229,16 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
                 "Failed to extend classpath with " + namespaceIdentifier + "!", e));
       }
     }
-    return result;
   }
 
-  private static Collection<String> getDependencies(IProject project)
-          throws CoreException {
+  private static Collection<String> getDependencies(IProject project) throws CoreException {
     Collection<String> result = new TreeSet<String>();
     IProject[] referencedProjects = project.getReferencedProjects();
     for (IProject eachProject : referencedProjects) {
       // for each java project
       extendClasspathWithProject(result, eachProject, new HashSet<IProject>());
       IProjectNature nature = eachProject.getNature(RutaNature.NATURE_ID);
-      if(nature != null) {
+      if (nature != null) {
         result.addAll(getDependencies(eachProject));
       }
     }
@@ -337,7 +308,7 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
       }
     }
     boolean recursive = configuration.getAttribute(RutaLaunchConstants.RECURSIVE, false);
-    if(ouputFolder != null) {
+    if (ouputFolder != null) {
       clearOutputFolder(new File(ouputFolder.getLocation().toPortableString()), recursive);
     }
 
