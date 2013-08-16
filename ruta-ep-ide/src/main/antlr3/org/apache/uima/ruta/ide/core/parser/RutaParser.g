@@ -1686,7 +1686,7 @@ String string = "";
     :
     name = EXEC lp = LPAREN 
      {   action = ActionFactory.createCallAction(name, StatementFactory.createEmtpyComponentReference(lp));}
-     (view = stringExpression COMMA)?
+     ((stringExpression)=> view = stringExpression COMMA)?
      {   if(view != null) {action = ActionFactory.createCallAction(name, ns, null, view);}}
     ns = dottedComponentReference 
      {   if(ns != null) {action = ActionFactory.createCallAction(name, ns, null, view);}}
