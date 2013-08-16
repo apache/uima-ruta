@@ -45,6 +45,14 @@ import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.ruta.extensions.IEngineLoader;
+import org.apache.uima.ruta.extensions.IRutaActionExtension;
+import org.apache.uima.ruta.extensions.IRutaBooleanFunctionExtension;
+import org.apache.uima.ruta.extensions.IRutaConditionExtension;
+import org.apache.uima.ruta.extensions.IRutaNumberFunctionExtension;
+import org.apache.uima.ruta.extensions.IRutaStringFunctionExtension;
+import org.apache.uima.ruta.extensions.IRutaTypeFunctionExtension;
+import org.apache.uima.ruta.ide.core.RutaExtensionManager;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.util.CasCreationUtils;
 import org.apache.uima.util.FileUtils;
@@ -189,6 +197,45 @@ public class QueryActionHandler implements IHandler {
         ae.setConfigParameterValue(RutaEngine.CREATE_MATCH_DEBUG_INFO, true);
         ae.setConfigParameterValue(RutaEngine.CREATE_PROFILING_INFO, false);
         ae.setConfigParameterValue(RutaEngine.CREATE_STATISTIC_INFO, false);
+        
+        
+        IRutaConditionExtension[] conditionExtensions = RutaExtensionManager.getDefault()
+                .getRutaConditionExtensions();
+        IRutaActionExtension[] actionExtensions = RutaExtensionManager.getDefault()
+                .getRutaActionExtensions();
+        IRutaBooleanFunctionExtension[] booleanFunctionExtensions = RutaExtensionManager.getDefault()
+                .getRutaBooleanFunctionExtensions();
+        IRutaNumberFunctionExtension[] numberFunctionExtensions = RutaExtensionManager.getDefault()
+                .getRutaNumberFunctionExtensions();
+        IRutaStringFunctionExtension[] stringFunctionExtensions = RutaExtensionManager.getDefault()
+                .getRutaStringFunctionExtensions();
+        IRutaTypeFunctionExtension[] typeFunctionExtensions = RutaExtensionManager.getDefault()
+                .getRutaTypeFunctionExtensions();
+
+        List<String> languageExtensions = new ArrayList<String>();
+
+        for (IRutaConditionExtension each : conditionExtensions) {
+          languageExtensions.add(each.getClass().getName());
+        }
+        for (IRutaActionExtension each : actionExtensions) {
+          languageExtensions.add(each.getClass().getName());
+        }
+        for (IRutaBooleanFunctionExtension each : booleanFunctionExtensions) {
+          languageExtensions.add(each.getClass().getName());
+        }
+        for (IRutaNumberFunctionExtension each : numberFunctionExtensions) {
+          languageExtensions.add(each.getClass().getName());
+        }
+        for (IRutaStringFunctionExtension each : stringFunctionExtensions) {
+          languageExtensions.add(each.getClass().getName());
+        }
+        for (IRutaTypeFunctionExtension each : typeFunctionExtensions) {
+          languageExtensions.add(each.getClass().getName());
+        }
+        ae.setConfigParameterValue(RutaEngine.ADDITIONAL_EXTENSIONS,
+                languageExtensions.toArray(new String[0]));
+        
+        
         ae.reconfigure();
         CAS cas = ae.newCAS();
 
