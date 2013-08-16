@@ -21,11 +21,13 @@ package org.apache.uima.ruta.rule;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.JCas;
@@ -44,6 +46,8 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
   protected RuleElementContainer caretaker;
 
   private Boolean conjunct = null;
+
+  private Comparator<RuleMatch> ruleMatchComparator = new RuleMatchComparator();
 
   public ComposedRuleElement(List<RuleElement> elements, RuleElementQuantifier quantifier,
           List<AbstractRutaCondition> conditions, List<AbstractRutaAction> actions,
@@ -108,7 +112,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       for (RuleMatch eachStartRuleMatch : startRuleMatches) {
         AnnotationFS prefixAnnotation = getPrefixAnnotation(eachStartRuleMatch, stream);
         for (RuleElement each : elements) {
-          if(each.equals(anchoringRuleElement)) {
+          if (each.equals(anchoringRuleElement)) {
             continue;
           }
           ComposedRuleElementMatch startElementMatch = (ComposedRuleElementMatch) eachStartRuleMatch
@@ -205,8 +209,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       }
     } else if (conjunct) {
       // conjunctive
-      
-      
+
       // TODO see startMatch()
       Map<RuleMatch, ComposedRuleElementMatch> ruleMatches = new HashMap<RuleMatch, ComposedRuleElementMatch>();
       for (RuleElement each : elements) {
@@ -243,40 +246,42 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
           Map<RuleMatch, ComposedRuleElementMatch> ruleMatches, boolean direction) {
     // TODO hotfix: this needs a correct implementation
     return ruleMatches;
-//    Map<RuleMatch, ComposedRuleElementMatch> result = new HashMap<RuleMatch, ComposedRuleElementMatch>();
-//    Set<Entry<RuleMatch, ComposedRuleElementMatch>> entrySet = ruleMatches.entrySet();
-//    Entry<RuleMatch, ComposedRuleElementMatch> largestEntry = null;
-//    boolean allMatched = true;
-//    AnnotationFS largestAnnotation = null;
-//    for (Entry<RuleMatch, ComposedRuleElementMatch> entry : entrySet) {
-//      RuleMatch ruleMatch = entry.getKey();
-//      ComposedRuleElementMatch elementMatch = entry.getValue();
-//      allMatched &= elementMatch.matched();
-//      AnnotationFS lastMatchedAnnotation = ruleMatch.getLastMatchedAnnotation(getFirstElement(),
-//              direction);
-//      if (largestEntry == null) {
-//        largestEntry = entry;
-//        largestAnnotation = lastMatchedAnnotation;
-//      } else {
-//        if (lastMatchedAnnotation != null
-//                && largestAnnotation != null
-//                && lastMatchedAnnotation.getCoveredText().length() > largestAnnotation
-//                        .getCoveredText().length()) {
-//          largestEntry = entry;
-//          largestAnnotation = lastMatchedAnnotation;
-//        }
-//      }
-//    }
-//    if (allMatched) {
-//      result.put(largestEntry.getKey(), largestEntry.getValue());
-//    }
-//    return result;
+    // Map<RuleMatch, ComposedRuleElementMatch> result = new HashMap<RuleMatch,
+    // ComposedRuleElementMatch>();
+    // Set<Entry<RuleMatch, ComposedRuleElementMatch>> entrySet = ruleMatches.entrySet();
+    // Entry<RuleMatch, ComposedRuleElementMatch> largestEntry = null;
+    // boolean allMatched = true;
+    // AnnotationFS largestAnnotation = null;
+    // for (Entry<RuleMatch, ComposedRuleElementMatch> entry : entrySet) {
+    // RuleMatch ruleMatch = entry.getKey();
+    // ComposedRuleElementMatch elementMatch = entry.getValue();
+    // allMatched &= elementMatch.matched();
+    // AnnotationFS lastMatchedAnnotation = ruleMatch.getLastMatchedAnnotation(getFirstElement(),
+    // direction);
+    // if (largestEntry == null) {
+    // largestEntry = entry;
+    // largestAnnotation = lastMatchedAnnotation;
+    // } else {
+    // if (lastMatchedAnnotation != null
+    // && largestAnnotation != null
+    // && lastMatchedAnnotation.getCoveredText().length() > largestAnnotation
+    // .getCoveredText().length()) {
+    // largestEntry = entry;
+    // largestAnnotation = lastMatchedAnnotation;
+    // }
+    // }
+    // }
+    // if (allMatched) {
+    // result.put(largestEntry.getKey(), largestEntry.getValue());
+    // }
+    // return result;
   }
 
   private Map<RuleMatch, ComposedRuleElementMatch> mergeDisjunctiveRuleMatches(
           Map<RuleMatch, ComposedRuleElementMatch> ruleMatches, boolean direction) {
     // TODO hotfix: this needs a correct implementation
-    Map<RuleMatch, ComposedRuleElementMatch> result = new HashMap<RuleMatch, ComposedRuleElementMatch>();
+    Map<RuleMatch, ComposedRuleElementMatch> result = new TreeMap<RuleMatch, ComposedRuleElementMatch>(
+            ruleMatchComparator);
     Set<Entry<RuleMatch, ComposedRuleElementMatch>> entrySet = ruleMatches.entrySet();
     Entry<RuleMatch, ComposedRuleElementMatch> largestEntry = null;
     AnnotationFS largestAnnotation = null;
@@ -385,7 +390,11 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       ruleMatch.setMatched((ruleMatch.matched() || removedFailedMatches)
               && (evaluateMatches != null || continueMatch));
       if (failed) {
-        if (nextElement != null) {
+        // TODO failed was caused by a child: should here failed = false?
+        if (!removedFailedMatches && continueMatch) {
+          result = continueOwnMatch(after, annotation, ruleMatch, ruleApply, parentContainerMatch,
+                  sideStepOrigin, null, stream, crowd);
+        } else if (nextElement != null) {
           AnnotationFS backtrackedAnnotation = getBacktrackedAnnotation(evaluateMatches, annotation);
           if (backtrackedAnnotation != null) {
             result = nextElement.continueMatch(after, backtrackedAnnotation, ruleMatch, ruleApply,
@@ -461,7 +470,8 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     }
   }
 
-  private void doMatch(ComposedRuleElementMatch match, RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd) {
+  private void doMatch(ComposedRuleElementMatch match, RuleMatch ruleMatch, RutaStream stream,
+          InferenceCrowd crowd) {
     List<AnnotationFS> textsMatched = match.getTextsMatched();
     if (textsMatched == null || textsMatched.isEmpty()) {
       return;
