@@ -93,20 +93,17 @@ GroupAssignment        -> TypeExpression
 RuleElements           -> RuleElement+
 RuleElement            -> RuleElementType | RuleElementLiteral
                         | RuleElementComposed | RuleElementWildCard
-RuleElementType        ->  TypeExpression QuantifierPart?
-                                         ("{" Conditions?  Actions? "}")?
-RuleElementWithCA      ->  TypeExpression QuantifierPart?
-                                            "{" Conditions?  Actions? "}"
-RuleElementLiteral     ->  SimpleStringExpression QuantifierPart?
-                                          ("{" Conditions?  Actions? "}")?
-RuleElementComposed    -> ( RuleElement ("&" RuleElement)+
-                          | RuleElement ("|" RuleElement)+
-                          | "(" RuleElements ")") 
-                          QuantifierPart? ("{" Conditions?  Actions? "}")?
-RuleElementDisjunctive -> "(" (TypeExpression | SimpleStringExpression)
-                        ("|" (TypeExpression | SimpleStringExpression) )+
-                        (")" QuantifierPart? "{" Conditions?  Actions? }")?
-RuleElementWildCard    -> "#"("{" Conditions?  Actions? }")?
+RuleElementType        ->  TypeExpression OptionalRuleElementPart
+RuleElementWithCA      ->  TypeExpression OptionalRuleElementPart
+RuleElementLiteral     ->  SimpleStringExpression OptionalRuleElementPart
+RuleElementComposed    -> "(" RuleElement ("&" RuleElement)+ ")"
+                          | "(" RuleElement ("|" RuleElement)+ ")"
+                          | "(" RuleElements ")"
+                          OptionalRuleElementPart
+OptionalRuleElementPart-> QuantifierPart? ("{" Conditions?  Actions? "}")?
+                          InlinedRules?
+InlinedRules           -> ( "<-" | "->" ) "{" SimpleStatement+ "}"
+RuleElementWildCard    -> "#"("{" Conditions?  Actions? }")? InlinedRules?
 QuantifierPart         -> "*" | "*?" | "+" | "+?" | "?" | "??"
                         | "[" NumberExpression "," NumberExpression "]"
                         | "[" NumberExpression "," NumberExpression "]?"

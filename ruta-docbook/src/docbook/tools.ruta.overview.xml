@@ -406,8 +406,9 @@ NUM{PARSE(moneyAmount)} SPECIAL{REGEXP("€") -> MATCHEDTEXT(moneyCurrency),
     </para>
     
     <programlisting><![CDATA[DECLARE LessThan;
-    MoneyAmount.currency=="€"{-> MoneyAmount.currency="Euro"};
-    MoneyAmount{(MoneyAmount.amount<=100), MoneyAmount.currency=="Euro" -> LessThan};]]></programlisting>
+MoneyAmount.currency=="€"{-> MoneyAmount.currency="Euro"};
+MoneyAmount{(MoneyAmount.amount<=100), 
+    MoneyAmount.currency=="Euro" -> LessThan};]]></programlisting>
 
     <para>
       UIMA Ruta script files with many rules can quickly confuse the reader. The UIMA Ruta language, therefore, allows to import other script files in order to increase
@@ -483,6 +484,27 @@ BLOCK(ForEach) Sentence{} {
       that does not start with a NP annotation.
     </para>
 
+    <para>
+      There are two more language constructs (<quote><![CDATA[->]]></quote> and <quote><![CDATA[<-]]></quote>) that allow to apply rules within a certain context. These rules are added to an arbitrary rule element 
+      and are called inlined rules. The first example interprets the inlined rules as actions. They are executed if the surrounding rule was able to match, 
+      which makes this one very similar to the block statement.
+    </para>
+
+    <programlisting><![CDATA[DECLARE SentenceWithNoLeadingNP;
+Sentence{}->{
+    Document{-STARTSWITH(NP) -> SentenceWithNoLeadingNP};
+};
+]]></programlisting>
+
+    <para>
+      The second one (<quote><![CDATA[<-]]></quote>) interprets the inlined rules as conditions. The surrounding rule can only match if at least one inlined rule was successfully applied.
+      In the following example, a sentence is annotated with the type SentenceWithNPNP, if there are two successive NP annotations within this sentence.
+    </para>
+    <programlisting><![CDATA[DECLARE SentenceWithNPNP;
+Sentence{-> SentenceWithNPNP}<-{
+    NP NP;
+};
+]]></programlisting>
     <para>
       Let us take a closer look on what exactly the UIMA Ruta rules match. The following rule matches on a word followed by another word:
     </para>
@@ -858,7 +880,7 @@ ae.process(cas);]]></programlisting>
                   <entry>
                     <link linkend='ugr.tools.ruta.ae.basic.parameter.createdBy'>createdBy</link>
                   </entry>
-                  <entry>Option to add additional information, which rule created a annotation.
+                  <entry>Option to add additional information, which rule created an annotation.
                   </entry>
                   <entry>Single Boolean</entry>
                 </row>

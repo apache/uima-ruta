@@ -343,6 +343,47 @@ Document{->CALL(MyScript.countNumberOfTypesInDocument)};
     </section>
 
   </section>
+  
+  <section id="ugr.tools.ruta.language.inlined">
+    <title>Inlined rules</title>
+    <para>
+      A rule element can have a few optional parts, e.g., the quantifier or the curly brackets with conditions and actions.
+      After the part with the conditions and actions, the rule element can also contain an optional part with inlined rules.
+      These rules are applied in the context of the rule element similar to the rules within a block construct: The rules 
+      will try to match within the window specified by the current match of the rule element. There are two types of inlined rules.
+      If the curly brackets start with the symbol <quote>-></quote>, the inlined rules will only be applied for successful matches of the surrounding rule.
+      This behavior is very similar to the block construct. However, there are also some differences, e.g, inlined rules do not specify a 
+      namespace, may not contain declarations and cannot be called by other rules.
+      If the curly brackets start with the symbol <quote>-></quote>,
+      then the inlined rules are interpreted as some sort of conditions. The surrounding rules will only match, if one of the inlined rules was successfully applied.
+      The functionality introduced by inlined rules is illustrated with a few examples:
+    </para>
+    <programlisting><![CDATA[Sentence{} -> {NUM{-> NumBeforeWord} W;};
+Sentence{-> SentenceWithNumBeforeWord} <- {NUM W;};
+]]></programlisting>
+    <para>
+      The first rule in this example matches on each <quote>Sentence</quote> annotation and applies the inlined rule within each matched sentence. The inlined rule 
+      matches on numbers followed by a word and annotates the number with an annotation of the type <quote>NumBeforeWord</quote>. The second rule matches on each sentence 
+      and applies the inlined rule within each sentence. Note that the inlined rule contains no actions. The rule matches only successfully on a sentence if one of the inlined rules was
+      successfully applied. In this case, the sentence is only annotated with an annotation of the type <quote>SentenceWithNumBeforeWord</quote>, if the 
+      sentence contains a number followed by a word.
+    </para>
+
+    <programlisting><![CDATA[Document.language == "en"{} -> {
+  PERIOD #{} <- {
+      COLON COLON % COMMA COMMA;
+    }
+    PERIOD{-> SpecialPeriod};
+}    
+]]></programlisting>
+    <para>
+      This examples combines both types of inlined rules. First, the rule matches on document annotations with the language feature set to <quote>en</quote>. Only for those documents,
+      the first inner rule is applied. The inner rule matches on everything between two period, but only if the text span between the period fulfills two conditions: There must be two 
+      successive colons and two successive commas within the window of the matched part of the wildcard. Only if these constraints are fulfilled, then the last period is annotated with the type 
+      <quote>SpecialPeriod</quote>.
+    </para>  
+  </section>
+  
   <section id="ugr.tools.ruta.language.score">
     <title>Heuristic extraction using scoring rules</title>
     <para>
