@@ -181,7 +181,7 @@ W{REGEXP("dog") -> MARK(Animal)};]]></programlisting>
       In the part of the conditions, boolean expressions and feature match expression can be applied, and in the part of the actions,
       type expressions and feature assignment expression can be added. The following example contains one implicit condition and one implicit action.
       The additional condition is a boolean expression (boolean variable), which is set to <quote>true</quote>, and therefore is always fulfills the condition.
-      The <quote>MARK</quote> action was replaced by a type expression, which refer to the type <quote>Animal</quote>. The follwong rule shows, therefore,
+      The <quote>MARK</quote> action was replaced by a type expression, which refer to the type <quote>Animal</quote>. The following rule shows, therefore,
       the same behavior as the rule in the last example.
     </para>
     
@@ -244,10 +244,10 @@ Document{-> MARKFAST(Animal, AnimalsList)};
 
     <para>
       There two more special symbols that can be used to link rule elements. If the symbol <quote>|</quote> is replaced by the
-      symbol <quote><![CDATA[&]]></quote> in the last exmaple, then the token after the animal need to be a comma and a semicolon, which is of course not possible.
+      symbol <quote><![CDATA[&]]></quote> in the last example, then the token after the animal need to be a comma and a semicolon, which is of course not possible.
       Another symbol with a special meaning is <quote>%</quote>, which cannot only be used within a composed rule element (parentheses).
-      This symbol can be interpreted as a global <quote>and</quote>: It links several rules, which only fire, if all rules have sucessfully matched. 
-      In the following example, an annoations of the type <quote>FoundIt</quote> is created, if the document contains two periods in a row and two commas in a row:
+      This symbol can be interpreted as a global <quote>and</quote>: It links several rules, which only fire, if all rules have successfully matched. 
+      In the following example, an annotation of the type <quote>FoundIt</quote> is created, if the document contains two periods in a row and two commas in a row:
     </para>
     
     <programlisting><![CDATA[PERIOD PERIOD % COMMA COMMA{-> FoundIt};]]></programlisting>
@@ -399,7 +399,7 @@ NUM{PARSE(moneyAmount)} SPECIAL{REGEXP("€") -> MATCHEDTEXT(moneyCurrency),
     </para>
 
     <para>
-      Using feature expression for conditions and action, can reduce the complexity of a rule. The first rule in the follwing example set the value of the feature
+      Using feature expression for conditions and action, can reduce the complexity of a rule. The first rule in the following example set the value of the feature
       <quote>currency</quote> of the annotation of the type <quote>MoneyAmount</quote> to <quote>Euro</quote>, if it was <quote>€</quote> before.
       The second rule creates an annotation of the type <quote>LessThan</quote> for all annotations of the type <quote>MoneyAmount</quote>, 
       if their amount is less than 100 and the currency is <quote>Euro</quote>. 
@@ -478,7 +478,7 @@ BLOCK(ForEach) Sentence{} {
 ]]></programlisting>
     
     <para>
-      Here, the rule in the block statement is performed for each occurence of an annotation of the type <quote>Sentence</quote>. 
+      Here, the rule in the block statement is performed for each occurrence of an annotation of the type <quote>Sentence</quote>. 
       The rule within the block matches on the complete document, which is the current sentence in the context of the block statement. 
       As a consequence, this example creates an annotation of the type <quote>SentenceWithNoLeadingNP</quote> for each sentence 
       that does not start with a NP annotation.
@@ -513,7 +513,7 @@ Sentence{-> SentenceWithNPNP}<-{
     <para>
       To be more precise, this rule matches on all documents like <quote>Apache UIMA</quote>, <quote>Apache     UIMA</quote>, <quote>ApacheUIMA</quote>,
       <quote><![CDATA[Apache <b>UIMA</b>]]></quote>. There are two main reasons for this: First of all, it depends on how the available annotations are defined. The default seeder
-      for the inital annotations creates an annotation for all characters until an upper case character occurs. Thus, the string <quote>ApacheUIMA</quote> consists of 
+      for the initial annotations creates an annotation for all characters until an upper case character occurs. Thus, the string <quote>ApacheUIMA</quote> consists of 
       two tokens.
       However, more important, the UIMA Ruta language provides a concept of visibility of the annotations. By default, all annotations of the types 
       <quote>SPACE</quote>, <quote>NBSP</quote>, <quote>BREAK</quote> and <quote>MARKUP</quote> (whitespace and XML elements) are filtered and not visible. This holds of course for
@@ -564,7 +564,7 @@ Document{-> EXEC(Modifier)};
     The descriptor needs to be located in the folder specified by the parameter <link linkend="ugr.tools.ruta.ae.basic.parameter.descriptorPaths">descriptorPaths</link>.
     The first rule deletes all text covered by annotations of the type <quote>Date</quote>. The second rule replaces the text of all annotations of the type <quote>MoneyAmount</quote> 
     with the string <quote><![CDATA[<MoneyAmount/>]]></quote>. The third rule remembers to set the background color of text in Headline annotation to green. The last rule
-    finally performs all of these changes in an additonal view called <quote>modified</quote>, which is specified in the configuration parameters of the analysis engine.
+    finally performs all of these changes in an additional view called <quote>modified</quote>, which is specified in the configuration parameters of the analysis engine.
     <xref linkend="ugr.tools.ruta.ae.modifier"/> and <xref linkend="ugr.tools.ruta.language.modification"/> provide a more detailed description.
   </para>
   
@@ -574,7 +574,7 @@ Document{-> EXEC(Modifier)};
     implementation, to the UIMA Ruta project. If the UIMA Ruta script is applied in a UIMA Pipeline, then the configuration parameter 
     <link linkend="ugr.tools.ruta.ae.basic.parameter.additionalUimafitEngines">additionalUimafitEngines</link> has to list the class of the analysis engine. 
     The following example loads an analysis engine without an descriptor and applies it on the document. The additional list of types states that
-    the annoations of those types created by the analysis engine should be available to the following Ruta rules.
+    the annotations of those types created by the analysis engine should be available to the following Ruta rules.
     
   </para>
       <programlisting><![CDATA[UIMAFIT my.package.impl.MyAnalysisEngine;

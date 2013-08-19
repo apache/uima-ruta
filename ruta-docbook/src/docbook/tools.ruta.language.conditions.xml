@@ -260,9 +260,9 @@
   <section id="ugr.tools.ruta.language.conditions.currentcount">
     <title>CURRENTCOUNT</title>
     <para>
-      The CURRENTCOUNT condition numbers all occurences of the matched
+      The CURRENTCOUNT condition numbers all occurrences of the matched
       type within the whole document consecutively, thus assigning an index
-      to each occurence. Additionally, it stores the index of the matched
+      to each occurrence. Additionally, it stores the index of the matched
       annotation in a numerical variable, if one is passed. The condition
       evaluates true if the index of the matched annotation is within a
       specified interval. If no interval is passed, the condition always

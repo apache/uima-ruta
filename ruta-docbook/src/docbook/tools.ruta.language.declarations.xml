@@ -219,7 +219,7 @@ Document{->CALL(AnotherScript)}; // <- rule executes "AnotherScript.ruta"]]></pr
             Analysis Engine (ENGINE): loads the given descriptor and creates an external analysis
             engine. The descriptor  must be located in the descriptor paths.
             The type system needed for the analysis engine has
-            to be imported seperately. Please mind the filtering setting when
+            to be imported separately. Please mind the filtering setting when
             calling an external analysis engine.
           </para>
         </listitem>
@@ -228,7 +228,7 @@ Document{->CALL(AnotherScript)}; // <- rule executes "AnotherScript.ruta"]]></pr
             Analysis Engine (UIMAFIT): loads the given class and creates an external analysis
             engine. Please mind that the implementation of the analysis engine needs to be available. 
             The type system needed for the analysis engine has
-            to be imported seperately. Please mind the filtering setting when
+            to be imported separately. Please mind the filtering setting when
             calling an external analysis engine.
           </para>
         </listitem>

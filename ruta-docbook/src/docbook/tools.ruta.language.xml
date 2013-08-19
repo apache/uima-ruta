@@ -551,7 +551,7 @@ Document{->MARKFAST(FistName, FirstNameList)};
         The file ending for this is <quote>.mtwl</quote>. It is generated from
         several ordinary WORDLISTs given as simple text files. It contains special
         nodes that provide additional information about the original file. These
-        kind of WORDLIST is useful, if several fifferent WORDLISTs are used within
+        kind of WORDLIST is useful, if several different WORDLISTs are used within
         a UIMA Ruta script. Using five different lists results in five rules using
         the MARKFAST action. The documents to annotate are thus searched five
         times resulting in a complexity of 5*O(m*log(n)) With a multi tree

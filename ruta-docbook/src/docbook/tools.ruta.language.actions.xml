@@ -281,7 +281,7 @@ Document{->CONFIGURE(HtmlAnnotator, "onlyContent" = false)};]]></programlisting>
     <para>
       The CREATE action is similar to the MARK action. It also
       annotates the matched text fragments with a type annotation, but
-      additionally assigns values to a choosen subset of the type's feature
+      additionally assigns values to a chosen subset of the type's feature
       elements.
     </para>
     <section>
@@ -352,7 +352,7 @@ Document{->CONFIGURE(HtmlAnnotator, "onlyContent" = false)};]]></programlisting>
       </title>
       <para>
         <programlisting><![CDATA[DYNAMICANCHORING(BooleanExpression
-                             (,NumberExpression(,NumberExpression)?)?)]]></programlisting>
+              (,NumberExpression(,NumberExpression)?)?)]]></programlisting>
       </para>
     </section>
     <section>
@@ -413,7 +413,7 @@ Document{->EXEC(NamedEntities, {Person, Location})};]]></programlisting>
   <section id="ugr.tools.ruta.language.actions.fill">
     <title>FILL</title>
     <para>
-      The FILL action fills a choosen subset of the given type's
+      The FILL action fills a chosen subset of the given type's
       feature elements.
     </para>
     <section>
@@ -493,7 +493,7 @@ Document{->EXEC(NamedEntities, {Person, Location})};]]></programlisting>
     <para>
       This action creates a complex structure: an annotation with
       features. The optionally passed indexes (NumberExpressions after the
-      TypeExpression) can be used to create an annotation that spanns the
+      TypeExpression) can be used to create an annotation that spans the
       matched information of several rule elements. The features are
       collected using the indexes of the rule elements of the complete
       rule.
@@ -546,7 +546,7 @@ A B{-> GATHER(C, 1, 2, "a" = 1, "b" = 2)};]]></programlisting>
           <tbody>
             <row>
               <entry>dominant</entry>
-              <entry>finds the most occuring element</entry>
+              <entry>finds the most occurring element</entry>
             </row>
           </tbody>
         </tgroup>

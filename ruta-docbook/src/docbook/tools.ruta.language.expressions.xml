@@ -304,7 +304,7 @@ BooleanListExpression  ->  BooleanListVariable
   <section id="ugr.tools.ruta.language.expressions.features">
     <title>Feature Expressions</title>
     <para>
-     Feature expression can be used in different situations, e.g., for resticting the match of a rule element, 
+     Feature expression can be used in different situations, e.g., for restricting the match of a rule element, 
      as an implicit condition or as an implicit action.
     <programlisting><![CDATA[FeatureExpression           -> TypeExpression "." DottedIdentifier
 FeatureMatchExpression      -> FeatureExpression "==" Expression
