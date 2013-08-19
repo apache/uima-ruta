@@ -76,6 +76,9 @@ public class ConditionFactory extends AbstractFactory {
   }
 
   public static RutaCondition createEmptyCondition(Token token) {
+    if(token != null && token.getText().equals("->")) {
+      return null;
+    }
     int bounds[] = getBounds(token);
     return new RutaCondition(bounds[0], bounds[1], new ArrayList<Expression>(),
             RutaConditionConstants.CONSTANT_OFFSET, "", bounds[0], bounds[1]);

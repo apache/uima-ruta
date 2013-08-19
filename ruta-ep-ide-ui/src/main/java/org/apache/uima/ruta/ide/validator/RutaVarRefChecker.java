@@ -89,6 +89,9 @@ import org.eclipse.dltk.core.builder.ISourceLineTracker;
 public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantExtension {
 
   private class VarRefVisitor extends ASTVisitor {
+    
+    private final String implicitString = "Implicit";
+    
     private final Stack<Map<String, Integer>> knownLocalVariables;
 
     private Set<String> knownLocalTypeNames;
@@ -411,7 +414,7 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
         String[] keywords = RutaKeywordsManager.getKeywords(IRutaKeywords.ACTION);
         List<String> asList = Arrays.asList(keywords);
         if (!StringUtils.isEmpty(actionName) && !"-".equals(actionName)
-                && !asList.contains(actionName)) {
+                && !asList.contains(actionName) && !implicitString.equals(tma.getName())) {
           IProblem problem = problemFactory.createUnknownActionProblem(tma);
           rep.reportProblem(problem);
         }
@@ -485,7 +488,7 @@ public class RutaVarRefChecker implements IBuildParticipant, IBuildParticipantEx
         String[] keywords = RutaKeywordsManager.getKeywords(IRutaKeywords.CONDITION);
         List<String> asList = Arrays.asList(keywords);
         if (!StringUtils.isEmpty(conditionName) && !"-".equals(conditionName)
-                && !asList.contains(conditionName)) {
+                && !asList.contains(conditionName) && !implicitString.equals(cond.getName())) {
           IProblem problem = problemFactory.createUnknownConditionProblem(cond);
           rep.reportProblem(problem);
         }
