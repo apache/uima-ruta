@@ -116,22 +116,22 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
 
   public static Expression createEmptyTypeExpression(Token token) {
     int bounds[] = getBounds(token);
-    return new RutaVariableReference(bounds[0], bounds[0], "", RutaTypeConstants.RUTA_TYPE_AT);
+    return new RutaVariableReference(bounds[0], bounds[1], "", RutaTypeConstants.RUTA_TYPE_AT);
   }
 
   public static Expression createEmptyStringExpression(Token token) {
     int bounds[] = getBounds(token);
-    return new RutaVariableReference(bounds[0], bounds[0], "", RutaTypeConstants.RUTA_TYPE_S);
+    return new RutaVariableReference(bounds[0], bounds[1], "", RutaTypeConstants.RUTA_TYPE_S);
   }
 
   public static Expression createEmptyNumberExpression(Token token) {
     int bounds[] = getBounds(token);
-    return new RutaVariableReference(bounds[0], bounds[0], "", RutaTypeConstants.RUTA_TYPE_N);
+    return new RutaVariableReference(bounds[0], bounds[1], "", RutaTypeConstants.RUTA_TYPE_N);
   }
 
   public static Expression createEmptyBooleanExpression(Token token) {
     int bounds[] = getBounds(token);
-    return new RutaVariableReference(bounds[0], bounds[0], "", RutaTypeConstants.RUTA_TYPE_B);
+    return new RutaVariableReference(bounds[0], bounds[1], "", RutaTypeConstants.RUTA_TYPE_B);
   }
 
   // public static Expression createSimpleTypeExpression(Token at, RutaBlock env) {

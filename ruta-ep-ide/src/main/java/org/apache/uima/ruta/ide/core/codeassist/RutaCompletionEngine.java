@@ -129,8 +129,8 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
       try {
         Collection<String> dependencies = new ArrayList<String>();
         // TODO UIMA-3077
-//        Collection<String> dependencies = RutaLaunchConfigurationDelegate
-//                .getClassPath(scriptProject);
+        // Collection<String> dependencies = RutaLaunchConfigurationDelegate
+        // .getClassPath(scriptProject);
         URL[] urls = new URL[dependencies.size()];
         int counter = 0;
         for (String dep : dependencies) {
@@ -138,8 +138,8 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
           counter++;
         }
         classloader = new URLClassLoader(urls);
-//      } catch (CoreException e) {
-//        RutaIdeCorePlugin.error(e);
+        // } catch (CoreException e) {
+        // RutaIdeCorePlugin.error(e);
       } catch (MalformedURLException e) {
         RutaIdeCorePlugin.error(e);
       }
@@ -155,6 +155,7 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
         if (node == null) {
           doCompletionOnEmptyStatement(module, position, i);
           doCompletionOnDeclaration(module, startPart);
+          doCompletionOnVarRef(module, parsed, startPart, RutaTypeConstants.RUTA_TYPE_AT, "");
         } else if (node instanceof RutaVariableReference) {
           int type = ((RutaVariableReference) node).getType();
           doCompletionOnVarRef(module, parsed, startPart, type,
@@ -170,9 +171,11 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
                   ((ComponentReference) node).getType(), startPart);
         } else if (node instanceof RutaAction) {
           doCompletionOnAction(module, parsed, startPart, RutaTypeConstants.RUTA_TYPE_A, startPart);
+          doCompletionOnVarRef(module, parsed, startPart, RutaTypeConstants.RUTA_TYPE_AT, "");
         } else if (node instanceof RutaCondition) {
           doCompletionOnCondition(module, parsed, startPart, RutaTypeConstants.RUTA_TYPE_C,
                   startPart);
+          doCompletionOnVarRef(module, parsed, startPart, RutaTypeConstants.RUTA_TYPE_AT, "");
         }
         // if(requestor.)
         // doCompletionOnKeyword(position, i, startPart);
@@ -510,7 +513,6 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
   @SuppressWarnings({ "unchecked" })
   private void doCompletionOnEmptyStatement(IModuleSource cu, int position, int i) {
     int kind = CompletionProposal.LOCAL_VARIABLE_REF;
-    // doCompletionOnKeyword(position, i, "");
     if (!super.requestor.isIgnored(kind)) {
       suggestFields(cu);
     }

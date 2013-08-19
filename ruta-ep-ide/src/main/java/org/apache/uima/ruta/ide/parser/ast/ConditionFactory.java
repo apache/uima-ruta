@@ -59,7 +59,7 @@ public class ConditionFactory extends AbstractFactory {
     }
     int[] bounds = getBounds(exprL.get(0), exprL.get(exprL.size() - 1));
     return new RutaCondition(bounds[0], bounds[1], exprL, RutaConditionConstants.CONSTANT_OFFSET,
-            IMPLICIT, bounds[0], bounds[0]);
+            IMPLICIT, bounds[0], bounds[1]);
   }
 
   public static RutaCondition createCondition(Token type, Expression... exprsArray) {
@@ -77,8 +77,8 @@ public class ConditionFactory extends AbstractFactory {
 
   public static RutaCondition createEmptyCondition(Token token) {
     int bounds[] = getBounds(token);
-    return new RutaCondition(bounds[0], bounds[0], new ArrayList<Expression>(),
-            RutaConditionConstants.CONSTANT_OFFSET, "", bounds[0], bounds[0]);
+    return new RutaCondition(bounds[0], bounds[1], new ArrayList<Expression>(),
+            RutaConditionConstants.CONSTANT_OFFSET, "", bounds[0], bounds[1]);
   }
 
 }
