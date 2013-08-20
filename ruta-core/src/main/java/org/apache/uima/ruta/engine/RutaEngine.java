@@ -223,6 +223,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     simpleGreedyForComposed = (Boolean) aContext
             .getConfigParameterValue(SIMPLE_GREEDY_FOR_COMPOSED);
 
+    
+    resourcePaths = resourcePaths == null ? new String[0] : resourcePaths;
     removeBasics = removeBasics == null ? false : removeBasics;
     createDebugInfo = createDebugInfo == null ? false : createDebugInfo;
     createDebugOnlyFor = createDebugOnlyFor == null ? new String[0] : createDebugOnlyFor;
@@ -230,7 +232,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     createStatisticInfo = createStatisticInfo == null ? false : createStatisticInfo;
     createCreatedByInfo = createCreatedByInfo == null ? false : createCreatedByInfo;
     withMatches = withMatches == null ? true : withMatches;
-
+    
     scriptEncoding = scriptEncoding == null ? "UTF-8" : scriptEncoding;
     defaultFilteredTypes = defaultFilteredTypes == null ? new String[0] : defaultFilteredTypes;
     dynamicAnchoring = dynamicAnchoring == null ? false : dynamicAnchoring;

@@ -137,13 +137,7 @@ public void setExternalFactory(RutaExternalFactory factory) {
 	  }
 	    
 	public void emitErrorMessage(Throwable e) {
-	      if(e instanceof MismatchedTokenException) {
-	        MismatchedTokenException mte = (MismatchedTokenException) e;
-	        String localizedMessage = mte.getLocalizedMessage();
-	      } else {
-	      
-	      }
-	      emitErrorMessage(e.getMessage());
+	      e.printStackTrace();
 	    }
 	
 	public void reportError(RecognitionException e) {

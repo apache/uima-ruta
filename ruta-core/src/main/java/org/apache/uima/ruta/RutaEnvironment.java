@@ -226,7 +226,7 @@ public class RutaEnvironment {
         }
       }
       if (!found) {
-        InputStream stream = ClassLoader.getSystemResourceAsStream(list);
+        InputStream stream = this.getClass().getResourceAsStream(list);
         if (stream != null) {
           found = true;
           try {
@@ -268,7 +268,8 @@ public class RutaEnvironment {
         break;
       }
       if (!found) {
-        InputStream stream = ClassLoader.getSystemResourceAsStream(table);
+        InputStream stream = this.getClass().getResourceAsStream(table);
+        found = true;
         try {
           tables.put(table, new CSVTable(stream));
         } catch (IOException e) {
