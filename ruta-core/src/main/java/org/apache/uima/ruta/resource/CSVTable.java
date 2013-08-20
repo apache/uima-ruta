@@ -19,7 +19,11 @@
 
 package org.apache.uima.ruta.resource;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,21 +37,20 @@ public class CSVTable implements RutaTable {
 
   private List<List<String>> tableData;
 
-  private Map<Integer, RutaWordList> columnWordLists;
+  private Map<Integer, RutaWordList> columnWordLists = new HashMap<Integer, RutaWordList>(2);
 
-  public CSVTable(String location) {
-    super();
-    columnWordLists = new HashMap<Integer, RutaWordList>(2);
-    try {
-      buildTable(location);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+  public CSVTable(String location) throws IOException {
+    this(new FileInputStream(new File(location)));
   }
 
-  private void buildTable(String location) throws Exception {
-    FileInputStream in = new FileInputStream(location);
-    Scanner sc = new Scanner(in, Charset.forName("UTF-8").name());
+  public CSVTable(InputStream stream) throws IOException {
+    super();
+    buildTable(stream);
+  }
+  
+  
+  private void buildTable(InputStream stream) {
+    Scanner sc = new Scanner(stream, Charset.forName("UTF-8").name());
     sc.useDelimiter("\\n");
     tableData = new ArrayList<List<String>>();
     while (sc.hasNext()) {
