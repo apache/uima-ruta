@@ -61,18 +61,18 @@ public class RegExpCondition extends TerminalRutaCondition {
       String coveredText = annotation.getCoveredText();
       Pattern regularExpPattern = null;
       if (ignore) {
-        regularExpPattern = Pattern.compile(stringValue, Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
+        regularExpPattern = Pattern.compile(stringValue, Pattern.MULTILINE + Pattern.DOTALL + Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
       } else {
-        regularExpPattern = Pattern.compile(stringValue);
+        regularExpPattern = Pattern.compile(stringValue, Pattern.MULTILINE + Pattern.DOTALL);
       }
       matcher = regularExpPattern.matcher(coveredText);
     } else {
       String variableValue = variable.getStringValue(element.getParent(), annotation, stream);
       Pattern regularExpPattern = null;
       if (ignore) {
-        regularExpPattern = Pattern.compile(stringValue, Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
+        regularExpPattern = Pattern.compile(stringValue, Pattern.MULTILINE + Pattern.DOTALL + Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
       } else {
-        regularExpPattern = Pattern.compile(stringValue);
+        regularExpPattern = Pattern.compile(stringValue, Pattern.MULTILINE + Pattern.DOTALL);
       }
       matcher = regularExpPattern.matcher(variableValue);
     }
