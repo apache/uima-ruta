@@ -746,7 +746,9 @@
       <ulink
         url="http://docs.oracle.com/javase/1.4.2/docs/api/java/util/regex/Pattern.html">Java API</ulink>
       . By default the REGEXP condition is case-sensitive. To change this,
-      add an optional boolean parameter, which is set to true.
+      add an optional boolean parameter, which is set to true. The regular expression is 
+      initialized with the flags DOTALL and MULTILINE, and if the optional parameter is set to true, 
+      then additionally with the flags CASE_INSENSITIVE and UNICODE_CASE.
     </para>
     <section>
       <title>
