@@ -21,7 +21,6 @@ package org.apache.uima.ruta.resource;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -41,6 +40,8 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.type.RutaBasic;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 
 /**
  * Class MultiTreeWordList.
@@ -51,7 +52,7 @@ public class MultiTreeWordList implements RutaWordList {
 
   private static final String ENCODING = "UTF-8";
 
-  private MultiTreeWordListPersistence persistence = new MultiTreeWordListPersistence();;
+  private MultiTreeWordListPersistence persistence = new MultiTreeWordListPersistence();
 
   /** The root of the TreeWordList. */
   protected MultiTextNode root;
@@ -73,12 +74,42 @@ public class MultiTreeWordList implements RutaWordList {
    *          the pathname of the used file.
    */
   public MultiTreeWordList(String pathname) throws IOException {
-    this(new String[] { pathname });
+    this(new FileSystemResource(pathname));
+  }
+
+  /**
+   * @param lists Resources to load.
+   * @throws IOException When there is a problem reading a resource.
+   */
+  public MultiTreeWordList(Resource... lists) throws IOException {
+    this.root = new MultiTextNode();
+    this.costMap = new EditDistanceCostMap();
+
+    for (Resource list : lists) {
+      // check if the resource is a directory
+      File directory = null;
+      try {
+        directory = list.getFile();
+      } catch (IOException e) {
+        // resource is not on the file system
+        directory = null;
+      }
+
+      if (directory != null && directory.isDirectory()) {
+        // resource is a directory, load its content
+        for (File data : directory.listFiles()) {
+          load(new FileSystemResource(data));
+        }
+      } else {
+        // resource is not a directory, load it normally
+        load(list);
+      }
+    }
   }
 
   /**
    * Constructor from an open stream. This method will close the stream.
-   * 
+   *
    * @param stream
    *          the stream to read the file from.
    * @param name
@@ -97,34 +128,38 @@ public class MultiTreeWordList implements RutaWordList {
   /**
    * Constructs a TreeWordList from a file with path = filename
    * 
-   * @param filename
+   * @param pathnames
    *          path of the file to create a TextWordList from
    */
   public MultiTreeWordList(String[] pathnames) throws IOException {
-    this.root = new MultiTextNode();
-    this.costMap = new EditDistanceCostMap();
-
     for (String pathname : pathnames) {
-      File directory = new File(pathname);
+      load(new FileSystemResource(pathname));
+    }
+  }
 
-      if (!directory.isDirectory()) {
-        if (directory.getName().endsWith(".txt")) {
-          buildNewTree(new FileInputStream(pathname), directory.getName());
-        }
-        if (directory.getName().endsWith(".mtwl")) {
-          persistence.readMTWL(root, directory.getAbsolutePath());
-        }
+  /**
+   * Load a resource in this word list.
+   *
+   * @param resource Resource to load. The resource's name must end with .txt or .mtwl.
+   * @throws IOException When there is a problem reading the resource.
+   */
+  private void load(Resource resource) throws IOException {
+    final String name = resource.getFilename();
+    InputStream stream = null;
+    try {
+      stream = resource.getInputStream();
+      if (name == null) {
+        throw new IllegalArgumentException("List does not have a name.");
+      } else if (name.endsWith(".txt")) {
+        buildNewTree(stream, name);
+      } else if (name.endsWith(".mtwl")) {
+        persistence.readMTWL(root, stream, "UTF-8");
       } else {
-        File[] listFiles = directory.listFiles();
-
-        for (File data : listFiles) {
-          if (data.getName().endsWith(".txt")) {
-            buildNewTree(new FileInputStream(data.getAbsolutePath()), data.getName());
-          }
-          if (data.getName().endsWith(".mtwl")) {
-            persistence.readMTWL(root, data.getAbsolutePath());
-          }
-        }
+        throw new IllegalArgumentException("File name should end with .mtwl or .txt, found " + name);
+      }
+    } finally {
+      if (stream != null) {
+        stream.close();
       }
     }
   }

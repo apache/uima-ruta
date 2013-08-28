@@ -19,8 +19,10 @@
 
 package org.apache.uima.ruta.resource;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -33,16 +35,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.type.RutaBasic;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -61,24 +61,44 @@ public class TreeWordList implements RutaWordList {
   }
 
   /**
+   * Constructs a TreeWordList from a resource.
+   *
+   * @param resource
+   *          Resource to create a TextWordList from
+   * @throws IllegalArgumentException
+   *          When {@code resource.getFileName()} is null or does not end with .txt or .twl.
+   */
+  public TreeWordList(Resource resource) throws IOException {
+    final String name = resource.getFilename();
+    InputStream stream = null;
+    try {
+      stream = resource.getInputStream();
+      if (name == null) {
+        throw new IllegalArgumentException("List does not have a name.");
+      } else if (name.endsWith(".txt")) {
+        buildNewTree(stream);
+      } else if (name.endsWith(".twl")) {
+        readXML(stream, "UTF-8");
+      } else {
+        throw new IllegalArgumentException("File name should end with .twl or .txt, found " + name);
+      }
+    } finally {
+      if (stream != null) {
+        stream.close();
+      }
+    }
+
+    this.name = name;
+  }
+
+  /**
    * Constructs a TreeWordList from a file with path = filename
-   * 
-   * @param filename
+   *
+   * @param pathname
    *          path of the file to create a TextWordList from
    */
   public TreeWordList(String pathname) throws IOException {
-    if (pathname.endsWith(".twl")) {
-      File f = new File(pathname);
-      FileInputStream fstream = new FileInputStream(f);
-      readXML(fstream, "UTF-8");
-    }
-    if (pathname.endsWith(".txt")) {
-      // reading the file
-      File f = new File(pathname);
-      FileInputStream fstream = new FileInputStream(f);
-      buildNewTree(fstream);
-    }
-    this.name = new File(pathname).getName();
+    this(new FileSystemResource(pathname));
   }
 
   /**

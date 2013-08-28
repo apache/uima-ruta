@@ -19,9 +19,7 @@
 
 package org.apache.uima.ruta;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -52,9 +50,12 @@ import org.apache.uima.ruta.expression.string.StringExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
 import org.apache.uima.ruta.resource.CSVTable;
 import org.apache.uima.ruta.resource.MultiTreeWordList;
+import org.apache.uima.ruta.resource.RutaResourceLoader;
 import org.apache.uima.ruta.resource.RutaTable;
 import org.apache.uima.ruta.resource.RutaWordList;
 import org.apache.uima.ruta.resource.TreeWordList;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 
 public class RutaEnvironment {
 
@@ -203,87 +204,44 @@ public class RutaEnvironment {
   public RutaWordList getWordList(String list) {
     RutaWordList result = wordLists.get(list);
     if (result == null) {
-      boolean found = false;
-      if (resourcePaths != null) {
-        for (String eachPath : resourcePaths) {
-          File file = new File(eachPath, list);
-          if (!file.exists()) {
-            continue;
+      ResourceLoader resourceLoader = new RutaResourceLoader(getResourcePaths());
+      Resource resource = resourceLoader.getResource(list);
+      if (resource.exists()) {
+        try {
+          if (list.endsWith("mtwl")) {
+            wordLists.put(list, new MultiTreeWordList(resource));
+          } else {
+            wordLists.put(list, new TreeWordList(resource));
           }
-          found = true;
-          try {
-            if (file.getName().endsWith("mtwl")) {
-              wordLists.put(list, new MultiTreeWordList(file.getAbsolutePath()));
-            } else {
-              wordLists.put(list, new TreeWordList(file.getAbsolutePath()));
-            }
-          } catch (IOException e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
-                    "Error reading word list", e);
-            found = false;
-          }
-          break;
+        } catch (IOException e) {
+          Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
+                  "Error reading word list" + list, e);
         }
-      }
-      if (!found) {
-        InputStream stream = this.getClass().getResourceAsStream(list);
-        if (stream != null) {
-          found = true;
-          try {
-            if (list.endsWith(".mtwl"))
-              wordLists.put(list, new MultiTreeWordList(stream, list));
-            else
-              wordLists.put(list, new TreeWordList(stream, list));
-          } catch (IOException e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
-                    "Error reading word list from classpath", e);
-            found = false;
-          }
-        }
-      }
-      if (!found) {
+      } else {
         Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Can't find " + list + "!");
       }
     }
+
     return wordLists.get(list);
   }
 
   public RutaTable getWordTable(String table) {
     RutaTable result = tables.get(table);
     if (result == null) {
-      boolean found = false;
-      for (String eachPath : resourcePaths) {
-        File file = new File(eachPath, table);
-        if (!file.exists()) {
-          continue;
-        }
-        found = true;
+      ResourceLoader resourceLoader = new RutaResourceLoader(getResourcePaths());
+      Resource resource = resourceLoader.getResource(table);
+      if (resource.exists()) {
         try {
-          tables.put(table, new CSVTable(file.getAbsolutePath()));
+          tables.put(table, new CSVTable(resource));
         } catch (IOException e) {
           Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
                   "Error reading csv table " + table, e);
-          found = false;
         }
-        break;
-      }
-      if (!found) {
-        InputStream stream = this.getClass().getResourceAsStream(table);
-        if (stream != null) {
-          found = true;
-          try {
-            tables.put(table, new CSVTable(stream));
-          } catch (IOException e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
-                    "Error reading csv table " + table + " from classpath", e);
-            found = false;
-          }
-        }
-      }
-      if (!found) {
+      } else {
         Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Can't find " + table + "!");
       }
     }
+
     return tables.get(table);
   }
 
@@ -521,5 +479,4 @@ public class RutaEnvironment {
       }
     }
   }
-
 }

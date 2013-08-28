@@ -19,8 +19,6 @@
 
 package org.apache.uima.ruta.resource;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -32,22 +30,42 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+
 public class CSVTable implements RutaTable {
 
   private List<List<String>> tableData;
 
   private Map<Integer, RutaWordList> columnWordLists = new HashMap<Integer, RutaWordList>(2);
 
+  /**
+   * @param table
+   *          A CSV table.
+   * @throws IOException
+   *           When there is a problem opening, reading or closing the table.
+   */
+  public CSVTable(Resource table) throws IOException {
+    InputStream stream = null;
+    try {
+      stream = table.getInputStream();
+      buildTable(stream);
+    } finally {
+      if (stream != null) {
+        stream.close();
+      }
+    }
+  }
+
   public CSVTable(String location) throws IOException {
-    this(new FileInputStream(new File(location)));
+    this(new FileSystemResource(location));
   }
 
   public CSVTable(InputStream stream) throws IOException {
     super();
     buildTable(stream);
   }
-  
-  
+
   private void buildTable(InputStream stream) {
     Scanner sc = new Scanner(stream, Charset.forName("UTF-8").name());
     sc.useDelimiter("\\n");
