@@ -223,7 +223,6 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     simpleGreedyForComposed = (Boolean) aContext
             .getConfigParameterValue(SIMPLE_GREEDY_FOR_COMPOSED);
 
-    
     resourcePaths = resourcePaths == null ? new String[0] : resourcePaths;
     removeBasics = removeBasics == null ? false : removeBasics;
     createDebugInfo = createDebugInfo == null ? false : createDebugInfo;
@@ -232,7 +231,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     createStatisticInfo = createStatisticInfo == null ? false : createStatisticInfo;
     createCreatedByInfo = createCreatedByInfo == null ? false : createCreatedByInfo;
     withMatches = withMatches == null ? true : withMatches;
-    
+
     scriptEncoding = scriptEncoding == null ? "UTF-8" : scriptEncoding;
     defaultFilteredTypes = defaultFilteredTypes == null ? new String[0] : defaultFilteredTypes;
     dynamicAnchoring = dynamicAnchoring == null ? false : dynamicAnchoring;
@@ -635,49 +634,71 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
           Map<String, AnalysisEngine> additionalEngines, String viewName)
           throws AnalysisEngineProcessException {
     String location = locate(toLoad, scriptPaths, SCRIPT_FILE_EXTENSION);
-    try {
-      RutaModule eachScript = loadScript(location);
-      additionalScripts.put(toLoad, eachScript);
-      for (String add : eachScript.getScripts().keySet()) {
-        if (!additionalScripts.containsKey(add)) {
-          recursiveLoadScript(add, additionalScripts, additionalEngines, viewName);
+    RutaModule eachScript = null;
+    if (location == null) {
+      try {
+        String scriptPath = toLoad.replaceAll("\\.", "/") + SCRIPT_FILE_EXTENSION;
+        eachScript = loadScriptIS(scriptPath);
+      } catch (IOException e) {
+        throw new AnalysisEngineProcessException(new FileNotFoundException("Script [" + toLoad
+                + "] cannot be found at [" + collectionToString(scriptPaths)
+                + "] with extension .ruta"));
+      } catch (RecognitionException e) {
+        throw new AnalysisEngineProcessException(new FileNotFoundException("Script [" + toLoad
+                + "] cannot be found at [" + collectionToString(scriptPaths)
+                + "] with extension .ruta"));
+      }
+    } else {
+      try {
+        eachScript = loadScript(location);
+      } catch (IOException e) {
+        throw new AnalysisEngineProcessException(new FileNotFoundException("Script [" + toLoad
+                + "] cannot be found at [" + collectionToString(scriptPaths)
+                + "] with extension .ruta"));
+      } catch (RecognitionException e) {
+        throw new AnalysisEngineProcessException(new FileNotFoundException("Script [" + toLoad
+                + "] cannot be found at [" + collectionToString(scriptPaths)
+                + "] with extension .ruta"));
+      }
+    }
+    additionalScripts.put(toLoad, eachScript);
+
+    for (String add : eachScript.getScripts().keySet()) {
+      if (!additionalScripts.containsKey(add)) {
+        recursiveLoadScript(add, additionalScripts, additionalEngines, viewName);
+      }
+    }
+
+    Set<String> engineKeySet = eachScript.getEngines().keySet();
+    for (String eachEngineLocation : engineKeySet) {
+      if (!additionalEngines.containsKey(eachEngineLocation)) {
+        String engineLocation = locate(eachEngineLocation, descriptorPaths, ".xml");
+        if (engineLocation == null) {
+          String engineLocationIS = locateIS(eachEngineLocation, descriptorPaths, ".xml");
+          try {
+            AnalysisEngine eachEngine = engineLoader.loadEngineIS(engineLocationIS, viewName);
+            additionalEngines.put(eachEngineLocation, eachEngine);
+          } catch (Exception e) {
+            // uimaFit engine?
+            try {
+              @SuppressWarnings("unchecked")
+              Class<? extends AnalysisComponent> uimafitClass = (Class<? extends AnalysisComponent>) Class
+                      .forName(eachEngineLocation);
+              AnalysisEngine eachEngine = AnalysisEngineFactory.createEngine(uimafitClass);
+              additionalEngines.put(eachEngineLocation, eachEngine);
+            } catch (Exception e1) {
+              throw new AnalysisEngineProcessException(e1);
+            }
+          }
+        } else {
+          try {
+            AnalysisEngine eachEngine = engineLoader.loadEngine(engineLocation, viewName);
+            additionalEngines.put(eachEngineLocation, eachEngine);
+          } catch (Exception e) {
+            throw new AnalysisEngineProcessException(e);
+          }
         }
       }
-      Set<String> engineKeySet = eachScript.getEngines().keySet();
-      for (String eachEngineLocation : engineKeySet) {
-        if (!additionalEngines.containsKey(eachEngineLocation)) {
-          String engineLocation = locate(eachEngineLocation, descriptorPaths, ".xml");
-          if (engineLocation == null) {
-            String engineLocationIS = locateIS(eachEngineLocation, descriptorPaths, ".xml");
-            try {
-              AnalysisEngine eachEngine = engineLoader.loadEngineIS(engineLocationIS, viewName);
-              additionalEngines.put(eachEngineLocation, eachEngine);
-            } catch (Exception e) {
-              // uimaFit engine?
-              try {
-                @SuppressWarnings("unchecked")
-                Class<? extends AnalysisComponent> uimafitClass = (Class<? extends AnalysisComponent>) Class
-                        .forName(eachEngineLocation);
-                AnalysisEngine eachEngine = AnalysisEngineFactory.createEngine(uimafitClass);
-                additionalEngines.put(eachEngineLocation, eachEngine);
-              } catch (Exception e1) {
-                throw new AnalysisEngineProcessException(e1);
-              }
-            }
-          } else {
-            try {
-              AnalysisEngine eachEngine = engineLoader.loadEngine(engineLocation, viewName);
-              additionalEngines.put(eachEngineLocation, eachEngine);
-            } catch (Exception e) {
-              throw new AnalysisEngineProcessException(e);
-            }
-          } 
-        }
-      }
-    } catch (IOException e) {
-      throw new AnalysisEngineProcessException(e);
-    } catch (RecognitionException e) {
-      throw new AnalysisEngineProcessException(e);
     }
   }
 
