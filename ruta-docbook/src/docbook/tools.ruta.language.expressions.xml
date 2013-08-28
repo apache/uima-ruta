@@ -307,7 +307,9 @@ BooleanListExpression  ->  BooleanListVariable
      Feature expression can be used in different situations, e.g., for restricting the match of a rule element, 
      as an implicit condition or as an implicit action.
     <programlisting><![CDATA[FeatureExpression           -> TypeExpression "." DottedIdentifier
-FeatureMatchExpression      -> FeatureExpression "==" Expression
+FeatureMatchExpression      -> FeatureExpression 
+                               ("==" | "!=" | "<=" | "<" | ">=" | ">") 
+                               Expression
 FeatureAssignmentExpression -> FeatureExpression "=" Expression
 ]]></programlisting>
     </para>

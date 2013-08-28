@@ -19,6 +19,8 @@
 
 package org.apache.uima.ruta.expression.feature;
 
+import java.math.BigDecimal;
+
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
@@ -70,11 +72,11 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
           RutaBlock parent) {
     String rn = feature.getRange().getName();
     if (rn.equals(UIMAConstants.TYPE_BOOLEAN)) {
-      boolean v1 = afs.getBooleanValue(feature);
+      Boolean v1 = afs.getBooleanValue(feature);
       if (arg instanceof BooleanExpression) {
         BooleanExpression expr = (BooleanExpression) arg;
-        boolean v2 = expr.getBooleanValue(parent, afs, stream);
-        return v1 == v2;
+        Boolean v2 = expr.getBooleanValue(parent, afs, stream);
+        return compare(v1, v2);
       }
     } else if (rn.equals(UIMAConstants.TYPE_INTEGER) || rn.equals(UIMAConstants.TYPE_BYTE)
             || rn.equals(UIMAConstants.TYPE_SHORT) || rn.equals(UIMAConstants.TYPE_LONG)) {
@@ -82,28 +84,56 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
       if (arg instanceof NumberExpression) {
         NumberExpression expr = (NumberExpression) arg;
         Integer v2 = expr.getIntegerValue(parent, afs, stream);
-        return v1.equals(v2);
+        return compare(v1, v2);
       }
     } else if (rn.equals(UIMAConstants.TYPE_DOUBLE)) {
       Double v1 = afs.getDoubleValue(feature);
       if (arg instanceof NumberExpression) {
         NumberExpression expr = (NumberExpression) arg;
         Double v2 = expr.getDoubleValue(parent, afs, stream);
-        return v1.equals(v2);
+        return compare(v1, v2);
       }
     } else if (rn.equals(UIMAConstants.TYPE_FLOAT)) {
       Float v1 = afs.getFloatValue(feature);
       if (arg instanceof NumberExpression) {
         NumberExpression expr = (NumberExpression) arg;
         Float v2 = expr.getFloatValue(parent, afs, stream);
-        return v1.equals(v2);
+        return compare(v1, v2);
       }
     } else if (rn.equals(UIMAConstants.TYPE_STRING)) {
       String v1 = afs.getStringValue(feature);
       if (arg instanceof StringExpression) {
         StringExpression expr = (StringExpression) arg;
         String v2 = expr.getStringValue(parent, afs, stream);
-        return v1 != null && v1.equals(v2);
+        return compare(v1, v2);
+      }
+    }
+    return false;
+  }
+
+  private boolean compare(Object v1, Object v2) {
+    if(v1 instanceof Number && v2 instanceof Number) {
+      Number n1 = (Number) v1;
+      Number n2 = (Number) v2;
+      int compareTo = new BigDecimal(n1.toString()).compareTo(new BigDecimal(n2.toString()));
+      if(op.equals("==")) {
+        return compareTo == 0;
+      } else if(op.equals("!=")) {
+        return compareTo != 0;
+      } else if(op.equals(">=")) {
+        return compareTo >= 0;
+      } else if(op.equals(">")) {
+        return compareTo > 0;
+      } else if(op.equals("<=")) {
+        return compareTo <= 0;
+      } else if(op.equals("<")) {
+        return compareTo < 0;
+      }
+    } else if(v1 != null && v2 != null) {
+      if(op.equals("==")) {
+        return v1.equals(v2);
+      } else if(op.equals("!=")) {
+        return !v1.equals(v2);
       }
     }
     return false;

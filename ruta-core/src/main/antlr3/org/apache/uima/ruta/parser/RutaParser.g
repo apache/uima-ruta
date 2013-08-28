@@ -913,8 +913,8 @@ options {
 
 matchReference returns [MatchReference mr = null]
 	:
-	ref = dottedId (op = EQUAL arg = argument)?
-	{mr = ExpressionFactory.createMatchReference(ref, op, arg);}
+	ref = dottedId ((comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument)?
+	{mr = ExpressionFactory.createMatchReference(ref, comp, arg);}
 	;
 
 typeExpression returns [TypeExpression type = null]
@@ -966,14 +966,14 @@ TypeExpression te = null;
 
 featureMatchExpression returns [FeatureMatchExpression fme = null]
 	:
-	f = featureExpression (op = EQUAL arg = argument)?
-	{fme = ExpressionFactory.createFeatureMatchExpression(f, op, arg, $blockDeclaration::env);}
+	f = featureExpression ((comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument)?
+	{fme = ExpressionFactory.createFeatureMatchExpression(f, comp, arg, $blockDeclaration::env);}
 	;
 
 featureMatchExpression2 returns [FeatureMatchExpression fme = null]
 	:
-	f = featureExpression op = EQUAL arg = argument
-	{fme = ExpressionFactory.createFeatureMatchExpression(f, op, arg, $blockDeclaration::env);}
+	f = featureExpression (comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument
+	{fme = ExpressionFactory.createFeatureMatchExpression(f, comp, arg, $blockDeclaration::env);}
 	;
 
 

@@ -936,7 +936,7 @@ featureAssignmentExpression returns [Expression expr = null]
 
 featureTypeExpression returns [Expression expr = null]
 	:
-	feature = dottedId (comp = EQUAL | comp = NOTEQUAL) value = argument {expr = ExpressionFactory.createFeatureMatch(feature, comp, value);}
+	feature = dottedId (comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) value = argument {expr = ExpressionFactory.createFeatureMatch(feature, comp, value);}
 	;
 
 featureExpression returns [Expression expr = null]
