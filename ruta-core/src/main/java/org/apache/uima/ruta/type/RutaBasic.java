@@ -123,7 +123,7 @@ public class RutaBasic extends Annotation {
   public Set<AnnotationFS> getEndAnchors(Type type) {
     Set<AnnotationFS> set = endMap.get(type);
     if (lowMemoryProfile) {
-      Set<AnnotationFS> result = new HashSet<AnnotationFS>(set);
+      Set<AnnotationFS> result = new HashSet<AnnotationFS>();
       if (set != null) {
         result.addAll(set);
       }

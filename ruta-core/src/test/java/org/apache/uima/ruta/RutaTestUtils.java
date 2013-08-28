@@ -25,6 +25,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -73,6 +74,13 @@ public class RutaTestUtils {
     return process(ruleFileName, textFileName, amount, false, false, null, null, null, null);
   }
 
+  public static CAS process(String ruleFileName, String textFileName, Map<String, Object> parameters, int amount)
+          throws URISyntaxException, IOException, InvalidXMLException,
+          ResourceInitializationException, AnalysisEngineProcessException,
+          ResourceConfigurationException {
+    return process(ruleFileName, textFileName, parameters, amount, null, null, null, null);
+  }
+
   public static CAS process(String ruleFileName, String textFileName, int amount,
           boolean dynamicAnchoring, boolean simpleGreedyForComposed,
           Map<String, String> complexTypes, String resourceDirName) throws URISyntaxException,
@@ -96,6 +104,19 @@ public class RutaTestUtils {
           boolean dynamicAnchoring, boolean simpleGreedyForComposed,
           Map<String, String> complexTypes, Map<String, List<TestFeature>> features,
           String resourceDirName, CAS cas) throws URISyntaxException, IOException,
+          InvalidXMLException, ResourceInitializationException, AnalysisEngineProcessException,
+          ResourceConfigurationException {
+    final HashMap parameters = new HashMap();
+    parameters.put(RutaEngine.DYNAMIC_ANCHORING, dynamicAnchoring);
+    parameters.put(RutaEngine.SIMPLE_GREEDY_FOR_COMPOSED, simpleGreedyForComposed);
+
+    return process(ruleFileName, textFileName, parameters, amount, complexTypes, features, resourceDirName, cas);
+  }
+
+  public static CAS process(String ruleFileName, String textFileName, Map<String, Object> parameters,
+                            int amount,
+                            Map<String, String> complexTypes, Map<String, List<TestFeature>> features,
+                            String resourceDirName, CAS cas) throws URISyntaxException, IOException,
           InvalidXMLException, ResourceInitializationException, AnalysisEngineProcessException,
           ResourceConfigurationException {
     URL ruleURL = RutaTestUtils.class.getClassLoader().getResource(ruleFileName);
@@ -141,17 +162,21 @@ public class RutaTestUtils {
     aed.getAnalysisEngineMetaData().setTypeSystem(mergeTypeSystems);
 
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
-    ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { ruleFile.getParentFile()
-            .getPath() });
+    ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[]{ruleFile.getParentFile()
+            .getPath()});
     String name = ruleFile.getName();
     if (name.endsWith(RutaEngine.SCRIPT_FILE_EXTENSION)) {
       name = name.substring(0, name.length() - 5);
     }
+
+    for (Map.Entry<String, Object> parameter : parameters.entrySet()) {
+      ae.setConfigParameterValue(parameter.getKey(), parameter.getValue());
+    }
+
     ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, name);
-    ae.setConfigParameterValue(RutaEngine.DYNAMIC_ANCHORING, dynamicAnchoring);
-    ae.setConfigParameterValue(RutaEngine.SIMPLE_GREEDY_FOR_COMPOSED, simpleGreedyForComposed);
+
     if (resourceFile != null) {
-      ae.setConfigParameterValue(RutaEngine.RESOURCE_PATHS, new String[] { resourceFile.getPath() });
+      ae.setConfigParameterValue(RutaEngine.RESOURCE_PATHS, new String[]{resourceFile.getPath()});
     }
 
     ae.reconfigure();
