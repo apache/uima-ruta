@@ -269,13 +269,15 @@ public class RutaEnvironment {
       }
       if (!found) {
         InputStream stream = this.getClass().getResourceAsStream(table);
-        found = true;
-        try {
-          tables.put(table, new CSVTable(stream));
-        } catch (IOException e) {
-          Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
-                  "Error reading csv table " + table + " from classpath", e);
-          found = false;
+        if (stream != null) {
+          found = true;
+          try {
+            tables.put(table, new CSVTable(stream));
+          } catch (IOException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
+                    "Error reading csv table " + table + " from classpath", e);
+            found = false;
+          }
         }
       }
       if (!found) {

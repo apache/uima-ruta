@@ -21,7 +21,6 @@ package org.apache.uima.ruta.resource;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -60,6 +59,7 @@ public class CSVTable implements RutaTable {
       List<String> row = Arrays.asList(lineElements);
       tableData.add(row);
     }
+    sc.close();
   }
 
   public RutaWordList getWordList(int index) {
