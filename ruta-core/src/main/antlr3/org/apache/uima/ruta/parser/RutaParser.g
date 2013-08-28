@@ -1280,6 +1280,7 @@ action  returns [AbstractRutaAction result = null]
 	| a = actionMarkScore
 	| a = actionMarkFast
 	| a = actionMarkLast
+	| a = actionMarkFirst
 	| a = actionReplace
 	| a = actionFilterType
 	| a = actionRetainType
@@ -1517,6 +1518,12 @@ actionMarkLast returns [AbstractRutaAction action = null]
     :   
     MARKLAST LPAREN type = typeExpression RPAREN
     {action = ActionFactory.createMarkLastAction(type, $blockDeclaration::env);}
+    ;
+    
+actionMarkFirst returns [AbstractRutaAction action = null]
+    :   
+    MARKFIRST LPAREN type = typeExpression RPAREN
+    {action = ActionFactory.createMarkFirstAction(type, $blockDeclaration::env);}
     ;
 
 actionReplace returns [AbstractRutaAction action = null]

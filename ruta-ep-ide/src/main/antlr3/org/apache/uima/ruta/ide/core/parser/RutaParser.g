@@ -1294,6 +1294,7 @@ result = ActionFactory.createEmptyAction(input.LT(1));
 	| a = actionMarkScore
 	| a = actionMarkFast
 	| a = actionMarkLast
+	| a = actionMarkFirst
 	| a = actionReplace
 	| a = actionRetainType
 	| a = actionFilterType
@@ -1553,6 +1554,13 @@ actionMarkFast returns [RutaAction action = null]
 actionMarkLast returns [RutaAction action = null]
     :   
     name = MARKLAST LPAREN type = typeExpression 
+    {action = ActionFactory.createAction(name, type);}
+    RPAREN
+    ;
+
+actionMarkFirst returns [RutaAction action = null]
+    :   
+    name = MARKFIRST LPAREN type = typeExpression 
     {action = ActionFactory.createAction(name, type);}
     RPAREN
     ;

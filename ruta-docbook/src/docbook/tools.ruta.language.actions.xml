@@ -768,6 +768,34 @@ Document{-> MARKFAST(FirstName, FirstNameList, true, 2)};]]></programlisting>
     </section>
   </section>
 
+  <section id="ugr.tools.ruta.language.actions.markfirst">
+    <title>MARKFIRST</title>
+    <para>
+      The MARKFIRST action annotates the first token (basic annotation) of the matched
+      annotation with the given type.
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[MARKFIRST(TypeExpression)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Document{->MARKFIRST(First)};]]></programlisting>
+      </para>
+      <para>
+        This rule annotates the first token of the document with the
+        annotation First.
+      </para>
+    </section>
+  </section>
+
   <section id="ugr.tools.ruta.language.actions.marklast">
     <title>MARKLAST</title>
     <para>

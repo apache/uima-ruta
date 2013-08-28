@@ -269,4 +269,8 @@ public class ActionFactory {
     return new ImplicitMarkAction(te);
   }
 
+  public static AbstractRutaAction createMarkFirstAction(TypeExpression type, RutaBlock env) {
+    return new MarkFirstAction(type);
+  }
+
 }

@@ -45,6 +45,7 @@ import org.apache.uima.ruta.action.ImplicitMarkAction;
 import org.apache.uima.ruta.action.LogAction;
 import org.apache.uima.ruta.action.MarkAction;
 import org.apache.uima.ruta.action.MarkFastAction;
+import org.apache.uima.ruta.action.MarkFirstAction;
 import org.apache.uima.ruta.action.MarkLastAction;
 import org.apache.uima.ruta.action.MarkOnceAction;
 import org.apache.uima.ruta.action.MarkTableAction;
@@ -113,6 +114,8 @@ public class ActionVerbalizer {
       return "MARKFAST";
     } else if (action instanceof MarkLastAction) {
       return "MARKLAST";
+    } else if (action instanceof MarkFirstAction) {
+      return "MARKFIRST";
     } else if (action instanceof ReplaceAction) {
       return "REPLACE";
     } else if (action instanceof RetainTypeAction) {
@@ -308,6 +311,9 @@ public class ActionVerbalizer {
               + verbalizer.verbalize(a.getIgnoreWS()) + ")";
     } else if (action instanceof MarkLastAction) {
       MarkLastAction a = (MarkLastAction) action;
+      return name + verbalizer.verbalize(a.getType()) + ")";
+    } else if (action instanceof MarkFirstAction) {
+      MarkFirstAction a = (MarkFirstAction) action;
       return name + verbalizer.verbalize(a.getType()) + ")";
     } else if (action instanceof ReplaceAction) {
       ReplaceAction a = (ReplaceAction) action;
