@@ -86,7 +86,7 @@ public class ContainsCondition extends TypeSentiveCondition {
           totalCount++;
           Type t = type.getType(element.getParent());
           if (each.beginsWith(t) || stream.getCas().getTypeSystem().subsumes(t, each.getType())) {
-            anchorCount++;
+            anchorCount += each.getBeginAnchors(t).size();
             basicCount++;
           } else if (each.isPartOf(t)) {
             basicCount++;
