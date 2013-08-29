@@ -38,8 +38,9 @@ public class PlusReluctant implements RuleElementQuantifier {
     boolean result = true;
     boolean allEmpty = true;
     for (RuleElementMatch match : matches) {
-      allEmpty &= match.getTextsMatched().isEmpty();
-      result &= match.getTextsMatched().isEmpty() || match.matched();
+      List<AnnotationFS> textsMatched = match.getTextsMatched();
+      allEmpty &= textsMatched.isEmpty();
+      result &= match.matched();
     }
     if (!result && matches.size() > 1) {
       matches.remove(matches.size() - 1);
