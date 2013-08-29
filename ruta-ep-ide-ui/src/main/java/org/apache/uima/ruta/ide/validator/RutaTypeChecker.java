@@ -228,15 +228,15 @@ public class RutaTypeChecker implements IBuildParticipant, IBuildParticipantExte
       // }
       if (s instanceof RutaTypeDeclaration) {
         RutaTypeDeclaration newType = (RutaTypeDeclaration) s;
-        if (reportWarningOnShortNames && shortTypes.contains(newType.getName())) {
-          IProblem problem = problemFactory.createDuplicateShortName(newType,
-                  ProblemSeverity.WARNING);
-          rep.reportProblem(problem);
-          return false;
-        }
         String longName = getLongLocalName(newType.getName());
         if (completeTypes.contains(longName)) {
           IProblem problem = problemFactory.createIdConflictsWithTypeProblem(newType);
+          rep.reportProblem(problem);
+          return false;
+        }
+        if (reportWarningOnShortNames && shortTypes.contains(newType.getName())) {
+          IProblem problem = problemFactory.createDuplicateShortName(newType,
+                  ProblemSeverity.WARNING);
           rep.reportProblem(problem);
           return false;
         }
