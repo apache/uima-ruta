@@ -63,7 +63,10 @@ public class PartOfNeqCondition extends TypeSentiveCondition {
   }
 
   private boolean check(AnnotationFS annotation, RutaStream stream, Type t) {
-    stream.moveTo(annotation);
+    try {
+      stream.moveTo(annotation);
+    } catch (Exception e) {
+    }
     while (stream.isValid()) {
       RutaBasic each = (RutaBasic) stream.get();
       Set<AnnotationFS> set = each.getBeginAnchors(t);
