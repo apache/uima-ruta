@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -44,9 +45,12 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 public class SelectedExcludedTypesHandler implements IHandler {
@@ -73,8 +77,8 @@ public class SelectedExcludedTypesHandler implements IHandler {
     TypeSystemDescription defaultTypeSystemDescription = null;
     List<String> types = new ArrayList<String>();
     try {
-      String tsDesc = RutaProjectUtils.getTypeSystemDescriptorPath(location,
-              resource.getProject()).toPortableString();
+      String tsDesc = RutaProjectUtils.getTypeSystemDescriptorPath(location, resource.getProject())
+              .toPortableString();
 
       defaultTypeSystemDescription = UIMAFramework.getXMLParser().parseTypeSystemDescription(
               new XMLInputSource(new File(tsDesc)));
@@ -89,11 +93,34 @@ public class SelectedExcludedTypesHandler implements IHandler {
     } catch (IOException e) {
       RutaAddonsPlugin.error(e);
     }
+
     Display display = Display.getDefault();
     Shell shell = new Shell(display, SWT.RESIZE | SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
-    shell.setText("Excluded types");
-    new SelectTypesDialog(shell, types, true, activePage);
-    return null;
+
+    ElementListSelectionDialog dialog = new ElementListSelectionDialog(shell, new LabelProvider());
+    String[] allTypes = types.toArray(new String[0]);
+    String[] selectedTypes = activePage.getExcludedTypes().toArray(new String[0]);
+    dialog.setIgnoreCase(false);
+    dialog.setMessage("Select excluded types (* = any string, ? = any char)");
+    dialog.setHelpAvailable(false);
+    // dialog.setEmptySelectionMessage("Empty selection");
+    dialog.setEmptyListMessage("no types available");
+    dialog.setMultipleSelection(true);
+    dialog.setInitialSelections(selectedTypes);
+    dialog.setElements(allTypes);
+    dialog.setTitle("Excluded Type Selection");
+    int open = dialog.open();
+    if (open == Window.OK) {
+      Object[] result = dialog.getResult();
+      List<String> list = new LinkedList<String>();
+      for (Object object : result) {
+        if (object instanceof String) {
+          list.add((String) object);
+        }
+      }
+      activePage.setExcludedTypes(list);
+    }
+    return Status.OK_STATUS;
   }
 
   public boolean isEnabled() {
