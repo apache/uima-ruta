@@ -712,7 +712,9 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     parser.setResourcePaths(resourcePaths);
     String name = scriptFile.getName();
     int lastIndexOf = name.lastIndexOf(SCRIPT_FILE_EXTENSION);
-    name = name.substring(0, lastIndexOf);
+    if(lastIndexOf != -1) {
+      name = name.substring(0, lastIndexOf);
+    }
     RutaModule script = parser.file_input(name);
     return script;
   }
@@ -726,8 +728,14 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     parser.setExternalFactory(factory);
     parser.setResourcePaths(resourcePaths);
     String name = scriptLocation;
+    if(scriptLocation.indexOf("/") != -1) {
+      String[] split = scriptLocation.split("[/]");
+      name = split[split.length-1];
+    }
     int lastIndexOf = name.lastIndexOf(SCRIPT_FILE_EXTENSION);
-    name = name.substring(0, lastIndexOf);
+    if(lastIndexOf != -1) {
+      name = name.substring(0, lastIndexOf);
+    }
     RutaModule script = parser.file_input(name);
     return script;
   }

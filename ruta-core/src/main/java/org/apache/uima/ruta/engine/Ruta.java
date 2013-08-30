@@ -28,6 +28,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.uima.UIMAFramework;
@@ -48,9 +49,9 @@ import org.apache.uima.util.XMLInputSource;
 
 public class Ruta {
 
-  public static void apply(CAS cas, String script) throws IOException, InvalidXMLException,
-          ResourceInitializationException, ResourceConfigurationException,
-          AnalysisEngineProcessException, URISyntaxException {
+  public static void apply(CAS cas, String script, Map<String, Object> parameters)
+          throws IOException, InvalidXMLException, ResourceInitializationException,
+          ResourceConfigurationException, AnalysisEngineProcessException, URISyntaxException {
     String viewName = cas.getViewName();
     URL aedesc = RutaEngine.class.getResource("BasicEngine.xml");
     AnalysisEngine ae = wrapAnalysisEngine(aedesc, viewName);
@@ -65,10 +66,21 @@ public class Ruta {
             .getAbsolutePath() });
     String name = scriptFile.getName().substring(0, scriptFile.getName().length() - 5);
     ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, name);
+    if (parameters != null) {
+      for (Map.Entry<String, Object> parameter : parameters.entrySet()) {
+        ae.setConfigParameterValue(parameter.getKey(), parameter.getValue());
+      }
+    }
     ae.reconfigure();
     ae.process(cas);
     scriptFile.delete();
     ae.destroy();
+  }
+
+  public static void apply(CAS cas, String script) throws IOException, InvalidXMLException,
+          ResourceInitializationException, ResourceConfigurationException,
+          AnalysisEngineProcessException, URISyntaxException {
+    apply(cas, script, null);
   }
 
   public static AnalysisEngine wrapAnalysisEngine(URL descriptorUrl, String viewName)
