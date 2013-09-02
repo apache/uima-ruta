@@ -10,7 +10,6 @@ import org.apache.uima.cas.impl.FSGenerator;
 import org.apache.uima.cas.impl.TypeImpl;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
-import org.apache.uima.jcas.tcas.DocumentAnnotation_Type;
 
 /** 
  * Updated by JCasGen Fri Jul 26 17:02:04 CEST 2013

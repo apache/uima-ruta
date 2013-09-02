@@ -8,8 +8,6 @@ import org.apache.uima.jcas.cas.TOP_Type;
 import org.apache.uima.jcas.tcas.Annotation;
 
 
-import org.apache.uima.jcas.tcas.DocumentAnnotation;
-
 /** 
  * Updated by JCasGen Fri Jul 26 17:02:04 CEST 2013
  * XML source: D:/work/workspace-uima-ruta/ruta/ruta-core/src/main/resources/org/apache/uima/ruta/engine/BasicTypeSystem.xml
