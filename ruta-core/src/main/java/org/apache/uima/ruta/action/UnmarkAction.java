@@ -57,15 +57,22 @@ public class UnmarkAction extends TypeSensitiveAction {
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(indexList,
             element.getContainer());
     for (AnnotationFS annotationFS : matchedAnnotations) {
-      RutaBasic beginAnchor = stream.getBeginAnchor(annotationFS.getBegin());
-      Set<AnnotationFS> beginAnchors = beginAnchor.getBeginAnchors(t);
-      if (beginAnchors != null) {
-        for (AnnotationFS each : new ArrayList<AnnotationFS>(beginAnchors)) {
-          if (allAtAnchor || each.getEnd() == annotationFS.getEnd()) {
-            stream.removeAnnotation(each, t);
+      Type matchedType = annotationFS.getType();
+      boolean subsumes = stream.getCas().getTypeSystem().subsumes(t, matchedType);
+      if(subsumes && !allAtAnchor) {
+        stream.removeAnnotation(annotationFS, t);
+      } else {
+        RutaBasic beginAnchor = stream.getBeginAnchor(annotationFS.getBegin());
+        Set<AnnotationFS> beginAnchors = beginAnchor.getBeginAnchors(t);
+        if (beginAnchors != null) {
+          for (AnnotationFS each : new ArrayList<AnnotationFS>(beginAnchors)) {
+            if (allAtAnchor || each.getEnd() == annotationFS.getEnd()) {
+              stream.removeAnnotation(each, t);
+            }
           }
         }
       }
+      
     }
 
   }
