@@ -26,9 +26,8 @@ import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.string.StringExpression;
 import org.apache.uima.ruta.expression.type.TypeFunctionExpression;
 import org.apache.uima.ruta.extensions.IRutaTypeFunctionExtension;
+import org.apache.uima.ruta.extensions.RutaParseException;
 import org.apache.uima.ruta.verbalize.RutaVerbalizer;
-
-import antlr.ANTLRException;
 
 public class ExampleTypeFunctionExtension implements IRutaTypeFunctionExtension {
 
@@ -46,9 +45,9 @@ public class ExampleTypeFunctionExtension implements IRutaTypeFunctionExtension 
   }
 
   public TypeFunctionExpression createTypeFunction(String name, List<RutaExpression> args)
-          throws ANTLRException {
+          throws RutaParseException {
     if (args == null || args.size() != 1 || !(args.get(0) instanceof StringExpression)) {
-      throw new ANTLRException("ExampleTypeFunction accepts only one StringExpression as argument!");
+      throw new RutaParseException("ExampleTypeFunction accepts only one StringExpression as argument!");
     }
     return new ExampleTypeFunction((StringExpression) args.get(0));
   }

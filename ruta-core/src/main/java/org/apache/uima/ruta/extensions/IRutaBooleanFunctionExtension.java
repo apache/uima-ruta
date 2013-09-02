@@ -24,11 +24,9 @@ import java.util.List;
 import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.bool.BooleanFunctionExpression;
 
-import antlr.ANTLRException;
-
 public interface IRutaBooleanFunctionExtension extends IRutaExtension {
 
   BooleanFunctionExpression createBooleanFunction(String name, List<RutaExpression> args)
-          throws ANTLRException;
+          throws RutaParseException;
 
 }

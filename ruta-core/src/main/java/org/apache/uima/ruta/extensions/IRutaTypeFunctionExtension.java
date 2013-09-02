@@ -24,11 +24,9 @@ import java.util.List;
 import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.type.TypeFunctionExpression;
 
-import antlr.ANTLRException;
-
 public interface IRutaTypeFunctionExtension extends IRutaExtension {
 
   TypeFunctionExpression createTypeFunction(String name, List<RutaExpression> args)
-          throws ANTLRException;
+          throws RutaParseException;
 
 }

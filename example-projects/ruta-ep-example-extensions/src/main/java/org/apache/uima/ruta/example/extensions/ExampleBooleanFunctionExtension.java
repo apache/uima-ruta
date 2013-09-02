@@ -25,9 +25,8 @@ import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.extensions.IRutaBooleanFunctionExtension;
+import org.apache.uima.ruta.extensions.RutaParseException;
 import org.apache.uima.ruta.verbalize.RutaVerbalizer;
-
-import antlr.ANTLRException;
 
 public class ExampleBooleanFunctionExtension implements IRutaBooleanFunctionExtension {
 
@@ -45,9 +44,9 @@ public class ExampleBooleanFunctionExtension implements IRutaBooleanFunctionExte
   }
 
   public ExampleBooleanFunction createBooleanFunction(String name, List<RutaExpression> args)
-          throws ANTLRException {
+          throws RutaParseException {
     if (args == null || args.size() != 1 || !(args.get(0) instanceof TypeExpression)) {
-      throw new ANTLRException(
+      throw new RutaParseException(
               "ExampleBooleanFunction accepts only one TypeExpression as argument!");
     }
     return new ExampleBooleanFunction((TypeExpression) args.get(0));

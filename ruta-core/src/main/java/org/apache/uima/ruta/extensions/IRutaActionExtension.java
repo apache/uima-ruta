@@ -24,10 +24,8 @@ import java.util.List;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.expression.RutaExpression;
 
-import antlr.ANTLRException;
-
 public interface IRutaActionExtension extends IRutaExtension {
 
-  AbstractRutaAction createAction(String name, List<RutaExpression> args) throws ANTLRException;
+  AbstractRutaAction createAction(String name, List<RutaExpression> args) throws RutaParseException;
 
 }

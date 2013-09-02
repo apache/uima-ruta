@@ -35,8 +35,6 @@
   <url>${uimaWebsiteUrl}</url>
   <description>Provides the UIMA Ruta development environment for Eclipse</description>
   <dependencies>
-    <!-- <dependency> <groupId>org.antlr</groupId> <artifactId>antlr-runtime</artifactId> <version>3.4</version> 
-      <scope>compile</scope> </dependency> -->
     <dependency>
       <groupId>org.eclipse.dltk</groupId>
       <artifactId>core</artifactId>
@@ -271,8 +269,6 @@
                 <excludes>
                   <exclude>release.properties</exclude> <!-- release generated artifact -->
                   <exclude>marker-file-identifying-*</exclude>
-                  <exclude>src/main/antlr3/org/apache/uima/ruta/ide/core/parser/RutaLexer.tokens</exclude> <!-- grammar tokens -->
-                  <exclude>src/main/antlr3/org/apache/uima/ruta/ide/core/parser/RutaParser.tokens</exclude> <!-- grammar tokens -->
                   <exclude>src/main/resources/org/apache/uima/ruta/ide/formatter/*.ruta</exclude> <!-- preview file -->
                   <exclude>src/main/resources/org/apache/uima/ruta/ide/formatter/preferences/*.ruta</exclude> <!-- preview file -->
                   <exclude>src/main/resources/org/apache/uima/ruta/ide/launching/*.ruta</exclude> <!-- preview file -->
@@ -334,8 +330,6 @@
                   org.eclipse.core.variables,
                   org.eclipse.jdt.launching
                 </Require-Bundle>
-                <!-- <Bundle-ClassPath>.,antlr-runtime-3.4.jar,stringtemplate-3.2.1.jar</Bundle-ClassPath> 
-                  !org.eclipse.core.runtime, !org.antlr.runtime, !org.antlr.stringtemplate, * -->
                 <Import-Package>
                 </Import-Package>
                 <Bundle-Localization>plugin</Bundle-Localization>

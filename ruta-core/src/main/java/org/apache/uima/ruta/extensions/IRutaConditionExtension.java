@@ -24,11 +24,9 @@ import java.util.List;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.expression.RutaExpression;
 
-import antlr.ANTLRException;
-
 public interface IRutaConditionExtension extends IRutaExtension {
 
   AbstractRutaCondition createCondition(String name, List<RutaExpression> args)
-          throws ANTLRException;
+          throws RutaParseException;
 
 }

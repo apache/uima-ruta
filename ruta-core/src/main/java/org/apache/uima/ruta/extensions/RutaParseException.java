@@ -19,14 +19,12 @@
 
 package org.apache.uima.ruta.extensions;
 
-import java.util.List;
+public class RutaParseException extends Exception {
 
-import org.apache.uima.ruta.expression.RutaExpression;
-import org.apache.uima.ruta.expression.number.NumberFunctionExpression;
+	public RutaParseException(String message) {
+		super(message);
+	}
 
-public interface IRutaNumberFunctionExtension extends IRutaExtension {
-
-  NumberFunctionExpression createNumberFunction(String name, List<RutaExpression> args)
-          throws RutaParseException;
+	private static final long serialVersionUID = -2728650696200821469L;
 
 }

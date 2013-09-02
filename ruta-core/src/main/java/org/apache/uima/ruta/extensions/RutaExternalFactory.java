@@ -32,8 +32,6 @@ import org.apache.uima.ruta.expression.number.NumberExpression;
 import org.apache.uima.ruta.expression.string.StringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 
-import antlr.ANTLRException;
-
 public class RutaExternalFactory {
 
   private Map<String, IRutaConditionExtension> conditionExtensions;
@@ -59,7 +57,7 @@ public class RutaExternalFactory {
   }
 
   public AbstractRutaCondition createExternalCondition(Token id, List<RutaExpression> args)
-          throws ANTLRException {
+          throws RutaParseException {
     String name = id.getText();
     IRutaConditionExtension extension = conditionExtensions.get(name);
     if (extension != null) {
@@ -70,7 +68,7 @@ public class RutaExternalFactory {
   }
 
   public AbstractRutaAction createExternalAction(Token id, List<RutaExpression> args)
-          throws ANTLRException {
+          throws RutaParseException {
     String name = id.getText();
     IRutaActionExtension extension = actionExtensions.get(name);
     if (extension != null) {
@@ -81,7 +79,7 @@ public class RutaExternalFactory {
   }
 
   public TypeExpression createExternalTypeFunction(Token id, List<RutaExpression> args)
-          throws ANTLRException {
+          throws RutaParseException {
     String name = id.getText();
     IRutaTypeFunctionExtension extension = typeFunctionExtensions.get(name);
     if (extension != null) {
@@ -92,7 +90,7 @@ public class RutaExternalFactory {
   }
 
   public BooleanExpression createExternalBooleanFunction(Token id, List<RutaExpression> args)
-          throws ANTLRException {
+          throws RutaParseException {
     String name = id.getText();
     IRutaBooleanFunctionExtension extension = booleanFunctionExtensions.get(name);
     if (extension != null) {
@@ -103,7 +101,7 @@ public class RutaExternalFactory {
   }
 
   public StringExpression createExternalStringFunction(Token id, List<RutaExpression> args)
-          throws ANTLRException {
+          throws RutaParseException {
     String name = id.getText();
     IRutaStringFunctionExtension extension = stringFunctionExtensions.get(name);
     if (extension != null) {
@@ -114,7 +112,7 @@ public class RutaExternalFactory {
   }
 
   public NumberExpression createExternalNumberFunction(Token id, List<RutaExpression> args)
-          throws ANTLRException {
+          throws RutaParseException {
     String name = id.getText();
     IRutaNumberFunctionExtension extension = numberFunctionExtensions.get(name);
     if (extension != null) {

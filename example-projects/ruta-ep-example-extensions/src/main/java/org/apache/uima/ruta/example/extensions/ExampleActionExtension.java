@@ -27,9 +27,8 @@ import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.number.NumberExpression;
 import org.apache.uima.ruta.extensions.IRutaActionExtension;
+import org.apache.uima.ruta.extensions.RutaParseException;
 import org.apache.uima.ruta.verbalize.RutaVerbalizer;
-
-import antlr.ANTLRException;
 
 public class ExampleActionExtension implements IRutaActionExtension {
 
@@ -48,14 +47,14 @@ public class ExampleActionExtension implements IRutaActionExtension {
   }
 
   public AbstractRutaAction createAction(String name, List<RutaExpression> args)
-          throws ANTLRException {
+          throws RutaParseException {
     List<NumberExpression> arguments = new ArrayList<NumberExpression>();
     if (args != null) {
       for (RutaExpression each : args) {
         if (each instanceof NumberExpression) {
           arguments.add((NumberExpression) each);
         } else {
-          throw new ANTLRException("ExampleAction accepts only NumberExpressions as arguments");
+          throw new RutaParseException("ExampleAction accepts only NumberExpressions as arguments");
         }
       }
     }

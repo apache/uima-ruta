@@ -26,9 +26,8 @@ import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.string.StringExpression;
 import org.apache.uima.ruta.extensions.IRutaConditionExtension;
+import org.apache.uima.ruta.extensions.RutaParseException;
 import org.apache.uima.ruta.verbalize.RutaVerbalizer;
-
-import antlr.ANTLRException;
 
 public class ExampleConditionExtension implements IRutaConditionExtension {
 
@@ -47,14 +46,14 @@ public class ExampleConditionExtension implements IRutaConditionExtension {
   }
 
   public AbstractRutaCondition createCondition(String name, List<RutaExpression> args)
-          throws ANTLRException {
+          throws RutaParseException {
     if (args != null && args.size() == 2) {
       if (!(args.get(0) instanceof StringExpression)) {
       }
       if (!(args.get(1) instanceof StringExpression)) {
       }
     } else {
-      throw new ANTLRException(
+      throw new RutaParseException(
               "ExampleCondition accepts exactly two StringExpressions as arguments");
     }
     return new ExampleCondition((StringExpression) args.get(0), (StringExpression) args.get(1));

@@ -93,7 +93,7 @@ public class RutaFormatter extends AbstractScriptFormatter {
       BitSet bs = new BitSet();
       bs.add(org.apache.uima.ruta.parser.RutaParser.LINE_COMMENT);
       bs.add(org.apache.uima.ruta.parser.RutaParser.COMMENT);
-      List<CommonToken> comments = tokenStream.getTokens(0, tokenStream.size(), bs);
+      List<CommonToken> comments = (List<CommonToken>) tokenStream.getTokens(0, tokenStream.size(), bs);
 
       final String output = format(input, (ModuleDeclaration) md, comments, indent);
       if (output != null) {
