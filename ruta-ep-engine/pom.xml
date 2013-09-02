@@ -78,31 +78,6 @@ licensed under the Common Public License.</postNoticeText>
             </execution>
           </executions>
         </plugin>
-        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-        <plugin>
-          <groupId>org.eclipse.m2e</groupId>
-          <artifactId>lifecycle-mapping</artifactId>
-          <version>1.0.0</version>
-          <configuration>
-            <lifecycleMappingMetadata>
-              <pluginExecutions>
-                <pluginExecution>
-                  <pluginExecutionFilter>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <versionRange>[2.3,)</versionRange>
-                    <goals>
-                      <goal>unpack-dependencies</goal>
-                    </goals>
-                  </pluginExecutionFilter>
-                  <action>
-                    <ignore />
-                  </action>
-                </pluginExecution>
-              </pluginExecutions>
-            </lifecycleMappingMetadata>
-          </configuration>
-        </plugin>
       </plugins>
     </pluginManagement>
 
@@ -159,7 +134,7 @@ licensed under the Common Public License.</postNoticeText>
                 </Require-Bundle>
                 <Import-Package>
                 </Import-Package>
-                <Embed-Dependency>*;scope=compile;inline=true</Embed-Dependency>
+                <Embed-Dependency>*;scope=compile</Embed-Dependency>
 
                 <Bundle-SymbolicName>org.apache.uima.ruta.engine;singleton:=true</Bundle-SymbolicName>
                 <Bundle-RequiredExecutionEnvironment>J2SE-1.5</Bundle-RequiredExecutionEnvironment>
@@ -172,15 +147,12 @@ licensed under the Common Public License.</postNoticeText>
           </execution>
         </executions>
       </plugin>
-
       <plugin>
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
           <execution>
-            <id>unpackDependentJars</id>
-            <goals>
-              <goal>unpack-dependencies</goal>
-            </goals>
+            <id>copyDependentJars</id>
+            <goals><goal>copy-dependencies</goal></goals>
             <configuration>
               <outputDirectory>${project.build.outputDirectory}</outputDirectory>
               <excludeArtifactIds>uimaj-core,uimaj-tools,uimaj-document-annotation,uimaj-adapter-vinci,jVinci,uimaj-cpe,tools</excludeArtifactIds>
