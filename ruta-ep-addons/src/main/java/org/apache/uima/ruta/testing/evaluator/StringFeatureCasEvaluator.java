@@ -27,17 +27,18 @@ import java.util.List;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.CASRuntimeException;
-import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.engine.RutaEngine;
 
-public class StringFeatureCasEvaluator implements ICasEvaluator {
+public class StringFeatureCasEvaluator extends AbstractCasEvaluator {
+  
   public CAS evaluate(CAS test, CAS run, Collection<String> excludedTypes)
           throws CASRuntimeException, CASException {
     Type falsePositiveType = run.getTypeSystem().getType(ICasEvaluator.FALSE_POSITIVE);
@@ -137,9 +138,9 @@ public class StringFeatureCasEvaluator implements ICasEvaluator {
     }
     if (withFeatures) {
       CAS testCas = fs.getCAS();
-      CAS runCas = newFS.getCAS();
+//      CAS runCas = newFS.getCAS();
       TypeSystem testTS = testCas.getTypeSystem();
-      TypeSystem runTS = runCas.getTypeSystem();
+//      TypeSystem runTS = runCas.getTypeSystem();
       Type stringType = testTS.getType(UIMAConstants.TYPE_STRING);
       List<Feature> features = fs.getType().getFeatures();
       for (Feature feature : features) {
@@ -157,24 +158,26 @@ public class StringFeatureCasEvaluator implements ICasEvaluator {
     TypeSystem typeSystem = cas.getTypeSystem();
     Type stringType = typeSystem.getType(UIMAConstants.TYPE_STRING);
     Collection<FeatureStructure> result = new HashSet<FeatureStructure>();
-    for (Type type : types) {
-      FSIterator<FeatureStructure> iterator = cas.getIndexRepository().getAllIndexedFS(type);
-      while (iterator.isValid()) {
-        FeatureStructure fs = iterator.get();
-        List<Feature> features = fs.getType().getFeatures();
-        for (Feature feature : features) {
-          Type range = feature.getRange();
-          if (typeSystem.subsumes(stringType, range)) {
-            result.add(fs);
-            break;
+    AnnotationIndex<AnnotationFS> annotationIndex = cas.getAnnotationIndex();
+    for (AnnotationFS each : annotationIndex) {
+      Type type = each.getType();
+      for (Type eachType : types) {
+        if(typeSystem.subsumes(eachType, type)) {
+          List<Feature> features = each.getType().getFeatures();
+          for (Feature feature : features) {
+            Type range = feature.getRange();
+            if (typeSystem.subsumes(stringType, range)) {
+              result.add(each);
+              break;
+            }
           }
         }
-        iterator.moveToNext();
       }
     }
     return result;
   }
 
+  
   private boolean match(FeatureStructure a1, FeatureStructure a2) {
     Type type1 = a1.getType();
     Type type2 = a2.getType();

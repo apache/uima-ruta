@@ -38,7 +38,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.engine.RutaEngine;
 
-public class FeatureCasEvaluator implements ICasEvaluator {
+public class FeatureCasEvaluator extends AbstractCasEvaluator {
 
   public CAS evaluate(CAS test, CAS run, Collection<String> excludedTypes)
           throws CASRuntimeException, CASException {
@@ -225,7 +225,7 @@ public class FeatureCasEvaluator implements ICasEvaluator {
   private Collection<FeatureStructure> getFeatureStructures(List<Type> types, CAS cas) {
     TypeSystem typeSystem = cas.getTypeSystem();
     Type annotationType = cas.getAnnotationType();
-    Type annotationBaseType = typeSystem.getType("uima.cas.AnnotationBase");
+//    Type annotationBaseType = typeSystem.getType("uima.cas.AnnotationBase");
     Collection<FeatureStructure> result = new HashSet<FeatureStructure>();
     for (Type type : types) {
       // if ((type != null) && !typeSystem.subsumes(cas.getAnnotationType(), type) &&

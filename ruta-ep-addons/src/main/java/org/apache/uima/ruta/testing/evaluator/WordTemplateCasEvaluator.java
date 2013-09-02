@@ -34,10 +34,11 @@ import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.seed.DefaultSeeder;
 
-public class WordTemplateCasEvaluator implements ICasEvaluator {
+public class WordTemplateCasEvaluator extends AbstractCasEvaluator {
 
   public CAS evaluate(CAS test, CAS run, Collection<String> excludedTypes)
           throws CASRuntimeException, CASException {
@@ -67,8 +68,8 @@ public class WordTemplateCasEvaluator implements ICasEvaluator {
     }
 
     List<Type> wordTypes = getWordTypes(run);
-    Collection<FeatureStructure> testFSs = getFeatureStructures(types, test, wordTypes);
-    Collection<FeatureStructure> runFSs = getFeatureStructures(types, run, wordTypes);
+    Collection<FeatureStructure> testFSs = getFeatureStructures(types, test);
+    Collection<FeatureStructure> runFSs = getFeatureStructures(types, run);
 
     Collection<FeatureStructure> matched = new HashSet<FeatureStructure>();
     List<FeatureStructure> fp = new ArrayList<FeatureStructure>();
@@ -171,29 +172,30 @@ public class WordTemplateCasEvaluator implements ICasEvaluator {
       }
     }
   }
-
-  private Collection<FeatureStructure> getFeatureStructures(List<Type> types, CAS cas,
-          List<Type> basicTypes) {
+  
+  private Collection<FeatureStructure> getFeatureStructures(List<Type> types, CAS cas) {
     TypeSystem typeSystem = cas.getTypeSystem();
     Type annotationType = cas.getAnnotationType();
     Collection<FeatureStructure> result = new HashSet<FeatureStructure>();
-    for (Type type : types) {
-      FSIterator<FeatureStructure> iterator = cas.getIndexRepository().getAllIndexedFS(type);
-      while (iterator.isValid()) {
-        FeatureStructure fs = iterator.get();
-        List<Feature> features = fs.getType().getFeatures();
-        for (Feature feature : features) {
-          Type range = feature.getRange();
-          if (typeSystem.subsumes(annotationType, range)) {
-            result.add(fs);
-            break;
+    AnnotationIndex<AnnotationFS> annotationIndex = cas.getAnnotationIndex();
+    for (AnnotationFS each : annotationIndex) {
+      Type type = each.getType();
+      for (Type eachType : types) {
+        if(typeSystem.subsumes(eachType, type)) {
+          List<Feature> features = each.getType().getFeatures();
+          for (Feature feature : features) {
+            Type range = feature.getRange();
+            if (typeSystem.subsumes(annotationType, range)) {
+              result.add(each);
+              break;
+            }
           }
         }
-        iterator.moveToNext();
       }
     }
     return result;
   }
+  
 
   private List<AnnotationFS> expand(AnnotationFS a, CAS cas, List<Type> basicTypes) {
     List<AnnotationFS> result = new LinkedList<AnnotationFS>();
@@ -263,7 +265,7 @@ public class WordTemplateCasEvaluator implements ICasEvaluator {
     for (AnnotationFS each1 : w1) {
       if (w2.size() > i) {
         AnnotationFS each2 = w2.get(i);
-        result &= matchWord(each1, each2);
+        result &= match(each1, each2);
       } else {
         return false;
       }
@@ -272,14 +274,5 @@ public class WordTemplateCasEvaluator implements ICasEvaluator {
     return result;
   }
 
-  private boolean matchWord(AnnotationFS a1, AnnotationFS a2) {
-    if (a1 != null && a2 != null) {
-      if (a1.getBegin() == a2.getBegin() && a1.getEnd() == a2.getEnd()
-              && a1.getType().getName().equals(a2.getType().getName())) {
-        return true;
-      }
-    }
-    return false;
-  }
-
+  
 }

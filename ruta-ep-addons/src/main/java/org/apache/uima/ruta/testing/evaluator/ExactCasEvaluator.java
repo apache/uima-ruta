@@ -27,13 +27,11 @@ import java.util.List;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.CASRuntimeException;
-import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Feature;
-import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 
-public class ExactCasEvaluator implements ICasEvaluator {
+public class ExactCasEvaluator extends AbstractCasEvaluator {
 
   public CAS evaluate(CAS test, CAS run, Collection<String> excludedTypes)
           throws CASRuntimeException, CASException {
@@ -111,28 +109,5 @@ public class ExactCasEvaluator implements ICasEvaluator {
     return run;
   }
 
-  private List<AnnotationFS> getAnnotations(List<Type> types, CAS cas) {
-    List<AnnotationFS> result = new ArrayList<AnnotationFS>();
-    for (Type type : types) {
-      FSIterator iterator = cas.getAnnotationIndex(type).iterator();
-      while (iterator.isValid()) {
-        FeatureStructure fs = iterator.get();
-        if (fs instanceof AnnotationFS) {
-          result.add((AnnotationFS) fs);
-        }
-        iterator.moveToNext();
-      }
-    }
-    return result;
-  }
-
-  private boolean match(AnnotationFS a1, AnnotationFS a2) {
-    if (a1 != null && a2 != null) {
-      if (a1.getBegin() == a2.getBegin() && a1.getEnd() == a2.getEnd()
-              && a1.getType().getName().equals(a2.getType().getName()))
-        return true;
-    }
-    return false;
-  }
 
 }

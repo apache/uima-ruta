@@ -27,12 +27,12 @@ import java.util.List;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.CASRuntimeException;
-import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.tcas.Annotation;
 
 public class TemplateCasEvaluator implements ICasEvaluator {
@@ -156,28 +156,31 @@ public class TemplateCasEvaluator implements ICasEvaluator {
     }
   }
 
+  
   private Collection<FeatureStructure> getFeatureStructures(List<Type> types, CAS cas) {
     TypeSystem typeSystem = cas.getTypeSystem();
     Type annotationType = cas.getAnnotationType();
     Collection<FeatureStructure> result = new HashSet<FeatureStructure>();
-    for (Type type : types) {
-      FSIterator<FeatureStructure> iterator = cas.getIndexRepository().getAllIndexedFS(type);
-      while (iterator.isValid()) {
-        FeatureStructure fs = iterator.get();
-        List<Feature> features = fs.getType().getFeatures();
-        for (Feature feature : features) {
-          Type range = feature.getRange();
-          if (typeSystem.subsumes(annotationType, range)) {
-            result.add(fs);
-            break;
+    AnnotationIndex<AnnotationFS> annotationIndex = cas.getAnnotationIndex();
+    for (AnnotationFS each : annotationIndex) {
+      Type type = each.getType();
+      for (Type eachType : types) {
+        if(typeSystem.subsumes(eachType, type)) {
+          List<Feature> features = each.getType().getFeatures();
+          for (Feature feature : features) {
+            Type range = feature.getRange();
+            if (typeSystem.subsumes(annotationType, range)) {
+              result.add(each);
+              break;
+            }
           }
         }
-        iterator.moveToNext();
       }
     }
     return result;
   }
-
+  
+  
   private boolean match(FeatureStructure a1, FeatureStructure a2) {
     Type type1 = a1.getType();
     Type type2 = a2.getType();

@@ -27,13 +27,11 @@ import java.util.List;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.CASRuntimeException;
-import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Feature;
-import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 
-public class PartialMatchCasEvaluator implements ICasEvaluator {
+public class PartialMatchCasEvaluator extends AbstractCasEvaluator {
 
   public CAS evaluate(CAS test, CAS run, Collection<String> excludedTypes)
           throws CASRuntimeException, CASException {
@@ -109,21 +107,6 @@ public class PartialMatchCasEvaluator implements ICasEvaluator {
       run.addFsToIndexes(annotationFS);
     }
     return run;
-  }
-
-  private List<AnnotationFS> getAnnotations(List<Type> types, CAS cas) {
-    List<AnnotationFS> result = new ArrayList<AnnotationFS>();
-    for (Type type : types) {
-      FSIterator iterator = cas.getAnnotationIndex(type).iterator();
-      while (iterator.isValid()) {
-        FeatureStructure fs = iterator.get();
-        if (fs instanceof AnnotationFS) {
-          result.add((AnnotationFS) fs);
-        }
-        iterator.moveToNext();
-      }
-    }
-    return result;
   }
 
   private boolean overlap(AnnotationFS a1, AnnotationFS a2) {
