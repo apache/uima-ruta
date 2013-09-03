@@ -264,7 +264,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   @Override
   public void process(JCas jcas) throws AnalysisEngineProcessException {
     CAS cas = jcas.getCas();
-    if (reloadScript || !cas.getViewName().equals(CAS.NAME_DEFAULT_SOFA)) {
+    if (reloadScript || (!initialized && !cas.getViewName().equals(CAS.NAME_DEFAULT_SOFA))) {
       initializeScript(cas.getViewName());
     } else {
       resetEnvironments(cas);
