@@ -23,13 +23,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
+import org.apache.uima.ruta.utils.ui.SelectTypesDialog;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -37,13 +37,11 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 public class SelectTypesHandler implements IHandler {
@@ -74,38 +72,13 @@ public class SelectTypesHandler implements IHandler {
 
       Display display = Display.getDefault();
       Shell shell = new Shell(display, SWT.RESIZE | SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
-
-      ElementListSelectionDialog dialog = new ElementListSelectionDialog(shell, new LabelProvider());
-      String[] allTypes = types.toArray(new String[0]);
-      String[] selectedTypes = composite.getSelectedTypes().toArray(new String[0]);
-      dialog.setIgnoreCase(false);
-      dialog.setMessage("Select types (* = any string, ? = any char)");
-      dialog.setHelpAvailable(false);
-      // dialog.setEmptySelectionMessage("Empty selection");
-      dialog.setEmptyListMessage("no types available");
-      dialog.setMultipleSelection(true);
-      dialog.setInitialSelections(selectedTypes);
-      dialog.setElements(allTypes);
-      dialog.setTitle("Type Selection");
+      
+      SelectTypesDialog dialog = new SelectTypesDialog(shell, types, composite.getSelectedTypes());
+      
       int open = dialog.open();
       if (open == Window.OK) {
-        Object[] result = dialog.getResult();
-        List<String> list = new LinkedList<String>();
-        for (Object object : result) {
-          if (object instanceof String) {
-            list.add((String) object);
-          }
-        }
-        composite.setSelectedTypes(list);
-        return Status.OK_STATUS;
+        composite.setSelectedTypes(dialog.getSelectedTypes());
       }
-
-      // shell.setText("Included types");
-      // SelectTypesDialog dialog = new SelectTypesDialog(shell, types,
-      // composite.getSelectedTypes());
-      // if (dialog.open() != Window.OK) {
-      // composite.setSelectedTypes(dialog.getSelectedTypes());
-      // }
     } catch (InvalidXMLException e) {
       RutaAddonsPlugin.error(e);
       return Status.CANCEL_STATUS;
