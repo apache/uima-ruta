@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -34,6 +33,7 @@ import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.ruta.testing.ui.views.TestPageBookView;
 import org.apache.uima.ruta.testing.ui.views.TestViewPage;
+import org.apache.uima.ruta.utils.ui.SelectTypesDialog;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -45,12 +45,9 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 public class SelectedIncludedTypesHandler implements IHandler {
@@ -95,30 +92,15 @@ public class SelectedIncludedTypesHandler implements IHandler {
     }
     Display display = Display.getDefault();
     Shell shell = new Shell(display, SWT.RESIZE | SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
-    
-    ElementListSelectionDialog dialog = new ElementListSelectionDialog(shell, new LabelProvider());
-    String[] allTypes = types.toArray(new String[0]);
-    String[] selectedTypes = activePage.getIncludedTypes().toArray(new String[0]);
-    dialog.setIgnoreCase(false);
-    dialog.setMessage("Select included types (* = any string, ? = any char)");
-    dialog.setHelpAvailable(false);
-    // dialog.setEmptySelectionMessage("Empty selection");
-    dialog.setEmptyListMessage("no types available");
-    dialog.setMultipleSelection(true);
-    dialog.setInitialSelections(selectedTypes);
-    dialog.setElements(allTypes);
-    dialog.setTitle("Included Type Selection");
-    int open = dialog.open();
-    if (open == Window.OK) {
-      Object[] result = dialog.getResult();
-      List<String> list = new LinkedList<String>();
-      for (Object object : result) {
-        if (object instanceof String) {
-          list.add((String) object);
-        }
-      }
-      activePage.setIncludedTypes(list);
+    shell.setText("Select included types");
+    SelectTypesDialog dialog = new SelectTypesDialog(shell, types, activePage.getIncludedTypes());
+    shell.open();
+    while (!shell.isDisposed()) {
+      if (!display.readAndDispatch())
+        display.sleep();
     }
+    List<String> selectedTypes = dialog.getSelectedTypes();
+    activePage.setIncludedTypes(selectedTypes);
     return Status.OK_STATUS;
   }
 

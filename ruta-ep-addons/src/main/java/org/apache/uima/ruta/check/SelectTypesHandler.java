@@ -37,7 +37,6 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -72,13 +71,17 @@ public class SelectTypesHandler implements IHandler {
 
       Display display = Display.getDefault();
       Shell shell = new Shell(display, SWT.RESIZE | SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
+      shell.setText("Included types");
       
       SelectTypesDialog dialog = new SelectTypesDialog(shell, types, composite.getSelectedTypes());
-      
-      int open = dialog.open();
-      if (open == Window.OK) {
-        composite.setSelectedTypes(dialog.getSelectedTypes());
+      shell.open();
+      while (!shell.isDisposed()) {
+        if (!display.readAndDispatch())
+          display.sleep();
       }
+      List<String> selectedTypes = dialog.getSelectedTypes();
+      composite.setSelectedTypes(selectedTypes);
+      
     } catch (InvalidXMLException e) {
       RutaAddonsPlugin.error(e);
       return Status.CANCEL_STATUS;

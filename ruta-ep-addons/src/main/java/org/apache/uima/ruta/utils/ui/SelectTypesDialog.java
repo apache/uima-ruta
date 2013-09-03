@@ -63,12 +63,15 @@ public class SelectTypesDialog extends Dialog implements Listener {
 
   private List<String> selectedTypes;
 
+  private List<String> initialTypes;
+
 
   public SelectTypesDialog(Shell shell, List<String> allTypes, List<String> selectedTypes) {
     super(shell);
     this.shell = shell;
     this.allTypes = allTypes;
     this.selectedTypes = selectedTypes;
+    this.initialTypes = new ArrayList<String>(selectedTypes);
     createDialogArea();
     init();
   }
@@ -149,6 +152,7 @@ public class SelectTypesDialog extends Dialog implements Listener {
             selection.add(tableItem.getText());
           }
         }
+        selectedTypes = selection;
         shell.dispose();
       }
     });
@@ -156,6 +160,7 @@ public class SelectTypesDialog extends Dialog implements Listener {
     cancelButton.addSelectionListener(new SelectionAdapter() {
       @Override
       public void widgetSelected(SelectionEvent event) {
+        selectedTypes = initialTypes;
         shell.dispose();
       }
     });
@@ -163,7 +168,7 @@ public class SelectTypesDialog extends Dialog implements Listener {
     int width = 300;
     int height = 400;
     shell.setSize(width, height);
-    shell.setMinimumSize(200, 250);
+    shell.setMinimumSize(300, 300);
     shell.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width - width) / 2, (Toolkit
             .getDefaultToolkit().getScreenSize().height - height) / 2);
     shell.setLayout(new FillLayout());
