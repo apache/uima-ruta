@@ -240,15 +240,15 @@
                   org.apache.uima.ruta.ide,
                   org.apache.uima.ruta.ide.ui,
                   org.eclipse.ui.ide,
-                  org.eclipse.dltk.core;bundle-version="3.0.0",
+                  org.eclipse.dltk.core,
                   org.eclipse.jface.text,
-                  org.eclipse.dltk.ui;bundle-version="1.0.2",
+                  org.eclipse.dltk.ui,
                   org.eclipse.ui.editors,
-                  org.eclipse.dltk.launching;bundle-version="3.0.0",
-                  org.eclipse.debug.ui;bundle-version="3.5.0",
-                  org.apache.uima.caseditor;bundle-version="2.4.1",
-                  org.apache.uima.ruta.caseditor;bundle-version="1.0.0",
-                  org.apache.uima.caseditor.ide;bundle-version="2.4.1",
+                  org.eclipse.dltk.launching,
+                  org.eclipse.debug.ui,
+                  org.apache.uima.caseditor,
+                  org.apache.uima.ruta.caseditor,
+                  org.apache.uima.caseditor.ide
                 </Require-Bundle>
                 <Import-Package>
                 </Import-Package>
