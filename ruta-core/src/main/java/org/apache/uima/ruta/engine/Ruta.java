@@ -62,10 +62,10 @@ public class Ruta {
       script = "PACKAGE org.apache.uima.ruta;\n" + script;
     }
     FileUtils.saveString2File(script, scriptFile);
-    ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { scriptFile.getParentFile()
+    ae.setConfigParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, new String[] { scriptFile.getParentFile()
             .getAbsolutePath() });
     String name = scriptFile.getName().substring(0, scriptFile.getName().length() - 5);
-    ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, name);
+    ae.setConfigParameterValue(RutaEngine.PARAM_MAIN_SCRIPT, name);
     if (parameters != null) {
       for (Map.Entry<String, Object> parameter : parameters.entrySet()) {
         ae.setConfigParameterValue(parameter.getKey(), parameter.getValue());
@@ -138,10 +138,10 @@ public class Ruta {
             .parseResourceSpecifier(in);
     AnalysisEngineMetaData metaData = aed.getAnalysisEngineMetaData();
     ConfigurationParameterSettings settings = metaData.getConfigurationParameterSettings();
-    settings.setParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { scriptFile.getParentFile()
+    settings.setParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, new String[] { scriptFile.getParentFile()
             .getAbsolutePath() });
     String name = scriptFile.getName().substring(0, scriptFile.getName().length() - 5);
-    settings.setParameterValue(RutaEngine.MAIN_SCRIPT, name);
+    settings.setParameterValue(RutaEngine.PARAM_MAIN_SCRIPT, name);
     if (tsds != null) {
       List<TypeSystemDescription> tsdList = new ArrayList<TypeSystemDescription>();
       tsdList.add(metaData.getTypeSystem());

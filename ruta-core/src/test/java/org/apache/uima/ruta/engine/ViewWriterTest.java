@@ -137,12 +137,12 @@ public class ViewWriterTest {
 
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
     String module = scriptFile.getName().substring(0, scriptFile.getName().length() - 5);
-    ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, module);
-    ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { scriptFile.getParentFile()
+    ae.setConfigParameterValue(RutaEngine.PARAM_MAIN_SCRIPT, module);
+    ae.setConfigParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, new String[] { scriptFile.getParentFile()
             .getAbsolutePath() });
     String aeName = descFile.getName().substring(0, descFile.getName().length() - 4);
-    ae.setConfigParameterValue(RutaEngine.ADDITIONAL_ENGINES, new String[] { aeName });
-    ae.setConfigParameterValue(RutaEngine.DESCRIPTOR_PATHS, new String[] { descFile.getParentFile()
+    ae.setConfigParameterValue(RutaEngine.PARAM_ADDITIONAL_ENGINES, new String[] { aeName });
+    ae.setConfigParameterValue(RutaEngine.PARAM_DESCRIPTOR_PATHS, new String[] { descFile.getParentFile()
             .getAbsolutePath() });
     ae.reconfigure();
 

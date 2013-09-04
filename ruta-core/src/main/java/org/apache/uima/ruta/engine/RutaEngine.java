@@ -39,7 +39,6 @@ import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.AnalysisComponent;
-import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
@@ -48,6 +47,8 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceConfigurationException;
@@ -82,107 +83,260 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   public static final String OPTIONAL_TYPE = "org.apache.uima.ruta.type.RutaOptional";
 
-  public static final String SEEDERS = "seeders";
+  /**
+   * Load script in Java notation, with "{@code .}" as package separator and no extension. File
+   * needs to be located in the path specified below with ending {@code .ruta}.
+   */
+  public static final String PARAM_MAIN_SCRIPT = "mainScript";
 
-  public static final String REMOVE_BASICS = "removeBasics";
+  @ConfigurationParameter(name = PARAM_MAIN_SCRIPT, mandatory = false)
+  private String mainScipt;
 
-  public static final String SCRIPT_PATHS = "scriptPaths";
+  /**
+   * This parameter specifies the encoding of the rule files. Its default value is "UTF-8".
+   */
+  public static final String PARAM_SCRIPT_ENCODING = "scriptEncoding";
 
-  public static final String DESCRIPTOR_PATHS = "descriptorPaths";
+  @ConfigurationParameter(name = PARAM_SCRIPT_ENCODING, mandatory = false, defaultValue = "UTF-8")
+  private String scriptEncoding;
 
-  public static final String MAIN_SCRIPT = "mainScript";
+  /**
+   * The parameter scriptPaths refers to a list of String values, which specify the possible
+   * locations of script files. The given locations are absolute paths. A typical value for this
+   * parameter is, for example, "C:/Ruta/MyProject/script/". If the parameter mainScript is set to
+   * org.apache.uima.Main, then the absolute path of the script file has to be
+   * "C:/Ruta/MyProject/script/org/apache/uima/Main.ruta". This parameter can contain multiple
+   * values, as the main script can refer to multiple projects similar to a class path in Java.
+   */
+  public static final String PARAM_SCRIPT_PATHS = "scriptPaths";
 
-  public static final String ADDITIONAL_SCRIPTS = "additionalScripts";
+  @ConfigurationParameter(name = PARAM_SCRIPT_PATHS, mandatory = false)
+  private String[] scriptPaths;
 
-  public static final String ADDITIONAL_ENGINES = "additionalEngines";
+  /**
+   * This parameter specifies the possible locations for descriptors like analysis engines or type
+   * systems, similar to the parameter scriptPaths for the script files. A typical value for this
+   * parameter is for example "C:/Ruta/MyProject/descriptor/". The relative values of the parameter
+   * additionalEngines are resolved to these absolute locations. This parameter can contain multiple
+   * values, as the main script can refer to multiple projects similar to a class path in Java.
+   */
+  public static final String PARAM_DESCRIPTOR_PATHS = "descriptorPaths";
 
-  public static final String ADDITIONAL_UIMAFIT_ENGINES = "additionalUimafitEngines";
+  @ConfigurationParameter(name = PARAM_DESCRIPTOR_PATHS, mandatory = false, defaultValue = {})
+  private String[] descriptorPaths;
 
-  public static final String ADDITIONAL_EXTENSIONS = "additionalExtensions";
+  /**
+   * This parameter specifies the possible locations of additional resources like word lists or CSV
+   * tables. The string values have to contain absolute locations, for example,
+   * "C:/Ruta/MyProject/resources/".
+   */
+  public static final String PARAM_RESOURCE_PATHS = "resourcePaths";
 
-  public static final String ADDITIONAL_ENGINE_LOADERS = "additionalEngineLoaders";
-
-  public static final String CREATE_DEBUG_INFO = "debug";
-
-  public static final String CREATE_DEBUG_INFO_ONLY_FOR = "debugOnlyFor";
-
-  public static final String CREATE_PROFILING_INFO = "profile";
-
-  public static final String CREATE_STATISTIC_INFO = "statistics";
-
-  public static final String CREATE_CREATED_BY_INFO = "createdBy";
-
-  public static final String CREATE_MATCH_DEBUG_INFO = "debugWithMatches";
-
-  public static final String RESOURCE_PATHS = "resourcePaths";
-
-  public static final String SCRIPT_ENCODING = "scriptEncoding";
-
-  public static final String DEFAULT_FILTERED_TYPES = "defaultFilteredTypes";
-
-  public static final String DYNAMIC_ANCHORING = "dynamicAnchoring";
-
-  public static final String RELOAD_SCRIPT = "reloadScript";
-
-  public static final String LOW_MEMORY_PROFILE = "lowMemoryProfile";
-
-  public static final String SIMPLE_GREEDY_FOR_COMPOSED = "simpleGreedyForComposed";
-
-  private String[] seeders;
-
-  private Boolean createDebugInfo;
-
-  private String[] createDebugOnlyFor;
-
-  private Boolean createProfilingInfo;
-
-  private Boolean createStatisticInfo;
-
-  private Boolean withMatches;
-
+  @ConfigurationParameter(name = PARAM_RESOURCE_PATHS, mandatory = false, defaultValue = {})
   private String[] resourcePaths;
 
-  private String scriptEncoding;
+  /**
+   * The parameter additionalScripts is defined as a list of string values and contains script
+   * files, which are additionally loaded by the analysis engine. These script files are specified
+   * by their complete namespace, exactly like the value of the parameter mainScript and can be
+   * refered to by language elements, e.g., by executing the containing rules. An exemplary value of
+   * this parameter is "org.apache.uima.SecondaryScript". In this example, the main script could
+   * import this script file by the declaration "SCRIPT org.apache.uima.SecondaryScript;" and then
+   * could execute it with the rule "Document{-> CALL(SecondaryScript)};".
+   */
+  public static final String PARAM_ADDITIONAL_SCRIPTS = "additionalScripts";
+
+  @ConfigurationParameter(name = PARAM_ADDITIONAL_SCRIPTS, mandatory = false, defaultValue = {})
+  private String[] additionalScripts;
+
+  /**
+   * This parameter contains a list of additional analysis engines, which can be executed by the
+   * UIMA Ruta rules. The single values are given by the name of the analysis engine with their
+   * complete namespace and have to be located relative to one value of the parameter
+   * descriptorPaths, the location where the analysis engine searches for the descriptor file. An
+   * example for one value of the parameter is "utils.HtmlAnnotator", which points to the descriptor
+   * "HtmlAnnotator.xml" in the folder "utils".
+   */
+  public static final String PARAM_ADDITIONAL_ENGINES = "additionalEngines";
+
+  @ConfigurationParameter(name = PARAM_ADDITIONAL_ENGINES, mandatory = false, defaultValue = {})
+  private String[] additionalEngines;
+
+  /**
+   * List of additional uimaFIT analysis engines, which are loaded without descriptor.
+   */
+  public static final String PARAM_ADDITIONAL_UIMAFIT_ENGINES = "additionalUimafitEngines";
+
+  @ConfigurationParameter(name = PARAM_ADDITIONAL_UIMAFIT_ENGINES, mandatory = false, defaultValue = {})
+  private String[] additionalUimafitEngines;
+
+  /**
+   * The parameter "additionalEngineLoaders" specifies a list of optional implementations of the
+   * interface "org.apache.uima.ruta.extensions.IEngineLoader", which can be used to
+   * application-specific configurations of additional analysis engines.
+   */
+  public static final String PARAM_ADDITIONAL_ENGINE_LOADERS = "additionalEngineLoaders";
+
+  @ConfigurationParameter(name = PARAM_ADDITIONAL_ENGINE_LOADERS, mandatory = false, defaultValue = {})
+  private String[] additionalEngineLoaders;
+
+  /**
+   * This parameter specifies optional extensions of the UIMA Ruta language. The elements of the
+   * string list have to implement the interface "org.apache.uima.ruta.extensions.IRutaExtension".
+   * With these extensions, application-specific conditions and actions can be added to the set of
+   * provided ones.
+   */
+  public static final String PARAM_ADDITIONAL_EXTENSIONS = "additionalExtensions";
+
+  @ConfigurationParameter(name = PARAM_ADDITIONAL_EXTENSIONS, mandatory = false, defaultValue = {})
+  private String[] additionalExtensions;
+
+  /**
+   * This boolean parameter indicates whether the script or resource files should be reloaded when
+   * processing a CAS. The default value is set to false. In this case, the script files are loaded
+   * when the analysis engine is initialized. If script files or resource files are extended, e.g.,
+   * a dictionary is filled yet when a collection of documents are processed, then the parameter is
+   * needed to be set to true in order to include the changes.
+   */
+  public static final String PARAM_RELOAD_SCRIPT = "reloadScript";
+
+  @ConfigurationParameter(name = PARAM_RELOAD_SCRIPT, mandatory = false, defaultValue = "false")
+  private Boolean reloadScript;
+
+  /**
+   * This list of string values refers to implementations of the interface
+   * "org.apache.uima.ruta.seed.RutaAnnotationSeeder", which can be used to automatically add
+   * annotations to the CAS. The default value of the parameter is a single seeder, namely
+   * "org.apache.uima.ruta.seed.DefaultSeeder" that adds annotations for token classes like CW,
+   * MARKUP or SEMICOLON. Remember that additional annotations can also be added with an additional
+   * engine that is executed by a UIMA Ruta rule.
+   */
+  public static final String PARAM_SEEDERS = "seeders";
+
+  @ConfigurationParameter(name = PARAM_SEEDERS, mandatory = false, defaultValue = { "org.apache.uima.ruta.seed.DefaultSeeder" })
+  private String[] seeders;
+
+  /**
+   * This parameter specifies a list of types, which are filtered by default when executing a script
+   * file. Using the default values of this parameter, whitespaces, line breaks and markup elements
+   * are not visible to Ruta rules. The visibility of annotations and, therefore, the covered text
+   * can be changed using the actions FILTERTYPE and RETAINTYPE.
+   */
+  public static final String PARAM_DEFAULT_FILTERED_TYPES = "defaultFilteredTypes";
+
+  @ConfigurationParameter(name = PARAM_DEFAULT_FILTERED_TYPES, mandatory = false, defaultValue = {
+      "org.apache.uima.ruta.type.SPACE", "org.apache.uima.ruta.type.NBSP",
+      "org.apache.uima.ruta.type.BREAK", "org.apache.uima.ruta.type.MARKUP" })
+  private String[] defaultFilteredTypes;
+
+  /**
+   * This parameter specifies whether the inference annotations created by the analysis engine
+   * should be removed after processing the CAS. The default value is set to true.
+   */
+  public static final String PARAM_REMOVE_BASICS = "removeBasics";
+
+  @ConfigurationParameter(name = PARAM_REMOVE_BASICS, mandatory = false, defaultValue = "true")
+  private Boolean removeBasics;
+
+  /**
+   * If this parameter is set to true, then the Ruta rules are not forced to start to match with the
+   * first rule element. Rather, the rule element referring to the most rare type is chosen. This
+   * option can be utilized to optimize the performance. Please mind that the matching result can
+   * vary in some cases when greedy rule elements are applied. The default value is set to false.
+   */
+  public static final String PARAM_DYNAMIC_ANCHORING = "dynamicAnchoring";
+
+  @ConfigurationParameter(name = PARAM_DYNAMIC_ANCHORING, mandatory = false, defaultValue = "false")
+  private Boolean dynamicAnchoring;
+
+  /**
+   * This parameter specifies whether the memory consumption should be reduced. This parameter
+   * should be set to true for very large CAS documents (e.g., > 500k tokens), but it also reduces
+   * the performance. The default value is set to false.
+   */
+  public static final String PARAM_LOW_MEMORY_PROFILE = "lowMemoryProfile";
+
+  @ConfigurationParameter(name = PARAM_LOW_MEMORY_PROFILE, mandatory = false, defaultValue = "false")
+  private Boolean lowMemoryProfile;
+
+  /**
+   * This parameter specifies whether a different inference strategy for composed rule elements
+   * should be applied. This option is only necessary when the composed rule element is expected to
+   * match very often, e.g., a rule element like (ANY ANY)+. The default value of this parameter is
+   * set to false.
+   */
+  public static final String PARAM_SIMPLE_GREEDY_FOR_COMPOSED = "simpleGreedyForComposed";
+
+  @ConfigurationParameter(name = PARAM_SIMPLE_GREEDY_FOR_COMPOSED, mandatory = false, defaultValue = "false")
+  private Boolean simpleGreedyForComposed;
+
+  /**
+   * If this parameter is set to true, then additional information about the execution of a rule
+   * script is added to the CAS. The actual information is specified by the following parameters.
+   * The default value of this parameter is set to false.
+   */
+  public static final String PARAM_DEBUG = "debug";
+
+  @ConfigurationParameter(name = PARAM_DEBUG, mandatory = false, defaultValue = "false")
+  private Boolean debug;
+
+  /**
+   * This parameter specificies whether the match information (covered text) of the rules should be
+   * stored in the CAS. The default value of this parameter is set to false.
+   */
+  public static final String PARAM_DEBUG_WITH_MATCHES = "debugWithMatches";
+
+  @ConfigurationParameter(name = PARAM_DEBUG_WITH_MATCHES, mandatory = false, defaultValue = "false")
+  private Boolean debugWithMatches;
+
+  /**
+   * This parameter specifies a list of rule-ids that enumerate the rule for which debug information
+   * should be created. No specific ids are given by default.
+   */
+  public static final String PARAM_DEBUG_ONLY_FOR = "debugOnlyFor";
+
+  @ConfigurationParameter(name = PARAM_DEBUG_ONLY_FOR, mandatory = false, defaultValue = {})
+  private String[] debugOnlyFor;
+
+  /**
+   * If this parameter is set to true, then additional information about the runtime of applied
+   * rules is added to the CAS. The default value of this parameter is set to false.
+   */
+  public static final String PARAM_PROFILE = "profile";
+
+  @ConfigurationParameter(name = PARAM_PROFILE, mandatory = false, defaultValue = "false")
+  private Boolean profile;
+
+  /**
+   * If this parameter is set to true, then additional information about the runtime of UIMA Ruta
+   * language elements like conditions and actions is added to the CAS. The default value of this
+   * parameter is set to false.
+   */
+  public static final String PARAM_STATISTICS = "statistics";
+
+  @ConfigurationParameter(name = PARAM_STATISTICS, mandatory = false, defaultValue = "false")
+  private Boolean statistics;
+
+  /**
+   * If this parameter is set to true, then additional information about what annotation was created
+   * by which rule is added to the CAS. The default value of this parameter is set to false.
+   */
+  public static final String PARAM_CREATED_BY = "createdBy";
+
+  @ConfigurationParameter(name = PARAM_CREATED_BY, mandatory = false, defaultValue = "false")
+  private Boolean createdBy;
 
   private UimaContext context;
 
   private RutaModule script;
 
-  private String[] additionalScriptLocations;
-
-  private String[] additionalEngineLocations;
-
-  private String[] additionalUimafitEngines;
-
-  private String[] additionalExtensions;
-
-  private String[] additionalEngineLoaders;
-
   private RutaExternalFactory factory;
 
   private RutaEngineLoader engineLoader;
 
-  private String[] defaultFilteredTypes;
-
   private String mainScript;
 
-  private String[] scriptPaths;
-
-  private String[] descriptorPaths;
-
   private RutaVerbalizer verbalizer;
-
-  private Boolean removeBasics;
-
-  private Boolean dynamicAnchoring;
-
-  private Boolean reloadScript;
-
-  private Boolean lowMemoryProfile;
-
-  private Boolean simpleGreedyForComposed;
-
-  private Boolean createCreatedByInfo;
 
   private boolean initialized = false;
 
@@ -194,43 +348,44 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     if (aContext == null && context != null) {
       aContext = context;
     }
-    seeders = (String[]) aContext.getConfigParameterValue(SEEDERS);
-    removeBasics = (Boolean) aContext.getConfigParameterValue(REMOVE_BASICS);
-    scriptPaths = (String[]) aContext.getConfigParameterValue(SCRIPT_PATHS);
-    descriptorPaths = (String[]) aContext.getConfigParameterValue(DESCRIPTOR_PATHS);
-    mainScript = (String) aContext.getConfigParameterValue(MAIN_SCRIPT);
-    additionalScriptLocations = (String[]) aContext.getConfigParameterValue(ADDITIONAL_SCRIPTS);
-    additionalEngineLocations = (String[]) aContext.getConfigParameterValue(ADDITIONAL_ENGINES);
+    seeders = (String[]) aContext.getConfigParameterValue(PARAM_SEEDERS);
+    removeBasics = (Boolean) aContext.getConfigParameterValue(PARAM_REMOVE_BASICS);
+    scriptPaths = (String[]) aContext.getConfigParameterValue(PARAM_SCRIPT_PATHS);
+    descriptorPaths = (String[]) aContext.getConfigParameterValue(PARAM_DESCRIPTOR_PATHS);
+    mainScript = (String) aContext.getConfigParameterValue(PARAM_MAIN_SCRIPT);
+    additionalScripts = (String[]) aContext.getConfigParameterValue(PARAM_ADDITIONAL_SCRIPTS);
+    additionalEngines = (String[]) aContext.getConfigParameterValue(PARAM_ADDITIONAL_ENGINES);
     additionalUimafitEngines = (String[]) aContext
-            .getConfigParameterValue(ADDITIONAL_UIMAFIT_ENGINES);
-    additionalExtensions = (String[]) aContext.getConfigParameterValue(ADDITIONAL_EXTENSIONS);
+            .getConfigParameterValue(PARAM_ADDITIONAL_UIMAFIT_ENGINES);
+    additionalExtensions = (String[]) aContext.getConfigParameterValue(PARAM_ADDITIONAL_EXTENSIONS);
     additionalEngineLoaders = (String[]) aContext
-            .getConfigParameterValue(ADDITIONAL_ENGINE_LOADERS);
+            .getConfigParameterValue(PARAM_ADDITIONAL_ENGINE_LOADERS);
 
-    createDebugInfo = (Boolean) aContext.getConfigParameterValue(CREATE_DEBUG_INFO);
-    createDebugOnlyFor = (String[]) aContext.getConfigParameterValue(CREATE_DEBUG_INFO_ONLY_FOR);
-    createProfilingInfo = (Boolean) aContext.getConfigParameterValue(CREATE_PROFILING_INFO);
-    createStatisticInfo = (Boolean) aContext.getConfigParameterValue(CREATE_STATISTIC_INFO);
-    createCreatedByInfo = (Boolean) aContext.getConfigParameterValue(CREATE_CREATED_BY_INFO);
-    withMatches = (Boolean) aContext.getConfigParameterValue(CREATE_MATCH_DEBUG_INFO);
+    debug = (Boolean) aContext.getConfigParameterValue(PARAM_DEBUG);
+    debugOnlyFor = (String[]) aContext.getConfigParameterValue(PARAM_DEBUG_ONLY_FOR);
+    profile = (Boolean) aContext.getConfigParameterValue(PARAM_PROFILE);
+    statistics = (Boolean) aContext.getConfigParameterValue(PARAM_STATISTICS);
+    createdBy = (Boolean) aContext.getConfigParameterValue(PARAM_CREATED_BY);
+    debugWithMatches = (Boolean) aContext.getConfigParameterValue(PARAM_DEBUG_WITH_MATCHES);
 
-    resourcePaths = (String[]) aContext.getConfigParameterValue(RESOURCE_PATHS);
-    scriptEncoding = (String) aContext.getConfigParameterValue(SCRIPT_ENCODING);
-    defaultFilteredTypes = (String[]) aContext.getConfigParameterValue(DEFAULT_FILTERED_TYPES);
-    dynamicAnchoring = (Boolean) aContext.getConfigParameterValue(DYNAMIC_ANCHORING);
-    reloadScript = (Boolean) aContext.getConfigParameterValue(RELOAD_SCRIPT);
-    lowMemoryProfile = (Boolean) aContext.getConfigParameterValue(LOW_MEMORY_PROFILE);
+    resourcePaths = (String[]) aContext.getConfigParameterValue(PARAM_RESOURCE_PATHS);
+    scriptEncoding = (String) aContext.getConfigParameterValue(PARAM_SCRIPT_ENCODING);
+    defaultFilteredTypes = (String[]) aContext
+            .getConfigParameterValue(PARAM_DEFAULT_FILTERED_TYPES);
+    dynamicAnchoring = (Boolean) aContext.getConfigParameterValue(PARAM_DYNAMIC_ANCHORING);
+    reloadScript = (Boolean) aContext.getConfigParameterValue(PARAM_RELOAD_SCRIPT);
+    lowMemoryProfile = (Boolean) aContext.getConfigParameterValue(PARAM_LOW_MEMORY_PROFILE);
     simpleGreedyForComposed = (Boolean) aContext
-            .getConfigParameterValue(SIMPLE_GREEDY_FOR_COMPOSED);
+            .getConfigParameterValue(PARAM_SIMPLE_GREEDY_FOR_COMPOSED);
 
     resourcePaths = resourcePaths == null ? new String[0] : resourcePaths;
     removeBasics = removeBasics == null ? false : removeBasics;
-    createDebugInfo = createDebugInfo == null ? false : createDebugInfo;
-    createDebugOnlyFor = createDebugOnlyFor == null ? new String[0] : createDebugOnlyFor;
-    createProfilingInfo = createProfilingInfo == null ? false : createProfilingInfo;
-    createStatisticInfo = createStatisticInfo == null ? false : createStatisticInfo;
-    createCreatedByInfo = createCreatedByInfo == null ? false : createCreatedByInfo;
-    withMatches = withMatches == null ? true : withMatches;
+    debug = debug == null ? false : debug;
+    debugOnlyFor = debugOnlyFor == null ? new String[0] : debugOnlyFor;
+    profile = profile == null ? false : profile;
+    statistics = statistics == null ? false : statistics;
+    createdBy = createdBy == null ? false : createdBy;
+    debugWithMatches = debugWithMatches == null ? true : debugWithMatches;
 
     scriptEncoding = scriptEncoding == null ? "UTF-8" : scriptEncoding;
     defaultFilteredTypes = defaultFilteredTypes == null ? new String[0] : defaultFilteredTypes;
@@ -385,17 +540,17 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   private InferenceCrowd initializeCrowd() {
     List<RutaInferenceVisitor> visitors = new ArrayList<RutaInferenceVisitor>();
-    if (createDebugInfo) {
-      visitors.add(new DebugInfoCollectorVisitor(createDebugInfo, withMatches, Arrays
-              .asList(createDebugOnlyFor), verbalizer));
+    if (debug) {
+      visitors.add(new DebugInfoCollectorVisitor(debug, debugWithMatches, Arrays
+              .asList(debugOnlyFor), verbalizer));
     }
-    if (createProfilingInfo) {
+    if (profile) {
       visitors.add(new TimeProfilerVisitor());
     }
-    if (createStatisticInfo) {
+    if (statistics) {
       visitors.add(new StatisticsVisitor(verbalizer));
     }
-    if (createCreatedByInfo) {
+    if (createdBy) {
       visitors.add(new CreatedByVisitor(verbalizer));
     }
     return new InferenceCrowd(visitors);
@@ -474,8 +629,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       }
     }
 
-    Map<String, RutaModule> additionalScripts = new HashMap<String, RutaModule>();
-    Map<String, AnalysisEngine> additionalEngines = new HashMap<String, AnalysisEngine>();
+    Map<String, RutaModule> additionalScriptsMap = new HashMap<String, RutaModule>();
+    Map<String, AnalysisEngine> additionalEnginesMap = new HashMap<String, AnalysisEngine>();
 
     if (additionalUimafitEngines != null) {
       for (String eachUimafitEngine : additionalUimafitEngines) {
@@ -492,19 +647,19 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
           throw new AnalysisEngineProcessException(e);
         }
         try {
-          additionalEngines.put(eachUimafitEngine, eachEngine);
+          additionalEnginesMap.put(eachUimafitEngine, eachEngine);
           String[] eachEngineLocationPartArray = eachUimafitEngine.split("\\.");
           if (eachEngineLocationPartArray.length > 1) {
             String shortEachEngineLocation = eachEngineLocationPartArray[eachEngineLocationPartArray.length - 1];
-            additionalEngines.put(shortEachEngineLocation, eachEngine);
+            additionalEnginesMap.put(shortEachEngineLocation, eachEngine);
           }
         } catch (Exception e) {
           throw new AnalysisEngineProcessException(e);
         }
       }
     }
-    if (additionalEngineLocations != null) {
-      for (String eachEngineLocation : additionalEngineLocations) {
+    if (additionalEngines != null) {
+      for (String eachEngineLocation : additionalEngines) {
         AnalysisEngine eachEngine;
         String location = locate(eachEngineLocation, descriptorPaths, ".xml");
         if (location == null) {
@@ -542,11 +697,11 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
           }
         }
         try {
-          additionalEngines.put(eachEngineLocation, eachEngine);
+          additionalEnginesMap.put(eachEngineLocation, eachEngine);
           String[] eachEngineLocationPartArray = eachEngineLocation.split("\\.");
           if (eachEngineLocationPartArray.length > 1) {
             String shortEachEngineLocation = eachEngineLocationPartArray[eachEngineLocationPartArray.length - 1];
-            additionalEngines.put(shortEachEngineLocation, eachEngine);
+            additionalEnginesMap.put(shortEachEngineLocation, eachEngine);
           }
         } catch (Exception e) {
           throw new AnalysisEngineProcessException(e);
@@ -554,21 +709,21 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       }
     }
 
-    if (additionalScriptLocations != null) {
-      for (String add : additionalScriptLocations) {
-        recursiveLoadScript(add, additionalScripts, additionalEngines, viewName);
+    if (additionalScripts != null) {
+      for (String add : additionalScripts) {
+        recursiveLoadScript(add, additionalScriptsMap, additionalEnginesMap, viewName);
       }
     }
 
-    for (RutaModule each : additionalScripts.values()) {
-      each.setScriptDependencies(additionalScripts);
+    for (RutaModule each : additionalScriptsMap.values()) {
+      each.setScriptDependencies(additionalScriptsMap);
     }
-    script.setScriptDependencies(additionalScripts);
+    script.setScriptDependencies(additionalScriptsMap);
 
-    for (RutaModule each : additionalScripts.values()) {
-      each.setEngineDependencies(additionalEngines);
+    for (RutaModule each : additionalScriptsMap.values()) {
+      each.setEngineDependencies(additionalEnginesMap);
     }
-    script.setEngineDependencies(additionalEngines);
+    script.setEngineDependencies(additionalEnginesMap);
   }
 
   public static void addSourceDocumentInformation(CAS cas, File each) {
@@ -712,7 +867,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     parser.setResourcePaths(resourcePaths);
     String name = scriptFile.getName();
     int lastIndexOf = name.lastIndexOf(SCRIPT_FILE_EXTENSION);
-    if(lastIndexOf != -1) {
+    if (lastIndexOf != -1) {
       name = name.substring(0, lastIndexOf);
     }
     RutaModule script = parser.file_input(name);
@@ -728,12 +883,12 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     parser.setExternalFactory(factory);
     parser.setResourcePaths(resourcePaths);
     String name = scriptLocation;
-    if(scriptLocation.indexOf("/") != -1) {
+    if (scriptLocation.indexOf("/") != -1) {
       String[] split = scriptLocation.split("[/]");
-      name = split[split.length-1];
+      name = split[split.length - 1];
     }
     int lastIndexOf = name.lastIndexOf(SCRIPT_FILE_EXTENSION);
-    if(lastIndexOf != -1) {
+    if (lastIndexOf != -1) {
       name = name.substring(0, lastIndexOf);
     }
     RutaModule script = parser.file_input(name);

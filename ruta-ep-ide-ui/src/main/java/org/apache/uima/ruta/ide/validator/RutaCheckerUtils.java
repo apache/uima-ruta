@@ -250,7 +250,7 @@ public class RutaCheckerUtils {
     ConfigurationParameterSettings configurationParameterSettings = aed.getAnalysisEngineMetaData()
             .getConfigurationParameterSettings();
     String[] paths = (String[]) configurationParameterSettings
-            .getParameterValue(RutaEngine.RESOURCE_PATHS);
+            .getParameterValue(RutaEngine.PARAM_RESOURCE_PATHS);
     if (paths == null) {
       IFolder folder = project.getProject().getFolder(
               RutaProjectUtils.getDefaultResourcesLocation());

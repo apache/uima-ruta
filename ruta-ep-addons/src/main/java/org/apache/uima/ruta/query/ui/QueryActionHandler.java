@@ -189,14 +189,14 @@ public class QueryActionHandler implements IHandler {
         FileUtils.saveString2File(script, tempFile, "UTF-8");
         String portableString = Path.fromOSString(tempFile.getParentFile().getPath())
                 .toPortableString();
-        ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { portableString });
+        ae.setConfigParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, new String[] { portableString });
         String name = tempFile.getName().substring(0, tempFile.getName().length() - 5);
-        ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, name);
+        ae.setConfigParameterValue(RutaEngine.PARAM_MAIN_SCRIPT, name);
 
-        ae.setConfigParameterValue(RutaEngine.CREATE_DEBUG_INFO, true);
-        ae.setConfigParameterValue(RutaEngine.CREATE_MATCH_DEBUG_INFO, true);
-        ae.setConfigParameterValue(RutaEngine.CREATE_PROFILING_INFO, false);
-        ae.setConfigParameterValue(RutaEngine.CREATE_STATISTIC_INFO, false);
+        ae.setConfigParameterValue(RutaEngine.PARAM_DEBUG, true);
+        ae.setConfigParameterValue(RutaEngine.PARAM_DEBUG_WITH_MATCHES, true);
+        ae.setConfigParameterValue(RutaEngine.PARAM_PROFILE, false);
+        ae.setConfigParameterValue(RutaEngine.PARAM_STATISTICS, false);
         
         
         IRutaConditionExtension[] conditionExtensions = RutaExtensionManager.getDefault()
@@ -232,7 +232,7 @@ public class QueryActionHandler implements IHandler {
         for (IRutaTypeFunctionExtension each : typeFunctionExtensions) {
           languageExtensions.add(each.getClass().getName());
         }
-        ae.setConfigParameterValue(RutaEngine.ADDITIONAL_EXTENSIONS,
+        ae.setConfigParameterValue(RutaEngine.PARAM_ADDITIONAL_EXTENSIONS,
                 languageExtensions.toArray(new String[0]));
         
         

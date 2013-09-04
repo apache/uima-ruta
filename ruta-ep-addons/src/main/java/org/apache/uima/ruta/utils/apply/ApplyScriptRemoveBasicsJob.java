@@ -33,7 +33,7 @@ public class ApplyScriptRemoveBasicsJob extends AbstractApplyScriptHandlerJob {
 
   @Override
   void initAE(AnalysisEngine ae) {
-    ae.setConfigParameterValue(RutaEngine.REMOVE_BASICS, true);
+    ae.setConfigParameterValue(RutaEngine.PARAM_REMOVE_BASICS, true);
   }
 
 }

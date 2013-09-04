@@ -58,11 +58,7 @@
       <groupId>org.apache.uima</groupId>
       <artifactId>ruta-core</artifactId>
       <version>${project.parent.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.uima</groupId>
-      <artifactId>ruta-ep-engine</artifactId>
-      <version>${project.parent.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>

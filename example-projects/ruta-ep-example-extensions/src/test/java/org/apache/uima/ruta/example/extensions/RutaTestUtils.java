@@ -142,17 +142,17 @@ public class RutaTestUtils {
     aed.getAnalysisEngineMetaData().setTypeSystem(mergeTypeSystems);
 
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
-    ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { ruleFile
+    ae.setConfigParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, new String[] { ruleFile
             .getParentFile().getPath() });
     String name = ruleFile.getName();
     if (name.endsWith(RutaEngine.SCRIPT_FILE_EXTENSION)) {
       name = name.substring(0, name.length() - 5);
     }
-    ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, name);
-    ae.setConfigParameterValue(RutaEngine.DYNAMIC_ANCHORING, dynamicAnchoring);
-    ae.setConfigParameterValue(RutaEngine.SIMPLE_GREEDY_FOR_COMPOSED, simpleGreedyForComposed);
+    ae.setConfigParameterValue(RutaEngine.PARAM_MAIN_SCRIPT, name);
+    ae.setConfigParameterValue(RutaEngine.PARAM_DYNAMIC_ANCHORING, dynamicAnchoring);
+    ae.setConfigParameterValue(RutaEngine.PARAM_SIMPLE_GREEDY_FOR_COMPOSED, simpleGreedyForComposed);
     if (resourceFile != null) {
-      ae.setConfigParameterValue(RutaEngine.RESOURCE_PATHS,
+      ae.setConfigParameterValue(RutaEngine.PARAM_RESOURCE_PATHS,
               new String[] { resourceFile.getPath() });
     }
 

@@ -171,11 +171,11 @@ public class RutaLauncher {
 
   private static void configure(AnalysisEngine ae) throws ResourceConfigurationException {
     if ("debug".equals(launchMode)) {
-      ae.setConfigParameterValue(RutaEngine.CREATE_DEBUG_INFO, true);
-      ae.setConfigParameterValue(RutaEngine.CREATE_MATCH_DEBUG_INFO, true);
-      ae.setConfigParameterValue(RutaEngine.CREATE_PROFILING_INFO, true);
-      ae.setConfigParameterValue(RutaEngine.CREATE_STATISTIC_INFO, true);
-      ae.setConfigParameterValue(RutaEngine.CREATE_CREATED_BY_INFO, true);
+      ae.setConfigParameterValue(RutaEngine.PARAM_DEBUG, true);
+      ae.setConfigParameterValue(RutaEngine.PARAM_DEBUG_WITH_MATCHES, true);
+      ae.setConfigParameterValue(RutaEngine.PARAM_PROFILE, true);
+      ae.setConfigParameterValue(RutaEngine.PARAM_STATISTICS, true);
+      ae.setConfigParameterValue(RutaEngine.PARAM_CREATED_BY, true);
     }
     ae.reconfigure();
 

@@ -46,7 +46,7 @@ public class StyleMapCreator extends JCasAnnotator_ImplBase {
       aContext = context;
     }
     styleMapLocation = (String) aContext.getConfigParameterValue(STYLE_MAP);
-    descriptorPaths = (String[]) aContext.getConfigParameterValue(RutaEngine.DESCRIPTOR_PATHS);
+    descriptorPaths = (String[]) aContext.getConfigParameterValue(RutaEngine.PARAM_DESCRIPTOR_PATHS);
     styleMapFactory = new StyleMapFactory();
   }
 

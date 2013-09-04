@@ -759,19 +759,19 @@ ae.process(cas);]]></programlisting>
                 </row>
                 <row>
                   <entry>
-                    <link linkend='ugr.tools.ruta.ae.basic.parameter.additionalEngineLoaders'>additionalEngineLoaders</link>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.additionalUimafitEngines'>additionalUimafitEngines</link>
                   </entry>
-                  <entry>List of class names of implementations that are able to perform additional
-                    task when loading external analysis engines.
+                  <entry>List of class names with complete namespace of additional uimaFIT analysis engines, which
+                    can be called by UIMA Ruta rules.
                   </entry>
                   <entry>Multi String</entry>
                 </row>
                 <row>
                   <entry>
-                    <link linkend='ugr.tools.ruta.ae.basic.parameter.additionalUimafitEngines'>additionalUimafitEngines</link>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.additionalEngineLoaders'>additionalEngineLoaders</link>
                   </entry>
-                  <entry>List of class names with complete namespace of additional analysis engines, which can be
-                    referred to.
+                  <entry>List of class names of implementations that are able to perform additional
+                    task when loading external analysis engines.
                   </entry>
                   <entry>Multi String</entry>
                 </row>
@@ -1007,7 +1007,7 @@ ae.process(cas);]]></programlisting>
           <title>removeBasics</title>
           <para>
             This parameter specifies whether the inference annotations created by the analysis engine should be removed after processing the CAS.
-            The default value is set to false.
+            The default value is set to true.
           </para>
         </section>
         <section id="ugr.tools.ruta.ae.basic.parameter.dynamicAnchoring">
@@ -1030,7 +1030,7 @@ ae.process(cas);]]></programlisting>
           <title>simpleGreedyForComposed</title>
           <para>
             This parameter specifies whether a different inference strategy for composed rule elements should be applied. This option is only necessary 
-            when the composed rule element is expected to match very often, e.g., a rule element like (ANY ANY).
+            when the composed rule element is expected to match very often, e.g., a rule element like (ANY ANY)+.
             The default value of this parameter is set to false.
           </para>
         </section>
@@ -1045,7 +1045,7 @@ ae.process(cas);]]></programlisting>
         <section id="ugr.tools.ruta.ae.basic.parameter.debugWithMatches">
           <title>debugWithMatches</title>
           <para>
-            This parameter specificies whether the match information (covered text) of the rules should be stored in the CAS.
+            This parameter specifies whether the match information (covered text) of the rules should be stored in the CAS.
             The default value of this parameter is set to false.
           </para>
         </section>
@@ -1421,7 +1421,7 @@ The|DT rabbit|NN made|VBD up|RB this|DT story|NN .|.</programlisting>
 			<para>The POS tagger is being developed as a Maven-based project. 
 			Since Ruta maven artifacts are available on Maven Central, we 
 			add the following dependency to the project&apos;s pom.xml. The functionalities described in this section 
-			require a version of Ruta equal to or greater than 2.0.2.</para>
+			require a version of Ruta equal to or greater than 2.1.0.</para>
 			<programlisting>&lt;dependency&gt;
 	&lt;groupId&gt;org.apache.uima&lt;/groupId&gt;
 	&lt;artifactId&gt;ruta-core&lt;/artifactId&gt;

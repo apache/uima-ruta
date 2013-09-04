@@ -56,7 +56,7 @@ public class CustomViewTest {
   private AnalysisEngine createAE(String script) throws ResourceInitializationException, IOException, InvalidXMLException {
     final AnalysisEngineDescription ruta = AnalysisEngineFactory.createEngineDescription(
             "org.apache.uima.ruta.engine.BasicEngine",
-            RutaEngine.MAIN_SCRIPT, script);
+            RutaEngine.PARAM_MAIN_SCRIPT, script);
 
     ruta.getAnalysisEngineMetaData()
             .getTypeSystem()

@@ -107,8 +107,8 @@ public class RutaTestUtils {
           InvalidXMLException, ResourceInitializationException, AnalysisEngineProcessException,
           ResourceConfigurationException {
     final HashMap parameters = new HashMap();
-    parameters.put(RutaEngine.DYNAMIC_ANCHORING, dynamicAnchoring);
-    parameters.put(RutaEngine.SIMPLE_GREEDY_FOR_COMPOSED, simpleGreedyForComposed);
+    parameters.put(RutaEngine.PARAM_DYNAMIC_ANCHORING, dynamicAnchoring);
+    parameters.put(RutaEngine.PARAM_SIMPLE_GREEDY_FOR_COMPOSED, simpleGreedyForComposed);
 
     return process(ruleFileName, textFileName, parameters, amount, complexTypes, features, resourceDirName, cas);
   }
@@ -162,7 +162,7 @@ public class RutaTestUtils {
     aed.getAnalysisEngineMetaData().setTypeSystem(mergeTypeSystems);
 
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
-    ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[]{ruleFile.getParentFile()
+    ae.setConfigParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, new String[]{ruleFile.getParentFile()
             .getPath()});
     String name = ruleFile.getName();
     if (name.endsWith(RutaEngine.SCRIPT_FILE_EXTENSION)) {
@@ -173,10 +173,10 @@ public class RutaTestUtils {
       ae.setConfigParameterValue(parameter.getKey(), parameter.getValue());
     }
 
-    ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, name);
+    ae.setConfigParameterValue(RutaEngine.PARAM_MAIN_SCRIPT, name);
 
     if (resourceFile != null) {
-      ae.setConfigParameterValue(RutaEngine.RESOURCE_PATHS, new String[]{resourceFile.getPath()});
+      ae.setConfigParameterValue(RutaEngine.PARAM_RESOURCE_PATHS, new String[]{resourceFile.getPath()});
     }
 
     ae.reconfigure();

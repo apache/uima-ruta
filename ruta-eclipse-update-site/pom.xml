@@ -55,6 +55,24 @@
     <item-eclipse-release-version>2.1.0.SNAPSHOT</item-eclipse-release-version>
   </properties>
 	<build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.rat</groupId>
+          <artifactId>apache-rat-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>default-cli</id>
+              <configuration>
+                <excludes>
+                  <exclude>marker-file-identifying-eclipse-update-site</exclude> <!-- marker file -->
+                </excludes>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
 		<plugins>
 			<plugin>
         <groupId>org.apache.maven.plugins</groupId>

@@ -58,7 +58,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class DLTKRutaHelper {
 
-  private static final String DLTK_TM = "scripts/dltk" + RutaEngine.SCRIPT_FILE_EXTENSION; //$NON-NLS-1$
+  private static final String DLTK_RUTA = "scripts/dltk" + RutaEngine.SCRIPT_FILE_EXTENSION; //$NON-NLS-1$
 
   public static List getScriptOutput(InputStream stream) {
     final List elements = new ArrayList();
@@ -131,7 +131,7 @@ public class DLTKRutaHelper {
   private static IFileHandle deploy(IDeployment deployment) {
     IFileHandle script;
     try {
-      IPath path = deployment.add(RutaIdeCorePlugin.getDefault().getBundle(), DLTK_TM);
+      IPath path = deployment.add(RutaIdeCorePlugin.getDefault().getBundle(), DLTK_RUTA);
       script = deployment.getFile(path);
     } catch (IOException e) {
       if (DLTKCore.DEBUG) {

@@ -122,6 +122,9 @@
                   <exclude>src/test/resources/org/apache/uima/ruta/seed/*ruta</exclude> <!-- test data -->
                   <exclude>src/test/resources/org/apache/uima/ruta/engine/*.html</exclude> <!-- test data -->
                   <exclude>src/test/resources/org/apache/uima/ruta/engine/*ruta</exclude> <!-- test data -->
+                  <exclude>src/test/resources/org/apache/uima/ruta/engine/*txt</exclude> <!-- test data -->
+                  <exclude>src/test/resources/org/apache/uima/ruta/engine/*txt</exclude> <!-- test data -->
+                  <exclude>src/main/resources/META-INF/org.apache.uima.fit/*txt</exclude> <!-- test data -->
                   <exclude>issuesFixed/**</exclude> <!-- generated -->
                 </excludes>
               </configuration>

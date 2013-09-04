@@ -159,19 +159,19 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     // the FILTERTYPE expression!
     String tempRulesFileName = getTempRulesFileName();
     IPath path = new Path(tempRulesFileName);
-    ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, path.removeFileExtension().lastSegment());
+    ae.setConfigParameterValue(RutaEngine.PARAM_MAIN_SCRIPT, path.removeFileExtension().lastSegment());
     String portableString = path.removeLastSegments(1).toPortableString();
-    ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { portableString });
-    ae.setConfigParameterValue(RutaEngine.ADDITIONAL_SCRIPTS, new String[0]);
-    ae.setConfigParameterValue(RutaEngine.RELOAD_SCRIPT, true);
+    ae.setConfigParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, new String[] { portableString });
+    ae.setConfigParameterValue(RutaEngine.PARAM_ADDITIONAL_SCRIPTS, new String[0]);
+    ae.setConfigParameterValue(RutaEngine.PARAM_RELOAD_SCRIPT, true);
     if (useDynamicAnchoring) {
-      ae.setConfigParameterValue(RutaEngine.DYNAMIC_ANCHORING, true);
+      ae.setConfigParameterValue(RutaEngine.PARAM_DYNAMIC_ANCHORING, true);
     }
     IPreferenceStore store = TextRulerPlugin.getDefault().getPreferenceStore();
     boolean lowMemoryProfile = store.getBoolean(TextRulerPreferences.LOW_MEMORY_PROFILE);
     boolean removeBasics = store.getBoolean(TextRulerPreferences.REMOVE_BASICS);
-    ae.setConfigParameterValue(RutaEngine.LOW_MEMORY_PROFILE, lowMemoryProfile);
-    ae.setConfigParameterValue(RutaEngine.REMOVE_BASICS, removeBasics);
+    ae.setConfigParameterValue(RutaEngine.PARAM_LOW_MEMORY_PROFILE, lowMemoryProfile);
+    ae.setConfigParameterValue(RutaEngine.PARAM_REMOVE_BASICS, removeBasics);
 
     try {
       ae.reconfigure();

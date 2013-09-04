@@ -76,15 +76,15 @@ public class IncompletePartitioningTest {
     aed.getAnalysisEngineMetaData().setTypeSystem(mergeTypeSystems);
 
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
-    ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { ruleFile
+    ae.setConfigParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, new String[] { ruleFile
             .getParentFile().getPath() });
     String name = ruleFile.getName();
     if (name.endsWith(RutaEngine.SCRIPT_FILE_EXTENSION)) {
       name = name.substring(0, name.length() - 5);
     }
-    ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, name);
-    ae.setConfigParameterValue(RutaEngine.SEEDERS, new String[0]);
-    ae.setConfigParameterValue(RutaEngine.DEFAULT_FILTERED_TYPES, new String[0]);
+    ae.setConfigParameterValue(RutaEngine.PARAM_MAIN_SCRIPT, name);
+    ae.setConfigParameterValue(RutaEngine.PARAM_SEEDERS, new String[0]);
+    ae.setConfigParameterValue(RutaEngine.PARAM_DEFAULT_FILTERED_TYPES, new String[0]);
 
     ae.reconfigure();
     CAS cas = ae.newCAS();

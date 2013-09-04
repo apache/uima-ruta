@@ -347,13 +347,13 @@ public class RutaSimpleBuilder {
     }
 
     analysisEngineDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
-            .setParameterValue(RutaEngine.MAIN_SCRIPT, mainScript);
+            .setParameterValue(RutaEngine.PARAM_MAIN_SCRIPT, mainScript);
     analysisEngineDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
-            .setParameterValue(RutaEngine.SCRIPT_PATHS, scriptPaths);
+            .setParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, scriptPaths);
     analysisEngineDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
-            .setParameterValue(RutaEngine.DESCRIPTOR_PATHS, descriptorPaths);
+            .setParameterValue(RutaEngine.PARAM_DESCRIPTOR_PATHS, descriptorPaths);
     String[] parameterValue = (String[]) analysisEngineDescription.getAnalysisEngineMetaData()
-            .getConfigurationParameterSettings().getParameterValue(RutaEngine.RESOURCE_PATHS);
+            .getConfigurationParameterSettings().getParameterValue(RutaEngine.PARAM_RESOURCE_PATHS);
     Set<String> resourceLocations = new HashSet<String>();
 
     if (parameterValue != null && parameterValue.length != 0) {
@@ -366,22 +366,22 @@ public class RutaSimpleBuilder {
       resourceLocations.add(defaultResourceDir.getAbsolutePath());
     }
     analysisEngineDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
-            .setParameterValue(RutaEngine.RESOURCE_PATHS, resourceLocations.toArray(new String[0]));
+            .setParameterValue(RutaEngine.PARAM_RESOURCE_PATHS, resourceLocations.toArray(new String[0]));
 
     String[] additionalScriptsArray = desc.getImportedScripts().toArray(new String[] {});
     analysisEngineDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
-            .setParameterValue(RutaEngine.ADDITIONAL_SCRIPTS, additionalScriptsArray);
+            .setParameterValue(RutaEngine.PARAM_ADDITIONAL_SCRIPTS, additionalScriptsArray);
 
     String[] additionalEnginesArray = desc.getImportedEngines().toArray(new String[] {});
     analysisEngineDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
-            .setParameterValue(RutaEngine.ADDITIONAL_ENGINES, additionalEnginesArray);
+            .setParameterValue(RutaEngine.PARAM_ADDITIONAL_ENGINES, additionalEnginesArray);
 
     String[] additionalUimafitEnginesArray = desc.getImportedUimafitEngines().toArray(
             new String[] {});
     analysisEngineDescription
             .getAnalysisEngineMetaData()
             .getConfigurationParameterSettings()
-            .setParameterValue(RutaEngine.ADDITIONAL_UIMAFIT_ENGINES, additionalUimafitEnginesArray);
+            .setParameterValue(RutaEngine.PARAM_ADDITIONAL_UIMAFIT_ENGINES, additionalUimafitEnginesArray);
 
     analysisEngineDescription.getAnalysisEngineMetaData().setTypeSystem(typeSystemDescription);
 
@@ -404,9 +404,9 @@ public class RutaSimpleBuilder {
 
     List<String> languageExtensions = options.getLanguage();
 
-    configurationParameterSettings.setParameterValue(RutaEngine.ADDITIONAL_EXTENSIONS,
+    configurationParameterSettings.setParameterValue(RutaEngine.PARAM_ADDITIONAL_EXTENSIONS,
             languageExtensions.toArray(new String[0]));
-    configurationParameterSettings.setParameterValue(RutaEngine.ADDITIONAL_ENGINE_LOADERS, options
+    configurationParameterSettings.setParameterValue(RutaEngine.PARAM_ADDITIONAL_ENGINE_LOADERS, options
             .getEngines().toArray(new String[0]));
   }
 
