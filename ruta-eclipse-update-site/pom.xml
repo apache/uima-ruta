@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>parent-pom</artifactId>
-    <version>4</version>
+    <version>6</version>
     <relativePath />
   </parent>
   
@@ -49,15 +49,11 @@
   
   <properties>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
-    <eclipseUpdateSite>${project.build.directory}/eclipse-update-site</eclipseUpdateSite>
-    <item-maven-release-version>2.0.2-SNAPSHOT</item-maven-release-version>
-    <item-eclipse-release-version>2.0.2.SNAPSHOT</item-eclipse-release-version>
+    <eclipseUpdateSiteComponent>ruta</eclipseUpdateSiteComponent>
+    <eclipseUpdateSubSite>${project.build.directory}/eclipse-update-site/${eclipseUpdateSiteComponent}</eclipseUpdateSubSite>
+    <item-maven-release-version>2.1.0-SNAPSHOT</item-maven-release-version>
+    <item-eclipse-release-version>2.1.0.SNAPSHOT</item-eclipse-release-version>
   </properties>
-  <!-- don't use dependency mechanism - use dependency:copy
-       because we need to get multiple versions for the
-       eclipese-feature-projects, and Maven
-       wants to resolve multiple versions into one. -->
-
 	<build>
 		<plugins>
 			<plugin>
@@ -65,53 +61,21 @@
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
           <execution>
-            <id>copy-all-plugins</id>
-            <goals>
-              <goal>copy</goal>
-            </goals>
+            <id>copy-new-plugins</id>
+            <goals><goal>copy</goal></goals>
             <configuration>
               <!-- ===================================================================
-                List here all the PLUGINS, with all versions - needed by P2 build 
+                                       the PLUGINS 
                 ======================================================================= -->
               <artifactItems>
-                <artifactItem>
-                  <groupId>org.apache.uima</groupId>
-                  <artifactId>ruta-ep-addons</artifactId>
-                  <version>${item-maven-release-version}</version>
-                  <destFileName>org.apache.uima.ruta.addons_${item-eclipse-release-version}.jar</destFileName>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.uima</groupId>
-                  <artifactId>ruta-ep-caseditor</artifactId>
-                  <version>${item-maven-release-version}</version>
-                  <destFileName>org.apache.uima.ruta.caseditor_${item-eclipse-release-version}.jar</destFileName>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.uima</groupId>
-                  <artifactId>ruta-ep-engine</artifactId>
-                  <version>${item-maven-release-version}</version>
-                  <destFileName>org.apache.uima.ruta.engine_${item-eclipse-release-version}.jar</destFileName>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.uima</groupId>
-                  <artifactId>ruta-ep-ide</artifactId>
-                  <version>${item-maven-release-version}</version>
-                  <destFileName>org.apache.uima.ruta.ide_${item-eclipse-release-version}.jar</destFileName>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.uima</groupId>
-                  <artifactId>ruta-ep-ide-ui</artifactId>
-                  <version>${item-maven-release-version}</version>
-                  <destFileName>org.apache.uima.ruta.ide.ui_${item-eclipse-release-version}.jar</destFileName>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.uima</groupId>
-                  <artifactId>ruta-ep-textruler</artifactId>
-                  <version>${item-maven-release-version}</version>
-                  <destFileName>org.apache.uima.ruta.textruler_${item-eclipse-release-version}.jar</destFileName>
-                </artifactItem>
-              </artifactItems>
-              <outputDirectory>${eclipseUpdateSite}/plugins</outputDirectory>
+                <artifactItem><groupId>org.apache.uima</groupId><artifactId>ruta-ep-addons</artifactId>         <version>${item-maven-release-version}</version><destFileName>org.apache.uima.ruta.addons_${item-eclipse-release-version}.jar   </destFileName></artifactItem>
+                <artifactItem><groupId>org.apache.uima</groupId><artifactId>ruta-ep-caseditor</artifactId>      <version>${item-maven-release-version}</version><destFileName>org.apache.uima.ruta.caseditor_${item-eclipse-release-version}.jar</destFileName></artifactItem>
+                <artifactItem><groupId>org.apache.uima</groupId><artifactId>ruta-ep-engine</artifactId>         <version>${item-maven-release-version}</version><destFileName>org.apache.uima.ruta.engine_${item-eclipse-release-version}.jar   </destFileName></artifactItem>
+                <artifactItem><groupId>org.apache.uima</groupId><artifactId>ruta-ep-ide</artifactId>            <version>${item-maven-release-version}</version><destFileName>org.apache.uima.ruta.ide_${item-eclipse-release-version}.jar      </destFileName></artifactItem>
+                <artifactItem><groupId>org.apache.uima</groupId><artifactId>ruta-ep-ide-ui</artifactId>         <version>${item-maven-release-version}</version><destFileName>org.apache.uima.ruta.ide.ui_${item-eclipse-release-version}.jar   </destFileName></artifactItem>
+                <artifactItem><groupId>org.apache.uima</groupId><artifactId>ruta-ep-textruler</artifactId>      <version>${item-maven-release-version}</version><destFileName>org.apache.uima.ruta.textruler_${item-eclipse-release-version}.jar</destFileName></artifactItem>
+              </artifactItems>            
+              <outputDirectory>${toBePacked}</outputDirectory>              
             </configuration>
           </execution>
           <execution>
@@ -120,98 +84,37 @@
               <goal>copy</goal>
             </goals>
             <configuration>
-             <!-- ===================================================================
-                List here all the FEATURES, with all versions - needed by P2 build 
+              <!-- ===================================================================
+                                         the FEATURES
                 ======================================================================= -->
               <artifactItems>
-                <artifactItem>
-                  <groupId>org.apache.uima</groupId>
-                  <artifactId>ruta-eclipse-feature</artifactId>
-                  <version>${item-maven-release-version}</version>
-                  <destFileName>org.apache.uima.ruta.feature_${item-eclipse-release-version}.jar</destFileName>
-                </artifactItem>
+                <artifactItem><groupId>org.apache.uima</groupId><artifactId>ruta-eclipse-feature</artifactId><version>${item-maven-release-version}</version><destFileName>org.apache.uima.ruta.feature_${item-eclipse-release-version}.jar</destFileName></artifactItem>
               </artifactItems>
-              <outputDirectory>${eclipseUpdateSite}/features</outputDirectory>
+              <outputDirectory>${project.build.directory}/eus-work/features</outputDirectory>   
             </configuration>
           </execution>
         </executions>
 			</plugin>
-      
       <plugin>
+        <!-- Override v 6 parent pom incorrect use of apacheRelease ant property
+             See https://issues.apache.org/jira/browse/UIMA-3080 -->
         <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
+        <executions>       
           <execution>
-            <id>BuildUpdateSite</id>
-            <phase>package</phase>
+            <id>BuildUpdateSite-pack-svnget-buildMetadata-commit-to-dev</id>
             <configuration>
               <target>
-                <!-- if the property uima-maven-build-eclipse-home is set, use it, otherwise don't -->
-                <condition property="eclipse.home" value="${uima-maven-build-eclipse-home}">
-                  <not>
-                    <equals arg1="${uima-maven-build-eclipse-home}" arg2="$${uima-maven-build-eclipse-home}" />
-                  </not>
+                <condition />  <!-- don't add anything to the 1st condition element -->
+                <condition />  <!-- don't add anything to the 2nd condition element -->
+                              <!-- insert this as the 3rd condition element -->
+                <condition property="apacheRelease">
+                  <equals arg1="${isApacheRelease}" arg2="true" />
                 </condition>
-
-                <property environment="envVar" />
-                <condition property="eclipse.home" value="${envVar.ECLIPSE_HOME}">
-                  <isset property="envVar.ECLIPSE_HOME" />
-                </condition>
-
-                <fail unless="eclipse.home"
-                  message="********** Please set up and use an ant property eclipse.home set to an Eclipse installation at level 3.3 or later, e.g. c:/eclipses/3.3/eclipse" />
-
-                <fail unless="uima-eclipse-jar-processor"
-                  message="********** Please add to your settings.xml file the property uima-eclipse-jar-processor, point to this within an Eclipse installation, e.g. \$\{uima-maven-build-eclipse-home\}/plugins/org.eclipse.equinox.p2.jarprocessor_1.0.200.v20110808-1657.jar" />
-                  
-                <echo>Compress plugin Jars using pack200 - this may take a minute or 2</echo>
-                <java jar="${uima-eclipse-jar-processor}" fork="true" failonerror="true" maxmemory="256m">
-                  <arg line="-processAll"/>
-                  <arg line="-repack"/>
-                  <arg line="-pack"/>
-                  <arg line="-verbose"/>
-                  <!--  only pack the plugins.  The publisher won't copy packed "features", 
-                        they are tiny anyways -->
-                  <arg line="-outputDir ${eclipseUpdateSite}/plugins"/>
-                  <arg line="${eclipseUpdateSite}/plugins"/>
-                                
-                </java>
-                
-                <echo>Generate p2 metadata</echo>
-                <!-- Generate p2 metadata -->
-                
-                <java jar="${eclipse-equinox-launcher}" fork="true" failonerror="true"
-                  maxmemory="256m">
-                  <arg line="-application org.eclipse.equinox.p2.publisher.FeaturesAndBundlesPublisher" />
-                  <arg line="-metadataRepository file://${eclipseUpdateSite}" />
-                  <arg line="-artifactRepository file://${eclipseUpdateSite}" />
-                  <arg line="-source ${eclipseUpdateSite}" />
-                  <arg line="-configs ANY.ANY.ANY" />
-                  <arg line="-publishArtifacts" />
-                  <arg line="-reusePack200Files"/>
-                  <arg line="-compress"/>
-                </java>
-                
-                <echo>Generate category information</echo>
-                <java jar="${eclipse-equinox-launcher}" fork="true" failonerror="true"
-                  maxmemory="256m">
-                  <arg line="-application org.eclipse.equinox.p2.publisher.CategoryPublisher" />
-                  <arg line="-metadataRepository file://${eclipseUpdateSite}" />
-                  <arg line="-categoryDefinition file://${basedir}/category.xml" />
-                  <arg line="-categoryQualifier apache-uima-ruta" />
-                  <arg line="-compress"/>
-                </java>
-                
               </target>
             </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
           </execution>
         </executions>
       </plugin>
-      
-      
 		</plugins>
 	</build>
-
 </project>
