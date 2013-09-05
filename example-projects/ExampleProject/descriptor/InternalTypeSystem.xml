@@ -37,6 +37,11 @@
       </features>
     </typeDescription>
     <typeDescription>
+      <name>org.apache.uima.ruta.type.RutaOptional</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+    </typeDescription>
+    <typeDescription>
       <name>org.apache.uima.ruta.type.RutaAnnotation</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>

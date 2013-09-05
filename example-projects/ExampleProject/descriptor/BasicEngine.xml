@@ -155,6 +155,12 @@
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
+      <configurationParameter>
+        <name>additionalUimafitEngines</name>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
