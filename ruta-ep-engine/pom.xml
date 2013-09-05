@@ -212,10 +212,6 @@ licensed under the Common Public License.</postNoticeText>
                   org.antlr.runtime.debug,
                   org.antlr.runtime.misc,
                   org.antlr.runtime.tree,
-                  org.antlr.stringtemplate,
-                  org.antlr.stringtemplate.language,
-                  org.antlr.stringtemplate.misc,
-                  org.antlr.*
                   org.htmlparser,
                   org.htmlparser.*,
                   org.apache.commons.lang3.*,
