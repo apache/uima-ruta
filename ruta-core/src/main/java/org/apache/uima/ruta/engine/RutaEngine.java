@@ -615,11 +615,11 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       } catch (IOException e) {
         throw new AnalysisEngineProcessException(new FileNotFoundException("Script [" + mainScript
                 + "] cannot be found at [" + collectionToString(scriptPaths)
-                + "] with extension .ruta"));
+                + "] or classpath with extension .ruta"));
       } catch (RecognitionException e) {
         throw new AnalysisEngineProcessException(new FileNotFoundException("Script [" + mainScript
                 + "] cannot be found at [" + collectionToString(scriptPaths)
-                + "] with extension .ruta"));
+                + "] or classpath  with extension .ruta"));
       }
     } else {
       try {
@@ -876,6 +876,9 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   private RutaModule loadScriptIS(String scriptLocation) throws IOException, RecognitionException {
     InputStream scriptInputStream = getClass().getClassLoader().getResourceAsStream(scriptLocation);
+    if (scriptInputStream == null) {
+            throw new FileNotFoundException("No script found in location [" + scriptLocation + "]");
+    }
     CharStream st = new ANTLRInputStream(scriptInputStream, scriptEncoding);
     RutaLexer lexer = new RutaLexer(st);
     CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -914,9 +917,15 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   }
 
   private String collectionToString(Object[] collection) {
-    return collectionToString(Arrays.asList(collection));
+    if (collection == null) {
+      return "";
+    }
+    else {
+      return collectionToString(Arrays.asList(collection));
+    }
   }
 
+  @Override
   public void batchProcessComplete() throws AnalysisEngineProcessException {
     super.batchProcessComplete();
     Collection<AnalysisEngine> values = script.getEngines().values();
@@ -925,6 +934,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     }
   }
 
+  @Override
   public void collectionProcessComplete() throws AnalysisEngineProcessException {
     super.collectionProcessComplete();
     Collection<AnalysisEngine> values = script.getEngines().values();
