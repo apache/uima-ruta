@@ -322,7 +322,8 @@ public class StatementFactory extends AbstractFactory {
 
   public static ComponentDeclaration createComponentDeclaration(CommonToken ct) {
     int nameBounds[] = getBounds(ct);
-    return new ComponentDeclaration(nameBounds[0], nameBounds[1], ct.getText());
+    String text = ct.getText();
+    return new ComponentDeclaration(nameBounds[0], nameBounds[0] + text.length(), text);
   }
 
 }

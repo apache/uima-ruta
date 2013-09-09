@@ -2053,11 +2053,15 @@ dottedComponentDeclaration returns [ComponentDeclaration ref = null ]
 	:
 	id = Identifier {
 		ct = new CommonToken(id);
+		ref = StatementFactory.createComponentDeclaration(ct);
 		}
 	(
-		dot = (DOT | MINUS) {ct.setText(ct.getText() + dot.getText());}
+		{(input.get(id.getTokenIndex()+1).getChannel() != Token.HIDDEN_CHANNEL)}?
+		dot = (DOT | MINUS) {ct.setText(ct.getText() + dot.getText());ref = StatementFactory.createComponentDeclaration(ct);}
+		{(input.get(dot.getTokenIndex()+1).getChannel() != Token.HIDDEN_CHANNEL)}?
 		id = Identifier {ct.setStopIndex(getBounds(id)[1]);
-		                 ct.setText(ct.getText() + id.getText());}
+		                 ct.setText(ct.getText() + id.getText());
+		                 ref = StatementFactory.createComponentDeclaration(ct);}
 	)*
 	{
 	 if (!ct.getText().equals("<missing Identifier>")) ref = StatementFactory.createComponentDeclaration(ct);}

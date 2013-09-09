@@ -30,8 +30,10 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.uima.UIMAFramework;
+import org.apache.uima.analysis_component.AnalysisComponent;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
@@ -39,6 +41,7 @@ import org.apache.uima.ruta.ide.RutaIdeCorePlugin;
 import org.apache.uima.ruta.ide.core.IRutaKeywords;
 import org.apache.uima.ruta.ide.core.RutaExtensionManager;
 import org.apache.uima.ruta.ide.core.RutaKeywordsManager;
+import org.apache.uima.ruta.ide.core.RutaNature;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.ruta.ide.core.extensions.ICompletionExtension;
 import org.apache.uima.ruta.ide.core.parser.RutaParseUtils;
@@ -54,7 +57,9 @@ import org.apache.uima.util.XMLInputSource;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.ast.ASTNode;
@@ -72,6 +77,15 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.core.SourceField;
 import org.eclipse.dltk.internal.core.SourceMethod;
 import org.eclipse.dltk.internal.core.SourceModule;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.internal.core.JavaProject;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.type.filter.AssignableTypeFilter;
 
 public class RutaCompletionEngine extends ScriptCompletionEngine {
 
@@ -127,10 +141,8 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
     if (classloader == null) {
       IScriptProject scriptProject = sourceModule.getModelElement().getScriptProject();
       try {
-        Collection<String> dependencies = new ArrayList<String>();
         // TODO UIMA-3077
-        // Collection<String> dependencies = RutaLaunchConfigurationDelegate
-        // .getClassPath(scriptProject);
+        Collection<String> dependencies = getDependencies(scriptProject.getProject());
         URL[] urls = new URL[dependencies.size()];
         int counter = 0;
         for (String dep : dependencies) {
@@ -141,6 +153,8 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
         // } catch (CoreException e) {
         // RutaIdeCorePlugin.error(e);
       } catch (MalformedURLException e) {
+        RutaIdeCorePlugin.error(e);
+      } catch (CoreException e) {
         RutaIdeCorePlugin.error(e);
       }
     }
@@ -243,7 +257,21 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
       }
     } else if (type == ComponentDeclaration.UIMAFIT_ENGINE) {
       List<String> engines = new ArrayList<String>();
-      // TODO: collect engines
+      
+      ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(true);
+      ResourceLoader resourceLoader =  new DefaultResourceLoader(classloader);
+      provider.setResourceLoader(resourceLoader);
+      provider.addIncludeFilter(new AssignableTypeFilter(AnalysisComponent.class));
+
+      String pack = complString.replaceAll("[.]", "/");
+      if(pack.endsWith("/")) {
+        pack = pack.substring(0, pack.length()-1);
+      }
+      Set<BeanDefinition> components = provider.findCandidateComponents(pack);
+      for (BeanDefinition component : components) {
+        String beanClassName = component.getBeanClassName();
+        engines.add(beanClassName);
+      }
       for (String string : engines) {
         if (match(complString, string)) {
           addProposal(complString, string, CompletionProposal.PACKAGE_REF);
@@ -343,7 +371,7 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
         result.addAll(collectScripts(folder2, newPrefix));
       } else if (iResource instanceof IFile) {
         IFile file = (IFile) iResource;
-        if (file.getFileExtension().equals("tm")) {
+        if (file.getFileExtension().equals("ruta")) {
           result.add(prefix + file.getName().substring(0, file.getName().length() - 5));
         }
       }
@@ -639,4 +667,68 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
     findKeywords(startPart.toCharArray(), keywords.toArray(new String[0]), true);
   }
 
+  public static List<String> getClassPath(IScriptProject project) throws CoreException {
+    List<String> extendedClasspath = new ArrayList<String>();
+    Collection<String> dependencies = getDependencies(project.getProject());
+    extendedClasspath.addAll(dependencies);
+    return extendedClasspath;
+  }
+
+  private static Collection<String> getDependencies(IProject project) throws CoreException {
+    Collection<String> result = new TreeSet<String>();
+    IProject[] referencedProjects = project.getReferencedProjects();
+    for (IProject eachProject : referencedProjects) {
+      // for each java project
+      extendClasspathWithProject(result, eachProject, new HashSet<IProject>());
+      IProjectNature nature = eachProject.getNature(RutaNature.NATURE_ID);
+      if (nature != null) {
+        result.addAll(getDependencies(eachProject));
+      }
+    }
+    return result;
+  }
+
+  private static void extendClasspathWithProject(Collection<String> result, IProject project,
+          Collection<IProject> visited) throws CoreException, JavaModelException {
+    IProjectNature nature = project.getNature(RutaProjectUtils.JAVANATURE);
+    if (nature != null) {
+      JavaProject javaProject = (JavaProject) JavaCore.create(project);
+
+      // add output, e.g., target/classes
+      IPath readOutputLocation = javaProject.readOutputLocation();
+      IFolder folder = ResourcesPlugin.getWorkspace().getRoot().getFolder(readOutputLocation);
+      result.add(folder.getLocation().toPortableString());
+
+      IClasspathEntry[] rawClasspath = javaProject.getRawClasspath();
+      for (IClasspathEntry each : rawClasspath) {
+        int entryKind = each.getEntryKind();
+        IPath path = each.getPath();
+        if (entryKind == IClasspathEntry.CPE_PROJECT) {
+          IProject p = RutaProjectUtils.getProject(path);
+          if (!visited.contains(p)) {
+            visited.add(p);
+            extendClasspathWithProject(result, p, visited);
+          }
+        } else if (entryKind != IClasspathEntry.CPE_SOURCE) {
+          String segment = path.segment(0);
+          if (!segment.equals("org.eclipse.jdt.launching.JRE_CONTAINER")) {
+            IClasspathEntry[] resolveClasspath = javaProject
+                    .resolveClasspath(new IClasspathEntry[] { each });
+            for (IClasspathEntry eachResolved : resolveClasspath) {
+              if (eachResolved.getEntryKind() == IClasspathEntry.CPE_PROJECT) {
+                IProject p = RutaProjectUtils.getProject(eachResolved.getPath());
+                if (!visited.contains(p)) {
+                  visited.add(p);
+                  extendClasspathWithProject(result, p, visited);
+                }
+              } else {
+                result.add(eachResolved.getPath().toPortableString());
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
 }
