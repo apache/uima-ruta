@@ -116,6 +116,7 @@
                   <exclude>issuesFixed/**</exclude>
                   <exclude>src/main/resources/docbook-shared/titlepage/*.xsl</exclude>
                   <exclude>marker-file-identifying-*</exclude>
+                  <exclude>ruta-eclipse-update-site/marker-file-identifying-*</exclude>
                   <exclude>DEPENDENCIES</exclude>
                 </excludes>
               </configuration>
