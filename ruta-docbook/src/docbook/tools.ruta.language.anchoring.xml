@@ -61,18 +61,18 @@ ANY @LastToken;]]></programlisting>
     Here, rules themselves are linked and they are only able to fire if each one of the linked rules successfully matched. In contrast to <quote><![CDATA[&]]></quote>, 
     this linkage of rule elements does not introduce constraints for the matched positions. In the following, a few examples of these three language constructs are given.
   </para>
-  <programlisting><![CDATA[(Token.posTag=="DET" & Lemma.value="the");]]></programlisting>
+  <programlisting><![CDATA[(Token.posTag=="DET" & Lemma.value=="the");]]></programlisting>
   <para>
     This rule is fulfilled, if there is a token whose feature <quote>posTag</quote> has the value <quote>DET</quote> and an annotation of the type <quote>Lemma</quote> whose feature <quote>value</quote> 
     has the value <quote>the</quote>. Both rule elements need to be fulfilled at the same position.
   </para>
-  <programlisting><![CDATA[NUM (W{REGEXP("Peter") -> Name} & ANY CW{PARTOF(Name)});]]></programlisting>
+  <programlisting><![CDATA[NUM (W{REGEXP("Peter") -> Name} & (ANY CW{PARTOF(Name)}));]]></programlisting>
   <para>
     This rule matches on a number and then validates if the next word is <quote>Peter</quote> and if next but one token is capitalized and part of an annotation of the type <quote>Name</quote>.
     If all rule elements successfully matched, then a new annotation of the type <quote>Name</quote> will be created covering the largest match of the linked rule elements. In this example,
     the new annotation covers also the token after the word <quote>Peter</quote> even if the actions was specified at the rule element with the smaller match.
   </para>
-  <programlisting><![CDATA[(W{REGEXP("Peter")} CW | "Mr" PERIOD CW){-> Name};]]></programlisting>
+  <programlisting><![CDATA[((W{REGEXP("Peter")} CW) | ("Mr" PERIOD CW)){-> Name};]]></programlisting>
   <para>
     In this example, an annotation of the type <quote>Name</quote> will be created for the token <quote>Peter</quote> followed by a 
     capitalized word or the word <quote>Mr</quote> followed by a period and a capitalized word.   

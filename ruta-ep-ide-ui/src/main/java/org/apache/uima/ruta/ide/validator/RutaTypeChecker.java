@@ -343,8 +343,8 @@ public class RutaTypeChecker implements IBuildParticipant, IBuildParticipantExte
 
     private String getLongLocalName(String name) {
       if (name.indexOf(".") == -1) {
-        String longName = this.packageName
-                + "."
+        String pack = packageName.equals("") ? "" : packageName + ".";
+        String longName = pack
                 + currentFile.getElementName().substring(0,
                         currentFile.getElementName().length() - 5) + ".";
         for (String each : blocks) {
