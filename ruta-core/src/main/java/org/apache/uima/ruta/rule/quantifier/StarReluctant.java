@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
-import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.rule.ComposedRuleElementMatch;
 import org.apache.uima.ruta.rule.RuleElement;
@@ -34,7 +33,7 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 public class StarReluctant implements RuleElementQuantifier {
 
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
-          RutaStatement element, RutaStream stream, InferenceCrowd crowd) {
+          RutaBlock parent, RutaStream stream, InferenceCrowd crowd) {
     return matches;
   }
 

@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
-import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.rule.ComposedRuleElementMatch;
 import org.apache.uima.ruta.rule.RuleElement;
@@ -32,20 +31,13 @@ import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class NormalQuantifier implements RuleElementQuantifier {
-  // @Override
-  // public boolean continueMatch(int index, List<RuleElement> elements, RutaBasic next,
-  // RuleElementMatch match, List<RuleElementMatch> matches, RutaStream stream,
-  // InferenceCrowd crowd) {
-  // return match == null;
-  // }
 
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
-          RutaStatement element, RutaStream stream, InferenceCrowd crowd) {
+          RutaBlock parent, RutaStream stream, InferenceCrowd crowd) {
     if (matches == null) {
       return null;
     }
     boolean result = true;
-    boolean resultOr = false;
     boolean allEmpty = true;
     
     for (RuleElementMatch match : matches) {

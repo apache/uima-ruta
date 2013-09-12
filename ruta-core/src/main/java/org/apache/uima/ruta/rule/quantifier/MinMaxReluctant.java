@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
-import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.NumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
@@ -62,9 +61,9 @@ public class MinMaxReluctant implements RuleElementQuantifier {
   }
 
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
-          RutaStatement element, RutaStream stream, InferenceCrowd crowd) {
-    int minValue = min.getIntegerValue(element.getParent(), null, stream);
-    int maxValue = max.getIntegerValue(element.getParent(), null, stream);
+          RutaBlock parent, RutaStream stream, InferenceCrowd crowd) {
+    int minValue = min.getIntegerValue(parent, null, stream);
+    int maxValue = max.getIntegerValue(parent, null, stream);
     if (matches.size() > 0) {
       RuleElementMatch ruleElementMatch = matches.get(matches.size() - 1);
       if (!ruleElementMatch.matched()) {
