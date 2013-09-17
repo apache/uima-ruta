@@ -78,6 +78,18 @@ licensed under the Common Public License.</postNoticeText>
       <artifactId>uimafit-core</artifactId>
       <version>2.0.0</version>
       <scope>compile</scope>
+      <!-- Exclude aop stuff, which is not need by uimafit 
+      and only introduces a non-asl license -->
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework</groupId> 
+          <artifactId>spring-aop</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>aopalliance</groupId> 
+          <artifactId>aopalliance</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
@@ -117,12 +129,6 @@ licensed under the Common Public License.</postNoticeText>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
-      <artifactId>spring-aop</artifactId>
-      <version>3.1.2.RELEASE</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
       <artifactId>spring-expression</artifactId>
       <version>3.1.2.RELEASE</version>
       <scope>compile</scope>
@@ -137,12 +143,6 @@ licensed under the Common Public License.</postNoticeText>
       <groupId>org.springframework</groupId>
       <artifactId>spring-asm</artifactId>
       <version>3.1.2.RELEASE</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>aopalliance</groupId>
-      <artifactId>aopalliance</artifactId>
-      <version>1.0</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>
@@ -248,7 +248,8 @@ licensed under the Common Public License.</postNoticeText>
                   !org.aspectj.*, !org.codehaus.groovy.*, !org.hibernate.* ,
                   !org.joda.*, !org.jruby.*, !org.omg.CORBA,
                   !org.springframework.instrument,
-                  !org.w3c.dom, !org.xml.sax, !org.xml.sax.ext, !org.xml.sax.helpers
+                  !org.w3c.dom, !org.xml.sax, !org.xml.sax.ext, !org.xml.sax.helpers,
+                  !org.aopalliance.*, !org.springframework.aop.*
                 </Import-Package>
                 <!-- -->
                 <Require-Bundle> org.apache.uima.runtime </Require-Bundle>

@@ -77,6 +77,18 @@
       <groupId>org.apache.uima</groupId>
       <artifactId>uimafit-core</artifactId>
       <version>2.0.0</version>
+      <!-- Exclude aop stuff, which is not need by uimafit 
+      and only introduces a non-asl license -->
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework</groupId> 
+          <artifactId>spring-aop</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>aopalliance</groupId> 
+          <artifactId>aopalliance</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <!-- needed for ruta-ep-ide - TODO this should be moved to engine? -->
     <dependency>
@@ -84,7 +96,7 @@
       <artifactId>commons-io</artifactId>
       <version>2.4</version>
     </dependency>
-    <!-- needed for ruta-ep-textruler - TODO this should be moved to engine? -->
+    <!-- needed for ruta-ep-textruler/ruta-ep-addons - TODO this should be moved to engine? -->
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-math3</artifactId>

@@ -141,6 +141,15 @@ Creative Commons Attribution 3.0 License.
   </properties>
   
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.uima</groupId>
+          <artifactId>uima-build-helper-maven-plugin</artifactId>
+          <version>7</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   <plugins>
     <plugin>
       <artifactId>maven-resources-plugin</artifactId>
