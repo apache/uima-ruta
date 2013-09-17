@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.BlockApply;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.RutaStatement;
@@ -114,14 +113,6 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
         result.add(apply);
       }
     }
-    return result;
-  }
-
-  private RuleApply getDummyRuleApply(RuleMatch ruleMatch) {
-    List<RuleElement> list = new ArrayList<RuleElement>(1);
-    list.add(this);
-    RutaRule dummyRule = new RutaRule(list, parent, -1);
-    RuleApply result = new RuleApply(dummyRule, true);
     return result;
   }
 

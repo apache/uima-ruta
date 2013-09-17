@@ -31,7 +31,6 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.ScriptApply;
-import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.engine.RutaEngine;
 
 public class RuleMatch extends AbstractRuleMatch<RutaRule> {
