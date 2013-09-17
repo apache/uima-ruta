@@ -126,6 +126,18 @@ licensed under the Common Public License.</postNoticeText>
       <artifactId>spring-context</artifactId>
       <version>3.1.2.RELEASE</version>
       <scope>compile</scope>
+      <!-- Exclude aop stuff, which is not need by uimafit 
+      and only introduces a non-asl license -->
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework</groupId> 
+          <artifactId>spring-aop</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>aopalliance</groupId> 
+          <artifactId>aopalliance</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -291,7 +303,7 @@ licensed under the Common Public License.</postNoticeText>
             </goals>
             <configuration>
               <outputDirectory>${project.build.outputDirectory}</outputDirectory>
-              <excludeArtifactIds>uimaj-core,uimaj-tools,uimaj-document-annotation,uimaj-adapter-vinci,jVinci,uimaj-cpe,tools</excludeArtifactIds>
+              <excludeArtifactIds>uimaj-core,uimaj-tools,uimaj-document-annotation,uimaj-adapter-vinci,jVinci,uimaj-cpe,tools,aopalliance,spring-aop</excludeArtifactIds>
             </configuration>
           </execution>
         </executions>
