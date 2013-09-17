@@ -25,6 +25,16 @@ a command for updating old projects. Please right-click on a project and select 
 
 -------------------------------------
 
+The UIMA Ruta analysis engine requires type priorities for the correct execution of rules. 
+If a CAS is created using the CASCreationUtils, please provide the type priorities, e.g., by:
+
+    URL tpUrl = this.getClass().getResource("/org/apache/uima/ruta/engine/TypePriorities.xml");
+    TypePriorities typePriorities = UIMAFramework.getXMLParser().parseTypePriorities(
+        new XMLInputSource(tpUrl));
+    CAS cas = CasCreationUtils.createCas(descriptor, typePriorities, new FsIndexDescription[0]);
+
+-------------------------------------
+
 If you use the uimaFIT JCasGenPomFriendly in Maven and want to use UIMA Ruta 
 as a standalone annotator you have to exclude the generated UIMA Ruta basic 
 type files from the build, e.g., by adding:
