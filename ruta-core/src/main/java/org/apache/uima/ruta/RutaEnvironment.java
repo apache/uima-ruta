@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -69,10 +70,18 @@ public class RutaEnvironment {
 
   private RutaBlock owner;
 
+  /**
+   * Mapping from short type name (e.g. {@code W}) to their disambiguated long type names
+   * (e.g. {@code org.apache.uima.ruta.type.W}).
+   */
   private Map<String, String> namespaces;
 
-  private Map<String, Object> variableValues;
+  /**
+   * Mapping from ambiguous short type names to all their possible long type names.
+   */
+  private Map<String, Set<String>> ambiguousTypeAlias;
 
+  private Map<String, Object> variableValues;
   private Map<String, Class<?>> variableTypes;
 
   private Map<String, Class<?>> availableTypes;
@@ -92,6 +101,7 @@ public class RutaEnvironment {
     this.owner = owner;
     types = new HashMap<String, Type>();
     namespaces = new HashMap<String, String>();
+    ambiguousTypeAlias = new HashMap<String, Set<String>>();
     wordLists = new HashMap<String, RutaWordList>();
     tables = new HashMap<String, CSVTable>();
     variableValues = new HashMap<String, Object>();
@@ -136,8 +146,14 @@ public class RutaEnvironment {
           addType(type);
         }
       }
+
+      // "Document" can be resolved to "uima.tcas.DocumentAnnotation" or "org.apache.uima.ruta.type.Document",
+      // we force it to the former
+      ambiguousTypeAlias.remove("Document");
+      namespaces.remove("Document");
       Type documentType = cas.getTypeSystem().getType(UIMAConstants.TYPE_DOCUMENT);
       addType("Document", documentType);
+
       Type annotationType = cas.getJCas().getCasType(org.apache.uima.jcas.tcas.Annotation.type);
       addType("Annotation", annotationType);
     } catch (CASException e) {
@@ -175,12 +191,31 @@ public class RutaEnvironment {
       complete = string;
       String[] split = complete.split("\\p{Punct}");
       String name = split[split.length - 1];
-      namespaces.put(name, complete);
+      importType(complete, name);
     }
     return complete;
   }
 
+  /**
+   * Resolves an annotation type.
+   *
+   * @param match Annotation type to resolve.
+   * @return Resolved annotation type or null if match is unknown.
+   * @throws IllegalArgumentException When {@code match} is ambiguous.
+   */
   public Type getType(String match) {
+    // make sure that match is not ambiguous
+    Set<String> ambiguousTargets = ambiguousTypeAlias.get(match);
+    if (ambiguousTargets != null) {
+      StringBuilder message = new StringBuilder(match);
+      message.append(" is ambiguous, use one of the following instead : ");
+      for (String target : ambiguousTargets) {
+        message.append(target).append(' ');
+      }
+      throw new IllegalArgumentException(message.toString());
+    }
+
+    // try to resolve match
     String expanded = expand(match);
     Type type = types.get(expanded);
     if (type == null) {
@@ -189,16 +224,46 @@ public class RutaEnvironment {
         type = parent.getEnvironment().getType(match);
       }
     }
+
     return type;
   }
 
   public void addType(String string, Type type) {
-    namespaces.put(string, type.getName());
+    importType(type.getName(), string);
     types.put(type.getName(), type);
   }
 
   public void addType(Type type) {
     addType(type.getShortName(), type);
+  }
+
+  /**
+   * Import a type in the current namespace.
+   *
+   * @param longName  Complete type name.
+   * @param shortName Short type name (without namespace).
+   */
+  private void importType(String longName, String shortName) {
+    Set<String> targets = ambiguousTypeAlias.get(shortName);
+    if (targets != null) {
+      // shortName is already ambiguous, add longName to its list of possible targets
+      targets.add(longName);
+    } else {
+      String existing = namespaces.put(shortName, longName);
+
+      if (existing != null && !existing.equals(longName)) {
+        // shortName can now be resolved to "existing" or "longName"
+        targets = new HashSet<String>(2);
+        targets.add(existing);
+        targets.add(longName);
+
+        // add existing mapping and longName to its list of possible targets
+        ambiguousTypeAlias.put(shortName, targets);
+
+        // remove shortName from the namespace because it is ambiguous
+        namespaces.remove(shortName);
+      }
+    }
   }
 
   public RutaWordList getWordList(String list) {
@@ -313,7 +378,7 @@ public class RutaEnvironment {
   public boolean isVariableOfType(String name, String type) {
     return ownsVariableOfType(name, type)
             || (owner.getParent() != null && owner.getParent().getEnvironment()
-                    .isVariableOfType(name, type));
+            .isVariableOfType(name, type));
   }
 
   public Class<?> getVariableType(String name) {
