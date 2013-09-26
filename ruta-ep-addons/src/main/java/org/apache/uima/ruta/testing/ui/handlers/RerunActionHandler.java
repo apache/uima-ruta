@@ -216,9 +216,10 @@ public class RerunActionHandler implements IHandler {
           String factoryName = store.getString(TestingPreferenceConstants.EVALUATOR_FACTORY);
           ICasEvaluator evaluator = RutaAddonsPlugin.getCasEvaluatorFactoryById(factoryName)
                   .createEvaluator();
-
+          boolean includeSubtypes = store.getBoolean(TestingPreferenceConstants.INCLUDE_SUBTYPES);
+          
           ae.process(runCas);
-          CAS resultCas = evaluator.evaluate(testCas, runCas, excludedTypes);
+          CAS resultCas = evaluator.evaluate(testCas, runCas, excludedTypes, includeSubtypes);
 
           IPath path2Test = td.getPath().removeLastSegments(1);
 

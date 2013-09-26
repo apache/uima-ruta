@@ -47,6 +47,8 @@ public class TestingPreferencePage extends PreferencePage implements IWorkbenchP
 
   private BooleanFieldEditor oldResults;
 
+  private BooleanFieldEditor includeSubtypes;
+
   public TestingPreferencePage() {
     IPreferenceStore store = RutaAddonsPlugin.getDefault().getPreferenceStore();
     setPreferenceStore(store);
@@ -75,6 +77,13 @@ public class TestingPreferencePage extends PreferencePage implements IWorkbenchP
     oldResults.setPreferenceStore(getPreferenceStore());
     oldResults.load();
 
+    includeSubtypes = new BooleanFieldEditor(TestingPreferenceConstants.INCLUDE_SUBTYPES,
+            "Additionally include subtypes", top);
+    includeSubtypes.setPage(this);
+    includeSubtypes.setPreferenceStore(getPreferenceStore());
+    includeSubtypes.load();
+    
+    
     evaluators = new DescriptionRadioGroupFieldEditor(TestingPreferenceConstants.EVALUATOR_FACTORY,
             "Evaluator :", 1, TestingPreferenceConstants.EVALUATORS, top);
 
@@ -113,6 +122,7 @@ public class TestingPreferencePage extends PreferencePage implements IWorkbenchP
     sync.loadDefault();
     oldResults.loadDefault();
     evaluators.loadDefault();
+    includeSubtypes.loadDefault();
     super.performDefaults();
   }
 
@@ -121,6 +131,7 @@ public class TestingPreferencePage extends PreferencePage implements IWorkbenchP
     sync.store();
     oldResults.store();
     evaluators.store();
+    includeSubtypes.store();
     return super.performOk();
   }
 }

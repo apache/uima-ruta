@@ -37,15 +37,14 @@ public class TestingPreferenceConstants {
 
   public static final String LOAD_OLD_TEST_RESULTS = "LOAD_OLD_TEST_RESULTS";
 
+  public static final String INCLUDE_SUBTYPES = "INCLUDE_SUBTYPES";
+
   public static String[][] EVALUATORS = getEvaluators();
 
   public static String[][] getEvaluators() {
-
-    List<String[]> result = new ArrayList<String[]>();
-    int size = 0;
-
     IExtension[] evalExtensions = Platform.getExtensionRegistry()
             .getExtensionPoint(RutaAddonsPlugin.PLUGIN_ID, "evaluators").getExtensions();
+    int size = 0;
     for (IExtension extension : evalExtensions) {
       IConfigurationElement[] configurationElements = extension.getConfigurationElements();
       for (IConfigurationElement configurationElement : configurationElements) {

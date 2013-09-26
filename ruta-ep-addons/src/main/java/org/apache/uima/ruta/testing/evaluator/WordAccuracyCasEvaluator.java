@@ -36,7 +36,7 @@ import org.apache.uima.ruta.seed.DefaultSeeder;
 
 public class WordAccuracyCasEvaluator extends AbstractCasEvaluator {
 
-  public CAS evaluate(CAS test, CAS run, Collection<String> excludedTypes)
+  public CAS evaluate(CAS test, CAS run, Collection<String> excludedTypes, boolean includeSubtypes)
           throws CASRuntimeException, CASException {
     Type annotationType = test.getAnnotationType();
     Type falsePositiveType = run.getTypeSystem().getType(ICasEvaluator.FALSE_POSITIVE);
@@ -54,8 +54,8 @@ public class WordAccuracyCasEvaluator extends AbstractCasEvaluator {
       }
     }
 
-    List<AnnotationFS> testAnnotations = getAnnotations(types, test);
-    List<AnnotationFS> runAnnotations = getAnnotations(types, run);
+    List<AnnotationFS> testAnnotations = getAnnotations(types, test, includeSubtypes);
+    List<AnnotationFS> runAnnotations = getAnnotations(types, run, includeSubtypes);
 
     Collection<AnnotationFS> matched = new HashSet<AnnotationFS>();
     List<AnnotationFS> fp = new ArrayList<AnnotationFS>();

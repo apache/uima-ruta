@@ -35,7 +35,7 @@ public interface ICasEvaluator {
 
   public static final String ORIGINAL = "original";
 
-  CAS evaluate(CAS test, CAS run, Collection<String> excludedTypes) throws CASRuntimeException,
+  CAS evaluate(CAS test, CAS run, Collection<String> excludedTypes, boolean includeSubtypes) throws CASRuntimeException,
           CASException;
 
 }

@@ -195,10 +195,12 @@ public class DocumentViewRunHandler implements IHandler {
                 XmiCasDeserializer.deserialize(new FileInputStream(testFile), testCas, true);
                 IPreferenceStore store = RutaAddonsPlugin.getDefault().getPreferenceStore();
                 String factoryName = store.getString(TestingPreferenceConstants.EVALUATOR_FACTORY);
+                boolean includeSubtypes = store.getBoolean(TestingPreferenceConstants.INCLUDE_SUBTYPES);
+                
                 ICasEvaluator evaluator = RutaAddonsPlugin.getCasEvaluatorFactoryById(factoryName)
                         .createEvaluator();
                 ArrayList<String> excludedTypes = new ArrayList<String>();
-                CAS resultCas = evaluator.evaluate(testCas, inputCAS, excludedTypes);
+                CAS resultCas = evaluator.evaluate(testCas, inputCAS, excludedTypes, includeSubtypes);
                 document.setFMeasure(calculateF1(resultCas));
               }
             }

@@ -40,7 +40,7 @@ import org.apache.uima.ruta.seed.DefaultSeeder;
 
 public class WordTemplateCasEvaluator extends AbstractCasEvaluator {
 
-  public CAS evaluate(CAS test, CAS run, Collection<String> excludedTypes)
+  public CAS evaluate(CAS test, CAS run, Collection<String> excludedTypes, boolean includeSubtypes)
           throws CASRuntimeException, CASException {
     Type falsePositiveType = run.getTypeSystem().getType(ICasEvaluator.FALSE_POSITIVE);
     Type falseNegativeType = run.getTypeSystem().getType(ICasEvaluator.FALSE_NEGATIVE);

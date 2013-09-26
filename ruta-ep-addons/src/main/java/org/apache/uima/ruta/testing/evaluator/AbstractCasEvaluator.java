@@ -30,14 +30,17 @@ import org.apache.uima.cas.text.AnnotationIndex;
 
 public abstract class AbstractCasEvaluator implements ICasEvaluator {
 
-  protected List<AnnotationFS> getAnnotations(List<Type> types, CAS cas) {
+  protected List<AnnotationFS> getAnnotations(List<Type> types, CAS cas, boolean includeSubtypes) {
     List<AnnotationFS> result = new ArrayList<AnnotationFS>();
     TypeSystem typeSystem = cas.getTypeSystem();
     AnnotationIndex<AnnotationFS> annotationIndex = cas.getAnnotationIndex();
     for (AnnotationFS each : annotationIndex) {
       Type type = each.getType();
       for (Type eachType : types) {
-        if(typeSystem.subsumes(eachType, type)) {
+        if(includeSubtypes && typeSystem.subsumes(eachType, type)) {
+          result.add(each);
+          break;
+        } else if(eachType.getName().equals(type.getName())) {
           result.add(each);
           break;
         }
