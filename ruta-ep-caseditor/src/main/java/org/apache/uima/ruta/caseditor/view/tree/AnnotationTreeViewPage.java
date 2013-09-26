@@ -477,9 +477,9 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
       boolean offsetConstraint = pos == -1
               || (annotationFS.getBegin() <= pos && annotationFS.getEnd() >= pos);
       boolean typeConstraint = StringUtils.isEmpty(manualTypeFilter)
-              || annotationFS.getType().getName().indexOf(manualTypeFilter) != -1;
+              || annotationFS.getType().getName().toLowerCase().indexOf(manualTypeFilter.toLowerCase()) != -1;
       boolean textConstraint = StringUtils.isEmpty(manualTextFilter)
-              || annotationFS.getCoveredText().indexOf(manualTextFilter) != -1;
+              || annotationFS.getCoveredText().toLowerCase().indexOf(manualTextFilter.toLowerCase()) != -1;
       if (offsetConstraint && typeConstraint && textConstraint) {
         root.insertFS(annotationFS, withParents);
       }

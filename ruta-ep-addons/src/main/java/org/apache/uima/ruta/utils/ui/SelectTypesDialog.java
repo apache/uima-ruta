@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.utils.ui;
 
@@ -44,7 +44,6 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 
-
 public class SelectTypesDialog extends Dialog implements Listener {
 
   private Shell shell;
@@ -64,7 +63,6 @@ public class SelectTypesDialog extends Dialog implements Listener {
   private List<String> selectedTypes;
 
   private List<String> initialTypes;
-
 
   public SelectTypesDialog(Shell shell, List<String> allTypes, List<String> selectedTypes) {
     super(shell);
@@ -212,7 +210,8 @@ public class SelectTypesDialog extends Dialog implements Listener {
     aTypeName = aTypeName.toLowerCase();
     for (String type : allTypes) {
       String candidateTypeName = type.toLowerCase();
-      if (StringUtils.isBlank(aTypeName) || candidateTypeName.indexOf(aTypeName) != -1) {
+      if (StringUtils.isBlank(aTypeName)
+              || candidateTypeName.toLowerCase().indexOf(aTypeName.toLowerCase()) != -1) {
 
         if (StringUtils.isEmpty(topEntry)) {
           topEntry = type;
@@ -237,14 +236,14 @@ public class SelectTypesDialog extends Dialog implements Listener {
         TableItem ti = (TableItem) item;
         TableItem[] selection = list.getSelection();
         for (TableItem tableItem : selection) {
-          if(tableItem != ti) {
+          if (tableItem != ti) {
             if (ti.getChecked()) {
               tableItem.setChecked(true);
               selectedTypes.add(tableItem.getText());
             } else {
               selectedTypes.remove(tableItem.getText());
               tableItem.setChecked(false);
-            }           
+            }
           }
         }
         if (ti.getChecked()) {
