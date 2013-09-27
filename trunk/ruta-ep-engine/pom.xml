@@ -166,7 +166,7 @@ licensed under the Common Public License.</postNoticeText>
   <build>
     <!-- don't use artifactId as first part of finalName, follow instead 
       the eclipse convention -->
-    <finalName>org.apache.uima.ruta.engine_${parsedVersion.osgiVersion}</finalName>
+    <finalName>org.apache.uima.ruta.engine_${parsedVersion.osgiVersion}-${maven.build.timestamp}</finalName>
     <pluginManagement>
       <plugins>
         <plugin>
@@ -288,6 +288,7 @@ licensed under the Common Public License.</postNoticeText>
                 <!-- <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy> -->
                 <Eclipse-BuddyPolicy>registered</Eclipse-BuddyPolicy>
                 <Eclipse-RegisterBuddy>org.apache.uima.runtime</Eclipse-RegisterBuddy>
+                <_snapshot>SNAPSHOT-${maven.build.timestamp}</_snapshot>
               </instructions>
             </configuration>
           </execution>

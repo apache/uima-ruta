@@ -62,7 +62,7 @@
 
   <build>
     <!-- parsedVersion set in parent-pom by builder-helper -->
-    <finalName>${project.artifactId}_${parsedVersion.osgiVersion}</finalName>
+    <finalName>org.apache.uima.ruta.feature.${parsedVersion.osgiVersion}-${maven.build.timestamp}</finalName>
     <!-- turn on filtering for these resources -->         
     <resources>
       <resource>

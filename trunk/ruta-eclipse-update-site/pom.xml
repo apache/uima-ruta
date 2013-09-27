@@ -23,13 +23,13 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>parent-pom</artifactId>
-    <version>6</version>
+    <version>8-SNAPSHOT</version>
     <relativePath />
   </parent>
   
 	<artifactId>ruta-eclipse-update-site</artifactId>
 	<packaging>pom</packaging>
-	<version>2.1.0</version>
+	<version>2.1.1-SNAPSHOT</version>
   
 	<name>Apache UIMA Ruta Eclipse: ${project.artifactId}</name>
   <description>The UIMA Ruta Eclipse update site</description>
@@ -51,8 +51,12 @@
     <uimaScmProject>${project.artifactId}</uimaScmProject>
     <eclipseUpdateSiteComponent>ruta</eclipseUpdateSiteComponent>
     <eclipseUpdateSubSite>${project.build.directory}/eclipse-update-site/${eclipseUpdateSiteComponent}</eclipseUpdateSubSite>
-    <item-maven-release-version>2.1.0</item-maven-release-version>
-    <item-eclipse-release-version>2.1.0</item-eclipse-release-version>
+    <item-maven-release-version>2.1.1-SNAPSHOT</item-maven-release-version>
+    <item-eclipse-release-version>2.1.1.SNAPSHOT-130926_1852</item-eclipse-release-version>
+    <!-- ${project.version}
+    <item-maven-release-version>${project.version}</item-maven-release-version>
+    <item-eclipse-release-version>${project.version}</item-eclipse-release-version>
+     -->
   </properties>
 	<build>
     <pluginManagement>

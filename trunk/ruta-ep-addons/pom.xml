@@ -173,7 +173,7 @@
   </scm>
   <build>
     <!-- don't use artifactId as first part of finalName, follow instead the eclipse convention -->
-    <finalName>org.apache.uima.ruta.addons_${parsedVersion.osgiVersion}</finalName>
+    <finalName>org.apache.uima.ruta.addons_${parsedVersion.osgiVersion}-${maven.build.timestamp}</finalName>
     <resources>
       <resource>
         <directory>.</directory>
@@ -248,6 +248,7 @@
                 </Require-Bundle>
                 <Import-Package>
                 </Import-Package>
+                <_snapshot>SNAPSHOT-${maven.build.timestamp}</_snapshot>
               </instructions>
             </configuration>
           </execution>

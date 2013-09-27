@@ -20,7 +20,7 @@
 <feature
       id="org.apache.uima.ruta.feature"
       label="UIMA Ruta Workbench"
-      version="${parsedVersion.osgiVersion}"
+      version="${parsedVersion.osgiVersion}-130926_1852"
       provider-name="Apache Software Foundation">
 
    <description url="http://uima.apache.org">
@@ -49,42 +49,42 @@ and NOTICE files
          id="org.apache.uima.ruta.addons"
          download-size="0"
          install-size="0"
-         version="${parsedVersion.osgiVersion}"
+         version="${parsedVersion.osgiVersion}-130926_1852"
          unpack="false"/>
 
    <plugin
          id="org.apache.uima.ruta.caseditor"
          download-size="0"
          install-size="0"
-         version="${parsedVersion.osgiVersion}"
+         version="${parsedVersion.osgiVersion}-130926_1852"
          unpack="false"/>
 
    <plugin
          id="org.apache.uima.ruta.engine"
          download-size="0"
          install-size="0"
-         version="${parsedVersion.osgiVersion}"
+         version="${parsedVersion.osgiVersion}-130926_1852"
          unpack="false"/>
 
    <plugin
          id="org.apache.uima.ruta.ide"
          download-size="0"
          install-size="0"
-         version="${parsedVersion.osgiVersion}"
+         version="${parsedVersion.osgiVersion}-130926_1852"
          unpack="false"/>
 
    <plugin
          id="org.apache.uima.ruta.ide.ui"
          download-size="0"
          install-size="0"
-         version="${parsedVersion.osgiVersion}"
+         version="${parsedVersion.osgiVersion}-130926_1852"
          unpack="false"/>
 
    <plugin
          id="org.apache.uima.ruta.textruler"
          download-size="0"
          install-size="0"
-         version="${parsedVersion.osgiVersion}"
+         version="${parsedVersion.osgiVersion}-130926_1852"
          unpack="false"/>
 
 </feature>
