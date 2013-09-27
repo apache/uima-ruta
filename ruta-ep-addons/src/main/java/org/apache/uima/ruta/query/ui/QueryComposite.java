@@ -437,7 +437,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
     }
 
     IMemento fileFilterMemento = memento.getChild("fileFilter");
-    if (dir != null) {
+    if (fileFilterMemento != null) {
       inputPatternText.setText(fileFilterMemento.getID());
     }
 
