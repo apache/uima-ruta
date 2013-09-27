@@ -51,8 +51,10 @@ public class RutaReferenceVisitor extends ASTVisitor {
     if (result != null) {
       return false;
     }
-    if (s instanceof RutaVariableReference || s instanceof ComponentDeclaration
-            || s instanceof ComponentReference) {
+    int sourceStart = s.sourceStart();
+    int sourceEnd = s.sourceEnd();
+    if ((s instanceof RutaVariableReference || s instanceof ComponentDeclaration || s instanceof ComponentReference)
+            && sourceStart <= start && sourceEnd >= start) {
       result = s;
     } else if (s instanceof RutaAction && ((RutaAction) s).getNameStart() <= start
             && start <= ((RutaAction) s).getNameEnd()) {

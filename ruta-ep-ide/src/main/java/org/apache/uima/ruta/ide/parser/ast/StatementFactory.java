@@ -20,6 +20,7 @@
 package org.apache.uima.ruta.ide.parser.ast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.antlr.runtime.CommonToken;
@@ -238,12 +239,17 @@ public class StatementFactory extends AbstractFactory {
     int nameBounds[] = getBounds(eachName);
     SimpleReference ref = new SimpleReference(nameBounds[0], nameBounds[1], eachName.getText());
     return new RutaFeatureDeclaration(eachName.getText(), type, nameBounds[0], nameBounds[1],
-            declBounds[0], declBounds[1], ref);
+            declBounds[0], declBounds[1], ref, eachTO);
   }
 
   @SuppressWarnings("unchecked")
   public static Statement createDeclareDeclarationsStatement(Token declareToken, List declarations,
           ASTNode parent) {
+    return createDeclareDeclarationsStatement(declareToken, declarations, parent, new ArrayList<RutaFeatureDeclaration>(0));
+  }
+  
+  public static Statement createDeclareDeclarationsStatement(Token declareToken, List declarations,
+          ASTNode parent, List<RutaFeatureDeclaration> features) {
     List<RutaAbstractDeclaration> decls = declarations;
     for (RutaAbstractDeclaration d : decls) {
       if (d == null) {
@@ -258,9 +264,14 @@ public class StatementFactory extends AbstractFactory {
       int end = decls.get(decls.size() - 1).sourceEnd();
       statementBounds[1] = Math.max(statementBounds[1], end);
     }
+    if(features != null && !features.isEmpty()) {
+      int end = features.get(features.size() - 1).sourceEnd();
+      statementBounds[1] = Math.max(statementBounds[1], end);
+    }
     return new RutaDeclareDeclarationsStatement(statementBounds[0], statementBounds[1],
-            declarations, parent, declBounds[0], declBounds[1]);
+            decls, parent, declBounds[0], declBounds[1], features);
   }
+  
 
   @SuppressWarnings("unchecked")
   public static Statement createDeclarationsStatement(Token declareToken, List declarations,

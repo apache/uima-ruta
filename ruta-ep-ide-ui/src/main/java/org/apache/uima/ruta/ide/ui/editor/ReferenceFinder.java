@@ -22,8 +22,10 @@ package org.apache.uima.ruta.ide.ui.editor;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.uima.ruta.ide.parser.ast.ActionFactory;
 import org.apache.uima.ruta.ide.parser.ast.ComponentDeclaration;
 import org.apache.uima.ruta.ide.parser.ast.ComponentReference;
+import org.apache.uima.ruta.ide.parser.ast.ConditionFactory;
 import org.apache.uima.ruta.ide.parser.ast.RutaAction;
 import org.apache.uima.ruta.ide.parser.ast.RutaCondition;
 import org.apache.uima.ruta.ide.parser.ast.RutaVariableReference;
@@ -39,7 +41,29 @@ public class ReferenceFinder extends ASTVisitor {
 
   public ReferenceFinder(ASTNode node) {
     super();
-    this.node = node;
+    this.node = getRealNode(node);
+  }
+
+  private ASTNode getRealNode(ASTNode node) {
+    if (node instanceof RutaAction) {
+      RutaAction a = (RutaAction) node;
+      if (ActionFactory.IMPLICIT.equals(a.getName()) && !a.getChilds().isEmpty()) {
+        Expression expression = a.getChilds().get(0);
+        if (expression != null && !expression.getChilds().isEmpty()) {
+          return (ASTNode) expression.getChilds().get(0);
+        }
+      }
+    }
+    if (node instanceof RutaCondition) {
+      RutaCondition c = (RutaCondition) node;
+      if (ConditionFactory.IMPLICIT.equals(c.getName()) && !c.getChilds().isEmpty()) {
+        Expression expression = c.getChilds().get(0);
+        if (expression != null && !expression.getChilds().isEmpty()) {
+          return (ASTNode) expression.getChilds().get(0);
+        }
+      }
+    }
+    return node;
   }
 
   @Override

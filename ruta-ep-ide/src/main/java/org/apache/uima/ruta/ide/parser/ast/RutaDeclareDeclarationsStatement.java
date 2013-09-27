@@ -26,17 +26,14 @@ import org.eclipse.dltk.ast.ASTVisitor;
 
 public class RutaDeclareDeclarationsStatement extends RutaDeclarationsStatement {
   private ASTNode parent;
-
-  // public RutaDeclarationsStatement(int declStart, int declEnd,
-  // List<RutaAbstractDeclaration> declarations, Expression init) {
-  // this(declStart, declEnd, declarations, init, 0, 0);
-  // }
+  private List<RutaFeatureDeclaration> features;
 
   public RutaDeclareDeclarationsStatement(int stmtStart, int stmtEnd,
           List<RutaAbstractDeclaration> declarations, ASTNode parent, int typeTokenStart,
-          int typeTokenEnd) {
+          int typeTokenEnd, List<RutaFeatureDeclaration> features) {
     super(stmtStart, stmtEnd, declarations, null, typeTokenStart, typeTokenEnd);
     this.parent = parent;
+    this.features = features;
   }
 
   @Override
@@ -50,6 +47,12 @@ public class RutaDeclareDeclarationsStatement extends RutaDeclarationsStatement 
           decl.traverse(visitor);
         }
       }
+      if(features != null) {
+        for (RutaFeatureDeclaration feat : features) {
+          feat.traverse(visitor);
+        }
+      }
+      
       visitor.endvisit(this);
     }
   }
@@ -61,6 +64,14 @@ public class RutaDeclareDeclarationsStatement extends RutaDeclarationsStatement 
 
   public ASTNode getParent() {
     return parent;
+  }
+
+  public List<RutaFeatureDeclaration> getFeatures() {
+    return features;
+  }
+
+  public void setFeatures(List<RutaFeatureDeclaration> features) {
+    this.features = features;
   }
 
 }

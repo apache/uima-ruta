@@ -19,18 +19,36 @@
 
 package org.apache.uima.ruta.ide.parser.ast;
 
+import org.eclipse.dltk.ast.ASTNode;
+import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.references.SimpleReference;
 
 public class RutaFeatureDeclaration extends RutaAbstractDeclaration {
 
   private String type;
 
+  private ASTNode declType;
+  
   public RutaFeatureDeclaration(String name, String type, int nameStart, int nameEnd,
-          int declStart, int declEnd, SimpleReference ref) {
+          int declStart, int declEnd, SimpleReference ref, Object declType) {
     super(name, nameStart, nameEnd, declStart, declEnd, ref);
     this.type = type;
+    if(declType instanceof ASTNode) {
+      this.declType = (ASTNode) declType;
+    }
   }
 
+  
+  @Override
+  public void traverse(ASTVisitor visitor) throws Exception {
+    if (visitor.visit(this)) {
+      declType.traverse(visitor);
+      getRef().traverse(visitor);
+      visitor.endvisit(this);
+    }
+  }
+
+  
   public void setType(String type) {
     this.type = type;
   }

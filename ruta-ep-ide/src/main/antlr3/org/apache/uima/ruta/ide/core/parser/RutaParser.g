@@ -514,7 +514,7 @@ declaration returns [List<Statement> stmts = new ArrayList<Statement>()]
 		}
 		addType($blockDeclaration::env, id.getText(), type.toString(), featureTypes, featureNames);
 		declarations.add( StatementFactory.createAnnotationType(id,declareToken, type, features));
-		stmt = StatementFactory.createDeclareDeclarationsStatement(declareToken, declarations, type);
+		stmt = StatementFactory.createDeclareDeclarationsStatement(declareToken, declarations, type, features);
 		stmts.add(stmt);
 		}
 	)

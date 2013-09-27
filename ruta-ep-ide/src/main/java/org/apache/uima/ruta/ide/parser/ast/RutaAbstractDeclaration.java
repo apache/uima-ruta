@@ -28,7 +28,7 @@ public abstract class RutaAbstractDeclaration extends FieldDeclaration {
 
   public RutaAbstractDeclaration(String name, int nameStart, int nameEnd, int declStart,
           int declEnd, SimpleReference ref) {
-    super(name, nameStart, nameEnd, nameStart, nameEnd); // declStart, declEnd);
+    super(name, nameStart, nameEnd, declStart, declEnd);
     this.setName(name);
     this.ref = ref;
   }
