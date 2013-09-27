@@ -1,0 +1,899 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<?eclipse version="3.4"?>
+<plugin>
+<extension-point id="evaluators" name="CAS Evaluator" schema="schema/evaluators.exsd"/>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="false"
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.query.ui.QueryView"
+            icon="icons/basket_edit.png"
+            id="org.apache.uima.ruta.query.ui.ScriptQueryView"
+            name="Ruta Query"
+            restorable="true">
+      </view>
+      <view
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.testing.ui.views.fp.FalsePositiveView"
+            icon="icons/bug.png"
+            id="org.apache.uima.ruta.testing.falsePositive"
+            name="False Positive">
+      </view>
+      <view
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.testing.ui.views.fn.FalseNegativeView"
+            icon="icons/bug.png"
+            id="org.apache.uima.ruta.testing.falseNegative"
+            name="False Negative">
+      </view>
+      <view
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.testing.ui.views.TestPageBookView"
+            icon="icons/bug_edit.png"
+            id="org.apache.uima.ruta.testing.TestingView"
+            name="Annotation Test"
+            restorable="true">
+      </view>
+      <view
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.testing.ui.views.tp.TruePositiveView"
+            icon="icons/bug.png"
+            id="org.apache.uima.ruta.testing.truePositive"
+            name="True Positive">
+      </view>
+   </extension> <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.apache.uima.ruta.query.ui.QueryActionHandler"
+            id="org.apache.uima.ruta.query.command"
+            name="Query Command">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.ruta.query.ui.ExportActionHandler"
+            id="org.apache.uima.ruta.query.export"
+            name="Export List">
+      </command>
+   </extension>   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="toolbar:org.apache.uima.ruta.query.ui.ScriptQueryView?after=additions">
+         <command
+               commandId="org.apache.uima.ruta.query.command"
+               icon="icons/13555.actionengine_play.gif"
+               label="Query"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.apache.uima.ruta.query.export"
+               icon="icons/10892.resource_persp.gif"
+               label="Export List"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar">
+         <toolbar
+               id="org.apache.uima.ruta.utils.query.queryToolbar">
+         </toolbar>
+      </menuContribution>
+   </extension> <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="toolbar:org.apache.uima.ruta.testing.TestingView?after=additions">
+         <command
+               commandId="org.apache.uima.ruta.testing.rerun"
+               icon="icons/13555.actionengine_play.gif"
+               label="Rerun Tests"
+               style="push"
+               tooltip="Rerun Tests">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.apache.uima.ruta.testing.excludeTypes"
+               icon="icons/thumb_down.png"
+               label="Select excluded types"
+               style="push"
+               tooltip="Select excluded types">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.apache.uima.ruta.testing.includeTypes"
+               icon="icons/thumb_up.png"
+               label="Select included types"
+               style="push"
+               tooltip="Select included types">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.apache.uima.ruta.testing.selectEvaluator"
+               icon="icons/evaluator.gif"
+               label="Select Evaluator"
+               style="push"
+               tooltip="Select evaluator">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.apache.uima.ruta.testing.ExportTabel"
+               icon="icons/10892.resource_persp.gif"
+               label="to CSV"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar">
+         <toolbar
+               id="org.apache.uima.ruta.testing.annotationTestToolbar">
+         </toolbar>
+      </menuContribution>
+   </extension>   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.apache.uima.ruta.testing.ui.handlers.RemoveTestsHandler"
+            id="org.apache.uima.ruta.testing.removeTests"
+            name="Remove Resource">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.ruta.testing.ui.handlers.RerunActionHandler"
+            id="org.apache.uima.ruta.testing.rerun"
+            name="Rerun Command">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.ruta.testing.ui.handlers.NextTestCaseHandler"
+            id="org.apache.uima.ruta.testing.nextTestCase"
+            name="NextTestCase">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.ruta.testing.ui.handlers.PreviousTestCaseHandler"
+            id="org.apache.uima.ruta.testing.PreviousTestCase"
+            name="PreviousTestCase">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.ruta.testing.ui.handlers.LoadFilesFromFolderHandler"
+            id="org.apache.uima.ruta.testing.LoadFolderCommand"
+            name="LoadFolderCommand">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.ruta.testing.ui.handlers.SelectedExcludedTypesHandler"
+            id="org.apache.uima.ruta.testing.excludeTypes"
+            name="Select excluded types">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.ruta.testing.ui.handlers.SelectedIncludedTypesHandler"
+            id="org.apache.uima.ruta.testing.includeTypes"
+            name="Select included types">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.ruta.testing.ui.handlers.SelectEvaluatorHandler"
+            id="org.apache.uima.ruta.testing.selectEvaluator"
+            name="Select Evaluator">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.ruta.testing.ui.handlers.ExportTabelHandler"
+            id="org.apache.uima.ruta.testing.ExportTabel"
+            name="Export Table">
+      </command>
+   </extension>
+    <extension
+         point="org.apache.uima.ruta.addons.evaluators">
+      <evaluator
+            factory="org.apache.uima.ruta.testing.evaluator.PartialMatchCasEvaluatorFacotry"
+            id="org.apache.uima.ruta.testing.partialmatchevaluator"
+            name="Partial Match">
+      </evaluator>
+      <evaluator
+            factory="org.apache.uima.ruta.testing.evaluator.ExactCasEvaluatorFactory"
+            id="org.apache.uima.ruta.testing.exactCasEvaluator"
+            name="Exact Match">
+      </evaluator>
+      <evaluator
+            factory="org.apache.uima.ruta.testing.evaluator.CoreMatchCasEvaluatorFactory"
+            id="org.apache.uima.ruta.testing.corematchevaluator"
+            name="Core Term Match">
+      </evaluator>
+      <evaluator
+            factory="org.apache.uima.ruta.testing.evaluator.WordAccuracyCasEvaluatorFactory"
+            id="org.apache.uima.ruta.testing.wordAccurecyCasEvaluator"
+            name="Word Accuracy">
+      </evaluator>
+      <evaluator
+            factory="org.apache.uima.ruta.testing.evaluator.TemplateCasEvaluatorFactory"
+            id="org.apache.uima.ruta.testing.templateCasEvaluator"
+            name="Template only">
+      </evaluator>
+      <evaluator
+            factory="org.apache.uima.ruta.testing.evaluator.WordTemplateCasEvaluatorFactory"
+            id="org.apache.uima.ruta.testing.wordTemplateCasEvaluator"
+            name="Template on word level">
+      </evaluator>
+      <evaluator
+            factory="org.apache.uima.ruta.testing.evaluator.FeatureCasEvaluatorFactory"
+            id="org.apache.uima.ruta.testing.featureCasEvaluator"
+            name="Features: Annotations and Strings">
+      </evaluator>
+      <evaluator
+            factory="org.apache.uima.ruta.testing.evaluator.StringFeatureCasEvaluatorFactory"
+            id="org.apache.uima.ruta.testing.stringFeature"
+            name="Annotations with String features">
+      </evaluator>
+   </extension>   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.apache.uima.ruta.testing.preferences.TestingPreferenceInitializer">
+      </initializer>
+   </extension>   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.apache.uima.ruta.ide.preferences"
+            class="org.apache.uima.ruta.testing.preferences.TestingPreferencePage"
+            id="org.apache.uima.ruta.testing.preferences"
+            name="Testing">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.apache.uima.ruta.utils.twl.TWLConverterHandler"
+            description="TWLConvertCommand"
+            id="org.apache.uima.ruta.utils.twl.command"
+            name="Convert to TWL">
+         <defaultHandler
+               class="org.apache.uima.ruta.utils.twl.TWLConverterHandler">
+         </defaultHandler>
+      </command>
+      <command
+            defaultHandler="org.apache.uima.ruta.utils.twl.MultiTWLConverterHandler"
+            description="MultiTWLConvertCommand"
+            id="org.apache.uima.ruta.utils.mtwl.command"
+            name="Convert to Multi TWL">
+         <defaultHandler
+               class="org.apache.uima.ruta.utils.twl.MultiTWLConverterHandler">
+         </defaultHandler>
+      </command>
+      <command
+            defaultHandler="org.apache.uima.ruta.utils.apply.ApplyScriptRemoveBasicsHandler"
+            id="org.apache.uima.ruta.utils.apply.script"
+            name="ApplyScriptCommand">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.ruta.utils.apply.ApplyScriptKeepBasicsHandler"
+            id="org.apache.uima.ruta.utils.apply.script.basics"
+            name="ApplyScriptBasicsCommand">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.ruta.utils.apply.ApplyScriptNoXMIHandler"
+            id="org.apache.uima.ruta.utils.apply.script.noxmi"
+            name="ApplyScriptNoXMICommand">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.ruta.utils.update.UpdateProjectHandler"
+            id="org.apache.uima.ruta.utils.update"
+            name="Update Project">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.ruta.utils.update.ConvertProjectHandler"
+            id="org.apache.uima.ruta.utils.convert"
+            name="Convert to UIMA Ruta project">
+      </command>
+   </extension>   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:org.eclipse.dltk.ui.ScriptExplorer?after=additions">
+         <menu
+               icon="icons/ruta_obj.png"
+               id="org.apache.uima.ruta.utils.popup.submenu"
+               label="UIMA Ruta">
+         </menu>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:org.apache.uima.ruta.utils.popup.submenu">
+         <command
+               commandId="org.apache.uima.ruta.utils.apply.script.basics"
+               disabledIcon="icons/ruta_obj.png"
+               hoverIcon="icons/ruta_obj.png"
+               icon="icons/ruta_obj.png"
+               id="org.apache.uima.ruta.utils.apply.script.basics.popup"
+               label="Quick Ruta"
+               style="push"
+               tooltip="Apply current Ruta script on folder and keep basics">
+            <visibleWhen
+                  checkEnabled="true">
+               <and>
+                  <with
+                        variable="activeEditorId">
+                     <equals
+                           value="org.apache.uima.ruta.ide.ui.editor.RutaEditor">
+                     </equals>
+                  </with>
+               </and>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:org.apache.uima.ruta.utils.popup.submenu">
+         <command
+               commandId="org.apache.uima.ruta.utils.apply.script"
+               disabledIcon="icons/ruta_obj.png"
+               hoverIcon="icons/ruta_obj.png"
+               icon="icons/ruta_obj.png"
+               id="org.apache.uima.ruta.utils.apply.script.popup"
+               label="Quick Ruta (remove basics)"
+               style="push"
+               tooltip="Apply current Ruta script on folder">
+            <visibleWhen
+                  checkEnabled="true">
+               <and>
+                  <with
+                        variable="activeEditorId">
+                     <equals
+                           value="org.apache.uima.ruta.ide.ui.editor.RutaEditor">
+                     </equals>
+                  </with>
+               </and>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:org.apache.uima.ruta.utils.popup.submenu">
+         <command
+               commandId="org.apache.uima.ruta.utils.apply.script.noxmi"
+               disabledIcon="icons/ruta_obj.png"
+               hoverIcon="icons/ruta_obj.png"
+               icon="icons/ruta_obj.png"
+               id="org.apache.uima.ruta.utils.apply.script.noxmi.popup"
+               label="Quick Ruta (no xmi)"
+               style="push"
+               tooltip="Apply current Ruta script on folder">
+            <visibleWhen
+                  checkEnabled="true">
+               <and>
+                  <with
+                        variable="activeEditorId">
+                     <equals
+                           value="org.apache.uima.ruta.ide.ui.editor.RutaEditor">
+                     </equals>
+                  </with>
+               </and>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:org.apache.uima.ruta.utils.popup.submenu">
+         <command
+               commandId="org.apache.uima.ruta.utils.twl.command"
+               disabledIcon="icons/ruta_obj.png"
+               hoverIcon="icons/ruta_obj.png"
+               icon="icons/ruta_obj.png"
+               id="org.apache.uima.ruta.utils.twl.popup"
+               label="Convert to TWL"
+               style="push"
+               tooltip="Convert the word list to a tree">
+            <visibleWhen
+                  checkEnabled="true">
+               <reference
+                     definitionId="org.apache.uima.ruta.utils.twl.definition">
+               </reference>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:org.apache.uima.ruta.utils.popup.submenu">
+         <command
+               commandId="org.apache.uima.ruta.utils.mtwl.command"
+               disabledIcon="icons/ruta_obj.png"
+               hoverIcon="icons/ruta_obj.png"
+               icon="icons/ruta_obj.png"
+               id="org.apache.uima.ruta.utils.mtwl.popup"
+               label="Convert to Multi TWL"
+               style="push"
+               tooltip="Convert several word lists to a tree">
+            <visibleWhen
+                  checkEnabled="true">
+               <reference
+                     definitionId="org.apache.uima.ruta.utils.mtwl.definition">
+               </reference>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:org.apache.uima.ruta.utils.popup.submenu">
+         <command
+               commandId="org.apache.uima.ruta.utils.update"
+               disabledIcon="icons/ruta_obj.png"
+               hoverIcon="icons/ruta_obj.png"
+               icon="icons/ruta_obj.png"
+               id="org.apache.uima.ruta.utils.update.popup"
+               label="Update Project"
+               style="push"
+               tooltip="Update basic templates for descriptors">
+              <visibleWhen
+                    checkEnabled="true">
+                 <reference
+                       definitionId="org.apache.uima.ruta.utils.update.definition">
+                 </reference>
+              </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:org.apache.uima.ruta.utils.popup.submenu">
+         <command
+               commandId="org.apache.uima.ruta.utils.convert"
+               disabledIcon="icons/ruta_obj.png"
+               hoverIcon="icons/ruta_obj.png"
+               icon="icons/ruta_obj.png"
+               id="org.apache.uima.ruta.utils.convert.popup"
+               label="Convert to UIMA Ruta project"
+               style="push"
+               tooltip="Convert to UIMA Ruta project">
+            <visibleWhen
+                  checkEnabled="true">
+               <reference
+                     definitionId="org.apache.uima.ruta.utils.convert.definition">
+               </reference>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>   <extension
+         point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="org.apache.uima.ruta.utils.twl.definition">
+         <with
+               variable="selection">
+            <iterate
+                  ifEmpty="false"
+                  operator="and">
+               <test
+                     property="org.eclipse.core.resources.extension"
+                     value="txt">
+               </test>
+            </iterate>
+         </with>
+      </definition>
+      <definition
+            id="org.apache.uima.ruta.utils.mtwl.definition">
+         <with
+               variable="selection">
+            <iterate
+                  ifEmpty="true">
+               <or>
+                  <test
+                        property="org.eclipse.core.resources.extension"
+                        value="txt">
+                  </test>
+               </or>
+            </iterate>
+         </with>
+      </definition>
+      <definition
+            id="org.apache.uima.ruta.utils.apply.script.definition">
+         <adapt
+               type="org.eclipse.core.resources.IResource">
+            <test
+                  property="org.eclipse.core.resources.extension"
+                  value="ruta">
+            </test>
+         </adapt>
+      </definition>
+      <definition
+            id="org.apache.uima.ruta.utils.update.definition">
+         <with
+               variable="selection">
+            <iterate
+                  ifEmpty="true">
+               <or>
+                  <instanceof
+                        value="org.eclipse.dltk.core.IScriptProject ">
+                  </instanceof>
+                  <instanceof
+                        value="org.eclipse.core.resources.IProject ">
+                  </instanceof>
+               </or>
+            </iterate>
+         </with>
+      </definition>
+      <definition
+            id="org.apache.uima.ruta.utils.convert.definition">
+         <with
+               variable="selection">
+            <iterate
+                  ifEmpty="true">
+               <or>
+                  <instanceof
+                        value="org.eclipse.dltk.core.IScriptProject ">
+                  </instanceof>
+                  <instanceof
+                        value="org.eclipse.core.resources.IProject ">
+                  </instanceof>
+               </or>
+            </iterate>
+         </with>
+      </definition>
+   </extension>   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="org.apache.uima.ruta.utils.apply.script"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+M3+T">
+      </key>
+      <key
+            commandId="org.apache.uima.ruta.utils.apply.script.basics"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+T">
+      </key>
+      <key
+            commandId="org.apache.uima.ruta.utils.apply.script.noxmi"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+M2+M3+T">
+      </key>
+      <key
+            commandId="org.apache.uima.ruta.utils.twl.command"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+J">
+      </key>
+      <key
+            commandId="org.apache.uima.ruta.utils.mtwl.command"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+M2+J">
+      </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.explain.apply.ApplyView"
+            icon="icons/chart_organisation.png"
+            id="org.apache.uima.ruta.explain.apply"
+            name="Applied Rules">
+      </view>
+      <view
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.explain.matched.MatchedView"
+            icon="icons/accept.png"
+            id="org.apache.uima.ruta.explain.matched"
+            name="Matched Rules"
+            restorable="true">
+      </view>
+      <view
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.explain.failed.FailedView"
+            icon="icons/cancel.png"
+            id="org.apache.uima.ruta.explain.failed"
+            name="Failed Rules">
+      </view>
+      <view
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.explain.element.ElementView"
+            icon="icons/chart_organisation.png"
+            id="org.apache.uima.ruta.explain.element"
+            name="Rule Elements">
+      </view>
+      <view
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.statistics.StatisticsView"
+            icon="icons/statistics.png"
+            id="org.apache.uima.ruta.statistics"
+            name="Statistics">
+      </view>
+      <view
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.explain.selection.ExplainSelectionView"
+            icon="icons/chart_organisation.png"
+            id="org.apache.uima.ruta.explain.selection"
+            name="Covering Rules">
+      </view>
+      <view
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.explain.rulelist.RuleListView"
+            icon="icons/chart_organisation.png"
+            id="org.apache.uima.ruta.explain.rulelist"
+            name="Rule List">
+      </view>
+      <view
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.explain.createdBy.CreatedByView"
+            icon="icons/font_add.png"
+            id="org.apache.uima.ruta.explain.createdBy"
+            name="Created By"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.apache.uima.caseditor.ide.searchstrategy">
+      <searchStrategy
+            class="org.apache.uima.ruta.searchStrategy.LastLaunchSearchStrategy"
+            description="Use the type system of the last launched Ruta script in the same project"
+            id="org.apache.uima.ruta.searchstrategy.lastlaunch"
+            priority="10">
+      </searchStrategy>
+      <searchStrategy
+            class="org.apache.uima.ruta.searchStrategy.DescriptorFolderSearchStrategy"
+            description="Pick one type system from the Ruta project descriptor folder"
+            id="org.apache.uima.ruta.searchstrategy.descriptorfolder"
+            priority="500">
+      </searchStrategy>
+      <searchStrategy
+            class="org.apache.uima.ruta.testing.searchStrategy.TestingSearchStrategy"
+            description="Use the type system of the tested Ruta script when opening a evaluated CAS"
+            id="org.apache.uima.ruta.searchstrategy.testing"
+            priority="5">
+      </searchStrategy>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="false"
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.cde.ui.DocumentView"
+            icon="icons/chart_organisation.png"
+            id="org.apache.uima.ruta.cde.ui.DocumentView"
+            name="CDE Documents"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="false"
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.cde.ui.ConstraintSelectView"
+            icon="icons/bullet_blue.png"
+            id="org.apache.uima.ruta.cde.ui.ConstraintSelectView"
+            name="CDE Constraints"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="false"
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.cde.ui.ResultView"
+            icon="icons/failed_ovr.gif"
+            id="org.apache.uima.ruta.cde.ui.ResultView"
+            name="CDE Result"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.apache.uima.ruta.cde.ui.DocumentView">
+         <command
+               commandId="org.apache.uima.ruta.cde.ui.DocumentView.run"
+               icon="icons/run.gif"
+               id="org.apache.uima.ruta.cde.ui.DocumentView.toolbar.run"
+               label="run"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.apache.uima.ruta.cde.ui.ConstraintSelectView">
+         <command
+               commandId="toolbar:org.apache.uima.ruta.cde.ui.ConstraintSelectView.exportall"
+               icon="icons/disk.png"
+               id="toolbar:org.apache.uima.ruta.cde.ui.ConstraintSelectView.toolbar.exportall"
+               label="Export all Constraints"
+               style="push">
+         </command>
+         <command
+               commandId="toolbar:org.apache.uima.ruta.cde.ui.ConstraintSelectView.importall"
+               icon="icons/folder_page.png"
+               label="Import Constraints"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="org.apache.uima.ruta.cde.ui.CDEPerspectiveFactory"
+            icon="icons/explain.png"
+            id="org.apache.uima.ruta.cde.perspective"
+            name="UIMA Ruta CDE">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.apache.uima.ruta.cde.ui.DocumentViewRunHandler"
+            id="org.apache.uima.ruta.cde.ui.DocumentView.run"
+            name="RunFromDocumentView">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.ruta.cde.ui.ExportConstraintsHandler"
+            id="toolbar:org.apache.uima.ruta.cde.ui.ConstraintSelectView.exportall"
+            name="ExportAllConstraints">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.ruta.cde.ui.ImportConstraintsHandler"
+            id="toolbar:org.apache.uima.ruta.cde.ui.ConstraintSelectView.importall"
+            name="ImportConstraints">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            default="false"
+            icon="icons/bullet_pink.png"
+            id="org.apache.uima.ruta.cde.constrainteditor"
+            name="CDE Editor">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.apache.uima.ruta.ide.preferences"
+            class="org.apache.uima.ruta.cde.ui.CDEPreferencePage"
+            id="org.apache.uima.ruta.cde.preferences"
+            name="CDE">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.check.AnnotationCheckView"
+            icon="icons/views.png"
+            id="org.apache.uima.ruta.check"
+            name="Check Annotations"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.apache.uima.ruta.check.UpdateTaskHandler"
+            id="org.apache.uima.ruta.check.update"
+            name="Update">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.ruta.check.SelectTypesHandler"
+            id="org.apache.uima.ruta.check.selectTypes"
+            name="Select types">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.ruta.check.AcceptHandler"
+            id="org.apache.uima.ruta.check.accept"
+            name="Accept">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.ruta.check.RejectHandler"
+            id="org.apache.uima.ruta.check.reject"
+            name="Reject">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.ruta.check.SaveHandler"
+            id="org.apache.uima.ruta.check.save"
+            name="Save">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.ruta.check.SetAnnotationModeHandler"
+            id="org.apache.uima.ruta.check.mode"
+            name="Mode">
+         <commandParameter
+               id="org.apache.uima.ruta.check.mode.type"
+               name="type"
+               optional="false">
+         </commandParameter>
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.apache.uima.ruta.check">
+         <command
+               commandId="org.apache.uima.ruta.check.update"
+               icon="icons/arrow_refresh_small.png"
+               id="org.apache.uima.ruta.check.toolbar.update"
+               label="Update"
+               style="push"
+               tooltip="Update">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.apache.uima.ruta.check">
+         <command
+               commandId="org.apache.uima.ruta.check.selectTypes"
+               icon="icons/ruta_obj.png"
+               id="org.apache.uima.ruta.check.toolbar.selectTypes"
+               label="Select types"
+               style="push"
+               tooltip="Select types">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.apache.uima.ruta.check">
+         <command
+               commandId="org.apache.uima.ruta.check.accept"
+               icon="icons/accept.png"
+               id="org.apache.uima.ruta.check.toolbar.accept"
+               label="Accept"
+               style="push"
+               tooltip="Accept">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.apache.uima.ruta.check">
+         <command
+               commandId="org.apache.uima.ruta.check.reject"
+               icon="icons/delete.png"
+               id="org.apache.uima.ruta.check.toolbar.reject"
+               label="Reject"
+               style="push"
+               tooltip="Reject">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.apache.uima.ruta.check">
+         <command
+               commandId="org.apache.uima.ruta.check.save"
+               icon="icons/disk.png"
+               id="org.apache.uima.ruta.check.toolbar.save"
+               label="Save"
+               style="push"
+               tooltip="Save">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.apache.uima.ruta.check">
+         <command
+               commandId="org.apache.uima.ruta.check.mode"
+               icon="icons/font_add.png"
+               id="org.apache.uima.ruta.check.toolbar.mode"
+               mode="FORCE_TEXT"
+               style="pulldown"
+               tooltip="Set Annotation mode">
+            <parameter
+                  name="org.apache.uima.ruta.check.mode.type">
+            </parameter>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            class="org.apache.uima.ruta.check.SetAnnotationModeContributionFactory"
+            locationURI="menu:org.apache.uima.ruta.check.toolbar.mode">
+      </menuContribution>
+   </extension>
+</plugin>

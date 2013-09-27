@@ -1,0 +1,22 @@
+PACKAGE org.apache.uima;
+
+DECLARE T1, T2, T3, T4, T5, T6, T7;
+
+DECLARE Annotation Complex (STRING s, Annotation a, BOOLEAN b);
+
+"A(.*?)C" -> T1, 1 = T2;
+
+"^B(.*?)B" -> T7, 1 = T3;
+
+"B(.*?)B(.)" -> 1 = T4, 2 = T5;
+
+BLOCK(limited) T7{} {
+    "B(.*?)B" -> 1 = T6;
+}
+
+"B(.*?)B(.)" -> 1 = Complex ("s" = 0, "a" = 2, "b" = true),
+                2 = Complex ("s" = 0, "a" = 1, "b" = false);
+
+
+
+

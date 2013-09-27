@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
+<!ENTITY imgroot "images/tools/ruta/workbench/" >
+<!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
+%uimaents;
+]>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<section id="section.tools.ruta.workbench.check">
+  <title>Check Annotations view</title>
+  <para>
+    The Check Annotations view provides functionality to quickly validate a set of annotations in different documents. 
+    The user can specify a two folders with xmiCAS files: One folder contains the documents with annotations that should be validated. 
+    The other folder is used to store the validated annotations. The view enables a rapid navigation between the documents and their annotations 
+    of the selected types can easily accepted or rejected.
+    <xref linkend="figure.tools.ruta.workbench.check"/> provides an screenshot of the view. Its parts are described in the following.
+  </para>
+  <figure id="figure.tools.ruta.workbench.check">
+      <title>Check Annotations view (right part)
+      </title>
+      <mediaobject>
+        <imageobject role="html">
+          <imagedata width="776px" format="PNG" align="center"
+            fileref="&imgroot;check/check.png" />
+        </imageobject>
+        <imageobject role="fo">
+          <imagedata width="5.4in" format="PNG" align="center"
+            fileref="&imgroot;check/check.png" />
+        </imageobject>
+        <textobject>
+          <phrase>Check Annotations view</phrase>
+        </textobject>
+      </mediaobject>
+    </figure>
+  <para>
+    The view provides three text fields: the absolute location of the folder with the source documents, which contain the annotations to be validated, 
+    the absolute location of the gold folder, where the accepted annotations will be stored, and the absolute location of the type system that contains 
+    all necessary types. The toolbar of the view provides six buttons: the first one updates the set of documents and 
+    their annotations in the main part of the view. This is necessary, e.g., if the selected types change or if the annotations in the documents change.
+    The second button opens a dialog for choosing the selected types. Only annotations of those types will be displayed and can be accepted or rejected.
+    The third and fourth button accept/reject the currently selected annotation. Only accepted annotations will be stored in the gold folder. An annotation can also 
+    be accepted with the key binding <quote>ctrl+1</quote> and rejected with the key binding <quote>ctrl+2</quote>. If an annotation is processed, 
+    then the next annotation is automatically selected and a new CAS Editor is opened if necessary. 
+    The fifth button adds the currently accepted
+    annotations to the corresponding file in the gold folder and additionally extends an file <quote>data.xml</quote>, which remembers what types have already been checked in each documents.
+    Annotations of these types will not show up again in the main part of the view. With the last button, the user can select the annotation mode of the CAS editor.
+    The choice is restricted to the currently selected types. If an annotation is missing in the source documents, then the user can manually add this annotation
+    in the CAS Editor. The new annotation will be added as accepted to the list of annotations in the main part of the view.
+  </para>
+    
+</section>

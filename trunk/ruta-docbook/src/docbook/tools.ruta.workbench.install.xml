@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
+<!ENTITY imgroot "images/tools/ruta/workbench/" >
+<!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
+%uimaents;
+]>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<section id="section.ugr.tools.ruta.workbench.install">
+  <title>Installation</title>
+  <para>
+
+    Do the installation of the UIMA Ruta Workbench as follows:
+    <orderedlist numeration="arabic">
+      <listitem>
+        <para>
+          Download, install and start Eclipse 3.7., 3.8 or 4.2. Eclipse 3.7 can, for example, can be obtained
+          from the <ulink url="http://www.eclipse.org/downloads/packages/release/indigo/sr2">eclipse.org</ulink> download site.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          Add the Apache UIMA update site (
+          <ulink url="http://www.apache.org/dist/uima/eclipse-update-site/">http://www.apache.org/dist/uima/eclipse-update-site/
+          </ulink>) to the available
+          software sites in your Eclipse installation.
+          Click on <quote>Help &rarr; Install New Software</quote>. This opens the install wizard, which can be
+          seen in <xref linkend='figure.ugr.tools.ruta.workbench.install.update' />
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          Select or enter the Apache UIMA update site (<ulink url="http://www.apache.org/dist/uima/eclipse-update-site/">http://www.apache.org/dist/uima/eclipse-update-site/
+          </ulink>)in field
+          <quote>Work with:</quote>
+          and press <quote>Enter</quote>.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          Select <quote>Apache UIMA Ruta</quote> and (if not yet installed) <quote>Apache UIMA Eclipse tooling and runtime support</quote>
+          by clicking into the related checkbox.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          Also select
+          <quote>Contact all update
+            sites during install to find required software
+          </quote>
+          and click on
+          <quote>Next</quote>.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          On the next page, click <quote>Next</quote>
+          again. Now, the license
+          agreement site is displayed. To install UIMA Ruta read the license and
+          choose
+          <quote>I accept the ...</quote>
+          if you agree to it. Then,
+          click on <quote>Finish</quote>
+        </para>
+      </listitem>
+    </orderedlist>
+  </para>
+  <para>
+    <figure id="figure.ugr.tools.ruta.workbench.install.update">
+      <title> Eclipse update site
+      </title>
+      <mediaobject>
+        <imageobject role="html">
+          <imagedata width="300px" format="PNG" align="center"
+            fileref="&imgroot;install/update.png" />
+        </imageobject>
+        <imageobject role="fo">
+          <imagedata width="5.0in" format="PNG" align="center"
+            fileref="&imgroot;install/update.png" />
+        </imageobject>
+        <textobject>
+          <phrase>
+            Eclipse update site.
+          </phrase>
+        </textobject>
+      </mediaobject>
+    </figure>
+  </para>
+  <para>
+    Now, UIMA Ruta is going to be installed.
+    After the successful
+    installation, switch to the UIMA Ruta
+    perspective. To get an overview, see
+    <xref linkend='section.ugr.tools.ruta.workbench.overview' />.
+  </para>
+  <note>
+    <para>
+      It is sometimes necessary to increase to available PermGenSpace by adding 
+      <quote>-XX:PermSize=64M -XX:MaxPermSize=228M</quote> to the config.ini file of your Eclipse installation.
+    </para>
+  </note>
+  <para>
+    Several times within this chapter we use a UIMA Ruta example
+    project
+    to illustrate the use of the UIMA Ruta Workbench.
+    The <quote>ExampleProject</quote> project is part of the source release of UIMA Ruta (example-projects folder).
+  </para>
+  <para>
+    To import this project into the workbench do
+    <quote>File &rarr;
+      Import...
+    </quote>
+    . Select
+    <quote>Existing Projects into Workspace</quote>
+    under
+    <quote>General</quote>
+    . Select the
+    <quote>ExampleProject</quote>
+    directory
+    in your file system as root directory and click on
+    <quote>Finish</quote>
+    . The
+    example project is now available in your workspace.
+  </para>
+</section>

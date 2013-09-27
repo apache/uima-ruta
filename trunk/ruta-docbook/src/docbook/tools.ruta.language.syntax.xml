@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
+<!ENTITY imgroot "images/tools/tools.ruta/" >
+<!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
+%uimaents;
+]>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
+  license agreements. See the NOTICE file distributed with this work for additional 
+  information regarding copyright ownership. The ASF licenses this file to 
+  you under the Apache License, Version 2.0 (the "License"); you may not use 
+  this file except in compliance with the License. You may obtain a copy of 
+  the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+  by applicable law or agreed to in writing, software distributed under the 
+  License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+  OF ANY KIND, either express or implied. See the License for the specific 
+  language governing permissions and limitations under the License. -->
+
+<section id="ugr.tools.ruta.language.syntax">
+  <title>Syntax</title>
+  <para>
+    UIMA Ruta defines its own language for writing rules and rule
+    scripts. This section gives a formal overview of its syntax.
+  </para>
+  <para>
+    Structure: The overall structure of a UIMA Ruta
+    script is defined by
+    the following syntax.
+    <programlisting><![CDATA[Script              -> PackageDeclaration? GlobalStatements Statements
+PackageDeclaration  -> "PACKAGE" DottedIdentifier ";"
+GlobalStatments     -> GlobalStatement*   
+GlobalStatment      -> ("TYPESYSTEM" | "SCRIPT" | "ENGINE" | "UIMAFIT") 
+                       DottedIdentifier2 ";"
+Statements          -> Statement*
+Statement           -> Declaration | VariableDeclaration 
+                        | BlockDeclaration | SimpleStatement ";"]]></programlisting>
+    Comments are excluded from the syntax definition. Comments start with
+    "//" and always go to the end of the line.
+  </para>
+  <para>
+    Example beginning of a UIMA Ruta file:
+    <programlisting><![CDATA[PACKAGE uima.ruta.example;
+
+// import the types of this type system 
+// (located in the descriptor folder -> types folder)
+TYPESYSTEM types.BibtexTypeSystem;
+
+SCRIPT uima.ruta.example.Author;
+SCRIPT uima.ruta.example.Title;
+SCRIPT uima.ruta.example.Year;
+]]></programlisting>
+
+    Syntax of declarations:
+    <programlisting><![CDATA[Declaration -> "DECLARE" (AnnotationType)? Identifier ("," Identifier )*
+               | "DECLARE" AnnotationType Identifier ( "("
+               FeatureDeclaration ")" )?
+FeatureDeclaration  -> ( (AnnotationType | "STRING" | "INT" | "FLOAT"
+                       "DOUBLE" | "BOOLEAN") Identifier) )+
+VariableDeclaration -> (("TYPE" Identifier ("," Identifier)*
+                                                   ("=" AnnotationType)?)
+                     | ("STRING" Identifier ("," Identifier)*
+                                                 ("=" StringExpression)?)
+                     | (("INT" | "DOUBLE" | "FLOAT") Identifier
+                               ("," Identifier)* ("=" NumberExpression)?)
+                     | ("BOOLEAN" Identifier ("," Identifier)*
+                                                ("=" BooleanExpression)?)
+                     | ("WORDLIST" Identifier ("=" WordListExpression)?)
+                     | ("WORDTABLE" Identifier ("=" WordTableExpression)?)
+                     | ("TYPELIST" Identifier ("=" TypeListExpression)?)
+                     | ("STRINGLIST" Identifier
+                                             ("=" StringListExpression)?)
+                     | (("INTLIST" | "DOUBLELIST" | "FLOATLIST")
+                                  Identifier ("=" NumberListExpression)?)
+                     | ("BOOLEANLIST" Identifier
+                                           ("=" BooleanListExpression)?))
+AnnotationType      ->  BasicAnnotationType | declaredAnnotationType
+BasicAnnotationType ->  ('COLON'| 'SW' | 'MARKUP' | 'PERIOD' | 'CW'| 'NUM'
+                      | 'QUESTION' | 'SPECIAL' | 'CAP' | 'COMMA'
+                      | 'EXCLAMATION' | 'SEMICOLON' | 'NBSP'| 'AMP' | '_'
+                      | 'SENTENCEEND' | 'W' | 'PM' | 'ANY' | 'ALL'
+                      | 'SPACE' | 'BREAK')
+BlockDeclaration    -> "BLOCK" "(" Identifier ")" RuleElementWithCA
+                                                       "{" Statements "}"]]></programlisting>
+
+    Syntax of statements and rule elements:
+    <programlisting><![CDATA[SimpleStatement        -> SimpleRule | RegExpRule | ConjunctRules
+SimpleRule             -> RuleElements ";"
+RegExpRule             -> StringExpression "->" GroupAssignment 
+                          ("," GroupAssignment)* ";"
+ConjunctRules          -> RuleElements ("%" RuleElements)+ ";"
+GroupAssignment        -> TypeExpression 
+                        | NumberEpxression "=" TypeExpression
+RuleElements           -> RuleElement+
+RuleElement            -> RuleElementType | RuleElementLiteral
+                        | RuleElementComposed | RuleElementWildCard
+RuleElementType        ->  TypeExpression OptionalRuleElementPart
+RuleElementWithCA      ->  TypeExpression OptionalRuleElementPart
+RuleElementLiteral     ->  SimpleStringExpression OptionalRuleElementPart
+RuleElementComposed    -> "(" RuleElement ("&" RuleElement)+ ")"
+                          | "(" RuleElement ("|" RuleElement)+ ")"
+                          | "(" RuleElements ")"
+                          OptionalRuleElementPart
+OptionalRuleElementPart-> QuantifierPart? ("{" Conditions?  Actions? "}")?
+                          InlinedRules?
+InlinedRules           -> ( "<-" | "->" ) "{" SimpleStatement+ "}"
+RuleElementWildCard    -> "#"("{" Conditions?  Actions? }")? InlinedRules?
+QuantifierPart         -> "*" | "*?" | "+" | "+?" | "?" | "??"
+                        | "[" NumberExpression "," NumberExpression "]"
+                        | "[" NumberExpression "," NumberExpression "]?"
+Conditions             -> Condition ( "," Condition )*
+Actions                -> "->" Action ( "," Action)*
+]]></programlisting>
+    Since each condition and each action has its own syntax, conditions
+    and actions are described in their own section. For conditions see
+    <xref linkend='ugr.tools.ruta.language.conditions' />
+    , for actions see
+    <xref linkend='ugr.tools.ruta.language.actions' />.
+    The syntax of expressions is explained in
+    <xref linkend='ugr.tools.ruta.language.expressions' />.
+  </para>
+  <para>
+    It is also possible to use specific expression as implicit conditions or action additionally to the set of available conditions and actions.
+        <programlisting><![CDATA[Condition -> BooleanExpression | FeatureMatchExpression
+Action    -> TypeExpression | FeatureAssignmentExpression 
+]]></programlisting>
+  
+
+  </para>
+  
+  
+  <para>
+    Identifier:
+    <programlisting><![CDATA[DottedIdentifier    ->  Identifier ("." Identifier)*
+DottedIdentifier2   ->  Identifier (("."|"-") Identifier)*
+Identifier          ->  letter (letter|digit)*
+]]></programlisting>
+  </para>
+</section>
