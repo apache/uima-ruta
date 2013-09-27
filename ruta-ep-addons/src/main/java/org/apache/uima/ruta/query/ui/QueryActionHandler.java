@@ -20,12 +20,14 @@
 package org.apache.uima.ruta.query.ui;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UIMAFramework;
@@ -45,7 +47,6 @@ import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.apache.uima.ruta.engine.RutaEngine;
-import org.apache.uima.ruta.extensions.IEngineLoader;
 import org.apache.uima.ruta.extensions.IRutaActionExtension;
 import org.apache.uima.ruta.extensions.IRutaBooleanFunctionExtension;
 import org.apache.uima.ruta.extensions.IRutaConditionExtension;
@@ -108,11 +109,14 @@ public class QueryActionHandler implements IHandler {
 
     private String dataLocation;
 
-    QueryHandlerJob(ExecutionEvent event, String dir, String typeSystem, String rules,
-            boolean recurive) {
-      super("Query in " + dir + "...");
+    private final String fileNameFilter;
+
+    QueryHandlerJob(ExecutionEvent event, String dir, String fileNameFilter, String typeSystem,
+            String rules, boolean recurive) {
+      super(String.format("Query in \"%s\" [filter: \"%s\"] ...", dir, fileNameFilter));
       this.event = event;
       this.dataLocation = dir;
+      this.fileNameFilter = fileNameFilter;
       this.typeSystemLocation = typeSystem;
       this.rules = rules;
       this.recursive = recurive;
@@ -197,14 +201,13 @@ public class QueryActionHandler implements IHandler {
         ae.setConfigParameterValue(RutaEngine.PARAM_DEBUG_WITH_MATCHES, true);
         ae.setConfigParameterValue(RutaEngine.PARAM_PROFILE, false);
         ae.setConfigParameterValue(RutaEngine.PARAM_STATISTICS, false);
-        
-        
+
         IRutaConditionExtension[] conditionExtensions = RutaExtensionManager.getDefault()
                 .getRutaConditionExtensions();
         IRutaActionExtension[] actionExtensions = RutaExtensionManager.getDefault()
                 .getRutaActionExtensions();
-        IRutaBooleanFunctionExtension[] booleanFunctionExtensions = RutaExtensionManager.getDefault()
-                .getRutaBooleanFunctionExtensions();
+        IRutaBooleanFunctionExtension[] booleanFunctionExtensions = RutaExtensionManager
+                .getDefault().getRutaBooleanFunctionExtensions();
         IRutaNumberFunctionExtension[] numberFunctionExtensions = RutaExtensionManager.getDefault()
                 .getRutaNumberFunctionExtensions();
         IRutaStringFunctionExtension[] stringFunctionExtensions = RutaExtensionManager.getDefault()
@@ -234,8 +237,7 @@ public class QueryActionHandler implements IHandler {
         }
         ae.setConfigParameterValue(RutaEngine.PARAM_ADDITIONAL_EXTENSIONS,
                 languageExtensions.toArray(new String[0]));
-        
-        
+
         ae.reconfigure();
         CAS cas = ae.newCAS();
 
@@ -245,7 +247,7 @@ public class QueryActionHandler implements IHandler {
           if (ae != null) {
             ae.destroy();
           }
-          if(cas != null) {
+          if (cas != null) {
             cas.release();
           }
           return Status.CANCEL_STATUS;
@@ -263,7 +265,7 @@ public class QueryActionHandler implements IHandler {
             if (ae != null) {
               ae.destroy();
             }
-            if(cas != null) {
+            if (cas != null) {
               cas.release();
             }
             return Status.CANCEL_STATUS;
@@ -296,7 +298,7 @@ public class QueryActionHandler implements IHandler {
               if (ae != null) {
                 ae.destroy();
               }
-              if(cas != null) {
+              if (cas != null) {
                 cas.release();
               }
               return Status.CANCEL_STATUS;
@@ -333,6 +335,36 @@ public class QueryActionHandler implements IHandler {
 
       return Status.OK_STATUS;
 
+    }
+
+    public List<File> getFiles(File dir, boolean recusive) {
+      List<File> result = new ArrayList<File>();
+      if (fileNameFilter == null) {
+        return result;
+      }
+      FileFilter fileFilter = new FileFilter() {
+
+        public boolean accept(File pathname) {
+          if (Pattern.matches(fileNameFilter, pathname.getName())) {
+            return true;
+          }
+          return false;
+        }
+      };
+      for (File each : dir.listFiles(fileFilter)) {
+        result.add(each);
+      }
+      if (recusive) {
+        for (File subdir : dir.listFiles(new FileFilter() {
+
+          public boolean accept(File pathname) {
+            return pathname.isDirectory();
+          }
+        })) {
+          result.addAll(getFiles(subdir, recusive));
+        }
+      }
+      return result;
     }
 
     private void removeDebugAnnotations(CAS cas, Type matchedType, Type ruleApplyType,
@@ -398,10 +430,12 @@ public class QueryActionHandler implements IHandler {
     QueryComposite queryComposite = queryView.getComposite();
 
     String dir = queryComposite.getDataDirectory();
+    String fileNameFilter = queryComposite.getFileFilter();
     String typesystem = queryComposite.getTypeSystem();
     String script = queryComposite.getScript();
     boolean recurive = queryComposite.isRecursive();
-    QueryHandlerJob job = new QueryHandlerJob(event, dir, typesystem, script, recurive);
+    QueryHandlerJob job = new QueryHandlerJob(event, dir, fileNameFilter, typesystem, script,
+            recurive);
 
     job.addJobChangeListener(new QueryJobChangeAdapter(queryComposite) {
     });
@@ -421,20 +455,5 @@ public class QueryActionHandler implements IHandler {
 
   public void removeHandlerListener(IHandlerListener handlerListener) {
 
-  }
-
-  public static List<File> getFiles(File dir, boolean recusive) {
-    List<File> result = new ArrayList<File>();
-    for (File each : dir.listFiles()) {
-      // TODO: find a solution for this hotfix
-      if (each.getName().endsWith(".svn")) {
-        continue;
-      }
-      result.add(each);
-      if (each.isDirectory() && recusive) {
-        result.addAll(getFiles(each, recusive));
-      }
-    }
-    return result;
   }
 }
