@@ -42,7 +42,9 @@ public class RutaFeatureDeclaration extends RutaAbstractDeclaration {
   @Override
   public void traverse(ASTVisitor visitor) throws Exception {
     if (visitor.visit(this)) {
-      declType.traverse(visitor);
+      if(declType != null) {
+        declType.traverse(visitor);
+      }
       getRef().traverse(visitor);
       visitor.endvisit(this);
     }

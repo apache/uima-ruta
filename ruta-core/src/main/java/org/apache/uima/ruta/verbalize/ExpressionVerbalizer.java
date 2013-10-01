@@ -259,19 +259,12 @@ public class ExpressionVerbalizer {
   }
 
   public String verbalize(MatchReference expression) {
-    String head = "";
     String tail = "";
-    if (expression.getRawFeatureExpression() != null) {
-      head = verbalizer.verbalize(expression.getRawFeatureExpression());
-    } else if (expression.getRawTypeExpression() != null) {
-      head = verbalize(expression.getRawTypeExpression());
-    } else {
-      head = expression.getMatch();
-      if (expression.getOp() != null) {
-        tail += expression.getOp();
-        if (expression.getArg() != null) {
-          tail += verbalize(expression.getArg());
-        }
+    String head = expression.getMatch();
+    if (expression.getOp() != null) {
+      tail += expression.getOp();
+      if (expression.getArg() != null) {
+        tail += verbalize(expression.getArg());
       }
     }
     return head + tail;
