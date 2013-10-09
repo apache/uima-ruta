@@ -323,6 +323,14 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
    */
   public static final String PARAM_CREATED_BY = "createdBy";
 
+  /**
+   * If this parameter is set to true, then only types in declared type systems are available by their short name.
+   */
+  public static final String PARAM_STRICT_IMPORTS = "strictImports";
+
+  @ConfigurationParameter(name = PARAM_STRICT_IMPORTS, mandatory = false, defaultValue = "false")
+  private Boolean strictImports = false;
+
   @ConfigurationParameter(name = PARAM_CREATED_BY, mandatory = false, defaultValue = "false")
   private Boolean createdBy;
 
@@ -478,7 +486,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private void initializeTypes(RutaModule script, CAS cas) {
     // TODO find a better solution for telling everyone about the types!
     RutaBlock mainRootBlock = script.getBlock(null);
-    mainRootBlock.getEnvironment().initializeTypes(cas);
+    mainRootBlock.getEnvironment().initializeTypes(cas, strictImports);
     Collection<RutaModule> values = script.getScripts().values();
     for (RutaModule eachModule : values) {
       relinkEnvironments(eachModule, mainRootBlock, new ArrayList<RutaModule>());

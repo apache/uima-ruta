@@ -820,6 +820,14 @@ ae.process(cas);]]></programlisting>
                 </row>
                 <row>
                   <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.strictImports'>strictImports</link>
+                  </entry>
+                  <entry>Option to restrict short type names resolution to those in the declared typesystems.
+                  </entry>
+                  <entry>Single Boolean</entry>
+                </row>
+                <row>
+                  <entry>
                     <link linkend='ugr.tools.ruta.ae.basic.parameter.dynamicAnchoring'>dynamicAnchoring</link>
                   </entry>
                   <entry>Option to allow rule matches to start at any rule element.</entry>
@@ -1008,6 +1016,13 @@ ae.process(cas);]]></programlisting>
           <para>
             This parameter specifies whether the inference annotations created by the analysis engine should be removed after processing the CAS.
             The default value is set to true.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.strictImports">
+          <title>strictImports</title>
+          <para>
+            This parameter specifies whether short type names should be resolved against the typesystems declared in the script or at runtime in the CAS typesystem.
+            The default value is set to false.
           </para>
         </section>
         <section id="ugr.tools.ruta.ae.basic.parameter.dynamicAnchoring">

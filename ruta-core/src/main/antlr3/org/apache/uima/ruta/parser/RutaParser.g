@@ -98,6 +98,8 @@ private int level = 0;
 private RutaScriptFactory factory = new RutaScriptFactory();
 private RutaScriptFactory automataFactory = new RutaAutomataFactory();
 private RutaExternalFactory external;
+private String namespace;
+private String moduleName;
 
 
 public void setExternalFactory(RutaExternalFactory factory) {
@@ -185,10 +187,15 @@ public void setExternalFactory(RutaExternalFactory factory) {
 	}
 	
 	public void addType(RutaBlock parent, String type) {
+	    assert !moduleName.contains(".");
+	    assert !type.contains(".");
+
+	    String resolvedType = type;
+	    if (!type.contains(".")) {
+	        resolvedType = namespace + "." + moduleName + "." + type;
+	    }
+        parent.getEnvironment().declareType(resolvedType);
 	}
-	
-	public void addType(RutaBlock parent, String name, String parentType, List featuresTypes, List featuresNames) {
-    	}
 	
 	public boolean isType(RutaBlock parent, String type) {
 		return parent.getEnvironment().getType(type) != null || type.equals("Document");
@@ -201,7 +208,7 @@ public void setExternalFactory(RutaExternalFactory factory) {
 	}
 	
 	public void addImportTypeSystem(RutaBlock parent, String descriptor) {
-		//parent.getEnvironment().addTypeSystem(descriptor);
+		parent.getEnvironment().addTypeSystem(descriptor);
 	}
 	public void addImportScript(RutaBlock parent, String namespace) {
 		parent.getScript().addScript(namespace, null);
@@ -272,6 +279,8 @@ List<RutaStatement> stmts = new ArrayList<RutaStatement>();
 	:
 	p = packageDeclaration?
 	{
+	namespace = p;
+	this.moduleName = moduleName;
 	rootBlock = factory.createRootScriptBlock(moduleName, p);
         rootBlock.getEnvironment().setResourcePaths(resourcePaths);
 	rootBlock.setElements(stmts);
@@ -423,10 +432,10 @@ List featureNames = new ArrayList();
 	DECLARE 
 	//{!isType($blockDeclaration::env, input.LT(1).getText())}? 
 	lazyParent = annotationType?
-	id = Identifier //{addType($blockDeclaration::env, id.getText(), lazyParent);}
+	id = Identifier {addType($blockDeclaration::env, id.getText());}
 			(COMMA 
 			//{!isType($blockDeclaration::env, input.LT(1).getText())}? 
-			id = Identifier //{addType($blockDeclaration::env, id.getText(), lazyParent);}
+			id = Identifier {addType($blockDeclaration::env, id.getText());}
 		 )* SEMI
 	| 
 	DECLARE type = annotationType newName = Identifier 
@@ -452,7 +461,7 @@ List featureNames = new ArrayList();
 			) 
 			fname = Identifier{featureNames.add(fname.getText());})* 
 		RPAREN) SEMI 
-		{addType($blockDeclaration::env, newName.getText(), type.getText(), featureTypes, featureNames);}
+		{addType($blockDeclaration::env, newName.getText());}
 	)
 	;
 	

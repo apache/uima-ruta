@@ -19,6 +19,8 @@
 
 package org.apache.uima.ruta;
 
+import static org.apache.uima.util.Level.SEVERE;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,10 +34,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.antlr.runtime.CommonToken;
+import org.apache.uima.UIMAFramework;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.Type;
-import org.apache.uima.jcas.cas.TOP;
+import org.apache.uima.cas.TypeSystem;
+import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
+import org.apache.uima.resource.metadata.TypeDescription;
+import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.expression.bool.BooleanExpression;
@@ -55,32 +61,34 @@ import org.apache.uima.ruta.resource.RutaResourceLoader;
 import org.apache.uima.ruta.resource.RutaTable;
 import org.apache.uima.ruta.resource.RutaWordList;
 import org.apache.uima.ruta.resource.TreeWordList;
+import org.apache.uima.util.InvalidXMLException;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
 public class RutaEnvironment {
 
   private final Object annotationTypeDummy = new Object();
-
   private Map<String, Type> types;
-
   private Map<String, RutaWordList> wordLists;
-
   private Map<String, CSVTable> tables;
-
   private RutaBlock owner;
-
   /**
    * Mapping from short type name (e.g. {@code W}) to their disambiguated long type names
    * (e.g. {@code org.apache.uima.ruta.type.W}).
    */
   private Map<String, String> namespaces;
-
   /**
    * Mapping from ambiguous short type names to all their possible long type names.
    */
   private Map<String, Set<String>> ambiguousTypeAlias;
-
+  /**
+   * Set of imported typesystems.
+   */
+  private Set<String> typesystems;
+  /**
+   * Set of types that are declared in the script.
+   */
+  private Set<String> declaredAnnotationTypes;
   private Map<String, Object> variableValues;
   private Map<String, Class<?>> variableTypes;
 
@@ -102,6 +110,8 @@ public class RutaEnvironment {
     types = new HashMap<String, Type>();
     namespaces = new HashMap<String, String>();
     ambiguousTypeAlias = new HashMap<String, Set<String>>();
+    typesystems = new HashSet<String>();
+    declaredAnnotationTypes = new HashSet<String>();
     wordLists = new HashMap<String, RutaWordList>();
     tables = new HashMap<String, CSVTable>();
     variableValues = new HashMap<String, Object>();
@@ -133,18 +143,25 @@ public class RutaEnvironment {
     availableListTypes.put("TYPELIST", Type.class);
     resourcePaths = getResourcePaths();
     initializedVariables = new HashMap<String, Object>();
+
+    // Always import BasicTypeSystem
+    addTypeSystem("org.apache.uima.ruta.engine.BasicTypeSystem");
   }
 
-  public void initializeTypes(CAS cas) {
+  /**
+   * Import short type names.
+   *
+   * @param cas          Cas to initialize the types for.
+   * @param strictImport Specify whether all types should be imported (false) or only types
+   */
+  public void initializeTypes(CAS cas, boolean strictImport) {
     this.cas = cas;
-    Type topType = null;
     try {
-      topType = cas.getJCas().getCasType(TOP.type);
-      if (topType != null) {
-        List<Type> list = cas.getTypeSystem().getProperlySubsumedTypes(topType);
-        for (Type type : list) {
-          addType(type);
-        }
+      if (strictImport) {
+        importDeclaredTypes(cas.getTypeSystem());
+      } else {
+        // import all types known to the cas
+        importAllTypes(cas.getTypeSystem());
       }
 
       // "Document" can be resolved to "uima.tcas.DocumentAnnotation" or "org.apache.uima.ruta.type.Document",
@@ -157,8 +174,58 @@ public class RutaEnvironment {
       Type annotationType = cas.getJCas().getCasType(org.apache.uima.jcas.tcas.Annotation.type);
       addType("Annotation", annotationType);
     } catch (CASException e) {
+      UIMAFramework.getLogger(getClass()).log(SEVERE, "Cannot initialize types.", e);
+    } catch (InvalidXMLException e) {
+      UIMAFramework.getLogger(getClass()).log(SEVERE, "Cannot initialize types.", e);
     }
 
+  }
+
+  /**
+   * Imports all types that are known to a type system.
+   *
+   * @param ts Type system to import.
+   * @throws CASException
+   */
+  private void importAllTypes(TypeSystem ts) throws CASException {
+    Type topType = ts.getTopType();
+    if (topType != null) {
+      List<Type> list = ts.getProperlySubsumedTypes(topType);
+      for (Type type : list) {
+        addType(type);
+      }
+    }
+  }
+
+  /**
+   * Import all types that are declared by the script or the typesystems it reference.
+   *
+   * @param casTS Type system containing all known types.
+   * @throws InvalidXMLException When import cannot be resolved.
+   */
+  private void importDeclaredTypes(TypeSystem casTS) throws InvalidXMLException {
+    // Add types from all the declared type systems
+    String[] descriptors = typesystems.toArray(new String[typesystems.size()]);
+    TypeSystemDescription ts = TypeSystemDescriptionFactory.createTypeSystemDescription(descriptors);
+    ts.resolveImports();
+    for (TypeDescription td : ts.getTypes()) {
+      Type type = casTS.getType(td.getName());
+      if (type != null) {
+        addType(type);
+      } else {
+        throw new RuntimeException("Type '" + td.getName() + "' not found");
+      }
+    }
+
+    // Add declared types
+    for (String name : declaredAnnotationTypes) {
+      Type type = casTS.getType(name);
+      if (type != null) {
+        addType(type);
+      } else {
+        throw new RuntimeException("Type '" + name + "' not found");
+      }
+    }
   }
 
   public String[] getResourcePaths() {
@@ -235,6 +302,19 @@ public class RutaEnvironment {
 
   public void addType(Type type) {
     addType(type.getShortName(), type);
+  }
+
+  public void declareType(String name) {
+    declaredAnnotationTypes.add(name);
+  }
+
+  /**
+   * Add a typesystem to the script.
+   *
+   * @param descriptor Type system's descriptor path.
+   */
+  public void addTypeSystem(String descriptor) {
+    typesystems.add(descriptor);
   }
 
   /**
