@@ -226,23 +226,9 @@ public class RutaRuleElement extends AbstractRuleElement {
             result.addAll(continueMatchSomewhereElse);
           }
         } else {
-          // was:
-          // List<RuleMatch> stepbackMatch = stepbackMatch(after, annotation, extendedMatch,
-          // ruleApply,
-          // extendedContainerMatch, sideStepOrigin, stream, crowd, entryPoint);
-          if (getContainer() instanceof ComposedRuleElement) {
-            ComposedRuleElement composed = (ComposedRuleElement) getContainer();
-            List<RuleMatch> fallbackContinue = composed.fallbackContinue(after, true, eachAnchor,
-                    extendedMatch, ruleApply, extendedContainerMatch, sideStepOrigin, entryPoint,
-                    stream, crowd);
-            result.addAll(fallbackContinue);
-          } else {
-            // should never happen...
-            List<RuleMatch> stepbackMatch = stepbackMatch(after, annotation, ruleMatch, ruleApply,
-                    containerMatch, sideStepOrigin, stream, crowd, entryPoint);
-            result.addAll(stepbackMatch);
-          }
-
+          List<RuleMatch> stepbackMatch = stepbackMatch(after, annotation, ruleMatch, ruleApply,
+                  containerMatch, sideStepOrigin, stream, crowd, entryPoint);
+          result.addAll(stepbackMatch);
         }
       }
     } else {
@@ -288,7 +274,16 @@ public class RutaRuleElement extends AbstractRuleElement {
         result = continueMatchSomewhereElse(after, false, annotation, ruleMatch, ruleApply,
                 containerMatch, sideStepOrigin, null, stream, crowd);
       } else {
-        doneMatching(ruleMatch, ruleApply, stream, crowd);
+        if (getContainer() instanceof ComposedRuleElement) {
+          ComposedRuleElement composed = (ComposedRuleElement) getContainer();
+          List<RuleMatch> fallbackContinue = composed.fallbackContinue(after, true, annotation,
+                  ruleMatch, ruleApply, containerMatch, sideStepOrigin, entryPoint,
+                  stream, crowd);
+          result.addAll(fallbackContinue);
+        } else {
+          // should never happen!
+          doneMatching(ruleMatch, ruleApply, stream, crowd);
+        }
       }
     }
     return result;
