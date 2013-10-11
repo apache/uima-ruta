@@ -391,7 +391,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
               && (evaluateMatches != null || continueMatch));
       if (failed) {
         // TODO failed was caused by a child: should here failed = false?
-        if (!removedFailedMatches && continueMatch) {
+        if (!removedFailedMatches && evaluateMatches != null && continueMatch) {
           result = continueOwnMatch(after, annotation, ruleMatch, ruleApply, parentContainerMatch,
                   sideStepOrigin, null, stream, crowd);
         } else if (nextElement != null) {
