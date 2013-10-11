@@ -29,7 +29,8 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.junit.Test;
 
-public class QuantifierTest2 {
+public class DynamicAnchoring2Test {
+
   @Test
   public void test() {
     String name = this.getClass().getSimpleName();
@@ -37,7 +38,7 @@ public class QuantifierTest2 {
     CAS cas = null;
     try {
       cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
-              + ".txt", 50);
+              + ".txt", 50, true, false, null, null);
     } catch (Exception e) {
       e.printStackTrace();
       assert (false);
@@ -48,35 +49,23 @@ public class QuantifierTest2 {
 
     t = RutaTestUtils.getTestType(cas, 1);
     ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
+    assertEquals(1, ai.size());
     iterator = ai.iterator();
-    assertEquals("A3 A4", iterator.next().getCoveredText());
-    assertEquals("A4 A5", iterator.next().getCoveredText());
-    assertEquals("A6 A7", iterator.next().getCoveredText());
+    assertEquals("A b", iterator.next().getCoveredText());
 
     t = RutaTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
-    assertEquals("A1 B B A2", iterator.next().getCoveredText());
+    assertEquals("b A", iterator.next().getCoveredText());
 
     t = RutaTestUtils.getTestType(cas, 3);
     ai = cas.getAnnotationIndex(t);
-    assertEquals(0, ai.size());
-
-    t = RutaTestUtils.getTestType(cas, 4);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(4, ai.size());
+    assertEquals(1, ai.size());
     iterator = ai.iterator();
-    assertEquals("A1 B B A2", iterator.next().getCoveredText());
-    assertEquals("A3 A4", iterator.next().getCoveredText());
-    assertEquals("A4 A5", iterator.next().getCoveredText());
-    assertEquals("A6 A7", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 5);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(0, ai.size());
+    assertEquals("A b A", iterator.next().getCoveredText());
 
     cas.release();
+    
   }
 }

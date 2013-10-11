@@ -29,7 +29,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.junit.Test;
 
-public class QuantifierTest1 {
+public class Quantifier1Test {
   @Test
   public void test() {
     String name = this.getClass().getSimpleName();

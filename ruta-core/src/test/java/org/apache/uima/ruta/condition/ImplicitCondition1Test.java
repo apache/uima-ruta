@@ -32,13 +32,13 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.ruta.FeatureMatchTest;
+import org.apache.uima.ruta.FeatureMatch1Test;
 import org.apache.uima.ruta.RutaTestUtils;
 import org.apache.uima.ruta.RutaTestUtils.TestFeature;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.junit.Test;
 
-public class ImplicitConditionTest {
+public class ImplicitCondition1Test {
 
   @Test
   public void test() {
@@ -78,7 +78,7 @@ public class ImplicitConditionTest {
 
     try {
       cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION,
-              FeatureMatchTest.class.getName().replaceAll("\\.", "/") +".txt", 50, false, false, complexTypes, features, null);
+              FeatureMatch1Test.class.getName().replaceAll("\\.", "/") +".txt", 50, false, false, complexTypes, features, null);
     } catch (Exception e) {
       e.printStackTrace();
       assert (false);

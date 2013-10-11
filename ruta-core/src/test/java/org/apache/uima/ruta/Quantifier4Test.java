@@ -29,8 +29,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.junit.Test;
 
-public class RuleInferenceTest3 {
-
+public class Quantifier4Test {
   @Test
   public void test() {
     String name = this.getClass().getSimpleName();
@@ -47,21 +46,12 @@ public class RuleInferenceTest3 {
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
 
-    t = RutaTestUtils.getTestType(cas, 4);
+    t = RutaTestUtils.getTestType(cas, 1);
     ai = cas.getAnnotationIndex(t);
-    assertEquals(4, ai.size());
-       
+    assertEquals(1, ai.size());
     iterator = ai.iterator();
-    assertEquals("[1]", iterator.next().getCoveredText());
-    assertEquals("[2]", iterator.next().getCoveredText());
-    assertEquals("[3]", iterator.next().getCoveredText());
-    assertEquals("[4]", iterator.next().getCoveredText());
-
-   
-
-    if (cas != null) {
-      cas.release();
-    }
-
+    assertEquals("org.apache.uima.ruta.type.CW", iterator.next().getCoveredText());
+    
+    cas.release();
   }
 }

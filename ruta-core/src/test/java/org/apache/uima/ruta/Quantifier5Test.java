@@ -29,8 +29,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.junit.Test;
 
-public class RuleInferenceTest2 {
-
+public class Quantifier5Test {
   @Test
   public void test() {
     String name = this.getClass().getSimpleName();
@@ -47,24 +46,27 @@ public class RuleInferenceTest2 {
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
 
-    t = RutaTestUtils.getTestType(cas, 2);
+    t = RutaTestUtils.getTestType(cas, 5);
     ai = cas.getAnnotationIndex(t);
-    assertEquals(8, ai.size());
+    assertEquals(2, ai.size());
     iterator = ai.iterator();
-    assertEquals("References", iterator.next().getCoveredText());
-    assertEquals("Bergmark, D. (2000). Automatic extraction of reference linking information from online docu-", iterator.next().getCoveredText());
-    assertEquals("ments. Technical Report CSTR2000-1821, Cornell Digital Library Research Group.", iterator.next().getCoveredText());
-    assertEquals("Bergmark, D., Phempoonpanich, P., and Zhao, S. (2001). Scraping the ACM digital library.", iterator.next().getCoveredText());
-    assertEquals("SIGIR Forum, 35(2):1–7.", iterator.next().getCoveredText());
-    assertEquals("Berkowitz, E. and Elkhadiri, M. R. (2004). Creation of a style independent intelligent au-", iterator.next().getCoveredText());
-    assertEquals("tonomous citation indexer to support academic research. In Proceedings of the the Fifteenth", iterator.next().getCoveredText());
-    assertEquals("Midwest Artificial Intelligence and Cognitive Science conference MAICS 2004, pages 68–73.", iterator.next().getCoveredText());
-
-   
-
-    if (cas != null) {
-      cas.release();
-    }
-
+    assertEquals("Peter geht zur Arbeit", iterator.next().getCoveredText());
+    assertEquals("Peter zur Arbeit", iterator.next().getCoveredText());
+    
+    t = RutaTestUtils.getTestType(cas, 6);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(2, ai.size());
+    iterator = ai.iterator();
+    assertEquals("Peter geht zur Arbeit", iterator.next().getCoveredText());
+    assertEquals("Peter zur Arbeit", iterator.next().getCoveredText());
+    
+    t = RutaTestUtils.getTestType(cas, 7);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(2, ai.size());
+    iterator = ai.iterator();
+    assertEquals("Peter geht zur Arbeit", iterator.next().getCoveredText());
+    assertEquals("zur Arbeit", iterator.next().getCoveredText());
+    
+    cas.release();
   }
 }

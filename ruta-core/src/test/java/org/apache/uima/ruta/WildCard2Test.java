@@ -29,7 +29,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.junit.Test;
 
-public class WildCardTest2 {
+public class WildCard2Test {
 
   @Test
   public void test() {

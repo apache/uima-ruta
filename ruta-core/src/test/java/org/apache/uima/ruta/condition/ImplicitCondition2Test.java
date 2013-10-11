@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.ruta;
+package org.apache.uima.ruta.condition;
 
 import static org.junit.Assert.assertEquals;
 
@@ -26,21 +26,22 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.ruta.RutaTestUtils;
 import org.apache.uima.ruta.engine.Ruta;
 import org.junit.Test;
 
-public class FeatureMatchTest2 {
+public class ImplicitCondition2Test {
 
   @Test
   public void test() {
     String document = "Peter Kluegl, Joern Kottmann, Marshall Schor.";
     String script = "";
-    script += "CW.begin<=14{-> T1};\n";
-    script += "CW.begin<14{-> T2};\n";
-    script += "CW.begin==0{-> T3};\n";
-    script += "CW.begin!=0{-> T4};\n";
-    script += "CW.begin>=20{-> T5};\n";
-    script += "CW.begin>20{-> T6};\n";
+    script += "CW{CW.begin<=14 -> T1};\n";
+    script += "CW{CW.begin<14-> T2};\n";
+    script += "CW{CW.begin==0-> T3};\n";
+    script += "CW{CW.begin!=0-> T4};\n";
+    script += "CW{CW.begin>=20-> T5};\n";
+    script += "CW{CW.begin>20-> T6};\n";
     CAS cas = null;
     try {
       cas = RutaTestUtils.getCAS(document);

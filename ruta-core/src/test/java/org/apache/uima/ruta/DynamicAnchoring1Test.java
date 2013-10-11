@@ -29,12 +29,12 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.junit.Test;
 
-public class DynamicAnchoringTest {
+public class DynamicAnchoring1Test {
 
   @Test
   public void test() {
-    String name = RuleInferenceTest.class.getSimpleName();
-    String namespace = RuleInferenceTest.class.getPackage().getName().replaceAll("\\.", "/");
+    String name = RuleInference1Test.class.getSimpleName();
+    String namespace = RuleInference1Test.class.getPackage().getName().replaceAll("\\.", "/");
     CAS cas = null;
     try {
       cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name

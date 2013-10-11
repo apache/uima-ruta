@@ -29,7 +29,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
 import org.junit.Test;
 
-public class QuantifierTest6 {
+public class Quantifier6Test {
   @Test
   public void test() {
     String document = "A1B-2C3-D4E";

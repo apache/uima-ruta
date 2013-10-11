@@ -29,7 +29,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.junit.Test;
 
-public class QuantifierTest5 {
+public class Quantifier3Test {
   @Test
   public void test() {
     String name = this.getClass().getSimpleName();
@@ -46,26 +46,31 @@ public class QuantifierTest5 {
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
 
+    t = RutaTestUtils.getTestType(cas, 1);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    assertEquals("Big Big Big", iterator.next().getCoveredText());
+
+    t = RutaTestUtils.getTestType(cas, 2);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    assertEquals("Big Big Big", iterator.next().getCoveredText());
+
+    t = RutaTestUtils.getTestType(cas, 3);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(0, ai.size());
+
+    t = RutaTestUtils.getTestType(cas, 4);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    assertEquals("Big Big Big", iterator.next().getCoveredText());
+    
     t = RutaTestUtils.getTestType(cas, 5);
     ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Peter geht zur Arbeit", iterator.next().getCoveredText());
-    assertEquals("Peter zur Arbeit", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 6);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Peter geht zur Arbeit", iterator.next().getCoveredText());
-    assertEquals("Peter zur Arbeit", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 7);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Peter geht zur Arbeit", iterator.next().getCoveredText());
-    assertEquals("zur Arbeit", iterator.next().getCoveredText());
+    assertEquals(0, ai.size());
     
     cas.release();
   }

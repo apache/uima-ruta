@@ -19,25 +19,23 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
-
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.ruta.engine.RutaEngine;
 import org.junit.Test;
 
-public class QuantifierTest3 {
+public class LongGreedy2Test {
+
   @Test
   public void test() {
     String name = this.getClass().getSimpleName();
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
     CAS cas = null;
     try {
-      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
-              + ".txt", 50);
+//      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
+//              + ".txt", 50, false, true, null, null);
     } catch (Exception e) {
       e.printStackTrace();
       assert (false);
@@ -46,32 +44,16 @@ public class QuantifierTest3 {
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Big Big Big", iterator.next().getCoveredText());
+    // t = RutaTestUtils.getTestType(cas, 2);
+    // ai = cas.getAnnotationIndex(t);
+    // assertEquals(1, ai.size());
+    // iterator = ai.iterator();
+    // String coveredText2 = iterator.next().getCoveredText();
+    // assertEquals(64998, coveredText2.length());
 
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Big Big Big", iterator.next().getCoveredText());
+    if (cas != null) {
+      cas.release();
+    }
 
-    t = RutaTestUtils.getTestType(cas, 3);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(0, ai.size());
-
-    t = RutaTestUtils.getTestType(cas, 4);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Big Big Big", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 5);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(0, ai.size());
-    
-    cas.release();
   }
 }

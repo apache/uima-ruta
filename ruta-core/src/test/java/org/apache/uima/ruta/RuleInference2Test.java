@@ -17,69 +17,54 @@
  * under the License.
  */
 
-package org.apache.uima.ruta.action;
+package org.apache.uima.ruta;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.ruta.RutaTestUtils;
-import org.apache.uima.ruta.RutaTestUtils.TestFeature;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.junit.Test;
 
-public class ShiftTest2 {
+public class RuleInference2Test {
 
   @Test
   public void test() {
     String name = this.getClass().getSimpleName();
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
-    
-    Map<String, String> complexTypes = new HashMap<String, String>();
-    String typeName = "org.apache.uima.FS";
-    complexTypes.put(typeName, "uima.tcas.Annotation");
-    
-    Map<String, List<TestFeature>> features = new TreeMap<String, List<TestFeature>>();
-    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
-    features.put(typeName, list);
-    String fn1 = "doc";
-    list.add(new TestFeature(fn1, "", "uima.tcas.Annotation"));
-    String fn2 = "lang";
-    list.add(new TestFeature(fn2, "", "uima.cas.String"));
-    
     CAS cas = null;
     try {
       cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
-              + ".txt", 50, false, false, complexTypes, features, namespace + "/");
+              + ".txt", 50);
     } catch (Exception e) {
       e.printStackTrace();
       assert (false);
     }
+    Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
 
-    Type type = cas.getTypeSystem().getType(typeName);
-    Feature f1 = type.getFeatureByBaseName(fn1);
-    Feature f2 = type.getFeatureByBaseName(fn2);
-    ai = cas.getAnnotationIndex(type);
+    t = RutaTestUtils.getTestType(cas, 2);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(8, ai.size());
     iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    AnnotationFS next = iterator.next();
-    AnnotationFS v1 = (AnnotationFS) next.getFeatureValue(f1);
-    String v2 = next.getStringValue(f2); 
-    assertEquals("only some text<br/>", v1.getCoveredText());
-    assertEquals("unknown", v2);
-    assertEquals("only some text", next.getCoveredText());
-    cas.release();
+    assertEquals("References", iterator.next().getCoveredText());
+    assertEquals("Bergmark, D. (2000). Automatic extraction of reference linking information from online docu-", iterator.next().getCoveredText());
+    assertEquals("ments. Technical Report CSTR2000-1821, Cornell Digital Library Research Group.", iterator.next().getCoveredText());
+    assertEquals("Bergmark, D., Phempoonpanich, P., and Zhao, S. (2001). Scraping the ACM digital library.", iterator.next().getCoveredText());
+    assertEquals("SIGIR Forum, 35(2):1–7.", iterator.next().getCoveredText());
+    assertEquals("Berkowitz, E. and Elkhadiri, M. R. (2004). Creation of a style independent intelligent au-", iterator.next().getCoveredText());
+    assertEquals("tonomous citation indexer to support academic research. In Proceedings of the the Fifteenth", iterator.next().getCoveredText());
+    assertEquals("Midwest Artificial Intelligence and Cognitive Science conference MAICS 2004, pages 68–73.", iterator.next().getCoveredText());
+
+   
+
+    if (cas != null) {
+      cas.release();
+    }
+
   }
 }

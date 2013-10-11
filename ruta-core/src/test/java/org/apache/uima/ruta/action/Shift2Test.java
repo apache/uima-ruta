@@ -17,41 +17,69 @@
  * under the License.
  */
 
-package org.apache.uima.ruta;
+package org.apache.uima.ruta.action;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
+import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.ruta.RutaTestUtils;
+import org.apache.uima.ruta.RutaTestUtils.TestFeature;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.junit.Test;
 
-public class QuantifierTest4 {
+public class Shift2Test {
+
   @Test
   public void test() {
     String name = this.getClass().getSimpleName();
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
+    
+    Map<String, String> complexTypes = new HashMap<String, String>();
+    String typeName = "org.apache.uima.FS";
+    complexTypes.put(typeName, "uima.tcas.Annotation");
+    
+    Map<String, List<TestFeature>> features = new TreeMap<String, List<TestFeature>>();
+    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    features.put(typeName, list);
+    String fn1 = "doc";
+    list.add(new TestFeature(fn1, "", "uima.tcas.Annotation"));
+    String fn2 = "lang";
+    list.add(new TestFeature(fn2, "", "uima.cas.String"));
+    
     CAS cas = null;
     try {
       cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
-              + ".txt", 50);
+              + ".txt", 50, false, false, complexTypes, features, namespace + "/");
     } catch (Exception e) {
       e.printStackTrace();
       assert (false);
     }
-    Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
+    Type type = cas.getTypeSystem().getType(typeName);
+    Feature f1 = type.getFeatureByBaseName(fn1);
+    Feature f2 = type.getFeatureByBaseName(fn2);
+    ai = cas.getAnnotationIndex(type);
     iterator = ai.iterator();
-    assertEquals("org.apache.uima.ruta.type.CW", iterator.next().getCoveredText());
-    
+    assertEquals(1, ai.size());
+    AnnotationFS next = iterator.next();
+    AnnotationFS v1 = (AnnotationFS) next.getFeatureValue(f1);
+    String v2 = next.getStringValue(f2); 
+    assertEquals("only some text<br/>", v1.getCoveredText());
+    assertEquals("unknown", v2);
+    assertEquals("only some text", next.getCoveredText());
     cas.release();
   }
 }

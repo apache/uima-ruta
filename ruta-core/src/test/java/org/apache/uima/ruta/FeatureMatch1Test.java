@@ -36,7 +36,7 @@ import org.apache.uima.ruta.RutaTestUtils.TestFeature;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.junit.Test;
 
-public class FeatureMatchTest {
+public class FeatureMatch1Test {
 
   @Test
   public void test() {
