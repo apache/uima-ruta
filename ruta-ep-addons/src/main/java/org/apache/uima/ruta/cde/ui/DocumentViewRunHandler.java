@@ -196,11 +196,12 @@ public class DocumentViewRunHandler implements IHandler {
                 IPreferenceStore store = RutaAddonsPlugin.getDefault().getPreferenceStore();
                 String factoryName = store.getString(TestingPreferenceConstants.EVALUATOR_FACTORY);
                 boolean includeSubtypes = store.getBoolean(TestingPreferenceConstants.INCLUDE_SUBTYPES);
+                boolean useAllTypes = store.getBoolean(TestingPreferenceConstants.ALL_TYPES);
                 
                 ICasEvaluator evaluator = RutaAddonsPlugin.getCasEvaluatorFactoryById(factoryName)
                         .createEvaluator();
                 ArrayList<String> excludedTypes = new ArrayList<String>();
-                CAS resultCas = evaluator.evaluate(testCas, inputCAS, excludedTypes, includeSubtypes);
+                CAS resultCas = evaluator.evaluate(testCas, inputCAS, excludedTypes, includeSubtypes, useAllTypes);
                 document.setFMeasure(calculateF1(resultCas));
               }
             }

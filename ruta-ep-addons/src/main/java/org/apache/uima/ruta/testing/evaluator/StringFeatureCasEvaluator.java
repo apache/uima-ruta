@@ -39,7 +39,7 @@ import org.apache.uima.ruta.engine.RutaEngine;
 
 public class StringFeatureCasEvaluator extends AbstractCasEvaluator {
   
-  public CAS evaluate(CAS test, CAS run, Collection<String> excludedTypes, boolean includeSubtypes)
+  public CAS evaluate(CAS test, CAS run, Collection<String> excludedTypes, boolean includeSubtypes, boolean useAllTypes)
           throws CASRuntimeException, CASException {
     Type falsePositiveType = run.getTypeSystem().getType(ICasEvaluator.FALSE_POSITIVE);
     Type falseNegativeType = run.getTypeSystem().getType(ICasEvaluator.FALSE_NEGATIVE);

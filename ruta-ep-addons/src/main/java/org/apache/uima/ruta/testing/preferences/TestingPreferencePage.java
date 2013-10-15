@@ -49,14 +49,14 @@ public class TestingPreferencePage extends PreferencePage implements IWorkbenchP
 
   private BooleanFieldEditor includeSubtypes;
 
+  private BooleanFieldEditor allTypes;
+
   public TestingPreferencePage() {
     IPreferenceStore store = RutaAddonsPlugin.getDefault().getPreferenceStore();
     setPreferenceStore(store);
   }
 
   public void init(IWorkbench workbench) {
-    // TODO Auto-generated method stub
-
   }
 
   @Override
@@ -83,6 +83,11 @@ public class TestingPreferencePage extends PreferencePage implements IWorkbenchP
     includeSubtypes.setPreferenceStore(getPreferenceStore());
     includeSubtypes.load();
     
+    allTypes = new BooleanFieldEditor(TestingPreferenceConstants.ALL_TYPES,
+            "Use all types", top);
+    allTypes.setPage(this);
+    allTypes.setPreferenceStore(getPreferenceStore());
+    allTypes.load();
     
     evaluators = new DescriptionRadioGroupFieldEditor(TestingPreferenceConstants.EVALUATOR_FACTORY,
             "Evaluator :", 1, TestingPreferenceConstants.EVALUATORS, top);
@@ -123,6 +128,7 @@ public class TestingPreferencePage extends PreferencePage implements IWorkbenchP
     oldResults.loadDefault();
     evaluators.loadDefault();
     includeSubtypes.loadDefault();
+    allTypes.loadDefault();
     super.performDefaults();
   }
 
@@ -132,6 +138,7 @@ public class TestingPreferencePage extends PreferencePage implements IWorkbenchP
     oldResults.store();
     evaluators.store();
     includeSubtypes.store();
+    allTypes.store();
     return super.performOk();
   }
 }

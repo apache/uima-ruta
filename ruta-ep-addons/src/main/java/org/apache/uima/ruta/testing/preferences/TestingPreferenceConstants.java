@@ -19,9 +19,6 @@
 
 package org.apache.uima.ruta.testing.preferences;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -38,6 +35,8 @@ public class TestingPreferenceConstants {
   public static final String LOAD_OLD_TEST_RESULTS = "LOAD_OLD_TEST_RESULTS";
 
   public static final String INCLUDE_SUBTYPES = "INCLUDE_SUBTYPES";
+  
+  public static final String ALL_TYPES = "ALL_TYPES";
 
   public static String[][] EVALUATORS = getEvaluators();
 

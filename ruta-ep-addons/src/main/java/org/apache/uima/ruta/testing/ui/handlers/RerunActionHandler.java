@@ -217,9 +217,10 @@ public class RerunActionHandler implements IHandler {
           ICasEvaluator evaluator = RutaAddonsPlugin.getCasEvaluatorFactoryById(factoryName)
                   .createEvaluator();
           boolean includeSubtypes = store.getBoolean(TestingPreferenceConstants.INCLUDE_SUBTYPES);
+          boolean useAllTypes = store.getBoolean(TestingPreferenceConstants.ALL_TYPES);
           
           ae.process(runCas);
-          CAS resultCas = evaluator.evaluate(testCas, runCas, excludedTypes, includeSubtypes);
+          CAS resultCas = evaluator.evaluate(testCas, runCas, excludedTypes, includeSubtypes, useAllTypes);
 
           IPath path2Test = td.getPath().removeLastSegments(1);
 
@@ -363,11 +364,11 @@ public class RerunActionHandler implements IHandler {
     data.setFalsePositiveCount(falsePositiveCount);
     data.setFalseNegativeCount(falseNegativeCount);
 
-    HashMap map = new HashMap();
+    HashMap<String, TypeEvalData> map = new HashMap<String, TypeEvalData>();
 
     AnnotationIndex<AnnotationFS> index = resultCas.getAnnotationIndex(truePositiveType);
 
-    FSIterator iter = index.iterator();
+    FSIterator<AnnotationFS> iter = index.iterator();
 
     while (iter.isValid()) {
       EvalAnnotation a = (EvalAnnotation) iter.next();

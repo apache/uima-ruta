@@ -15,11 +15,12 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.testing.evaluator;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.cas.CAS;
@@ -37,10 +38,10 @@ public abstract class AbstractCasEvaluator implements ICasEvaluator {
     for (AnnotationFS each : annotationIndex) {
       Type type = each.getType();
       for (Type eachType : types) {
-        if(includeSubtypes && typeSystem.subsumes(eachType, type)) {
+        if (includeSubtypes && typeSystem.subsumes(eachType, type)) {
           result.add(each);
           break;
-        } else if(eachType.getName().equals(type.getName())) {
+        } else if (eachType.getName().equals(type.getName())) {
           result.add(each);
           break;
         }
@@ -56,6 +57,20 @@ public abstract class AbstractCasEvaluator implements ICasEvaluator {
         return true;
     }
     return false;
+  }
+
+  protected List<Type> getTypes(CAS test, Collection<String> excludedTypes, Type annotationType,
+          boolean useAllTypes) {
+    List<Type> allTypes = test.getTypeSystem().getProperlySubsumedTypes(annotationType);
+    List<Type> types = new ArrayList<Type>();
+    for (Type eachType : allTypes) {
+      int size = test.getAnnotationIndex(eachType).size();
+      if (!excludedTypes.contains(eachType.getName()) && (size > 0 || useAllTypes)
+              && !eachType.equals(test.getDocumentAnnotation().getType())) {
+        types.add(eachType);
+      }
+    }
+    return types;
   }
 
 }
