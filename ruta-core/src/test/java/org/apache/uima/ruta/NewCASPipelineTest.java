@@ -32,6 +32,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
 import org.apache.uima.fit.pipeline.SimplePipeline;
+import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.ResourceMetaData;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
@@ -71,7 +72,7 @@ public class NewCASPipelineTest {
 
   @Test
   public void test() throws ResourceInitializationException, IOException, InvalidXMLException,
-          AnalysisEngineProcessException {
+          AnalysisEngineProcessException, ResourceConfigurationException {
     final String name = getClass().getSimpleName();
     final String namespace = getClass().getPackage().getName();
     final AnalysisEngine ae = createAE(namespace + "." + name);
@@ -79,6 +80,9 @@ public class NewCASPipelineTest {
     metaData.add(ae.getMetaData());
     String input = "This is a test.";
     Type t1 = null;
+    
+    
+    // create a cas and apply rules
     final CAS cas = CasCreationUtils.createCas(metaData);
     cas.setDocumentText(input);
     SimplePipeline.runPipeline(cas, ae);
@@ -86,12 +90,17 @@ public class NewCASPipelineTest {
     t1 = cas.getTypeSystem().getType(TEST_TYPE);
     assertEquals(1, cas.getAnnotationIndex(t1).size());
 
+    // reset the cas and do it again
     cas.reset();
     cas.setDocumentText(input);
     SimplePipeline.runPipeline(cas, ae);
 
     t1 = cas.getTypeSystem().getType(TEST_TYPE);
     assertEquals(1, cas.getAnnotationIndex(t1).size());
+    
+    // create a new cas and force the ae to update its types
+    ae.setConfigParameterValue(RutaEngine.PARAM_RELOAD_SCRIPT, true);
+    ae.reconfigure();
     
     final CAS cas2 = CasCreationUtils.createCas(metaData);
     cas2.setDocumentText(input);
@@ -100,6 +109,23 @@ public class NewCASPipelineTest {
     t1 = cas2.getTypeSystem().getType(TEST_TYPE);
     assertEquals(1, cas2.getAnnotationIndex(t1).size());
     
+    // create a new cas and do not force the ae to update its types
+    ae.setConfigParameterValue(RutaEngine.PARAM_RELOAD_SCRIPT, false);
+    ae.reconfigure();
+    final CAS cas3 = CasCreationUtils.createCas(metaData);
+    cas3.setDocumentText(input);
+    SimplePipeline.runPipeline(cas3, ae);
+
+    t1 = cas3.getTypeSystem().getType(TEST_TYPE);
+    assertEquals(1, cas3.getAnnotationIndex(t1).size());
+    
+    // create a new cas and do not reconfigure the engine
+    final CAS cas4 = CasCreationUtils.createCas(metaData);
+    cas4.setDocumentText(input);
+    SimplePipeline.runPipeline(cas4, ae);
+
+    t1 = cas4.getTypeSystem().getType(TEST_TYPE);
+    assertEquals(1, cas4.getAnnotationIndex(t1).size());
     
     if (ae != null) {
       ae.destroy();
@@ -109,6 +135,12 @@ public class NewCASPipelineTest {
     }
     if (cas2 != null) {
       cas2.release();
+    }
+    if (cas3 != null) {
+      cas3.release();
+    }
+    if (cas4 != null) {
+      cas4.release();
     }
 
   }
