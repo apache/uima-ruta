@@ -350,6 +350,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   private List<Type> seedTypes;
 
+  private TypeSystem lastTypeSystem;
+
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
@@ -432,9 +434,11 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     } else {
       resetEnvironments(cas);
     }
-    if (!initialized || reloadScript) {
+    boolean typeSystemChanged = lastTypeSystem != cas.getTypeSystem();
+    if (!initialized || reloadScript || typeSystemChanged) {
       initializeTypes(script, cas);
       initialized = true;
+      lastTypeSystem = cas.getTypeSystem();
     }
     InferenceCrowd crowd = initializeCrowd();
     RutaStream stream = initializeStream(cas, crowd);
