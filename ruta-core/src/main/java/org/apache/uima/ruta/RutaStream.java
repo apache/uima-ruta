@@ -80,6 +80,8 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
 
   private InferenceCrowd crowd;
 
+  private Boolean greedyAnchoring;
+
   protected RutaStream(CAS cas, FSIterator<AnnotationFS> current, Type basicType,
           FilterManager filter, boolean lowMemoryProfile, boolean simpleGreedyForComposed,
           InferenceCrowd crowd) {
@@ -345,12 +347,17 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
             windowType, cas);
     RutaStream stream = new RutaStream(cas, basicIt, basicType, filterManager, lowMemoryProfile,
             simpleGreedyForComposed, crowd);
+    stream.setDynamicAnchoring(dynamicAnchoring);
+    stream.setGreedyAnchoring(greedyAnchoring);
     return stream;
   }
 
   public FSIterator<AnnotationFS> copy() {
-    return new RutaStream(cas, currentIt.copy(), basicType, filter, lowMemoryProfile,
+    RutaStream stream = new RutaStream(cas, currentIt.copy(), basicType, filter, lowMemoryProfile,
             simpleGreedyForComposed, crowd);
+    stream.setDynamicAnchoring(dynamicAnchoring);
+    stream.setGreedyAnchoring(greedyAnchoring);
+    return stream;
   }
 
   public AnnotationFS get() throws NoSuchElementException {
@@ -692,8 +699,11 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
 
   public RutaStream getCompleteStream() {
     FilterManager defaultFilter = new FilterManager(filter.getDefaultFilterTypes(), getCas());
-    return new RutaStream(getCas(), basicIt, basicType, defaultFilter, lowMemoryProfile,
+    RutaStream stream = new RutaStream(getCas(), basicIt, basicType, defaultFilter, lowMemoryProfile,
             simpleGreedyForComposed, crowd);
+    stream.setDynamicAnchoring(dynamicAnchoring);
+    stream.setGreedyAnchoring(greedyAnchoring);
+    return stream;
   }
 
   public long getHistogram(Type type) {
@@ -719,7 +729,15 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   public void setDynamicAnchoring(boolean dynamicAnchoring) {
     this.dynamicAnchoring = dynamicAnchoring;
   }
-
+  
+  public boolean isGreedyAnchoring() {
+    return greedyAnchoring;
+  }
+  
+  public void setGreedyAnchoring(Boolean greedyAnchoring) {
+    this.greedyAnchoring = greedyAnchoring;
+  }
+  
   public void setIndexPenalty(double indexPenalty) {
     this.indexPenalty = indexPenalty;
   }
@@ -766,5 +784,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       return getBeginAnchor(annotation.getBegin());
     }
   }
+
+
   
 }

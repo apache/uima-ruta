@@ -1318,6 +1318,7 @@ action  returns [AbstractRutaAction result = null]
 	| a = actionShift
 	| a = actionConfigure
 	| a = actionDynamicAnchoring
+	| a = actionGreedyAnchoring
 	| a = actionTrim 
 	| a = actionAddRetainType
 	| a = actionRemoveRetainType
@@ -1641,6 +1642,13 @@ actionDynamicAnchoring returns [AbstractRutaAction action = null]
     (COMMA penalty = numberExpression 
     (COMMA factor = numberExpression)?)? 
     {action = ActionFactory.createDynamicAnchoringAction(active, penalty, factor, $blockDeclaration::env);}
+    RPAREN
+    ;
+
+actionGreedyAnchoring returns [AbstractRutaAction action = null]
+    :
+    name = GREEDYANCHORING LPAREN active = booleanExpression 
+    {action = ActionFactory.createGreedyAnchoringAction(active, $blockDeclaration::env);}
     RPAREN
     ;
 

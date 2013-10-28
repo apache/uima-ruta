@@ -40,6 +40,7 @@ import org.apache.uima.ruta.action.GatherAction;
 import org.apache.uima.ruta.action.GetAction;
 import org.apache.uima.ruta.action.GetFeatureAction;
 import org.apache.uima.ruta.action.GetListAction;
+import org.apache.uima.ruta.action.GreedyAnchoringAction;
 import org.apache.uima.ruta.action.ImplicitFeatureAction;
 import org.apache.uima.ruta.action.ImplicitMarkAction;
 import org.apache.uima.ruta.action.LogAction;
@@ -148,6 +149,8 @@ public class ActionVerbalizer {
       return "CONFIGURE";
     } else if (action instanceof DynamicAnchoringAction) {
       return "DYNAMICANCHORING";
+    } else if (action instanceof GreedyAnchoringAction) {
+      return "GREEDYANCHORING";
     } else if (action instanceof GetListAction) {
       return "GETLIST";
     } else if (action instanceof MarkTableAction) {
@@ -422,6 +425,11 @@ public class ActionVerbalizer {
       String pp = panelty == null ? "" : ", " + verbalizer.verbalize(panelty);
       String pf = factor == null ? "" : ", " + verbalizer.verbalize(factor);
       return name + pa + pp + pf + ")";
+    } else if (action instanceof GreedyAnchoringAction) {
+      GreedyAnchoringAction a = (GreedyAnchoringAction) action;
+      BooleanExpression active = a.getActive();
+      String pa = verbalizer.verbalize(active);
+      return name + pa + ")";
     } else if (action instanceof GetListAction) {
       GetListAction a = (GetListAction) action;
       String var = a.getVar();

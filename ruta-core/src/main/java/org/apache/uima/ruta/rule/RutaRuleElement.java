@@ -57,6 +57,9 @@ public class RutaRuleElement extends AbstractRuleElement {
     Collection<AnnotationFS> anchors = getAnchors(stream);
     boolean useAlternatives = anchors.size() != 1;
     for (AnnotationFS eachAnchor : anchors) {
+      if(stream.isGreedyAnchoring() && isAlreadyCovered(eachAnchor, ruleApply, stream)) {
+        continue;
+      }
       ComposedRuleElementMatch extendedContainerMatch = containerMatch;
       RuleMatch extendedMatch = ruleMatch;
       if (useAlternatives) {
@@ -113,6 +116,22 @@ public class RutaRuleElement extends AbstractRuleElement {
       }
     }
     return result;
+  }
+
+  private boolean isAlreadyCovered(AnnotationFS eachAnchor, RuleApply ruleApply, RutaStream stream) {
+    List<AbstractRuleMatch<? extends AbstractRule>> list = ruleApply.getList();
+    Collections.reverse(list);
+    for (AbstractRuleMatch<? extends AbstractRule> each : list) {
+      if(each instanceof RuleMatch) {
+        RuleMatch rm = (RuleMatch) each;
+        List<AnnotationFS> matchedAnnotationsOf = rm.getMatchedAnnotationsOf(this);
+        for (AnnotationFS annotationFS : matchedAnnotationsOf) {
+          if(eachAnchor.getBegin() >= annotationFS.getBegin() && eachAnchor.getEnd() <= annotationFS.getEnd())
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   public List<RuleMatch> continueOwnMatch(boolean after, AnnotationFS annotation,

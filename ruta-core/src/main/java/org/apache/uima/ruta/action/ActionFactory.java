@@ -273,4 +273,9 @@ public class ActionFactory {
     return new MarkFirstAction(type);
   }
 
+  public static AbstractRutaAction createGreedyAnchoringAction(BooleanExpression active,
+          RutaBlock env) {
+    return new GreedyAnchoringAction(active);
+  }
+
 }

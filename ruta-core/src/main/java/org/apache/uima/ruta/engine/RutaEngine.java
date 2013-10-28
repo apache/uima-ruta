@@ -271,6 +271,17 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private Boolean simpleGreedyForComposed;
 
   /**
+   * If this parameter is set to true, then start positions already matched by the same rule will be ignored. This situation 
+   * occurs mostly for rules that start with a quantifier. The following rule, for example, matches only once, 
+   * if this parameter is set to true: {@code ANY+;}
+   */
+  public static final String PARAM_GREEDY_ANCHORING = "greedyAnchoring";
+
+  @ConfigurationParameter(name = PARAM_GREEDY_ANCHORING, mandatory = false, defaultValue = "false")
+  private Boolean greedyAnchoring = false;
+  
+  
+  /**
    * If this parameter is set to true, then additional information about the execution of a rule
    * script is added to the CAS. The actual information is specified by the following parameters.
    * The default value of this parameter is set to false.
@@ -281,7 +292,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private Boolean debug;
 
   /**
-   * This parameter specificies whether the match information (covered text) of the rules should be
+   * This parameter specifies whether the match information (covered text) of the rules should be
    * stored in the CAS. The default value of this parameter is set to false.
    */
   public static final String PARAM_DEBUG_WITH_MATCHES = "debugWithMatches";
@@ -323,6 +334,9 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
    */
   public static final String PARAM_CREATED_BY = "createdBy";
 
+  @ConfigurationParameter(name = PARAM_CREATED_BY, mandatory = false, defaultValue = "false")
+  private Boolean createdBy;
+
   /**
    * If this parameter is set to true, then only types in declared type systems are available by their short name.
    */
@@ -330,9 +344,6 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   @ConfigurationParameter(name = PARAM_STRICT_IMPORTS, mandatory = false, defaultValue = "false")
   private Boolean strictImports = false;
-
-  @ConfigurationParameter(name = PARAM_CREATED_BY, mandatory = false, defaultValue = "false")
-  private Boolean createdBy;
 
   private UimaContext context;
 
@@ -387,6 +398,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     lowMemoryProfile = (Boolean) aContext.getConfigParameterValue(PARAM_LOW_MEMORY_PROFILE);
     simpleGreedyForComposed = (Boolean) aContext
             .getConfigParameterValue(PARAM_SIMPLE_GREEDY_FOR_COMPOSED);
+    greedyAnchoring = (Boolean) aContext
+            .getConfigParameterValue(PARAM_GREEDY_ANCHORING);
 
     resourcePaths = resourcePaths == null ? new String[0] : resourcePaths;
     removeBasics = removeBasics == null ? false : removeBasics;
@@ -403,7 +416,9 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     reloadScript = reloadScript == null ? false : reloadScript;
     lowMemoryProfile = lowMemoryProfile == null ? false : lowMemoryProfile;
     simpleGreedyForComposed = simpleGreedyForComposed == null ? false : simpleGreedyForComposed;
+    greedyAnchoring = greedyAnchoring == null ? false : greedyAnchoring;
 
+    
     this.context = aContext;
 
     factory = new RutaExternalFactory();
@@ -443,6 +458,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     InferenceCrowd crowd = initializeCrowd();
     RutaStream stream = initializeStream(cas, crowd);
     stream.setDynamicAnchoring(dynamicAnchoring);
+    stream.setGreedyAnchoring(greedyAnchoring);
     try {
       script.apply(stream, crowd);
     } catch (Throwable e) {

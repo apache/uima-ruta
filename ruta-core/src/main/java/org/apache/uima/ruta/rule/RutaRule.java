@@ -37,7 +37,7 @@ public class RutaRule extends AbstractRule {
 
   @Override
   public RuleApply apply(RutaStream stream, InferenceCrowd crowd) {
-    return apply(stream, crowd, false);
+    return apply(stream, crowd, stream.isGreedyAnchoring());
   }
 
   public RuleApply apply(RutaStream stream, InferenceCrowd crowd, boolean remember) {

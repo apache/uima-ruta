@@ -1323,6 +1323,7 @@ result = ActionFactory.createEmptyAction(input.LT(1));
 	| a = actionShift
 	| a = actionConfigure
 	| a = actionDynamicAnchoring
+	| a = actionGreedyAnchoring
 	| a = actionTrim
 	| a = actionAddFilterType
 	| a = actionAddRetainType
@@ -1752,6 +1753,13 @@ actionDynamicAnchoring returns [RutaAction action = null]
     {action = ActionFactory.createAction(name, active, penalty);}
     (COMMA factor = numberExpression)?)? 
     {action = ActionFactory.createAction(name, active, penalty, factor);}
+    RPAREN
+    ;
+
+actionGreedyAnchoring returns [RutaAction action = null]
+    :
+    name = GREEDYANCHORING LPAREN active = booleanExpression 
+     {action = ActionFactory.createAction(name, active);}
     RPAREN
     ;
 

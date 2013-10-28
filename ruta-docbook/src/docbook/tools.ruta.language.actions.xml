@@ -660,6 +660,36 @@ A B{-> GATHER(C, 1, 2, "a" = 1, "b" = 2)};]]></programlisting>
     </section>
   </section>
 
+  <section id="ugr.tools.ruta.language.actions.greedyanchoring">
+    <title>GREEDYANCHORING</title>
+    <para>
+      The GREEDYANCHORING action turns greedy anchoring on or off
+      (first parameter). If this parameter is set to true, then start positions already matched by the same rule will be ignored. This situation 
+      occurs mostly for rules that start with a quantifier. 
+    </para>
+    <section>
+      <title>
+        <emphasis role="bold">Definition:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[GREEDYANCHORING(BooleanExpression)]]></programlisting>
+      </para>
+    </section>
+    <section>
+      <title>
+        <emphasis role="bold">Example:</emphasis>
+      </title>
+      <para>
+        <programlisting><![CDATA[Document{->GREEDYANCHORING(true)};
+        ANY+;]]></programlisting>
+      </para>
+      <para>
+        The above mentioned example activates dynamic anchoring and the second rule will then only match once 
+        since the next positions, e.g., the second token, are already covered by the first attempt.
+      </para>
+    </section>
+  </section>
+
   <section id="ugr.tools.ruta.language.actions.log">
     <title>LOG</title>
     <para>

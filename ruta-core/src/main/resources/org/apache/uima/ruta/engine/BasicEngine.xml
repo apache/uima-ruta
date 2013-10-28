@@ -132,7 +132,14 @@
       </configurationParameter>
       <configurationParameter>
         <name>dynamicAnchoring</name>
-        <description>Activates dynamic achoring (possible speed up).</description>
+        <description>Activates dynamic anchoring (possible speed up).</description>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>greedyAnchoring</name>
+        <description>Activates greedy anchoring.</description>
         <type>Boolean</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>

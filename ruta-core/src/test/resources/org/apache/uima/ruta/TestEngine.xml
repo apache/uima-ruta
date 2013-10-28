@@ -138,6 +138,13 @@
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
+        <name>greedyAnchoring</name>
+        <description>Activates greedy anchoring.</description>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
         <name>lowMemoryProfile</name>
         <type>Boolean</type>
         <multiValued>false</multiValued>
