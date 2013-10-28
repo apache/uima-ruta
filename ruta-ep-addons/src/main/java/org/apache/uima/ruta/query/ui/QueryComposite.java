@@ -25,8 +25,10 @@ import java.util.Iterator;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.uima.caseditor.editor.AnnotationEditor;
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
+import org.apache.uima.ruta.cde.utils.DocumentData;
 import org.apache.uima.ruta.ide.core.RutaLanguageToolkit;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IWorkspace;
@@ -53,12 +55,16 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.FileTransfer;
+import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -73,6 +79,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -115,10 +122,12 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
 
   private ControlDecoration deco;
 
+  private Clipboard clipboard;
+
   public QueryComposite(Composite parent, int style) {
     super(parent, style);
     // initImages();
-
+    clipboard = new Clipboard(parent.getDisplay());
     initGUI();
 
     ScrolledComposite sComp = new ScrolledComposite(parent, SWT.BORDER | SWT.V_SCROLL
@@ -347,10 +356,32 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
       composite2.setLayoutData(comp2Data);
       composite2.setLayout(new FillLayout());
 
-      resultViewer = new TableViewer(composite2, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
-      resultViewer.setLabelProvider(new QueryResultLabelProvider());
+      resultViewer = new TableViewer(composite2, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.MULTI);
+      final QueryResultLabelProvider queryResultLabelProvider = new QueryResultLabelProvider();
+      resultViewer.setLabelProvider(queryResultLabelProvider);
       resultViewer.setContentProvider(new QueryResultContentProvider());
       resultViewer.addSelectionChangedListener(this);
+      resultViewer.getTable().addKeyListener(new KeyListener() {
+
+        public void keyPressed(KeyEvent e) {
+          if (((e.stateMask & SWT.CTRL) == SWT.CTRL) && (e.keyCode == 'c')) {
+            String output = "";
+            TableItem[] items = resultViewer.getTable().getSelection();
+            for (TableItem item : items) {
+              QueryResult data = (QueryResult) item.getData();
+              if(output.length() != 0) {
+                output += System.getProperty("line.separator");
+              }
+              output += queryResultLabelProvider.getText(data);
+            }
+            clipboard.setContents(new Object[] { output },
+                    new Transfer[] { TextTransfer.getInstance() });
+          }
+        }
+
+        public void keyReleased(KeyEvent arg0) {
+        }
+      });
       resultViewer.addDoubleClickListener(new IDoubleClickListener() {
         public void doubleClick(DoubleClickEvent event) {
           Object obj = event.getSelection();
