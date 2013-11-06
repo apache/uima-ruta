@@ -395,7 +395,8 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
           result = continueOwnMatch(after, annotation, ruleMatch, ruleApply, parentContainerMatch,
                   sideStepOrigin, null, stream, crowd);
         } else if (nextElement != null) {
-          AnnotationFS backtrackedAnnotation = getBacktrackedAnnotation(evaluateMatches, annotation);
+          AnnotationFS backtrackedAnnotation = getBacktrackedAnnotation(after, evaluateMatches,
+                  annotation);
           if (backtrackedAnnotation != null) {
             result = nextElement.continueMatch(after, backtrackedAnnotation, ruleMatch, ruleApply,
                     parentContainerMatch, sideStepOrigin, null, stream, crowd);
@@ -423,22 +424,30 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     return result;
   }
 
-  private AnnotationFS getBacktrackedAnnotation(List<RuleElementMatch> evaluateMatches,
-          AnnotationFS annotation) {
+  private AnnotationFS getBacktrackedAnnotation(boolean after,
+          List<RuleElementMatch> evaluateMatches, AnnotationFS annotation) {
     if (evaluateMatches == null) {
       return null;
     }
     if (evaluateMatches.isEmpty()) {
       return annotation;
     }
-    // TODO both directions!
-    List<AnnotationFS> textsMatched = evaluateMatches.get(evaluateMatches.size() - 1)
-            .getTextsMatched();
-    if (textsMatched.isEmpty()) {
-      return null;
+    if (after) {
+      List<AnnotationFS> textsMatched = evaluateMatches.get(evaluateMatches.size() - 1)
+              .getTextsMatched();
+      if (textsMatched.isEmpty()) {
+        return null;
+      }
+      AnnotationFS backtrackedAnnotation = textsMatched.get(textsMatched.size() - 1);
+      return backtrackedAnnotation;
+    } else {
+      List<AnnotationFS> textsMatched = evaluateMatches.get(0).getTextsMatched();
+      if (textsMatched.isEmpty()) {
+        return null;
+      }
+      AnnotationFS backtrackedAnnotation = textsMatched.get(0);
+      return backtrackedAnnotation;
     }
-    AnnotationFS backtrackedAnnotation = textsMatched.get(textsMatched.size() - 1);
-    return backtrackedAnnotation;
   }
 
   private List<RuleMatch> fallback(boolean after, boolean failed, AnnotationFS annotation,

@@ -47,6 +47,8 @@ public class RuleElementCaretaker implements RuleElementContainer {
     if (indexOf > 0) {
       RuleElement ruleElement = container.getRuleElements().get(indexOf - 1);
       return ruleElement;
+    } else if(indexOf == -1) {
+      return container.getRuleElements().get(container.getRuleElements().size() - 1);
     }
     return null;
   }
