@@ -183,34 +183,21 @@ public class RutaCheckerUtils {
     return result;
   }
 
-  @SuppressWarnings({ "unchecked", "unused" })
   public static boolean checkEngineOnClasspath(String clazz, IScriptProject project,
           ClassLoader classloader) {
-    if (classloader != null) {
-      try {
-        Class<?> loadClass = classloader.loadClass(clazz);
-        Class<?> loadClass2 = classloader.loadClass(AnalysisComponent.class.getName());
-        boolean assignableFrom = loadClass2.isAssignableFrom(loadClass);
-        if (loadClass != null && loadClass2.isAssignableFrom(loadClass)) {
-          return true;
-        }
-      } catch (ClassNotFoundException e) {
-        return false;
-      }
-      return false;
-    } else {
-      try {
-        Class<?> forName = Class.forName(clazz);
-        try {
-          Class<? extends AnalysisComponent> uimafit = (Class<? extends AnalysisComponent>) forName;
-        } catch (Exception e) {
-          return false;
-        }
-      } catch (ClassNotFoundException e) {
-        return false;
-      }
+    if (classloader == null) {
+      classloader = RutaEngine.class.getClassLoader();
     }
-    return true;
+    try {
+      Class<?> loadClass = classloader.loadClass(clazz);
+      Class<?> loadClass2 = classloader.loadClass(AnalysisComponent.class.getName());
+      if (loadClass != null && loadClass2.isAssignableFrom(loadClass)) {
+        return true;
+      }
+    } catch (ClassNotFoundException e) {
+      return false;
+    }
+    return false;
   }
 
   public static boolean checkScriptImport(String xmlFilePath, IScriptProject project) {
