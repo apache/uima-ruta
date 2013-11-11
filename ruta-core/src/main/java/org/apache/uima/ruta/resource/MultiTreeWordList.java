@@ -132,6 +132,8 @@ public class MultiTreeWordList implements RutaWordList {
    *          path of the file to create a TextWordList from
    */
   public MultiTreeWordList(String[] pathnames) throws IOException {
+    this.root = new MultiTextNode();
+    this.costMap = new EditDistanceCostMap();
     for (String pathname : pathnames) {
       load(new FileSystemResource(pathname));
     }
