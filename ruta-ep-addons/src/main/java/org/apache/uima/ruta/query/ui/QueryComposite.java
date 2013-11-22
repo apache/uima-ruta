@@ -25,10 +25,8 @@ import java.util.Iterator;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.uima.caseditor.editor.AnnotationEditor;
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
-import org.apache.uima.ruta.cde.utils.DocumentData;
 import org.apache.uima.ruta.ide.core.RutaLanguageToolkit;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IWorkspace;
@@ -46,6 +44,8 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.ITextListener;
+import org.eclipse.jface.text.TextEvent;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -120,7 +120,9 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
 
   private Text inputPatternText;
 
-  private ControlDecoration deco;
+  private ControlDecoration decoFileFilterPattern;
+
+  private ControlDecoration decoQueryRules;
 
   private Clipboard clipboard;
 
@@ -225,12 +227,12 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
       inputPatternText.setLayoutData(inputPatternTextData);
       inputPatternText.setText(".+\\.xmi");
 
-      deco = new ControlDecoration(this.inputPatternText, SWT.TOP | SWT.LEFT);
-      Image image = FieldDecorationRegistry.getDefault()
+      decoFileFilterPattern = new ControlDecoration(this.inputPatternText, SWT.TOP | SWT.LEFT);
+      Image imageError = FieldDecorationRegistry.getDefault()
               .getFieldDecoration(FieldDecorationRegistry.DEC_ERROR).getImage();
-      deco.setDescriptionText("PatternSyntaxException for this regular expression.");
-      deco.setImage(image);
-      deco.hide();
+      decoFileFilterPattern.setDescriptionText("PatternSyntaxException for this regular expression.");
+      decoFileFilterPattern.setImage(imageError);
+      decoFileFilterPattern.hide();
       inputPatternText.addModifyListener(new ModifyListener() {
         public void modifyText(ModifyEvent e) {
           // without that listener, the text fields forget the
@@ -238,7 +240,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
           // we also MUST call getText() otherwise the changes in
           // the field are lost (what is this???!!)
           Text t = (Text) e.widget;
-          deco.hide();
+          decoFileFilterPattern.hide();
         }
       });
 
@@ -325,6 +327,29 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
       viewer.configure(configuration);
       setInformation("");
       compositeQueryRules.layout();
+
+      viewer.addTextListener(new ITextListener() {
+
+        public void textChanged(TextEvent arg0) {
+          setRutaQuerySyntaxError(false);
+        }
+      });
+
+      decoQueryRules = new ControlDecoration(compositeQueryRules, SWT.TOP | SWT.LEFT);
+      decoQueryRules.setDescriptionText("Could not run query, maybe illegal Ruta rule syntax.");
+      decoQueryRules.setImage(imageError);
+      decoQueryRules.hide();
+      // TODO
+      // inputPatternText.addModifyListener(new ModifyListener() {
+      // public void modifyText(ModifyEvent e) {
+      // // without that listener, the text fields forget the
+      // // last change when leaving with tab! don't know why!
+      // // we also MUST call getText() otherwise the changes in
+      // // the field are lost (what is this???!!)
+      // Text t = (Text) e.widget;
+      // decoPattern.hide();
+      // }
+      // });
 
       // next row: query results
 
@@ -575,10 +600,10 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
     String string = inputPatternText.getText().trim();
     try {
       Pattern.compile(string);
-      this.deco.hide();
+      this.decoFileFilterPattern.hide();
       return string;
     } catch (PatternSyntaxException e) {
-      this.deco.show();
+      this.decoFileFilterPattern.show();
       return "";
     }
   }
@@ -632,6 +657,14 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
 
   public void setTypeSystem(String typeSystemLocation) {
     typeSystemFileText.setText(typeSystemLocation);
+  }
+
+  public void setRutaQuerySyntaxError(boolean hasError) {
+    if (hasError) {
+      this.decoQueryRules.show();
+    } else {
+      this.decoQueryRules.hide();
+    }
   }
 
 }

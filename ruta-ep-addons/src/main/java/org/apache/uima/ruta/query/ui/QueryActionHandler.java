@@ -330,6 +330,12 @@ public class QueryActionHandler implements IHandler {
         ae.destroy();
         monitor.done();
       } catch (Exception e) {
+        // report error in query view:
+        queryComposite.getDisplay().syncExec(new Runnable() {
+          public void run() {
+            queryComposite.setRutaQuerySyntaxError(true);
+          }
+        });
         RutaAddonsPlugin.error(e);
       }
 
