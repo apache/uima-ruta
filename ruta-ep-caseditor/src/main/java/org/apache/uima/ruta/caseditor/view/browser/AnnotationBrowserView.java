@@ -28,6 +28,8 @@ import org.eclipse.ui.part.IPageBookViewPage;
 public class AnnotationBrowserView extends CasEditorView {
   public static final String ID = "org.apache.uima.caseditor.browser";
 
+  private AnnotationTreeViewPage page;
+
   public AnnotationBrowserView() {
     super("The instance view is currently not available.");
   }
@@ -36,10 +38,16 @@ public class AnnotationBrowserView extends CasEditorView {
   protected IPageBookViewPage doCreatePage(ICasEditor editor) {
     IPageBookViewPage result = null;
     if (editor.getDocument() != null && editor instanceof AnnotationEditor) {
-      AnnotationTreeViewPage page = new AnnotationTreeViewPage(false, (AnnotationEditor) editor);
+      page = new AnnotationTreeViewPage(false, (AnnotationEditor) editor);
+      initPage(page);
+      page.createControl(getPageBook());
       result = page;
     }
     return result;
+  }
+
+  public AnnotationTreeViewPage getAnnotationTreeViewPage() {
+    return page;
   }
 
 }

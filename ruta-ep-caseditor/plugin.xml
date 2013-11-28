@@ -71,5 +71,46 @@ under the License.
           class="org.apache.uima.ruta.caseditor.view.preferences.CasEditorViewPreferenceInitializer">
     </initializer>
    </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            description="Checks all types visible in the Annotation Browser to be highlighted in the CAS editor"
+            id="org.apache.uima.ruta.caseditor.view.tree.commands.checkAllTypesHighlighted"
+            name="Highlight All (visible) Types">
+      </command>
+      <command
+            description="Resets type highlighting. No type will be checked."
+            id="org.apache.uima.ruta.caseditor.view.tree.commands.clearTypeHighlighting"
+            name="Clear Type Highlighting">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="org.apache.uima.ruta.caseditor.view.tree.handler.CheckAll"
+            commandId="org.apache.uima.ruta.caseditor.view.tree.commands.checkAllTypesHighlighted">
+      </handler>
+      <handler
+            class="org.apache.uima.ruta.caseditor.view.tree.handler.UncheckAll"
+            commandId="org.apache.uima.ruta.caseditor.view.tree.commands.clearTypeHighlighting">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.apache.uima.caseditor.browser">
+         <command
+               commandId="org.apache.uima.ruta.caseditor.view.tree.commands.checkAllTypesHighlighted"
+               icon="icons/lightbulb_add.png"
+               style="push">
+         </command>
+         <command
+               commandId="org.apache.uima.ruta.caseditor.view.tree.commands.clearTypeHighlighting"
+               icon="icons/lightbulb_off.png"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
 
 </plugin>

@@ -23,12 +23,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.Type;
+import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.caseditor.editor.AnnotationEditor;
@@ -49,13 +51,17 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -65,6 +71,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -87,7 +94,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
         String annotation = annotationStyle.getAnnotation();
         updateIcon(annotation);
       }
-      if(!treeView.isBusy()) {
+      if (!treeView.isBusy()) {
         treeView.refresh();
       }
     }
@@ -141,12 +148,31 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
   @Override
   public void createControl(Composite parent) {
     this.overlay = new Composite(parent, SWT.NONE);
+
+    final Clipboard clipboard = new Clipboard(Display.getCurrent());
+
     GridLayout layout = new GridLayout();
     layout.horizontalSpacing = 0;
     layout.verticalSpacing = 0;
     layout.marginWidth = 0;
     layout.marginHeight = 0;
     overlay.setLayout(layout);
+
+    KeyListener checkSelectedKeyListener = new KeyListener() {
+      
+      public void keyReleased(KeyEvent arg0) {
+        // TODO Auto-generated method stub
+        
+      }
+      
+      public void keyPressed(KeyEvent keyEvent) {
+        int keyCode = keyEvent.keyCode;
+        if (keyCode == SWT.CR) {
+          uncheckAll();
+          checkAllVisible();
+        }
+      }
+    };
 
     filterTypeTextField = new Text(overlay, SWT.SINGLE | SWT.BORDER);
     GridData gd = new GridData();
@@ -159,7 +185,8 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     filterTypeTextField.addListener(SWT.MouseUp, this);
     filterTypeTextField.addListener(SWT.Modify, this);
     // TODO only for 3.3 see pom
-     filterTypeTextField.setMessage("Only types with...");
+    filterTypeTextField.setMessage("Only types with...");
+    filterTypeTextField.addKeyListener(checkSelectedKeyListener);
 
     filterCoveredTextTextField = new Text(overlay, SWT.SINGLE | SWT.BORDER);
     GridData gd2 = new GridData();
@@ -173,6 +200,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     filterCoveredTextTextField.addListener(SWT.Modify, this);
     // TODO only for 3.3 see pom
     filterCoveredTextTextField.setMessage("Only annotations with...");
+    filterCoveredTextTextField.addKeyListener(checkSelectedKeyListener);
 
     treeView = new CheckboxTreeViewer(overlay, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
     gd = new GridData(GridData.FILL_BOTH);
@@ -202,9 +230,23 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
       @Override
       public void keyPressed(KeyEvent e) {
         int keyCode = e.keyCode;
-        // backspace or delete
+        // backspace or delete: delete annotations
         if (keyCode == SWT.BS || keyCode == SWT.DEL) {
           deleteSelectedAnnotations();
+        }
+        // ctrl and c: copy type name to clipboard
+        if ((e.stateMask & SWT.CTRL) == SWT.CTRL && keyCode == 'c') {
+          TreeItem[] selection = treeView.getTree().getSelection();
+          if (selection != null && selection.length == 1) {
+            Object obj = selection[0].getData();
+            if (obj instanceof TypeTreeNode) {
+              TypeTreeNode typeTreeNode = (TypeTreeNode) obj;
+              Type type = typeTreeNode.getType();
+              TextTransfer textTransfer = TextTransfer.getInstance();
+              clipboard.setContents(new Object[] { type.getName() },
+                      new Transfer[] { textTransfer });
+            }
+          }
         }
       }
 
@@ -220,8 +262,45 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     editor.addAnnotationListener(this);
     if (!useSelection) {
       reloadTree();
+
+      // TODO auto-check all
+      // if (RutaCasEditorPlugin.getDefault().getPreferenceStore().getBoolean("AlwaysCheckAll")) {
+      // checkAll();
+      // }
+
     }
 
+  }
+
+  /**
+   * Unchecks all types of the typesystem so that they are not highlighted anymore.
+   */
+  public void uncheckAll() {
+    TypeSystem ts = editor.getDocument().getCAS().getTypeSystem();
+    Iterator<Type> typeIterator = ts.getTypeIterator();
+    while (typeIterator.hasNext()) {
+      Type type = (Type) typeIterator.next();
+      editor.setShownAnnotationType(type, false);
+    }
+    getTreeViewer().getTree().deselectAll();
+  }
+
+  /**
+   * Checks all visible types of the tree to be highlighted.
+   */
+  public void checkAllVisible() {
+    TypeSystem ts = editor.getDocument().getCAS().getTypeSystem();
+    Type documentAnnotationType = ts.getType("uima.tcas.DocumentAnnotation");
+    for (TreeItem i : getTreeViewer().getTree().getItems()) {
+      Object e = i.getData();
+      if (e instanceof TypeTreeNode) {
+        TypeTreeNode typeTreeNode = (TypeTreeNode) e;
+        Type type = typeTreeNode.getType();
+        if (!documentAnnotationType.equals(type)) {
+          editor.setShownAnnotationType(type, true);
+        }
+      }
+    }
   }
 
   /*
@@ -471,15 +550,18 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
   public IRootTreeNode getTypeOrderedTree(int pos, String manualTypeFilter, String manualTextFilter) {
     TypeOrderedRootTreeNode root = new TypeOrderedRootTreeNode();
     IPreferenceStore preferenceStore = RutaCasEditorPlugin.getDefault().getPreferenceStore();
-    boolean withParents = preferenceStore.getBoolean(CasEditorViewsPreferenceConstants.SHOW_PARENT_TYPES);
+    boolean withParents = preferenceStore
+            .getBoolean(CasEditorViewsPreferenceConstants.SHOW_PARENT_TYPES);
     AnnotationIndex<AnnotationFS> annotationIndex = document.getCAS().getAnnotationIndex();
     for (AnnotationFS annotationFS : annotationIndex) {
       boolean offsetConstraint = pos == -1
               || (annotationFS.getBegin() <= pos && annotationFS.getEnd() >= pos);
       boolean typeConstraint = StringUtils.isEmpty(manualTypeFilter)
-              || annotationFS.getType().getName().toLowerCase().indexOf(manualTypeFilter.toLowerCase()) != -1;
+              || annotationFS.getType().getName().toLowerCase()
+                      .indexOf(manualTypeFilter.toLowerCase()) != -1;
       boolean textConstraint = StringUtils.isEmpty(manualTextFilter)
-              || annotationFS.getCoveredText().toLowerCase().indexOf(manualTextFilter.toLowerCase()) != -1;
+              || annotationFS.getCoveredText().toLowerCase()
+                      .indexOf(manualTextFilter.toLowerCase()) != -1;
       if (offsetConstraint && typeConstraint && textConstraint) {
         root.insertFS(annotationFS, withParents);
       }
