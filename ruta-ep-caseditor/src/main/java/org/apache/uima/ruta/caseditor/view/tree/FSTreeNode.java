@@ -23,7 +23,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.ArrayFS;
+import org.apache.uima.cas.CommonArrayFS;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
@@ -58,7 +60,9 @@ public class FSTreeNode extends AbstractTreeNode implements IAdaptable {
   public void addFeatures(ITreeNode parent, Feature f, FeatureStructure featureStructure,
           List<Type> parentTypes) {
     if (f.getRange().isArray()) {
+      // handle all kinds of arrays
       FeatureStructure featureValue = featureStructure.getFeatureValue(f);
+      // ArrayFS is a special kind of CommonArrayFS
       if (featureValue instanceof ArrayFS) {
         ArrayFS array = (ArrayFS) featureValue;
         if (array != null) {
@@ -83,6 +87,11 @@ public class FSTreeNode extends AbstractTreeNode implements IAdaptable {
             }
           }
         }
+      } else if (featureValue instanceof CommonArrayFS) {
+        // handle all other kind of CommonArrayFS nodes (ArrayFS handled above) 
+        CommonArrayFS array = (CommonArrayFS) featureValue;
+        String text = "[" + StringUtils.join(array.toStringArray(), ", ") + "]";
+        parent.addChild(new ArrayFeatureTreeNode(this, f, text));
       }
     } else if (f.getRange().isPrimitive()) {
       if ("uima.cas.AnnotationBase:sofa".equals(f.getName())) {
