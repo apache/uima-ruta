@@ -24,7 +24,7 @@ import java.util.List;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.type.RutaBasic;
@@ -32,13 +32,13 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class ReplaceAction extends AbstractRutaAction {
 
-  public StringExpression getReplacement() {
+  public IStringExpression getReplacement() {
     return replacement;
   }
 
-  private final StringExpression replacement;
+  private final IStringExpression replacement;
 
-  public ReplaceAction(StringExpression replacement) {
+  public ReplaceAction(IStringExpression replacement) {
     super();
     this.replacement = replacement;
   }

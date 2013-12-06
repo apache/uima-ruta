@@ -19,6 +19,8 @@
 
 package org.apache.uima.ruta;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,8 +40,6 @@ import org.apache.uima.util.InvalidXMLException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * Tests Ruta when it is runned on another view than _InitialView.

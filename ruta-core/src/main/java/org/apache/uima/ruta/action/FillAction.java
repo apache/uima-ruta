@@ -26,8 +26,8 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.RutaExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
@@ -35,11 +35,11 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class FillAction extends AbstractStructureAction {
 
-  private Map<StringExpression, RutaExpression> features;
+  private Map<IStringExpression, IRutaExpression> features;
 
   private TypeExpression structureType;
 
-  public FillAction(TypeExpression structureType, Map<StringExpression, RutaExpression> features) {
+  public FillAction(TypeExpression structureType, Map<IStringExpression, IRutaExpression> features) {
     super();
     this.structureType = structureType;
     this.features = features;
@@ -72,7 +72,7 @@ public class FillAction extends AbstractStructureAction {
 
   }
 
-  public Map<StringExpression, RutaExpression> getFeatures() {
+  public Map<IStringExpression, IRutaExpression> getFeatures() {
     return features;
   }
 

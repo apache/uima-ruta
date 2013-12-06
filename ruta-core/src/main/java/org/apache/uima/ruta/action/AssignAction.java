@@ -23,10 +23,10 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.RutaExpression;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
@@ -36,9 +36,9 @@ public class AssignAction extends AbstractRutaAction {
 
   private String var;
 
-  private RutaExpression expression;
+  private IRutaExpression expression;
 
-  public AssignAction(String var, RutaExpression e) {
+  public AssignAction(String var, IRutaExpression e) {
     super();
     this.var = var;
     this.expression = e;
@@ -49,20 +49,20 @@ public class AssignAction extends AbstractRutaAction {
     RutaBlock parent = element.getParent();
     RutaEnvironment environment = parent.getEnvironment();
     Class<?> clazz = environment.getVariableType(var);
-    if (clazz.equals(Integer.class) && expression instanceof NumberExpression) {
-      int v = ((NumberExpression) expression).getIntegerValue(parent, match, element, stream);
+    if (clazz.equals(Integer.class) && expression instanceof INumberExpression) {
+      int v = ((INumberExpression) expression).getIntegerValue(parent, match, element, stream);
       environment.setVariableValue(var, v);
-    } else if (clazz.equals(Double.class) && expression instanceof NumberExpression) {
-      double v = ((NumberExpression) expression).getDoubleValue(parent, match, element, stream);
+    } else if (clazz.equals(Double.class) && expression instanceof INumberExpression) {
+      double v = ((INumberExpression) expression).getDoubleValue(parent, match, element, stream);
       environment.setVariableValue(var, v);
     } else if (clazz.equals(Type.class) && expression instanceof TypeExpression) {
       Type v = ((TypeExpression) expression).getType(parent);
       environment.setVariableValue(var, v);
-    } else if (clazz.equals(Boolean.class) && expression instanceof BooleanExpression) {
-      boolean v = ((BooleanExpression) expression).getBooleanValue(parent, match, element, stream);
+    } else if (clazz.equals(Boolean.class) && expression instanceof IBooleanExpression) {
+      boolean v = ((IBooleanExpression) expression).getBooleanValue(parent, match, element, stream);
       environment.setVariableValue(var, v);
-    } else if (clazz.equals(String.class) && expression instanceof StringExpression) {
-      String v = ((StringExpression) expression).getStringValue(parent, match, element, stream);
+    } else if (clazz.equals(String.class) && expression instanceof IStringExpression) {
+      String v = ((IStringExpression) expression).getStringValue(parent, match, element, stream);
       environment.setVariableValue(var, v);
     }
   }
@@ -71,7 +71,7 @@ public class AssignAction extends AbstractRutaAction {
     return var;
   }
 
-  public RutaExpression getExpression() {
+  public IRutaExpression getExpression() {
     return expression;
   }
 

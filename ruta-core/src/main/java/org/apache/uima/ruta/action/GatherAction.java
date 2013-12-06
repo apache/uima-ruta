@@ -40,10 +40,10 @@ import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.list.NumberListExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleElementMatch;
@@ -56,15 +56,15 @@ public class GatherAction extends AbstractStructureAction {
 
   private TypeExpression structureType;
 
-  private Map<StringExpression, RutaExpression> features;
+  private Map<IStringExpression, IRutaExpression> features;
 
-  private List<NumberExpression> indexes;
+  private List<INumberExpression> indexes;
 
-  public GatherAction(TypeExpression structureType, Map<StringExpression, RutaExpression> features,
-          List<NumberExpression> indexes) {
+  public GatherAction(TypeExpression structureType, Map<IStringExpression, IRutaExpression> features,
+          List<INumberExpression> indexes) {
     super();
     this.structureType = structureType;
-    this.features = features == null ? new HashMap<StringExpression, RutaExpression>() : features;
+    this.features = features == null ? new HashMap<IStringExpression, IRutaExpression>() : features;
     this.indexes = (indexes == null || indexes.isEmpty()) ? null : indexes;
   }
 
@@ -95,16 +95,16 @@ public class GatherAction extends AbstractStructureAction {
 
   }
 
-  private void gatherFeatures(TOP structure, Map<StringExpression, RutaExpression> features,
+  private void gatherFeatures(TOP structure, Map<IStringExpression, IRutaExpression> features,
           AnnotationFS matchedAnnotation, RuleElement element, RuleMatch match, RutaStream stream) {
     Map<String, List<Number>> map = new HashMap<String, List<Number>>();
-    for (Entry<StringExpression, RutaExpression> each : features.entrySet()) {
+    for (Entry<IStringExpression, IRutaExpression> each : features.entrySet()) {
       RutaBlock parent = element.getParent();
       String value = each.getKey().getStringValue(parent, match, element, stream);
-      RutaExpression expr = each.getValue();
+      IRutaExpression expr = each.getValue();
       List<Number> ints = new ArrayList<Number>();
-      if (expr instanceof NumberExpression) {
-        NumberExpression ne = (NumberExpression) expr;
+      if (expr instanceof INumberExpression) {
+        INumberExpression ne = (INumberExpression) expr;
         ints.add(ne.getIntegerValue(parent, match, element, stream));
         map.put(value, ints);
       } else if (expr instanceof NumberListExpression) {
@@ -213,7 +213,7 @@ public class GatherAction extends AbstractStructureAction {
       return indexList;
     }
     int last = Integer.MAX_VALUE - 1;
-    for (NumberExpression each : indexes) {
+    for (INumberExpression each : indexes) {
       int value = each.getIntegerValue(element.getParent(), null, stream);
       for (int i = Math.min(value, last + 1); i < value; i++) {
         indexList.add(i);
@@ -227,11 +227,11 @@ public class GatherAction extends AbstractStructureAction {
     return structureType;
   }
 
-  public Map<StringExpression, RutaExpression> getFeatures() {
+  public Map<IStringExpression, IRutaExpression> getFeatures() {
     return features;
   }
 
-  public List<NumberExpression> getIndexes() {
+  public List<INumberExpression> getIndexes() {
     return indexes;
   }
 }

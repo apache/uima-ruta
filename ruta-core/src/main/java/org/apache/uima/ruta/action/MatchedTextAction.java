@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
@@ -33,9 +33,9 @@ public class MatchedTextAction extends AbstractRutaAction {
 
   private final String var;
 
-  private final List<NumberExpression> list;
+  private final List<INumberExpression> list;
 
-  public MatchedTextAction(String var, List<NumberExpression> list) {
+  public MatchedTextAction(String var, List<INumberExpression> list) {
     super();
     this.var = var;
     this.list = list;
@@ -56,7 +56,7 @@ public class MatchedTextAction extends AbstractRutaAction {
     return var;
   }
 
-  public List<NumberExpression> getList() {
+  public List<INumberExpression> getList() {
     return list;
   }
 
@@ -68,7 +68,7 @@ public class MatchedTextAction extends AbstractRutaAction {
       return indexList;
     }
     int last = Integer.MAX_VALUE - 1;
-    for (NumberExpression each : list) {
+    for (INumberExpression each : list) {
       int value = each.getIntegerValue(element.getParent(), null, stream);
       for (int i = Math.min(value, last + 1); i < value; i++) {
         indexList.add(i);

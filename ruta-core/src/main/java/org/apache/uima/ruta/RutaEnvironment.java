@@ -44,16 +44,16 @@ import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.expression.list.SimpleBooleanListExpression;
 import org.apache.uima.ruta.expression.list.SimpleNumberListExpression;
 import org.apache.uima.ruta.expression.list.SimpleStringListExpression;
 import org.apache.uima.ruta.expression.list.SimpleTypeListExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.resource.LiteralWordListExpression;
 import org.apache.uima.ruta.expression.resource.LiteralWordTableExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
 import org.apache.uima.ruta.resource.CSVTable;
 import org.apache.uima.ruta.resource.MultiTreeWordList;
@@ -515,8 +515,8 @@ public class RutaEnvironment {
   public Object getLiteralValue(String var, Object value) {
     if (ownsVariable(var)) {
       Class<?> clazz = variableTypes.get(var);
-      if (value instanceof NumberExpression) {
-        NumberExpression ne = (NumberExpression) value;
+      if (value instanceof INumberExpression) {
+        INumberExpression ne = (INumberExpression) value;
         if (clazz.equals(Integer.class)) {
           return ne.getIntegerValue(owner, null, null);
         } else if (clazz.equals(Double.class)) {
@@ -526,11 +526,11 @@ public class RutaEnvironment {
         } else if (clazz.equals(String.class)) {
           return ne.getStringValue(owner, null, null);
         }
-      } else if (clazz.equals(String.class) && value instanceof StringExpression) {
-        StringExpression se = (StringExpression) value;
+      } else if (clazz.equals(String.class) && value instanceof IStringExpression) {
+        IStringExpression se = (IStringExpression) value;
         return se.getStringValue(owner, null, null);
-      } else if (clazz.equals(Boolean.class) && value instanceof BooleanExpression) {
-        BooleanExpression be = (BooleanExpression) value;
+      } else if (clazz.equals(Boolean.class) && value instanceof IBooleanExpression) {
+        IBooleanExpression be = (IBooleanExpression) value;
         return be.getBooleanValue(owner, null, null);
       }
       if (clazz.equals(RutaWordList.class) && value instanceof LiteralWordListExpression) {

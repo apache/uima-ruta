@@ -23,9 +23,9 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
@@ -35,16 +35,16 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class NearCondition extends TypeSentiveCondition {
 
-  private final NumberExpression min;
+  private final INumberExpression min;
 
-  private final NumberExpression max;
+  private final INumberExpression max;
 
-  private final BooleanExpression forward;
+  private final IBooleanExpression forward;
 
-  private final BooleanExpression filtered;
+  private final IBooleanExpression filtered;
 
-  public NearCondition(TypeExpression type, NumberExpression min, NumberExpression max,
-          BooleanExpression forward, BooleanExpression filtered) {
+  public NearCondition(TypeExpression type, INumberExpression min, INumberExpression max,
+          IBooleanExpression forward, IBooleanExpression filtered) {
     super(type);
     this.min = min == null ? new SimpleNumberExpression(1) : min;
     this.max = max == null ? new SimpleNumberExpression(1) : max;
@@ -89,19 +89,19 @@ public class NearCondition extends TypeSentiveCondition {
     return new EvaluatedCondition(this, false);
   }
 
-  public NumberExpression getMin() {
+  public INumberExpression getMin() {
     return min;
   }
 
-  public NumberExpression getMax() {
+  public INumberExpression getMax() {
     return max;
   }
 
-  public BooleanExpression getForward() {
+  public IBooleanExpression getForward() {
     return forward;
   }
 
-  public BooleanExpression getFiltered() {
+  public IBooleanExpression getFiltered() {
     return filtered;
   }
 }

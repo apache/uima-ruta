@@ -2,13 +2,13 @@
 /* First created by JCasGen Sat Jun 08 19:25:02 CEST 2013 */
 package org.apache.uima.ruta.type;
 
-import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.JCasRegistry;
+import org.apache.uima.cas.FeatureStructure;
+import org.apache.uima.cas.Type;
 import org.apache.uima.cas.impl.CASImpl;
 import org.apache.uima.cas.impl.FSGenerator;
-import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.impl.TypeImpl;
-import org.apache.uima.cas.Type;
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 

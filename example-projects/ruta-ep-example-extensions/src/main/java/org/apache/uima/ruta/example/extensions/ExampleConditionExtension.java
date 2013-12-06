@@ -24,7 +24,7 @@ import java.util.List;
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.expression.RutaExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.string.AbstractStringExpression;
 import org.apache.uima.ruta.extensions.IRutaConditionExtension;
 import org.apache.uima.ruta.extensions.RutaParseException;
 import org.apache.uima.ruta.verbalize.RutaVerbalizer;
@@ -48,15 +48,15 @@ public class ExampleConditionExtension implements IRutaConditionExtension {
   public AbstractRutaCondition createCondition(String name, List<RutaExpression> args)
           throws RutaParseException {
     if (args != null && args.size() == 2) {
-      if (!(args.get(0) instanceof StringExpression)) {
+      if (!(args.get(0) instanceof AbstractStringExpression)) {
       }
-      if (!(args.get(1) instanceof StringExpression)) {
+      if (!(args.get(1) instanceof AbstractStringExpression)) {
       }
     } else {
       throw new RutaParseException(
               "ExampleCondition accepts exactly two StringExpressions as arguments");
     }
-    return new ExampleCondition((StringExpression) args.get(0), (StringExpression) args.get(1));
+    return new ExampleCondition((AbstractStringExpression) args.get(0), (AbstractStringExpression) args.get(1));
   }
 
   public String verbalizeName(RutaElement element) {

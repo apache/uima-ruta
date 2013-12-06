@@ -23,7 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.uima.cas.Type;
-import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.IRutaExpression;
 
 public class VerbalizerUtils {
 
@@ -60,11 +60,11 @@ public class VerbalizerUtils {
     return result.toString();
   }
 
-  public String verbalizeExpressionList(List<? extends RutaExpression> list) {
+  public String verbalizeExpressionList(List<? extends IRutaExpression> list) {
     StringBuilder result = new StringBuilder();
-    Iterator<? extends RutaExpression> it = list.iterator();
+    Iterator<? extends IRutaExpression> it = list.iterator();
     while (it.hasNext()) {
-      RutaExpression e = it.next();
+      IRutaExpression e = it.next();
       result.append(verbalizer.verbalize(e));
       if (it.hasNext()) {
         result.append(", ");

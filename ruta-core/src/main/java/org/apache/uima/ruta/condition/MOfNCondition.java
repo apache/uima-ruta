@@ -24,19 +24,19 @@ import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class MOfNCondition extends ComposedRutaCondition {
 
-  private final NumberExpression min;
+  private final INumberExpression min;
 
-  private final NumberExpression max;
+  private final INumberExpression max;
 
-  public MOfNCondition(List<AbstractRutaCondition> conditions, NumberExpression min,
-          NumberExpression max) {
+  public MOfNCondition(List<AbstractRutaCondition> conditions, INumberExpression min,
+          INumberExpression max) {
     super(conditions);
     this.min = min;
     this.max = max;
@@ -61,11 +61,11 @@ public class MOfNCondition extends ComposedRutaCondition {
     return new EvaluatedCondition(this, value, evals);
   }
 
-  public NumberExpression getMin() {
+  public INumberExpression getMin() {
     return min;
   }
 
-  public NumberExpression getMax() {
+  public INumberExpression getMax() {
     return max;
   }
 }

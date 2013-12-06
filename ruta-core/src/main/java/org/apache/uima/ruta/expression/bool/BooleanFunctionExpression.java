@@ -19,6 +19,6 @@
 
 package org.apache.uima.ruta.expression.bool;
 
-public abstract class BooleanFunctionExpression extends BooleanExpression {
+public abstract class BooleanFunctionExpression extends AbstractBooleanExpression {
 
 }

@@ -24,22 +24,22 @@ import java.util.List;
 
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class GetAction extends AbstractRutaAction {
 
-  private ListExpression<RutaExpression> listExpr;
+  private ListExpression<IRutaExpression> listExpr;
 
   private String var;
 
-  private StringExpression opExpr;
+  private IStringExpression opExpr;
 
-  public GetAction(ListExpression<RutaExpression> f, String string, StringExpression op) {
+  public GetAction(ListExpression<IRutaExpression> f, String string, IStringExpression op) {
     super();
     this.listExpr = f;
     this.var = string;
@@ -83,7 +83,7 @@ public class GetAction extends AbstractRutaAction {
     return dominant;
   }
 
-  public ListExpression<RutaExpression> getListExpr() {
+  public ListExpression<IRutaExpression> getListExpr() {
     return listExpr;
   }
 
@@ -91,7 +91,7 @@ public class GetAction extends AbstractRutaAction {
     return var;
   }
 
-  public StringExpression getOpExpr() {
+  public IStringExpression getOpExpr() {
     return opExpr;
   }
 

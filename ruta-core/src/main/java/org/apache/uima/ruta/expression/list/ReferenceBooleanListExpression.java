@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 
 public class ReferenceBooleanListExpression extends BooleanListExpression {
 
@@ -41,8 +41,8 @@ public class ReferenceBooleanListExpression extends BooleanListExpression {
     List<Object> list = parent.getEnvironment().getVariableValue(var, List.class);
     List<Boolean> result = new ArrayList<Boolean>();
     for (Object each : list) {
-      if (each instanceof BooleanExpression) {
-        result.add(((BooleanExpression) each).getBooleanValue(parent, null, stream));
+      if (each instanceof IBooleanExpression) {
+        result.add(((IBooleanExpression) each).getBooleanValue(parent, null, stream));
       } else if (each instanceof Boolean) {
         result.add((Boolean) each);
       }

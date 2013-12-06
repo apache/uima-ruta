@@ -21,22 +21,22 @@ package org.apache.uima.ruta.action;
 
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class DynamicAnchoringAction extends AbstractRutaAction {
 
-  private final BooleanExpression active;
+  private final IBooleanExpression active;
 
-  private final NumberExpression panelty;
+  private final INumberExpression panelty;
 
-  private final NumberExpression factor;
+  private final INumberExpression factor;
 
-  public DynamicAnchoringAction(BooleanExpression active, NumberExpression panelty,
-          NumberExpression factor) {
+  public DynamicAnchoringAction(IBooleanExpression active, INumberExpression panelty,
+          INumberExpression factor) {
     super();
     this.active = active;
     this.panelty = panelty;
@@ -58,15 +58,15 @@ public class DynamicAnchoringAction extends AbstractRutaAction {
     }
   }
 
-  public BooleanExpression getActive() {
+  public IBooleanExpression getActive() {
     return active;
   }
 
-  public NumberExpression getPanelty() {
+  public INumberExpression getPanelty() {
     return panelty;
   }
 
-  public NumberExpression getFactor() {
+  public INumberExpression getFactor() {
     return factor;
   }
 

@@ -29,7 +29,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.type.RutaBasic;
@@ -45,9 +45,9 @@ public class GetListAction extends AbstractRutaAction {
 
   private String var;
 
-  private StringExpression opExpr;
+  private IStringExpression opExpr;
 
-  public GetListAction(String var, StringExpression op) {
+  public GetListAction(String var, IStringExpression op) {
     super();
     this.var = var;
     this.opExpr = op;
@@ -106,7 +106,7 @@ public class GetListAction extends AbstractRutaAction {
     return var;
   }
 
-  public StringExpression getOpExpr() {
+  public IStringExpression getOpExpr() {
     return opExpr;
   }
 

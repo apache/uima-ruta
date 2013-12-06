@@ -24,9 +24,9 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
 import org.apache.uima.ruta.expression.bool.BooleanNumberExpression;
 import org.apache.uima.ruta.expression.bool.BooleanTypeExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.ReferenceBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.ruta.expression.list.BooleanListExpression;
@@ -42,13 +42,14 @@ import org.apache.uima.ruta.expression.list.SimpleTypeListExpression;
 import org.apache.uima.ruta.expression.list.StringListExpression;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
 import org.apache.uima.ruta.expression.number.ComposedNumberExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.ReferenceNumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
+import org.apache.uima.ruta.expression.string.AbstractStringExpression;
 import org.apache.uima.ruta.expression.string.ComposedStringExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.string.ReferenceStringExpression;
 import org.apache.uima.ruta.expression.string.SimpleStringExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
 import org.apache.uima.ruta.expression.type.ReferenceTypeExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
@@ -64,7 +65,7 @@ public class ExpressionVerbalizerTest {
 //    List<TypeExpression> typeExprList = new ArrayList<TypeExpression>();
 //    List<StringExpression> stringExprList = new ArrayList<StringExpression>();
 //    List<RutaExpression> exprList = new ArrayList<RutaExpression>();
-//    List<NumberExpression> indexes = new ArrayList<NumberExpression>();
+//    List<INumberExpression> indexes = new ArrayList<INumberExpression>();
 
 //    
 ////    typeExprList.add(typeExpr1);
@@ -79,7 +80,7 @@ public class ExpressionVerbalizerTest {
 //    TypeListExpression typeListExpr = new SimpleTypeListExpression(typeExprList);
 //    StringListExpression stringListExpr = new SimpleStringListExpression(stringExprList);
 //    Map<StringExpression, RutaExpression> stringExprMap = new HashMap<StringExpression, RutaExpression>();
-//    Map<StringExpression, NumberExpression> stringExprNumExprMap = new HashMap<StringExpression, NumberExpression>();
+//    Map<StringExpression, INumberExpression> stringExprNumExprMap = new HashMap<StringExpression, INumberExpression>();
 //    Map<StringExpression, TypeExpression> stringExprTypeExprMap = new HashMap<StringExpression, TypeExpression>();
 //    @SuppressWarnings("rawtypes")
 //    ListExpression listExpr = new SimpleTypeListExpression(typeExprList);
@@ -97,22 +98,22 @@ public class ExpressionVerbalizerTest {
     TypeExpression typeExpr1 = new SimpleTypeExpression("Type1");
     TypeExpression typeExpr2 = new ReferenceTypeExpression("typeVar");
     
-    List<NumberExpression> numExprList1 = new ArrayList<NumberExpression>();
-    List<NumberExpression> numExprList2 = new ArrayList<NumberExpression>();
+    List<INumberExpression> numExprList1 = new ArrayList<INumberExpression>();
+    List<INumberExpression> numExprList2 = new ArrayList<INumberExpression>();
     List<String> opList1 = new ArrayList<String>();
     List<String> opList2 = new ArrayList<String>();
-    NumberExpression numExpr1 = new SimpleNumberExpression(4);
-    NumberExpression numExpr2 = new ReferenceNumberExpression("numVar");
-    NumberExpression numExpr3 = new ReferenceNumberExpression("4.9");
-    NumberExpression numExpr4 = new ReferenceNumberExpression("-4");
+    INumberExpression numExpr1 = new SimpleNumberExpression(4);
+    INumberExpression numExpr2 = new ReferenceNumberExpression("numVar");
+    INumberExpression numExpr3 = new ReferenceNumberExpression("4.9");
+    INumberExpression numExpr4 = new ReferenceNumberExpression("-4");
     numExprList1.add(numExpr1);
     numExprList1.add(numExpr2);
     opList1.add("+");
     opList2.add("*");
-    NumberExpression numExpr5 = new ComposedNumberExpression(numExprList1, opList1);
+    INumberExpression numExpr5 = new ComposedNumberExpression(numExprList1, opList1);
     numExprList2.add(numExpr3);
     numExprList2.add(numExpr5);
-    NumberExpression numExpr6 = new ComposedNumberExpression(numExprList2, opList2);
+    INumberExpression numExpr6 = new ComposedNumberExpression(numExprList2, opList2);
     
     s = v.verbalize(numExpr1);
     assertEquals("4", s);
@@ -129,17 +130,17 @@ public class ExpressionVerbalizerTest {
     
     
     
-    BooleanExpression boolExpr1 = new SimpleBooleanExpression(true);
-    BooleanExpression boolExpr2 = new SimpleBooleanExpression(false);
-    BooleanExpression boolExpr3 = new ReferenceBooleanExpression(var);
-    BooleanExpression boolExpr4 = new BooleanNumberExpression(numExpr1, "==", numExpr2);
-    BooleanExpression boolExpr5 = new BooleanNumberExpression(numExpr1, "!=", numExpr2);
-    BooleanExpression boolExpr6 = new BooleanNumberExpression(numExpr1, "<=", numExpr2);
-    BooleanExpression boolExpr7 = new BooleanNumberExpression(numExpr1, ">=", numExpr2);
-    BooleanExpression boolExpr8 = new BooleanNumberExpression(numExpr1, "<", numExpr2);
-    BooleanExpression boolExpr9 = new BooleanNumberExpression(numExpr1, ">", numExpr2);
-    BooleanExpression boolExpr10 = new BooleanTypeExpression(typeExpr1, "==", typeExpr2);
-    BooleanExpression boolExpr11 = new BooleanTypeExpression(typeExpr1, "!=", typeExpr2);
+    IBooleanExpression boolExpr1 = new SimpleBooleanExpression(true);
+    IBooleanExpression boolExpr2 = new SimpleBooleanExpression(false);
+    IBooleanExpression boolExpr3 = new ReferenceBooleanExpression(var);
+    IBooleanExpression boolExpr4 = new BooleanNumberExpression(numExpr1, "==", numExpr2);
+    IBooleanExpression boolExpr5 = new BooleanNumberExpression(numExpr1, "!=", numExpr2);
+    IBooleanExpression boolExpr6 = new BooleanNumberExpression(numExpr1, "<=", numExpr2);
+    IBooleanExpression boolExpr7 = new BooleanNumberExpression(numExpr1, ">=", numExpr2);
+    IBooleanExpression boolExpr8 = new BooleanNumberExpression(numExpr1, "<", numExpr2);
+    IBooleanExpression boolExpr9 = new BooleanNumberExpression(numExpr1, ">", numExpr2);
+    IBooleanExpression boolExpr10 = new BooleanTypeExpression(typeExpr1, "==", typeExpr2);
+    IBooleanExpression boolExpr11 = new BooleanTypeExpression(typeExpr1, "!=", typeExpr2);
     
     s = v.verbalize(boolExpr1);
     assertEquals("true", s);
@@ -164,12 +165,12 @@ public class ExpressionVerbalizerTest {
     s = v.verbalize(boolExpr11);
     assertEquals("Type1 != typeVar", s);
 
-    List<StringExpression> stringExprList = new ArrayList<StringExpression>();
-    StringExpression stringExpr1 = new SimpleStringExpression("string");
-    StringExpression stringExpr2 = new ReferenceStringExpression(var);
+    List<IStringExpression> stringExprList = new ArrayList<IStringExpression>();
+    AbstractStringExpression stringExpr1 = new SimpleStringExpression("string");
+    AbstractStringExpression stringExpr2 = new ReferenceStringExpression(var);
     stringExprList.add(stringExpr1);
     stringExprList.add(stringExpr2);
-    StringExpression stringExpr3 = new ComposedStringExpression(stringExprList);
+    AbstractStringExpression stringExpr3 = new ComposedStringExpression(stringExprList);
     
     s = v.verbalize(stringExpr1);
     assertEquals("\"string\"", s);
@@ -186,7 +187,7 @@ public class ExpressionVerbalizerTest {
     s = v.verbalize(sle2);
     assertEquals("anyVar", s);
     
-    List<BooleanExpression> boolExprList = new ArrayList<BooleanExpression>();
+    List<IBooleanExpression> boolExprList = new ArrayList<IBooleanExpression>();
     boolExprList.add(boolExpr1);
     boolExprList.add(boolExpr3);
     BooleanListExpression ble1 = new SimpleBooleanListExpression(boolExprList);
@@ -196,7 +197,7 @@ public class ExpressionVerbalizerTest {
     s = v.verbalize(ble2);
     assertEquals("anyVar", s);
     
-    List<NumberExpression> numExprList = new ArrayList<NumberExpression>();
+    List<INumberExpression> numExprList = new ArrayList<INumberExpression>();
     numExprList.add(numExpr1);
     numExprList.add(numExpr3);
     NumberListExpression nle1 = new SimpleNumberListExpression(numExprList);

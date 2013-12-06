@@ -24,15 +24,16 @@ import java.util.List;
 
 import org.antlr.runtime.Token;
 import org.apache.uima.ruta.RutaBlock;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
 import org.apache.uima.ruta.expression.bool.BooleanFeatureExpression;
 import org.apache.uima.ruta.expression.bool.BooleanNumberExpression;
 import org.apache.uima.ruta.expression.bool.BooleanTypeExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.ReferenceBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanFunction;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
+import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
 import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
 import org.apache.uima.ruta.expression.list.BooleanListExpression;
 import org.apache.uima.ruta.expression.list.NumberListExpression;
@@ -47,8 +48,8 @@ import org.apache.uima.ruta.expression.list.SimpleTypeListExpression;
 import org.apache.uima.ruta.expression.list.StringListExpression;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
 import org.apache.uima.ruta.expression.number.ComposedNumberExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.NegativeNumberExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
 import org.apache.uima.ruta.expression.number.NumberFeatureExpression;
 import org.apache.uima.ruta.expression.number.ReferenceNumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
@@ -58,10 +59,11 @@ import org.apache.uima.ruta.expression.resource.ReferenceWordListExpression;
 import org.apache.uima.ruta.expression.resource.ReferenceWordTableExpression;
 import org.apache.uima.ruta.expression.resource.WordListExpression;
 import org.apache.uima.ruta.expression.resource.WordTableExpression;
+import org.apache.uima.ruta.expression.string.AbstractStringExpression;
 import org.apache.uima.ruta.expression.string.ComposedStringExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.string.ReferenceStringExpression;
 import org.apache.uima.ruta.expression.string.SimpleStringExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
 import org.apache.uima.ruta.expression.string.StringFeatureExpression;
 import org.apache.uima.ruta.expression.type.ReferenceTypeExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
@@ -72,7 +74,7 @@ public class ExpressionFactory {
   private ExpressionFactory() {
   }
 
-  public static NumberExpression createIntegerExpression(Token number, Token minus) {
+  public static INumberExpression createIntegerExpression(Token number, Token minus) {
     Integer valueOf = Integer.valueOf(number.getText());
     SimpleNumberExpression simpleNumberExpression = new SimpleNumberExpression(valueOf);
     if (minus != null) {
@@ -82,7 +84,7 @@ public class ExpressionFactory {
     }
   }
 
-  public static NumberExpression createDoubleExpression(Token number, Token minus) {
+  public static INumberExpression createDoubleExpression(Token number, Token minus) {
     Double valueOf = Double.valueOf(number.getText());
     SimpleNumberExpression simpleNumberExpression = new SimpleNumberExpression(valueOf);
     if (minus != null) {
@@ -92,7 +94,7 @@ public class ExpressionFactory {
     }
   }
 
-  public static NumberExpression createReferenceNumberExpression(Token var, Token minus) {
+  public static INumberExpression createReferenceNumberExpression(Token var, Token minus) {
     ReferenceNumberExpression simpleNumberExpression = new ReferenceNumberExpression(var.getText());
     if (minus != null) {
       return new NegativeNumberExpression(simpleNumberExpression);
@@ -101,7 +103,7 @@ public class ExpressionFactory {
     }
   }
 
-  public static NumberExpression createComposedNumberExpression(List<NumberExpression> expressions,
+  public static INumberExpression createComposedNumberExpression(List<INumberExpression> expressions,
           List<Token> opTokens) {
     List<String> ops = new ArrayList<String>();
     for (Token token : opTokens) {
@@ -110,39 +112,39 @@ public class ExpressionFactory {
     return new ComposedNumberExpression(expressions, ops);
   }
 
-  public static NumberExpression createComposedNumberExpression(NumberExpression expression,
+  public static INumberExpression createComposedNumberExpression(INumberExpression expression,
           Token opToken) {
     List<String> ops = new ArrayList<String>();
-    List<NumberExpression> exprList = new ArrayList<NumberExpression>();
+    List<INumberExpression> exprList = new ArrayList<INumberExpression>();
     ops.add(opToken.getText());
     exprList.add(expression);
     return new ComposedNumberExpression(exprList, ops);
   }
 
-  public static StringExpression createSimpleStringExpression(Token token) {
+  public static AbstractStringExpression createSimpleStringExpression(Token token) {
     String text = token.getText();
     String substring = text.substring(1, text.length() - 1);
     return new SimpleStringExpression(substring);
   }
 
-  public static StringExpression createComposedStringExpression(List<StringExpression> expressions) {
+  public static IStringExpression createComposedStringExpression(List<IStringExpression> expressions) {
     return new ComposedStringExpression(expressions);
   }
 
-  public static StringExpression createReferenceStringExpression(Token var) {
+  public static AbstractStringExpression createReferenceStringExpression(Token var) {
     return new ReferenceStringExpression(var.getText());
   }
 
-  public static BooleanExpression createBooleanNumberExpression(NumberExpression e1, Token op,
-          NumberExpression e2) {
+  public static IBooleanExpression createBooleanNumberExpression(INumberExpression e1, Token op,
+          INumberExpression e2) {
     return new BooleanNumberExpression(e1, op.getText(), e2);
   }
 
-  public static BooleanExpression createSimpleBooleanExpression(Token v) {
+  public static IBooleanExpression createSimpleBooleanExpression(Token v) {
     return new SimpleBooleanExpression(Boolean.valueOf(v.getText()));
   }
 
-  public static BooleanExpression createReferenceBooleanExpression(Token id) {
+  public static IBooleanExpression createReferenceBooleanExpression(Token id) {
     return new ReferenceBooleanExpression(id.getText());
   }
 
@@ -160,8 +162,8 @@ public class ExpressionFactory {
     return new SimpleTypeExpression(typeString);
   }
 
-  public static BooleanExpression createBooleanFunction(Token op, BooleanExpression e1,
-          BooleanExpression e2) {
+  public static IBooleanExpression createBooleanFunction(Token op, IBooleanExpression e1,
+          IBooleanExpression e2) {
     return new SimpleBooleanFunction(op.getText(), e1, e2);
   }
 
@@ -181,7 +183,7 @@ public class ExpressionFactory {
     return new LiteralWordTableExpression(path.getText());
   }
 
-  public static BooleanExpression createBooleanTypeExpression(TypeExpression e1, Token op,
+  public static IBooleanExpression createBooleanTypeExpression(TypeExpression e1, Token op,
           TypeExpression e2) {
     return new BooleanTypeExpression(e1, op.getText(), e2);
   }
@@ -210,11 +212,11 @@ public class ExpressionFactory {
     return new ReferenceNumberListExpression(var.getText());
   }
 
-  public static BooleanListExpression createBooleanListExpression(List<BooleanExpression> list) {
+  public static BooleanListExpression createBooleanListExpression(List<IBooleanExpression> list) {
     return new SimpleBooleanListExpression(list);
   }
 
-  public static NumberListExpression createNumberListExpression(List<NumberExpression> list) {
+  public static NumberListExpression createNumberListExpression(List<INumberExpression> list) {
     return new SimpleNumberListExpression(list);
   }
 
@@ -222,7 +224,7 @@ public class ExpressionFactory {
     return new SimpleTypeListExpression(list);
   }
 
-  public static StringListExpression createStringListExpression(List<StringExpression> list) {
+  public static StringListExpression createStringListExpression(List<IStringExpression> list) {
     return new SimpleStringListExpression(list);
   }
 
@@ -236,12 +238,12 @@ public class ExpressionFactory {
   }
 
   public static FeatureMatchExpression createFeatureMatchExpression(FeatureExpression f, Token op,
-          RutaExpression arg, RutaBlock env) {
+          IRutaExpression arg, RutaBlock env) {
     return new FeatureMatchExpression(f, op.getText(), arg);
   }
 
   public static MatchReference createMatchReference(Token refToken, Token opToken,
-          RutaExpression arg) {
+          IRutaExpression arg) {
     String match = refToken.getText();
     String op = null;
     if (opToken != null) {
@@ -250,16 +252,20 @@ public class ExpressionFactory {
     return new MatchReference(match, op, arg);
   }
 
-  public static NumberExpression createNumberFeatureExpression(FeatureExpression fe) {
+  public static INumberExpression createNumberFeatureExpression(FeatureExpression fe) {
     return new NumberFeatureExpression(fe);
   }
 
-  public static StringExpression createStringFeatureExpression(FeatureExpression fe) {
+  public static AbstractStringExpression createStringFeatureExpression(FeatureExpression fe) {
     return new StringFeatureExpression(fe);
   }
 
-  public static BooleanExpression createBooleanFeatureExpression(FeatureExpression fe) {
+  public static IBooleanExpression createBooleanFeatureExpression(FeatureExpression fe) {
     return new BooleanFeatureExpression(fe);
+  }
+
+  public static GenericFeatureExpression createGenericFeatureExpression(FeatureExpression fe) {
+    return new GenericFeatureExpression(fe);
   }
 
 }

@@ -33,14 +33,14 @@ import org.apache.uima.resource.metadata.ConfigurationParameterDeclarations;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaModule;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.RutaExpression;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.list.BooleanListExpression;
 import org.apache.uima.ruta.expression.list.NumberListExpression;
 import org.apache.uima.ruta.expression.list.StringListExpression;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
@@ -50,9 +50,9 @@ public class ConfigureAction extends AbstractRutaAction {
 
   private final String namespace;
 
-  private final Map<StringExpression, RutaExpression> parameterMap;
+  private final Map<IStringExpression, IRutaExpression> parameterMap;
 
-  public ConfigureAction(String ns, Map<StringExpression, RutaExpression> map) {
+  public ConfigureAction(String ns, Map<IStringExpression, IRutaExpression> map) {
     super();
     this.namespace = ns;
     this.parameterMap = map;
@@ -66,14 +66,14 @@ public class ConfigureAction extends AbstractRutaAction {
     ConfigurationParameterDeclarations configurationParameterDeclarations = targetEngine
             .getAnalysisEngineMetaData().getConfigurationParameterDeclarations();
 
-    Set<Entry<StringExpression, RutaExpression>> entrySet = parameterMap.entrySet();
-    for (Entry<StringExpression, RutaExpression> entry : entrySet) {
-      StringExpression key = entry.getKey();
+    Set<Entry<IStringExpression, IRutaExpression>> entrySet = parameterMap.entrySet();
+    for (Entry<IStringExpression, IRutaExpression> entry : entrySet) {
+      IStringExpression key = entry.getKey();
       String stringValue = key.getStringValue(parent, match, element, stream);
       ConfigurationParameter configurationParameter = configurationParameterDeclarations
               .getConfigurationParameter(null, stringValue);
       if (configurationParameter != null) {
-        RutaExpression value = entry.getValue();
+        IRutaExpression value = entry.getValue();
         String type = configurationParameter.getType();
         if (type.equals("String")) {
           if (configurationParameter.isMultiValued()) {
@@ -91,8 +91,8 @@ public class ConfigureAction extends AbstractRutaAction {
               targetEngine.setConfigParameterValue(stringValue, stringList.toArray());
             }
           } else {
-            if (value instanceof StringExpression) {
-              StringExpression se = (StringExpression) value;
+            if (value instanceof IStringExpression) {
+              IStringExpression se = (IStringExpression) value;
               String string = se.getStringValue(parent, match, element, stream);
               targetEngine.setConfigParameterValue(stringValue, string);
             } else if (value instanceof TypeExpression) {
@@ -111,8 +111,8 @@ public class ConfigureAction extends AbstractRutaAction {
             }
             targetEngine.setConfigParameterValue(stringValue, numbers.toArray());
           } else {
-            if (value instanceof NumberExpression) {
-              NumberExpression ne = (NumberExpression) value;
+            if (value instanceof INumberExpression) {
+              INumberExpression ne = (INumberExpression) value;
               Double d = ne.getDoubleValue(parent, match, element, stream);
               targetEngine.setConfigParameterValue(stringValue, d.floatValue());
             }
@@ -127,8 +127,8 @@ public class ConfigureAction extends AbstractRutaAction {
             }
             targetEngine.setConfigParameterValue(stringValue, numbers.toArray());
           } else {
-            if (value instanceof NumberExpression) {
-              NumberExpression ne = (NumberExpression) value;
+            if (value instanceof INumberExpression) {
+              INumberExpression ne = (INumberExpression) value;
               Integer i = ne.getIntegerValue(parent, match, element, stream);
               targetEngine.setConfigParameterValue(stringValue, i);
             }
@@ -139,8 +139,8 @@ public class ConfigureAction extends AbstractRutaAction {
             List<Boolean> list = ble.getList(parent, stream);
             targetEngine.setConfigParameterValue(stringValue, list.toArray());
           } else {
-            if (value instanceof BooleanExpression) {
-              BooleanExpression be = (BooleanExpression) value;
+            if (value instanceof IBooleanExpression) {
+              IBooleanExpression be = (IBooleanExpression) value;
               Boolean b = be.getBooleanValue(parent, match, element, stream);
               targetEngine.setConfigParameterValue(stringValue, b);
             }
@@ -160,7 +160,7 @@ public class ConfigureAction extends AbstractRutaAction {
     return namespace;
   }
 
-  public Map<StringExpression, RutaExpression> getParameterMap() {
+  public Map<IStringExpression, IRutaExpression> getParameterMap() {
     return parameterMap;
   }
 

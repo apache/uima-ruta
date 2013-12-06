@@ -31,7 +31,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.RutaStream;
 
-public class RutaExpression extends RutaElement {
+public class RutaExpression extends RutaElement implements IRutaExpression {
 
   protected List<AnnotationFS> getTargetAnnotation(AnnotationFS annotation, Type type,
           RutaStream stream) {

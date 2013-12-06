@@ -25,17 +25,17 @@ import java.util.List;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.RutaExpression;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.ruta.expression.list.BooleanListExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.expression.list.NumberListExpression;
 import org.apache.uima.ruta.expression.list.StringListExpression;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.RuleElement;
@@ -44,26 +44,26 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class ContainsCondition extends TypeSentiveCondition {
 
-  private final NumberExpression min;
+  private final INumberExpression min;
 
-  private final NumberExpression max;
+  private final INumberExpression max;
 
-  private final BooleanExpression percent;
+  private final IBooleanExpression percent;
 
-  private RutaExpression arg;
+  private IRutaExpression arg;
 
   private ListExpression argList;
 
-  public ContainsCondition(TypeExpression type, NumberExpression min, NumberExpression max,
-          BooleanExpression percent) {
+  public ContainsCondition(TypeExpression type, INumberExpression min, INumberExpression max,
+          IBooleanExpression percent) {
     super(type);
     this.min = min == null ? new SimpleNumberExpression(Integer.valueOf(1)) : min;
     this.max = max == null ? new SimpleNumberExpression(Integer.MAX_VALUE) : max;
     this.percent = percent == null ? new SimpleBooleanExpression(false) : percent;
   }
 
-  public ContainsCondition(ListExpression list, RutaExpression a, NumberExpression min,
-          NumberExpression max, BooleanExpression percent) {
+  public ContainsCondition(ListExpression list, IRutaExpression a, INumberExpression min,
+          INumberExpression max, IBooleanExpression percent) {
     super((TypeExpression) null);
     this.min = min == null ? new SimpleNumberExpression(Integer.valueOf(1)) : min;
     this.max = max == null ? new SimpleNumberExpression(Integer.MAX_VALUE) : max;
@@ -95,24 +95,24 @@ public class ContainsCondition extends TypeSentiveCondition {
       }
     } else {
       totalCount = argList.getList(element.getParent(), stream).size();
-      if (arg instanceof BooleanExpression && argList instanceof BooleanListExpression) {
-        BooleanExpression e = (BooleanExpression) arg;
+      if (arg instanceof IBooleanExpression && argList instanceof BooleanListExpression) {
+        IBooleanExpression e = (IBooleanExpression) arg;
         BooleanListExpression le = (BooleanListExpression) argList;
         boolean v = e.getBooleanValue(element.getParent(), annotation, stream);
         List<Boolean> l = new ArrayList<Boolean>(le.getList(element.getParent(), stream));
         while (l.remove(v)) {
           basicCount++;
         }
-      } else if (arg instanceof NumberExpression && argList instanceof NumberListExpression) {
-        NumberExpression e = (NumberExpression) arg;
+      } else if (arg instanceof INumberExpression && argList instanceof NumberListExpression) {
+        INumberExpression e = (INumberExpression) arg;
         NumberListExpression le = (NumberListExpression) argList;
         Number v = e.getDoubleValue(element.getParent(), annotation, stream);
         List<Number> l = new ArrayList<Number>(le.getList(element.getParent(), stream));
         while (l.remove(v)) {
           basicCount++;
         }
-      } else if (arg instanceof StringExpression && argList instanceof StringListExpression) {
-        StringExpression e = (StringExpression) arg;
+      } else if (arg instanceof IStringExpression && argList instanceof StringListExpression) {
+        IStringExpression e = (IStringExpression) arg;
         StringListExpression le = (StringListExpression) argList;
         String v = e.getStringValue(element.getParent(), annotation, stream);
         List<String> l = new ArrayList<String>(le.getList(element.getParent(), stream));
@@ -145,19 +145,19 @@ public class ContainsCondition extends TypeSentiveCondition {
     }
   }
 
-  public NumberExpression getMin() {
+  public INumberExpression getMin() {
     return min;
   }
 
-  public NumberExpression getMax() {
+  public INumberExpression getMax() {
     return max;
   }
 
-  public BooleanExpression getPercent() {
+  public IBooleanExpression getPercent() {
     return percent;
   }
 
-  public RutaExpression getArg() {
+  public IRutaExpression getArg() {
     return arg;
   }
 

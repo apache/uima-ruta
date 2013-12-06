@@ -23,7 +23,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 
-public class SimpleNumberExpression extends NumberExpression {
+public class SimpleNumberExpression extends AbstractNumberExpression {
 
   private final Number number;
 
@@ -32,17 +32,14 @@ public class SimpleNumberExpression extends NumberExpression {
     this.number = number;
   }
 
-  @Override
   public double getDoubleValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     return number.doubleValue();
   }
 
-  @Override
   public float getFloatValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     return number.floatValue();
   }
 
-  @Override
   public int getIntegerValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     return number.intValue();
   }
@@ -51,7 +48,6 @@ public class SimpleNumberExpression extends NumberExpression {
     return number;
   }
 
-  @Override
   public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     boolean floating = number.intValue() != number.doubleValue();
     if (floating) {

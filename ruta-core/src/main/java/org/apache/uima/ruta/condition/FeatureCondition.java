@@ -23,9 +23,9 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.RuleElement;
@@ -33,37 +33,37 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class FeatureCondition extends AbstractRutaCondition {
 
-  private final StringExpression featureStringExpression;
+  private final IStringExpression featureStringExpression;
 
-  private StringExpression stringExpr;
+  private IStringExpression stringExpr;
 
-  private NumberExpression numberExpr;
+  private INumberExpression numberExpr;
 
-  private BooleanExpression booleanExpr;
+  private IBooleanExpression booleanExpr;
 
   private TypeExpression typeExpr;
 
-  protected FeatureCondition(StringExpression feature) {
+  protected FeatureCondition(IStringExpression feature) {
     super();
     this.featureStringExpression = feature;
   }
 
-  public FeatureCondition(StringExpression feature, StringExpression stringExpr) {
+  public FeatureCondition(IStringExpression feature, IStringExpression stringExpr) {
     this(feature);
     this.stringExpr = stringExpr;
   }
 
-  public FeatureCondition(StringExpression feature, NumberExpression numberExpr) {
+  public FeatureCondition(IStringExpression feature, INumberExpression numberExpr) {
     this(feature);
     this.numberExpr = numberExpr;
   }
 
-  public FeatureCondition(StringExpression feature, BooleanExpression booleanExpr) {
+  public FeatureCondition(IStringExpression feature, IBooleanExpression booleanExpr) {
     this(feature);
     this.booleanExpr = booleanExpr;
   }
 
-  public FeatureCondition(StringExpression feature, TypeExpression typeExpr, String variable,
+  public FeatureCondition(IStringExpression feature, TypeExpression typeExpr, String variable,
           RuleElement re) {
     this(feature);
     this.typeExpr = typeExpr;
@@ -124,19 +124,19 @@ public class FeatureCondition extends AbstractRutaCondition {
     return new EvaluatedCondition(this, false);
   }
 
-  public StringExpression getFeatureStringExpression() {
+  public IStringExpression getFeatureStringExpression() {
     return featureStringExpression;
   }
 
-  public StringExpression getStringExpr() {
+  public IStringExpression getStringExpr() {
     return stringExpr;
   }
 
-  public NumberExpression getNumberExpr() {
+  public INumberExpression getNumberExpr() {
     return numberExpr;
   }
 
-  public BooleanExpression getBooleanExpr() {
+  public IBooleanExpression getBooleanExpr() {
     return booleanExpr;
   }
 

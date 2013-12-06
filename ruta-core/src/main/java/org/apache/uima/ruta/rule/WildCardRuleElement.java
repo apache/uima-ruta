@@ -37,7 +37,7 @@ import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.engine.RutaEngine;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.ruta.type.RutaFrame;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
@@ -251,7 +251,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
       }
     } else if (matcher instanceof RutaLiteralMatcher) {
       RutaLiteralMatcher lm = (RutaLiteralMatcher) matcher;
-      StringExpression expression = lm.getExpression();
+      IStringExpression expression = lm.getExpression();
       String stringValue = expression.getStringValue(parent, annotation, stream);
       AnnotationFS documentAnnotation = stream.getDocumentAnnotation();
       int delta = documentAnnotation.getBegin();
@@ -407,7 +407,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
           RutaStream stream, InferenceCrowd crowd) {
     List<RuleMatch> result = new ArrayList<RuleMatch>();
     RutaLiteralMatcher matcher = (RutaLiteralMatcher) nextElement.getMatcher();
-    StringExpression expression = matcher.getExpression();
+    IStringExpression expression = matcher.getExpression();
     String stringValue = expression.getStringValue(parent, null, stream);
     AnnotationFS documentAnnotation = stream.getDocumentAnnotation();
     int delta = documentAnnotation.getBegin();

@@ -63,12 +63,12 @@ import org.apache.uima.ruta.action.TrieAction;
 import org.apache.uima.ruta.action.TrimAction;
 import org.apache.uima.ruta.action.UnmarkAction;
 import org.apache.uima.ruta.action.UnmarkAllAction;
-import org.apache.uima.ruta.expression.RutaExpression;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.resource.WordTableExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 
 public class ActionVerbalizer {
@@ -196,7 +196,7 @@ public class ActionVerbalizer {
       StringBuilder features = new StringBuilder();
       if (a.getFeatures() != null) {
         features.append(", ");
-        for (Entry<StringExpression, RutaExpression> each : a.getFeatures().entrySet()) {
+        for (Entry<IStringExpression, IRutaExpression> each : a.getFeatures().entrySet()) {
           features.append(verbalizer.verbalize(each.getKey()));
           features.append(" = ");
           features.append(verbalizer.verbalize(each.getValue()));
@@ -219,7 +219,7 @@ public class ActionVerbalizer {
       String features = "";
       if (a.getFeatures() != null) {
         features += ", ";
-        for (StringExpression each : a.getFeatures().keySet()) {
+        for (IStringExpression each : a.getFeatures().keySet()) {
           features += verbalizer.verbalize(each);
           features += " = ";
           features += verbalizer.verbalize(a.getFeatures().get(each));
@@ -245,7 +245,7 @@ public class ActionVerbalizer {
       String features = "";
       if (a.getFeatures() != null) {
         features += ", ";
-        for (StringExpression each : a.getFeatures().keySet()) {
+        for (IStringExpression each : a.getFeatures().keySet()) {
           features += verbalizer.verbalize(each);
           features += " = ";
           features += verbalizer.verbalize(a.getFeatures().get(each));
@@ -365,7 +365,7 @@ public class ActionVerbalizer {
       TrieAction a = (TrieAction) action;
       String map = "";
       if (a.getMap() != null) {
-        for (StringExpression each : a.getMap().keySet()) {
+        for (IStringExpression each : a.getMap().keySet()) {
           map += verbalizer.verbalize(each);
           map += " = ";
           map += verbalizer.verbalize(a.getMap().get(each));
@@ -405,7 +405,7 @@ public class ActionVerbalizer {
       String map = "";
       if (a.getParameterMap() != null) {
         map += ", ";
-        for (StringExpression each : a.getParameterMap().keySet()) {
+        for (IStringExpression each : a.getParameterMap().keySet()) {
           map += verbalizer.verbalize(each);
           map += " = ";
           map += verbalizer.verbalize(a.getParameterMap().get(each));
@@ -417,9 +417,9 @@ public class ActionVerbalizer {
     } else if (action instanceof DynamicAnchoringAction) {
       DynamicAnchoringAction a = (DynamicAnchoringAction) action;
 
-      BooleanExpression active = a.getActive();
-      NumberExpression panelty = a.getPanelty();
-      NumberExpression factor = a.getFactor();
+      IBooleanExpression active = a.getActive();
+      INumberExpression panelty = a.getPanelty();
+      INumberExpression factor = a.getFactor();
 
       String pa = verbalizer.verbalize(active);
       String pp = panelty == null ? "" : ", " + verbalizer.verbalize(panelty);
@@ -427,7 +427,7 @@ public class ActionVerbalizer {
       return name + pa + pp + pf + ")";
     } else if (action instanceof GreedyAnchoringAction) {
       GreedyAnchoringAction a = (GreedyAnchoringAction) action;
-      BooleanExpression active = a.getActive();
+      IBooleanExpression active = a.getActive();
       String pa = verbalizer.verbalize(active);
       return name + pa + ")";
     } else if (action instanceof GetListAction) {
@@ -438,13 +438,13 @@ public class ActionVerbalizer {
     } else if (action instanceof MarkTableAction) {
       MarkTableAction a = (MarkTableAction) action;
       TypeExpression typeExpr = a.getTypeExpr();
-      NumberExpression indexExpr = a.getIndexExpr();
+      INumberExpression indexExpr = a.getIndexExpr();
       WordTableExpression tableExpr = a.getTableExpr();
-      Map<StringExpression, NumberExpression> featureMap = a.getFeatureMap();
-      BooleanExpression ignoreCase = a.getIgnoreCase();
-      NumberExpression ignoreLength = a.getIgnoreLength();
-      StringExpression ignoreChar = a.getIgnoreChar();
-      NumberExpression maxIgnoreChar = a.getMaxIgnoreChar();
+      Map<IStringExpression, INumberExpression> featureMap = a.getFeatureMap();
+      IBooleanExpression ignoreCase = a.getIgnoreCase();
+      INumberExpression ignoreLength = a.getIgnoreLength();
+      IStringExpression ignoreChar = a.getIgnoreChar();
+      INumberExpression maxIgnoreChar = a.getMaxIgnoreChar();
 
       String type = verbalizer.verbalize(typeExpr);
       String index = verbalizer.verbalize(indexExpr);
@@ -452,7 +452,7 @@ public class ActionVerbalizer {
       String map = "";
       if (featureMap != null) {
         map += ", ";
-        for (StringExpression each : featureMap.keySet()) {
+        for (IStringExpression each : featureMap.keySet()) {
           map += verbalizer.verbalize(each);
           map += " = ";
           map += verbalizer.verbalize(featureMap.get(each));
@@ -468,7 +468,7 @@ public class ActionVerbalizer {
     } else if (action instanceof MatchedTextAction) {
       MatchedTextAction a = (MatchedTextAction) action;
       String var = a.getVar();
-      List<NumberExpression> list = a.getList();
+      List<INumberExpression> list = a.getList();
       String indexes = list == null ? "" : ", " + verbalizer.verbalizeExpressionList(list);
       return name + var + indexes + ")";
     } else if (action instanceof RemoveDuplicateAction) {

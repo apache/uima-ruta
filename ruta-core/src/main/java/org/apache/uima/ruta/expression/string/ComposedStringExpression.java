@@ -27,9 +27,9 @@ import org.apache.uima.ruta.RutaStream;
 
 public class ComposedStringExpression extends LiteralStringExpression {
 
-  private final List<StringExpression> epxressions;
+  private final List<IStringExpression> epxressions;
 
-  public ComposedStringExpression(List<StringExpression> expressions) {
+  public ComposedStringExpression(List<IStringExpression> expressions) {
     super();
     this.epxressions = expressions;
   }
@@ -37,13 +37,13 @@ public class ComposedStringExpression extends LiteralStringExpression {
   @Override
   public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     StringBuilder result = new StringBuilder();
-    for (StringExpression each : getExpressions()) {
+    for (IStringExpression each : getExpressions()) {
       result.append(each.getStringValue(parent, annotation, stream));
     }
     return result.toString();
   }
 
-  public List<StringExpression> getExpressions() {
+  public List<IStringExpression> getExpressions() {
     return epxressions;
   }
 

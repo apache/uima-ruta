@@ -27,9 +27,9 @@ import org.antlr.runtime.Token;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.expression.RutaExpression;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
+import org.apache.uima.ruta.expression.string.AbstractStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 
 public class RutaExternalFactory {
@@ -89,7 +89,7 @@ public class RutaExternalFactory {
     return null;
   }
 
-  public BooleanExpression createExternalBooleanFunction(Token id, List<RutaExpression> args)
+  public IBooleanExpression createExternalBooleanFunction(Token id, List<RutaExpression> args)
           throws RutaParseException {
     String name = id.getText();
     IRutaBooleanFunctionExtension extension = booleanFunctionExtensions.get(name);
@@ -100,7 +100,7 @@ public class RutaExternalFactory {
     return null;
   }
 
-  public StringExpression createExternalStringFunction(Token id, List<RutaExpression> args)
+  public AbstractStringExpression createExternalStringFunction(Token id, List<RutaExpression> args)
           throws RutaParseException {
     String name = id.getText();
     IRutaStringFunctionExtension extension = stringFunctionExtensions.get(name);
@@ -111,7 +111,7 @@ public class RutaExternalFactory {
     return null;
   }
 
-  public NumberExpression createExternalNumberFunction(Token id, List<RutaExpression> args)
+  public INumberExpression createExternalNumberFunction(Token id, List<RutaExpression> args)
           throws RutaParseException {
     String name = id.getText();
     IRutaNumberFunctionExtension extension = numberFunctionExtensions.get(name);

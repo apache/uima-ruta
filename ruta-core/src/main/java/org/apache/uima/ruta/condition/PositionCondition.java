@@ -26,8 +26,8 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.RuleElement;
@@ -37,12 +37,12 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class PositionCondition extends TypeSentiveCondition {
 
-  private final NumberExpression position;
+  private final INumberExpression position;
 
-  private final BooleanExpression relative;
+  private final IBooleanExpression relative;
 
-  public PositionCondition(TypeExpression type, NumberExpression position,
-          BooleanExpression relative) {
+  public PositionCondition(TypeExpression type, INumberExpression position,
+          IBooleanExpression relative) {
     super(type);
     this.position = position;
     this.relative = relative;
@@ -136,11 +136,11 @@ public class PositionCondition extends TypeSentiveCondition {
     return false;
   }
 
-  public NumberExpression getPosition() {
+  public INumberExpression getPosition() {
     return position;
   }
 
-  public BooleanExpression getRelative() {
+  public IBooleanExpression getRelative() {
     return relative;
   }
 

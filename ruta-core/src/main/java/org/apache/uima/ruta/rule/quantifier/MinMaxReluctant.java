@@ -24,7 +24,7 @@ import java.util.List;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
 import org.apache.uima.ruta.rule.ComposedRuleElementMatch;
 import org.apache.uima.ruta.rule.RuleElement;
@@ -34,11 +34,11 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class MinMaxReluctant implements RuleElementQuantifier {
 
-  private NumberExpression min;
+  private INumberExpression min;
 
-  private NumberExpression max;
+  private INumberExpression max;
 
-  public MinMaxReluctant(NumberExpression min, NumberExpression max, boolean interval) {
+  public MinMaxReluctant(INumberExpression min, INumberExpression max, boolean interval) {
     super();
     if (!interval) {
       this.min = min;
@@ -52,11 +52,11 @@ public class MinMaxReluctant implements RuleElementQuantifier {
     }
   }
 
-  public NumberExpression getMin() {
+  public INumberExpression getMin() {
     return min;
   }
 
-  public NumberExpression getMax() {
+  public INumberExpression getMax() {
     return max;
   }
 

@@ -26,7 +26,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.IRutaExpression;
 
 public interface RutaMatcher {
 
@@ -36,7 +36,7 @@ public interface RutaMatcher {
 
   List<Type> getTypes(RutaBlock parent, RutaStream stream);
 
-  RutaExpression getExpression();
+  IRutaExpression getExpression();
 
   long estimateAnchors(RutaBlock parent, RutaStream stream);
 

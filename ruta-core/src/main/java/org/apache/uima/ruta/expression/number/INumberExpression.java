@@ -17,34 +17,27 @@
  * under the License.
  */
 
-package org.apache.uima.ruta.action;
+package org.apache.uima.ruta.expression.number;
 
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
-import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class GreedyAnchoringAction extends AbstractRutaAction {
+public interface INumberExpression extends IStringExpression {
 
-  private final IBooleanExpression active;
+  int getIntegerValue(RutaBlock parent, RuleMatch match, RuleElement element, RutaStream stream);
 
-  public GreedyAnchoringAction(IBooleanExpression active) {
-    super();
-    this.active = active;
-  }
+  double getDoubleValue(RutaBlock parent, RuleMatch match, RuleElement element, RutaStream stream);
 
-  @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
-    RutaBlock parent = element.getParent();
-    boolean activated = active.getBooleanValue(parent, null, stream);
-    stream.setGreedyAnchoring(activated);
-  }
+  float getFloatValue(RutaBlock parent, RuleMatch match, RuleElement element, RutaStream stream);
 
-  public IBooleanExpression getActive() {
-    return active;
-  }
+  int getIntegerValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream);
 
+  double getDoubleValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream);
+
+  float getFloatValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream);
 
 }

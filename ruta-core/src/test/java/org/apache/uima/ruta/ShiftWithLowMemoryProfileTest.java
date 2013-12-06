@@ -19,6 +19,8 @@
 
 package org.apache.uima.ruta;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -35,8 +37,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * There was a {@link NullPointerException} when calling

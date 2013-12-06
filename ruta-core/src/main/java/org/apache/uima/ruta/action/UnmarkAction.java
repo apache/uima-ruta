@@ -26,8 +26,8 @@ import java.util.Set;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
@@ -36,11 +36,11 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class UnmarkAction extends TypeSensitiveAction {
 
-  private List<NumberExpression> list;
+  private List<INumberExpression> list;
 
-  private BooleanExpression allAnchor;
+  private IBooleanExpression allAnchor;
 
-  public UnmarkAction(TypeExpression type, List<NumberExpression> list, BooleanExpression b) {
+  public UnmarkAction(TypeExpression type, List<INumberExpression> list, IBooleanExpression b) {
     super(type);
     this.list = list;
     this.allAnchor = b;
@@ -77,15 +77,15 @@ public class UnmarkAction extends TypeSensitiveAction {
 
   }
 
-  public List<NumberExpression> getList() {
+  public List<INumberExpression> getList() {
     return list;
   }
 
-  public BooleanExpression getAllAnchor() {
+  public IBooleanExpression getAllAnchor() {
     return allAnchor;
   }
 
-  protected List<Integer> getIndexList(RuleElement element, List<NumberExpression> list,
+  protected List<Integer> getIndexList(RuleElement element, List<INumberExpression> list,
           RutaStream stream) {
     List<Integer> indexList = new ArrayList<Integer>();
     if (list == null || list.isEmpty()) {
@@ -94,7 +94,7 @@ public class UnmarkAction extends TypeSensitiveAction {
       return indexList;
     }
     int last = Integer.MAX_VALUE - 1;
-    for (NumberExpression each : list) {
+    for (INumberExpression each : list) {
       int value = each.getIntegerValue(element.getParent(), null, stream);
       for (int i = Math.min(value, last + 1); i < value; i++) {
         indexList.add(i);

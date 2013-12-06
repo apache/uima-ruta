@@ -24,7 +24,7 @@ import java.util.List;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
@@ -33,8 +33,8 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class MarkOnceAction extends MarkAction {
 
-  public MarkOnceAction(TypeExpression type, NumberExpression scoreValue,
-          List<NumberExpression> list) {
+  public MarkOnceAction(TypeExpression type, INumberExpression scoreValue,
+          List<INumberExpression> list) {
     super(type, scoreValue, list);
   }
 

@@ -30,7 +30,7 @@ import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 
-public class NumberFeatureExpression extends NumberExpression {
+public class NumberFeatureExpression extends AbstractNumberExpression {
 
   private FeatureExpression fe;
 
@@ -39,17 +39,14 @@ public class NumberFeatureExpression extends NumberExpression {
     this.fe = fe;
   }
 
-  @Override
   public int getIntegerValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     return getNumberValue(parent, annotation, stream).intValue();
   }
 
-  @Override
   public double getDoubleValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     return getNumberValue(parent, annotation, stream).doubleValue();
   }
 
-  @Override
   public float getFloatValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     return getNumberValue(parent, annotation, stream).floatValue();
   }

@@ -23,10 +23,10 @@ import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.string.SimpleStringExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
@@ -35,16 +35,16 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class ColorAction extends AbstractRutaAction {
 
-  private StringExpression bgcolor;
+  private IStringExpression bgcolor;
 
-  private StringExpression fgcolor;
+  private IStringExpression fgcolor;
 
-  private BooleanExpression selected;
+  private IBooleanExpression selected;
 
   private TypeExpression type;
 
-  public ColorAction(TypeExpression type, StringExpression bgcolor, StringExpression fgcolor,
-          BooleanExpression selected) {
+  public ColorAction(TypeExpression type, IStringExpression bgcolor, IStringExpression fgcolor,
+          IBooleanExpression selected) {
     super();
     this.type = type;
     this.bgcolor = bgcolor == null ? new SimpleStringExpression("red") : bgcolor;
@@ -68,15 +68,15 @@ public class ColorAction extends AbstractRutaAction {
     }
   }
 
-  public StringExpression getFgColor() {
+  public IStringExpression getFgColor() {
     return fgcolor;
   }
 
-  public StringExpression getBgColor() {
+  public IStringExpression getBgColor() {
     return bgcolor;
   }
 
-  public BooleanExpression getSelected() {
+  public IBooleanExpression getSelected() {
     return selected;
   }
 

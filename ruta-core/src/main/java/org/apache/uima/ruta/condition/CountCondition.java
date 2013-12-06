@@ -25,16 +25,16 @@ import java.util.List;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.RutaExpression;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.list.BooleanListExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.expression.list.NumberListExpression;
 import org.apache.uima.ruta.expression.list.StringListExpression;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.RuleElement;
@@ -42,25 +42,25 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class CountCondition extends TypeSentiveCondition {
 
-  private final NumberExpression min;
+  private final INumberExpression min;
 
-  private final NumberExpression max;
+  private final INumberExpression max;
 
   private final String var;
 
   private ListExpression list;
 
-  private RutaExpression arg;
+  private IRutaExpression arg;
 
-  public CountCondition(TypeExpression type, NumberExpression min, NumberExpression max, String var) {
+  public CountCondition(TypeExpression type, INumberExpression min, INumberExpression max, String var) {
     super(type);
     this.min = min == null ? new SimpleNumberExpression(Integer.MIN_VALUE) : min;
     this.max = max == null ? new SimpleNumberExpression(Integer.MAX_VALUE) : max;
     this.var = var;
   }
 
-  public CountCondition(ListExpression list, RutaExpression a, NumberExpression min,
-          NumberExpression max, String var) {
+  public CountCondition(ListExpression list, IRutaExpression a, INumberExpression min,
+          INumberExpression max, String var) {
     super((TypeExpression) null);
     this.list = list;
     this.arg = a;
@@ -84,24 +84,24 @@ public class CountCondition extends TypeSentiveCondition {
       return new EvaluatedCondition(this, value);
     } else {
       int count = 0;
-      if (arg instanceof BooleanExpression && list instanceof BooleanListExpression) {
-        BooleanExpression e = (BooleanExpression) arg;
+      if (arg instanceof IBooleanExpression && list instanceof BooleanListExpression) {
+        IBooleanExpression e = (IBooleanExpression) arg;
         BooleanListExpression le = (BooleanListExpression) list;
         boolean v = e.getBooleanValue(element.getParent(), annotation, stream);
         List<Boolean> l = new ArrayList<Boolean>(le.getList(element.getParent(), stream));
         while (l.remove(v)) {
           count++;
         }
-      } else if (arg instanceof NumberExpression && list instanceof NumberListExpression) {
-        NumberExpression e = (NumberExpression) arg;
+      } else if (arg instanceof INumberExpression && list instanceof NumberListExpression) {
+        INumberExpression e = (INumberExpression) arg;
         NumberListExpression le = (NumberListExpression) list;
         Number v = e.getDoubleValue(element.getParent(), annotation, stream);
         List<Number> l = new ArrayList<Number>(le.getList(element.getParent(), stream));
         while (l.remove(v)) {
           count++;
         }
-      } else if (arg instanceof StringExpression && list instanceof StringListExpression) {
-        StringExpression e = (StringExpression) arg;
+      } else if (arg instanceof IStringExpression && list instanceof StringListExpression) {
+        IStringExpression e = (IStringExpression) arg;
         StringListExpression le = (StringListExpression) list;
         String v = e.getStringValue(element.getParent(), annotation, stream);
         List<String> l = new ArrayList<String>(le.getList(element.getParent(), stream));
@@ -126,11 +126,11 @@ public class CountCondition extends TypeSentiveCondition {
     }
   }
 
-  public NumberExpression getMin() {
+  public INumberExpression getMin() {
     return min;
   }
 
-  public NumberExpression getMax() {
+  public INumberExpression getMax() {
     return max;
   }
 
@@ -142,7 +142,7 @@ public class CountCondition extends TypeSentiveCondition {
     return list;
   }
 
-  public RutaExpression getArg() {
+  public IRutaExpression getArg() {
     return arg;
   }
 }

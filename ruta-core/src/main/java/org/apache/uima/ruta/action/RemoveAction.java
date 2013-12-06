@@ -24,11 +24,11 @@ import java.util.List;
 
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.RutaExpression;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
@@ -38,9 +38,9 @@ public class RemoveAction extends AbstractRutaAction {
 
   private String var;
 
-  private List<RutaExpression> elements;
+  private List<IRutaExpression> elements;
 
-  public RemoveAction(String var, List<RutaExpression> list) {
+  public RemoveAction(String var, List<IRutaExpression> list) {
     super();
     this.var = var;
     this.elements = list;
@@ -50,7 +50,7 @@ public class RemoveAction extends AbstractRutaAction {
     return var;
   }
 
-  public List<RutaExpression> getElements() {
+  public List<IRutaExpression> getElements() {
     return elements;
   }
 
@@ -62,7 +62,7 @@ public class RemoveAction extends AbstractRutaAction {
     List<Object> toRemove = new ArrayList<Object>();
     for (Object entry : list) {
       Object value1 = getValue(entry, parent, stream);
-      for (RutaExpression arg : elements) {
+      for (IRutaExpression arg : elements) {
         if (arg instanceof ListExpression) {
           ListExpression l = (ListExpression) arg;
           List list2 = l.getList(parent, stream);
@@ -87,14 +87,14 @@ public class RemoveAction extends AbstractRutaAction {
   }
 
   private Object getValue(Object obj, RutaBlock parent, RutaStream stream) {
-    if (obj instanceof NumberExpression) {
-      return ((NumberExpression) obj).getDoubleValue(parent, null, stream);
-    } else if (obj instanceof BooleanExpression) {
-      return ((BooleanExpression) obj).getBooleanValue(parent, null, stream);
+    if (obj instanceof INumberExpression) {
+      return ((INumberExpression) obj).getDoubleValue(parent, null, stream);
+    } else if (obj instanceof IBooleanExpression) {
+      return ((IBooleanExpression) obj).getBooleanValue(parent, null, stream);
     } else if (obj instanceof TypeExpression) {
       return ((TypeExpression) obj).getType(parent);
-    } else if (obj instanceof StringExpression) {
-      return ((StringExpression) obj).getStringValue(parent, null, stream);
+    } else if (obj instanceof IStringExpression) {
+      return ((IStringExpression) obj).getStringValue(parent, null, stream);
     }
     return null;
   }

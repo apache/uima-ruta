@@ -38,13 +38,13 @@ public class MatchReference extends RutaExpression {
 
   private String op;
 
-  private RutaExpression arg;
+  private IRutaExpression arg;
 
   private TypeExpression typeExpression;
 
   private FeatureExpression featureExpression;
 
-  public MatchReference(String match, String op, RutaExpression arg) {
+  public MatchReference(String match, String op, IRutaExpression arg) {
     super();
     this.match = match;
     this.op = op;
@@ -114,7 +114,7 @@ public class MatchReference extends RutaExpression {
     return op;
   }
 
-  public RutaExpression getArg() {
+  public IRutaExpression getArg() {
     return arg;
   }
 

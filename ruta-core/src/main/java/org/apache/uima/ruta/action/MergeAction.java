@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.apache.commons.collections.ListUtils;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
@@ -35,12 +35,12 @@ public class MergeAction extends AbstractRutaAction {
   @SuppressWarnings("rawtypes")
   private List<ListExpression> lists;
 
-  private BooleanExpression unionExpr;
+  private IBooleanExpression unionExpr;
 
   private String target;
 
   @SuppressWarnings("rawtypes")
-  public MergeAction(BooleanExpression union, String target, List<ListExpression> list) {
+  public MergeAction(IBooleanExpression union, String target, List<ListExpression> list) {
     super();
     this.unionExpr = union;
     this.target = target;
@@ -74,7 +74,7 @@ public class MergeAction extends AbstractRutaAction {
     }
   }
 
-  public BooleanExpression getUnion() {
+  public IBooleanExpression getUnion() {
     return unionExpr;
   }
 

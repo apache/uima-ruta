@@ -19,6 +19,6 @@
 
 package org.apache.uima.ruta.expression.number;
 
-public abstract class NumberFunctionExpression extends NumberExpression {
+public abstract class NumberFunctionExpression extends AbstractNumberExpression {
 
 }

@@ -28,7 +28,7 @@ import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 
-public abstract class StringExpression extends RutaExpression {
+public abstract class AbstractStringExpression extends RutaExpression implements IStringExpression {
 
   public String getStringValue(RutaBlock parent, RuleMatch match, RuleElement element,
           RutaStream stream) {

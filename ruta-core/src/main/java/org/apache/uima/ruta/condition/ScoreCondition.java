@@ -25,7 +25,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.RuleElement;
@@ -33,13 +33,13 @@ import org.apache.uima.ruta.type.RutaAnnotation;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class ScoreCondition extends TerminalRutaCondition {
-  private final NumberExpression min;
+  private final INumberExpression min;
 
-  private final NumberExpression max;
+  private final INumberExpression max;
 
   private final String var;
 
-  public ScoreCondition(NumberExpression min, NumberExpression max, String var) {
+  public ScoreCondition(INumberExpression min, INumberExpression max, String var) {
     super();
     this.min = min == null ? new SimpleNumberExpression(Integer.MIN_VALUE) : min;
     this.max = max == null ? new SimpleNumberExpression(Integer.MAX_VALUE) : max;
@@ -68,11 +68,11 @@ public class ScoreCondition extends TerminalRutaCondition {
     return new EvaluatedCondition(this, value);
   }
 
-  public NumberExpression getMin() {
+  public INumberExpression getMin() {
     return min;
   }
 
-  public NumberExpression getMax() {
+  public INumberExpression getMax() {
     return max;
   }
 

@@ -23,7 +23,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 
-public class ReferenceNumberExpression extends NumberExpression {
+public class ReferenceNumberExpression extends AbstractNumberExpression {
 
   private final String var;
 
@@ -32,7 +32,6 @@ public class ReferenceNumberExpression extends NumberExpression {
     this.var = var;
   }
 
-  @Override
   public double getDoubleValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     Object value = parent.getEnvironment().getVariableValue(getVar());
     double variableValue = 0;
@@ -42,7 +41,6 @@ public class ReferenceNumberExpression extends NumberExpression {
     return variableValue;
   }
 
-  @Override
   public float getFloatValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     Object value = parent.getEnvironment().getVariableValue(getVar());
     float variableValue = 0;
@@ -52,7 +50,6 @@ public class ReferenceNumberExpression extends NumberExpression {
     return variableValue;
   }
 
-  @Override
   public int getIntegerValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     Object value = parent.getEnvironment().getVariableValue(getVar());
     int variableValue = 0;
@@ -62,7 +59,6 @@ public class ReferenceNumberExpression extends NumberExpression {
     return variableValue;
   }
 
-  @Override
   public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     Class<?> variableType = parent.getEnvironment().getVariableType(getVar());
     if (variableType.equals(Integer.class)) {

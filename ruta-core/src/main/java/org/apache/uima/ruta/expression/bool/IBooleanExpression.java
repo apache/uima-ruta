@@ -17,34 +17,19 @@
  * under the License.
  */
 
-package org.apache.uima.ruta.action;
+package org.apache.uima.ruta.expression.bool;
 
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
-import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class GreedyAnchoringAction extends AbstractRutaAction {
+public interface IBooleanExpression extends IStringExpression {
+  
+  boolean getBooleanValue(RutaBlock parent, RuleMatch match, RuleElement element, RutaStream stream);
 
-  private final IBooleanExpression active;
-
-  public GreedyAnchoringAction(IBooleanExpression active) {
-    super();
-    this.active = active;
-  }
-
-  @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
-    RutaBlock parent = element.getParent();
-    boolean activated = active.getBooleanValue(parent, null, stream);
-    stream.setGreedyAnchoring(activated);
-  }
-
-  public IBooleanExpression getActive() {
-    return active;
-  }
-
+  boolean getBooleanValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream);
 
 }

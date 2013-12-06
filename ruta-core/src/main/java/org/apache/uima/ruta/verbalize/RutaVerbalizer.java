@@ -28,6 +28,7 @@ import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
+import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.extensions.IRutaExtension;
 import org.apache.uima.ruta.rule.ComposedRuleElement;
@@ -64,20 +65,22 @@ public class RutaVerbalizer {
     }
   }
 
-  public String verbalize(RutaElement element) {
-    if (externalVerbalizers.keySet().contains(element.getClass())) {
-      return externalVerbalizers.get(element.getClass()).verbalize(element, this);
+  public String verbalize(Object element) {
+    if (externalVerbalizers.keySet().contains(element.getClass()) && element instanceof RutaElement) {
+      return externalVerbalizers.get(element.getClass()).verbalize((RutaElement) element, this);
     } else if (element instanceof AbstractRutaAction) {
       return actionVerbalizer.verbalize((AbstractRutaAction) element);
     } else if (element instanceof AbstractRutaCondition) {
       return conditionVerbalizer.verbalize((AbstractRutaCondition) element);
-    } else if (element instanceof RutaExpression) {
+    } else if (element instanceof IRutaExpression) {
       return expressionVerbalizer.verbalize((RutaExpression) element);
+    } else if(element instanceof RutaElement){
+      return scriptVerbalizer.verbalize((RutaElement) element);
     } else {
-      return scriptVerbalizer.verbalize(element);
+      return element.getClass().getSimpleName();
     }
   }
-
+  
   public String verbalizeName(RutaElement element) {
     if (externalVerbalizers.keySet().contains(element.getClass())) {
       return externalVerbalizers.get(element.getClass()).verbalizeName(element);
@@ -113,7 +116,7 @@ public class RutaVerbalizer {
     return verbalizerUtils.verbalizeTypeList(list);
   }
 
-  public String verbalizeExpressionList(List<? extends RutaExpression> list) {
+  public String verbalizeExpressionList(List<? extends IRutaExpression> list) {
     return verbalizerUtils.verbalizeExpressionList(list);
   }
 
@@ -124,5 +127,6 @@ public class RutaVerbalizer {
   public String verbalizeComposed(ComposedRuleElement cre) {
     return scriptVerbalizer.verbalizeComposed(cre);
   }
+
 
 }

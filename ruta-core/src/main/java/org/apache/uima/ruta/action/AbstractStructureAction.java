@@ -34,10 +34,10 @@ import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
-import org.apache.uima.ruta.expression.RutaExpression;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.utils.UIMAUtils;
@@ -48,11 +48,11 @@ public abstract class AbstractStructureAction extends AbstractRutaAction {
     super();
   }
 
-  protected void fillFeatures(TOP structure, Map<StringExpression, RutaExpression> features,
+  protected void fillFeatures(TOP structure, Map<IStringExpression, IRutaExpression> features,
           AnnotationFS matchedAnnotation, RuleElement element, RutaStream stream) {
-    Map<String, RutaExpression> map = new HashMap<String, RutaExpression>();
+    Map<String, IRutaExpression> map = new HashMap<String, IRutaExpression>();
     RutaBlock parent = element.getParent();
-    for (Entry<StringExpression, RutaExpression> each : features.entrySet()) {
+    for (Entry<IStringExpression, IRutaExpression> each : features.entrySet()) {
       String value = each.getKey().getStringValue(parent, matchedAnnotation, stream);
       map.put(value, each.getValue());
     }
@@ -76,34 +76,34 @@ public abstract class AbstractStructureAction extends AbstractRutaAction {
             AnnotationFS annotation = annotationsInWindow.get(0);
             structure.setStringValue(targetFeature, annotation.getCoveredText());
           }
-        } else if (valueObject instanceof StringExpression
+        } else if (valueObject instanceof IStringExpression
                 && range.getName().equals(UIMAConstants.TYPE_STRING)) {
-          structure.setStringValue(targetFeature, ((StringExpression) valueObject).getStringValue(
+          structure.setStringValue(targetFeature, ((IStringExpression) valueObject).getStringValue(
                   parent, matchedAnnotation, stream));
 
-        } else if (valueObject instanceof NumberExpression) {
+        } else if (valueObject instanceof INumberExpression) {
           if (range.getName().equals(UIMAConstants.TYPE_INTEGER)) {
-            structure.setIntValue(targetFeature, ((NumberExpression) valueObject).getIntegerValue(
+            structure.setIntValue(targetFeature, ((INumberExpression) valueObject).getIntegerValue(
                     parent, matchedAnnotation, stream));
           } else if (range.getName().equals(UIMAConstants.TYPE_DOUBLE)) {
-            structure.setDoubleValue(targetFeature, ((NumberExpression) valueObject)
+            structure.setDoubleValue(targetFeature, ((INumberExpression) valueObject)
                     .getDoubleValue(parent, matchedAnnotation, stream));
           } else if (range.getName().equals(UIMAConstants.TYPE_FLOAT)) {
-            structure.setFloatValue(targetFeature, ((NumberExpression) valueObject).getFloatValue(
+            structure.setFloatValue(targetFeature, ((INumberExpression) valueObject).getFloatValue(
                     parent, matchedAnnotation, stream));
           } else if (range.getName().equals(UIMAConstants.TYPE_BYTE)) {
-            structure.setByteValue(targetFeature, (byte) ((NumberExpression) valueObject)
+            structure.setByteValue(targetFeature, (byte) ((INumberExpression) valueObject)
                     .getIntegerValue(parent, matchedAnnotation, stream));
           } else if (range.getName().equals(UIMAConstants.TYPE_SHORT)) {
-            structure.setShortValue(targetFeature, (short) ((NumberExpression) valueObject)
+            structure.setShortValue(targetFeature, (short) ((INumberExpression) valueObject)
                     .getIntegerValue(parent, matchedAnnotation, stream));
           } else if (range.getName().equals(UIMAConstants.TYPE_LONG)) {
-            structure.setLongValue(targetFeature, (long) ((NumberExpression) valueObject)
+            structure.setLongValue(targetFeature, (long) ((INumberExpression) valueObject)
                     .getIntegerValue(parent, matchedAnnotation, stream));
           }
-        } else if (valueObject instanceof BooleanExpression
+        } else if (valueObject instanceof IBooleanExpression
                 && range.getName().equals(UIMAConstants.TYPE_BOOLEAN)) {
-          structure.setBooleanValue(targetFeature, ((BooleanExpression) valueObject)
+          structure.setBooleanValue(targetFeature, ((IBooleanExpression) valueObject)
                   .getBooleanValue(parent, matchedAnnotation, stream));
         } else if (valueObject instanceof TypeExpression) {
           TypeExpression type = (TypeExpression) valueObject;

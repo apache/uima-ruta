@@ -52,9 +52,9 @@ import org.apache.uima.ruta.condition.StartsWithCondition;
 import org.apache.uima.ruta.condition.TotalCountCondition;
 import org.apache.uima.ruta.condition.VoteCondition;
 import org.apache.uima.ruta.expression.list.ListExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 
 public class ConditionVerbalizer {
 
@@ -164,9 +164,9 @@ public class ConditionVerbalizer {
       return sb.toString();
     } else if (condition instanceof ContainsCondition) {
       ContainsCondition c = (ContainsCondition) condition;
-      NumberExpression minE = c.getMin();
+      INumberExpression minE = c.getMin();
       String min = verbalizeMin(minE, 1);
-      NumberExpression maxE = c.getMax();
+      INumberExpression maxE = c.getMax();
       String max = verbalizeMax(maxE, Integer.MAX_VALUE);
       String percent = verbalizer.verbalize(c.getPercent());
       percent = !percent.equals("false") ? ", " + percent : "";
@@ -180,9 +180,9 @@ public class ConditionVerbalizer {
     } else if (condition instanceof ContextCountCondition) {
       ContextCountCondition c = (ContextCountCondition) condition;
       String type = verbalizer.verbalize(c.getType());
-      NumberExpression minE = c.getMin();
+      INumberExpression minE = c.getMin();
       String min = verbalizeMin(minE, Integer.MIN_VALUE);
-      NumberExpression maxE = c.getMax();
+      INumberExpression maxE = c.getMax();
       String max = verbalizeMax(maxE, Integer.MAX_VALUE);
       String var = c.getVar() == null ? "" : ", " + c.getVar();
       return name + type + min + max + var + ")";
@@ -190,18 +190,18 @@ public class ConditionVerbalizer {
       CountCondition c = (CountCondition) condition;
       if (c.getArg() == null) {
         String type = verbalizer.verbalize(c.getType());
-        NumberExpression minE = c.getMin();
+        INumberExpression minE = c.getMin();
         String min = verbalizeMin(minE, Integer.MIN_VALUE);
-        NumberExpression maxE = c.getMax();
+        INumberExpression maxE = c.getMax();
         String max = verbalizeMax(maxE, Integer.MAX_VALUE);
         String var = c.getVar() == null ? "" : ", " + c.getVar();
         return name + type + min + max + var + ")";
       } else {
         String list = verbalizer.verbalize(c.getArgList());
         String arg = verbalizer.verbalize(c.getArg());
-        NumberExpression minE = c.getMin();
+        INumberExpression minE = c.getMin();
         String min = verbalizeMin(minE, Integer.MIN_VALUE);
-        NumberExpression maxE = c.getMax();
+        INumberExpression maxE = c.getMax();
         String max = verbalizeMax(maxE, Integer.MAX_VALUE);
         String var = c.getVar() == null ? "" : ", " + c.getVar();
         return name + list + ", " + arg + min + max + var + ")";
@@ -209,9 +209,9 @@ public class ConditionVerbalizer {
     } else if (condition instanceof CurrentCountCondition) {
       CurrentCountCondition c = (CurrentCountCondition) condition;
       String type = verbalizer.verbalize(c.getType());
-      NumberExpression minE = c.getMin();
+      INumberExpression minE = c.getMin();
       String min = verbalizeMin(minE, Integer.MIN_VALUE);
-      NumberExpression maxE = c.getMax();
+      INumberExpression maxE = c.getMax();
       String max = verbalizeMax(maxE, Integer.MAX_VALUE);
       String var = c.getVar() == null ? "" : ", " + c.getVar();
       return name + type + min + max + var + ")";
@@ -226,7 +226,7 @@ public class ConditionVerbalizer {
       } else {
         list = verbalizer.verbalize(c.getStringList());
       }
-      NumberExpression distE = c.getDistance();
+      INumberExpression distE = c.getDistance();
       String dist = "";
       String rel = "";
       if (distE != null) {
@@ -244,9 +244,9 @@ public class ConditionVerbalizer {
       StringBuilder sb = new StringBuilder();
       sb.append(name);
 
-      NumberExpression minE = c.getMin();
+      INumberExpression minE = c.getMin();
       String min = verbalizeMin(minE, Integer.MIN_VALUE);
-      NumberExpression maxE = c.getMax();
+      INumberExpression maxE = c.getMax();
       String max = verbalizeMax(maxE, Integer.MAX_VALUE);
       sb.append(min.substring(2, min.length()));
       sb.append(max);
@@ -268,9 +268,9 @@ public class ConditionVerbalizer {
       NearCondition c = (NearCondition) condition;
       String type = verbalizer.verbalize(c.getType());
       String var = verbalizer.verbalize(c.getForward());
-      NumberExpression minE = c.getMin();
+      INumberExpression minE = c.getMin();
       String min = verbalizeMin(minE, Integer.MIN_VALUE);
-      NumberExpression maxE = c.getMax();
+      INumberExpression maxE = c.getMax();
       String max = verbalizeMax(maxE, Integer.MAX_VALUE);
       String filtered = verbalizer.verbalize(c.getFiltered());
       if (!"".equals(filtered)) {
@@ -335,7 +335,7 @@ public class ConditionVerbalizer {
               + verbalizer.verbalize(c.getPosition()) + relative + ")";
     } else if (condition instanceof RegExpCondition) {
       RegExpCondition c = (RegExpCondition) condition;
-      StringExpression variable = c.getVariable();
+      IStringExpression variable = c.getVariable();
       String ic = verbalizer.verbalize(c.getIgnoreCase());
       if (variable == null) {
         return name + verbalizer.verbalize(c.getPattern()) + ", " + ic + ")";
@@ -345,18 +345,18 @@ public class ConditionVerbalizer {
     } else if (condition instanceof ScoreCondition) {
       ScoreCondition c = (ScoreCondition) condition;
       // String type = verbalizer.verbalize(c.getType());
-      NumberExpression minE = c.getMin();
+      INumberExpression minE = c.getMin();
       String min = verbalizeMin(minE, Integer.MIN_VALUE);
-      NumberExpression maxE = c.getMax();
+      INumberExpression maxE = c.getMax();
       String max = verbalizeMax(maxE, Integer.MAX_VALUE);
       String var = c.getVar() == null ? "" : ", " + c.getVar();
       return name + min.substring(2) + max + var + ")";
     } else if (condition instanceof TotalCountCondition) {
       TotalCountCondition c = (TotalCountCondition) condition;
       String type = verbalizer.verbalize(c.getType());
-      NumberExpression minE = c.getMin();
+      INumberExpression minE = c.getMin();
       String min = verbalizeMin(minE, Integer.MIN_VALUE);
-      NumberExpression maxE = c.getMax();
+      INumberExpression maxE = c.getMax();
       String max = verbalizeMax(maxE, Integer.MAX_VALUE);
       String var = c.getVar() == null ? "" : ", " + c.getVar();
       return name + type + min + max + var + ")";
@@ -428,9 +428,9 @@ public class ConditionVerbalizer {
       return name + type + ")";
     } else if (condition instanceof SizeCondition) {
       SizeCondition c = (SizeCondition) condition;
-      NumberExpression minE = c.getMinExpr();
+      INumberExpression minE = c.getMinExpr();
       String min = verbalizeMin(minE, Integer.MIN_VALUE);
-      NumberExpression maxE = c.getMaxExpr();
+      INumberExpression maxE = c.getMaxExpr();
       String max = verbalizeMax(maxE, Integer.MAX_VALUE);
       String var = c.getVarExpr() == null ? "" : ", " + c.getVarExpr();
       ListExpression<?> listExpr = c.getListExpr();
@@ -448,7 +448,7 @@ public class ConditionVerbalizer {
     return condition.getClass().getSimpleName();
   }
 
-  private String verbalizeMax(NumberExpression maxE, int def) {
+  private String verbalizeMax(INumberExpression maxE, int def) {
     String max = "";
     if (!(maxE instanceof SimpleNumberExpression && ((SimpleNumberExpression) maxE).getNumber()
             .equals(def))) {
@@ -457,7 +457,7 @@ public class ConditionVerbalizer {
     return max;
   }
 
-  private String verbalizeMin(NumberExpression minE, int def) {
+  private String verbalizeMin(INumberExpression minE, int def) {
     String min = "";
     if (!(minE instanceof SimpleNumberExpression && ((SimpleNumberExpression) minE).getNumber()
             .equals(def))) {

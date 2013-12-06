@@ -29,7 +29,7 @@ import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.rule.RutaRuleElement;
@@ -37,11 +37,11 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class GetFeatureAction extends AbstractRutaAction {
 
-  private StringExpression featureStringExpression;
+  private IStringExpression featureStringExpression;
 
   private String variable;
 
-  public GetFeatureAction(StringExpression f, String variable) {
+  public GetFeatureAction(IStringExpression f, String variable) {
     super();
     this.featureStringExpression = f;
     this.variable = variable;
@@ -107,7 +107,7 @@ public class GetFeatureAction extends AbstractRutaAction {
 
   }
 
-  public StringExpression getFeatureStringExpression() {
+  public IStringExpression getFeatureStringExpression() {
     return featureStringExpression;
   }
 

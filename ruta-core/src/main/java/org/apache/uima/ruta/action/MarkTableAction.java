@@ -33,10 +33,10 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.resource.WordTableExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.resource.RutaTable;
 import org.apache.uima.ruta.resource.RutaWordList;
@@ -50,22 +50,22 @@ public class MarkTableAction extends AbstractRutaAction {
 
   private final WordTableExpression tableExpr;
 
-  private final Map<StringExpression, NumberExpression> featureMap;
+  private final Map<IStringExpression, INumberExpression> featureMap;
 
-  private final NumberExpression indexExpr;
+  private final INumberExpression indexExpr;
 
-  private final BooleanExpression ignoreCase;
+  private final IBooleanExpression ignoreCase;
 
-  private final NumberExpression ignoreLength;
+  private final INumberExpression ignoreLength;
 
-  private final StringExpression ignoreChar;
+  private final IStringExpression ignoreChar;
 
-  private final NumberExpression maxIgnoreChar;
+  private final INumberExpression maxIgnoreChar;
 
-  public MarkTableAction(TypeExpression typeExpr, NumberExpression indexExpr,
-          WordTableExpression tableExpr, Map<StringExpression, NumberExpression> featureMap,
-          BooleanExpression ignoreCase, NumberExpression ignoreLength, StringExpression ignoreChar,
-          NumberExpression maxIgnoreChar) {
+  public MarkTableAction(TypeExpression typeExpr, INumberExpression indexExpr,
+          WordTableExpression tableExpr, Map<IStringExpression, INumberExpression> featureMap,
+          IBooleanExpression ignoreCase, INumberExpression ignoreLength, IStringExpression ignoreChar,
+          INumberExpression maxIgnoreChar) {
     super();
     this.typeExpr = typeExpr;
     this.indexExpr = indexExpr;
@@ -84,7 +84,7 @@ public class MarkTableAction extends AbstractRutaAction {
     int index = indexExpr.getIntegerValue(block, match, element, stream);
     Type type = typeExpr.getType(block);
     Map<String, Integer> map = new HashMap<String, Integer>();
-    for (StringExpression each : featureMap.keySet()) {
+    for (IStringExpression each : featureMap.keySet()) {
       map.put(each.getStringValue(block, match, element, stream), featureMap.get(each)
               .getIntegerValue(block, match, element, stream));
     }
@@ -168,27 +168,27 @@ public class MarkTableAction extends AbstractRutaAction {
     return tableExpr;
   }
 
-  public Map<StringExpression, NumberExpression> getFeatureMap() {
+  public Map<IStringExpression, INumberExpression> getFeatureMap() {
     return featureMap;
   }
 
-  public NumberExpression getIndexExpr() {
+  public INumberExpression getIndexExpr() {
     return indexExpr;
   }
 
-  public BooleanExpression getIgnoreCase() {
+  public IBooleanExpression getIgnoreCase() {
     return ignoreCase;
   }
 
-  public NumberExpression getIgnoreLength() {
+  public INumberExpression getIgnoreLength() {
     return ignoreLength;
   }
 
-  public StringExpression getIgnoreChar() {
+  public IStringExpression getIgnoreChar() {
     return ignoreChar;
   }
 
-  public NumberExpression getMaxIgnoreChar() {
+  public INumberExpression getMaxIgnoreChar() {
     return maxIgnoreChar;
   }
 }

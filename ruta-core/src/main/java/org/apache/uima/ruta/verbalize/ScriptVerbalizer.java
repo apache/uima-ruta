@@ -29,9 +29,9 @@ import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
-import org.apache.uima.ruta.expression.RutaExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.AbstractRuleElement;
 import org.apache.uima.ruta.rule.ComposedRuleElement;
@@ -260,27 +260,27 @@ public class ScriptVerbalizer {
     sb.append(regexp);
     sb.append(THEN);
 
-    Iterator<Entry<TypeExpression, NumberExpression>> iterator = rule.getTypeMap().entrySet()
+    Iterator<Entry<TypeExpression, INumberExpression>> iterator = rule.getTypeMap().entrySet()
             .iterator();
     while (iterator.hasNext()) {
-      Entry<TypeExpression, NumberExpression> next = iterator.next();
+      Entry<TypeExpression, INumberExpression> next = iterator.next();
       String type = verbalizer.verbalize(next.getKey());
-      NumberExpression value = next.getValue();
+      INumberExpression value = next.getValue();
       if (value != null) {
         String group = verbalizer.verbalize(value);
         sb.append(group + " = " + type);
       } else {
         sb.append(type);
       }
-      Map<TypeExpression, Map<StringExpression, RutaExpression>> featureAssignments = rule
+      Map<TypeExpression, Map<IStringExpression, IRutaExpression>> featureAssignments = rule
               .getFeatureAssignments();
       if (featureAssignments != null) {
-        Map<StringExpression, RutaExpression> map = featureAssignments.get(next.getKey());
+        Map<IStringExpression, IRutaExpression> map = featureAssignments.get(next.getKey());
         if (map != null) {
           sb.append("(");
-          Iterator<Entry<StringExpression, RutaExpression>> fit = map.entrySet().iterator();
+          Iterator<Entry<IStringExpression, IRutaExpression>> fit = map.entrySet().iterator();
           while (fit.hasNext()) {
-            Map.Entry<StringExpression, RutaExpression> entry = (Map.Entry<StringExpression, RutaExpression>) fit
+            Map.Entry<IStringExpression, IRutaExpression> entry = (Map.Entry<IStringExpression, IRutaExpression>) fit
                     .next();
             sb.append(verbalizer.verbalize(entry.getKey()));
             sb.append(" = ");

@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 
 public class ReferenceNumberListExpression extends NumberListExpression {
 
@@ -41,8 +41,8 @@ public class ReferenceNumberListExpression extends NumberListExpression {
     List<Object> list = parent.getEnvironment().getVariableValue(var, List.class);
     List<Number> result = new ArrayList<Number>();
     for (Object each : list) {
-      if (each instanceof NumberExpression) {
-        result.add(((NumberExpression) each).getDoubleValue(parent, null, stream));
+      if (each instanceof INumberExpression) {
+        result.add(((INumberExpression) each).getDoubleValue(parent, null, stream));
       } else if (each instanceof Number) {
         result.add((Number) each);
       }

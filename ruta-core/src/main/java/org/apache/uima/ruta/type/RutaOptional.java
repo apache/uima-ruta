@@ -3,10 +3,9 @@
 /* First created by JCasGen Sat Jun 08 19:25:02 CEST 2013 */
 package org.apache.uima.ruta.type;
 
-import org.apache.uima.jcas.JCas; 
+import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
-
 import org.apache.uima.jcas.tcas.Annotation;
 
 

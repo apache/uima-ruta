@@ -24,27 +24,27 @@ import java.util.regex.Pattern;
 
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class RegExpCondition extends TerminalRutaCondition {
-  private final StringExpression pattern;
+  private final IStringExpression pattern;
 
-  private final BooleanExpression ignoreCase;
+  private final IBooleanExpression ignoreCase;
 
-  private StringExpression variable;
+  private IStringExpression variable;
 
-  public RegExpCondition(StringExpression pattern, BooleanExpression ignoreCase) {
+  public RegExpCondition(IStringExpression pattern, IBooleanExpression ignoreCase) {
     super();
     this.pattern = pattern;
     this.ignoreCase = ignoreCase == null ? new SimpleBooleanExpression(false) : ignoreCase;
   }
 
-  public RegExpCondition(StringExpression v, StringExpression pattern, BooleanExpression ignoreCase) {
+  public RegExpCondition(IStringExpression v, IStringExpression pattern, IBooleanExpression ignoreCase) {
     this(pattern, ignoreCase);
     this.variable = v;
   }
@@ -79,15 +79,15 @@ public class RegExpCondition extends TerminalRutaCondition {
     return new EvaluatedCondition(this, matches);
   }
 
-  public StringExpression getPattern() {
+  public IStringExpression getPattern() {
     return pattern;
   }
 
-  public StringExpression getVariable() {
+  public IStringExpression getVariable() {
     return variable;
   }
 
-  public BooleanExpression getIgnoreCase() {
+  public IBooleanExpression getIgnoreCase() {
     return ignoreCase;
   }
 

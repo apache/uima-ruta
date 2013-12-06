@@ -27,10 +27,10 @@ import java.util.TreeMap;
 import org.antlr.runtime.Token;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
+import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.MatchReference;
-import org.apache.uima.ruta.expression.RutaExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.AbstractRuleElement;
 import org.apache.uima.ruta.rule.ComposedRuleElement;
@@ -117,7 +117,7 @@ public class RutaScriptFactory {
     return new RutaRule(elements, parent, idCounter++);
   }
 
-  public RutaRuleElement createRuleElement(RutaExpression expression,
+  public RutaRuleElement createRuleElement(IRutaExpression expression,
           RuleElementQuantifier quantifier, List<AbstractRutaCondition> conditions,
           List<AbstractRutaAction> actions, RuleElementContainer container, RutaBlock parent) {
     RutaMatcher matcher = null;
@@ -127,8 +127,8 @@ public class RutaScriptFactory {
       // e.g., for functions
       MatchReference matchReference = new MatchReference((TypeExpression) expression);
       matcher = new RutaTypeMatcher(matchReference);
-    } else if (expression instanceof StringExpression) {
-      matcher = new RutaLiteralMatcher((StringExpression) expression);
+    } else if (expression instanceof IStringExpression) {
+      matcher = new RutaLiteralMatcher((IStringExpression) expression);
     }
     return new RutaRuleElement(matcher, quantifier, conditions, actions, container, parent);
   }
@@ -161,13 +161,13 @@ public class RutaScriptFactory {
     return new StarReluctant();
   }
 
-  public static RuleElementQuantifier createMinMaxGreedyQuantifier(NumberExpression min,
-          NumberExpression max, Token comma) {
+  public static RuleElementQuantifier createMinMaxGreedyQuantifier(INumberExpression min,
+          INumberExpression max, Token comma) {
     return new MinMaxGreedy(min, max, comma != null);
   }
 
-  public static RuleElementQuantifier createMinMaxReluctantQuantifier(NumberExpression min,
-          NumberExpression max, Token comma) {
+  public static RuleElementQuantifier createMinMaxReluctantQuantifier(INumberExpression min,
+          INumberExpression max, Token comma) {
     return new MinMaxReluctant(min, max, comma != null);
   }
 

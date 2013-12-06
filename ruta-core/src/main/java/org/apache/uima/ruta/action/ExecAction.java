@@ -43,7 +43,7 @@ import org.apache.uima.ruta.RutaModule;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.type.RutaBasic;
@@ -54,13 +54,13 @@ public class ExecAction extends CallAction {
 
   private TypeListExpression typeList;
 
-  private StringExpression view;
+  private IStringExpression view;
 
   public ExecAction(String namespace) {
     super(namespace);
   }
 
-  public ExecAction(String ns, TypeListExpression tl, StringExpression view) {
+  public ExecAction(String ns, TypeListExpression tl, IStringExpression view) {
     this(ns);
     this.typeList = tl;
     this.view = view;
@@ -134,11 +134,11 @@ public class ExecAction extends CallAction {
     return typeList;
   }
 
-  public StringExpression getView() {
+  public IStringExpression getView() {
     return view;
   }
 
-  public void setView(StringExpression view) {
+  public void setView(IStringExpression view) {
     this.view = view;
   }
 

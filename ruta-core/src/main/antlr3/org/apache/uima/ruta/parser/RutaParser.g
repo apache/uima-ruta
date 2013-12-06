@@ -64,20 +64,20 @@ import org.apache.uima.ruta.RutaScriptFactory;
 import org.apache.uima.ruta.RutaAutomataFactory;
 import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.expression.ExpressionFactory;
-import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.list.BooleanListExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.expression.list.NumberListExpression;
 import org.apache.uima.ruta.expression.list.StringListExpression;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.resource.WordListExpression;
 import org.apache.uima.ruta.expression.resource.WordTableExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.string.StringFunctionFactory;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.extensions.RutaExternalFactory;
@@ -576,7 +576,7 @@ options {
 }
 @init{
 	//RegExpRule rer = null;
-	Map<TypeExpression, RutaExpression> map = new HashMap<TypeExpression, RutaExpression>();
+	Map<TypeExpression, IRutaExpression> map = new HashMap<TypeExpression, IRutaExpression>();
 }
 	: 
 
@@ -595,9 +595,9 @@ options {
 
 regexpRule returns [RegExpRule stmt = null]
 @init{
-	Map<TypeExpression, NumberExpression> map = new HashMap<TypeExpression, NumberExpression>();
-	Map<TypeExpression, Map<StringExpression, RutaExpression>> fa = new HashMap<TypeExpression, Map<StringExpression, RutaExpression>>();
-	Map<StringExpression, RutaExpression> fmap = null;
+	Map<TypeExpression, INumberExpression> map = new HashMap<TypeExpression, INumberExpression>();
+	Map<TypeExpression, Map<IStringExpression, IRutaExpression>> fa = new HashMap<TypeExpression, Map<IStringExpression, IRutaExpression>>();
+	Map<IStringExpression, IRutaExpression> fmap = null;
 }
 	:
 	{
@@ -606,11 +606,11 @@ regexpRule returns [RegExpRule stmt = null]
 	regexp = stringExpression THEN
 	(
 	(numberExpression ASSIGN_EQUAL)=> indexCG = numberExpression ASSIGN_EQUAL indexTE = typeExpression {map.put(indexTE, indexCG);}
-	(LPAREN {fmap = new HashMap<StringExpression, RutaExpression>();} fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} 
+	(LPAREN {fmap = new HashMap<IStringExpression, IRutaExpression>();} fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} 
 	(COMMA fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} )* RPAREN {fa.put(indexTE, fmap);})?
 	|
 	te = typeExpression {map.put(te, null);}
-	(LPAREN {fmap = new HashMap<StringExpression, RutaExpression>();} fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} 
+	(LPAREN {fmap = new HashMap<IStringExpression, IRutaExpression>();} fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} 
 	(COMMA fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} )* RPAREN {fa.put(te, fmap);})?
 	)
 	
@@ -618,11 +618,11 @@ regexpRule returns [RegExpRule stmt = null]
 	COMMA
 	(
 	(numberExpression ASSIGN_EQUAL)=> indexCG = numberExpression ASSIGN_EQUAL indexTE = typeExpression {map.put(indexTE, indexCG);}
-	(LPAREN {fmap = new HashMap<StringExpression, RutaExpression>();} fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} 
+	(LPAREN {fmap = new HashMap<IStringExpression, IRutaExpression>();} fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} 
 	(COMMA fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} )* RPAREN {fa.put(indexTE, fmap);})?
 	|
 	te = typeExpression {map.put(te, null);}
-	(LPAREN {fmap = new HashMap<StringExpression, RutaExpression>();} fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} 
+	(LPAREN {fmap = new HashMap<IStringExpression, IRutaExpression>();} fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} 
 	(COMMA fk = stringExpression ASSIGN_EQUAL arg = argument {fmap.put(fk, arg);} )* RPAREN {fa.put(te, fmap);})?
 	)
 	
@@ -808,7 +808,7 @@ booleanListExpression returns [BooleanListExpression expr = null]
 
 simpleBooleanListExpression returns [BooleanListExpression expr = null]
 @init{
-	List<BooleanExpression> list = new ArrayList<BooleanExpression>();
+	List<IBooleanExpression> list = new ArrayList<IBooleanExpression>();
 }	:
 	LCURLY (e = simpleBooleanExpression {list.add(e);} (COMMA e = simpleBooleanExpression {list.add(e);})*)?  RCURLY
 	{expr = ExpressionFactory.createBooleanListExpression(list);}
@@ -825,7 +825,7 @@ intListExpression returns [NumberListExpression expr = null]
 
 simpleIntListExpression returns [NumberListExpression expr = null]
 @init{
-	List<NumberExpression> list = new ArrayList<NumberExpression>();
+	List<INumberExpression> list = new ArrayList<INumberExpression>();
 }	:
 	LCURLY (e = simpleNumberExpression {list.add(e);} (COMMA e = simpleNumberExpression {list.add(e);})*)?  RCURLY
 	{expr = ExpressionFactory.createNumberListExpression(list);}
@@ -851,7 +851,7 @@ doubleListExpression returns [NumberListExpression expr = null]
 
 simpleDoubleListExpression returns [NumberListExpression expr = null]
 @init{
-	List<NumberExpression> list = new ArrayList<NumberExpression>();
+	List<INumberExpression> list = new ArrayList<INumberExpression>();
 }	:
 	LCURLY (e = simpleNumberExpression {list.add(e);} (COMMA e = simpleNumberExpression {list.add(e);})*)?  RCURLY
 	{expr = ExpressionFactory.createNumberListExpression(list);}
@@ -868,7 +868,7 @@ floatListExpression returns [NumberListExpression expr = null]
 
 simpleFloatListExpression returns [NumberListExpression expr = null]
 @init{
-	List<NumberExpression> list = new ArrayList<NumberExpression>();
+	List<INumberExpression> list = new ArrayList<INumberExpression>();
 }	:
 	LCURLY (e = simpleNumberExpression {list.add(e);} (COMMA e = simpleNumberExpression {list.add(e);})*)?  RCURLY
 	{expr = ExpressionFactory.createNumberListExpression(list);}
@@ -884,7 +884,7 @@ stringListExpression returns [StringListExpression expr = null]
 
 simpleStringListExpression returns [StringListExpression expr = null]
 @init{
-	List<StringExpression> list = new ArrayList<StringExpression>();
+	List<IStringExpression> list = new ArrayList<IStringExpression>();
 }	:
 	LCURLY (e = simpleStringExpression {list.add(e);} (COMMA e = simpleStringExpression {list.add(e);})*)?  RCURLY
 	{expr = ExpressionFactory.createStringListExpression(list);}	
@@ -910,7 +910,7 @@ simpleTypeListExpression returns [TypeListExpression expr = null]
 	{expr = ExpressionFactory.createReferenceTypeListExpression(var);}
 	;
 
-typeMatchExpression returns [RutaExpression expr = null]
+typeMatchExpression returns [IRutaExpression expr = null]
 options {
 	backtrack = true;
 }
@@ -1355,8 +1355,8 @@ externalAction returns [AbstractRutaAction action = null]
 
 actionCreate returns [AbstractRutaAction action = null]
 @init {
-	Map<StringExpression, RutaExpression> map = new HashMap<StringExpression, RutaExpression>();
-    	List<NumberExpression> indexes = new ArrayList<NumberExpression>();
+	Map<IStringExpression, IRutaExpression> map = new HashMap<IStringExpression, IRutaExpression>();
+    	List<INumberExpression> indexes = new ArrayList<INumberExpression>();
 }
     :
     name = CREATE LPAREN structure = typeExpression 
@@ -1372,7 +1372,7 @@ actionCreate returns [AbstractRutaAction action = null]
 
 actionMarkTable returns [AbstractRutaAction action = null]
 @init {
-	Map<StringExpression, NumberExpression> map = new HashMap<StringExpression, NumberExpression>();
+	Map<IStringExpression, INumberExpression> map = new HashMap<IStringExpression, INumberExpression>();
 }
     :
     name = MARKTABLE LPAREN 
@@ -1394,8 +1394,8 @@ actionMarkTable returns [AbstractRutaAction action = null]
  
 actionGather returns [AbstractRutaAction action = null]
 @init {
-	Map<StringExpression, RutaExpression> map = new HashMap<StringExpression, RutaExpression>();
-    	List<NumberExpression> indexes = new ArrayList<NumberExpression>();
+	Map<IStringExpression, IRutaExpression> map = new HashMap<IStringExpression, IRutaExpression>();
+    	List<INumberExpression> indexes = new ArrayList<INumberExpression>();
 }
     :
     name = GATHER LPAREN structure = typeExpression 
@@ -1411,7 +1411,7 @@ actionGather returns [AbstractRutaAction action = null]
 
 actionFill returns [AbstractRutaAction action = null]
 @init {
-Map<StringExpression, RutaExpression> map = new HashMap<StringExpression, RutaExpression>();
+Map<IStringExpression, IRutaExpression> map = new HashMap<IStringExpression, IRutaExpression>();
 }
     :
     FILL LPAREN type = typeExpression (COMMA fname = stringExpression ASSIGN_EQUAL 
@@ -1450,7 +1450,7 @@ actionLog returns [AbstractRutaAction action = null]
 
 actionMark returns [AbstractRutaAction action = null]
 @init {
-List<NumberExpression> list = new ArrayList<NumberExpression>();
+List<INumberExpression> list = new ArrayList<INumberExpression>();
 }
     :   
     MARK LPAREN 
@@ -1466,7 +1466,7 @@ List<NumberExpression> list = new ArrayList<NumberExpression>();
 
 actionShift returns [AbstractRutaAction action = null]
 @init {
-List<NumberExpression> list = new ArrayList<NumberExpression>();
+List<INumberExpression> list = new ArrayList<INumberExpression>();
 }
     :   
     SHIFT LPAREN 
@@ -1483,7 +1483,7 @@ List<NumberExpression> list = new ArrayList<NumberExpression>();
 
 actionMarkScore returns [AbstractRutaAction action = null]
 @init {
-List<NumberExpression> list = new ArrayList<NumberExpression>();
+List<INumberExpression> list = new ArrayList<INumberExpression>();
 }
     :   
     MARKSCORE LPAREN 
@@ -1500,7 +1500,7 @@ List<NumberExpression> list = new ArrayList<NumberExpression>();
 
 actionMarkOnce returns [AbstractRutaAction action = null]
 @init {
-List<NumberExpression> list = new ArrayList<NumberExpression>();
+List<INumberExpression> list = new ArrayList<INumberExpression>();
 }
     :   
     MARKONCE LPAREN ((score = numberExpression) => score = numberExpression COMMA)? (type = typeExpression) => type = typeExpression
@@ -1573,7 +1573,7 @@ actionCall returns [AbstractRutaAction action = null]
 
 actionConfigure returns [AbstractRutaAction action = null]
 @init {
-	Map<StringExpression, RutaExpression> map = new HashMap<StringExpression, RutaExpression>();
+	Map<IStringExpression, IRutaExpression> map = new HashMap<IStringExpression, IRutaExpression>();
 }
 
     :
@@ -1672,7 +1672,7 @@ actionTrim returns [AbstractRutaAction action = null]
 
 actionUnmark returns [AbstractRutaAction action = null]
 @init {
-List<NumberExpression> list = new ArrayList<NumberExpression>();
+List<INumberExpression> list = new ArrayList<INumberExpression>();
 }
     :
     name = UNMARK LPAREN 
@@ -1711,7 +1711,7 @@ actionTransfer returns [AbstractRutaAction action = null]
 
 actionTrie returns [AbstractRutaAction action = null]
 @init {
-Map<StringExpression, TypeExpression> map = new HashMap<StringExpression, TypeExpression>();
+Map<IStringExpression, TypeExpression> map = new HashMap<IStringExpression, TypeExpression>();
 }
     :
     name = TRIE LPAREN
@@ -1730,7 +1730,7 @@ Map<StringExpression, TypeExpression> map = new HashMap<StringExpression, TypeEx
 
 actionAdd returns [AbstractRutaAction action = null]
 @init{
-	List<RutaExpression> list = new ArrayList<RutaExpression>();
+	List<IRutaExpression> list = new ArrayList<IRutaExpression>();
 } 
     :
     name = ADD LPAREN f = listVariable (COMMA a = argument {list.add(a);})+ RPAREN
@@ -1739,7 +1739,7 @@ actionAdd returns [AbstractRutaAction action = null]
 
 actionRemove returns [AbstractRutaAction action = null]
 @init{
-	List<RutaExpression> list = new ArrayList<RutaExpression>();
+	List<IRutaExpression> list = new ArrayList<IRutaExpression>();
 } 
     :
     name = REMOVE LPAREN f = listVariable (COMMA a = argument {list.add(a);})+ RPAREN
@@ -1775,7 +1775,7 @@ actionGetList returns [AbstractRutaAction action = null]
 
 actionMatchedText returns [AbstractRutaAction action = null]
 @init {
-List<NumberExpression> list = new ArrayList<NumberExpression>();
+List<INumberExpression> list = new ArrayList<INumberExpression>();
 }
     :   
     MATCHEDTEXT LPAREN 
@@ -1836,14 +1836,15 @@ varArgumentList returns [List args = new ArrayList()]
 	arg = argument {args.add(arg);}(COMMA arg = argument {args.add(arg);})*
 	;
 
-argument returns [RutaExpression expr = null]
+argument returns [IRutaExpression expr = null]
 options {
 	backtrack = true;
 }
 	:
-	a4 = stringExpression {expr = a4;}
+	(featureExpression)=> fe = featureExpression {expr = ExpressionFactory.createGenericFeatureExpression(fe);}
 	| a2 = booleanExpression {expr = a2;}
 	| a3 = numberExpression {expr = a3;}
+	| a4 = stringExpression {expr = a4;}
 	| a1 = typeExpression {expr = a1;}
 	
 	//(a2 = booleanExpression)=> a2 = booleanExpression {expr = a2;}
@@ -1852,7 +1853,7 @@ options {
 	//| (a1 = typeExpression)=> a1 = typeExpression {expr = a1;}
 	;
 
-primitiveArgument returns [RutaExpression expr = null]
+primitiveArgument returns [IRutaExpression expr = null]
 options {
 	backtrack = true;
 }
@@ -1931,7 +1932,7 @@ wordTableExpression returns [WordTableExpression expr = null]
 	;
 
 // not checked
-numberFunction returns [NumberExpression expr = null]
+numberFunction returns [INumberExpression expr = null]
 	:
 	(op=(EXP | LOGN | SIN | COS | TAN) numExprP=numberExpressionInPar)
 	{expr = ExpressionFactory.createComposedNumberExpression(numExprP,op);}
@@ -1941,7 +1942,7 @@ numberFunction returns [NumberExpression expr = null]
 
 
 // not checked
-externalNumberFunction returns [NumberExpression expr = null]
+externalNumberFunction returns [INumberExpression expr = null]
 	:
 	{isNumberFunctionExtension(input.LT(1).getText())}? 
 	id = Identifier LPAREN
@@ -1959,16 +1960,16 @@ numberVariable returns [Token ref = null]
 	;
 
 
-additiveExpression returns [NumberExpression expr = null]
-@init{List<NumberExpression> exprs = new ArrayList<NumberExpression>();
+additiveExpression returns [INumberExpression expr = null]
+@init{List<INumberExpression> exprs = new ArrayList<INumberExpression>();
 	List<Token> ops = new ArrayList<Token>();}
 	:   
 	e = multiplicativeExpression{exprs.add(e);} ((PLUS | MINUS)=> op = (PLUS | MINUS){ops.add(op);} e = multiplicativeExpression{exprs.add(e);} )*
 	{expr = ExpressionFactory.createComposedNumberExpression(exprs,ops);}
 	;
 
-multiplicativeExpression returns [NumberExpression expr = null]
-@init{List<NumberExpression> exprs = new ArrayList<NumberExpression>();
+multiplicativeExpression returns [INumberExpression expr = null]
+@init{List<INumberExpression> exprs = new ArrayList<INumberExpression>();
 	List<Token> ops = new ArrayList<Token>();}
 	:	
 	(e = simpleNumberExpression{exprs.add(e);} (( STAR | SLASH | PERCENT )=> op = ( STAR | SLASH | PERCENT ){ops.add(op);} e = simpleNumberExpression{exprs.add(e);} )*
@@ -1976,17 +1977,17 @@ multiplicativeExpression returns [NumberExpression expr = null]
 	|   e1 = numberFunction {expr = e1;})
 	;
 
-numberExpression returns [NumberExpression expr = null]
+numberExpression returns [INumberExpression expr = null]
 	:
 	e = additiveExpression {expr = e;}
 	;
 
-numberExpressionInPar returns [NumberExpression expr = null]
+numberExpressionInPar returns [INumberExpression expr = null]
 	:
 	LPAREN  e = additiveExpression RPAREN {expr = e;}
 	;
 
-simpleNumberExpression returns [NumberExpression expr = null]
+simpleNumberExpression returns [INumberExpression expr = null]
 	:
 	(featureExpression)=> fe = featureExpression {expr = ExpressionFactory.createNumberFeatureExpression(fe);}	
 	| m = MINUS? lit = DecimalLiteral {expr = ExpressionFactory.createIntegerExpression(lit,m);} 
@@ -1996,12 +1997,12 @@ simpleNumberExpression returns [NumberExpression expr = null]
 	| e = numberExpressionInPar {expr = e;}
 	;
 	
-stringExpression returns [StringExpression expr = null]
+stringExpression returns [IStringExpression expr = null]
 options {
 	backtrack = true;
 }
 @init {
-List<StringExpression> exprs = new ArrayList<StringExpression>();
+List<IStringExpression> exprs = new ArrayList<IStringExpression>();
 }
 	:
 	(featureExpression)=> fe = featureExpression {expr = ExpressionFactory.createStringFeatureExpression(fe);}
@@ -2017,8 +2018,8 @@ List<StringExpression> exprs = new ArrayList<StringExpression>();
 	;
 
 // not checked
-stringFunction returns [StringExpression expr = null]
-@init {List<StringExpression> list = new ArrayList<StringExpression>();}
+stringFunction returns [IStringExpression expr = null]
+@init {List<IStringExpression> list = new ArrayList<IStringExpression>();}
 :
 	name = REMOVESTRING LPAREN var = variable (COMMA t = stringExpression {list.add(t);})+ RPAREN
 	{expr = StringFunctionFactory.createRemoveFunction(var,list);}
@@ -2027,7 +2028,7 @@ stringFunction returns [StringExpression expr = null]
 	;
 
 // not checked
-externalStringFunction returns [StringExpression expr = null]
+externalStringFunction returns [IStringExpression expr = null]
 	:
 	{isStringFunctionExtension(input.LT(1).getText())}? 
 	id = Identifier LPAREN
@@ -2037,14 +2038,14 @@ externalStringFunction returns [StringExpression expr = null]
 	}
 	;
 
-simpleStringExpression returns [StringExpression expr = null]
+simpleStringExpression returns [IStringExpression expr = null]
 	: 
 	lit = StringLiteral {expr = ExpressionFactory.createSimpleStringExpression(lit);} 
 	| {isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "STRING")}? id = Identifier {expr = ExpressionFactory.createReferenceStringExpression(id);} 
 	;
 
 
-booleanExpression returns [BooleanExpression expr = null]
+booleanExpression returns [IBooleanExpression expr = null]
 	:
 	(featureExpression)=> fe = featureExpression {expr = ExpressionFactory.createBooleanFeatureExpression(fe);}
 	| (e = composedBooleanExpression)=> e = composedBooleanExpression {expr = e;}
@@ -2052,7 +2053,7 @@ booleanExpression returns [BooleanExpression expr = null]
 	
 	;
 
-simpleBooleanExpression returns [BooleanExpression expr = null]
+simpleBooleanExpression returns [IBooleanExpression expr = null]
 	:
 	 e = literalBooleanExpression {expr = e;}
 	| {isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "BOOLEAN")}? 
@@ -2060,7 +2061,7 @@ simpleBooleanExpression returns [BooleanExpression expr = null]
 	;
 
 // not checked
-composedBooleanExpression returns [BooleanExpression expr = null]
+composedBooleanExpression returns [IBooleanExpression expr = null]
 
 	:
 	(e2 = booleanCompare)=> e2 = booleanCompare {expr = e2;}
@@ -2070,7 +2071,7 @@ composedBooleanExpression returns [BooleanExpression expr = null]
 	;
 
 // not checked
-booleanFunction returns [BooleanExpression expr = null]
+booleanFunction returns [IBooleanExpression expr = null]
 
 	:
 	(op = XOR LPAREN e1 = booleanExpression COMMA e2 = booleanExpression RPAREN)
@@ -2079,7 +2080,7 @@ booleanFunction returns [BooleanExpression expr = null]
 	;
 
 // not checked
-externalBooleanFunction returns [BooleanExpression expr = null]
+externalBooleanFunction returns [IBooleanExpression expr = null]
 	:
 	{isBooleanFunctionExtension(input.LT(1).getText())}? 
 	id = Identifier LPAREN
@@ -2090,14 +2091,14 @@ externalBooleanFunction returns [BooleanExpression expr = null]
 	;
 
 // not checked
-booleanCompare returns [BooleanExpression expr = null]
+booleanCompare returns [IBooleanExpression expr = null]
 	:
 	(e1 = simpleBooleanExpression op = (EQUAL | NOTEQUAL) e2 = booleanExpression)
 	{expr = ExpressionFactory.createBooleanFunction(op,e1,e2);}
 	;
 
 
-literalBooleanExpression returns  [BooleanExpression expr = null]
+literalBooleanExpression returns  [IBooleanExpression expr = null]
 	:
 	v = TRUE {expr = ExpressionFactory.createSimpleBooleanExpression(v);} 
 	| v = FALSE {expr = ExpressionFactory.createSimpleBooleanExpression(v);}
@@ -2105,7 +2106,7 @@ literalBooleanExpression returns  [BooleanExpression expr = null]
 
 
 
-booleanTypeExpression  returns  [BooleanExpression expr = null]
+booleanTypeExpression  returns  [IBooleanExpression expr = null]
 	:
 	e1 = typeExpression
 	op = (EQUAL | NOTEQUAL)
@@ -2113,7 +2114,7 @@ booleanTypeExpression  returns  [BooleanExpression expr = null]
 	{expr = ExpressionFactory.createBooleanTypeExpression(e1,op,e2);}
 	;
 	
-booleanNumberExpression  returns  [BooleanExpression expr = null]
+booleanNumberExpression  returns  [IBooleanExpression expr = null]
 	:
 	LPAREN
 	e1 = numberExpression//{exprs.add(e);} 

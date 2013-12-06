@@ -29,8 +29,8 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.RutaExpression;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
@@ -39,9 +39,9 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class ImplicitCondition extends AbstractRutaCondition {
 
-  private RutaExpression expr;
+  private IRutaExpression expr;
 
-  public ImplicitCondition(RutaExpression expr) {
+  public ImplicitCondition(IRutaExpression expr) {
     super();
     this.expr = expr;
   }
@@ -49,8 +49,8 @@ public class ImplicitCondition extends AbstractRutaCondition {
   @Override
   public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
-    if (expr instanceof BooleanExpression) {
-      BooleanExpression be = (BooleanExpression) expr;
+    if (expr instanceof IBooleanExpression) {
+      IBooleanExpression be = (IBooleanExpression) expr;
       return new EvaluatedCondition(this, be.getBooleanValue(element.getParent(), null, stream));
     } else if (expr instanceof FeatureMatchExpression) {
       FeatureMatchExpression fme = (FeatureMatchExpression) expr;
@@ -82,11 +82,11 @@ public class ImplicitCondition extends AbstractRutaCondition {
     return result;
   }
 
-  public RutaExpression getExpr() {
+  public IRutaExpression getExpr() {
     return expr;
   }
 
-  public void setExpr(RutaExpression expr) {
+  public void setExpr(IRutaExpression expr) {
     this.expr = expr;
   }
 }

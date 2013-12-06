@@ -24,13 +24,13 @@ import java.util.List;
 
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 
 public class SimpleBooleanListExpression extends BooleanListExpression {
 
-  private List<BooleanExpression> list;
+  private List<IBooleanExpression> list;
 
-  public SimpleBooleanListExpression(List<BooleanExpression> list) {
+  public SimpleBooleanListExpression(List<IBooleanExpression> list) {
     super();
     this.list = list;
   }
@@ -38,13 +38,13 @@ public class SimpleBooleanListExpression extends BooleanListExpression {
   @Override
   public List<Boolean> getList(RutaBlock parent, RutaStream stream) {
     List<Boolean> result = new ArrayList<Boolean>();
-    for (BooleanExpression each : list) {
+    for (IBooleanExpression each : list) {
       result.add(each.getBooleanValue(parent, null, stream));
     }
     return result;
   }
 
-  public List<BooleanExpression> getList() {
+  public List<IBooleanExpression> getList() {
     return list;
   }
 

@@ -30,9 +30,9 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.RutaExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
@@ -42,15 +42,15 @@ public class CreateAction extends AbstractStructureAction {
 
   private TypeExpression structureType;
 
-  private Map<StringExpression, RutaExpression> features;
+  private Map<IStringExpression, IRutaExpression> features;
 
-  private List<NumberExpression> indexes;
+  private List<INumberExpression> indexes;
 
-  public CreateAction(TypeExpression structureType, Map<StringExpression, RutaExpression> features,
-          List<NumberExpression> indexes) {
+  public CreateAction(TypeExpression structureType, Map<IStringExpression, IRutaExpression> features,
+          List<INumberExpression> indexes) {
     super();
     this.structureType = structureType;
-    this.features = features == null ? new HashMap<StringExpression, RutaExpression>() : features;
+    this.features = features == null ? new HashMap<IStringExpression, IRutaExpression>() : features;
     this.indexes = (indexes == null || indexes.isEmpty()) ? null : indexes;
   }
 
@@ -90,7 +90,7 @@ public class CreateAction extends AbstractStructureAction {
       return indexList;
     }
     int last = Integer.MAX_VALUE - 1;
-    for (NumberExpression each : indexes) {
+    for (INumberExpression each : indexes) {
       int value = each.getIntegerValue(element.getParent(), null, stream);
       for (int i = Math.min(value, last + 1); i < value; i++) {
         indexList.add(i);
@@ -104,11 +104,11 @@ public class CreateAction extends AbstractStructureAction {
     return structureType;
   }
 
-  public Map<StringExpression, RutaExpression> getFeatures() {
+  public Map<IStringExpression, IRutaExpression> getFeatures() {
     return features;
   }
 
-  public List<NumberExpression> getIndexes() {
+  public List<INumberExpression> getIndexes() {
     return indexes;
   }
 }

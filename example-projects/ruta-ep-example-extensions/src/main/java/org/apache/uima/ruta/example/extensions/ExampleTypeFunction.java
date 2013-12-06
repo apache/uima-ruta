@@ -23,19 +23,19 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.string.AbstractStringExpression;
 import org.apache.uima.ruta.expression.type.TypeFunctionExpression;
 
 public class ExampleTypeFunction extends TypeFunctionExpression {
 
-  private final StringExpression expr;
+  private final AbstractStringExpression expr;
 
-  public ExampleTypeFunction(StringExpression expr) {
+  public ExampleTypeFunction(AbstractStringExpression expr) {
     super();
     this.expr = expr;
   }
 
-  public StringExpression getExpr() {
+  public AbstractStringExpression getExpr() {
     return expr;
   }
 

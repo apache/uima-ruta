@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
@@ -33,11 +33,11 @@ public class LogAction extends AbstractRutaAction {
 
   public static final String LOGGER_NAME = Logger.global.getName();
 
-  private final StringExpression text;
+  private final IStringExpression text;
 
   private final Level level;
 
-  public LogAction(StringExpression text, Level level) {
+  public LogAction(IStringExpression text, Level level) {
     super();
     this.text = text;
     this.level = level == null ? Level.INFO : level;
@@ -50,7 +50,7 @@ public class LogAction extends AbstractRutaAction {
     Logger.getLogger(LOGGER_NAME).log(level, msg);
   }
 
-  public StringExpression getText() {
+  public IStringExpression getText() {
     return text;
   }
 

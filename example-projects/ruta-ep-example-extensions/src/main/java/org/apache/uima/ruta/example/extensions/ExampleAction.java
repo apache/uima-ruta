@@ -29,16 +29,16 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.action.AbstractRutaAction;
-import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class ExampleAction extends AbstractRutaAction {
 
-  private List<NumberExpression> indexExprList;
+  private List<INumberExpression> indexExprList;
 
-  public ExampleAction(List<NumberExpression> indexExprList) {
+  public ExampleAction(List<INumberExpression> indexExprList) {
     super();
     this.indexExprList = indexExprList;
   }
@@ -46,7 +46,7 @@ public class ExampleAction extends AbstractRutaAction {
   @Override
   public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
     List<Integer> indexes = new ArrayList<Integer>();
-    for (NumberExpression each : indexExprList) {
+    for (INumberExpression each : indexExprList) {
       RutaBlock parent = element.getParent();
       int integerValue = each.getIntegerValue(parent, match, element, stream);
       indexes.add(integerValue);
@@ -75,11 +75,11 @@ public class ExampleAction extends AbstractRutaAction {
     return subsumedTypes.get(nextInt);
   }
 
-  public List<NumberExpression> getIndexExprList() {
+  public List<INumberExpression> getIndexExprList() {
     return indexExprList;
   }
 
-  public void setIndexExprList(List<NumberExpression> indexExprList) {
+  public void setIndexExprList(List<INumberExpression> indexExprList) {
     this.indexExprList = indexExprList;
   }
 

@@ -22,17 +22,17 @@ package org.apache.uima.ruta.expression.bool;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 
-public class BooleanNumberExpression extends BooleanExpression {
+public class BooleanNumberExpression extends AbstractBooleanExpression {
 
-  private final NumberExpression e1;
+  private final INumberExpression e1;
 
   private final String op;
 
-  private final NumberExpression e2;
+  private final INumberExpression e2;
 
-  public BooleanNumberExpression(NumberExpression e1, String op, NumberExpression e2) {
+  public BooleanNumberExpression(INumberExpression e1, String op, INumberExpression e2) {
     super();
     this.e1 = e1;
     this.op = op;
@@ -63,7 +63,7 @@ public class BooleanNumberExpression extends BooleanExpression {
     return false;
   }
 
-  public NumberExpression getFristExpression() {
+  public INumberExpression getFristExpression() {
     return e1;
   }
 
@@ -71,7 +71,7 @@ public class BooleanNumberExpression extends BooleanExpression {
     return op;
   }
 
-  public NumberExpression getSecondExpression() {
+  public INumberExpression getSecondExpression() {
     return e2;
   }
 

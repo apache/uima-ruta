@@ -19,6 +19,6 @@
 
 package org.apache.uima.ruta.expression.string;
 
-public abstract class StringFunctionExpression extends StringExpression {
+public abstract class StringFunctionExpression extends AbstractStringExpression {
 
 }

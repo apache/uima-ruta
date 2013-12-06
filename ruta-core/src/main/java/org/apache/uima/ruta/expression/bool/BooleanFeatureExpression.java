@@ -29,7 +29,7 @@ import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 
-public class BooleanFeatureExpression extends BooleanExpression {
+public class BooleanFeatureExpression extends AbstractBooleanExpression {
 
   private FeatureExpression fe;
 

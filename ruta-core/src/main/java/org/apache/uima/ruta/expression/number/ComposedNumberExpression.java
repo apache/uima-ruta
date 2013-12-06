@@ -27,19 +27,18 @@ import org.apache.uima.ruta.RutaStream;
 
 public class ComposedNumberExpression extends AbstractNumberExpression {
 
-  private final List<NumberExpression> expressions;
+  private final List<INumberExpression> expressions;
 
   private final List<String> ops;
 
-  public ComposedNumberExpression(List<NumberExpression> expressions, List<String> ops) {
+  public ComposedNumberExpression(List<INumberExpression> expressions, List<String> ops) {
     super();
     this.expressions = expressions;
     this.ops = ops;
   }
 
-  @Override
   public double getDoubleValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    NumberExpression numberExpression = getExpressions().get(0);
+    INumberExpression numberExpression = getExpressions().get(0);
     if (numberExpression == null) {
       return 0;
     }
@@ -54,9 +53,8 @@ public class ComposedNumberExpression extends AbstractNumberExpression {
     return result;
   }
 
-  @Override
   public float getFloatValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    NumberExpression numberExpression = getExpressions().get(0);
+    INumberExpression numberExpression = getExpressions().get(0);
     if (numberExpression == null) {
       return 0;
     }
@@ -71,7 +69,6 @@ public class ComposedNumberExpression extends AbstractNumberExpression {
     return result;
   }
 
-  @Override
   public int getIntegerValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     int result = getExpressions().get(0).getIntegerValue(parent, annotation, stream);
     for (int i = 0; i < getOperators().size(); i++) {
@@ -89,7 +86,7 @@ public class ComposedNumberExpression extends AbstractNumberExpression {
     return "" + getDoubleValue(parent, null, stream);
   }
 
-  public List<NumberExpression> getExpressions() {
+  public List<INumberExpression> getExpressions() {
     return expressions;
   }
 

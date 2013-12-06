@@ -24,13 +24,13 @@ import java.util.List;
 
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 
 public class SimpleStringListExpression extends StringListExpression {
 
-  private List<StringExpression> list;
+  private List<IStringExpression> list;
 
-  public SimpleStringListExpression(List<StringExpression> list) {
+  public SimpleStringListExpression(List<IStringExpression> list) {
     super();
     this.list = list;
   }
@@ -38,13 +38,13 @@ public class SimpleStringListExpression extends StringListExpression {
   @Override
   public List<String> getList(RutaBlock parent, RutaStream stream) {
     List<String> result = new ArrayList<String>();
-    for (StringExpression each : list) {
+    for (IStringExpression each : list) {
       result.add(each.getStringValue(parent, null, stream));
     }
     return result;
   }
 
-  public List<StringExpression> getList() {
+  public List<IStringExpression> getList() {
     return list;
   }
 }

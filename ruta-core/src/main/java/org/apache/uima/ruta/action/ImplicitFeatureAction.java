@@ -33,11 +33,11 @@ import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
-import org.apache.uima.ruta.expression.RutaExpression;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.AnnotationComparator;
 import org.apache.uima.ruta.rule.RuleElement;
@@ -71,7 +71,7 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
     Collection<AnnotationFS> featureAnnotations = expr.getFeatureAnnotations(annotations, stream,
             element.getParent(), false);
     Feature feature = expr.getFeature(element.getParent());
-    RutaExpression arg = expr.getArg();
+    IRutaExpression arg = expr.getArg();
     for (AnnotationFS each : featureAnnotations) {
       setFeatureValue(each, feature, arg, element, stream);
     }
@@ -80,36 +80,36 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
     }
   }
 
-  private void setFeatureValue(AnnotationFS a, Feature feature, RutaExpression argExpr,
+  private void setFeatureValue(AnnotationFS a, Feature feature, IRutaExpression argExpr,
           RuleElement element, RutaStream stream) {
     String range = feature.getRange().getName();
     if (range.equals(UIMAConstants.TYPE_STRING)) {
-      if (argExpr instanceof StringExpression) {
-        StringExpression stringExpr = (StringExpression) argExpr;
+      if (argExpr instanceof IStringExpression) {
+        IStringExpression stringExpr = (IStringExpression) argExpr;
         String string = stringExpr.getStringValue(element.getParent(), null, stream);
         a.setStringValue(feature, string);
       }
-    } else if (argExpr instanceof NumberExpression
+    } else if (argExpr instanceof INumberExpression
             && (range.equals(UIMAConstants.TYPE_INTEGER) || range.equals(UIMAConstants.TYPE_LONG)
                     || range.equals(UIMAConstants.TYPE_SHORT) || range
                       .equals(UIMAConstants.TYPE_BYTE))) {
-      NumberExpression numberExpr = (NumberExpression) argExpr;
+      INumberExpression numberExpr = (INumberExpression) argExpr;
       int v = numberExpr.getIntegerValue(element.getParent(), a, stream);
       a.setIntValue(feature, v);
-    } else if (argExpr instanceof NumberExpression && (range.equals(UIMAConstants.TYPE_DOUBLE))) {
-      NumberExpression numberExpr = (NumberExpression) argExpr;
+    } else if (argExpr instanceof INumberExpression && (range.equals(UIMAConstants.TYPE_DOUBLE))) {
+      INumberExpression numberExpr = (INumberExpression) argExpr;
       double v = numberExpr.getDoubleValue(element.getParent(), a, stream);
       a.setDoubleValue(feature, v);
-    } else if (argExpr instanceof NumberExpression && (range.equals(UIMAConstants.TYPE_FLOAT))) {
-      NumberExpression numberExpr = (NumberExpression) argExpr;
+    } else if (argExpr instanceof INumberExpression && (range.equals(UIMAConstants.TYPE_FLOAT))) {
+      INumberExpression numberExpr = (INumberExpression) argExpr;
       float v = numberExpr.getFloatValue(element.getParent(), a, stream);
       a.setFloatValue(feature, v);
-    } else if (argExpr instanceof BooleanExpression && (range.equals(UIMAConstants.TYPE_BOOLEAN))) {
-      BooleanExpression booleanExpr = (BooleanExpression) argExpr;
+    } else if (argExpr instanceof IBooleanExpression && (range.equals(UIMAConstants.TYPE_BOOLEAN))) {
+      IBooleanExpression booleanExpr = (IBooleanExpression) argExpr;
       boolean v = booleanExpr.getBooleanValue(element.getParent(), a, stream);
       a.setBooleanValue(feature, v);
-    } else if (argExpr instanceof BooleanExpression && (range.equals(UIMAConstants.TYPE_BOOLEAN))) {
-      BooleanExpression booleanExpr = (BooleanExpression) argExpr;
+    } else if (argExpr instanceof IBooleanExpression && (range.equals(UIMAConstants.TYPE_BOOLEAN))) {
+      IBooleanExpression booleanExpr = (IBooleanExpression) argExpr;
       boolean v = booleanExpr.getBooleanValue(element.getParent(), a, stream);
       a.setBooleanValue(feature, v);
     } else if (argExpr instanceof TypeExpression && !feature.getRange().isPrimitive()) {

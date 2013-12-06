@@ -25,7 +25,7 @@ import org.antlr.runtime.Token;
 
 public class StringFunctionFactory {
 
-  public static StringExpression createRemoveFunction(Token var, List<StringExpression> list) {
+  public static AbstractStringExpression createRemoveFunction(Token var, List<IStringExpression> list) {
     String v = var == null ? "" : var.getText();
     return new RemoveFunction(v, list);
   }

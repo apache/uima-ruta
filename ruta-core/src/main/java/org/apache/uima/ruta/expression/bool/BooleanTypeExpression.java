@@ -25,7 +25,7 @@ import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 
-public class BooleanTypeExpression extends BooleanExpression {
+public class BooleanTypeExpression extends AbstractBooleanExpression {
 
   private final TypeExpression e1;
 

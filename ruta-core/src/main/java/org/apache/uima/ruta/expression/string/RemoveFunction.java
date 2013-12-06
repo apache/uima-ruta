@@ -27,11 +27,11 @@ import org.apache.uima.ruta.RutaStream;
 
 public class RemoveFunction extends StringFunctionExpression {
 
-  private List<StringExpression> list;
+  private List<IStringExpression> list;
 
   private String var;
 
-  public RemoveFunction(String v, List<StringExpression> list) {
+  public RemoveFunction(String v, List<IStringExpression> list) {
     super();
     this.var = v;
     this.list = list;
@@ -41,7 +41,7 @@ public class RemoveFunction extends StringFunctionExpression {
   public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     StringBuilder result = new StringBuilder();
     String value = parent.getEnvironment().getVariableValue(var, String.class);
-    for (StringExpression each : list) {
+    for (IStringExpression each : list) {
       String string = each.getStringValue(parent, annotation, stream);
       String[] split = value.split(string);
       for (String r : split) {
@@ -51,7 +51,7 @@ public class RemoveFunction extends StringFunctionExpression {
     return result.toString();
   }
 
-  public List<StringExpression> getList() {
+  public List<IStringExpression> getList() {
     return list;
   }
 

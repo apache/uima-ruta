@@ -27,9 +27,9 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
@@ -38,54 +38,54 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class SetFeatureAction extends AbstractRutaAction {
 
-  private final StringExpression featureStringExpression;
+  private final IStringExpression featureStringExpression;
 
-  private StringExpression stringExpr;
+  private IStringExpression stringExpr;
 
-  private NumberExpression numberExpr;
+  private INumberExpression numberExpr;
 
-  private BooleanExpression booleanExpr;
+  private IBooleanExpression booleanExpr;
 
   private TypeExpression typeExpr;
 
-  protected SetFeatureAction(StringExpression feature) {
+  protected SetFeatureAction(IStringExpression feature) {
     super();
     this.featureStringExpression = feature;
   }
 
-  public SetFeatureAction(StringExpression feature, StringExpression stringExpr) {
+  public SetFeatureAction(IStringExpression feature, IStringExpression stringExpr) {
     this(feature);
     this.stringExpr = stringExpr;
   }
 
-  public SetFeatureAction(StringExpression feature, NumberExpression numberExpr) {
+  public SetFeatureAction(IStringExpression feature, INumberExpression numberExpr) {
     this(feature);
     this.numberExpr = numberExpr;
   }
 
-  public SetFeatureAction(StringExpression feature, BooleanExpression booleanExpr) {
+  public SetFeatureAction(IStringExpression feature, IBooleanExpression booleanExpr) {
     this(feature);
     this.booleanExpr = booleanExpr;
   }
 
-  public SetFeatureAction(StringExpression feature, TypeExpression typeExpr) {
+  public SetFeatureAction(IStringExpression feature, TypeExpression typeExpr) {
     this(feature);
     this.typeExpr = typeExpr;
   }
 
-  public StringExpression getFeatureStringExpression() {
+  public IStringExpression getFeatureStringExpression() {
     return featureStringExpression;
   }
 
-  public StringExpression getStringExpr() {
+  public IStringExpression getStringExpr() {
     return stringExpr;
   }
 
-  public NumberExpression getNumberExpr() {
+  public INumberExpression getNumberExpr() {
     return numberExpr;
   }
 
-  public BooleanExpression getBooleanExpr() {
+  public IBooleanExpression getBooleanExpr() {
     return booleanExpr;
   }
 

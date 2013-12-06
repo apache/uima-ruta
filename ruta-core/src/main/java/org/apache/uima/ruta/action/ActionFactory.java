@@ -25,16 +25,16 @@ import java.util.logging.Level;
 
 import org.antlr.runtime.Token;
 import org.apache.uima.ruta.RutaBlock;
-import org.apache.uima.ruta.expression.RutaExpression;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.expression.list.StringListExpression;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.resource.WordListExpression;
 import org.apache.uima.ruta.expression.resource.WordTableExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 
 public class ActionFactory {
@@ -43,7 +43,7 @@ public class ActionFactory {
   }
 
   public static AbstractRutaAction createColorAction(TypeExpression typeExpr,
-          StringExpression bgcolor, StringExpression fgcolor, BooleanExpression selected,
+          IStringExpression bgcolor, IStringExpression fgcolor, IBooleanExpression selected,
           RutaBlock parent) {
     return new ColorAction(typeExpr, bgcolor, fgcolor, selected);
   }
@@ -53,14 +53,14 @@ public class ActionFactory {
   }
 
   public static AbstractRutaAction createMarkFastAction(TypeExpression type,
-          WordListExpression list, BooleanExpression ignore, NumberExpression ignoreLength,
-          BooleanExpression ignoreWS, RutaBlock parent) {
+          WordListExpression list, IBooleanExpression ignore, INumberExpression ignoreLength,
+          IBooleanExpression ignoreWS, RutaBlock parent) {
     return new MarkFastAction(type, list, ignore, ignoreLength, ignoreWS);
   }
 
   public static AbstractRutaAction createMarkFastAction(TypeExpression type,
-          StringListExpression list, BooleanExpression ignore, NumberExpression ignoreLength,
-          BooleanExpression ignoreWS, RutaBlock env) {
+          StringListExpression list, IBooleanExpression ignore, INumberExpression ignoreLength,
+          IBooleanExpression ignoreWS, RutaBlock env) {
     return new MarkFastAction(type, list, ignore, ignoreLength, ignoreWS);
   }
 
@@ -73,41 +73,41 @@ public class ActionFactory {
     return new RetainTypeAction(types);
   }
 
-  public static AbstractRutaAction createLogAction(StringExpression expr, Token log,
+  public static AbstractRutaAction createLogAction(IStringExpression expr, Token log,
           RutaBlock parent) {
     String logString = log == null ? "INFO" : log.getText();
     Level level = Level.parse(logString.toUpperCase());
     return new LogAction(expr, level);
   }
 
-  public static AbstractRutaAction createMarkAction(NumberExpression score, TypeExpression type,
-          List<NumberExpression> list, RutaBlock parent) {
+  public static AbstractRutaAction createMarkAction(INumberExpression score, TypeExpression type,
+          List<INumberExpression> list, RutaBlock parent) {
     return new MarkAction(type, score, list);
   }
 
-  public static AbstractRutaAction createMarkOnceAction(NumberExpression score,
-          TypeExpression type, List<NumberExpression> list, RutaBlock env) {
+  public static AbstractRutaAction createMarkOnceAction(INumberExpression score,
+          TypeExpression type, List<INumberExpression> list, RutaBlock env) {
     return new MarkOnceAction(type, score, list);
   }
 
-  public static AbstractRutaAction createReplaceAction(StringExpression lit, RutaBlock parent) {
+  public static AbstractRutaAction createReplaceAction(IStringExpression lit, RutaBlock parent) {
     return new ReplaceAction(lit);
   }
 
   public static AbstractRutaAction createCreateAction(TypeExpression typeExpr,
-          Map<StringExpression, RutaExpression> map, List<NumberExpression> indexes,
+          Map<IStringExpression, IRutaExpression> map, List<INumberExpression> indexes,
           RutaBlock parent) {
     return new CreateAction(typeExpr, map, indexes);
   }
 
   public static AbstractRutaAction createGatherAction(TypeExpression typeExpr,
-          Map<StringExpression, RutaExpression> map, List<NumberExpression> indexes,
+          Map<IStringExpression, IRutaExpression> map, List<INumberExpression> indexes,
           RutaBlock parent) {
     return new GatherAction(typeExpr, map, indexes);
   }
 
   public static AbstractRutaAction createFillAction(TypeExpression type,
-          Map<StringExpression, RutaExpression> map, RutaBlock parent) {
+          Map<IStringExpression, IRutaExpression> map, RutaBlock parent) {
     return new FillAction(type, map);
   }
 
@@ -116,11 +116,11 @@ public class ActionFactory {
   }
 
   public static AbstractRutaAction createConfigureAction(String ns,
-          Map<StringExpression, RutaExpression> map, RutaBlock env) {
+          Map<IStringExpression, IRutaExpression> map, RutaBlock env) {
     return new ConfigureAction(ns, map);
   }
 
-  public static AbstractRutaAction createAssignAction(Token nv, RutaExpression e, RutaBlock parent) {
+  public static AbstractRutaAction createAssignAction(Token nv, IRutaExpression e, RutaBlock parent) {
     return new AssignAction(nv.getText(), e);
   }
 
@@ -149,20 +149,20 @@ public class ActionFactory {
     return new RemoveFilterTypeAction(types);
   }
 
-  public static AbstractRutaAction createSetFeatureAction(StringExpression f, Object v,
+  public static AbstractRutaAction createSetFeatureAction(IStringExpression f, Object v,
           RutaBlock parent) {
-    if (v instanceof NumberExpression) {
-      return new SetFeatureAction(f, (NumberExpression) v);
-    } else if (v instanceof BooleanExpression) {
-      return new SetFeatureAction(f, (BooleanExpression) v);
-    } else if (v instanceof StringExpression) {
-      return new SetFeatureAction(f, (StringExpression) v);
+    if (v instanceof INumberExpression) {
+      return new SetFeatureAction(f, (INumberExpression) v);
+    } else if (v instanceof IBooleanExpression) {
+      return new SetFeatureAction(f, (IBooleanExpression) v);
+    } else if (v instanceof IStringExpression) {
+      return new SetFeatureAction(f, (IStringExpression) v);
     }
     return null;
   }
 
   public static AbstractRutaAction createUnmarkAction(TypeExpression f,
-          List<NumberExpression> list, BooleanExpression b, RutaBlock env) {
+          List<INumberExpression> list, IBooleanExpression b, RutaBlock env) {
     return new UnmarkAction(f, list, b);
   }
 
@@ -185,46 +185,46 @@ public class ActionFactory {
   }
 
   public static AbstractRutaAction createTrieAction(WordListExpression list,
-          Map<StringExpression, TypeExpression> map, BooleanExpression ignoreCase,
-          NumberExpression ignoreLength, BooleanExpression edit, NumberExpression distance,
-          StringExpression ignoreChar, RutaBlock parent) {
+          Map<IStringExpression, TypeExpression> map, IBooleanExpression ignoreCase,
+          INumberExpression ignoreLength, IBooleanExpression edit, INumberExpression distance,
+          IStringExpression ignoreChar, RutaBlock parent) {
     return new TrieAction(list, map, ignoreCase, ignoreLength, edit, distance, ignoreChar);
   }
 
-  public static AbstractRutaAction createExecAction(String ns, TypeListExpression tl, StringExpression view, RutaBlock env) {
+  public static AbstractRutaAction createExecAction(String ns, TypeListExpression tl, IStringExpression view, RutaBlock env) {
     return new ExecAction(ns, tl, view);
   }
 
   public static AbstractRutaAction createMarkTableAction(TypeExpression structure,
-          NumberExpression index, WordTableExpression table,
-          Map<StringExpression, NumberExpression> map, BooleanExpression ignoreCase,
-          NumberExpression ignoreLength, StringExpression ignoreChar,
-          NumberExpression maxIgnoreChar, RutaBlock env) {
+          INumberExpression index, WordTableExpression table,
+          Map<IStringExpression, INumberExpression> map, IBooleanExpression ignoreCase,
+          INumberExpression ignoreLength, IStringExpression ignoreChar,
+          INumberExpression maxIgnoreChar, RutaBlock env) {
     return new MarkTableAction(structure, index, table, map, ignoreCase, ignoreLength, ignoreChar,
             maxIgnoreChar);
   }
 
-  public static AbstractRutaAction createMergeAction(BooleanExpression union, Token target,
+  public static AbstractRutaAction createMergeAction(IBooleanExpression union, Token target,
           List<ListExpression> list, RutaBlock env) {
     return new MergeAction(union, target == null ? null : target.getText(), list);
   }
 
-  public static AbstractRutaAction createGetAction(ListExpression<RutaExpression> f, Token var,
-          StringExpression op, RutaBlock env) {
+  public static AbstractRutaAction createGetAction(ListExpression<IRutaExpression> f, Token var,
+          IStringExpression op, RutaBlock env) {
     return new GetAction(f, var == null ? null : var.getText(), op);
   }
 
-  public static AbstractRutaAction createRemoveAction(Token var, List<RutaExpression> list,
+  public static AbstractRutaAction createRemoveAction(Token var, List<IRutaExpression> list,
           RutaBlock env) {
     return new RemoveAction(var == null ? null : var.getText(), list);
   }
 
-  public static AbstractRutaAction createAddAction(Token var, List<RutaExpression> list,
+  public static AbstractRutaAction createAddAction(Token var, List<IRutaExpression> list,
           RutaBlock env) {
     return new AddAction(var == null ? null : var.getText(), list);
   }
 
-  public static AbstractRutaAction createGetListAction(Token var, StringExpression op, RutaBlock env) {
+  public static AbstractRutaAction createGetListAction(Token var, IStringExpression op, RutaBlock env) {
     return new GetListAction(var == null ? null : var.getText(), op);
   }
 
@@ -232,12 +232,12 @@ public class ActionFactory {
     return new RemoveDuplicateAction(var == null ? null : var.getText());
   }
 
-  public static AbstractRutaAction createGetFeatureAction(StringExpression f, Token var,
+  public static AbstractRutaAction createGetFeatureAction(IStringExpression f, Token var,
           RutaBlock env) {
     return new GetFeatureAction(f, var == null ? null : var.getText());
   }
 
-  public static AbstractRutaAction createMatchedTextAction(Token var, List<NumberExpression> list,
+  public static AbstractRutaAction createMatchedTextAction(Token var, List<INumberExpression> list,
           RutaBlock env) {
     return new MatchedTextAction(var == null ? null : var.getText(), list);
   }
@@ -247,12 +247,12 @@ public class ActionFactory {
   }
 
   public static AbstractRutaAction createShiftAction(TypeExpression type,
-          List<NumberExpression> list, RutaBlock env) {
+          List<INumberExpression> list, RutaBlock env) {
     return new ShiftAction(type, list);
   }
 
-  public static AbstractRutaAction createDynamicAnchoringAction(BooleanExpression active,
-          NumberExpression penalty, NumberExpression factor, RutaBlock env) {
+  public static AbstractRutaAction createDynamicAnchoringAction(IBooleanExpression active,
+          INumberExpression penalty, INumberExpression factor, RutaBlock env) {
     return new DynamicAnchoringAction(active, penalty, factor);
   }
 
@@ -273,7 +273,7 @@ public class ActionFactory {
     return new MarkFirstAction(type);
   }
 
-  public static AbstractRutaAction createGreedyAnchoringAction(BooleanExpression active,
+  public static AbstractRutaAction createGreedyAnchoringAction(IBooleanExpression active,
           RutaBlock env) {
     return new GreedyAnchoringAction(active);
   }

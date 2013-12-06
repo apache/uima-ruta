@@ -23,36 +23,32 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 
-public class NegativeNumberExpression extends NumberExpression {
+public class NegativeNumberExpression extends AbstractNumberExpression {
 
-  private final NumberExpression ne;
+  private final INumberExpression ne;
 
-  public NegativeNumberExpression(NumberExpression simpleNumberExpression) {
+  public NegativeNumberExpression(INumberExpression simpleNumberExpression) {
     super();
     this.ne = simpleNumberExpression;
   }
 
-  @Override
   public double getDoubleValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     return -ne.getDoubleValue(parent, annotation, stream);
   }
 
-  @Override
   public float getFloatValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     return -ne.getFloatValue(parent, annotation, stream);
   }
 
-  @Override
   public int getIntegerValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     return -ne.getIntegerValue(parent, annotation, stream);
   }
 
-  @Override
   public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     return "-" + ne.getStringValue(parent, annotation, stream);
   }
 
-  public NumberExpression getExpression() {
+  public INumberExpression getExpression() {
     return ne;
   }
 

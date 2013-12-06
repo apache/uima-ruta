@@ -21,9 +21,9 @@ package org.apache.uima.ruta.expression.type;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.ruta.RutaBlock;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.string.AbstractStringExpression;
 
-public abstract class TypeExpression extends StringExpression {
+public abstract class TypeExpression extends AbstractStringExpression {
 
   public abstract Type getType(RutaBlock parent);
 

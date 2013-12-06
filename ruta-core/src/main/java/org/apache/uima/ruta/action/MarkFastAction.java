@@ -25,10 +25,10 @@ import java.util.List;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.ruta.expression.list.StringListExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
 import org.apache.uima.ruta.expression.resource.WordListExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
@@ -44,14 +44,14 @@ public class MarkFastAction extends AbstractMarkAction {
 
   private StringListExpression stringList;
 
-  private BooleanExpression ignore;
+  private IBooleanExpression ignore;
 
-  private NumberExpression ignoreLength;
+  private INumberExpression ignoreLength;
 
-  private BooleanExpression ignoreWS;
+  private IBooleanExpression ignoreWS;
 
-  public MarkFastAction(TypeExpression type, WordListExpression list, BooleanExpression ignore,
-          NumberExpression ignoreLength, BooleanExpression ignoreWS) {
+  public MarkFastAction(TypeExpression type, WordListExpression list, IBooleanExpression ignore,
+          INumberExpression ignoreLength, IBooleanExpression ignoreWS) {
     super(type);
     this.list = list;
     this.ignore = ignore == null ? new SimpleBooleanExpression(false) : ignore;
@@ -60,8 +60,8 @@ public class MarkFastAction extends AbstractMarkAction {
     this.ignoreWS = ignoreWS == null ? new SimpleBooleanExpression(true) : ignoreWS;
   }
 
-  public MarkFastAction(TypeExpression type, StringListExpression list, BooleanExpression ignore,
-          NumberExpression ignoreLength, BooleanExpression ignoreWS) {
+  public MarkFastAction(TypeExpression type, StringListExpression list, IBooleanExpression ignore,
+          INumberExpression ignoreLength, IBooleanExpression ignoreWS) {
     super(type);
     this.stringList = list;
     this.ignore = ignore == null ? new SimpleBooleanExpression(false) : ignore;
@@ -102,15 +102,15 @@ public class MarkFastAction extends AbstractMarkAction {
     return stringList;
   }
 
-  public BooleanExpression getIgnore() {
+  public IBooleanExpression getIgnore() {
     return ignore;
   }
 
-  public NumberExpression getIgnoreLength() {
+  public INumberExpression getIgnoreLength() {
     return ignoreLength;
   }
 
-  public BooleanExpression getIgnoreWS() {
+  public IBooleanExpression getIgnoreWS() {
     return ignoreWS;
   }
 

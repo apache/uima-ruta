@@ -27,14 +27,14 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.type.RutaBasic;
 
 public class RutaLiteralMatcher implements RutaMatcher {
 
-  private final StringExpression expression;
+  private final IStringExpression expression;
 
-  public RutaLiteralMatcher(StringExpression expression) {
+  public RutaLiteralMatcher(IStringExpression expression) {
     super();
     this.expression = expression;
   }
@@ -63,7 +63,7 @@ public class RutaLiteralMatcher implements RutaMatcher {
     return "\"" + expression.toString() + "\"";
   }
 
-  public StringExpression getExpression() {
+  public IStringExpression getExpression() {
     return expression;
   }
 

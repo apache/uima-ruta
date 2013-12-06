@@ -25,18 +25,18 @@ import java.util.Date;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.string.AbstractStringExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class ExampleCondition extends AbstractRutaCondition {
 
-  private final StringExpression dateExpr;
+  private final AbstractStringExpression dateExpr;
 
-  private final StringExpression formatExpr;
+  private final AbstractStringExpression formatExpr;
 
-  public ExampleCondition(StringExpression expr, StringExpression format) {
+  public ExampleCondition(AbstractStringExpression expr, AbstractStringExpression format) {
     super();
     this.dateExpr = expr;
     this.formatExpr = format;
@@ -60,11 +60,11 @@ public class ExampleCondition extends AbstractRutaCondition {
     return new EvaluatedCondition(this, result);
   }
 
-  public StringExpression getExpr() {
+  public AbstractStringExpression getExpr() {
     return dateExpr;
   }
 
-  public StringExpression getFormatExpr() {
+  public AbstractStringExpression getFormatExpr() {
     return formatExpr;
   }
 

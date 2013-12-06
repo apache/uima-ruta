@@ -26,9 +26,9 @@ import java.util.List;
 
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
@@ -66,14 +66,14 @@ public class RemoveDuplicateAction extends AbstractRutaAction {
   }
 
   private Object getValue(Object obj, RutaBlock parent, RutaStream stream) {
-    if (obj instanceof NumberExpression) {
-      return ((NumberExpression) obj).getDoubleValue(parent, null, stream);
-    } else if (obj instanceof BooleanExpression) {
-      return ((BooleanExpression) obj).getBooleanValue(parent, null, stream);
+    if (obj instanceof INumberExpression) {
+      return ((INumberExpression) obj).getDoubleValue(parent, null, stream);
+    } else if (obj instanceof IBooleanExpression) {
+      return ((IBooleanExpression) obj).getBooleanValue(parent, null, stream);
     } else if (obj instanceof TypeExpression) {
       return ((TypeExpression) obj).getType(parent);
-    } else if (obj instanceof StringExpression) {
-      return ((StringExpression) obj).getStringValue(parent, null, stream);
+    } else if (obj instanceof IStringExpression) {
+      return ((IStringExpression) obj).getStringValue(parent, null, stream);
     }
     return null;
   }

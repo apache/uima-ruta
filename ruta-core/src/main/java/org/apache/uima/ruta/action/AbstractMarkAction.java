@@ -26,7 +26,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
@@ -58,7 +58,7 @@ public abstract class AbstractMarkAction extends TypeSensitiveAction {
     return super.toString() + "," + type.getClass().getSimpleName();
   }
 
-  protected List<Integer> getIndexList(RuleElement element, List<NumberExpression> list,
+  protected List<Integer> getIndexList(RuleElement element, List<INumberExpression> list,
           RutaStream stream) {
     List<Integer> indexList = new ArrayList<Integer>();
     if (list == null || list.isEmpty()) {
@@ -67,7 +67,7 @@ public abstract class AbstractMarkAction extends TypeSensitiveAction {
       return indexList;
     }
     int last = Integer.MAX_VALUE - 1;
-    for (NumberExpression each : list) {
+    for (INumberExpression each : list) {
       int value = each.getIntegerValue(element.getParent(), null, stream);
       for (int i = Math.min(value, last + 1); i < value; i++) {
         indexList.add(i);

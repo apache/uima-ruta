@@ -27,10 +27,10 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.resource.WordListExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.resource.RutaWordList;
 import org.apache.uima.ruta.rule.RuleElement;
@@ -41,21 +41,21 @@ public class TrieAction extends AbstractRutaAction {
 
   private final WordListExpression list;
 
-  private final Map<StringExpression, TypeExpression> map;
+  private final Map<IStringExpression, TypeExpression> map;
 
-  private final BooleanExpression ignoreCase;
+  private final IBooleanExpression ignoreCase;
 
-  private final NumberExpression ignoreLength;
+  private final INumberExpression ignoreLength;
 
-  private final BooleanExpression edit;
+  private final IBooleanExpression edit;
 
-  private final NumberExpression distance;
+  private final INumberExpression distance;
 
-  private final StringExpression ignoreChar;
+  private final IStringExpression ignoreChar;
 
-  public TrieAction(WordListExpression list, Map<StringExpression, TypeExpression> map,
-          BooleanExpression ignoreCase, NumberExpression ignoreLength, BooleanExpression edit,
-          NumberExpression distance, StringExpression ignoreChar) {
+  public TrieAction(WordListExpression list, Map<IStringExpression, TypeExpression> map,
+          IBooleanExpression ignoreCase, INumberExpression ignoreLength, IBooleanExpression edit,
+          INumberExpression distance, IStringExpression ignoreChar) {
     super();
     this.list = list;
     this.map = map;
@@ -71,7 +71,7 @@ public class TrieAction extends AbstractRutaAction {
 
     Map<String, Type> typeMap = new HashMap<String, Type>();
     RutaBlock parent = element.getParent();
-    for (StringExpression eachKey : map.keySet()) {
+    for (IStringExpression eachKey : map.keySet()) {
       String stringValue = eachKey.getStringValue(parent, match, element, stream);
       TypeExpression typeExpression = map.get(eachKey);
       if (typeExpression != null) {
@@ -102,27 +102,27 @@ public class TrieAction extends AbstractRutaAction {
     return list;
   }
 
-  public Map<StringExpression, TypeExpression> getMap() {
+  public Map<IStringExpression, TypeExpression> getMap() {
     return map;
   }
 
-  public BooleanExpression getIgnoreCase() {
+  public IBooleanExpression getIgnoreCase() {
     return ignoreCase;
   }
 
-  public NumberExpression getIgnoreLength() {
+  public INumberExpression getIgnoreLength() {
     return ignoreLength;
   }
 
-  public BooleanExpression getEdit() {
+  public IBooleanExpression getEdit() {
     return edit;
   }
 
-  public NumberExpression getDistance() {
+  public INumberExpression getDistance() {
     return distance;
   }
 
-  public StringExpression getIgnoreChar() {
+  public IStringExpression getIgnoreChar() {
     return ignoreChar;
   }
 

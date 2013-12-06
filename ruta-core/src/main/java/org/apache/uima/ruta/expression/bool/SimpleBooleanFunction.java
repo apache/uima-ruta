@@ -23,15 +23,15 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 
-public class SimpleBooleanFunction extends BooleanExpression {
+public class SimpleBooleanFunction extends AbstractBooleanExpression {
 
   private String op;
 
-  private BooleanExpression e1;
+  private IBooleanExpression e1;
 
-  private BooleanExpression e2;
+  private IBooleanExpression e2;
 
-  public SimpleBooleanFunction(String text, BooleanExpression e1, BooleanExpression e2) {
+  public SimpleBooleanFunction(String text, IBooleanExpression e1, IBooleanExpression e2) {
     super();
     this.op = text;
     this.e1 = e1;

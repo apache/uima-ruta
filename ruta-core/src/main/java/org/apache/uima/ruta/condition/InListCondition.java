@@ -23,9 +23,9 @@ import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.list.StringListExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.resource.WordListExpression;
 import org.apache.uima.ruta.resource.RutaWordList;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
@@ -34,24 +34,24 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class InListCondition extends TerminalRutaCondition {
 
-  private BooleanExpression relative;
+  private IBooleanExpression relative;
 
-  private final NumberExpression distance;
+  private final INumberExpression distance;
 
   private WordListExpression listExpr;
 
   private StringListExpression stringList;
 
-  public InListCondition(WordListExpression listExpr, NumberExpression distance,
-          BooleanExpression relative) {
+  public InListCondition(WordListExpression listExpr, INumberExpression distance,
+          IBooleanExpression relative) {
     super();
     this.listExpr = listExpr;
     this.distance = distance;
     this.relative = relative;
   }
 
-  public InListCondition(StringListExpression list, NumberExpression distance,
-          BooleanExpression relative) {
+  public InListCondition(StringListExpression list, INumberExpression distance,
+          IBooleanExpression relative) {
     super();
     this.distance = distance;
     this.relative = relative;
@@ -71,11 +71,11 @@ public class InListCondition extends TerminalRutaCondition {
     return new EvaluatedCondition(this, contains);
   }
 
-  public BooleanExpression getRelative() {
+  public IBooleanExpression getRelative() {
     return relative;
   }
 
-  public NumberExpression getDistance() {
+  public INumberExpression getDistance() {
     return distance;
   }
 

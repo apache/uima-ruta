@@ -21,16 +21,16 @@ package org.apache.uima.ruta.condition;
 
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class IfCondition extends AbstractRutaCondition {
 
-  private final BooleanExpression expression;
+  private final IBooleanExpression expression;
 
-  public IfCondition(BooleanExpression e) {
+  public IfCondition(IBooleanExpression e) {
     super();
     this.expression = e;
   }
@@ -42,7 +42,7 @@ public class IfCondition extends AbstractRutaCondition {
             stream));
   }
 
-  public BooleanExpression getExpression() {
+  public IBooleanExpression getExpression() {
     return expression;
   }
 

@@ -25,11 +25,11 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.RutaExpression;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
+import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
@@ -39,9 +39,9 @@ public class AddAction extends AbstractRutaAction {
 
   private String var;
 
-  private List<RutaExpression> elements;
+  private List<IRutaExpression> elements;
 
-  public AddAction(String var, List<RutaExpression> list) {
+  public AddAction(String var, List<IRutaExpression> list) {
     super();
     this.var = var;
     this.elements = list;
@@ -51,7 +51,7 @@ public class AddAction extends AbstractRutaAction {
     return var;
   }
 
-  public List<RutaExpression> getElements() {
+  public List<IRutaExpression> getElements() {
     return elements;
   }
 
@@ -63,20 +63,20 @@ public class AddAction extends AbstractRutaAction {
     List list = environment.getVariableValue(var, List.class);
     // Class<?> vtype = environment.getVariableType(var);
     Class<?> vgtype = environment.getVariableGenericType(var);
-    for (RutaExpression each : elements) {
+    for (IRutaExpression each : elements) {
       if (each instanceof ListExpression) {
         ListExpression l = (ListExpression) each;
         list.addAll(l.getList(parent, stream));
-      } else if (vgtype.equals(Boolean.class) && each instanceof BooleanExpression) {
-        list.add(((BooleanExpression) each).getBooleanValue(parent, match, element, stream));
-      } else if (vgtype.equals(Integer.class) && each instanceof NumberExpression) {
-        list.add(((NumberExpression) each).getIntegerValue(parent, match, element, stream));
-      } else if (vgtype.equals(Double.class) && each instanceof NumberExpression) {
-        list.add(((NumberExpression) each).getDoubleValue(parent, match, element, stream));
+      } else if (vgtype.equals(Boolean.class) && each instanceof IBooleanExpression) {
+        list.add(((IBooleanExpression) each).getBooleanValue(parent, match, element, stream));
+      } else if (vgtype.equals(Integer.class) && each instanceof INumberExpression) {
+        list.add(((INumberExpression) each).getIntegerValue(parent, match, element, stream));
+      } else if (vgtype.equals(Double.class) && each instanceof INumberExpression) {
+        list.add(((INumberExpression) each).getDoubleValue(parent, match, element, stream));
       } else if (vgtype.equals(Type.class) && each instanceof TypeExpression) {
         list.add(((TypeExpression) each).getType(parent));
-      } else if (vgtype.equals(String.class) && each instanceof StringExpression) {
-        list.add(((StringExpression) each).getStringValue(parent, match, element, stream));
+      } else if (vgtype.equals(String.class) && each instanceof IStringExpression) {
+        list.add(((IStringExpression) each).getStringValue(parent, match, element, stream));
       }
     }
   }

@@ -23,7 +23,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 
-public class ReferenceBooleanExpression extends BooleanExpression {
+public class ReferenceBooleanExpression extends AbstractBooleanExpression {
 
   private final String var;
 

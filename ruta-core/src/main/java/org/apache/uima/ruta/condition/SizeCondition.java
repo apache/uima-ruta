@@ -22,7 +22,7 @@ package org.apache.uima.ruta.condition;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.list.ListExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.RuleElement;
@@ -32,13 +32,13 @@ public class SizeCondition extends AbstractRutaCondition {
 
   private ListExpression<?> listExpr;
 
-  private NumberExpression minExpr;
+  private INumberExpression minExpr;
 
-  private NumberExpression maxExpr;
+  private INumberExpression maxExpr;
 
   private String varExpr;
 
-  public SizeCondition(ListExpression<?> list, NumberExpression min, NumberExpression max,
+  public SizeCondition(ListExpression<?> list, INumberExpression min, INumberExpression max,
           String string) {
     super();
     this.listExpr = list;
@@ -63,11 +63,11 @@ public class SizeCondition extends AbstractRutaCondition {
     return listExpr;
   }
 
-  public NumberExpression getMinExpr() {
+  public INumberExpression getMinExpr() {
     return minExpr;
   }
 
-  public NumberExpression getMaxExpr() {
+  public INumberExpression getMaxExpr() {
     return maxExpr;
   }
 

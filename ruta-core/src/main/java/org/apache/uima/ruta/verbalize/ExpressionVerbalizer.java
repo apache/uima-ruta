@@ -22,16 +22,17 @@ package org.apache.uima.ruta.verbalize;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.MatchReference;
-import org.apache.uima.ruta.expression.RutaExpression;
-import org.apache.uima.ruta.expression.bool.BooleanExpression;
 import org.apache.uima.ruta.expression.bool.BooleanFeatureExpression;
 import org.apache.uima.ruta.expression.bool.BooleanNumberExpression;
 import org.apache.uima.ruta.expression.bool.BooleanTypeExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.ReferenceBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
+import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.expression.list.ReferenceBooleanListExpression;
 import org.apache.uima.ruta.expression.list.ReferenceNumberListExpression;
@@ -42,8 +43,8 @@ import org.apache.uima.ruta.expression.list.SimpleNumberListExpression;
 import org.apache.uima.ruta.expression.list.SimpleStringListExpression;
 import org.apache.uima.ruta.expression.list.SimpleTypeListExpression;
 import org.apache.uima.ruta.expression.number.ComposedNumberExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.NegativeNumberExpression;
-import org.apache.uima.ruta.expression.number.NumberExpression;
 import org.apache.uima.ruta.expression.number.NumberFeatureExpression;
 import org.apache.uima.ruta.expression.number.ReferenceNumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
@@ -52,10 +53,10 @@ import org.apache.uima.ruta.expression.resource.ReferenceWordTableExpression;
 import org.apache.uima.ruta.expression.resource.WordListExpression;
 import org.apache.uima.ruta.expression.resource.WordTableExpression;
 import org.apache.uima.ruta.expression.string.ComposedStringExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.string.LiteralStringExpression;
 import org.apache.uima.ruta.expression.string.ReferenceStringExpression;
 import org.apache.uima.ruta.expression.string.SimpleStringExpression;
-import org.apache.uima.ruta.expression.string.StringExpression;
 import org.apache.uima.ruta.expression.string.StringFeatureExpression;
 import org.apache.uima.ruta.expression.type.ReferenceTypeExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
@@ -70,13 +71,13 @@ public class ExpressionVerbalizer {
     this.verbalizer = verbalizer;
   }
 
-  public String verbalize(RutaExpression expression) {
+  public String verbalize(IRutaExpression expression) {
     if (expression instanceof TypeExpression) {
       return verbalize((TypeExpression) expression);
-    } else if (expression instanceof BooleanExpression) {
-      return verbalize((BooleanExpression) expression);
-    } else if (expression instanceof NumberExpression) {
-      return verbalize((NumberExpression) expression);
+    } else if (expression instanceof IBooleanExpression) {
+      return verbalize((IBooleanExpression) expression);
+    } else if (expression instanceof INumberExpression) {
+      return verbalize((INumberExpression) expression);
     } else if (expression instanceof WordListExpression) {
       return verbalize((WordListExpression) expression);
     } else if (expression instanceof WordTableExpression) {
@@ -85,12 +86,14 @@ public class ExpressionVerbalizer {
       return verbalize((ListExpression<?>) expression);
     } else if (expression instanceof FeatureExpression) {
       return verbalize((FeatureExpression) expression);
-    } else if (expression instanceof StringExpression) {
-      return verbalize((StringExpression) expression);
+    } else if (expression instanceof IStringExpression) {
+      return verbalize((IStringExpression) expression);
     } else if (expression instanceof MatchReference) {
       return verbalize((MatchReference) expression);
     } else if (expression instanceof FeatureMatchExpression) {
       return verbalize((FeatureMatchExpression) expression);
+    } else if (expression instanceof GenericFeatureExpression) {
+      return verbalize(((GenericFeatureExpression) expression).getFeatureExpression());
     }
     return expression.getClass().getSimpleName();
   }
@@ -140,7 +143,7 @@ public class ExpressionVerbalizer {
     return expression.getClass().getSimpleName();
   }
 
-  public String verbalize(NumberExpression expression) {
+  public String verbalize(INumberExpression expression) {
     if (expression == null) {
       return "";
     } else if (expression instanceof NegativeNumberExpression) {
@@ -154,7 +157,7 @@ public class ExpressionVerbalizer {
       return e.getNumber().toString();
     } else if (expression instanceof ComposedNumberExpression) {
       ComposedNumberExpression e = (ComposedNumberExpression) expression;
-      NumberExpression ne = e.getExpressions().get(0);
+      INumberExpression ne = e.getExpressions().get(0);
       if (ne == null) {
         return "";
       }
@@ -172,7 +175,7 @@ public class ExpressionVerbalizer {
     return expression.getClass().getSimpleName();
   }
 
-  public String verbalize(BooleanExpression expression) {
+  public String verbalize(IBooleanExpression expression) {
     if (expression == null) {
       return "";
     } else if (expression instanceof BooleanNumberExpression) {
@@ -195,15 +198,15 @@ public class ExpressionVerbalizer {
     return expression.getClass().getSimpleName();
   }
 
-  public String verbalize(StringExpression expression) {
+  public String verbalize(IStringExpression expression) {
     if (expression == null) {
       return "";
-    } else if (expression instanceof NumberExpression) {
-      return verbalize((NumberExpression) expression);
+    } else if (expression instanceof INumberExpression) {
+      return verbalize((INumberExpression) expression);
     } else if (expression instanceof TypeExpression) {
       return verbalize((TypeExpression) expression);
-    } else if (expression instanceof BooleanExpression) {
-      return verbalize((BooleanExpression) expression);
+    } else if (expression instanceof IBooleanExpression) {
+      return verbalize((IBooleanExpression) expression);
     } else if (expression instanceof ListExpression) {
       return verbalize((ListExpression) expression);
     } else if (expression instanceof LiteralStringExpression) {
@@ -220,9 +223,9 @@ public class ExpressionVerbalizer {
     } else if (expression instanceof ComposedStringExpression) {
       ComposedStringExpression e = (ComposedStringExpression) expression;
       StringBuilder sb = new StringBuilder();
-      Iterator<StringExpression> it = e.getExpressions().iterator();
+      Iterator<IStringExpression> it = e.getExpressions().iterator();
       while (it.hasNext()) {
-        StringExpression each = it.next();
+        IStringExpression each = it.next();
         sb.append(verbalize(each));
         if (it.hasNext()) {
           sb.append(" + ");

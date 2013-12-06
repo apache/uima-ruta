@@ -25,7 +25,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.number.NumberExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
@@ -34,11 +34,11 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class MarkAction extends AbstractMarkAction {
 
-  protected final NumberExpression score;
+  protected final INumberExpression score;
 
-  protected final List<NumberExpression> list;
+  protected final List<INumberExpression> list;
 
-  public MarkAction(TypeExpression type, NumberExpression scoreValue, List<NumberExpression> list) {
+  public MarkAction(TypeExpression type, INumberExpression scoreValue, List<INumberExpression> list) {
     super(type);
     this.score = scoreValue;
     this.list = list;
@@ -96,11 +96,11 @@ public class MarkAction extends AbstractMarkAction {
 
   }
 
-  public NumberExpression getScore() {
+  public INumberExpression getScore() {
     return score;
   }
 
-  public List<NumberExpression> getList() {
+  public List<INumberExpression> getList() {
     return list;
   }
 }
