@@ -1845,6 +1845,7 @@ options {
 	| a2 = booleanExpression {expr = a2;}
 	| a3 = numberExpression {expr = a3;}
 	| a4 = stringExpression {expr = a4;}
+	| (listExpression)=> l = listExpression {expr = l;}
 	| a1 = typeExpression {expr = a1;}
 	
 	//(a2 = booleanExpression)=> a2 = booleanExpression {expr = a2;}

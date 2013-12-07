@@ -1966,6 +1966,7 @@ argument returns [Expression expr = null] //SimpleReference arg1 = null]
 	(stringExpression)=> a4 = stringExpression {expr = a4;}
 	| (booleanExpression)=> a2 = booleanExpression {expr = a2;}
 	| (numberExpression)=> a3 = numberExpression {expr = a3;}
+	| (listExpression)=> l = listExpression {expr = l;}
 	| a1 = typeExpression {expr = a1;}
 	//token = (
 	//(booleanExpression[par]) => booleanExpression[par]
