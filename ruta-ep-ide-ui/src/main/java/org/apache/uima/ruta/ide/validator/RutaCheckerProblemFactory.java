@@ -22,6 +22,7 @@ package org.apache.uima.ruta.ide.validator;
 import java.util.List;
 
 import org.apache.uima.ruta.ide.core.extensions.IRutaCheckerProblemFactory;
+import org.apache.uima.ruta.ide.parser.ast.FeatureMatchExpression;
 import org.apache.uima.ruta.ide.parser.ast.RutaAbstractDeclaration;
 import org.apache.uima.ruta.ide.parser.ast.RutaAction;
 import org.apache.uima.ruta.ide.parser.ast.RutaCondition;
@@ -102,6 +103,17 @@ public class RutaCheckerProblemFactory implements IRutaCheckerProblemFactory{
     return problem;
   }
 
+  public IProblem createTypeProblem(FeatureMatchExpression ref, ISourceModule currentFile) {
+
+    String errMsgHead = "Type \"";
+
+    String errMsgTailDefault = " \" not defined in this script/block!";
+    String errMsg = errMsgHead + ref.getFeature().getText() + errMsgTailDefault;
+    IProblem problem = new RutaCheckerDefaultProblem(currentFile.getElementName(), errMsg, ref,
+            linetracker.getLineNumberOfOffset(ref.sourceStart()));
+    return problem;
+  }
+  
   private String generateFileNotFoundProblemMsg(ASTNode node) {
     return generateFileNotFoundProblemMsg(node.toString());
   }

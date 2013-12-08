@@ -459,6 +459,7 @@ public class RutaTypeChecker implements IBuildParticipant, IBuildParticipantExte
           rep.reportProblem(problemFactory.createUnknownFeatureProblem(fme, aref));
         }
       } else {
+        rep.reportProblem(problemFactory.createTypeProblem(fme, currentFile));
         rep.reportProblem(problemFactory.createUnknownFeatureProblem(fme, aref));
       }
     }

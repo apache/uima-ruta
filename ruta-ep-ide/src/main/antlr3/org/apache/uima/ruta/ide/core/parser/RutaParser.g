@@ -894,9 +894,10 @@ expr = ExpressionFactory.createEmptyTypeExpression(input.LT(1));
 	(typeFunction)=> tf = typeFunction {expr = tf;}
 	| 
 	st = simpleTypeExpression 
-	)
 	{expr = ExpressionFactory.createTypeExpression(st);
 	 }
+	)
+	
 	
 	;	
 	
