@@ -1647,8 +1647,8 @@ actionDynamicAnchoring returns [AbstractRutaAction action = null]
 
 actionGreedyAnchoring returns [AbstractRutaAction action = null]
     :
-    name = GREEDYANCHORING LPAREN active = booleanExpression 
-    {action = ActionFactory.createGreedyAnchoringAction(active, $blockDeclaration::env);}
+    name = GREEDYANCHORING LPAREN active = booleanExpression (COMMA active2 = booleanExpression )?
+    {action = ActionFactory.createGreedyAnchoringAction(active, active2, $blockDeclaration::env);}
     RPAREN
     ;
 

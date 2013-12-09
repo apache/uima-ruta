@@ -274,8 +274,8 @@ public class ActionFactory {
   }
 
   public static AbstractRutaAction createGreedyAnchoringAction(IBooleanExpression active,
-          RutaBlock env) {
-    return new GreedyAnchoringAction(active);
+          IBooleanExpression active2, RutaBlock env) {
+    return new GreedyAnchoringAction(active, active2);
   }
 
 }

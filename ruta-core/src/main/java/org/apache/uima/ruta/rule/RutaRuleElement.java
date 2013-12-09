@@ -124,7 +124,12 @@ public class RutaRuleElement extends AbstractRuleElement {
     for (AbstractRuleMatch<? extends AbstractRule> each : list) {
       if(each instanceof RuleMatch) {
         RuleMatch rm = (RuleMatch) each;
-        List<AnnotationFS> matchedAnnotationsOf = rm.getMatchedAnnotationsOf(this);
+        List<AnnotationFS> matchedAnnotationsOf = Collections.emptyList();
+        if(stream.isGreedyRule()) {
+          matchedAnnotationsOf = rm.getMatchedAnnotationsOfRoot();
+        } else if(stream.isGreedyRuleElement()) {
+          matchedAnnotationsOf = rm.getMatchedAnnotationsOf(this);
+        }
         for (AnnotationFS annotationFS : matchedAnnotationsOf) {
           if(eachAnchor.getBegin() >= annotationFS.getBegin() && eachAnchor.getEnd() <= annotationFS.getEnd())
           return true;

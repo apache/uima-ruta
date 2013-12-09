@@ -271,16 +271,24 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private Boolean simpleGreedyForComposed;
 
   /**
-   * If this parameter is set to true, then start positions already matched by the same rule will be ignored. This situation 
-   * occurs mostly for rules that start with a quantifier. The following rule, for example, matches only once, 
-   * if this parameter is set to true: {@code ANY+;}
+   * If this parameter is set to true, then start positions already matched by the same rule element will be
+   * ignored. This situation occurs mostly for rules that start with a quantifier. The following
+   * rule, for example, matches only once, if this parameter is set to true: {@code ANY+;}
    */
-  public static final String PARAM_GREEDY_ANCHORING = "greedyAnchoring";
+  public static final String PARAM_GREEDY_RULE_ELEMENT = "greedyRuleElement";
 
-  @ConfigurationParameter(name = PARAM_GREEDY_ANCHORING, mandatory = false, defaultValue = "false")
-  private Boolean greedyAnchoring = false;
-  
-  
+  @ConfigurationParameter(name = PARAM_GREEDY_RULE_ELEMENT, mandatory = false, defaultValue = "false")
+  private Boolean greedyRuleElement = false;
+
+  /**
+   * If this parameter is set to true, then start positions already matched by the rule will be
+   * ignored and only positions not part of an match will be considered.
+   */
+  public static final String PARAM_GREEDY_RULE = "greedyRule";
+
+  @ConfigurationParameter(name = PARAM_GREEDY_RULE, mandatory = false, defaultValue = "false")
+  private Boolean greedyRule = false;
+
   /**
    * If this parameter is set to true, then additional information about the execution of a rule
    * script is added to the CAS. The actual information is specified by the following parameters.
@@ -338,7 +346,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private Boolean createdBy;
 
   /**
-   * If this parameter is set to true, then only types in declared type systems are available by their short name.
+   * If this parameter is set to true, then only types in declared type systems are available by
+   * their short name.
    */
   public static final String PARAM_STRICT_IMPORTS = "strictImports";
 
@@ -398,8 +407,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     lowMemoryProfile = (Boolean) aContext.getConfigParameterValue(PARAM_LOW_MEMORY_PROFILE);
     simpleGreedyForComposed = (Boolean) aContext
             .getConfigParameterValue(PARAM_SIMPLE_GREEDY_FOR_COMPOSED);
-    greedyAnchoring = (Boolean) aContext
-            .getConfigParameterValue(PARAM_GREEDY_ANCHORING);
+    greedyRuleElement = (Boolean) aContext.getConfigParameterValue(PARAM_GREEDY_RULE_ELEMENT);
+    greedyRule = (Boolean) aContext.getConfigParameterValue(PARAM_GREEDY_RULE);
 
     resourcePaths = resourcePaths == null ? new String[0] : resourcePaths;
     removeBasics = removeBasics == null ? false : removeBasics;
@@ -416,9 +425,9 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     reloadScript = reloadScript == null ? false : reloadScript;
     lowMemoryProfile = lowMemoryProfile == null ? false : lowMemoryProfile;
     simpleGreedyForComposed = simpleGreedyForComposed == null ? false : simpleGreedyForComposed;
-    greedyAnchoring = greedyAnchoring == null ? false : greedyAnchoring;
+    greedyRuleElement = greedyRuleElement == null ? false : greedyRuleElement;
+    greedyRule = greedyRule == null ? false : greedyRule;
 
-    
     this.context = aContext;
 
     factory = new RutaExternalFactory();
@@ -458,7 +467,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     InferenceCrowd crowd = initializeCrowd();
     RutaStream stream = initializeStream(cas, crowd);
     stream.setDynamicAnchoring(dynamicAnchoring);
-    stream.setGreedyAnchoring(greedyAnchoring);
+    stream.setGreedyRuleElement(greedyRuleElement);
+    stream.setGreedyRule(greedyRule);
     try {
       script.apply(stream, crowd);
     } catch (Throwable e) {
@@ -905,7 +915,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private RutaModule loadScriptIS(String scriptLocation) throws IOException, RecognitionException {
     InputStream scriptInputStream = getClass().getClassLoader().getResourceAsStream(scriptLocation);
     if (scriptInputStream == null) {
-            throw new FileNotFoundException("No script found in location [" + scriptLocation + "]");
+      throw new FileNotFoundException("No script found in location [" + scriptLocation + "]");
     }
     CharStream st = new ANTLRInputStream(scriptInputStream, scriptEncoding);
     RutaLexer lexer = new RutaLexer(st);
@@ -947,8 +957,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private String collectionToString(Object[] collection) {
     if (collection == null) {
       return "";
-    }
-    else {
+    } else {
       return collectionToString(Arrays.asList(collection));
     }
   }

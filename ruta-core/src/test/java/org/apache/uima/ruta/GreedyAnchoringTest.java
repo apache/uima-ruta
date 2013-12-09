@@ -36,7 +36,7 @@ import org.junit.Test;
 public class GreedyAnchoringTest {
 
   @Test
-  public void test() {
+  public void testGreedyRuleElement() {
     String document = "Peter Kluegl, Joern Kottmann, Marshall Schor.";
     String script = "";
     script += "ANY+{->T1};";
@@ -44,7 +44,7 @@ public class GreedyAnchoringTest {
     
     CAS cas = null;
     Map<String, Object> params = new HashMap<String, Object>();
-    params.put(RutaEngine.PARAM_GREEDY_ANCHORING, true);
+    params.put(RutaEngine.PARAM_GREEDY_RULE_ELEMENT, true);
     try {
       cas = RutaTestUtils.getCAS(document);
       Ruta.apply(cas, script, params);
@@ -74,4 +74,39 @@ public class GreedyAnchoringTest {
     }
 
   }
+  
+  @Test
+  public void testGreedyRule() {
+    String document = "Peter Kluegl Joern Kottmann Marshall Schor.";
+    String script = "";
+    script += "(CW CW){->T1};";
+    
+    CAS cas = null;
+    Map<String, Object> params = new HashMap<String, Object>();
+    params.put(RutaEngine.PARAM_GREEDY_RULE, true);
+    try {
+      cas = RutaTestUtils.getCAS(document);
+      Ruta.apply(cas, script, params);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    Type t = null;
+    AnnotationIndex<AnnotationFS> ai = null;
+    FSIterator<AnnotationFS> iterator = null;
+
+    t = RutaTestUtils.getTestType(cas, 1);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(3, ai.size());
+    iterator = ai.iterator();
+    assertEquals("Peter Kluegl", iterator.next().getCoveredText());
+    assertEquals("Joern Kottmann", iterator.next().getCoveredText());
+    assertEquals("Marshall Schor", iterator.next().getCoveredText());
+    
+    if (cas != null) {
+      cas.release();
+    }
+
+  }
+  
 }

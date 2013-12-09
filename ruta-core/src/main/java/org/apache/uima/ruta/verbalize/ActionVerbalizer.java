@@ -427,9 +427,14 @@ public class ActionVerbalizer {
       return name + pa + pp + pf + ")";
     } else if (action instanceof GreedyAnchoringAction) {
       GreedyAnchoringAction a = (GreedyAnchoringAction) action;
-      IBooleanExpression active = a.getActive();
+      IBooleanExpression active = a.getGreedyRuleElement();
+      IBooleanExpression active2 = a.getGreedyRule();
       String pa = verbalizer.verbalize(active);
-      return name + pa + ")";
+      String pa2 = "";
+      if (active2 != null) {
+        pa2 = ", " + verbalizer.verbalize(active2);
+      }
+      return name + pa + pa2 + ")";
     } else if (action instanceof GetListAction) {
       GetListAction a = (GetListAction) action;
       String var = a.getVar();
@@ -484,9 +489,9 @@ public class ActionVerbalizer {
       TrimAction a = (TrimAction) action;
       TypeListExpression typeList = a.getTypeList();
       String verbalize = "";
-      if(typeList != null) {
+      if (typeList != null) {
         verbalize = verbalizer.verbalize(typeList);
-      } else if(a.getTypes() != null) {
+      } else if (a.getTypes() != null) {
         verbalize = verbalizer.verbalizeExpressionList(a.getTypes());
       }
       return name + verbalize + ")";

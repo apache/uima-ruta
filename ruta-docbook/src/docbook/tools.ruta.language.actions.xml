@@ -663,16 +663,17 @@ A B{-> GATHER(C, 1, 2, "a" = 1, "b" = 2)};]]></programlisting>
   <section id="ugr.tools.ruta.language.actions.greedyanchoring">
     <title>GREEDYANCHORING</title>
     <para>
-      The GREEDYANCHORING action turns greedy anchoring on or off
-      (first parameter). If this parameter is set to true, then start positions already matched by the same rule will be ignored. This situation 
-      occurs mostly for rules that start with a quantifier. 
+      The GREEDYANCHORING action turns greedy anchoring on or off. 
+      If the first parameter is set to true, then start positions already matched by the same rule element will be ignored. This situation 
+      occurs mostly for rules that start with a quantifier. The second optional parameter activates greedy acnhoring for the complete rule.
+      Later rule matches are only possible after previous matches.
     </para>
     <section>
       <title>
         <emphasis role="bold">Definition:</emphasis>
       </title>
       <para>
-        <programlisting><![CDATA[GREEDYANCHORING(BooleanExpression)]]></programlisting>
+        <programlisting><![CDATA[GREEDYANCHORING(BooleanExpression(,BooleanExpression)?)]]></programlisting>
       </para>
     </section>
     <section>
@@ -680,12 +681,14 @@ A B{-> GATHER(C, 1, 2, "a" = 1, "b" = 2)};]]></programlisting>
         <emphasis role="bold">Example:</emphasis>
       </title>
       <para>
-        <programlisting><![CDATA[Document{->GREEDYANCHORING(true)};
-        ANY+;]]></programlisting>
+        <programlisting><![CDATA[Document{->GREEDYANCHORING(true, true)};
+        ANY+;
+        CW CW;]]></programlisting>
       </para>
       <para>
         The above mentioned example activates dynamic anchoring and the second rule will then only match once 
         since the next positions, e.g., the second token, are already covered by the first attempt.
+        The third rule will not match on capitalized word that have benn already considered by previous matches of the rule.
       </para>
     </section>
   </section>

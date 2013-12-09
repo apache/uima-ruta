@@ -1759,8 +1759,10 @@ actionDynamicAnchoring returns [RutaAction action = null]
 
 actionGreedyAnchoring returns [RutaAction action = null]
     :
-    name = GREEDYANCHORING LPAREN active = booleanExpression 
-     {action = ActionFactory.createAction(name, active);}
+    name = GREEDYANCHORING 
+    {action = ActionFactory.createAction(name, active);}
+    LPAREN active = booleanExpression (COMMA active2 = booleanExpression)?
+     {action = ActionFactory.createAction(name, active, active2);}
     RPAREN
     ;
 
