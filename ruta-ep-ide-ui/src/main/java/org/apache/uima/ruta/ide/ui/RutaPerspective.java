@@ -30,6 +30,10 @@ import org.eclipse.ui.progress.IProgressConstants;
 
 public class RutaPerspective implements IPerspectiveFactory {
 
+  private static final String TAE_CONFIGURATOR_NEW_WIZARD = "taeconfigurator.wizards.TAEConfiguratorNewWizard";
+
+  private static final String TYPE_SYSTEM_NEW_WIZARD = "taeconfigurator.wizards.TypeSystemNewWizard";
+
   public static final String TYPE_BROWSER = "org.apache.uima.caseditor.browser";
 
   public static final String SELECTION_VIEW = "org.apache.uima.caseditor.selection";
@@ -60,6 +64,8 @@ public class RutaPerspective implements IPerspectiveFactory {
 
     layout.addNewWizardShortcut(ID_NEW_SOURCE_WIZARD);
     layout.addNewWizardShortcut(RutaPackageCreationWizard.ID_WIZARD);
+    layout.addNewWizardShortcut(TYPE_SYSTEM_NEW_WIZARD);
+    layout.addNewWizardShortcut(TAE_CONFIGURATOR_NEW_WIZARD);
 
     layout.addNewWizardShortcut(NEW_FOLDER_WIZARD);
     layout.addNewWizardShortcut(NEW_FILE_WIZARD);
