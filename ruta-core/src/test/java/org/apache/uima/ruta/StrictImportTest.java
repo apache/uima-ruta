@@ -72,7 +72,8 @@ public class StrictImportTest {
   @Test
   public void testUndeclaredTypeSystemWithStrictImportOff() throws Exception {
     CAS cas;
-    AnalysisEngine ae = createAE(NAMESPACE + "/" + NAME + "UndeclaredTypeSystem", false);
+    String script = NAMESPACE + "/" + NAME + "UndeclaredTypeSystem";
+    AnalysisEngine ae = createAE(script, false);
     try {
       cas = ae.newCAS();
       cas.setDocumentText("Word");
@@ -83,19 +84,15 @@ public class StrictImportTest {
       }
     }
 
-    List<String> myTypes = new ArrayList<String>();
-    for (AnnotationFS annotation : CasUtil.select(cas, cas.getTypeSystem().getType("org.apache.uima.ruta.MyType"))) {
-      myTypes.add(annotation.getCoveredText());
-    }
-
     assertEquals(Arrays.asList("Word"), selectText(cas, "org.apache.uima.ruta.MyType"));
-    assertEquals(Arrays.asList("Word"), selectText(cas, NAME + ".T1"));
+    assertEquals(Arrays.asList("Word"), selectText(cas, script.replaceAll("/", ".") + ".T1"));
   }
 
   @Test
   public void testDeclaredTypeSystem() throws Exception {
     CAS cas;
-    AnalysisEngine ae = createAE(NAMESPACE + "/" + NAME + "DeclaredTypeSystem", true);
+    String script = NAMESPACE + "/" + NAME + "DeclaredTypeSystem";
+    AnalysisEngine ae = createAE(script, true);
     try {
       cas = ae.newCAS();
       cas.setDocumentText("Word");
@@ -107,12 +104,12 @@ public class StrictImportTest {
     }
 
     assertEquals(Arrays.asList("Word"), selectText(cas, "org.apache.uima.ruta.MyType"));
-    assertEquals(Arrays.asList("Word"), selectText(cas, NAME + ".T1"));
+    assertEquals(Arrays.asList("Word"), selectText(cas, script.replaceAll("/", ".") + ".T1"));
   }
 
   private List<String> selectText(CAS cas, String type) {
     List<String> values = new ArrayList<String>();
-    for (AnnotationFS annotation : CasUtil.select(cas, cas.getTypeSystem().getType("org.apache.uima.ruta.MyType"))) {
+    for (AnnotationFS annotation : CasUtil.select(cas, cas.getTypeSystem().getType(type))) {
       values.add(annotation.getCoveredText());
     }
 
