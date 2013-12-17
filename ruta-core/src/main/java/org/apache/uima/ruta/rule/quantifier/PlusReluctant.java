@@ -58,6 +58,10 @@ public class PlusReluctant implements RuleElementQuantifier {
   public boolean continueMatch(boolean after, AnnotationFS annotation, RuleElement ruleElement,
           RuleMatch ruleMatch, ComposedRuleElementMatch containerMatch, RutaStream stream,
           InferenceCrowd crowd) {
+    if(annotation == null) {
+      // do not try to continue a match that totally failed
+      return false;
+    }
     List<RuleElementMatch> ownList = containerMatch.getInnerMatches().get(ruleElement);
     if (ownList == null || ownList.isEmpty()) {
       return true;

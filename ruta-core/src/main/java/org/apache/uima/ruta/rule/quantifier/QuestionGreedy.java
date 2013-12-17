@@ -57,6 +57,10 @@ public class QuestionGreedy implements RuleElementQuantifier {
   public boolean continueMatch(boolean after, AnnotationFS annotation, RuleElement ruleElement,
           RuleMatch extendedMatch, ComposedRuleElementMatch containerMatch, RutaStream stream,
           InferenceCrowd crowd) {
+    if(annotation == null) {
+      // do not try to continue a match that totally failed
+      return false;
+    }
     List<RuleElementMatch> list = containerMatch.getInnerMatches().get(ruleElement);
     return list == null || list.isEmpty();
   }

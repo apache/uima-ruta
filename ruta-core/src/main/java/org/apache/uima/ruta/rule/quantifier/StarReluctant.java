@@ -40,6 +40,10 @@ public class StarReluctant implements RuleElementQuantifier {
   public boolean continueMatch(boolean after, AnnotationFS annotation, RuleElement ruleElement,
           RuleMatch ruleMatch, ComposedRuleElementMatch containerMatch, RutaStream stream,
           InferenceCrowd crowd) {
+    if(annotation == null) {
+      // do not try to continue a match that totally failed
+      return false;
+    }
     RuleElement nextElement = ruleElement.getContainer().getNextElement(after, ruleElement);
     if (nextElement == null) {
       return false;

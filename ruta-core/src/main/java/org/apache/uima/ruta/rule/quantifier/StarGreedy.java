@@ -60,6 +60,10 @@ public class StarGreedy implements RuleElementQuantifier {
   public boolean continueMatch(boolean after, AnnotationFS annotation, RuleElement ruleElement,
           RuleMatch extendedMatch, ComposedRuleElementMatch containerMatch, RutaStream stream,
           InferenceCrowd crowd) {
+    if(annotation == null) {
+      // do not try to continue a match that totally failed
+      return false;
+    }
     return true;
   }
 

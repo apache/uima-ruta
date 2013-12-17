@@ -64,6 +64,10 @@ public class PlusGreedy implements RuleElementQuantifier {
   public boolean continueMatch(boolean after, AnnotationFS annotation, RuleElement ruleElement,
           RuleMatch extendedMatch, ComposedRuleElementMatch containerMatch, RutaStream stream,
           InferenceCrowd crowd) {
+    if(annotation == null) {
+      // do not try to continue a match that totally failed
+      return false;
+    }
     List<List<RuleElementMatch>> matchInfo = extendedMatch.getMatchInfo(ruleElement);
     List<RuleElementMatch> matches;
     if (after) {
