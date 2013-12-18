@@ -28,7 +28,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.core.AbstractLanguageToolkit;
 
 public class RutaLanguageToolkit extends AbstractLanguageToolkit {
-  private static final String[] languageExtensions = new String[] { "tm" };
+  private static final String[] languageExtensions = new String[] { "ruta" };
 
   private static RutaLanguageToolkit sInstance = new RutaLanguageToolkit();
 

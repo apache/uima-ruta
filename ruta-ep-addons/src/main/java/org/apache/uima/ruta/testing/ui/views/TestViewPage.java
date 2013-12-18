@@ -66,9 +66,11 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
@@ -102,20 +104,23 @@ public class TestViewPage extends Page implements IPageBookViewPage {
   private List<String> excludedTypes = new ArrayList<String>();
 
   private List<String> includedTypes = new ArrayList<String>();
-  
+
   private ListLabelProvider labelProvider;
 
-  public TestViewPage(Composite parent, IResource r) {
-    super();
-    this.script = r;
+  private Button buttonDoJavaRun;
+
+  private boolean doJavaRun;
+
+  public TestViewPage(Composite parent, IResource scriptResource) {
+    this(scriptResource);
     this.overlay = new Composite(parent, 0);
-    this.caretaker = new Caretaker();
     this.propertyChangeListener = null;
   }
 
-  public TestViewPage(IResource r) {
+  public TestViewPage(IResource scriptResource) {
     super();
-    this.script = r;
+    this.doJavaRun = true;
+    this.script = scriptResource;
     this.caretaker = new Caretaker();
   }
 
@@ -142,6 +147,31 @@ public class TestViewPage extends Page implements IPageBookViewPage {
     gridLayout.marginWidth = 5;
     gridLayout.marginHeight = 5;
     overlay.setLayout(gridLayout);
+
+    // Composite rowButtonOverlay = new Composite(overlay, SWT.RIGHT_TO_LEFT);
+    GridData layoutData = new GridData(SWT.RIGHT);
+    layoutData.grabExcessHorizontalSpace = true;
+    layoutData.horizontalAlignment = GridData.END;
+    layoutData.horizontalSpan = 1;
+    // rowButtonOverlay.setLayout(rowLayout);
+    buttonDoJavaRun = new Button(overlay, SWT.CHECK);
+    buttonDoJavaRun.setLayoutData(layoutData);
+    buttonDoJavaRun.setText("extend classpath");
+    String buttonDoJavaRunTooltip = "If checked, " + "the classpath will be extended "
+            + "so that java analysis engines can be executed.";
+    buttonDoJavaRun.setToolTipText(buttonDoJavaRunTooltip);
+    buttonDoJavaRun.addSelectionListener(new SelectionListener() {
+
+      public void widgetSelected(SelectionEvent ev) {
+        doJavaRun = ((Button) ev.getSource()).getSelection();
+      }
+
+      public void widgetDefaultSelected(SelectionEvent arg0) {
+        // TODO Auto-generated method stub
+
+      }
+    });
+    buttonDoJavaRun.setSelection(true); // TODO use prefs store / memento
 
     tInfoPanel = new InfoPanel(overlay);
     GridData tInfoLabelData = new GridData();
@@ -210,7 +240,7 @@ public class TestViewPage extends Page implements IPageBookViewPage {
         Object obj = event.getSelection();
         if (obj instanceof IStructuredSelection) {
           StructuredSelection selection = (StructuredSelection) obj;
-          Iterator<?>iterator = selection.iterator();
+          Iterator<?> iterator = selection.iterator();
           while (iterator.hasNext()) {
             Object element = iterator.next();
             if (element instanceof TestCasData) {
@@ -447,8 +477,8 @@ public class TestViewPage extends Page implements IPageBookViewPage {
     IPreferenceStore store = RutaAddonsPlugin.getDefault().getPreferenceStore();
 
     IProject project = script.getProject();
-    IPath testFolderPath = project.getFullPath()
-            .append(RutaProjectUtils.getDefaultTestLocation()).removeFirstSegments(1);
+    IPath testFolderPath = project.getFullPath().append(RutaProjectUtils.getDefaultTestLocation())
+            .removeFirstSegments(1);
     IPath scriptPath = script.getFullPath();
     IPath scriptPackagePath = scriptPath.removeFirstSegments(2);
     IPath testFolderPackagePath = testFolderPath.append(scriptPackagePath).removeFileExtension();
@@ -482,16 +512,15 @@ public class TestViewPage extends Page implements IPageBookViewPage {
 
   private void checkProjectTestStructure(IResource r) {
     IProject project = r.getProject();
-    IPath testFolderPath = project.getFullPath()
-            .append(RutaProjectUtils.getDefaultTestLocation()).removeFirstSegments(1);
+    IPath testFolderPath = project.getFullPath().append(RutaProjectUtils.getDefaultTestLocation())
+            .removeFirstSegments(1);
     IPath scriptPath = r.getFullPath().removeFileExtension();
     IPath scriptPackagePath = scriptPath.removeFirstSegments(2);
     IPath testScriptPath = testFolderPath.append(scriptPackagePath);
     IPath resultPath = testScriptPath.append(TestCasData.RESULT_FOLDER);
     IFolder resultFolder = project.getFolder(resultPath);
 
-    IPath path2TempTests = project.getFullPath()
-            .append(RutaProjectUtils.getDefaultTestLocation())
+    IPath path2TempTests = project.getFullPath().append(RutaProjectUtils.getDefaultTestLocation())
             .append(RutaProjectUtils.getDefaultTempTestLocation()).removeFirstSegments(1);
     IFolder tempTestFolder = project.getFolder(path2TempTests);
 
@@ -538,8 +567,12 @@ public class TestViewPage extends Page implements IPageBookViewPage {
   public void setIncludedTypes(List<String> includedTypes) {
     this.includedTypes = includedTypes;
   }
-  
+
   public List<String> getIncludedTypes() {
     return includedTypes;
+  }
+
+  public boolean doExtendClasspath() {
+    return this.doJavaRun;
   }
 }

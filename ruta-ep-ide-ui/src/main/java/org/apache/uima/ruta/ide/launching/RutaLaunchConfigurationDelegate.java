@@ -90,7 +90,7 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     IPath projectPath = proj.getResource().getLocation();
     IPath inputDirPath = projectPath.append(RutaProjectUtils.getDefaultInputLocation());
     IPath outputDirPath = projectPath.append(RutaProjectUtils.getDefaultOutputLocation());
-    String engine = RutaProjectUtils.getEngineDescriptorPath(member.getLocation(),
+    String engineDefaultMethod = RutaProjectUtils.getEngineDescriptorPath(member.getLocation(),
             proj.getProject()).toPortableString();
     String input = configuration.getAttribute(RutaLaunchConstants.INPUT_FOLDER,
             inputDirPath.toPortableString());
@@ -101,6 +101,11 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
             outputDirPath.toPortableString());
     if (StringUtils.isBlank(output)) {
       output = outputDirPath.toPortableString();
+    }
+    String engine = configuration.getAttribute(RutaLaunchConstants.ARG_DESCRIPTOR,
+            engineDefaultMethod);
+    if (StringUtils.isBlank(engine)) {
+      engine = engineDefaultMethod;
     }
 
     cmdline.append(RutaLaunchConstants.ARG_DESCRIPTOR + " ");
@@ -215,16 +220,20 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
             .getExtensionPoint(RutaIdeCorePlugin.PLUGIN_ID, "conditionExtension").getExtensions();
     extensionToClassPath(d, result, extensions);
     extensions = Platform.getExtensionRegistry()
-            .getExtensionPoint(RutaIdeCorePlugin.PLUGIN_ID, "booleanFunctionExtension").getExtensions();
+            .getExtensionPoint(RutaIdeCorePlugin.PLUGIN_ID, "booleanFunctionExtension")
+            .getExtensions();
     extensionToClassPath(d, result, extensions);
     extensions = Platform.getExtensionRegistry()
-            .getExtensionPoint(RutaIdeCorePlugin.PLUGIN_ID, "numberFunctionExtension").getExtensions();
+            .getExtensionPoint(RutaIdeCorePlugin.PLUGIN_ID, "numberFunctionExtension")
+            .getExtensions();
     extensionToClassPath(d, result, extensions);
     extensions = Platform.getExtensionRegistry()
-            .getExtensionPoint(RutaIdeCorePlugin.PLUGIN_ID, "stringFunctionExtension").getExtensions();
+            .getExtensionPoint(RutaIdeCorePlugin.PLUGIN_ID, "stringFunctionExtension")
+            .getExtensions();
     extensionToClassPath(d, result, extensions);
     extensions = Platform.getExtensionRegistry()
-            .getExtensionPoint(RutaIdeCorePlugin.PLUGIN_ID, "typeFunctionExtension").getExtensions();
+            .getExtensionPoint(RutaIdeCorePlugin.PLUGIN_ID, "typeFunctionExtension")
+            .getExtensions();
     extensionToClassPath(d, result, extensions);
     return result;
   }
@@ -312,8 +321,11 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     IScriptProject proj = AbstractScriptLaunchConfigurationDelegate.getScriptProject(configuration);
     IPath projectPath = proj.getResource().getLocation();
     IPath outputDirPath = projectPath.append(RutaProjectUtils.getDefaultOutputLocation());
-    String outputFolderPath = configuration.getAttribute(RutaLaunchConstants.OUTPUT_FOLDER,
-            outputDirPath.toPortableString());
+    String outputFolderPath = configuration.getAttribute(RutaLaunchConstants.ARG_OUTPUT_FOLDER, "");
+    if (StringUtils.isBlank(outputFolderPath)) {
+      outputFolderPath = configuration.getAttribute(RutaLaunchConstants.OUTPUT_FOLDER,
+              outputDirPath.toPortableString());
+    }
     if (outputFolderPath.length() != 0) {
       IPath path = Path.fromPortableString(outputFolderPath);
       IResource member = ResourcesPlugin.getWorkspace().getRoot().findMember(path);

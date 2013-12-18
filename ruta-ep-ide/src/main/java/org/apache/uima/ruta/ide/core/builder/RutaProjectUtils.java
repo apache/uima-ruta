@@ -275,6 +275,10 @@ public class RutaProjectUtils {
     return "test";
   }
 
+  public static String getDefaultCleanTestLocation() {
+    return "temp_clean";
+  }
+
   public static String getDefaultScriptLocation() {
     return "script";
   }
