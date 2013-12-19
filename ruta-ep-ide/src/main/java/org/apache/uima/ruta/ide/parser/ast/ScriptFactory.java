@@ -36,19 +36,31 @@ public class ScriptFactory extends AbstractFactory {
 
   private int idCounter;
 
+  public void resetRuleCounter() {
+    idCounter = 0;
+  }
+  
+  
   public RutaRule createRule(RutaRuleElement element) {
     List<Expression> elements = new ArrayList<Expression>();
     elements.add(element);
     return createRule(elements, null);
   }
 
-  public RutaRule createRule(List<Expression> elements, Token s) {
-    RutaRule rule = new RutaRule(elements, idCounter++);
+  public RutaRule createRule(List<Expression> elements, Token s, boolean updateCounter) {
+    RutaRule rule = new RutaRule(elements, idCounter);
+    if(updateCounter) {
+      idCounter++;
+    }
     if (s != null) {
       int[] bounds = getBounds(s);
       rule.setEnd(bounds[1]);
     }
     return rule;
+  }
+  
+  public RutaRule createRule(List<Expression> elements, Token s) {
+    return createRule(elements, s, true);
   }
 
   public RutaRule createRegExpRule(List<Expression> exprs,

@@ -577,7 +577,7 @@ simpleStatement returns [RutaRule stmt = null]
 	(regexpRule)=> rer = regexpRule {stmt = rer;}
 	|
 	elements=ruleElementsRoot
-	{stmt = scriptFactory.createRule(elements, null);}
+	{stmt = scriptFactory.createRule(elements, null, false);}
 		s = SEMI 
 	{stmt = scriptFactory.createRule(elements, s);}
 		
