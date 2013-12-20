@@ -167,6 +167,7 @@ Creative Commons Attribution 3.0 License.
                 <directory>src/main/readme_bin</directory>
                 <includes>
                   <include>LICENSE</include>
+                  <include>NOTICE</include>
                 </includes>
                 <filtering>true</filtering>
               </resource>
