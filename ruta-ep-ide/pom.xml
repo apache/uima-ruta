@@ -30,6 +30,7 @@
   </parent>
   <properties>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
+    <postNoticeText>${uniWueNoticeText}</postNoticeText>
   </properties>
   <name>Apache UIMA Ruta Eclipse: ${project.artifactId}</name>
   <url>${uimaWebsiteUrl}</url>
