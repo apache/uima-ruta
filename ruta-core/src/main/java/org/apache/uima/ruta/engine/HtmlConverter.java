@@ -71,6 +71,8 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
 
   public static final String REPLACE_LINEBREAKS = "replaceLinebreaks";
 
+  public static final String LINEBREAK_REPLACEMENT = "linebreakReplacement";
+  
   public static final String LINEBREAK = "\n";
 
   public static final String NEWLINE_INDUCING_TAGS = "newlineInducingTags";
@@ -96,6 +98,8 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
   private String[] conversionReplacements;
 
   private Boolean replaceLinebreaks;
+  
+  private String linebreakReplacement;
 
   enum StringConversionPolicy {
     HEURISTIC, EXPLICIT, NONE
@@ -115,6 +119,8 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
             : modifiedViewName;
     replaceLinebreaks = (Boolean) aContext.getConfigParameterValue(REPLACE_LINEBREAKS);
     replaceLinebreaks = replaceLinebreaks == null ? true : replaceLinebreaks;
+    linebreakReplacement = (String) aContext.getConfigParameterValue(LINEBREAK_REPLACEMENT);
+    linebreakReplacement = linebreakReplacement == null ? "" : linebreakReplacement;
     String conversionPolicyString = (String) aContext.getConfigParameterValue(CONVERSION_POLICY);
     conversionPolicyString = conversionPolicyString == null ? null : conversionPolicyString
             .toLowerCase();
@@ -325,7 +331,7 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
 
   private SortedSet<HtmlConverterPSpan> handleLinebreaksInDocumentText(
           SortedSet<HtmlConverterPSpan> visibleSpansSoFar, String splitSeq) {
-    return this.handleConversion(visibleSpansSoFar, splitSeq, "");
+    return this.handleConversion(visibleSpansSoFar, splitSeq, linebreakReplacement);
   }
 
   private SortedSet<HtmlConverterPSpan> htmlDecoding(SortedSet<HtmlConverterPSpan> visibleSpansSoFar) {

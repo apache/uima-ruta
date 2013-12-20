@@ -1257,6 +1257,13 @@ ae.process(cas);]]></programlisting>
             The default behaviour is <quote>true</quote>.
           </para>
         </section>
+        <section id="ugr.tools.ruta.ae.htmlconverter.parameter.linebreakReplacement">
+          <title>replaceLinebreaks</title>
+          <para>
+            This string parameter determines the character sequence that replaces a linebreak.
+            The default behaviour is the empty string.
+          </para>
+        </section>
         <section id="ugr.tools.ruta.ae.htmlconverter.parameter.conversionPolicy">
           <title>conversionPolicy</title>
           <para>
