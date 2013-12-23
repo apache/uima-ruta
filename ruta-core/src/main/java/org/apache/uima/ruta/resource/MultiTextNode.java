@@ -224,10 +224,9 @@ public class MultiTextNode {
 
     // Remember Lazy Initialization.
     if (types == null) {
-      return Collections.unmodifiableCollection(new LinkedList<String>());
+      return Collections.emptyList();
     }
-
-    return Collections.unmodifiableCollection(types);
+    return types;
   }
 
   /**

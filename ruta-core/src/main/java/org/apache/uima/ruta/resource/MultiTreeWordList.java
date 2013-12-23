@@ -78,8 +78,10 @@ public class MultiTreeWordList implements RutaWordList {
   }
 
   /**
-   * @param lists Resources to load.
-   * @throws IOException When there is a problem reading a resource.
+   * @param lists
+   *          Resources to load.
+   * @throws IOException
+   *           When there is a problem reading a resource.
    */
   public MultiTreeWordList(Resource... lists) throws IOException {
     this.root = new MultiTextNode();
@@ -109,7 +111,7 @@ public class MultiTreeWordList implements RutaWordList {
 
   /**
    * Constructor from an open stream. This method will close the stream.
-   *
+   * 
    * @param stream
    *          the stream to read the file from.
    * @param name
@@ -141,9 +143,11 @@ public class MultiTreeWordList implements RutaWordList {
 
   /**
    * Load a resource in this word list.
-   *
-   * @param resource Resource to load. The resource's name must end with .txt or .mtwl.
-   * @throws IOException When there is a problem reading the resource.
+   * 
+   * @param resource
+   *          Resource to load. The resource's name must end with .txt or .mtwl.
+   * @throws IOException
+   *           When there is a problem reading the resource.
    */
   private void load(Resource resource) throws IOException {
     final String name = resource.getFilename();
@@ -232,7 +236,7 @@ public class MultiTreeWordList implements RutaWordList {
    *         itself.
    */
   public Collection<String> getTypeCone(MultiTextNode node) {
-
+    // TODO improve this method!
     List<String> returnList = new LinkedList<String>();
 
     if (node.getTypes() != null) {
@@ -512,24 +516,122 @@ public class MultiTreeWordList implements RutaWordList {
     List<String> resultList = new LinkedList<String>();
     Map<String, Set<String>> resultMap = null;
 
-    if (string.length() >= ignoreLength && ignoreCase) {
-      resultMap = editDistance(string, (int) distance, true, ignoreToken, true);
+    if (!edit) {
+      return recursiveContains2(root, string, 0, ignoreCase && string.length() > ignoreLength, true, ignoreToken.toCharArray(),
+              ignoreLength);
     } else {
-      resultMap = editDistance(string, (int) distance, false, ignoreToken, true);
-    }
+      if (string.length() >= ignoreLength && ignoreCase) {
+        resultMap = editDistance(string, (int) distance, true, ignoreToken, true);
+      } else {
+        resultMap = editDistance(string, (int) distance, false, ignoreToken, true);
+      }
 
-    for (Set<String> set : resultMap.values()) {
-      for (String s : set) {
-        if (!resultList.contains(s)) {
-          // resultList.addAll(resultMap.get(set));
-          resultList.add(s);
+      for (Set<String> set : resultMap.values()) {
+        for (String s : set) {
+          if (!resultList.contains(s)) {
+            // resultList.addAll(resultMap.get(set));
+            resultList.add(s);
+          }
         }
       }
     }
 
     return resultList;
   }
+  /**
+   * Returns true, if the MultiTreeWordList contains the string text, false otherwise.
+   * 
+   * @param pointer
+   *          The MultiTextNode we are looking at.
+   * @param text
+   *          The string which is contained or not.
+   * @param index
+   *          The index of the string text we checked until now.
+   * @param ignoreCase
+   *          Indicates whether we search case sensitive or not.
+   * @param fragment
+   *          Indicates whether we are looking for a prefix of the string text.
+   * @param ignoreChars
+   *          Characters which can be ignored.
+   * @param maxIgnoreChars
+   *          Maximum number of characters which are allowed to be ignored.
+   * @return True, if the TreeWordList contains the string text, false otherwise.
+   */
+  private List<String> recursiveContains2(MultiTextNode pointer, String text, int index,
+          boolean ignoreCase, boolean fragment, char[] ignoreChars, int maxIgnoreChars) {
 
+    if (pointer == null) {
+      return null;
+    }
+
+    if (index == text.length()) {
+      if(pointer.isWordEnd()) {
+        return new ArrayList<String>(pointer.getTypes());
+      }
+      if(fragment) {
+        return Collections.emptyList();
+      }
+    }
+
+    char charAt = text.charAt(index);
+    boolean charAtIgnored = false;
+
+    if (ignoreChars != null) {
+      for (char each : ignoreChars) {
+        if (each == charAt) {
+          charAtIgnored = true;
+          break;
+        }
+      }
+      charAtIgnored &= index != 0;
+    }
+
+    int next = ++index;
+
+    if (ignoreCase) {
+
+      // Lower Case Node.
+      MultiTextNode childNodeL = pointer.getChildNode(Character.toLowerCase(charAt));
+
+      // Upper Case Node.
+      MultiTextNode childNodeU = pointer.getChildNode(Character.toUpperCase(charAt));
+
+      if (charAtIgnored && childNodeL == null && childNodeU == null) {
+        // Character is ignored and does not appear.
+        return recursiveContains2(pointer, text, next, ignoreCase, fragment, ignoreChars,
+                maxIgnoreChars);
+      } else {
+        // Recursion.
+        Collection<String> recursiveContainsL = recursiveContains2(childNodeL, text, next, ignoreCase, fragment, ignoreChars,
+                maxIgnoreChars);
+        Collection<String> recursiveContainsU = recursiveContains2(childNodeU, text, next, ignoreCase, fragment, ignoreChars,
+                        maxIgnoreChars);
+        List<String> result = new LinkedList<String>();
+        if(recursiveContainsL != null) {
+          result.addAll(recursiveContainsL);
+        }
+        if(recursiveContainsU!= null) {
+          result.addAll(recursiveContainsU);
+        }
+        return result;
+      }
+
+    } else {
+      // Case sensitive.
+      MultiTextNode childNode = pointer.getChildNode(charAt);
+
+      if (charAtIgnored && childNode == null) {
+        // Recursion with incremented index.
+        return recursiveContains2(pointer, text, next, ignoreCase, fragment, ignoreChars,
+                maxIgnoreChars);
+      } else {
+        // Recursion with new node.
+        return recursiveContains2(childNode, text, next, ignoreCase, fragment, ignoreChars,
+                maxIgnoreChars);
+      }
+    }
+  }
+  
   /**
    * Returns true, if the MultiTreeWordList contains the string text, false otherwise.
    * 
@@ -634,7 +736,7 @@ public class MultiTreeWordList implements RutaWordList {
         List<String> types = containsFragment(candidate.toString(), ignoreCase, ignoreLength, edit,
                 distance, ignoreToken);
 
-        if (!types.isEmpty()) {
+        if (types != null && !types.isEmpty()) {
           streamPointer.moveToNext();
           if (streamPointer.isValid()) {
             RutaBasic next = (RutaBasic) streamPointer.get();

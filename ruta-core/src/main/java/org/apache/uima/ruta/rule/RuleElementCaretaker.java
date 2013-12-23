@@ -74,6 +74,9 @@ public class RuleElementCaretaker implements RuleElementContainer {
       int i = 1;
       for (RuleElement each : ruleElements) {
         long estimate = each.estimateAnchors(stream);
+        if(estimate == 0) {
+          return each;
+        }
         double factor = stream.getIndexPenalty();
         estimate = (long) (Math.log(estimate) * (i * factor));
         if (estimate < min) {
