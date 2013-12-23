@@ -54,6 +54,8 @@ public class FilterManager {
 
   private final CAS cas;
 
+  private Set<Type> currentHiddenTypes;
+
   public FilterManager(Collection<Type> filterTypes, CAS cas) {
     super();
     this.defaultFilterTypes = filterTypes;
@@ -122,7 +124,7 @@ public class FilterManager {
         filterTypes.removeAll(subsumedTypes);
       }
     }
-
+    currentHiddenTypes = filterTypes;
     FSMatchConstraint typeConstraint = createTypeConstraint(filterTypes);
 
     FSMatchConstraint constraint = new NotConstraint(typeConstraint);
@@ -202,4 +204,9 @@ public class FilterManager {
     }
   }
 
+  public Set<Type> getCurrentHiddenTypes() {
+    return currentHiddenTypes;
+  }
+
+  
 }

@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -40,6 +41,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.rule.AbstractRule;
 import org.apache.uima.ruta.rule.AbstractRuleMatch;
 import org.apache.uima.ruta.type.RutaAnnotation;
@@ -81,7 +83,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   private InferenceCrowd crowd;
 
   private Boolean greedyRuleElement;
-  
+
   private Boolean greedyRule;
 
   protected RutaStream(CAS cas, FSIterator<AnnotationFS> current, Type basicType,
@@ -183,7 +185,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       }
     } else {
       RutaBasic firstBasic = (RutaBasic) basicIndex.iterator().get();
-      if(firstBasic.isLowMemoryProfile() != lowMemoryProfile) {
+      if (firstBasic.isLowMemoryProfile() != lowMemoryProfile) {
         for (AnnotationFS each : basicIndex) {
           RutaBasic eachBasic = (RutaBasic) each;
           eachBasic.setLowMemoryProfile(lowMemoryProfile);
@@ -230,7 +232,6 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     }
     crowd.annotationAdded(annotation, creator);
   }
-
 
   private boolean checkSpan(AnnotationFS annotation) {
     boolean result = false;
@@ -291,7 +292,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   private RutaBasic getCeiling(TreeMap<Integer, RutaBasic> anchors, int anchor) {
-    while(anchor <= anchors.lastKey()) {
+    while (anchor <= anchors.lastKey()) {
       RutaBasic basic = anchors.get(anchor);
       if (basic != null) {
         return basic;
@@ -302,7 +303,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   private RutaBasic getFloor(TreeMap<Integer, RutaBasic> anchors, int anchor) {
-    while(anchor >= 0) {
+    while (anchor >= 0) {
       RutaBasic basic = anchors.get(anchor);
       if (basic != null) {
         return basic;
@@ -703,8 +704,8 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
 
   public RutaStream getCompleteStream() {
     FilterManager defaultFilter = new FilterManager(filter.getDefaultFilterTypes(), getCas());
-    RutaStream stream = new RutaStream(getCas(), basicIt, basicType, defaultFilter, lowMemoryProfile,
-            simpleGreedyForComposed, crowd);
+    RutaStream stream = new RutaStream(getCas(), basicIt, basicType, defaultFilter,
+            lowMemoryProfile, simpleGreedyForComposed, crowd);
     stream.setDynamicAnchoring(dynamicAnchoring);
     stream.setGreedyRuleElement(greedyRuleElement);
     stream.setGreedyRule(greedyRule);
@@ -734,23 +735,23 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   public void setDynamicAnchoring(boolean dynamicAnchoring) {
     this.dynamicAnchoring = dynamicAnchoring;
   }
-  
+
   public boolean isGreedyRuleElement() {
     return greedyRuleElement;
   }
-  
+
   public void setGreedyRuleElement(Boolean greedyAnchoring) {
     this.greedyRuleElement = greedyAnchoring;
   }
-  
+
   public boolean isGreedyRule() {
     return greedyRule;
   }
-  
+
   public void setGreedyRule(Boolean greedyAnchoring) {
     this.greedyRule = greedyAnchoring;
   }
-  
+
   public void setIndexPenalty(double indexPenalty) {
     this.indexPenalty = indexPenalty;
   }
@@ -778,8 +779,24 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
                     .getEnd())) {
       return false;
     }
-    FSMatchConstraint defaultConstraint = filter.getDefaultConstraint();
-    return defaultConstraint.match(annotationFS);
+    int begin = annotationFS.getBegin();
+    int end = annotationFS.getEnd();
+    Set<Type> currentHiddenTypes = filter.getCurrentHiddenTypes();
+    RutaBasic beginAnchor = getBeginAnchor(begin);
+    for (Type type : currentHiddenTypes) {
+      boolean partOf = beginAnchor.isPartOf(type);
+      if(partOf) {
+        return false;
+      }
+    }
+    RutaBasic endAnchor = getEndAnchor(end);
+    for (Type type : currentHiddenTypes) {
+      boolean partOf = endAnchor.isPartOf(type);
+      if(partOf) {
+        return false;
+      }
+    }
+    return true;
   }
 
   public RutaBasic getAnchor(boolean direction, int pointer) {
@@ -802,6 +819,30 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     return greedyRule || greedyRuleElement;
   }
 
+  public Collection<AnnotationFS> getAnnotations(Type type) {
+    Collection<AnnotationFS> result = new LinkedList<AnnotationFS>();
+    AnnotationFS windowAnnotation = filter.getWindowAnnotation();
+    if (windowAnnotation != null
+            && (windowAnnotation.getBegin() != cas.getDocumentAnnotation().getBegin() || windowAnnotation
+                    .getEnd() != cas.getDocumentAnnotation().getEnd())) {
+      AnnotationFS frame = cas.createAnnotation(cas.getTypeSystem().getType(RutaEngine.FRAME_TYPE),
+              windowAnnotation.getBegin(), windowAnnotation.getEnd());
+      FSIterator<AnnotationFS> subiterator = cas.getAnnotationIndex(type).subiterator(frame);
+      while (subiterator.hasNext()) {
+        AnnotationFS each = (AnnotationFS) subiterator.next();
+        if (isVisible(each)) {
+          result.add(each);
+        }
+      }
+    } else {
+      AnnotationIndex<AnnotationFS> annotationIndex = cas.getAnnotationIndex(type);
+      for (AnnotationFS each : annotationIndex) {
+        if (isVisible(each)) {
+          result.add(each);
+        }
+      }
+    }
+    return result;
+  }
 
-  
 }

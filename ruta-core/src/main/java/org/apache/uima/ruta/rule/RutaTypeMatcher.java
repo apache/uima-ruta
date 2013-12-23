@@ -72,23 +72,7 @@ public class RutaTypeMatcher implements RutaMatcher {
         // TODO what about dynamic windowing?
         annotations.add(stream.getDocumentAnnotation());
       } else {
-        stream.moveToFirst();
-        while (stream.isValid()) {
-          RutaBasic nextBasic = (RutaBasic) stream.get();
-          List<Type> allTypes = stream.getCas().getTypeSystem().getProperlySubsumedTypes(type);
-          allTypes.add(type);
-          for (Type eachType : allTypes) {
-            Collection<AnnotationFS> beginAnchors = nextBasic.getBeginAnchors(eachType);
-            if (beginAnchors != null) {
-              for (AnnotationFS afs : beginAnchors) {
-                if (afs.getEnd() <= stream.getDocumentAnnotation().getEnd()) {
-                  annotations.add(afs);
-                }
-              }
-            }
-          }
-          stream.moveToNext();
-        }
+        annotations.addAll(stream.getAnnotations(type));
       }
     }
     FeatureExpression featureExpression = mr.getFeatureExpression(parent, stream);

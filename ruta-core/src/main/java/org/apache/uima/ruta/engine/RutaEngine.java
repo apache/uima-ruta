@@ -82,6 +82,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   public static final String BASIC_TYPE = "org.apache.uima.ruta.type.RutaBasic";
 
   public static final String OPTIONAL_TYPE = "org.apache.uima.ruta.type.RutaOptional";
+  
+  public static final String FRAME_TYPE = "org.apache.uima.ruta.type.RutaFrame";
 
   /**
    * Load script in Java notation, with "{@code .}" as package separator and no extension. File
