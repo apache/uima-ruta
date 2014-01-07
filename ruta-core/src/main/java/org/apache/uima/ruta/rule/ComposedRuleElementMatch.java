@@ -20,7 +20,6 @@
 package org.apache.uima.ruta.rule;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +34,10 @@ import org.apache.uima.ruta.RutaStream;
 public class ComposedRuleElementMatch extends RuleElementMatch {
 
   private Map<RuleElement, List<RuleElementMatch>> innerMatches;
+
+  private boolean textMatchedUpdated = false;
+
+  private List<AnnotationFS> textMatched = null;
 
   public ComposedRuleElementMatch(ComposedRuleElement ruleElement,
           ComposedRuleElementMatch containerMatch) {
@@ -70,8 +73,8 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
     }
     list.add(ruleElementMatch);
     textsMatched.addAll(ruleElementMatch.getTextsMatched());
-
     evaluateInnerMatches(included, stream);
+    textMatchedUpdated = false;
   }
 
   public void evaluateInnerMatches(boolean included, RutaStream stream) {
@@ -189,6 +192,7 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
         }
       }
     }
+    textMatchedUpdated = false;
   }
 
   public String toString() {
@@ -196,17 +200,20 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
   }
 
   public List<AnnotationFS> getTextsMatched() {
-    // TODO find a better solution for this
-    Collection<AnnotationFS> set = new TreeSet<AnnotationFS>(new AnnotationComparator());
-    Collection<List<RuleElementMatch>> values = innerMatches.values();
-    for (List<RuleElementMatch> list : values) {
-      if (list != null) {
-        for (RuleElementMatch ruleElementMatch : list) {
-          set.addAll(ruleElementMatch.getTextsMatched());
+    if (!textMatchedUpdated || textMatched == null) {
+      Collection<AnnotationFS> set = new TreeSet<AnnotationFS>(new AnnotationComparator());
+      Collection<List<RuleElementMatch>> values = innerMatches.values();
+      for (List<RuleElementMatch> list : values) {
+        if (list != null) {
+          for (RuleElementMatch ruleElementMatch : list) {
+            set.addAll(ruleElementMatch.getTextsMatched());
+          }
         }
       }
+      textMatched = new ArrayList<AnnotationFS>(set);
+      textMatchedUpdated = true;
     }
-    return Arrays.asList(set.toArray(new AnnotationFS[0]));
+    return textMatched;
   }
 
   public void setConditionInfo(List<EvaluatedCondition> evaluatedConditions) {

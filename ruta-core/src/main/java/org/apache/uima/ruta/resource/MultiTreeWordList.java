@@ -744,7 +744,7 @@ public class MultiTreeWordList implements RutaWordList {
             // ignoreCase,
             // ignoreLength, edit, distance, ignoreToken);
 
-            tryToCreateAnnotation(stream, results, basicsToAdd, candidate.toString(), interResults,
+            tryToCreateAnnotation(types, stream, results, basicsToAdd, candidate.toString(), interResults,
                     ignoreCase, ignoreLength, edit, distance, ignoreToken, typeMap);
             //
             lastCandidate = candidate.toString();
@@ -753,7 +753,7 @@ public class MultiTreeWordList implements RutaWordList {
 
           } else {
             // !streamPointer.isValid();
-            tryToCreateAnnotation(stream, results, basicsToAdd, lastCandidate, interResults,
+            tryToCreateAnnotation(types, stream, results, basicsToAdd, lastCandidate, interResults,
                     ignoreCase, ignoreLength, edit, distance, ignoreToken, typeMap);
           }
         } else {
@@ -782,15 +782,12 @@ public class MultiTreeWordList implements RutaWordList {
     return new ArrayList<AnnotationFS>();
   }
 
-  private void tryToCreateAnnotation(RutaStream stream, Collection<AnnotationFS> results,
+  private void tryToCreateAnnotation(List<String> types, RutaStream stream, Collection<AnnotationFS> results,
           List<RutaBasic> basicsToAdd, String lastCandidate, List<AnnotationFS> interResult,
           boolean ignoreCase, int ignoreLength, boolean edit, double distance, String ignoreToken,
           Map<String, Type> map) {
-
-    List<String> contains = contains(lastCandidate, ignoreCase, ignoreLength, edit, distance,
-            ignoreToken);
-    if (basicsToAdd.size() >= 1 || contains.isEmpty()) {
-      for (String each : contains) {
+    if (basicsToAdd.size() >= 1 && types != null) {
+      for (String each : types) {
         Type type = map.get(each);
         if (type != null) {
           int begin = basicsToAdd.get(0).getBegin();

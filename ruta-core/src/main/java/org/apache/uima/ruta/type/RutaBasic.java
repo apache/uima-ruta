@@ -28,6 +28,10 @@ public class RutaBasic extends Annotation {
 
   private static final int INITIAL_CAPACITY = 2;
 
+  private static final String ROOT_TYPE1 = "uima.tcas.Annotation";
+
+  private static final String ROOT_TYPE2 = "uima.cas.AnnotationBase";
+
   private boolean lowMemoryProfile = false;
 
   private Map<String, Integer> partOf = new TreeMap<String, Integer>();
@@ -53,7 +57,8 @@ public class RutaBasic extends Annotation {
     }
     count++;
     partOf.put(type.getName(), count);
-    if (!lowMemoryProfile) {
+    if (!lowMemoryProfile && !type.getName().equals(ROOT_TYPE1)
+            && !type.getName().equals(ROOT_TYPE2)) {
       TypeSystem typeSystem = getCAS().getTypeSystem();
       Type parent = typeSystem.getParent(type);
       if (parent != null) {
@@ -181,7 +186,8 @@ public class RutaBasic extends Annotation {
       beginMap.put(type, list);
     }
     list.add(annotation);
-    if (!lowMemoryProfile) {
+    if (!lowMemoryProfile && !type.getName().equals(ROOT_TYPE1)
+            && !type.getName().equals(ROOT_TYPE2)) {
       TypeSystem typeSystem = getCAS().getTypeSystem();
       Type parent = typeSystem.getParent(type);
       if (parent != null) {
@@ -197,7 +203,8 @@ public class RutaBasic extends Annotation {
       endMap.put(type, list);
     }
     list.add(annotation);
-    if (!lowMemoryProfile) {
+    if (!lowMemoryProfile && !type.getName().equals(ROOT_TYPE1)
+            && !type.getName().equals(ROOT_TYPE2)) {
       TypeSystem typeSystem = getCAS().getTypeSystem();
       Type parent = typeSystem.getParent(type);
       if (parent != null) {

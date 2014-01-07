@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.uima.cas.ConstraintFactory;
@@ -115,15 +116,11 @@ public class RutaTypeMatcher implements RutaMatcher {
       List<Type> reTypes = getTypes(parent, stream);
       Collection<AnnotationFS> anchors = new TreeSet<AnnotationFS>(comparator);
       for (Type eachMatchType : reTypes) {
-        List<Type> types = stream.getCas().getTypeSystem().getProperlySubsumedTypes(eachMatchType);
-        types.add(eachMatchType);
-        for (Type eachType : types) {
-          Collection<AnnotationFS> beginAnchors = nextBasic.getBeginAnchors(eachType);
-          if (beginAnchors != null) {
-            for (AnnotationFS afs : beginAnchors) {
-              if (afs.getEnd() <= stream.getDocumentAnnotation().getEnd()) {
-                anchors.add(afs);
-              }
+        Collection<AnnotationFS> beginAnchors = nextBasic.getBeginAnchors(eachMatchType);
+        if (beginAnchors != null) {
+          for (AnnotationFS afs : beginAnchors) {
+            if (afs.getEnd() <= stream.getDocumentAnnotation().getEnd()) {
+              anchors.add(afs);
             }
           }
         }
@@ -160,15 +157,11 @@ public class RutaTypeMatcher implements RutaMatcher {
       List<Type> reTypes = getTypes(parent, stream);
       Collection<AnnotationFS> anchors = new TreeSet<AnnotationFS>(comparator);
       for (Type eachMatchType : reTypes) {
-        List<Type> types = stream.getCas().getTypeSystem().getProperlySubsumedTypes(eachMatchType);
-        types.add(eachMatchType);
-        for (Type eachType : types) {
-          Collection<AnnotationFS> endAnchors = nextBasic.getEndAnchors(eachType);
-          if (endAnchors != null) {
-            for (AnnotationFS afs : endAnchors) {
-              if (afs.getBegin() >= stream.getDocumentAnnotation().getBegin()) {
-                anchors.add(afs);
-              }
+        Collection<AnnotationFS> endAnchors = nextBasic.getEndAnchors(eachMatchType);
+        if (endAnchors != null) {
+          for (AnnotationFS afs : endAnchors) {
+            if (afs.getBegin() >= stream.getDocumentAnnotation().getBegin()) {
+              anchors.add(afs);
             }
           }
         }
