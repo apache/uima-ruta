@@ -29,6 +29,8 @@ import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
+import org.apache.uima.ruta.expression.MatchReference;
+import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.rule.quantifier.RuleElementQuantifier;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
@@ -363,7 +365,16 @@ public class RutaRuleElement extends AbstractRuleElement {
     result.setRuleAnchor(ruleAnchor);
     List<EvaluatedCondition> evaluatedConditions = new ArrayList<EvaluatedCondition>(
             conditions.size());
-    boolean base = matcher.match(annotation, stream, getParent());
+//    boolean base = matcher.match(annotation, stream, getParent());
+    boolean base = true;
+    if(matcher instanceof RutaTypeMatcher) {
+      RutaTypeMatcher rtm = (RutaTypeMatcher) matcher;
+      MatchReference mr = (MatchReference) rtm.getExpression();
+      FeatureExpression featureExpression = mr.getFeatureExpression(parent, stream);
+      if (featureExpression != null) {
+        base = matcher.match(annotation, stream, getParent());
+      }
+    }
     List<AnnotationFS> textsMatched = new ArrayList<AnnotationFS>(1);
     if (base) {
       for (AbstractRutaCondition condition : conditions) {

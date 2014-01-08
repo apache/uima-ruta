@@ -7,10 +7,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
+import org.apache.uima.cas.impl.TypeImpl;
+import org.apache.uima.cas.impl.TypeSystemImpl;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
@@ -26,7 +27,7 @@ import org.apache.uima.jcas.tcas.Annotation;
  */
 public class RutaBasic extends Annotation {
 
-  private static final int INITIAL_CAPACITY = 2;
+  private static final int INITIAL_CAPACITY = 5;
 
   private static final String ROOT_TYPE1 = "uima.tcas.Annotation";
 
@@ -34,7 +35,7 @@ public class RutaBasic extends Annotation {
 
   private boolean lowMemoryProfile = false;
 
-  private Map<String, Integer> partOf = new TreeMap<String, Integer>();
+  private int[] partOf = new int[((TypeSystemImpl) getCAS().getTypeSystem()).getLargestTypeCode()];
 
   private final Map<Type, Set<AnnotationFS>> beginMap = new HashMap<Type, Set<AnnotationFS>>(
           INITIAL_CAPACITY);
@@ -51,47 +52,49 @@ public class RutaBasic extends Annotation {
   }
 
   public void addPartOf(Type type) {
-    Integer count = partOf.get(type.getName());
-    if (count == null) {
-      count = 0;
-    }
-    count++;
-    partOf.put(type.getName(), count);
-    if (!lowMemoryProfile && !type.getName().equals(ROOT_TYPE1)
-            && !type.getName().equals(ROOT_TYPE2)) {
-      TypeSystem typeSystem = getCAS().getTypeSystem();
-      Type parent = typeSystem.getParent(type);
-      if (parent != null) {
-        addPartOf(parent);
+    int code = ((TypeImpl) type).getCode();
+    addPartOf(code);
+  }
+
+  private void addPartOf(int code) {
+    partOf[code] = partOf[code] + 1;
+    if (!lowMemoryProfile) {
+      int parentCode = getCAS().getTypeSystem().getLowLevelTypeSystem().ll_getParentType(code);
+      if (parentCode > 0) {
+        addPartOf(parentCode);
       }
     }
   }
 
   public void removePartOf(Type type) {
-    Integer count = partOf.get(type.getName());
-    if (count != null && count > 0) {
-      count--;
-      partOf.put(type.getName(), count);
+    int code = ((TypeImpl) type).getCode();
+    removePartOf(code);
+  }
+
+  private void removePartOf(int code) {
+    if (partOf[code] != 0) {
+      partOf[code] = partOf[code] - 1;
     }
     if (!lowMemoryProfile) {
-      TypeSystem typeSystem = getCAS().getTypeSystem();
-      Type parent = typeSystem.getParent(type);
-      if (parent != null) {
-        removePartOf(parent);
+      int parentCode = getCAS().getTypeSystem().getLowLevelTypeSystem().ll_getParentType(code);
+      if (parentCode > 0) {
+        removePartOf(parentCode);
       }
     }
   }
 
   public boolean isPartOf(Type type) {
-    Integer count = partOf.get(type.getName());
-    if (count != null && count > 0) {
+    int code = ((TypeImpl) type).getCode();
+    int count = partOf[code];
+    if (count > 0) {
       return true;
     }
     if (lowMemoryProfile) {
       List<Type> subsumedTypes = getCAS().getTypeSystem().getProperlySubsumedTypes(type);
       for (Type each : subsumedTypes) {
-        Integer parentCount = partOf.get(each.getName());
-        if (parentCount != null && parentCount > 0) {
+        int code2 = ((TypeImpl) each).getCode();
+        int count2 = partOf[code2];
+        if (count2 > 0) {
           return true;
         }
       }
