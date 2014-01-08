@@ -78,7 +78,9 @@ public class RuleElementCaretaker implements RuleElementContainer {
           return each;
         }
         double factor = stream.getIndexPenalty();
-        estimate = (long) (Math.log(estimate) * (i * factor));
+        if(factor != 0) {
+          estimate = (long) (Math.log(estimate) * (i * factor));
+        }
         if (estimate < min) {
           min = estimate;
           minElement = each;
