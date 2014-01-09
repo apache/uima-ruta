@@ -342,6 +342,7 @@ BooleanString	:	'BOOLEAN';
 TypeSystemString:	'TYPESYSTEM';
 ImportString    :   'IMPORT';
 FromString      :   'FROM';
+AsString        :   'AS';
 SymbolString	:	'SYMBOL';
 CONDITION	:	'CONDITION';	
 ACTION		:	'ACTION';

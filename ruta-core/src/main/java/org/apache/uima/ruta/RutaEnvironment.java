@@ -372,8 +372,9 @@ public class RutaEnvironment {
    *
    * @param typesystem Typesystem from which to import the type or null.
    * @param longName Type to import.
+   * @param shortName  Short name to use for this type.
    */
-  public void importTypeFromTypeSystem(String typesystem, String longName) {
+  public void importTypeFromTypeSystem(String typesystem, String longName, String shortName) {
     String key = typesystem != null? typesystem : "";
     List<Alias> aliases = typeImports.get(key);
 
@@ -383,8 +384,19 @@ public class RutaEnvironment {
       typeImports.put(key, aliases);
     }
 
-    String shortName = longName.substring(longName.lastIndexOf('.') + 1);
     aliases.add(new Alias(longName, shortName));
+  }
+
+  /**
+   * Import a type from a type system.
+   *
+   * The type is aliased by its unqualified name.
+   *
+   * @param typesystem Typesystem from which to import the type or null.
+   * @param longName Type to import.
+   */
+  public void importTypeFromTypeSystem(String typesystem, String longName) {
+    importTypeFromTypeSystem(typesystem, longName, longName.substring(longName.lastIndexOf('.') + 1));
   }
 
   public RutaWordList getWordList(String list) {
