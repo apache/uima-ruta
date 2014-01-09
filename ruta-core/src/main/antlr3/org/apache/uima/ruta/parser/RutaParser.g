@@ -58,6 +58,7 @@ import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.condition.ConditionFactory;
 import org.apache.uima.ruta.RutaAutomataBlock;
 import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaModule;
 import org.apache.uima.ruta.RutaScriptBlock;
 import org.apache.uima.ruta.RutaScriptFactory;
@@ -239,13 +240,18 @@ public void setExternalFactory(RutaExternalFactory factory) {
      * Import a package from a type system.
      *
      * @param parent Block where the type should be imported.
-     * @param tsd Typesystem from which to import the type.
+     * @param tsd Typesystem from which to import the package or null to import it from the CAS typesystem.
      * @param qualifiedPackage Package to import from the typesystem.
      * @param alias Package alias.
      */
-    public void importPackageFromTypeSystem(RutaBlock parent, String typesystem, String qualifiedPackage, Token alias) {
-        parent.getEnvironment()
-            .importPackageFromTypeSystem(typesystem, qualifiedPackage, alias != null? alias.getText() : null);
+    public void importPackage(RutaBlock parent, String typesystem, String qualifiedPackage, Token alias) {
+        RutaEnvironment env = parent.getEnvironment();
+        String aliasText = alias != null? alias.getText() : null;
+        if (typesystem != null) {
+            env.importPackageFromTypeSystem(typesystem, qualifiedPackage, aliasText);
+        } else {
+            env.importPackage(qualifiedPackage, aliasText);
+        }
     }
 
 	protected static final int[] getBounds(Token t) {
@@ -449,7 +455,7 @@ importStatement returns [RutaStatement stmt = null]
 	| UimafitString ns = dottedIdentifier2{addImportUimafitEngine($blockDeclaration::env, ns);} SEMI
 	| ImportString type = dottedIdentifier (FromString ts = dottedIdentifier2)? (AsString alias = Identifier)? SEMI{importTypeFromTypeSystem($blockDeclaration::env, ts, type, alias);}
 	| ImportString STAR FromString ts = dottedIdentifier2 SEMI{addImportTypeSystem($blockDeclaration::env, ts);}
-	| ImportString PackageString pkg = dottedIdentifier FromString ts = dottedIdentifier2 (AsString alias = Identifier)? SEMI{importPackageFromTypeSystem($blockDeclaration::env, ts, pkg, alias);}
+	| ImportString PackageString pkg = dottedIdentifier (FromString ts = dottedIdentifier2)? (AsString alias = Identifier)? SEMI{importPackage($blockDeclaration::env, ts, pkg, alias);}
 	;
 
 declaration returns [RutaStatement stmt = null]

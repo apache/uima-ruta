@@ -1,0 +1,7 @@
+PACKAGE org.apache.uima.ruta;
+
+IMPORT PACKAGE org.apache.uima.ruta.other;
+IMPORT PACKAGE org.apache.uima.ruta.other2 AS other2;
+
+W{REGEXP("First") -> MARK(Type1)};
+W{REGEXP("Second") -> MARK(other2.Type1)};

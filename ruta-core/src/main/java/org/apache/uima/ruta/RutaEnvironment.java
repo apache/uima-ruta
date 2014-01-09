@@ -99,6 +99,14 @@ public class RutaEnvironment {
   private Map<String, List<Alias>> typeImports;
 
   /**
+   * Packages that are imported in the environment without a typesystem specification.
+   *
+   * Keys are package names and values are aliases. An empty string as alias means that all types from the package
+   * should be imported in the default namespace.
+   */
+  private Map<String, List<String>> packageImports;
+
+  /**
    * Set of types that are declared in the script.
    */
   private Set<String> declaredAnnotationTypes;
@@ -125,6 +133,7 @@ public class RutaEnvironment {
     ambiguousTypeAlias = new HashMap<String, Set<String>>();
     typesystems = new HashSet<String>();
     typeImports = new HashMap<String, List<Alias>>();
+    packageImports = new HashMap<String, List<String>>();
     declaredAnnotationTypes = new HashSet<String>();
     wordLists = new HashMap<String, RutaWordList>();
     tables = new HashMap<String, CSVTable>();
@@ -173,6 +182,7 @@ public class RutaEnvironment {
     try {
       if (strictImport) {
         importDeclaredTypes(cas.getTypeSystem());
+        importDeclaredPackages(cas.getTypeSystem());
       } else {
         // import all types known to the cas
         importAllTypes(cas.getTypeSystem());
@@ -249,6 +259,30 @@ public class RutaEnvironment {
         addType(type);
       } else {
         throw new RuntimeException("Type '" + name + "' not found");
+      }
+    }
+  }
+
+  /**
+   * Import all packages that are imported by the script.
+   *
+   * @param casTS Type system containing all known types.
+   */
+  private void importDeclaredPackages(TypeSystem casTS) {
+    Iterator<Type> iter = casTS.getTypeIterator();
+    while(iter.hasNext()) {
+      Type type = iter.next();
+      String name = type.getName();
+      String pkg = name.substring(0, Math.max(name.lastIndexOf('.'), 0));
+      List<String> aliases = packageImports.get(pkg);
+      if (aliases != null) {
+        for (String alias : aliases) {
+          if (alias.isEmpty()) {
+            addType(type);
+          } else {
+            addType(alias + "." + type.getShortName(), type);
+          }
+        }
       }
     }
   }
@@ -431,6 +465,22 @@ public class RutaEnvironment {
         }
       }
     }
+  }
+
+  /**
+   * Import all the types from a package that are available at runtime.
+   *
+   * @param packageName Package to load.
+   * @param alias Alias of the package. Null or empty string to use no alias.
+   */
+  public void importPackage(String packageName, String alias) {
+    List<String> aliases = packageImports.get(packageName);
+    if (aliases == null) {
+      aliases = new ArrayList<String>(1);
+      packageImports.put(packageName, aliases);
+    }
+
+    aliases.add(alias == null? "" : alias);
   }
 
   public RutaWordList getWordList(String list) {

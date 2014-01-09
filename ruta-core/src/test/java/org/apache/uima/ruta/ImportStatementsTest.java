@@ -159,6 +159,21 @@ public class ImportStatementsTest {
 
   }
 
+  @Test
+  public void testImportPackageFromCasTypeSystem() throws Exception {
+    AnalysisEngine ae = createAE(NAMESPACE + "/" + NAME + "ImportPackageFromCasTypeSystem", true);
+    try {
+      CAS cas = ae.newCAS();
+      cas.setDocumentText("First Second");
+      ae.process(cas);
+
+      assertEquals(Arrays.asList("First"), selectText(cas, "org.apache.uima.ruta.other.Type1"));
+      assertEquals(Arrays.asList("Second"), selectText(cas, "org.apache.uima.ruta.other2.Type1"));
+    } finally {
+      ae.destroy();
+    }
+  }
+
   private List<String> selectText(CAS cas, String type) {
     List<String> values = new ArrayList<String>();
     for (AnnotationFS annotation : CasUtil.select(cas, cas.getTypeSystem().getType(type))) {
