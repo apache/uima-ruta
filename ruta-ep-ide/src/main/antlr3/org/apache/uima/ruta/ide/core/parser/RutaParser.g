@@ -328,6 +328,12 @@ importStatement returns [Statement stmt = null]
 	name = dottedComponentDeclaration 
 	{if(name != null) {stmt = StatementFactory.createImportEngine(name,im);addImportUimafitEngine(name);}}
 	 SEMI 
+	| ImportString type = dottedIdentifier (FromString ts = dottedIdentifier2)? (AsString alias = Identifier)? SEMI
+	
+	| ImportString STAR FromString ts = dottedIdentifier2 SEMI
+	
+	| ImportString PackageString pkg = dottedIdentifier (FromString ts = dottedIdentifier2)? (AsString alias = Identifier)? SEMI
+	
 	;
 	
 variableDeclaration returns [List<Statement> stmts = new ArrayList<Statement>()]
@@ -2007,6 +2013,15 @@ dottedIdentifier returns [String idString = ""]
 		idn = Identifier {idString += idn.getText();}
 	)*
 	;
+dottedIdentifier2 returns [String idString = ""]
+	:
+	id = Identifier {idString += id.getText();}
+	(
+		dot = (DOT|MINUS) {idString += dot.getText();}
+		idn = Identifier {idString += idn.getText();}
+	)*
+	;
+
 
 //snooze	
 dottedId returns [Token token = null ]
