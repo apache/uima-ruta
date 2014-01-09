@@ -39,7 +39,8 @@ public class ImportStatementsTest {
   private AnalysisEngine createAE(String script, boolean strictImport) throws ResourceInitializationException, IOException, InvalidXMLException {
     final TypeSystemDescription tsd = TypeSystemDescriptionFactory.createTypeSystemDescription(
         "org.apache.uima.ruta.BasicTypeSystem",
-        "org.apache.uima.ruta.ImportStatementsTestTypeSystem");
+        "org.apache.uima.ruta.ImportStatementsTestTypeSystem",
+        "org.apache.uima.ruta.ImportStatementsTestTypeSystemWithAmbiguousShortNames");
     final AnalysisEngineDescription ruta = AnalysisEngineFactory.createEngineDescription(
         "org.apache.uima.ruta.engine.BasicEngine",
         RutaEngine.PARAM_MAIN_SCRIPT, script,
@@ -120,6 +121,22 @@ public class ImportStatementsTest {
 
       assertEquals(Arrays.asList("First"), selectText(cas, "org.apache.uima.ruta.Type1"));
       assertEquals(Arrays.asList("Second"), selectText(cas, "org.apache.uima.ruta.Type2"));
+    } finally {
+      ae.destroy();
+    }
+
+  }
+
+  @Test
+  public void testImportPackageFromTypeSystem() throws Exception {
+    AnalysisEngine ae = createAE(NAMESPACE + "/" + NAME + "ImportPackageFromTypeSystem", true);
+    try {
+      CAS cas = ae.newCAS();
+      cas.setDocumentText("First Second");
+      ae.process(cas);
+
+      assertEquals(Arrays.asList("First"), selectText(cas, "org.apache.uima.ruta.other.Type1"));
+      assertEquals(Arrays.asList("Second"), selectText(cas, "org.apache.uima.ruta.other.Type2"));
     } finally {
       ae.destroy();
     }

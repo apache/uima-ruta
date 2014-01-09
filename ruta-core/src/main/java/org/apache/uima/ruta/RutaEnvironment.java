@@ -234,6 +234,10 @@ public class RutaEnvironment {
     // Add types that are imported explicitly
     for (List<Alias> aliases : typeImports.values()) {
       for (Alias alias : aliases) {
+        Type type = casTS.getType(alias.longName);
+        if (type == null) {
+          throw new RuntimeException("Type '" + alias.longName + "' not found");
+        }
         addType(alias.shortName, casTS.getType(alias.longName));
       }
     }
@@ -397,6 +401,29 @@ public class RutaEnvironment {
    */
   public void importTypeFromTypeSystem(String typesystem, String longName) {
     importTypeFromTypeSystem(typesystem, longName, longName.substring(longName.lastIndexOf('.') + 1));
+  }
+
+  /**
+   * Import all the types from a package.
+   *
+   * @param typesystem  Type system describing the package to load.
+   * @param packageName Package to load.
+   */
+  public void importPackageFromTypeSystem(String typesystem, String packageName) {
+    TypeSystemDescription tsd = TypeSystemDescriptionFactory.createTypeSystemDescription(typesystem);
+    try {
+      tsd.resolveImports();
+    } catch (InvalidXMLException e) {
+      throw new RuntimeException("Cannot resolve imports in " + typesystem, e);
+    }
+
+    for (TypeDescription td : tsd.getTypes()) {
+      String qname = td.getName();
+      if (qname.startsWith(packageName) && qname.indexOf('.', packageName.length() + 1) == -1) {
+        // td is in packageName
+        importTypeFromTypeSystem(typesystem, qname);
+      }
+    }
   }
 
   public RutaWordList getWordList(String list) {
