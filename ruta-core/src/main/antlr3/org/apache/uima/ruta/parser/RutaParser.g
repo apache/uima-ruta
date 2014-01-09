@@ -436,6 +436,7 @@ importStatement returns [RutaStatement stmt = null]
 	| EngineString ns = dottedIdentifier2{addImportEngine($blockDeclaration::env, ns);} SEMI
 	| UimafitString ns = dottedIdentifier2{addImportUimafitEngine($blockDeclaration::env, ns);} SEMI
 	| ImportString type = dottedIdentifier (FromString ts = dottedIdentifier2)? (AsString alias = Identifier)? SEMI{importTypeFromTypeSystem($blockDeclaration::env, ts, type, alias.getText());}
+	| ImportString STAR FromString ts = dottedIdentifier2 SEMI{addImportTypeSystem($blockDeclaration::env, ts);}
 	;
 
 declaration returns [RutaStatement stmt = null]
