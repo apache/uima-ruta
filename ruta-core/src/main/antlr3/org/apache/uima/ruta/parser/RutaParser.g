@@ -219,8 +219,18 @@ public void setExternalFactory(RutaExternalFactory factory) {
 	public void addImportUimafitEngine(RutaBlock parent, String namespace) {
 		parent.getScript().addUimafitEngine(namespace, null);
 	}
-	
-	
+
+	/**
+	 * Import a type from a type system.
+	 *
+	 * @param parent Block where the type should be imported.
+	 * @param tsd Typesystem from which to import the type.
+	 * @param qualifiedType Type to import from the typesystem.
+	 */
+    public void importTypeFromTypeSystem(RutaBlock parent, String typesystem, String qualifiedType) {
+        parent.getEnvironment().importTypeFromTypeSystem(typesystem, qualifiedType);
+    }
+
 	protected static final int[] getBounds(Token t) {
     		if (t instanceof CommonToken) {
     			CommonToken ct = (CommonToken) t;
@@ -420,6 +430,7 @@ importStatement returns [RutaStatement stmt = null]
 	| ScriptString ns = dottedIdentifier2{addImportScript($blockDeclaration::env, ns);} SEMI
 	| EngineString ns = dottedIdentifier2{addImportEngine($blockDeclaration::env, ns);} SEMI
 	| UimafitString ns = dottedIdentifier2{addImportUimafitEngine($blockDeclaration::env, ns);} SEMI
+	| ImportString type = dottedIdentifier (FromString ts = dottedIdentifier2)? SEMI{importTypeFromTypeSystem($blockDeclaration::env, ts, type);}
 	;
 
 declaration returns [RutaStatement stmt = null]

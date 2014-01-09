@@ -22,14 +22,8 @@ package org.apache.uima.ruta;
 import static org.apache.uima.util.Level.SEVERE;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -85,6 +79,25 @@ public class RutaEnvironment {
    * Set of imported typesystems.
    */
   private Set<String> typesystems;
+
+  /**
+   * An alias from a long to a short name.
+   */
+  private static class Alias {
+    final String longName;
+    final String shortName;
+
+    Alias(String longName, String shortName) {
+      this.longName = longName;
+      this.shortName = shortName;
+    }
+  }
+
+  /**
+   * Types that are imported in the environment. Keys are type system descriptors and values are aliased types.
+   */
+  private Map<String, List<Alias>> typeImports;
+
   /**
    * Set of types that are declared in the script.
    */
@@ -111,6 +124,7 @@ public class RutaEnvironment {
     namespaces = new HashMap<String, String>();
     ambiguousTypeAlias = new HashMap<String, Set<String>>();
     typesystems = new HashSet<String>();
+    typeImports = new HashMap<String, List<Alias>>();
     declaredAnnotationTypes = new HashSet<String>();
     wordLists = new HashMap<String, RutaWordList>();
     tables = new HashMap<String, CSVTable>();
@@ -214,6 +228,13 @@ public class RutaEnvironment {
         addType(type);
       } else {
         throw new RuntimeException("Type '" + td.getName() + "' not found");
+      }
+    }
+
+    // Add types that are imported explicitly
+    for (List<Alias> aliases : typeImports.values()) {
+      for (Alias alias : aliases) {
+        addType(alias.shortName, casTS.getType(alias.longName));
       }
     }
 
@@ -344,6 +365,26 @@ public class RutaEnvironment {
         namespaces.remove(shortName);
       }
     }
+  }
+
+  /**
+   * Import a type from a type system.
+   *
+   * @param typesystem Typesystem from which to import the type or null.
+   * @param longName Type to import.
+   */
+  public void importTypeFromTypeSystem(String typesystem, String longName) {
+    String key = typesystem != null? typesystem : "";
+    List<Alias> aliases = typeImports.get(key);
+
+    if (aliases == null) {
+      // we keep aliases sorted by key for
+      aliases = new ArrayList<Alias>();
+      typeImports.put(key, aliases);
+    }
+
+    String shortName = longName.substring(longName.lastIndexOf('.') + 1);
+    aliases.add(new Alias(longName, shortName));
   }
 
   public RutaWordList getWordList(String list) {
