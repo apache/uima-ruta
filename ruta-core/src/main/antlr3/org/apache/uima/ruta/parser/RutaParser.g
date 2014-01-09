@@ -244,11 +244,8 @@ public void setExternalFactory(RutaExternalFactory factory) {
      * @param alias Package alias.
      */
     public void importPackageFromTypeSystem(RutaBlock parent, String typesystem, String qualifiedPackage, Token alias) {
-        if (alias == null) {
-            parent.getEnvironment().importPackageFromTypeSystem(typesystem, qualifiedPackage);
-        } else {
-            //parent.getEnvironment().importTypeFromTypeSystem(typesystem, qualifiedPackage, alias.getText());
-        }
+        parent.getEnvironment()
+            .importPackageFromTypeSystem(typesystem, qualifiedPackage, alias != null? alias.getText() : null);
     }
 
 	protected static final int[] getBounds(Token t) {

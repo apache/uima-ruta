@@ -273,17 +273,19 @@ public class RutaEnvironment {
   }
 
   private String expand(String string) {
-    String complete;
-    if (string.indexOf(".") == -1) {
-      complete = namespaces.get(string);
-      if (complete == null) {
+    String complete = namespaces.get(string);
+    if (complete == null) {
+      if (!string.contains(".")) {
+        complete = namespaces.get(string);
+        if (complete == null) {
+          complete = string;
+        }
+      } else {
         complete = string;
+        String[] split = complete.split("\\p{Punct}");
+        String name = split[split.length - 1];
+        importType(complete, name);
       }
-    } else {
-      complete = string;
-      String[] split = complete.split("\\p{Punct}");
-      String name = split[split.length - 1];
-      importType(complete, name);
     }
     return complete;
   }
@@ -409,7 +411,7 @@ public class RutaEnvironment {
    * @param typesystem  Type system describing the package to load.
    * @param packageName Package to load.
    */
-  public void importPackageFromTypeSystem(String typesystem, String packageName) {
+  public void importPackageFromTypeSystem(String typesystem, String packageName, String alias) {
     TypeSystemDescription tsd = TypeSystemDescriptionFactory.createTypeSystemDescription(typesystem);
     try {
       tsd.resolveImports();
@@ -421,7 +423,12 @@ public class RutaEnvironment {
       String qname = td.getName();
       if (qname.startsWith(packageName) && qname.indexOf('.', packageName.length() + 1) == -1) {
         // td is in packageName
-        importTypeFromTypeSystem(typesystem, qname);
+        if (alias != null) {
+          String shortName = alias + "." + qname.substring(qname.lastIndexOf('.') + 1);
+          importTypeFromTypeSystem(typesystem, qname, shortName);
+        } else {
+          importTypeFromTypeSystem(typesystem, qname);
+        }
       }
     }
   }

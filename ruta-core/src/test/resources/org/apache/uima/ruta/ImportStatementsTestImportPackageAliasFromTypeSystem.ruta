@@ -1,0 +1,7 @@
+PACKAGE org.apache.uima.ruta;
+
+IMPORT PACKAGE org.apache.uima.ruta.other FROM org.apache.uima.ruta.ImportStatementsTestTypeSystemWithAmbiguousShortNames AS p1;
+IMPORT PACKAGE org.apache.uima.ruta.other2 FROM org.apache.uima.ruta.ImportStatementsTestTypeSystemWithAmbiguousShortNames AS p2;
+
+W{REGEXP("First") -> MARK(p1.Type1)};
+W{REGEXP("Second") -> MARK(p2.Type1)};
