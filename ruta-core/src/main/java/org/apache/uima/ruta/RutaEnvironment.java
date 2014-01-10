@@ -419,7 +419,6 @@ public class RutaEnvironment {
     List<Alias> aliases = typeImports.get(key);
 
     if (aliases == null) {
-      // we keep aliases sorted by key for
       aliases = new ArrayList<Alias>();
       typeImports.put(key, aliases);
     }
@@ -443,7 +442,7 @@ public class RutaEnvironment {
    * Import all the types from a package.
    *
    * @param typesystem  Type system describing the package to load.
-   * @param packageName Package to load.
+   * @param packageName Package to load or null to load all packages.
    */
   public void importPackageFromTypeSystem(String typesystem, String packageName, String alias) {
     TypeSystemDescription tsd = TypeSystemDescriptionFactory.createTypeSystemDescription(typesystem);
@@ -455,7 +454,8 @@ public class RutaEnvironment {
 
     for (TypeDescription td : tsd.getTypes()) {
       String qname = td.getName();
-      if (qname.startsWith(packageName) && qname.indexOf('.', packageName.length() + 1) == -1) {
+      if (packageName == null ||
+          (qname.startsWith(packageName) && qname.indexOf('.', packageName.length() + 1) == -1)) {
         // td is in packageName
         if (alias != null) {
           String shortName = alias + "." + qname.substring(qname.lastIndexOf('.') + 1);
@@ -465,6 +465,16 @@ public class RutaEnvironment {
         }
       }
     }
+  }
+
+  /**
+   * Imports all the packages from the specified type system.
+   *
+   * @param typesystem Typesystem to load.
+   * @param alias      Alias for all the packages.
+   */
+  public void importAllPackagesFromTypeSystem(String typesystem, String alias) {
+    importPackageFromTypeSystem(typesystem, null, alias);
   }
 
   /**

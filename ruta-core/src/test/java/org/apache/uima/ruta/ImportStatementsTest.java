@@ -59,7 +59,8 @@ public class ImportStatementsTest {
     final TypeSystemDescription tsd = TypeSystemDescriptionFactory.createTypeSystemDescription(
         "org.apache.uima.ruta.BasicTypeSystem",
         "org.apache.uima.ruta.ImportStatementsTestTypeSystem",
-        "org.apache.uima.ruta.ImportStatementsTestTypeSystemWithAmbiguousShortNames");
+        "org.apache.uima.ruta.ImportStatementsTestTypeSystemWithAmbiguousShortNames",
+        "org.apache.uima.ruta.ImportStatementsTestTypeSystemWithManyPackages");
     final AnalysisEngineDescription ruta = AnalysisEngineFactory.createEngineDescription(
         "org.apache.uima.ruta.engine.BasicEngine",
         RutaEngine.PARAM_MAIN_SCRIPT, script,
@@ -188,6 +189,56 @@ public class ImportStatementsTest {
 
       assertEquals(Arrays.asList("First"), selectText(cas, "org.apache.uima.ruta.other.Type1"));
       assertEquals(Arrays.asList("Second"), selectText(cas, "org.apache.uima.ruta.other2.Type1"));
+    } finally {
+      ae.destroy();
+    }
+  }
+
+  @Test
+  public void testImportAllPackagesFromTypeSystem() throws Exception {
+    AnalysisEngine ae = createAE(NAMESPACE + "/" + NAME + "ImportAllPackagesFromTypeSystem", true);
+    try {
+      CAS cas = ae.newCAS();
+      cas.setDocumentText("First Second");
+      ae.process(cas);
+
+      assertEquals(Arrays.asList("First"), selectText(cas, "org.apache.uima.ruta.other3.Type1"));
+      assertEquals(Arrays.asList("Second"), selectText(cas, "org.apache.uima.ruta.other4.Type2"));
+    } finally {
+      ae.destroy();
+    }
+  }
+
+  @Test
+  public void testImportAllPackagesWithAliasFromTypeSystem() throws Exception {
+    AnalysisEngine ae = createAE(NAMESPACE + "/" + NAME + "ImportAllPackagesWithAliasFromTypeSystem", true);
+    try {
+      CAS cas = ae.newCAS();
+      cas.setDocumentText("First Second");
+      ae.process(cas);
+
+      assertEquals(Arrays.asList("First"), selectText(cas, "org.apache.uima.ruta.other3.Type1"));
+      assertEquals(Arrays.asList("Second"), selectText(cas, "org.apache.uima.ruta.other4.Type2"));
+    } finally {
+      ae.destroy();
+    }
+  }
+
+  @Test
+  public void testImportAllPackagesFromTypeSystemWithAmbiguousShortNames() throws Exception {
+    AnalysisEngine ae = createAE(NAMESPACE + "/" + NAME + "ImportAllPackagesFromTypeSystemWithAmbiguousShortNames", true);
+    try {
+      CAS cas = ae.newCAS();
+      cas.setDocumentText("First Second");
+      ae.process(cas);
+
+      fail("Engine should fail because Type1 and Type2 are ambiguous");
+    } catch (AnalysisEngineProcessException e) {
+      if (e.getCause() instanceof IllegalArgumentException) {
+        // success, Type1 and Type2 are ambiguous and this exception should be raised.
+      } else {
+        throw e;
+      }
     } finally {
       ae.destroy();
     }

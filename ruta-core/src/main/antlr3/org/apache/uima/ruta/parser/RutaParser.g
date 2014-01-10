@@ -254,6 +254,20 @@ public void setExternalFactory(RutaExternalFactory factory) {
         }
     }
 
+    /**
+     * Import all packages from a type system.
+     *
+     * @param parent Block where the type should be imported.
+     * @param tsd Typesystem from which to import the package or null to import it from the CAS typesystem.
+     * @param alias Package alias.
+     */
+    public void importAllPackages(RutaBlock parent, String typesystem, Token alias) {
+        RutaEnvironment env = parent.getEnvironment();
+        String aliasText = alias != null? alias.getText() : null;
+
+        env.importAllPackagesFromTypeSystem(typesystem, aliasText);
+    }
+
 	protected static final int[] getBounds(Token t) {
     		if (t instanceof CommonToken) {
     			CommonToken ct = (CommonToken) t;
@@ -456,6 +470,7 @@ importStatement returns [RutaStatement stmt = null]
 	| ImportString type = dottedIdentifier (FromString ts = dottedIdentifier2)? (AsString alias = Identifier)? SEMI{importTypeFromTypeSystem($blockDeclaration::env, ts, type, alias);}
 	| ImportString STAR FromString ts = dottedIdentifier2 SEMI{addImportTypeSystem($blockDeclaration::env, ts);}
 	| ImportString PackageString pkg = dottedIdentifier (FromString ts = dottedIdentifier2)? (AsString alias = Identifier)? SEMI{importPackage($blockDeclaration::env, ts, pkg, alias);}
+	| ImportString PackageString STAR FromString ts = dottedIdentifier2 (AsString alias = Identifier)? SEMI{importAllPackages($blockDeclaration::env, ts, alias);}
 	;
 
 declaration returns [RutaStatement stmt = null]
