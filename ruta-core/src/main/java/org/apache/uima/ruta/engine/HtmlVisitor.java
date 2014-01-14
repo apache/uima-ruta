@@ -98,10 +98,6 @@ public class HtmlVisitor extends NodeVisitor {
     AnnotationFS found = null;
     for (int i = annotationStack.size() - 1; i >= 0; i--) {
       AnnotationFS each = (AnnotationFS) annotationStack.get(i);
-      // // Java 6:
-      // Iterator<AnnotationFS> descendingIterator = annotationStack.descendingIterator();
-      // while (descendingIterator.hasNext()) {
-      // AnnotationFS each = (AnnotationFS) descendingIterator.next();
       Feature nameFeature = each.getType().getFeatureByBaseName("name");
       String eachName = each.getStringValue(nameFeature);
       if (name.equals(eachName)) {

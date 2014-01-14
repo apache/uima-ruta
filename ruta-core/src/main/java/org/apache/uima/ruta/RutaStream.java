@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeMap;
@@ -158,10 +159,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
         anchors.add(a.getEnd());
       }
       if (anchors.size() == 1) {
-        // for Java 6:
-        // Integer first = anchors.pollFirst();
-        Integer first = anchors.first();
-        anchors.remove(first);
+        Integer first = anchors.pollFirst();
         RutaBasic newTMB = new RutaBasic(getJCas(), first, first);
         newTMB.setLowMemoryProfile(lowMemoryProfile);
         beginAnchors.put(first, newTMB);
@@ -170,10 +168,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
         cas.addFsToIndexes(newTMB);
       } else {
         while (anchors.size() >= 2) {
-          // for Java 6:
-          // Integer first = anchors.pollFirst();
-          Integer first = anchors.first();
-          anchors.remove(first);
+          Integer first = anchors.pollFirst();
           Integer second = anchors.first();
           RutaBasic newTMB = new RutaBasic(getJCas(), first, second);
           newTMB.setLowMemoryProfile(lowMemoryProfile);
@@ -253,18 +248,14 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   private boolean checkAnchor(int anchor) {
-    // was for Java 6:
-    // Entry<Integer, RutaBasic> floorEntry = endAnchors.floorEntry(anchor);
-    // Entry<Integer, RutaBasic> ceilingEntry = endAnchors.ceilingEntry(anchor);
-    // if (floorEntry != null && ceilingEntry != null) {
-    // RutaBasic floor = floorEntry.getValue();
-    // RutaBasic ceiling = ceilingEntry.getValue();
-    RutaBasic floor = getFloor(endAnchors, anchor);
-    if (floor == null) {
-      floor = getFloor(beginAnchors, anchor);
+    Entry<Integer, RutaBasic> floorEntry = endAnchors.floorEntry(anchor);
+    if (floorEntry == null) {
+      floorEntry = beginAnchors.floorEntry(anchor);
     }
-    RutaBasic ceiling = getCeiling(endAnchors, anchor);
-    if (floor != null && ceiling != null) {
+    Entry<Integer, RutaBasic> ceilingEntry = endAnchors.ceilingEntry(anchor);
+    if (floorEntry != null && ceilingEntry != null) {
+      RutaBasic floor = floorEntry.getValue();
+      RutaBasic ceiling = ceilingEntry.getValue();
       RutaBasic toSplit = null;
       if (floor.getEnd() > anchor) {
         toSplit = floor;
@@ -513,29 +504,13 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       result.add(beginAnchor);
       return result;
     }
-    // was Java 6:
-    // RutaBasic endAnchor = getEndAnchor(windowAnnotation.getEnd());
-    // NavigableSet<RutaBasic> subSet = basics.subSet(beginAnchor, true, endAnchor, true);
-
+    RutaBasic endAnchor = getEndAnchor(windowAnnotation.getEnd());
     Collection<RutaBasic> subSet = null;
     if (windowAnnotation.getEnd() == cas.getDocumentAnnotation().getEnd()
             && windowAnnotation.getBegin() == 0) {
       subSet = basics;
-    } else if (windowAnnotation.getEnd() == cas.getDocumentAnnotation().getEnd()) {
-      subSet = basics.tailSet(beginAnchor);
     } else {
-      RutaBasic endAnchor1 = getCeiling(endAnchors, windowAnnotation.getEnd() + 1);
-      if (endAnchor1 != null) {
-        subSet = basics.subSet(beginAnchor, endAnchor1);
-      } else {
-        // hotfix for limited window stream with a window on the complete document
-        subSet = new LinkedList<RutaBasic>();
-        RutaBasic floor = getFloor(endAnchors, windowAnnotation.getEnd());
-        Collection<RutaBasic> subSetHead = basics.subSet(beginAnchor, floor);
-        RutaBasic endAnchorTail = endAnchors.get(windowAnnotation.getEnd());
-        subSet.addAll(subSetHead);
-        subSet.add(endAnchorTail);
-      }
+      subSet = basics.subSet(beginAnchor, true, endAnchor, true);
     }
     return subSet;
   }
@@ -785,14 +760,14 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     RutaBasic beginAnchor = getBeginAnchor(begin);
     for (Type type : currentHiddenTypes) {
       boolean partOf = beginAnchor.isPartOf(type);
-      if(partOf) {
+      if (partOf) {
         return false;
       }
     }
     RutaBasic endAnchor = getEndAnchor(end);
     for (Type type : currentHiddenTypes) {
       boolean partOf = endAnchor.isPartOf(type);
-      if(partOf) {
+      if (partOf) {
         return false;
       }
     }
