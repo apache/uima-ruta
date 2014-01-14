@@ -59,7 +59,7 @@ public class RutaRuleElement extends AbstractRuleElement {
     Collection<AnnotationFS> anchors = getAnchors(stream);
     boolean useAlternatives = anchors.size() != 1;
     for (AnnotationFS eachAnchor : anchors) {
-      if(stream.isGreedyAnchoring() && isAlreadyCovered(eachAnchor, ruleApply, stream)) {
+      if (stream.isGreedyAnchoring() && isAlreadyCovered(eachAnchor, ruleApply, stream)) {
         continue;
       }
       ComposedRuleElementMatch extendedContainerMatch = containerMatch;
@@ -124,17 +124,18 @@ public class RutaRuleElement extends AbstractRuleElement {
     List<AbstractRuleMatch<? extends AbstractRule>> list = ruleApply.getList();
     Collections.reverse(list);
     for (AbstractRuleMatch<? extends AbstractRule> each : list) {
-      if(each instanceof RuleMatch) {
+      if (each instanceof RuleMatch) {
         RuleMatch rm = (RuleMatch) each;
         List<AnnotationFS> matchedAnnotationsOf = Collections.emptyList();
-        if(stream.isGreedyRule()) {
+        if (stream.isGreedyRule()) {
           matchedAnnotationsOf = rm.getMatchedAnnotationsOfRoot();
-        } else if(stream.isGreedyRuleElement()) {
+        } else if (stream.isGreedyRuleElement()) {
           matchedAnnotationsOf = rm.getMatchedAnnotationsOf(this);
         }
         for (AnnotationFS annotationFS : matchedAnnotationsOf) {
-          if(eachAnchor.getBegin() >= annotationFS.getBegin() && eachAnchor.getEnd() <= annotationFS.getEnd())
-          return true;
+          if (eachAnchor.getBegin() >= annotationFS.getBegin()
+                  && eachAnchor.getEnd() <= annotationFS.getEnd())
+            return true;
         }
       }
     }
@@ -303,8 +304,7 @@ public class RutaRuleElement extends AbstractRuleElement {
         if (getContainer() instanceof ComposedRuleElement) {
           ComposedRuleElement composed = (ComposedRuleElement) getContainer();
           List<RuleMatch> fallbackContinue = composed.fallbackContinue(after, true, annotation,
-                  ruleMatch, ruleApply, containerMatch, sideStepOrigin, entryPoint,
-                  stream, crowd);
+                  ruleMatch, ruleApply, containerMatch, sideStepOrigin, entryPoint, stream, crowd);
           result.addAll(fallbackContinue);
         } else {
           // should never happen!
@@ -322,37 +322,39 @@ public class RutaRuleElement extends AbstractRuleElement {
     boolean newDirection = !after;
     List<AnnotationFS> matchedAnnotationsOf = ruleMatch.getMatchedAnnotationsOf(this);
     AnnotationFS annotation = null;
-    if (newDirection) {
-      annotation = matchedAnnotationsOf.get(matchedAnnotationsOf.size() - 1);
-    } else {
-      annotation = matchedAnnotationsOf.get(0);
-    }
-    ComposedRuleElementMatch sideStepContainerMatch = containerMatch;
-    if (!containerMatch.getRuleElement().equals(getContainer())) {
-      List<List<RuleElementMatch>> matchInfo = ruleMatch
-              .getMatchInfo((ComposedRuleElement) getContainer());
+    if (!matchedAnnotationsOf.isEmpty()) {
       if (newDirection) {
-        List<RuleElementMatch> list = matchInfo.get(matchInfo.size() - 1);
-        sideStepContainerMatch = (ComposedRuleElementMatch) list.get(list.size() - 1);
+        annotation = matchedAnnotationsOf.get(matchedAnnotationsOf.size() - 1);
       } else {
-        List<RuleElementMatch> list = matchInfo.get(0);
-        sideStepContainerMatch = (ComposedRuleElementMatch) list.get(0);
+        annotation = matchedAnnotationsOf.get(0);
       }
-    }
+      ComposedRuleElementMatch sideStepContainerMatch = containerMatch;
+      if (!containerMatch.getRuleElement().equals(getContainer())) {
+        List<List<RuleElementMatch>> matchInfo = ruleMatch
+                .getMatchInfo((ComposedRuleElement) getContainer());
+        if (newDirection) {
+          List<RuleElementMatch> list = matchInfo.get(matchInfo.size() - 1);
+          sideStepContainerMatch = (ComposedRuleElementMatch) list.get(list.size() - 1);
+        } else {
+          List<RuleElementMatch> list = matchInfo.get(0);
+          sideStepContainerMatch = (ComposedRuleElementMatch) list.get(0);
+        }
+      }
 
-    if (quantifier.continueMatch(newDirection, annotation, this, ruleMatch, sideStepContainerMatch,
-            stream, crowd)) {
-      continueMatch(newDirection, annotation, ruleMatch, ruleApply, sideStepContainerMatch, null,
-              entryPoint, stream, crowd);
-    } else {
-      RuleElement nextRuleElement = getContainer().getNextElement(newDirection, this);
-      if (nextRuleElement != null) {
-        result = nextRuleElement.continueMatch(newDirection, annotation, ruleMatch, ruleApply,
-                sideStepContainerMatch, null, null, stream, crowd);
-      } else if (getContainer() instanceof ComposedRuleElement) {
-        ComposedRuleElement composed = (ComposedRuleElement) getContainer();
-        result = composed.fallbackContinue(newDirection, false, annotation, ruleMatch, ruleApply,
-                sideStepContainerMatch, null, entryPoint, stream, crowd);
+      if (quantifier.continueMatch(newDirection, annotation, this, ruleMatch,
+              sideStepContainerMatch, stream, crowd)) {
+        continueMatch(newDirection, annotation, ruleMatch, ruleApply, sideStepContainerMatch, null,
+                entryPoint, stream, crowd);
+      } else {
+        RuleElement nextRuleElement = getContainer().getNextElement(newDirection, this);
+        if (nextRuleElement != null) {
+          result = nextRuleElement.continueMatch(newDirection, annotation, ruleMatch, ruleApply,
+                  sideStepContainerMatch, null, null, stream, crowd);
+        } else if (getContainer() instanceof ComposedRuleElement) {
+          ComposedRuleElement composed = (ComposedRuleElement) getContainer();
+          result = composed.fallbackContinue(newDirection, false, annotation, ruleMatch, ruleApply,
+                  sideStepContainerMatch, null, entryPoint, stream, crowd);
+        }
       }
     }
     return result;
@@ -365,9 +367,9 @@ public class RutaRuleElement extends AbstractRuleElement {
     result.setRuleAnchor(ruleAnchor);
     List<EvaluatedCondition> evaluatedConditions = new ArrayList<EvaluatedCondition>(
             conditions.size());
-//    boolean base = matcher.match(annotation, stream, getParent());
+    // boolean base = matcher.match(annotation, stream, getParent());
     boolean base = true;
-    if(matcher instanceof RutaTypeMatcher) {
+    if (matcher instanceof RutaTypeMatcher) {
       RutaTypeMatcher rtm = (RutaTypeMatcher) matcher;
       MatchReference mr = (MatchReference) rtm.getExpression();
       FeatureExpression featureExpression = mr.getFeatureExpression(parent, stream);

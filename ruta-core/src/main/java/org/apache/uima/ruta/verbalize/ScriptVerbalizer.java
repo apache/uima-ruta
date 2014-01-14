@@ -112,6 +112,9 @@ public class ScriptVerbalizer {
     List<AbstractRutaAction> actions = re.getActions();
     RuleElementQuantifier quantifier = re.getQuantifier();
     StringBuilder result = new StringBuilder();
+    if(re.isStartAnchor()) {
+      result.append("@");
+    }
     if(re instanceof ConjunctRulesRuleElement) {
       result.append(verbalizeConjunct((ConjunctRulesRuleElement) re));
     } else if (re instanceof ComposedRuleElement) {

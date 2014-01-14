@@ -59,7 +59,9 @@ public class RuleElementCaretaker implements RuleElementContainer {
 
   public RuleElement getAnchoringRuleElement(RutaStream stream) {
     List<RuleElement> ruleElements = container.getRuleElements();
-    if (ruleElements.size() == 1 || containsLiteralMatcher(ruleElements)) {
+    if (ruleElements.size() == 1 
+            //|| containsLiteralMatcher(ruleElements)
+            ) {
       return ruleElements.get(0);
     }
     for (RuleElement ruleElement : ruleElements) {
@@ -93,17 +95,6 @@ public class RuleElementCaretaker implements RuleElementContainer {
 
   }
 
-  private boolean containsLiteralMatcher(List<RuleElement> ruleElements) {
-    for (RuleElement each : ruleElements) {
-      if (each instanceof RutaRuleElement) {
-        RutaRuleElement re = (RutaRuleElement) each;
-        if (re.getMatcher() instanceof RutaLiteralMatcher) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
 
   public RuleElement getFirstElement() {
     List<RuleElement> ruleElements = container.getRuleElements();

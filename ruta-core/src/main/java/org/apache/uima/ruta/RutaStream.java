@@ -282,28 +282,6 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     return false;
   }
 
-  private RutaBasic getCeiling(TreeMap<Integer, RutaBasic> anchors, int anchor) {
-    while (anchor <= anchors.lastKey()) {
-      RutaBasic basic = anchors.get(anchor);
-      if (basic != null) {
-        return basic;
-      }
-      anchor++;
-    }
-    return null;
-  }
-
-  private RutaBasic getFloor(TreeMap<Integer, RutaBasic> anchors, int anchor) {
-    while (anchor >= 0) {
-      RutaBasic basic = anchors.get(anchor);
-      if (basic != null) {
-        return basic;
-      }
-      anchor--;
-    }
-    return null;
-  }
-
   public void removeAnnotation(AnnotationFS annotationFS) {
     removeAnnotation(annotationFS, annotationFS.getType());
   }
