@@ -69,7 +69,10 @@ public class StatisticsEntry {
     IntArrayFSImpl vamount = (IntArrayFSImpl) fs.getFeatureValue(famount);
     DoubleArrayFSImpl vpart = (DoubleArrayFSImpl) fs.getFeatureValue(fparts);
 
-    String[] narray = vname.toArray();
+    String[] narray = new String[0];
+    if(vname != null) {
+      narray = vname.toArray();
+    }
     double[] tarray = vtotal.toArray();
     int[] aarray = vamount.toArray();
     double[] parray = vpart.toArray();
