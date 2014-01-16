@@ -47,8 +47,7 @@ public class FillAction extends AbstractStructureAction {
 
   @Override
   public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
-    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(null,
-            element.getContainer());
+    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOf(element);
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
       if (matchedAnnotation == null) {
         return;
@@ -58,10 +57,18 @@ public class FillAction extends AbstractStructureAction {
       if (list.isEmpty()) {
         list = stream.getOverappingAnnotations(matchedAnnotation, type);
       }
-      //
-      // for (AnnotationFS each : list) {
-      // fillFeatures((Annotation)each, features, matchedAnnotation, element, stream);
-      // }
+      if (list.isEmpty()) {
+        // look at the complete match of the rule
+        List<AnnotationFS> matchedAnnotations2 = match.getMatchedAnnotations(null,
+                element.getContainer());
+        if (!matchedAnnotations2.isEmpty()) {
+          AnnotationFS m = matchedAnnotations2.get(0);
+          list = stream.getAnnotationsInWindow(m, type);
+          if (list.isEmpty()) {
+            list = stream.getOverappingAnnotations(m, type);
+          }
+        }
+      }
       if (!list.isEmpty()) {
         AnnotationFS annotationFS = list.get(0);
         stream.getCas().removeFsFromIndexes(annotationFS);
