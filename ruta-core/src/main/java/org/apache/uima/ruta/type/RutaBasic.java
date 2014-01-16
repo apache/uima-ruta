@@ -1,12 +1,10 @@
 /* First created by JCasGen Wed Apr 16 17:01:16 CEST 2008 */
 package org.apache.uima.ruta.type;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
@@ -27,7 +25,7 @@ import org.apache.uima.jcas.tcas.Annotation;
  */
 public class RutaBasic extends Annotation {
 
-  private static final int INITIAL_CAPACITY = 5;
+  private static final int INITIAL_CAPACITY = 2;
 
   private static final String ROOT_TYPE1 = "uima.tcas.Annotation";
 
@@ -37,11 +35,17 @@ public class RutaBasic extends Annotation {
 
   private int[] partOf = new int[((TypeSystemImpl) getCAS().getTypeSystem()).getLargestTypeCode()];
 
-  private final Map<Type, Set<AnnotationFS>> beginMap = new HashMap<Type, Set<AnnotationFS>>(
-          INITIAL_CAPACITY);
+  private Collection<?>[] beginMap = new ArrayList<?>[((TypeSystemImpl) getCAS().getTypeSystem())
+          .getLargestTypeCode()];
 
-  private final Map<Type, Set<AnnotationFS>> endMap = new HashMap<Type, Set<AnnotationFS>>(
-          INITIAL_CAPACITY);
+  private Collection<?>[] endMap = new ArrayList<?>[((TypeSystemImpl) getCAS().getTypeSystem())
+          .getLargestTypeCode()];
+
+  private boolean empty = true;
+  
+  public boolean isEmpty() {
+    return empty;
+  }
 
   public boolean isLowMemoryProfile() {
     return lowMemoryProfile;
@@ -104,18 +108,21 @@ public class RutaBasic extends Annotation {
 
   }
 
-  public Set<AnnotationFS> getBeginAnchors(Type type) {
-    Set<AnnotationFS> set = beginMap.get(type);
+  @SuppressWarnings("unchecked")
+  public Collection<AnnotationFS> getBeginAnchors(Type type) {
+    int code = ((TypeImpl) type).getCode();
+    Collection<AnnotationFS> set = (Collection<AnnotationFS>) beginMap[code];
     if (lowMemoryProfile) {
-      Set<AnnotationFS> result = new HashSet<AnnotationFS>();
+      Collection<AnnotationFS> result = new ArrayList<AnnotationFS>();
       if (set != null) {
         result.addAll(set);
       }
       List<Type> subsumedTypes = getCAS().getTypeSystem().getProperlySubsumedTypes(type);
       for (Type each : subsumedTypes) {
-        Set<AnnotationFS> c = beginMap.get(each);
+        int parentCode = ((TypeImpl) each).getCode();
+        Collection<?> c = beginMap[parentCode];
         if (c != null) {
-          result.addAll(c);
+          result.addAll((Collection<? extends AnnotationFS>) c);
         }
       }
       return result;
@@ -128,18 +135,21 @@ public class RutaBasic extends Annotation {
     }
   }
 
-  public Set<AnnotationFS> getEndAnchors(Type type) {
-    Set<AnnotationFS> set = endMap.get(type);
+  @SuppressWarnings("unchecked")
+  public Collection<AnnotationFS> getEndAnchors(Type type) {
+    int code = ((TypeImpl) type).getCode();
+    Collection<AnnotationFS> set = (Collection<AnnotationFS>) endMap[code];
     if (lowMemoryProfile) {
-      Set<AnnotationFS> result = new HashSet<AnnotationFS>();
+      Collection<AnnotationFS> result = new ArrayList<AnnotationFS>();
       if (set != null) {
         result.addAll(set);
       }
       List<Type> subsumedTypes = getCAS().getTypeSystem().getProperlySubsumedTypes(type);
       for (Type each : subsumedTypes) {
-        Set<AnnotationFS> c = endMap.get(each);
+        int parentCode = ((TypeImpl) each).getCode();
+        Collection<?> c = endMap[parentCode];
         if (c != null) {
-          result.addAll(c);
+          result.addAll((Collection<? extends AnnotationFS>) c);
         }
       }
       return result;
@@ -153,7 +163,10 @@ public class RutaBasic extends Annotation {
   }
 
   public boolean beginsWith(Type type) {
-    if (beginMap.containsKey(type)) {
+    int code = ((TypeImpl) type).getCode();
+    Collection<?> set = beginMap[code];
+    boolean beginsWith = set != null && !set.isEmpty();
+    if (beginsWith) {
       return true;
     }
     if (lowMemoryProfile) {
@@ -168,7 +181,10 @@ public class RutaBasic extends Annotation {
   }
 
   public boolean endsWith(Type type) {
-    if (endMap.containsKey(type)) {
+    int code = ((TypeImpl) type).getCode();
+    Collection<?> set = endMap[code];
+    boolean endswith = set != null && !set.isEmpty();
+    if (endswith) {
       return true;
     }
     if (lowMemoryProfile) {
@@ -182,13 +198,16 @@ public class RutaBasic extends Annotation {
     return false;
   }
 
+  @SuppressWarnings("unchecked")
   public void addBegin(AnnotationFS annotation, Type type) {
-    Set<AnnotationFS> list = beginMap.get(type);
-    if (list == null) {
-      list = new HashSet<AnnotationFS>(INITIAL_CAPACITY);
-      beginMap.put(type, list);
+    empty = false;
+    int code = ((TypeImpl) type).getCode();
+    Collection<Object> set = (Collection<Object>) beginMap[code];
+    if (set == null) {
+      set = new ArrayList<Object>(INITIAL_CAPACITY);
+      beginMap[code] = set;
     }
-    list.add(annotation);
+    set.add(annotation);
     if (!lowMemoryProfile && !type.getName().equals(ROOT_TYPE1)
             && !type.getName().equals(ROOT_TYPE2)) {
       TypeSystem typeSystem = getCAS().getTypeSystem();
@@ -199,13 +218,16 @@ public class RutaBasic extends Annotation {
     }
   }
 
+  @SuppressWarnings("unchecked")
   public void addEnd(AnnotationFS annotation, Type type) {
-    Set<AnnotationFS> list = endMap.get(type);
-    if (list == null) {
-      list = new HashSet<AnnotationFS>(INITIAL_CAPACITY);
-      endMap.put(type, list);
+    empty = false;
+    int code = ((TypeImpl) type).getCode();
+    Collection<Object> set = (Collection<Object>) endMap[code];
+    if (set == null) {
+      set = new ArrayList<Object>(INITIAL_CAPACITY);
+      endMap[code] = set;
     }
-    list.add(annotation);
+    set.add(annotation);
     if (!lowMemoryProfile && !type.getName().equals(ROOT_TYPE1)
             && !type.getName().equals(ROOT_TYPE2)) {
       TypeSystem typeSystem = getCAS().getTypeSystem();
@@ -216,12 +238,14 @@ public class RutaBasic extends Annotation {
     }
   }
 
+  @SuppressWarnings("unchecked")
   public void removeBegin(AnnotationFS annotation, Type type) {
-    Set<AnnotationFS> list = beginMap.get(type);
-    if (list != null) {
-      list.remove(annotation);
-      if (list.isEmpty()) {
-        beginMap.remove(annotation.getType());
+    int code = ((TypeImpl) type).getCode();
+    Collection<Object> set = (Collection<Object>) beginMap[code];
+    if (set != null) {
+      set.remove(annotation);
+      if (set.isEmpty()) {
+        beginMap[code] = null;
       }
     }
     if (!lowMemoryProfile) {
@@ -233,12 +257,14 @@ public class RutaBasic extends Annotation {
     }
   }
 
+  @SuppressWarnings("unchecked")
   public void removeEnd(AnnotationFS annotation, Type type) {
-    Set<AnnotationFS> list = endMap.get(type);
-    if (list != null) {
-      list.remove(annotation);
-      if (list.isEmpty()) {
-        endMap.remove(annotation.getType());
+    int code = ((TypeImpl) type).getCode();
+    Collection<Object> set = (Collection<Object>) endMap[code];
+    if (set != null) {
+      set.remove(annotation);
+      if (set.isEmpty()) {
+        endMap[code] = null;
       }
     }
     if (!lowMemoryProfile) {
@@ -250,8 +276,12 @@ public class RutaBasic extends Annotation {
     }
   }
 
-  public Map<Type, Set<AnnotationFS>> getBeginMap() {
+  public Collection<?>[] getBeginMap() {
     return beginMap;
+  }
+
+  public Collection<?>[] getEndMap() {
+    return endMap;
   }
 
   /**
@@ -338,8 +368,7 @@ public class RutaBasic extends Annotation {
     jcasType.ll_cas.ll_setStringValue(addr, ((RutaBasic_Type) jcasType).casFeatCode_replacement, v);
   }
 
-  public Map<Type, Set<AnnotationFS>> getEndMap() {
-    return endMap;
-  }
+
+
 
 }

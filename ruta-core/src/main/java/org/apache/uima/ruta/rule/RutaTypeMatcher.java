@@ -175,24 +175,6 @@ public class RutaTypeMatcher implements RutaMatcher {
     return Collections.emptyList();
   }
 
-  public FSMatchConstraint createAnchorConstraints(RutaBlock block, RutaStream stream) {
-    ConstraintFactory cf = stream.getCas().getConstraintFactory();
-    List<Type> types = getTypes(block, stream);
-    FSMatchConstraint result = null;
-
-    for (Type eachType : types) {
-      BasicTypeConstraint anchorConstraint = new BasicTypeConstraint(cf.createTypeConstraint(),
-              eachType);
-      anchorConstraint.add(eachType);
-      if (result != null) {
-        result = cf.or(result, anchorConstraint);
-      } else {
-        result = anchorConstraint;
-      }
-    }
-    return result;
-  }
-
   public boolean match(AnnotationFS annotation, RutaStream stream, RutaBlock parent) {
     if (annotation == null) {
       return false;

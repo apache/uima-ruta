@@ -20,6 +20,7 @@
 package org.apache.uima.ruta.action;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -60,7 +61,7 @@ public class UnmarkAllAction extends TypeSensitiveAction {
       List<AnnotationFS> textsMatched = ruleElementMatch.getTextsMatched();
       for (AnnotationFS each : textsMatched) {
         RutaBasic beginAnchor = stream.getBeginAnchor(each.getBegin());
-        Set<AnnotationFS> beginAnchors = beginAnchor.getBeginAnchors(t);
+        Collection<AnnotationFS> beginAnchors = beginAnchor.getBeginAnchors(t);
         for (AnnotationFS annotationFS : beginAnchors) {
           if (annotationFS.getEnd() == each.getEnd()
                   && !retainType(annotationFS.getType(), retainList, typeSystem)) {

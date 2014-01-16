@@ -71,9 +71,9 @@ public class ImplicitCondition extends AbstractRutaCondition {
     if (typeSystem.subsumes(type, annotation.getType())) {
       result.add(annotation);
     } else {
-      Set<AnnotationFS> beginAnchors = stream.getBeginAnchor(annotation.getBegin())
+      Collection<AnnotationFS> beginAnchors = stream.getBeginAnchor(annotation.getBegin())
               .getBeginAnchors(type);
-      Set<AnnotationFS> endAnchors = stream.getEndAnchor(annotation.getEnd()).getEndAnchors(type);
+      Collection<AnnotationFS> endAnchors = stream.getEndAnchor(annotation.getEnd()).getEndAnchors(type);
       @SuppressWarnings("unchecked")
       Collection<AnnotationFS> intersection = CollectionUtils
               .intersection(beginAnchors, endAnchors);

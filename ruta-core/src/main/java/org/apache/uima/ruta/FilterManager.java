@@ -135,10 +135,7 @@ public class FilterManager {
   }
 
   private FSMatchConstraint createTypeConstraint(Collection<Type> types) {
-    BasicTypeConstraint result = new BasicTypeConstraint(cf.createTypeConstraint(), types);
-    for (Type each : types) {
-      result.add(each);
-    }
+    BasicTypeConstraint result = new BasicTypeConstraint(types);
     return result;
   }
 

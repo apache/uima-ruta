@@ -19,6 +19,7 @@
 
 package org.apache.uima.ruta.condition;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -47,7 +48,7 @@ public class IsCondition extends TypeSentiveCondition {
           InferenceCrowd crowd) {
     RutaBasic beginAnchor = stream.getBeginAnchor(annotation.getBegin());
     if (!isWorkingOnList()) {
-      Set<AnnotationFS> beginAnchors = beginAnchor
+      Collection<AnnotationFS> beginAnchors = beginAnchor
               .getBeginAnchors(type.getType(element.getParent()));
       boolean result = false;
       if (beginAnchors != null) {
@@ -63,7 +64,7 @@ public class IsCondition extends TypeSentiveCondition {
       boolean result = false;
       List<Type> types = getList().getList(element.getParent(), stream);
       for (Type type : types) {
-        Set<AnnotationFS> beginAnchors = beginAnchor.getBeginAnchors(type);
+        Collection<AnnotationFS> beginAnchors = beginAnchor.getBeginAnchors(type);
         if (beginAnchors != null) {
           for (AnnotationFS annotationFS : beginAnchors) {
             result |= check(annotation, annotationFS);

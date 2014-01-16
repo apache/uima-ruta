@@ -20,6 +20,7 @@
 package org.apache.uima.ruta.condition;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -77,7 +78,7 @@ public class ContextCountCondition extends TypeSentiveCondition {
       int counter = 0;
       List<RutaBasic> basicsInWindow = stream.getBasicsInWindow(eachContext);
       for (RutaBasic eachBasic : basicsInWindow) {
-        Set<AnnotationFS> beginAnchors = eachBasic.getBeginAnchors(annotation.getType());
+        Collection<AnnotationFS> beginAnchors = eachBasic.getBeginAnchors(annotation.getType());
         if (beginAnchors != null) {
           for (AnnotationFS each : beginAnchors) {
             counter++;

@@ -73,8 +73,7 @@ public class ExecAction extends CallAction {
     if (block == null) {
       return;
     }
-    RutaStream completeStream = stream.getCompleteStream();
-    ScriptApply apply = block.apply(completeStream, crowd);
+    ScriptApply apply = block.apply(stream, crowd);
     match.addDelegateApply(this, apply);
   }
 

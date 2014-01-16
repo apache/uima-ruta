@@ -68,20 +68,25 @@ public class GetListAction extends AbstractRutaAction {
 
       if (TYPES_AT_BEGIN.equals(op)) {
         RutaBasic beginAnchor = stream.getBeginAnchor(matched.getBegin());
-        Collection<Set<AnnotationFS>> values = beginAnchor.getBeginMap().values();
+        Collection<?>[] beginMap = beginAnchor.getBeginMap();
         Set<AnnotationFS> aset = new HashSet<AnnotationFS>();
-        for (Set<AnnotationFS> set : values) {
-          aset.addAll(set);
+        for (Collection<?> set : beginMap) {
+          if(set != null) {
+            aset.addAll((Collection<? extends AnnotationFS>) set);
+          }
         }
         for (AnnotationFS annotationFS : aset) {
           list.add(annotationFS.getType());
         }
       } else if (TYPES_AT_END.equals(op)) {
         RutaBasic endAnchor = stream.getEndAnchor(matched.getEnd());
-        Collection<Set<AnnotationFS>> values = endAnchor.getEndMap().values();
+//        Collection<Set<AnnotationFS>> values = endAnchor.getEndMap().values();
+        Collection<?>[] endMap = endAnchor.getEndMap();
         Set<AnnotationFS> aset = new HashSet<AnnotationFS>();
-        for (Set<AnnotationFS> set : values) {
-          aset.addAll(set);
+        for (Collection<?> set : endMap) {
+          if(set != null) {
+            aset.addAll((Collection<? extends AnnotationFS>) set);
+          }
         }
         for (AnnotationFS annotationFS : aset) {
           list.add(annotationFS.getType());

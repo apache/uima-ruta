@@ -140,9 +140,9 @@ public class GatherAction extends AbstractStructureAction {
               structure.setFeatureValue(targetFeature, fs);
             } else {
               // search for
-              Set<AnnotationFS> beginAnchors = stream.getBeginAnchor(fs.getBegin())
+              Collection<AnnotationFS> beginAnchors = stream.getBeginAnchor(fs.getBegin())
                       .getBeginAnchors(range);
-              Set<AnnotationFS> endAnchors = stream.getEndAnchor(fs.getEnd()).getEndAnchors(range);
+              Collection<AnnotationFS> endAnchors = stream.getEndAnchor(fs.getEnd()).getEndAnchors(range);
               @SuppressWarnings("unchecked")
               Collection<AnnotationFS> intersection = CollectionUtils.intersection(beginAnchors,
                       endAnchors);

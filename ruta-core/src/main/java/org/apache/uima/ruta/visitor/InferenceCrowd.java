@@ -61,6 +61,9 @@ public class InferenceCrowd implements RutaInferenceVisitor {
 
   public void annotationAdded(AnnotationFS annotation,
           AbstractRuleMatch<? extends AbstractRule> creator) {
+    if(visitors.isEmpty()) { 
+      return;
+    }
     for (RutaInferenceVisitor each : visitors) {
       each.annotationAdded(annotation, creator);
     }

@@ -19,6 +19,7 @@
 
 package org.apache.uima.ruta.condition;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -69,7 +70,7 @@ public class PartOfNeqCondition extends TypeSentiveCondition {
     }
     while (stream.isValid()) {
       RutaBasic each = (RutaBasic) stream.get();
-      Set<AnnotationFS> set = each.getBeginAnchors(t);
+      Collection<AnnotationFS> set = each.getBeginAnchors(t);
       if (set == null) {
         stream.moveToPrevious();
         continue;

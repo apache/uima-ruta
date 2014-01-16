@@ -19,6 +19,7 @@
 
 package org.apache.uima.ruta.action;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -55,9 +56,9 @@ public class ShiftAction extends MarkAction {
       AnnotationFS eachDestination = destinationAnnotationSpans.get(i);
       Set<AnnotationFS> allAnchoredAnnotations = new TreeSet<AnnotationFS>(
               new AnnotationComparator());
-      Set<AnnotationFS> beginAnchors = stream.getBeginAnchor(eachMatched.getBegin())
+      Collection<AnnotationFS> beginAnchors = stream.getBeginAnchor(eachMatched.getBegin())
               .getBeginAnchors(targetType);
-      Set<AnnotationFS> endAnchors = stream.getEndAnchor(eachMatched.getEnd()).getEndAnchors(
+      Collection<AnnotationFS> endAnchors = stream.getEndAnchor(eachMatched.getEnd()).getEndAnchors(
               targetType);
       allAnchoredAnnotations.addAll(beginAnchors);
       allAnchoredAnnotations.addAll(endAnchors);

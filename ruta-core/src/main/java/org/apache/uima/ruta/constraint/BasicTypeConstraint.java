@@ -22,6 +22,7 @@ package org.apache.uima.ruta.constraint;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.uima.cas.FSTypeConstraint;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
@@ -30,19 +31,16 @@ import org.apache.uima.ruta.type.RutaBasic;
 public class BasicTypeConstraint implements FSTypeConstraint {
   private static final long serialVersionUID = 1115953538613617791L;
 
-  private final FSTypeConstraint constraint;
 
   private final Collection<Type> types;
 
-  public BasicTypeConstraint(FSTypeConstraint constraint, Collection<Type> types) {
+  public BasicTypeConstraint(Collection<Type> types) {
     super();
-    this.constraint = constraint;
     this.types = types;
   }
 
-  public BasicTypeConstraint(FSTypeConstraint constraint, Type type) {
+  public BasicTypeConstraint(Type type) {
     super();
-    this.constraint = constraint;
     if (type != null) {
       this.types = new ArrayList<Type>();
       this.types.add(type);
@@ -52,39 +50,38 @@ public class BasicTypeConstraint implements FSTypeConstraint {
   }
 
   public void add(Type type) {
-    constraint.add(type);
+    types.add(type);
   }
 
+  public void add(String typeString) {
+    throw new NotImplementedException();
+  }
+  
+
   public boolean match(FeatureStructure fs) {
-    if (fs instanceof RutaBasic) {
-      RutaBasic tmb = (RutaBasic) fs;
-      if (tmb.getBeginMap().isEmpty() && tmb.getEndMap().isEmpty()) {
-        return true;
-      }
-    }
-    if (constraint.match(fs)) {
-      return true;
-    }
     boolean result = false;
     if (fs instanceof RutaBasic) {
       RutaBasic tmb = (RutaBasic) fs;
+      if(tmb.isEmpty()) {
+        return true;
+      }
       if (types != null) {
         for (Type each : types) {
-          result |= tmb.isPartOf(each) || tmb.beginsWith(each) || tmb.endsWith(each);
-          if (result)
-            break;
+          result |= tmb.isPartOf(each);
+          if (result) {
+            return true;
+          }
         }
       }
-    }
+    } 
     return result;
   }
 
   @Override
   public String toString() {
-    return "(BASIC " + constraint.toString() + " with " + types + ")";
+    return "(BASIC " +  " with " + types + ")";
   }
 
-  public void add(String type) {
-    constraint.add(type);
-  }
+
+
 }

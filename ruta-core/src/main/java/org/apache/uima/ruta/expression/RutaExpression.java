@@ -44,9 +44,9 @@ public class RutaExpression extends RutaElement implements IRutaExpression {
       result.add(annotation);
       return result;
     } else {
-      Set<AnnotationFS> beginAnchors = stream.getBeginAnchor(annotation.getBegin())
+      Collection<AnnotationFS> beginAnchors = stream.getBeginAnchor(annotation.getBegin())
               .getBeginAnchors(type);
-      Set<AnnotationFS> endAnchors = stream.getEndAnchor(annotation.getEnd()).getEndAnchors(type);
+      Collection<AnnotationFS> endAnchors = stream.getEndAnchor(annotation.getEnd()).getEndAnchors(type);
       @SuppressWarnings("unchecked")
       Collection<AnnotationFS> intersection = CollectionUtils
               .intersection(beginAnchors, endAnchors);

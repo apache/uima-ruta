@@ -20,6 +20,7 @@
 package org.apache.uima.ruta.action;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -63,7 +64,7 @@ public class UnmarkAction extends TypeSensitiveAction {
         stream.removeAnnotation(annotationFS, t);
       } else {
         RutaBasic beginAnchor = stream.getBeginAnchor(annotationFS.getBegin());
-        Set<AnnotationFS> beginAnchors = beginAnchor.getBeginAnchors(t);
+        Collection<AnnotationFS> beginAnchors = beginAnchor.getBeginAnchors(t);
         if (beginAnchors != null) {
           for (AnnotationFS each : new ArrayList<AnnotationFS>(beginAnchors)) {
             if (allAtAnchor || each.getEnd() == annotationFS.getEnd()) {

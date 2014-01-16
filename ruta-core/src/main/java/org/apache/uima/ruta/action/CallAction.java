@@ -131,7 +131,7 @@ public class CallAction extends AbstractRutaAction {
         if (fs instanceof RutaBasic) {
           RutaBasic basic = (RutaBasic) fs;
           for (Type type : types) {
-            Set<AnnotationFS> beginAnchors = basic.getBeginAnchors(type);
+            Collection<AnnotationFS> beginAnchors = basic.getBeginAnchors(type);
             for (AnnotationFS a : beginAnchors) {
               if (a != null && !a.getType().getName().equals("uima.tcas.DocumentAnnotation")
                       && !(a instanceof RutaBasic)) {

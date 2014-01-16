@@ -19,6 +19,7 @@
 
 package org.apache.uima.ruta.condition;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -64,7 +65,7 @@ public class PartOfCondition extends TypeSentiveCondition {
 
   private boolean check(Type t, AnnotationFS annotation, RuleElement element, RutaStream stream) {
     RutaBasic beginAnchor = stream.getBeginAnchor(annotation.getBegin());
-    Set<AnnotationFS> beginAnchors = beginAnchor.getBeginAnchors(t);
+    Collection<AnnotationFS> beginAnchors = beginAnchor.getBeginAnchors(t);
     return beginAnchor.isPartOf(t) || (beginAnchors != null && !beginAnchors.isEmpty());
   }
 
