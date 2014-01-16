@@ -210,8 +210,12 @@ Document{->CALL(AnotherScript)}; // <- rule executes "AnotherScript.ruta"]]></pr
       <itemizedlist mark='opencircle'>
         <listitem>
           <para>
-            Type System (TYPESYSTEM): includes the types defined in an
-            external type system.
+            Type System (IMPORT or TYPESYSTEM): includes the types
+            defined in an external type system. You can select which
+            types or packages to import from a type system and how to
+            alias them. If use IMPORT statements, consider enabling
+            <link
+            linkend='ugr.tools.ruta.ae.basic.parameter.strictImports'>strictImports</link>.
           </para>
         </listitem>
         <listitem>
@@ -236,17 +240,49 @@ Document{->CALL(AnotherScript)}; // <- rule executes "AnotherScript.ruta"]]></pr
     </para>
       <section>
         <title>
-          <emphasis role="bold">Example:</emphasis>
+          <emphasis role="bold">Type System Example:</emphasis>
         </title>
         <para>
-          <programlisting><![CDATA[ENINGE my.package.ExternalEngine; // <- "ExternalEngine.xml" in the 
- // "my.package" package (in the descriptor folder)
+          <programlisting><![CDATA[// Imports all the types from "ExternalTypeSystem.xml"
+TYPESYSTEM my.package.ExternalTypeSystem;
+IMPORT * FROM my.package.ExternalTypeSystem;
+
+// Import my.package.SomeType from "ExternalTypeSystem.xml"
+IMPORT my.package.SomeType FROM my.package.ExternalTypeSystem;
+
+// Import my.package.SomeType from the typesystem available to
+// the CAS at runtime. This can be useful when typesystems are
+// loaded by uimaFIT
+IMPORT my.package.SomeType;
+
+// Import my.package.SomeType from "ExternalTypeSystem.xml" 
+// and alias it to T1
+IMPORT my.package.SomeType FROM my.package.ExternalTypeSystem AS T1;
+
+// Import all types in my.package from "ExternalTypeSystem.xml"
+IMPORT PACKAGE my.package FROM my.package.ExternalTypeSystem;
+
+// Import package my.package from "ExternalTypeSystem.xml" 
+// and alias it to p1 (p1.SomeType can now be used)
+IMPORT PACKAGE my.package FROM my.package.ExternalTypeSystem AS p1; 
+
+// Import all packages from "ExternalTypeSystem.xml" and alias them to p2
+IMPORT PACKAGE * FROM my.package.ExternalTypeSystem AS p2;]]></programlisting>
+        </para>
+      </section>
+
+      <section>
+        <title>
+          <emphasis role="bold">Analysis Engine Example:</emphasis>
+        </title>
+        <para>
+          <programlisting><![CDATA[ENGINE my.package.ExternalEngine; // <- "ExternalEngine.xml" in the 
+// "my.package" package (in the descriptor folder)
 UIMAFIT my.implementation.AnotherEngine;
-TYPESYSTEM my.package.ExternalTypeSystem; // <- "ExternalTypeSystem.xml" 
- // in the "my.package" package (in the descriptor folder)
+
 Document{->RETAINTYPE(SPACE,BREAK),CALL(ExternalEngine)}; 
- // calls ExternalEngine, but retains white spaces]]></programlisting>
-Document{-> EXEC(AnotherEngine, {SomeType})};
+// calls ExternalEngine, but retains white spaces
+Document{-> EXEC(AnotherEngine, {SomeType})};]]></programlisting>
         </para>
       </section>
   </section>

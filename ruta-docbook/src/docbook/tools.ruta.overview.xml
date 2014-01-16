@@ -1021,7 +1021,7 @@ ae.process(cas);]]></programlisting>
         <section id="ugr.tools.ruta.ae.basic.parameter.strictImports">
           <title>strictImports</title>
           <para>
-            This parameter specifies whether short type names should be resolved against the typesystems declared in the script or at runtime in the CAS typesystem.
+            This parameter specifies whether short type names should be resolved against the typesystems declared in the script (true) or at runtime in the CAS typesystem (false).
             The default value is set to false.
           </para>
         </section>

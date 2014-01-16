@@ -29,8 +29,9 @@
     <programlisting><![CDATA[Script              -> PackageDeclaration? GlobalStatements Statements
 PackageDeclaration  -> "PACKAGE" DottedIdentifier ";"
 GlobalStatments     -> GlobalStatement*   
-GlobalStatment      -> ("TYPESYSTEM" | "SCRIPT" | "ENGINE" | "UIMAFIT") 
+GlobalStatment      -> ("SCRIPT" | "ENGINE" | "UIMAFIT") 
                        DottedIdentifier2 ";"
+                       | ImportStatement
 Statements          -> Statement*
 Statement           -> Declaration | VariableDeclaration 
                         | BlockDeclaration | SimpleStatement ";"]]></programlisting>
@@ -38,12 +39,27 @@ Statement           -> Declaration | VariableDeclaration
     "//" and always go to the end of the line.
   </para>
   <para>
+    Syntax of import statements:
+   
+    <programlisting><![CDATA[ImportStatement  -> (ImportType | ImportPackage | ImportTypeSystem) ";"
+ImportType       -> "IMPORT" Type ("FROM" Typesystem)? 
+                    ("AS" Alias)?
+ImportPackage    -> "IMPORT" "PAKAGE" Package ("FROM" Typesystem)? 
+                    ("AS" Alias)?
+ImportTypeSystem -> "IMPORT" "PACKAGE" "*" "FROM" TypeSystem ("AS" Alias)?
+                    | "IMPORT" "*" "FROM" Typesystem
+                    | "TYPESYSTEM" Typesystem
+Type             -> DottedIdentifier
+Package          -> DottedIdentifier
+TypeSystem       -> DottedIdentifier2
+Alias            -> Identifier]]></programlisting>
+
     Example beginning of a UIMA Ruta file:
     <programlisting><![CDATA[PACKAGE uima.ruta.example;
 
 // import the types of this type system 
 // (located in the descriptor folder -> types folder)
-TYPESYSTEM types.BibtexTypeSystem;
+IMPORT * FROM types.BibtexTypeSystem;
 
 SCRIPT uima.ruta.example.Author;
 SCRIPT uima.ruta.example.Title;
