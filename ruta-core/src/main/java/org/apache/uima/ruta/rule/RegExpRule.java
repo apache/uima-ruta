@@ -118,7 +118,7 @@ public class RegExpRule extends AbstractRule {
       Type type = key.getType(getParent());
       Map<IStringExpression, IRutaExpression> value = entry.getValue();
       INumberExpression cgExpr = typeMap.get(key);
-      int cg = cgExpr.getIntegerValue(getParent(), null, stream);
+      int cg = cgExpr == null ? 0 : cgExpr.getIntegerValue(getParent(), null, stream);
       Map<Type, Map<String, Object>> map = result.get(cg);
       if (map == null) {
         map = new HashMap<Type, Map<String, Object>>();
