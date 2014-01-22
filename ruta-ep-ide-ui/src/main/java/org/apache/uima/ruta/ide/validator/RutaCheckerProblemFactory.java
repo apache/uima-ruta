@@ -21,6 +21,7 @@ package org.apache.uima.ruta.ide.validator;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.ruta.ide.core.extensions.IRutaCheckerProblemFactory;
 import org.apache.uima.ruta.ide.parser.ast.FeatureMatchExpression;
 import org.apache.uima.ruta.ide.parser.ast.RutaAbstractDeclaration;
@@ -38,7 +39,7 @@ import org.eclipse.dltk.compiler.problem.ProblemSeverity;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.builder.ISourceLineTracker;
 
-public class RutaCheckerProblemFactory implements IRutaCheckerProblemFactory{
+public class RutaCheckerProblemFactory implements IRutaCheckerProblemFactory {
   private ISourceLineTracker linetracker;
 
   private String fileName;
@@ -75,10 +76,10 @@ public class RutaCheckerProblemFactory implements IRutaCheckerProblemFactory{
       sb.append(string);
       sb.append(", ");
     }
-
-    return new RutaCheckerDefaultProblem(this.fileName, "Types in " + localPath
-            + " share same short name, but with different namespaces: " + sb.toString(), node,
-            getLine(node), severity);
+    String msg = String.format(
+            "Types in %s share same short name, but with different namespaces: %s.", localPath,
+            StringUtils.abbreviate(sb.toString(), 150));
+    return new RutaCheckerDefaultProblem(this.fileName, msg, node, getLine(node), severity);
   }
 
   public IProblem createDuplicateShortName(RutaAbstractDeclaration var, ProblemSeverity severity) {
@@ -113,7 +114,7 @@ public class RutaCheckerProblemFactory implements IRutaCheckerProblemFactory{
             linetracker.getLineNumberOfOffset(ref.sourceStart()));
     return problem;
   }
-  
+
   private String generateFileNotFoundProblemMsg(ASTNode node) {
     return generateFileNotFoundProblemMsg(node.toString());
   }
