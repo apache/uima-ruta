@@ -517,8 +517,8 @@ public class MultiTreeWordList implements RutaWordList {
     Map<String, Set<String>> resultMap = null;
 
     if (!edit) {
-      return recursiveContains2(root, string, 0, ignoreCase && string.length() > ignoreLength, true, ignoreToken.toCharArray(),
-              ignoreLength);
+      return recursiveContains2(root, string, 0, ignoreCase && string.length() > ignoreLength,
+              true, ignoreToken.toCharArray(), ignoreLength);
     } else {
       if (string.length() >= ignoreLength && ignoreCase) {
         resultMap = editDistance(string, (int) distance, true, ignoreToken, true);
@@ -538,6 +538,7 @@ public class MultiTreeWordList implements RutaWordList {
 
     return resultList;
   }
+
   /**
    * Returns true, if the MultiTreeWordList contains the string text, false otherwise.
    * 
@@ -565,10 +566,10 @@ public class MultiTreeWordList implements RutaWordList {
     }
 
     if (index == text.length()) {
-      if(pointer.isWordEnd()) {
+      if (pointer.isWordEnd()) {
         return new ArrayList<String>(pointer.getTypes());
       }
-      if(fragment) {
+      if (fragment) {
         return Collections.emptyList();
       }
     }
@@ -592,25 +593,34 @@ public class MultiTreeWordList implements RutaWordList {
 
       // Lower Case Node.
       MultiTextNode childNodeL = pointer.getChildNode(Character.toLowerCase(charAt));
-
+      if(childNodeL == null) {
+        childNodeL = skipWS(pointer, Character.toLowerCase(charAt));
+      }
+      
       // Upper Case Node.
       MultiTextNode childNodeU = pointer.getChildNode(Character.toUpperCase(charAt));
-
+      if(childNodeU == null) {
+        childNodeU = skipWS(pointer, Character.toUpperCase(charAt));
+      }
+      
       if (charAtIgnored && childNodeL == null && childNodeU == null) {
         // Character is ignored and does not appear.
         return recursiveContains2(pointer, text, next, ignoreCase, fragment, ignoreChars,
                 maxIgnoreChars);
       } else {
         // Recursion.
-        Collection<String> recursiveContainsL = recursiveContains2(childNodeL, text, next, ignoreCase, fragment, ignoreChars,
-                maxIgnoreChars);
-        Collection<String> recursiveContainsU = recursiveContains2(childNodeU, text, next, ignoreCase, fragment, ignoreChars,
-                        maxIgnoreChars);
+        Collection<String> recursiveContainsL = recursiveContains2(childNodeL, text, next,
+                ignoreCase, fragment, ignoreChars, maxIgnoreChars);
+        Collection<String> recursiveContainsU = recursiveContains2(childNodeU, text, next,
+                ignoreCase, fragment, ignoreChars, maxIgnoreChars);
+        if(recursiveContainsL == null && recursiveContainsU == null) {
+          return null;
+        }
         List<String> result = new LinkedList<String>();
-        if(recursiveContainsL != null) {
+        if (recursiveContainsL != null) {
           result.addAll(recursiveContainsL);
         }
-        if(recursiveContainsU!= null) {
+        if (recursiveContainsU != null) {
           result.addAll(recursiveContainsU);
         }
         return result;
@@ -630,6 +640,19 @@ public class MultiTreeWordList implements RutaWordList {
                 maxIgnoreChars);
       }
     }
+  }
+
+  private MultiTextNode skipWS(MultiTextNode pointer, char charAt) {
+    MultiTextNode childNode = pointer.getChildNode(' ');
+    if (childNode != null) {
+      MultiTextNode node = childNode.getChildNode(charAt);
+      if (node == null) {
+        return skipWS(childNode, charAt);
+      } else {
+        return node;
+      }
+    }
+    return null;
   }
   
   /**
@@ -729,47 +752,58 @@ public class MultiTreeWordList implements RutaWordList {
       String text = anchorBasic.getCoveredText();
       StringBuilder candidate = new StringBuilder(text);
       String lastCandidate = candidate.toString();
-      List<AnnotationFS> interResults = new ArrayList<AnnotationFS>();
 
-      while (streamPointer.isValid()) {
+      if (text.length() != 1 || !ignoreToken.contains(text)) {
 
-        List<String> types = containsFragment(candidate.toString(), ignoreCase, ignoreLength, edit,
-                distance, ignoreToken);
+        List<AnnotationFS> interResults = new ArrayList<AnnotationFS>();
 
-        if (types != null && !types.isEmpty()) {
-          streamPointer.moveToNext();
-          if (streamPointer.isValid()) {
-            RutaBasic next = (RutaBasic) streamPointer.get();
-            // List<String> contains = contains(candidate,
-            // ignoreCase,
-            // ignoreLength, edit, distance, ignoreToken);
+        while (streamPointer.isValid()) {
 
-            tryToCreateAnnotation(types, stream, results, basicsToAdd, candidate.toString(), interResults,
-                    ignoreCase, ignoreLength, edit, distance, ignoreToken, typeMap);
-            //
-            lastCandidate = candidate.toString();
-            candidate.append(next.getCoveredText());
-            basicsToAdd.add(next);
-
-          } else {
-            // !streamPointer.isValid();
-            tryToCreateAnnotation(types, stream, results, basicsToAdd, lastCandidate, interResults,
-                    ignoreCase, ignoreLength, edit, distance, ignoreToken, typeMap);
+          boolean skip = false;
+          String currentBasicText = basicsToAdd.get(basicsToAdd.size()-1).getCoveredText();
+          if (currentBasicText.length() == 1 && ignoreToken.contains(currentBasicText)) {
+            skip = true;
           }
-        } else {
+          List<String> types = null;
+          if (!skip) {
+            types = containsFragment(candidate.toString(), ignoreCase, ignoreLength, edit,
+                    distance, ignoreToken);
+          }
+          if (skip || types != null) {
+            streamPointer.moveToNext();
+            if (streamPointer.isValid()) {
+              RutaBasic next = (RutaBasic) streamPointer.get();
+              // List<String> contains = contains(candidate,
+              // ignoreCase,
+              // ignoreLength, edit, distance, ignoreToken);
+              if (!skip) {
+                tryToCreateAnnotation(types, stream, results, basicsToAdd, candidate.toString(),
+                        interResults, ignoreCase, ignoreLength, edit, distance, ignoreToken,
+                        typeMap);
+              }
+              lastCandidate = candidate.toString();
+              candidate.append(next.getCoveredText());
+              basicsToAdd.add(next);
 
-          // containsFragment.isEmpty();
-          // basicsToAdd.remove(basicsToAdd.size() - 1);
-          // tryToCreateAnnotation(stream, results, basicsToAdd,
-          // lastCandidate, interResults, ignoreCase,
-          // ignoreLength, edit, distance, ignoreToken, typeMap);
+            } else {
+              // !streamPointer.isValid();
+              tryToCreateAnnotation(types, stream, results, basicsToAdd, lastCandidate,
+                      interResults, ignoreCase, ignoreLength, edit, distance, ignoreToken, typeMap);
+            }
+          } else {
 
-          // breaks inner while()-loop.
-          break;
+            // containsFragment.isEmpty();
+            // basicsToAdd.remove(basicsToAdd.size() - 1);
+            // tryToCreateAnnotation(stream, results, basicsToAdd,
+            // lastCandidate, interResults, ignoreCase,
+            // ignoreLength, edit, distance, ignoreToken, typeMap);
+
+            // breaks inner while()-loop.
+            break;
+          }
+
         }
-
       }
-
       stream.moveToNext();
     }
 
@@ -782,10 +816,10 @@ public class MultiTreeWordList implements RutaWordList {
     return new ArrayList<AnnotationFS>();
   }
 
-  private void tryToCreateAnnotation(List<String> types, RutaStream stream, Collection<AnnotationFS> results,
-          List<RutaBasic> basicsToAdd, String lastCandidate, List<AnnotationFS> interResult,
-          boolean ignoreCase, int ignoreLength, boolean edit, double distance, String ignoreToken,
-          Map<String, Type> map) {
+  private void tryToCreateAnnotation(List<String> types, RutaStream stream,
+          Collection<AnnotationFS> results, List<RutaBasic> basicsToAdd, String lastCandidate,
+          List<AnnotationFS> interResult, boolean ignoreCase, int ignoreLength, boolean edit,
+          double distance, String ignoreToken, Map<String, Type> map) {
     if (basicsToAdd.size() >= 1 && types != null) {
       for (String each : types) {
         Type type = map.get(each);

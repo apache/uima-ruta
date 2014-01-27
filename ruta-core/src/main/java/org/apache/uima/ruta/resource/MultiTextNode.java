@@ -48,10 +48,8 @@ public class MultiTextNode {
   /** Documents/Types that contain the value specified by the super class. */
   private Set<String> types;
 
-  /**
-   * Default-Kapazität, mit der die Kinder-Hashmap initialisiert wird. Also die Default-Anzahl der
-   * Kinder, mit der wir rechnen.
-   */
+  private boolean isWordEnd = false;
+  
   private static final int DEFAUL_INITIAL_CAPACITY = 5;
 
   /** Default constructor uses a space as value. */
@@ -69,24 +67,7 @@ public class MultiTextNode {
    *          Indicates whether this is a word end.
    */
   public MultiTextNode(char value, boolean isWordEnd) {
-    this(value, isWordEnd, new String[] {});
-  }
-
-  /**
-   * Constructs a MultiTextNode with a character and the information, whether this is a word end or
-   * not. Documents are the documents, where the word, represented by the path from the root to this
-   * node, occurs.
-   * 
-   * @param value
-   *          The Character represented by the node.
-   * @param isWordEnd
-   *          Indicates whether this is a word end.
-   * @param documents
-   *          The documents, where the word, represented by the path from the root to this node,
-   *          occurs.
-   */
-  public MultiTextNode(char value, boolean isWordEnd, String... documents) {
-    this(value, isWordEnd, DEFAUL_INITIAL_CAPACITY, documents);
+    this(value, isWordEnd, DEFAUL_INITIAL_CAPACITY);
   }
 
   /**
@@ -100,32 +81,11 @@ public class MultiTextNode {
    *          Indicates whether this is a word end.
    * @param capacity
    *          The initial capacity of the map of child nodes.
-   * @param documents
-   *          The documents, where the word, represented by the path from the root to this node,
-   *          occurs.
    */
-  private MultiTextNode(char value, boolean isWordEnd, int capacity, String... documents) {
-
+  private MultiTextNode(char value, boolean isWordEnd, int capacity) {
     this.value = value;
     this.children = new HashMap<Character, MultiTextNode>(capacity);
     setWordEnd(isWordEnd);
-
-    for (String s : documents) {
-      addType(s);
-    }
-  }
-
-  /**
-   * Adds an edge c to the map of children, which points to a new MultiTextNode with value c.
-   * 
-   * @param c
-   *          The value of the new node.
-   * @param isWordEnd
-   *          The isWordEnd-property of the new node.
-   * @return The previous value associated with c, if exists, null otherwise.
-   */
-  public MultiTextNode addChild(char c, boolean isWordEnd) {
-    return addChild(new MultiTextNode(c, false));
   }
 
   /**
@@ -136,15 +96,13 @@ public class MultiTextNode {
    * @return The previous value associated with the value of n, if exists, null otherwise.
    */
   public MultiTextNode addChild(MultiTextNode n) {
-
-    // Lazy Initialization.
     if (children == null) {
       children = new HashMap<Character, MultiTextNode>();
     }
-
     return children.put(n.getValue(), n);
   }
 
+  
   /**
    * Returns the child, when you follow the c-edge, if exists. Returns null otherwise.
    * 
@@ -176,12 +134,12 @@ public class MultiTextNode {
   }
 
   /**
-   * Returns a value which speficies, whether the word is finished or not.
+   * Returns a value which specifies, whether the word is finished or not.
    * 
-   * @return A value which speficies, whether the word is finished or not.
+   * @return A value which specifies, whether the word is finished or not.
    */
   public boolean isWordEnd() {
-    return types != null && !types.isEmpty();
+    return isWordEnd;
   }
 
   /**
@@ -207,8 +165,6 @@ public class MultiTextNode {
    * @return True, if the sources did not already contain the string document, false otherwise.
    */
   public boolean addType(String type) {
-
-    // Lazy Initialization.
     if (types == null) {
       types = new HashSet<String>();
     }
@@ -236,21 +192,7 @@ public class MultiTextNode {
    *          The boolean, isWordEnd is set to.
    */
   public void setWordEnd(boolean b) {
-    setWordEnd(b, new String[] {});
-  }
-
-  /**
-   * Sets isWordEnd to the specified boolean and adds a document to the types.
-   * 
-   * @param b
-   *          The boolean, isWordEnd is set to.
-   * @param document
-   *          The document which is added to the types.
-   */
-  public void setWordEnd(boolean b, String... documents) {
-    for (String document : documents) {
-      addType(document);
-    }
+    isWordEnd = b;
   }
 
   /**
@@ -344,4 +286,5 @@ public class MultiTextNode {
 
     return true;
   }
+
 }

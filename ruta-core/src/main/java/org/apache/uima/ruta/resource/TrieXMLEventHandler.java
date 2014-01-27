@@ -89,7 +89,6 @@ public class TrieXMLEventHandler extends DefaultHandler {
 
   @Override
   public void characters(char ch[], int start, int length) {
-    // if (listeningState == true) {
     if (stack.isEmpty()) {
       return;
     }
@@ -100,6 +99,7 @@ public class TrieXMLEventHandler extends DefaultHandler {
         type.append(String.valueOf(ch[i]));
       }
       peek.addType(type.toString());
+      peek.setWordEnd(true);
     } else if (inContent) {
       if (ch.length > 0) {
         peek.setValue(ch[0]);
@@ -107,7 +107,5 @@ public class TrieXMLEventHandler extends DefaultHandler {
         peek.setValue(' ');
       }
     }
-    // }
-
   }
 }

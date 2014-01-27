@@ -64,7 +64,23 @@ public class TrieTest {
     assertEquals("Kluegl", iterator.next().getCoveredText());
     assertEquals("Schor", iterator.next().getCoveredText());
     assertEquals("Kottmann", iterator.next().getCoveredText());
+    
+    t = RutaTestUtils.getTestType(cas, 3);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(3, ai.size());
+    iterator = ai.iterator();
+    assertEquals("Peter Kluegl", iterator.next().getCoveredText());
+    assertEquals("Marshall Schor", iterator.next().getCoveredText());
+    assertEquals("Joern Kottmann", iterator.next().getCoveredText());
 
+    t = RutaTestUtils.getTestType(cas, 4);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(3, ai.size());
+    iterator = ai.iterator();
+    assertEquals("Peter Kluegl: Ruta", iterator.next().getCoveredText());
+    assertEquals("Marshall Schor: UIMA", iterator.next().getCoveredText());
+    assertEquals("Joern Kottmann: CAS Editor", iterator.next().getCoveredText());
+    
     cas.release();
     
   }
