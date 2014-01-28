@@ -821,7 +821,8 @@ public class MultiTreeWordList implements RutaWordList {
           List<AnnotationFS> interResult, boolean ignoreCase, int ignoreLength, boolean edit,
           double distance, String ignoreToken, Map<String, Type> map) {
     if (basicsToAdd.size() >= 1 && types != null) {
-      for (String each : types) {
+      Set<String> set = new HashSet<String>(types);
+      for (String each : set) {
         Type type = map.get(each);
         if (type != null) {
           int begin = basicsToAdd.get(0).getBegin();
