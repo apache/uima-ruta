@@ -25,15 +25,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.TreeSet;
 
-import org.apache.uima.cas.ConstraintFactory;
-import org.apache.uima.cas.FSMatchConstraint;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.constraint.BasicTypeConstraint;
 import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
@@ -96,7 +93,7 @@ public class RutaTypeMatcher implements RutaMatcher {
     }
     if (annotation.getEnd() > 0) {
       stream.moveTo(lastBasic);
-      if (stream.isVisible(lastBasic)) {
+      if (stream.isVisible(lastBasic) && stream.get().getEnd() == lastBasic.getEnd()) {
         stream.moveToNext();
       }
     } else {
