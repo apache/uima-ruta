@@ -21,7 +21,9 @@ package org.apache.uima.ruta.ide.launching;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -67,6 +69,7 @@ import org.osgi.framework.Bundle;
 
 public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
 
+
   private String mode;
 
   @Override
@@ -108,15 +111,20 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
       engine = engineDefaultMethod;
     }
 
-    cmdline.append(RutaLaunchConstants.ARG_DESCRIPTOR + " ");
-    cmdline.append(engine + " ");
+    try {
+      cmdline.append(RutaLaunchConstants.ARG_DESCRIPTOR + " ");
+      cmdline.append(URLEncoder.encode(engine, RutaLauncher.URL_ENCODING) + " ");
 
-    cmdline.append(RutaLaunchConstants.ARG_INPUT_FOLDER + " ");
-    cmdline.append(makeAbsolute(input, configuration) + " ");
+      cmdline.append(RutaLaunchConstants.ARG_INPUT_FOLDER + " ");
+      cmdline.append(URLEncoder.encode(makeAbsolute(input, configuration), RutaLauncher.URL_ENCODING) + " ");
 
-    cmdline.append(RutaLaunchConstants.ARG_OUTPUT_FOLDER + " ");
-    cmdline.append(makeAbsolute(output, configuration) + " ");
+      cmdline.append(RutaLaunchConstants.ARG_OUTPUT_FOLDER + " ");
+      cmdline.append(URLEncoder.encode(makeAbsolute(output, configuration), RutaLauncher.URL_ENCODING) + " ");
 
+    } catch (UnsupportedEncodingException e) {
+      throw new CoreException(new Status(IStatus.ERROR, RutaIdeUIPlugin.PLUGIN_ID,
+              "Unsupported Encoding"));
+    }
     cmdline.append(RutaLaunchConstants.ARG_MODE + " ");
     cmdline.append(mode + " ");
 

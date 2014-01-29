@@ -23,7 +23,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -43,6 +45,8 @@ import org.xml.sax.SAXException;
 
 public class RutaLauncher {
 
+  public static final String URL_ENCODING = "UTF-8";
+  
   private static File descriptor;
 
   private static File inputFolder;
@@ -59,7 +63,7 @@ public class RutaLauncher {
 
   private static String view = null;
 
-  private static boolean parseCmdLineArgs(String[] args) {
+  private static boolean parseCmdLineArgs(String[] args) throws UnsupportedEncodingException {
     int index = 0;
     int count = 0;
     while (index < args.length) {
@@ -69,18 +73,18 @@ public class RutaLauncher {
           return false;
         }
         count++;
-        inputFolder = new File(args[index++]);
+        inputFolder = new File(URLDecoder.decode(args[index++], URL_ENCODING));
       } else if (RutaLaunchConstants.ARG_OUTPUT_FOLDER.equals(each)) {
         if (index >= args.length) {
           return false;
         }
-        outputFolder = new File(args[index++]);
+        outputFolder = new File(URLDecoder.decode(args[index++], URL_ENCODING));
       } else if (RutaLaunchConstants.ARG_DESCRIPTOR.equals(each)) {
         if (index >= args.length) {
           return false;
         }
         count++;
-        descriptor = new File(args[index++]);
+        descriptor = new File(URLDecoder.decode(args[index++], URL_ENCODING));
       } else if (RutaLaunchConstants.ARG_RECURSIVE.equals(each)) {
         if (index >= args.length) {
           return false;
@@ -116,7 +120,7 @@ public class RutaLauncher {
       throw new IllegalArgumentException("Passed arguments are invalid!");
     }
 
-    AnalysisEngine ae = Ruta.wrapAnalysisEngine(descriptor.toURL(), view, true, inputEncoding);
+    AnalysisEngine ae = Ruta.wrapAnalysisEngine(descriptor.toURI().toURL(), view, true, inputEncoding);
     configure(ae);
     CAS cas = ae.newCAS();
 
