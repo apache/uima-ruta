@@ -182,6 +182,8 @@ public class RutaEnvironment {
     try {
       if (strictImport) {
         importDeclaredTypes(cas.getTypeSystem());
+        importDeclaredTypesystems(cas.getTypeSystem());
+        importTypeAliases(cas.getTypeSystem());
         importPackageAliases(cas.getTypeSystem());
       } else {
         // import all types known to the cas
@@ -224,6 +226,43 @@ public class RutaEnvironment {
   }
 
   /**
+   * Import all types that are declared by the script.
+   *
+   * @param casTS Type system containing all known types.
+   * @throws InvalidXMLException When import cannot be resolved.
+   */
+  private void importDeclaredTypes(TypeSystem casTS) throws InvalidXMLException {
+    for (String name : declaredAnnotationTypes) {
+      Type type = casTS.getType(name);
+      if (type != null) {
+        addType(type);
+      } else {
+        throw new RuntimeException("Type '" + name + "' not found");
+      }
+    }
+  }
+
+  /**
+   * Import all typesystems that are imported in the script.
+   *
+   * @param casTS Type system containing all known types.
+   * @throws InvalidXMLException When import cannot be resolved.
+   */
+  private void importDeclaredTypesystems(TypeSystem casTS) throws InvalidXMLException {
+    String[] descriptors = typesystems.toArray(new String[typesystems.size()]);
+    TypeSystemDescription ts = TypeSystemDescriptionFactory.createTypeSystemDescription(descriptors);
+    ts.resolveImports();
+    for (TypeDescription td : ts.getTypes()) {
+      Type type = casTS.getType(td.getName());
+      if (type != null) {
+        addType(type);
+      } else {
+        throw new RuntimeException("Type '" + td.getName() + "' not found");
+      }
+    }
+  }
+
+  /**
    * Imports all type aliases.
    *
    * @param casTS Cas type system.
@@ -240,39 +279,6 @@ public class RutaEnvironment {
     }
   }
 
-  /**
-   * Import all types that are declared by the script or the typesystems it reference.
-   *
-   * @param casTS Type system containing all known types.
-   * @throws InvalidXMLException When import cannot be resolved.
-   */
-  private void importDeclaredTypes(TypeSystem casTS) throws InvalidXMLException {
-    // Add types from all the declared type systems
-    String[] descriptors = typesystems.toArray(new String[typesystems.size()]);
-    TypeSystemDescription ts = TypeSystemDescriptionFactory.createTypeSystemDescription(descriptors);
-    ts.resolveImports();
-    for (TypeDescription td : ts.getTypes()) {
-      Type type = casTS.getType(td.getName());
-      if (type != null) {
-        addType(type);
-      } else {
-        throw new RuntimeException("Type '" + td.getName() + "' not found");
-      }
-    }
-
-    // Add types that are imported explicitly
-    importTypeAliases(casTS);
-
-    // Add declared types
-    for (String name : declaredAnnotationTypes) {
-      Type type = casTS.getType(name);
-      if (type != null) {
-        addType(type);
-      } else {
-        throw new RuntimeException("Type '" + name + "' not found");
-      }
-    }
-  }
 
   /**
    * Import all packages that are imported by the script.
