@@ -182,11 +182,12 @@ public class RutaEnvironment {
     try {
       if (strictImport) {
         importDeclaredTypes(cas.getTypeSystem());
-        importDeclaredPackages(cas.getTypeSystem());
+        importPackageAliases(cas.getTypeSystem());
       } else {
         // import all types known to the cas
         importAllTypes(cas.getTypeSystem());
         importTypeAliases(cas.getTypeSystem());
+        importPackageAliases(cas.getTypeSystem());
       }
 
       // "Document" can be resolved to "uima.tcas.DocumentAnnotation" or "org.apache.uima.ruta.type.Document",
@@ -228,17 +229,13 @@ public class RutaEnvironment {
    * @param casTS Cas type system.
    */
   private void importTypeAliases(TypeSystem casTS) {
-    // Add types that are imported explicitly
     for (List<Alias> aliases : typeImports.values()) {
       for (Alias alias : aliases) {
-        if (!alias.shortName.equals(alias.longName)) {
-          // we only import aliases
-          Type type = casTS.getType(alias.longName);
-          if (type == null) {
-            throw new RuntimeException("Type '" + alias.longName + "' not found");
-          }
-          addType(alias.shortName, casTS.getType(alias.longName));
+        Type type = casTS.getType(alias.longName);
+        if (type == null) {
+          throw new RuntimeException("Type '" + alias.longName + "' not found");
         }
+        addType(alias.shortName, casTS.getType(alias.longName));
       }
     }
   }
@@ -264,15 +261,7 @@ public class RutaEnvironment {
     }
 
     // Add types that are imported explicitly
-    for (List<Alias> aliases : typeImports.values()) {
-      for (Alias alias : aliases) {
-        Type type = casTS.getType(alias.longName);
-        if (type == null) {
-          throw new RuntimeException("Type '" + alias.longName + "' not found");
-        }
-        addType(alias.shortName, casTS.getType(alias.longName));
-      }
-    }
+    importTypeAliases(casTS);
 
     // Add declared types
     for (String name : declaredAnnotationTypes) {
@@ -290,7 +279,7 @@ public class RutaEnvironment {
    *
    * @param casTS Type system containing all known types.
    */
-  private void importDeclaredPackages(TypeSystem casTS) {
+  private void importPackageAliases(TypeSystem casTS) {
     Iterator<Type> iter = casTS.getTypeIterator();
     while(iter.hasNext()) {
       Type type = iter.next();

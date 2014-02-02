@@ -195,6 +195,21 @@ public class ImportStatementsTest {
   }
 
   @Test
+  public void testImportPackageAsWhenStrictModeIsOff() throws Exception {
+    AnalysisEngine ae = createAE(NAMESPACE + "/" + NAME + "ImportPackageAs", false);
+    try {
+      CAS cas = ae.newCAS();
+      cas.setDocumentText("First Second");
+      ae.process(cas);
+
+      assertEquals(Arrays.asList("First"), selectText(cas, "org.apache.uima.ruta.Type1"));
+      assertEquals(Arrays.asList("Second"), selectText(cas, "org.apache.uima.ruta.Type2"));
+    } finally {
+      ae.destroy();
+    }
+  }
+
+  @Test
   public void testImportPackageFromCasTypeSystem() throws Exception {
     AnalysisEngine ae = createAE(NAMESPACE + "/" + NAME + "ImportPackageFromCasTypeSystem", true);
     try {

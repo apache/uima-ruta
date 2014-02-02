@@ -1,0 +1,6 @@
+PACKAGE org.apache.uima.ruta;
+
+IMPORT PACKAGE org.apache.uima.ruta AS pkg;
+
+W{REGEXP("First") -> MARK(pkg.Type1)};
+W{REGEXP("Second") -> MARK(pkg.Type2)};
