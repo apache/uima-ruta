@@ -186,6 +186,7 @@ public class RutaEnvironment {
       } else {
         // import all types known to the cas
         importAllTypes(cas.getTypeSystem());
+        importTypeAliases(cas.getTypeSystem());
       }
 
       // "Document" can be resolved to "uima.tcas.DocumentAnnotation" or "org.apache.uima.ruta.type.Document",
@@ -217,6 +218,27 @@ public class RutaEnvironment {
       List<Type> list = ts.getProperlySubsumedTypes(topType);
       for (Type type : list) {
         addType(type);
+      }
+    }
+  }
+
+  /**
+   * Imports all type aliases.
+   *
+   * @param casTS Cas type system.
+   */
+  private void importTypeAliases(TypeSystem casTS) {
+    // Add types that are imported explicitly
+    for (List<Alias> aliases : typeImports.values()) {
+      for (Alias alias : aliases) {
+        if (!alias.shortName.equals(alias.longName)) {
+          // we only import aliases
+          Type type = casTS.getType(alias.longName);
+          if (type == null) {
+            throw new RuntimeException("Type '" + alias.longName + "' not found");
+          }
+          addType(alias.shortName, casTS.getType(alias.longName));
+        }
       }
     }
   }

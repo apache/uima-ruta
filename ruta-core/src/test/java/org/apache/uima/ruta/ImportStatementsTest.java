@@ -132,6 +132,21 @@ public class ImportStatementsTest {
   }
 
   @Test
+  public void testImportTypeAsStrictModeOff() throws Exception {
+    AnalysisEngine ae = createAE(NAMESPACE + "/" + NAME + "ImportTypeAs", false);
+    try {
+      CAS cas = ae.newCAS();
+      cas.setDocumentText("First Second");
+      ae.process(cas);
+
+      assertEquals(Arrays.asList("First"), selectText(cas, "org.apache.uima.ruta.Type1"));
+      assertEquals(Arrays.asList("Second"), selectText(cas, "org.apache.uima.ruta.Type2"));
+    } finally {
+      ae.destroy();
+    }
+  }
+
+  @Test
   public void testImportStarFromTypeSystem() throws Exception {
     AnalysisEngine ae = createAE(NAMESPACE + "/" + NAME + "ImportStarFromTypeSystem", true);
     try {
