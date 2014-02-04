@@ -40,8 +40,13 @@ import org.apache.uima.caseditor.editor.IAnnotationEditorModifyListener;
 import org.apache.uima.caseditor.editor.ICasDocument;
 import org.apache.uima.ruta.caseditor.RutaCasEditorPlugin;
 import org.apache.uima.ruta.caseditor.view.preferences.CasEditorViewsPreferenceConstants;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IStatusLineManager;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -60,8 +65,6 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -71,7 +74,6 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -99,6 +101,21 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
       }
     }
 
+  }
+
+  private class CheckAllVisibleAction extends Action {
+    @Override
+    public void run() {
+      uncheckAll();
+      checkAllVisible();
+    }
+  }
+
+  private class UncheckAllAction extends Action {
+    @Override
+    public void run() {
+      uncheckAll();
+    }
   }
 
   private CheckboxTreeViewer treeView;
@@ -158,16 +175,11 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     layout.marginHeight = 0;
     overlay.setLayout(layout);
 
-    KeyListener checkSelectedKeyListener = new KeyListener() {
-      
-      public void keyReleased(KeyEvent arg0) {
-        // TODO Auto-generated method stub
-        
-      }
-      
+    KeyListener checkSelectedKeyListener = new KeyAdapter() {
+
       public void keyPressed(KeyEvent keyEvent) {
         int keyCode = keyEvent.keyCode;
-        if (keyCode == SWT.CR) {
+        if (keyCode == SWT.CR || keyCode == SWT.LF || keyCode == SWT.KEYPAD_CR) {
           uncheckAll();
           checkAllVisible();
         }
@@ -270,6 +282,24 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
 
     }
 
+  }
+
+  @Override
+  public void makeContributions(IMenuManager menuManager, IToolBarManager toolBarManager,
+          IStatusLineManager statusLineManager) {
+    //
+    Action createActionCheckVisible = new CheckAllVisibleAction();
+    createActionCheckVisible.setText("Set all types visible in the Annotation Browser to be highlighted in the CAS editor.");
+    ImageDescriptor imageDescriptor = RutaCasEditorPlugin
+            .getImageDescriptor("/icons/lightbulb_add.png");
+    createActionCheckVisible.setImageDescriptor(imageDescriptor);
+    toolBarManager.add(createActionCheckVisible);
+    //
+    Action createActionUncheckAll = new UncheckAllAction();
+    createActionUncheckAll.setText("Reset type highlighting. No type will be checked.");
+    createActionUncheckAll.setImageDescriptor(RutaCasEditorPlugin
+            .getImageDescriptor("/icons/lightbulb_off.png"));
+    toolBarManager.add(createActionUncheckAll);
   }
 
   /**
