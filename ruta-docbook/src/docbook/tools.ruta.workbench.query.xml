@@ -31,6 +31,7 @@ under the License.
     passages the query applies to. For example, if you have a set of annotated documents containing
     a number of Author annotations, you could use the Query View to get a list of all the author
     names associated with these annotations.
+    The set of relevant files can be restricted by a regular expression over the file names, e.g., "files_0[0-9]\\.xmi".
   </para>
   <para>
     <figure id="figure.ugr.tools.ruta.workbench.ruta_query.query_view">
@@ -42,11 +43,11 @@ under the License.
       <mediaobject>
         <imageobject role="html">
           <imagedata width="576px" format="PNG" align="center"
-            fileref="&imgroot;query/query_example2_number.png" />
+            fileref="&imgroot;query/Query2.2.0.png" />
         </imageobject>
         <imageobject role="fo">
           <imagedata width="3.0in" format="PNG" align="center"
-            fileref="&imgroot;query/query_example2_number.png" />
+            fileref="&imgroot;query/Query2.2.0.png" />
         </imageobject>
         <textobject>
           <phrase>Query View</phrase>
