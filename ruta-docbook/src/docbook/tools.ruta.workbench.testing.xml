@@ -144,7 +144,14 @@ under the License.
       negatives (FN). In the field below (label (11)), you will find a table with statistic
       information for a single selected test file. To change this view, select a file in the test
       list field. The table shows a total TP, FP and FN information, as well as precision, recall
-      and f1-score for every type as well as for the whole file. </para>
+      and f1-score for every type as well as for the whole file.
+    </para>
+    <para>
+      There is also an experimental feature to extend the classpath during testing, which allows to 
+      evaluate scripts that call analysis engines available through classpath extensions.
+      Therefore, you have to check the checkbox at the upper right corner of the view 
+      (available since UIMA Ruta 2.2.0; not shown in the <link linkend='figure.ugr.tools.ruta.workbench.testing.annotation_test_initial_view'>screenshot</link>). 
+    </para>
     <para>
       Next, you have to add test files to your project. A test file is a previously annotated xmiCAS
       file that can be used as a golden standard for the test. You can use any xmiCAS file. The
