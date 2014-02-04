@@ -58,11 +58,11 @@
         <mediaobject>
           <imageobject role="html">
             <imagedata width="300px" format="PNG" align="center"
-              fileref="&imgroot;ruta/annotation_browser.png" />
+              fileref="&imgroot;ruta/AnnotationBrowser_2.2.0.png" />
           </imageobject>
           <imageobject role="fo">
             <imagedata width="3.0in" format="PNG" align="center"
-              fileref="&imgroot;ruta/annotation_browser.png" />
+              fileref="&imgroot;ruta/AnnotationBrowser_2.2.0.png" />
           </imageobject>
           <textobject>
             <phrase>
@@ -74,13 +74,18 @@
     </para>
     <para>
       Moreover, this view has two possible filters. Using the
-      <quote>Only types with...</quote>
-      -filter leads to a list containing only those types that contain
-      the
-      entered text. The
-      <quote>Only annotations with...</quote>
-      -filter leads to an analog list.
-      The user can choose whether all types are displayed using the preference page <quote>UIMA Cas Editor -> Cas Editor Views</quote>
+      <quote>Only types with...</quote>-filter leads to a list containing only those types that contain
+      the entered text. 
+      The <quote>Only annotations with...</quote>-filter leads to an analogous list. 
+      Both list filters can be quickly activated by hitting the return key. 
+    </para>
+	<para>
+		Type highlighting can be reset by the action represented by a
+		switched-off light bulb at the top of the view. 
+		The light bulb that is turned on sets all types visible in the tree view of the page highlighted in the CAS editor.   
+	</para>
+    <para>
+      The user can choose whether parent types are displayed using the preference page <quote>UIMA Cas Editor -> Cas Editor Views</quote>.
     </para>
   </section>
 
