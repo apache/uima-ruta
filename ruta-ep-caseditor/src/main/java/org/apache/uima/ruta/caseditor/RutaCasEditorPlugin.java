@@ -31,7 +31,7 @@ import org.osgi.framework.BundleContext;
 public class RutaCasEditorPlugin extends AbstractUIPlugin {
 
   // The plug-in ID
-  public static final String PLUGIN_ID = "org.apache.uima.ruta.ide"; //$NON-NLS-1$
+  public static final String PLUGIN_ID = "org.apache.uima.ruta.caseditor"; //$NON-NLS-1$
 
   // The shared instance
   private static RutaCasEditorPlugin plugin;
