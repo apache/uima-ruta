@@ -35,7 +35,8 @@ public class TestingPreferenceInitializer extends AbstractPreferenceInitializer 
     store.setDefault(TestingPreferenceConstants.AUTOMATED_FILE_SYNCRONIZATION, "0");
     store.setDefault(TestingPreferenceConstants.LOAD_OLD_TEST_RESULTS, "0");
     store.setDefault(TestingPreferenceConstants.INCLUDE_SUBTYPES, "0");
-    store.setDefault(TestingPreferenceConstants.ALL_TYPES, "0");
+    store.setDefault(TestingPreferenceConstants.ALL_TYPES, true);
+    store.setDefault(TestingPreferenceConstants.EXTEND_CLASSPATH, false);
   }
 
 }

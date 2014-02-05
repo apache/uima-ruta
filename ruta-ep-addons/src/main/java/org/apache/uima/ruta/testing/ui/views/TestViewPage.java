@@ -107,9 +107,6 @@ public class TestViewPage extends Page implements IPageBookViewPage {
 
   private ListLabelProvider labelProvider;
 
-  private Button buttonDoJavaRun;
-
-  private boolean doJavaRun;
 
   public TestViewPage(Composite parent, IResource scriptResource) {
     this(scriptResource);
@@ -119,7 +116,6 @@ public class TestViewPage extends Page implements IPageBookViewPage {
 
   public TestViewPage(IResource scriptResource) {
     super();
-    this.doJavaRun = true;
     this.script = scriptResource;
     this.caretaker = new Caretaker();
   }
@@ -154,24 +150,6 @@ public class TestViewPage extends Page implements IPageBookViewPage {
     layoutData.horizontalAlignment = GridData.END;
     layoutData.horizontalSpan = 1;
     // rowButtonOverlay.setLayout(rowLayout);
-    buttonDoJavaRun = new Button(overlay, SWT.CHECK);
-    buttonDoJavaRun.setLayoutData(layoutData);
-    buttonDoJavaRun.setText("extend classpath");
-    String buttonDoJavaRunTooltip = "If checked, " + "the classpath will be extended "
-            + "so that java analysis engines can be executed.";
-    buttonDoJavaRun.setToolTipText(buttonDoJavaRunTooltip);
-    buttonDoJavaRun.addSelectionListener(new SelectionListener() {
-
-      public void widgetSelected(SelectionEvent ev) {
-        doJavaRun = ((Button) ev.getSource()).getSelection();
-      }
-
-      public void widgetDefaultSelected(SelectionEvent arg0) {
-        // TODO Auto-generated method stub
-
-      }
-    });
-    buttonDoJavaRun.setSelection(true); // TODO use prefs store / memento
 
     tInfoPanel = new InfoPanel(overlay);
     GridData tInfoLabelData = new GridData();
@@ -572,7 +550,4 @@ public class TestViewPage extends Page implements IPageBookViewPage {
     return includedTypes;
   }
 
-  public boolean doExtendClasspath() {
-    return this.doJavaRun;
-  }
 }

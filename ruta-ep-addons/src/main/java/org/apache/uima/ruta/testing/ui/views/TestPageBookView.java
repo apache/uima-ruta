@@ -32,14 +32,12 @@ import org.eclipse.ui.part.PageBookView;
 
 public class TestPageBookView extends PageBookView {
 
+  
   public TestPageBookView() {
-    // TODO Auto-generated constructor stub
   }
 
   @Override
   protected IPage createDefaultPage(PageBook book) {
-    // IWorkbenchPart activePart = getSite().getPage().getActivePart();
-    // if (activePart != null && activePart.getSite().getId().equals(anObject))
     MessagePage messagePage = new MessagePage();
     initPage(messagePage);
     messagePage.setMessage("This view is not available");
@@ -49,7 +47,6 @@ public class TestPageBookView extends PageBookView {
 
   @Override
   protected PageRec doCreatePage(IWorkbenchPart part) {
-    // getPageBook().dispose();
     EditorPart source = (EditorPart) part;
     IEditorInput editorInput = source.getEditorInput();
     if (editorInput instanceof FileEditorInput) {

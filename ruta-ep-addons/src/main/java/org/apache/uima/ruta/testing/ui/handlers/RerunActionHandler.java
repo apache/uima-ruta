@@ -164,7 +164,8 @@ public class RerunActionHandler implements IHandler {
       monitor.beginTask("Running evaluation, please wait", numFiles);
 
       // switch usage mode: old (only Ruta) vs. new (supports java/uimaFIT AEs)
-      boolean javaSupportMode = debugPage.doExtendClasspath();
+      IPreferenceStore store = RutaAddonsPlugin.getDefault().getPreferenceStore();
+      boolean javaSupportMode = store.getBoolean(TestingPreferenceConstants.EXTEND_CLASSPATH);
       if (!javaSupportMode) {
         // only Ruta mode (classpath NOT expanded)
         IStatus status = evalRutaOnlyScript(monitor, testPageView, debugPage, fScript, project,

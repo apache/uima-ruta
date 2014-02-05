@@ -143,13 +143,6 @@ under the License.
       </initializer>
    </extension>
    <extension
-         point="org.eclipse.dltk.core.buildpathContainerInitializer">
-      <buildpathContainerInitializer
-            class="org.apache.uima.ruta.ide.core.packages.RutaPackagesBuildpathContainerInitializer"
-            id="org.apache.uima.ruta.ide.core.PACKAGES">
-      </buildpathContainerInitializer>
-   </extension>
-   <extension
     point="org.eclipse.dltk.core.buildParticipant">
       <buildParticipant
             class="org.eclipse.dltk.core.builder.ParserBuildParticipantFactory"

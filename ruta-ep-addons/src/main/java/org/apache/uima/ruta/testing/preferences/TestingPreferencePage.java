@@ -20,6 +20,7 @@
 package org.apache.uima.ruta.testing.preferences;
 
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
+import org.apache.uima.ruta.testing.ui.handlers.ExtendClasspathHandler;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
@@ -32,6 +33,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.commands.ICommandService;
 
 public class TestingPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
@@ -50,6 +53,8 @@ public class TestingPreferencePage extends PreferencePage implements IWorkbenchP
   private BooleanFieldEditor includeSubtypes;
 
   private BooleanFieldEditor allTypes;
+
+  private BooleanFieldEditor extendClasspath;
 
   public TestingPreferencePage() {
     IPreferenceStore store = RutaAddonsPlugin.getDefault().getPreferenceStore();
@@ -88,6 +93,12 @@ public class TestingPreferencePage extends PreferencePage implements IWorkbenchP
     allTypes.setPage(this);
     allTypes.setPreferenceStore(getPreferenceStore());
     allTypes.load();
+    
+    extendClasspath = new BooleanFieldEditor(TestingPreferenceConstants.EXTEND_CLASSPATH,
+            "Extend classpath", top);
+    extendClasspath.setPage(this);
+    extendClasspath.setPreferenceStore(getPreferenceStore());
+    extendClasspath.load();
     
     evaluators = new DescriptionRadioGroupFieldEditor(TestingPreferenceConstants.EVALUATOR_FACTORY,
             "Evaluator :", 1, TestingPreferenceConstants.EVALUATORS, top);
@@ -129,9 +140,41 @@ public class TestingPreferencePage extends PreferencePage implements IWorkbenchP
     evaluators.loadDefault();
     includeSubtypes.loadDefault();
     allTypes.loadDefault();
+    extendClasspath.loadDefault();
+    ICommandService service = (ICommandService) PlatformUI.getWorkbench().getService(
+            ICommandService.class);
+    service.refreshElements(ExtendClasspathHandler.COMMAND_ID, null);
     super.performDefaults();
   }
-
+  
+  @Override
+  protected void performDefaults() {
+    sync.loadDefault();
+    oldResults.loadDefault();
+    evaluators.loadDefault();
+    includeSubtypes.loadDefault();
+    allTypes.loadDefault();
+    extendClasspath.loadDefault();
+    ICommandService service = (ICommandService) PlatformUI.getWorkbench().getService(
+            ICommandService.class);
+    service.refreshElements(ExtendClasspathHandler.COMMAND_ID, null);
+    super.performDefaults();
+  }
+  
+  @Override
+  protected void performApply() {
+    sync.store();
+    oldResults.store();
+    evaluators.store();
+    includeSubtypes.store();
+    allTypes.store();
+    extendClasspath.store();
+    ICommandService service = (ICommandService) PlatformUI.getWorkbench().getService(
+            ICommandService.class);
+    service.refreshElements(ExtendClasspathHandler.COMMAND_ID, null);
+    super.performApply();
+  }
+  
   @Override
   public boolean performOk() {
     sync.store();
@@ -139,6 +182,10 @@ public class TestingPreferencePage extends PreferencePage implements IWorkbenchP
     evaluators.store();
     includeSubtypes.store();
     allTypes.store();
+    extendClasspath.store();
+    ICommandService service = (ICommandService) PlatformUI.getWorkbench().getService(
+            ICommandService.class);
+    service.refreshElements(ExtendClasspathHandler.COMMAND_ID, null);
     return super.performOk();
   }
 }

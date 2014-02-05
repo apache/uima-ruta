@@ -111,7 +111,7 @@ public class InfoPanel extends Composite {
     Text value = new Text(parent, SWT.READ_ONLY);
     value.setText(init);
     // bug: 39661 Junit test counters do not repaint correctly [JUnit]
-    value.setBackground(getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
+//    value.setBackground(getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
     value
             .setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING
                     | GridData.FILL_HORIZONTAL));

@@ -38,6 +38,8 @@ public class TestingPreferenceConstants {
   
   public static final String ALL_TYPES = "ALL_TYPES";
 
+  public static final String EXTEND_CLASSPATH = "EXTEND_CLASSPATH";
+
   public static String[][] EVALUATORS = getEvaluators();
 
   public static String[][] getEvaluators() {
