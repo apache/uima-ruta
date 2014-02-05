@@ -42,7 +42,11 @@ under the License.
     view is by default associated with the UIMA Ruta perspective.
   </para>
   <note><para>
-    TODO      
+    There are two options for choosing the types that should be evaluated, which is specified by the preference <quoted>Use all types</quoted>.
+    If this preference is activated (by default), then the user has to selected the types using the toolbar in the view. 
+    There are button for selecting the included and excluded types. If this preference is deactivated, 
+    then only the types present in the current test document are evaluated. This can result in missing false positive, if 
+    the an annotation of a specific type was created by the rules and no annotation of this type is present in the test document.
   </para></note>
   <para>
     <xref linkend='figure.ugr.tools.ruta.workbench.testing.script_explorer' />
