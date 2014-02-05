@@ -49,6 +49,11 @@
     <para>
       The result of the execution of the UIMA Ruta example project is
       shown in <xref linkend='figure.ugr.tools.ruta.workbench.ruta_perspective.annotation_browser' />.
+      You can see that there are 5 annotations of 5 different types in the document. 
+      Highlighting of certain types can be controlled by the checkboxes in the tree view. 
+      The names of the types are abbreviated by their package constituents. Full type names are provided by tooltips
+      and can be copied into the clipboard by hitting 'ctrl + c'. 
+      This can be especially useful to paste a type name into the Query View.    
     </para>
     <para>
       <figure
