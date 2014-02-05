@@ -163,6 +163,7 @@
                 <Bundle-Activator>org.apache.uima.ruta.caseditor.RutaCasEditorPlugin</Bundle-Activator>
                 <Bundle-RequiredExecutionEnvironment>J2SE-1.5</Bundle-RequiredExecutionEnvironment>
                 <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
+                <_nouses>true</_nouses>
                 <Export-Package>
                   org.apache.uima.ruta.caseditor.*
                 </Export-Package>
