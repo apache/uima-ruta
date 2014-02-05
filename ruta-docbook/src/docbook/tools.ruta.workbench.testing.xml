@@ -41,6 +41,9 @@ under the License.
     views: Annotation Test, True Positive, False Positive and False Negative. The Annotation Test
     view is by default associated with the UIMA Ruta perspective.
   </para>
+  <note><para>
+    TODO      
+  </para></note>
   <para>
     <xref linkend='figure.ugr.tools.ruta.workbench.testing.script_explorer' />
     shows the script explorer. Every UIMA Ruta project contains a folder called
@@ -57,11 +60,11 @@ under the License.
       <title>Test folder structure. </title>
       <mediaobject>
         <imageobject role="html">
-          <imagedata width="576px" format="PNG" align="center"
+          <imagedata format="PNG" align="center"
             fileref="&imgroot;testing/script_explorer.png" />
         </imageobject>
         <imageobject role="fo">
-          <imagedata width="3.0in" format="PNG" align="center"
+          <imagedata  format="PNG" align="center"
             fileref="&imgroot;testing/script_explorer.png" />
         </imageobject>
         <textobject>
@@ -92,41 +95,17 @@ under the License.
     <para>
       <figure id="figure.ugr.tools.ruta.workbench.testing.annotation_test_initial_view">
         <title>
-          The Annotation Test view.
-          <emphasis role="bold">(1)</emphasis>
-          Start Button;
-          <emphasis role="bold">(2)</emphasis>
-          Buttons to switch test cases;
-          <emphasis role="bold">(3)</emphasis>
-          <quote>Load all test files from selected folder</quote>
-          button;
-          <emphasis role="bold">(4)</emphasis>
-          <quote>Select excluded types</quote>
-          button ;
-          <emphasis role="bold">(5)</emphasis>
-          <quote>Select evaluator</quote>
-          button;
-          <emphasis role="bold">(6)</emphasis>
-          Export button;
-          <emphasis role="bold">(7)</emphasis>
-          Active/Tested script file;
-          <emphasis role="bold">(8)</emphasis>
-          Selected view;
-          <emphasis role="bold">(9)</emphasis>
-          Statistics summary over all ran tests;
-          <emphasis role="bold">(10)</emphasis>
-          List of all tested files;
-          <emphasis role="bold">(11)</emphasis>
-          Results per test file;
+          The Annotation Test view. Button from left to right:
+          Start Test; Select excluded type; Select included type; Select evaluator/preferences; Export to CSV; Extend Classpath
         </title>
         <mediaobject>
           <imageobject role="html">
             <imagedata width="576px" format="PNG" align="center"
-              fileref="&imgroot;testing/annotation_test_initial_view.png" />
+              fileref="&imgroot;testing/annotation_test_initial_view_2_2_0.png" />
           </imageobject>
           <imageobject role="fo">
             <imagedata width="5.5in" format="PNG" align="center"
-              fileref="&imgroot;testing/annotation_test_initial_view.png" />
+              fileref="&imgroot;testing/annotation_test_initial_view_2_2_0.png" />
           </imageobject>
           <textobject>
             <phrase> The Annotation Test view.       </phrase>
@@ -135,22 +114,21 @@ under the License.
       </figure>
     </para>
     <para> All control elements that are needed for the interaction with the testing environment
-      are located here. At the top right, there is the buttons bar (label (1)-(6)). At the top left
-      of the view (label (7)) the name of the script that is going to be tested is shown. It is
-      always equal to the script active in the editor. Below this (label (10)), the test list is
+      are located here. At the top right, there is the buttons bar. At the top left
+      of the view the name of the script that is going to be tested is shown. It is
+      always equal to the script active in the editor. Below this, the test list is
       located. This list contains the different files for testing. Right next to the name of the script
-      file (label (8)) you can select the desired view. Right to this (label (9)) you get statistics
+      file you can select the desired view. Right to this you get statistics
       over all ran tests: the number of all true positives (TP), false positives (FP) and false
-      negatives (FN). In the field below (label (11)), you will find a table with statistic
+      negatives (FN). In the field below, you will find a table with statistic
       information for a single selected test file. To change this view, select a file in the test
       list field. The table shows a total TP, FP and FN information, as well as precision, recall
       and f1-score for every type as well as for the whole file.
     </para>
     <para>
       There is also an experimental feature to extend the classpath during testing, which allows to 
-      evaluate scripts that call analysis engines available through classpath extensions.
-      Therefore, you have to check the checkbox at the upper right corner of the view 
-      (available since UIMA Ruta 2.2.0; not shown in the <link linkend='figure.ugr.tools.ruta.workbench.testing.annotation_test_initial_view'>screenshot</link>). 
+      evaluate scripts that call analysis engines in the same workspace.
+      Therefore, you have to toggle the button in the toolbar of the view. 
     </para>
     <para>
       Next, you have to add test files to your project. A test file is a previously annotated xmiCAS
@@ -194,10 +172,10 @@ under the License.
         <title>The testing preference page view   </title>
         <mediaobject>
           <imageobject role="html">
-            <imagedata width="576px" format="PNG" align="center" fileref="&imgroot;testing/preference.png" />
+            <imagedata width="476px" format="PNG" align="center" fileref="&imgroot;testing/preference_2_2_0.png" />
           </imageobject>
           <imageobject role="fo">
-            <imagedata width="3.5in" format="PNG" align="center" fileref="&imgroot;testing/preference.png" />
+            <imagedata width="4in" format="PNG" align="center" fileref="&imgroot;testing/preference_2_2_0.png" />
           </imageobject>
           <textobject>
             <phrase> The testing preference page view.       </phrase>
@@ -217,11 +195,11 @@ under the License.
         <title>Excluded types window   </title>
         <mediaobject>
           <imageobject role="html">
-            <imagedata width="576px" format="PNG" align="center"
+            <imagedata format="PNG" align="center"
               fileref="&imgroot;testing/excluded_types.png" />
           </imageobject>
           <imageobject role="fo">
-            <imagedata width="3.0in" format="PNG" align="center"
+            <imagedata format="PNG" align="center"
               fileref="&imgroot;testing/excluded_types.png" />
           </imageobject>
           <textobject>
@@ -242,11 +220,11 @@ under the License.
         <mediaobject>
           <imageobject role="html">
             <imagedata width="576px" format="PNG" align="center"
-              fileref="&imgroot;testing/annotation_test_test_run.png" />
+              fileref="&imgroot;testing/annotation_test_test_run_2_2_0.png" />
           </imageobject>
           <imageobject role="fo">
             <imagedata width="5.5in" format="PNG" align="center"
-              fileref="&imgroot;testing/annotation_test_test_run.png" />
+              fileref="&imgroot;testing/annotation_test_test_run_2_2_0.png" />
           </imageobject>
           <textobject>
             <phrase> The Annotation Test view.       </phrase>
@@ -292,11 +270,11 @@ under the License.
         <title>The True Positive view.   </title>
         <mediaobject>
           <imageobject role="html">
-            <imagedata width="576px" format="PNG" align="center"
+            <imagedata format="PNG" align="center"
               fileref="&imgroot;testing/true_positive.png" />
           </imageobject>
           <imageobject role="fo">
-            <imagedata width="5.0in" format="PNG" align="center"
+            <imagedata format="PNG" align="center"
               fileref="&imgroot;testing/true_positive.png" />
           </imageobject>
           <textobject>
