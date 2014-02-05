@@ -42,7 +42,7 @@ under the License.
     view is by default associated with the UIMA Ruta perspective.
   </para>
   <note><para>
-    There are two options for choosing the types that should be evaluated, which is specified by the preference <quoted>Use all types</quoted>.
+    There are two options for choosing the types that should be evaluated, which is specified by the preference <quote>Use all types</quote>.
     If this preference is activated (by default), then the user has to selected the types using the toolbar in the view. 
     There are button for selecting the included and excluded types. If this preference is deactivated, 
     then only the types present in the current test document are evaluated. This can result in missing false positive, if 
