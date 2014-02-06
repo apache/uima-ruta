@@ -242,6 +242,75 @@ public class RerunActionHandler implements IHandler {
       return Status.OK_STATUS;
     }
 
+    /**
+     * This method assumes that gold annotations have already been removed from the files. It just
+     * applies the script to the files.
+     * 
+     * @param monitor
+     * @param scriptFile
+     * @param cleanInputPath
+     */
+    private void runWithJVM(IProgressMonitor monitor, IFile scriptFile, IPath cleanInputPath,
+            IPath runOutputPath) {
+      monitor.setTaskName(String.format("Processing script \"%s\" [w classpatch ext.].",
+              scriptFile.getName()));
+
+      IProject project = scriptFile.getProject();
+
+      // init args
+      String inputDirPath = null;
+      String outputDirPath = null;
+      if (cleanInputPath != null) {
+        inputDirPath = cleanInputPath.toFile().getAbsolutePath();
+      } else {
+        // TODO throw exception
+        return;
+      }
+      if (runOutputPath != null) {
+        outputDirPath = runOutputPath.toFile().getAbsolutePath();
+      } else {
+        // TODO throw exception
+        return;
+      }
+      IPath descriptorPath = RutaProjectUtils.getEngineDescriptorPath(scriptFile.getLocation(),
+              project);
+      String descriptorAbsolutePath = descriptorPath.toFile().getAbsolutePath();
+
+      try {
+        ILaunchManager mgr = DebugPlugin.getDefault().getLaunchManager();
+        ILaunchConfigurationType type = mgr
+                .getLaunchConfigurationType(RutaLaunchConfigurationConstants.ID_RUTA_SCRIPT);
+
+        ILaunchConfigurationWorkingCopy copy = type.newInstance(null, scriptFile.getName()
+                + ".Testing");
+        // do not use RutaLaunchConstants.ARG_INPUT_FOLDER here
+        copy.setAttribute(RutaLaunchConstants.INPUT_FOLDER, inputDirPath);
+        // do not use RutaLaunchConstants.ARG_OUTPUT_FOLDER here
+        copy.setAttribute(RutaLaunchConstants.OUTPUT_FOLDER, outputDirPath);
+        copy.setAttribute(RutaLaunchConstants.ARG_DESCRIPTOR, descriptorAbsolutePath);
+        copy.setAttribute(RutaLaunchConfigurationConstants.ATTR_PROJECT_NAME, project.getName());
+        ILaunchConfiguration lc = copy.doSave();
+
+        String mode = ILaunchManager.RUN_MODE;
+        ILaunch launch = new Launch(lc, mode, null);
+
+        ILaunchConfiguration launchConfiguration = launch.getLaunchConfiguration();
+
+        ILaunch launched = launchConfiguration.launch(ILaunchManager.RUN_MODE, monitor);
+
+        while (!launched.isTerminated()) {
+          try {
+            Thread.sleep(100);
+          } catch (InterruptedException e) {
+            RutaAddonsPlugin.error(e);
+          }
+        }
+
+      } catch (CoreException e) {
+        RutaAddonsPlugin.error(e);
+      }
+    }
+
     private void clearFolder(final IProject project, final IPath folderPath) {
       FileUtils.deleteAllFiles(folderPath.toFile()); // clear folder
       try {
@@ -299,7 +368,6 @@ public class RerunActionHandler implements IHandler {
             }
           }
           cleanCas = cleanCas.getView(viewCasName);
-
           prepareCas(cleanCas);
           // store clean CAS
           IPath path2CleanFile = computeCleanPath(cleanInputPath, td);
@@ -313,7 +381,7 @@ public class RerunActionHandler implements IHandler {
             return;
           }
         }
-        
+
         cleanCas.release();
         project.getFolder(cleanInputPath.makeRelativeTo(project.getLocation())).refreshLocal(
                 IResource.DEPTH_INFINITE, new NullProgressMonitor());
@@ -401,41 +469,37 @@ public class RerunActionHandler implements IHandler {
       return Status.OK_STATUS;
     }
 
-    private void prepareCas(CAS runCas) {
-      if (includedTypes != null && !includedTypes.isEmpty()) {
+    private void prepareCas(CAS cas) {
+      if (!includedTypes.isEmpty()) {
+        // exclude all other types if there are some included types
         excludedTypes = new ArrayList<String>();
-        List<Type> types = runCas.getTypeSystem().getProperlySubsumedTypes(
-                runCas.getAnnotationType());
+        List<Type> types = cas.getTypeSystem().getProperlySubsumedTypes(cas.getAnnotationType());
         for (Type type : types) {
           if (!includedTypes.contains(type.getName())) {
             excludedTypes.add(type.getName());
           }
         }
       }
-      List<AnnotationFS> toRemove = new LinkedList<AnnotationFS>();
-      if (excludedTypes != null && !excludedTypes.isEmpty()) {
-        AnnotationIndex<AnnotationFS> annotationIndex = runCas.getAnnotationIndex();
+      if (includedTypes.isEmpty() && excludedTypes.isEmpty()) {
+        // remove all annotation in default settings
+        String documentText = cas.getDocumentText();
+        cas.reset();
+        cas.setDocumentText(documentText);
+      } else {
+        List<AnnotationFS> toRemove = new LinkedList<AnnotationFS>();
+        AnnotationIndex<AnnotationFS> annotationIndex = cas.getAnnotationIndex();
         for (AnnotationFS annotationFS : annotationIndex) {
           Type type = annotationFS.getType();
           String typeName = type.getName();
           if (includedTypes.contains(typeName) || !excludedTypes.contains(typeName)) {
-            if (type != null && runCas.getTypeSystem().subsumes(runCas.getAnnotationType(), type)) {
-              toRemove.add(annotationFS);
-            }
+            toRemove.add(annotationFS);
           }
         }
-      }
-      // remove annotations from run (test) cas
-      if (excludedTypes != null && excludedTypes.isEmpty() && includedTypes != null
-              && includedTypes.isEmpty()) {
-        AnnotationIndex<AnnotationFS> annotationIndex = runCas.getAnnotationIndex();
-        for (AnnotationFS each : annotationIndex) {
-          toRemove.add(each);
-        }
-      }
-      for (AnnotationFS each : toRemove) {
-        if (!runCas.getDocumentAnnotation().equals(each)) {
-          runCas.removeFsFromIndexes(each);
+        System.out.println();
+        for (AnnotationFS each : toRemove) {
+          if (!cas.getDocumentAnnotation().equals(each)) {
+            cas.removeFsFromIndexes(each);
+          }
         }
       }
     }
@@ -540,20 +604,12 @@ public class RerunActionHandler implements IHandler {
     return null;
   }
 
-  private static void writeXmi(CAS aCas, File name) throws IOException, SAXException {
+  private static void writeXmi(CAS aCas, File file) throws IOException, SAXException {
     FileOutputStream out = null;
     try {
-      name.getParentFile().mkdirs();
-      if (!name.exists()) {
-        name.createNewFile();
-      }
-      out = new FileOutputStream(name);
+      file.getParentFile().mkdirs();
+      out = new FileOutputStream(file);
       XmiCasSerializer.serialize(aCas, out);
-
-      // out = new FileOutputStream(name);
-      // XmiCasSerializer ser = new XmiCasSerializer(aCas.getTypeSystem());
-      // XMLSerializer xmlSer = new XMLSerializer(out, false);
-      // ser.serialize(aCas, xmlSer.getContentHandler());
     } catch (Exception e) {
       RutaAddonsPlugin.error(e);
     } finally {
@@ -655,75 +711,6 @@ public class RerunActionHandler implements IHandler {
     }
 
     data.setTypeEvalData(map);
-  }
-
-  /**
-   * This method assumes that gold annotations have already been removed from the files. It just
-   * applies the script to the files.
-   * 
-   * @param monitor
-   * @param scriptFile
-   * @param cleanInputPath
-   */
-  private void runWithJVM(IProgressMonitor monitor, IFile scriptFile, IPath cleanInputPath,
-          IPath runOutputPath) {
-    monitor.setTaskName(String.format("Processing script \"%s\" [w classpatch ext.].",
-            scriptFile.getName()));
-
-    IProject project = scriptFile.getProject();
-
-    // init args
-    String inputDirPath = null;
-    String outputDirPath = null;
-    if (cleanInputPath != null) {
-      inputDirPath = cleanInputPath.toFile().getAbsolutePath();
-    } else {
-      // TODO throw exception
-      return;
-    }
-    if (runOutputPath != null) {
-      outputDirPath = runOutputPath.toFile().getAbsolutePath();
-    } else {
-      // TODO throw exception
-      return;
-    }
-    IPath descriptorPath = RutaProjectUtils.getEngineDescriptorPath(scriptFile.getLocation(),
-            project);
-    String descriptorAbsolutePath = descriptorPath.toFile().getAbsolutePath();
-
-    try {
-      ILaunchManager mgr = DebugPlugin.getDefault().getLaunchManager();
-      ILaunchConfigurationType type = mgr
-              .getLaunchConfigurationType(RutaLaunchConfigurationConstants.ID_RUTA_SCRIPT);
-
-      ILaunchConfigurationWorkingCopy copy = type.newInstance(null, scriptFile.getName()
-              + ".Testing");
-      // do not use RutaLaunchConstants.ARG_INPUT_FOLDER here
-      copy.setAttribute(RutaLaunchConstants.INPUT_FOLDER, inputDirPath);
-      // do not use RutaLaunchConstants.ARG_OUTPUT_FOLDER here
-      copy.setAttribute(RutaLaunchConstants.OUTPUT_FOLDER, outputDirPath);
-      copy.setAttribute(RutaLaunchConstants.ARG_DESCRIPTOR, descriptorAbsolutePath);
-      copy.setAttribute(RutaLaunchConfigurationConstants.ATTR_PROJECT_NAME, project.getName());
-      ILaunchConfiguration lc = copy.doSave();
-
-      String mode = ILaunchManager.RUN_MODE;
-      ILaunch launch = new Launch(lc, mode, null);
-
-      ILaunchConfiguration launchConfiguration = launch.getLaunchConfiguration();
-
-      ILaunch launched = launchConfiguration.launch(ILaunchManager.RUN_MODE, monitor);
-
-      while (!launched.isTerminated()) {
-        try {
-          Thread.sleep(100);
-        } catch (InterruptedException e) {
-          RutaAddonsPlugin.error(e);
-        }
-      }
-
-    } catch (CoreException e) {
-      RutaAddonsPlugin.error(e);
-    }
   }
 
 }
