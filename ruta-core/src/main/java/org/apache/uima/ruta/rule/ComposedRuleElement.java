@@ -90,12 +90,12 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       }
 
       Map<RuleMatch, ComposedRuleElementMatch> mergedMatches = mergeDisjunctiveRuleMatches(
-              ruleMatches, true);
+              ruleMatches, true, stream);
       Set<Entry<RuleMatch, ComposedRuleElementMatch>> entrySet = mergedMatches.entrySet();
       for (Entry<RuleMatch, ComposedRuleElementMatch> entry : entrySet) {
         RuleMatch eachRuleMatch = entry.getKey();
         ComposedRuleElementMatch eachComposedMatch = entry.getValue();
-        AnnotationFS lastAnnotation = eachRuleMatch.getLastMatchedAnnotation(this, true);
+        AnnotationFS lastAnnotation = eachRuleMatch.getLastMatchedAnnotation(this, true, null, parent, stream);
         boolean failed = !eachComposedMatch.matched();
         List<RuleMatch> fallbackContinue = fallbackContinue(true, failed, lastAnnotation,
                 eachRuleMatch, ruleApply, eachComposedMatch, null, entryPoint, stream, crowd);
@@ -133,7 +133,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       for (Entry<RuleMatch, ComposedRuleElementMatch> entry : entrySet) {
         RuleMatch eachRuleMatch = entry.getKey();
         ComposedRuleElementMatch eachComposedMatch = entry.getValue();
-        AnnotationFS lastAnnotation = eachRuleMatch.getLastMatchedAnnotation(this, true);
+        AnnotationFS lastAnnotation = eachRuleMatch.getLastMatchedAnnotation(this, true, null, parent, stream);
         boolean failed = !eachComposedMatch.matched();
         List<RuleMatch> fallbackContinue = fallbackContinue(true, failed, lastAnnotation,
                 eachRuleMatch, ruleApply, eachComposedMatch, null, entryPoint, stream, crowd);
@@ -144,7 +144,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
   }
 
   private AnnotationFS getPrefixAnnotation(RuleMatch ruleMatch, RutaStream stream) {
-    AnnotationFS lastMatchedAnnotation = ruleMatch.getLastMatchedAnnotation(this, true);
+    AnnotationFS lastMatchedAnnotation = ruleMatch.getLastMatchedAnnotation(this, true, null, parent, stream);
     if (lastMatchedAnnotation.getBegin() == 0) {
       JCas jCas = stream.getJCas();
       AnnotationFS dummy = new RutaFrame(jCas, 0, 0);
@@ -195,12 +195,12 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       }
       // TODO sort matches, no need to merge them, right?!
       Map<RuleMatch, ComposedRuleElementMatch> mergedMatches = mergeDisjunctiveRuleMatches(
-              ruleMatches, after);
+              ruleMatches, after, stream);
       Set<Entry<RuleMatch, ComposedRuleElementMatch>> entrySet = mergedMatches.entrySet();
       for (Entry<RuleMatch, ComposedRuleElementMatch> entry : entrySet) {
         RuleMatch eachRuleMatch = entry.getKey();
         ComposedRuleElementMatch eachComposedMatch = entry.getValue();
-        AnnotationFS lastAnnotation = eachRuleMatch.getLastMatchedAnnotation(this, after);
+        AnnotationFS lastAnnotation = eachRuleMatch.getLastMatchedAnnotation(this, after, annotation, parent, stream);
         boolean failed = !eachComposedMatch.matched();
         List<RuleMatch> fallbackContinue = fallbackContinue(after, failed, lastAnnotation,
                 eachRuleMatch, ruleApply, eachComposedMatch, sideStepOrigin, entryPoint, stream,
@@ -231,7 +231,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       for (Entry<RuleMatch, ComposedRuleElementMatch> entry : entrySet) {
         RuleMatch eachRuleMatch = entry.getKey();
         ComposedRuleElementMatch eachComposedMatch = entry.getValue();
-        AnnotationFS lastAnnotation = eachRuleMatch.getLastMatchedAnnotation(this, after);
+        AnnotationFS lastAnnotation = eachRuleMatch.getLastMatchedAnnotation(this, after, annotation, parent, stream);
         boolean failed = !eachComposedMatch.matched();
         List<RuleMatch> fallbackContinue = fallbackContinue(after, failed, lastAnnotation,
                 eachRuleMatch, ruleApply, eachComposedMatch, sideStepOrigin, entryPoint, stream,
@@ -278,7 +278,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
   }
 
   private Map<RuleMatch, ComposedRuleElementMatch> mergeDisjunctiveRuleMatches(
-          Map<RuleMatch, ComposedRuleElementMatch> ruleMatches, boolean direction) {
+          Map<RuleMatch, ComposedRuleElementMatch> ruleMatches, boolean direction, RutaStream stream) {
     // TODO hotfix: this needs a correct implementation
     Map<RuleMatch, ComposedRuleElementMatch> result = new TreeMap<RuleMatch, ComposedRuleElementMatch>(
             ruleMatchComparator);
@@ -292,7 +292,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
         result.put(ruleMatch, elementMatch);
       } else {
         AnnotationFS lastMatchedAnnotation = ruleMatch.getLastMatchedAnnotation(getFirstElement(),
-                direction);
+                direction, null, parent, stream);
         if (largestEntry == null) {
           largestEntry = entry;
           largestAnnotation = lastMatchedAnnotation;
@@ -483,6 +483,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
           InferenceCrowd crowd) {
     List<AnnotationFS> textsMatched = match.getTextsMatched();
     if (textsMatched == null || textsMatched.isEmpty()) {
+      match.evaluateInnerMatches(true, stream);
       return;
     }
     int begin = textsMatched.get(0).getBegin();

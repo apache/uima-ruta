@@ -29,7 +29,9 @@ import java.util.Set;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaElement;
+import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.engine.RutaEngine;
 
@@ -68,10 +70,14 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
     return getMatchedAnnotations(element.getSelfIndexList(), element.getContainer());
   }
 
-  public AnnotationFS getLastMatchedAnnotation(RuleElement element, boolean direction) {
+  public AnnotationFS getLastMatchedAnnotation(RuleElement element, boolean direction, AnnotationFS annotation, RutaBlock parent, RutaStream stream) {
     List<AnnotationFS> matchedAnnotations = getMatchedAnnotationsOf(element);
     if (matchedAnnotations.isEmpty()) {
-      return null;
+      if(element.getQuantifier().isOptional(parent, stream)) {
+        return annotation;
+      } else {
+        return null;
+      }
     }
     if (direction) {
       return matchedAnnotations.get(matchedAnnotations.size() - 1);

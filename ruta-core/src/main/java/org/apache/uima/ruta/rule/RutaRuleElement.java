@@ -376,7 +376,7 @@ public class RutaRuleElement extends AbstractRuleElement {
       if (featureExpression != null) {
         base = matcher.match(annotation, stream, getParent());
       }
-    }
+    } 
     List<AnnotationFS> textsMatched = new ArrayList<AnnotationFS>(1);
     if (base) {
       for (AbstractRutaCondition condition : conditions) {

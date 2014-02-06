@@ -21,7 +21,6 @@ package org.apache.uima.ruta.condition;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
