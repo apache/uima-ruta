@@ -64,7 +64,6 @@ import org.apache.uima.util.CasCreationUtils;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
-import org.apache.uima.util.XMLSerializer;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
@@ -159,6 +158,7 @@ public class RerunActionHandler implements IHandler {
               fScript.getLocation(), project);
 
       // show message
+      @SuppressWarnings({ "unchecked", "rawtypes" })
       ArrayList<TestCasData> testCasData = (ArrayList) debugPage.getViewer().getInput();
       int numFiles = testCasData.size();
       monitor.beginTask("Running evaluation, please wait", numFiles);
@@ -175,14 +175,20 @@ public class RerunActionHandler implements IHandler {
           MessageDialog.openWarning(shell, "Error", status.getMessage());
         }
         return status;
+      } else {
+        // * write clean run files into a temp directory, remember file names
+        // TODO this approach (may) causes problems, when Java/uimaFIT engines have their own
+        // typesystems...
+        IStatus status = evalRutaWithClassPathScript(monitor, testPageView, debugPage, fScript,
+                project, typeSystemDescriptorPath, testCasData);
+        return status;
       }
+    }
 
-      // MAIN LOGIC for java support mode
-      // TODO:
-
-      // * write clean run files into a temp directory, remember file names
-      // TODO this approach (may) causes problems, when Java/uimaFIT engines have their own
-      // typesystems...
+    private IStatus evalRutaWithClassPathScript(IProgressMonitor monitor,
+            final TestPageBookView testPageView, final TestViewPage debugPage, final IFile fScript,
+            final IProject project, IPath typeSystemDescriptorPath,
+            ArrayList<TestCasData> testCasData) {
       final IPath cleanInputPath = project.getLocation()
               .append(RutaProjectUtils.getDefaultTestLocation())
               .append(RutaProjectUtils.getDefaultCleanTestLocation());
@@ -200,8 +206,8 @@ public class RerunActionHandler implements IHandler {
       clearFolder(project, runTestPath);
       runWithJVM(monitor, fScript, cleanInputPath, runTestPath);
 
-      // * for each (goldFile, runFile)-pair:
       try {
+        // * for each (goldFile, runFile)-pair:
         XMLInputSource in = new XMLInputSource(typeSystemDescriptorPath.toPortableString());
         TypeSystemDescription tsd = UIMAFramework.getXMLParser().parseTypeSystemDescription(in);
         CAS runCas = CasCreationUtils.createCas(tsd, null, null);
@@ -226,12 +232,13 @@ public class RerunActionHandler implements IHandler {
           }
         }
       } catch (Exception e) {
-        // TODO: handle exception
         RutaAddonsPlugin.error(e);
+        monitor.done();
+        testPageView.showBusy(false);
+        return new Status(Status.ERROR, RutaAddonsPlugin.PLUGIN_ID,
+                "Error during testing. See Error View for details.");
       }
-
       monitor.done();
-
       return Status.OK_STATUS;
     }
 
@@ -276,7 +283,7 @@ public class RerunActionHandler implements IHandler {
         XMLInputSource in = new XMLInputSource(tsDescriptorPath.toPortableString());
         TypeSystemDescription tsd = UIMAFramework.getXMLParser().parseTypeSystemDescription(in);
 
-        CAS cleanCas = CasCreationUtils.createCas(tsd, null, null);
+        CAS cleanCas = getEmptyCas(tsd);
 
         for (TestCasData td : testCasData) {
           // init etc
@@ -293,44 +300,7 @@ public class RerunActionHandler implements IHandler {
           }
           cleanCas = cleanCas.getView(viewCasName);
 
-          // gather uima types
-          if (includedTypes != null && !includedTypes.isEmpty()) {
-            excludedTypes = new ArrayList<String>();
-            List<Type> types = cleanCas.getTypeSystem().getProperlySubsumedTypes(
-                    cleanCas.getAnnotationType());
-            for (Type type : types) {
-              if (!includedTypes.contains(type.getName())) {
-                excludedTypes.add(type.getName());
-              }
-            }
-          }
-          List<AnnotationFS> toRemove = new LinkedList<AnnotationFS>();
-          if (excludedTypes != null && !excludedTypes.isEmpty()) {
-            AnnotationIndex<AnnotationFS> annotationIndex = cleanCas.getAnnotationIndex();
-            for (AnnotationFS annotationFS : annotationIndex) {
-              Type type = annotationFS.getType();
-              String typeName = type.getName();
-              if (includedTypes.contains(typeName) || !excludedTypes.contains(typeName)) {
-                if (type != null
-                        && cleanCas.getTypeSystem().subsumes(cleanCas.getAnnotationType(), type)) {
-                  toRemove.add(annotationFS);
-                }
-              }
-            }
-          }
-          // remove annotations from run (test) cas
-          if (excludedTypes != null && excludedTypes.isEmpty() && includedTypes != null
-                  && includedTypes.isEmpty()) {
-            AnnotationIndex<AnnotationFS> annotationIndex = cleanCas.getAnnotationIndex();
-            for (AnnotationFS each : annotationIndex) {
-              toRemove.add(each);
-            }
-          }
-          for (AnnotationFS each : toRemove) {
-            if (!cleanCas.getDocumentAnnotation().equals(each)) {
-              cleanCas.removeFsFromIndexes(each);
-            }
-          }
+          prepareCas(cleanCas);
           // store clean CAS
           IPath path2CleanFile = computeCleanPath(cleanInputPath, td);
           String fPath = path2CleanFile.toPortableString();
@@ -339,11 +309,12 @@ public class RerunActionHandler implements IHandler {
 
           td.setResultPath(path2CleanFile);
 
-          cleanCas.release();
-
-          if (monitor.isCanceled())
+          if (monitor.isCanceled()) {
             return;
+          }
         }
+        
+        cleanCas.release();
         project.getFolder(cleanInputPath.makeRelativeTo(project.getLocation())).refreshLocal(
                 IResource.DEPTH_INFINITE, new NullProgressMonitor());
       } catch (Exception e) {
@@ -405,43 +376,7 @@ public class RerunActionHandler implements IHandler {
           runCas = runCas.getView(viewCasName);
 
           // gather uima eval-types
-          if (includedTypes != null && !includedTypes.isEmpty()) {
-            excludedTypes = new ArrayList<String>();
-            List<Type> types = runCas.getTypeSystem().getProperlySubsumedTypes(
-                    runCas.getAnnotationType());
-            for (Type type : types) {
-              if (!includedTypes.contains(type.getName())) {
-                excludedTypes.add(type.getName());
-              }
-            }
-          }
-          List<AnnotationFS> toRemove = new LinkedList<AnnotationFS>();
-          if (excludedTypes != null && !excludedTypes.isEmpty()) {
-            AnnotationIndex<AnnotationFS> annotationIndex = runCas.getAnnotationIndex();
-            for (AnnotationFS annotationFS : annotationIndex) {
-              Type type = annotationFS.getType();
-              String typeName = type.getName();
-              if (includedTypes.contains(typeName) || !excludedTypes.contains(typeName)) {
-                if (type != null
-                        && runCas.getTypeSystem().subsumes(runCas.getAnnotationType(), type)) {
-                  toRemove.add(annotationFS);
-                }
-              }
-            }
-          }
-          // remove annotations from run (test) cas
-          if (excludedTypes != null && excludedTypes.isEmpty() && includedTypes != null
-                  && includedTypes.isEmpty()) {
-            AnnotationIndex<AnnotationFS> annotationIndex = runCas.getAnnotationIndex();
-            for (AnnotationFS each : annotationIndex) {
-              toRemove.add(each);
-            }
-          }
-          for (AnnotationFS each : toRemove) {
-            if (!runCas.getDocumentAnnotation().equals(each)) {
-              runCas.removeFsFromIndexes(each);
-            }
-          }
+          prepareCas(runCas);
 
           // process run cas and evaluate it
           ae.process(runCas);
@@ -464,6 +399,45 @@ public class RerunActionHandler implements IHandler {
       monitor.done();
       testPageView.showBusy(false);
       return Status.OK_STATUS;
+    }
+
+    private void prepareCas(CAS runCas) {
+      if (includedTypes != null && !includedTypes.isEmpty()) {
+        excludedTypes = new ArrayList<String>();
+        List<Type> types = runCas.getTypeSystem().getProperlySubsumedTypes(
+                runCas.getAnnotationType());
+        for (Type type : types) {
+          if (!includedTypes.contains(type.getName())) {
+            excludedTypes.add(type.getName());
+          }
+        }
+      }
+      List<AnnotationFS> toRemove = new LinkedList<AnnotationFS>();
+      if (excludedTypes != null && !excludedTypes.isEmpty()) {
+        AnnotationIndex<AnnotationFS> annotationIndex = runCas.getAnnotationIndex();
+        for (AnnotationFS annotationFS : annotationIndex) {
+          Type type = annotationFS.getType();
+          String typeName = type.getName();
+          if (includedTypes.contains(typeName) || !excludedTypes.contains(typeName)) {
+            if (type != null && runCas.getTypeSystem().subsumes(runCas.getAnnotationType(), type)) {
+              toRemove.add(annotationFS);
+            }
+          }
+        }
+      }
+      // remove annotations from run (test) cas
+      if (excludedTypes != null && excludedTypes.isEmpty() && includedTypes != null
+              && includedTypes.isEmpty()) {
+        AnnotationIndex<AnnotationFS> annotationIndex = runCas.getAnnotationIndex();
+        for (AnnotationFS each : annotationIndex) {
+          toRemove.add(each);
+        }
+      }
+      for (AnnotationFS each : toRemove) {
+        if (!runCas.getDocumentAnnotation().equals(each)) {
+          runCas.removeFsFromIndexes(each);
+        }
+      }
     }
 
     private void evalLogicAndUpdateGUI(IProgressMonitor monitor,
@@ -574,9 +548,12 @@ public class RerunActionHandler implements IHandler {
         name.createNewFile();
       }
       out = new FileOutputStream(name);
-      XmiCasSerializer ser = new XmiCasSerializer(aCas.getTypeSystem());
-      XMLSerializer xmlSer = new XMLSerializer(out, false);
-      ser.serialize(aCas, xmlSer.getContentHandler());
+      XmiCasSerializer.serialize(aCas, out);
+
+      // out = new FileOutputStream(name);
+      // XmiCasSerializer ser = new XmiCasSerializer(aCas.getTypeSystem());
+      // XMLSerializer xmlSer = new XMLSerializer(out, false);
+      // ser.serialize(aCas, xmlSer.getContentHandler());
     } catch (Exception e) {
       RutaAddonsPlugin.error(e);
     } finally {
@@ -680,8 +657,6 @@ public class RerunActionHandler implements IHandler {
     data.setTypeEvalData(map);
   }
 
-  // private void
-
   /**
    * This method assumes that gold annotations have already been removed from the files. It just
    * applies the script to the files.
@@ -742,14 +717,12 @@ public class RerunActionHandler implements IHandler {
         try {
           Thread.sleep(100);
         } catch (InterruptedException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
+          RutaAddonsPlugin.error(e);
         }
       }
 
     } catch (CoreException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      RutaAddonsPlugin.error(e);
     }
   }
 
