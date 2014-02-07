@@ -180,6 +180,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
 
   private Set<String> allLongTypeNames;
 
+  private String parentTypeInDeclaration;
+
   public LanguageCheckerVisitor(IProblemReporter problemReporter, ISourceLineTracker linetracker,
           ISourceModule sourceModule) {
     super();
@@ -266,6 +268,11 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       if (parent != null && parent instanceof RutaVariableReference) {
         RutaVariableReference p = (RutaVariableReference) parent;
         String name = p.getName();
+        String string = namespaces.get(name);
+        if(string != null) {
+          name = string;
+        }
+        parentTypeInDeclaration = name;
         // TODO remember name for new types and their features!
         if (finalTypes.contains(name)) {
           IProblem problem = problemFactory.createInheritenceFinalProblem(p);
@@ -298,11 +305,19 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       }
       List<RutaFeatureDeclaration> features = newType.getFeatures();
       Set<FeatureDescription> feats = new HashSet<FeatureDescription>();
-   // TODO add feature description of parent!
+      if(parentTypeInDeclaration != null) {
+        Set<FeatureDescription> set = featureDescriptionMap.get(parentTypeInDeclaration);
+        feats.addAll(set);
+      }
       if (features != null) {
         for (RutaFeatureDeclaration each : features) {
-          // TODO create correct feature description!
+          // TODO create correct feature description! Works right now because the type is not checked
           String type = each.getType();
+          type = translate(type);
+          String string = namespaces.get(type);
+          if(string != null) {
+            type = string;
+          }
           FeatureDescription f = new FeatureDescription_impl(each.getName(), "", type);
           feats.add(f);
           if (type.equals("INT") || type.equals("STRING") || type.equals("DOUBLE")
@@ -709,6 +724,15 @@ public class LanguageCheckerVisitor extends ASTVisitor {
   }
 
   @Override
+  public boolean endvisit(Statement s) throws Exception {
+    if (s instanceof RutaDeclareDeclarationsStatement) {
+      parentTypeInDeclaration = null;
+    }
+    return super.endvisit(s);
+  }
+  
+  
+  @Override
   public boolean endvisit(MethodDeclaration s) throws Exception {
     if (s instanceof RutaBlock) {
       knownLocalVariables.pop();
@@ -741,6 +765,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     if (set != null) {
       for (FeatureDescription featureDescription : set) {
         String fName = featureDescription.getName();
+        // TODO check on correct feature type, e.g., the type of the annotation
         if (fName.equals(featureName) && (kind == -1 || checkFeatureKind(featureDescription, kind))) {
           return true;
         }
@@ -1141,5 +1166,25 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     }
     return typeSysDescr;
   }
-
+  private String translate(String name) {
+    if (name == null) {
+      return null;
+    }
+    if (name.equals("Annotation")) {
+      return "uima.tcas.Annotation";
+    } else if (name.equals("STRING")) {
+      return UIMAConstants.TYPE_STRING;
+    } else if (name.equals("INT")) {
+      return UIMAConstants.TYPE_INTEGER;
+    } else if (name.equals("DOUBLE")) {
+      return UIMAConstants.TYPE_DOUBLE;
+    } else if (name.equals("FLOAT")) {
+      return UIMAConstants.TYPE_FLOAT;
+    } else if (name.equals("BOOLEAN")) {
+      return UIMAConstants.TYPE_BOOLEAN;
+    } else if (name.equals("TYPE")) {
+      return UIMAConstants.TYPE_STRING;
+    }
+    return name;
+  }
 }
