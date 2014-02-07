@@ -216,4 +216,10 @@ public class RutaCheckerProblemFactory implements IRutaCheckerProblemFactory {
     return new RutaCheckerDefaultProblem(this.fileName, message.toString(), ref, getLine(ref));
   }
 
+  public IProblem createIdenticalLongTypeNameProblem(String longName, ISourceModule sourceModule) {
+    StringBuilder message = new StringBuilder(longName);
+    message.append(" is ambiguous!");
+    return new RutaCheckerDefaultProblem(this.fileName, message.toString());
+  }
+
 }

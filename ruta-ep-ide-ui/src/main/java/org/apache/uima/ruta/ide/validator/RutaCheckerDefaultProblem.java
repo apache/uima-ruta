@@ -48,4 +48,9 @@ public class RutaCheckerDefaultProblem extends DefaultProblem {
             line);
   }
 
+  public RutaCheckerDefaultProblem(String fileName, String message) {
+    super(fileName, message, RutaProblemIdentifier.PROBLEM, new String[] {}, ProblemSeverity.ERROR,
+            0, 0, 0, 0);
+  }
+
 }
