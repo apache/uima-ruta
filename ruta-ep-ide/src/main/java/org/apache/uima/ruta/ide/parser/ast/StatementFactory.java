@@ -38,10 +38,10 @@ public class StatementFactory extends AbstractFactory {
    *          Antlr-Token (dotted-identifier/id)
    * @return new Import-Statement
    */
-  public static RutaImportStatement createImport(ComponentDeclaration dottedId, Token impString,
+  public static RutaImportStatement createImport(ComponentDeclaration component, Token impString,
           int type) {
-    int bounds[] = getBounds(impString, dottedId);
-    return new RutaImportStatement(bounds[0], bounds[1], dottedId, type);
+    int bounds[] = getBounds(impString, component);
+    return new RutaImportStatement(bounds[0], bounds[1], component, type);
   }
 
   public static ComponentDeclaration createEmptyComponentDeclaration(Token t) {
@@ -57,6 +57,39 @@ public class StatementFactory extends AbstractFactory {
     return createImport(dottedId, impString, RutaStatementConstants.S_IMPORT_TYPESYSTEM);
   }
 
+  public static Statement createImportType(Token importToken, Token type, ComponentDeclaration ts,
+          Token alias) {
+    int bounds[] = getBounds(importToken, type);
+    if(ts != null) {
+      bounds = getBounds(importToken, ts);
+    }
+    if(alias != null) {
+      bounds = getBounds(importToken, alias);
+    }
+    return new RutaImportTypesStatement(bounds[0], bounds[1], ts, type, null, alias);
+  }
+
+  public static Statement createImportAllPackagew(Token importToken, ComponentDeclaration ts, Token alias) {
+    int bounds[] = getBounds(importToken, ts);
+    if(alias != null) {
+      bounds = getBounds(importToken, alias);
+    }
+    return new RutaImportTypesStatement(bounds[0], bounds[1], ts, null, alias, alias);
+  }
+
+  public static Statement createImportPackage(Token importToken, Token pkg, ComponentDeclaration ts,
+          Token alias) {
+    int bounds[] = getBounds(importToken, pkg);
+    if(ts != null) {
+      bounds = getBounds(importToken, ts);
+    }
+    if(alias != null) {
+      bounds = getBounds(importToken, alias);
+    }
+    return new RutaImportTypesStatement(bounds[0], bounds[1], ts, null, pkg, alias);
+  }
+  
+  
   public static RutaImportStatement createImportScript(ComponentDeclaration dottedId,
           Token impString) {
     if (dottedId != null) {
@@ -336,5 +369,7 @@ public class StatementFactory extends AbstractFactory {
     String text = ct.getText();
     return new ComponentDeclaration(nameBounds[0], nameBounds[0] + text.length(), text);
   }
+
+
 
 }

@@ -184,8 +184,10 @@ import org.apache.uima.ruta.ide.parser.ast.RutaPackageDeclaration;
 		}
 	}
 	
-	  public void addImportTypeSystem(ComponentDeclaration module) {
-	    descriptor.addTypeSystem(module.getName());
+	  public void addImportTypeSystem(ComponentDeclaration ts) {
+	    if(ts != null){
+	     descriptor.addTypeSystem(ts.getName());
+	    }
 	  }
 	
 	  public void addImportScript(ComponentDeclaration module) {
@@ -328,11 +330,14 @@ importStatement returns [Statement stmt = null]
 	name = dottedComponentDeclaration 
 	{if(name != null) {stmt = StatementFactory.createImportEngine(name,im);addImportUimafitEngine(name);}}
 	 SEMI 
-	| ImportString type = dottedIdentifier (FromString ts = dottedIdentifier2)? (AsString alias = Identifier)? SEMI
-	
-	| ImportString STAR FromString ts = dottedIdentifier2 SEMI
-	
-	| ImportString PackageString pkg = dottedIdentifier (FromString ts = dottedIdentifier2)? (AsString alias = Identifier)? SEMI
+	| ImportString type = dottedId2 (FromString ts = dottedComponentDeclaration)? (AsString alias = Identifier)? SEMI
+	{stmt = StatementFactory.createImportType(im,type,ts,alias);addImportTypeSystem(ts);}
+	| ImportString STAR FromString ts = dottedComponentDeclaration SEMI
+	{stmt = StatementFactory.createImportTypeSystem(ts,im);addImportTypeSystem(ts);}
+	| ImportString PackageString pkg = dottedId2 (FromString ts = dottedComponentDeclaration)? (AsString alias = Identifier)? SEMI
+	{stmt = StatementFactory.createImportPackage(im,pkg,ts,alias);addImportTypeSystem(ts);}
+	| ImportString PackageString STAR FromString ts = dottedComponentDeclaration (AsString alias = Identifier)? SEMI
+	{stmt = StatementFactory.createImportAllPackagew(im,ts,alias);addImportTypeSystem(ts);}
 	
 	;
 	
@@ -2046,7 +2051,7 @@ dottedId2 returns [Token token = null ]
 		ct = new CommonToken(id);
 		}
 	(
-		dot = DOT {ct.setText(ct.getText() + dot.getText());}
+		dot = (DOT| MINUS) {ct.setText(ct.getText() + dot.getText());}
 		id = Identifier {ct.setStopIndex(getBounds(id)[1]);
 		                 ct.setText(ct.getText() + id.getText());}
 	)+
