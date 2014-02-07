@@ -63,18 +63,6 @@ public class PartOfNEQ2Test {
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
     
-    t = cas.getTypeSystem().getType(typeName2);
-    ai = cas.getAnnotationIndex(t);
-    for (AnnotationFS each : ai) {
-      System.out.println(each.getCoveredText());
-    }
-    
-    t = cas.getTypeSystem().getType(typeName3);
-    ai = cas.getAnnotationIndex(t);
-    for (AnnotationFS each : ai) {
-      System.out.println(each.getCoveredText());
-    }
-    
     t = cas.getTypeSystem().getType(typeName1);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
