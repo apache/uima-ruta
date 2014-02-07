@@ -20,7 +20,6 @@
 package org.apache.uima.ruta.ide.parser.ast;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.antlr.runtime.CommonToken;
@@ -74,7 +73,7 @@ public class StatementFactory extends AbstractFactory {
     if(alias != null) {
       bounds = getBounds(importToken, alias);
     }
-    return new RutaImportTypesStatement(bounds[0], bounds[1], ts, null, alias, alias);
+    return new RutaImportTypesStatement(bounds[0], bounds[1], ts, null, null, alias);
   }
 
   public static Statement createImportPackage(Token importToken, Token pkg, ComponentDeclaration ts,

@@ -200,20 +200,21 @@ public class RutaCheckerUtils {
     return false;
   }
 
-  public static boolean checkScriptImport(String xmlFilePath, IScriptProject project) {
-    boolean result = false;
+  public static IFile checkScriptImport(String xmlFilePath, IScriptProject project) {
     List<IFolder> allDescriptorFolders;
     try {
       allDescriptorFolders = RutaProjectUtils.getAllScriptFolders(project);
     } catch (CoreException e) {
-      return false;
+      return null;
     }
     for (IFolder folder : allDescriptorFolders) {
       String fileExtended = xmlFilePath.replaceAll("[.]", "/") + RutaEngine.SCRIPT_FILE_EXTENSION;
       IFile iFile = RutaCheckerUtils.getFile(folder, fileExtended);
-      result |= iFile.exists();
+      if(iFile.exists()) {
+        return iFile;
+      }
     }
-    return result;
+    return null;
   }
 
   /**
@@ -267,19 +268,20 @@ public class RutaCheckerUtils {
     return getFile(folder, fileExtended);
   }
 
-  public static boolean checkTypeSystemImport(String localPath, IScriptProject project) {
-    boolean result = false;
+  public static IFile checkTypeSystemImport(String localPath, IScriptProject project) {
     List<IFolder> allDescriptorFolders;
     try {
       allDescriptorFolders = RutaProjectUtils.getAllDescriptorFolders(project.getProject());
     } catch (Exception e) {
-      return false;
+      return null;
     }
     for (IFolder folder : allDescriptorFolders) {
       String fileExtended = localPath.replaceAll("[.]", "/") + ".xml";
       IFile iFile = RutaCheckerUtils.getFile(folder, fileExtended);
-      result |= iFile.exists();
+      if(iFile.exists()) {
+        return iFile;
+      }
     }
-    return result;
+    return null;
   }
 }

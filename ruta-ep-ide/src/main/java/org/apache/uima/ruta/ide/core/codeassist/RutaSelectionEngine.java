@@ -272,7 +272,6 @@ public class RutaSelectionEngine extends ScriptSelectionEngine {
 
     private void importTypesystem(Statement s) {
       SimpleReference sRef = (SimpleReference) ((RutaImportStatement) s).getExpression();
-      String sRefName = sRef.getName();
 
       // TODO not working yet
       // importTypesystem(sRefName);

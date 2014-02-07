@@ -19,12 +19,9 @@
 
 package org.apache.uima.ruta.ide.parser.ast;
 
-import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
-import org.eclipse.dltk.ast.statements.Statement;
 
 public class RutaBlock extends MethodDeclaration {
 

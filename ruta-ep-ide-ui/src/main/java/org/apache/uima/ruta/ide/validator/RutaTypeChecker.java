@@ -274,9 +274,9 @@ public class RutaTypeChecker implements IBuildParticipant, IBuildParticipantExte
           SimpleReference sRef = (SimpleReference) ((RutaImportStatement) s).getExpression();
           String localPath = sRef.getName();
           try {
-            boolean checkTypeSystemImport = RutaCheckerUtils.checkTypeSystemImport(localPath,
+            IFile checkTypeSystemImport = RutaCheckerUtils.checkTypeSystemImport(localPath,
                     project);
-            if (!checkTypeSystemImport) {
+            if (checkTypeSystemImport == null) {
               rep.reportProblem(problemFactory.createFileNotFoundProblem(sRef, localPath));
             }
             Set<String> importedTypes = importTypeSystem(localPath);
@@ -306,8 +306,8 @@ public class RutaTypeChecker implements IBuildParticipant, IBuildParticipantExte
 
           // HOTFIX Peter add also the imported types of the imported type system!
           try {
-            boolean checkScriptImport = RutaCheckerUtils.checkScriptImport(localpath, project);
-            if (!checkScriptImport) {
+            IFile checkScriptImport = RutaCheckerUtils.checkScriptImport(localpath, project);
+            if (checkScriptImport != null) {
               rep.reportProblem(problemFactory.createFileNotFoundProblem(sRef, localpath));
             }
             Set<String> importedTypes = importTypeSystem(localpath + "TypeSystem");

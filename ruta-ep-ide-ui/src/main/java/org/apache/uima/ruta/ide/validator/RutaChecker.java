@@ -38,8 +38,9 @@ public class RutaChecker implements IBuildParticipant, IBuildParticipantExtensio
   public RutaChecker(IScriptProject project) {
     buildParticipants = new ArrayList<IBuildParticipant>();
     try {
-      buildParticipants.add(new RutaTypeChecker(project));
-      buildParticipants.add(new RutaVarRefChecker());
+      buildParticipants.add(new RutaLanguageChecker());
+//      buildParticipants.add(new RutaTypeChecker(project));
+//      buildParticipants.add(new RutaVarRefChecker());
       buildParticipants.add(new RutaEngineAndCallChecker(project));
       buildParticipants.add(new RutaRessourceChecker(project));
     } catch (CoreException e) {

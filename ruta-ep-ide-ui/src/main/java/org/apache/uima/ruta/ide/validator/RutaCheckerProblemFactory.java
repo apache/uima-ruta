@@ -19,6 +19,7 @@
 
 package org.apache.uima.ruta.ide.validator;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -191,6 +192,11 @@ public class RutaCheckerProblemFactory implements IRutaCheckerProblemFactory {
     return new RutaCheckerDefaultProblem(this.fileName, message, action, getLine(action));
   }
 
+  public IProblem createUnknownVariableProblem(RutaVariableReference ref) {
+    String message = "error: Variable \"" + ref.getName() + "\" is not defined.";
+    return new RutaCheckerDefaultProblem(this.fileName, message, ref, getLine(ref));
+  }
+  
   public IProblem createWrongNumberOfArgumentsProblem(String name, Expression element, int expected) {
     String message = "error: The element " + name + " expects " + expected + " arguments.";
     return new RutaCheckerDefaultProblem(this.fileName, message, element, getLine(element));
@@ -199,6 +205,15 @@ public class RutaCheckerProblemFactory implements IRutaCheckerProblemFactory {
   public IProblem createUnknownFunctionProblem(RutaFunction f) {
     String message = "error: Function \"" + f.getName() + "\" is not defined.";
     return new RutaCheckerDefaultProblem(this.fileName, message, f, getLine(f));
+  }
+
+  public IProblem createAmbiguousShortName(RutaVariableReference ref, Collection<String> ambiguousTargets, ProblemSeverity error) {
+    StringBuilder message = new StringBuilder(ref.getName());
+    message.append(" is ambiguous, use one of the following instead : ");
+    for (String target : ambiguousTargets) {
+      message.append(target).append(' ');
+    }
+    return new RutaCheckerDefaultProblem(this.fileName, message.toString(), ref, getLine(ref));
   }
 
 }

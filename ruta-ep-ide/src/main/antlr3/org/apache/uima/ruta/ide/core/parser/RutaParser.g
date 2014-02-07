@@ -330,13 +330,13 @@ importStatement returns [Statement stmt = null]
 	name = dottedComponentDeclaration 
 	{if(name != null) {stmt = StatementFactory.createImportEngine(name,im);addImportUimafitEngine(name);}}
 	 SEMI 
-	| ImportString type = dottedId2 (FromString ts = dottedComponentDeclaration)? (AsString alias = Identifier)? SEMI
+	| im = ImportString type = dottedId2 (FromString ts = dottedComponentDeclaration)? (AsString alias = Identifier)? SEMI
 	{stmt = StatementFactory.createImportType(im,type,ts,alias);addImportTypeSystem(ts);}
-	| ImportString STAR FromString ts = dottedComponentDeclaration SEMI
+	| im = ImportString STAR FromString ts = dottedComponentDeclaration SEMI
 	{stmt = StatementFactory.createImportTypeSystem(ts,im);addImportTypeSystem(ts);}
-	| ImportString PackageString pkg = dottedId2 (FromString ts = dottedComponentDeclaration)? (AsString alias = Identifier)? SEMI
+	| im = ImportString PackageString pkg = dottedId2 (FromString ts = dottedComponentDeclaration)? (AsString alias = Identifier)? SEMI
 	{stmt = StatementFactory.createImportPackage(im,pkg,ts,alias);addImportTypeSystem(ts);}
-	| ImportString PackageString STAR FromString ts = dottedComponentDeclaration (AsString alias = Identifier)? SEMI
+	| im = ImportString PackageString STAR FromString ts = dottedComponentDeclaration (AsString alias = Identifier)? SEMI
 	{stmt = StatementFactory.createImportAllPackagew(im,ts,alias);addImportTypeSystem(ts);}
 	
 	;

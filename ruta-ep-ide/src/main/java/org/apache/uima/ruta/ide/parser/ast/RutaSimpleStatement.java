@@ -46,7 +46,9 @@ public abstract class RutaSimpleStatement extends Statement {
   @Override
   public void traverse(ASTVisitor visitor) throws Exception {
     if (visitor.visit(this)) {
-      expression.traverse(visitor);
+      if(expression != null) {
+        expression.traverse(visitor);
+      }
       visitor.endvisit(this);
     }
   }
