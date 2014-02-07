@@ -63,6 +63,13 @@ public class PartOfNeqCondition extends TypeSentiveCondition {
   }
 
   private boolean check(AnnotationFS annotation, RutaStream stream, Type t) {
+    RutaBasic beginAnchor = stream.getBeginAnchor(annotation.getBegin());
+    RutaBasic endAnchor = stream.getEndAnchor(annotation.getEnd());
+    boolean partOf = beginAnchor.isPartOf(t) || endAnchor.isPartOf(t);
+    if (!partOf) {
+      return false;
+    }
+
     try {
       stream.moveTo(annotation);
     } catch (Exception e) {
@@ -70,13 +77,15 @@ public class PartOfNeqCondition extends TypeSentiveCondition {
     while (stream.isValid()) {
       RutaBasic each = (RutaBasic) stream.get();
       Collection<AnnotationFS> set = each.getBeginAnchors(t);
+      // TODO: maybe faster to move in the other direction?
       if (set == null) {
         stream.moveToPrevious();
         continue;
       }
       for (AnnotationFS afs : set) {
         if (afs != null
-                && afs.getType().equals(t)
+                && (afs.getType().equals(t) || stream.getCas().getTypeSystem()
+                        .subsumes(t, afs.getType()))
                 && ((afs.getBegin() < annotation.getBegin() && afs.getEnd() > annotation.getEnd())
                         || (afs.getBegin() == annotation.getBegin() && afs.getEnd() > annotation
                                 .getEnd()) || (afs.getBegin() < annotation.getBegin() && afs
