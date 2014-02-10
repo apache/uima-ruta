@@ -47,7 +47,6 @@ import org.apache.uima.ruta.ide.core.extensions.IIDEConditionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IIDENumberFunctionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IIDEStringFunctionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IIDETypeFunctionExtension;
-import org.apache.uima.ruta.ide.core.extensions.IRutaCheckerProblemFactory;
 import org.apache.uima.ruta.ide.core.extensions.IRutaExtension;
 import org.apache.uima.ruta.ide.parser.ast.FeatureMatchExpression;
 import org.apache.uima.ruta.ide.parser.ast.RutaAction;

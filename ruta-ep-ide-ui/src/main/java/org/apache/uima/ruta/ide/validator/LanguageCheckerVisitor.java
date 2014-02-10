@@ -24,20 +24,19 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Stack;
-import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import org.antlr.runtime.Token;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UIMAFramework;
-import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.metadata.FeatureDescription;
 import org.apache.uima.resource.metadata.TypeDescription;
@@ -84,7 +83,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Preferences;
 import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
@@ -97,7 +95,6 @@ import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.compiler.problem.IProblem;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.compiler.problem.ProblemSeverity;
-import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.builder.ISourceLineTracker;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -191,8 +188,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
 
     this.problemFactory = new RutaCheckerProblemFactory(sourceModule.getElementName(), linetracker);
 
-    namespaces = new HashMap<String, String>();
-    ambiguousTypeAlias = new HashMap<String, Set<String>>();
+    namespaces = new TreeMap<String, String>();
+    ambiguousTypeAlias = new TreeMap<String, Set<String>>();
     allLongTypeNames = new HashSet<String>();
     knownLocalVariables = new Stack<Map<String, Integer>>();
     knownLocalVariables.push(new HashMap<String, Integer>());
@@ -268,10 +265,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       if (parent != null && parent instanceof RutaVariableReference) {
         RutaVariableReference p = (RutaVariableReference) parent;
         String name = p.getName();
-        String string = namespaces.get(name);
-        if(string != null) {
-          name = string;
-        }
+        name = expand(name);
         parentTypeInDeclaration = name;
         // TODO remember name for new types and their features!
         if (finalTypes.contains(name)) {
@@ -305,19 +299,19 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       }
       List<RutaFeatureDeclaration> features = newType.getFeatures();
       Set<FeatureDescription> feats = new HashSet<FeatureDescription>();
-      if(parentTypeInDeclaration != null) {
+      if (parentTypeInDeclaration != null) {
         Set<FeatureDescription> set = featureDescriptionMap.get(parentTypeInDeclaration);
-        feats.addAll(set);
+        if (set != null) {
+          feats.addAll(set);
+        }
       }
       if (features != null) {
         for (RutaFeatureDeclaration each : features) {
-          // TODO create correct feature description! Works right now because the type is not checked
+          // TODO create correct feature description! Works right now because the type is not
+          // checked
           String type = each.getType();
           type = translate(type);
-          String string = namespaces.get(type);
-          if(string != null) {
-            type = string;
-          }
+          type = expand(type);
           FeatureDescription f = new FeatureDescription_impl(each.getName(), "", type);
           feats.add(f);
           if (type.equals("INT") || type.equals("STRING") || type.equals("DOUBLE")
@@ -328,7 +322,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
             IProblem problem = problemFactory.createUnknownFeatureTypeProblem(each);
             pr.reportProblem(problem);
           }
-          
+
         }
         featureDescriptionMap.put(longName, feats);
       }
@@ -359,10 +353,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
         String structure = "";
         if (struct != null) {
           structure = sourceModule.getSource().substring(struct.sourceStart(), struct.sourceEnd());
-          String string = namespaces.get(structure);
-          if (string != null) {
-            structure = string;
-          }
+          structure = expand(structure);
         }
         Map<Expression, Expression> fmap = entry.getValue();
         Set<Expression> keySet = fmap.keySet();
@@ -492,14 +483,19 @@ public class LanguageCheckerVisitor extends ASTVisitor {
         String text = fme.getFeature().getText();
         int lastIndexOf = text.lastIndexOf('.');
         String twf = text.substring(0, lastIndexOf);
-        matchedType = isFeatureMatch(twf);
+        if (getVariableType(twf) == RutaTypeConstants.RUTA_TYPE_AT) {
+          matchedType = twf;
+        } else {
+          twf = expand(twf);
+          matchedType = isFeatureMatch(twf);
+        }
       } else if (head != null) {
         matchedType = sourceModule.getSource().substring(head.sourceStart(), head.sourceEnd());
       }
       // cache long name
-      String string = namespaces.get(matchedType);
-      if (string != null) {
-        matchedType = string;
+      matchedType = expand(matchedType);
+      if (matchedType == null) {
+        matchedType = "uima.tcas.Annotation";
       }
     }
     if (s instanceof FeatureMatchExpression) {
@@ -523,7 +519,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
           return false;
         }
         if (namespaces.keySet().contains(name) || namespaces.values().contains(name)
-                || allLongTypeNames.contains(name)) {
+                || allLongTypeNames.contains(name)
+                || getVariableType(name) == RutaTypeConstants.RUTA_TYPE_AT) {
           return false;
         }
         if (isFeatureMatch(ref.getName()) != null) {
@@ -594,10 +591,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
         String structure = null;
         if (struct != null) {
           structure = sourceModule.getSource().substring(struct.sourceStart(), struct.sourceEnd());
-          String string = namespaces.get(structure);
-          if (string != null) {
-            structure = string;
-          }
+          structure = expand(structure);
         }
         Map<Expression, Expression> assignments = sa.getAssignments();
         // hotfix... correct name in ast
@@ -677,6 +671,18 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     return true;
   }
 
+  private String expand(String shortName) {
+    if (shortName == null) {
+      return null;
+    }
+    String longName = shortName;
+    String string = namespaces.get(shortName);
+    if (string != null) {
+      longName = string;
+    }
+    return longName;
+  }
+
   private void checkTypeOfFeatureMatch(String featText, FeatureMatchExpression fme) {
     int lastIndexOf = featText.lastIndexOf(".");
     if (lastIndexOf == -1) {
@@ -685,14 +691,11 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     String aref = featText.substring(0, lastIndexOf);
     String fref = featText.substring(lastIndexOf + 1, featText.length());
     String match = isFeatureMatch(aref);
-    if(match == null && getVariableType(aref) == RutaTypeConstants.RUTA_TYPE_AT) {
+    if (match == null && getVariableType(aref) == RutaTypeConstants.RUTA_TYPE_AT) {
       // do not check on variables!
       return;
     }
-    String string = namespaces.get(match);
-    if (string != null) {
-      match = string;
-    }
+    match = expand(match);
     if (match != null) {
       int kind = -1;
       if (fme.getValue() != null) {
@@ -730,8 +733,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     }
     return super.endvisit(s);
   }
-  
-  
+
   @Override
   public boolean endvisit(MethodDeclaration s) throws Exception {
     if (s instanceof RutaBlock) {
@@ -755,11 +757,17 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     if (longTypeName == null) {
       return false;
     }
-    if (longTypeName.equals("org.apache.uima.ruta.type.Document")
+    if (longTypeName.equals("Document")
+            || longTypeName.equals("org.apache.uima.ruta.type.Document")
             || longTypeName.equals("uima.tcas.DocumentAnnotation")) {
-      if (featureName.equals("language")) {
+      if (featureName.equals("language") || featureName.equals("begin")
+              || featureName.equals("end")) {
         return true;
       }
+    }
+    if( featureName.equals("begin")
+            || featureName.equals("end")) {
+      return kind ==-1 || kind == RutaTypeConstants.RUTA_TYPE_N;
     }
     Set<FeatureDescription> set = featureDescriptionMap.get(longTypeName);
     if (set != null) {
@@ -799,6 +807,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
 
   private String getLongNameOfNewType(String shortName) {
     String moduleName = sourceModule.getElementName();
+    moduleName = moduleName.substring(0, moduleName.length()-5);
     String packagePrefix = "";
     if (!packageName.isEmpty()) {
       packagePrefix = packageName + ".";
@@ -1047,10 +1056,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
         String[] split = tail.split("[.]");
         String typeToCheck = type;
         for (String feat : split) {
-          String string = namespaces.get(typeToCheck);
-          if (string != null) {
-            typeToCheck = string;
-          }
+          typeToCheck = expand(typeToCheck);
           typeToCheck = checkFSFeatureOfType(feat, typeToCheck);
           foundAll &= (typeToCheck != null);
           if (!foundAll) {
@@ -1166,6 +1172,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     }
     return typeSysDescr;
   }
+
   private String translate(String name) {
     if (name == null) {
       return null;

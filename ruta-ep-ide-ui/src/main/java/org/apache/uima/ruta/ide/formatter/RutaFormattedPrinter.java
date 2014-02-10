@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.antlr.runtime.CommonToken;
-import org.apache.uima.ruta.ide.core.RutaConstants;
 import org.apache.uima.ruta.ide.parser.ast.ActionFactory;
 import org.apache.uima.ruta.ide.parser.ast.ComposedRuleElement;
 import org.apache.uima.ruta.ide.parser.ast.ConditionFactory;
