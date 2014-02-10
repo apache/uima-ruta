@@ -182,7 +182,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
         }
       }
       for (AnnotationFS a : allAnnotations) {
-          addAnnotation(a, false, false, null);
+        addAnnotation(a, false, false, null);
       }
       updateIterators(documentAnnotation);
     } else {
@@ -234,7 +234,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   public void addAnnotation(AnnotationFS annotation, boolean addToIndex, boolean updateInternal,
           AbstractRuleMatch<? extends AbstractRule> creator) {
     Type type = annotation.getType();
-    if(type.equals(basicType)) {
+    if (type.equals(basicType)) {
       return;
     }
     boolean modified = checkSpan(annotation);
@@ -753,6 +753,9 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public boolean isVisible(AnnotationFS annotationFS) {
+    if (annotationFS == null) {
+      return false;
+    }
     AnnotationFS windowAnnotation = filter.getWindowAnnotation();
     if (windowAnnotation != null
             && (annotationFS.getBegin() < windowAnnotation.getBegin() || annotationFS.getEnd() > windowAnnotation
