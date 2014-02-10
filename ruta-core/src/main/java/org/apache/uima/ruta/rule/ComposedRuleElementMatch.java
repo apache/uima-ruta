@@ -35,9 +35,7 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
 
   private Map<RuleElement, List<RuleElementMatch>> innerMatches;
 
-  private boolean textMatchedUpdated = false;
-
-  private List<AnnotationFS> textMatched = null;
+  private boolean textsMatchedUpdated = false;
 
   public ComposedRuleElementMatch(ComposedRuleElement ruleElement,
           ComposedRuleElementMatch containerMatch) {
@@ -51,8 +49,17 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
     }
   }
 
+  protected void enforceUpdate() {
+    textsMatchedUpdated = false;
+    ComposedRuleElementMatch cm = getContainerMatch();
+    if(cm != null) {
+      cm.enforceUpdate();
+    }
+  }
+  
   private void setInnerMatches(Map<RuleElement, List<RuleElementMatch>> innerMatches) {
     this.innerMatches = innerMatches;
+    enforceUpdate();
   }
 
   public Map<RuleElement, List<RuleElementMatch>> getInnerMatches() {
@@ -72,9 +79,8 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
       innerMatches.put(ruleElement, list);
     }
     list.add(ruleElementMatch);
-    textsMatched.addAll(ruleElementMatch.getTextsMatched());
     evaluateInnerMatches(included, stream);
-    textMatchedUpdated = false;
+    enforceUpdate();
   }
 
   public void evaluateInnerMatches(boolean included, RutaStream stream) {
@@ -192,7 +198,7 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
         }
       }
     }
-    textMatchedUpdated = false;
+    enforceUpdate();
   }
 
   public String toString() {
@@ -200,7 +206,7 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
   }
 
   public List<AnnotationFS> getTextsMatched() {
-    if (!textMatchedUpdated || textMatched == null) {
+    if (!textsMatchedUpdated || textsMatched == null) {
       Collection<AnnotationFS> set = new TreeSet<AnnotationFS>(new AnnotationComparator());
       Collection<List<RuleElementMatch>> values = innerMatches.values();
       for (List<RuleElementMatch> list : values) {
@@ -210,10 +216,10 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
           }
         }
       }
-      textMatched = new ArrayList<AnnotationFS>(set);
-      textMatchedUpdated = true;
+      textsMatched = new ArrayList<AnnotationFS>(set);
+      textsMatchedUpdated = true;
     }
-    return textMatched;
+    return textsMatched;
   }
 
   public void setConditionInfo(List<EvaluatedCondition> evaluatedConditions) {
