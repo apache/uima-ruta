@@ -67,7 +67,7 @@ public class ExampleAction extends AbstractRutaAction {
   }
 
   private Type getRandomType(RutaStream stream) {
-    Type annotationType = stream.getCas().getAnnotationType();
+    Type annotationType = stream.getCas().getTypeSystem().getType("org.apache.uima.ruta.type.TokenSeed");
     TypeSystem typeSystem = stream.getCas().getTypeSystem();
     List<Type> subsumedTypes = typeSystem.getProperlySubsumedTypes(annotationType);
     Random r = new Random();
