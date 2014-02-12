@@ -240,7 +240,7 @@ licensed under the Common Public License.</postNoticeText>
                 <Import-Package>
                   <!-- -->
                   org.apache.uima.*,
-                  !antlr, !bsh, !com.jamonapi, !com.sun.net.httpserver,
+                  !bsh, !com.sun.net.httpserver,
                   !edu.emory.mathcs.backport.java.util.concurrent,
                   !groovy.lang, !javax.annotation, !javax.ejb,
                   !javax.el, !javax.inject,
@@ -259,8 +259,6 @@ licensed under the Common Public License.</postNoticeText>
                   !javax.xml.ws, !joptsimple, !net.sf.cglib.*, !net.sf.ehcache.*,
                   !org.antlr.stringtemplate,
                   !org.apache.avalon.framework.logger,
-                  !org.apache.commons.pool,
-                  !org.apache.commons.pool.impl,
                   !org.apache.log, !org.apache.log4j, !org.apache.log4j.xml,
                   !org.aspectj.*, !org.codehaus.groovy.*, !org.hibernate.* ,
                   !org.joda.*, !org.jruby.*, !org.omg.CORBA,
