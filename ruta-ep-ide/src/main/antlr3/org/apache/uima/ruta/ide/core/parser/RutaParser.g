@@ -953,7 +953,7 @@ featureTypeExpression returns [Expression expr = null]
 
 featureExpression returns [Expression expr = null]
 	:
-	f = dottedId2  {expr = ExpressionFactory.createFeatureExpression(f);}
+	f = dottedId  {expr = ExpressionFactory.createFeatureExpression(f);}
 	;
 
 simpleTypeExpression returns [Expression type = null]
