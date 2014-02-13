@@ -943,17 +943,17 @@ externalTypeFunction returns [Expression expr = null]
 
 featureAssignmentExpression returns [Expression expr = null]
 	:
-	feature = dottedId comp = ASSIGN_EQUAL value = argument {expr = ExpressionFactory.createFeatureMatch(feature, comp, value);}
+	feature = dottedId3 comp = ASSIGN_EQUAL value = argument {expr = ExpressionFactory.createFeatureMatch(feature, comp, value);}
 	;
 
 featureTypeExpression returns [Expression expr = null]
 	:
-	feature = dottedId (comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) value = argument {expr = ExpressionFactory.createFeatureMatch(feature, comp, value);}
+	feature = dottedId3 (comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) value = argument {expr = ExpressionFactory.createFeatureMatch(feature, comp, value);}
 	;
 
 featureExpression returns [Expression expr = null]
 	:
-	f = dottedId  {expr = ExpressionFactory.createFeatureExpression(f);}
+	f = dottedId3  {expr = ExpressionFactory.createFeatureExpression(f);}
 	;
 
 simpleTypeExpression returns [Expression type = null]
@@ -2052,6 +2052,22 @@ dottedId2 returns [Token token = null ]
 		}
 	(
 		dot = (DOT| MINUS) {ct.setText(ct.getText() + dot.getText());}
+		id = Identifier {ct.setStopIndex(getBounds(id)[1]);
+		                 ct.setText(ct.getText() + id.getText());}
+	)+
+	{token = ct;
+	 return token;}
+	;
+
+dottedId3 returns [Token token = null ]
+@init {CommonToken ct = null;}
+	:
+	// at least one dot!
+	id = Identifier {
+		ct = new CommonToken(id);
+		}
+	(
+		dot = DOT {ct.setText(ct.getText() + dot.getText());}
 		id = Identifier {ct.setStopIndex(getBounds(id)[1]);
 		                 ct.setText(ct.getText() + id.getText());}
 	)+
