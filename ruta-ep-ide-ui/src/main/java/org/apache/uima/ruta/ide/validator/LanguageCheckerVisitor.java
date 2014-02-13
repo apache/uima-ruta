@@ -765,9 +765,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
         return true;
       }
     }
-    if( featureName.equals("begin")
-            || featureName.equals("end")) {
-      return kind ==-1 || kind == RutaTypeConstants.RUTA_TYPE_N;
+    if (featureName.equals("begin") || featureName.equals("end")) {
+      return kind == -1 || kind == RutaTypeConstants.RUTA_TYPE_N;
     }
     Set<FeatureDescription> set = featureDescriptionMap.get(longTypeName);
     if (set != null) {
@@ -807,7 +806,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
 
   private String getLongNameOfNewType(String shortName) {
     String moduleName = sourceModule.getElementName();
-    moduleName = moduleName.substring(0, moduleName.length()-5);
+    moduleName = moduleName.substring(0, moduleName.length() - 5);
     String packagePrefix = "";
     if (!packageName.isEmpty()) {
       packagePrefix = packageName + ".";
@@ -897,6 +896,9 @@ public class LanguageCheckerVisitor extends ASTVisitor {
 
   private void initializePredefinedInformation() {
 
+    typeDescriptionMap = new HashMap<String, TypeDescription>();
+    featureDescriptionMap = new HashMap<String, Set<FeatureDescription>>();
+
     try {
       typeSystemDescription = getTypeSystemOfScript();
       IPath descriptorRootPath = RutaProjectUtils.getDescriptorRootPath(sourceModule
@@ -906,19 +908,18 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     } catch (Exception e) {
       RutaIdeUIPlugin.error(e);
     }
+    if (typeSystemDescription != null) {
+      TypeDescription[] descriptions = typeSystemDescription.getTypes();
+      for (TypeDescription typeDescription : descriptions) {
+        String typeName = typeDescription.getName();
+        typeDescriptionMap.put(typeName, typeDescription);
+      }
 
-    typeDescriptionMap = new HashMap<String, TypeDescription>();
-    TypeDescription[] descriptions = typeSystemDescription.getTypes();
-    for (TypeDescription typeDescription : descriptions) {
-      String typeName = typeDescription.getName();
-      typeDescriptionMap.put(typeName, typeDescription);
-    }
-
-    featureDescriptionMap = new HashMap<String, Set<FeatureDescription>>();
-    for (TypeDescription typeDescription : descriptions) {
-      Set<FeatureDescription> allFeatures = getAllDeclaredFeatures(typeDescription,
-              typeDescriptionMap);
-      featureDescriptionMap.put(typeDescription.getName(), allFeatures);
+      for (TypeDescription typeDescription : descriptions) {
+        Set<FeatureDescription> allFeatures = getAllDeclaredFeatures(typeDescription,
+                typeDescriptionMap);
+        featureDescriptionMap.put(typeDescription.getName(), allFeatures);
+      }
     }
 
     List<String> uimaPredefTypes = Arrays.asList(new String[] { "uima.cas.Boolean",

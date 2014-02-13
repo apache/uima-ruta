@@ -53,6 +53,11 @@ public class TextRulerPreprocessor {
     AnalysisEngineDescription analysisEngineDescription = TextRulerToolkit
             .getAnalysisEngineDescription(TextRulerToolkit
                     .getEngineDescriptorFromTMSourceFile(new Path(tmFile)));
+    if(analysisEngineDescription == null) {
+      delegate.preprocessorStatusUpdate(this, "Descriptor is missing. Please rebuild the project.");
+      return null;
+    }
+    
     // we want to reuse these cases, so extend the type system in case a boundary-based learner is
     // called
     TextRulerToolkit.addBoundaryTypes(analysisEngineDescription, currentSlotNames);

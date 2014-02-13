@@ -152,6 +152,11 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
 
     AnalysisEngineDescription description = TextRulerToolkit
             .getAnalysisEngineDescription(descriptorFile);
+    if (description == null) {
+      sendStatusUpdateToDelegate("Failed to load descriptor. Please rebuild the project.",
+              TextRulerLearnerState.ML_INITIALIZING, false);
+      return;
+    }
     TextRulerToolkit.addBoundaryTypes(description, slotNames);
     ae = TextRulerToolkit.loadAnalysisEngine(description);
 
@@ -159,7 +164,8 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     // the FILTERTYPE expression!
     String tempRulesFileName = getTempRulesFileName();
     IPath path = new Path(tempRulesFileName);
-    ae.setConfigParameterValue(RutaEngine.PARAM_MAIN_SCRIPT, path.removeFileExtension().lastSegment());
+    ae.setConfigParameterValue(RutaEngine.PARAM_MAIN_SCRIPT, path.removeFileExtension()
+            .lastSegment());
     String portableString = path.removeLastSegments(1).toPortableString();
     ae.setConfigParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, new String[] { portableString });
     ae.setConfigParameterValue(RutaEngine.PARAM_ADDITIONAL_SCRIPTS, new String[0]);
@@ -183,6 +189,9 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
   protected boolean checkForMandatoryTypes() {
     // check if all passed slot types are present:
     CAS someCas = getTestCAS();
+    if (someCas == null) {
+      return false;
+    }
     TypeSystem ts = someCas.getTypeSystem();
     // GlobalCASSource.releaseCAS(someCas);
     boolean result = true;
@@ -218,6 +227,9 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
   public void run() {
     if (createTempDirIfNeccessary()) {
       updateAE();
+      if (ae == null) {
+        return;
+      }
       inducedRules.clear();
       if (!checkForMandatoryTypes()) {
 
@@ -410,19 +422,19 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
         theRule.setCoveringStatistics(inducedRules.get(ruleString));
         System.out.println("skipped with " + inducedRules.get(ruleString));
       } else {
-      TextRulerStatisticsCollector sumC = sums.get(ruleIndex);
-      for (TextRulerExampleDocument theDoc : sortedDocs) {
-        theDoc.resetAndFillTestCAS(theTestCAS, target);
-        testRuleOnDocument(theRule, theDoc, sumC, theTestCAS);
-        double errorRate = sumC.n / Math.max(sumC.p, 1);
-        if (errorRate > maxErrorRate) {
-          System.out.println("stopped:" + sumC);
-          break;
+        TextRulerStatisticsCollector sumC = sums.get(ruleIndex);
+        for (TextRulerExampleDocument theDoc : sortedDocs) {
+          theDoc.resetAndFillTestCAS(theTestCAS, target);
+          testRuleOnDocument(theRule, theDoc, sumC, theTestCAS);
+          double errorRate = sumC.n / Math.max(sumC.p, 1);
+          if (errorRate > maxErrorRate) {
+            System.out.println("stopped:" + sumC);
+            break;
+          }
+          if (shouldAbort())
+            return;
         }
-        if (shouldAbort())
-          return;
-      }
-      inducedRules.put(ruleString, sumC);
+        inducedRules.put(ruleString, sumC);
       }
     }
     theTestCAS.reset();
