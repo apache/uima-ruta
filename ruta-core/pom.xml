@@ -44,6 +44,12 @@
       <groupId>org.antlr</groupId>
       <artifactId>antlr-runtime</artifactId>
       <version>3.5</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.antlr</groupId> 
+          <artifactId>stringtemplate</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.htmlparser</groupId>

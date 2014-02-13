@@ -36,8 +36,6 @@
   <url>${uimaWebsiteUrl}</url>
   <description>Provides the UIMA Ruta development environment for Eclipse</description>
   <dependencies>
-    <!-- <dependency> <groupId>org.antlr</groupId> <artifactId>antlr-runtime</artifactId> <version>3.4</version> 
-      <scope>compile</scope> </dependency> -->
     <dependency>
       <groupId>org.eclipse.dltk</groupId>
       <artifactId>core</artifactId>

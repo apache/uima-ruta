@@ -35,8 +35,6 @@ licensed under the Common Public License.</postNoticeText>
   <description>Provides the UIMA Ruta engine to other Eclipse 
     plugins for their use</description>
   <dependencies>
-    <!-- <dependency> <groupId>org.antlr</groupId> <artifactId>antlr-runtime</artifactId> 
-      <version>3.4</version> <scope>compile</scope> </dependency> -->
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>ruta-core</artifactId>
@@ -48,6 +46,12 @@ licensed under the Common Public License.</postNoticeText>
       <artifactId>antlr-runtime</artifactId>
       <version>3.5</version>
       <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.antlr</groupId> 
+          <artifactId>stringtemplate</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.htmlparser</groupId>
@@ -306,7 +310,7 @@ licensed under the Common Public License.</postNoticeText>
             </goals>
             <configuration>
               <outputDirectory>${project.build.outputDirectory}</outputDirectory>
-              <excludeArtifactIds>uimaj-core,uimaj-tools,uimaj-document-annotation,uimaj-adapter-vinci,jVinci,uimaj-cpe,tools,aopalliance,spring-aop</excludeArtifactIds>
+              <excludeArtifactIds>uimaj-core,uimaj-tools,uimaj-document-annotation,uimaj-adapter-vinci,jVinci,uimaj-cpe,tools,aopalliance,spring-aop,stringtemplate,antlr</excludeArtifactIds>
             </configuration>
           </execution>
         </executions>
