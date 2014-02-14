@@ -1,0 +1,1 @@
+Use SIZE to count the numbers of list entries.

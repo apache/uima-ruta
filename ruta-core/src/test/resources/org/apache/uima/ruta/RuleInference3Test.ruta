@@ -1,0 +1,18 @@
+PACKAGE org.apache.uima;
+
+DECLARE T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20,T21,T22,T23,T24,T25;
+
+// T1 = LBrack
+// T2 = T2
+// T3 = FirstLBrack
+// T4 = RefStart
+
+Document{-> RETAINTYPE(BREAK)};
+
+SPECIAL{REGEXP("\\[") -> MARK(T1)};
+SPECIAL{REGEXP("\\]") -> MARK(T2)};
+
+T1{POSITION(Document,1) -> MARK(T3)};
+
+BREAK T1 ANY[1,10]{-PARTOF(T2) -> MARK(T4, 2, 3, 4)} T2;
+T1{PARTOF(T3)} ANY[1,10]{-PARTOF(T2) -> MARK(T4, 1, 2, 3, 4)} T2;

@@ -1,0 +1,11 @@
+The Ruta language is an imperative rule language extended with scripting elements. 
+A Ruta rule defines a pattern of annotations with additional conditions. If this 
+pattern applies, then the actions of the rule are performed  on the matched annotations. 
+A rule is composed of a sequence of rule elements and a rule element essentially consists 
+of four parts: A matching condition, an optional quantifier, a list of conditions and a 
+list of actions. The matching condition is typically a type of an annotation by which the 
+rule element matches on the covered text of one of those annotations. The quantifier 
+specifies, whether it is necessary that the rule element successfully matches and how often 
+the rule element may match. The list of conditions specifies additional constraints that 
+the matched text or annotations need to fulfill. The list of actions defines the 
+consequences of the rule and often creates new annotations or modifies existing annotations.

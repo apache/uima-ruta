@@ -1,0 +1,5 @@
+PACKAGE org.apache.uima.ruta;
+
+IMPORT org.apache.uima.ruta.Type1;
+
+W{-> MARK(Type1)};

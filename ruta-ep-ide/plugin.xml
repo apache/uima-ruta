@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<?eclipse version="3.4"?>
+<plugin
+>
+  <extension-point id="rutaCommandProcessor" name="rutaCommandProcessor" schema="schema/rutaCommandProcessor.exsd"/>
+   <extension-point id="rutaCommandDetector" name="rutaCommandDetector" schema="schema/rutaCommandDetector.exsd"/>
+   <extension-point id="rutakeywords" name="rutakeywords" schema="schema/rutakeywords.exsd"/>
+   <extension-point id="rutaExtension" name="rutaExtension" schema="schema/rutaExtension.exsd"/>
+   <extension-point id="conditionExtension" name="conditionExtension" schema="schema/conditionExtension.exsd"/>
+   <extension-point id="actionExtension" name="actionExtension" schema="schema/actionExtension.exsd"/>
+   <extension-point id="engineExtension" name="engineExtension" schema="schema/engineExtension.exsd"/>
+   <extension-point id="booleanFunctionExtension" name="booleanFunctionExtension" schema="schema/booleanFunctionExtension.exsd"/>
+   <extension-point id="typeFunctionExtension" name="typeFunctionExtension" schema="schema/typeFunctionExtension.exsd"/>
+   <extension-point id="numberFunctionExtension" name="numberFunctionExtension" schema="schema/numberFunctionExtension.exsd"/>
+   <extension-point id="stringFunctionExtension" name="stringFunctionExtension" schema="schema/stringFunctionExtension.exsd"/>
+   <extension-point id="rutaSemanticHighlighting" name="rutaSemanticHighlighting" schema="schema/rutaSemanticHighlighting.exsd"/>
+   <extension-point id="rutaTestEngine" name="rutaTestEngine" schema="schema/rutaTestEngine.exsd"/>
+   <extension
+         id="nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run class="org.apache.uima.ruta.ide.core.RutaNature"/>
+      </runtime>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.validators.core.validator">
+      <validatorType
+            class="org.apache.uima.ruta.ide.core.packages.RutaPackageCheckerType"
+            id="org.apache.uima.ruta.ide.packageChecker"
+            nature="org.apache.uima.ruta.ide.nature">
+      </validatorType>
+   </extension>
+   
+   <extension
+         point="org.eclipse.dltk.core.language">
+      <language
+            class="org.apache.uima.ruta.ide.core.RutaLanguageToolkit"
+            nature="org.apache.uima.ruta.ide.nature"/>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.sourceElementParsers">
+      <parser
+            class="org.apache.uima.ruta.ide.core.parser.RutaSourceElementParser"
+            nature="org.apache.uima.ruta.ide.nature"
+            priority="0">
+      </parser>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.selectionEngine">
+      <selectionEngine
+            class="org.apache.uima.ruta.ide.core.codeassist.RutaSelectionEngine"
+            nature="org.apache.uima.ruta.ide.nature"
+            priority="0">
+      </selectionEngine>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.completionEngine">
+      <completionEngine
+            class="org.apache.uima.ruta.ide.core.codeassist.RutaCompletionEngine"
+            nature="org.apache.uima.ruta.ide.nature"
+            priority="0">
+      </completionEngine>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.search">
+      <seachFactory
+            class="org.apache.uima.ruta.ide.core.RutaSearchFactory"
+            nature="org.apache.uima.ruta.ide.nature"
+            priority="0">
+      </seachFactory>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.callHierarchy">
+      <callHerarchiesFactory
+            class="org.apache.uima.ruta.ide.core.RutaCallHierarchyFactory"
+            nature="org.apache.uima.ruta.ide.nature"
+            priority="0">
+      </callHerarchiesFactory>
+   </extension>
+   <extension
+        point="org.eclipse.core.runtime.contentTypes">
+     <content-type
+           base-type="org.eclipse.core.runtime.text"
+           file-extensions="ruta"
+           id="org.apache.uima.ruta.ide.rutaContentType"
+           name="%rutaContentType"
+           priority="high">
+        <describer
+              class="org.apache.uima.ruta.ide.core.RutaContentDescriber"
+              plugin="org.apache.uima.ruta.ide.core">
+        </describer>       
+     </content-type>
+  </extension>
+   <extension
+         point="org.eclipse.dltk.core.sourceParsers">
+      <parserContribution
+            natureId="org.apache.uima.ruta.ide.nature">
+         <parser
+               class="org.apache.uima.ruta.ide.core.parser.RutaSourceParserFactory"
+               description="%sourceParser.description"
+               id="org.apache.uima.ruta.ide.sourceParser"
+               name="%sourceParser.name"
+               priority="0" />
+      </parserContribution>
+   </extension>
+   <extension
+         point="org.apache.uima.ruta.ide.rutakeywords">
+      <keywords
+            class="org.apache.uima.ruta.ide.core.RutaKeywords">
+      </keywords>
+   </extension>
+ <extension
+         point="org.eclipse.dltk.core.mixin">
+      <mixin
+            class="org.apache.uima.ruta.ide.core.mixin.RutaMixinParser"
+            nature="org.apache.uima.ruta.ide.nature"
+            priority="0">
+      </mixin>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.apache.uima.ruta.ide.core.RutaPreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+    point="org.eclipse.dltk.core.buildParticipant">
+      <buildParticipant
+            class="org.eclipse.dltk.core.builder.ParserBuildParticipantFactory"
+            id="org.apache.uima.ruta.ide.buildParticipant.parser"
+            name="%parserBuildParticipant.name"
+            nature="org.apache.uima.ruta.ide.nature">
+      </buildParticipant>
+    <buildParticipant
+      class="org.apache.uima.ruta.ide.core.parser.RutaTodoParserType"
+      id="org.apache.uima.ruta.ide.todo"
+      name="%taskTagsBuildParticipant.name"
+      nature="org.apache.uima.ruta.ide.nature">
+      <requires
+            id="org.apache.uima.ruta.ide.buildParticipant.parser">
+      </requires>
+    </buildParticipant>
+    <buildParticipant
+          class="org.apache.uima.ruta.ide.core.builder.RutaBuilder"
+          id="org.apache.uima.ruta.ide.core.builder"
+          name="UIMA Ruta Descriptor Builder"
+          nature="org.apache.uima.ruta.ide.nature">
+    </buildParticipant>
+  </extension>
+  
+  
+
+
+
+
+
+
+  <!--extension
+    point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+    <launchConfigurationTabGroup
+    type="org.apache.uima.ruta.ide.launching.localRutaApplication"
+    class="org.apache.uima.ruta.ide.debug.ui.launchConfiguration.RutaTabGroup"
+    id="org.apache.uima.ruta.ide.debug.ui.RutaTabGroup">
+    <launchMode 
+    mode="debug"
+    perspective="org.eclipse.debug.ui.DebugPerspective"
+    description="Debug">
+    </launchMode>
+    </launchConfigurationTabGroup>
+    </extension-->   
+
+
+
+
+
+
+
+
+
+
+
+<!--
+  <extension point="org.eclipse.ui.propertyPages">
+    <page
+      class="org.apache.uima.ruta.ide.debugger.preferences.RutaDebuggerPreferencePage"
+      category="org.apache.uima.ruta.ide.propertyPage.debug.engines"
+      id="org.apache.uima.ruta.ide.propertyPage.debug.engines.debugger"
+      name="%PropertyPage.name">
+      <enabledWhen>
+        <adapt type="org.eclipse.core.resources.IProject">
+          <test
+            property="org.eclipse.core.resources.projectNature"
+            value="org.apache.uima.ruta.ide.nature" />
+        </adapt>
+      </enabledWhen>
+    </page>
+  </extension>
+  -->
+<!--
+  <extension
+        point="org.eclipse.ui.propertyPages">
+     <page
+           category="org.apache.uima.ruta.ide.propertyPage"
+           class="org.apache.uima.ruta.ide.debug.ui.preferences.RutaDebugPreferencePage"
+           id="org.apache.uima.ruta.ide.propertyPage.debug"
+           name="%Debug.PropertyPage">
+        <enabledWhen>
+           <adapt
+                 type="org.eclipse.core.resources.IProject">
+              <test
+                    property="org.eclipse.core.resources.projectNature"
+                    value="org.apache.uima.ruta.ide.nature">
+              </test>
+           </adapt>
+        </enabledWhen>
+     </page>
+     <page
+           category="org.apache.uima.ruta.ide.propertyPage.debug"
+           class="org.apache.uima.ruta.ide.debug.ui.preferences.RutaDebuggingEnginePreferencePage"
+           id="org.apache.uima.ruta.ide.propertyPage.debug.engines"
+           name="%Engines.PropertyPage">
+        <enabledWhen>
+           <adapt
+                 type="org.eclipse.core.resources.IProject">
+              <test
+                    property="org.eclipse.core.resources.projectNature"
+                    value="org.apache.uima.ruta.ide.nature">
+              </test>
+           </adapt>
+        </enabledWhen>
+     </page>
+  </extension>
+  -->
+   <!--
+     <extension
+           point="org.eclipse.dltk.ui.buildpathContainerPage">
+        <buildpathContainerPage
+              class="org.apache.uima.ruta.ide.ui.wizards.RutaJavaContainerPage"
+              id="org.apache.uima.ruta.ide.java.page"
+              name="Java Library"
+              nature="org.apache.uima.ruta.ide.nature">
+        </buildpathContainerPage>
+     </extension>
+     -->
+</plugin>

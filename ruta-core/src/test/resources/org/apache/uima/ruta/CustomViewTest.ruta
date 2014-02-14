@@ -1,0 +1,5 @@
+PACKAGE org.apache.uima;
+
+DECLARE T1;
+
+W{->T1};

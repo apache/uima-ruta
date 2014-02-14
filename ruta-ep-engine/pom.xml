@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
+  license agreements. See the NOTICE file distributed with this work for additional 
+  information regarding copyright ownership. The ASF licenses this file to 
+  you under the Apache License, Version 2.0 (the "License"); you may not use 
+  this file except in compliance with the License. You may obtain a copy of 
+  the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+  by applicable law or agreed to in writing, software distributed under the 
+  License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+  OF ANY KIND, either express or implied. See the License for the specific 
+  language governing permissions and limitations under the License. -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>ruta-ep-engine</artifactId>
+  <version>2.2.1-SNAPSHOT</version>
+  <parent>
+    <groupId>org.apache.uima</groupId>
+    <artifactId>ruta-parent</artifactId>
+    <version>2.2.1-SNAPSHOT</version>
+    <relativePath>../ruta-parent/pom.xml</relativePath>
+  </parent>
+  <properties>
+    <postNoticeText>${uniWueNoticeText}
+
+This product contains ANTLR libraries (http://www.antlr.org/), 
+licensed under the BSD License.
+
+This product contains htmlparser libraries (http://htmlparser.sourceforge.net/), 
+licensed under the Common Public License.</postNoticeText>
+    <uimaScmProject>${project.artifactId}</uimaScmProject>
+  </properties>
+  <name>Apache UIMA Ruta Eclipse: ${project.artifactId}</name>
+  <url>${uimaWebsiteUrl}</url>
+  <description>Provides the UIMA Ruta engine to other Eclipse 
+    plugins for their use</description>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>ruta-core</artifactId>
+      <version>${project.parent.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.antlr</groupId>
+      <artifactId>antlr-runtime</artifactId>
+      <version>3.5</version>
+      <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.antlr</groupId> 
+          <artifactId>stringtemplate</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.htmlparser</groupId>
+      <artifactId>htmlparser</artifactId>
+      <version>1.6</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>3.2.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.6</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimafit-core</artifactId>
+      <version>2.0.0</version>
+      <scope>compile</scope>
+      <!-- Exclude aop stuff, which is not need by uimafit 
+      and only introduces a non-asl license -->
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework</groupId> 
+          <artifactId>spring-aop</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>aopalliance</groupId> 
+          <artifactId>aopalliance</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.4</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-math3</artifactId>
+      <version>3.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.1.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging-api</artifactId>
+      <version>1.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+      <version>3.1.2.RELEASE</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>3.1.2.RELEASE</version>
+      <scope>compile</scope>
+      <!-- Exclude aop stuff, which is not need by uimafit 
+      and only introduces a non-asl license -->
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework</groupId> 
+          <artifactId>spring-aop</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>aopalliance</groupId> 
+          <artifactId>aopalliance</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-expression</artifactId>
+      <version>3.1.2.RELEASE</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-beans</artifactId>
+      <version>3.1.2.RELEASE</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-asm</artifactId>
+      <version>3.1.2.RELEASE</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+  <scm>
+    <url>http://svn.apache.org/viewvc/uima/ruta/trunk/ruta-ep-engine</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-ep-engine</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-ep-engine</developerConnection>
+  </scm>
+  <build>
+    <!-- don't use artifactId as first part of finalName, follow instead 
+      the eclipse convention -->
+    <finalName>org.apache.uima.ruta.engine_${parsedVersion.osgiVersion}</finalName>
+    <resources>
+      <resource>
+        <directory>src/main/readme_src</directory>
+      </resource>
+    </resources>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.rat</groupId>
+          <artifactId>apache-rat-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>default-cli</id>
+              <configuration>
+                <excludes>
+                  <exclude>release.properties</exclude> <!-- release generated artifact -->
+                  <exclude>marker-file-identifying-*</exclude>
+                  <exclude>issuesFixed/**</exclude>
+                </excludes>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>uima-bundle</id>
+            <configuration>
+              <instructions>
+                <_nouses>true</_nouses>
+                <_exportcontents>org.apache.uima.ruta,
+                  org.apache.uima.ruta.action,
+                  org.apache.uima.ruta.condition,
+                  org.apache.uima.ruta.constraint,
+                  org.apache.uima.ruta.engine,
+                  org.apache.uima.ruta.expression,
+                  org.apache.uima.ruta.expression.bool,
+                  org.apache.uima.ruta.expression.list,
+                  org.apache.uima.ruta.expression.number,
+                  org.apache.uima.ruta.expression.resource,
+                  org.apache.uima.ruta.expression.string,
+                  org.apache.uima.ruta.expression.type,
+                  org.apache.uima.ruta.extensions,
+                  org.apache.uima.ruta.parser,
+                  org.apache.uima.ruta.resource,
+                  org.apache.uima.ruta.rule,
+                  org.apache.uima.ruta.rule.quantifier,
+                  org.apache.uima.ruta.seed,
+                  org.apache.uima.ruta.type,
+                  org.apache.uima.ruta.utils,
+                  org.apache.uima.ruta.verbalize,
+                  org.apache.uima.ruta.visitor,
+                  org.antlr.runtime,
+                  org.antlr.runtime.debug,
+                  org.antlr.runtime.misc,
+                  org.antlr.runtime.tree,
+                  org.htmlparser,
+                  org.htmlparser.*,
+                  org.apache.commons.lang3.*,
+                  org.apache.commons.io.*,
+                  org.apache.uima.fit.*,
+                  org.apache.commons.math3.*,
+                  org.springframework.*
+                </_exportcontents>
+
+                <Import-Package>
+                  <!-- -->
+                  org.apache.uima.*,
+                  !bsh, !com.sun.net.httpserver,
+                  !edu.emory.mathcs.backport.java.util.concurrent,
+                  !groovy.lang, !javax.annotation, !javax.ejb,
+                  !javax.el, !javax.inject,
+                  !javax.interceptor, !javax.jms,
+                  !javax.management, !javax.management.modelmbean, !javax.management.openmbean,
+                  !javax.management.remote,
+                  !javax.naming, !javax.persistence.spi, !javax.rmi, !javax.servlet,
+                  !javax.swing, !javax.swing.border,
+                  !javax.swing.event, !javax.swing.text, !javax.swing.tree, !javax.validation,
+                  !javax.validation.bootstrap,
+                  !javax.validation.metadata, !javax.xml.namespace,
+                  !javax.xml.parsers, !javax.xml.stream,
+                  !javax.xml.stream.events, !javax.xml.stream.util,
+                  !javax.xml.transform, !javax.xml.transform.sax,
+                  !javax.xml.transform.stax,
+                  !javax.xml.ws, !joptsimple, !net.sf.cglib.*, !net.sf.ehcache.*,
+                  !org.antlr.stringtemplate,
+                  !org.apache.avalon.framework.logger,
+                  !org.apache.log, !org.apache.log4j, !org.apache.log4j.xml,
+                  !org.aspectj.*, !org.codehaus.groovy.*, !org.hibernate.* ,
+                  !org.joda.*, !org.jruby.*, !org.omg.CORBA,
+                  !org.springframework.instrument,
+                  !org.w3c.dom, !org.xml.sax, !org.xml.sax.ext, !org.xml.sax.helpers,
+                  !org.aopalliance.*, !org.springframework.aop.*
+                </Import-Package>
+                <!-- -->
+                <Require-Bundle> org.apache.uima.runtime </Require-Bundle>
+                <!-- <Import-Package>org.apache.uima, org.apache.uima.analysis_component, 
+                  org.apache.uima.analysis_engine, org.apache.uima.analysis_engine.annotator, 
+                  org.apache.uima.analysis_engine.asb, org.apache.uima.analysis_engine.asb.impl, 
+                  org.apache.uima.analysis_engine.impl, org.apache.uima.analysis_engine.impl.compatibility, 
+                  org.apache.uima.analysis_engine.metadata, org.apache.uima.analysis_engine.metadata.impl, 
+                  org.apache.uima.analysis_engine.service.impl, org.apache.uima.cas, org.apache.uima.cas.admin, 
+                  org.apache.uima.cas.impl, org.apache.uima.cas.text, org.apache.uima.cas_data, 
+                  org.apache.uima.cas_data.impl, org.apache.uima.flow, org.apache.uima.flow.impl, 
+                  org.apache.uima.impl, org.apache.uima.internal.util, org.apache.uima.internal.util.rb_trees, 
+                  org.apache.uima.internal.util.text, org.apache.uima.jcas, org.apache.uima.jcas.cas, 
+                  org.apache.uima.jcas.impl, org.apache.uima.jcas.tcas, org.apache.uima.resource, 
+                  org.apache.uima.resource.impl, org.apache.uima.resource.metadata, org.apache.uima.resource.metadata.impl, 
+                  org.apache.uima.resource.service.impl, org.apache.uima.search, org.apache.uima.search.impl, 
+                  org.apache.uima.uimacpp, org.apache.uima.util, org.apache.uima.util.impl, 
+                  </Import-Package> -->
+                <Embed-Dependency>*;scope=compile</Embed-Dependency>
+                <!-- <Embed-Transitive>true</Embed-Transitive> -->
+                <Bundle-SymbolicName>org.apache.uima.ruta.engine;singleton:=true</Bundle-SymbolicName>
+                <Bundle-RequiredExecutionEnvironment>J2SE-1.5</Bundle-RequiredExecutionEnvironment>
+                <Eclipse-ExtensibleAPI>true</Eclipse-ExtensibleAPI>
+                <!-- <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy> -->
+                <Eclipse-BuddyPolicy>registered</Eclipse-BuddyPolicy>
+                <Eclipse-RegisterBuddy>org.apache.uima.runtime</Eclipse-RegisterBuddy>
+              </instructions>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copyDependentJars</id>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+              <excludeArtifactIds>uimaj-core,uimaj-tools,uimaj-document-annotation,uimaj-adapter-vinci,jVinci,uimaj-cpe,tools,aopalliance,spring-aop,stringtemplate,antlr</excludeArtifactIds>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

@@ -1,0 +1,5 @@
+A Boolean b that is true;
+b = false;
+The Number 42;
+The Double d = 2,1;
+Another Double that is 2.3;
