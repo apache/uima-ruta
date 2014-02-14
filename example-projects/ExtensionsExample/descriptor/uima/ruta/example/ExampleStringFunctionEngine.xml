@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
     <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
     <primitive>true</primitive>
@@ -113,7 +114,21 @@
             </configurationParameter>
             <configurationParameter>
                 <name>dynamicAnchoring</name>
-                <description>Activates dynamic achoring (possible speed up).</description>
+                <description>Activates dynamic anchoring (possible speed up).</description>
+                <type>Boolean</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>greedyRuleElement</name>
+                <description>Activates greedy anchoring for rule elements.</description>
+                <type>Boolean</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>greedyRule</name>
+                <description>Activates greedy anchoring for complete rules.</description>
                 <type>Boolean</type>
                 <multiValued>false</multiValued>
                 <mandatory>false</mandatory>
@@ -132,6 +147,18 @@
             </configurationParameter>
             <configurationParameter>
                 <name>simpleGreedyForComposed</name>
+                <type>Boolean</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>additionalUimafitEngines</name>
+                <type>String</type>
+                <multiValued>true</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>strictImports</name>
                 <type>Boolean</type>
                 <multiValued>false</multiValued>
                 <mandatory>false</mandatory>
@@ -225,6 +252,12 @@
             </nameValuePair>
             <nameValuePair>
                 <name>additionalEngines</name>
+                <value>
+                    <array/>
+                </value>
+            </nameValuePair>
+            <nameValuePair>
+                <name>additionalUimafitEngines</name>
                 <value>
                     <array/>
                 </value>

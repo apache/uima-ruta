@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--
   Licensed to the Apache Software Foundation (ASF) under one
   or more contributor license agreements.  See the NOTICE file
@@ -17,7 +18,6 @@
   specific language governing permissions and limitations
   under the License.
 -->
-
 <typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <name>BasicTypeSystem</name>
   <description/>
@@ -140,7 +140,7 @@
     <typeDescription>
       <name>org.apache.uima.ruta.type.Document</name>
       <description/>
-      <supertypeName>uima.tcas.DocumentAnnotation</supertypeName>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
     </typeDescription>
     <typeDescription>
       <name>org.apache.uima.ruta.type.TokenSeed</name>
