@@ -61,5 +61,12 @@ under the License.
             engine="org.apache.uima.ruta.example.extensions.ExampleNumberFunctionExtension">
       </condition>
    </extension>
+   <extension
+         point="org.apache.uima.ruta.ide.blockExtension">
+      <block
+            class="org.apache.uima.ruta.example.extensions.ExampleBlockIDEExtension"
+            engine="org.apache.uima.ruta.example.extensions.ExampleBlockExtension">
+      </block>
+   </extension>
 
 </plugin>

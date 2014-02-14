@@ -20,6 +20,7 @@
 package org.apache.uima.ruta.ide.core;
 
 import org.apache.uima.ruta.extensions.IRutaActionExtension;
+import org.apache.uima.ruta.extensions.IRutaBlockExtension;
 import org.apache.uima.ruta.extensions.IRutaBooleanFunctionExtension;
 import org.apache.uima.ruta.extensions.IRutaConditionExtension;
 import org.apache.uima.ruta.extensions.IRutaNumberFunctionExtension;
@@ -105,6 +106,13 @@ public final class RutaKeywordsManager {
     for (IRutaTypeFunctionExtension each : typeFunctionExtensions) {
       String[] knownExtensions = each.getKnownExtensions();
       all[IRutaKeywords.TYPEFUNCTION] = RutaKeywords.append(all[IRutaKeywords.TYPEFUNCTION],
+              knownExtensions);
+    }
+    IRutaBlockExtension[] blockExtensions = RutaExtensionManager.getDefault()
+            .getRutaBlockExtensions();
+    for (IRutaBlockExtension each : blockExtensions) {
+      String[] knownExtensions = each.getKnownExtensions();
+      all[IRutaKeywords.DECLARATION] = RutaKeywords.append(all[IRutaKeywords.DECLARATION],
               knownExtensions);
     }
   }

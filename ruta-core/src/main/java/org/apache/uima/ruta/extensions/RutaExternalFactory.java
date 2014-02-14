@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.antlr.runtime.Token;
+import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.expression.RutaExpression;
@@ -46,6 +47,8 @@ public class RutaExternalFactory {
 
   private Map<String, IRutaNumberFunctionExtension> numberFunctionExtensions;
 
+  private Map<String, IRutaBlockExtension> blockExtensions;
+
   public RutaExternalFactory() {
     super();
     conditionExtensions = new HashMap<String, IRutaConditionExtension>();
@@ -54,6 +57,7 @@ public class RutaExternalFactory {
     stringFunctionExtensions = new HashMap<String, IRutaStringFunctionExtension>();
     numberFunctionExtensions = new HashMap<String, IRutaNumberFunctionExtension>();
     typeFunctionExtensions = new HashMap<String, IRutaTypeFunctionExtension>();
+    blockExtensions = new HashMap<String, IRutaBlockExtension>();
   }
 
   public AbstractRutaCondition createExternalCondition(Token id, List<RutaExpression> args)
@@ -122,6 +126,20 @@ public class RutaExternalFactory {
     return null;
   }
 
+  public RutaBlock createExternalBlock(Token type, List<RutaExpression> args, RutaBlock env)
+          throws RutaParseException {
+		if(type == null) {
+		  return null;
+		}
+		String t = type.getText();
+		IRutaBlockExtension extension = blockExtensions.get(t);
+		if(extension != null) {
+		  return extension.createBlock(t, args, env);
+		}
+		return null;
+	}
+  
+  
   public void addExtension(String id, IRutaExtension extension) {
     if (extension instanceof IRutaActionExtension) {
       addActionExtension(id, (IRutaActionExtension) extension);
@@ -135,6 +153,8 @@ public class RutaExternalFactory {
       addNumberFunctionExtension(id, (IRutaNumberFunctionExtension) extension);
     } else if (extension instanceof IRutaTypeFunctionExtension) {
       addTypeFunctionExtension(id, (IRutaTypeFunctionExtension) extension);
+    } else if (extension instanceof IRutaBlockExtension) {
+      addBlockExtension(id, (IRutaBlockExtension) extension);
     }
   }
 
@@ -160,6 +180,10 @@ public class RutaExternalFactory {
 
   public void addTypeFunctionExtension(String id, IRutaTypeFunctionExtension extension) {
     typeFunctionExtensions.put(id, extension);
+  }
+  
+  public void addBlockExtension(String id, IRutaBlockExtension extension) {
+    blockExtensions.put(id, extension);
   }
 
   public boolean isInitialized() {
@@ -194,8 +218,8 @@ public class RutaExternalFactory {
 
   public Map<String, IRutaTypeFunctionExtension> getTypeFunctionExtensions() {
     return typeFunctionExtensions;
-  }
-
+  }  
+  
   public void setTypeFunctionExtensions(Map<String, IRutaTypeFunctionExtension> typeFunctionExtensions) {
     this.typeFunctionExtensions = typeFunctionExtensions;
   }
@@ -215,5 +239,14 @@ public class RutaExternalFactory {
   public void setConditionExtensions(Map<String, IRutaConditionExtension> conditionExtensions) {
     this.conditionExtensions = conditionExtensions;
   }
+  
+  public Map<String, IRutaBlockExtension> getBlockExtensions() {
+    return blockExtensions;
+  }
+
+  public void setBlockExtensions(Map<String, IRutaBlockExtension> blockExtensions) {
+    this.blockExtensions = blockExtensions;
+  }
+
 
 }

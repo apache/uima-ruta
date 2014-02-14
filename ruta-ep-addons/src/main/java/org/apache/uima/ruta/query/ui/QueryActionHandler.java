@@ -48,6 +48,7 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.extensions.IRutaActionExtension;
+import org.apache.uima.ruta.extensions.IRutaBlockExtension;
 import org.apache.uima.ruta.extensions.IRutaBooleanFunctionExtension;
 import org.apache.uima.ruta.extensions.IRutaConditionExtension;
 import org.apache.uima.ruta.extensions.IRutaNumberFunctionExtension;
@@ -214,6 +215,8 @@ public class QueryActionHandler implements IHandler {
                 .getRutaStringFunctionExtensions();
         IRutaTypeFunctionExtension[] typeFunctionExtensions = RutaExtensionManager.getDefault()
                 .getRutaTypeFunctionExtensions();
+        IRutaBlockExtension[] blockExtensions = RutaExtensionManager.getDefault()
+                .getRutaBlockExtensions();
 
         List<String> languageExtensions = new ArrayList<String>();
 
@@ -233,6 +236,9 @@ public class QueryActionHandler implements IHandler {
           languageExtensions.add(each.getClass().getName());
         }
         for (IRutaTypeFunctionExtension each : typeFunctionExtensions) {
+          languageExtensions.add(each.getClass().getName());
+        }
+        for (IRutaBlockExtension each : blockExtensions) {
           languageExtensions.add(each.getClass().getName());
         }
         ae.setConfigParameterValue(RutaEngine.PARAM_ADDITIONAL_EXTENSIONS,

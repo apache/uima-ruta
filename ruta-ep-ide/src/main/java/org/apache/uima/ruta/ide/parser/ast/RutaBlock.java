@@ -19,15 +19,20 @@
 
 package org.apache.uima.ruta.ide.parser.ast;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
+import org.eclipse.dltk.ast.expressions.Expression;
 
 public class RutaBlock extends MethodDeclaration {
 
   private RutaRule rule;
 
   private String namespace;
+
+  private List<Expression> args;
 
   public RutaBlock(String name, String namespace, int nameStart, int nameEnd, int declStart,
           int declEnd) {
@@ -45,6 +50,11 @@ public class RutaBlock extends MethodDeclaration {
     if (visitor.visit(this)) {
       if (rule != null) {
         rule.traverse(visitor);
+      }
+      if(args != null) {
+        for (Expression each : args) {
+          each.traverse(visitor);
+        }
       }
       traverseChildNodes(visitor);
       visitor.endvisit(this);
@@ -68,5 +78,11 @@ public class RutaBlock extends MethodDeclaration {
 
   public String toString() {
     return this.getClass().getSimpleName() + " : " + super.toString();
+  }
+
+
+  public void setArguments(List<Expression> args) {
+    this.args = args;
+    
   }
 }

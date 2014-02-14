@@ -332,7 +332,6 @@ ScriptString	:	'SCRIPT';
 EngineString	:	'ENGINE';
 UimafitString	:	'UIMAFIT';
 BlockString 	:	'BLOCK';
-AutomataBlockString 	:	'RULES';
 TypeString 	:	'TYPE';
 IntString	:	'INT';
 DoubleString	:	'DOUBLE';

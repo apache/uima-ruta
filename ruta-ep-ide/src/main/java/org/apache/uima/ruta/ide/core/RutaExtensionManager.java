@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.uima.ruta.extensions.IEngineLoader;
 import org.apache.uima.ruta.extensions.IRutaActionExtension;
+import org.apache.uima.ruta.extensions.IRutaBlockExtension;
 import org.apache.uima.ruta.extensions.IRutaBooleanFunctionExtension;
 import org.apache.uima.ruta.extensions.IRutaConditionExtension;
 import org.apache.uima.ruta.extensions.IRutaNumberFunctionExtension;
@@ -33,6 +34,7 @@ import org.apache.uima.ruta.extensions.IRutaTypeFunctionExtension;
 import org.apache.uima.ruta.ide.RutaIdeCorePlugin;
 import org.apache.uima.ruta.ide.core.extensions.ICompletionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IIDEActionExtension;
+import org.apache.uima.ruta.ide.core.extensions.IIDEBlockExtension;
 import org.apache.uima.ruta.ide.core.extensions.IIDEBooleanFunctionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IIDEConditionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IIDENumberFunctionExtension;
@@ -269,6 +271,27 @@ public class RutaExtensionManager {
     return result.toArray(new IIDETypeFunctionExtension[0]);
   }
 
+  public IIDEBlockExtension[] getIDEBlockExtensions() {
+    Collection<IIDEBlockExtension> result = new ArrayList<IIDEBlockExtension>();
+    IExtension[] blockExtensions = Platform.getExtensionRegistry()
+            .getExtensionPoint(RutaIdeCorePlugin.PLUGIN_ID, "blockExtension").getExtensions();
+    for (IExtension extension : blockExtensions) {
+      IConfigurationElement[] configurationElements = extension.getConfigurationElements();
+      for (IConfigurationElement configurationElement : configurationElements) {
+        Object obj = null;
+        try {
+          obj = configurationElement.createExecutableExtension("class");
+        } catch (CoreException e) {
+          e.printStackTrace();
+        }
+        if (obj instanceof IIDEBlockExtension) {
+          result.add((IIDEBlockExtension) obj);
+        }
+      }
+    }
+    return result.toArray(new IIDEBlockExtension[0]);
+  }
+  
   public IRutaConditionExtension[] getRutaConditionExtensions() {
     Collection<IRutaConditionExtension> result = new ArrayList<IRutaConditionExtension>();
     IExtension[] conditionExtensions = Platform.getExtensionRegistry()
@@ -393,6 +416,27 @@ public class RutaExtensionManager {
       }
     }
     return result.toArray(new IRutaTypeFunctionExtension[0]);
+  }
+  
+  public IRutaBlockExtension[] getRutaBlockExtensions() {
+    Collection<IRutaBlockExtension> result = new ArrayList<IRutaBlockExtension>();
+    IExtension[] extensions = Platform.getExtensionRegistry()
+            .getExtensionPoint(RutaIdeCorePlugin.PLUGIN_ID, "blockExtension").getExtensions();
+    for (IExtension extension : extensions) {
+      IConfigurationElement[] configurationElements = extension.getConfigurationElements();
+      for (IConfigurationElement configurationElement : configurationElements) {
+        Object obj = null;
+        try {
+          obj = configurationElement.createExecutableExtension("engine");
+        } catch (CoreException e) {
+          e.printStackTrace();
+        }
+        if (obj instanceof IRutaBlockExtension) {
+          result.add((IRutaBlockExtension) obj);
+        }
+      }
+    }
+    return result.toArray(new IRutaBlockExtension[0]);
   }
 
   public IEngineLoader[] getEngineExtensions() {
