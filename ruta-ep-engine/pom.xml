@@ -23,11 +23,9 @@
   <properties>
     <postNoticeText>${uniWueNoticeText}
 
-This product contains ANTLR libraries (http://www.antlr.org/), 
-licensed under the BSD License.
-
 This product contains htmlparser libraries (http://htmlparser.sourceforge.net/), 
-licensed under the Common Public License.</postNoticeText>
+licensed under the Common Public License.
+    </postNoticeText>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
   </properties>
   <name>Apache UIMA Ruta Eclipse: ${project.artifactId}</name>
