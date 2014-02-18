@@ -88,7 +88,7 @@ under the License.
       </title>
       <mediaobject>
         <imageobject role="html">
-          <imagedata width="300px" format="PNG" align="center"
+          <imagedata width="500px" format="PNG" align="center"
             fileref="&imgroot;install/update.png" />
         </imageobject>
         <imageobject role="fo">
