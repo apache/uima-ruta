@@ -50,6 +50,7 @@ import org.apache.uima.ruta.ide.core.RutaExtensionManager;
 import org.apache.uima.ruta.ide.core.RutaKeywordsManager;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.ruta.ide.core.extensions.IIDEActionExtension;
+import org.apache.uima.ruta.ide.core.extensions.IIDEBlockExtension;
 import org.apache.uima.ruta.ide.core.extensions.IIDEBooleanFunctionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IIDEConditionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IIDENumberFunctionExtension;
@@ -119,6 +120,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
 
   private Map<String, IIDETypeFunctionExtension> typeFunctionExtensions;
 
+  private Map<String, IIDEBlockExtension> blockExtensions;
+  
   /**
    * Mapping from short type name (e.g. {@code W}) to their disambiguated long type names (e.g.
    * {@code org.apache.uima.ruta.type.W}).
@@ -178,6 +181,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
   private Set<String> allLongTypeNames;
 
   private String parentTypeInDeclaration;
+
+
 
   public LanguageCheckerVisitor(IProblemReporter problemReporter, ISourceLineTracker linetracker,
           ISourceModule sourceModule) {
@@ -748,8 +753,11 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     if (s instanceof RutaBlock) {
       RutaBlock b = (RutaBlock) s;
       knownLocalVariables.push(new HashMap<String, Integer>());
-      blocks.push(b.getName());
+      String name = b.getName();
+      blocks.push(name);
+      // TODO add syntax check for block extensions
     }
+    
     return true;
   }
 
@@ -1011,6 +1019,15 @@ public class LanguageCheckerVisitor extends ASTVisitor {
         typeFunctionExtensions.put(string, each);
       }
     }
+    IIDEBlockExtension[] bextensions = RutaExtensionManager.getDefault()
+            .getIDEBlockExtensions();
+    for (IIDEBlockExtension each : bextensions) {
+      String[] knownExtensions = each.getKnownExtensions();
+      for (String string : knownExtensions) {
+        blockExtensions.put(string, each);
+      }
+    }
+    
 
   }
 

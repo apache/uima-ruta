@@ -39,8 +39,7 @@ public class ScriptFactory extends AbstractFactory {
   public void resetRuleCounter() {
     idCounter = 0;
   }
-  
-  
+
   public RutaRule createRule(RutaRuleElement element) {
     List<Expression> elements = new ArrayList<Expression>();
     elements.add(element);
@@ -49,7 +48,7 @@ public class ScriptFactory extends AbstractFactory {
 
   public RutaRule createRule(List<Expression> elements, Token s, boolean updateCounter) {
     RutaRule rule = new RutaRule(elements, idCounter);
-    if(updateCounter) {
+    if (updateCounter) {
       idCounter++;
     }
     if (s != null) {
@@ -58,7 +57,7 @@ public class ScriptFactory extends AbstractFactory {
     }
     return rule;
   }
-  
+
   public RutaRule createRule(List<Expression> elements, Token s) {
     return createRule(elements, s, true);
   }
@@ -152,7 +151,7 @@ public class ScriptFactory extends AbstractFactory {
     filterNullObjects(c);
     filterNullObjects(a);
     RutaRuleElement rutaRuleElement = new RutaRuleElement(bounds[0], bounds[1], null, null, c, a);
-    if(w != null && w.getText().equals("#")) {
+    if (w != null && w.getText().equals("#")) {
       rutaRuleElement.setWildcard(true);
     }
     return rutaRuleElement;
@@ -184,7 +183,7 @@ public class ScriptFactory extends AbstractFactory {
    * @param id
    * @param type
    * @param rutaBlock
-   * @return
+   * @return RutaBlock
    */
   public RutaBlock createScriptBlock(Token id, Token type, RutaBlock rutaBlock) {
     int[] bounds = getBounds(type, id);
@@ -200,7 +199,21 @@ public class ScriptFactory extends AbstractFactory {
     }
   }
 
-  public void finalizeScriptBlock(RutaBlock block, Token rc, RutaRule rule, List<Statement> body) {
+  /**
+   * Creates an AST element for an external block construct
+   * @param type
+   * @param parent block
+   * @return new external block construct
+   */
+  public RutaBlock createExternalBlock(Token type, RutaBlock env) {
+    int[] bounds = getBounds(type);
+    int[] nameBounds = getBounds(type);
+    RutaBlock block = new RutaBlock(type.getText(), type.getText(), nameBounds[0], nameBounds[1],
+            bounds[0], bounds[1]);
+    return block;
+  }
+
+  public void finalizeBlock(RutaBlock block, Token rc, RutaRule rule, List<Statement> body) {
     // taking care of null statements - errors should have been recognized
     // in parser
     filterNullObjects(body);

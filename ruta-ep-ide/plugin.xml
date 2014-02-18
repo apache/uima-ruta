@@ -34,6 +34,7 @@ under the License.
    <extension-point id="stringFunctionExtension" name="stringFunctionExtension" schema="schema/stringFunctionExtension.exsd"/>
    <extension-point id="rutaSemanticHighlighting" name="rutaSemanticHighlighting" schema="schema/rutaSemanticHighlighting.exsd"/>
    <extension-point id="rutaTestEngine" name="rutaTestEngine" schema="schema/rutaTestEngine.exsd"/>
+   <extension-point id="blockExtension" name="blockExtension" schema="schema/blockExtension.exsd"/>
    <extension
          id="nature"
          point="org.eclipse.core.resources.natures">

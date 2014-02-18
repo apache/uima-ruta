@@ -28,6 +28,7 @@ options {
 
 package org.apache.uima.ruta.ide.core.parser;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,6 +86,7 @@ import org.apache.uima.ruta.ide.parser.ast.RutaPackageDeclaration;
 	private Map<String, String> varTypeMap = new HashMap<String, String>();
 	private Map<String, String> lists = new HashMap<String, String>();
 	private Map<String, String> tables = new HashMap<String, String>();
+	private Collection<String> knownExternalBlocks = new ArrayList();
 	public int length;
 	public DLTKTokenConverter converter;
 	public DescriptorManager descriptor;
@@ -95,6 +97,14 @@ import org.apache.uima.ruta.ide.parser.ast.RutaPackageDeclaration;
 	private String packageString;
 	
 	private ScriptFactory scriptFactory = new ScriptFactory();
+	
+	public void setKnownExternalBlocks(Collection<String> knownExternalBlocks) {
+		this.knownExternalBlocks = knownExternalBlocks;
+	}
+	
+	private boolean isBlockExtension(String name) {
+		return knownExternalBlocks.contains(name);
+	}
 	
 	public List<String> getVariables() {
 		return vars;
@@ -301,7 +311,7 @@ statement returns [List<Statement> stmts = new ArrayList<Statement>()]
 	( stmts1 = declaration {stmts.addAll(stmts1);}
 	| stmtVariable = variableDeclaration {stmts.addAll(stmtVariable);}
 	| stmt3 = blockDeclaration {stmts.add(stmt3);}
-	//| stmt4 = tmRule {stmts.add(stmt4);}
+	| (externalBlock)=> stmt4 = externalBlock {stmts.add(stmt4);}
 	| stmt2 = simpleStatement {stmts.add(stmt2);}
 	
 
@@ -551,7 +561,7 @@ level--;
 }
 	:
 
-	(declareToken = BlockString | declareToken = AutomataBlockString)
+	(declareToken = BlockString)
 	LPAREN
 	id = Identifier {addVariable(id.getText(), declareToken.getText());}
 	{
@@ -562,11 +572,38 @@ level--;
 	re1 = ruleElementWithCA
 	{
 	rule = scriptFactory.createRule(re1);
-	scriptFactory.finalizeScriptBlock(block, rc, rule, body);}
+	scriptFactory.finalizeBlock(block, rc, rule, body);}
 	LCURLY body = statements rc = RCURLY
-	{scriptFactory.finalizeScriptBlock(block, rc, rule, body);}
+	{scriptFactory.finalizeBlock(block, rc, rule, body);}
 	;
 
+externalBlock returns [RutaBlock block = null]
+options{
+	backtrack = true;
+}
+
+@init{
+RutaRule rule = null;
+
+}
+@after {
+
+}
+	:
+	{isBlockExtension(input.LT(1).getText())}? 
+	(type = Identifier)
+	{block = scriptFactory.createExternalBlock(type, $blockDeclaration[level]::env);
+		$blockDeclaration::env = block;}
+	(LPAREN
+	args = varArgumentList  {block.setArguments(args);}
+	RPAREN)?
+	re1 = ruleElementWithCA
+	{
+	rule = scriptFactory.createRule(re1);
+	scriptFactory.finalizeBlock(block, rc, rule, body);}
+	LCURLY body = statements rc = RCURLY
+	{scriptFactory.finalizeBlock(block, rc, rule, body);}
+	;
 	
 ruleElementWithCA returns [RutaRuleElement re = null] 
     :

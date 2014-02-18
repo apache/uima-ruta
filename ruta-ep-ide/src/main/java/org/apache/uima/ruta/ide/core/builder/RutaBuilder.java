@@ -25,6 +25,7 @@ import java.util.List;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.extensions.IEngineLoader;
 import org.apache.uima.ruta.extensions.IRutaActionExtension;
+import org.apache.uima.ruta.extensions.IRutaBlockExtension;
 import org.apache.uima.ruta.extensions.IRutaBooleanFunctionExtension;
 import org.apache.uima.ruta.extensions.IRutaConditionExtension;
 import org.apache.uima.ruta.extensions.IRutaNumberFunctionExtension;
@@ -193,6 +194,8 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
             .getRutaStringFunctionExtensions();
     IRutaTypeFunctionExtension[] typeFunctionExtensions = RutaExtensionManager.getDefault()
             .getRutaTypeFunctionExtensions();
+    IRutaBlockExtension[] blockExtensions = RutaExtensionManager.getDefault()
+            .getRutaBlockExtensions();
     IEngineLoader[] engineExtensions = RutaExtensionManager.getDefault().getEngineExtensions();
 
     List<String> language = new ArrayList<String>();
@@ -214,6 +217,9 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
       language.add(each.getClass().getName());
     }
     for (IRutaTypeFunctionExtension each : typeFunctionExtensions) {
+      language.add(each.getClass().getName());
+    }
+    for (IRutaBlockExtension each : blockExtensions) {
       language.add(each.getClass().getName());
     }
     for (IEngineLoader each : engineExtensions) {

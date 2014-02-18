@@ -20,6 +20,9 @@
 package org.apache.uima.ruta.ide.core.parser;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +31,10 @@ import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.Token;
 import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.ruta.extensions.IRutaBlockExtension;
 import org.apache.uima.ruta.ide.core.IRutaKeywords;
+import org.apache.uima.ruta.ide.core.RutaExtensionManager;
+import org.apache.uima.ruta.ide.core.RutaKeywords;
 import org.apache.uima.ruta.ide.core.RutaKeywordsManager;
 import org.apache.uima.ruta.ide.core.builder.DescriptorManager;
 import org.apache.uima.ruta.ide.parser.ast.RutaModuleDeclaration;
@@ -108,6 +114,14 @@ public class RutaSourceParser extends AbstractSourceParser {
       variables.add(each);
       variableTypes.put(each, "TYPEFUNCTION");
     }
+    Collection<String> knownExternalBlocks = new ArrayList<String>();
+    IRutaBlockExtension[] blockExtensions = RutaExtensionManager.getDefault()
+            .getRutaBlockExtensions();
+    for (IRutaBlockExtension each : blockExtensions) {
+      String[] knownExtensions = each.getKnownExtensions();
+      knownExternalBlocks.addAll(Arrays.asList(knownExtensions));
+    }
+    parser.setKnownExternalBlocks(knownExternalBlocks);
     parser.addPredefinedType("Document");
     parser.addPredefinedType("Annotation");
 

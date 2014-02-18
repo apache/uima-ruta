@@ -56,13 +56,11 @@ import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.action.ActionFactory;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.condition.ConditionFactory;
-import org.apache.uima.ruta.RutaAutomataBlock;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaModule;
 import org.apache.uima.ruta.RutaScriptBlock;
 import org.apache.uima.ruta.RutaScriptFactory;
-import org.apache.uima.ruta.RutaAutomataFactory;
 import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.expression.ExpressionFactory;
 import org.apache.uima.ruta.expression.IRutaExpression;
@@ -97,7 +95,6 @@ import org.apache.uima.ruta.rule.quantifier.RuleElementQuantifier;
 private List vars = new ArrayList();	
 private int level = 0;
 private RutaScriptFactory factory = new RutaScriptFactory();
-private RutaScriptFactory automataFactory = new RutaAutomataFactory();
 private RutaExternalFactory external;
 private String namespace;
 private String moduleName;
@@ -302,6 +299,9 @@ public void setExternalFactory(RutaExternalFactory factory) {
       	private boolean isTypeFunctionExtension(String name) {
       	  return external.getTypeFunctionExtensions().keySet().contains(name);
       	}
+      	private boolean isBlockExtension(String name) {
+      	  return external.getBlockExtensions().keySet().contains(name);
+      	}
       	
 
 
@@ -367,7 +367,7 @@ statement returns [RutaStatement stmt = null]
 	| stmtVariable = variableDeclaration {stmt = stmtVariable;}
 	| stmtRule = simpleStatement {stmt = stmtRule;}
 	| stmtBlock = blockDeclaration {stmt = stmtBlock;}
-	| stmtAutomata = automataDeclaration {stmt = stmtBlock;}
+	| stmtExternal = externalBlock {stmt = stmtExternal;}
 	)
 	;
 
@@ -556,7 +556,8 @@ level--;
 	}	
 	;
 
-automataDeclaration returns [RutaBlock block = null]
+
+externalBlock returns [RutaBlock block = null]
 options {
 	backtrack = true;
 }
@@ -567,36 +568,34 @@ scope {
 @init{
 RutaRuleElement re = null;
 RuleElementIsolator container = null;
-RutaScriptFactory oldFactory = factory;
-factory = automataFactory; 
 level++;
 }
 @after {
-factory = oldFactory;
 level--;
 }
 	:
-	
-	type = AutomataBlockString 
-	LPAREN
-	id = Identifier 
-	RPAREN
-	{block = factory.createAutomataBlock(id, re, body, $blockDeclaration[level - 1]::env);}
+	{isBlockExtension(input.LT(1).getText())}? 
+	type = Identifier 
+	(LPAREN
+	args = varArgumentList
+	RPAREN)?
+	{block = external.createExternalBlock(type, args, $blockDeclaration[level - 1]::env);}
 	{$blockDeclaration::env = block;
 	container = new RuleElementIsolator();}
+	
 	re1 = ruleElementWithCA[container] {re = re1;}
+	
 	{RutaRule rule = factory.createRule(re, block);
-	if(block instanceof RutaAutomataBlock) {
-	((RutaAutomataBlock)block).setMatchRule(rule);
-	}
-	container.setContainer(rule);
-	}
+	block.setRule(rule);
+	container.setContainer(rule);}
+	
 	LCURLY body = statements RCURLY
 	{block.setElements(body);
-	$blockDeclaration::env.getScript().addBlock(id.getText(),block);
-
+	// really needs to know of the block?
+	//$blockDeclaration::env.getScript().addBlock(type,block);
 	}	
 	;
+
 
 	
 ruleElementWithCA[RuleElementContainer container] returns [RutaRuleElement re = null] 
