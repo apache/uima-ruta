@@ -62,7 +62,7 @@ public class RutaBlock extends MethodDeclaration {
   }
 
   /**
-   * @param ruleElement
+   * @param rule
    *          the ruleElement to set
    */
   public void setRule(RutaRule rule) {

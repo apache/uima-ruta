@@ -248,8 +248,7 @@ public class TrabalLearner extends TextRulerBasicLearner {
    * annotations, and the values are lists of errors that can be corrected through the same type of
    * rule.
    * 
-   * @param isFirstHalf
-   * @return
+   * @return map of errors
    */
   private Map<String, List<AnnotationError>> createErrorGroups() {
     errors = createErrorList();
@@ -515,7 +514,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
    * createErrorGroups().
    * 
    * @param errorGrps
-   * @param isFirstHalf
    * @return The best found list of correction rules.
    */
   private List<TrabalRule> runAlgorithm(Map<String, List<AnnotationError>> errorGrps) {
@@ -744,7 +742,7 @@ public class TrabalLearner extends TextRulerBasicLearner {
    * Creates basic rules for the given types of errors.
    * 
    * @param errors
-   * @return
+   * @return list of basic rules
    */
   public List<TrabalRule> createBasicRules(List<AnnotationError> errors) {
     List<TrabalRule> result = new ArrayList<TrabalRule>();
@@ -773,7 +771,7 @@ public class TrabalLearner extends TextRulerBasicLearner {
    * Chooses the rules which are expected to be the best.
    * 
    * @param rules
-   * @return
+   * @return list of best basic rules
    */
   private List<TrabalRule> getBestBasicRule(List<TrabalRule> rules) {
     if (rules.size() < maxNumberOfBasicRules)
@@ -827,8 +825,8 @@ public class TrabalLearner extends TextRulerBasicLearner {
   /**
    * Creates basic rules for shifting type errors.
    * 
-   * @param each
-   * @return
+   * @param error
+   * @return list of shifting rules
    */
   private List<TrabalRule> createShiftingRules(AnnotationError each) {
     List<TrabalRule> result = new ArrayList<TrabalRule>();
@@ -915,7 +913,7 @@ public class TrabalLearner extends TextRulerBasicLearner {
    * 
    * @param error
    * @param truth
-   * @return
+   * @return list of expansion rules
    */
   private List<TrabalRule> createExpansionRules(TextRulerExample error, TextRulerExample truth) {
     List<TrabalRule> result = new ArrayList<TrabalRule>();
@@ -945,8 +943,8 @@ public class TrabalLearner extends TextRulerBasicLearner {
   /**
    * Creates basic rules for annotation type errors.
    * 
-   * @param each
-   * @return
+   * @param error
+   * @return list of annotation rules
    */
   private List<TrabalRule> createAnnotationRules(AnnotationError each) {
     List<TrabalRule> result = new ArrayList<TrabalRule>();
@@ -973,8 +971,8 @@ public class TrabalLearner extends TextRulerBasicLearner {
   /**
    * Creates basic rules for deletion type errors.
    * 
-   * @param each
-   * @return
+   * @param error
+   * @return list of deletion rules
    */
   private List<TrabalRule> createDeletionRules(AnnotationError each) {
     List<TrabalRule> result = new ArrayList<TrabalRule>();
@@ -988,8 +986,8 @@ public class TrabalLearner extends TextRulerBasicLearner {
   /**
    * Creates basic rules for correction type errors.
    * 
-   * @param each
-   * @return
+   * @param error
+   * @return list of correction rules
    */
   private List<TrabalRule> createCorrectionRules(AnnotationError each) {
     List<TrabalRule> result = new ArrayList<TrabalRule>();
@@ -1061,8 +1059,8 @@ public class TrabalLearner extends TextRulerBasicLearner {
   /**
    * Creates conditions for a given rule.
    * 
-   * @param rule
-   * @return
+   * @param rules
+   * @return ranked list of conditions
    */
   public RankedList createConditions(List<TrabalRule> rules) {
     if (rules.size() == 0)
@@ -1145,7 +1143,7 @@ public class TrabalLearner extends TextRulerBasicLearner {
    * @param frontBoundary
    * @param rearBoundary
    * @param truth
-   * @return
+   * @return ranked list of conditions
    */
   private RankedList createConditions(TrabalRuleItem frontBoundary, TrabalRuleItem rearBoundary,
           TrabalAnnotation truth) {
@@ -1191,7 +1189,7 @@ public class TrabalLearner extends TextRulerBasicLearner {
    * Creates conditions for a rule, given by its annotation.
    * 
    * @param error
-   * @return
+   * @return ranked list of conditions
    */
   private RankedList createConditions(TrabalAnnotation annotation) {
     RankedList result = new RankedList(idf);
@@ -1320,7 +1318,7 @@ public class TrabalLearner extends TextRulerBasicLearner {
    * @param document
    * @param cas
    * @param numberOfSideItems
-   * @return
+   * @return first term
    */
   private List<List<TrabalRuleItem>> getFirstTermsWithinBounds(int startPos, int endPos,
           TextRulerExampleDocument document, CAS cas, int numberOfSideItems) {
@@ -1368,7 +1366,7 @@ public class TrabalLearner extends TextRulerBasicLearner {
    * @param document
    * @param cas
    * @param numberOfSideItems
-   * @return
+   * @return last term
    */
   private List<List<TrabalRuleItem>> getLastTermsWithinBounds(int startPos, int endPos,
           TextRulerExampleDocument document, CAS cas, int numberOfSideItems) {
@@ -1417,7 +1415,7 @@ public class TrabalLearner extends TextRulerBasicLearner {
    * @param cas
    * @param index
    * @param maxNumberOfItems
-   * @return
+   * @return updated list of items
    */
   private List<List<TrabalRuleItem>> addPreceding(List<List<TrabalRuleItem>> lists, int till,
           TextRulerExampleDocument document, CAS cas, int index, int maxNumberOfItems) {
@@ -1461,7 +1459,7 @@ public class TrabalLearner extends TextRulerBasicLearner {
    * @param cas
    * @param index
    * @param maxNumberOfItems
-   * @return
+   * @return updated list of items
    */
   private List<List<TrabalRuleItem>> addFollowing(List<List<TrabalRuleItem>> lists, int till,
           TextRulerExampleDocument document, CAS cas, int index, int maxNumberOfItems) {
@@ -1526,7 +1524,7 @@ public class TrabalLearner extends TextRulerBasicLearner {
    * @param end
    * @param doc
    * @param cas
-   * @return
+   * @return list of terms
    */
   private List<TrabalRuleItem> getSingleTermsWithinBounds(int begin, int end,
           TextRulerExampleDocument doc, CAS cas) {
@@ -1555,8 +1553,7 @@ public class TrabalLearner extends TextRulerBasicLearner {
    * @param documents
    * @param additionalDocuments
    * @param ruleSet
-   * @param isFirstHalf
-   * @return
+   * @return list of rules
    */
   public List<TrabalRule> testTrabalRulesOnDocumentSet(List<TrabalRule> rules,
           final TextRulerExampleDocumentSet documents,
@@ -1811,8 +1808,8 @@ public class TrabalLearner extends TextRulerBasicLearner {
   /**
    * Removes duplicate rules by their hash value.
    * 
-   * @param createRules
-   * @return
+   * @param rules
+   * @return updated list
    */
   public static List<TrabalRule> removeDuplicateRules(List<TrabalRule> rules) {
     return new ArrayList<TrabalRule>(new HashSet<TrabalRule>(rules));
@@ -1822,7 +1819,7 @@ public class TrabalLearner extends TextRulerBasicLearner {
    * Returns a string, containing the rules of the given list.
    * 
    * @param rules
-   * @return
+   * @return string representation of given rules
    */
   public static String getRuleStrings(List<TrabalRule> rules) {
     String result = "";
@@ -1836,7 +1833,7 @@ public class TrabalLearner extends TextRulerBasicLearner {
    * Tests, if the given type is a slot type.
    * 
    * @param type
-   * @return
+   * @return true, if given type is a slot type
    */
   public boolean isSlotType(Type type) {
     for (String slot : slotNames) {

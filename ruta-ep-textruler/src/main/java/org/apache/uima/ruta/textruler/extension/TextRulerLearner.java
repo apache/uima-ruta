@@ -67,13 +67,13 @@ public interface TextRulerLearner {
 
   /**
    * 
-   * @return
+   * @return analysis engine
    */
   AnalysisEngine getAnalysisEngine();
 
   /**
    * 
-   * @return
+   * @return CAS
    */
   CAS getTestCAS();
 }

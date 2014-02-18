@@ -65,7 +65,6 @@ public class RutaWordRule implements IPredicateRule {
    * @param defaultToken
    *          the default token to be returned on success if nothing else is specified, may not be
    *          <code>null</code>
-   * @param funcNameToken
    * @param classNameToken
    * 
    * @see #addWord(String, IToken)

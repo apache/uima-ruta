@@ -25,9 +25,6 @@ import org.eclipse.dltk.ui.formatter.IScriptFormatterFactory;
 
 public class RutaFormatterModifyDialog extends FormatterModifyDialog {
 
-  /**
-   * @param parent
-   */
   public RutaFormatterModifyDialog(IFormatterModifyDialogOwner dialogOwner,
           IScriptFormatterFactory formatterFactory) {
     super(dialogOwner, formatterFactory);

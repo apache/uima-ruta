@@ -32,9 +32,9 @@ import org.eclipse.dltk.ast.statements.Statement;
 
 public class StatementFactory extends AbstractFactory {
   /**
-   * @param impString
-   * @param dottedId
-   *          Antlr-Token (dotted-identifier/id)
+   * @param component
+   * @param impString - import string
+   * @param type - type of import
    * @return new Import-Statement
    */
   public static RutaImportStatement createImport(ComponentDeclaration component, Token impString,
@@ -116,7 +116,7 @@ public class StatementFactory extends AbstractFactory {
    *          Antlr-Token "PACKAGE"
    * @param dottedId
    *          Antlr-Token (dotted-identifier/id)
-   * @return
+   * @return new RutaPackageDeclaration
    */
   public static RutaPackageDeclaration createPkgDeclaration(Token dottedId, Token pString) {
     int bounds[] = getBounds(pString, dottedId);
@@ -132,7 +132,7 @@ public class StatementFactory extends AbstractFactory {
   /**
    * @param id
    * @param type
-   * @return
+   * @return new RutaVariableDeclaration
    */
   private static RutaVariableDeclaration createVariable(Token id, Token typeToken, int type) {
     return createVariable(id, typeToken, type, null);
@@ -152,7 +152,7 @@ public class StatementFactory extends AbstractFactory {
   /**
    * @param id
    * @param type
-   * @return
+   * @return new RutaVariableDeclaration
    */
   public static RutaVariableDeclaration createIntVariable(Token id, Token type) {
     return createVariable(id, type, RutaTypeConstants.RUTA_TYPE_I);
@@ -161,7 +161,7 @@ public class StatementFactory extends AbstractFactory {
   /**
    * @param id
    * @param type
-   * @return
+   * @return new variable
    */
   public static Object createFloatVariable(Token id, Token type) {
     return createVariable(id, type, RutaTypeConstants.RUTA_TYPE_F);
@@ -170,7 +170,7 @@ public class StatementFactory extends AbstractFactory {
   /**
    * @param id
    * @param type
-   * @return
+   * @return new RutaVariableDeclaration
    */
   public static RutaVariableDeclaration createDoubleVariable(Token id, Token type) {
     return createVariable(id, type, RutaTypeConstants.RUTA_TYPE_D);
@@ -179,7 +179,7 @@ public class StatementFactory extends AbstractFactory {
   /**
    * @param id
    * @param type
-   * @return
+   * @return new RutaVariableDeclaration
    */
   public static RutaVariableDeclaration createStringVariable(Token id, Token type) {
     return createVariable(id, type, RutaTypeConstants.RUTA_TYPE_S);
@@ -188,7 +188,7 @@ public class StatementFactory extends AbstractFactory {
   /**
    * @param id
    * @param type
-   * @return
+   * @return new RutaVariableDeclaration
    */
   public static RutaVariableDeclaration createBooleanVariable(Token id, Token type) {
     return createVariable(id, type, RutaTypeConstants.RUTA_TYPE_B);
@@ -197,7 +197,7 @@ public class StatementFactory extends AbstractFactory {
   /**
    * @param id
    * @param type
-   * @return
+   * @return new RutaVariableDeclaration
    */
   public static RutaVariableDeclaration createTypeVariable(Token id, Token type) {
     return createVariable(id, type, RutaTypeConstants.RUTA_TYPE_AT);
@@ -206,7 +206,7 @@ public class StatementFactory extends AbstractFactory {
   /**
    * @param id
    * @param type
-   * @return
+   * @return new RutaVariableDeclaration
    */
   public static RutaVariableDeclaration createListVariable(Token id, Token type, Expression expr) {
     return createVariable(id, type, RutaTypeConstants.RUTA_TYPE_WL, expr);
@@ -215,7 +215,7 @@ public class StatementFactory extends AbstractFactory {
   /**
    * @param id
    * @param type
-   * @return
+   * @return new RutaVariableDeclaration
    */
   public static RutaVariableDeclaration createTableVariable(Token id, Token type, Expression expr) {
     return createVariable(id, type, RutaTypeConstants.RUTA_TYPE_WT, expr);
@@ -224,10 +224,9 @@ public class StatementFactory extends AbstractFactory {
   /**
    * @param id
    * @param declareToken
-   * @param featureNames
-   * @param featureTypes
    * @param type
-   * @return
+   * @param features
+   * @return new Declaration
    */
 
   public static Declaration createAnnotationType(Token id, Token declareToken, Expression type,

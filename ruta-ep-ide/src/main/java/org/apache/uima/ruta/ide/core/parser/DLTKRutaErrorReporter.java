@@ -34,11 +34,6 @@ import org.eclipse.dltk.compiler.problem.DefaultProblem;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 
-/**
- * 
- * @see org.eclipse.dltk.p y thon.internal.core.parsers.DLTKP y thonErrorReporter
- * 
- */
 public class DLTKRutaErrorReporter {
   IProblemReporter reporter;
 

@@ -60,7 +60,7 @@ public class RutaCheckerUtils {
    *          i.e.: "org.apache.uima.MyScript"
    * @param type
    *          i.e. IModelElement.FIELD for fields to be collected and returned
-   * @return
+   * @return set of elements
    * @throws InvalidXMLException
    * @throws IOException
    * @throws ModelException

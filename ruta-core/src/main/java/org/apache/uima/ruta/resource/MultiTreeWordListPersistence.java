@@ -37,12 +37,13 @@ import org.xml.sax.XMLReader;
 
 public class MultiTreeWordListPersistence {
 
+ 
   /**
-   * 
    * Reads the XML-File with the specified path and creates a TreeWordList.
    * 
-   * @param stream
-   *          The open XML-File containing the TreeWordList. This method will close the stream.
+   * @param root - the root node of the tree
+   * @param path - path of the word list
+   * @throws IOException
    */
   public void readMTWL(MultiTextNode root, String path) throws IOException {
     readMTWL(root, new FileInputStream(path), "UTF-8");

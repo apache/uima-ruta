@@ -209,7 +209,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
    * Creates (local) NumberVariableReference
    * 
    * @param numVarRef
-   * @return
+   * @return new VariableReference of Token
    */
   public static VariableReference createNumberVariableReference(Token numVarRef) {
     return newVariableReference(numVarRef, RutaTypeConstants.RUTA_TYPE_N);

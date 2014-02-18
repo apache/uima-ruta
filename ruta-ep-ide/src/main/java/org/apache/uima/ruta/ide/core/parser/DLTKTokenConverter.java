@@ -60,10 +60,6 @@ public class DLTKTokenConverter {
     this.model = new CodeModel(content);
   }
 
-  /**
-   * @param token
-   * @return
-   */
   @Deprecated
   public DLTKToken convert(Token token) {
     if (token == null) {

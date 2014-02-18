@@ -221,9 +221,9 @@ public void setExternalFactory(RutaExternalFactory factory) {
 	/**
 	 * Import a type from a type system.
 	 *
-	 * @param parent Block where the type should be imported.
-	 * @param tsd Typesystem from which to import the type.
-	 * @param qualifiedType Type to import from the typesystem.
+	 * @param parent - Block where the type should be imported.
+	 * @param typesystem - Typesystem from which to import the type.
+	 * @param qualifiedType - Type to import from the typesystem.
 	 */
     public void importTypeFromTypeSystem(RutaBlock parent, String typesystem, String qualifiedType, Token alias) {
         if (alias == null) {
@@ -236,10 +236,10 @@ public void setExternalFactory(RutaExternalFactory factory) {
     /**
      * Import a package from a type system.
      *
-     * @param parent Block where the type should be imported.
-     * @param tsd Typesystem from which to import the package or null to import it from the CAS typesystem.
-     * @param qualifiedPackage Package to import from the typesystem.
-     * @param alias Package alias.
+     * @param parent - Block where the type should be imported.
+     * @param typesystem - Typesystem from which to import the package or null to import it from the CAS typesystem.
+     * @param qualifiedPackage - Package to import from the typesystem.
+     * @param alias - Package alias.
      */
     public void importPackage(RutaBlock parent, String typesystem, String qualifiedPackage, Token alias) {
         RutaEnvironment env = parent.getEnvironment();
@@ -254,9 +254,9 @@ public void setExternalFactory(RutaExternalFactory factory) {
     /**
      * Import all packages from a type system.
      *
-     * @param parent Block where the type should be imported.
-     * @param tsd Typesystem from which to import the package or null to import it from the CAS typesystem.
-     * @param alias Package alias.
+     * @param parent - Block where the type should be imported.
+     * @param typesystem - Typesystem from which to import the package or null to import it from the CAS typesystem.
+     * @param alias - Package alias.
      */
     public void importAllPackages(RutaBlock parent, String typesystem, Token alias) {
         RutaEnvironment env = parent.getEnvironment();

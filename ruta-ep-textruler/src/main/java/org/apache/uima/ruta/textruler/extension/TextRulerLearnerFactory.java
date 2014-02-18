@@ -33,7 +33,7 @@ public interface TextRulerLearnerFactory {
   /**
    * @param inputFolderPath
    *          the input folder path where e.g. example XMIs are located
-   * @param additionalFolderPath TODO
+   * @param additionalFolderPath
    * @param preprocessorTMfile
    *          the preprocessing Ruta file (this is important for finding the type system and
    *          analysis engine descriptor file)
@@ -42,12 +42,12 @@ public interface TextRulerLearnerFactory {
    *          you want to use it!)
    * @param fullSlotTypeNames
    *          an array with the slot-names to learn (full qualified UIMA type names)
-   * @param skip TODO
+   * @param filterSet
+   *          Ruta filter set (full qualified UIMA type names)
+   * @param skip
    * @param delegate
    *          a delegate that can be notified for status updates and asked for aborting the
    *          algorithm
-   * @param the
-   *          Ruta filter set (full qualified UIMA type names)
    * @return the algorithm of your class that implements TextRulerLearner
    */
   public TextRulerLearner createAlgorithm(String inputFolderPath, String additionalFolderPath,

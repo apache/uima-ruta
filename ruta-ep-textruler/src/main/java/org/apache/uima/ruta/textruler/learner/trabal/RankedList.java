@@ -174,7 +174,7 @@ public class RankedList extends ArrayList<Condition> {
    * Returns the ranking of the given object.
    * 
    * @param each
-   * @return
+   * @return ranking
    */
   public double rankingOf(Condition each) {
     if (contains(each)) {

@@ -38,7 +38,7 @@ public class RutaImportStatement extends RutaSimpleStatement {
   /**
    * See {@link RutaStatementConstants}
    * 
-   * @return
+   * @return type of import
    */
   public int getType() {
     return this.type;

@@ -168,7 +168,7 @@ public class ScriptFactory extends AbstractFactory {
    * @param res
    * @param block
    * @param packageString
-   * @return
+   * @return new RutaScriptBlock
    */
   public RutaScriptBlock createScriptBlock(int declStart, int declEnd, int nameStart, int nameEnd,
           String string, List<RutaRuleElement> res, Block block, String packageString) {
@@ -205,7 +205,7 @@ public class ScriptFactory extends AbstractFactory {
    * @param parent block
    * @return new external block construct
    */
-  public RutaBlock createExternalBlock(Token type, RutaBlock env) {
+  public RutaBlock createExternalBlock(Token type, RutaBlock parent) {
     int[] bounds = getBounds(type);
     int[] nameBounds = getBounds(type);
     RutaBlock block = new RutaBlock(type.getText(), type.getText(), nameBounds[0], nameBounds[1],

@@ -94,7 +94,7 @@ public abstract class AbstractFactory {
    *          first element. determines bounds[0].
    * @param astnodeListArray
    *          in ascending elements order
-   * @return
+   * @return bounds of arguments
    */
   protected static final int[] getSurroundingBounds(ASTNode head, List... astnodeListArray) {
     int bounds[] = { Integer.MAX_VALUE, -1 };
