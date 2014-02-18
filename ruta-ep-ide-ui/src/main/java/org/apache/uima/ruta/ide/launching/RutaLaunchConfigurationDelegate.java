@@ -57,6 +57,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -208,6 +209,8 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
       throw new CoreException(new Status(IStatus.ERROR, RutaIdeUIPlugin.PLUGIN_ID, IStatus.OK,
               "Failed to compose classpath!", e));
     }
+    
+    extendClasspathWithProject(extendedClasspath, project.getProject(), new HashSet<IProject>());
 
     Collection<String> dependencies = getDependencies(project.getProject());
     extendedClasspath.addAll(dependencies);
@@ -280,8 +283,24 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
 
   private static void extendClasspathWithProject(Collection<String> result, IProject project,
           Collection<IProject> visited) throws CoreException, JavaModelException {
-    IProjectNature nature = project.getNature(RutaProjectUtils.JAVANATURE);
-    if (nature != null) {
+    IProjectNature rutaNature = project.getNature(RutaNature.NATURE_ID);
+    if (rutaNature != null) {
+      IScriptProject sp = DLTKCore.create(project);
+      List<IFolder> scriptFolders = RutaProjectUtils.getScriptFolders(sp);
+      for (IFolder each : scriptFolders) {
+        result.add(each.getLocation().toPortableString());
+      }
+      List<IFolder> descriptorFolders = RutaProjectUtils.getDescriptorFolders(project);
+      for (IFolder each : descriptorFolders) {
+        result.add(each.getLocation().toPortableString());
+      }
+      IFolder resourceFolder = project.getFolder(RutaProjectUtils.getDefaultResourcesLocation());
+      if(resourceFolder != null && resourceFolder.exists()) {
+        result.add(resourceFolder.getLocation().toPortableString());
+      }
+    }
+    IProjectNature javaNature = project.getNature(RutaProjectUtils.JAVANATURE);
+    if (javaNature != null) {
       JavaProject javaProject = (JavaProject) JavaCore.create(project);
 
       // add output, e.g., target/classes
