@@ -257,7 +257,8 @@ public class RutaFormattedPrinter extends ASTVisitor {
       // return true;
     }
     if (s instanceof RutaTypeDeclaration) {
-      append(s);
+      RutaTypeDeclaration rtd = (RutaTypeDeclaration) s;
+      append(document.get(rtd.getNameStart(), rtd.getNameEnd()));
       List<RutaFeatureDeclaration> features = ((RutaTypeDeclaration) s).getFeatures();
       if (features != null && !features.isEmpty()) {
         append(PAR_OPEN);
