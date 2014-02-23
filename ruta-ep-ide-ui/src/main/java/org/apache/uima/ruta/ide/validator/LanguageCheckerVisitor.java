@@ -467,7 +467,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       Iterator<IFolder> iterator = folders.iterator();
       while (iterator.hasNext()) {
         IFolder iFolder = (IFolder) iterator.next();
-        sb.append(iFolder.getLocationURI().toURL());
+        sb.append(iFolder.getLocation().toPortableString());
         if (iterator.hasNext()) {
           sb.append(System.getProperty("path.separator"));
         }
