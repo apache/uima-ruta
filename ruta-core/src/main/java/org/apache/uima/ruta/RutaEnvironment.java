@@ -376,7 +376,6 @@ public class RutaEnvironment {
         type = parent.getEnvironment().getType(match);
       }
     }
-
     return type;
   }
 

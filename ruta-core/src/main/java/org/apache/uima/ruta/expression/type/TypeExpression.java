@@ -25,6 +25,13 @@ import org.apache.uima.ruta.expression.string.AbstractStringExpression;
 
 public abstract class TypeExpression extends AbstractStringExpression {
 
+  /**
+   * Returns the actual type of the TypeExpression
+   * 
+   * @param parent - the block of the element 
+   * @return annotation type
+   * @throws IllegalArgumentException if the type cannot be resolved.
+   */
   public abstract Type getType(RutaBlock parent);
 
 }

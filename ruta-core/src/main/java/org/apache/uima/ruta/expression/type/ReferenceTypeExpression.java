@@ -42,9 +42,20 @@ public class ReferenceTypeExpression extends TypeExpression {
     return var;
   }
 
+  /**
+   * Returns the actual type of the TypeExpression
+   * 
+   * @param parent - the block of the element 
+   * @return annotation type
+   * @throws IllegalArgumentException if the type cannot be resolved.
+   */
   @Override
   public Type getType(RutaBlock parent) {
-    return parent.getEnvironment().getVariableValue(var, Type.class);
+    Type type = parent.getEnvironment().getVariableValue(var, Type.class);
+    if(type == null) {
+      throw new IllegalArgumentException("Not able to resolve type variable: " + var);
+    }
+    return type;
   }
 
   @Override

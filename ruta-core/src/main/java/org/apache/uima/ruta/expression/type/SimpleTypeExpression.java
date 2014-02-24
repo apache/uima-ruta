@@ -33,9 +33,20 @@ public class SimpleTypeExpression extends TypeExpression {
     this.typeString = typeString;
   }
 
+  /**
+   * Returns the actual type of the TypeExpression
+   * 
+   * @param parent - the block of the element 
+   * @return annotation type
+   * @throws IllegalArgumentException if the type cannot be resolved.
+   */
   @Override
   public Type getType(RutaBlock parent) {
-    return parent.getEnvironment().getType(typeString);
+    Type type = parent.getEnvironment().getType(typeString);
+    if(type == null) {
+      throw new IllegalArgumentException("Not able to resolve type: " + typeString);
+    }
+    return type;
   }
 
   @Override

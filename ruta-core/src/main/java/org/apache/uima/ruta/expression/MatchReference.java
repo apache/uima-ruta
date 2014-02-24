@@ -22,6 +22,7 @@ package org.apache.uima.ruta.expression;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.RutaStream;
@@ -56,7 +57,7 @@ public class MatchReference extends RutaExpression {
     this.typeExpression = expression;
   }
 
-  private void resolve(RutaStatement parent, RutaStream stream) {
+  private void resolve(RutaBlock parent, RutaStream stream) {
     if (typeExpression != null) {
       return;
     }
@@ -89,6 +90,9 @@ public class MatchReference extends RutaExpression {
         }
       }
     }
+    if(typeExpression == null || typeExpression.getType(parent) == null) {
+      throw new IllegalArgumentException("Not able to resolve type of expression: "+ match);
+    }
   }
 
   private TypeExpression buildTypeExpression(String candidate, RutaEnvironment e) {
@@ -100,12 +104,12 @@ public class MatchReference extends RutaExpression {
     return null;
   }
 
-  public TypeExpression getTypeExpression(RutaStatement parent, RutaStream stream) {
+  public TypeExpression getTypeExpression(RutaBlock parent, RutaStream stream) {
     resolve(parent, stream);
     return typeExpression;
   }
 
-  public FeatureExpression getFeatureExpression(RutaStatement parent, RutaStream stream) {
+  public FeatureExpression getFeatureExpression(RutaBlock parent, RutaStream stream) {
     resolve(parent, stream);
     return featureExpression;
   }
