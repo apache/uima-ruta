@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+    <name>uima.ruta.example.ExampleBlockTypeSystem</name>
+    <imports>
+        <import location="../../../BasicTypeSystem.xml"/>
+    </imports>
+    <types>
+        <typeDescription>
+            <name>uima.ruta.example.ExampleBlock.T1</name>
+            <description>Type defined in uima.ruta.example.ExampleBlock</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.ExampleBlock.T2</name>
+            <description>Type defined in uima.ruta.example.ExampleBlock</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.ExampleBlock.T3</name>
+            <description>Type defined in uima.ruta.example.ExampleBlock</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.ExampleBlock.T4</name>
+            <description>Type defined in uima.ruta.example.ExampleBlock</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+    </types>
+</typeSystemDescription>

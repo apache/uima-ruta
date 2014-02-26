@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
     <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
     <primitive>true</primitive>
@@ -113,7 +114,21 @@
             </configurationParameter>
             <configurationParameter>
                 <name>dynamicAnchoring</name>
-                <description>Activates dynamic achoring (possible speed up).</description>
+                <description>Activates dynamic anchoring (possible speed up).</description>
+                <type>Boolean</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>greedyRuleElement</name>
+                <description>Activates greedy anchoring for rule elements.</description>
+                <type>Boolean</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>greedyRule</name>
+                <description>Activates greedy anchoring for complete rules.</description>
                 <type>Boolean</type>
                 <multiValued>false</multiValued>
                 <mandatory>false</mandatory>
@@ -132,6 +147,18 @@
             </configurationParameter>
             <configurationParameter>
                 <name>simpleGreedyForComposed</name>
+                <type>Boolean</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>additionalUimafitEngines</name>
+                <type>String</type>
+                <multiValued>true</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>strictImports</name>
                 <type>Boolean</type>
                 <multiValued>false</multiValued>
                 <mandatory>false</mandatory>
@@ -197,7 +224,7 @@
                 <name>scriptPaths</name>
                 <value>
                     <array>
-                        <string>D:/work/workspace-textmarker/ExtensionsExample/script</string>
+                        <string>D:/work/workspace-ruta/ExtensionsExample/script</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -205,7 +232,7 @@
                 <name>descriptorPaths</name>
                 <value>
                     <array>
-                        <string>D:/work/workspace-textmarker/ExtensionsExample/descriptor</string>
+                        <string>D:/work/workspace-ruta/ExtensionsExample/descriptor</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -213,7 +240,7 @@
                 <name>resourcePaths</name>
                 <value>
                     <array>
-                        <string>D:\work\workspace-textmarker\ExtensionsExample\resources</string>
+                        <string>D:\work\workspace-ruta\ExtensionsExample\resources</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -230,11 +257,23 @@
                 </value>
             </nameValuePair>
             <nameValuePair>
+                <name>additionalUimafitEngines</name>
+                <value>
+                    <array/>
+                </value>
+            </nameValuePair>
+            <nameValuePair>
                 <name>additionalExtensions</name>
                 <value>
                     <array>
                         <string>org.apache.uima.ruta.example.extensions.ExampleConditionExtension</string>
                         <string>org.apache.uima.ruta.example.extensions.ExampleActionExtension</string>
+                        <string>org.apache.uima.ruta.example.extensions.ExampleBooleanFunctionExtension</string>
+                        <string>org.apache.uima.ruta.example.extensions.ExampleNumberFunctionExtension</string>
+                        <string>org.apache.uima.ruta.example.extensions.ExampleStringFunctionExtension</string>
+                        <string>org.apache.uima.ruta.example.extensions.ExampleTypeFunctionExtension</string>
+                        <string>org.apache.uima.ruta.example.extensions.ExampleBlockExtension</string>
+                        <string>org.apache.uima.ruta.extension.fst.FSTBlockExtension</string>
                     </array>
                 </value>
             </nameValuePair>

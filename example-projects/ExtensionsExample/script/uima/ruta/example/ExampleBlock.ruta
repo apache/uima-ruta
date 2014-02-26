@@ -1,0 +1,11 @@
+PACKAGE uima.ruta.example;
+
+DECLARE T1, T2, T3, T4;
+
+//This is a test.
+REVERSE Document{}{
+  (CW T3){-> T4};
+  (SW T2){-> T3};
+  (SW T1){-> T2};
+  (SW PERIOD){-> T1};
+}

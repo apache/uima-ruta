@@ -46,6 +46,12 @@
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
+        <name>linebreakReplacement</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
         <name>inputView</name>
         <type>String</type>
         <multiValued>false</multiValued>
