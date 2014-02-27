@@ -78,7 +78,7 @@ public class RutaRuleElement extends AbstractRuleElement {
         if (quantifier.continueMatch(true, eachAnchor, this, extendedMatch, extendedContainerMatch,
                 stream, crowd)) {
           List<RuleMatch> continueOwnMatch = continueOwnMatch(true, eachAnchor, extendedMatch,
-                  ruleApply, extendedContainerMatch, sideStepOrigin, null, stream, crowd);
+                  ruleApply, extendedContainerMatch, sideStepOrigin, entryPoint, stream, crowd);
           result.addAll(continueOwnMatch);
         } else {
           if (after != null) {
@@ -270,7 +270,7 @@ public class RutaRuleElement extends AbstractRuleElement {
           RutaRuleElement sideStepOrigin, RutaStream stream, InferenceCrowd crowd,
           RuleElement entryPoint) {
     List<RuleMatch> result = new ArrayList<RuleMatch>();
-    if (ruleApply == null) {
+    if (this.equals(entryPoint) && ruleApply == null) {
       result.add(ruleMatch);
       return result;
     }
@@ -299,7 +299,7 @@ public class RutaRuleElement extends AbstractRuleElement {
       ruleMatch.setMatched(evaluateMatches != null);
       if (ruleMatch.matched()) {
         result = continueMatchSomewhereElse(after, false, annotation, ruleMatch, ruleApply,
-                containerMatch, sideStepOrigin, null, stream, crowd);
+                containerMatch, sideStepOrigin, entryPoint, stream, crowd);
       } else {
         if (getContainer() instanceof ComposedRuleElement) {
           ComposedRuleElement composed = (ComposedRuleElement) getContainer();

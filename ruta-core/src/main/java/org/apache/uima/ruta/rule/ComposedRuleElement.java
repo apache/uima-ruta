@@ -393,13 +393,13 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
         // TODO failed was caused by a child: should here failed = false?
         if (!removedFailedMatches && evaluateMatches != null && continueMatch) {
           result = continueOwnMatch(after, annotation, ruleMatch, ruleApply, parentContainerMatch,
-                  sideStepOrigin, null, stream, crowd);
+                  sideStepOrigin, entryPoint, stream, crowd);
         } else if (nextElement != null) {
           AnnotationFS backtrackedAnnotation = getBacktrackedAnnotation(after, evaluateMatches,
                   annotation);
           if (backtrackedAnnotation != null) {
             result = nextElement.continueMatch(after, backtrackedAnnotation, ruleMatch, ruleApply,
-                    parentContainerMatch, sideStepOrigin, null, stream, crowd);
+                    parentContainerMatch, sideStepOrigin, entryPoint, stream, crowd);
           } else {
             result = fallback(after, failed, annotation, ruleMatch, ruleApply,
                     parentContainerMatch, sideStepOrigin, entryPoint, stream, crowd);
@@ -414,7 +414,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
                   sideStepOrigin, null, stream, crowd);
         } else if (nextElement != null) {
           result = nextElement.continueMatch(after, annotation, ruleMatch, ruleApply,
-                  parentContainerMatch, sideStepOrigin, null, stream, crowd);
+                  parentContainerMatch, sideStepOrigin, entryPoint, stream, crowd);
         } else {
           result = fallback(after, failed, annotation, ruleMatch, ruleApply, parentContainerMatch,
                   sideStepOrigin, entryPoint, stream, crowd);
