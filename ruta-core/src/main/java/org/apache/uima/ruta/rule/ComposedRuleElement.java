@@ -411,7 +411,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       } else {
         if (continueMatch) {
           result = continueOwnMatch(after, annotation, ruleMatch, ruleApply, parentContainerMatch,
-                  sideStepOrigin, null, stream, crowd);
+                  sideStepOrigin, entryPoint, stream, crowd);
         } else if (nextElement != null) {
           result = nextElement.continueMatch(after, annotation, ruleMatch, ruleApply,
                   parentContainerMatch, sideStepOrigin, entryPoint, stream, crowd);
