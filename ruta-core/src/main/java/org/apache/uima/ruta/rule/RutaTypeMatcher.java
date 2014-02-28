@@ -82,6 +82,9 @@ public class RutaTypeMatcher implements RutaMatcher {
 
   public Collection<AnnotationFS> getAnnotationsAfter(RutaRuleElement ruleElement,
           AnnotationFS annotation, RutaStream stream, RutaBlock parent) {
+    if(annotation.getEnd() == stream.getDocumentAnnotation().getEnd()) {
+      return Collections.emptyList();
+    }
     RutaBasic lastBasic = stream.getEndAnchor(annotation.getEnd());
     int end = 0;
     if (lastBasic == null) {
@@ -133,6 +136,9 @@ public class RutaTypeMatcher implements RutaMatcher {
 
   public Collection<AnnotationFS> getAnnotationsBefore(RutaRuleElement ruleElement,
           AnnotationFS annotation, RutaStream stream, RutaBlock parent) {
+    if(annotation.getBegin() == stream.getDocumentAnnotation().getBegin()) {
+      return Collections.emptyList();
+    }
     RutaBasic firstBasic = stream.getBeginAnchor(annotation.getBegin());
     if (firstBasic == null) {
       return Collections.emptyList();
