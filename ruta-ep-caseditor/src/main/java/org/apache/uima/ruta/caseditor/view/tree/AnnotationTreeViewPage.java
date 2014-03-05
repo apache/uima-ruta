@@ -306,8 +306,8 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
    * Unchecks all types of the typesystem so that they are not highlighted anymore.
    */
   public void uncheckAll() {
-    TypeSystem ts = editor.getDocument().getCAS().getTypeSystem();
-    Iterator<Type> typeIterator = ts.getTypeIterator();
+    Collection<Type> shownAnnotationTypes = new ArrayList<Type>(editor.getShownAnnotationTypes());
+    Iterator<Type> typeIterator = shownAnnotationTypes.iterator();
     while (typeIterator.hasNext()) {
       Type type = (Type) typeIterator.next();
       editor.setShownAnnotationType(type, false);
