@@ -226,16 +226,12 @@ public class ConditionVerbalizer {
       } else {
         list = verbalizer.verbalize(c.getStringList());
       }
-      INumberExpression distE = c.getDistance();
-      String dist = "";
-      String rel = "";
-      if (distE != null) {
-        dist = ", " + verbalizer.verbalize(distE);
+      IStringExpression a = c.getArg();
+      String arg = "";
+      if (a != null) {
+        arg = ", " + verbalizer.verbalize(a);
       }
-      if (c.getRelative() != null) {
-        rel = ", " + verbalizer.verbalize(c.getRelative());
-      }
-      return name + list + dist + rel + ")";
+      return name + list +arg + ")";
     } else if (condition instanceof LastCondition) {
       LastCondition c = (LastCondition) condition;
       return name + verbalizer.verbalize(c.getType()) + ")";

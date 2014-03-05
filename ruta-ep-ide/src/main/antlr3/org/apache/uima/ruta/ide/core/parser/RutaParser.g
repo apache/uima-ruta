@@ -1174,9 +1174,10 @@ conditionInList returns [RutaCondition cond = null]
 }
     :
     name = INLIST LPAREN ((list2 = stringListExpression)=>list2 = stringListExpression | list1 = wordListExpression) 
-    (COMMA dist = numberExpression (COMMA rel = booleanExpression)?)? 
-     {if(list1 != null) {cond = ConditionFactory.createCondition(name, list1, dist, rel);}
-    else {cond = ConditionFactory.createCondition(name, list2, dist, rel);};}
+    (COMMA arg = stringExpression)?
+    //(COMMA dist = numberExpression (COMMA rel = booleanExpression)?)? 
+     {if(list1 != null) {cond = ConditionFactory.createCondition(name, list1, arg);}
+    else {cond = ConditionFactory.createCondition(name, list2, arg);};}
     RPAREN
     ;
             

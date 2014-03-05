@@ -1196,14 +1196,18 @@ conditionCurrentCount returns [AbstractRutaCondition cond = null]
     (COMMA var = numberVariable)? RPAREN
     {cond = ConditionFactory.createConditionCurrentCount(type, min, max, var,$blockDeclaration::env);}
     ;
+    
 conditionInList returns [AbstractRutaCondition cond = null]
  options {
 	backtrack = true;
 }
     :
-    INLIST LPAREN ((list2 = stringListExpression)=>list2 = stringListExpression | list1 = wordListExpression) (COMMA dist = numberExpression (COMMA rel = booleanExpression)?)? RPAREN
-    {if(list1 != null) {cond = ConditionFactory.createConditionInList(list1, dist, rel,$blockDeclaration::env);}
-    else {cond = ConditionFactory.createConditionInList(list2, dist, rel,$blockDeclaration::env);};}
+    INLIST LPAREN ((list2 = stringListExpression)=>list2 = stringListExpression | list1 = wordListExpression) 
+    (COMMA arg = stringExpression)?
+    //(COMMA dist = numberExpression (COMMA rel = booleanExpression)?)? 
+    RPAREN
+    {if(list1 != null) {cond = ConditionFactory.createConditionInList(list1, arg,$blockDeclaration::env);}
+    else {cond = ConditionFactory.createConditionInList(list2, arg,$blockDeclaration::env);};}
     ;
 
     

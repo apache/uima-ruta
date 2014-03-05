@@ -180,9 +180,9 @@ public class ConditionVerbalizerTest {
     assertEquals("IF(true)", s);
 
     // INLIST
-    c = new InListCondition(stringListExpr, numExpr1, boolExpr1);
+    c = new InListCondition(stringListExpr, stringExpr);
     s = v.verbalize(c);
-    assertEquals("INLIST({\"string\"}, 4, true)", s);
+    assertEquals("INLIST({\"string\"}, \"string\")", s);
 
     // IS
     c = new IsCondition(typeExpr1);

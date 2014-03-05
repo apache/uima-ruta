@@ -95,8 +95,8 @@ public class ConditionFactory {
   }
 
   public static AbstractRutaCondition createConditionInList(WordListExpression listExpr,
-          INumberExpression dist, IBooleanExpression rel, RutaBlock parent) {
-    return new InListCondition(listExpr, dist, rel);
+          IStringExpression arg, RutaBlock parent) {
+    return new InListCondition(listExpr, arg);
   }
 
   public static AbstractRutaCondition createConditionMOfN(List<AbstractRutaCondition> conds,
@@ -237,8 +237,8 @@ public class ConditionFactory {
   }
 
   public static AbstractRutaCondition createConditionInList(StringListExpression list,
-          INumberExpression dist, IBooleanExpression rel, RutaBlock env) {
-    return new InListCondition(list, dist, rel);
+          IStringExpression arg, RutaBlock env) {
+    return new InListCondition(list, arg);
   }
 
   public static AbstractRutaCondition createConditionCount(ListExpression<Object> type,

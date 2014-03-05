@@ -383,20 +383,18 @@
     <title>INLIST</title>
     <para>
       The INLIST condition is fulfilled, if the matched annotation is listed
-      in a given word or string list. The (relative) edit distance
-      is currently disabled.
-      <!-- ATTENTION: it seems the edit distance is still disabled? what does 
-        this mean? -->
+      in a given word or string list. If an optional agrument is given, then 
+      the value of the argument is used instead of the covered text of the matched annotation
     </para>
     <section>
       <title>
         <emphasis role="bold">Definition:</emphasis>
       </title>
       <para>
-        <programlisting><![CDATA[INLIST(WordList(,NumberExpression,(BooleanExpression)?)?) ]]></programlisting>
+        <programlisting><![CDATA[INLIST(WordList(,StringExpression)?) ]]></programlisting>
       </para>
       <para>
-        <programlisting><![CDATA[INLIST(StringList(,NumberExpression,(BooleanExpression)?)?) ]]></programlisting>
+        <programlisting><![CDATA[INLIST(StringList(,StringExpression)?) ]]></programlisting>
       </para>
     </section>
     <section>
@@ -404,12 +402,19 @@
         <emphasis role="bold">Example:</emphasis>
       </title>
       <para>
-        <programlisting><![CDATA[Keyword{INLIST(specialKeywords.txt)->MARK(SpecialKeyword)};]]></programlisting>
+        <programlisting><![CDATA[Keyword{INLIST(SpecialKeywordList)->MARK(SpecialKeyword)};]]></programlisting>
       </para>
       <para>
         A Keyword is annotated with the type SpecialKeyword, if the text
-        of the Keyword annotation is listed in the word list
-        'specialKeywords.txt'.
+        of the Keyword annotation is listed in the word list or string list
+        SpecialKeywordList.
+      </para>
+      <para>
+        <programlisting><![CDATA[Token{INLIST(MyLemmaList, Token.lemma)->MARK(SpecialLemma)};]]></programlisting>
+      </para>
+      <para>
+        This rule creates an annotation of the type SpecialLemma for each token that provides a feature value 
+        of the feature "lemma" that is present in the string list or word list MyLemmaList.
       </para>
     </section>
   </section>

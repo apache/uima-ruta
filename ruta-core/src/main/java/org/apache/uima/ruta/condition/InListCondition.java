@@ -23,10 +23,9 @@ import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.list.StringListExpression;
-import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.resource.WordListExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.resource.RutaWordList;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.RuleElement;
@@ -34,49 +33,38 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class InListCondition extends TerminalRutaCondition {
 
-  private IBooleanExpression relative;
-
-  private final INumberExpression distance;
-
   private WordListExpression listExpr;
 
   private StringListExpression stringList;
 
-  public InListCondition(WordListExpression listExpr, INumberExpression distance,
-          IBooleanExpression relative) {
+  private IStringExpression arg;
+
+  public InListCondition(WordListExpression listExpr, IStringExpression arg) {
     super();
     this.listExpr = listExpr;
-    this.distance = distance;
-    this.relative = relative;
+    this.arg = arg;
   }
 
-  public InListCondition(StringListExpression list, INumberExpression distance,
-          IBooleanExpression relative) {
+  public InListCondition(StringListExpression list, IStringExpression arg) {
     super();
-    this.distance = distance;
-    this.relative = relative;
     this.stringList = list;
+    this.arg = arg;
   }
 
   @Override
   public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
-    String coveredText = annotation.getCoveredText();
+    String text = annotation.getCoveredText();
+    if(arg != null) {
+      text = arg.getStringValue(element.getParent(), annotation, stream);
+    }
     if (stringList == null) {
       RutaWordList wordList = listExpr.getList(element.getParent());
-      return new EvaluatedCondition(this, wordList.contains(coveredText, false, 0, null, 0, true));
+      return new EvaluatedCondition(this, wordList.contains(text, false, 0, null, 0, true));
     }
     List<String> sList = stringList.getList(element.getParent(), stream);
-    boolean contains = sList.contains(coveredText);
+    boolean contains = sList.contains(text);
     return new EvaluatedCondition(this, contains);
-  }
-
-  public IBooleanExpression getRelative() {
-    return relative;
-  }
-
-  public INumberExpression getDistance() {
-    return distance;
   }
 
   public WordListExpression getListExpression() {
@@ -85,6 +73,10 @@ public class InListCondition extends TerminalRutaCondition {
 
   public StringListExpression getStringList() {
     return stringList;
+  }
+
+  public IStringExpression getArg() {
+    return arg;
   }
 
 }
