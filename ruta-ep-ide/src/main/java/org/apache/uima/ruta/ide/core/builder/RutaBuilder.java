@@ -37,6 +37,7 @@ import org.apache.uima.ruta.ide.core.RutaExtensionManager;
 import org.apache.uima.ruta.ide.parser.ast.RutaModuleDeclaration;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -82,6 +83,13 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
       IPath outputPath = getAbsolutePath(sourceModule);
       IPath[] generateResources = generateResources(moduleDeclaration, outputPath, container,
               sourceModule);
+
+      IProject proj = sourceModule.getScriptProject().getProject();
+      List<IFolder> allDescriptorFolders = RutaProjectUtils.getAllDescriptorFolders(proj);
+      for (IFolder iFolder : allDescriptorFolders) {
+        RutaProjectUtils.addProjectDataPath(proj, iFolder);
+      }
+      
       monitor.worked(2);
       String defaultDescriptorLocation = RutaProjectUtils.getDefaultDescriptorLocation();
       IFolder folder = container.getProject().getFolder(defaultDescriptorLocation);

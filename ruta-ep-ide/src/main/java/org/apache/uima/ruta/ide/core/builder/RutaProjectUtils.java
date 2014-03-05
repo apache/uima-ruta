@@ -19,7 +19,6 @@
 
 package org.apache.uima.ruta.ide.core.builder;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -147,7 +146,7 @@ public class RutaProjectUtils {
     return result;
   }
 
-  private static Collection<IProject> getReferencedProjects(IProject proj,
+  public static Collection<IProject> getReferencedProjects(IProject proj,
           Collection<IProject> visited) throws CoreException {
     Collection<IProject> result = new HashSet<IProject>();
     IProject[] referencedProjects = proj.getReferencedProjects();
@@ -230,26 +229,32 @@ public class RutaProjectUtils {
 
   public static void addProjectDataPath(IProject project, IFolder folder) throws CoreException {
     String dataPath = project.getPersistentProperty((new QualifiedName("", CDE_DATA_PATH)));
+    String sep = System.getProperty("path.separator");
     if (dataPath == null) {
       dataPath = "";
     }
+    String[] split = dataPath.split(sep);
+    List<String> paths = Arrays.asList(split);
     String addon = folder.getLocation().toPortableString();
-    if (!StringUtils.isEmpty(dataPath)) {
-      dataPath += File.pathSeparator;
+    if(!paths.contains(addon)) {
+      if (!StringUtils.isEmpty(dataPath)) {
+        dataPath += sep;
+      }
+      dataPath += addon;
+      project.setPersistentProperty(new QualifiedName("", CDE_DATA_PATH), dataPath);
     }
-    dataPath += addon;
-    project.setPersistentProperty(new QualifiedName("", CDE_DATA_PATH), dataPath);
   }
 
   public static void removeProjectDataPath(IProject project, IFolder folder) throws CoreException {
     String dataPath = project.getPersistentProperty((new QualifiedName("", CDE_DATA_PATH)));
+    String sep = System.getProperty("path.separator");
     if (dataPath == null) {
       return;
     }
     String path = folder.getLocation().toPortableString();
     if (!StringUtils.isEmpty(dataPath)) {
       dataPath.replaceAll(path, "");
-      dataPath.replaceAll(File.pathSeparator + File.pathSeparator, "");
+      dataPath.replaceAll(sep + sep, "");
     }
     project.setPersistentProperty(new QualifiedName("", CDE_DATA_PATH), dataPath);
   }
