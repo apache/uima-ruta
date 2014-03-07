@@ -641,6 +641,12 @@ public class LanguageCheckerVisitor extends ASTVisitor {
           String feat = se.toString();
           feat = getFeatureName(se, feat);
           boolean featureFound = findFeature(matchedType, feat, -1);
+          if(!featureFound) {
+            String featureMatch = isFeatureMatch(matchedType);
+            if(featureMatch != null) {
+              featureFound = findFeature(featureMatch, feat, -1);
+            }
+          }
           if (!featureFound) {
             IProblem problem = problemFactory.createUnknownFeatureProblem(se, matchedType);
             pr.reportProblem(problem);
