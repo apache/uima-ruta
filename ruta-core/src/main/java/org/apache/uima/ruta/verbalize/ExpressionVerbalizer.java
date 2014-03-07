@@ -84,14 +84,14 @@ public class ExpressionVerbalizer {
       return verbalize((WordTableExpression) expression);
     } else if (expression instanceof ListExpression<?>) {
       return verbalize((ListExpression<?>) expression);
+    } else if (expression instanceof FeatureMatchExpression) {
+      return verbalize((FeatureMatchExpression) expression);
     } else if (expression instanceof FeatureExpression) {
       return verbalize((FeatureExpression) expression);
     } else if (expression instanceof IStringExpression) {
       return verbalize((IStringExpression) expression);
     } else if (expression instanceof MatchReference) {
       return verbalize((MatchReference) expression);
-    } else if (expression instanceof FeatureMatchExpression) {
-      return verbalize((FeatureMatchExpression) expression);
     } else if (expression instanceof GenericFeatureExpression) {
       return verbalize(((GenericFeatureExpression) expression).getFeatureExpression());
     }
