@@ -53,7 +53,6 @@ public class SetFeatureAction extends AbstractRutaAction {
     return featureStringExpression;
   }
 
-
   @Override
   public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
     RutaBlock parent = element.getParent();
@@ -69,31 +68,33 @@ public class SetFeatureAction extends AbstractRutaAction {
           IStringExpression stringExpr = (IStringExpression) expr;
           String string = stringExpr.getStringValue(parent, match, element, stream);
           annotationFS.setStringValue(feature, string);
-        }else  if (range.equals(UIMAConstants.TYPE_INTEGER) && expr instanceof INumberExpression) {
-            INumberExpression numberExpr = (INumberExpression) expr;
-            int v = numberExpr.getIntegerValue(parent, match, element, stream);
-            annotationFS.setIntValue(feature, v);
-          } else if (range.equals(UIMAConstants.TYPE_DOUBLE) && expr instanceof INumberExpression) {
-            INumberExpression numberExpr = (INumberExpression) expr;
-            double v = numberExpr.getDoubleValue(parent, match, element, stream);
-            annotationFS.setDoubleValue(feature, v);
-          } else if (range.equals(UIMAConstants.TYPE_FLOAT) && expr instanceof INumberExpression) {
-            INumberExpression numberExpr = (INumberExpression) expr;
-            float v = (float) numberExpr.getFloatValue(parent, match, element, stream);
-            annotationFS.setFloatValue(feature, v);
-          } else if (range.equals(UIMAConstants.TYPE_BYTE) && expr instanceof INumberExpression) {
-            INumberExpression numberExpr = (INumberExpression) expr;
-            byte v = (byte) numberExpr.getIntegerValue(parent, match, element, stream);
-            annotationFS.setByteValue(feature, v);
-          } else if (range.equals(UIMAConstants.TYPE_SHORT) && expr instanceof INumberExpression) {
-            INumberExpression numberExpr = (INumberExpression) expr;
-            short v = (short) numberExpr.getIntegerValue(parent, match, element, stream);
-            annotationFS.setShortValue(feature, v);
-          } else if (range.equals(UIMAConstants.TYPE_LONG) && expr instanceof INumberExpression) {
-            INumberExpression numberExpr = (INumberExpression) expr;
-            long v = numberExpr.getIntegerValue(parent, match, element, stream);
-            annotationFS.setLongValue(feature, v);
-        } else if (range.equals(UIMAConstants.TYPE_BOOLEAN)&& expr instanceof IBooleanExpression) {
+        } else if (rangeName.equals(UIMAConstants.TYPE_INTEGER)
+                && expr instanceof INumberExpression) {
+          INumberExpression numberExpr = (INumberExpression) expr;
+          int v = numberExpr.getIntegerValue(parent, match, element, stream);
+          annotationFS.setIntValue(feature, v);
+        } else if (rangeName.equals(UIMAConstants.TYPE_DOUBLE) && expr instanceof INumberExpression) {
+          INumberExpression numberExpr = (INumberExpression) expr;
+          double v = numberExpr.getDoubleValue(parent, match, element, stream);
+          annotationFS.setDoubleValue(feature, v);
+        } else if (rangeName.equals(UIMAConstants.TYPE_FLOAT) && expr instanceof INumberExpression) {
+          INumberExpression numberExpr = (INumberExpression) expr;
+          float v = (float) numberExpr.getFloatValue(parent, match, element, stream);
+          annotationFS.setFloatValue(feature, v);
+        } else if (rangeName.equals(UIMAConstants.TYPE_BYTE) && expr instanceof INumberExpression) {
+          INumberExpression numberExpr = (INumberExpression) expr;
+          byte v = (byte) numberExpr.getIntegerValue(parent, match, element, stream);
+          annotationFS.setByteValue(feature, v);
+        } else if (rangeName.equals(UIMAConstants.TYPE_SHORT) && expr instanceof INumberExpression) {
+          INumberExpression numberExpr = (INumberExpression) expr;
+          short v = (short) numberExpr.getIntegerValue(parent, match, element, stream);
+          annotationFS.setShortValue(feature, v);
+        } else if (rangeName.equals(UIMAConstants.TYPE_LONG) && expr instanceof INumberExpression) {
+          INumberExpression numberExpr = (INumberExpression) expr;
+          long v = numberExpr.getIntegerValue(parent, match, element, stream);
+          annotationFS.setLongValue(feature, v);
+        } else if (rangeName.equals(UIMAConstants.TYPE_BOOLEAN)
+                && expr instanceof IBooleanExpression) {
           IBooleanExpression booleanExpr = (IBooleanExpression) expr;
           boolean v = booleanExpr.getBooleanValue(parent, match, element, stream);
           annotationFS.setBooleanValue(feature, v);
