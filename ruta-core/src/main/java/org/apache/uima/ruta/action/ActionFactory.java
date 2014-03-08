@@ -26,6 +26,7 @@ import java.util.logging.Level;
 import org.antlr.runtime.Token;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
@@ -149,16 +150,9 @@ public class ActionFactory {
     return new RemoveFilterTypeAction(types);
   }
 
-  public static AbstractRutaAction createSetFeatureAction(IStringExpression f, Object v,
+  public static AbstractRutaAction createSetFeatureAction(IStringExpression f, IRutaExpression v,
           RutaBlock parent) {
-    if (v instanceof INumberExpression) {
-      return new SetFeatureAction(f, (INumberExpression) v);
-    } else if (v instanceof IBooleanExpression) {
-      return new SetFeatureAction(f, (IBooleanExpression) v);
-    } else if (v instanceof IStringExpression) {
-      return new SetFeatureAction(f, (IStringExpression) v);
-    }
-    return null;
+    return new SetFeatureAction(f, v);
   }
 
   public static AbstractRutaAction createUnmarkAction(TypeExpression f,
@@ -191,7 +185,8 @@ public class ActionFactory {
     return new TrieAction(list, map, ignoreCase, ignoreLength, edit, distance, ignoreChar);
   }
 
-  public static AbstractRutaAction createExecAction(String ns, TypeListExpression tl, IStringExpression view, RutaBlock env) {
+  public static AbstractRutaAction createExecAction(String ns, TypeListExpression tl,
+          IStringExpression view, RutaBlock env) {
     return new ExecAction(ns, tl, view);
   }
 
@@ -224,7 +219,8 @@ public class ActionFactory {
     return new AddAction(var == null ? null : var.getText(), list);
   }
 
-  public static AbstractRutaAction createGetListAction(Token var, IStringExpression op, RutaBlock env) {
+  public static AbstractRutaAction createGetListAction(Token var, IStringExpression op,
+          RutaBlock env) {
     return new GetListAction(var == null ? null : var.getText(), op);
   }
 

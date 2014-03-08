@@ -328,16 +328,7 @@ public class ActionVerbalizer {
     } else if (action instanceof SetFeatureAction) {
       SetFeatureAction a = (SetFeatureAction) action;
       String e1 = verbalizer.verbalize(a.getFeatureStringExpression());
-      String e2 = "";
-      if (a.getBooleanExpr() != null) {
-        e2 = verbalizer.verbalize(a.getBooleanExpr());
-      } else if (a.getNumberExpr() != null) {
-        e2 = verbalizer.verbalize(a.getNumberExpr());
-      } else if (a.getStringExpr() != null) {
-        e2 = verbalizer.verbalize(a.getStringExpr());
-      } else if (a.getTypeExpr() != null) {
-        e2 = verbalizer.verbalize(a.getTypeExpr());
-      }
+      String e2 = verbalizer.verbalize(a.getExpr());
       return name + e1 + ", " + e2 + ")";
     } else if (action instanceof GetFeatureAction) {
       GetFeatureAction a = (GetFeatureAction) action;

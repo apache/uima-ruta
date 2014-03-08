@@ -27,6 +27,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
+import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
@@ -40,58 +41,18 @@ public class SetFeatureAction extends AbstractRutaAction {
 
   private final IStringExpression featureStringExpression;
 
-  private IStringExpression stringExpr;
+  private final IRutaExpression expr;
 
-  private INumberExpression numberExpr;
-
-  private IBooleanExpression booleanExpr;
-
-  private TypeExpression typeExpr;
-
-  protected SetFeatureAction(IStringExpression feature) {
+  public SetFeatureAction(IStringExpression feature, IRutaExpression expr) {
     super();
     this.featureStringExpression = feature;
-  }
-
-  public SetFeatureAction(IStringExpression feature, IStringExpression stringExpr) {
-    this(feature);
-    this.stringExpr = stringExpr;
-  }
-
-  public SetFeatureAction(IStringExpression feature, INumberExpression numberExpr) {
-    this(feature);
-    this.numberExpr = numberExpr;
-  }
-
-  public SetFeatureAction(IStringExpression feature, IBooleanExpression booleanExpr) {
-    this(feature);
-    this.booleanExpr = booleanExpr;
-  }
-
-  public SetFeatureAction(IStringExpression feature, TypeExpression typeExpr) {
-    this(feature);
-    this.typeExpr = typeExpr;
+    this.expr = expr;
   }
 
   public IStringExpression getFeatureStringExpression() {
     return featureStringExpression;
   }
 
-  public IStringExpression getStringExpr() {
-    return stringExpr;
-  }
-
-  public INumberExpression getNumberExpr() {
-    return numberExpr;
-  }
-
-  public IBooleanExpression getBooleanExpr() {
-    return booleanExpr;
-  }
-
-  public TypeExpression getTypeExpr() {
-    return typeExpr;
-  }
 
   @Override
   public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
@@ -101,35 +62,43 @@ public class SetFeatureAction extends AbstractRutaAction {
     for (AnnotationFS annotationFS : matchedAnnotations) {
       Feature feature = annotationFS.getType().getFeatureByBaseName(featureString);
       if (feature != null) {
+        Type range = feature.getRange();
+        String rangeName = range.getName();
         stream.getCas().removeFsFromIndexes(annotationFS);
-        if (stringExpr != null) {
+        if (rangeName.equals(UIMAConstants.TYPE_STRING) && expr instanceof IStringExpression) {
+          IStringExpression stringExpr = (IStringExpression) expr;
           String string = stringExpr.getStringValue(parent, match, element, stream);
           annotationFS.setStringValue(feature, string);
-        } else if (numberExpr != null) {
-          String range = feature.getRange().getName();
-          if (range.equals(UIMAConstants.TYPE_INTEGER)) {
+        }else  if (range.equals(UIMAConstants.TYPE_INTEGER) && expr instanceof INumberExpression) {
+            INumberExpression numberExpr = (INumberExpression) expr;
             int v = numberExpr.getIntegerValue(parent, match, element, stream);
             annotationFS.setIntValue(feature, v);
-          } else if (range.equals(UIMAConstants.TYPE_DOUBLE)) {
+          } else if (range.equals(UIMAConstants.TYPE_DOUBLE) && expr instanceof INumberExpression) {
+            INumberExpression numberExpr = (INumberExpression) expr;
             double v = numberExpr.getDoubleValue(parent, match, element, stream);
             annotationFS.setDoubleValue(feature, v);
-          } else if (range.equals(UIMAConstants.TYPE_FLOAT)) {
+          } else if (range.equals(UIMAConstants.TYPE_FLOAT) && expr instanceof INumberExpression) {
+            INumberExpression numberExpr = (INumberExpression) expr;
             float v = (float) numberExpr.getFloatValue(parent, match, element, stream);
             annotationFS.setFloatValue(feature, v);
-          } else if (range.equals(UIMAConstants.TYPE_BYTE)) {
+          } else if (range.equals(UIMAConstants.TYPE_BYTE) && expr instanceof INumberExpression) {
+            INumberExpression numberExpr = (INumberExpression) expr;
             byte v = (byte) numberExpr.getIntegerValue(parent, match, element, stream);
             annotationFS.setByteValue(feature, v);
-          } else if (range.equals(UIMAConstants.TYPE_SHORT)) {
+          } else if (range.equals(UIMAConstants.TYPE_SHORT) && expr instanceof INumberExpression) {
+            INumberExpression numberExpr = (INumberExpression) expr;
             short v = (short) numberExpr.getIntegerValue(parent, match, element, stream);
             annotationFS.setShortValue(feature, v);
-          } else if (range.equals(UIMAConstants.TYPE_LONG)) {
+          } else if (range.equals(UIMAConstants.TYPE_LONG) && expr instanceof INumberExpression) {
+            INumberExpression numberExpr = (INumberExpression) expr;
             long v = numberExpr.getIntegerValue(parent, match, element, stream);
             annotationFS.setLongValue(feature, v);
-          }
-        } else if (booleanExpr != null) {
+        } else if (range.equals(UIMAConstants.TYPE_BOOLEAN)&& expr instanceof IBooleanExpression) {
+          IBooleanExpression booleanExpr = (IBooleanExpression) expr;
           boolean v = booleanExpr.getBooleanValue(parent, match, element, stream);
           annotationFS.setBooleanValue(feature, v);
-        } else if (typeExpr != null) {
+        } else if (expr instanceof TypeExpression) {
+          TypeExpression typeExpr = (TypeExpression) expr;
           Type t = typeExpr.getType(parent);
           List<AnnotationFS> inWindow = stream.getAnnotationsInWindow(annotationFS, t);
           if (feature.getRange().isArray()) {
@@ -142,5 +111,9 @@ public class SetFeatureAction extends AbstractRutaAction {
         stream.getCas().addFsToIndexes(annotationFS);
       }
     }
+  }
+
+  public IRutaExpression getExpr() {
+    return expr;
   }
 }
