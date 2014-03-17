@@ -63,16 +63,27 @@ public class TrimAction extends AbstractRutaAction {
     int newEnd = oldEnd;
 
     RutaBasic beginBasic = stream.getBeginAnchor(oldBegin);
-    while (isPartof(beginBasic, typesToTrim) && beginBasic.getBegin() < oldEnd) {
+    while (beginBasic != null && isPartof(beginBasic, typesToTrim)
+            && beginBasic.getBegin() < oldEnd) {
       beginBasic = stream.getBasicNextTo(false, beginBasic);
     }
-    newBegin = beginBasic.getBegin();
+    if (beginBasic != null) {
+      newBegin = beginBasic.getBegin();
+    } else {
+      stream.removeAnnotation(annotation);
+      return;
+    }
 
     RutaBasic endBasic = stream.getEndAnchor(oldEnd);
-    while (isPartof(endBasic, typesToTrim) && endBasic.getEnd() > newBegin) {
+    while (endBasic != null && isPartof(endBasic, typesToTrim) && endBasic.getEnd() > newBegin) {
       endBasic = stream.getBasicNextTo(true, endBasic);
     }
-    newEnd = endBasic.getEnd();
+    if (endBasic != null) {
+      newEnd = endBasic.getEnd();
+    } else {
+      stream.removeAnnotation(annotation);
+      return;
+    }
 
     if (oldBegin != newBegin || newEnd != oldEnd) {
       stream.removeAnnotation(annotation);
