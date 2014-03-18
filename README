@@ -39,6 +39,7 @@ If you use the uimaFIT JCasGenPomFriendly in Maven and want to use UIMA Ruta
 as a standalone annotator you have to exclude the generated UIMA Ruta basic 
 type files from the build, e.g., by adding:
 
+
    <plugin>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-compiler-plugin</artifactId>
