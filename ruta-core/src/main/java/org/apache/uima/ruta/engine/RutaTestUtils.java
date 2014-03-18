@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.ruta;
+package org.apache.uima.ruta.engine;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,7 +42,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.util.CasCreationUtils;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.InvalidXMLException;
@@ -106,7 +105,7 @@ public class RutaTestUtils {
           String resourceDirName, CAS cas) throws URISyntaxException, IOException,
           InvalidXMLException, ResourceInitializationException, AnalysisEngineProcessException,
           ResourceConfigurationException {
-    final HashMap parameters = new HashMap();
+    final Map<String, Object> parameters = new HashMap<String, Object>();
     parameters.put(RutaEngine.PARAM_DYNAMIC_ANCHORING, dynamicAnchoring);
     parameters.put(RutaEngine.PARAM_SIMPLE_GREEDY_FOR_COMPOSED, simpleGreedyForComposed);
 
@@ -206,7 +205,10 @@ public class RutaTestUtils {
           IOException, InvalidXMLException {
     URL url = RutaEngine.class.getClassLoader().getResource("BasicEngine.xml");
     if (url == null) {
-      url = RutaTestUtils.class.getClassLoader().getResource("org/apache/uima/ruta/TestEngine.xml");
+      url = RutaTestUtils.class.getClassLoader().getResource("org/apache/uima/ruta/BasicEngine.xml");
+    }
+    if (url == null) {
+      url = RutaTestUtils.class.getResource("BasicEngine.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);

@@ -40,6 +40,12 @@ licensed under the Common Public License.
       <scope>compile</scope>
     </dependency>
     <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>ruta-core-ext</artifactId>
+      <version>${project.parent.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>org.antlr</groupId>
       <artifactId>antlr-runtime</artifactId>
       <version>3.5</version>
@@ -288,7 +294,7 @@ licensed under the Common Public License.
                 <Embed-Dependency>*;scope=compile</Embed-Dependency>
                 <!-- <Embed-Transitive>true</Embed-Transitive> -->
                 <Bundle-SymbolicName>org.apache.uima.ruta.engine;singleton:=true</Bundle-SymbolicName>
-                <Bundle-RequiredExecutionEnvironment>J2SE-1.5</Bundle-RequiredExecutionEnvironment>
+                <Bundle-RequiredExecutionEnvironment>JavaSE-1.6</Bundle-RequiredExecutionEnvironment>
                 <Eclipse-ExtensibleAPI>true</Eclipse-ExtensibleAPI>
                 <!-- <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy> -->
                 <Eclipse-BuddyPolicy>registered</Eclipse-BuddyPolicy>

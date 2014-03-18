@@ -37,7 +37,6 @@ import org.apache.uima.resource.metadata.TypePriorities;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.resource.metadata.impl.TypeDescription_impl;
 import org.apache.uima.resource.metadata.impl.TypeSystemDescription_impl;
-import org.apache.uima.ruta.RutaTestUtils;
 import org.apache.uima.util.CasCreationUtils;
 import org.apache.uima.util.XMLInputSource;
 import org.junit.Test;

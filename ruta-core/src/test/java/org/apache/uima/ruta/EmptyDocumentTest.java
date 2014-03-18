@@ -26,6 +26,7 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
 
 public class EmptyDocumentTest {

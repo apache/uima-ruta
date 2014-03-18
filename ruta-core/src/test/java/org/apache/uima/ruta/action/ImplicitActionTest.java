@@ -33,9 +33,9 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.FeatureMatch1Test;
-import org.apache.uima.ruta.RutaTestUtils;
-import org.apache.uima.ruta.RutaTestUtils.TestFeature;
 import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.ruta.engine.RutaTestUtils;
+import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
 import org.junit.Test;
 
 public class ImplicitActionTest {
