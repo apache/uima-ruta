@@ -43,9 +43,9 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
  */
 public class OnlyFirstBlock extends RutaBlock {
 
-  public OnlyFirstBlock(String name, RutaRule rule, List<RutaStatement> elements, RutaBlock parent,
+  public OnlyFirstBlock(RutaBlock parent,
           String defaultNamespace) {
-    super(name, rule, elements, parent, defaultNamespace);
+    super(parent, defaultNamespace);
   }
 
   @Override

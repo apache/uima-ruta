@@ -90,11 +90,7 @@ public class DebugInfoFactory {
     int applied = blockApply.getRuleApply().getApplied();
     RutaElement element = blockApply.getElement();
     String verbalize = "";
-    if(element instanceof RutaBlock) {
-      verbalize = verbalizer.verbalize((RutaBlock) element, false);
-    } else {
-      verbalize = verbalizer.verbalize(element);
-    }
+    verbalize = verbalizer.verbalize(element);
     if (applied > 1) {
       List<ScriptApply> innerApplies = blockApply.getInnerApplies();
       List<List<ScriptApply>> loops = new ArrayList<List<ScriptApply>>();

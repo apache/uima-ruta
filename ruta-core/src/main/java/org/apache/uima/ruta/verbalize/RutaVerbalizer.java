@@ -76,6 +76,8 @@ public class RutaVerbalizer {
       return expressionVerbalizer.verbalize((RutaExpression) element);
     } else if(element instanceof RutaElement){
       return scriptVerbalizer.verbalize((RutaElement) element);
+    } else if(element instanceof RutaBlock){
+      return verbalize((RutaBlock) element, false);
     } else {
       return element.getClass().getSimpleName();
     }

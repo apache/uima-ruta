@@ -37,8 +37,8 @@ public class OnlyFirstBlockExtension implements IRutaBlockExtension {
   public String verbalize(RutaElement element, RutaVerbalizer verbalizer) {
     if (element instanceof OnlyFirstBlock) {
       OnlyFirstBlock b = (OnlyFirstBlock) element;
-      String verbalize = verbalizer.verbalize(b, true);
-      verbalize.replaceFirst("BLOCK", verbalizeName(element));
+      String verbalize = verbalizer.verbalize(b, false);
+      verbalize = verbalize.replaceFirst("BLOCK", verbalizeName(element));
       return verbalize;
     } else {
       return "UnknownAction";
@@ -48,7 +48,7 @@ public class OnlyFirstBlockExtension implements IRutaBlockExtension {
   @Override
   public RutaBlock createBlock(String name, List<RutaExpression> args, RutaBlock env)
           throws RutaParseException {
-    return new OnlyFirstBlock(name, null, null, env, name);
+    return new OnlyFirstBlock(env, name);
   }
 
 

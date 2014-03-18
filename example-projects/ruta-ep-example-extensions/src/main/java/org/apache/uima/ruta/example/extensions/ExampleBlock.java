@@ -44,9 +44,9 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
  */
 public class ExampleBlock extends RutaBlock {
 
-  public ExampleBlock(String name, RutaRule rule, List<RutaStatement> elements, RutaBlock parent,
+  public ExampleBlock(RutaBlock parent,
           String defaultNamespace) {
-    super(name, rule, elements, parent, defaultNamespace);
+    super(parent, defaultNamespace);
   }
 
   @Override

@@ -37,6 +37,10 @@ public abstract class RutaBlock extends RutaStatement {
 
   private RutaModule script;
 
+  public RutaBlock(RutaBlock parent, String defaultNamespace) {
+    this(null, null, null, parent, defaultNamespace);
+  }
+
   public RutaBlock(String name, RutaRule rule, List<RutaStatement> elements, RutaBlock parent,
           String defaultNamespace) {
     super(parent);
@@ -93,5 +97,4 @@ public abstract class RutaBlock extends RutaStatement {
     return name;
   }
 
- 
 }

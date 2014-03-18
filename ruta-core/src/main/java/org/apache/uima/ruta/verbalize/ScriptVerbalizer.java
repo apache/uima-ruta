@@ -74,9 +74,13 @@ public class ScriptVerbalizer {
     StringBuilder result = new StringBuilder();
     RutaRule rule = block.getRule();
     List<RutaStatement> elements = block.getElements();
-    result.append("BLOCK(");
-    result.append(block.getName());
-    result.append(")");
+    String name = block.getName();
+    result.append("BLOCK");
+    if(name != null) {
+      result.append("(");
+      result.append(name);
+      result.append(")");
+    }
     result.append(" ");
     if (rule != null) {
       result.append(verbalizeRule(rule));
