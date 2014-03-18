@@ -56,6 +56,11 @@
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
+      <artifactId>ruta-core-ext</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
       <artifactId>ruta-ep-addons</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -79,11 +84,17 @@
       <artifactId>ruta-ep-textruler</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>ruta-ep-core-ext</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
   
   <modules>
     <module>ruta-parent</module>
     <module>ruta-core</module>
+    <module>ruta-core-ext</module>
 
     <module>ruta-ep-engine</module>
     <module>ruta-ep-ide</module>
@@ -91,6 +102,7 @@
     <module>ruta-ep-caseditor</module>
     <module>ruta-ep-addons</module>
     <module>ruta-ep-textruler</module>
+    <module>ruta-ep-core-ext</module>
 
     <module>ruta-docbook</module>
     <module>ruta-eclipse-feature</module>
