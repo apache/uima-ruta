@@ -566,7 +566,7 @@ Document{->MARKFAST(FistName, FirstNameList)};
         have been merged in the multi tree word list
         <quote>Names.mtwl</quote>, then the following rule annotates all
         first names and last names in the whole document:
-        <programlisting><![CDATA[WORDLIST Names = "Names.mtwl";
+        <programlisting><![CDATA[WORDLIST Names = 'Names.mtwl';
 Declare FirstName, LastName;
 Document{->TRIE("FirstNames.txt" = FistName, "LastNames.txt" = LastName, 
                                           Names, false, 0, false, 0, "")};]]></programlisting>
