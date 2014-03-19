@@ -20,10 +20,7 @@
 package org.apache.uima.ruta.ide.ui.wizards;
 
 import org.eclipse.dltk.ui.wizards.ProjectWizardFirstPage;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 
 final class RutaProjectWizardFirstPage extends ProjectWizardFirstPage {
 

@@ -20,6 +20,7 @@
 package org.apache.uima.ruta.ide.validator;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -67,15 +68,18 @@ public class RutaCheckerProblemFactory implements IRutaCheckerProblemFactory {
 
   public IProblem createFileNotFoundProblem(ASTNode fileNode) {
     return createFileNotFoundProblem(fileNode, fileNode.toString());
-    // generateFileNotFoundProblemMsg(fileNode));
   }
 
   public IProblem createDuplicateShortNameInImported(ASTNode node, String localPath,
           List<String> checkDuplicateShortNames, ProblemSeverity severity) {
     StringBuilder sb = new StringBuilder();
-    for (String string : checkDuplicateShortNames) {
+    Iterator<String> iterator = checkDuplicateShortNames.iterator();
+    while (iterator.hasNext()) {
+      String string = (String) iterator.next();
       sb.append(string);
-      sb.append(", ");
+      if(iterator.hasNext()) {
+        sb.append(", ");
+      }
     }
     String msg = String.format(
             "Types in %s share same short name, but with different namespaces: %s.", localPath,

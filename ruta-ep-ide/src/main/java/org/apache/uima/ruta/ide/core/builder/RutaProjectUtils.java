@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.ruta.engine.RutaEngine;
@@ -44,6 +45,7 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.JavaProject;
 
 public class RutaProjectUtils {
@@ -269,7 +271,88 @@ public class RutaProjectUtils {
     }
     return null;
   }
+  
+  public static Collection<String> getClassPath(IProject project) throws CoreException {
+    Collection<String> result = new TreeSet<String>();
+    extendClasspathWithProject(result, project.getProject(), new HashSet<IProject>());
+    Collection<String> dependencies = getDependencies(project.getProject());
+    result.addAll(dependencies);
+    return result;
+  }
+  
+  private static Collection<String> getDependencies(IProject project) throws CoreException {
+    Collection<String> result = new TreeSet<String>();
+    IProject[] referencedProjects = project.getReferencedProjects();
+    for (IProject eachProject : referencedProjects) {
+      extendClasspathWithProject(result, eachProject, new HashSet<IProject>());
+      IProjectNature nature = eachProject.getNature(RutaNature.NATURE_ID);
+      if (nature != null) {
+        result.addAll(getDependencies(eachProject));
+      }
+    }
+    return result;
+  }
+  
+  private static void extendClasspathWithProject(Collection<String> result, IProject project,
+          Collection<IProject> visited) throws CoreException, JavaModelException {
+    IProjectNature rutaNature = project.getNature(RutaNature.NATURE_ID);
+    if (rutaNature != null) {
+      IScriptProject sp = DLTKCore.create(project);
+      List<IFolder> scriptFolders = RutaProjectUtils.getScriptFolders(sp);
+      for (IFolder each : scriptFolders) {
+        result.add(each.getLocation().toPortableString());
+      }
+      List<IFolder> descriptorFolders = RutaProjectUtils.getDescriptorFolders(project);
+      for (IFolder each : descriptorFolders) {
+        result.add(each.getLocation().toPortableString());
+      }
+      IFolder resourceFolder = project.getFolder(RutaProjectUtils.getDefaultResourcesLocation());
+      if(resourceFolder != null && resourceFolder.exists()) {
+        result.add(resourceFolder.getLocation().toPortableString());
+      }
+    }
+    IProjectNature javaNature = project.getNature(RutaProjectUtils.JAVANATURE);
+    if (javaNature != null) {
+      JavaProject javaProject = (JavaProject) JavaCore.create(project);
 
+      // add output, e.g., target/classes
+      IPath readOutputLocation = javaProject.readOutputLocation();
+      IFolder folder = ResourcesPlugin.getWorkspace().getRoot().getFolder(readOutputLocation);
+      result.add(folder.getLocation().toPortableString());
+
+      IClasspathEntry[] rawClasspath = javaProject.getRawClasspath();
+      for (IClasspathEntry each : rawClasspath) {
+        int entryKind = each.getEntryKind();
+        IPath path = each.getPath();
+        if (entryKind == IClasspathEntry.CPE_PROJECT) {
+          IProject p = RutaProjectUtils.getProject(path);
+          if (!visited.contains(p)) {
+            visited.add(p);
+            extendClasspathWithProject(result, p, visited);
+          }
+        } else if (entryKind != IClasspathEntry.CPE_SOURCE) {
+          String segment = path.segment(0);
+          if (!segment.equals("org.eclipse.jdt.launching.JRE_CONTAINER")) {
+            IClasspathEntry[] resolveClasspath = javaProject
+                    .resolveClasspath(new IClasspathEntry[] { each });
+            for (IClasspathEntry eachResolved : resolveClasspath) {
+              if (eachResolved.getEntryKind() == IClasspathEntry.CPE_PROJECT) {
+                IProject p = RutaProjectUtils.getProject(eachResolved.getPath());
+                if (!visited.contains(p)) {
+                  visited.add(p);
+                  extendClasspathWithProject(result, p, visited);
+                }
+              } else {
+                result.add(eachResolved.getPath().toPortableString());
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  
   public static String getDefaultInputLocation() {
     return "input";
   }

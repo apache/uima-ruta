@@ -27,11 +27,14 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_component.AnalysisComponent;
 import org.apache.uima.resource.ResourceManager;
@@ -84,8 +87,11 @@ import org.eclipse.jdt.internal.core.JavaProject;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.type.filter.AssignableTypeFilter;
+import org.springframework.util.PathMatcher;
 
 public class RutaCompletionEngine extends ScriptCompletionEngine {
 
@@ -141,17 +147,14 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
     if (classloader == null) {
       IScriptProject scriptProject = sourceModule.getModelElement().getScriptProject();
       try {
-        // TODO UIMA-3077
-        Collection<String> dependencies = getDependencies(scriptProject.getProject());
+        Collection<String> dependencies = RutaProjectUtils.getClassPath(scriptProject.getProject());
         URL[] urls = new URL[dependencies.size()];
         int counter = 0;
         for (String dep : dependencies) {
-          urls[counter] = new File(dep).toURL();
+          urls[counter] = new File(dep).toURI().toURL();
           counter++;
         }
         classloader = new URLClassLoader(urls);
-        // } catch (CoreException e) {
-        // RutaIdeCorePlugin.error(e);
       } catch (MalformedURLException e) {
         RutaIdeCorePlugin.error(e);
       } catch (CoreException e) {
@@ -165,7 +168,17 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
         RutaReferenceVisitor referenceVisitor = new RutaReferenceVisitor(actualCompletionPosition);
         parsed.traverse(referenceVisitor);
         node = referenceVisitor.getResult();
-
+        if(node == null) {
+          referenceVisitor = new RutaReferenceVisitor(actualCompletionPosition-1);
+          parsed.traverse(referenceVisitor);
+          node = referenceVisitor.getResult();
+        }
+        if(node == null) {
+          referenceVisitor = new RutaReferenceVisitor(actualCompletionPosition-2);
+          parsed.traverse(referenceVisitor);
+          node = referenceVisitor.getResult();
+        }
+        
         if (node == null) {
           doCompletionOnEmptyStatement(module, position, i);
           doCompletionOnDeclaration(module, startPart);
@@ -240,16 +253,28 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
   private void doCompletionOnComponentDeclaration(IModuleSource cu, RutaModuleDeclaration parsed,
           String startPart, int type, String complString) throws Exception {
     if (type == ComponentDeclaration.SCRIPT) {
+      List<String> scripts = new ArrayList<String>();
+
       List<IFolder> scriptFolders = RutaProjectUtils.getAllScriptFolders(sourceModule
               .getModelElement().getScriptProject());
-
-      List<String> scripts = new ArrayList<String>();
       for (IFolder folder : scriptFolders) {
         try {
           scripts.addAll(collectScripts(folder, ""));
         } catch (CoreException e) {
         }
       }
+      Resource[] resources = getFilesInClasspath(complString, "ruta");
+      for (Resource resource : resources) {
+        try {
+          String string = getScriptRepresentation(resource, "ruta");
+          if (string != null && !scripts.contains(string)) {
+            scripts.add(string);
+          }
+        } catch (Exception e) {
+          // do not report the exceptions
+        }
+      }
+
       for (String string : scripts) {
         if (match(complString, string)) {
           addProposal(complString, string, CompletionProposal.PACKAGE_REF);
@@ -257,15 +282,15 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
       }
     } else if (type == ComponentDeclaration.UIMAFIT_ENGINE) {
       List<String> engines = new ArrayList<String>();
-      
-      ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(true);
-      ResourceLoader resourceLoader =  new DefaultResourceLoader(classloader);
+      ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(
+              true);
+      ResourceLoader resourceLoader = new DefaultResourceLoader(classloader);
       provider.setResourceLoader(resourceLoader);
       provider.addIncludeFilter(new AssignableTypeFilter(AnalysisComponent.class));
 
       String pack = complString.replaceAll("[.]", "/");
-      if(pack.endsWith("/")) {
-        pack = pack.substring(0, pack.length()-1);
+      if (pack.endsWith("/")) {
+        pack = pack.substring(0, pack.length() - 1);
       }
       Set<BeanDefinition> components = provider.findCandidateComponents(pack);
       for (BeanDefinition component : components) {
@@ -278,13 +303,28 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
         }
       }
     } else if (type == ComponentDeclaration.ENGINE) {
-      List<IFolder> descriptorFolders = RutaProjectUtils.getAllDescriptorFolders(sourceModule
-              .getModelElement().getScriptProject().getProject());
       List<String> engines = new ArrayList<String>();
-      for (IFolder folder : descriptorFolders) {
+      Resource[] resources = getFilesInClasspath(complString, "xml");
+      for (Resource resource : resources) {
         try {
-          engines.addAll(collectEngines(folder, ""));
-        } catch (CoreException e) {
+          UIMAFramework.getXMLParser().parseAnalysisEngineDescription(
+                  new XMLInputSource(resource.getURL()));
+          String string = getScriptRepresentation(resource, "xml");
+          if (string != null) {
+            engines.add(string);
+          }
+        } catch (Exception e) {
+          // do not report the exceptions
+        }
+      }
+      if (StringUtils.isAllUpperCase(complString)) {
+        List<IFolder> descriptorFolders = RutaProjectUtils.getAllDescriptorFolders(sourceModule
+                .getModelElement().getScriptProject().getProject());
+        for (IFolder folder : descriptorFolders) {
+          try {
+            engines.addAll(collectEngines(folder, ""));
+          } catch (CoreException e) {
+          }
         }
       }
       for (String string : engines) {
@@ -293,13 +333,29 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
         }
       }
     } else {
-      List<IFolder> descriptorFolders = RutaProjectUtils.getAllDescriptorFolders(sourceModule
-              .getModelElement().getScriptProject().getProject());
       List<String> tss = new ArrayList<String>();
-      for (IFolder folder : descriptorFolders) {
+      Resource[] resources = getFilesInClasspath(complString, "xml");
+      for (Resource resource : resources) {
         try {
-          tss.addAll(collectTypeSystems(folder, ""));
-        } catch (CoreException e) {
+          UIMAFramework.getXMLParser().parseTypeSystemDescription(
+                  new XMLInputSource(resource.getURL()));
+          String string = getScriptRepresentation(resource, "xml");
+          if (string != null) {
+            tss.add(string);
+          }
+        } catch (Exception e) {
+          // do not report the exceptions
+        }
+      }
+      if (StringUtils.isAllUpperCase(complString)) {
+        // fallback for camel case
+        List<IFolder> descriptorFolders = RutaProjectUtils.getAllDescriptorFolders(sourceModule
+                .getModelElement().getScriptProject().getProject());
+        for (IFolder folder : descriptorFolders) {
+          try {
+            tss.addAll(collectTypeSystems(folder, ""));
+          } catch (CoreException e) {
+          }
         }
       }
       for (String string : tss) {
@@ -308,6 +364,39 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
         }
       }
     }
+  }
+
+  private Resource[] getFilesInClasspath(String prefix, String extension) throws IOException {
+    String pack = prefix.replaceAll("[.]", "/");
+    if (pack.endsWith("/")) {
+      pack = pack.substring(0, pack.length() - 1);
+    }
+    PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(
+            classloader);
+    String p = "classpath*:";
+    String suffix = "/**/*." + extension;
+    String pattern = p + pack + suffix;
+    Resource[] resources = resolver.getResources(pattern);
+    return resources;
+  }
+
+  private String getScriptRepresentation(Resource resource, String suffix) throws IOException {
+    URL url = resource.getURL();
+    URL[] urLs = classloader.getURLs();
+    String externalForm = url.toExternalForm();
+    for (URL each : urLs) {
+      String eachExternalForm = each.toExternalForm();
+      if (externalForm.startsWith("jar:")) {
+        eachExternalForm = "jar:" + eachExternalForm + "!/";
+      }
+      if (externalForm.startsWith(eachExternalForm)) {
+        String name = externalForm.substring(eachExternalForm.length(), externalForm.length()
+                - (suffix.length() + 1));
+        name = name.replaceAll("[/]", ".");
+        return name;
+      }
+    }
+    return null;
   }
 
   private List<String> collectEngines(IFolder folder, String prefix) throws CoreException {
@@ -667,68 +756,4 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
     findKeywords(startPart.toCharArray(), keywords.toArray(new String[0]), true);
   }
 
-  public static List<String> getClassPath(IScriptProject project) throws CoreException {
-    List<String> extendedClasspath = new ArrayList<String>();
-    Collection<String> dependencies = getDependencies(project.getProject());
-    extendedClasspath.addAll(dependencies);
-    return extendedClasspath;
-  }
-
-  private static Collection<String> getDependencies(IProject project) throws CoreException {
-    Collection<String> result = new TreeSet<String>();
-    IProject[] referencedProjects = project.getReferencedProjects();
-    for (IProject eachProject : referencedProjects) {
-      // for each java project
-      extendClasspathWithProject(result, eachProject, new HashSet<IProject>());
-      IProjectNature nature = eachProject.getNature(RutaNature.NATURE_ID);
-      if (nature != null) {
-        result.addAll(getDependencies(eachProject));
-      }
-    }
-    return result;
-  }
-
-  private static void extendClasspathWithProject(Collection<String> result, IProject project,
-          Collection<IProject> visited) throws CoreException, JavaModelException {
-    IProjectNature nature = project.getNature(RutaProjectUtils.JAVANATURE);
-    if (nature != null) {
-      JavaProject javaProject = (JavaProject) JavaCore.create(project);
-
-      // add output, e.g., target/classes
-      IPath readOutputLocation = javaProject.readOutputLocation();
-      IFolder folder = ResourcesPlugin.getWorkspace().getRoot().getFolder(readOutputLocation);
-      result.add(folder.getLocation().toPortableString());
-
-      IClasspathEntry[] rawClasspath = javaProject.getRawClasspath();
-      for (IClasspathEntry each : rawClasspath) {
-        int entryKind = each.getEntryKind();
-        IPath path = each.getPath();
-        if (entryKind == IClasspathEntry.CPE_PROJECT) {
-          IProject p = RutaProjectUtils.getProject(path);
-          if (!visited.contains(p)) {
-            visited.add(p);
-            extendClasspathWithProject(result, p, visited);
-          }
-        } else if (entryKind != IClasspathEntry.CPE_SOURCE) {
-          String segment = path.segment(0);
-          if (!segment.equals("org.eclipse.jdt.launching.JRE_CONTAINER")) {
-            IClasspathEntry[] resolveClasspath = javaProject
-                    .resolveClasspath(new IClasspathEntry[] { each });
-            for (IClasspathEntry eachResolved : resolveClasspath) {
-              if (eachResolved.getEntryKind() == IClasspathEntry.CPE_PROJECT) {
-                IProject p = RutaProjectUtils.getProject(eachResolved.getPath());
-                if (!visited.contains(p)) {
-                  visited.add(p);
-                  extendClasspathWithProject(result, p, visited);
-                }
-              } else {
-                result.add(eachResolved.getPath().toPortableString());
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  
 }

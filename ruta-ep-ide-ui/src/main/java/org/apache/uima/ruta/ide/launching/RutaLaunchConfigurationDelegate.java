@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -37,12 +36,8 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.ide.RutaIdeCorePlugin;
 import org.apache.uima.ruta.ide.RutaIdeUIPlugin;
 import org.apache.uima.ruta.ide.core.RutaCorePreferences;
-import org.apache.uima.ruta.ide.core.RutaNature;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.eclipse.core.internal.resources.Folder;
-import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -57,13 +52,8 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate;
-import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.internal.core.JavaProject;
 import org.eclipse.jdt.launching.JavaLaunchDelegate;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.osgi.framework.Bundle;
@@ -210,10 +200,9 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
               "Failed to compose classpath!", e));
     }
     
-    extendClasspathWithProject(extendedClasspath, project.getProject(), new HashSet<IProject>());
-
-    Collection<String> dependencies = getDependencies(project.getProject());
-    extendedClasspath.addAll(dependencies);
+    
+    Collection<String> classPath = RutaProjectUtils.getClassPath(project.getProject());
+    extendedClasspath.addAll(classPath);
 
     Collection<String> extensions = getExtensions();
     extendedClasspath.addAll(extensions);
@@ -267,78 +256,6 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     }
   }
 
-  private static Collection<String> getDependencies(IProject project) throws CoreException {
-    Collection<String> result = new TreeSet<String>();
-    IProject[] referencedProjects = project.getReferencedProjects();
-    for (IProject eachProject : referencedProjects) {
-      // for each java project
-      extendClasspathWithProject(result, eachProject, new HashSet<IProject>());
-      IProjectNature nature = eachProject.getNature(RutaNature.NATURE_ID);
-      if (nature != null) {
-        result.addAll(getDependencies(eachProject));
-      }
-    }
-    return result;
-  }
-
-  private static void extendClasspathWithProject(Collection<String> result, IProject project,
-          Collection<IProject> visited) throws CoreException, JavaModelException {
-    IProjectNature rutaNature = project.getNature(RutaNature.NATURE_ID);
-    if (rutaNature != null) {
-      IScriptProject sp = DLTKCore.create(project);
-      List<IFolder> scriptFolders = RutaProjectUtils.getScriptFolders(sp);
-      for (IFolder each : scriptFolders) {
-        result.add(each.getLocation().toPortableString());
-      }
-      List<IFolder> descriptorFolders = RutaProjectUtils.getDescriptorFolders(project);
-      for (IFolder each : descriptorFolders) {
-        result.add(each.getLocation().toPortableString());
-      }
-      IFolder resourceFolder = project.getFolder(RutaProjectUtils.getDefaultResourcesLocation());
-      if(resourceFolder != null && resourceFolder.exists()) {
-        result.add(resourceFolder.getLocation().toPortableString());
-      }
-    }
-    IProjectNature javaNature = project.getNature(RutaProjectUtils.JAVANATURE);
-    if (javaNature != null) {
-      JavaProject javaProject = (JavaProject) JavaCore.create(project);
-
-      // add output, e.g., target/classes
-      IPath readOutputLocation = javaProject.readOutputLocation();
-      IFolder folder = ResourcesPlugin.getWorkspace().getRoot().getFolder(readOutputLocation);
-      result.add(folder.getLocation().toPortableString());
-
-      IClasspathEntry[] rawClasspath = javaProject.getRawClasspath();
-      for (IClasspathEntry each : rawClasspath) {
-        int entryKind = each.getEntryKind();
-        IPath path = each.getPath();
-        if (entryKind == IClasspathEntry.CPE_PROJECT) {
-          IProject p = RutaProjectUtils.getProject(path);
-          if (!visited.contains(p)) {
-            visited.add(p);
-            extendClasspathWithProject(result, p, visited);
-          }
-        } else if (entryKind != IClasspathEntry.CPE_SOURCE) {
-          String segment = path.segment(0);
-          if (!segment.equals("org.eclipse.jdt.launching.JRE_CONTAINER")) {
-            IClasspathEntry[] resolveClasspath = javaProject
-                    .resolveClasspath(new IClasspathEntry[] { each });
-            for (IClasspathEntry eachResolved : resolveClasspath) {
-              if (eachResolved.getEntryKind() == IClasspathEntry.CPE_PROJECT) {
-                IProject p = RutaProjectUtils.getProject(eachResolved.getPath());
-                if (!visited.contains(p)) {
-                  visited.add(p);
-                  extendClasspathWithProject(result, p, visited);
-                }
-              } else {
-                result.add(eachResolved.getPath().toPortableString());
-              }
-            }
-          }
-        }
-      }
-    }
-  }
 
   @Override
   public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch,

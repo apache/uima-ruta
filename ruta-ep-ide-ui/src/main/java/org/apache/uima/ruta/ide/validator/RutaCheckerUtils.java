@@ -46,6 +46,8 @@ import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 public class RutaCheckerUtils {
 
@@ -66,7 +68,8 @@ public class RutaCheckerUtils {
    * @throws ModelException
    */
   public static Set<String> importScript(String path, int type, IScriptProject project,
-          boolean appendPath) throws InvalidXMLException, IOException, ModelException, CoreException {
+          boolean appendPath) throws InvalidXMLException, IOException, ModelException,
+          CoreException {
     Stack<String> namespaceStack = new Stack<String>();
 
     final Set<String> imports = new HashSet<String>();
@@ -177,8 +180,8 @@ public class RutaCheckerUtils {
     }
     for (IFolder folder : allDescriptorFolders) {
       String fileExtended = xmlFilePath.replaceAll("[.]", "/") + ".xml";
-      IFile iFile = RutaCheckerUtils.getFile(folder, fileExtended);
-      result |= iFile.exists();
+      IFile file = RutaCheckerUtils.getFile(folder, fileExtended);
+      result |= file.exists();
     }
     return result;
   }
@@ -209,9 +212,9 @@ public class RutaCheckerUtils {
     }
     for (IFolder folder : allDescriptorFolders) {
       String fileExtended = xmlFilePath.replaceAll("[.]", "/") + RutaEngine.SCRIPT_FILE_EXTENSION;
-      IFile iFile = RutaCheckerUtils.getFile(folder, fileExtended);
-      if(iFile.exists()) {
-        return iFile;
+      IFile file = RutaCheckerUtils.getFile(folder, fileExtended);
+      if (file.exists()) {
+        return file;
       }
     }
     return null;
@@ -277,11 +280,32 @@ public class RutaCheckerUtils {
     }
     for (IFolder folder : allDescriptorFolders) {
       String fileExtended = localPath.replaceAll("[.]", "/") + ".xml";
-      IFile iFile = RutaCheckerUtils.getFile(folder, fileExtended);
-      if(iFile.exists()) {
-        return iFile;
+      IFile file = RutaCheckerUtils.getFile(folder, fileExtended);
+      if (file.exists()) {
+        return file;
       }
     }
     return null;
   }
+
+  public static URL checkImportExistence(String candidate, String extension,
+          ClassLoader classloader) throws IOException {
+    String p = candidate.replaceAll("[.]", "/");
+    p += "." + extension;
+    PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(
+            classloader);
+    String prefix = "classpath*:";
+    String pattern = prefix + p;
+    Resource[] resources = resolver.getResources(pattern);
+    if(resources == null || resources.length == 0) {
+      return null;
+    } else {
+      Resource resource = resources[0];
+      URL url = resource.getURL();
+      return url;
+    }
+  }
+
+  
+
 }

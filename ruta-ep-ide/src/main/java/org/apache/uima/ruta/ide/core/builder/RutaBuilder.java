@@ -19,7 +19,12 @@
 
 package org.apache.uima.ruta.ide.core.builder;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.ruta.engine.RutaEngine;
@@ -42,8 +47,10 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.core.DLTKCore;
@@ -119,7 +126,7 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
   }
 
   private IPath[] generateResources(ModuleDeclaration moduleDeclaration, IPath outputPath,
-          IContainer container, ISourceModule sourceModule) {
+          IContainer container, ISourceModule sourceModule) throws CoreException {
     List<IPath> result = new ArrayList<IPath>();
     if (moduleDeclaration instanceof RutaModuleDeclaration) {
       RutaModuleDeclaration tmmd = (RutaModuleDeclaration) moduleDeclaration;
@@ -167,7 +174,21 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
       if (mainScript.endsWith(RutaEngine.SCRIPT_FILE_EXTENSION)) {
         mainScript = mainScript.substring(0, mainScript.length() - 5);
       }
-      build(basicTS, basicE, typeSystem, engine, sm, mainScript, scriptPaths, descriptorPaths);
+      Collection<String> dependencies = RutaProjectUtils.getClassPath(proj
+              .getProject());
+      URL[] urls = new URL[dependencies.size()];
+      int counter = 0;
+      for (String dep : dependencies) {
+        try {
+          urls[counter] = new File(dep).toURI().toURL();
+        } catch (MalformedURLException e) {
+          throw new CoreException(new Status(IStatus.ERROR,
+                  RutaIdeCorePlugin.PLUGIN_ID, e.getMessage()));
+        }
+        counter++;
+      }
+      ClassLoader classloader = new URLClassLoader(urls);
+      build(basicTS, basicE, typeSystem, engine, sm, mainScript, scriptPaths, descriptorPaths, classloader);
 
       IPath tsPath = Path.fromPortableString(typeSystem);
       IPath ePath = Path.fromPortableString(engine);
@@ -179,7 +200,7 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
 
   private void build(String basicTypesystem, String basicEngine, String typeSystemDest,
           String engineDest, DescriptorManager sm, String mainScript, String[] scriptPaths,
-          String[] enginePaths) {
+          String[] enginePaths, ClassLoader classloader) {
     RutaSimpleBuilder builder = null;
     try {
       builder = new RutaSimpleBuilder(basicTypesystem, basicEngine);
@@ -239,7 +260,7 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
       IPreferenceStore store = RutaIdeCorePlugin.getDefault().getPreferenceStore();
       option.setImportByName(store.getBoolean(RutaCorePreferences.BUILDER_IMPORT_BY_NAME));
       option.setResolveImports(store.getBoolean(RutaCorePreferences.BUILDER_RESOLVE_IMPORTS));
-      builder.build(sm, typeSystemDest, engineDest, option, mainScript, scriptPaths, enginePaths);
+      builder.build(sm, typeSystemDest, engineDest, option, mainScript, scriptPaths, enginePaths, classloader);
     } catch (Exception e) {
       DLTKCore.error(e.getMessage(), e);
       if (DLTKCore.DEBUG_PARSER) {

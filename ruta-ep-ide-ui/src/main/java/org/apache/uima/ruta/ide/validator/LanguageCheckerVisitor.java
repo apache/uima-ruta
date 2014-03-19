@@ -19,9 +19,9 @@
 
 package org.apache.uima.ruta.ide.validator;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -38,6 +38,7 @@ import org.antlr.runtime.Token;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.resource.ResourceManager;
+import org.apache.uima.resource.impl.ResourceManager_impl;
 import org.apache.uima.resource.metadata.FeatureDescription;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
@@ -182,13 +183,15 @@ public class LanguageCheckerVisitor extends ASTVisitor {
 
   private String parentTypeInDeclaration;
 
+  private ClassLoader classLoader;
+
   public LanguageCheckerVisitor(IProblemReporter problemReporter, ISourceLineTracker linetracker,
-          ISourceModule sourceModule) {
+          ISourceModule sourceModule, ClassLoader classLoader) {
     super();
     this.pr = problemReporter;
     this.linetracker = linetracker;
     this.sourceModule = sourceModule;
-
+    this.classLoader = classLoader;
     this.problemFactory = new RutaCheckerProblemFactory(sourceModule.getElementName(), linetracker);
 
     namespaces = new TreeMap<String, String>();
@@ -241,14 +244,19 @@ public class LanguageCheckerVisitor extends ASTVisitor {
 
         // HOTFIX Peter add also the imported types of the imported type system!
         try {
-          IFile iFile = RutaCheckerUtils.checkScriptImport(localPath,
+          URL url = null;
+          IFile file = RutaCheckerUtils.checkScriptImport(localPath,
                   sourceModule.getScriptProject());
-          if (iFile == null) {
+          if (file == null) {
+            url = RutaCheckerUtils.checkImportExistence(localPath + "TypeSystem", "xml",
+                    classLoader);
+          }
+          if (file == null && url == null) {
             pr.reportProblem(problemFactory.createFileNotFoundProblem(sRef, localPath));
           } else {
             IPath typeSystemDescriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(
-                    iFile.getLocation(), sourceModule.getScriptProject().getProject());
-            TypeSystemDescription tsDesc = importCompleteTypeSystem(typeSystemDescriptorPath);
+                    file.getLocation(), sourceModule.getScriptProject().getProject());
+            TypeSystemDescription tsDesc = importCompleteTypeSystem(typeSystemDescriptorPath, url);
 
             List<String> checkDuplicateShortNames = checkOnAmbiguousShortNames(tsDesc);
             if (!checkDuplicateShortNames.isEmpty()) {
@@ -385,14 +393,17 @@ public class LanguageCheckerVisitor extends ASTVisitor {
   private void processCompleteTypeSystemImport(SimpleReference sRef, String localPath,
           Token typeToken, Token pkgToken, Token aliasToken) throws CoreException {
     try {
-      IFile ifile = RutaCheckerUtils.checkTypeSystemImport(localPath,
+      URL url = null;
+      IFile file = RutaCheckerUtils.checkTypeSystemImport(localPath,
               sourceModule.getScriptProject());
-      if (ifile == null) {
+      if (file == null) {
+        url = RutaCheckerUtils.checkImportExistence(localPath, "xml", classLoader);
+      }
+      if (file == null && url == null) {
         pr.reportProblem(problemFactory.createFileNotFoundProblem(sRef, localPath));
       } else {
-        IPath location = ifile.getLocation();
-        TypeSystemDescription tsDesc = importTypeSystem(location, typeToken, pkgToken, aliasToken);
-
+        IPath path = file == null ? null : file.getLocation();
+        TypeSystemDescription tsDesc = importTypeSystem(path, url, typeToken, pkgToken, aliasToken);
         if (reportWarningOnShortNames) {
           List<String> checkDuplicateShortNames = checkOnAmbiguousShortNames(tsDesc);
           if (!checkDuplicateShortNames.isEmpty()) {
@@ -421,13 +432,18 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     return checkDuplicateShortNames;
   }
 
-  private TypeSystemDescription importTypeSystem(IPath path, Token typeToken, Token pkgToken,
-          Token aliasToken) throws InvalidXMLException, IOException, MalformedURLException,
-          CoreException {
-    File file = path.toFile();
-    TypeSystemDescription tsDesc = UIMAFramework.getXMLParser().parseTypeSystemDescription(
-            new XMLInputSource(file));
-    ResourceManager resMgr = getResourceManager();
+  private TypeSystemDescription importTypeSystem(IPath path, URL url, Token typeToken,
+          Token pkgToken, Token aliasToken) throws InvalidXMLException, IOException,
+          MalformedURLException, CoreException {
+    TypeSystemDescription tsDesc = null;
+    if (path != null) {
+      tsDesc = UIMAFramework.getXMLParser().parseTypeSystemDescription(
+              new XMLInputSource(path.toFile()));
+    } else {
+      tsDesc = UIMAFramework.getXMLParser().parseTypeSystemDescription(new XMLInputSource(url));
+    }
+
+    ResourceManager resMgr = getResourceManager(classLoader);
     tsDesc.resolveImports(resMgr);
     for (TypeDescription each : tsDesc.getTypes()) {
       String longName = each.getName();
@@ -457,9 +473,9 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     return tsDesc;
   }
 
-  private ResourceManager getResourceManager() throws MalformedURLException, CoreException {
+  private ResourceManager getResourceManager(ClassLoader classloader) throws MalformedURLException, CoreException {
     if (resourceManager == null) {
-      resourceManager = UIMAFramework.newDefaultResourceManager();
+      resourceManager = new ResourceManager_impl(classloader);
       List<IFolder> folders = RutaProjectUtils.getAllDescriptorFolders(sourceModule
               .getScriptProject().getProject());
       StringBuilder sb = new StringBuilder();
@@ -917,7 +933,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       IPath descriptorRootPath = RutaProjectUtils.getDescriptorRootPath(sourceModule
               .getScriptProject().getProject());
       IPath basicTSD = descriptorRootPath.append("BasicTypeSystem.xml");
-      importCompleteTypeSystem(basicTSD);
+      importCompleteTypeSystem(basicTSD, null);
     } catch (Exception e) {
       RutaIdeUIPlugin.error(e);
     }
@@ -965,9 +981,9 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     }
   }
 
-  private TypeSystemDescription importCompleteTypeSystem(IPath path) throws InvalidXMLException,
-          MalformedURLException, IOException, CoreException {
-    return importTypeSystem(path, null, null, null);
+  private TypeSystemDescription importCompleteTypeSystem(IPath path, URL url)
+          throws InvalidXMLException, MalformedURLException, IOException, CoreException {
+    return importTypeSystem(path, url, null, null, null);
   }
 
   private void initializeExtensionInformation() {
@@ -1189,7 +1205,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     if (descriptorPath.toFile().exists()) {
       typeSysDescr = UIMAFramework.getXMLParser().parseTypeSystemDescription(
               new XMLInputSource(descriptorPath.toPortableString()));
-      ResourceManager resMgr = getResourceManager();
+      ResourceManager resMgr = getResourceManager(classLoader);
       typeSysDescr.resolveImports(resMgr);
     }
     return typeSysDescr;

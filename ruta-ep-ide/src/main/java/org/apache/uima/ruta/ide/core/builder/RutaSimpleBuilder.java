@@ -25,6 +25,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -60,6 +61,8 @@ import org.apache.uima.util.XMLSerializer;
 import org.apache.uima.util.XMLizable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
@@ -90,11 +93,11 @@ public class RutaSimpleBuilder {
   }
 
   public void build(DescriptorManager desc, String typeSystemOutput, String engineOutput,
-          RutaBuildOptions option, String mainScript, String[] scriptPaths, String[] enginePaths)
-          throws SAXException, RutaBuildException, InvalidXMLException, IOException,
-          ResourceInitializationException {
+          RutaBuildOptions option, String mainScript, String[] scriptPaths, String[] enginePaths,
+          ClassLoader classloader) throws SAXException, RutaBuildException, InvalidXMLException,
+          IOException, ResourceInitializationException {
 
-    rm = new ResourceManager_impl();
+    rm = new ResourceManager_impl(classloader);
     String dataPath = "";
     for (String string : enginePaths) {
       dataPath += string + File.pathSeparator;
@@ -113,6 +116,7 @@ public class RutaSimpleBuilder {
     CAS cas = CasCreationUtils.createCas(initialTypeSystem, null, new FsIndexDescription[0]);
     fillTypeNameMap(typeNameMap, cas.getTypeSystem());
     cas.release();
+    List<TypeSystemDescription> toInclude = new ArrayList<TypeSystemDescription>();
     List<Import> importList = new ArrayList<Import>();
     Import_impl import_impl = new Import_impl();
     if (option.isImportByName()) {
@@ -129,34 +133,51 @@ public class RutaSimpleBuilder {
     importList.add(import_impl);
     for (String eachName : desc.getImportedTypeSystems()) {
       String locate = RutaEngine.locate(eachName, enginePaths, ".xml");
-      if (locate == null) {
-        throw new FileNotFoundException("Build process can't find " + eachName + " in "
-                + mainScript);
+      URL url = null;
+      boolean include = false;
+      if (locate != null) {
+        File file = new File(locate);
+        url = file.toURI().toURL();
       }
-      File file = new File(locate);
-      TypeSystemDescription each = getTypeSystemDescriptor(file, option);
+      if (url == null) {
+        url = checkImportExistence(eachName, "xml", classloader);
+        include = true;
+        if (url == null) {
+          throw new FileNotFoundException("Build process can't find " + eachName + " in "
+                  + mainScript);
+        }
+      }
+      TypeSystemDescription each = getTypeSystemDescriptor(url, option);
       if (each != null) {
         fillTypeNameMap(typeNameMap, each);
-        import_impl = new Import_impl();
-        if (option.isImportByName()) {
-          import_impl.setName(eachName);
-        } else if (option.isResolveImports()) {
-          String absoluteLocation = each.getSourceUrlString();
-          import_impl.setLocation(absoluteLocation);
+        if (include) {
+          // need to include the complete type system because an import is not possible
+          each.resolveImports(rm);
+          toInclude.add(each);
         } else {
-          String relativeLocation = getRelativeLocation(file.getAbsolutePath(), typeSystemOutput);
-          import_impl.setLocation(relativeLocation);
+          import_impl = new Import_impl();
+          if (option.isImportByName()) {
+            import_impl.setName(eachName);
+          } else if (option.isResolveImports()) {
+            String absoluteLocation = each.getSourceUrlString();
+            import_impl.setLocation(absoluteLocation);
+          } else {
+            String relativeLocation = getRelativeLocation(url.getPath(), typeSystemOutput);
+            import_impl.setLocation(relativeLocation);
+          }
+          importList.add(import_impl);
         }
-        importList.add(import_impl);
       } else {
         throw new FileNotFoundException("Build process can't find " + eachName + " in "
                 + mainScript);
       }
     }
     for (String eachName : desc.getImportedScripts()) {
+      // TODO
       String locate = RutaEngine.locate(eachName, enginePaths, "TypeSystem.xml");
       File file = new File(locate);
-      TypeSystemDescription each = getTypeSystemDescriptor(file, option);
+      URL url = file.toURI().toURL();
+      TypeSystemDescription each = getTypeSystemDescriptor(url, option);
       if (each != null) {
         fillTypeNameMap(typeNameMap, each);
         import_impl = new Import_impl();
@@ -175,7 +196,7 @@ public class RutaSimpleBuilder {
                 + mainScript);
       }
     }
-
+    typeSystemDescription = CasCreationUtils.mergeTypeSystems(toInclude, rm);
     Import[] newImports = importList.toArray(new Import[0]);
     typeSystemDescription.setImports(newImports);
     if (option.isResolveImports()) {
@@ -185,7 +206,8 @@ public class RutaSimpleBuilder {
         throw new RutaBuildException("Failed to resolve imported Type Systems", e);
       }
     }
-
+   
+    
     // TODO hotfixes: where do I get the final types??
     Set<String> finalTypes = new HashSet<String>();
     finalTypes.addAll(Arrays.asList(new String[] { "uima.cas.Boolean", "uima.cas.Byte",
@@ -230,8 +252,11 @@ public class RutaSimpleBuilder {
       }
     }
 
-    typeSystemDescription.setTypes(types.toArray(new TypeDescription[0]));
     File typeSystemFile = getFile(typeSystemOutput);
+    TypeDescription[] presentTypes = typeSystemDescription.getTypes();
+    
+    types.addAll(Arrays.asList(presentTypes));
+    typeSystemDescription.setTypes(types.toArray(new TypeDescription[0]));
     typeSystemDescription.setName(mainScript + "TypeSystem");
     typeSystemDescription.setSourceUrl(typeSystemFile.toURI().toURL());
     TypeSystemDescription aets = uimaFactory.createTypeSystemDescription();
@@ -243,6 +268,7 @@ public class RutaSimpleBuilder {
       import_impl.setLocation(relativeLocation);
     }
 
+    
     File engineFile = configureEngine(desc, engineOutput, option, mainScript, scriptPaths,
             enginePaths, capability, import_impl, aets);
 
@@ -365,8 +391,11 @@ public class RutaSimpleBuilder {
               RutaProjectUtils.getDefaultResourcesLocation());
       resourceLocations.add(defaultResourceDir.getAbsolutePath());
     }
-    analysisEngineDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
-            .setParameterValue(RutaEngine.PARAM_RESOURCE_PATHS, resourceLocations.toArray(new String[0]));
+    analysisEngineDescription
+            .getAnalysisEngineMetaData()
+            .getConfigurationParameterSettings()
+            .setParameterValue(RutaEngine.PARAM_RESOURCE_PATHS,
+                    resourceLocations.toArray(new String[0]));
 
     String[] additionalScriptsArray = desc.getImportedScripts().toArray(new String[] {});
     analysisEngineDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
@@ -381,7 +410,8 @@ public class RutaSimpleBuilder {
     analysisEngineDescription
             .getAnalysisEngineMetaData()
             .getConfigurationParameterSettings()
-            .setParameterValue(RutaEngine.PARAM_ADDITIONAL_UIMAFIT_ENGINES, additionalUimafitEnginesArray);
+            .setParameterValue(RutaEngine.PARAM_ADDITIONAL_UIMAFIT_ENGINES,
+                    additionalUimafitEnginesArray);
 
     analysisEngineDescription.getAnalysisEngineMetaData().setTypeSystem(typeSystemDescription);
 
@@ -406,14 +436,14 @@ public class RutaSimpleBuilder {
 
     configurationParameterSettings.setParameterValue(RutaEngine.PARAM_ADDITIONAL_EXTENSIONS,
             languageExtensions.toArray(new String[0]));
-    configurationParameterSettings.setParameterValue(RutaEngine.PARAM_ADDITIONAL_ENGINE_LOADERS, options
-            .getEngines().toArray(new String[0]));
+    configurationParameterSettings.setParameterValue(RutaEngine.PARAM_ADDITIONAL_ENGINE_LOADERS,
+            options.getEngines().toArray(new String[0]));
   }
 
-  private TypeSystemDescription getTypeSystemDescriptor(File file, RutaBuildOptions option)
+  private TypeSystemDescription getTypeSystemDescriptor(URL url, RutaBuildOptions option)
           throws InvalidXMLException, IOException {
     TypeSystemDescription tsdesc = UIMAFramework.getXMLParser().parseTypeSystemDescription(
-            new XMLInputSource(file));
+            new XMLInputSource(url));
     if (option.isResolveImports()) {
       tsdesc.resolveImports(rm);
     }
@@ -432,6 +462,24 @@ public class RutaSimpleBuilder {
     ch.startDocument();
     desc.toXML(ch);
     ch.endDocument();
+  }
+
+  public static URL checkImportExistence(String candidate, String extension, ClassLoader classloader)
+          throws IOException {
+    String p = candidate.replaceAll("[.]", "/");
+    p += "." + extension;
+    PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(
+            classloader);
+    String prefix = "classpath*:";
+    String pattern = prefix + p;
+    Resource[] resources = resolver.getResources(pattern);
+    if (resources == null || resources.length == 0) {
+      return null;
+    } else {
+      Resource resource = resources[0];
+      URL url = resource.getURL();
+      return url;
+    }
   }
 
 }
