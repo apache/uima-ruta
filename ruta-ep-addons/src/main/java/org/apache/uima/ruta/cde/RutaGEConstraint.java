@@ -231,7 +231,7 @@ public class RutaGEConstraint implements IRutaConstraint {
           String[] typeAndRatio = singleEstimate.split("\\s+");
           String typeName = typeAndRatio[0];
           String ratio = typeAndRatio[1];
-          ratio.trim();
+          ratio = ratio.trim();
           String rule = "";
 
           if (pattern.startsWith("\"")) {

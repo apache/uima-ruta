@@ -82,7 +82,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   public static final String BASIC_TYPE = "org.apache.uima.ruta.type.RutaBasic";
 
   public static final String OPTIONAL_TYPE = "org.apache.uima.ruta.type.RutaOptional";
-  
+
   public static final String FRAME_TYPE = "org.apache.uima.ruta.type.RutaFrame";
 
   /**
@@ -273,9 +273,9 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private Boolean simpleGreedyForComposed;
 
   /**
-   * If this parameter is set to true, then start positions already matched by the same rule element will be
-   * ignored. This situation occurs mostly for rules that start with a quantifier. The following
-   * rule, for example, matches only once, if this parameter is set to true: {@code ANY+;}
+   * If this parameter is set to true, then start positions already matched by the same rule element
+   * will be ignored. This situation occurs mostly for rules that start with a quantifier. The
+   * following rule, for example, matches only once, if this parameter is set to true: {@code ANY+;}
    */
   public static final String PARAM_GREEDY_RULE_ELEMENT = "greedyRuleElement";
 
@@ -380,76 +380,78 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     if (aContext == null && context != null) {
       aContext = context;
     }
-    seeders = (String[]) aContext.getConfigParameterValue(PARAM_SEEDERS);
-    removeBasics = (Boolean) aContext.getConfigParameterValue(PARAM_REMOVE_BASICS);
-    scriptPaths = (String[]) aContext.getConfigParameterValue(PARAM_SCRIPT_PATHS);
-    descriptorPaths = (String[]) aContext.getConfigParameterValue(PARAM_DESCRIPTOR_PATHS);
-    mainScript = (String) aContext.getConfigParameterValue(PARAM_MAIN_SCRIPT);
-    additionalScripts = (String[]) aContext.getConfigParameterValue(PARAM_ADDITIONAL_SCRIPTS);
-    additionalEngines = (String[]) aContext.getConfigParameterValue(PARAM_ADDITIONAL_ENGINES);
-    additionalUimafitEngines = (String[]) aContext
-            .getConfigParameterValue(PARAM_ADDITIONAL_UIMAFIT_ENGINES);
-    additionalExtensions = (String[]) aContext.getConfigParameterValue(PARAM_ADDITIONAL_EXTENSIONS);
-    additionalEngineLoaders = (String[]) aContext
-            .getConfigParameterValue(PARAM_ADDITIONAL_ENGINE_LOADERS);
+    if (aContext != null) {
+      seeders = (String[]) aContext.getConfigParameterValue(PARAM_SEEDERS);
+      removeBasics = (Boolean) aContext.getConfigParameterValue(PARAM_REMOVE_BASICS);
+      scriptPaths = (String[]) aContext.getConfigParameterValue(PARAM_SCRIPT_PATHS);
+      descriptorPaths = (String[]) aContext.getConfigParameterValue(PARAM_DESCRIPTOR_PATHS);
+      mainScript = (String) aContext.getConfigParameterValue(PARAM_MAIN_SCRIPT);
+      additionalScripts = (String[]) aContext.getConfigParameterValue(PARAM_ADDITIONAL_SCRIPTS);
+      additionalEngines = (String[]) aContext.getConfigParameterValue(PARAM_ADDITIONAL_ENGINES);
+      additionalUimafitEngines = (String[]) aContext
+              .getConfigParameterValue(PARAM_ADDITIONAL_UIMAFIT_ENGINES);
+      additionalExtensions = (String[]) aContext
+              .getConfigParameterValue(PARAM_ADDITIONAL_EXTENSIONS);
+      additionalEngineLoaders = (String[]) aContext
+              .getConfigParameterValue(PARAM_ADDITIONAL_ENGINE_LOADERS);
 
-    debug = (Boolean) aContext.getConfigParameterValue(PARAM_DEBUG);
-    debugOnlyFor = (String[]) aContext.getConfigParameterValue(PARAM_DEBUG_ONLY_FOR);
-    profile = (Boolean) aContext.getConfigParameterValue(PARAM_PROFILE);
-    statistics = (Boolean) aContext.getConfigParameterValue(PARAM_STATISTICS);
-    createdBy = (Boolean) aContext.getConfigParameterValue(PARAM_CREATED_BY);
-    debugWithMatches = (Boolean) aContext.getConfigParameterValue(PARAM_DEBUG_WITH_MATCHES);
+      debug = (Boolean) aContext.getConfigParameterValue(PARAM_DEBUG);
+      debugOnlyFor = (String[]) aContext.getConfigParameterValue(PARAM_DEBUG_ONLY_FOR);
+      profile = (Boolean) aContext.getConfigParameterValue(PARAM_PROFILE);
+      statistics = (Boolean) aContext.getConfigParameterValue(PARAM_STATISTICS);
+      createdBy = (Boolean) aContext.getConfigParameterValue(PARAM_CREATED_BY);
+      debugWithMatches = (Boolean) aContext.getConfigParameterValue(PARAM_DEBUG_WITH_MATCHES);
 
-    resourcePaths = (String[]) aContext.getConfigParameterValue(PARAM_RESOURCE_PATHS);
-    scriptEncoding = (String) aContext.getConfigParameterValue(PARAM_SCRIPT_ENCODING);
-    defaultFilteredTypes = (String[]) aContext
-            .getConfigParameterValue(PARAM_DEFAULT_FILTERED_TYPES);
-    dynamicAnchoring = (Boolean) aContext.getConfigParameterValue(PARAM_DYNAMIC_ANCHORING);
-    reloadScript = (Boolean) aContext.getConfigParameterValue(PARAM_RELOAD_SCRIPT);
-    lowMemoryProfile = (Boolean) aContext.getConfigParameterValue(PARAM_LOW_MEMORY_PROFILE);
-    simpleGreedyForComposed = (Boolean) aContext
-            .getConfigParameterValue(PARAM_SIMPLE_GREEDY_FOR_COMPOSED);
-    greedyRuleElement = (Boolean) aContext.getConfigParameterValue(PARAM_GREEDY_RULE_ELEMENT);
-    greedyRule = (Boolean) aContext.getConfigParameterValue(PARAM_GREEDY_RULE);
+      resourcePaths = (String[]) aContext.getConfigParameterValue(PARAM_RESOURCE_PATHS);
+      scriptEncoding = (String) aContext.getConfigParameterValue(PARAM_SCRIPT_ENCODING);
+      defaultFilteredTypes = (String[]) aContext
+              .getConfigParameterValue(PARAM_DEFAULT_FILTERED_TYPES);
+      dynamicAnchoring = (Boolean) aContext.getConfigParameterValue(PARAM_DYNAMIC_ANCHORING);
+      reloadScript = (Boolean) aContext.getConfigParameterValue(PARAM_RELOAD_SCRIPT);
+      lowMemoryProfile = (Boolean) aContext.getConfigParameterValue(PARAM_LOW_MEMORY_PROFILE);
+      simpleGreedyForComposed = (Boolean) aContext
+              .getConfigParameterValue(PARAM_SIMPLE_GREEDY_FOR_COMPOSED);
+      greedyRuleElement = (Boolean) aContext.getConfigParameterValue(PARAM_GREEDY_RULE_ELEMENT);
+      greedyRule = (Boolean) aContext.getConfigParameterValue(PARAM_GREEDY_RULE);
 
-    resourcePaths = resourcePaths == null ? new String[0] : resourcePaths;
-    removeBasics = removeBasics == null ? false : removeBasics;
-    debug = debug == null ? false : debug;
-    debugOnlyFor = debugOnlyFor == null ? new String[0] : debugOnlyFor;
-    profile = profile == null ? false : profile;
-    statistics = statistics == null ? false : statistics;
-    createdBy = createdBy == null ? false : createdBy;
-    debugWithMatches = debugWithMatches == null ? true : debugWithMatches;
+      resourcePaths = resourcePaths == null ? new String[0] : resourcePaths;
+      removeBasics = removeBasics == null ? false : removeBasics;
+      debug = debug == null ? false : debug;
+      debugOnlyFor = debugOnlyFor == null ? new String[0] : debugOnlyFor;
+      profile = profile == null ? false : profile;
+      statistics = statistics == null ? false : statistics;
+      createdBy = createdBy == null ? false : createdBy;
+      debugWithMatches = debugWithMatches == null ? true : debugWithMatches;
 
-    scriptEncoding = scriptEncoding == null ? "UTF-8" : scriptEncoding;
-    defaultFilteredTypes = defaultFilteredTypes == null ? new String[0] : defaultFilteredTypes;
-    dynamicAnchoring = dynamicAnchoring == null ? false : dynamicAnchoring;
-    reloadScript = reloadScript == null ? false : reloadScript;
-    lowMemoryProfile = lowMemoryProfile == null ? false : lowMemoryProfile;
-    simpleGreedyForComposed = simpleGreedyForComposed == null ? false : simpleGreedyForComposed;
-    greedyRuleElement = greedyRuleElement == null ? false : greedyRuleElement;
-    greedyRule = greedyRule == null ? false : greedyRule;
+      scriptEncoding = scriptEncoding == null ? "UTF-8" : scriptEncoding;
+      defaultFilteredTypes = defaultFilteredTypes == null ? new String[0] : defaultFilteredTypes;
+      dynamicAnchoring = dynamicAnchoring == null ? false : dynamicAnchoring;
+      reloadScript = reloadScript == null ? false : reloadScript;
+      lowMemoryProfile = lowMemoryProfile == null ? false : lowMemoryProfile;
+      simpleGreedyForComposed = simpleGreedyForComposed == null ? false : simpleGreedyForComposed;
+      greedyRuleElement = greedyRuleElement == null ? false : greedyRuleElement;
+      greedyRule = greedyRule == null ? false : greedyRule;
 
-    this.context = aContext;
+      this.context = aContext;
 
-    factory = new RutaExternalFactory();
-    engineLoader = new RutaEngineLoader();
-    verbalizer = new RutaVerbalizer();
+      factory = new RutaExternalFactory();
+      engineLoader = new RutaEngineLoader();
+      verbalizer = new RutaVerbalizer();
 
-    if (!factory.isInitialized()) {
-      initializeExtensionWithClassPath();
-    }
-    if (!engineLoader.isInitialized()) {
-      initializeEngineLoaderWithClassPath();
-    }
-    if (!reloadScript) {
-      try {
-        initializeScript(CAS.NAME_DEFAULT_SOFA);
-      } catch (AnalysisEngineProcessException e) {
-        throw new ResourceInitializationException(e);
+      if (!factory.isInitialized()) {
+        initializeExtensionWithClassPath();
+      }
+      if (!engineLoader.isInitialized()) {
+        initializeEngineLoaderWithClassPath();
+      }
+      if (!reloadScript) {
+        try {
+          initializeScript(CAS.NAME_DEFAULT_SOFA);
+        } catch (AnalysisEngineProcessException e) {
+          throw new ResourceInitializationException(e);
+        }
       }
     }
-
   }
 
   @Override

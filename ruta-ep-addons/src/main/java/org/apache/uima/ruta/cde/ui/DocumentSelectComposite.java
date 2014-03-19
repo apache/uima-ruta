@@ -452,7 +452,7 @@ public class DocumentSelectComposite extends Composite {
         if (ft.isSupportedType(event.currentDataType)) {
           fileList = (String[]) event.data;
         }
-        if (fileList.length > 0) {
+        if (fileList != null && fileList.length > 0) {
           for (int i = 0; i < fileList.length; i++) {
             File file = new File(fileList[i]);
             if (file.isDirectory()) {
@@ -478,7 +478,7 @@ public class DocumentSelectComposite extends Composite {
         if (ft.isSupportedType(event.currentDataType)) {
           fileList = (String[]) event.data;
         }
-        if (fileList.length == 1) {
+        if (fileList != null && fileList.length == 1) {
           String string = fileList[0];
           inputDirectoryText.setText(string);
           setDocumentsByDir();
@@ -496,7 +496,7 @@ public class DocumentSelectComposite extends Composite {
         if (ft.isSupportedType(event.currentDataType)) {
           fileList = (String[]) event.data;
         }
-        if (fileList.length == 1) {
+        if (fileList != null && fileList.length == 1) {
           String string = fileList[0];
           testDirectoryText.setText(string);
         }
@@ -513,7 +513,7 @@ public class DocumentSelectComposite extends Composite {
         if (ft.isSupportedType(event.currentDataType)) {
           fileList = (String[]) event.data;
         }
-        if (fileList.length == 1) {
+        if (fileList != null && fileList.length == 1) {
           String string = fileList[0];
           File file = new File(string);
           if (file.isFile()) {

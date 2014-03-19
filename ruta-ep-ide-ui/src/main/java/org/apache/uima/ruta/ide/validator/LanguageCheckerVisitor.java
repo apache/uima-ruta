@@ -121,7 +121,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
   private Map<String, IIDETypeFunctionExtension> typeFunctionExtensions;
 
   private Map<String, IIDEBlockExtension> blockExtensions;
-  
+
   /**
    * Mapping from short type name (e.g. {@code W}) to their disambiguated long type names (e.g.
    * {@code org.apache.uima.ruta.type.W}).
@@ -181,8 +181,6 @@ public class LanguageCheckerVisitor extends ASTVisitor {
   private Set<String> allLongTypeNames;
 
   private String parentTypeInDeclaration;
-
-
 
   public LanguageCheckerVisitor(IProblemReporter problemReporter, ISourceLineTracker linetracker,
           ISourceModule sourceModule) {
@@ -247,15 +245,16 @@ public class LanguageCheckerVisitor extends ASTVisitor {
                   sourceModule.getScriptProject());
           if (iFile == null) {
             pr.reportProblem(problemFactory.createFileNotFoundProblem(sRef, localPath));
-          }
-          IPath typeSystemDescriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(
-                  iFile.getLocation(), sourceModule.getScriptProject().getProject());
-          TypeSystemDescription tsDesc = importCompleteTypeSystem(typeSystemDescriptorPath);
+          } else {
+            IPath typeSystemDescriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(
+                    iFile.getLocation(), sourceModule.getScriptProject().getProject());
+            TypeSystemDescription tsDesc = importCompleteTypeSystem(typeSystemDescriptorPath);
 
-          List<String> checkDuplicateShortNames = checkOnAmbiguousShortNames(tsDesc);
-          if (!checkDuplicateShortNames.isEmpty()) {
-            pr.reportProblem(problemFactory.createDuplicateShortNameInImported(sRef, localPath,
-                    checkDuplicateShortNames, ProblemSeverity.WARNING));
+            List<String> checkDuplicateShortNames = checkOnAmbiguousShortNames(tsDesc);
+            if (!checkDuplicateShortNames.isEmpty()) {
+              pr.reportProblem(problemFactory.createDuplicateShortNameInImported(sRef, localPath,
+                      checkDuplicateShortNames, ProblemSeverity.WARNING));
+            }
           }
         } catch (IOException e) {
           pr.reportProblem(problemFactory.createFileNotFoundProblem(sRef, localPath));
@@ -641,9 +640,9 @@ public class LanguageCheckerVisitor extends ASTVisitor {
           String feat = se.toString();
           feat = getFeatureName(se, feat);
           boolean featureFound = findFeature(matchedType, feat, -1);
-          if(!featureFound) {
+          if (!featureFound) {
             String featureMatch = isFeatureMatch(matchedType);
-            if(featureMatch != null) {
+            if (featureMatch != null) {
               featureFound = findFeature(featureMatch, feat, -1);
             }
           }
@@ -763,7 +762,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       blocks.push(name);
       // TODO add syntax check for block extensions
     }
-    
+
     return true;
   }
 
@@ -978,6 +977,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     booleanFunctionExtensions = new HashMap<String, IIDEBooleanFunctionExtension>();
     stringFunctionExtensions = new HashMap<String, IIDEStringFunctionExtension>();
     typeFunctionExtensions = new HashMap<String, IIDETypeFunctionExtension>();
+    blockExtensions = new HashMap<String, IIDEBlockExtension>();
     IIDEConditionExtension[] cextensions = RutaExtensionManager.getDefault()
             .getIDEConditionExtensions();
     for (IIDEConditionExtension each : cextensions) {
@@ -1025,15 +1025,13 @@ public class LanguageCheckerVisitor extends ASTVisitor {
         typeFunctionExtensions.put(string, each);
       }
     }
-    IIDEBlockExtension[] bextensions = RutaExtensionManager.getDefault()
-            .getIDEBlockExtensions();
+    IIDEBlockExtension[] bextensions = RutaExtensionManager.getDefault().getIDEBlockExtensions();
     for (IIDEBlockExtension each : bextensions) {
       String[] knownExtensions = each.getKnownExtensions();
       for (String string : knownExtensions) {
         blockExtensions.put(string, each);
       }
     }
-    
 
   }
 

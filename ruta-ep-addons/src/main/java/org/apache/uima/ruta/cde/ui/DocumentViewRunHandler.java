@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Type;
@@ -305,7 +306,7 @@ public class DocumentViewRunHandler implements IHandler {
       for (String fileName : files) {
         String fullPath = folder + System.getProperty("file.separator") + fileName;
         String fileNameWithoutExtension = getFileNameWithoutExtensions(fullPath);
-        if (fileNameWithoutExtension != "") {
+        if (!StringUtils.isBlank(fileNameWithoutExtension)) {
           filesMap.put(fileNameWithoutExtension, fullPath);
         }
       }

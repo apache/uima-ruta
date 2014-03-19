@@ -50,7 +50,7 @@ import org.eclipse.dltk.core.ModelException;
 public class RutaCheckerUtils {
 
   public static Set<String> importScript(String path, int type, IScriptProject project)
-          throws InvalidXMLException, IOException, ModelException {
+          throws InvalidXMLException, IOException, CoreException {
     return importScript(path, type, project, false);
   }
 
@@ -66,7 +66,7 @@ public class RutaCheckerUtils {
    * @throws ModelException
    */
   public static Set<String> importScript(String path, int type, IScriptProject project,
-          boolean appendPath) throws InvalidXMLException, IOException, ModelException {
+          boolean appendPath) throws InvalidXMLException, IOException, ModelException, CoreException {
     Stack<String> namespaceStack = new Stack<String>();
 
     final Set<String> imports = new HashSet<String>();
@@ -74,7 +74,7 @@ public class RutaCheckerUtils {
     try {
       scriptFolders = RutaProjectUtils.getAllScriptFolders(project);
     } catch (CoreException e) {
-      e.printStackTrace();
+      throw e;
     }
     String fileNameWithoutExtension = path.substring(path.lastIndexOf('.') + 1);
     String fileNameWithExtension = fileNameWithoutExtension + RutaEngine.SCRIPT_FILE_EXTENSION;

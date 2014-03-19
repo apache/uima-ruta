@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.testing.ui.handlers;
 
@@ -41,7 +41,6 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-
 public class LoadFilesFromFolderHandler implements IHandler {
 
   TestPageBookView debugView;
@@ -65,19 +64,21 @@ public class LoadFilesFromFolderHandler implements IHandler {
 
     IViewPart scriptExpl = HandlerUtil.getActiveSite(event).getWorkbenchWindow().getActivePage()
             .findView("org.eclipse.dltk.ui.ScriptExplorer");
-    ISelection select = scriptExpl.getViewSite().getSelectionProvider().getSelection();
+    if (scriptExpl != null) {
+      ISelection select = scriptExpl.getViewSite().getSelectionProvider().getSelection();
 
-    if (select != null && select instanceof StructuredSelection) {
-      StructuredSelection structSelect = (StructuredSelection) select;
-      Iterator iter = structSelect.iterator();
-      while (iter.hasNext()) {
-        Object o = iter.next();
-        if (o instanceof Folder) {
-          Folder folder = (Folder) o;
-          IPath path2Folder = folder.getFullPath().removeFirstSegments(1);
-          IFolder testFolder = project.getFolder(path2Folder);
+      if (select != null && select instanceof StructuredSelection) {
+        StructuredSelection structSelect = (StructuredSelection) select;
+        Iterator<?> iter = structSelect.iterator();
+        while (iter.hasNext()) {
+          Object o = iter.next();
+          if (o instanceof Folder) {
+            Folder folder = (Folder) o;
+            IPath path2Folder = folder.getFullPath().removeFirstSegments(1);
+            IFolder testFolder = project.getFolder(path2Folder);
 
-          loadFolder(testFolder);
+            loadFolder(testFolder);
+          }
         }
       }
     }
@@ -85,18 +86,14 @@ public class LoadFilesFromFolderHandler implements IHandler {
   }
 
   public boolean isEnabled() {
-    // TODO Auto-generated method stub
     return true;
   }
 
   public boolean isHandled() {
-    // TODO Auto-generated method stub
     return true;
   }
 
   public void removeHandlerListener(IHandlerListener handlerListener) {
-    // TODO Auto-generated method stub
-
   }
 
   public void loadFolder(IFolder folder) {

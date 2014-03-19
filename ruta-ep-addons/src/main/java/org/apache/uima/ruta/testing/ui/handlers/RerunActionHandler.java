@@ -170,7 +170,7 @@ public class RerunActionHandler implements IHandler {
         // only Ruta mode (classpath NOT expanded)
         IStatus status = evalRutaOnlyScript(monitor, testPageView, debugPage, fScript, project,
                 engineDescriptorPath, testCasData);
-        if (status.equals(IStatus.ERROR)) {
+        if (status.getSeverity() == IStatus.ERROR) {
           Shell shell = Display.getCurrent().getActiveShell();
           MessageDialog.openWarning(shell, "Error", status.getMessage());
         }

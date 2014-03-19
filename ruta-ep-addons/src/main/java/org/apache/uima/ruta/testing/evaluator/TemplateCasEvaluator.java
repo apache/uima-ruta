@@ -144,7 +144,7 @@ public class TemplateCasEvaluator implements ICasEvaluator {
           if (valueTest instanceof AnnotationFS) {
             AnnotationFS a1 = (AnnotationFS) valueTest;
             Feature feature2 = newFS.getType().getFeatureByBaseName(feature.getShortName());
-            if (feature != null) {
+            if (feature2 != null) {
               Type range2 = runTS.getType(range.getName());
               AnnotationFS createAnnotation = runCas.createAnnotation(range2, a1.getBegin(),
                       a1.getEnd());

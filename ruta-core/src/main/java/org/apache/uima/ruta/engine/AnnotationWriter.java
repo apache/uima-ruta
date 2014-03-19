@@ -56,9 +56,12 @@ public class AnnotationWriter extends JCasAnnotator_ImplBase {
     if (aContext == null && context != null) {
       aContext = context;
     }
-    output = (String) aContext.getConfigParameterValue(OUTPUT);
-    type = (String) aContext.getConfigParameterValue(TYPE);
-    encoding = (String) aContext.getConfigParameterValue(ENCODING);
+    if(aContext != null) {
+      output = (String) aContext.getConfigParameterValue(OUTPUT);
+      type = (String) aContext.getConfigParameterValue(TYPE);
+      encoding = (String) aContext.getConfigParameterValue(ENCODING);
+      this.context = aContext;
+    }
   }
 
   @Override

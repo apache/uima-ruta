@@ -110,10 +110,12 @@ public class RutaProjectUtils {
     if (scriptFolders != null) {
       for (IScriptFolder eachScriptFolder : scriptFolders) {
         IModelElement parent = eachScriptFolder.getParent();
-        IResource resource = parent.getResource();
-        if (parent != null && resource != null && resource instanceof IFolder) {
-          if (!result.contains(resource)) {
-            result.add((IFolder) resource);
+        if (parent != null) {
+          IResource resource = parent.getResource();
+          if (resource != null && resource instanceof IFolder) {
+            if (!result.contains(resource)) {
+              result.add((IFolder) resource);
+            }
           }
         }
       }
@@ -236,7 +238,7 @@ public class RutaProjectUtils {
     String[] split = dataPath.split(sep);
     List<String> paths = Arrays.asList(split);
     String addon = folder.getLocation().toPortableString();
-    if(!paths.contains(addon)) {
+    if (!paths.contains(addon)) {
       if (!StringUtils.isEmpty(dataPath)) {
         dataPath += sep;
       }
@@ -253,8 +255,8 @@ public class RutaProjectUtils {
     }
     String path = folder.getLocation().toPortableString();
     if (!StringUtils.isEmpty(dataPath)) {
-      dataPath.replaceAll(path, "");
-      dataPath.replaceAll(sep + sep, "");
+      dataPath = dataPath.replaceAll(path, "");
+      dataPath = dataPath.replaceAll(sep + sep, "");
     }
     project.setPersistentProperty(new QualifiedName("", CDE_DATA_PATH), dataPath);
   }

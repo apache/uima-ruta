@@ -45,8 +45,6 @@ import org.eclipse.ui.part.Page;
 
 public class ElementViewPage extends Page implements ISelectionListener {
 
-  private IExplainTreeNode node;
-
   private TreeViewer treeView;
 
   private Map<String, Image> images;
@@ -129,7 +127,7 @@ public class ElementViewPage extends Page implements ISelectionListener {
     treeView = new TreeViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL);
     treeView.setContentProvider(new ElementTreeContentProvider());
     treeView.setLabelProvider(new ElementTreeLabelProvider(this));
-    treeView.setInput(node);
+    treeView.setInput(null);
     // treeView.addCheckStateListener(getCurrentCEVData());
     getSite().setSelectionProvider(treeView);
     getSite().getPage().addSelectionListener(this);

@@ -159,21 +159,24 @@ public class CreatedByViewPage extends Page implements ISelectionListener, ICasE
         IWorkspaceRoot workspaceRoot = workspace.getRoot();
         IFile iFile = workspaceRoot.getFileForLocation(path);
         IProject project = iFile.getProject();
-        IScriptProject scriptProject = DLTKCore.create(project);
-        List<IFolder> allScriptFolders;
-        try {
-          allScriptFolders = RutaProjectUtils.getAllScriptFolders(scriptProject);
-          List<String> folders = RutaProjectUtils.getFolderLocations(allScriptFolders);
-          String locate = RutaEngine.locate(script, folders.toArray(new String[0]), RutaEngine.SCRIPT_FILE_EXTENSION);
-          if (locate != null) {
-            IPath locatedPath = new Path(locate);
-            ExplainUtils.openInRutaEditor(locatedPath, id);
-          } else {
-            RutaAddonsPlugin.error(new IllegalArgumentException("Not able to locate script: "
-                    + script));
+        if (iFile != null) {
+          IScriptProject scriptProject = DLTKCore.create(project);
+          List<IFolder> allScriptFolders;
+          try {
+            allScriptFolders = RutaProjectUtils.getAllScriptFolders(scriptProject);
+            List<String> folders = RutaProjectUtils.getFolderLocations(allScriptFolders);
+            String locate = RutaEngine.locate(script, folders.toArray(new String[0]),
+                    RutaEngine.SCRIPT_FILE_EXTENSION);
+            if (locate != null) {
+              IPath locatedPath = new Path(locate);
+              ExplainUtils.openInRutaEditor(locatedPath, id);
+            } else {
+              RutaAddonsPlugin.error(new IllegalArgumentException("Not able to locate script: "
+                      + script));
+            }
+          } catch (CoreException e) {
+            RutaAddonsPlugin.error(e);
           }
-        } catch (CoreException e) {
-          RutaAddonsPlugin.error(e);
         }
       }
     }

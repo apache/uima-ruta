@@ -176,13 +176,13 @@ public class ShiftAllRule extends ShiftingRule {
         return true;
       }
       if (frontBoundaryItem != null)
-        if (frontBoundaryItem.equals(target))
+        if (frontBoundaryItem.getAnnotation().equals(target))
           return true;
       if (errorBoundaryItem != null)
-        if (errorBoundaryItem.equals(target))
+        if (errorBoundaryItem.getAnnotation().equals(target))
           return true;
       if (rearBoundaryItem != null)
-        if (rearBoundaryItem.equals(target))
+        if (rearBoundaryItem.getAnnotation().equals(target))
           return true;
       for (Condition each : getConditions()) {
         if (each.getItem().getAnnotation().getType().getShortName()

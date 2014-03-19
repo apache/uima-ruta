@@ -137,7 +137,7 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
         if (ft.isSupportedType(event.currentDataType)) {
           fileList = (String[]) event.data;
         }
-        if (fileList.length > 0) {
+        if (fileList != null && fileList.length > 0) {
           String fileString = fileList[0];
           documentSource.setText(fileString);
         }
@@ -163,7 +163,7 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
         if (ft.isSupportedType(event.currentDataType)) {
           fileList = (String[]) event.data;
         }
-        if (fileList.length > 0) {
+        if (fileList != null && fileList.length > 0) {
           String fileString = fileList[0];
           documentSink.setText(fileString);
         }
@@ -189,7 +189,7 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
         if (ft.isSupportedType(event.currentDataType)) {
           fileList = (String[]) event.data;
         }
-        if (fileList.length > 0) {
+        if (fileList != null && fileList.length > 0) {
           String fileString = fileList[0];
           typeSystem.setText(fileString);
         }
@@ -291,6 +291,8 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
             newDoc = ((CheckDocument) firstElement.getParent().getElement());
           } else if (element instanceof CheckDocument) {
             newDoc = ((CheckDocument) element);
+          } else {
+            return;
           }
           if (casEditor != null && casEditor.getDocumentProvider() != null
                   && casEditor.getDocument() != null) {

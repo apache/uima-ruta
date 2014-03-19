@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.utils.twl;
 
@@ -47,7 +47,6 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
-
 
 public class MultiTWLConverterHandler implements IHandler {
   private class ConverterHandlerJob extends Job {
@@ -100,18 +99,14 @@ public class MultiTWLConverterHandler implements IHandler {
 
           IWorkspaceRoot myWorkspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
           IContainer container = myWorkspaceRoot.getContainerForLocation(parent);
-          // final String localPath = container.getProjectRelativePath() + "/" + container.getName()
-          // + "/" + "generated.mtwl";
-          try {
-            container.getParent().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
-          } catch (CoreException e) {
+          if (container != null) {
+            try {
+              container.getParent().refreshLocal(IResource.DEPTH_INFINITE,
+                      new NullProgressMonitor());
+            } catch (CoreException e) {
+              RutaAddonsPlugin.error(e);
+            }
           }
-          // event.getShell().getDisplay().asyncExec(new Runnable() {
-          // public void run() {
-          // MessageDialog.openInformation(window.getShell(), "Multi TWL created",
-          // "A multi TWL was created:\n" + localPath);
-          // }
-          // });
         }
 
       }

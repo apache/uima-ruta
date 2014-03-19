@@ -38,7 +38,7 @@ public class ExampleNumberFunctionExtension implements IRutaNumberFunctionExtens
   public String verbalize(RutaElement element, RutaVerbalizer verbalizer) {
     if (element instanceof ExampleTypeFunction) {
       return verbalizeName(element) + "("
-              + verbalizer.verbalize(((ExampleBooleanFunction) element).getExpr()) + ")";
+              + verbalizer.verbalize(((ExampleTypeFunction) element).getExpr()) + ")";
     } else {
       return "UnknownNumberFunction";
     }

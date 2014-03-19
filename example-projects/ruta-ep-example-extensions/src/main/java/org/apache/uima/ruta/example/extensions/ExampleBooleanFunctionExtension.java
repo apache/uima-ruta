@@ -35,7 +35,7 @@ public class ExampleBooleanFunctionExtension implements IRutaBooleanFunctionExte
   private final Class<?>[] extensions = new Class[] { ExampleBooleanFunction.class };
 
   public String verbalize(RutaElement element, RutaVerbalizer verbalizer) {
-    if (element instanceof ExampleTypeFunction) {
+    if (element instanceof ExampleBooleanFunction) {
       return verbalizeName(element) + "("
               + verbalizer.verbalize(((ExampleBooleanFunction) element).getExpr()) + ")";
     } else {

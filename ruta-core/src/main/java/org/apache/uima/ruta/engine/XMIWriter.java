@@ -49,7 +49,10 @@ public class XMIWriter extends JCasAnnotator_ImplBase {
     if (aContext == null && context != null) {
       aContext = context;
     }
-    output = (String) aContext.getConfigParameterValue(OUTPUT);
+    if(aContext != null) {
+      output = (String) aContext.getConfigParameterValue(OUTPUT);
+      this.context = aContext;
+    }
   }
 
   private static void writeXmi(CAS aCas, File name) throws Exception {

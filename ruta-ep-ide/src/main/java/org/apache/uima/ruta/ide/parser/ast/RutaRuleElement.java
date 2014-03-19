@@ -56,12 +56,12 @@ public class RutaRuleElement extends Expression {
     if (conditions != null) {
       this.conditions = conditions;
     } else {
-      conditions = new ArrayList<RutaCondition>();
+      this.conditions = new ArrayList<RutaCondition>();
     }
     if (actions != null) {
       this.actions = actions;
     } else {
-      actions = new ArrayList<RutaAction>();
+      this.actions = new ArrayList<RutaAction>();
     }
     if (quantifierPartExpressions != null) {
       this.quantifierExpressions = quantifierPartExpressions;

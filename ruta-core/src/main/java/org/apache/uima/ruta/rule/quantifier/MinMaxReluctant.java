@@ -89,8 +89,12 @@ public class MinMaxReluctant implements RuleElementQuantifier {
     int minValue = min.getIntegerValue(ruleElement.getParent(), annotation, stream);
     int maxValue = max.getIntegerValue(ruleElement.getParent(), annotation, stream);
     List<RuleElementMatch> list = containerMatch.getInnerMatches().get(ruleElement);
-    if (list == null && maxValue > 0) {
-      return true;
+    if (list == null) {
+      if (maxValue > 0) {
+        return true;
+      } else {
+        return false;
+      }
     }
 
     int matchedSize = list.size();

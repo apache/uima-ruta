@@ -23,14 +23,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.uima.caseditor.editor.AnnotationEditor;
-import org.apache.uima.caseditor.editor.ICasDocument;
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.apache.uima.ruta.explain.ExplainConstants;
 import org.apache.uima.ruta.explain.apply.ApplyView;
 import org.apache.uima.ruta.explain.rulelist.RuleListView;
 import org.apache.uima.ruta.explain.selection.ExplainSelectionView;
 import org.apache.uima.ruta.explain.tree.BlockApplyNode;
-import org.apache.uima.ruta.explain.tree.IExplainTreeNode;
 import org.apache.uima.ruta.explain.tree.MatchedRootNode;
 import org.apache.uima.ruta.explain.tree.RuleApplyNode;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -47,22 +45,12 @@ import org.eclipse.ui.part.Page;
 
 public class MatchedViewPage extends Page implements ISelectionListener {
 
-  private IExplainTreeNode node;
-
   private CheckboxTreeViewer treeView;
-
-  private int current;
 
   private Map<String, Image> images;
 
-  private AnnotationEditor editor;
-
-  private ICasDocument document;
-
   public MatchedViewPage(AnnotationEditor editor) {
     super();
-    this.editor = editor;
-    this.document = editor.getDocument();
   }
 
   @Override
@@ -115,7 +103,7 @@ public class MatchedViewPage extends Page implements ISelectionListener {
     treeView = new CheckboxTreeViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL);
     treeView.setContentProvider(new MatchedTreeContentProvider());
     treeView.setLabelProvider(new MatchedTreeLabelProvider(this));
-    treeView.setInput(node);
+    treeView.setInput(null);
     getSite().setSelectionProvider(treeView);
     getSite().getPage().addSelectionListener(this);
   }

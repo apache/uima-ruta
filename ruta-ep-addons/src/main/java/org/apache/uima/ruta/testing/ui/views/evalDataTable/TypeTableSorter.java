@@ -66,10 +66,8 @@ public class TypeTableSorter extends ViewerSorter {
       case TypeEvalTableConst.COLUMN_TYPE_NAME:
         rc = td1.getTypeName().compareTo(td2.getTypeName());
         break;
-        
       case TypeEvalTableConst.COLUMN_TRUE_POSITIVES:
         rc = td1.getTruePositives() - td2.getTruePositives();
-        
         break;
       case TypeEvalTableConst.COLUMN_FALSE_POSITIVES:
         rc = td1.getFalsePositives() - td2.getFalsePositives();
@@ -79,7 +77,7 @@ public class TypeTableSorter extends ViewerSorter {
         break;
       case TypeEvalTableConst.COLUMN_PRECISION:
         rc = Double.compare(td1.getPrecision() , td2.getPrecision());
-        
+        break;
       case TypeEvalTableConst.COLUMN_RECALL:
         rc = Double.compare(td1.getRecall() , td2.getRecall());
         break;

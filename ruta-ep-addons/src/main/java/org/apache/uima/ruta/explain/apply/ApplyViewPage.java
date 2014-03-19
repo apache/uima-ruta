@@ -142,7 +142,7 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
     viewer.setLabelProvider(new ApplyTreeLabelProvider(this));
 
     document.addChangeListener(this);
-    
+
     ExplainTree tree = new ExplainTree(document.getCAS());
     viewer.setAutoExpandLevel(2);
     viewer.setInput(tree.getRoot());
@@ -174,18 +174,20 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
             IWorkspace workspace = ResourcesPlugin.getWorkspace();
             IWorkspaceRoot workspaceRoot = workspace.getRoot();
             IFile iFile = workspaceRoot.getFileForLocation(path);
-            IProject project = iFile.getProject();
-            IScriptProject scriptProject = DLTKCore.create(project);
-            List<IFolder> allScriptFolders;
-            try {
-              allScriptFolders = RutaProjectUtils.getAllScriptFolders(scriptProject);
-              List<String> folders = RutaProjectUtils.getFolderLocations(allScriptFolders);
-              String locate = RutaEngine
-                      .locate(script, folders.toArray(new String[0]), RutaEngine.SCRIPT_FILE_EXTENSION);
-              IPath locatedPath = new Path(locate);
-              ExplainUtils.openInRutaEditor(locatedPath, id);
-            } catch (CoreException e) {
-              RutaAddonsPlugin.error(e);
+            if (iFile != null) {
+              IProject project = iFile.getProject();
+              IScriptProject scriptProject = DLTKCore.create(project);
+              List<IFolder> allScriptFolders;
+              try {
+                allScriptFolders = RutaProjectUtils.getAllScriptFolders(scriptProject);
+                List<String> folders = RutaProjectUtils.getFolderLocations(allScriptFolders);
+                String locate = RutaEngine.locate(script, folders.toArray(new String[0]),
+                        RutaEngine.SCRIPT_FILE_EXTENSION);
+                IPath locatedPath = new Path(locate);
+                ExplainUtils.openInRutaEditor(locatedPath, id);
+              } catch (CoreException e) {
+                RutaAddonsPlugin.error(e);
+              }
             }
           }
         }
@@ -233,27 +235,27 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
   }
 
   public void added(FeatureStructure newFeatureStructure) {
-    
+
   }
 
   public void added(Collection<FeatureStructure> newFeatureStructure) {
-    
+
   }
 
   public void removed(FeatureStructure deletedFeatureStructure) {
-    
+
   }
 
   public void removed(Collection<FeatureStructure> deletedFeatureStructure) {
-    
+
   }
 
   public void updated(FeatureStructure featureStructure) {
-    
+
   }
 
   public void updated(Collection<FeatureStructure> featureStructure) {
-    
+
   }
 
   public void changed() {
@@ -269,6 +271,7 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
     ExplainTree tree = new ExplainTree(document.getCAS());
     viewer.setInput(tree.getRoot());
   }
+
   public void viewChanged(String oldViewName, String newViewName) {
     changed();
   }

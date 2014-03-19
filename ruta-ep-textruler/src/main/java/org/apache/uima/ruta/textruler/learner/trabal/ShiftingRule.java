@@ -69,10 +69,10 @@ public abstract class ShiftingRule extends TrabalRule {
         return true;
       }
       if (frontBoundaryItem != null)
-        if (frontBoundaryItem.equals(target))
+        if (frontBoundaryItem.getAnnotation().equals(target))
           return true;
       if (rearBoundaryItem != null)
-        if (rearBoundaryItem.equals(target))
+        if (rearBoundaryItem.getAnnotation().equals(target))
           return true;
       for (Condition each : getConditions()) {
         if (each.getItem().getAnnotation().getType().getShortName()

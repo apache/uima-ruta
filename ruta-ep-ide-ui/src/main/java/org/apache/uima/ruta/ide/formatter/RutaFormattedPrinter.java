@@ -532,10 +532,10 @@ public class RutaFormattedPrinter extends ASTVisitor {
     List<Expression> indices = tmca.getExpressions();
     if (indices != null) {
       traverseAstNodes(indices);
-    }
-    if (!indices.isEmpty()) {
-      append(COMMA);
-      append(" ");
+      if (!indices.isEmpty()) {
+        append(COMMA);
+        append(" ");
+      }
     }
     // assignments
     Map<Expression, Expression> assignments = tmca.getAssignments();

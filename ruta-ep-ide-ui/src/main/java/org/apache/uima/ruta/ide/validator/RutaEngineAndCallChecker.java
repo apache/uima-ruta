@@ -83,14 +83,15 @@ public class RutaEngineAndCallChecker implements IBuildParticipant, IBuildPartic
 
       if (curFile != null && curFile.endsWith(".ruta")) {
         scripts.add(curFile.substring(0, curFile.length() - 5));
-      }
-      try {
-        String fnwe = curFile.substring(0, curFile.length() - 5);
-        scriptsInnerBlocks.addAll(RutaCheckerUtils
-                .importScript(fnwe, IModelElement.METHOD, project));
-      } catch (InvalidXMLException e) {
-      } catch (IOException e) {
-      } catch (ModelException e) {
+        try {
+          String fnwe = curFile.substring(0, curFile.length() - 5);
+          scriptsInnerBlocks.addAll(RutaCheckerUtils
+                  .importScript(fnwe, IModelElement.METHOD, project));
+        } catch (InvalidXMLException e) {
+        } catch (IOException e) {
+        } catch (ModelException e) {
+        } catch (CoreException e) {
+        }
       }
       IPreferenceStore preferenceStore = RutaIdeUIPlugin.getDefault().getPreferenceStore();
       boolean noVM = preferenceStore.getBoolean(RutaCorePreferences.NO_VM_IN_DEV_MODE);

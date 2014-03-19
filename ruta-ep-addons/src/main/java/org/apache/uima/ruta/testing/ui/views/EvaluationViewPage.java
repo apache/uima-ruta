@@ -52,8 +52,6 @@ public class EvaluationViewPage extends Page implements ICasDocumentListener, IS
 
   int current = 0;
 
-  private Map<String, Image> images;
-
   private AnnotationEditor editor;
 
   private ICasDocument document;
@@ -117,15 +115,9 @@ public class EvaluationViewPage extends Page implements ICasDocumentListener, IS
     getSite().getPage().removeSelectionListener(this);
     document.removeChangeListener(this);
     editor.removeCasEditorInputListener(this);
-    if (images != null) {
-      for (Image each : images.values()) {
-        each.dispose();
-      }
-    }
   }
 
   public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-    // TODO Auto-generated method stub
   }
 
   public void added(FeatureStructure newFeatureStructure) {

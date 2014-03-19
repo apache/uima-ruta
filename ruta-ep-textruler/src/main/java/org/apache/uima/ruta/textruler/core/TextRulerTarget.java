@@ -19,6 +19,8 @@
 
 package org.apache.uima.ruta.textruler.core;
 
+import java.util.Arrays;
+
 /**
  * 
  * TextRulerTarget encapsulates a learning target of an ML-algorithm. It currently can be
@@ -174,6 +176,6 @@ public class TextRulerTarget {
 
   @Override
   public int hashCode() {
-    return slotNames.hashCode() * type.hashCode();
+    return Arrays.asList(slotNames).hashCode() * type.hashCode();
   }
 }

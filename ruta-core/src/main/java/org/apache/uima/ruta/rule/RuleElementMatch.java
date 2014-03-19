@@ -58,7 +58,7 @@ public class RuleElementMatch {
     conditionsMatched = baseConditionMatched;
     if (baseConditionMatched) {
       for (EvaluatedCondition each : conditions) {
-        conditionsMatched &= each.isValue();
+        conditionsMatched = conditionsMatched && each.isValue();
       }
     }
     if (containerMatch != null) {

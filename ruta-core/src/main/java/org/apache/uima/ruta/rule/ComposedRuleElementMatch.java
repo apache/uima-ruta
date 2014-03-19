@@ -225,7 +225,7 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
   public void setConditionInfo(List<EvaluatedCondition> evaluatedConditions) {
     conditions = evaluatedConditions;
     for (EvaluatedCondition each : conditions) {
-      conditionsMatched &= each.isValue();
+      conditionsMatched = conditionsMatched && each.isValue();
     }
 
   }

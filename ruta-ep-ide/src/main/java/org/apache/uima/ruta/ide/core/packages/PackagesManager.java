@@ -97,7 +97,7 @@ public class PackagesManager {
 
   private Map packsWithDeps = new HashMap();
 
-  public static PackagesManager getInstance() {
+  public static synchronized PackagesManager getInstance() {
     if (manager == null) {
       manager = new PackagesManager();
     }
@@ -450,7 +450,7 @@ public class PackagesManager {
     return getInternalPackageNames(install, project.getElementName());
   }
 
-  public Set getInternalPackageNames(IInterpreterInstall install, IProject project) {
+  public synchronized Set getInternalPackageNames(IInterpreterInstall install, IProject project) {
     return getInternalPackageNames(install, project.getName());
   }
 

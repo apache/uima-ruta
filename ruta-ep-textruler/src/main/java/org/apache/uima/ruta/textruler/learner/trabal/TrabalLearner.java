@@ -1121,8 +1121,8 @@ public class TrabalLearner extends TextRulerBasicLearner {
   }
 
   public RankedList getPositiveExamplesFor(Type type) {
-    if (positiveExamples.containsKey(type)) {
-      return positiveExamples.get(type);
+    if (positiveExamples.containsKey(type.getShortName())) {
+      return positiveExamples.get(type.getShortName());
     } else {
       return new RankedList(idf);
     }
@@ -1158,7 +1158,7 @@ public class TrabalLearner extends TextRulerBasicLearner {
       result.add(new Condition(ConditionType.BEFORE, item));
     }
     for (TrabalRuleItem item : getConsumingTerms(frontBoundary, doc)) {
-      if (!item.getAnnotation().equals(cas.getDocumentAnnotation())) {
+      if (!item.getAnnotation().getType().equals(cas.getDocumentAnnotation().getType())) {
         result.add(new Condition(ConditionType.PARTOF, item));
       }
     }
@@ -1203,7 +1203,7 @@ public class TrabalLearner extends TextRulerBasicLearner {
       result.add(new Condition(ConditionType.BEFORE, item));
     }
     for (TrabalRuleItem item : getConsumingTerms(ruleItem, doc)) {
-      if (!item.getAnnotation().equals(cas.getDocumentAnnotation())) {
+      if (!item.getAnnotation().getType().equals(cas.getDocumentAnnotation().getType())) {
         result.add(new Condition(ConditionType.PARTOF, item));
       }
     }

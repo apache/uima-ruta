@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.utils.twl;
 
@@ -42,7 +42,6 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
-
 
 public class TWLConverterHandler implements IHandler {
 
@@ -86,9 +85,12 @@ public class TWLConverterHandler implements IHandler {
         list.createXMLFile(exportPath, "UTF-8");
         IWorkspaceRoot myWorkspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
         IContainer container = myWorkspaceRoot.getContainerForLocation(file.getLocation());
-        try {
-          container.getParent().refreshLocal(1, null);
-        } catch (CoreException e) {
+        if (container != null) {
+          try {
+            container.getParent().refreshLocal(1, null);
+          } catch (CoreException e) {
+            RutaAddonsPlugin.error(e);
+          }
         }
         monitor.worked(1);
       }

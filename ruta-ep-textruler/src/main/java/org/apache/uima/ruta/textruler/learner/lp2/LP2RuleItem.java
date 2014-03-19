@@ -290,10 +290,6 @@ public class LP2RuleItem implements TextRulerRuleItem {
     return wordConstraint;
   }
 
-  public void removeConstraintWithName(String name) {
-    otherConstraints.remove(name);
-  }
-
   public int totalConstraintCount() {
     return otherConstraints.size() + (wordConstraint != null ? 1 : 0)
             + (contextConstraint != null ? 1 : 0);

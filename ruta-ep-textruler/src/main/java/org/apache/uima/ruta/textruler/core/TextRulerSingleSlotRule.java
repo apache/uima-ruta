@@ -120,7 +120,7 @@ public class TextRulerSingleSlotRule extends TextRulerRule {
       slotPattern.fillerPattern.add(item);
       setNeedsCompile(true);
     } else {
-      new Exception("[TextRulerRule] BOUNDARY SLOT RULES CANNOT HAVE FILLER ITEMS!");
+      throw new RuntimeException("[TextRulerRule] BOUNDARY SLOT RULES CANNOT HAVE FILLER ITEMS!");
     }
   }
 

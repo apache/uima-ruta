@@ -35,9 +35,9 @@ public class ExampleStringFunctionExtension implements IRutaStringFunctionExtens
   private final Class<?>[] extensions = new Class[] { ExampleStringFunction.class };
 
   public String verbalize(RutaElement element, RutaVerbalizer verbalizer) {
-    if (element instanceof ExampleTypeFunction) {
+    if (element instanceof ExampleStringFunction) {
       return verbalizeName(element) + "("
-              + verbalizer.verbalize(((ExampleBooleanFunction) element).getExpr()) + ")";
+              + verbalizer.verbalize(((ExampleStringFunction) element).getExpr()) + ")";
     } else {
       return "UnknownStringFunction";
     }

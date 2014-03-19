@@ -343,7 +343,7 @@ public class TestViewPage extends Page implements IPageBookViewPage {
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
     IFile file = workspace.getRoot().getFileForLocation(resultPath);
 
-    if (!file.isSynchronized(IResource.DEPTH_ZERO)) {
+    if (file != null && !file.isSynchronized(IResource.DEPTH_ZERO)) {
       try {
         file.refreshLocal(IResource.DEPTH_ZERO, new NullProgressMonitor());
       } catch (CoreException e) {

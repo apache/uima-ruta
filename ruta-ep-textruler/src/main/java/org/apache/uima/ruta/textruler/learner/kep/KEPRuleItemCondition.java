@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.textruler.learner.kep;
 
@@ -53,19 +53,20 @@ public class KEPRuleItemCondition {
             + (regExp + type == null ? "" : type.getShortName()) + ")";
   }
 
-  public boolean equals(KEPRuleItemCondition other) {
-    if (this.condition == Condition.REGEXP && other.condition == Condition.REGEXP
-            && this.regExp.equals(other.regExp) && this.isNot == other.isNot)
-      return true;
-    if (this.type.toString().equals(other.type.toString()) && this.isNot == other.isNot
-            && this.condition == other.condition)
-      return true;
+  public boolean equals(Object o) {
+    if (o instanceof KEPRuleItemCondition) {
+      KEPRuleItemCondition other = (KEPRuleItemCondition) o;
+      if (this.condition == Condition.REGEXP && other.condition == Condition.REGEXP
+              && this.regExp.equals(other.regExp) && this.isNot == other.isNot)
+        return true;
+      if (this.type.toString().equals(other.type.toString()) && this.isNot == other.isNot
+              && this.condition == other.condition)
+        return true;
+    } else if (o instanceof Type) {
+      if (this.type.toString().equals(((Type) o).toString()))
+        return true;
+    }
     return false;
   }
 
-  public boolean equals(Type type) {
-    if (this.type.toString().equals(type.toString()))
-      return true;
-    return false;
-  }
 }

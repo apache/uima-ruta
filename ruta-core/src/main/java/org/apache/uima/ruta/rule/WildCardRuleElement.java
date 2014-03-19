@@ -356,7 +356,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
     } else {
       iterator = getIteratorOfType(after, defaultType, annotation, stream);
     }
-    if (iterator.isValid() && iterator.get().equals(annotation)) {
+    if (iterator != null && iterator.isValid() && iterator.get().equals(annotation)) {
       moveOn(after, iterator);
     }
     return iterator;

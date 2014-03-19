@@ -443,7 +443,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
         if (ft.isSupportedType(event.currentDataType)) {
           fileList = (String[]) event.data;
         }
-        if (fileList.length > 0)
+        if (fileList != null && fileList.length > 0)
           inputDirectoryText.setText(fileList[0]);
       }
     });
@@ -458,7 +458,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
         if (ft.isSupportedType(event.currentDataType)) {
           fileList = (String[]) event.data;
         }
-        if (fileList.length > 0)
+        if (fileList != null && fileList.length > 0)
           typeSystemFileText.setText(fileList[0]);
       }
     });

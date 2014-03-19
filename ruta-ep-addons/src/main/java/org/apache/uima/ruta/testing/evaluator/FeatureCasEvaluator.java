@@ -40,8 +40,8 @@ import org.apache.uima.ruta.engine.RutaEngine;
 
 public class FeatureCasEvaluator extends AbstractCasEvaluator {
 
-  public CAS evaluate(CAS test, CAS run, Collection<String> excludedTypes, boolean includeSubtypes, boolean useAllTypes)
-          throws CASRuntimeException, CASException {
+  public CAS evaluate(CAS test, CAS run, Collection<String> excludedTypes, boolean includeSubtypes,
+          boolean useAllTypes) throws CASRuntimeException, CASException {
 
     Type falsePositiveType = run.getTypeSystem().getType(ICasEvaluator.FALSE_POSITIVE);
     Type falseNegativeType = run.getTypeSystem().getType(ICasEvaluator.FALSE_NEGATIVE);
@@ -200,7 +200,7 @@ public class FeatureCasEvaluator extends AbstractCasEvaluator {
           if (valueTest instanceof AnnotationFS) {
             AnnotationFS a1 = (AnnotationFS) valueTest;
             Feature feature2 = newFS.getType().getFeatureByBaseName(feature.getShortName());
-            if (feature != null) {
+            if (feature2 != null) {
               Type range2 = runTS.getType(range.getName());
               AnnotationFS createAnnotation = runCas.createAnnotation(range2, a1.getBegin(),
                       a1.getEnd());
@@ -225,7 +225,7 @@ public class FeatureCasEvaluator extends AbstractCasEvaluator {
   private Collection<FeatureStructure> getFeatureStructures(List<Type> types, CAS cas) {
     TypeSystem typeSystem = cas.getTypeSystem();
     Type annotationType = cas.getAnnotationType();
-//    Type annotationBaseType = typeSystem.getType("uima.cas.AnnotationBase");
+    // Type annotationBaseType = typeSystem.getType("uima.cas.AnnotationBase");
     Collection<FeatureStructure> result = new HashSet<FeatureStructure>();
     for (Type type : types) {
       // if ((type != null) && !typeSystem.subsumes(cas.getAnnotationType(), type) &&
@@ -324,79 +324,48 @@ public class FeatureCasEvaluator extends AbstractCasEvaluator {
       }
 
       if (UIMAConstants.TYPE_STRING.equals(range.getName())) {
-
         String name = eachFeature1.getShortName();
-
         Feature eachFeature2 = type2.getFeatureByBaseName(name);
-
         String featureValue1 = a1.getFeatureValueAsString(eachFeature1);
-
         String featureValue2 = a2.getFeatureValueAsString(eachFeature2);
-
-        if ((StringUtils.isBlank(featureValue2)) && (featureValue1 == null)) {
-
+        
+        if ((StringUtils.isBlank(featureValue2)) && StringUtils.isBlank(featureValue1)) {
           // nothing to do
-
         }
-
-        else if (featureValue2.trim().toLowerCase().contains(featureValue1.trim().toLowerCase())) {
-
-          result &= true;
-
-        }
-
         else if (featureValue1 != null || featureValue2 != null) {
-
           // the unrelated values are put in uppercase
-
-          a1.setFeatureValueFromString(eachFeature1, featureValue1.toUpperCase());
-
-          a2.setFeatureValueFromString(eachFeature2, featureValue2.toUpperCase());
-
+          String f1 =  featureValue1 == null ? "null" : featureValue1.toUpperCase();
+          String f2 =  featureValue2 == null ? "null" : featureValue2.toUpperCase();
+          a1.setFeatureValueFromString(eachFeature1, f1);
+          a2.setFeatureValueFromString(eachFeature2, f2);
           return false;
-
         }
-
+        else if (featureValue2.trim().toLowerCase().contains(featureValue1.trim().toLowerCase())) {
+          result &= true;
+        }
       }
-
     }
-
     return result && (allEmpty1 == allEmpty2);
-
   }
 
   private boolean matchAnnotations(AnnotationFS a1, AnnotationFS a2) {
-
     if (a1 != null && a2 != null) {
-
       // if (a1.getBegin() == a2.getBegin() && a1.getEnd() == a2.getEnd()
-
       if ((contains(a1, a2) || overlap(a1, a2))
-
       && a1.getType().getName().equals(a2.getType().getName())) {
-
         return true;
-
       }
-
     }
-
     return false;
 
   }
 
   private boolean overlap(AnnotationFS a1, AnnotationFS a2) {
-
     if (a1 != null && a2 != null) {
-
       if ((a1.getBegin() <= a2.getBegin() && a1.getEnd() >= a2.getBegin())
-
       || (a1.getBegin() >= a2.getBegin() && a1.getBegin() <= a2.getEnd()))
-
         return true;
-
     }
-
     return false;
 
   }
