@@ -639,11 +639,119 @@ FeatureAssignment -> "(" StringExpression "=" Expression
   <section id="ugr.tools.ruta.language.extensions">
     <title>Language Extensions</title>
     <para>
-      The UIMA Ruta language can be extended with external actions, conditions, 
+      The UIMA Ruta language can be extended with external blocks, actions, conditions, 
       type functions, boolean functions, string functions and number functions. 
+      The block constructs are able to introduce new rule matching paradigms. 
+      The other extensions provide atomic elements to the language, e.g., a condition that evaluates project-specific properties.
       An exemplary implementation of each kind of extension can be found in the project
       <quote>ruta-ep-example-extensions</quote> and a simple UIMA Ruta project, which uses these extensions, is located at 
       <quote>ExtensionsExample</quote>. Both projects are part of the source release of UIMA ruta and are located in the <quote>example-projects</quote> folder.
     </para>
+    <section id="ugr.tools.ruta.language.extensions.core-ext">
+	    <title>Provided Extensions</title>
+	    <para>
+	      The UIMA Ruta language already provides extensions besides the exemplary elements. 
+	      The projet ruta-core-ext contains the implementation for the analysis engine and the project
+	      ruta-ep-core-ext contains the integration in the UIMA Ruta Workbench.
+	    </para>
+	    <section id="ugr.tools.ruta.language.extensions.core-ext.onlyfirst">
+	    <title>ONLYFIRST</title>
+      <para>
+        This additional block construct applies the contained statements/rules only until 
+        the first one was successfully applied. The following example provides an overview of the syntax:
+      </para>
+      <programlisting><![CDATA[ONLYFIRST Document{}{
+  Document{CONTAINS(Keyword1) -> Doc1};
+  Document{CONTAINS(Keyword2) -> Doc2};
+  Document{CONTAINS(Keyword3) -> Doc3};
+}]]></programlisting>
+      <para>
+        The block contains three rules each evaluating if the document contains a specific annotation of the type Keyword1/2/3.
+        If the first rule is able to match, then the other two rules will not try to apply. Straightforwardly, if the first rule failed to match and 
+        the second rules is able to match, then the third rule will not try to be applied.
+      </para>
+	    </section>
+    </section>
+    <section id="ugr.tools.ruta.language.extensions.new">
+    <title>Adding new Language Elements</title>
+    <para>
+      The extension of the UIMA Ruta language is illustrated using an exmaple on how to add a new condition.
+      Other langauge elements can be specified straightforwardly by using the corresponding interfaces and extensions.
+    </para>
+    <para>
+      Three classes need to be implemented for adding a new condition that also is resolved in the UIMA Ruta Workbench:
+    </para>
+    <para>
+    <orderedlist numeration="arabic">
+    <listitem>
+	    <para>
+	      An implementation of the condition extending AbstractRutaCondition.
+	    </para>
+    </listitem>
+    <listitem>
+      <para>
+        An implementation of IRutaConditionExtension, which provides the condition implementation to the engine.
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+        An implementation of IIDEConditionExtension, which provides the condition for the UIMA Ruta Workench.
+      </para>
+    </listitem>
+    </orderedlist>
+    </para>
+    <para>
+      The exemplary project provides implementation of all possible language elements. 
+      This project contains the implementations for the analysis engine and also the implementation 
+      for the UIMA Ruta Workbench, and is therefore an Eclipse plugin (mind the pom file).
+    </para>
+    <para>
+      Concerning the ExampleCondition condition extension, there are four important spots/classes:
+    </para>
+    <para>
+    <orderedlist numeration="arabic">
+    <listitem>
+      <para>
+        ExampleCondition.java provides the implementation of the new condition, which evaluates dates.
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+        ExampleConditionExtension.java provides the extension for the analysis engine. 
+        It knows the name of the condition, its implementation, can create new instances 
+        of that condition, and is able to verbalize the condition for the explanation components.
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+        ExampleConditionIDEExtension provides the syntax check for the editor and the keyword for syntax coloring.
+      </para>
+    </listitem>    
+    <listitem>
+      <para>
+        The plugin.xml defines the extension for the Workbench:
+      </para>
+    </listitem>
+    </orderedlist>
+    <programlisting><![CDATA[<extension point="org.apache.uima.ruta.ide.conditionExtension">
+  <condition
+    class="org.apache.uima.ruta.example.extensions.
+      ExampleConditionIDEExtension"
+    engine="org.apache.uima.ruta.example.extensions.
+      ExampleConditionExtension">
+  </condition>
+</extension>]]></programlisting>
+    </para>
+    <para>
+      If the UIMA Ruta Workbench is not used or the rules are only applied in UIMA pipelines, 
+      only the ExampleCondition and ExampleConditionExtension are needed, and org.apache.uima.ruta.example.extensions.ExampleConditionExtension 
+      needs to be added to the additionalExtensions parameter of your UIMA Ruta analysis engine (descriptor).
+    </para>
+    <para>
+      Adding new conditions using Java projects in the same workspace has not been tested yet, 
+      but at least the Workbench support will be missing due to the inclusion of extensions 
+      using the extension point mechanism of Eclipse.    
+    </para>
+    </section>
   </section>
 </chapter>
