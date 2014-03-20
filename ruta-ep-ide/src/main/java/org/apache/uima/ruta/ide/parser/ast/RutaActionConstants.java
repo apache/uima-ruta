@@ -24,6 +24,8 @@ import org.eclipse.dltk.ast.expressions.ExpressionConstants;
 
 public interface RutaActionConstants {
   public static final int A_CALL = ExpressionConstants.USER_EXPRESSION_START + RutaParser.CALL;
+  
+  public static final int A_EXEC = ExpressionConstants.USER_EXPRESSION_START + RutaParser.EXEC;
 
   public static final int A_ASSIGN = ExpressionConstants.USER_EXPRESSION_START + RutaParser.ASSIGN;
 

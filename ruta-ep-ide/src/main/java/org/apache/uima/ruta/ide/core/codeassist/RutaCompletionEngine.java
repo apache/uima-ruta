@@ -168,17 +168,7 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
         RutaReferenceVisitor referenceVisitor = new RutaReferenceVisitor(actualCompletionPosition);
         parsed.traverse(referenceVisitor);
         node = referenceVisitor.getResult();
-        if(node == null) {
-          referenceVisitor = new RutaReferenceVisitor(actualCompletionPosition-1);
-          parsed.traverse(referenceVisitor);
-          node = referenceVisitor.getResult();
-        }
-        if(node == null) {
-          referenceVisitor = new RutaReferenceVisitor(actualCompletionPosition-2);
-          parsed.traverse(referenceVisitor);
-          node = referenceVisitor.getResult();
-        }
-        
+
         if (node == null) {
           doCompletionOnEmptyStatement(module, position, i);
           doCompletionOnDeclaration(module, startPart);
@@ -219,9 +209,17 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
   private void doCompletionOnComponentReference(IModuleSource cu, RutaModuleDeclaration parsed,
           String startPart, int type, String complString) {
     Collection<String> importedEngines = parsed.descriptorInfo.getImportedEngines();
+    importedEngines.addAll(parsed.descriptorInfo.getImportedUimafitEngines());
     for (String string : importedEngines) {
       if (match(complString, string)) {
         addProposal(complString, string, CompletionProposal.PACKAGE_REF);
+      }
+      int indexOf = string.lastIndexOf(".");
+      if (indexOf != -1) {
+        String shortName = string.substring(indexOf + 1, string.length());
+        if (match(complString, shortName)) {
+          addProposal(complString, shortName, CompletionProposal.PACKAGE_REF);
+        }
       }
     }
     Collection<String> importedScripts = parsed.descriptorInfo.getImportedScripts();

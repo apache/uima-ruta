@@ -172,7 +172,7 @@ public class RutaEngineAndCallChecker implements IBuildParticipant, IBuildPartic
     public boolean visit(Expression s) throws Exception {
       if (s instanceof RutaAction) {
         RutaAction action = (RutaAction) s;
-        if (action.getKind() == RutaActionConstants.A_CALL) {
+        if (action.getKind() == RutaActionConstants.A_CALL || action.getKind() == RutaActionConstants.A_EXEC) {
           // TODO see antlr grammar: no viable child defined!
           if (action.getChilds().size() > 0) {
             SimpleReference ref = (SimpleReference) action.getChilds().get(0);
