@@ -19,22 +19,22 @@
 package org.apache.uima.ruta.engine;
 
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngine;
+import static org.junit.Assert.assertEquals;
 
-import java.io.File;
-
-import org.apache.commons.io.FileUtils;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.fit.component.CasDumpWriter;
+import org.apache.uima.cas.FSIterator;
+import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.fit.factory.JCasBuilder;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
+import org.apache.uima.ruta.type.FalsePositive;
 import org.apache.uima.ruta.type.TruePositive;
-import org.junit.Assert;
 import org.junit.Test;
 
 public class UimafitTest {
   @Test
   public void test() throws Exception {
-    AnalysisEngine tm = createEngine(RutaEngine.class,
+    AnalysisEngine ae = createEngine(RutaEngine.class,
     // Load script in "Java" notation, with "." as package separator and no extension.
     // File needs to be located in the path specified below with ending ".ruta".
             RutaEngine.PARAM_MAIN_SCRIPT, "org.apache.uima.ruta.engine.UimafitTest",
@@ -42,7 +42,7 @@ public class UimafitTest {
             RutaEngine.PARAM_SCRIPT_PATHS, new String[] { "src/test/resources" });
 
     // Create a CAS from the AE so it has the required type priorities
-    JCas jcas = tm.newJCas();
+    JCas jcas = ae.newJCas();
 
     // Fill the CAS with some tokens
     JCasBuilder builder = new JCasBuilder(jcas);
@@ -57,15 +57,13 @@ public class UimafitTest {
     builder.close();
 
     // Apply the script
-    tm.process(jcas);
+    ae.process(jcas);
 
-    AnalysisEngine dumper = createEngine(CasDumpWriter.class, CasDumpWriter.PARAM_OUTPUT_FILE,
-            "target/test-output/casdump.txt");
-    dumper.process(jcas);
-
-    String expected = FileUtils.readFileToString(new File(
-            "src/test/resources/org/apache/uima/ruta/engine/casdump.txt"), "UTF-8");
-    String actual = FileUtils.readFileToString(new File("target/test-output/casdump.txt"), "UTF-8");
-    Assert.assertEquals(expected.trim(), actual.trim());
+    // Test the result
+    AnnotationIndex<Annotation> ai = jcas.getAnnotationIndex(FalsePositive.type);
+    FSIterator<Annotation> iterator = ai.iterator();
+    assertEquals(1, ai.size());
+    assertEquals("This is a test.", iterator.next().getCoveredText());
+    
   }
 }
