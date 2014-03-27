@@ -153,6 +153,9 @@ public class RutaProjectUtils {
   public static Collection<IProject> getReferencedProjects(IProject proj,
           Collection<IProject> visited) throws CoreException {
     Collection<IProject> result = new HashSet<IProject>();
+    if(!proj.isOpen()) {
+      return result;
+    }
     IProject[] referencedProjects = proj.getReferencedProjects();
     result.addAll(Arrays.asList(referencedProjects));
     IProjectNature nature = proj.getNature(JAVANATURE);
@@ -171,6 +174,9 @@ public class RutaProjectUtils {
 
   public static List<IFolder> getDescriptorFolders(IProject proj) throws CoreException {
     List<IFolder> result = new ArrayList<IFolder>();
+    if(!proj.isOpen()) {
+      return result;
+    }
     IProjectNature javaNature = proj.getNature(JAVANATURE);
     if (javaNature != null) {
       IJavaProject javaProject = JavaCore.create(proj);
