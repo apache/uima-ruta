@@ -40,10 +40,7 @@ public class RutaChecker implements IBuildParticipant, IBuildParticipantExtensio
     try {
       buildParticipants.add(new RutaProjectChecker());
       buildParticipants.add(new RutaLanguageChecker());
-//      buildParticipants.add(new RutaTypeChecker(project));
-//      buildParticipants.add(new RutaVarRefChecker());
       buildParticipants.add(new RutaEngineAndCallChecker(project));
-      buildParticipants.add(new RutaRessourceChecker(project));
     } catch (CoreException e) {
       e.printStackTrace();
     }
