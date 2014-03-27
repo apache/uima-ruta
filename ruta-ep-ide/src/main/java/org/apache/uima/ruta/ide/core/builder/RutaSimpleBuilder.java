@@ -162,8 +162,13 @@ public class RutaSimpleBuilder {
             String absoluteLocation = each.getSourceUrlString();
             import_impl.setLocation(absoluteLocation);
           } else {
-            String relativeLocation = getRelativeLocation(url.getPath(), typeSystemOutput);
-            import_impl.setLocation(relativeLocation);
+            if (!url.getPath().substring(0, 2).equals(typeSystemOutput.substring(0, 2))) {
+              // hotfix for different partitions making trouble for the relative path
+              import_impl.setName(eachName);
+            } else {
+              String relativeLocation = getRelativeLocation(url.getPath(), typeSystemOutput);
+              import_impl.setLocation(relativeLocation);
+            }
           }
           importList.add(import_impl);
         }
@@ -206,8 +211,7 @@ public class RutaSimpleBuilder {
         throw new RutaBuildException("Failed to resolve imported Type Systems", e);
       }
     }
-   
-    
+
     // TODO hotfixes: where do I get the final types??
     Set<String> finalTypes = new HashSet<String>();
     finalTypes.addAll(Arrays.asList(new String[] { "uima.cas.Boolean", "uima.cas.Byte",
@@ -254,7 +258,7 @@ public class RutaSimpleBuilder {
 
     File typeSystemFile = getFile(typeSystemOutput);
     TypeDescription[] presentTypes = typeSystemDescription.getTypes();
-    
+
     types.addAll(Arrays.asList(presentTypes));
     typeSystemDescription.setTypes(types.toArray(new TypeDescription[0]));
     typeSystemDescription.setName(mainScript + "TypeSystem");
@@ -268,7 +272,6 @@ public class RutaSimpleBuilder {
       import_impl.setLocation(relativeLocation);
     }
 
-    
     File engineFile = configureEngine(desc, engineOutput, option, mainScript, scriptPaths,
             enginePaths, capability, import_impl, aets);
 
