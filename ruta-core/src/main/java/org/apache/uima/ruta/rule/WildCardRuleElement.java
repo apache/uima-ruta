@@ -109,24 +109,6 @@ public class WildCardRuleElement extends AbstractRuleElement {
       ComposedRuleElement cre = ((ComposedRuleElement) nextElement);
       result = tryWithNextComposed(after, annotation, cre, ruleMatch, ruleApply, containerMatch,
               nextDepth, sideStepOrigin, stream, crowd);
-      // RuleElement nextInnerRuleElement = null;
-      // if (after) {
-      // nextInnerRuleElement = cre.getFirstElement();
-      // } else {
-      // nextInnerRuleElement = cre.getLastElement();
-      // }
-      // // TODO won't work ...!!!
-      // ComposedRuleElementMatch nextContainerMatch =
-      // getContainerMatchOfNextElement(containerMatch, nextDepth);
-      // ComposedRuleElementMatch composedMatch = new ComposedRuleElementMatch(cre,
-      // nextContainerMatch);
-      // if (containerMatch == null) {
-      // ruleMatch.setRootMatch(composedMatch);
-      // } else {
-      // nextContainerMatch.addInnerMatch(this, composedMatch, false, stream);
-      // }
-      // tryWithNextRuleElement(nextInnerRuleElement, after, annotation, ruleMatch, ruleApply,
-      // composedMatch, nextDepth, sideStepOrigin, entryPoint, stream, crowd);
     } else if (nextElement instanceof WildCardRuleElement) {
       // another wildcard? seriously? then just assume its an "Annotation" type
       CAS cas = stream.getCas();
@@ -340,7 +322,6 @@ public class WildCardRuleElement extends AbstractRuleElement {
 
   private FSIterator<AnnotationFS> getIterator(boolean after, AnnotationFS annotation,
           RuleElement nextElement, Type defaultType, RutaStream stream) {
-    CAS cas = stream.getCas();
     FSIterator<AnnotationFS> iterator = null;
     if (defaultType == null) {
       RutaRuleElement re = (RutaRuleElement) nextElement;
@@ -465,32 +446,6 @@ public class WildCardRuleElement extends AbstractRuleElement {
     } else {
       return anchor.getBegin();
     }
-  }
-
-  private FSIterator<AnnotationFS> getIteratorForDisjunctive(CAS cas, List<Type> types,
-          boolean after, AnnotationFS annotation, RutaStream stream) {
-    ConstraintFactory cf = cas.getConstraintFactory();
-    FSTypeConstraint typeConstraint = cf.createTypeConstraint();
-    for (Type each : types) {
-      typeConstraint.add(each);
-    }
-    FSIterator<AnnotationFS> windowIt = cas.getAnnotationIndex().subiterator(
-            stream.getDocumentAnnotation());
-    FSIterator<AnnotationFS> iterator = cas.createFilteredIterator(windowIt, typeConstraint);
-    if (annotation != null) {
-      iterator.moveTo(annotation);
-      if (!after) {
-        iterator.moveToPrevious();
-      }
-    } else {
-      if (after) {
-        iterator.moveToFirst();
-      } else {
-        iterator.moveToLast();
-      }
-    }
-
-    return iterator;
   }
 
   private void moveOn(boolean after, FSIterator<AnnotationFS> iterator) {
