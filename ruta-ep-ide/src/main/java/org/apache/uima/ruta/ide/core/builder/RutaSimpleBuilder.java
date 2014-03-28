@@ -162,11 +162,15 @@ public class RutaSimpleBuilder {
             String absoluteLocation = each.getSourceUrlString();
             import_impl.setLocation(absoluteLocation);
           } else {
-            if (!url.getPath().substring(0, 2).equals(typeSystemOutput.substring(0, 2))) {
+            String path = url.getPath();
+            String relativeLocation = getRelativeLocation(path, typeSystemOutput);
+            File parentFile = new File(typeSystemOutput).getParentFile();
+            File targetFile = new File(parentFile, relativeLocation);
+            boolean ableToFindFile = targetFile.exists();
+            if (!ableToFindFile) {
               // hotfix for different partitions making trouble for the relative path
               import_impl.setName(eachName);
             } else {
-              String relativeLocation = getRelativeLocation(url.getPath(), typeSystemOutput);
               import_impl.setLocation(relativeLocation);
             }
           }
