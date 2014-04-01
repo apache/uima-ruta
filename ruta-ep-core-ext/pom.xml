@@ -27,7 +27,7 @@
     <groupId>org.apache.uima</groupId>
     <artifactId>ruta-parent</artifactId>
     <version>2.2.0</version>
-    <relativePath>../../ruta-parent/pom.xml</relativePath>
+    <relativePath>../ruta-parent/pom.xml</relativePath>
   </parent>
   <properties>
     <postNoticeText />

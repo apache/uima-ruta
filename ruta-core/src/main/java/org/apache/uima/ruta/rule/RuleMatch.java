@@ -181,6 +181,16 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
     // hotfix for invisible dummy matches
     int pointer = 0;
     AnnotationFS annotationFS = null;
+    
+    if(textsMatched.size() == 0) {
+      return null;
+    } else if(textsMatched.size() ==1) {
+      AnnotationFS fs = textsMatched.get(0);
+      if(fs.getType().getName().equals(RutaEngine.OPTIONAL_TYPE)) {
+        return null;
+      }
+    }
+    
     while (pointer < textsMatched.size() && (annotationFS = textsMatched.get(pointer)) != null
             && annotationFS.getType().getName().equals(RutaEngine.OPTIONAL_TYPE)) {
       pointer++;

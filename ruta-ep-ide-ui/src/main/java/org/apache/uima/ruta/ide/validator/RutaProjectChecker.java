@@ -22,67 +22,57 @@ package org.apache.uima.ruta.ide.validator;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
+import org.eclipse.dltk.compiler.problem.IProblem;
+import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.core.SourceParserUtil;
 import org.eclipse.dltk.core.builder.IBuildContext;
 import org.eclipse.dltk.core.builder.IBuildParticipant;
 import org.eclipse.dltk.core.builder.IBuildParticipantExtension;
+import org.eclipse.dltk.core.builder.ISourceLineTracker;
 
-public class RutaChecker implements IBuildParticipant, IBuildParticipantExtension {
-  List<IBuildParticipant> buildParticipants = null;
+/**
+ * Validator for the complete Ruta project, e.g., checks whether the referenced projects are open.
+ *
+ */
+public class RutaProjectChecker implements IBuildParticipant, IBuildParticipantExtension {
 
-  public RutaChecker(IScriptProject project) {
-    buildParticipants = new ArrayList<IBuildParticipant>();
-    try {
-      buildParticipants.add(new RutaProjectChecker());
-      buildParticipants.add(new RutaLanguageChecker());
-      buildParticipants.add(new RutaEngineAndCallChecker(project));
-    } catch (CoreException e) {
-      e.printStackTrace();
-    }
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.eclipse.dltk.core.builder.IBuildParticipant#build(org.eclipse.dltk
-   * .core.builder.IBuildContext)
-   */
-  public void build(IBuildContext context) throws CoreException {
-    // if ast not declared in context ..
-    Object mdObj = context.get(IBuildContext.ATTR_MODULE_DECLARATION);
-    if (!(mdObj instanceof ModuleDeclaration)) {
-      // ...temporary inefficient hack to get live error msgs
-      // TODO refactor
-      ISourceModule sourceModule = context.getSourceModule();
-      ModuleDeclaration md = SourceParserUtil.getModuleDeclaration(sourceModule, null);
-      context.set(IBuildContext.ATTR_MODULE_DECLARATION, md);
-    }
-    for (IBuildParticipant buildP : buildParticipants) {
-      buildP.build(context);
-    }
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.eclipse.dltk.core.builder.IBuildParticipantExtension#beginBuild(int)
-   */
   public boolean beginBuild(int buildType) {
     return true;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.eclipse.dltk.core.builder.IBuildParticipantExtension#endBuild(org
-   * .eclipse.core.runtime.IProgressMonitor)
-   */
   public void endBuild(IProgressMonitor monitor) {
+  }
+
+  public void build(IBuildContext context) throws CoreException {
+    Object mdObj = context.get(IBuildContext.ATTR_MODULE_DECLARATION);
+    if (!(mdObj instanceof ModuleDeclaration)) {
+      return;
+    }
+    IProblemReporter problemReporter = context.getProblemReporter();
+    ISourceModule smod = context.getSourceModule();
+    ISourceLineTracker linetracker = context.getLineTracker();
+    RutaCheckerProblemFactory problemFactory = new RutaCheckerProblemFactory(smod.getElementName(), linetracker);
+    
+    IScriptProject scriptProject = smod.getScriptProject();
+    IProject project = scriptProject.getProject();
+    IProject[] referencedProjects = project.getReferencedProjects();
+    List<IProject> listOfClosedProjects = new ArrayList<IProject>();
+    for (IProject each : referencedProjects) {
+      if(!each.isOpen()) {
+        listOfClosedProjects.add(each);
+      }
+    }
+    
+    if(!listOfClosedProjects.isEmpty()) {
+      IProblem problem = problemFactory.createClosedProjectsProblem(listOfClosedProjects);
+      problemReporter.reportProblem(problem);
+    }
+    
   }
 
 }

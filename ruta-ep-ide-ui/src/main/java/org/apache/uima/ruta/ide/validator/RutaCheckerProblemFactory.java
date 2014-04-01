@@ -32,6 +32,7 @@ import org.apache.uima.ruta.ide.parser.ast.RutaCondition;
 import org.apache.uima.ruta.ide.parser.ast.RutaFeatureDeclaration;
 import org.apache.uima.ruta.ide.parser.ast.RutaFunction;
 import org.apache.uima.ruta.ide.parser.ast.RutaVariableReference;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.expressions.Expression;
@@ -224,6 +225,25 @@ public class RutaCheckerProblemFactory implements IRutaCheckerProblemFactory {
     StringBuilder message = new StringBuilder(longName);
     message.append(" is ambiguous!");
     return new RutaCheckerDefaultProblem(this.fileName, message.toString());
+  }
+
+  public IProblem createClosedProjectsProblem(List<IProject> projects) {
+    StringBuilder message = new StringBuilder();
+    if(projects.size() == 1) {
+      message.append("A referenced project is closed: ");
+    } else {
+      message.append("Referenced project are closed: ");
+    }
+    Iterator<IProject> iterator = projects.iterator();
+    while (iterator.hasNext()) {
+      IProject each = (IProject) iterator.next();
+      message.append(each.getName());
+      if(iterator.hasNext()) {
+        message.append(", ");
+      }
+    }
+    
+    return new RutaCheckerDefaultProblem(this.fileName, message.toString());    
   }
 
 }
