@@ -137,7 +137,7 @@ This product contains icons developed by Mark James
 (http://www.famfamfam.com/lab/icons/silk/), licensed under the 
 Creative Commons Attribution 3.0 License.
     </postNoticeText>
-    <uimaVersion>2.5.1-SNAPSHOT</uimaVersion>
+    <uimaVersion>2.5.0</uimaVersion>
   </properties>
   
   <build>
