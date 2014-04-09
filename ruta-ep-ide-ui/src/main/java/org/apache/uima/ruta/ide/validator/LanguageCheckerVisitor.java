@@ -83,6 +83,7 @@ import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.ast.ASTListNode;
@@ -254,8 +255,13 @@ public class LanguageCheckerVisitor extends ASTVisitor {
           if (file == null && url == null) {
             pr.reportProblem(problemFactory.createFileNotFoundProblem(sRef, localPath));
           } else {
+            IProject referredProject =sourceModule.getScriptProject().getProject();
+            if(file != null) {
+              // script in other project? use that if the file was found in the workspace
+              referredProject = file.getProject();
+            }
             IPath typeSystemDescriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(
-                    file.getLocation(), sourceModule.getScriptProject().getProject());
+                    file.getLocation(), referredProject);
             TypeSystemDescription tsDesc = importCompleteTypeSystem(typeSystemDescriptorPath, url);
 
             List<String> checkDuplicateShortNames = checkOnAmbiguousShortNames(tsDesc);
