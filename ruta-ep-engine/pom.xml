@@ -48,7 +48,7 @@ licensed under the Common Public License.
     <dependency>
       <groupId>org.antlr</groupId>
       <artifactId>antlr-runtime</artifactId>
-      <version>3.5</version>
+      <version>3.5.2</version>
       <scope>compile</scope>
       <exclusions>
         <exclusion>
