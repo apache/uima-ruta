@@ -2015,9 +2015,10 @@ argument returns [Expression expr = null] //SimpleReference arg1 = null]
 //	backtrack = true;
 //}
 	:
-	(stringExpression)=> a4 = stringExpression {expr = a4;}
+	(featureExpression)=> fe = featureExpression {expr = fe;}
 	| (booleanExpression)=> a2 = booleanExpression {expr = a2;}
 	| (numberExpression)=> a3 = numberExpression {expr = a3;}
+	| (stringExpression)=> a4 = stringExpression {expr = a4;}
 	| (listExpression)=> l = listExpression {expr = l;}
 	| a1 = typeExpression {expr = a1;}
 	//token = (
