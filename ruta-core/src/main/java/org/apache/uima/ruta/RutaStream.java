@@ -766,17 +766,21 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     int end = annotationFS.getEnd();
     Set<Type> currentHiddenTypes = filter.getCurrentHiddenTypes();
     RutaBasic beginAnchor = getBeginAnchor(begin);
-    for (Type type : currentHiddenTypes) {
-      boolean partOf = beginAnchor.isPartOf(type);
-      if (partOf) {
-        return false;
+    if (beginAnchor != null) {
+      for (Type type : currentHiddenTypes) {
+        boolean partOf = beginAnchor.isPartOf(type);
+        if (partOf) {
+          return false;
+        }
       }
     }
     RutaBasic endAnchor = getEndAnchor(end);
-    for (Type type : currentHiddenTypes) {
-      boolean partOf = endAnchor.isPartOf(type);
-      if (partOf) {
-        return false;
+    if (endAnchor != null) {
+      for (Type type : currentHiddenTypes) {
+        boolean partOf = endAnchor.isPartOf(type);
+        if (partOf) {
+          return false;
+        }
       }
     }
     return true;
