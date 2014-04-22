@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>  
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="CWEngine">
+      <import location="CWEngine.xml"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SWEngine">
+      <import location="SWEngine.xml"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SimpleEngine">
+      <import location="SimpleEngine.xml"/>
+    </delegateAnalysisEngine>
+  <delegateAnalysisEngine key="ModifierCW">
+      <import location="ModifierCW.xml"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="ModifierSW">
+      <import location="ModifierSW.xml"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>AAE</name>
+    <description/>
+    <version>1.0</version>
+    <vendor/>
+    <configurationParameters/>
+    <configurationParameterSettings/>
+    <flowConstraints>
+      <fixedFlow>
+        <node>CWEngine</node>
+        <node>ModifierCW</node>
+        <node>SWEngine</node>
+        <node>ModifierSW</node>
+        <node>SimpleEngine</node>
+      </fixedFlow>
+    </flowConstraints>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs/>
+        <inputSofas>
+          <sofaName>global1</sofaName>
+        </inputSofas>
+        <outputSofas>
+          <sofaName>global2</sofaName>
+          <sofaName>global3</sofaName>
+        </outputSofas>
+        <languagesSupported/>
+      </capability>
+    </capabilities>
+  <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>true</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+<sofaMappings>
+    <sofaMapping>
+      <componentKey>ModifierCW</componentKey>
+      <componentSofaName>modified</componentSofaName>
+      <aggregateSofaName>global2</aggregateSofaName>
+    </sofaMapping>
+    <sofaMapping>
+      <componentKey>ModifierSW</componentKey>
+      <aggregateSofaName>global2</aggregateSofaName>
+    </sofaMapping>
+    <sofaMapping>
+      <componentKey>SWEngine</componentKey>
+      <aggregateSofaName>global2</aggregateSofaName>
+    </sofaMapping>
+    <sofaMapping>
+      <componentKey>ModifierSW</componentKey>
+      <componentSofaName>modified</componentSofaName>
+      <aggregateSofaName>global3</aggregateSofaName>
+    </sofaMapping>
+    <sofaMapping>
+      <componentKey>SimpleEngine</componentKey>
+      <aggregateSofaName>global3</aggregateSofaName>
+    </sofaMapping>
+    <sofaMapping>
+      <componentKey>CWEngine</componentKey>
+      <aggregateSofaName>global1</aggregateSofaName>
+    </sofaMapping>
+  <sofaMapping>
+      <componentKey>ModifierCW</componentKey>
+      <aggregateSofaName>global1</aggregateSofaName>
+    </sofaMapping>
+  </sofaMappings>
+</analysisEngineDescription>
