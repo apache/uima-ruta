@@ -58,6 +58,9 @@ public class InListCondition extends TerminalRutaCondition {
     if(arg != null) {
       text = arg.getStringValue(element.getParent(), annotation, stream);
     }
+    if(text == null) {
+      return new EvaluatedCondition(this, false);
+    }
     if (stringList == null) {
       RutaWordList wordList = listExpr.getList(element.getParent());
       return new EvaluatedCondition(this, wordList.contains(text, false, 0, null, 0, true));

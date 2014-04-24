@@ -187,6 +187,9 @@ public class TreeWordList implements RutaWordList {
    */
   public boolean contains(String s, boolean ignoreCase, int size, char[] ignoreChars,
           int maxIgnoreChars, boolean ignoreWS) {
+    if(s == null) {
+      return false;
+    }
     TextNode pointer = root;
     return recursiveContains(pointer, s, 0, ignoreCase && s.length() > size, false, ignoreChars,
             maxIgnoreChars, ignoreWS);
