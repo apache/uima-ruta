@@ -49,6 +49,7 @@ import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.RecognizerSharedState;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.TokenStream;
+import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 
@@ -98,7 +99,11 @@ private RutaScriptFactory factory = new RutaScriptFactory();
 private RutaExternalFactory external;
 private String namespace;
 private String moduleName;
+private ResourceManager resourceManager;
 
+public void setResourceManager(ResourceManager resourceManager) {
+  this.resourceManager = resourceManager;  
+}
 
 public void setExternalFactory(RutaExternalFactory factory) {
 	external = factory;
@@ -330,6 +335,7 @@ List<RutaStatement> stmts = new ArrayList<RutaStatement>();
 	this.moduleName = moduleName;
 	rootBlock = factory.createRootScriptBlock(moduleName, p);
         rootBlock.getEnvironment().setResourcePaths(resourcePaths);
+        rootBlock.getEnvironment().setResourceManager(resourceManager);
 	rootBlock.setElements(stmts);
 	module = new RutaModule(rootBlock);
 	rootBlock.setScript(module);

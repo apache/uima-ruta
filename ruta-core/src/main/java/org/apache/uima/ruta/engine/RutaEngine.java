@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,6 +38,7 @@ import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
+import org.apache.uima.UIMAFramework;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.AnalysisComponent;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -53,6 +55,7 @@ import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.ruta.FilterManager;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaModule;
@@ -374,6 +377,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   private TypeSystem lastTypeSystem;
 
+  private ResourceManager resourceManager = null;
+
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
@@ -438,6 +443,18 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       engineLoader = new RutaEngineLoader();
       verbalizer = new RutaVerbalizer();
 
+      resourceManager = UIMAFramework.newDefaultResourceManager();
+      String dataPath = "";
+      if (descriptorPaths != null) {
+        for (String path : descriptorPaths) {
+          dataPath += path + File.pathSeparator;
+        }
+        try {
+          resourceManager.setDataPath(dataPath);
+        } catch (MalformedURLException e) {
+          throw new ResourceInitializationException(e);
+        }
+      }
       if (!factory.isInitialized()) {
         initializeExtensionWithClassPath();
       }
@@ -907,6 +924,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     RutaParser parser = new RutaParser(tokens);
     parser.setExternalFactory(factory);
     parser.setResourcePaths(resourcePaths);
+    parser.setResourceManager(resourceManager);
     String name = scriptFile.getName();
     int lastIndexOf = name.lastIndexOf(SCRIPT_FILE_EXTENSION);
     if (lastIndexOf != -1) {

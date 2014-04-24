@@ -41,6 +41,7 @@ import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
+import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.action.AbstractRutaAction;
@@ -132,9 +133,12 @@ public class RutaEnvironment {
 
   private Map<String, Object> initializedVariables;
 
+  private ResourceManager resourceManager;
+  
   public RutaEnvironment(RutaBlock owner) {
     super();
     this.owner = owner;
+    
     types = new HashMap<String, Type>();
     namespaces = new HashMap<String, String>();
     ambiguousTypeAlias = new HashMap<String, Set<String>>();
@@ -470,7 +474,7 @@ public class RutaEnvironment {
   public void importPackageFromTypeSystem(String typesystem, String packageName, String alias) {
     TypeSystemDescription tsd = TypeSystemDescriptionFactory.createTypeSystemDescription(typesystem);
     try {
-      tsd.resolveImports();
+      tsd.resolveImports(getResourceManager());
     } catch (InvalidXMLException e) {
       throw new RuntimeException("Cannot resolve imports in " + typesystem, e);
     }
@@ -793,5 +797,22 @@ public class RutaEnvironment {
         entry.setValue(initialValue);
       }
     }
+  }
+
+  public ResourceManager getResourceManager() {
+    if(resourceManager != null) {
+      return resourceManager;
+    } else {
+      RutaBlock parent = owner.getParent();
+      if(parent != null) {
+        return parent.getEnvironment().getResourceManager();
+      } 
+    }
+    // at least return default resource manager
+    return UIMAFramework.newDefaultResourceManager();
+  }
+
+  public void setResourceManager(ResourceManager resourceManager) {
+    this.resourceManager = resourceManager;
   }
 }
