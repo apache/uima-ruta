@@ -143,7 +143,7 @@ public class TreeWordList implements RutaWordList {
     this.root = new TextNode();
     while (scan.hasNextLine()) {
       String s = scan.nextLine().trim();
-
+      // HOTFIX for old formats
       if (s.endsWith("=")) {
         s = s.substring(0, s.length() - 1);
         s = s.trim();

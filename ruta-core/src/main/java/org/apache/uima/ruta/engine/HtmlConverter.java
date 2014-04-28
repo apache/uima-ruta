@@ -82,6 +82,9 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
   public static final String CONVERSION_PATTERNS = "conversionPatterns";
 
   public static final String CONVERSION_REPLACEMENTS = "conversionReplacements";
+  
+  public static final String SKIP_WHITESPACES = "skipWhitespaces";
+  
 
   // default values:
   private static final String DEFAULT_MODIFIED_VIEW = "plaintext";
@@ -100,6 +103,8 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
   private Boolean replaceLinebreaks;
   
   private String linebreakReplacement;
+  
+  private Boolean skipWhitespaces;
 
   enum StringConversionPolicy {
     HEURISTIC, EXPLICIT, NONE
@@ -119,6 +124,8 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
             : modifiedViewName;
     replaceLinebreaks = (Boolean) aContext.getConfigParameterValue(REPLACE_LINEBREAKS);
     replaceLinebreaks = replaceLinebreaks == null ? true : replaceLinebreaks;
+    skipWhitespaces = (Boolean) aContext.getConfigParameterValue(SKIP_WHITESPACES);
+    skipWhitespaces = skipWhitespaces == null ? true : skipWhitespaces;
     linebreakReplacement = (String) aContext.getConfigParameterValue(LINEBREAK_REPLACEMENT);
     linebreakReplacement = linebreakReplacement == null ? "" : linebreakReplacement;
     String conversionPolicyString = (String) aContext.getConfigParameterValue(CONVERSION_POLICY);
@@ -220,7 +227,7 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
     try {
       Parser parser = new Parser(documentText);
       NodeList list = parser.parse(null);
-      HtmlConverterVisitor visitor = new HtmlConverterVisitor(newlineInducingTags);
+      HtmlConverterVisitor visitor = new HtmlConverterVisitor(newlineInducingTags, skipWhitespaces);
       list.visitAllNodesWith(visitor);
       visibleSpansSoFar = visitor.getTextSpans();
       linebreaksFromHtmlTags = visitor.getLinebreaksFromHtmlTags();

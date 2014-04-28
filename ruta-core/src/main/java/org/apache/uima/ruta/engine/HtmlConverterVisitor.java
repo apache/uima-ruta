@@ -48,8 +48,9 @@ public class HtmlConverterVisitor extends TextExtractingVisitor {
 
   private Set<String> newlineInducingTags;
 
-  public HtmlConverterVisitor(Set<String> newlineInducingTags) {
+  public HtmlConverterVisitor(Set<String> newlineInducingTags, boolean skipWhitespace) {
     this.newlineInducingTags = newlineInducingTags;
+    this.skipWhitespace = skipWhitespace;
   }
 
   @Override
