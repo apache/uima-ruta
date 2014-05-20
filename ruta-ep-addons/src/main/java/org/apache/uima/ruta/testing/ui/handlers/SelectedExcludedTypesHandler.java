@@ -23,7 +23,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UIMAFramework;
@@ -62,6 +64,9 @@ public class SelectedExcludedTypesHandler implements IHandler {
 
   public Object execute(ExecutionEvent event) throws ExecutionException {
     TestPageBookView debugView = (TestPageBookView) HandlerUtil.getActivePart(event);
+    if(!(debugView.getCurrentPage() instanceof TestViewPage)) {
+      return Status.CANCEL_STATUS;
+    }
     TestViewPage activePage = (TestViewPage) debugView.getCurrentPage();
     IResource resource = activePage.getResource();
     IPath location = resource.getLocation();
@@ -81,9 +86,11 @@ public class SelectedExcludedTypesHandler implements IHandler {
               new XMLInputSource(new File(tsDesc)));
       defaultTypeSystemDescription.resolveImports();
       TypeDescription[] systemTypes = defaultTypeSystemDescription.getTypes();
+      Set<String> set = new HashSet<String>();
       for (TypeDescription typeDescription : systemTypes) {
-        types.add(typeDescription.getName());
+        set.add(typeDescription.getName());
       }
+      types.addAll(set);
       Collections.sort(types);
     } catch (InvalidXMLException e) {
       RutaAddonsPlugin.error(e);

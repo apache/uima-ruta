@@ -23,7 +23,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.resource.metadata.TypeDescription;
@@ -64,9 +66,11 @@ public class SelectTypesHandler implements IHandler {
               new XMLInputSource(new File(composite.getTypeSystem())));
       tsd.resolveImports();
       TypeDescription[] systemTypes = tsd.getTypes();
+      Set<String> set = new HashSet<String>();
       for (TypeDescription typeDescription : systemTypes) {
-        types.add(typeDescription.getName());
+        set.add(typeDescription.getName());
       }
+      types.addAll(set);
       Collections.sort(types);
 
       Display display = Display.getDefault();

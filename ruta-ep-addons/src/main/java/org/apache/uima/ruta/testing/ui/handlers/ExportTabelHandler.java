@@ -30,6 +30,7 @@ import org.apache.uima.ruta.testing.ui.views.evalDataTable.TypeEvalData;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -39,6 +40,9 @@ public class ExportTabelHandler extends AbstractHandler {
 
   public Object execute(ExecutionEvent event) throws ExecutionException {
     TestPageBookView debugView = (TestPageBookView) HandlerUtil.getActivePart(event);
+    if(!(debugView.getCurrentPage() instanceof TestViewPage)) {
+      return Status.CANCEL_STATUS;
+    }
     TestViewPage debugPage = (TestViewPage) debugView.getCurrentPage();
     
     TableViewer viewer = debugPage.getViewer();

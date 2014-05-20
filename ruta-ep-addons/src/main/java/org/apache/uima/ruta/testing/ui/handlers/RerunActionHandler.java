@@ -587,8 +587,10 @@ public class RerunActionHandler implements IHandler {
   }
 
   public Object execute(ExecutionEvent event) throws ExecutionException {
-
     TestPageBookView debugView = (TestPageBookView) HandlerUtil.getActivePart(event);
+    if(!(debugView.getCurrentPage() instanceof TestViewPage)) {
+      return Status.CANCEL_STATUS;
+    }
     TestViewPage debugPage = (TestViewPage) debugView.getCurrentPage();
 
     String viewCasName = debugPage.getSelectedViewCasName();
