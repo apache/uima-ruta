@@ -180,16 +180,6 @@ under the License.
             name="Rerun Command">
       </command>
       <command
-            defaultHandler="org.apache.uima.ruta.testing.ui.handlers.NextTestCaseHandler"
-            id="org.apache.uima.ruta.testing.nextTestCase"
-            name="NextTestCase">
-      </command>
-      <command
-            defaultHandler="org.apache.uima.ruta.testing.ui.handlers.PreviousTestCaseHandler"
-            id="org.apache.uima.ruta.testing.PreviousTestCase"
-            name="PreviousTestCase">
-      </command>
-      <command
             defaultHandler="org.apache.uima.ruta.testing.ui.handlers.LoadFilesFromFolderHandler"
             id="org.apache.uima.ruta.testing.LoadFolderCommand"
             name="LoadFolderCommand">
