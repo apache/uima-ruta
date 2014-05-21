@@ -37,19 +37,14 @@ import org.eclipse.ui.handlers.HandlerUtil;
 public class RemoveTestsHandler implements IHandler {
 
   public void addHandlerListener(IHandlerListener handlerListener) {
-    // TODO Auto-generated method stub
-
   }
 
   public void dispose() {
-    // TODO Auto-generated method stub
-
   }
 
   public Object execute(ExecutionEvent event) throws ExecutionException {
     TestPageBookView debugView = (TestPageBookView) HandlerUtil.getActivePart(event);
     TestViewPage activePage = (TestViewPage) debugView.getCurrentPage();
-    activePage.saveState();
     TableViewer viewer = activePage.getViewer();
     List list = (List) viewer.getInput();
     if (viewer.getSelection() == null) {

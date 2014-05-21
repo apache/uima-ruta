@@ -145,7 +145,6 @@ public class RerunActionHandler implements IHandler {
       // handle GUI
       final TestPageBookView testPageView = (TestPageBookView) HandlerUtil.getActivePart(event);
       final TestViewPage debugPage = (TestViewPage) testPageView.getCurrentPage();
-      debugPage.saveState();
       testPageView.showBusy(true);
 
       // init variables

@@ -19,10 +19,14 @@
 
 package org.apache.uima.ruta.testing.ui.views;
 
+import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IPage;
@@ -32,7 +36,8 @@ import org.eclipse.ui.part.PageBookView;
 
 public class TestPageBookView extends PageBookView {
 
-  
+  private IMemento memento;
+
   public TestPageBookView() {
   }
 
@@ -56,6 +61,7 @@ public class TestPageBookView extends PageBookView {
       TestViewPage testPage = new TestViewPage(r);
       initPage(testPage);
       testPage.createControl(getPageBook());
+      testPage.restoreState(memento);
       PageRec result = new PageRec(part, testPage);
       return result;
     }
@@ -64,7 +70,9 @@ public class TestPageBookView extends PageBookView {
 
   @Override
   protected void doDestroyPage(IWorkbenchPart part, PageRec pageRecord) {
-    pageRecord.page.dispose();
+    TestViewPage testViewPage = (TestViewPage)pageRecord.page;
+    testViewPage.saveState(memento);
+    testViewPage.dispose();
   }
 
   @Override
@@ -79,6 +87,12 @@ public class TestPageBookView extends PageBookView {
       }
     }
     return null;
+  }
+
+  @Override
+  public void init(IViewSite site, IMemento memento) throws PartInitException {
+    super.init(site, memento);
+    this.memento = memento;
   }
 
   @Override

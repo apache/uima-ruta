@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
@@ -35,7 +36,6 @@ import org.apache.uima.ruta.testing.ui.views.fn.FalseNegativeView;
 import org.apache.uima.ruta.testing.ui.views.fp.FalsePositiveView;
 import org.apache.uima.ruta.testing.ui.views.tp.TruePositiveView;
 import org.apache.uima.ruta.testing.ui.views.util.CASLoader;
-import org.apache.uima.ruta.testing.ui.views.util.Caretaker;
 import org.apache.uima.ruta.testing.ui.views.util.EvalDataProcessor;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -66,16 +66,15 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -84,8 +83,6 @@ import org.eclipse.ui.part.IPageBookViewPage;
 import org.eclipse.ui.part.Page;
 
 public class TestViewPage extends Page implements IPageBookViewPage {
-
-  private Caretaker caretaker;
 
   private Composite overlay;
 
@@ -107,7 +104,6 @@ public class TestViewPage extends Page implements IPageBookViewPage {
 
   private ListLabelProvider labelProvider;
 
-
   public TestViewPage(Composite parent, IResource scriptResource) {
     this(scriptResource);
     this.overlay = new Composite(parent, 0);
@@ -117,7 +113,6 @@ public class TestViewPage extends Page implements IPageBookViewPage {
   public TestViewPage(IResource scriptResource) {
     super();
     this.script = scriptResource;
-    this.caretaker = new Caretaker();
   }
 
   @Override
@@ -330,9 +325,6 @@ public class TestViewPage extends Page implements IPageBookViewPage {
     }
     table.setHeaderVisible(true);
     table.setLinesVisible(true);
-
-    caretaker = new Caretaker((ArrayList<TestCasData>) listviewer.getInput());
-
   }
 
   protected void openInCasEditor(IPath resultPath) {
@@ -410,24 +402,53 @@ public class TestViewPage extends Page implements IPageBookViewPage {
     }
   }
 
-  public Caretaker getCaretaker() {
-    return this.caretaker;
-  }
-
-  public void saveState() {
-    if (listviewer.getInput() != null) {
-      caretaker.saveState(listviewer);
+  public void saveState(IMemento memento) {
+    List<String> it = getIncludedTypes();
+    StringBuilder sb1 = new StringBuilder();
+    for (String each : it) {
+      sb1.append(each);
+      sb1.append(";");
     }
+    List<String> et = getExcludedTypes();
+    StringBuilder sb2 = new StringBuilder();
+    for (String each : et) {
+      sb2.append(each);
+      sb2.append(";");
+    }
+    memento.createChild("includedTypes", sb1.toString());
+    memento.createChild("excludedTypes", sb2.toString());
   }
 
-  public void previousState() {
-    ArrayList<TestCasData> stuff = (ArrayList<TestCasData>) caretaker.getPreviousState();
-    listviewer.setInput(stuff);
-  }
+  public void restoreState(IMemento memento) {
+    if (memento == null)
+      return;
 
-  public void nextState() {
-    listviewer.setInput(caretaker.getNextState());
-    listviewer.refresh();
+    IMemento itm = memento.getChild("includedTypes");
+    if (itm != null) {
+      String id = itm.getID();
+      String[] split = id.split("");
+      List<String> l = new ArrayList<String>();
+      for (String string : split) {
+        if (!StringUtils.isBlank(string)) {
+          l.add(string);
+        }
+      }
+      setIncludedTypes(l);
+    }
+
+    IMemento etm = memento.getChild("excludedTypes");
+    if (etm != null) {
+      String id = etm.getID();
+      String[] split = id.split("");
+      List<String> l = new ArrayList<String>();
+      for (String string : split) {
+        if (!StringUtils.isBlank(string)) {
+          l.add(string);
+        }
+      }
+      setExcludedTypes(l);
+    }
+
   }
 
   @Override
