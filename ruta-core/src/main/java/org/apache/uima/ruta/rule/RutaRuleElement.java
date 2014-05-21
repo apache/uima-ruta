@@ -66,7 +66,7 @@ public class RutaRuleElement extends AbstractRuleElement {
       RuleMatch extendedMatch = ruleMatch;
       if (useAlternatives) {
         extendedContainerMatch = containerMatch.copy();
-        extendedMatch = ruleMatch.copy(extendedContainerMatch);
+        extendedMatch = ruleMatch.copy(extendedContainerMatch, true);
       }
       doMatch(eachAnchor, extendedMatch, extendedContainerMatch, true, stream, crowd);
       if (this.equals(entryPoint) && ruleApply == null) {
@@ -234,7 +234,7 @@ public class RutaRuleElement extends AbstractRuleElement {
         RuleMatch extendedMatch = ruleMatch;
         if (useAlternatives) {
           extendedContainerMatch = containerMatch.copy();
-          extendedMatch = ruleMatch.copy(extendedContainerMatch);
+          extendedMatch = ruleMatch.copy(extendedContainerMatch, after);
         }
         doMatch(eachAnchor, extendedMatch, extendedContainerMatch, false, stream, crowd);
 
@@ -253,9 +253,14 @@ public class RutaRuleElement extends AbstractRuleElement {
             result.addAll(continueMatchSomewhereElse);
           }
         } else {
-          List<RuleMatch> stepbackMatch = stepbackMatch(after, annotation, ruleMatch, ruleApply,
-                  containerMatch, sideStepOrigin, stream, crowd, entryPoint);
-          result.addAll(stepbackMatch);
+          if (this.equals(entryPoint)) {
+            // hotfix for UIMA-3820
+            result.add(extendedMatch);
+          } else {
+            List<RuleMatch> stepbackMatch = stepbackMatch(after, annotation, ruleMatch, ruleApply,
+                    containerMatch, sideStepOrigin, stream, crowd, entryPoint);
+            result.addAll(stepbackMatch);
+          }
         }
       }
     } else {
@@ -376,7 +381,7 @@ public class RutaRuleElement extends AbstractRuleElement {
       if (featureExpression != null) {
         base = matcher.match(annotation, stream, getParent());
       }
-    } 
+    }
     List<AnnotationFS> textsMatched = new ArrayList<AnnotationFS>(1);
     if (base) {
       for (AbstractRutaCondition condition : conditions) {

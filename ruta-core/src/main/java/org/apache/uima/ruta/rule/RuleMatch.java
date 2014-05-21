@@ -57,8 +57,6 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
 
   public RuleMatch(RutaRule rule) {
     super(rule);
-    // map = new TreeMap<RuleElement, List<RuleElementMatch>>(
-    // new RuleElementComparator(rule.getRoot()));
     delegateApply = new HashMap<RutaElement, ScriptApply>(0);
   }
 
@@ -252,13 +250,13 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
     this.matched = matched;
   }
 
-  public RuleMatch copy(ComposedRuleElementMatch extendedContainerMatch) {
+  public RuleMatch copy(ComposedRuleElementMatch extendedContainerMatch, boolean after) {
     RuleMatch copy = new RuleMatch(rule);
     copy.setMatched(matched);
     if (extendedContainerMatch.getContainerMatch() == null) {
       copy.setRootMatch(extendedContainerMatch);
     } else {
-      copy.setRootMatch(rootMatch.copy(extendedContainerMatch));
+      copy.setRootMatch(rootMatch.copy2(extendedContainerMatch, after));
     }
 
     Map<RutaElement, ScriptApply> newDelegateApply = new HashMap<RutaElement, ScriptApply>(

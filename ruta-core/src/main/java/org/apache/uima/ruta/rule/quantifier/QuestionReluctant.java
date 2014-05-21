@@ -66,7 +66,7 @@ public class QuestionReluctant implements RuleElementQuantifier {
       return false;
     }
     ComposedRuleElementMatch extendedContainerMatch = containerMatch.copy();
-    RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch);
+    RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch, after);
     nextElement.continueMatch(after, annotation, extendedMatch, null, extendedContainerMatch, null,
             nextElement, stream, crowd);
     List<RuleElementMatch> nextList = extendedContainerMatch.getInnerMatches().get(nextElement);

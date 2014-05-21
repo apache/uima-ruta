@@ -77,7 +77,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       Map<RuleMatch, ComposedRuleElementMatch> ruleMatches = new HashMap<RuleMatch, ComposedRuleElementMatch>();
       for (RuleElement each : elements) {
         ComposedRuleElementMatch extendedContainerMatch = containerMatch.copy();
-        RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch);
+        RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch, true);
         ComposedRuleElementMatch composedMatch = createComposedMatch(extendedMatch,
                 extendedContainerMatch, stream);
         List<RuleMatch> startRuleMatches = each.startMatch(extendedMatch, null, composedMatch,
@@ -185,7 +185,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       Map<RuleMatch, ComposedRuleElementMatch> ruleMatches = new HashMap<RuleMatch, ComposedRuleElementMatch>();
       for (RuleElement each : elements) {
         ComposedRuleElementMatch extendedContainerMatch = containerMatch.copy();
-        RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch);
+        RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch, after);
         ComposedRuleElementMatch composedMatch = createComposedMatch(extendedMatch,
                 extendedContainerMatch, stream);
         List<RuleMatch> continueRuleMatches = each.continueMatch(after, annotation, extendedMatch,
@@ -218,7 +218,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       Map<RuleMatch, ComposedRuleElementMatch> ruleMatches = new HashMap<RuleMatch, ComposedRuleElementMatch>();
       for (RuleElement each : elements) {
         ComposedRuleElementMatch extendedContainerMatch = containerMatch.copy();
-        RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch);
+        RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch, after);
         ComposedRuleElementMatch composedMatch = createComposedMatch(extendedMatch,
                 extendedContainerMatch, stream);
         List<RuleMatch> continueRuleMatches = each.continueMatch(after, annotation, extendedMatch,
@@ -412,8 +412,13 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
                     parentContainerMatch, sideStepOrigin, entryPoint, stream, crowd);
           }
         } else {
-          result = fallback(after, failed, annotation, ruleMatch, ruleApply, parentContainerMatch,
-                  sideStepOrigin, entryPoint, stream, crowd);
+          if (this.equals(entryPoint)) {
+            // hotfix for UIMA-3820
+            result.add(ruleMatch);
+          } else {
+            result = fallback(after, failed, annotation, ruleMatch, ruleApply, parentContainerMatch,
+                    sideStepOrigin, entryPoint, stream, crowd);
+          }
         }
       } else {
         if (continueMatch) {

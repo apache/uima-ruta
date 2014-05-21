@@ -52,11 +52,11 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
   protected void enforceUpdate() {
     textsMatchedUpdated = false;
     ComposedRuleElementMatch cm = getContainerMatch();
-    if(cm != null) {
+    if (cm != null) {
       cm.enforceUpdate();
     }
   }
-  
+
   private void setInnerMatches(Map<RuleElement, List<RuleElementMatch>> innerMatches) {
     this.innerMatches = innerMatches;
     enforceUpdate();
@@ -131,7 +131,8 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
     return copy;
   }
 
-  public ComposedRuleElementMatch copy(ComposedRuleElementMatch extendedContainerMatch) {
+  public ComposedRuleElementMatch copy(ComposedRuleElementMatch extendedContainerMatch,
+          boolean after) {
     ComposedRuleElementMatch copy = new ComposedRuleElementMatch((ComposedRuleElement) ruleElement,
             containerMatch);
     copy.setBaseConditionMatched(baseConditionMatched);
@@ -164,10 +165,62 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
           for (RuleElementMatch each : value) {
             each.setContainerMatch(copy);
             if (each instanceof ComposedRuleElementMatch) {
-              newValue.add(((ComposedRuleElementMatch) each).copy(extendedContainerMatch));
+              newValue.add(((ComposedRuleElementMatch) each).copy(extendedContainerMatch, after));
             } else {
               newValue.add(each.copy());
             }
+          }
+          newMap.put(entry.getKey(), newValue);
+        } else {
+          newMap.put(entry.getKey(), null);
+        }
+      }
+    }
+    copy.setInnerMatches(newMap);
+    return copy;
+  }
+
+  public ComposedRuleElementMatch copy2(ComposedRuleElementMatch extendedContainerMatch,
+          boolean after) {
+    ComposedRuleElementMatch copy = new ComposedRuleElementMatch((ComposedRuleElement) ruleElement,
+            containerMatch);
+    copy.setBaseConditionMatched(baseConditionMatched);
+    copy.setConditions(conditions);
+    copy.setConditionsMatched(conditionsMatched);
+    copy.setTextsMatched(textsMatched);
+    Map<RuleElement, List<RuleElementMatch>> newMap = new TreeMap<RuleElement, List<RuleElementMatch>>(
+            new RuleElementComparator((ComposedRuleElement) ruleElement));
+    for (Entry<RuleElement, List<RuleElementMatch>> entry : innerMatches.entrySet()) {
+      RuleElement key = entry.getKey();
+      List<RuleElementMatch> value = entry.getValue();
+      if (key.equals(extendedContainerMatch.getRuleElement())) {
+        extendedContainerMatch.setContainerMatch(copy);
+        if (value != null) {
+          List<RuleElementMatch> newValue = new ArrayList<RuleElementMatch>();
+          newValue.addAll(value);
+          newValue.set(newValue.size() - 1, extendedContainerMatch);
+          newMap.put(extendedContainerMatch.getRuleElement(), newValue);
+        }
+      } else {
+        if (value != null && !value.isEmpty()) {
+          List<RuleElementMatch> newValue = new ArrayList<RuleElementMatch>();
+          int counter = 0;
+          for (RuleElementMatch each : value) {
+            each.setContainerMatch(copy);
+            // really need to copy all?
+            boolean isCurrentOne = false;
+            if (after && counter == value.size() - 1) {
+              isCurrentOne = true;
+            }
+            if (!after && counter == 0) {
+              isCurrentOne = true;
+            }
+            if (each instanceof ComposedRuleElementMatch && isCurrentOne) {
+              newValue.add(((ComposedRuleElementMatch) each).copy2(extendedContainerMatch, after));
+            } else {
+              newValue.add(each.copy());
+            }
+            counter++;
           }
           newMap.put(entry.getKey(), newValue);
         } else {
