@@ -124,14 +124,11 @@ public class WildCardRuleElement extends AbstractRuleElement {
     AnnotationFS nextOne = annotation;
     boolean doneHere = false;
     while (!doneHere && (nextOne = getNextPositionForComposed(cre, after, nextOne, stream)) != null) {
-//      RutaBasic endAnchor = stream.getEndAnchor(nextOne.getBegin());
-//      RutaBasic anchor = stream.getAnchor(!after, nextOne);
       int pointer = after ? nextOne.getBegin() : nextOne.getEnd();
       RutaBasic anchor = stream.getAnchor(!after, pointer);
       ComposedRuleElementMatch extendedContainerMatch = containerMatch.copy();
       RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch, after);
       AnnotationFS coveredByWildCard = getCoveredByWildCard(after, annotation, nextOne, stream);
-
       doMatch(coveredByWildCard, extendedMatch, extendedContainerMatch, annotation == null, stream,
               crowd);
       if (extendedMatch.matched()) {

@@ -209,12 +209,16 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
             each.setContainerMatch(copy);
             // really need to copy all?
             boolean isCurrentOne = false;
-            if (after && counter == value.size() - 1) {
+            if (counter == value.size() - 1) {
               isCurrentOne = true;
             }
-            if (!after && counter == 0) {
-              isCurrentOne = true;
-            }
+            // should not be neccessary because empty matches are listed last
+            // if (after && counter == value.size() - 1) {
+            // isCurrentOne = true;
+            // }
+            // if (!after && counter == 0) {
+            // isCurrentOne = true;
+            // }
             if (each instanceof ComposedRuleElementMatch && isCurrentOne) {
               newValue.add(((ComposedRuleElementMatch) each).copy2(extendedContainerMatch, after));
             } else {

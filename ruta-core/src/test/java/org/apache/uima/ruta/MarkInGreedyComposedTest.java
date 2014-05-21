@@ -33,37 +33,65 @@ import org.junit.Test;
 public class MarkInGreedyComposedTest {
 
   
-//  @Test
-//  public void testWildCardFollowedByComposedReversed() {
-//    String document = "1 x f B e d B x c A b a A 1";
-//    String script = "";
-//    script += "( ( (SW{REGEXP(\"x\")} SW ) #) {-> T1} )+ @NUM;";
-//    CAS cas = null;
-//    try {
-//      cas = RutaTestUtils.getCAS(document);
-//      Ruta.apply(cas, script);
-//    } catch (Exception e) {
-//      e.printStackTrace();
-//    }
-//
-//    Type t = null;
-//    AnnotationIndex<AnnotationFS> ai = null;
-//    FSIterator<AnnotationFS> iterator = null;
-//
-//    t = RutaTestUtils.getTestType(cas, 1);
-//    ai = cas.getAnnotationIndex(t);
-//    iterator = ai.iterator();
-////    for (AnnotationFS a : ai) {
-////      System.out.println(a.getCoveredText());
-////    }
-//    assertEquals(2, ai.size());
-//    assertEquals("x f B e d B", iterator.next().getCoveredText());
-//    assertEquals("x c A b a A", iterator.next().getCoveredText());
-//    
-//    if (cas != null) {
-//      cas.release();
-//    }
-//  }
+  
+  @Test
+  public void testWildCardFollowedByComposedReversed() {
+    String document = "1 x f B e d B x c A b a A 1";
+    String script = "";
+    script += "( ( (SW{REGEXP(\"x\")} SW ) #) {-> T1} )+ @NUM;";
+    CAS cas = null;
+    try {
+      cas = RutaTestUtils.getCAS(document);
+      Ruta.apply(cas, script);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    Type t = null;
+    AnnotationIndex<AnnotationFS> ai = null;
+    FSIterator<AnnotationFS> iterator = null;
+
+    t = RutaTestUtils.getTestType(cas, 1);
+    ai = cas.getAnnotationIndex(t);
+    iterator = ai.iterator();
+    assertEquals(2, ai.size());
+    assertEquals("x f B e d B", iterator.next().getCoveredText());
+    assertEquals("x c A b a A", iterator.next().getCoveredText());
+    
+    if (cas != null) {
+      cas.release();
+    }
+  }
+  
+  @Test
+  public void testSimpleFollowedByComposedReversed() {
+    String document = "1 x f B x c A 1";
+    String script = "";
+    script += "( ( (SW{REGEXP(\"x\")} SW ) CW) {-> T1} )+ @NUM;";
+    CAS cas = null;
+    try {
+      cas = RutaTestUtils.getCAS(document);
+      Ruta.apply(cas, script);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    Type t = null;
+    AnnotationIndex<AnnotationFS> ai = null;
+    FSIterator<AnnotationFS> iterator = null;
+
+    t = RutaTestUtils.getTestType(cas, 1);
+    ai = cas.getAnnotationIndex(t);
+    iterator = ai.iterator();
+    assertEquals(2, ai.size());
+    assertEquals("x f B", iterator.next().getCoveredText());
+    assertEquals("x c A", iterator.next().getCoveredText());
+    
+    if (cas != null) {
+      cas.release();
+    }
+  }
+  
   
   @Test
   public void testWildCardFollowedByComposed() {
