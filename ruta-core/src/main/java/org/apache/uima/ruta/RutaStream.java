@@ -86,6 +86,8 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
 
   private Boolean greedyRule;
 
+  private boolean onlyOnce = false;
+
   public RutaStream(CAS cas, Type basicType, FilterManager filter, boolean lowMemoryProfile,
           boolean simpleGreedyForComposed, InferenceCrowd crowd) {
     super();
@@ -358,6 +360,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
             filterManager, lowMemoryProfile, simpleGreedyForComposed, crowd);
     stream.setDynamicAnchoring(dynamicAnchoring);
     stream.setGreedyRuleElement(greedyRuleElement);
+    stream.setGreedyRule(greedyRule);
     stream.setGreedyRule(greedyRule);
     return stream;
   }
@@ -752,6 +755,19 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     this.simpleGreedyForComposed = simpleGreedyForComposed;
   }
 
+  public boolean isGreedyAnchoring() {
+    return greedyRule || greedyRuleElement;
+  }
+
+  public boolean isOnlyOnce() {
+    return onlyOnce;
+  }
+  
+  public void setOnlyOnce(Boolean onlyOnce) {
+    this.onlyOnce = onlyOnce;
+  }
+  
+  
   public boolean isVisible(AnnotationFS annotationFS) {
     if (annotationFS == null) {
       return false;
@@ -802,10 +818,6 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     }
   }
 
-  public boolean isGreedyAnchoring() {
-    return greedyRule || greedyRuleElement;
-  }
-
   public Collection<AnnotationFS> getAnnotations(Type type) {
     Collection<AnnotationFS> result = new LinkedList<AnnotationFS>();
     AnnotationFS windowAnnotation = filter.getWindowAnnotation();
@@ -831,5 +843,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     }
     return result;
   }
+
+
 
 }

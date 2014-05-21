@@ -60,8 +60,14 @@ public class RutaRuleElement extends AbstractRuleElement {
     boolean useAlternatives = anchors.size() != 1;
     for (AnnotationFS eachAnchor : anchors) {
       if (stream.isGreedyAnchoring() && isAlreadyCovered(eachAnchor, ruleApply, stream)) {
+        // skip if next matched should not overlap
         continue;
       }
+      if (stream.isOnlyOnce() && ruleApply.getApplied() > 0) {
+        // skip if the rule should only be applied once, on the first successful match
+        continue;
+      }
+      
       ComposedRuleElementMatch extendedContainerMatch = containerMatch;
       RuleMatch extendedMatch = ruleMatch;
       if (useAlternatives) {

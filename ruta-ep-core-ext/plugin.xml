@@ -26,5 +26,12 @@ under the License.
             engine="org.apache.uima.ruta.block.OnlyFirstBlockExtension">
       </block>
    </extension>
+   <extension
+         point="org.apache.uima.ruta.ide.blockExtension">
+      <block
+            class="org.apache.uima.ruta.block.OnlyOnceBlockIDEExtension"
+            engine="org.apache.uima.ruta.block.OnlyOnceBlockExtension">
+      </block>
+   </extension>
 
 </plugin>

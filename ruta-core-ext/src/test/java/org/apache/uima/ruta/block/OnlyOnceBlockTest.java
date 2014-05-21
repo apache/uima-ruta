@@ -34,21 +34,19 @@ import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
 
-public class OnlyFirstBlockTest {
+public class OnlyOnceBlockTest {
 
   @Test
   public void test() {
-    String document = "some text with numbers: 1 2 3 4";
-    String script = "ONLYONCE Document{}{\n";
-    script += "SW{-> T1};\n";
-    script += "NUM{-> T2};\n";
-    script += "SW+{-> T1};\n";
-    script += "NUM+{-> T4};\n";
+    String document = "some text";
+    String script = "ONLYFIRST Document{}{\n";
+    script += "Document{-> T1};\n";
+    script += "Document{-> T2};\n";
     script += "}";
 
     Map<String, Object> parameters = new HashMap<String, Object>();
     parameters.put(RutaEngine.PARAM_ADDITIONAL_EXTENSIONS,
-            new String[] { OnlyOnceBlockExtension.class.getName() });
+            new String[] { OnlyFirstBlockExtension.class.getName() });
     CAS cas = null;
     try {
       cas = RutaTestUtils.getCAS(document);
@@ -65,26 +63,12 @@ public class OnlyFirstBlockTest {
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
-    assertEquals("some", iterator.next().getCoveredText());
+    assertEquals("some text", iterator.next().getCoveredText());
 
     t = RutaTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("1", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 3);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("some text with numbers", iterator.next().getCoveredText());
+    assertEquals(0, ai.size());
 
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("1 2 3 4", iterator.next().getCoveredText());
-    
     if (cas != null) {
       cas.release();
     }
