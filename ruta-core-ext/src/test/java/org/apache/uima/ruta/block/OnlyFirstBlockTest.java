@@ -42,7 +42,7 @@ public class OnlyFirstBlockTest {
     String script = "ONLYONCE Document{}{\n";
     script += "SW{-> T1};\n";
     script += "NUM{-> T2};\n";
-    script += "SW+{-> T1};\n";
+    script += "SW+{-> T3};\n";
     script += "NUM+{-> T4};\n";
     script += "}";
 
@@ -79,7 +79,7 @@ public class OnlyFirstBlockTest {
     iterator = ai.iterator();
     assertEquals("some text with numbers", iterator.next().getCoveredText());
 
-    t = RutaTestUtils.getTestType(cas, 2);
+    t = RutaTestUtils.getTestType(cas, 4);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
