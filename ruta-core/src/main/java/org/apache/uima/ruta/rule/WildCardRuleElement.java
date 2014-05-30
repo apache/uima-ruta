@@ -139,8 +139,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
         if (anchor == null) {
           result = cre.startMatch(extendedMatch, ruleApply, nextContainerMatch, cre, stream, crowd);
         } else {
-          result = cre.continueMatch(after, anchor, extendedMatch, ruleApply,
-                  nextContainerMatch, sideStepOrigin, cre, stream, crowd);
+          result = cre.continueMatch(after, anchor, extendedMatch, ruleApply, nextContainerMatch,
+                  sideStepOrigin, cre, stream, crowd);
         }
         List<RuleElementMatch> nextList = nextContainerMatch.getInnerMatches().get(cre);
         boolean matched = hasMatched(nextList);
@@ -232,7 +232,9 @@ public class WildCardRuleElement extends AbstractRuleElement {
     RutaMatcher matcher = re.getMatcher();
     if (matcher instanceof RutaTypeMatcher) {
       FSIterator<AnnotationFS> iterator = getIterator(after, annotation, re, null, stream);
-      // moveOn(after, iterator);
+      if(iterator == null) {
+        return null;
+      }
       if (iterator.isValid()) {
         result = iterator.get();
         if (annotation != null && (after && result.getEnd() == annotation.getEnd())
@@ -290,7 +292,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
     FSIterator<AnnotationFS> iterator = getIterator(after, annotation, nextElement, defaultType,
             stream);
     // already matched something maybe, but now at the end of the document
-    if (!iterator.isValid()) {
+    if (iterator == null ||!iterator.isValid()) {
       RuleElementContainer c = getContainer();
       if (c instanceof ComposedRuleElement) {
         ComposedRuleElement cre = (ComposedRuleElement) c;
@@ -300,7 +302,6 @@ public class WildCardRuleElement extends AbstractRuleElement {
       result.add(ruleMatch);
       return result;
     }
-
     boolean doneHere = false;
     while (!doneHere && iterator.isValid() && stream.isVisible(iterator.get())) {
       AnnotationFS nextOne = iterator.get();
@@ -382,6 +383,20 @@ public class WildCardRuleElement extends AbstractRuleElement {
       } else {
         AnnotationFS pointer = stream.getAnchor(after, annotation);
         result = cas.getAnnotationIndex(type).iterator(pointer);
+        if (annotation != null && result.isValid()) {
+          // hotfix for index overflow...
+          AnnotationFS a = result.get();
+          if (after) {
+            if (a.getBegin() <= annotation.getBegin()) {
+              return null;
+            }
+          } else {
+            if (a.getEnd() >= annotation.getEnd()) {
+              return null;
+            }
+          }
+        }
+
         if (!after) {
           result.moveToPrevious();
         }
