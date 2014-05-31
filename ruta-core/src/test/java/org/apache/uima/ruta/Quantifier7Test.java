@@ -38,7 +38,7 @@ public class Quantifier7Test {
     script += "\"i\" -> T2;\n";
     script += "COMMA {-> T3};\n";
     script += "COMMA #{-> T5} COMMA;\n";
-    script += "T5 { CONTAINS(T1)} (T5 { CONTAINS(T2) } T3?)* { -> MARK(T4, 1, 2) };\n";
+    script += "T5 { CONTAINS(T1)} (T3? T5 { CONTAINS(T2) } T3?)* { -> MARK(T4, 1, 2) };\n";
     
     CAS cas = null;
     try {
@@ -51,9 +51,10 @@ public class Quantifier7Test {
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
-
+    
     t = RutaTestUtils.getTestType(cas, 4);
     ai = cas.getAnnotationIndex(t);
+
     assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals("H 1 2 3, i 1 2 3, i 1 2 3, i 1 2 3,", iterator.next().getCoveredText());

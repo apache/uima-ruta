@@ -232,7 +232,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
     RutaMatcher matcher = re.getMatcher();
     if (matcher instanceof RutaTypeMatcher) {
       FSIterator<AnnotationFS> iterator = getIterator(after, annotation, re, null, stream);
-      if(iterator == null) {
+      if (iterator == null) {
         return null;
       }
       if (iterator.isValid()) {
@@ -292,7 +292,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
     FSIterator<AnnotationFS> iterator = getIterator(after, annotation, nextElement, defaultType,
             stream);
     // already matched something maybe, but now at the end of the document
-    if (iterator == null ||!iterator.isValid()) {
+    if (iterator == null || !iterator.isValid()) {
       RuleElementContainer c = getContainer();
       if (c instanceof ComposedRuleElement) {
         ComposedRuleElement cre = (ComposedRuleElement) c;
@@ -383,22 +383,23 @@ public class WildCardRuleElement extends AbstractRuleElement {
       } else {
         AnnotationFS pointer = stream.getAnchor(after, annotation);
         result = cas.getAnnotationIndex(type).iterator(pointer);
+        if (!after) {
+          result.moveToPrevious();
+        }
         if (annotation != null && result.isValid()) {
           // hotfix for index overflow...
           AnnotationFS a = result.get();
+          // not greater equal because caller method will fix it for same positions, should be fixed
+          // right here
           if (after) {
-            if (a.getBegin() <= annotation.getBegin()) {
+            if (a.getBegin() < annotation.getBegin()) {
               return null;
             }
           } else {
-            if (a.getEnd() >= annotation.getEnd()) {
+            if (a.getEnd() > annotation.getEnd()) {
               return null;
             }
           }
-        }
-
-        if (!after) {
-          result.moveToPrevious();
         }
       }
     } else {

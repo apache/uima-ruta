@@ -59,8 +59,6 @@ public class InlinedRulesTest {
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
 
-
-    
     t = RutaTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
