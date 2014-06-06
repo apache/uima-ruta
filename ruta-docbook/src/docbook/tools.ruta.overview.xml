@@ -1293,6 +1293,19 @@ ae.process(cas);]]></programlisting>
             Remember to enable explicit conversion via <quote>conversionPolicy</quote> first.
           </para>
         </section>
+        <section id="ugr.tools.ruta.ae.htmlconverter.parameter.skipWhitespaces">
+          <title>skipWhitespaces</title>
+          <para>
+            This boolean parameter determines if the converter should skip whitespaces. 
+            Html documents often contains whitespaces for indentation and formatting, 
+            which should not be reproduced in the converted plain text document.
+            If the parameter is set to false, then the whitespces are not removed. 
+            This behavior is useful, if not Html documents are converted, but XMl files.
+            The default value is true.
+          </para>
+        </section>
+        
+        
       </section>
     </section><section id="ugr.tools.ruta.ae.stylemap">
       <title>Style Map Creator</title>
