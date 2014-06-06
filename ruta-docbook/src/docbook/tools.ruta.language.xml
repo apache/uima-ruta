@@ -672,6 +672,24 @@ FeatureAssignment -> "(" StringExpression "=" Expression
       </para>
 	    </section>
     </section>
+    <section id="ugr.tools.ruta.language.extensions.core-ext.onlyonce">
+      <title>ONLYONCE</title>
+      <para>
+        Rules within this block construct will stop after the first succesful match.
+        The following example provides an overview of the syntax:
+      </para>
+      <programlisting><![CDATA[ONLYONCE Document{}{
+  CW{-> FirstCW};
+  NUM+{-> FirstNumList};
+}]]></programlisting>
+      <para>
+        The block contains two rules. 
+        The first rule will annotate the first capitalized word of the document with the type FirstCW.
+        All further possible matches will be skipped.
+        The second rule will annotate the first sequence of numbers with the type FirstNumList.
+        The greedy behavior of the quantifiers is not changed by the ONLYONCE block.
+       </para>
+    </section>
     <section id="ugr.tools.ruta.language.extensions.new">
     <title>Adding new Language Elements</title>
     <para>
