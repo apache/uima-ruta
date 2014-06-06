@@ -675,7 +675,7 @@ FeatureAssignment -> "(" StringExpression "=" Expression
     <section id="ugr.tools.ruta.language.extensions.core-ext.onlyonce">
       <title>ONLYONCE</title>
       <para>
-        Rules within this block construct will stop after the first succesful match.
+        Rules within this block construct will stop after the first successful match.
         The following example provides an overview of the syntax:
       </para>
       <programlisting><![CDATA[ONLYONCE Document{}{
