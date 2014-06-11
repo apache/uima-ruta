@@ -69,7 +69,7 @@ public class TransferAction extends TypeSensitiveAction {
       Feature newFeature = newType.getFeatureByBaseName(shortName);
       if (newFeature != null) {
         if (feature.getRange().isPrimitive()) {
-          String value = oldFS.getFeatureValueAsString(newFeature);
+          String value = oldFS.getFeatureValueAsString(feature);
           newFS.setFeatureValueFromString(newFeature, value);
         } else {
           FeatureStructure value = oldFS.getFeatureValue(feature);
