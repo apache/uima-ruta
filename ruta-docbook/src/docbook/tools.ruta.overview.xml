@@ -648,11 +648,11 @@ aed.resolveImports(resMgr);
 AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed, 
     resMgr, null);
 File scriptFile = new File("path/to/file/MyScript.ruta");
-ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, 
+ae.setConfigParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, 
     new String[] { scriptFile.getParentFile().getAbsolutePath() });
 String name = scriptFile.getName().substring(0, 
-    scriptFile.getName().length() - 3);
-ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, name);
+    scriptFile.getName().length() - 5);
+ae.setConfigParameterValue(RutaEngine.PARAM_MAIN_SCRIPT, name);
 ae.reconfigure();
 CAS cas = ae.newCAS();
 cas.setDocumentText("This is my document.");
