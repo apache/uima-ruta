@@ -61,10 +61,6 @@ public class ReverseQuantifierTest {
     
     t = RutaTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
-    System.out.println("T2");
-    for (AnnotationFS a : ai) {
-      System.out.println(a.getCoveredText());
-    }
     assertEquals(4, ai.size());
     iterator = ai.iterator();
     // TODO: is this really correct? the rule elements should not match at all!
