@@ -35,17 +35,17 @@ public class CheckAnnotationDocumentListener extends AbstractAnnotationDocumentL
 
   @Override
   protected void addedAnnotation(Collection<AnnotationFS> annotations) {
-    composite.addedAnnotation(annotations);
+    composite.addAnnotations(annotations);
   }
 
   @Override
   protected void removedAnnotation(Collection<AnnotationFS> annotations) {
-    composite.removedAnnotation(annotations);
+    composite.removeAnnotations(annotations);
   }
 
   @Override
   protected void updatedAnnotation(Collection<AnnotationFS> annotations) {
-    composite.updatedAnnotation(annotations);
+    composite.updateAnnotations(annotations);
   }
 
 }

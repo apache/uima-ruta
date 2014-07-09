@@ -28,12 +28,18 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
+import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.impl.XmiCasDeserializer;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.caseditor.editor.AnnotationEditor;
@@ -45,6 +51,8 @@ import org.apache.uima.util.CasCreationUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.dialogs.IInputValidator;
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -52,6 +60,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
@@ -61,13 +70,18 @@ import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
@@ -90,13 +104,15 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
 
   private ViewPart viewPart;
 
-  private Text typeSystem;
+  private Text pathToTypeSystem;
 
   private HashMap<String, Image> images;
 
   private Text documentSink;
 
-  private List<String> selectedTypes;
+  private Map<String, Set<String>> typesToCheck;
+
+  private Set<String> typesToTransferUnchecked;
 
   private CheckDocument currentDocument = null;
 
@@ -106,10 +122,13 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
 
   private List<CheckDocument> oldDocs;
 
+  private TypeSystemDescription tsd;
+
   public AnnotationCheckComposite(Composite parent, int style, ViewPart viewPart) {
     super(parent, style);
     this.viewPart = viewPart;
-    selectedTypes = new ArrayList<String>();
+    typesToCheck = new HashMap<String, Set<String>>();
+    typesToTransferUnchecked = new HashSet<String>();
     initGui();
     annotationListener = new CheckAnnotationDocumentListener(this);
   }
@@ -117,19 +136,77 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
   private void initGui() {
     this.setLayout(new FormLayout());
     this.setSize(400, 800);
+    initDocumentSourceTextField();
+    initDocumentSinkTextField();
+    initTypeSystemPathTextField();
+    initTreeViewer();
+    viewPart.getSite().getPage().addSelectionListener(this);
+    viewPart.getSite().setSelectionProvider(treeView);
+  }
 
-    documentSource = new Text(this, SWT.SINGLE | SWT.BORDER);
-    FormData fdata1 = new FormData();
-    fdata1.width = 200;
-    fdata1.left = new FormAttachment(0, 1000, 5);
-    fdata1.top = new FormAttachment(0, 1000, 5);
-    fdata1.right = new FormAttachment(1000, 1000, -5);
-    documentSource.setLayoutData(fdata1);
-    documentSource.setToolTipText("Document source folder...");
-    documentSource.setMessage("Document source folder...");
-    DropTarget dt = new DropTarget(documentSource, DND.DROP_DEFAULT | DND.DROP_MOVE);
-    dt.setTransfer(new Transfer[] { FileTransfer.getInstance() });
-    dt.addDropListener(new DropTargetAdapter() {
+  private void initTreeViewer() {
+    FormData fdata3 = new FormData();
+    fdata3.left = new FormAttachment(0, 1000, 3);
+    fdata3.top = new FormAttachment(0, 1000, 81);
+    fdata3.right = new FormAttachment(1000, 1000, -3);
+    fdata3.bottom = new FormAttachment(1000, 1000, -3);
+    Composite comp = new Composite(this, SWT.CENTER);
+    comp.setLayoutData(fdata3);
+    comp.setLayout(new FillLayout());
+    treeView = new TreeViewer(comp, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+    AnnotationCheckContentProvider provider = new AnnotationCheckContentProvider();
+    treeView.setContentProvider(provider);
+    treeView.getControl().addKeyListener(new KeyAdapter() {
+      @Override
+      public void keyPressed(KeyEvent e) {
+        char c = e.character;
+        if (c == '4' || c == '5') {
+          if (c == '4') {
+            accept();
+          } else if (c == '5') {
+            reject(true);
+          }
+        }
+      }
+    });
+    treeView.setComparator(new FeatureCheckTreeNodeComparator());
+    treeView.getTree().addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseDown(MouseEvent e) {
+        Object source = e.getSource();
+        if (source instanceof Tree && e.button == 3) {
+          Tree tree = (Tree) source;
+          Composite composite = tree.getParent().getParent();
+          TreeSelection teeSelection = (TreeSelection) treeView.getSelection();
+          Object node = teeSelection.getFirstElement();
+          Display display = Display.getDefault();
+          Shell shell = new Shell(display, SWT.RESIZE | SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
+          if (node instanceof AnnotationCheckTreeNode && !(node instanceof FeatureCheckTreeNode)) {
+            changeType(shell, composite, node);
+          }
+          if (node instanceof AnnotationCheckTreeNode && node instanceof FeatureCheckTreeNode) {
+            changeFeature(shell, node);
+          }
+        }
+      }
+    });
+    lableProvider = new AnnotationCheckLabelProvider(this);
+    treeView.setLabelProvider(lableProvider);
+  }
+
+  private void initTypeSystemPathTextField() {
+    pathToTypeSystem = new Text(this, SWT.SINGLE | SWT.BORDER);
+    FormData fdata2 = new FormData();
+    fdata2.width = 200;
+    fdata2.left = new FormAttachment(0, 1000, 5);
+    fdata2.top = new FormAttachment(0, 1000, 55);
+    fdata2.right = new FormAttachment(1000, 1000, -5);
+    pathToTypeSystem.setLayoutData(fdata2);
+    pathToTypeSystem.setToolTipText("Type System...");
+    pathToTypeSystem.setMessage("Type System...");
+    DropTarget dt1 = new DropTarget(pathToTypeSystem, DND.DROP_DEFAULT | DND.DROP_MOVE);
+    dt1.setTransfer(new Transfer[] { FileTransfer.getInstance() });
+    dt1.addDropListener(new DropTargetAdapter() {
       @Override
       public void drop(DropTargetEvent event) {
         String fileList[] = null;
@@ -139,11 +216,13 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
         }
         if (fileList != null && fileList.length > 0) {
           String fileString = fileList[0];
-          documentSource.setText(fileString);
+          pathToTypeSystem.setText(fileString);
         }
       }
     });
+  }
 
+  private void initDocumentSinkTextField() {
     documentSink = new Text(this, SWT.SINGLE | SWT.BORDER);
     FormData fdatag = new FormData();
     fdatag.width = 200;
@@ -169,19 +248,21 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
         }
       }
     });
+  }
 
-    typeSystem = new Text(this, SWT.SINGLE | SWT.BORDER);
-    FormData fdata2 = new FormData();
-    fdata2.width = 200;
-    fdata2.left = new FormAttachment(0, 1000, 5);
-    fdata2.top = new FormAttachment(0, 1000, 55);
-    fdata2.right = new FormAttachment(1000, 1000, -5);
-    typeSystem.setLayoutData(fdata2);
-    typeSystem.setToolTipText("Type System...");
-    typeSystem.setMessage("Type System...");
-    DropTarget dt1 = new DropTarget(typeSystem, DND.DROP_DEFAULT | DND.DROP_MOVE);
-    dt1.setTransfer(new Transfer[] { FileTransfer.getInstance() });
-    dt1.addDropListener(new DropTargetAdapter() {
+  private void initDocumentSourceTextField() {
+    documentSource = new Text(this, SWT.SINGLE | SWT.BORDER);
+    FormData fdata1 = new FormData();
+    fdata1.width = 200;
+    fdata1.left = new FormAttachment(0, 1000, 5);
+    fdata1.top = new FormAttachment(0, 1000, 5);
+    fdata1.right = new FormAttachment(1000, 1000, -5);
+    documentSource.setLayoutData(fdata1);
+    documentSource.setToolTipText("Document source folder...");
+    documentSource.setMessage("Document source folder...");
+    DropTarget dt = new DropTarget(documentSource, DND.DROP_DEFAULT | DND.DROP_MOVE);
+    dt.setTransfer(new Transfer[] { FileTransfer.getInstance() });
+    dt.addDropListener(new DropTargetAdapter() {
       @Override
       public void drop(DropTargetEvent event) {
         String fileList[] = null;
@@ -191,44 +272,50 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
         }
         if (fileList != null && fileList.length > 0) {
           String fileString = fileList[0];
-          typeSystem.setText(fileString);
+          documentSource.setText(fileString);
         }
       }
     });
+  }
 
-    FormData fdata3 = new FormData();
-    fdata3.left = new FormAttachment(0, 1000, 3);
-    fdata3.top = new FormAttachment(0, 1000, 81);
-    fdata3.right = new FormAttachment(1000, 1000, -3);
-    fdata3.bottom = new FormAttachment(1000, 1000, -3);
-    Composite comp = new Composite(this, SWT.CENTER);
-    comp.setLayoutData(fdata3);
-    comp.setLayout(new FillLayout());
-    treeView = new TreeViewer(comp, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+  private void changeType(Shell shell, Composite composite, Object node) {
+    AnnotationCheckComposite annotCheckCompo = null;
+    if (!(composite instanceof AnnotationCheckComposite)) {
+      return;
+    }
+    annotCheckCompo = (AnnotationCheckComposite) composite;
+    shell.setText("Change annotation type");
+    TypeSystemDescription tsd = annotCheckCompo.getTypeSystemDescription();
+    SelectTypesDialogCheck dialog = new SelectTypesDialogCheck(shell, tsd, null, false, SWT.SINGLE,
+            false);
+    String newTypeName = null;
+    if (dialog.open() == Window.OK) {
+      newTypeName = dialog.getChoosenType();
+    }
+    if (newTypeName != null) {
+      AnnotationCheckTreeNode annotCheckTreeNode = (AnnotationCheckTreeNode) node;
+      CheckAnnotation checkAnnot = (CheckAnnotation) annotCheckTreeNode.getElement();
+      checkAnnot.setTypeName(newTypeName);
+      String[] split = newTypeName.split("\\.");
+      String shortTypeName = split[split.length - 1];
+      checkAnnot.setShortType(shortTypeName);
+      treeView.refresh();
+      return;
+    }
+  }
 
-    AnnotationCheckContentProvider provider = new AnnotationCheckContentProvider();
-    treeView.setContentProvider(provider);
-
-    treeView.getControl().addKeyListener(new KeyAdapter() {
-      @Override
-      public void keyPressed(KeyEvent e) {
-        char c = e.character;
-        if (c == '1' || c == '2') {
-          if (c == '1') {
-            accept();
-          } else if (c == '2') {
-            reject();
-          }
-        }
-      }
-
-    });
-
-    lableProvider = new AnnotationCheckLabelProvider(this);
-    treeView.setLabelProvider(lableProvider);
-
-    viewPart.getSite().getPage().addSelectionListener(this);
-    viewPart.getSite().setSelectionProvider(treeView);
+  private void changeFeature(Shell shell, Object node) {
+    FeatureCheckTreeNode featTreeNode = (FeatureCheckTreeNode) node;
+    shell.setText("Change value of feature");
+    Type range = featTreeNode.getFeature().getRange();
+    IInputValidator validator = new ChangeFeatureValidator(range);
+    InputDialog dialog = new InputDialog(getShell(), "Define new feature value",
+            "New feature value:", "", validator);
+    if (dialog.open() == Window.OK) {
+      featTreeNode.setValue(dialog.getValue());
+      treeView.refresh();
+      return;
+    }
   }
 
   /*
@@ -273,12 +360,26 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
     image = desc.createImage();
     name = "help";
     images.put(name, image);
+
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/bullet_blue.png");
+    image = desc.createImage();
+    name = "feature";
+    images.put(name, image);
+
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/folder_page.png");
+    image = desc.createImage();
+    name = "folder";
+    images.put(name, image);
   }
 
+  @Override
   public void selectionChanged(IWorkbenchPart part, ISelection selection) {
     if (part instanceof AnnotationCheckView) {
       if (selection instanceof TreeSelection) {
         TreeSelection ts = (TreeSelection) selection;
+        if (ts.getFirstElement() instanceof FeatureCheckTreeNode) {
+          return;
+        }
         if (ts.getFirstElement() instanceof AnnotationCheckTreeNode) {
           AnnotationCheckTreeNode firstElement = (AnnotationCheckTreeNode) ts.getFirstElement();
           CheckElement element = firstElement.getElement();
@@ -286,8 +387,8 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
           int end = 0;
           CheckDocument newDoc = null;
           if (element instanceof CheckAnnotation) {
-            begin = ((CheckAnnotation) element).begin;
-            end = ((CheckAnnotation) element).end;
+            begin = ((CheckAnnotation) element).getBegin();
+            end = ((CheckAnnotation) element).getEnd();
             newDoc = ((CheckDocument) firstElement.getParent().getElement());
           } else if (element instanceof CheckDocument) {
             newDoc = ((CheckDocument) element);
@@ -312,8 +413,8 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
           Iterator<Type> typeIterator = casEditor.getDocument().getCAS().getTypeSystem()
                   .getTypeIterator();
           while (typeIterator.hasNext()) {
-            Type type = (Type) typeIterator.next();
-            boolean contains = selectedTypes.contains(type.getName());
+            Type type = typeIterator.next();
+            boolean contains = typesToCheck.containsKey(type.getName());
             casEditor.setShownAnnotationType(type, contains);
           }
           currentDocument = newDoc;
@@ -323,6 +424,7 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
     }
   }
 
+  @Override
   public void selectionChanged(SelectionChangedEvent arg0) {
   }
 
@@ -345,13 +447,27 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
     IMemento tsName = memento.getChild("typeSystem");
     if (tsName != null) {
       String id = tsName.getID();
-      typeSystem.setText(id);
+      pathToTypeSystem.setText(id);
     }
 
-    for (IMemento eachMemento : memento.getChildren("selectedTypes")) {
-      IMemento child = eachMemento.getChild("type");
-      if (child != null) {
-        selectedTypes.add(child.getID());
+    IMemento selectedTypes = memento.getChild("typesToCheck");
+    if (selectedTypes != null) {
+      typesToCheck = new HashMap<String, Set<String>>();
+      for (IMemento mementoTypesToCheck : selectedTypes.getChildren(selectedTypes.getID())) {
+        String typeName = mementoTypesToCheck.getID();
+        Set<String> features = new HashSet<String>();
+        for (IMemento mementoFeature : mementoTypesToCheck.getChildren("feature")) {
+          features.add(mementoFeature.getID());
+        }
+        typesToCheck.put(typeName, features);
+      }
+    }
+    IMemento uncheckedTypes = memento.getChild("typesToTransferUnchecked");
+    if (uncheckedTypes != null) {
+      typesToTransferUnchecked = new HashSet<String>();
+      for (IMemento mementoUnchecked : uncheckedTypes.getChildren(uncheckedTypes.getID())) {
+        String typeName = mementoUnchecked.getID();
+        typesToTransferUnchecked.add(typeName);
       }
     }
 
@@ -360,11 +476,20 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
   public void saveState(IMemento memento) {
     memento.createChild("documentSource", documentSource.getText());
     memento.createChild("documentSink", documentSink.getText());
-    memento.createChild("typeSystem", typeSystem.getText());
+    memento.createChild("typeSystem", pathToTypeSystem.getText());
 
-    for (String each : selectedTypes) {
-      IMemento currentMemento = memento.createChild("selectedTypes", "type");
-      currentMemento.createChild("type", each);
+    IMemento selectedTypesMemento = memento.createChild("typesToCheck", "type");
+    for (Entry<String, Set<String>> checkedTypeEntry : typesToCheck.entrySet()) {
+      IMemento selectedTypeMemento = selectedTypesMemento.createChild("type",
+              checkedTypeEntry.getKey());
+      for (String feature : checkedTypeEntry.getValue()) {
+        selectedTypeMemento.createChild("feature", feature);
+      }
+    }
+
+    IMemento uncheckTypesMemento = memento.createChild("typesToTransferUnchecked", "unchecked");
+    for (String uncheckedTypeName : typesToTransferUnchecked) {
+      uncheckTypesMemento.createChild("unchecked", uncheckedTypeName);
     }
 
   }
@@ -381,19 +506,19 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
     return documentSink.getText();
   }
 
-  public String getTypeSystem() {
-    return typeSystem.getText();
+  public String getPathToTypeSystem() {
+    return pathToTypeSystem.getText();
   }
 
-  public List<String> getSelectedTypes() {
-    return selectedTypes;
+  public Map<String, Set<String>> getCheckedTypes() {
+    return typesToCheck;
   }
 
-  public void setSelectedTypes(List<String> selection) {
-    this.selectedTypes = selection;
+  public void setTypesToCheck(Map<String, Set<String>> typesToCheck) {
+    this.typesToCheck = typesToCheck;
   }
 
-  public void reject() {
+  public void reject(boolean doMove) {
     TreeSelection selection = (TreeSelection) treeView.getSelection();
     AnnotationCheckTreeNode firstElement = (AnnotationCheckTreeNode) selection.getFirstElement();
     if (firstElement == null) {
@@ -401,7 +526,9 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
     }
     firstElement.getElement().checked = true;
     firstElement.getElement().keep = false;
-    moveToNext();
+    if (doMove) {
+      moveToNext();
+    }
     treeView.refresh();
   }
 
@@ -413,19 +540,41 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
     }
     firstElement.getElement().checked = true;
     firstElement.getElement().keep = true;
+    List<AnnotationCheckTreeNode> siblings = Arrays.asList(firstElement.getParent().getChildren());
+    int indexOfFirstElement = siblings.indexOf(firstElement);
+    CheckAnnotation firstElementAnnotation = (CheckAnnotation) firstElement.getElement();
     moveToNext();
+    for (int i = indexOfFirstElement + 1; i < siblings.size(); i++) {
+      CheckElement nextSiblingCE = siblings.get(i).getElement();
+      if (nextSiblingCE instanceof CheckAnnotation) {
+        CheckAnnotation nextSibling = (CheckAnnotation) nextSiblingCE;
+        if (nextSibling.getBegin() == firstElementAnnotation.getBegin()
+                && nextSibling.getEnd() == firstElementAnnotation.getEnd()) {
+          reject(true);
+        } else {
+          break;
+        }
+        if (i == siblings.size() - 1) {
+          IAnnotationCheckTreeNode parent = siblings.get(0).getParent();
+          parent.getElement().checked = true;
+          parent.getElement().keep = true;
+        }
+      }
+    }
     treeView.refresh();
   }
 
   public void moveToNext() {
     TreeSelection selection = (TreeSelection) treeView.getSelection();
-    AnnotationCheckTreeNode firstElement = (AnnotationCheckTreeNode) selection.getFirstElement();
-    if (firstElement == null) {
+    IAnnotationCheckTreeNode parent = null;
+    AnnotationCheckTreeNode firstElement = null;
+    if (selection.getFirstElement() instanceof FeatureCheckTreeNode) {
       return;
     }
-    IAnnotationCheckTreeNode parent = firstElement.getParent();
-    AnnotationCheckTreeNode[] children = parent.getChildren();
-    List<AnnotationCheckTreeNode> list = Arrays.asList(children);
+    firstElement = (AnnotationCheckTreeNode) selection.getFirstElement();
+    parent = firstElement.getParent();
+    IAnnotationCheckTreeNode[] children = parent.getChildren();
+    List<IAnnotationCheckTreeNode> list = Arrays.asList(children);
     int indexOf = list.indexOf(firstElement);
     IAnnotationCheckTreeNode brother = null;
     IAnnotationCheckTreeNode uncle = parent;
@@ -442,8 +591,8 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
       brother = list.get(indexOf + 1);
     } else if (firstElement.getElement() instanceof CheckAnnotation) {
       brother = null;
-      AnnotationCheckTreeNode[] children2 = parent.getParent().getChildren();
-      List<AnnotationCheckTreeNode> list2 = Arrays.asList(children2);
+      IAnnotationCheckTreeNode[] children2 = parent.getParent().getChildren();
+      List<IAnnotationCheckTreeNode> list2 = Arrays.asList(children2);
       int indexOf2 = list2.indexOf(parent);
       if (list2 == null || list2.isEmpty()) {
 
@@ -465,11 +614,13 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
     }
     final TreeSelection newSelection = new TreeSelection(treePath);
     treeView.setSelection(newSelection, true);
+    treeView.expandToLevel(((AnnotationCheckTreeNode) newSelection.getFirstElement()).getParent(),
+            TreeViewer.ALL_LEVELS);
 
     if (firstElement.getElement() instanceof CheckAnnotation) {
       boolean allChecked = true;
       boolean oneKeep = false;
-      for (AnnotationCheckTreeNode each : list) {
+      for (IAnnotationCheckTreeNode each : list) {
         CheckElement element = each.getElement();
         allChecked &= element.checked;
         oneKeep |= element.keep;
@@ -484,61 +635,74 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
     AnnotationCheckTreeNode root = (AnnotationCheckTreeNode) treeView.getInput();
     AnnotationCheckTreeNode[] children = root.getChildren();
     List<CheckDocument> docs = new ArrayList<CheckDocument>(oldDocs);
-    TypeSystemDescription tsd = null;
-    try {
-      tsd = UIMAFramework.getXMLParser().parseTypeSystemDescription(
-              new XMLInputSource(typeSystem.getText()));
-      tsd.resolveImports();
-    } catch (InvalidXMLException e) {
-      RutaAddonsPlugin.error(e);
-    } catch (IOException e) {
-      RutaAddonsPlugin.error(e);
-    }
+    TypeSystemDescription tsd = getTypeSystemDescription();
+    CAS casSource = null;
     CAS cas = null;
     try {
       cas = CasCreationUtils.createCas(tsd, null, new FsIndexDescription[0]);
+      casSource = CasCreationUtils.createCas(tsd, null, new FsIndexDescription[0]);
     } catch (ResourceInitializationException e) {
       RutaAddonsPlugin.error(e);
     }
-
     for (AnnotationCheckTreeNode each : children) {
       CheckDocument cd = (CheckDocument) each.getElement();
       if (cd.checked && cd.keep) {
         cas.reset();
         File oldFile = new File(cd.source);
         File goldFile = new File(documentSink.getText(), oldFile.getName());
-        if (goldFile.exists()) {
-          try {
+        try {
+          if (goldFile.exists()) {
             XmiCasDeserializer.deserialize(new FileInputStream(goldFile), cas, false);
-          } catch (FileNotFoundException e) {
-            RutaAddonsPlugin.error(e);
-          } catch (SAXException e) {
-            RutaAddonsPlugin.error(e);
-          } catch (IOException e) {
-            RutaAddonsPlugin.error(e);
-          }
-        } else {
-          try {
+          } else {
             XmiCasDeserializer.deserialize(new FileInputStream(oldFile), cas, true);
-          } catch (FileNotFoundException e) {
-            RutaAddonsPlugin.error(e);
-          } catch (SAXException e) {
-            RutaAddonsPlugin.error(e);
-          } catch (IOException e) {
-            RutaAddonsPlugin.error(e);
           }
-          String documentText = cas.getDocumentText();
-          cas.reset();
-          cas.setDocumentText(documentText);
+        } catch (FileNotFoundException e) {
+          RutaAddonsPlugin.error(e);
+        } catch (SAXException e) {
+          RutaAddonsPlugin.error(e);
+        } catch (IOException e) {
+          RutaAddonsPlugin.error(e);
+        }
+        String documentText = cas.getDocumentText();
+        cas.reset();
+        cas.setDocumentText(documentText);
+        try {
+          XmiCasDeserializer.deserialize(new FileInputStream(oldFile), casSource, true);
+        } catch (FileNotFoundException e) {
+          RutaAddonsPlugin.error(e);
+        } catch (SAXException e) {
+          RutaAddonsPlugin.error(e);
+        } catch (IOException e) {
+          RutaAddonsPlugin.error(e);
+        }
+        for (String uncheckedTypeName : typesToTransferUnchecked) {
+          Type type = cas.getTypeSystem().getType(uncheckedTypeName);
+          if (type != null) {
+            for (AnnotationFS annot : casSource.getAnnotationIndex(type)) {
+              cas.addFsToIndexes(cas.createAnnotation(type, annot.getBegin(), annot.getEnd()));
+            }
+          }
         }
         AnnotationCheckTreeNode[] annotationNodes = each.getChildren();
         for (AnnotationCheckTreeNode eachAN : annotationNodes) {
           CheckAnnotation ca = (CheckAnnotation) eachAN.getElement();
           if (ca.checked && ca.keep) {
-            Type type = cas.getTypeSystem().getType(ca.type);
+            TypeSystem ts = casEditor.getDocument().getCAS().getTypeSystem();
+            Type type = ts.getType(ca.getTypeName());
             if (type != null) {
-              AnnotationFS createAnnotation = cas.createAnnotation(type, ca.begin, ca.end);
-              cas.addFsToIndexes(createAnnotation);
+              AnnotationFS annotFS = ca.toAnnotationFS(cas, type);
+              if (eachAN.hasChildren()) {
+                FeatureCheckTreeNode[] featureNodes = (FeatureCheckTreeNode[]) eachAN.getChildren();
+                for (FeatureCheckTreeNode featureNode : featureNodes) {
+                  Feature feature = featureNode.getFeature();
+                  try {
+                    annotFS.setFeatureValueFromString(feature, featureNode.getValue());
+                  } catch (Exception e) {
+                    continue;
+                  }
+                }
+              }
+              cas.addFsToIndexes(annotFS);
             }
           }
         }
@@ -547,7 +711,7 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
         } catch (Exception e) {
           RutaAddonsPlugin.error(e);
         }
-        cd.checkedTypes.addAll(selectedTypes);
+        cd.checkedTypes.addAll(typesToCheck.keySet());
         if (!docs.contains(cd)) {
           docs.add(cd);
         }
@@ -569,7 +733,7 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
     }
   }
 
-  public void addedAnnotation(Collection<AnnotationFS> annotations) {
+  public void addAnnotations(Collection<AnnotationFS> annotations) {
     AnnotationCheckRootNode root = (AnnotationCheckRootNode) treeView.getInput();
     AnnotationCheckTreeNode[] children = root.getChildren();
     for (AnnotationCheckTreeNode docNode : children) {
@@ -591,19 +755,20 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
     }
   }
 
-  public void removedAnnotation(Collection<AnnotationFS> annotations) {
+  public void removeAnnotations(Collection<AnnotationFS> annotations) {
     AnnotationCheckRootNode root = (AnnotationCheckRootNode) treeView.getInput();
     AnnotationCheckTreeNode[] children = root.getChildren();
     for (AnnotationCheckTreeNode docNode : children) {
       if (docNode.getElement().equals(currentDocument)) {
         AnnotationCheckTreeNode[] achildren = docNode.getChildren();
         for (AnnotationCheckTreeNode anode : achildren) {
-          CheckAnnotation e = (CheckAnnotation) anode.getElement();
+          CheckAnnotation checkAnnotation = (CheckAnnotation) anode.getElement();
           for (AnnotationFS eachAnnotation : annotations) {
-            if (eachAnnotation.getBegin() == e.begin && eachAnnotation.getEnd() == e.end
-                    && eachAnnotation.getType().getName().equals(e.type)) {
-              e.checked = true;
-              e.keep = false;
+            if (eachAnnotation.getBegin() == checkAnnotation.getBegin()
+                    && eachAnnotation.getEnd() == checkAnnotation.getBegin()
+                    && eachAnnotation.getType().getName().equals(checkAnnotation.getTypeName())) {
+              checkAnnotation.checked = true;
+              checkAnnotation.keep = false;
             }
           }
         }
@@ -613,12 +778,43 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
     }
   }
 
-  public void updatedAnnotation(Collection<AnnotationFS> annotations) {
+  public void updateAnnotations(Collection<AnnotationFS> annotations) {
   }
 
   public void setOldDocs(List<CheckDocument> docs) {
     this.oldDocs = docs;
 
+  }
+
+  public TypeSystemDescription getTypeSystemDescription() {
+    refreshTypeSystem();
+    return tsd;
+  }
+
+  public void refreshTypeSystem() {
+    try {
+      String typeSystem = getPathToTypeSystem();
+      TypeSystemDescription tsd = UIMAFramework.getXMLParser().parseTypeSystemDescription(
+              new XMLInputSource(new File(typeSystem)));
+      tsd.resolveImports();
+      this.tsd = tsd;
+    } catch (InvalidXMLException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public Map<String, Set<String>> getUncheckedTypes() {
+    Map<String, Set<String>> map = new HashMap<String, Set<String>>();
+    for (String entry : typesToTransferUnchecked) {
+      map.put(entry, null);
+    }
+    return map;
+  }
+
+  public void setUncheckedTypes(Set<String> typesToTransferUnchecked) {
+    this.typesToTransferUnchecked = typesToTransferUnchecked;
   }
 
 }

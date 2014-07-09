@@ -29,21 +29,24 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class RejectHandler implements IHandler {
 
+  @Override
   public void addHandlerListener(IHandlerListener arg0) {
 
   }
 
+  @Override
   public void dispose() {
 
   }
 
+  @Override
   public Object execute(ExecutionEvent event) throws ExecutionException {
     AnnotationCheckView acView;
     try {
       acView = (AnnotationCheckView) HandlerUtil.getActiveWorkbenchWindow(event).getWorkbench()
               .getActiveWorkbenchWindow().getActivePage().showView(AnnotationCheckView.ID);
-      AnnotationCheckComposite composite = (AnnotationCheckComposite) acView.getComposite();
-      composite.reject();
+      AnnotationCheckComposite composite = acView.getComposite();
+      composite.reject(true);
     } catch (Exception e) {
       RutaAddonsPlugin.error(e);
       return Status.CANCEL_STATUS;
@@ -51,14 +54,17 @@ public class RejectHandler implements IHandler {
     return Status.OK_STATUS;
   }
 
+  @Override
   public boolean isEnabled() {
     return true;
   }
 
+  @Override
   public boolean isHandled() {
     return true;
   }
 
+  @Override
   public void removeHandlerListener(IHandlerListener arg0) {
 
   }

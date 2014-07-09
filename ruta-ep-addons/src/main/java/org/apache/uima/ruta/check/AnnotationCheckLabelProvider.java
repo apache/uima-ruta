@@ -41,20 +41,27 @@ public class AnnotationCheckLabelProvider extends LabelProvider implements ILabe
    */
   @Override
   public Image getImage(Object element) {
+    if (element instanceof FeatureCheckTreeNode) {
+      return composite.getImage("feature");
+    }
     if (element instanceof IAnnotationCheckTreeNode) {
-      IAnnotationCheckTreeNode node = (IAnnotationCheckTreeNode) element;
-      CheckElement e = node.getElement();
-      if (!e.checked) {
-        return composite.getImage("help");
-      } else {
-        if (e.keep) {
-          return composite.getImage("accept");
-        } else {
-          return composite.getImage("delete");
-        }
-      }
+      return getAnnotationCheckTreeNodeImage(element);
     }
     return null;
+  }
+
+  private Image getAnnotationCheckTreeNodeImage(Object element) {
+    IAnnotationCheckTreeNode node = (IAnnotationCheckTreeNode) element;
+    CheckElement e = node.getElement();
+    if (!e.checked) {
+      return composite.getImage("help");
+    } else {
+      if (e.keep) {
+        return composite.getImage("accept");
+      } else {
+        return composite.getImage("delete");
+      }
+    }
   }
 
   /*
@@ -64,13 +71,17 @@ public class AnnotationCheckLabelProvider extends LabelProvider implements ILabe
    */
   @Override
   public String getText(Object element) {
+    if (element instanceof FeatureCheckTreeNode) {
+      FeatureCheckTreeNode featureNode = (FeatureCheckTreeNode) element;
+      return "[" + featureNode.getFeature().getShortName() + "]: " + featureNode.getValue();
+    }
     if (element instanceof AnnotationCheckTreeNode) {
       AnnotationCheckTreeNode node = (AnnotationCheckTreeNode) element;
       CheckElement ce = node.getElement();
       if (ce instanceof CheckAnnotation) {
         CheckAnnotation ca = (CheckAnnotation) ce;
-        String normalizeSpace = StringUtils.normalizeSpace(ca.coveredText);
-        return "[" + ca.shortType + "]: " + normalizeSpace;
+        String normalizeSpace = StringUtils.normalizeSpace(ca.getCoveredText());
+        return "[" + ca.getShortType() + "]: " + normalizeSpace;
       } else if (ce instanceof CheckDocument) {
         CheckDocument cd = (CheckDocument) ce;
         String name = new File(cd.source).getName();

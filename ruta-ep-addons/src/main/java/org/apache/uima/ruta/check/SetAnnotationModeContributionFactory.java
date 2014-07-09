@@ -15,11 +15,12 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
-*/
+ */
 
 package org.apache.uima.ruta.check;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
@@ -44,26 +45,26 @@ public class SetAnnotationModeContributionFactory extends ExtensionContributionF
     try {
       acView = (AnnotationCheckView) Workbench.getInstance().getActiveWorkbenchWindow()
               .getActivePage().showView(AnnotationCheckView.ID);
-      AnnotationCheckComposite composite = (AnnotationCheckComposite) acView.getComposite();
-      List<String> selectedTypes = composite.getSelectedTypes();
+      AnnotationCheckComposite composite = acView.getComposite();
+      List<String> typesToCheck = new LinkedList<String>(composite.getCheckedTypes().keySet());
       CommandContributionItemParameter pd = new CommandContributionItemParameter(serviceLocator,
               "", SetAnnotationModeHandler.MODE, SWT.PUSH);
       HashMap<String, String> mapd = new HashMap<String, String>();
       pd.label = "uima.tcas.Annotation";
       mapd.put(SetAnnotationModeHandler.TYPE, pd.label);
-      pd.parameters =  mapd;
+      pd.parameters = mapd;
       pd.icon = RutaAddonsPlugin.getImageDescriptor("icons/font_add.png");
       CommandContributionItem itemp = new CommandContributionItem(pd);
       itemp.setVisible(true);
       additions.addContributionItem(itemp, null);
-      for (String each : selectedTypes) {
+      for (String each : typesToCheck) {
         CommandContributionItemParameter p = new CommandContributionItemParameter(serviceLocator,
                 "", SetAnnotationModeHandler.MODE, SWT.PUSH);
         p.label = each;
         p.icon = RutaAddonsPlugin.getImageDescriptor("icons/font_add.png");
         HashMap<String, String> map = new HashMap<String, String>();
         map.put(SetAnnotationModeHandler.TYPE, p.label);
-        p.parameters =  map;
+        p.parameters = map;
         CommandContributionItem item = new CommandContributionItem(p);
         item.setVisible(true);
         additions.addContributionItem(item, null);

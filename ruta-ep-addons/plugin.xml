@@ -788,9 +788,14 @@ under the License.
             name="Update">
       </command>
       <command
-            defaultHandler="org.apache.uima.ruta.check.SelectTypesHandler"
+            defaultHandler="org.apache.uima.ruta.check.SelectCheckedTypesHandler"
             id="org.apache.uima.ruta.check.selectTypes"
-            name="Select types">
+            name="Select checked types and features">
+      </command>
+      <command
+            defaultHandler="org.apache.uima.ruta.check.SelectUncheckedTypesHandler"
+            id="org.apache.uima.ruta.check.selectUncheckedTypes"
+            name="Select unchecked types">
       </command>
       <command
             defaultHandler="org.apache.uima.ruta.check.AcceptHandler"
@@ -841,7 +846,19 @@ under the License.
                id="org.apache.uima.ruta.check.toolbar.selectTypes"
                label="Select types"
                style="push"
-               tooltip="Select types">
+               tooltip="Select checked types and features">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.apache.uima.ruta.check">
+         <command
+               commandId="org.apache.uima.ruta.check.selectUncheckedTypes"
+               icon="icons/thumb_up.png"
+               id="org.apache.uima.ruta.check.toolbar.selectUncheckedTypes"
+               label="Select unchecked types"
+               style="push"
+               tooltip="Select unchecked types">
          </command>
       </menuContribution>
       <menuContribution

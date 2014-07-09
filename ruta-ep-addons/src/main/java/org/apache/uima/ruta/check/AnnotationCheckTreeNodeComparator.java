@@ -21,26 +21,27 @@ package org.apache.uima.ruta.check;
 
 import java.util.Comparator;
 
-public class AnnotationCheckTreeNodeComparator implements Comparator<AnnotationCheckTreeNode>{
+public class AnnotationCheckTreeNodeComparator implements Comparator<AnnotationCheckTreeNode> {
 
+  @Override
   public int compare(AnnotationCheckTreeNode o1, AnnotationCheckTreeNode o2) {
-    if(o1.getElement() instanceof CheckAnnotation && o1.getElement() instanceof CheckAnnotation) {
+    if (o1.getElement() instanceof CheckAnnotation && o1.getElement() instanceof CheckAnnotation) {
       CheckAnnotation ca1 = (CheckAnnotation) o1.getElement();
       CheckAnnotation ca2 = (CheckAnnotation) o2.getElement();
-      if (ca1.begin < ca2.begin) {
+      if (ca1.getBegin() < ca2.getBegin()) {
         return -1;
-      } else if (ca1.begin > ca2.begin) {
+      } else if (ca1.getBegin() > ca2.getBegin()) {
         return 1;
-      } else if (ca1.end > ca2.end) {
+      } else if (ca1.getEnd() > ca2.getEnd()) {
         return -1;
-      } else if (ca1.end < ca2.end) {
+      } else if (ca1.getEnd() < ca2.getEnd()) {
         return 1;
       } else {
         boolean equals = o1.equals(o2);
         if (equals) {
           return 0;
         } else {
-          int compareTo = ca1.type.compareTo(ca2.type);
+          int compareTo = ca1.getTypeName().compareTo(ca2.getTypeName());
           if (compareTo == 0) {
             return 1;
           } else {

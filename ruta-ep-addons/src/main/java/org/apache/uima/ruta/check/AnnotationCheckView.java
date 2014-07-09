@@ -29,11 +29,9 @@ import org.eclipse.ui.part.ViewPart;
 public class AnnotationCheckView extends ViewPart {
   public static final String ID = "org.apache.uima.ruta.check";
 
-
   private AnnotationCheckComposite checkComp;
 
   private IMemento memento;
-
 
   public AnnotationCheckView() {
     super();
@@ -41,11 +39,12 @@ public class AnnotationCheckView extends ViewPart {
 
   @Override
   public void createPartControl(Composite parent) {
-    checkComp =  new AnnotationCheckComposite(parent, SWT.NULL, this);
+    checkComp = new AnnotationCheckComposite(parent, SWT.NULL, this);
     if (memento != null) {
       checkComp.restoreState(memento);
       memento = null;
     }
+    checkComp.refreshTypeSystem();
   }
 
   @Override
@@ -57,10 +56,12 @@ public class AnnotationCheckView extends ViewPart {
     return checkComp;
   }
 
+  @Override
   public void saveState(IMemento memento) {
     checkComp.saveState(memento);
   }
 
+  @Override
   public void init(IViewSite site, IMemento memento) throws PartInitException {
     this.memento = memento;
     super.init(site, memento);
