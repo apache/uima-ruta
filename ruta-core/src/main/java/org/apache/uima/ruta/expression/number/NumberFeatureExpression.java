@@ -40,15 +40,18 @@ public class NumberFeatureExpression extends AbstractNumberExpression {
   }
 
   public int getIntegerValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return getNumberValue(parent, annotation, stream).intValue();
+    Number v = getNumberValue(parent, annotation, stream);
+    return v == null ? 0 : v.intValue();
   }
 
   public double getDoubleValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return getNumberValue(parent, annotation, stream).doubleValue();
+    Number v = getNumberValue(parent, annotation, stream);
+    return v == null ? 0 : v.doubleValue();
   }
 
   public float getFloatValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return getNumberValue(parent, annotation, stream).floatValue();
+    Number v = getNumberValue(parent, annotation, stream);
+    return v == null ? 0 : v.floatValue();
   }
 
   private Number getNumberValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
