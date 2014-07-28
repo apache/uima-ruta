@@ -354,7 +354,7 @@ Document{->CALL(MyScript.countNumberOfTypesInDocument)};
       If the curly brackets start with the symbol <quote>-></quote>, the inlined rules will only be applied for successful matches of the surrounding rule.
       This behavior is very similar to the block construct. However, there are also some differences, e.g., inlined rules do not specify a 
       namespace, may not contain declarations and cannot be called by other rules.
-      If the curly brackets start with the symbol <quote><-</quote>,
+      If the curly brackets start with the symbol <quote>&lt;-</quote>,
       then the inlined rules are interpreted as some sort of condition. The surrounding rules will only match, if one of the inlined rules was successfully applied.
       The functionality introduced by inlined rules is illustrated with a few examples:
     </para>
