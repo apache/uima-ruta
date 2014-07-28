@@ -47,7 +47,12 @@ public class StringFeatureExpression extends AbstractStringExpression {
             false);
     if (!featureAnnotations.isEmpty()) {
       AnnotationFS next = featureAnnotations.iterator().next();
-      return next.getStringValue(feature);
+      if(feature == null) {
+        // feature == coveredText
+        return next.getCoveredText();
+      } else {
+        return next.getStringValue(feature);
+      }
     }
     return null;
   }

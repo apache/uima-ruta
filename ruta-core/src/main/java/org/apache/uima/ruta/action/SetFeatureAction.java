@@ -60,6 +60,7 @@ public class SetFeatureAction extends AbstractRutaAction {
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOf(element);
     for (AnnotationFS annotationFS : matchedAnnotations) {
       Feature feature = annotationFS.getType().getFeatureByBaseName(featureString);
+
       if (feature != null) {
         Type range = feature.getRange();
         String rangeName = range.getName();
@@ -110,6 +111,8 @@ public class SetFeatureAction extends AbstractRutaAction {
           }
         }
         stream.getCas().addFsToIndexes(annotationFS);
+      } else {
+        throw new IllegalArgumentException("Not able to assign feature value (e.g., coveredText).");
       }
     }
   }

@@ -31,6 +31,7 @@ import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.AbstractStringExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 
 public class FeatureMatchExpression extends SimpleFeatureExpression {
 
@@ -71,7 +72,8 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
 
   public boolean checkFeatureValue(AnnotationFS afs, Feature feature, RutaStream stream,
           RutaBlock parent) {
-    String rn = feature.getRange().getName();
+    // null is possibly coveredText
+    String rn = feature == null ? UIMAConstants.TYPE_STRING : feature.getRange().getName();
     if (rn.equals(UIMAConstants.TYPE_BOOLEAN)) {
       Boolean v1 = afs.getBooleanValue(feature);
       if (arg instanceof IBooleanExpression) {
@@ -102,9 +104,13 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
         return compare(v1, v2);
       }
     } else if (rn.equals(UIMAConstants.TYPE_STRING)) {
-      String v1 = afs.getStringValue(feature);
-      if (arg instanceof AbstractStringExpression) {
-        AbstractStringExpression expr = (AbstractStringExpression) arg;
+      String v1 = afs.getCoveredText();
+      // null is possibly coveredText
+      if (feature != null) {
+        v1 = afs.getStringValue(feature);
+      }
+      if (arg instanceof IStringExpression) {
+        IStringExpression expr = (IStringExpression) arg;
         String v2 = expr.getStringValue(parent, afs, stream);
         return compare(v1, v2);
       }
@@ -113,27 +119,27 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
   }
 
   private boolean compare(Object v1, Object v2) {
-    if(v1 instanceof Number && v2 instanceof Number) {
+    if (v1 instanceof Number && v2 instanceof Number) {
       Number n1 = (Number) v1;
       Number n2 = (Number) v2;
       int compareTo = new BigDecimal(n1.toString()).compareTo(new BigDecimal(n2.toString()));
-      if(op.equals("==")) {
+      if (op.equals("==")) {
         return compareTo == 0;
-      } else if(op.equals("!=")) {
+      } else if (op.equals("!=")) {
         return compareTo != 0;
-      } else if(op.equals(">=")) {
+      } else if (op.equals(">=")) {
         return compareTo >= 0;
-      } else if(op.equals(">")) {
+      } else if (op.equals(">")) {
         return compareTo > 0;
-      } else if(op.equals("<=")) {
+      } else if (op.equals("<=")) {
         return compareTo <= 0;
-      } else if(op.equals("<")) {
+      } else if (op.equals("<")) {
         return compareTo < 0;
       }
-    } else if(v1 != null && v2 != null) {
-      if(op.equals("==")) {
+    } else if (v1 != null && v2 != null) {
+      if (op.equals("==")) {
         return v1.equals(v2);
-      } else if(op.equals("!=")) {
+      } else if (op.equals("!=")) {
         return !v1.equals(v2);
       }
     }

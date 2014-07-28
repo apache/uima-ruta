@@ -81,6 +81,9 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
 
   private void setFeatureValue(AnnotationFS a, Feature feature, IRutaExpression argExpr,
           RuleElement element, RutaStream stream) {
+    if(feature == null) {
+      throw new IllegalArgumentException("Not able to assign feature value (e.g., coveredText).");
+    }
     String range = feature.getRange().getName();
     if (range.equals(UIMAConstants.TYPE_STRING)) {
       if (argExpr instanceof IStringExpression) {

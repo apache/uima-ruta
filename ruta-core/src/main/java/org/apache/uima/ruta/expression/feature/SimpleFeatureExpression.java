@@ -25,13 +25,16 @@ import java.util.Collection;
 import java.util.List;
 import java.util.TreeSet;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.extensions.RutaParseException;
 import org.apache.uima.ruta.rule.AnnotationComparator;
 
 public class SimpleFeatureExpression extends FeatureExpression {
@@ -69,9 +72,21 @@ public class SimpleFeatureExpression extends FeatureExpression {
     Type type = typeExpr.getType(parent);
     Feature feature = null;
     for (String each : features) {
-      feature = type.getFeatureByBaseName(each);
+      if (StringUtils.equals(each, UIMAConstants.FEATURE_COVERED_TEXT)) {
+        // there is no explicit feature for coveredText
+        feature = null;
+      } else {
+        feature = type.getFeatureByBaseName(each);
+        if (feature == null) {
+          if(!StringUtils.equals(each, UIMAConstants.FEATURE_COVERED_TEXT_SHORT))
+          throw new IllegalArgumentException("Not able to access feature " + each + " of type "
+                  + type.getName());
+        }
+      }
       result.add(feature);
-      type = feature.getRange();
+      if(feature != null) {
+        type = feature.getRange();
+      }
     }
     return result;
   }
@@ -99,7 +114,8 @@ public class SimpleFeatureExpression extends FeatureExpression {
     for (AnnotationFS eachBase : annotations) {
       AnnotationFS afs = eachBase;
       for (Feature feature : features) {
-        if (feature.getRange().isPrimitive()) {
+        if(feature == null || feature.getRange().isPrimitive()) {
+          // feature == null -> this is the coveredText "feature"
           if (this instanceof FeatureMatchExpression) {
             FeatureMatchExpression fme = (FeatureMatchExpression) this;
             if (checkOnFeatureValue) {
@@ -119,7 +135,7 @@ public class SimpleFeatureExpression extends FeatureExpression {
         }
       }
       if (!(this instanceof FeatureMatchExpression)) {
-        if(stream.isVisible(afs)) {
+        if (stream.isVisible(afs)) {
           result.add(afs);
         }
       }
