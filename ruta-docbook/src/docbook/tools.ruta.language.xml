@@ -690,6 +690,219 @@ FeatureAssignment -> "(" StringExpression "=" Expression
         The greedy behavior of the quantifiers is not changed by the ONLYONCE block.
        </para>
     </section>
+        <section id="ugr.tools.ruta.language.extensions.core-ext.stringfunctions">
+      <title>Stringfunctions</title>
+      <para>
+        In order to manipulate Strings in variables a bunch of Stringfunctions
+        have been added.
+        They will all be presented with a short example demonstrating their use.
+      </para>
+      <section>
+        <title>firstCharToUpperCase(IStringExpression expr)</title>
+        <programlisting><![CDATA[STRING s;
+STRINGLIST sl;
+SW{-> MATCHEDTEXT(s), ADD(sl, firstCharToUpperCase(s))};
+CW{INLIST(sl) -> Test};]]></programlisting>
+        <para>
+          This example declares a STRING and a STRINGLIST. Afterwards for every
+          small-written word,
+          the according word with a capital first Character is added to the
+          STRINGLIST.
+          This might be helpful in german Named-Entity-Recognition where you will
+          encounter "der blonde Junge..." and "der Blonde",
+          both map to the same entity. Applied to the word "blonde" you can then
+          also track the second appearance of that Person.
+          In the last line a rule marks all words in the STRINGLIST as a Test
+          Annotation.
+        </para>
+      </section>
+      <section>
+        <title>replaceFirst(IStringExpression expr, IStringExpression
+          searchTerm,
+          IStringExpression replacement)
+        </title>
+        <programlisting><![CDATA[STRING s;
+STRINGLIST sl;
+CW{-> MATCHEDTEXT(s), ADD(sl, replaceFirst(s,"e","o"))};
+CW{INLIST(sl) -> Test};]]></programlisting>
+        <para>
+          This example declares a STRING and a STRINGLIST. Next every capital
+          Word CW is added
+          to the STRINGLIST, however the first "e" is going to be replaced by
+          "o". Afterwards all
+          instances of the STRINGLIST are matched with all present CWs and
+          annotated as a Test Annotation if a match occurs.
+        </para>
+      </section>
+      <section>
+        <title>replaceAll(IStringExpression expr, IStringExpression
+          searchTerm,
+          IStringExpression replacement)
+        </title>
+        <programlisting><![CDATA[STRING s;
+STRINGLIST sl;
+CW{-> MATCHEDTEXT(s), ADD(sl, replaceAll(s,"e","o"))};
+CW{INLIST(sl) -> Test};]]></programlisting>
+        <para>
+          This example declares a STRING and a STRINGLIST. Next every capital
+          Word CW is added
+          to the STRINGLIST, however similar to the above example at first
+          there is going to be a replacement.
+          This time all "e"`s are going to be replaced by "o"`s. Afterwards all
+          instances of the STRINGLIST are matched with all present CWs and
+          annotated as a Test Annotation if a match occurs.
+        </para>
+      </section>
+
+      <section>
+        <title>substring(IStringExpression expr, INumberExpression from,
+          INumberExpression to)
+        </title>
+        <programlisting><![CDATA[STRING s;
+STRINGLIST sl;
+CW{-> MATCHEDTEXT(s), ADD(sl, substring(s,0,8))};
+SW{INLIST(sl) -> Test};]]></programlisting>
+        <para>
+          This example declares a STRING and a STRINGLIST. Imagine you found the
+          word "Alexanderplatz" but
+          you only want to continue with the word "Alexander". This snippet
+          shows how this can be done by
+          using the Stringfunctions in RUTA. If a word has less character than
+          specified in the arguments,
+          nothing will be executed.
+
+        </para>
+      </section>
+
+      <section>
+        <title>toLowerCase(IStringExpression expr)</title>
+        <programlisting><![CDATA[STRING s;
+STRINGLIST sl;
+CW{-> MATCHEDTEXT(s), ADD(sl, toLowerCase(s))};
+SW{INLIST(sl) -> Test};]]></programlisting>
+        <para>
+          This example declares a STRING and a STRINGLIST. A problem you might
+          encounter is that you
+          want to know whether the first word of a sentence is really a
+          noun.(Again more or less german related)
+          By using this function you could add all words that start a
+          sentence(which usually means a capitalized word) to a list
+          as in this example. Then test if it also appears within the text but
+          this time as lowercase. As a result you could change its
+          POS-Tag.
+
+        </para>
+      </section>
+            <section>
+        <title>toUpperCase(IStringExpression expr)</title>
+        <programlisting><![CDATA[STRING s;
+STRINGLIST sl;
+CW{-> MATCHEDTEXT(s), ADD(sl, toUpperCase(s))};
+SW{INLIST(sl) -> T1};]]></programlisting>
+        <para>
+          This example declares a STRING and a STRINGLIST. A typical scenario for
+          its use might be
+          Named-Entity-Recognition. This time you want to find all organizations given an input
+          document.
+          At first you might track-down all fully capitalized words. As a
+          second step you can use this function
+          and iterate over all CW insances and compare the found instance with
+          all the uppercase organizations that were
+          found before.
+        </para>
+      </section>
+
+
+      <section>
+        <title>contains(IStringExpression expr,IStringExpression contains)
+        </title>
+        <programlisting><![CDATA[STRING s;
+BOOLEAN a ;
+BLOCK(forEACH) W{}{
+    W{->MATCHEDTEXT(s), ASSIGN(a,contains(s,"er"))};
+    W{a ->Test};
+}]]></programlisting>
+        <para>
+          If you want to find all words that contain a given charactersequence.
+          Assume again you are in a NER-Task
+          you found the token "Alexanderplatz" using this function you can track
+          down the names that are part of a given token.
+          This example uses a BLOCK to iterate over each word and then assigns
+          whether the text of that word contains the given char-sequence.
+          If so it is annotated as a Test annotation.
+        </para>
+      </section>
+
+      <section>
+        <title>endsWith(IStringExpression expr,IStringExpression expr)
+        </title>
+        <programlisting><![CDATA[STRING s;
+BOOLEAN a;
+BLOCK(forEACH) W{}{
+    W{->MATCHEDTEXT(s), ASSIGN(a,endsWith(s,"str."))};
+    W{a ->Test};
+}]]></programlisting>
+        <para>
+          Assume you found the suffix "str." as a strong indicator whether a given
+          token represents
+          location (a street) by using this function you can now easily identify all
+          of those words, given
+          a valid suffix.
+        </para>
+      </section>
+
+      <section>
+        <title>startsWith(IStringExpression expr,IStringExpression expr)
+        </title>
+        <programlisting><![CDATA[STRING s;
+BOOLEAN a ;
+BLOCK(forEACH) W{}{
+    W{->MATCHEDTEXT(s), ASSIGN(a,startsWith(s,"sprech"))};
+    W{a ->Test};
+}]]></programlisting>
+        <para>
+  Given a stem of a word you want to mark every instance that was possibly derived from that stem.
+  If you decide to use that function you can detect all those words in 1 line and in a next step mark all
+  of them as an Annotationtype of choice.
+  
+        </para>
+      </section>
+      
+            <section>
+        <title>equals(IStringExpression expr,IStringExpression expr) and equalsIgnoreCase(expr,expr)
+        </title>
+        <programlisting><![CDATA[STRING s;
+STRING s2 = "Kenny";
+BOOLEAN a;
+BLOCK(forEACH) W{}{
+    W{->MATCHEDTEXT(s), ASSIGN(a,equals(s,s2))};
+    W{->MATCHEDTEXT(s), ASSIGN(a,equalsIgnoreCase(s,s2))};
+    W{a ->Test};
+}]]></programlisting>
+        <para>
+  These functions check whether both arguments are equal in terms of the
+  text of the token that they contain.
+  
+  
+        </para>
+      </section>
+      
+                  <section>
+        <title>isEmpty(IStringExpression expr) and equalsIgnoreCase(expr,expr)
+        </title>
+        <programlisting><![CDATA[STRING s;
+BOOLEAN a;
+BLOCK(forEACH) W{}{
+    W{->MATCHEDTEXT(s), ASSIGN(a,isEmpty(s))};
+    W{a ->Test};
+}]]></programlisting>
+        <para>
+An equivalent function to the Java Stringlibrary. It checks whether or not a given variable contains
+an empty Stringliteral "" or not.
+  
+        </para>
+      </section>
+          </section>
     <section id="ugr.tools.ruta.language.extensions.new">
     <title>Adding new Language Elements</title>
     <para>
