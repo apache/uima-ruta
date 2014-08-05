@@ -233,6 +233,7 @@ licensed under the Common Public License.
                   org.apache.uima.ruta.verbalize,
                   org.apache.uima.ruta.visitor,
                   org.apache.uima.ruta.block,
+                  org.apache.uima.ruta.string.*,
                   org.antlr.runtime,
                   org.antlr.runtime.debug,
                   org.antlr.runtime.misc,

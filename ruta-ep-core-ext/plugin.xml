@@ -33,5 +33,19 @@ under the License.
             engine="org.apache.uima.ruta.block.OnlyOnceBlockExtension">
       </block>
    </extension>
+   <extension
+         point="org.apache.uima.ruta.ide.stringFunctionExtension">
+      <stringFunction
+            class="org.apache.uima.ruta.string.StringOperationsIDEExtension"
+            engine="org.apache.uima.ruta.string.StringOperationsExtension">
+      </stringFunction>
+   </extension>
+   <extension
+         point="org.apache.uima.ruta.ide.booleanFunctionExtension">
+      <condition
+            class="org.apache.uima.ruta.string.BooleanOperationsIDEExtension"
+            engine="org.apache.uima.ruta.string.bool.BooleanOperationsExtension">
+      </condition>
+   </extension>
 
 </plugin>
