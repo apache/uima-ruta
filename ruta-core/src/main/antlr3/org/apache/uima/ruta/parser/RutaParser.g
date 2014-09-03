@@ -114,7 +114,10 @@ public void setExternalFactory(RutaExternalFactory factory) {
 	}
 	 public void emitErrorMessage(RecognitionException e) {
 	    int foundInt = e.c;
-	    String stringFound = getTokenNames()[foundInt];
+	    String stringFound = "<unknown token>";
+	    if(foundInt >= 0 && foundInt < getTokenNames().length) {
+	    	stringFound = getTokenNames()[foundInt];
+	    }
 	    int line = e.line;
 	    String text = e.token.getText();
 	

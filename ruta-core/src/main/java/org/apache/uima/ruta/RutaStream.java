@@ -320,6 +320,10 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public void removeAnnotation(AnnotationFS annotation, Type type) {
+    if(type.getName().equals(UIMAConstants.TYPE_DOCUMENT)) {
+      // do not remove DocumentAnnotation
+      return;
+    }
     Collection<RutaBasic> basicAnnotationsInWindow = getAllBasicsInWindow(annotation);
     for (RutaBasic basic : basicAnnotationsInWindow) {
       basic.removePartOf(type);
