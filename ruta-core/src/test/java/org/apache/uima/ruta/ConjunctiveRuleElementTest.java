@@ -38,6 +38,7 @@ import org.junit.Test;
 
 public class ConjunctiveRuleElementTest {
 
+  /*
   @Test
   public void test() {
     String document = "Peter Kluegl, Joern Kottmann, Marshall Schor.";
@@ -92,6 +93,7 @@ public class ConjunctiveRuleElementTest {
     }
 
   }
+  */
   
   @Test
   public void testWithFeatureMatch() {

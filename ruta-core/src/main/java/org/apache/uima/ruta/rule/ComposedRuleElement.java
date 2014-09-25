@@ -111,19 +111,21 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       List<RuleMatch> startRuleMatches = anchoringRuleElement.startMatch(ruleMatch, null,
               composedMatch, this, stream, crowd);
       for (RuleMatch eachStartRuleMatch : startRuleMatches) {
-        AnnotationFS prefixAnnotation = getPrefixAnnotation(eachStartRuleMatch, stream);
-        for (RuleElement each : elements) {
-          if (each.equals(anchoringRuleElement)) {
-            continue;
-          }
-          ComposedRuleElementMatch startElementMatch = (ComposedRuleElementMatch) eachStartRuleMatch
-                  .getLastMatch(this, true);
-          List<RuleMatch> continueMatch = each.continueMatch(true, prefixAnnotation,
-                  eachStartRuleMatch, null, startElementMatch, null, this, stream, crowd);
-          for (RuleMatch startRuleMatch : continueMatch) {
-            ComposedRuleElementMatch elementMatch = (ComposedRuleElementMatch) startRuleMatch
+        if (eachStartRuleMatch.matched()) {
+          AnnotationFS prefixAnnotation = getPrefixAnnotation(eachStartRuleMatch, stream);
+          for (RuleElement each : elements) {
+            if (each.equals(anchoringRuleElement)) {
+              continue;
+            }
+            ComposedRuleElementMatch startElementMatch = (ComposedRuleElementMatch) eachStartRuleMatch
                     .getLastMatch(this, true);
-            ruleMatches.put(startRuleMatch, elementMatch);
+            List<RuleMatch> continueMatch = each.continueMatch(true, prefixAnnotation,
+                    eachStartRuleMatch, null, startElementMatch, null, this, stream, crowd);
+            for (RuleMatch startRuleMatch : continueMatch) {
+              ComposedRuleElementMatch elementMatch = (ComposedRuleElementMatch) startRuleMatch
+                      .getLastMatch(this, true);
+              ruleMatches.put(startRuleMatch, elementMatch);
+            }
           }
         }
       }
@@ -214,21 +216,30 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     } else if (conjunct) {
       // conjunctive
 
-      // TODO see startMatch()
       Map<RuleMatch, ComposedRuleElementMatch> ruleMatches = new HashMap<RuleMatch, ComposedRuleElementMatch>();
-      for (RuleElement each : elements) {
-        ComposedRuleElementMatch extendedContainerMatch = containerMatch.copy();
-        RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch, after);
-        ComposedRuleElementMatch composedMatch = createComposedMatch(extendedMatch,
-                extendedContainerMatch, stream);
-        List<RuleMatch> continueRuleMatches = each.continueMatch(after, annotation, extendedMatch,
-                null, composedMatch, sideStepOrigin, this, stream, crowd);
-        for (RuleMatch continueRuleMatch : continueRuleMatches) {
-          ComposedRuleElementMatch startElementMatch = (ComposedRuleElementMatch) continueRuleMatch
+      RuleElement anchoringRuleElement = getAnchoringRuleElement(stream);
+      ComposedRuleElementMatch composedMatch = createComposedMatch(ruleMatch, containerMatch,
+              stream);
+      List<RuleMatch> startRuleMatches = anchoringRuleElement.continueMatch(after, annotation,
+              ruleMatch, null, composedMatch, sideStepOrigin, this, stream, crowd);
+
+      for (RuleMatch eachStartRuleMatch : startRuleMatches) {
+        for (RuleElement each : elements) {
+          if (each.equals(anchoringRuleElement)) {
+            continue;
+          }
+          ComposedRuleElementMatch startElementMatch = (ComposedRuleElementMatch) eachStartRuleMatch
                   .getLastMatch(this, true);
-          ruleMatches.put(continueRuleMatch, startElementMatch);
+          List<RuleMatch> continueMatch = each.continueMatch(true, annotation, eachStartRuleMatch,
+                  null, startElementMatch, null, this, stream, crowd);
+          for (RuleMatch startRuleMatch : continueMatch) {
+            ComposedRuleElementMatch elementMatch = (ComposedRuleElementMatch) startRuleMatch
+                    .getLastMatch(this, true);
+            ruleMatches.put(startRuleMatch, elementMatch);
+          }
         }
       }
+
       Map<RuleMatch, ComposedRuleElementMatch> mergedMatches = mergeConjunctiveRuleMatches(
               ruleMatches, after);
       Set<Entry<RuleMatch, ComposedRuleElementMatch>> entrySet = mergedMatches.entrySet();
@@ -416,8 +427,8 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
             // hotfix for UIMA-3820
             result.add(ruleMatch);
           } else {
-            result = fallback(after, failed, annotation, ruleMatch, ruleApply, parentContainerMatch,
-                    sideStepOrigin, entryPoint, stream, crowd);
+            result = fallback(after, failed, annotation, ruleMatch, ruleApply,
+                    parentContainerMatch, sideStepOrigin, entryPoint, stream, crowd);
           }
         }
       } else {
