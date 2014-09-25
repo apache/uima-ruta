@@ -100,7 +100,10 @@ public class ConjunctiveRuleElementTest {
     String document = "Peter did something.";
     String script = "";
     script += "CW{-> CREATE(Token, \"posTag\" = \"noun\")} SW{-> CREATE(Token, \"posTag\" = \"verb\", \"mood\" = \"p\", \"tense\" = \"p\")} SW;\n";
-    script += "(Token.posTag == \"noun\" ( Token.posTag == \"verb\" & Token.mood==\"p\" & Token.tense==\"p\" )){-> T1};\n";
+    script += "(Token.posTag == \"verb\" & Token.mood==\"p\" & Token.tense==\"p\" ){-> T1};\n";
+    script += "(Token.posTag == \"noun\" @( Token.posTag == \"verb\" & Token.mood==\"p\" & Token.tense==\"p\" )){-> T2};\n";
+    script += "(Token.posTag == \"noun\" ( Token.posTag == \"verb\" & Token.mood==\"p\" & Token.tense==\"p\" )){-> T3};\n";
+    
     
     Map<String, String> typeMap = new TreeMap<String, String>();
     String typeName1 = "Token";
@@ -132,7 +135,20 @@ public class ConjunctiveRuleElementTest {
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
+    assertEquals("did", iterator.next().getCoveredText());
+
+    t = RutaTestUtils.getTestType(cas, 2);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
     assertEquals("Peter did", iterator.next().getCoveredText());
+    
+    t = RutaTestUtils.getTestType(cas, 3);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    assertEquals("Peter did", iterator.next().getCoveredText());
+    
     
     if (cas != null) {
       cas.release();
