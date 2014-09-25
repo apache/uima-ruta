@@ -21,6 +21,11 @@ package org.apache.uima.ruta;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
@@ -28,6 +33,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
+import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
 import org.junit.Test;
 
 public class ConjunctiveRuleElementTest {
@@ -86,4 +92,52 @@ public class ConjunctiveRuleElementTest {
     }
 
   }
+  
+  @Test
+  public void testWithFeatureMatch() {
+    
+//    DECLARE Annotation Token (STRING posTag, STRING mood, STRING tense);    
+    String document = "Peter did something.";
+    String script = "";
+    script += "CW{-> CREATE(Token, \"posTag\" = \"noun\")} SW{-> CREATE(Token, \"posTag\" = \"verb\", \"mood\" = \"p\", \"tense\" = \"p\")} SW;\n";
+    script += "(Token.posTag == \"noun\" ( Token.posTag == \"verb\" & Token.mood==\"p\" & Token.tense==\"p\" )){-> T1};\n";
+    
+    Map<String, String> typeMap = new TreeMap<String, String>();
+    String typeName1 = "Token";
+    typeMap.put(typeName1, "uima.tcas.Annotation");
+
+    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
+    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    featureMap.put(typeName1, list);
+    String fn1 = "posTag";
+    list.add(new TestFeature(fn1, "", "uima.cas.String"));
+    String fn2 = "mood";
+    list.add(new TestFeature(fn2, "", "uima.cas.String"));
+    String fn3 = "tense";
+    list.add(new TestFeature(fn3, "", "uima.cas.String"));
+    
+    CAS cas = null;
+    try {
+      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+      Ruta.apply(cas, script);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    Type t = null;
+    AnnotationIndex<AnnotationFS> ai = null;
+    FSIterator<AnnotationFS> iterator = null;
+
+    t = RutaTestUtils.getTestType(cas, 1);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    assertEquals("Peter did", iterator.next().getCoveredText());
+    
+    if (cas != null) {
+      cas.release();
+    }
+
+  }
+  
 }
