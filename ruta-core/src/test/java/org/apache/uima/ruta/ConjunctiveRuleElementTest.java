@@ -38,7 +38,6 @@ import org.junit.Test;
 
 public class ConjunctiveRuleElementTest {
 
-  /*
   @Test
   public void test() {
     String document = "Peter Kluegl, Joern Kottmann, Marshall Schor.";
@@ -69,44 +68,41 @@ public class ConjunctiveRuleElementTest {
     iterator = ai.iterator();
     assertEquals(1, ai.size());
     assertEquals("Peter Kluegl", iterator.next().getCoveredText());
-    
+
     t = RutaTestUtils.getTestType(cas, 3);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(1, ai.size());
     assertEquals("Schor", iterator.next().getCoveredText());
-    
+
     t = RutaTestUtils.getTestType(cas, 4);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(1, ai.size());
     assertEquals("Schor.", iterator.next().getCoveredText());
-    
+
     t = RutaTestUtils.getTestType(cas, 5);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(1, ai.size());
     assertEquals("Marshall Schor", iterator.next().getCoveredText());
-    
+
     if (cas != null) {
       cas.release();
     }
 
   }
-  */
-  
+
   @Test
   public void testWithFeatureMatch() {
-    
-//    DECLARE Annotation Token (STRING posTag, STRING mood, STRING tense);    
+
     String document = "Peter did something.";
     String script = "";
     script += "CW{-> CREATE(Token, \"posTag\" = \"noun\")} SW{-> CREATE(Token, \"posTag\" = \"verb\", \"mood\" = \"p\", \"tense\" = \"p\")} SW;\n";
     script += "(Token.posTag == \"verb\" & Token.mood==\"p\" & Token.tense==\"p\" ){-> T1};\n";
-//    script += "(Token.posTag == \"noun\" @( Token.posTag == \"verb\" & Token.mood==\"p\" & Token.tense==\"p\" )){-> T2};\n";
+    // script +=
     script += "(Token.posTag == \"noun\" ( Token.posTag == \"verb\" & Token.mood==\"p\" & Token.tense==\"p\" )){-> T3};\n";
-    
-    
+
     Map<String, String> typeMap = new TreeMap<String, String>();
     String typeName1 = "Token";
     typeMap.put(typeName1, "uima.tcas.Annotation");
@@ -120,7 +116,7 @@ public class ConjunctiveRuleElementTest {
     list.add(new TestFeature(fn2, "", "uima.cas.String"));
     String fn3 = "tense";
     list.add(new TestFeature(fn3, "", "uima.cas.String"));
-    
+
     CAS cas = null;
     try {
       cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
@@ -139,23 +135,76 @@ public class ConjunctiveRuleElementTest {
     iterator = ai.iterator();
     assertEquals("did", iterator.next().getCoveredText());
 
-//    t = RutaTestUtils.getTestType(cas, 2);
-//    ai = cas.getAnnotationIndex(t);
-//    assertEquals(1, ai.size());
-//    iterator = ai.iterator();
-//    assertEquals("Peter did", iterator.next().getCoveredText());
-    
     t = RutaTestUtils.getTestType(cas, 3);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals("Peter did", iterator.next().getCoveredText());
-    
-    
+
     if (cas != null) {
       cas.release();
     }
 
   }
-  
+
+  @Test
+  public void testWithStartAnchor() {
+
+    String document = "Peter did something.";
+    String script = "";
+    script += "CW{-> CREATE(Token, \"posTag\" = \"noun\")} SW{-> CREATE(Token, \"posTag\" = \"verb\", \"mood\" = \"p\", \"tense\" = \"p\")} SW;\n";
+    script += "(Token.posTag == \"noun\" @( Token.posTag == \"verb\" & Token.mood==\"p\" & Token.tense==\"p\" )){-> T1};\n";
+    script += "(Token.posTag == \"noun\" @( Token.posTag == \"verb\" & Token.mood==\"p\" & Token.tense==\"p\" )){-> T2} ANY;\n";
+    script += "Token.posTag == \"noun\" @(Token.posTag == \"verb\" ANY){-> T3};\n";
+
+    Map<String, String> typeMap = new TreeMap<String, String>();
+    String typeName1 = "Token";
+    typeMap.put(typeName1, "uima.tcas.Annotation");
+
+    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
+    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    featureMap.put(typeName1, list);
+    String fn1 = "posTag";
+    list.add(new TestFeature(fn1, "", "uima.cas.String"));
+    String fn2 = "mood";
+    list.add(new TestFeature(fn2, "", "uima.cas.String"));
+    String fn3 = "tense";
+    list.add(new TestFeature(fn3, "", "uima.cas.String"));
+
+    CAS cas = null;
+    try {
+      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+      Ruta.apply(cas, script);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    Type t = null;
+    AnnotationIndex<AnnotationFS> ai = null;
+    FSIterator<AnnotationFS> iterator = null;
+
+    t = RutaTestUtils.getTestType(cas, 1);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    assertEquals("Peter did", iterator.next().getCoveredText());
+
+    t = RutaTestUtils.getTestType(cas, 2);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    assertEquals("Peter did", iterator.next().getCoveredText());
+
+    t = RutaTestUtils.getTestType(cas, 3);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    assertEquals("did something", iterator.next().getCoveredText());
+
+    if (cas != null) {
+      cas.release();
+    }
+
+  }
+
 }

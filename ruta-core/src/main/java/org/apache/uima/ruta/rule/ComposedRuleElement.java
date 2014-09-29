@@ -106,6 +106,11 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       // conjunctive
       Map<RuleMatch, ComposedRuleElementMatch> ruleMatches = new HashMap<RuleMatch, ComposedRuleElementMatch>();
       RuleElement anchoringRuleElement = getAnchoringRuleElement(stream);
+      RutaRuleElement sideStepOrigin = null;
+      
+      if (anchoringRuleElement instanceof RutaRuleElement && hasAncestor(false)) {
+        sideStepOrigin = (RutaRuleElement) anchoringRuleElement;
+      }
       ComposedRuleElementMatch composedMatch = createComposedMatch(ruleMatch, containerMatch,
               stream);
       List<RuleMatch> startRuleMatches = anchoringRuleElement.startMatch(ruleMatch, null,
@@ -140,7 +145,8 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
                 parent, stream);
         boolean failed = !eachComposedMatch.matched();
         List<RuleMatch> fallbackContinue = fallbackContinue(true, failed, lastAnnotation,
-                eachRuleMatch, ruleApply, eachComposedMatch, null, entryPoint, stream, crowd);
+                eachRuleMatch, ruleApply, eachComposedMatch, sideStepOrigin, entryPoint, stream,
+                crowd);
         result.addAll(fallbackContinue);
       }
     }
