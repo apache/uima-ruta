@@ -344,8 +344,8 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
   private SortedSet<HtmlConverterPSpan> htmlDecoding(SortedSet<HtmlConverterPSpan> visibleSpansSoFar) {
     TreeSet<HtmlConverterPSpan> copy = new TreeSet<HtmlConverterPSpan>(visibleSpansSoFar);
 
-    Pattern patt = Pattern.compile("(&[a-zA-Z]{2,5};)|(&#\\d{2,5};)");
-
+    Pattern patt = Pattern.compile("(&[a-zA-Z0-9]{2,6};)|(&#\\d{2,5};)");
+    
     for (HtmlConverterPSpan pSpan : visibleSpansSoFar) {
       String spanTxt = pSpan.getTxt();
       Matcher matcher = patt.matcher(spanTxt);
