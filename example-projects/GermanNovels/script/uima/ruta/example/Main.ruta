@@ -1,0 +1,17 @@
+PACKAGE uima.ruta.example;
+
+IMPORT PACKAGE de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos FROM GeneratedDKProCoreTypes AS pos;
+IMPORT de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Lemma FROM GeneratedDKProCoreTypes;
+
+UIMAFIT de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordSegmenter;
+UIMAFIT de.tudarmstadt.ukp.dkpro.core.treetagger.TreeTaggerPosLemmaTT4J;
+
+SCRIPT uima.ruta.example.Name;
+
+Document{-CONTAINS(pos.POS)} -> {
+	Document{-> SETFEATURE("language", "de")};
+	Document{-> EXEC(StanfordSegmenter)};
+	Document{-> EXEC(TreeTaggerPosLemmaTT4J, {pos.POS})};
+};
+
+Document{-> CALL(Name)};

@@ -1,0 +1,112 @@
+﻿PACKAGE uima.ruta.example;
+
+IMPORT PACKAGE de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos FROM GeneratedDKProCoreTypes AS pos;
+IMPORT de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Lemma FROM GeneratedDKProCoreTypes;
+
+SCRIPT uima.ruta.example.DirectSpeech;
+
+WORDLIST AnimalList = 'Animals.txt';
+WORDLIST FirstNameList = 'FirstNames.txt';
+WORDLIST GeneralTitleList = 'GeneralTitles.txt';
+WORDLIST PhraseList = 'IMPhrases.txt';
+WORDLIST JobList = 'Jobs.txt';
+WORDLIST MilitaryTitleList = 'MilitaryTitles.txt';
+WORDLIST NobleTitleList = 'NobleTitles.txt';
+WORDLIST ObjectWordList = 'ObjectWords.txt';
+WORDLIST RelativesTitleList = 'RelativesTitles.txt';
+WORDLIST VerbList = 'Verbs.txt';
+
+STRINGLIST AddNames;
+STRINGLIST FirstNames;
+STRINGLIST LastNames;
+STRINGLIST PersNames;
+STRING Match;
+
+DECLARE PersName, AddName, FirstName, LastName, AnAnimal,
+RelativesTitle, GeneralTitle, MilitaryTitle, NobleTitle,
+Job, BodyPart, IMPhrase;
+
+Document{-> CALL(DirectSpeech)};
+Document{-> RETAINTYPE(SPACE)};
+Document{-> MARKFAST(AnAnimal, AnimalList)};
+Document{-> MARKFAST(FirstName, FirstNameList)};
+Document{-> MARKFAST(GeneralTitle, GeneralTitleList)};
+Document{-> MARKFAST(IMPhrase, PhraseList)};
+Document{-> MARKFAST(Job, JobList)};
+Document{-> MARKFAST(MilitaryTitle, MilitaryTitleList)};
+Document{-> MARKFAST(NobleTitle, NobleTitleList)};
+Document{-> MARKFAST(RelativesTitle, RelativesTitleList)};
+Document{-> RETAINTYPE};
+
+//-------------------------------------- VORNAMEN -----------------------------------------------\\
+
+// Titel, nach denen wahrscheinlich ein Vorname kommt
+(RelativesTitle|AnAnimal) pos.N{-PARTOF(FirstName), -PARTOF(SPECIAL)
+-> MARK(FirstName), MATCHEDTEXT(Match), ADD(FirstNames, Match)};
+
+// Vornamen, die mit "s" enden speichern
+FirstName{-> MATCHEDTEXT(Match), ADD(FirstNames, Match + "s")};
+
+// Alle Vornamen in der Liste FirstNames markieren
+pos.N{-PARTOF(FirstName), INLIST(FirstNames) -> MARK(FirstName)};
+
+// Vorname + Vorname = Vorname
+FirstName{-> SHIFT(FirstName, 1, 2)} FirstName{-> UNMARK(FirstName)};
+
+
+//-------------------------------------- NACHNAMEN ----------------------------------------------\\
+
+// Vornamen +  CW (-> Nachname)
+CW{INLIST(FirstNameList)} "von"? CW{-PARTOF(FirstName), -PARTOF(LastName), -PARTOF(pos.PP)
+-> MARK(LastName, 2, 3), MATCHEDTEXT(Match), ADD(LastNames, Match)};
+
+// Titel, nach denen wahrscheinlich ein Nachname kommt
+(GeneralTitle|MilitaryTitle|NobleTitle|Job) "von"? CW{-PARTOF(GeneralTitle), -PARTOF(Job),
+-PARTOF(NobleTitle), -PARTOF(MilitaryTitle), -PARTOF(RelativesTitle), -PARTOF(FirstName),
+-PARTOF(LastName) -> MARK(LastName, 2, 3), MATCHEDTEXT(Match), ADD(LastNames, Match)};
+
+// Nachnamen, die mit "s" enden speichern
+LastName{-> MATCHEDTEXT(Match), ADD(LastNames, Match + "s")};
+
+// Markieren der Namen in LastName
+pos.N{-PARTOF(FirstName), -PARTOF(LastName), INLIST(LastNames) -> MARK(LastName)};
+
+
+//-------------------------------------- ADDNAMEN -----------------------------------------------\\
+
+// Verschiedene Titel zusammenfassen
+(AnAnimal|RelativesTitle|GeneralTitle|MilitaryTitle|NobleTitle|Job)
+{-> MARK(AddName), MATCHEDTEXT(Match), ADD(AddNames, Match)};
+
+// Alle Zusatztitel in der Liste AddNames markieren
+pos.N{-PARTOF(AddName), INLIST(AddNames, Lemma.value) -> MARK(AddName)};
+
+
+//-------------------------------------- PERSONEN -----------------------------------------------\\
+
+// AddName + FirstName + LastName = PersName
+(AddName* @FirstName LastName*){-PARTOF(PersName) -> MARK(PersName)};
+(AddName* FirstName? @LastName){-PARTOF(PersName) -> MARK(PersName)};
+
+// Sprecher nach direkter Rede als Person markieren
+DirectSpeech COMMA? pos.V{INLIST(VerbList, Lemma.value)} pos.ART? CW+{-PARTOF(PersName)
+-> MARK(PersName), MATCHEDTEXT(Match), ADD(PersNames, Match)};
+
+// Alle Personen in der Liste PersNames markieren
+pos.N{-PARTOF(PersName), INLIST(PersNames, Lemma.value) -> MARK(PersName)};
+
+
+//-------------------------------------- KORREKTUR ----------------------------------------------\\
+
+// Eigennamen, die nicht als Vornamen oder Nachnamen erkannt wurden
+Document{-> CLEAR(FirstNames)};
+DirectSpeech COMMA? pos.V{INLIST(VerbList, Lemma.value)} CW+{-PARTOF(FirstName), -PARTOF(LastName),
+-PARTOF(AddName) -> MARK(FirstName), MATCHEDTEXT(Match), ADD(FirstNames, Match)};
+
+// Eindeutige Phrasen nach denen ein Name kommt
+IMPhrase CW{-PARTOF(FirstName) -> MARK(FirstName), MATCHEDTEXT(Match),
+ADD(FirstNames, Match, Match + "s")};
+
+// Alle Vornamen in der Liste FirstNames markieren
+pos.N{-PARTOF(FirstName), INLIST(FirstNames) -> MARK(FirstName)};
+FirstName{-PARTOF(PersName) -> MARK(PersName)};

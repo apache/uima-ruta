@@ -1,0 +1,10 @@
+PACKAGE uima.ruta.example;
+
+DECLARE DirectSpeech;
+
+"›" #{-> MARK(DirectSpeech, 1, 2, 3)} "‹";
+"»" #{-> MARK(DirectSpeech, 1, 2, 3)} "«";
+"‘" #{-> MARK(DirectSpeech, 1, 2, 3)} "’";
+"“" #{-> MARK(DirectSpeech, 1, 2, 3)} "”";
+"‚" #{-> MARK(DirectSpeech, 1, 2, 3)} "‛";
+"„" #{-> MARK(DirectSpeech, 1, 2, 3)} "‟";
