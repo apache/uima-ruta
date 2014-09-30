@@ -1,0 +1,14 @@
+#TeXlipse project settings
+#Tue Sep 30 14:20:26 CEST 2014
+markTmpDer=true
+builderNum=2
+outputDir=bin/
+makeIndSty=
+bibrefDir=
+outputFormat=pdf
+tempDir=tmp
+mainTexFile=tutorial-GermanNovels.tex
+outputFile=tutorial-GermanNovels.pdf
+langSpell=en
+markDer=true
+srcDir=src/
