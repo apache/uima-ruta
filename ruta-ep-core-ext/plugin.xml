@@ -34,6 +34,13 @@ under the License.
       </block>
    </extension>
    <extension
+         point="org.apache.uima.ruta.ide.blockExtension">
+      <block
+            class="org.apache.uima.ruta.block.fst.FSTBlockIDEExtension"
+            engine="org.apache.uima.ruta.block.fst.FSTBlockExtension">
+      </block>
+   </extension>
+   <extension
          point="org.apache.uima.ruta.ide.stringFunctionExtension">
       <stringFunction
             class="org.apache.uima.ruta.string.StringOperationsIDEExtension"
