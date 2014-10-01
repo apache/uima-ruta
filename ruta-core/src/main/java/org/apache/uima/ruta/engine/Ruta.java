@@ -58,9 +58,6 @@ public class Ruta {
 
     File scriptFile = File.createTempFile("Ruta", RutaEngine.SCRIPT_FILE_EXTENSION);
     scriptFile.deleteOnExit();
-    if (!script.startsWith("PACKAGE")) {
-      script = "PACKAGE org.apache.uima.ruta;\n" + script;
-    }
     FileUtils.saveString2File(script, scriptFile);
     ae.setConfigParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, new String[] { scriptFile.getParentFile()
             .getAbsolutePath() });
