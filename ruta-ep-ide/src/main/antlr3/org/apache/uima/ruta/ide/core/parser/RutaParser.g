@@ -1067,8 +1067,9 @@ result = ConditionFactory.createEmptyCondition(input.LT(1));
 	| c = conditionEndsWith
 	| c = conditionPartOfNeq
 	| c = conditionSize
+	
+	| (booleanExpression)=> b = booleanExpression {c = ConditionFactory.createCondition(b);}
 	| (externalCondition)=> c = externalCondition
-	| b = booleanExpression {c = ConditionFactory.createCondition(b);}
 	) {result = c;}
 	;
 	
@@ -2354,6 +2355,7 @@ composedBooleanExpression returns [Expression expr = null]
 	| (bte = booleanTypeExpression)=> bte = booleanTypeExpression{expr = bte;}
 	| (bne = booleanNumberExpression)=> bne = booleanNumberExpression{expr = bne;}
 	| e1 = booleanFunction {expr = e1;}
+	| LPAREN ep = booleanExpression RPAREN {expr = ep;}
 	;
 
 // not checked
@@ -2405,11 +2407,11 @@ booleanTypeExpression  returns  [Expression expr = null]
 //nearly OK
 booleanNumberExpression  returns  [Expression expr = null]
 	:
-	LPAREN
+	//LPAREN
 	e1 = numberExpression
 	op = (LESS | GREATER | GREATEREQUAL | LESSEQUAL | EQUAL | NOTEQUAL)
 	e2 = numberExpression
-	RPAREN
+	//RPAREN
 	{expr = ExpressionFactory.createBooleanNumberExpression(e1,op,e2);}
 	;
 

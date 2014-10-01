@@ -2132,6 +2132,7 @@ composedBooleanExpression returns [IBooleanExpression expr = null]
 	| (bte = booleanTypeExpression)=> bte = booleanTypeExpression{expr = bte;}
 	| (bne = booleanNumberExpression)=> bne = booleanNumberExpression{expr = bne;}
 	| e1 = booleanFunction {expr = e1;}
+	| LPAREN ep = booleanExpression RPAREN {expr = ep;}
 	;
 
 // not checked
@@ -2180,11 +2181,11 @@ booleanTypeExpression  returns  [IBooleanExpression expr = null]
 	
 booleanNumberExpression  returns  [IBooleanExpression expr = null]
 	:
-	LPAREN
+	//LPAREN
 	e1 = numberExpression//{exprs.add(e);} 
 	op = (LESS | GREATER | GREATEREQUAL | LESSEQUAL | EQUAL | NOTEQUAL)//{ops.add(op);} 
 	e2 = numberExpression//{exprs.add(e);}
-	RPAREN
+	//RPAREN
 	{expr = ExpressionFactory.createBooleanNumberExpression(e1,op,e2);}
 	;
 	
