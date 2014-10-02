@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+    <name>uima.ruta.example.SorterTypeSystem</name>
+    <imports>
+        <import location="../../../BasicTypeSystem.xml"/>
+        <import location="../../../utils/SourceDocumentInformation.xml"/>
+    </imports>
+    <types>
+        <typeDescription>
+            <name>Sorter.Pattern</name>
+            <description>Type defined in null.Sorter</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>Sorter.Pattern</name>
+            <description>Type defined in null.Sorter</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+    </types>
+</typeSystemDescription>

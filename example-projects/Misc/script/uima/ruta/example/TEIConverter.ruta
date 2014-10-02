@@ -1,0 +1,21 @@
+ENGINE utils.HtmlAnnotator;
+TYPESYSTEM utils.HtmlTypeSystem;
+ENGINE utils.HtmlConverter;
+ENGINE TEIViewWriter;
+TYPESYSTEM utils.SourceDocumentInformation;
+
+DECLARE PersName, LastName, FirstName, AddName;
+
+Document{->EXEC(HtmlAnnotator, {TAG})};
+Document{-> RETAINTYPE(MARKUP,SPACE)};
+TAG.name=="PERSNAME"{-> PersName};
+TAG.name=="SURNAME"{-> LastName};
+TAG.name=="FORENAME"{-> FirstName};
+TAG.name=="ADDNAME"{-> AddName};
+Document{-> RETAINTYPE};
+
+Document { -> CONFIGURE(HtmlConverter, "inputView" = "_InitialView", "outputView" = "plain", "skipWhitespaces" = false), 
+      EXEC(HtmlConverter)};
+
+Document{ -> CONFIGURE(ViewWriter, "inputView" = "plain", "outputView" = "_InitialView", "output" = "/../converted/"), 
+    EXEC(TEIViewWriter)};

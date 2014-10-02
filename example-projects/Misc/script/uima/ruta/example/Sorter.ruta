@@ -1,0 +1,13 @@
+ENGINE utils.XMIWriter;
+TYPESYSTEM utils.SourceDocumentInformation;
+
+DECLARE Pattern;
+
+// some rule-based pattern
+(NUM SPECIAL NUM SPECIAL NUM){-> Pattern};
+
+Document{CONTAINS(Pattern)->CONFIGURE(XMIWriter, "Output" = "../with/"), EXEC(XMIWriter)};
+Document{-CONTAINS(Pattern)->CONFIGURE(XMIWriter, "Output" = "../without/"), EXEC(XMIWriter)};
+
+
+

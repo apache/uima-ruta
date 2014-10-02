@@ -1,0 +1,18 @@
+PACKAGE uima.ruta.example;
+
+ENGINE utils.HtmlAnnotator;
+ENGINE utils.HtmlConverter;
+ENGINE HtmlViewWriter;
+TYPESYSTEM utils.HtmlTypeSystem;
+TYPESYSTEM utils.SourceDocumentInformation;
+
+Document{-> RETAINTYPE(SPACE,BREAK)};
+Document{->EXEC(HtmlAnnotator)};
+
+Document { -> CONFIGURE(HtmlConverter, "inputView" = "_InitialView", 
+    "outputView" = "plain"), 
+      EXEC(HtmlConverter)};
+
+Document{ -> CONFIGURE(ViewWriter, "inputView" = "plain", 
+    "outputView" = "_InitialView", "output" = "/../converted/"), 
+    EXEC(HtmlViewWriter)};
