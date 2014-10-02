@@ -35,6 +35,7 @@ import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
+import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
@@ -57,7 +58,7 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
 
   @Override
   public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
-    TypeExpression typeExpr = expr.getTypeExpr();
+    TypeExpression typeExpr = expr.getTypeExpr(element.getParent());
     Type type = typeExpr.getType(element.getParent());
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOf(element);
     Collection<AnnotationFS> annotations = new TreeSet<AnnotationFS>(comp);
@@ -81,7 +82,7 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
 
   private void setFeatureValue(AnnotationFS a, Feature feature, IRutaExpression argExpr,
           RuleElement element, RutaStream stream) {
-    if(feature == null) {
+    if (feature == null) {
       throw new IllegalArgumentException("Not able to assign feature value (e.g., coveredText).");
     }
     String range = feature.getRange().getName();
@@ -124,6 +125,17 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
         AnnotationFS annotation = inWindow.get(0);
         a.setFeatureValue(feature, annotation);
       }
+    } else if (argExpr instanceof GenericFeatureExpression && !feature.getRange().isPrimitive()) {
+      TypeExpression typeExpr = ((GenericFeatureExpression) argExpr).getFeatureExpression()
+              .getTypeExpr(element.getParent());
+      Type t = typeExpr.getType(element.getParent());
+      List<AnnotationFS> inWindow = stream.getAnnotationsInWindow(a, t);
+      if (feature.getRange().isArray()) {
+        a.setFeatureValue(feature, UIMAUtils.toFSArray(stream.getJCas(), inWindow));
+      } else {
+        AnnotationFS annotation = inWindow.get(0);
+        a.setFeatureValue(feature, annotation);
+      }
     }
   }
 
@@ -136,7 +148,8 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
     } else {
       Collection<AnnotationFS> beginAnchors = stream.getBeginAnchor(annotation.getBegin())
               .getBeginAnchors(type);
-      Collection<AnnotationFS> endAnchors = stream.getEndAnchor(annotation.getEnd()).getEndAnchors(type);
+      Collection<AnnotationFS> endAnchors = stream.getEndAnchor(annotation.getEnd()).getEndAnchors(
+              type);
       @SuppressWarnings("unchecked")
       Collection<AnnotationFS> intersection = CollectionUtils
               .intersection(beginAnchors, endAnchors);

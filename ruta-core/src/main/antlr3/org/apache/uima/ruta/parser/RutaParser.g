@@ -1027,28 +1027,37 @@ List<Token> fs = new ArrayList<Token>();
 TypeExpression te = null;
 }
 	:
-	at = Identifier {te = ExpressionFactory.createSimpleTypeExpression(at, $blockDeclaration::env);}
-	(DOT f = Identifier {fs.add(f);})+
-	{feat = ExpressionFactory.createFeatureExpression(te, fs, $blockDeclaration::env);}
+	match = dottedId2 
+	{
+	MatchReference mr = ExpressionFactory.createMatchReference(match, null, null);
+	feat = ExpressionFactory.createFeatureExpression(mr, $blockDeclaration::env);
+	}
 	;
 
 featureMatchExpression returns [FeatureMatchExpression fme = null]
 	:
-	f = featureExpression ((comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument)?
-	{fme = ExpressionFactory.createFeatureMatchExpression(f, comp, arg, $blockDeclaration::env);}
+	match = dottedId2 ((comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument)?
+	{
+	MatchReference mr = ExpressionFactory.createMatchReference(match, comp, arg);
+	fme = ExpressionFactory.createFeatureMatchExpression(mr, $blockDeclaration::env);}
 	;
 
 featureMatchExpression2 returns [FeatureMatchExpression fme = null]
 	:
-	f = featureExpression (comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument
-	{fme = ExpressionFactory.createFeatureMatchExpression(f, comp, arg, $blockDeclaration::env);}
+	match = dottedId2 (comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument
+	{
+	MatchReference mr = ExpressionFactory.createMatchReference(match, comp, arg);
+	fme = ExpressionFactory.createFeatureMatchExpression(mr, $blockDeclaration::env);}
 	;
 
 
 featureAssignmentExpression returns [FeatureMatchExpression fme = null]
 	:
-	f = featureExpression op = ASSIGN_EQUAL arg = argument
-	{fme = ExpressionFactory.createFeatureMatchExpression(f, op, arg, $blockDeclaration::env);}
+	match = dottedId2 op = ASSIGN_EQUAL arg = argument
+	{
+	MatchReference mr = ExpressionFactory.createMatchReference(match, op, arg);
+	fme = ExpressionFactory.createFeatureMatchExpression(mr, $blockDeclaration::env);
+	}
 	;
 	
 	
@@ -1965,6 +1974,20 @@ dottedId returns [Token token = null ]
 		id = Identifier {ct.setStopIndex(getBounds(id)[1]);
 		                 ct.setText(ct.getText() + id.getText());}
 	)*
+	{token = ct;
+	 return token;}
+	;
+dottedId2 returns [Token token = null ]
+@init {CommonToken ct = null;}
+	:
+	id = Identifier {
+		ct = new CommonToken(id);
+		}
+	(
+		dot = DOT {ct.setText(ct.getText() + dot.getText());}
+		id = Identifier {ct.setStopIndex(getBounds(id)[1]);
+		                 ct.setText(ct.getText() + id.getText());}
+	)+
 	{token = ct;
 	 return token;}
 	;

@@ -33,12 +33,15 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
+import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.extensions.RutaParseException;
 import org.apache.uima.ruta.rule.AnnotationComparator;
 
 public class SimpleFeatureExpression extends FeatureExpression {
 
+  protected MatchReference mr;
+  
   private TypeExpression typeExpr;
 
   private List<String> features;
@@ -51,8 +54,9 @@ public class SimpleFeatureExpression extends FeatureExpression {
     this.features = featureReferences;
   }
 
-  public SimpleFeatureExpression(TypeExpression te, String[] featureReferences) {
-    this(te, Arrays.asList(featureReferences));
+  public SimpleFeatureExpression(MatchReference mr) {
+    super();
+    this.mr = mr;
   }
 
   @Override
@@ -63,11 +67,14 @@ public class SimpleFeatureExpression extends FeatureExpression {
     } else {
       return null;
     }
-
   }
 
   @Override
   public List<Feature> getFeatures(RutaBlock parent) {
+    if(mr != null) {
+      typeExpr = mr.getTypeExpression(parent);
+      features = mr.getFeatureExpression(parent).getFeatureStringList(parent);
+    }
     List<Feature> result = new ArrayList<Feature>();
     Type type = typeExpr.getType(parent);
     Feature feature = null;
@@ -91,7 +98,10 @@ public class SimpleFeatureExpression extends FeatureExpression {
     return result;
   }
 
-  public TypeExpression getTypeExpr() {
+  public TypeExpression getTypeExpr(RutaBlock parent) {
+    if(mr != null) {
+      return mr.getTypeExpression(parent);
+    }
     return typeExpr;
   }
 
@@ -99,7 +109,10 @@ public class SimpleFeatureExpression extends FeatureExpression {
     this.typeExpr = typeExpr;
   }
 
-  public List<String> getFeatureStringList() {
+  public List<String> getFeatureStringList(RutaBlock parent) {
+    if(mr != null) {
+      features = mr.getFeatureExpression(parent).getFeatureStringList(parent);
+    }
     return features;
   }
 

@@ -56,7 +56,7 @@ public class NumberFeatureExpression extends AbstractNumberExpression {
 
   private Number getNumberValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     Number result = null;
-    Type type = fe.getTypeExpr().getType(parent);
+    Type type = fe.getTypeExpr(parent).getType(parent);
     Feature feature = fe.getFeature(parent);
     Type range = feature.getRange();
     List<AnnotationFS> list = getTargetAnnotation(annotation, type, stream);

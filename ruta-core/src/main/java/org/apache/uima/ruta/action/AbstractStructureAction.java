@@ -36,6 +36,7 @@ import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
@@ -75,6 +76,19 @@ public abstract class AbstractStructureAction extends AbstractRutaAction {
           if (annotationsInWindow != null && !annotationsInWindow.isEmpty()) {
             AnnotationFS annotation = annotationsInWindow.get(0);
             structure.setStringValue(targetFeature, annotation.getCoveredText());
+          }
+        } else if(valueObject instanceof GenericFeatureExpression &&  range instanceof Type) {
+          GenericFeatureExpression gfe = (GenericFeatureExpression) valueObject;
+          TypeExpression type = gfe.getFeatureExpression().getTypeExpr(parent);
+          List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(matchedAnnotation,
+                  type.getType(parent));
+          if (typeSystem.subsumes(jcas.getCasType(FSArray.type), range)) {
+            structure
+                    .setFeatureValue(targetFeature, UIMAUtils.toFSArray(jcas, annotationsInWindow));
+          } else if (typeSystem.subsumes(range, type.getType(parent))
+                  && !annotationsInWindow.isEmpty()) {
+            AnnotationFS annotation = annotationsInWindow.get(0);
+            structure.setFeatureValue(targetFeature, annotation);
           }
         } else if (valueObject instanceof IStringExpression
                 && range.getName().equals(UIMAConstants.TYPE_STRING)) {

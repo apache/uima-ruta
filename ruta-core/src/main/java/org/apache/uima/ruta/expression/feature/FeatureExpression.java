@@ -35,9 +35,9 @@ public abstract class FeatureExpression extends RutaExpression {
 
   public abstract List<Feature> getFeatures(RutaBlock parent);
 
-  public abstract List<String> getFeatureStringList();
+  public abstract List<String> getFeatureStringList(RutaBlock parent);
 
-  public abstract TypeExpression getTypeExpr();
+  public abstract TypeExpression getTypeExpr(RutaBlock parent);
 
   public abstract Collection<AnnotationFS> getFeatureAnnotations(
           Collection<AnnotationFS> annotations, RutaStream stream, RutaBlock parent,

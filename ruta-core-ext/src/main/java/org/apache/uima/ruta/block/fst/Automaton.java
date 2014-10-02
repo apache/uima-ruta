@@ -238,7 +238,7 @@ public class Automaton {
     if (matcher instanceof RutaTypeMatcher) {
       RutaTypeMatcher rtm = (RutaTypeMatcher) matcher;
       MatchReference mr = (MatchReference) rtm.getExpression();
-      FeatureExpression featureExpression = mr.getFeatureExpression(element.getParent(), stream);
+      FeatureExpression featureExpression = mr.getFeatureExpression(element.getParent());
       if (featureExpression != null) {
         base = matcher.match(annotation, stream, element.getParent());
       }

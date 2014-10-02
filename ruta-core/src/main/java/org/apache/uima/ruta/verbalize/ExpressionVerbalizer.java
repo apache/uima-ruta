@@ -275,8 +275,8 @@ public class ExpressionVerbalizer {
 
   public String verbalize(FeatureExpression expression) {
     StringBuilder sb = new StringBuilder();
-    sb.append(verbalize(expression.getTypeExpr()));
-    List<String> list = expression.getFeatureStringList();
+    sb.append(verbalize(expression.getTypeExpr(null)));
+    List<String> list = expression.getFeatureStringList(null);
     for (String string : list) {
       sb.append(".");
       sb.append(string);

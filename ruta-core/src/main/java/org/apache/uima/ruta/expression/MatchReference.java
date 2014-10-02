@@ -57,7 +57,7 @@ public class MatchReference extends RutaExpression {
     this.typeExpression = expression;
   }
 
-  private void resolve(RutaBlock parent, RutaStream stream) {
+  private void resolve(RutaBlock parent) {
     if (typeExpression != null) {
       return;
     }
@@ -86,7 +86,7 @@ public class MatchReference extends RutaExpression {
           featureExpression = new SimpleFeatureExpression(typeExpression, tail);
         } else {
           SimpleFeatureExpression expr = new SimpleFeatureExpression(typeExpression, tail);
-          featureExpression = new FeatureMatchExpression(expr, op, arg);
+          featureExpression = new FeatureMatchExpression(expr, op, arg, parent);
         }
       }
     }
@@ -104,13 +104,13 @@ public class MatchReference extends RutaExpression {
     return null;
   }
 
-  public TypeExpression getTypeExpression(RutaBlock parent, RutaStream stream) {
-    resolve(parent, stream);
+  public TypeExpression getTypeExpression(RutaBlock parent) {
+    resolve(parent);
     return typeExpression;
   }
 
-  public FeatureExpression getFeatureExpression(RutaBlock parent, RutaStream stream) {
-    resolve(parent, stream);
+  public FeatureExpression getFeatureExpression(RutaBlock parent) {
+    resolve(parent);
     return featureExpression;
   }
 

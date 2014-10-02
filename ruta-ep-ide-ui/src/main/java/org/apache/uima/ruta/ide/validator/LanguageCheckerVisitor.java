@@ -255,8 +255,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
           if (file == null && url == null) {
             pr.reportProblem(problemFactory.createFileNotFoundProblem(sRef, localPath));
           } else {
-            IProject referredProject =sourceModule.getScriptProject().getProject();
-            if(file != null) {
+            IProject referredProject = sourceModule.getScriptProject().getProject();
+            if (file != null) {
               // script in other project? use that if the file was found in the workspace
               referredProject = file.getProject();
             }
@@ -479,7 +479,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     return tsDesc;
   }
 
-  private ResourceManager getResourceManager(ClassLoader classloader) throws MalformedURLException, CoreException {
+  private ResourceManager getResourceManager(ClassLoader classloader) throws MalformedURLException,
+          CoreException {
     if (resourceManager == null) {
       resourceManager = new ResourceManager_impl(classloader);
       List<IFolder> folders = RutaProjectUtils.getAllDescriptorFolders(sourceModule
@@ -527,6 +528,10 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     if (s instanceof FeatureMatchExpression) {
       FeatureMatchExpression fme = (FeatureMatchExpression) s;
       String featText = fme.getFeature().getText();
+      // HOTFIX: parser creates wrong AST element
+      if (allLongTypeNames.contains(featText)) {
+        return true;
+      }
       checkTypeOfFeatureMatch(featText, fme);
       return true;
     }
@@ -717,13 +722,16 @@ public class LanguageCheckerVisitor extends ASTVisitor {
 
   private void checkTypeOfFeatureMatch(String featText, FeatureMatchExpression fme) {
     int lastIndexOf = featText.lastIndexOf(".");
+    int firstIndexOf = featText.indexOf(".");
     if (lastIndexOf == -1) {
       return;
     }
+    String bref = featText.substring(0, firstIndexOf);
     String aref = featText.substring(0, lastIndexOf);
     String fref = featText.substring(lastIndexOf + 1, featText.length());
     String match = isFeatureMatch(aref);
-    if (match == null && getVariableType(aref) == RutaTypeConstants.RUTA_TYPE_AT) {
+    if (match == null
+            && (getVariableType(aref) == RutaTypeConstants.RUTA_TYPE_AT || getVariableType(bref) == RutaTypeConstants.RUTA_TYPE_AT)) {
       // do not check on variables!
       return;
     }

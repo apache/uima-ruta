@@ -383,7 +383,7 @@ public class RutaRuleElement extends AbstractRuleElement {
     if (matcher instanceof RutaTypeMatcher) {
       RutaTypeMatcher rtm = (RutaTypeMatcher) matcher;
       MatchReference mr = (MatchReference) rtm.getExpression();
-      FeatureExpression featureExpression = mr.getFeatureExpression(parent, stream);
+      FeatureExpression featureExpression = mr.getFeatureExpression(parent);
       if (featureExpression != null) {
         base = matcher.match(annotation, stream, getParent());
       }

@@ -27,6 +27,7 @@ import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
@@ -43,13 +44,21 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
 
   private String op;
 
-  public FeatureMatchExpression(FeatureExpression f, String op, IRutaExpression arg) {
-    super(f.getTypeExpr(), f.getFeatureStringList());
+  public FeatureMatchExpression(FeatureExpression f, String op, IRutaExpression arg,
+          RutaBlock parent) {
+    super(f.getTypeExpr(parent), f.getFeatureStringList(parent));
     this.op = op;
     this.arg = arg;
   }
 
+  public FeatureMatchExpression(MatchReference mr, RutaBlock env) {
+    super(mr);
+  }
+
   public IRutaExpression getArg() {
+    if (mr != null && arg == null) {
+      arg = mr.getArg();
+    }
     return arg;
   }
 
@@ -58,6 +67,9 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
   }
 
   public String getOp() {
+    if (mr != null && op == null) {
+      op = mr.getOp();
+    }
     return op;
   }
 
@@ -76,30 +88,30 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
     String rn = feature == null ? UIMAConstants.TYPE_STRING : feature.getRange().getName();
     if (rn.equals(UIMAConstants.TYPE_BOOLEAN)) {
       Boolean v1 = afs.getBooleanValue(feature);
-      if (arg instanceof IBooleanExpression) {
-        IBooleanExpression expr = (IBooleanExpression) arg;
+      if (getArg() instanceof IBooleanExpression) {
+        IBooleanExpression expr = (IBooleanExpression) getArg();
         Boolean v2 = expr.getBooleanValue(parent, afs, stream);
         return compare(v1, v2);
       }
     } else if (rn.equals(UIMAConstants.TYPE_INTEGER) || rn.equals(UIMAConstants.TYPE_BYTE)
             || rn.equals(UIMAConstants.TYPE_SHORT) || rn.equals(UIMAConstants.TYPE_LONG)) {
       Integer v1 = afs.getIntValue(feature);
-      if (arg instanceof INumberExpression) {
-        INumberExpression expr = (INumberExpression) arg;
+      if (getArg() instanceof INumberExpression) {
+        INumberExpression expr = (INumberExpression) getArg();
         Integer v2 = expr.getIntegerValue(parent, afs, stream);
         return compare(v1, v2);
       }
     } else if (rn.equals(UIMAConstants.TYPE_DOUBLE)) {
       Double v1 = afs.getDoubleValue(feature);
-      if (arg instanceof INumberExpression) {
-        INumberExpression expr = (INumberExpression) arg;
+      if (getArg() instanceof INumberExpression) {
+        INumberExpression expr = (INumberExpression) getArg();
         Double v2 = expr.getDoubleValue(parent, afs, stream);
         return compare(v1, v2);
       }
     } else if (rn.equals(UIMAConstants.TYPE_FLOAT)) {
       Float v1 = afs.getFloatValue(feature);
-      if (arg instanceof INumberExpression) {
-        INumberExpression expr = (INumberExpression) arg;
+      if (getArg() instanceof INumberExpression) {
+        INumberExpression expr = (INumberExpression) getArg();
         Float v2 = expr.getFloatValue(parent, afs, stream);
         return compare(v1, v2);
       }
@@ -109,8 +121,8 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
       if (feature != null) {
         v1 = afs.getStringValue(feature);
       }
-      if (arg instanceof IStringExpression) {
-        IStringExpression expr = (IStringExpression) arg;
+      if (getArg() instanceof IStringExpression) {
+        IStringExpression expr = (IStringExpression) getArg();
         String v2 = expr.getStringValue(parent, afs, stream);
         return compare(v1, v2);
       }
@@ -123,23 +135,23 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
       Number n1 = (Number) v1;
       Number n2 = (Number) v2;
       int compareTo = new BigDecimal(n1.toString()).compareTo(new BigDecimal(n2.toString()));
-      if (op.equals("==")) {
+      if (getOp().equals("==")) {
         return compareTo == 0;
-      } else if (op.equals("!=")) {
+      } else if (getOp().equals("!=")) {
         return compareTo != 0;
-      } else if (op.equals(">=")) {
+      } else if (getOp().equals(">=")) {
         return compareTo >= 0;
-      } else if (op.equals(">")) {
+      } else if (getOp().equals(">")) {
         return compareTo > 0;
-      } else if (op.equals("<=")) {
+      } else if (getOp().equals("<=")) {
         return compareTo <= 0;
-      } else if (op.equals("<")) {
+      } else if (getOp().equals("<")) {
         return compareTo < 0;
       }
     } else if (v1 != null && v2 != null) {
-      if (op.equals("==")) {
+      if (getOp().equals("==")) {
         return v1.equals(v2);
-      } else if (op.equals("!=")) {
+      } else if (getOp().equals("!=")) {
         return !v1.equals(v2);
       }
     }

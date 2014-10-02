@@ -228,18 +228,12 @@ public class ExpressionFactory {
     return new SimpleStringListExpression(list);
   }
 
-  public static SimpleFeatureExpression createFeatureExpression(TypeExpression te, List<Token> fs,
-          RutaBlock env) {
-    List<String> featureReferences = new ArrayList<String>();
-    for (Token token : fs) {
-      featureReferences.add(token.getText());
-    }
-    return new SimpleFeatureExpression(te, featureReferences);
+  public static FeatureExpression createFeatureExpression(MatchReference mr, RutaBlock env) {
+    return new SimpleFeatureExpression(mr);
   }
-
-  public static FeatureMatchExpression createFeatureMatchExpression(FeatureExpression f, Token op,
-          IRutaExpression arg, RutaBlock env) {
-    return new FeatureMatchExpression(f, op.getText(), arg);
+  
+  public static FeatureMatchExpression createFeatureMatchExpression(MatchReference mr, RutaBlock env) {
+    return new FeatureMatchExpression(mr, env);
   }
 
   public static MatchReference createMatchReference(Token refToken, Token opToken,
@@ -267,5 +261,7 @@ public class ExpressionFactory {
   public static GenericFeatureExpression createGenericFeatureExpression(FeatureExpression fe) {
     return new GenericFeatureExpression(fe);
   }
+
+
 
 }

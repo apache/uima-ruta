@@ -53,7 +53,7 @@ public class ImplicitCondition extends AbstractRutaCondition {
       return new EvaluatedCondition(this, be.getBooleanValue(element.getParent(), null, stream));
     } else if (expr instanceof FeatureMatchExpression) {
       FeatureMatchExpression fme = (FeatureMatchExpression) expr;
-      TypeExpression typeExpr = fme.getTypeExpr();
+      TypeExpression typeExpr = fme.getTypeExpr(element.getParent());
       Type type = typeExpr.getType(element.getParent());
       List<AnnotationFS> annotations = getAnnotationsToCheck(annotation, type, fme, stream);
       Collection<AnnotationFS> featureAnnotations = fme.getFeatureAnnotations(annotations, stream,

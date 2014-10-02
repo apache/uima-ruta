@@ -40,7 +40,7 @@ public class StringFeatureExpression extends AbstractStringExpression {
 
   @Override
   public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    Type type = fe.getTypeExpr().getType(parent);
+    Type type = fe.getTypeExpr(parent).getType(parent);
     Feature feature = fe.getFeature(parent);
     List<AnnotationFS> list = getTargetAnnotation(annotation, type, stream);
     Collection<AnnotationFS> featureAnnotations = fe.getFeatureAnnotations(list, stream, parent,
