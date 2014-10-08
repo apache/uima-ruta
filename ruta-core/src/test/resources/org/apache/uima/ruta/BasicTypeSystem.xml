@@ -140,7 +140,7 @@
     <typeDescription>
       <name>org.apache.uima.ruta.type.Document</name>
       <description/>
-      <supertypeName>uima.tcas.DocumentAnnotation</supertypeName>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
     </typeDescription>
     <typeDescription>
       <name>org.apache.uima.ruta.type.TokenSeed</name>

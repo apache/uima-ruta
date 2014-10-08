@@ -541,7 +541,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     Collection<RutaModule> values = script.getScripts().values();
     for (RutaModule eachModule : values) {
       relinkEnvironments(eachModule, mainRootBlock, new ArrayList<RutaModule>());
-      // initializeTypes(eachModule, cas);
+      initializeTypes(eachModule, cas);
     }
   }
 

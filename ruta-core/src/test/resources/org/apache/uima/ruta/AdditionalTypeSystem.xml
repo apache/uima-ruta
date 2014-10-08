@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+    <name>org.apache.uima.ruta.AdditionalTypeSystem</name>
+    <imports>
+        <import location="BasicTypeSystem.xml"/>
+    </imports>
+    <types>
+        <typeDescription>
+            <name>org.apache.uima.ruta.Additional.NewType1</name>
+            <description>Type defined in org.apache.uima.ruta.Additional</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>org.apache.uima.ruta.Additional.NewType2</name>
+            <description>Type defined in org.apache.uima.ruta.Additional</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+    </types>
+</typeSystemDescription>

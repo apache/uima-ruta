@@ -1,0 +1,9 @@
+PACKAGE org.apache.uima.ruta;
+DECLARE NewType1, NewType2;
+TYPE RutaNum = org.apache.uima.ruta.type.NUM;
+RutaNum {-> NewType1};
+CW{-> NewType2};
+
+
+
+
