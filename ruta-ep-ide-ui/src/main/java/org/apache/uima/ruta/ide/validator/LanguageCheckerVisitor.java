@@ -69,6 +69,7 @@ import org.apache.uima.ruta.ide.parser.ast.RutaFeatureDeclaration;
 import org.apache.uima.ruta.ide.parser.ast.RutaFunction;
 import org.apache.uima.ruta.ide.parser.ast.RutaImportStatement;
 import org.apache.uima.ruta.ide.parser.ast.RutaImportTypesStatement;
+import org.apache.uima.ruta.ide.parser.ast.RutaListExpression;
 import org.apache.uima.ruta.ide.parser.ast.RutaPackageDeclaration;
 import org.apache.uima.ruta.ide.parser.ast.RutaRegExpRule;
 import org.apache.uima.ruta.ide.parser.ast.RutaRuleElement;
@@ -637,6 +638,34 @@ public class LanguageCheckerVisitor extends ASTVisitor {
             if (!featureFound) {
               IProblem problem = problemFactory.createUnknownFeatureProblem(each, structure);
               pr.reportProblem(problem);
+            }
+          }
+        } else if (assignments != null && action.equals("TRIE")) {
+          for (Expression each : assignments.values()) {
+            if (each instanceof RutaListExpression) {
+              RutaListExpression rle = (RutaListExpression) each;
+              List<?> childs = rle.getExprs().getChilds();
+              if (childs.size() != 2 && childs.size() != 3) {
+                IProblem problem = problemFactory.createWrongNumberOfArgumentsProblem(actionName,
+                        rle, 2);
+                pr.reportProblem(problem);
+              }
+              Object arg1 = childs.get(0);
+              if(arg1 instanceof RutaExpression) {
+                RutaExpression e1 = (RutaExpression) arg1;
+                if(e1.getKind() != RutaTypeConstants.RUTA_TYPE_AT) {
+                  IProblem problem = problemFactory.createWrongArgumentTypeProblem(e1, "Type");
+                  pr.reportProblem(problem);
+                }
+              }
+              Object arg2 = childs.get(1);
+              if(arg2 instanceof RutaExpression) {
+                RutaExpression e2 = (RutaExpression) arg2;
+                if(e2.getKind() != RutaTypeConstants.RUTA_TYPE_S) {
+                  IProblem problem = problemFactory.createWrongArgumentTypeProblem(e2, "String");
+                  pr.reportProblem(problem);
+                }
+              }
             }
           }
         }

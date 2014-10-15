@@ -1330,7 +1330,8 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
         <emphasis role="bold">Definition:</emphasis>
       </title>
       <para>
-        <programlisting><![CDATA[TRIE((String = Type)+,ListExpression,BooleanExpression,NumberExpression,
+        <programlisting><![CDATA[TRIE((String = (TypeExpression|{TypeExpression,StringExpression,Expression}))+,
+          ListExpression,BooleanExpression,NumberExpression,
           BooleanExpression,NumberExpression,StringExpression)]]></programlisting>
       </para>
     </section>
@@ -1352,6 +1353,17 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
         deactivated. The cost of an edit operation can currently not be
         configured by an argument. The last argument additionally defines
         several chars that will be ignored.
+      </para>
+      <para>
+        <programlisting><![CDATA[Document{->TRIE("FirstNames.txt" = {A, "a", "first"}, "LastNames.txt" = {B, "b", true}, 
+          "CompleteNames.txt" = {C, "c", 6},
+          list1, true, 4, false, 0, ":")};]]></programlisting>
+      </para>
+      <para>
+        Here, the dictionary 'list1' is applied on the document. Matches originated in dictionary 'FirstNames.txt'
+        result in annotations of type A wheras their features 'a' are set to 'first'. The other two dictionaries 
+        create annotations of type 'B' and 'C' for the corresponding dictionaries with a boolean feature value 
+        and a integer feature value.
       </para>
     </section>
   </section>

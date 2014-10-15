@@ -36,10 +36,17 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.uima.cas.FSIterator;
+import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.UIMAConstants;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.type.RutaBasic;
+import org.apache.uima.ruta.utils.UIMAUtils;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 
@@ -593,16 +600,16 @@ public class MultiTreeWordList implements RutaWordList {
 
       // Lower Case Node.
       MultiTextNode childNodeL = pointer.getChildNode(Character.toLowerCase(charAt));
-      if(childNodeL == null) {
+      if (childNodeL == null) {
         childNodeL = skipWS(pointer, Character.toLowerCase(charAt));
       }
-      
+
       // Upper Case Node.
       MultiTextNode childNodeU = pointer.getChildNode(Character.toUpperCase(charAt));
-      if(childNodeU == null) {
+      if (childNodeU == null) {
         childNodeU = skipWS(pointer, Character.toUpperCase(charAt));
       }
-      
+
       if (charAtIgnored && childNodeL == null && childNodeU == null) {
         // Character is ignored and does not appear.
         return recursiveContains2(pointer, text, next, ignoreCase, fragment, ignoreChars,
@@ -613,7 +620,7 @@ public class MultiTreeWordList implements RutaWordList {
                 ignoreCase, fragment, ignoreChars, maxIgnoreChars);
         Collection<String> recursiveContainsU = recursiveContains2(childNodeU, text, next,
                 ignoreCase, fragment, ignoreChars, maxIgnoreChars);
-        if(recursiveContainsL == null && recursiveContainsU == null) {
+        if (recursiveContainsL == null && recursiveContainsU == null) {
           return null;
         }
         List<String> result = new LinkedList<String>();
@@ -654,7 +661,7 @@ public class MultiTreeWordList implements RutaWordList {
     }
     return null;
   }
-  
+
   /**
    * Returns true, if the MultiTreeWordList contains the string text, false otherwise.
    * 
@@ -736,7 +743,7 @@ public class MultiTreeWordList implements RutaWordList {
     }
   }
 
-  public Collection<AnnotationFS> find(RutaStream stream, Map<String, Type> typeMap,
+  public Collection<AnnotationFS> find(RutaStream stream, Map<String, Object> typeMap,
           boolean ignoreCase, int ignoreLength, boolean edit, double distance, String ignoreToken) {
 
     Collection<AnnotationFS> results = new HashSet<AnnotationFS>();
@@ -760,7 +767,7 @@ public class MultiTreeWordList implements RutaWordList {
         while (streamPointer.isValid()) {
 
           boolean skip = false;
-          String currentBasicText = basicsToAdd.get(basicsToAdd.size()-1).getCoveredText();
+          String currentBasicText = basicsToAdd.get(basicsToAdd.size() - 1).getCoveredText();
           if (currentBasicText.length() == 1 && ignoreToken.contains(currentBasicText)) {
             skip = true;
           }
@@ -819,20 +826,75 @@ public class MultiTreeWordList implements RutaWordList {
   private void tryToCreateAnnotation(List<String> types, RutaStream stream,
           Collection<AnnotationFS> results, List<RutaBasic> basicsToAdd, String lastCandidate,
           List<AnnotationFS> interResult, boolean ignoreCase, int ignoreLength, boolean edit,
-          double distance, String ignoreToken, Map<String, Type> map) {
+          double distance, String ignoreToken, Map<String, Object> map) {
     if (basicsToAdd.size() >= 1 && types != null) {
       Set<String> set = new HashSet<String>(types);
       for (String each : set) {
-        Type type = map.get(each);
-        if (type != null) {
+        Object o = map.get(each);
+        if (o instanceof Type) {
+          Type type = (Type) o;
           int begin = basicsToAdd.get(0).getBegin();
           int end = basicsToAdd.get(basicsToAdd.size() - 1).getEnd();
           AnnotationFS newFS = stream.getCas().createAnnotation(type, begin, end);
           results.add(newFS);
+        } else if (o instanceof List) {
+          List<?> list = (List<?>) o;
+          Type type = null;
+          String featureString = null;
+          Object value = each;
+          if (list.size() == 2 ||list.size() == 3) {
+            if (list.get(0) instanceof Type) {
+              type = (Type) list.get(0);
+            }
+            if (list.get(1) instanceof String) {
+              featureString = (String) list.get(1);
+            }
+            if (list.size() == 3) {
+              value =  list.get(2);
+            }
+            
+            if (type != null && featureString != null) {
+              int begin = basicsToAdd.get(0).getBegin();
+              int end = basicsToAdd.get(basicsToAdd.size() - 1).getEnd();
+              AnnotationFS newFS = stream.getCas().createAnnotation(type, begin, end);
+              Feature feature = type.getFeatureByBaseName(featureString);
+              setFeatureValue(newFS, feature, value);
+              results.add(newFS);
+            }
+          }
         }
       }
     } else if (interResult != null && !interResult.isEmpty()) {
       results.addAll(interResult);
+    }
+  }
+
+  private void setFeatureValue(AnnotationFS annotationFS, Feature feature, Object o) {
+    if (feature != null && o != null) {
+      Type range = feature.getRange();
+      String rangeName = range.getName();
+      if (rangeName.equals(UIMAConstants.TYPE_STRING) && o instanceof String) {
+        annotationFS.setStringValue(feature, (String) o);
+      } else if (rangeName.equals(UIMAConstants.TYPE_INTEGER) && o instanceof Number) {
+        annotationFS.setIntValue(feature, ((Number) o).intValue());
+      } else if (rangeName.equals(UIMAConstants.TYPE_DOUBLE) && o instanceof Number) {
+        annotationFS.setDoubleValue(feature, ((Number) o).doubleValue());
+      } else if (rangeName.equals(UIMAConstants.TYPE_FLOAT) && o instanceof Number) {
+        annotationFS.setFloatValue(feature, ((Number) o).floatValue());
+      } else if (rangeName.equals(UIMAConstants.TYPE_BYTE) && o instanceof Number) {
+        annotationFS.setByteValue(feature, ((Number) o).byteValue());
+      } else if (rangeName.equals(UIMAConstants.TYPE_SHORT) && o instanceof Number) {
+        annotationFS.setShortValue(feature, ((Number) o).shortValue());
+      } else if (rangeName.equals(UIMAConstants.TYPE_LONG) && o instanceof Number) {
+        annotationFS.setLongValue(feature, ((Number) o).longValue());
+      } else if (rangeName.equals(UIMAConstants.TYPE_BOOLEAN) && o instanceof Boolean) {
+        annotationFS.setBooleanValue(feature, (Boolean) o);
+      } else if (rangeName.equals(UIMAConstants.TYPE_STRING) & o instanceof Type) {
+        annotationFS.setStringValue(feature, ((Type) o).getName());
+      }
+    } else {
+      throw new IllegalArgumentException("Not able to assign feature value: " + o + " -> "
+              + feature);
     }
   }
 

@@ -42,6 +42,7 @@ import org.apache.uima.ruta.expression.list.SimpleBooleanListExpression;
 import org.apache.uima.ruta.expression.list.SimpleNumberListExpression;
 import org.apache.uima.ruta.expression.list.SimpleStringListExpression;
 import org.apache.uima.ruta.expression.list.SimpleTypeListExpression;
+import org.apache.uima.ruta.expression.list.UntypedListExpression;
 import org.apache.uima.ruta.expression.number.ComposedNumberExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.NegativeNumberExpression;
@@ -139,6 +140,9 @@ public class ExpressionVerbalizer {
     } else if (expression instanceof ReferenceTypeListExpression) {
       ReferenceTypeListExpression e = (ReferenceTypeListExpression) expression;
       return e.getVar();
+    } else if (expression instanceof UntypedListExpression) {
+      UntypedListExpression e = (UntypedListExpression) expression;
+      return "{" + verbalizer.verbalizeExpressionList(e.getList()) + "}";
     }
     return expression.getClass().getSimpleName();
   }

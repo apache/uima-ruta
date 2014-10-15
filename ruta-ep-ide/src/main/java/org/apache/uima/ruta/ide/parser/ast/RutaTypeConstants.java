@@ -98,7 +98,10 @@ public final class RutaTypeConstants {
 
   public static final int RUTA_TYPE_TL = (2 << 17) + 5;
 
+  public static final int RUTA_TYPE_UTL = (2 << 17) + 6;
+
   public static final Map<Integer, String> typeStringOfInt;
+
   static {
     typeStringOfInt = new HashMap<Integer, String>();
     typeStringOfInt.put(RUTA_TYPE_A, "ACTION");

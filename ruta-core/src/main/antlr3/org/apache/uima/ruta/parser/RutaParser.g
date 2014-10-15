@@ -858,6 +858,15 @@ listExpression returns [ListExpression expr = null]
 	| (floatListExpression)=> dl = floatListExpression {expr = dl;}
 	| (stringListExpression)=> sl = stringListExpression {expr = sl;}
 	| (typeListExpression)=> tl = typeListExpression {expr = tl;}
+	| (untypedListExpression)=> utl = untypedListExpression {expr = utl;}
+	;
+
+untypedListExpression returns [ListExpression expr = null]
+@init{
+	List<IRutaExpression> list = new ArrayList<IRutaExpression>();
+}	:
+	LCURLY (e = argument {list.add(e);} (COMMA e = argument {list.add(e);})*)?  RCURLY
+	{expr = ExpressionFactory.createUntypedListExpression(list);}
 	;
 
 booleanListExpression returns [BooleanListExpression expr = null]
@@ -1783,12 +1792,14 @@ actionTransfer returns [AbstractRutaAction action = null]
 
 actionTrie returns [AbstractRutaAction action = null]
 @init {
-Map<IStringExpression, TypeExpression> map = new HashMap<IStringExpression, TypeExpression>();
+Map<IStringExpression, IRutaExpression> map = new HashMap<IStringExpression, IRutaExpression>();
 }
     :
     name = TRIE LPAREN
-    key = stringExpression ASSIGN_EQUAL value = typeExpression{map.put(key,value);}
-    (COMMA key = stringExpression ASSIGN_EQUAL value = typeExpression{map.put(key,value);} )*
+    key = stringExpression ASSIGN_EQUAL 
+    (value = typeExpression{map.put(key,value);} | listValue = untypedListExpression {map.put(key,listValue);}) 
+    (COMMA key = stringExpression ASSIGN_EQUAL 
+    (value = typeExpression{map.put(key,value);} | listValue = untypedListExpression {map.put(key,listValue);}) )*
     COMMA list = wordListExpression 
     COMMA ignoreCase = booleanExpression 
     COMMA ignoreLength = numberExpression 

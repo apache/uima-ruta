@@ -112,7 +112,7 @@ public class ActionVerbalizerTest {
     StringListExpression stringListExpr = new SimpleStringListExpression(stringExprList);
     Map<IStringExpression, IRutaExpression> stringExprMap = new HashMap<IStringExpression, IRutaExpression>();
     Map<IStringExpression, INumberExpression> stringExprNumExprMap = new HashMap<IStringExpression, INumberExpression>();
-    Map<IStringExpression, TypeExpression> stringExprTypeExprMap = new HashMap<IStringExpression, TypeExpression>();
+    Map<IStringExpression, IRutaExpression> stringExprTypeExprMap = new HashMap<IStringExpression, IRutaExpression>();
     @SuppressWarnings("rawtypes")
     ListExpression listExpr = new SimpleTypeListExpression(typeExprList);
     @SuppressWarnings("rawtypes")

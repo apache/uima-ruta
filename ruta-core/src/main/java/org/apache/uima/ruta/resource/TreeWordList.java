@@ -397,7 +397,7 @@ public class TreeWordList implements RutaWordList {
     return name;
   }
 
-  public List<AnnotationFS> find(RutaStream stream, Map<String, Type> typeMap, boolean ignoreCase,
+  public List<AnnotationFS> find(RutaStream stream, Map<String, Object> typeMap, boolean ignoreCase,
           int ignoreLength, boolean edit, double distance, String ignoreToken) {
     return null;
   }

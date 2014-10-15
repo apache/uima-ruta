@@ -179,7 +179,7 @@ public class ActionFactory {
   }
 
   public static AbstractRutaAction createTrieAction(WordListExpression list,
-          Map<IStringExpression, TypeExpression> map, IBooleanExpression ignoreCase,
+          Map<IStringExpression, IRutaExpression> map, IBooleanExpression ignoreCase,
           INumberExpression ignoreLength, IBooleanExpression edit, INumberExpression distance,
           IStringExpression ignoreChar, RutaBlock parent) {
     return new TrieAction(list, map, ignoreCase, ignoreLength, edit, distance, ignoreChar);

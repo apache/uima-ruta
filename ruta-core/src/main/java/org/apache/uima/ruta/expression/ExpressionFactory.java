@@ -36,6 +36,7 @@ import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
 import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
 import org.apache.uima.ruta.expression.list.BooleanListExpression;
+import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.expression.list.NumberListExpression;
 import org.apache.uima.ruta.expression.list.ReferenceBooleanListExpression;
 import org.apache.uima.ruta.expression.list.ReferenceNumberListExpression;
@@ -47,6 +48,7 @@ import org.apache.uima.ruta.expression.list.SimpleStringListExpression;
 import org.apache.uima.ruta.expression.list.SimpleTypeListExpression;
 import org.apache.uima.ruta.expression.list.StringListExpression;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
+import org.apache.uima.ruta.expression.list.UntypedListExpression;
 import org.apache.uima.ruta.expression.number.ComposedNumberExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.NegativeNumberExpression;
@@ -260,6 +262,10 @@ public class ExpressionFactory {
 
   public static GenericFeatureExpression createGenericFeatureExpression(FeatureExpression fe) {
     return new GenericFeatureExpression(fe);
+  }
+
+  public static ListExpression<Object> createUntypedListExpression(List<IRutaExpression> list) {
+    return new UntypedListExpression(list);
   }
 
 

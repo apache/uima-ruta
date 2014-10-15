@@ -28,7 +28,7 @@ import org.apache.uima.ruta.expression.string.AbstractStringExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 
-abstract class AbstractBooleanExpression extends AbstractStringExpression implements IBooleanExpression {
+public abstract class AbstractBooleanExpression extends AbstractStringExpression implements IBooleanExpression {
 
   public boolean getBooleanValue(RutaBlock parent, RuleMatch match, RuleElement element,
           RutaStream stream) {

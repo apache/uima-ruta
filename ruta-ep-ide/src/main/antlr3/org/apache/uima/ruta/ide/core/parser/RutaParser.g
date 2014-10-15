@@ -809,6 +809,15 @@ listExpression returns [Expression expr = null]
 	| (floatListExpression)=> e = floatListExpression {expr = e;}
 	| (stringListExpression)=> e = stringListExpression {expr = e;}
 	| (typeListExpression)=> e = typeListExpression {expr = e;}
+	| (untypedListExpression)=> utl = untypedListExpression {expr = utl;}
+	;
+
+untypedListExpression returns [Expression expr = null]
+@init{
+	List<Expression> list = new ArrayList<Expression>();
+}	:
+	LCURLY (e = argument {list.add(e);} (COMMA e = argument {list.add(e);})*)?  RCURLY
+	{expr = ExpressionFactory.createListExpression(list, RutaTypeConstants.RUTA_TYPE_UTL);}
 	;
 	
 booleanListExpression returns [Expression expr = null]
@@ -1889,9 +1898,10 @@ List<Expression> right = new ArrayList<Expression>();
     :
     name = TRIE LPAREN
         key = stringExpression {left.add(key);}ASSIGN_EQUAL 
-        value = typeExpression {right.add(value);}
+        (value = typeExpression{right.add(value);} | listValue = untypedListExpression {right.add(listValue);}) 
         (COMMA key = stringExpression {left.add(key);} ASSIGN_EQUAL 
-        value = typeExpression {right.add(value);})*
+        (value = typeExpression{right.add(value);} | listValue = untypedListExpression {right.add(listValue);}) 
+        )*
         COMMA list = wordListExpression 
         
     COMMA ignoreCase = booleanExpression 

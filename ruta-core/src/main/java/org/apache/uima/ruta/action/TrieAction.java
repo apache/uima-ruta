@@ -21,13 +21,16 @@ package org.apache.uima.ruta.action;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.expression.list.UntypedListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.resource.WordListExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
@@ -41,7 +44,7 @@ public class TrieAction extends AbstractRutaAction {
 
   private final WordListExpression list;
 
-  private final Map<IStringExpression, TypeExpression> map;
+  private final Map<IStringExpression, IRutaExpression> map;
 
   private final IBooleanExpression ignoreCase;
 
@@ -53,7 +56,7 @@ public class TrieAction extends AbstractRutaAction {
 
   private final IStringExpression ignoreChar;
 
-  public TrieAction(WordListExpression list, Map<IStringExpression, TypeExpression> map,
+  public TrieAction(WordListExpression list, Map<IStringExpression, IRutaExpression> map,
           IBooleanExpression ignoreCase, INumberExpression ignoreLength, IBooleanExpression edit,
           INumberExpression distance, IStringExpression ignoreChar) {
     super();
@@ -69,14 +72,17 @@ public class TrieAction extends AbstractRutaAction {
   @Override
   public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
 
-    Map<String, Type> typeMap = new HashMap<String, Type>();
+    Map<String, Object> typeMap = new HashMap<String, Object>();
     RutaBlock parent = element.getParent();
     for (IStringExpression eachKey : map.keySet()) {
       String stringValue = eachKey.getStringValue(parent, match, element, stream);
-      TypeExpression typeExpression = map.get(eachKey);
-      if (typeExpression != null) {
-        Type typeValue = typeExpression.getType(parent);
+      IRutaExpression expression = map.get(eachKey);
+      if (expression instanceof TypeExpression) {
+        Type typeValue = ((TypeExpression) expression).getType(parent);
         typeMap.put(stringValue, typeValue);
+      } else if (expression instanceof UntypedListExpression) {
+        List<Object> innerList = ((UntypedListExpression) expression).getList(parent, stream);
+        typeMap.put(stringValue, innerList);
       }
     }
     boolean ignoreCaseValue = ignoreCase.getBooleanValue(parent, match, element, stream);
@@ -102,7 +108,7 @@ public class TrieAction extends AbstractRutaAction {
     return list;
   }
 
-  public Map<IStringExpression, TypeExpression> getMap() {
+  public Map<IStringExpression, IRutaExpression> getMap() {
     return map;
   }
 
