@@ -63,11 +63,11 @@ public class TreeWordList implements RutaWordList {
 
   /**
    * Constructs a TreeWordList from a resource.
-   *
+   * 
    * @param resource
    *          Resource to create a TextWordList from
    * @throws IllegalArgumentException
-   *          When {@code resource.getFileName()} is null or does not end with .txt or .twl.
+   *           When {@code resource.getFileName()} is null or does not end with .txt or .twl.
    */
   public TreeWordList(Resource resource) throws IOException {
     final String name = resource.getFilename();
@@ -94,7 +94,7 @@ public class TreeWordList implements RutaWordList {
 
   /**
    * Constructs a TreeWordList from a file with path = filename
-   *
+   * 
    * @param pathname
    *          path of the file to create a TextWordList from
    */
@@ -187,7 +187,7 @@ public class TreeWordList implements RutaWordList {
    */
   public boolean contains(String s, boolean ignoreCase, int size, char[] ignoreChars,
           int maxIgnoreChars, boolean ignoreWS) {
-    if(s == null) {
+    if (s == null) {
       return false;
     }
     TextNode pointer = root;
@@ -216,10 +216,14 @@ public class TreeWordList implements RutaWordList {
       for (char each : ignoreChars) {
         if (each == charAt) {
           charAtIgnored = true;
+          maxIgnoreChars--;
           break;
         }
       }
       charAtIgnored &= index != 0;
+      if (maxIgnoreChars < 0) {
+        return false;
+      }
     }
     int next = ++index;
 
@@ -397,8 +401,8 @@ public class TreeWordList implements RutaWordList {
     return name;
   }
 
-  public List<AnnotationFS> find(RutaStream stream, Map<String, Object> typeMap, boolean ignoreCase,
-          int ignoreLength, boolean edit, double distance, String ignoreToken) {
+  public List<AnnotationFS> find(RutaStream stream, Map<String, Object> typeMap,
+          boolean ignoreCase, int ignoreLength, boolean edit, double distance, String ignoreToken) {
     return null;
   }
 

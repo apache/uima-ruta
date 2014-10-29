@@ -74,8 +74,28 @@ public class MarkTableTest {
     Feature f1 = t.getFeatureByBaseName(fn1);
     Feature f2 = t.getFeatureByBaseName(fn2);
     ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
+    
+    assertEquals(7, ai.size());
     iterator = ai.iterator();
+    
+    next = iterator.next();
+    v1 = next.getStringValue(f1);
+    v2 = next.getStringValue(f2);
+    assertEquals("Peter", v1);
+    assertEquals("Ruta", v2);
+    
+    next = iterator.next();
+    v1 = next.getStringValue(f1);
+    v2 = next.getStringValue(f2);
+    assertEquals("Marshall", v1);
+    assertEquals("UIMA", v2);
+    
+    next = iterator.next();
+    v1 = next.getStringValue(f1);
+    v2 = next.getStringValue(f2);
+    assertEquals("Joern", v1);
+    assertEquals("CAS Editor", v2);
+    
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);

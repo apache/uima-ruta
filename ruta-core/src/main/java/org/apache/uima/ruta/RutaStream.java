@@ -848,6 +848,17 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     return result;
   }
 
+  public String getVisibleCoveredText(AnnotationFS annotationFS) {
+    StringBuilder result = new StringBuilder();
+    List<RutaBasic> basicsInWindow = getBasicsInWindow(annotationFS);
+    for (RutaBasic each : basicsInWindow) {
+      if(isVisible(each)) {
+        result.append(each.getCoveredText());
+      }
+    }
+    return result.toString();
+  }
+
 
 
 }

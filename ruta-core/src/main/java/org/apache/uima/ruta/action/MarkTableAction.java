@@ -64,8 +64,8 @@ public class MarkTableAction extends AbstractRutaAction {
 
   public MarkTableAction(TypeExpression typeExpr, INumberExpression indexExpr,
           WordTableExpression tableExpr, Map<IStringExpression, INumberExpression> featureMap,
-          IBooleanExpression ignoreCase, INumberExpression ignoreLength, IStringExpression ignoreChar,
-          INumberExpression maxIgnoreChar) {
+          IBooleanExpression ignoreCase, INumberExpression ignoreLength,
+          IStringExpression ignoreChar, INumberExpression maxIgnoreChar) {
     super();
     this.typeExpr = typeExpr;
     this.indexExpr = indexExpr;
@@ -102,7 +102,16 @@ public class MarkTableAction extends AbstractRutaAction {
     Collection<AnnotationFS> found = wordList.find(stream, ignoreCaseValue, ignoreLengthValue,
             ignoreCharValue.toCharArray(), maxIgnoreCharValue, true);
     for (AnnotationFS annotationFS : found) {
-      List<String> rowWhere = table.getRowWhere(index - 1, annotationFS.getCoveredText());
+      // HOTFIX: for feature assignment
+      String candidate = stream.getVisibleCoveredText(annotationFS);
+      for (int i = 0; i < maxIgnoreCharValue; i++) {
+        candidate = candidate.replaceFirst("[" + ignoreCharValue + "]", "");
+      }
+      List<String> rowWhere = table.getRowWhere(index - 1, candidate);
+      if (rowWhere.isEmpty() && ignoreCaseValue && candidate.length() > ignoreLengthValue) {
+        // TODO: does not cover all variants
+        rowWhere = table.getRowWhere(index - 1, candidate.toLowerCase());
+      }
       FeatureStructure newFS = stream.getCas().createFS(type);
       if (newFS instanceof Annotation) {
         Annotation a = (Annotation) newFS;
