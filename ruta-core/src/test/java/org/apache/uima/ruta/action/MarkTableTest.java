@@ -75,7 +75,7 @@ public class MarkTableTest {
     Feature f2 = t.getFeatureByBaseName(fn2);
     ai = cas.getAnnotationIndex(t);
     
-    assertEquals(7, ai.size());
+    assertEquals(6, ai.size());
     iterator = ai.iterator();
     
     next = iterator.next();
