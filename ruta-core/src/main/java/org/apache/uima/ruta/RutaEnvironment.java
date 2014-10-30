@@ -41,6 +41,7 @@ import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
+import org.apache.uima.resource.ResourceAccessException;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
@@ -70,19 +71,26 @@ import org.springframework.core.io.ResourceLoader;
 public class RutaEnvironment {
 
   private final Object annotationTypeDummy = new Object();
+
   private Map<String, Type> types;
+
   private Map<String, RutaWordList> wordLists;
-  private Map<String, CSVTable> tables;
+
+  private Map<String, RutaTable> tables;
+
   private RutaBlock owner;
+
   /**
-   * Mapping from short type name (e.g. {@code W}) to their disambiguated long type names
-   * (e.g. {@code org.apache.uima.ruta.type.W}).
+   * Mapping from short type name (e.g. {@code W}) to their disambiguated long type names (e.g.
+   * {@code org.apache.uima.ruta.type.W}).
    */
   private Map<String, String> namespaces;
+
   /**
    * Mapping from ambiguous short type names to all their possible long type names.
    */
   private Map<String, Set<String>> ambiguousTypeAlias;
+
   /**
    * Set of imported typesystems.
    */
@@ -93,6 +101,7 @@ public class RutaEnvironment {
    */
   private static class Alias {
     final String longName;
+
     final String shortName;
 
     Alias(String longName, String shortName) {
@@ -102,15 +111,16 @@ public class RutaEnvironment {
   }
 
   /**
-   * Types that are imported in the environment. Keys are type system descriptors and values are aliased types.
+   * Types that are imported in the environment. Keys are type system descriptors and values are
+   * aliased types.
    */
   private Map<String, List<Alias>> typeImports;
 
   /**
    * Packages that are imported in the environment without a typesystem specification.
    *
-   * Keys are package names and values are aliases. An empty string as alias means that all types from the package
-   * should be imported in the default namespace.
+   * Keys are package names and values are aliases. An empty string as alias means that all types
+   * from the package should be imported in the default namespace.
    */
   private Map<String, List<String>> packageImports;
 
@@ -118,7 +128,9 @@ public class RutaEnvironment {
    * Set of types that are declared in the script.
    */
   private Set<String> declaredAnnotationTypes;
+
   private Map<String, Object> variableValues;
+
   private Map<String, Class<?>> variableTypes;
 
   private Map<String, Class<?>> availableTypes;
@@ -134,11 +146,11 @@ public class RutaEnvironment {
   private Map<String, Object> initializedVariables;
 
   private ResourceManager resourceManager;
-  
+
   public RutaEnvironment(RutaBlock owner) {
     super();
     this.owner = owner;
-    
+
     types = new HashMap<String, Type>();
     namespaces = new HashMap<String, String>();
     ambiguousTypeAlias = new HashMap<String, Set<String>>();
@@ -147,7 +159,7 @@ public class RutaEnvironment {
     packageImports = new HashMap<String, List<String>>();
     declaredAnnotationTypes = new HashSet<String>();
     wordLists = new HashMap<String, RutaWordList>();
-    tables = new HashMap<String, CSVTable>();
+    tables = new HashMap<String, RutaTable>();
     variableValues = new HashMap<String, Object>();
     variableTypes = new HashMap<String, Class<?>>();
     variableGenericTypes = new HashMap<String, Class<?>>();
@@ -185,8 +197,10 @@ public class RutaEnvironment {
   /**
    * Import short type names.
    *
-   * @param cas          Cas to initialize the types for.
-   * @param strictImport Specify whether all types should be imported (false) or only types
+   * @param cas
+   *          Cas to initialize the types for.
+   * @param strictImport
+   *          Specify whether all types should be imported (false) or only types
    */
   public void initializeTypes(CAS cas, boolean strictImport) {
     this.cas = cas;
@@ -203,7 +217,8 @@ public class RutaEnvironment {
         importPackageAliases(cas.getTypeSystem());
       }
 
-      // "Document" can be resolved to "uima.tcas.DocumentAnnotation" or "org.apache.uima.ruta.type.Document",
+      // "Document" can be resolved to "uima.tcas.DocumentAnnotation" or
+      // "org.apache.uima.ruta.type.Document",
       // we force it to the former
       ambiguousTypeAlias.remove("Document");
       namespaces.remove("Document");
@@ -223,7 +238,8 @@ public class RutaEnvironment {
   /**
    * Imports all types that are known to a type system.
    *
-   * @param ts Type system to import.
+   * @param ts
+   *          Type system to import.
    * @throws CASException
    */
   private void importAllTypes(TypeSystem ts) throws CASException {
@@ -239,8 +255,10 @@ public class RutaEnvironment {
   /**
    * Import all types that are declared by the script.
    *
-   * @param casTS Type system containing all known types.
-   * @throws InvalidXMLException When import cannot be resolved.
+   * @param casTS
+   *          Type system containing all known types.
+   * @throws InvalidXMLException
+   *           When import cannot be resolved.
    */
   private void importDeclaredTypes(TypeSystem casTS) throws InvalidXMLException {
     for (String name : declaredAnnotationTypes) {
@@ -256,12 +274,15 @@ public class RutaEnvironment {
   /**
    * Import all typesystems that are imported in the script.
    *
-   * @param casTS Type system containing all known types.
-   * @throws InvalidXMLException When import cannot be resolved.
+   * @param casTS
+   *          Type system containing all known types.
+   * @throws InvalidXMLException
+   *           When import cannot be resolved.
    */
   private void importDeclaredTypesystems(TypeSystem casTS) throws InvalidXMLException {
     String[] descriptors = typesystems.toArray(new String[typesystems.size()]);
-    TypeSystemDescription ts = TypeSystemDescriptionFactory.createTypeSystemDescription(descriptors);
+    TypeSystemDescription ts = TypeSystemDescriptionFactory
+            .createTypeSystemDescription(descriptors);
     ts.resolveImports();
     for (TypeDescription td : ts.getTypes()) {
       Type type = casTS.getType(td.getName());
@@ -276,7 +297,8 @@ public class RutaEnvironment {
   /**
    * Imports all type aliases.
    *
-   * @param casTS Cas type system.
+   * @param casTS
+   *          Cas type system.
    */
   private void importTypeAliases(TypeSystem casTS) {
     for (List<Alias> aliases : typeImports.values()) {
@@ -290,15 +312,15 @@ public class RutaEnvironment {
     }
   }
 
-
   /**
    * Import all packages that are imported by the script.
    *
-   * @param casTS Type system containing all known types.
+   * @param casTS
+   *          Type system containing all known types.
    */
   private void importPackageAliases(TypeSystem casTS) {
     Iterator<Type> iter = casTS.getTypeIterator();
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       Type type = iter.next();
       String name = type.getName();
       String pkg = name.substring(0, Math.max(name.lastIndexOf('.'), 0));
@@ -355,9 +377,11 @@ public class RutaEnvironment {
   /**
    * Resolves an annotation type.
    *
-   * @param match Annotation type to resolve.
+   * @param match
+   *          Annotation type to resolve.
    * @return Resolved annotation type or null if match is unknown.
-   * @throws IllegalArgumentException When {@code match} is ambiguous.
+   * @throws IllegalArgumentException
+   *           When {@code match} is ambiguous.
    */
   public Type getType(String match) {
     // make sure that match is not ambiguous
@@ -399,7 +423,8 @@ public class RutaEnvironment {
   /**
    * Add a typesystem to the script.
    *
-   * @param descriptor Type system's descriptor path.
+   * @param descriptor
+   *          Type system's descriptor path.
    */
   public void addTypeSystem(String descriptor) {
     typesystems.add(descriptor);
@@ -408,8 +433,10 @@ public class RutaEnvironment {
   /**
    * Import a type in the current namespace.
    *
-   * @param longName  Complete type name.
-   * @param shortName Short type name (without namespace).
+   * @param longName
+   *          Complete type name.
+   * @param shortName
+   *          Short type name (without namespace).
    */
   private void importType(String longName, String shortName) {
     Set<String> targets = ambiguousTypeAlias.get(shortName);
@@ -437,12 +464,15 @@ public class RutaEnvironment {
   /**
    * Import a type from a type system.
    *
-   * @param typesystem Typesystem from which to import the type or null.
-   * @param longName Type to import.
-   * @param shortName  Short name to use for this type.
+   * @param typesystem
+   *          Typesystem from which to import the type or null.
+   * @param longName
+   *          Type to import.
+   * @param shortName
+   *          Short name to use for this type.
    */
   public void importTypeFromTypeSystem(String typesystem, String longName, String shortName) {
-    String key = typesystem != null? typesystem : "";
+    String key = typesystem != null ? typesystem : "";
     List<Alias> aliases = typeImports.get(key);
 
     if (aliases == null) {
@@ -458,21 +488,27 @@ public class RutaEnvironment {
    *
    * The type is aliased by its unqualified name.
    *
-   * @param typesystem Typesystem from which to import the type or null.
-   * @param longName Type to import.
+   * @param typesystem
+   *          Typesystem from which to import the type or null.
+   * @param longName
+   *          Type to import.
    */
   public void importTypeFromTypeSystem(String typesystem, String longName) {
-    importTypeFromTypeSystem(typesystem, longName, longName.substring(longName.lastIndexOf('.') + 1));
+    importTypeFromTypeSystem(typesystem, longName,
+            longName.substring(longName.lastIndexOf('.') + 1));
   }
 
   /**
    * Import all the types from a package.
    *
-   * @param typesystem  Type system describing the package to load.
-   * @param packageName Package to load or null to load all packages.
+   * @param typesystem
+   *          Type system describing the package to load.
+   * @param packageName
+   *          Package to load or null to load all packages.
    */
   public void importPackageFromTypeSystem(String typesystem, String packageName, String alias) {
-    TypeSystemDescription tsd = TypeSystemDescriptionFactory.createTypeSystemDescription(typesystem);
+    TypeSystemDescription tsd = TypeSystemDescriptionFactory
+            .createTypeSystemDescription(typesystem);
     try {
       tsd.resolveImports(getResourceManager());
     } catch (InvalidXMLException e) {
@@ -481,8 +517,8 @@ public class RutaEnvironment {
 
     for (TypeDescription td : tsd.getTypes()) {
       String qname = td.getName();
-      if (packageName == null ||
-          (qname.startsWith(packageName) && qname.indexOf('.', packageName.length() + 1) == -1)) {
+      if (packageName == null
+              || (qname.startsWith(packageName) && qname.indexOf('.', packageName.length() + 1) == -1)) {
         // td is in packageName
         if (alias != null) {
           String shortName = alias + "." + qname.substring(qname.lastIndexOf('.') + 1);
@@ -497,8 +533,10 @@ public class RutaEnvironment {
   /**
    * Imports all the packages from the specified type system.
    *
-   * @param typesystem Typesystem to load.
-   * @param alias      Alias for all the packages.
+   * @param typesystem
+   *          Typesystem to load.
+   * @param alias
+   *          Alias for all the packages.
    */
   public void importAllPackagesFromTypeSystem(String typesystem, String alias) {
     importPackageFromTypeSystem(typesystem, null, alias);
@@ -507,8 +545,10 @@ public class RutaEnvironment {
   /**
    * Import all the types from a package that are available at runtime.
    *
-   * @param packageName Package to load.
-   * @param alias Alias of the package. Null or empty string to use no alias.
+   * @param packageName
+   *          Package to load.
+   * @param alias
+   *          Alias of the package. Null or empty string to use no alias.
    */
   public void importPackage(String packageName, String alias) {
     List<String> aliases = packageImports.get(packageName);
@@ -517,27 +557,37 @@ public class RutaEnvironment {
       packageImports.put(packageName, aliases);
     }
 
-    aliases.add(alias == null? "" : alias);
+    aliases.add(alias == null ? "" : alias);
   }
 
   public RutaWordList getWordList(String list) {
     RutaWordList result = wordLists.get(list);
     if (result == null) {
-      ResourceLoader resourceLoader = new RutaResourceLoader(getResourcePaths());
-      Resource resource = resourceLoader.getResource(list);
-      if (resource.exists()) {
-        try {
-          if (list.endsWith("mtwl")) {
-            wordLists.put(list, new MultiTreeWordList(resource));
-          } else {
-            wordLists.put(list, new TreeWordList(resource));
+      if (list.endsWith("txt") || list.endsWith("mtwl")) {
+        ResourceLoader resourceLoader = new RutaResourceLoader(getResourcePaths());
+        Resource resource = resourceLoader.getResource(list);
+        if (resource.exists()) {
+          try {
+            if (list.endsWith("mtwl")) {
+              wordLists.put(list, new MultiTreeWordList(resource));
+            } else {
+              wordLists.put(list, new TreeWordList(resource));
+            }
+          } catch (IOException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
+                    "Error reading word list" + list, e);
           }
-        } catch (IOException e) {
-          Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
-                  "Error reading word list" + list, e);
+        } else {
+          Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Can't find " + list + "!");
         }
       } else {
-        Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Can't find " + list + "!");
+        try {
+          RutaWordList rutaTable = (RutaWordList) owner.getContext().getResourceObject(list);
+          wordLists.put(list, rutaTable);
+        } catch (ResourceAccessException e) {
+          Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
+                  "Can't find external resource table" + list, e);
+        }
       }
     }
 
@@ -547,17 +597,28 @@ public class RutaEnvironment {
   public RutaTable getWordTable(String table) {
     RutaTable result = tables.get(table);
     if (result == null) {
-      ResourceLoader resourceLoader = new RutaResourceLoader(getResourcePaths());
-      Resource resource = resourceLoader.getResource(table);
-      if (resource.exists()) {
-        try {
-          tables.put(table, new CSVTable(resource));
-        } catch (IOException e) {
-          Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
-                  "Error reading csv table " + table, e);
+      if (table.endsWith("csv")) {
+        ResourceLoader resourceLoader = new RutaResourceLoader(getResourcePaths());
+        Resource resource = resourceLoader.getResource(table);
+        if (resource.exists()) {
+          try {
+            tables.put(table, new CSVTable(resource));
+          } catch (IOException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
+                    "Error reading csv table " + table, e);
+          }
+        } else {
+          Logger.getLogger(this.getClass().getName())
+                  .log(Level.SEVERE, "Can't find " + table + "!");
         }
       } else {
-        Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Can't find " + table + "!");
+        try {
+          RutaTable rutaTable = (RutaTable) owner.getContext().getResourceObject(table);
+          tables.put(table, rutaTable);
+        } catch (ResourceAccessException e) {
+          Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
+                  "Can't find external resource table" + table, e);
+        }
       }
     }
 
@@ -632,7 +693,7 @@ public class RutaEnvironment {
   public boolean isVariableOfType(String name, String type) {
     return ownsVariableOfType(name, type)
             || (owner.getParent() != null && owner.getParent().getEnvironment()
-            .isVariableOfType(name, type));
+                    .isVariableOfType(name, type));
   }
 
   public Class<?> getVariableType(String name) {
@@ -800,13 +861,13 @@ public class RutaEnvironment {
   }
 
   public ResourceManager getResourceManager() {
-    if(resourceManager != null) {
+    if (resourceManager != null) {
       return resourceManager;
     } else {
       RutaBlock parent = owner.getParent();
-      if(parent != null) {
+      if (parent != null) {
         return parent.getEnvironment().getResourceManager();
-      } 
+      }
     }
     // at least return default resource manager
     return UIMAFramework.newDefaultResourceManager();

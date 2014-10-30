@@ -35,7 +35,7 @@ public class RutaScriptBlock extends RutaBlock {
 
   public RutaScriptBlock(String id, RutaRule rule, List<RutaStatement> elements, RutaBlock parent,
           String defaultNamespace) {
-    super(id, rule, elements, parent, defaultNamespace);
+    super(id, rule, elements, parent, defaultNamespace, parent != null ? parent.getContext() : null);
   }
 
   @Override

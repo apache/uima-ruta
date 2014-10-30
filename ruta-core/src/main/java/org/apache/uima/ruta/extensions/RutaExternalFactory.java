@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.antlr.runtime.Token;
+import org.apache.uima.UimaContext;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
@@ -48,6 +49,8 @@ public class RutaExternalFactory {
   private Map<String, IRutaNumberFunctionExtension> numberFunctionExtensions;
 
   private Map<String, IRutaBlockExtension> blockExtensions;
+
+  private UimaContext context;
 
   public RutaExternalFactory() {
     super();
@@ -128,18 +131,19 @@ public class RutaExternalFactory {
 
   public RutaBlock createExternalBlock(Token type, List<RutaExpression> args, RutaBlock env)
           throws RutaParseException {
-		if(type == null) {
-		  return null;
-		}
-		String t = type.getText();
-		IRutaBlockExtension extension = blockExtensions.get(t);
-		if(extension != null) {
-		  return extension.createBlock(t, args, env);
-		}
-		return null;
-	}
-  
-  
+    if (type == null) {
+      return null;
+    }
+    String t = type.getText();
+    IRutaBlockExtension extension = blockExtensions.get(t);
+    if (extension != null) {
+      RutaBlock rutaBlock = extension.createBlock(t, args, env);
+      rutaBlock.setContext(context);
+      return rutaBlock;
+    }
+    return null;
+  }
+
   public void addExtension(String id, IRutaExtension extension) {
     if (extension instanceof IRutaActionExtension) {
       addActionExtension(id, (IRutaActionExtension) extension);
@@ -181,7 +185,7 @@ public class RutaExternalFactory {
   public void addTypeFunctionExtension(String id, IRutaTypeFunctionExtension extension) {
     typeFunctionExtensions.put(id, extension);
   }
-  
+
   public void addBlockExtension(String id, IRutaBlockExtension extension) {
     blockExtensions.put(id, extension);
   }
@@ -196,7 +200,8 @@ public class RutaExternalFactory {
     return numberFunctionExtensions;
   }
 
-  public void setNumberFunctionExtensions(Map<String, IRutaNumberFunctionExtension> numberFunctionExtensions) {
+  public void setNumberFunctionExtensions(
+          Map<String, IRutaNumberFunctionExtension> numberFunctionExtensions) {
     this.numberFunctionExtensions = numberFunctionExtensions;
   }
 
@@ -204,7 +209,8 @@ public class RutaExternalFactory {
     return stringFunctionExtensions;
   }
 
-  public void setStringFunctionExtensions(Map<String, IRutaStringFunctionExtension> stringFunctionExtensions) {
+  public void setStringFunctionExtensions(
+          Map<String, IRutaStringFunctionExtension> stringFunctionExtensions) {
     this.stringFunctionExtensions = stringFunctionExtensions;
   }
 
@@ -212,15 +218,17 @@ public class RutaExternalFactory {
     return booleanFunctionExtensions;
   }
 
-  public void setBooleanFunctionExtensions(Map<String, IRutaBooleanFunctionExtension> booleanFunctionExtensions) {
+  public void setBooleanFunctionExtensions(
+          Map<String, IRutaBooleanFunctionExtension> booleanFunctionExtensions) {
     this.booleanFunctionExtensions = booleanFunctionExtensions;
   }
 
   public Map<String, IRutaTypeFunctionExtension> getTypeFunctionExtensions() {
     return typeFunctionExtensions;
-  }  
-  
-  public void setTypeFunctionExtensions(Map<String, IRutaTypeFunctionExtension> typeFunctionExtensions) {
+  }
+
+  public void setTypeFunctionExtensions(
+          Map<String, IRutaTypeFunctionExtension> typeFunctionExtensions) {
     this.typeFunctionExtensions = typeFunctionExtensions;
   }
 
@@ -239,7 +247,7 @@ public class RutaExternalFactory {
   public void setConditionExtensions(Map<String, IRutaConditionExtension> conditionExtensions) {
     this.conditionExtensions = conditionExtensions;
   }
-  
+
   public Map<String, IRutaBlockExtension> getBlockExtensions() {
     return blockExtensions;
   }
@@ -248,5 +256,12 @@ public class RutaExternalFactory {
     this.blockExtensions = blockExtensions;
   }
 
+  public UimaContext getContext() {
+    return context;
+  }
+
+  public void setContext(UimaContext context) {
+    this.context = context;
+  }
 
 }

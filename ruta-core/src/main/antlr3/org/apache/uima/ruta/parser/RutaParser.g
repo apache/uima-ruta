@@ -52,6 +52,7 @@ import org.antlr.runtime.TokenStream;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.apache.uima.UimaContext;
 
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.action.ActionFactory;
@@ -100,7 +101,7 @@ private RutaExternalFactory external;
 private String namespace;
 private String moduleName;
 private ResourceManager resourceManager;
-
+private UimaContext context;
 public void setResourceManager(ResourceManager resourceManager) {
   this.resourceManager = resourceManager;  
 }
@@ -108,6 +109,10 @@ public void setResourceManager(ResourceManager resourceManager) {
 public void setExternalFactory(RutaExternalFactory factory) {
 	external = factory;
 }
+	public void setContext(UimaContext context){
+	    this.context = context;
+	    factory.setContext(context);
+	}
 
 	public void emitErrorMessage(String msg) {
 		System.out.println(msg);

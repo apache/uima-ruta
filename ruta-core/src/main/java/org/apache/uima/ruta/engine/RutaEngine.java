@@ -440,6 +440,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       this.context = aContext;
 
       factory = new RutaExternalFactory();
+      factory.setContext(aContext);
       engineLoader = new RutaEngineLoader();
       verbalizer = new RutaVerbalizer();
 
@@ -922,6 +923,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     RutaLexer lexer = new RutaLexer(st);
     CommonTokenStream tokens = new CommonTokenStream(lexer);
     RutaParser parser = new RutaParser(tokens);
+    parser.setContext(context);
     parser.setExternalFactory(factory);
     parser.setResourcePaths(resourcePaths);
     parser.setResourceManager(resourceManager);
@@ -944,6 +946,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     CommonTokenStream tokens = new CommonTokenStream(lexer);
     RutaParser parser = new RutaParser(tokens);
     parser.setExternalFactory(factory);
+    parser.setContext(context);
     parser.setResourcePaths(resourcePaths);
     String name = scriptLocation;
     if (scriptLocation.indexOf("/") != -1) {

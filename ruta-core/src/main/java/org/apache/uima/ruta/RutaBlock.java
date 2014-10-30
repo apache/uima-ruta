@@ -21,6 +21,7 @@ package org.apache.uima.ruta;
 
 import java.util.List;
 
+import org.apache.uima.UimaContext;
 import org.apache.uima.ruta.rule.RutaRule;
 
 public abstract class RutaBlock extends RutaStatement {
@@ -37,18 +38,21 @@ public abstract class RutaBlock extends RutaStatement {
 
   private RutaModule script;
 
-  public RutaBlock(RutaBlock parent, String defaultNamespace) {
-    this(null, null, null, parent, defaultNamespace);
+  protected UimaContext context;
+
+  public RutaBlock(RutaBlock parent, String defaultNamespace, UimaContext context) {
+    this(null, null, null, parent, defaultNamespace, context);
   }
 
   public RutaBlock(String name, RutaRule rule, List<RutaStatement> elements, RutaBlock parent,
-          String defaultNamespace) {
+          String defaultNamespace, UimaContext context) {
     super(parent);
     this.name = name;
     this.rule = rule;
     this.elements = elements;
     this.environment = new RutaEnvironment(this);
     this.namespace = defaultNamespace;
+    this.context = context;
   }
 
   public RutaRule getRule() {
@@ -95,6 +99,14 @@ public abstract class RutaBlock extends RutaStatement {
 
   public String getName() {
     return name;
+  }
+
+  public UimaContext getContext() {
+    return context;
+  }
+
+  public void setContext(UimaContext context) {
+    this.context = context;
   }
 
 }

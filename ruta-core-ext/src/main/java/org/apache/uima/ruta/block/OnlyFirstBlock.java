@@ -21,6 +21,7 @@ package org.apache.uima.ruta.block;
 
 import java.util.List;
 
+import org.apache.uima.UimaContext;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.BlockApply;
@@ -42,9 +43,8 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
  */
 public class OnlyFirstBlock extends RutaBlock {
 
-  public OnlyFirstBlock(RutaBlock parent,
-          String defaultNamespace) {
-    super(parent, defaultNamespace);
+  public OnlyFirstBlock(RutaBlock parent, String defaultNamespace) {
+    super(parent, defaultNamespace, parent != null ? parent.getContext() : null);
   }
 
   @Override

@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.antlr.runtime.Token;
+import org.apache.uima.UimaContext;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.expression.IRutaExpression;
@@ -58,6 +59,8 @@ import org.apache.uima.ruta.rule.quantifier.StarReluctant;
 public class RutaScriptFactory {
 
   private int idCounter = 0;
+
+  private UimaContext context;
 
   public RutaScriptFactory() {
     super();
@@ -104,6 +107,7 @@ public class RutaScriptFactory {
     container.setContainer(createRule);
 
     result.setRule(createRule);
+    result.setContext(context);
     return result;
   }
 
@@ -192,8 +196,8 @@ public class RutaScriptFactory {
     return new RegExpRule(null, null, idCounter++, env);
   }
 
-  public List<RuleElement> processConjunctRules(List<RuleElement> reList,
-          List<Token> conList, RuleElementContainer container, RutaBlock env) {
+  public List<RuleElement> processConjunctRules(List<RuleElement> reList, List<Token> conList,
+          RuleElementContainer container, RutaBlock env) {
     boolean isConjunct = false;
     for (Token token : conList) {
       if (token != null) {
@@ -224,8 +228,8 @@ public class RutaScriptFactory {
       }
     }
     List<RuleElement> elements = new ArrayList<RuleElement>();
-    
-    ConjunctRulesRuleElement cr = new ConjunctRulesRuleElement(null, container, env); 
+
+    ConjunctRulesRuleElement cr = new ConjunctRulesRuleElement(null, container, env);
     for (List<RuleElement> each : map.values()) {
       ComposedRuleElement cre = createComposedRuleElement(each, null, null, null, cr, env);
       for (RuleElement ruleElement : each) {
@@ -238,6 +242,14 @@ public class RutaScriptFactory {
     List<RuleElement> result = new ArrayList<RuleElement>();
     result.add(cr);
     return result;
+  }
+
+  public UimaContext getContext() {
+    return context;
+  }
+
+  public void setContext(UimaContext context) {
+    this.context = context;
   }
 
 }

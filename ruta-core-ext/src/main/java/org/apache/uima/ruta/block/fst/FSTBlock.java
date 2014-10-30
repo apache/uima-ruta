@@ -42,7 +42,8 @@ public class FSTBlock extends RutaBlock {
 
   public FSTBlock(String name, RutaRule rule, List<RutaStatement> elements, RutaBlock parent,
           String defaultNamespace) {
-    super(name, rule, elements, parent, defaultNamespace);
+    super(name, rule, elements, parent, defaultNamespace, parent != null ? parent.getContext()
+            : null);
   }
 
   @Override
@@ -76,7 +77,7 @@ public class FSTBlock extends RutaBlock {
   @Override
   public void setElements(List<RutaStatement> elements) {
     this.elements = elements;
-    
+
     auto = new Automaton(elements);
   }
 

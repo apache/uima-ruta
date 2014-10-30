@@ -40,13 +40,12 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 /**
  * Exemplary implementation of a block extension, which applied its rules in reverse order.
- *
+ * 
  */
 public class ExampleBlock extends RutaBlock {
 
-  public ExampleBlock(RutaBlock parent,
-          String defaultNamespace) {
-    super(parent, defaultNamespace);
+  public ExampleBlock(RutaBlock parent, String defaultNamespace) {
+    super(parent, defaultNamespace, parent != null ? parent.getContext() : null);
   }
 
   @Override
@@ -82,8 +81,5 @@ public class ExampleBlock extends RutaBlock {
     crowd.endVisit(this, result);
     return result;
   }
-
-
-
 
 }
