@@ -17,11 +17,12 @@
  * under the License.
  */
 
-
 package org.apache.uima.ruta.caseditor.view.preferences;
 
 public class CasEditorViewsPreferenceConstants {
 
   public static final String SHOW_PARENT_TYPES = "showParentTypes";
+
+  public static final String SHOW_TYPES_WITHOUT_ANNOTATIONS = "showTypesWithoutAnnotations";
 
 }

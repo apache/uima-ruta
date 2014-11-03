@@ -24,11 +24,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
@@ -41,6 +44,7 @@ import org.apache.uima.caseditor.editor.ICasDocument;
 import org.apache.uima.ruta.caseditor.RutaCasEditorPlugin;
 import org.apache.uima.ruta.caseditor.view.preferences.CasEditorViewsPreferenceConstants;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.action.IToolBarManager;
@@ -53,6 +57,7 @@ import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
@@ -89,6 +94,10 @@ import org.eclipse.ui.part.Page;
 public class AnnotationTreeViewPage extends Page implements MouseListener, IDoubleClickListener,
         Listener, ISelectionListener, ICheckStateListener, IAnnotationEditorModifyListener {
 
+  public static enum ModifyAnnotationOperation {
+    WIDE_L, LOWER_L, WIDE_R, LOWER_R;
+  }
+
   public class TreeViewAnnotationStyleChangeListener extends AnnotationStyleChangeListener {
 
     public void annotationStylesChanged(Collection<AnnotationStyle> styles) {
@@ -115,6 +124,22 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     @Override
     public void run() {
       uncheckAll();
+    }
+  }
+
+  private class ShowTypesWithoutAnnotations extends Action {
+
+    public ShowTypesWithoutAnnotations() {
+      super("Show Types Without Annotations", Action.AS_CHECK_BOX);
+      setChecked(isTreeWithTypesWithoutAnnotations());
+    }
+
+    @Override
+    public void run() {
+      IPreferenceStore preferenceStore = RutaCasEditorPlugin.getDefault().getPreferenceStore();
+      preferenceStore.setValue(CasEditorViewsPreferenceConstants.SHOW_TYPES_WITHOUT_ANNOTATIONS,
+              isChecked());
+      reloadTree();
     }
   }
 
@@ -242,6 +267,8 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
       @Override
       public void keyPressed(KeyEvent e) {
         int keyCode = e.keyCode;
+        // TODO refactor to actions with key bindings: ...
+        //
         // backspace or delete: delete annotations
         if (keyCode == SWT.BS || keyCode == SWT.DEL) {
           deleteSelectedAnnotations();
@@ -258,6 +285,18 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
               clipboard.setContents(new Object[] { type.getName() },
                       new Transfer[] { textTransfer });
             }
+          }
+        }
+        // ctrl and c: copy type name to clipboard:
+        if ((e.stateMask & SWT.CTRL) == SWT.CTRL) {
+          if (keyCode == 'u') {
+            modifyAnnotation(ModifyAnnotationOperation.WIDE_L);
+          } else if (keyCode == 'i') {
+            modifyAnnotation(ModifyAnnotationOperation.LOWER_L);
+          } else if (keyCode == 'o') {
+            modifyAnnotation(ModifyAnnotationOperation.LOWER_R);
+          } else if (keyCode == 'p') {
+            modifyAnnotation(ModifyAnnotationOperation.WIDE_R);
           }
         }
       }
@@ -289,7 +328,8 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
           IStatusLineManager statusLineManager) {
     //
     Action createActionCheckVisible = new CheckAllVisibleAction();
-    createActionCheckVisible.setText("Set all types visible in the Annotation Browser to be highlighted in the CAS editor.");
+    createActionCheckVisible
+            .setText("Set all types visible in the Annotation Browser to be highlighted in the CAS editor.");
     ImageDescriptor imageDescriptor = RutaCasEditorPlugin
             .getImageDescriptor("/icons/lightbulb_add.png");
     createActionCheckVisible.setImageDescriptor(imageDescriptor);
@@ -300,37 +340,51 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     createActionUncheckAll.setImageDescriptor(RutaCasEditorPlugin
             .getImageDescriptor("/icons/lightbulb_off.png"));
     toolBarManager.add(createActionUncheckAll);
+    //
+    if (!useSelection) {
+      IAction showTypesWithoutAnnotations = new ShowTypesWithoutAnnotations();
+      menuManager.add(showTypesWithoutAnnotations);
+    }
   }
 
   /**
    * Unchecks all types of the typesystem so that they are not highlighted anymore.
+   * 
+   * TODO use more efficient implementation since UIMA 2.5.1 setShownAnnotationType!s!
    */
   public void uncheckAll() {
-    Collection<Type> shownAnnotationTypes = new ArrayList<Type>(editor.getShownAnnotationTypes());
-    Iterator<Type> typeIterator = shownAnnotationTypes.iterator();
-    while (typeIterator.hasNext()) {
-      Type type = (Type) typeIterator.next();
-      editor.setShownAnnotationType(type, false);
-    }
+    // Collection<Type> shownAnnotationTypes = new
+    // ArrayList<Type>(editor.getShownAnnotationTypes());
+    // Iterator<Type> typeIterator = shownAnnotationTypes.iterator();
+    // while (typeIterator.hasNext()) {
+    // Type type = (Type) typeIterator.next();
+    // editor.setShownAnnotationType(type, false);
+    // }
+    editor.setShownAnnotationTypes(new LinkedList<Type>());
     getTreeViewer().getTree().deselectAll();
   }
 
   /**
    * Checks all visible types of the tree to be highlighted.
+   * 
+   * TODO use more efficient implementation since UIMA 2.5.1 setShownAnnotationType!s!
    */
   public void checkAllVisible() {
     TypeSystem ts = editor.getDocument().getCAS().getTypeSystem();
     Type documentAnnotationType = ts.getType("uima.tcas.DocumentAnnotation");
+    List<Type> selectedTypes = new LinkedList<Type>();
     for (TreeItem i : getTreeViewer().getTree().getItems()) {
       Object e = i.getData();
       if (e instanceof TypeTreeNode) {
         TypeTreeNode typeTreeNode = (TypeTreeNode) e;
         Type type = typeTreeNode.getType();
         if (!documentAnnotationType.equals(type)) {
-          editor.setShownAnnotationType(type, true);
+          // editor.setShownAnnotationType(type, true);
+          selectedTypes.add(type);
         }
       }
     }
+    editor.setShownAnnotationTypes(selectedTypes);
   }
 
   /*
@@ -388,6 +442,8 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
       if (treeNode instanceof AnnotationTreeNode) {
         // FeatureStructureSelectionProvider provider =
         // ((FeatureStructureSelectionProvider)editor.getSelectionProvider();
+      } else if (treeNode instanceof TypeTreeNode) {
+        editor.setAnnotationMode(((TypeTreeNode) treeNode).getType());
       }
     }
   }
@@ -399,6 +455,47 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
    */
   public void mouseDoubleClick(MouseEvent e) {
     // TODO
+
+  }
+
+  public void modifyAnnotation(ModifyAnnotationOperation operationType) {
+    TreeItem[] items = treeView.getTree().getSelection();
+    if (items.length != 1) {
+      return;
+    }
+    Feature beginFeature = document.getCAS().getBeginFeature();
+    Feature endFeature = document.getCAS().getEndFeature();
+    for (TreeItem it : items) {
+      if (it.getData() instanceof AnnotationTreeNode) {
+        AnnotationTreeNode annot = (AnnotationTreeNode) it.getData();
+        AnnotationFS fs = annot.getAnnotation();
+        switch (operationType) {
+          case WIDE_L:
+            if (fs.getBegin() > 0) {
+              fs.setIntValue(beginFeature, fs.getBegin() - 1);
+            }
+            break;
+          case LOWER_L:
+            if (fs.getBegin() < fs.getEnd() - 1) {
+              fs.setIntValue(beginFeature, fs.getBegin() + 1);
+            }
+            break;
+          case LOWER_R:
+            if (fs.getEnd() > fs.getBegin() + 1) {
+              fs.setIntValue(endFeature, fs.getEnd() - 1);
+            }
+            break;
+          case WIDE_R:
+            if (fs.getEnd() < fs.getCAS().getDocumentText().length()) {
+              fs.setIntValue(endFeature, fs.getEnd() + 1);
+            }
+            break;
+          default:
+            break;
+        }
+        document.update(fs);
+      }
+    }
   }
 
   public void deleteSelectedAnnotations() {
@@ -582,6 +679,20 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     IPreferenceStore preferenceStore = RutaCasEditorPlugin.getDefault().getPreferenceStore();
     boolean withParents = preferenceStore
             .getBoolean(CasEditorViewsPreferenceConstants.SHOW_PARENT_TYPES);
+    if (isTreeWithTypesWithoutAnnotations()) {
+      CAS cas = editor.getDocument().getCAS();
+      Type atype = cas.getAnnotationType();
+      TypeSystem ts = cas.getTypeSystem();
+      Iterator<Type> tit = ts.getProperlySubsumedTypes(atype).iterator();
+      while (tit.hasNext()) {
+        Type type = tit.next();
+        boolean typeConstraint = StringUtils.isEmpty(manualTypeFilter)
+                || type.getName().toLowerCase().indexOf(manualTypeFilter.toLowerCase()) != -1;
+        if (typeConstraint) {
+          root.getTreeNode(type); // register type
+        }
+      }
+    }
     AnnotationIndex<AnnotationFS> annotationIndex = document.getCAS().getAnnotationIndex();
     for (AnnotationFS annotationFS : annotationIndex) {
       boolean offsetConstraint = pos == -1
@@ -608,7 +719,6 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
       offset = editor.getCaretOffset();
       reloadTree();
     }
-
   }
 
   public void handleEvent(Event event) {
@@ -619,6 +729,16 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
   }
 
   public void reloadTree() {
+    // remember selected annotation:
+    ISelection selection = treeView.getSelection();
+    AnnotationFS selectedFS = null;
+    if (selection instanceof IStructuredSelection && ((IStructuredSelection) selection).size() == 1
+            && ((IStructuredSelection) selection).getFirstElement() instanceof AnnotationTreeNode) {
+      IStructuredSelection ssel = (IStructuredSelection) selection;
+      AnnotationTreeNode firstElement = (AnnotationTreeNode) ssel.getFirstElement();
+      selectedFS = firstElement.getAnnotation();
+    }
+    // reload tree:
     String typeText = filterTypeTextField.getText();
     String coveredTextText = filterCoveredTextTextField.getText();
     IRootTreeNode tree = getTypeOrderedTree(offset, typeText, coveredTextText);
@@ -627,6 +747,29 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     List<TypeTreeNode> nodes = toNodes(shownAnnotationTypes);
     getTreeViewer().setCheckedElements(nodes.toArray());
     getTreeViewer().setGrayed(new TypeTreeNode(editor.getAnnotationMode()), true);
+    // try to restore selection:
+    if (selectedFS != null) {
+      Type type = selectedFS.getType();
+      TreeItem[] items = getTreeViewer().getTree().getItems();
+      for (int i = 0; i < items.length; i++) {
+        TreeItem treeItem = items[i];
+        Object data = treeItem.getData();
+        if (data instanceof TypeTreeNode && ((TypeTreeNode) data).getType().equals(type)) {
+          TypeTreeNode typeTreeNode = (TypeTreeNode) data;
+          treeItem.setExpanded(true);
+          ITreeNode[] children = typeTreeNode.getChildren();
+          for (int j = 0; j < children.length; j++) {
+            ITreeNode fsTreeNode = children[j];
+            if (fsTreeNode instanceof AnnotationTreeNode) {
+              AnnotationTreeNode atn = (AnnotationTreeNode) fsTreeNode;
+              if (atn.getAnnotation().equals(selectedFS)) {
+                treeView.setSelection(new StructuredSelection(atn));
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   public void checkStateChanged(CheckStateChangedEvent event) {
@@ -658,6 +801,13 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
       nodes.add(new TypeTreeNode(type));
     }
     return nodes;
+  }
+
+  private boolean isTreeWithTypesWithoutAnnotations() {
+    IPreferenceStore preferenceStore = RutaCasEditorPlugin.getDefault().getPreferenceStore();
+    return !useSelection
+            && preferenceStore
+                    .getBoolean(CasEditorViewsPreferenceConstants.SHOW_TYPES_WITHOUT_ANNOTATIONS);
   }
 
 }

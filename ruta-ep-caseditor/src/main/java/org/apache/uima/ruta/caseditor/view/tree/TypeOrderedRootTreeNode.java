@@ -32,7 +32,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 public class TypeOrderedRootTreeNode extends AbstractTreeNode implements IRootTreeNode {
 
   private Map<Type, TypeTreeNode> typeMap = new HashMap<Type, TypeTreeNode>();
-  
+
   public TypeOrderedRootTreeNode() {
     super();
   }
@@ -43,6 +43,22 @@ public class TypeOrderedRootTreeNode extends AbstractTreeNode implements IRootTr
 
   public Type getType() {
     return null;
+  }
+
+  /**
+   * Gets a tree node for a type from cache; may create a new tree node.
+   * 
+   * @param type
+   * @return
+   */
+  public TypeTreeNode getTreeNode(Type type) {
+    TypeTreeNode typeTreeNode = typeMap.get(type);
+    if (typeTreeNode == null) {
+      typeTreeNode = new TypeTreeNode(this, type);
+      typeMap.put(type, typeTreeNode);
+      addChild(typeTreeNode);
+    }
+    return typeTreeNode;
   }
 
   public void insertFS(FeatureStructure fs, boolean withParents) {
@@ -60,18 +76,13 @@ public class TypeOrderedRootTreeNode extends AbstractTreeNode implements IRootTr
   }
 
   private void insertFS(FeatureStructure fs, Type type, boolean withParents) {
-    TypeTreeNode typeTreeNode = typeMap.get(type);
-    if(typeTreeNode == null) {
-      typeTreeNode = new TypeTreeNode(this, type);
-      typeMap.put(type, typeTreeNode);
-      addChild(typeTreeNode);
-    }
-    
+    TypeTreeNode typeTreeNode = getTreeNode(type);
+
     FSTreeNode node = createFSNode(typeTreeNode, fs);
     typeTreeNode.addChild(node);
-    if(withParents) {
+    if (withParents) {
       Type parent = fs.getCAS().getTypeSystem().getParent(type);
-      if(parent != null) {
+      if (parent != null) {
         insertFS(fs, parent, withParents);
       }
     }
