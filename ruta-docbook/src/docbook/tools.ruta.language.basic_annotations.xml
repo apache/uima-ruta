@@ -131,7 +131,7 @@
           </row>
           <row>
             <entry>NBSP</entry>
-            <entry>ANY</entry>
+            <entry>SPACE</entry>
             <entry>non breaking space</entry>
             <entry><![CDATA[" "]]></entry>
           </row>
