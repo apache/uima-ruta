@@ -36,6 +36,8 @@ public class PlainTextAnnotator extends JCasAnnotator_ImplBase {
   public static final String TYPE_LINE = "org.apache.uima.ruta.type.Line";
 
   public static final String TYPE_WSLINE = "org.apache.uima.ruta.type.WSLine";
+  
+  public static final String TYPE_EMPTYLINE = "org.apache.uima.ruta.type.EmptyLine";
 
   public static final String TYPE_PARAGRAPH = "org.apache.uima.ruta.type.Paragraph";
 
@@ -46,6 +48,7 @@ public class PlainTextAnnotator extends JCasAnnotator_ImplBase {
     BufferedReader br = new BufferedReader(new StringReader(documentText));
     Type lineType = cas.getTypeSystem().getType(TYPE_LINE);
     Type wsLineType = cas.getTypeSystem().getType(TYPE_WSLINE);
+    Type emptyLineType = cas.getTypeSystem().getType(TYPE_EMPTYLINE);
     Type paragraphType = cas.getTypeSystem().getType(TYPE_PARAGRAPH);
 
     int offsetTillNow = 0;
@@ -70,7 +73,13 @@ public class PlainTextAnnotator extends JCasAnnotator_ImplBase {
           paragraphBegin = offsetTillNow;
         }
 
-        if (wsLine && !emptyLine) {
+        if (wsLine && emptyLine) {
+          // do not create annotation with length 0
+          // instead append the line break to the annotation
+          AnnotationFS newEmptyLineFS = cas.createAnnotation(emptyLineType, offsetTillNow, offsetTillNow
+                  + nlLength);
+          cas.addFsToIndexes(newEmptyLineFS);
+        } else if (wsLine && !emptyLine) {
           AnnotationFS newWSLineFS = cas.createAnnotation(wsLineType, offsetTillNow, offsetTillNow
                   + eachLine.length());
           cas.addFsToIndexes(newWSLineFS);
@@ -86,6 +95,10 @@ public class PlainTextAnnotator extends JCasAnnotator_ImplBase {
           AnnotationFS newParaFS = cas.createAnnotation(paragraphType, paragraphBegin, lastLineEnd);
           cas.addFsToIndexes(newParaFS);
         } else if (offsetAfterLine + nlLength == documentText.length()) {
+          AnnotationFS newParaFS = cas.createAnnotation(paragraphType, paragraphBegin,
+                  offsetAfterLine);
+          cas.addFsToIndexes(newParaFS);
+        } else if (offsetAfterLine == documentText.length()) {
           AnnotationFS newParaFS = cas.createAnnotation(paragraphType, paragraphBegin,
                   offsetAfterLine);
           cas.addFsToIndexes(newParaFS);
