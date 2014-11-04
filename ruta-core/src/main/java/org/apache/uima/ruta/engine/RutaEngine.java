@@ -230,7 +230,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   public static final String PARAM_DEFAULT_FILTERED_TYPES = "defaultFilteredTypes";
 
   @ConfigurationParameter(name = PARAM_DEFAULT_FILTERED_TYPES, mandatory = false, defaultValue = {
-      "org.apache.uima.ruta.type.SPACE", "org.apache.uima.ruta.type.NBSP",
+      "org.apache.uima.ruta.type.SPACE",
       "org.apache.uima.ruta.type.BREAK", "org.apache.uima.ruta.type.MARKUP" })
   private String[] defaultFilteredTypes;
 

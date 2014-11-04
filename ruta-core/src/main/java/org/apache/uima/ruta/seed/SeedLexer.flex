@@ -86,7 +86,7 @@ SPACE=[ \t]
     }
     
                                        
-    \xA0|&nbsp;|&NBSP; {
+    \u00A0|\u202F|\uFEFF|\u2007|\u180E|&nbsp;|&NBSP; {
                 NBSP t = new NBSP(cas);
                 t.setBegin(yychar);
                 t.setEnd(yychar + yytext().length());

@@ -206,7 +206,6 @@
         <value>
           <array>
             <string>org.apache.uima.ruta.type.SPACE</string>
-            <string>org.apache.uima.ruta.type.NBSP</string>
             <string>org.apache.uima.ruta.type.BREAK</string>
             <string>org.apache.uima.ruta.type.MARKUP</string>
           </array>
