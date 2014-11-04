@@ -55,6 +55,8 @@ import org.apache.uima.ruta.expression.number.NegativeNumberExpression;
 import org.apache.uima.ruta.expression.number.NumberFeatureExpression;
 import org.apache.uima.ruta.expression.number.ReferenceNumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
+import org.apache.uima.ruta.expression.resource.ExternalWordListExpression;
+import org.apache.uima.ruta.expression.resource.ExternalWordTableExpression;
 import org.apache.uima.ruta.expression.resource.LiteralWordListExpression;
 import org.apache.uima.ruta.expression.resource.LiteralWordTableExpression;
 import org.apache.uima.ruta.expression.resource.ReferenceWordListExpression;
@@ -268,6 +270,16 @@ public class ExpressionFactory {
     return new UntypedListExpression(list);
   }
 
+  public static WordListExpression createExternalWordListExpression(Token name,
+          List<IStringExpression> args) {
+    return new ExternalWordListExpression(name.getText(), args);
+  }
+  
+  public static WordTableExpression createExternalWordTableExpression(Token name,
+          List<IStringExpression> args) {
+    return new ExternalWordTableExpression(name.getText(), args);
+  }
+  
 
 
 }

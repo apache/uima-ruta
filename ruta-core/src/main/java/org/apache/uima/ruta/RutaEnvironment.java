@@ -773,7 +773,8 @@ public class RutaEnvironment {
         String path = lle.getText();
         RutaWordList wordList = getWordList(path);
         return wordList;
-      } else if (clazz.equals(RutaWordList.class)) {
+      } else if (clazz.equals(RutaWordList.class) && value instanceof String) {
+     // TODO: ExtenralWordTableExpression will be ignored
         RutaWordList list = getWordList((String) value);
         return list;
       } else if (clazz.equals(RutaTable.class) && value instanceof LiteralWordTableExpression) {
@@ -781,7 +782,8 @@ public class RutaEnvironment {
         String path = lte.getText();
         RutaTable table = getWordTable(path);
         return table;
-      } else if (clazz.equals(RutaTable.class)) {
+      } else if (clazz.equals(RutaTable.class)  && value instanceof String) {
+        // TODO: ExtenralWordTableExpression will be ignored, and add a method like for word lists
         RutaTable table = getWordTable((String) value);
         return table;
       } else if (clazz.equals(List.class) && value instanceof ListExpression) {

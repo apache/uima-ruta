@@ -422,11 +422,15 @@ List<String> vars = new ArrayList<String>();
 	|
 	type = WORDLIST 
 	{!isVariableOfType($blockDeclaration::env, input.LT(1).getText(), type.getText())}? 
-	name = Identifier (ASSIGN_EQUAL list = wordListExpression)? SEMI {addVariable($blockDeclaration::env, name.getText(), type.getText());if(list != null){setValue($blockDeclaration::env, name.getText(), list);}} 
+	name = Identifier (ASSIGN_EQUAL list = wordListExpression)? 
+	{addVariable($blockDeclaration::env, name.getText(), type.getText());if(list != null){setValue($blockDeclaration::env, name.getText(), list);}} 
+	SEMI 
 	| 
 	type = WORDTABLE 
 	{!isVariableOfType($blockDeclaration::env, input.LT(1).getText(), type.getText())}? 
-	name = Identifier (ASSIGN_EQUAL table = wordTableExpression)? SEMI {addVariable($blockDeclaration::env, name.getText(), type.getText());if(table != null){setValue($blockDeclaration::env, name.getText(), table);}}
+	name = Identifier (ASSIGN_EQUAL table = wordTableExpression)? 
+	{addVariable($blockDeclaration::env, name.getText(), type.getText());if(table != null){setValue($blockDeclaration::env, name.getText(), table);}}
+	SEMI 
 	|
 	type = BOOLEANLIST 
 	{!isVariableOfType($blockDeclaration::env, input.LT(1).getText(), type.getText())}? 
@@ -2016,7 +2020,13 @@ annotationType returns [Token ref = null]
 	;
 
 wordListExpression returns [WordListExpression expr = null]
+@init  {
+List<IStringExpression> args = new ArrayList<IStringExpression>();
+}
 	:
+	RESOURCE LPAREN name = dottedId (COMMA arg = stringExpression {args.add(arg);} )* RPAREN
+	{expr = ExpressionFactory.createExternalWordListExpression(name, args);}
+	|
 	id = Identifier
 	{expr = ExpressionFactory.createReferenceWordListExpression(id);}
 	|
@@ -2026,7 +2036,13 @@ wordListExpression returns [WordListExpression expr = null]
 
 
 wordTableExpression returns [WordTableExpression expr = null]
+@init  {
+List<IStringExpression> args = new ArrayList<IStringExpression>();
+}
 	:
+	RESOURCE LPAREN name = dottedId (COMMA arg = stringExpression {args.add(arg);} )* RPAREN
+	{expr = ExpressionFactory.createExternalWordTableExpression(name, args);}
+	|
 	id = Identifier
 	{expr = ExpressionFactory.createReferenceWordTableExpression(id);}
 	|
