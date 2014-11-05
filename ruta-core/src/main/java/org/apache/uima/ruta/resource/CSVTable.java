@@ -30,6 +30,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 
@@ -80,11 +82,16 @@ public class CSVTable implements RutaTable {
     sc.close();
   }
 
-  public RutaWordList getWordList(int index) {
+  public RutaWordList getWordList(int index, RutaBlock parent) {
     RutaWordList list = columnWordLists.get(index);
     if (list == null) {
       if (index > 0 && index <= tableData.get(0).size()) {
-        list = new TreeWordList(getColumnData(index - 1));
+        Boolean dictRemoveWS = (Boolean) parent.getContext().getConfigParameterValue(
+                RutaEngine.PARAM_DICT_REMOVE_WS);
+        if (dictRemoveWS == null) {
+          dictRemoveWS = false;
+        }
+        list = new TreeWordList(getColumnData(index - 1), dictRemoveWS);
         columnWordLists.put(index, list);
       }
     }
@@ -112,6 +119,13 @@ public class CSVTable implements RutaTable {
     int i = 0;
     for (String string : columnData) {
       if (string.toLowerCase().equals(value.toLowerCase())) {
+        return tableData.get(i);
+      }
+      i++;
+    }
+    i = 0;
+    for (String string : columnData) {
+      if (string.toLowerCase().replaceAll("\\s", "").equals(value.toLowerCase())) {
         return tableData.get(i);
       }
       i++;

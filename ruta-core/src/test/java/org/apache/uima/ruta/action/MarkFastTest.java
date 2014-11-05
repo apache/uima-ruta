@@ -63,11 +63,9 @@ public class MarkFastTest {
 
     t = RutaTestUtils.getTestType(cas, 3);
     ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
     iterator = ai.iterator();
-    assertEquals("1 0 0", iterator.next().getCoveredText());
+    assertEquals(1, ai.size());
     assertEquals("100", iterator.next().getCoveredText());
-    assertEquals("2 0 0", iterator.next().getCoveredText());
 
     t = RutaTestUtils.getTestType(cas, 4);
     ai = cas.getAnnotationIndex(t);

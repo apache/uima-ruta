@@ -76,7 +76,7 @@ public class TWLConverterHandler implements IHandler {
         String path = file.getRawLocation().toString();
         TreeWordList list;
         try {
-          list = new TreeWordList(path);
+          list = new TreeWordList(path, false);
         } catch (IOException e) {
           RutaAddonsPlugin.error(e);
           return Status.CANCEL_STATUS;

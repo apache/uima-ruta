@@ -80,7 +80,7 @@ public class MarkFastAction extends AbstractMarkAction {
       if (list != null) {
         wl = list.getList(parent);
       } else if (stringList != null) {
-        wl = new TreeWordList(stringList.getList(parent, stream));
+        wl = new TreeWordList(stringList.getList(parent, stream), false);
       }
       if (wl instanceof TreeWordList) {
         Collection<AnnotationFS> found = wl.find(windowStream,

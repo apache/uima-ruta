@@ -47,6 +47,7 @@ import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.expression.list.SimpleBooleanListExpression;
@@ -146,7 +147,7 @@ public class RutaEnvironment {
   private Map<String, Object> initializedVariables;
 
   private ResourceManager resourceManager;
-
+  
   public RutaEnvironment(RutaBlock owner) {
     super();
     this.owner = owner;
@@ -562,6 +563,10 @@ public class RutaEnvironment {
 
   public RutaWordList getWordList(String list) {
     RutaWordList result = wordLists.get(list);
+    Boolean dictRemoveWS = (Boolean) owner.getContext().getConfigParameterValue(RutaEngine.PARAM_DICT_REMOVE_WS);
+    if(dictRemoveWS == null) {
+      dictRemoveWS = false;
+    }
     if (result == null) {
       if (list.endsWith("txt") || list.endsWith("mtwl")) {
         ResourceLoader resourceLoader = new RutaResourceLoader(getResourcePaths());
@@ -571,7 +576,7 @@ public class RutaEnvironment {
             if (list.endsWith("mtwl")) {
               wordLists.put(list, new MultiTreeWordList(resource));
             } else {
-              wordLists.put(list, new TreeWordList(resource));
+              wordLists.put(list, new TreeWordList(resource, dictRemoveWS));
             }
           } catch (IOException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
@@ -774,7 +779,7 @@ public class RutaEnvironment {
         RutaWordList wordList = getWordList(path);
         return wordList;
       } else if (clazz.equals(RutaWordList.class) && value instanceof String) {
-     // TODO: ExtenralWordTableExpression will be ignored
+     // TODO: ExtenralWordListExpression will be ignored
         RutaWordList list = getWordList((String) value);
         return list;
       } else if (clazz.equals(RutaTable.class) && value instanceof LiteralWordTableExpression) {
@@ -878,4 +883,5 @@ public class RutaEnvironment {
   public void setResourceManager(ResourceManager resourceManager) {
     this.resourceManager = resourceManager;
   }
+
 }

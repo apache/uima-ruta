@@ -21,9 +21,11 @@ package org.apache.uima.ruta.resource;
 
 import java.util.List;
 
+import org.apache.uima.ruta.RutaBlock;
+
 public interface RutaTable {
 
-  RutaWordList getWordList(int index);
+  RutaWordList getWordList(int index, RutaBlock parent);
 
   String getEntry(int row, int column);
 

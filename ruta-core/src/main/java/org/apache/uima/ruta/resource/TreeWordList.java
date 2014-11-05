@@ -37,7 +37,6 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
@@ -54,6 +53,8 @@ public class TreeWordList implements RutaWordList {
 
   private String name;
 
+  private boolean dictRemoveWS = false;
+
   /**
    * Default constructor
    */
@@ -69,7 +70,8 @@ public class TreeWordList implements RutaWordList {
    * @throws IllegalArgumentException
    *           When {@code resource.getFileName()} is null or does not end with .txt or .twl.
    */
-  public TreeWordList(Resource resource) throws IOException {
+  public TreeWordList(Resource resource, boolean dictRemoveWS) throws IOException {
+    this.dictRemoveWS = dictRemoveWS;
     final String name = resource.getFilename();
     InputStream stream = null;
     try {
@@ -98,8 +100,8 @@ public class TreeWordList implements RutaWordList {
    * @param pathname
    *          path of the file to create a TextWordList from
    */
-  public TreeWordList(String pathname) throws IOException {
-    this(new FileSystemResource(pathname));
+  public TreeWordList(String pathname, boolean dictRemoveWS) throws IOException {
+    this(new FileSystemResource(pathname), dictRemoveWS);
   }
 
   /**
@@ -108,7 +110,8 @@ public class TreeWordList implements RutaWordList {
    * @param stream
    *          path of the file to create a TextWordList from
    */
-  public TreeWordList(InputStream stream, String name) throws IOException {
+  public TreeWordList(InputStream stream, String name, boolean dictRemoveWS) throws IOException {
+    this.dictRemoveWS = dictRemoveWS;
     if (name.endsWith(".twl")) {
       readXML(stream, "UTF-8");
     }
@@ -118,9 +121,10 @@ public class TreeWordList implements RutaWordList {
     this.name = new File(name).getName();
   }
 
-  public TreeWordList(List<String> data) {
+  public TreeWordList(List<String> data, boolean dictRemoveWS) {
     buildNewTree(data);
     name = "local";
+    this.dictRemoveWS = dictRemoveWS;
   }
 
   public void buildNewTree(List<String> data) {
@@ -172,6 +176,9 @@ public class TreeWordList implements RutaWordList {
     // Create Nodes from all chars of the strings besides the last one
     TextNode pointer = root;
     for (Character each : s.toCharArray()) {
+      if(dictRemoveWS && Character.isWhitespace(each)) {
+        continue;
+      }
       TextNode childNode = pointer.getChildNode(each);
       if (childNode == null) {
         childNode = new TextNode(each, false);
@@ -227,9 +234,18 @@ public class TreeWordList implements RutaWordList {
     }
     int next = ++index;
 
+    boolean result = false;
+    
     if (ignoreCase) {
       TextNode childNodeL = pointer.getChildNode(Character.toLowerCase(charAt));
       TextNode childNodeU = pointer.getChildNode(Character.toUpperCase(charAt));
+      
+      TextNode wsNode = pointer.getChildNode(' ');
+      if(ignoreWS && wsNode != null) {
+          result |= recursiveContains(wsNode, text, --next, ignoreCase, fragment, ignoreChars,
+                  maxIgnoreChars, ignoreWS);
+      }
+      
       if (childNodeL == null && ignoreWS) {
         childNodeL = skipWS(pointer, charAt);
       }
@@ -237,27 +253,34 @@ public class TreeWordList implements RutaWordList {
         childNodeU = skipWS(pointer, charAt);
       }
       if (charAtIgnored && childNodeL == null && childNodeU == null) {
-        return recursiveContains(pointer, text, next, ignoreCase, fragment, ignoreChars,
+        result |= recursiveContains(pointer, text, next, ignoreCase, fragment, ignoreChars,
                 maxIgnoreChars, ignoreWS);
       } else {
-        return recursiveContains(childNodeL, text, next, ignoreCase, fragment, ignoreChars,
+        result |= recursiveContains(childNodeL, text, next, ignoreCase, fragment, ignoreChars,
                 maxIgnoreChars, ignoreWS)
                 | recursiveContains(childNodeU, text, next, ignoreCase, fragment, ignoreChars,
                         maxIgnoreChars, ignoreWS);
       }
     } else {
+      TextNode wsNode = pointer.getChildNode(' ');
+      if(ignoreWS && wsNode != null) {
+          result |= recursiveContains(wsNode, text, --next, ignoreCase, fragment, ignoreChars,
+                  maxIgnoreChars, ignoreWS);
+      }
+      
       TextNode childNode = pointer.getChildNode(charAt);
       if (childNode == null && ignoreWS) {
         childNode = skipWS(pointer, charAt);
       }
       if (charAtIgnored && childNode == null) {
-        return recursiveContains(pointer, text, next, ignoreCase, fragment, ignoreChars,
+        result |= recursiveContains(pointer, text, next, ignoreCase, fragment, ignoreChars,
                 maxIgnoreChars, ignoreWS);
       } else {
-        return recursiveContains(childNode, text, next, ignoreCase, fragment, ignoreChars,
+        result |= recursiveContains(childNode, text, next, ignoreCase, fragment, ignoreChars,
                 maxIgnoreChars, ignoreWS);
       }
     }
+    return result;
   }
 
   private TextNode skipWS(TextNode pointer, char charAt) {
