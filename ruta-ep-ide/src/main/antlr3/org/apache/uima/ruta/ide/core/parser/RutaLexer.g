@@ -60,6 +60,10 @@ WORDTABLE
   : 'WORDTABLE'
   ;
 
+RESOURCE
+  : 'RESOURCE'
+  ;
+
 AND
   : 'AND'
   ;
