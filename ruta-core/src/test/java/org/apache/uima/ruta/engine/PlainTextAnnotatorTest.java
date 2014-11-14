@@ -67,7 +67,7 @@ public class PlainTextAnnotatorTest {
     assertEquals(8, ai.size());
 
     ai = cas.getAnnotationIndex(cas.getTypeSystem().getType("org.apache.uima.ruta.type.WSLine"));
-    assertEquals(4, ai.size());
+    assertEquals(5, ai.size());
 
     ai = cas.getAnnotationIndex(cas.getTypeSystem().getType("org.apache.uima.ruta.type.Paragraph"));
     assertEquals(4, ai.size());

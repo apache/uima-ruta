@@ -60,6 +60,10 @@ public class PlainTextAnnotator extends JCasAnnotator_ImplBase {
     try {
       while ((eachLine = br.readLine()) != null) {
         boolean wsLine = StringUtils.isBlank(eachLine);
+        if(!wsLine && StringUtils.isBlank(eachLine.trim().replaceAll("\u00A0|\u202F|\uFEFF|\u2007|\u180E", ""))) {
+          // HOTFIX for NBSPs
+          wsLine = true;
+        }
         boolean emptyLine = StringUtils.isEmpty(eachLine);
         int offsetAfterLine = offsetTillNow + eachLine.length();
         int nlLength = 1;
