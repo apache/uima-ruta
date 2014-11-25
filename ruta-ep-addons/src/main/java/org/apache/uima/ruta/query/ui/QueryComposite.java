@@ -230,7 +230,8 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
       decoFileFilterPattern = new ControlDecoration(this.inputPatternText, SWT.TOP | SWT.LEFT);
       Image imageError = FieldDecorationRegistry.getDefault()
               .getFieldDecoration(FieldDecorationRegistry.DEC_ERROR).getImage();
-      decoFileFilterPattern.setDescriptionText("PatternSyntaxException for this regular expression.");
+      decoFileFilterPattern
+              .setDescriptionText("PatternSyntaxException for this regular expression.");
       decoFileFilterPattern.setImage(imageError);
       decoFileFilterPattern.hide();
       inputPatternText.addModifyListener(new ModifyListener() {
@@ -300,19 +301,12 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
       // next row: query rules
 
       FormAttachment top4 = new FormAttachment(labelTypeSystem, 10);
-      Composite compositeQueryRules = new Composite(this, SWT.CENTER);
+      Composite compositeQueryRules = new Composite(this, SWT.NULL);
       FormData compData = new FormData();
-      // compData.width = 300;
       compData.height = 100;
       compData.left = new FormAttachment(0, 1000, 10);
       compData.top = top4;
       compData.right = new FormAttachment(1000, 1000, -10);
-      // compData.left = new FormAttachment(0, 1000, 12);
-      // compData.top = new FormAttachment(0, 1000, 70);
-      // compData.bottom = new FormAttachment(0, 1000, -10);
-      // compData.right = new FormAttachment(1000, 1000, -10);
-      // compData.width = 109;
-      // composite1.setSize(500, 500);
       compositeQueryRules.setLayoutData(compData);
       compositeQueryRules.setLayout(new FillLayout());
       IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager.getLanguageToolkit(RutaLanguageToolkit
@@ -363,7 +357,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
       resultLabel.setLayoutData(resultLabelData);
       resultLabel.setText("Result:");
 
-      Composite composite2 = new Composite(this, SWT.CENTER);
+      Composite composite2 = new Composite(this, SWT.NONE);
       FormData comp2Data = new FormData();
       // comp2Data.width = 300;
       // comp2Data.height = 200;
@@ -381,7 +375,8 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
       composite2.setLayoutData(comp2Data);
       composite2.setLayout(new FillLayout());
 
-      resultViewer = new TableViewer(composite2, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.MULTI);
+      resultViewer = new TableViewer(composite2, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER
+              | SWT.MULTI);
       final QueryResultLabelProvider queryResultLabelProvider = new QueryResultLabelProvider();
       resultViewer.setLabelProvider(queryResultLabelProvider);
       resultViewer.setContentProvider(new QueryResultContentProvider());
@@ -394,7 +389,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
             TableItem[] items = resultViewer.getTable().getSelection();
             for (TableItem item : items) {
               QueryResult data = (QueryResult) item.getData();
-              if(output.length() != 0) {
+              if (output.length() != 0) {
                 output += System.getProperty("line.separator");
               }
               output += queryResultLabelProvider.getText(data);
