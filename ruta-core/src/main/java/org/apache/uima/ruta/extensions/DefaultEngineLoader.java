@@ -21,7 +21,6 @@ package org.apache.uima.ruta.extensions;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 
@@ -53,8 +52,8 @@ public abstract class DefaultEngineLoader implements IEngineLoader {
   protected AnalysisEngine loadEngineMyselfIS(String location) throws IOException,
           InvalidXMLException, ResourceInitializationException {
     // TODO handle multi-view CASs
-    InputStream locationIS = getClass().getClassLoader().getResourceAsStream(location);
-    XMLInputSource in = new XMLInputSource(locationIS, null);
+    URL resource = getClass().getClassLoader().getResource(location);
+    XMLInputSource in = new XMLInputSource(resource);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
     return ae;
