@@ -441,10 +441,25 @@ public class RutaSimpleBuilder {
 
     List<String> languageExtensions = options.getLanguage();
 
-    configurationParameterSettings.setParameterValue(RutaEngine.PARAM_ADDITIONAL_EXTENSIONS,
-            languageExtensions.toArray(new String[0]));
-    configurationParameterSettings.setParameterValue(RutaEngine.PARAM_ADDITIONAL_ENGINE_LOADERS,
-            options.getEngines().toArray(new String[0]));
+    String[] extensions = (String[]) configurationParameterSettings
+            .getParameterValue(RutaEngine.PARAM_ADDITIONAL_EXTENSIONS);
+    String[] loaders = (String[]) configurationParameterSettings
+            .getParameterValue(RutaEngine.PARAM_ADDITIONAL_ENGINE_LOADERS);
+
+    List<String> es = new ArrayList<String>();
+    List<String> ls = new ArrayList<String>();
+    if(extensions != null) {
+      es.addAll(Arrays.asList(extensions));
+    }
+    es.addAll(languageExtensions);
+    if(loaders != null) {
+      ls.addAll(Arrays.asList(loaders));
+    }
+    ls.addAll(options.getEngines());
+
+    configurationParameterSettings.setParameterValue(RutaEngine.PARAM_ADDITIONAL_EXTENSIONS, es.toArray(new String[0]));
+    configurationParameterSettings
+            .setParameterValue(RutaEngine.PARAM_ADDITIONAL_ENGINE_LOADERS, ls.toArray(new String[0]));
   }
 
   private TypeSystemDescription getTypeSystemDescriptor(URL url, RutaBuildOptions option)
