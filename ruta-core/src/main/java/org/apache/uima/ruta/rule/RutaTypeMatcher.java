@@ -96,7 +96,7 @@ public class RutaTypeMatcher implements RutaMatcher {
     }
     if (annotation.getEnd() > 0) {
       stream.moveTo(lastBasic);
-      if (stream.isVisible(lastBasic) && stream.get().getEnd() == lastBasic.getEnd()) {
+      if (stream.isVisible(lastBasic) && stream.isValid() && stream.get().getEnd() == lastBasic.getEnd()) {
         stream.moveToNext();
       }
     } else {
