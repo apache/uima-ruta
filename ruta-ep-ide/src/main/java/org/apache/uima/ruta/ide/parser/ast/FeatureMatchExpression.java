@@ -60,6 +60,10 @@ public class FeatureMatchExpression extends Expression {
   public Token getFeature() {
     return feature;
   }
+  
+  public Token getComparator() {
+    return comp;
+  }
 
   public Expression getValue() {
     return value;

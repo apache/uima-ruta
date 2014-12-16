@@ -102,6 +102,7 @@ public class RutaRuleElement extends Expression {
           rule.traverse(visitor);
         }
       }
+      visitor.endvisit(this);
     }
   }
 

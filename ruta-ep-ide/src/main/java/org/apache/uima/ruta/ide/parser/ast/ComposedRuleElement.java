@@ -73,6 +73,7 @@ public class ComposedRuleElement extends RutaRuleElement {
           rule.traverse(visitor);
         }
       }
+      visitor.endvisit(this);
     }
   }
 

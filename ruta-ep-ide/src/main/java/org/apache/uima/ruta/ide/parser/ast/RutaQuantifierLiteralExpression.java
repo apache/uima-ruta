@@ -19,6 +19,7 @@
 
 package org.apache.uima.ruta.ide.parser.ast;
 
+import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
 
 public class RutaQuantifierLiteralExpression extends Expression {
@@ -44,4 +45,12 @@ public class RutaQuantifierLiteralExpression extends Expression {
     return RutaExpressionConstants.E_QUANTIFIER_LIT;
   }
 
+  
+  @Override
+  public void traverse(ASTVisitor visitor) throws Exception {
+    if (visitor.visit(this)) {
+      visitor.endvisit(this);
+    }
+  }
+  
 }

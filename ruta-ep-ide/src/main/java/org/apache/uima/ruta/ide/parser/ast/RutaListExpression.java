@@ -47,6 +47,7 @@ public class RutaListExpression extends RutaExpression {
   public void traverse(ASTVisitor visitor) throws Exception {
     if (visitor.visit(this)) {
       this.getExprs().traverse(visitor);
+      visitor.endvisit(this);
     }
   }
 
