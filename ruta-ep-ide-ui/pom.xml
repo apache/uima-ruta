@@ -294,7 +294,7 @@
               <instructions>
                 <Bundle-SymbolicName>org.apache.uima.ruta.ide.ui;singleton:=true</Bundle-SymbolicName>
                 <Bundle-Activator>org.apache.uima.ruta.ide.RutaIdeUIPlugin</Bundle-Activator>
-                <Bundle-RequiredExecutionEnvironment>JavaSE-1.6</Bundle-RequiredExecutionEnvironment>
+                <Bundle-RequiredExecutionEnvironment>JavaSE-1.7</Bundle-RequiredExecutionEnvironment>
                 <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
                 <_nouses>true</_nouses>
                 <Export-Package>
