@@ -1,5 +1,6 @@
 package org.apache.uima.ruta.expression.resource;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.ruta.RutaStatement;
@@ -20,6 +21,11 @@ public class ExternalWordTableExpression extends WordTableExpression {
 
   @Override
   public RutaTable getTable(RutaStatement element) {
+    List<String> argList = new ArrayList<String>();
+    for (IStringExpression each : args) {
+      argList.add(each.getStringValue(element.getParent(), null, null));
+    }
+    
     return null;
   }
 
