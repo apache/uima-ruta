@@ -69,6 +69,10 @@ public class RutaLanguageChecker implements IBuildParticipant, IBuildParticipant
       ASTVisitor visitor = new LanguageCheckerVisitor(problemReporter, linetracker, smod,
               classloader);
       md.traverse(visitor);
+//      XMLOutputVisitor xmlVisitor = new XMLOutputVisitor(smod.getSource());
+//      md.traverse(xmlVisitor);
+//      String xml = xmlVisitor.getXML();
+//      FileUtils.saveString2File(xml, new File("D:/"+ smod.getElementName() + ".xml"));
     } catch (Exception e) {
       RutaIdeUIPlugin.error(e);
     }
