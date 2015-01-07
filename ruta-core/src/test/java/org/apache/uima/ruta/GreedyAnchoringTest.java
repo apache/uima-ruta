@@ -42,6 +42,8 @@ public class GreedyAnchoringTest {
     String script = "";
     script += "ANY+{->T1};";
     script += "ANY*{->T2};";
+    script += "((SW | CW) (W & CW) PM)+{->T3};";
+    
     
     CAS cas = null;
     Map<String, Object> params = new HashMap<String, Object>();
@@ -69,6 +71,12 @@ public class GreedyAnchoringTest {
     iterator = ai.iterator();
     assertEquals(document, iterator.next().getCoveredText());
     
+    t = RutaTestUtils.getTestType(cas, 3);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    assertEquals(document, iterator.next().getCoveredText());
+    
     
     if (cas != null) {
       cas.release();
@@ -81,6 +89,7 @@ public class GreedyAnchoringTest {
     String document = "Peter Kluegl Joern Kottmann Marshall Schor.";
     String script = "";
     script += "(CW CW){->T1};";
+    script += "((SW | CW) (W & CW)){->T2};";
     
     CAS cas = null;
     Map<String, Object> params = new HashMap<String, Object>();
@@ -97,6 +106,14 @@ public class GreedyAnchoringTest {
     FSIterator<AnnotationFS> iterator = null;
 
     t = RutaTestUtils.getTestType(cas, 1);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(3, ai.size());
+    iterator = ai.iterator();
+    assertEquals("Peter Kluegl", iterator.next().getCoveredText());
+    assertEquals("Joern Kottmann", iterator.next().getCoveredText());
+    assertEquals("Marshall Schor", iterator.next().getCoveredText());
+    
+    t = RutaTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
     assertEquals(3, ai.size());
     iterator = ai.iterator();

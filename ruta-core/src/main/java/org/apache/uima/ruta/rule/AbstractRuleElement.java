@@ -100,15 +100,15 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
     List<ScriptApply> result = new ArrayList<ScriptApply>();
     List<AnnotationFS> matchedAnnotationsOf = ruleMatch.getMatchedAnnotationsOf(this);
     // TODO where to implement the explanation of inlined rules?
-//    BlockApply blockApply = new BlockApply(this);
-//    RuleApply dummyRuleApply = getDummyRuleApply(ruleMatch);
-//    blockApply.setRuleApply(dummyRuleApply);
-//    ruleMatch.addDelegateApply(this, blockApply);
+    // BlockApply blockApply = new BlockApply(this);
+    // RuleApply dummyRuleApply = getDummyRuleApply(ruleMatch);
+    // blockApply.setRuleApply(dummyRuleApply);
+    // ruleMatch.addDelegateApply(this, blockApply);
     for (AnnotationFS annotationFS : matchedAnnotationsOf) {
       RutaStream windowStream = stream.getWindowStream(annotationFS, annotationFS.getType());
       for (RutaStatement each : inlinedRules) {
         ScriptApply apply = each.apply(windowStream, crowd);
-//        blockApply.add(apply);
+        // blockApply.add(apply);
         ruleMatch.addDelegateApply(this, apply);
         result.add(apply);
       }
@@ -136,12 +136,12 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
   protected boolean matchInnerRules(RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd) {
     boolean inlinedRulesMatched = true;
     List<ScriptApply> list = processInlinedConditionRules(ruleMatch, stream, crowd);
-    if(list != null) {
+    if (list != null) {
       inlinedRulesMatched = false;
       for (ScriptApply scriptApply : list) {
-        if(scriptApply instanceof RuleApply) {
+        if (scriptApply instanceof RuleApply) {
           RuleApply ra = (RuleApply) scriptApply;
-          if(ra.applied > 0) {
+          if (ra.applied > 0) {
             inlinedRulesMatched = true;
           }
         }
@@ -149,7 +149,7 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
     }
     return inlinedRulesMatched;
   }
-  
+
   protected List<RuleElementMatch> getMatch(RuleMatch ruleMatch,
           ComposedRuleElementMatch containerMatch) {
     List<RuleElementMatch> matchInfo;
@@ -187,6 +187,45 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
     }
     if (c instanceof ComposedRuleElement) {
       return ((ComposedRuleElement) c).hasAncestor(after);
+    }
+    return false;
+  }
+
+  protected boolean earlyExit(AnnotationFS eachAnchor, RuleApply ruleApply, RutaStream stream) {
+    if (stream.isGreedyAnchoring() && ruleApply != null
+            && isAlreadyCovered(eachAnchor, ruleApply, stream)) {
+      // skip if next matched should not overlap
+      return true;
+    }
+    if (stream.isOnlyOnce() && ruleApply != null && ruleApply.getApplied() > 0) {
+      // skip if the rule should only be applied once, on the first successful match
+      return true;
+    }
+    return false;
+  }
+
+  private boolean isAlreadyCovered(AnnotationFS eachAnchor, RuleApply ruleApply, RutaStream stream) {
+    List<AbstractRuleMatch<? extends AbstractRule>> list = ruleApply.getList();
+    Collections.reverse(list);
+    for (AbstractRuleMatch<? extends AbstractRule> each : list) {
+      if (each instanceof RuleMatch) {
+        RuleMatch rm = (RuleMatch) each;
+        List<AnnotationFS> matchedAnnotationsOf = Collections.emptyList();
+        if (stream.isGreedyRule()) {
+          matchedAnnotationsOf = rm.getMatchedAnnotationsOfRoot();
+        } else if (stream.isGreedyRuleElement()) {
+          matchedAnnotationsOf = rm.getMatchedAnnotationsOf(this);
+        }
+        for (AnnotationFS annotationFS : matchedAnnotationsOf) {
+          if (eachAnchor.getBegin() >= annotationFS.getBegin()
+                  && eachAnchor.getEnd() <= annotationFS.getEnd()) {
+            return true;
+          } else if (eachAnchor.getBegin() < annotationFS.getEnd()) {
+            // overlapping annotations of composed rule elements with null ruleApply lookahead
+            return true;
+          }
+        }
+      }
     }
     return false;
   }

@@ -107,7 +107,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       Map<RuleMatch, ComposedRuleElementMatch> ruleMatches = new HashMap<RuleMatch, ComposedRuleElementMatch>();
       RuleElement anchoringRuleElement = getAnchoringRuleElement(stream);
       RutaRuleElement sideStepOrigin = null;
-      
+
       if (anchoringRuleElement instanceof RutaRuleElement && hasAncestor(false)) {
         sideStepOrigin = (RutaRuleElement) anchoringRuleElement;
       }
@@ -144,10 +144,14 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
         AnnotationFS lastAnnotation = eachRuleMatch.getLastMatchedAnnotation(this, true, null,
                 parent, stream);
         boolean failed = !eachComposedMatch.matched();
-        List<RuleMatch> fallbackContinue = fallbackContinue(true, failed, lastAnnotation,
-                eachRuleMatch, ruleApply, eachComposedMatch, sideStepOrigin, entryPoint, stream,
-                crowd);
-        result.addAll(fallbackContinue);
+        List<AnnotationFS> textsMatched = eachComposedMatch.getTextsMatched();
+        if ((!stream.isGreedyAnchoring() && !stream.isOnlyOnce())
+                || !earlyExit(textsMatched.get(0), ruleApply, stream)) {
+          List<RuleMatch> fallbackContinue = fallbackContinue(true, failed, lastAnnotation,
+                  eachRuleMatch, ruleApply, eachComposedMatch, sideStepOrigin, entryPoint, stream,
+                  crowd);
+          result.addAll(fallbackContinue);
+        }
       }
     }
     return result;
@@ -214,15 +218,19 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
         AnnotationFS lastAnnotation = eachRuleMatch.getLastMatchedAnnotation(this, after,
                 annotation, parent, stream);
         boolean failed = !eachComposedMatch.matched();
-        List<RuleMatch> fallbackContinue = fallbackContinue(after, failed, lastAnnotation,
-                eachRuleMatch, ruleApply, eachComposedMatch, sideStepOrigin, entryPoint, stream,
-                crowd);
-        result.addAll(fallbackContinue);
+        List<AnnotationFS> textsMatched = eachRuleMatch.getMatchedAnnotationsOfRoot();
+        if ((!stream.isGreedyAnchoring() && !stream.isOnlyOnce())
+                || (!textsMatched.isEmpty() && !earlyExit(textsMatched.get(0), ruleApply, stream))) {
+          List<RuleMatch> fallbackContinue = fallbackContinue(after, failed, lastAnnotation,
+                  eachRuleMatch, ruleApply, eachComposedMatch, sideStepOrigin, entryPoint, stream,
+                  crowd);
+          result.addAll(fallbackContinue);
+        }
       }
     } else if (conjunct) {
       // conjunctive
-
       Map<RuleMatch, ComposedRuleElementMatch> ruleMatches = new HashMap<RuleMatch, ComposedRuleElementMatch>();
+
       RuleElement anchoringRuleElement = getAnchoringRuleElement(stream);
       ComposedRuleElementMatch composedMatch = createComposedMatch(ruleMatch, containerMatch,
               stream);
@@ -245,7 +253,6 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
           }
         }
       }
-
       Map<RuleMatch, ComposedRuleElementMatch> mergedMatches = mergeConjunctiveRuleMatches(
               ruleMatches, after);
       Set<Entry<RuleMatch, ComposedRuleElementMatch>> entrySet = mergedMatches.entrySet();
@@ -254,11 +261,17 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
         ComposedRuleElementMatch eachComposedMatch = entry.getValue();
         AnnotationFS lastAnnotation = eachRuleMatch.getLastMatchedAnnotation(this, after,
                 annotation, parent, stream);
+
         boolean failed = !eachComposedMatch.matched();
-        List<RuleMatch> fallbackContinue = fallbackContinue(after, failed, lastAnnotation,
-                eachRuleMatch, ruleApply, eachComposedMatch, sideStepOrigin, entryPoint, stream,
-                crowd);
-        result.addAll(fallbackContinue);
+
+        List<AnnotationFS> textsMatched = eachRuleMatch.getMatchedAnnotationsOfRoot();
+        if ((!stream.isGreedyAnchoring() && !stream.isOnlyOnce())
+                || (!textsMatched.isEmpty() && !earlyExit(textsMatched.get(0), ruleApply, stream))) {
+          List<RuleMatch> fallbackContinue = fallbackContinue(after, failed, lastAnnotation,
+                  eachRuleMatch, ruleApply, eachComposedMatch, sideStepOrigin, entryPoint, stream,
+                  crowd);
+          result.addAll(fallbackContinue);
+        }
       }
     }
     return result;

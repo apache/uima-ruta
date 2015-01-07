@@ -59,12 +59,8 @@ public class RutaRuleElement extends AbstractRuleElement {
     Collection<AnnotationFS> anchors = getAnchors(stream);
     boolean useAlternatives = anchors.size() != 1;
     for (AnnotationFS eachAnchor : anchors) {
-      if (stream.isGreedyAnchoring() && isAlreadyCovered(eachAnchor, ruleApply, stream)) {
-        // skip if next matched should not overlap
-        continue;
-      }
-      if (stream.isOnlyOnce() && ruleApply.getApplied() > 0) {
-        // skip if the rule should only be applied once, on the first successful match
+      if(earlyExit(eachAnchor, ruleApply, stream)) {
+        // ... for different matching paradigms that avoid some matches
         continue;
       }
       
@@ -124,28 +120,6 @@ public class RutaRuleElement extends AbstractRuleElement {
       }
     }
     return result;
-  }
-
-  private boolean isAlreadyCovered(AnnotationFS eachAnchor, RuleApply ruleApply, RutaStream stream) {
-    List<AbstractRuleMatch<? extends AbstractRule>> list = ruleApply.getList();
-    Collections.reverse(list);
-    for (AbstractRuleMatch<? extends AbstractRule> each : list) {
-      if (each instanceof RuleMatch) {
-        RuleMatch rm = (RuleMatch) each;
-        List<AnnotationFS> matchedAnnotationsOf = Collections.emptyList();
-        if (stream.isGreedyRule()) {
-          matchedAnnotationsOf = rm.getMatchedAnnotationsOfRoot();
-        } else if (stream.isGreedyRuleElement()) {
-          matchedAnnotationsOf = rm.getMatchedAnnotationsOf(this);
-        }
-        for (AnnotationFS annotationFS : matchedAnnotationsOf) {
-          if (eachAnchor.getBegin() >= annotationFS.getBegin()
-                  && eachAnchor.getEnd() <= annotationFS.getEnd())
-            return true;
-        }
-      }
-    }
-    return false;
   }
 
   public List<RuleMatch> continueOwnMatch(boolean after, AnnotationFS annotation,
@@ -236,6 +210,11 @@ public class RutaRuleElement extends AbstractRuleElement {
       }
       boolean useAlternatives = nextAnnotations.size() != 1;
       for (AnnotationFS eachAnchor : nextAnnotations) {
+        if(earlyExit(eachAnchor, ruleApply, stream)) {
+          // ... for different matching paradigms that avoid some matches
+          continue;
+        }
+        
         ComposedRuleElementMatch extendedContainerMatch = containerMatch;
         RuleMatch extendedMatch = ruleMatch;
         if (useAlternatives) {

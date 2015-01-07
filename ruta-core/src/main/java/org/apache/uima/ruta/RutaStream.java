@@ -359,7 +359,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
             windowAnnotation.getBegin(), true, windowAnnotation.getEnd(), false);
     NavigableMap<Integer, RutaBasic> newEndAnchors = endAnchors.subMap(windowAnnotation.getBegin(),
             false, windowAnnotation.getEnd(), true);
-    ;
+
     RutaStream stream = new RutaStream(cas, basicType, newBeginAnchors, newEndAnchors,
             filterManager, lowMemoryProfile, simpleGreedyForComposed, crowd);
     stream.setDynamicAnchoring(dynamicAnchoring);
