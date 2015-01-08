@@ -286,6 +286,7 @@ public class RutaRuleElement extends AbstractRuleElement {
     } else {
       List<RuleElementMatch> evaluateMatches = quantifier.evaluateMatches(matchInfo, parent,
               stream, crowd);
+      // TODO enforce match update?
       ruleMatch.setMatched(evaluateMatches != null);
       if (ruleMatch.matched()) {
         result = continueMatchSomewhereElse(after, false, annotation, ruleMatch, ruleApply,

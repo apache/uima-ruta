@@ -424,6 +424,9 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
               crowd);
       int sizeAfter = evaluateMatches != null ? evaluateMatches.size() : sizeBefore;
       boolean removedFailedMatches = sizeAfter < sizeBefore;
+      if(removedFailedMatches) {
+        containerMatch.enforceUpdate();
+      }
       ruleMatch.setMatched((ruleMatch.matched() || removedFailedMatches)
               && (evaluateMatches != null || continueMatch));
       if (failed) {
