@@ -510,6 +510,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public List<AnnotationFS> getAnnotationsInWindow(AnnotationFS windowAnnotation, Type type) {
+    if(type == null) return null;
     List<AnnotationFS> result = new ArrayList<AnnotationFS>();
     List<AnnotationFS> inWindow = getAnnotationsInWindow2(windowAnnotation, type);
     result = inWindow;

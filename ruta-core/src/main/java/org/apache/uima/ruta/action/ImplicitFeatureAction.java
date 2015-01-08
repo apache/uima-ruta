@@ -38,6 +38,7 @@ import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.AnnotationComparator;
 import org.apache.uima.ruta.rule.RuleElement;
@@ -115,15 +116,19 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
       IBooleanExpression booleanExpr = (IBooleanExpression) argExpr;
       boolean v = booleanExpr.getBooleanValue(element.getParent(), a, stream);
       a.setBooleanValue(feature, v);
-    } else if (argExpr instanceof TypeExpression && !feature.getRange().isPrimitive()) {
-      TypeExpression typeExpr = (TypeExpression) argExpr;
+    } else if (argExpr instanceof ITypeExpression && !feature.getRange().isPrimitive()) {
+      ITypeExpression typeExpr = (ITypeExpression) argExpr;
       Type t = typeExpr.getType(element.getParent());
       List<AnnotationFS> inWindow = stream.getAnnotationsInWindow(a, t);
       if (feature.getRange().isArray()) {
         a.setFeatureValue(feature, UIMAUtils.toFSArray(stream.getJCas(), inWindow));
       } else {
-        AnnotationFS annotation = inWindow.get(0);
-        a.setFeatureValue(feature, annotation);
+        if (inWindow != null) {
+          AnnotationFS annotation = inWindow.get(0);
+          a.setFeatureValue(feature, annotation);
+        } else {
+          a.setFeatureValue(feature, null);
+        }
       }
     } else if (argExpr instanceof GenericFeatureExpression && !feature.getRange().isPrimitive()) {
       TypeExpression typeExpr = ((GenericFeatureExpression) argExpr).getFeatureExpression()

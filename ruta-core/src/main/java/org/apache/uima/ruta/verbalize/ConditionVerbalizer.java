@@ -364,14 +364,7 @@ public class ConditionVerbalizer {
     } else if (condition instanceof FeatureCondition) {
       FeatureCondition c = (FeatureCondition) condition;
       String e1 = verbalizer.verbalize(c.getFeatureStringExpression());
-      String e2 = "";
-      if (c.getBooleanExpr() != null) {
-        e2 = verbalizer.verbalize(c.getBooleanExpr());
-      } else if (c.getNumberExpr() != null) {
-        e2 = verbalizer.verbalize(c.getNumberExpr());
-      } else if (c.getStringExpr() != null) {
-        e2 = verbalizer.verbalize(c.getStringExpr());
-      }
+      String e2 = verbalizer.verbalize(c.getArgExpr());
       return name + e1 + ", " + e2 + ")";
     } else if (condition instanceof ParseCondition) {
       ParseCondition c = (ParseCondition) condition;

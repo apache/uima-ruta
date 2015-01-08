@@ -20,6 +20,9 @@
 package org.apache.uima.ruta.expression.feature;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.text.AnnotationFS;
@@ -126,12 +129,24 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
         String v2 = expr.getStringValue(parent, afs, stream);
         return compare(v1, v2);
       }
+    } else if(!feature.getRange().isPrimitive() && getArg() instanceof FeatureExpression) {
+      FeatureExpression fe = (FeatureExpression) getArg();
+      List<AnnotationFS> list = new ArrayList<>(1);
+      list.add(afs);
+      Collection<AnnotationFS> featureAnnotations = fe.getFeatureAnnotations(list, stream, parent, false);
+      return compare(afs.getFeatureValue(feature), featureAnnotations);
     }
     return false;
   }
 
   private boolean compare(Object v1, Object v2) {
-    if (v1 instanceof Number && v2 instanceof Number) {
+    if (v1 == null || v2 == null) {
+      if(v1 == null && v2 == null && getOp().equals("==")) {
+        return true;
+      } else if (getOp().equals("!=")) {
+        return true;
+      }
+    } else if (v1 instanceof Number && v2 instanceof Number) {
       Number n1 = (Number) v1;
       Number n2 = (Number) v2;
       int compareTo = new BigDecimal(n1.toString()).compareTo(new BigDecimal(n2.toString()));

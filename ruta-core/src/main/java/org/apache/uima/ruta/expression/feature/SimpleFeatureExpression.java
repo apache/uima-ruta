@@ -33,7 +33,9 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
+import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.MatchReference;
+import org.apache.uima.ruta.expression.NullExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.extensions.RutaParseException;
 import org.apache.uima.ruta.rule.AnnotationComparator;
@@ -150,6 +152,12 @@ public class SimpleFeatureExpression extends FeatureExpression {
       if (!(this instanceof FeatureMatchExpression)) {
         if (stream.isVisible(afs)) {
           result.add(afs);
+        }
+      } else {
+        // exploit expression for null assignments
+        IRutaExpression arg = ((FeatureMatchExpression)this).getArg();
+        if(arg instanceof NullExpression) {
+          result.addAll(annotations);
         }
       }
     }

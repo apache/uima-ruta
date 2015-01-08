@@ -279,6 +279,10 @@ public class ExpressionFactory {
           List<IStringExpression> args) {
     return new ExternalWordTableExpression(name.getText(), args);
   }
+
+  public static IRutaExpression createNullExpression() {
+    return new NullExpression();
+  }
   
 
 
