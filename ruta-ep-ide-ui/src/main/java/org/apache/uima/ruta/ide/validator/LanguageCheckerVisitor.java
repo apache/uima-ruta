@@ -59,6 +59,7 @@ import org.apache.uima.ruta.ide.core.extensions.IIDEStringFunctionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IIDETypeFunctionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IRutaExtension;
 import org.apache.uima.ruta.ide.parser.ast.FeatureMatchExpression;
+import org.apache.uima.ruta.ide.parser.ast.NullExpression;
 import org.apache.uima.ruta.ide.parser.ast.RutaAction;
 import org.apache.uima.ruta.ide.parser.ast.RutaActionConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaBlock;
@@ -537,6 +538,9 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       return true;
     }
     if (s instanceof RutaVariableReference) {
+      if(s instanceof NullExpression) {
+        return false;
+      }
       RutaVariableReference ref = (RutaVariableReference) s;
       if ((ref.getType() & RutaTypeConstants.RUTA_TYPE_AT) != 0) {
         // types
@@ -776,7 +780,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
         }
       }
       boolean findFeature = findFeature(match, fref, kind);
-      if (findFeature) {
+      if (findFeature || fme.getValue() instanceof NullExpression) {
 
       } else {
         pr.reportProblem(problemFactory.createUnknownFeatureProblem(fme, aref));
@@ -1212,7 +1216,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
   }
 
   private boolean isVariableDeclared(RutaVariableReference ref) {
-    if (!knowsVariable(ref.getName())) {
+    if (!knowsVariable(ref.getName()) && !(ref instanceof NullExpression)) {
       // declared as type?
       if (namespaces.keySet().contains(ref.getName())) {
         String errMsg = "\"" + ref.getName() + "\" declared as a Type. Variable of type "

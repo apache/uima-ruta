@@ -29,7 +29,7 @@ public class RutaKeywords implements IRutaKeywords {
   private static String[] declaration = { "WORDLIST", "DECLARE", "BOOLEAN", "PACKAGE", "TYPE",
       "TYPESYSTEM", "INT", "DOUBLE", "FLOAT", "STRING", "SCRIPT", "WORDTABLE", "ENGINE", "BLOCK",
       "BOOLEANLIST", "INTLIST", "DOUBLELIST", "FLOATLIST", "STRINGLIST", "TYPELIST",
-      "UIMAFIT", "IMPORT" , "FROM", "AS" };
+      "UIMAFIT", "IMPORT" , "FROM", "AS", "null" };
 
   private static String[] action = { "DEL", "CALL", "MARK", "MARKSCORE", "COLOR", "LOG", "REPLACE",
       "FILLOBJECT", "RETAINTYPE", "SETFEATURE", "ASSIGN", "PUTINLIST", "ATTRIBUTE", "MARKFAST",

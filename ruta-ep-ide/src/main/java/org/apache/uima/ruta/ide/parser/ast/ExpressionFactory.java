@@ -396,5 +396,8 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
     list.add(fe);
     return createStringExpression(list);
   }
-
+  public static Expression createNullExpression(Token t) {
+    int bounds[] = getBounds(t);
+    return new NullExpression(bounds[0], bounds[1]);
+  }
 }

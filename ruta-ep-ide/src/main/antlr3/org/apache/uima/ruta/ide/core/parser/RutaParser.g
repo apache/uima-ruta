@@ -2026,7 +2026,8 @@ argument returns [Expression expr = null] //SimpleReference arg1 = null]
 //	backtrack = true;
 //}
 	:
-	(featureExpression)=> fe = featureExpression {expr = fe;}
+	(nullExpression) => a5 = nullExpression {expr = a5;}
+	| (featureExpression)=> fe = featureExpression {expr = fe;}
 	| (booleanExpression)=> a2 = booleanExpression {expr = a2;}
 	| (numberExpression)=> a3 = numberExpression {expr = a3;}
 	| (stringExpression)=> a4 = stringExpression {expr = a4;}
@@ -2039,6 +2040,11 @@ argument returns [Expression expr = null] //SimpleReference arg1 = null]
 	//| (typeExpression[par]) => typeExpression[par]
 	//)
 	//{arg = token;}
+	;
+
+nullExpression returns [Expression expr = null]
+	:
+	t = NULL {expr = ExpressionFactory.createNullExpression(t);}
 	;
 
 primitiveArgument returns [Expression expr = null]

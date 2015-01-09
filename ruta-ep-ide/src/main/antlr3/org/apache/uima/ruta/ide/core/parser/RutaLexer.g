@@ -369,7 +369,7 @@ TAN : 'TAN';
 XOR :   'XOR';
 TRUE  : 'true';
 FALSE   : 'false';
-
+NULL : 'null';
 
 STARTANCHOR 
   :  '@';
