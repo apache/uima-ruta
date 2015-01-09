@@ -38,15 +38,19 @@ public class OnlyOnceBlockTest {
 
   @Test
   public void test() {
-    String document = "some text";
-    String script = "ONLYFIRST Document{}{\n";
-    script += "Document{-> T1};\n";
-    script += "Document{-> T2};\n";
+    String document = "some text with numbers: 1 2 3 4";
+    String script = "ONLYONCE Document{}{\n";
+    script += "SW{-> T1};\n";
+    script += "NUM{-> T2};\n";
+    script += "SW+{-> T3};\n";
+    script += "NUM+{-> T4};\n";
+    script += "(SW | CW | NUM)+{-> T5};\n";
+    script += "(ALL & ANY)+{-> T6};\n";
     script += "}";
 
     Map<String, Object> parameters = new HashMap<String, Object>();
     parameters.put(RutaEngine.PARAM_ADDITIONAL_EXTENSIONS,
-            new String[] { OnlyFirstBlockExtension.class.getName() });
+            new String[] { OnlyOnceBlockExtension.class.getName() });
     CAS cas = null;
     try {
       cas = RutaTestUtils.getCAS(document);
@@ -63,12 +67,38 @@ public class OnlyOnceBlockTest {
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
     iterator = ai.iterator();
-    assertEquals("some text", iterator.next().getCoveredText());
+    assertEquals("some", iterator.next().getCoveredText());
 
     t = RutaTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
-    assertEquals(0, ai.size());
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    assertEquals("1", iterator.next().getCoveredText());
+    
+    t = RutaTestUtils.getTestType(cas, 3);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    assertEquals("some text with numbers", iterator.next().getCoveredText());
 
+    t = RutaTestUtils.getTestType(cas, 4);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    assertEquals("1 2 3 4", iterator.next().getCoveredText());
+    
+    t = RutaTestUtils.getTestType(cas, 5);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    assertEquals("some text with numbers", iterator.next().getCoveredText());
+    
+    t = RutaTestUtils.getTestType(cas, 6);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    assertEquals("some text with numbers: 1 2 3 4", iterator.next().getCoveredText());
+    
     if (cas != null) {
       cas.release();
     }

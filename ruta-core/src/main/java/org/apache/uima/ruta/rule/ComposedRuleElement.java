@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -74,7 +75,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
               crowd);
     } else if (!conjunct) {
       // disjunctive
-      Map<RuleMatch, ComposedRuleElementMatch> ruleMatches = new HashMap<RuleMatch, ComposedRuleElementMatch>();
+      Map<RuleMatch, ComposedRuleElementMatch> ruleMatches = new LinkedHashMap<RuleMatch, ComposedRuleElementMatch>();
       for (RuleElement each : elements) {
         ComposedRuleElementMatch extendedContainerMatch = containerMatch.copy();
         RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch, true);
@@ -104,7 +105,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       }
     } else if (conjunct) {
       // conjunctive
-      Map<RuleMatch, ComposedRuleElementMatch> ruleMatches = new HashMap<RuleMatch, ComposedRuleElementMatch>();
+      Map<RuleMatch, ComposedRuleElementMatch> ruleMatches = new LinkedHashMap<RuleMatch, ComposedRuleElementMatch>();
       RuleElement anchoringRuleElement = getAnchoringRuleElement(stream);
       RutaRuleElement sideStepOrigin = null;
 
