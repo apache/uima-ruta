@@ -166,6 +166,9 @@ Creative Commons Attribution 3.0 License.
               </configuration> 
             </execution>
           </executions>
+          <configuration>
+            <source>7</source>
+          </configuration>  
         </plugin>
       </plugins>
     </pluginManagement>
