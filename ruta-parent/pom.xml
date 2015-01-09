@@ -155,9 +155,39 @@ Creative Commons Attribution 3.0 License.
             <target>1.7</target>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId> 
+          <executions>
+            <execution>
+              <id>attach-javadocs</id>
+              <configuration>
+                <source>7</source>
+              </configuration> 
+            </execution>
+          </executions>
+        </plugin>
       </plugins>
     </pluginManagement>
   <plugins>
+    <plugin>
+      <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>enforce-versions</id>
+            <configuration>
+              <rules>
+                <requireMavenVersion>
+                  <version>3.0</version>
+                </requireMavenVersion>
+                <requireJavaVersion>
+                  <version>1.7</version>
+                </requireJavaVersion>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+    </plugin>
     <plugin>
       <artifactId>maven-resources-plugin</artifactId>
       <executions>
