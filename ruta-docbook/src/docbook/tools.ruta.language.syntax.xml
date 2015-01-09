@@ -109,8 +109,11 @@ GroupAssignment        -> TypeExpression
 RuleElements           -> RuleElement+
 RuleElement            -> RuleElementType | RuleElementLiteral
                         | RuleElementComposed | RuleElementWildCard
-RuleElementType        ->  TypeExpression OptionalRuleElementPart
-RuleElementWithCA      ->  TypeExpression OptionalRuleElementPart
+RuleElementType        ->  MatchReference OptionalRuleElementPart
+RuleElementWithCA      ->  MatchReference ("{" Conditions?  Actions? "}")?
+MatchReference         -> TypeExpression | FeatureMatchExpression
+FeatureMatchExpression -> TypeExpression ( "." Feature)+ 
+                          ( Operator (Expression | "null"))?
 RuleElementLiteral     ->  SimpleStringExpression OptionalRuleElementPart
 RuleElementComposed    -> "(" RuleElement ("&" RuleElement)+ ")"
                           | "(" RuleElement ("|" RuleElement)+ ")"
