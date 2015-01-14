@@ -867,6 +867,11 @@ under the License.
            nature="org.apache.uima.ruta.ide.nature">
      </provider>
      <provider
+           class="org.apache.uima.ruta.ide.ui.documentation.DescriptorDocumentationProvider"
+           id="org.apache.uima.ruta.ide.ui.DescriptorDocumentationProvider"
+           nature="org.apache.uima.ruta.ide.nature">
+     </provider>
+     <provider
            class="org.apache.uima.ruta.ide.ui.documentation.RutaFunctionDocumentationProvider"
            id="org.apache.uima.ruta.ide.ui.RutaFunctionDocumentationProvider"
            nature="org.apache.uima.ruta.ide.nature">
