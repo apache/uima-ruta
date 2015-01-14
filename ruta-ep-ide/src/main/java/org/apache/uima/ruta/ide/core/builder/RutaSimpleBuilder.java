@@ -251,7 +251,7 @@ public class RutaSimpleBuilder {
     }
 
     Set<String> names = new HashSet<String>();
-    List<TypeDescription> types = new ArrayList<TypeDescription>();
+    Collection<TypeDescription> types = new HashSet<TypeDescription>();
     for (TypeDescription each : typeSystemDescription.getTypes()) {
       String name = each.getName();
       if (!names.contains(name)) {

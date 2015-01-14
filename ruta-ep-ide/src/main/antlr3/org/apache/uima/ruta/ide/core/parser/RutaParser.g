@@ -128,7 +128,13 @@ import org.apache.uima.ruta.ide.parser.ast.RutaPackageDeclaration;
 	
 	public void addType(RutaBlock parent, String type, String parentType) {
 		vars.add(type);
-		descriptor.addType(parent.getNamespace()+"."+type.trim(), "Type defined in "+packageString+"."+module, parentType);
+		String descriptionString = null;
+       if(packageString == null) {
+         descriptionString = "Type defined in " + module;
+       } else {
+         descriptionString = "Type defined in " + packageString + "." + module;
+       }
+		descriptor.addType(parent.getNamespace()+"."+type.trim(), descriptionString, parentType);
 	}
 	
 	public void addPredefinedType(String type) {
@@ -140,7 +146,13 @@ import org.apache.uima.ruta.ide.parser.ast.RutaPackageDeclaration;
 	public void addType(RutaBlock parent, String name, String parentType, List featuresTypes,
           List<Token> featuresNames) {
 	   	 name = parent.getNamespace() + "." + name.trim();
-	   	 descriptor.addType(name, "Type defined in " + packageString + "." + module, parentType);
+	   	 String descriptionString = null;
+	   	 if(packageString == null) {
+	   	   descriptionString = "Type defined in " + module;
+	   	 } else {
+	   	   descriptionString = "Type defined in " + packageString + "." + module;
+	   	 }
+	   	 descriptor.addType(name, descriptionString, parentType);
 	    	for (int i = 0; i < featuresTypes.size(); i++) {
 	    	  Object object = featuresTypes.get(i);
 	    	  String ftype = "";
