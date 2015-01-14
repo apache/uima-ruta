@@ -892,6 +892,22 @@ ae.process(cas);]]></programlisting>
                   </entry>
                   <entry>Single Boolean</entry>
                 </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.varNames'>varNames</link>
+                  </entry>
+                  <entry>String array with names of variables. Is used in combination with varValues.
+                  </entry>
+                  <entry>Multi String</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.varValues'>varValues</link>
+                  </entry>
+                  <entry>String array with values of variables. Is used in combination with varNames.
+                  </entry>
+                  <entry>Multi String</entry>
+                </row>
               </tbody>
             </tgroup>
           </table>
@@ -1091,6 +1107,27 @@ ae.process(cas);]]></programlisting>
           <para>
             If this parameter is set to true, then additional information about what annotation was created by which rule is added to the CAS.
             The default value of this parameter is set to false.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.varNames">
+          <title>varNames</title>
+          <para>
+            This parameter specifies the names of variables and is used in combination with the parameter
+				    varValues, which contains the values of the corresponding variables. The n-th entry of this
+				    string array specifies the variable of the n-th entry of the string array of the parameter
+				    varValues. If the variables is defined in the root of a script, then the name of the variable
+				    suffices. If the variable is defined in a BLOCK or imported script, then the the name must
+				    contain the namespaces of the blocks as a prefix, e.g., InnerBlock.varName or OtherScript.SomeBlock.varName.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.varValues">
+          <title>varValues</title>
+          <para>
+            This parameter specifies the values of variables as string values in an string array. It is
+				    used in combination with the parameter varNames, which contains the names of the corresponding
+				    variables. The n-th entry of this string array specifies the value of the n-th entry of the
+				    string array of the parameter varNames. Only value of the kinds string, boolean, int, double
+				    and float are allowed.
           </para>
         </section>
       </section>

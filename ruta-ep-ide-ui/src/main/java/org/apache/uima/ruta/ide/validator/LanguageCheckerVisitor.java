@@ -844,6 +844,9 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     if (featureName.equals("begin") || featureName.equals("end")) {
       return kind == -1 || kind == RutaTypeConstants.RUTA_TYPE_N;
     }
+    if (featureName.equals("ct") || featureName.equals("coveredText")) {
+      return kind == -1 || kind == RutaTypeConstants.RUTA_TYPE_S;
+    }
     Set<FeatureDescription> set = featureDescriptionMap.get(longTypeName);
     if (set != null) {
       for (FeatureDescription featureDescription : set) {

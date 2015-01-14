@@ -66,29 +66,18 @@ public class CallAction extends AbstractRutaAction {
         e.printStackTrace();
       }
     } else {
-      String scriptName = namespace;
-      String blockName = namespace;
-      String[] split = namespace.split("[.]");
-      if (split.length > 1) {
-        scriptName = split[0];
-        blockName = split[split.length - 1];
-      }
-      RutaModule targetScript = thisScript.getScript(scriptName);
-      if (targetScript != null) {
-        callScript(blockName, match, element, stream, crowd, targetScript);
+      RutaBlock block = thisScript.getBlock(namespace);
+      if (block != null) {
+        callScript(block, match, element, stream, crowd);
       } else {
-        System.out.println("Found no script: " + scriptName);
+        System.out.println("Found no script/block: " + namespace);
       }
     }
 
   }
 
-  protected void callScript(String blockName, RuleMatch match, RuleElement element,
-          RutaStream stream, InferenceCrowd crowd, RutaModule targetScript) {
-    RutaBlock block = targetScript.getBlock(blockName);
-    if (block == null) {
-      return;
-    }
+  protected void callScript(RutaBlock block, RuleMatch match, RuleElement element,
+          RutaStream stream, InferenceCrowd crowd) {
     List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element);
     for (AnnotationFS annotationFS : matchedAnnotationsOf) {
       RutaStream windowStream = stream.getWindowStream(annotationFS,

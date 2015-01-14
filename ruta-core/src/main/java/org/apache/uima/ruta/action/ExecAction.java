@@ -67,12 +67,8 @@ public class ExecAction extends CallAction {
   }
 
   @Override
-  protected void callScript(String blockName, RuleMatch match, RuleElement element,
-          RutaStream stream, InferenceCrowd crowd, RutaModule targetScript) {
-    RutaBlock block = targetScript.getBlock(blockName);
-    if (block == null) {
-      return;
-    }
+  protected void callScript(RutaBlock block, RuleMatch match, RuleElement element,
+          RutaStream stream, InferenceCrowd crowd) {
     ScriptApply apply = block.apply(stream, crowd);
     match.addDelegateApply(this, apply);
   }

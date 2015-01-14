@@ -77,6 +77,24 @@
           <parameter>RutaEngine/createdBy</parameter>
         </overrides>
       </configurationParameter>
+      <configurationParameter>
+        <name>varNames</name>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>RutaEngine/varNames</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>varValues</name>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>RutaEngine/varValues</parameter>
+        </overrides>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings/>
     <flowConstraints>

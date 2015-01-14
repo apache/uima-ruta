@@ -54,7 +54,25 @@ public class RutaModule extends RutaElement {
     if (id == null || id.equals(rootBlock.getName())) {
       return rootBlock;
     }
-    return blocks.get(id);
+    RutaBlock ownBlock = blocks.get(id);
+    if(ownBlock != null) {
+      return ownBlock;
+    }
+    int indexOf = id.indexOf('.');
+    if(indexOf != -1) {
+      String otherScriptName = id.substring(0, indexOf);
+      String tail = id.substring(indexOf + 1, id.length());
+      RutaModule otherScript = getScript(otherScriptName);
+      if(otherScript != null) {
+        return otherScript.getBlock(tail);
+      }
+    } else {
+      RutaModule otherScript = getScript(id);
+      if(otherScript != null) {
+        return otherScript.getBlock(null);
+      }
+    }
+    return null;
   }
 
   public RutaModule getScript(String name) {

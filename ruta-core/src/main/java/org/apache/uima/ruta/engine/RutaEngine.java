@@ -58,6 +58,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.ruta.FilterManager;
 import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaModule;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.extensions.IEngineLoader;
@@ -230,8 +231,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   public static final String PARAM_DEFAULT_FILTERED_TYPES = "defaultFilteredTypes";
 
   @ConfigurationParameter(name = PARAM_DEFAULT_FILTERED_TYPES, mandatory = false, defaultValue = {
-      "org.apache.uima.ruta.type.SPACE",
-      "org.apache.uima.ruta.type.BREAK", "org.apache.uima.ruta.type.MARKUP" })
+      "org.apache.uima.ruta.type.SPACE", "org.apache.uima.ruta.type.BREAK",
+      "org.apache.uima.ruta.type.MARKUP" })
   private String[] defaultFilteredTypes;
 
   /**
@@ -358,7 +359,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   @ConfigurationParameter(name = PARAM_STRICT_IMPORTS, mandatory = false, defaultValue = "false")
   private Boolean strictImports = false;
-  
+
   /**
    * If this parameter is set to true, then whitespaces are removed when dictionaries are loaded
    */
@@ -366,6 +367,31 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   @ConfigurationParameter(name = PARAM_DICT_REMOVE_WS, mandatory = false, defaultValue = "false")
   private Boolean dictRemoveWS = false;
+
+  /**
+   * This parameter specifies the names of variables and is used in combination with the parameter
+   * varValues, which contains the values of the corresponding variables. The n-th entry of this
+   * string array specifies the variable of the n-th entry of the string array of the parameter
+   * varValues. If the variables is defined in the root of a script, then the name of the variable
+   * suffices. If the variable is defined in a BLOCK or imported script, then the the name must
+   * contain the namespaces of the blocks as a prefix, e.g., InnerBlock.varName or OtherScript.SomeBlock.varName
+   */
+  public static final String PARAM_VAR_NAMES = "varNames";
+
+  @ConfigurationParameter(name = PARAM_VAR_NAMES, mandatory = false, defaultValue = {})
+  private String[] varNames;
+
+  /**
+   * This parameter specifies the values of variables as string values in an string array. It is
+   * used in combination with the parameter varNames, which contains the names of the corresponding
+   * variables. The n-th entry of this string array specifies the value of the n-th entry of the
+   * string array of the parameter varNames. Only value of the kinds string, boolean, int, double
+   * and float are allowed.
+   */
+  public static final String PARAM_VAR_VALUES = "varValues";
+
+  @ConfigurationParameter(name = PARAM_VAR_VALUES, mandatory = false, defaultValue = {})
+  private String[] varValues;
 
   private UimaContext context;
 
@@ -445,6 +471,9 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       greedyRuleElement = greedyRuleElement == null ? false : greedyRuleElement;
       greedyRule = greedyRule == null ? false : greedyRule;
 
+      varNames = (String[]) aContext.getConfigParameterValue(PARAM_VAR_NAMES);
+      varValues = (String[]) aContext.getConfigParameterValue(PARAM_VAR_VALUES);
+
       this.context = aContext;
 
       factory = new RutaExternalFactory();
@@ -487,6 +516,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       initializeScript(cas.getViewName());
     } else {
       resetEnvironments(cas);
+      initializeVariableValues();
     }
     boolean typeSystemChanged = lastTypeSystem != cas.getTypeSystem();
     if (!initialized || reloadScript || typeSystemChanged) {
@@ -792,6 +822,59 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       each.setEngineDependencies(additionalEnginesMap);
     }
     script.setEngineDependencies(additionalEnginesMap);
+
+    initializeVariableValues();
+  }
+
+  private void initializeVariableValues() {
+    if(varNames == null || varValues == null) {
+      return;
+    }
+    if (varNames.length != varValues.length) {
+      throw new IllegalArgumentException(
+              "The parameters varNames and varValues must contain the same amount of entries.");
+    }
+
+    for (int i = 0; i < varNames.length; i++) {
+      String longName = varNames[i];
+      String value = varValues[i];
+      
+      int lastIndexOf = longName.lastIndexOf('.');
+      String shortName = longName;
+      String blockName = null;
+      if (lastIndexOf != -1) {
+        blockName = longName.substring(0, lastIndexOf);
+        shortName = longName.substring(lastIndexOf + 1, longName.length());
+      }
+      RutaBlock block = script.getBlock(blockName);
+      if(block == null) {
+        return;
+      }
+      
+      RutaEnvironment environment = block.getEnvironment();
+      if (!environment.ownsVariable(shortName)) {
+        return;
+      }
+      Object valueObj = null;
+      Class<?> variableType = environment.getVariableType(shortName);
+      if (Integer.class.equals(variableType)) {
+        valueObj = Integer.parseInt(value);
+      } else if (Double.class.equals(variableType)) {
+        valueObj = Double.parseDouble(value);
+      } else if (Float.class.equals(variableType)) {
+        valueObj = Float.parseFloat(value);
+      } else if (String.class.equals(variableType)) {
+        valueObj = value;
+      } else if (Boolean.class.equals(variableType)) {
+        valueObj = Boolean.parseBoolean(value);
+      } else {
+        throw new IllegalArgumentException(
+                "Only variables for primitives can be assigned by parameters: " + shortName
+                        + " defined in block: " + blockName);
+      }
+      environment.setVariableValue(shortName, valueObj);
+    }
+
   }
 
   public static void addSourceDocumentInformation(CAS cas, File each) {
