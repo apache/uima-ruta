@@ -131,7 +131,7 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
       }
     } else if(!feature.getRange().isPrimitive() && getArg() instanceof FeatureExpression) {
       FeatureExpression fe = (FeatureExpression) getArg();
-      List<AnnotationFS> list = new ArrayList<>(1);
+      List<AnnotationFS> list = new ArrayList<AnnotationFS>(1);
       list.add(afs);
       Collection<AnnotationFS> featureAnnotations = fe.getFeatureAnnotations(list, stream, parent, false);
       return compare(afs.getFeatureValue(feature), featureAnnotations);
