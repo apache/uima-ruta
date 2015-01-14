@@ -415,8 +415,10 @@ public class TestViewPage extends Page implements IPageBookViewPage {
       sb2.append(each);
       sb2.append(";");
     }
-    memento.createChild("includedTypes", sb1.toString());
-    memento.createChild("excludedTypes", sb2.toString());
+    if (memento != null) {
+      memento.createChild("includedTypes", sb1.toString());
+      memento.createChild("excludedTypes", sb2.toString());
+    }
   }
 
   public void restoreState(IMemento memento) {
