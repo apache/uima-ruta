@@ -23,32 +23,62 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 
+/**
+ * This Analysis Engine can be utilized to write the covered text of annotations in a text file,
+ * whereas each covered text is put into a new line. If the analysis engine, for example, is
+ * configured for the type <code>uima.example.Person</code>, then all covered texts of all Person
+ * annotations are stored in a text file, one person in each line. A descriptor file for this
+ * Analysis Engine is located in the folder <code>descriptor/utils</code> of a UIMA Ruta project.
+ * 
+ */
 public class AnnotationWriter extends JCasAnnotator_ImplBase {
 
-  private static final String OUTPUT = "Output";
+  /**
+   * This string parameter specifies the absolute path of the resulting file named
+   * <code>output.txt</code>. However, if an annotation of the type
+   * <code>org.apache.uima.examples.SourceDocumentInformation</code> is given, then the value of
+   * this parameter is interpreted to be relative to the URI stored in the annotation and the name
+   * of the file will be adapted to the name of the source file. The default value of this parameter
+   * is <code>/../output/</code>.
+   */
+  public static final String PARAM_OUTPUT = "Output";
 
-  private static final String ENCODING = "Encoding";
-
-  private static final String TYPE = "Type";
-
-  private UimaContext context;
-
+  @ConfigurationParameter(name = PARAM_OUTPUT, mandatory = false, defaultValue = "/../output/")
   private String output;
 
+  /**
+   * This string parameter specifies the encoding of the resulting file. The default value of this
+   * parameter is <code>UTF-8</code>.
+   */
+  public static final String PARAM_ENCODING = "Encoding";
+
+  @ConfigurationParameter(name = PARAM_ENCODING, mandatory = false, defaultValue = "UTF-8")
+  private String encoding;
+
+  /**
+   * Only the covered texts of annotations of the type specified with this parameter are stored in
+   * the resulting file. The default value of this parameter is
+   * <code>uima.tcas.DocumentAnnotation</code>, which will store the complete document in a new
+   * file.
+   */
+  public static final String PARAM_TYPE = "Type";
+
+  @ConfigurationParameter(name = PARAM_TYPE, mandatory = false, defaultValue = ">uima.tcas.DocumentAnnotation")
   private String type;
 
-  private String encoding;
+  private UimaContext context;
 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
@@ -56,10 +86,10 @@ public class AnnotationWriter extends JCasAnnotator_ImplBase {
     if (aContext == null && context != null) {
       aContext = context;
     }
-    if(aContext != null) {
-      output = (String) aContext.getConfigParameterValue(OUTPUT);
-      type = (String) aContext.getConfigParameterValue(TYPE);
-      encoding = (String) aContext.getConfigParameterValue(ENCODING);
+    if (aContext != null) {
+      output = (String) aContext.getConfigParameterValue(PARAM_OUTPUT);
+      type = (String) aContext.getConfigParameterValue(PARAM_TYPE);
+      encoding = (String) aContext.getConfigParameterValue(PARAM_ENCODING);
       this.context = aContext;
     }
   }

@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
@@ -31,17 +30,37 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.impl.XmiCasSerializer;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.XMLSerializer;
 
+/**
+ * This Analysis Engine is able to serialize the processed CAS to an XMI file. One use case for the
+ * XMI Writer is, for example, a rule-based sort, which stores the processed XMI files in different
+ * folder, dependent on the execution of the rules, e.g., whether a pattern of annotations occurs or
+ * not. A descriptor file for this Analysis Engine is located in the folder
+ * <code>descriptor/utils</code> of a UIMA Ruta project.
+ * 
+ */
 public class XMIWriter extends JCasAnnotator_ImplBase {
 
-  private static final String OUTPUT = "Output";
+  /**
+   * This string parameter specifies the absolute path of the resulting file named
+   * <code>output.xmi</code>. However, if an annotation of the type
+   * <code>org.apache.uima.examples.SourceDocumentInformation</code> is given, then the value of
+   * this parameter is interpreted to be relative to the URI stored in the annotation and the name
+   * of the file will be adapted to the name of the source file. If this functionality is activated
+   * in the preferences, then the UIMA Ruta Workbench adds the SourceDocumentInformation annotation
+   * when the user launches a script file. The default value is <code>/../output/</code>
+   */
+  public static final String PARAM_OUTPUT = "Output";
+
+  @ConfigurationParameter(name = PARAM_OUTPUT, mandatory = false, defaultValue = "_InitialView")
+  private String output;
 
   private UimaContext context;
-
-  private String output;
 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
@@ -49,8 +68,8 @@ public class XMIWriter extends JCasAnnotator_ImplBase {
     if (aContext == null && context != null) {
       aContext = context;
     }
-    if(aContext != null) {
-      output = (String) aContext.getConfigParameterValue(OUTPUT);
+    if (aContext != null) {
+      output = (String) aContext.getConfigParameterValue(PARAM_OUTPUT);
       this.context = aContext;
     }
   }

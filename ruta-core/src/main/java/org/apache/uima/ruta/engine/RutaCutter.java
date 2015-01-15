@@ -27,7 +27,6 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
@@ -35,6 +34,8 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -42,35 +43,55 @@ import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.util.CasCopier;
 import org.apache.uima.util.Level;
 
+/**
+ * This Analysis Engine is able to cut the document of the CAS. Only the text covered by annotations
+ * of the specified type will be retained and all other parts of the documents will be removed. The
+ * offsets of annotations in the index will be updated, but not feature structures nested as feature
+ * values.
+ * 
+ */
 public class RutaCutter extends JCasAnnotator_ImplBase {
 
-  public static final String OUTPUT_VIEW = "outputView";
+  /**
+   * The name of the view, which will contain the modified CAS. The default value is
+   * <code>cutted</code>.
+   */
+  public static final String PARAM_OUTPUT_VIEW = "outputView";
 
-  public static final String INPUT_VIEW = "inputView";
+  @ConfigurationParameter(name = PARAM_OUTPUT_VIEW, mandatory = false, defaultValue = "cutted")
+  private String outputViewName;
 
-  public static final String KEEP = "keep";
+  /**
+   * The name of the view that should be processed. The default value is <code>_InitialView</code>.
+   */
+  public static final String PARAM_INPUT_VIEW = "inputView";
+
+  @ConfigurationParameter(name = PARAM_INPUT_VIEW, mandatory = false, defaultValue = "_InitialView")
+  private String inputViewName;
+
+  /**
+   * This string parameter specifies the complete name of a type. Only the text covered by
+   * annotations of this type will be retained and all other parts of the documents will be removed.
+   */
+  public static final String PARAM_KEEP = "keep";
+
+  @ConfigurationParameter(name = PARAM_KEEP, mandatory = false, defaultValue = "_InitialView")
+  private String keep;
 
   private static final String DEFAULT_OUTPUT_VIEW = "cutted";
 
   private static final String DEFAULT_INPUT_VIEW = "_InitialView";
-
-  // variables:
-  private String inputViewName;
-
-  private String outputViewName;
-
-  private String keep;
 
   private int[] map;
 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
-    inputViewName = (String) aContext.getConfigParameterValue(INPUT_VIEW);
+    inputViewName = (String) aContext.getConfigParameterValue(PARAM_INPUT_VIEW);
     inputViewName = StringUtils.isBlank(inputViewName) ? DEFAULT_INPUT_VIEW : inputViewName;
-    outputViewName = (String) aContext.getConfigParameterValue(OUTPUT_VIEW);
+    outputViewName = (String) aContext.getConfigParameterValue(PARAM_OUTPUT_VIEW);
     outputViewName = StringUtils.isBlank(outputViewName) ? DEFAULT_OUTPUT_VIEW : outputViewName;
-    keep = (String) aContext.getConfigParameterValue(KEEP);
+    keep = (String) aContext.getConfigParameterValue(PARAM_KEEP);
   }
 
   @Override

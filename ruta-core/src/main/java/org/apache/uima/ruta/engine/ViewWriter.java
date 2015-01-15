@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_component.JCasMultiplier_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.AbstractCas;
 import org.apache.uima.cas.CAS;
@@ -32,28 +31,65 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.impl.XmiCasSerializer;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.fit.component.JCasMultiplier_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.CasCopier;
 import org.apache.uima.util.XMLSerializer;
 
+/**
+ * This Analysis Engine is able to serialize the processed CAS to an XMI file whereas the the source
+ * and destination view can be specified A descriptor file for this Analysis Engine is located in
+ * the folder <quote>descriptor/utils</quote> of a UIMA Ruta project.
+ * 
+ */
 public class ViewWriter extends JCasMultiplier_ImplBase {
 
-  public static final String OUTPUT = "output";
-  public static final String INPUT_VIEW = "inputView";
-  public static final String OUTPUT_VIEW = "outputView";
+  /**
+   * This string parameter specifies the absolute path of the resulting file named
+   * <quote>output.xmi</quote>. However, if an annotation of the type
+   * <quote>org.apache.uima.examples.SourceDocumentInformation</quote> is given, then the value of
+   * this parameter is interpreted to be relative to the URI stored in the annotation and the name
+   * of the file will be adapted to the name of the source file. If this functionality is activated
+   * in the preferences, then the UIMA Ruta Workbench adds the SourceDocumentInformation annotation
+   * when the user launches a script file.
+   */
+  public static final String PARAM_OUTPUT = "output";
+
+  @ConfigurationParameter(name = PARAM_OUTPUT, mandatory = false, defaultValue = "")
+  private String output;
+
   
-  private String outputLocation;
+  /**
+   * The name of the view that should be stored in a file. The default value is "_InitialView".
+   */
+  public static final String PARAM_INPUT_VIEW = "inputView";
+
+  @ConfigurationParameter(name = PARAM_INPUT_VIEW, mandatory = false, defaultValue = "_InitialView")
   private String inputView;
+  
+
+  /**
+   * The name, which should be used, to store the view in the file. The default value is "_InitialView".
+   */
+  public static final String PARAM_OUTPUT_VIEW = "outputView";
+
+  @ConfigurationParameter(name = PARAM_OUTPUT_VIEW, mandatory = false, defaultValue = "_InitialView")
   private String outputView;
+  
+
+
+
+
   private CAS outView;
 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
-    outputLocation = (String) aContext.getConfigParameterValue(OUTPUT);
-    inputView= (String) aContext.getConfigParameterValue(INPUT_VIEW);
-    outputView= (String) aContext.getConfigParameterValue(OUTPUT_VIEW);
+    output = (String) aContext.getConfigParameterValue(PARAM_OUTPUT);
+    inputView = (String) aContext.getConfigParameterValue(PARAM_INPUT_VIEW);
+    outputView = (String) aContext.getConfigParameterValue(PARAM_OUTPUT_VIEW);
   }
 
   private static void writeXmi(CAS aCas, File name) throws Exception {
@@ -79,10 +115,10 @@ public class ViewWriter extends JCasMultiplier_ImplBase {
     CAS cas = jcas.getCas();
     Type sdiType = cas.getTypeSystem().getType(RutaEngine.SOURCE_DOCUMENT_INFORMATION);
 
-    File file = new File(outputLocation);
-    if(file.isDirectory()) {
+    File file = new File(output);
+    if (file.isDirectory()) {
       String filename = "output.xmi";
-      file = new File(outputLocation, filename);
+      file = new File(output, filename);
     }
     if (sdiType != null) {
       FSIterator<AnnotationFS> sdiit = cas.getAnnotationIndex(sdiType).iterator();
@@ -96,13 +132,13 @@ public class ViewWriter extends JCasMultiplier_ImplBase {
           name = name + ".xmi";
         }
         String parent = f.getParent().endsWith("/") ? f.getParent() : f.getParent() + "/";
-        file = new File(parent + outputLocation, name);
+        file = new File(parent + output, name);
         file.getParentFile().mkdirs();
       }
 
     }
     CAS inView = cas.getView(inputView);
-    if(outView == null) {
+    if (outView == null) {
       outView = getContext().getEmptyCas(CAS.class);
     }
     outView.reset();
@@ -114,15 +150,15 @@ public class ViewWriter extends JCasMultiplier_ImplBase {
       throw new AnalysisEngineProcessException(e);
     }
   }
-  
+
   @Override
   public void collectionProcessComplete() {
-    if(outView != null) {
+    if (outView != null) {
       outView.release();
     }
     outView = null;
   }
-  
+
   public boolean hasNext() throws AnalysisEngineProcessException {
     return false;
   }

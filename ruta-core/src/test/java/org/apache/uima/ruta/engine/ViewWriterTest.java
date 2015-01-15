@@ -66,9 +66,9 @@ public class ViewWriterTest {
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
 
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
-    ae.setConfigParameterValue(ViewWriter.INPUT_VIEW, NEW_VIEW);
-    ae.setConfigParameterValue(ViewWriter.OUTPUT_VIEW, CAS.NAME_DEFAULT_SOFA);
-    ae.setConfigParameterValue(ViewWriter.OUTPUT, tempFile.getAbsolutePath());
+    ae.setConfigParameterValue(ViewWriter.PARAM_INPUT_VIEW, NEW_VIEW);
+    ae.setConfigParameterValue(ViewWriter.PARAM_OUTPUT_VIEW, CAS.NAME_DEFAULT_SOFA);
+    ae.setConfigParameterValue(ViewWriter.PARAM_OUTPUT, tempFile.getAbsolutePath());
     ae.reconfigure();
 
     CAS cas = ae.newCAS();

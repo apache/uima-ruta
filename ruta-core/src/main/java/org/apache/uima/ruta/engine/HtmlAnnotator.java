@@ -23,26 +23,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.htmlparser.Parser;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 
+/**
+ * This Analysis Engine provides support for HTML files by adding annotations for the HTML elements.
+ * Using the default values, the HTML Annotator creates annotations for each HTML element spanning
+ * the content of the element, whereas the most common elements are represented by own types. The
+ * document <code>This text is <b>bold</b>.</code>, for example, would be annotated
+ * with an annotation of the type <code>org.apache.uima.ruta.type.html.B</code> for the word
+ * <code>bold</code>. The HTML annotator can be configured in order to include the start and end
+ * elements in the created annotations. A descriptor file for this Analysis Engine is located in the
+ * folder <code>descriptor/utils</code> of a UIMA Ruta project.
+ * 
+ */
 public class HtmlAnnotator extends JCasAnnotator_ImplBase {
   public static final String NAMESPACE = "org.apache.uima.ruta.type.html.";
 
-  public static final String ONLY_CONTENT = "onlyContent";
+  /**
+   * This parameter specifies whether created annotations should cover only the content of the HTML
+   * elements or also their start and end elements. The default value is <code>true</code>.
+   */
+  public static final String PARAM_ONLY_CONTENT = "onlyContent";
 
+  @ConfigurationParameter(name = PARAM_ONLY_CONTENT, mandatory = false, defaultValue = "true")
   private Boolean onlyContent;
 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
-    onlyContent = (Boolean) aContext.getConfigParameterValue(ONLY_CONTENT);
+    onlyContent = (Boolean) aContext.getConfigParameterValue(PARAM_ONLY_CONTENT);
     onlyContent = onlyContent == null ? true : onlyContent;
   }
 

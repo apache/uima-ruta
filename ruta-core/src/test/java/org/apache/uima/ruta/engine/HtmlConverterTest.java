@@ -111,10 +111,10 @@ public class HtmlConverterTest {
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
     CAS cas = ae.newCAS();
 
-    ae.setConfigParameterValue(HtmlConverter.OUTPUT_VIEW, outputViewName);
-    ae.setConfigParameterValue(HtmlConverter.CONVERSION_POLICY, "explicit");
-    ae.setConfigParameterValue(HtmlConverter.CONVERSION_PATTERNS, new String[] { "&nbsp;" });
-    ae.setConfigParameterValue(HtmlConverter.CONVERSION_REPLACEMENTS, new String[] { " " });
+    ae.setConfigParameterValue(HtmlConverter.PARAM_OUTPUT_VIEW, outputViewName);
+    ae.setConfigParameterValue(HtmlConverter.PARAM_CONVERSION_POLICY, "explicit");
+    ae.setConfigParameterValue(HtmlConverter.PARAM_CONVERSION_PATTERNS, new String[] { "&nbsp;" });
+    ae.setConfigParameterValue(HtmlConverter.PARAM_CONVERSION_REPLACEMENTS, new String[] { " " });
     ae.reconfigure();
     cas.reset();
     cas.setDocumentText(htmlDecoding);
@@ -152,7 +152,7 @@ public class HtmlConverterTest {
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
     CAS cas = ae.newCAS();
 
-    ae.setConfigParameterValue(HtmlConverter.OUTPUT_VIEW, outputViewName);
+    ae.setConfigParameterValue(HtmlConverter.PARAM_OUTPUT_VIEW, outputViewName);
     ae.reconfigure();
     cas.reset();
     cas.setDocumentText(htmlDecoding);
@@ -190,7 +190,7 @@ public class HtmlConverterTest {
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
     CAS cas = ae.newCAS();
 
-    ae.setConfigParameterValue(HtmlConverter.OUTPUT_VIEW, outputViewName);
+    ae.setConfigParameterValue(HtmlConverter.PARAM_OUTPUT_VIEW, outputViewName);
     ae.reconfigure();
     cas.reset();
     cas.setDocumentText(htmlUnix);
@@ -227,7 +227,7 @@ public class HtmlConverterTest {
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
     CAS cas = ae.newCAS();
 
-    ae.setConfigParameterValue(HtmlConverter.OUTPUT_VIEW, outputViewName);
+    ae.setConfigParameterValue(HtmlConverter.PARAM_OUTPUT_VIEW, outputViewName);
     ae.reconfigure();
     cas.reset();
     cas.setDocumentText(htmlWin);
@@ -264,7 +264,7 @@ public class HtmlConverterTest {
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
     CAS cas = ae.newCAS();
 
-    ae.setConfigParameterValue(HtmlConverter.OUTPUT_VIEW, outputViewName);
+    ae.setConfigParameterValue(HtmlConverter.PARAM_OUTPUT_VIEW, outputViewName);
     ae.reconfigure();
     cas.reset();
     cas.setDocumentText(htmlWithComments);
@@ -301,8 +301,8 @@ public class HtmlConverterTest {
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
     CAS cas = ae.newCAS();
 
-    ae.setConfigParameterValue(HtmlConverter.OUTPUT_VIEW, outputViewName);
-    ae.setConfigParameterValue(HtmlConverter.NEWLINE_INDUCING_TAGS, new String[] { "br" });
+    ae.setConfigParameterValue(HtmlConverter.PARAM_OUTPUT_VIEW, outputViewName);
+    ae.setConfigParameterValue(HtmlConverter.PARAM_NEWLINE_INDUCING_TAGS, new String[] { "br" });
     ae.reconfigure();
     cas.reset();
     cas.setDocumentText(htmlWin);
@@ -339,7 +339,7 @@ public class HtmlConverterTest {
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
     CAS cas = ae.newCAS();
 
-    ae.setConfigParameterValue(HtmlConverter.OUTPUT_VIEW, outputViewName);
+    ae.setConfigParameterValue(HtmlConverter.PARAM_OUTPUT_VIEW, outputViewName);
     ae.reconfigure();
     cas.reset();
     cas.setDocumentText(htmlWithCommentsAndScript);
@@ -517,8 +517,8 @@ public class HtmlConverterTest {
 
     String inputViewName = "inview";
 
-    ae.setConfigParameterValue(HtmlConverter.INPUT_VIEW, inputViewName);
-    ae.setConfigParameterValue(HtmlConverter.OUTPUT_VIEW, outputViewName);
+    ae.setConfigParameterValue(HtmlConverter.PARAM_INPUT_VIEW, inputViewName);
+    ae.setConfigParameterValue(HtmlConverter.PARAM_OUTPUT_VIEW, outputViewName);
     ae.reconfigure();
     cas.reset();
     CAS inview = cas.createView(inputViewName);

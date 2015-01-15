@@ -19,7 +19,8 @@
 
 package org.apache.uima.ruta.engine;
 
-import java.util.Set;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -29,11 +30,7 @@ import org.htmlparser.Text;
 import org.htmlparser.tags.ScriptTag;
 import org.htmlparser.visitors.TextExtractingVisitor;
 
-/**
- * TODO comment / describe <br>
- * TODO write test(s)
- * 
- */
+
 public class HtmlConverterVisitor extends TextExtractingVisitor {
 
   private boolean inBody = false;
@@ -46,10 +43,10 @@ public class HtmlConverterVisitor extends TextExtractingVisitor {
 
   private SortedSet<HtmlConverterPSpan> linebreaksFromHtmlTags = new TreeSet<HtmlConverterPSpan>();
 
-  private Set<String> newlineInducingTags;
+  private Collection<String> newlineInducingTags;
 
-  public HtmlConverterVisitor(Set<String> newlineInducingTags, boolean skipWhitespace) {
-    this.newlineInducingTags = newlineInducingTags;
+  public HtmlConverterVisitor(String[] newlineInducingTags, boolean skipWhitespace) {
+    this.newlineInducingTags = Arrays.asList(newlineInducingTags);
     this.skipWhitespace = skipWhitespace;
   }
 

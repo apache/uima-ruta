@@ -30,13 +30,14 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -48,133 +49,172 @@ import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 
 /**
- * <p>
- * This is a basic html/xml to text converter that maintains annotations. <br />
- * Note that it is recommended to preprocess/prettify the html <i>before</i> any annotations are
- * added to the document.
- * </p>
- * <p>
- * how to handle: <br />
- * - TODO tables? <br />
- * - TODO lists (ul, ol) <br />
- * - TODO ... <br />
- * </p>
+ * This Analysis Engine is able to convert html content from a source view into a plain string
+ * representation stored in an output view. Especially, the Analysis Engine transfers annotations
+ * under consideration of the changed document text and annotation offsets in the new view. The copy
+ * process also sets features, however, features of type annotation are currently not supported.
+ * Note that if an annotation would have the same start and end positions in the new view, i.e., if
+ * it would be mapped to an annotation of length 0, it is not moved to the new view.
+ * 
+ * The HTML Converter also supports heuristic and explicit conversion patterns which default to
+ * html4 decoding, e.g., "<![CDATA[&nbsp;]]>", "<![CDATA[&lt;]]>", etc. Concepts like tables or
+ * lists are not supported.
+ * 
+ * Note that in general it is suggested to run an html cleaner before any further processing to
+ * avoid problems with malformed html.
+ * 
+ * A descriptor file for this Analysis Engine is located in the folder <code>descriptor/utils</code>
+ * of a UIMA Ruta project.
  * 
  */
 public class HtmlConverter extends JCasAnnotator_ImplBase {
-  // parameter names:
+
   public static final String NAMESPACE = "org.apache.uima.ruta.type.html.";
 
-  public static final String OUTPUT_VIEW = "outputView";
-
-  public static final String INPUT_VIEW = "inputView";
-
-  public static final String REPLACE_LINEBREAKS = "replaceLinebreaks";
-
-  public static final String LINEBREAK_REPLACEMENT = "linebreakReplacement";
-  
-  public static final String LINEBREAK = "\n";
-
-  public static final String NEWLINE_INDUCING_TAGS = "newlineInducingTags";
-
-  public static final String CONVERSION_POLICY = "conversionPolicy";
-
-  public static final String CONVERSION_PATTERNS = "conversionPatterns";
-
-  public static final String CONVERSION_REPLACEMENTS = "conversionReplacements";
-  
-  public static final String SKIP_WHITESPACES = "skipWhitespaces";
-  
-
-  // default values:
   private static final String DEFAULT_MODIFIED_VIEW = "plaintext";
 
-  // variables:
-  private String inputViewName;
+  public static final String LINEBREAK = "\n";
+  
+  /**
+   * This string parameter specifies the name of the new view. The default value is
+   * <code>plaintext</code>.
+   */
+  public static final String PARAM_OUTPUT_VIEW = "outputView";
 
+  @ConfigurationParameter(name = PARAM_OUTPUT_VIEW, mandatory = false, defaultValue = DEFAULT_MODIFIED_VIEW)
   private String modifiedViewName;
 
-  private Set<String> newlineInducingTags;
+  /**
+   * This string parameter can optionally be set to specify the name of the input view.
+   */
+  public static final String PARAM_INPUT_VIEW = "inputView";
 
-  private String[] conversionPatterns;
+  @ConfigurationParameter(name = PARAM_INPUT_VIEW, mandatory = false)
+  private String inputViewName;
 
-  private String[] conversionReplacements;
+  /**
+   * This boolean parameter determines if linebreaks inside the text nodes are kept or removed. The
+   * default behavior is <code>true</code>.
+   */
+  public static final String PARAM_REPLACE_LINEBREAKS = "replaceLinebreaks";
 
+  @ConfigurationParameter(name = PARAM_REPLACE_LINEBREAKS, mandatory = false, defaultValue = "true")
   private Boolean replaceLinebreaks;
-  
-  private String linebreakReplacement;
-  
+
+  /**
+   * This boolean parameter determines if the converter should skip whitespaces. Html documents
+   * often contains whitespaces for indentation and formatting, which should not be reproduced in
+   * the converted plain text document. If the parameter is set to false, then the whitespces are
+   * not removed. This behavior is useful, if not Html documents are converted, but XMl files. The
+   * default value is true.
+   */
+  public static final String PARAM_SKIP_WHITESPACES = "skipWhitespaces";
+
+  @ConfigurationParameter(name = PARAM_SKIP_WHITESPACES, mandatory = false, defaultValue = "true")
   private Boolean skipWhitespaces;
 
-  enum StringConversionPolicy {
-    HEURISTIC, EXPLICIT, NONE
-  }
+  /**
+   * This string parameter determines the character sequence that replaces a linebreak. The default
+   * behavior is the empty string.
+   */
+  public static final String PARAM_LINEBREAK_REPLACEMENT = "linebreakReplacement";
 
-  private StringConversionPolicy conversionPolicy;
+  @ConfigurationParameter(name = PARAM_LINEBREAK_REPLACEMENT, mandatory = false, defaultValue = "")
+  private String linebreakReplacement;
+
+  /**
+   * This string array parameter sets the names of the html tags that create linebreaks in the
+   * output view. The default is <code>br, p, div, ul, ol, dl, li, h1, ..., h6, blockquote</code>.
+   */
+  public static final String PARAM_NEWLINE_INDUCING_TAGS = "newlineInducingTags";
+
+  @ConfigurationParameter(name = PARAM_NEWLINE_INDUCING_TAGS, mandatory = false, defaultValue = {
+      "br", "p", "div", "ul", "ol", "dl", "li", "h1", "h2", "h3", "h4", "h5", "h6", "blockquote" })
+  private String[] newlineInducingTags;
+
+  /**
+   * This string array parameter can be used to apply custom conversions. It defaults to a list of
+   * commonly used codes, e.g., <![CDATA[&nbsp;]]>, which are converted using html 4 entity
+   * unescaping. However, explicit conversion strings can also be passed via the parameter
+   * <code>conversionReplacements</code>. Remember to enable explicit conversion via
+   * <code>conversionPolicy</code> first.
+   */
+  public static final String PARAM_CONVERSION_PATTERNS = "conversionPatterns";
+
+  @ConfigurationParameter(name = PARAM_CONVERSION_PATTERNS, mandatory = false, defaultValue = {
+      "&nbsp;", "&laquo;", "&raquo;", "&quot;", "&amp;", "&lt;", "&gt;", "&apos;", "&sect;",
+      "&uml;", "&copy;", "&trade;", "&reg;", "&ouml;", "&auml;", "&uuml;", "&#160;" })
+  private String[] conversionPatterns;
+
+  /**
+   * This string parameter determines the conversion policy used, either "heuristic", "explicit", or
+   * "none". When the value is "explicit", the parameters <code>conversionPatterns</code> and
+   * optionally <code>conversionReplacements</code> are considered. The "heuristic" conversion
+   * policy uses simple regular expressions to decode html4 entities such as "<![CDATA[&nbsp;]]>".
+   * The default behavior is "heuristic".
+   */
+  public static final String PARAM_CONVERSION_POLICY = "conversionPolicy";
+
+  @ConfigurationParameter(name = PARAM_CONVERSION_POLICY, mandatory = false, defaultValue = "heuristic")
+  private String conversionPolicy;
+
+  /**
+   * This string array parameter corresponds to <code>conversionPatterns</code> such that
+   * <code>conversionPatterns[i]</code> will be replaced by
+   * <code>conversionReplacements[i]</code>; replacements should be shorter than the source
+   * pattern. Per default, the replacement strings are computed using Html4 decoding. Remember to
+   * enable explicit conversion via <code>conversionPolicy</code> first.
+   */
+  public static final String PARAM_CONVERSION_REPLACEMENTS = "conversionReplacements";
+
+  @ConfigurationParameter(name = PARAM_CONVERSION_REPLACEMENTS, mandatory = false)
+  private String[] conversionReplacements;
+
+
 
   private int[] map;
 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
-    inputViewName = (String) aContext.getConfigParameterValue(INPUT_VIEW);
+    inputViewName = (String) aContext.getConfigParameterValue(PARAM_INPUT_VIEW);
     inputViewName = StringUtils.isBlank(inputViewName) ? null : inputViewName;
-    modifiedViewName = (String) aContext.getConfigParameterValue(OUTPUT_VIEW);
+    modifiedViewName = (String) aContext.getConfigParameterValue(PARAM_OUTPUT_VIEW);
     modifiedViewName = StringUtils.isBlank(modifiedViewName) ? DEFAULT_MODIFIED_VIEW
             : modifiedViewName;
-    replaceLinebreaks = (Boolean) aContext.getConfigParameterValue(REPLACE_LINEBREAKS);
+    replaceLinebreaks = (Boolean) aContext.getConfigParameterValue(PARAM_REPLACE_LINEBREAKS);
     replaceLinebreaks = replaceLinebreaks == null ? true : replaceLinebreaks;
-    skipWhitespaces = (Boolean) aContext.getConfigParameterValue(SKIP_WHITESPACES);
+    skipWhitespaces = (Boolean) aContext.getConfigParameterValue(PARAM_SKIP_WHITESPACES);
     skipWhitespaces = skipWhitespaces == null ? true : skipWhitespaces;
-    linebreakReplacement = (String) aContext.getConfigParameterValue(LINEBREAK_REPLACEMENT);
+    linebreakReplacement = (String) aContext.getConfigParameterValue(PARAM_LINEBREAK_REPLACEMENT);
     linebreakReplacement = linebreakReplacement == null ? "" : linebreakReplacement;
-    String conversionPolicyString = (String) aContext.getConfigParameterValue(CONVERSION_POLICY);
-    conversionPolicyString = conversionPolicyString == null ? null : conversionPolicyString
-            .toLowerCase();
-    if (StringUtils.isBlank(conversionPolicyString) || conversionPolicyString.equals("heuristic")) {
-      conversionPolicy = StringConversionPolicy.HEURISTIC;
-    } else if (conversionPolicyString.equals("explicit")) {
-      conversionPolicy = StringConversionPolicy.EXPLICIT;
-    } else if (conversionPolicyString.equals("none")) {
-      conversionPolicy = StringConversionPolicy.NONE;
+    String conversionPolicy = (String) aContext.getConfigParameterValue(PARAM_CONVERSION_POLICY);
+    if (StringUtils.isBlank(conversionPolicy) || conversionPolicy.equals("heuristic")) {
+      conversionPolicy = "heuristic";
+    } else if (conversionPolicy.equals("explicit")) {
+    } else if (conversionPolicy.equals("none")) {
     } else {
       throw new ResourceInitializationException("illegal conversionPolicy parameter value",
               new Object[0]);
     }
-    newlineInducingTags = new HashSet<String>();
-    String[] nlTags = (String[]) aContext.getConfigParameterValue(NEWLINE_INDUCING_TAGS);
-    if (nlTags == null || nlTags.length == 0) {
-      newlineInducingTags.add("br");
-      newlineInducingTags.add("p");
-      newlineInducingTags.add("div");
-      newlineInducingTags.add("ul");
-      newlineInducingTags.add("ol");
-      newlineInducingTags.add("dl");
-      newlineInducingTags.add("li");
-      newlineInducingTags.add("h1");
-      newlineInducingTags.add("h2");
-      newlineInducingTags.add("h3");
-      newlineInducingTags.add("h4");
-      newlineInducingTags.add("h5");
-      newlineInducingTags.add("h6");
-      newlineInducingTags.add("blockquote");
-    } else {
-      for (String nlTag : nlTags) {
-        newlineInducingTags.add(nlTag);
-      }
-      // check assertions
-      if (modifiedViewName.equals(inputViewName)) {
-        throw new ResourceInitializationException("input and output view names must differ!",
-                new Object[0]);
-      }
+    String[] nlTags = (String[]) aContext.getConfigParameterValue(PARAM_NEWLINE_INDUCING_TAGS);
+    if (nlTags == null) {
+      newlineInducingTags = new String[] { "br", "p", "div", "ul", "ol", "dl", "li", "h1", "h2",
+          "h3", "h4", "h5", "h6", "blockquote" };
+
     }
-    conversionPatterns = (String[]) aContext.getConfigParameterValue(CONVERSION_PATTERNS);
+    // check assertions
+    if (modifiedViewName.equals(inputViewName)) {
+      throw new ResourceInitializationException("input and output view names must differ!",
+              new Object[0]);
+    }
+    conversionPatterns = (String[]) aContext.getConfigParameterValue(PARAM_CONVERSION_PATTERNS);
     if (conversionPatterns == null) {
       conversionPatterns = new String[] { "&nbsp;", "&laquo;", "&raquo;", "&quot;", "&amp;",
           "&lt;", "&gt;", "&apos;", "&sect;", "&uml;", "&copy;", "&trade;", "&reg;", "&ouml;",
           "&auml;", "&uuml;", "&#160;" };
     }
-    conversionReplacements = (String[]) aContext.getConfigParameterValue(CONVERSION_REPLACEMENTS);
+    conversionReplacements = (String[]) aContext.getConfigParameterValue(PARAM_CONVERSION_REPLACEMENTS);
     if (conversionReplacements == null) {
       conversionReplacements = new String[conversionPatterns.length];
       for (int i = 0; i < conversionPatterns.length; i++) {
@@ -237,9 +277,9 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
     if (replaceLinebreaks) {
       visibleSpansSoFar = this.handleLinebreaksInDocumentText(visibleSpansSoFar, splitSeq);
     }
-    if (conversionPolicy == StringConversionPolicy.HEURISTIC) {
+    if (conversionPolicy.equals("heuristic")) {
       visibleSpansSoFar = this.htmlDecoding(visibleSpansSoFar);
-    } else if (conversionPolicy == StringConversionPolicy.EXPLICIT) {
+    } else if (conversionPolicy.equals("explicit")) {
       for (int i = 0; i < conversionPatterns.length; i++) {
         String pat = conversionPatterns[i];
         String rep = conversionReplacements[i];
@@ -345,7 +385,7 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
     TreeSet<HtmlConverterPSpan> copy = new TreeSet<HtmlConverterPSpan>(visibleSpansSoFar);
 
     Pattern patt = Pattern.compile("(&[a-zA-Z0-9]{2,6};)|(&#\\d{2,5};)");
-    
+
     for (HtmlConverterPSpan pSpan : visibleSpansSoFar) {
       String spanTxt = pSpan.getTxt();
       Matcher matcher = patt.matcher(spanTxt);
