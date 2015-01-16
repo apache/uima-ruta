@@ -58,9 +58,9 @@ public class RutaModifierTest {
     TypeSystemDescription mergeTypeSystems = CasCreationUtils.mergeTypeSystems(tsds);
     aed.getAnalysisEngineMetaData().setTypeSystem(mergeTypeSystems);
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed);
-    ae.setConfigParameterValue(RutaModifier.OUTPUT_LOCATION, "");
+    ae.setConfigParameterValue(RutaModifier.PARAM_OUTPUT_LOCATION, "");
     String viewName = "modified_for_testing";
-    ae.setConfigParameterValue(RutaModifier.OUTPUT_VIEW, viewName);
+    ae.setConfigParameterValue(RutaModifier.PARAM_OUTPUT_VIEW, viewName);
     ae.reconfigure();
     
     String scriptName = this.getClass().getSimpleName();

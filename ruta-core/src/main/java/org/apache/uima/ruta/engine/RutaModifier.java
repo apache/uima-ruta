@@ -30,7 +30,6 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
@@ -38,39 +37,83 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.tools.stylemap.StyleMapEntry;
 import org.apache.uima.util.FileUtils;
 
+/**
+ * The Modifier Analysis Engine can be used to create an additional view, which contains all textual
+ * modifications and HTML highlightings that were specified by the executed rules. This Analysis
+ * Engine can be applied, e.g., for anonymization where all annotations of persons are replaced by
+ * the string <code>Person</code>. Furthermore, the content of the new view can optionally be stored
+ * in a new HTML file. A descriptor file for this Analysis Engine is located in the folder
+ * <code>descriptor/utils</code> of a UIMA Ruta project.
+ * 
+ */
 public class RutaModifier extends JCasAnnotator_ImplBase {
+
   public static final String DEFAULT_MODIFIED_VIEW = "modified";
 
-  public static final String OUTPUT_LOCATION = "outputLocation";
+  /**
+   * This optional string parameter specifies the absolute path of the resulting file named
+   * <code>output.modified.html</code>. However, if an annotation of the type
+   * <code>org.apache.uima.examples.SourceDocumentInformation</code> is given, then the value of
+   * this parameter is interpreted to be relative to the URI stored in the annotation and the name
+   * of the file will be adapted to the name of the source file. If this functionality is activated
+   * in the preferences, then the UIMA Ruta Workbench adds the SourceDocumentInformation annotation
+   * when the user launches a script file. The default value of this parameter is empty. In this
+   * case no additional html file will be created.
+   */
+  public static final String PARAM_OUTPUT_LOCATION = "outputLocation";
 
-  public static final String OUTPUT_VIEW = "outputView";
-
-  private StyleMapFactory styleMapFactory;
-
-  private String styleMapLocation;
-
-  private String[] descriptorPaths;
-
+  @ConfigurationParameter(name = PARAM_OUTPUT_LOCATION, mandatory = false)
   private String outputLocation;
 
+  /**
+   * This string parameter specifies the name of the style map file created by the Style Map Creator
+   * Analysis Engine, which stores the colors for additional highlightings in the modified view.
+   */
+  public static final String PARAM_STYLE_MAP = StyleMapCreator.PARAM_STYLE_MAP;
+
+  @ConfigurationParameter(name = PARAM_STYLE_MAP, mandatory = false)
+  private String styleMapLocation;
+
+  /**
+   * This string parameter specifies the name of the view, which will contain the modified document.
+   * A view of this name must not yet exist. The default value of this parameter is
+   * <code>modified</code>.
+   */
+  public static final String PARAM_OUTPUT_VIEW = "outputView";
+
+  @ConfigurationParameter(name = PARAM_OUTPUT_VIEW, mandatory = false, defaultValue = DEFAULT_MODIFIED_VIEW)
   private String modifiedViewName;
+
+  /**
+   * This parameter can contain multiple string values and specifies the absolute paths where the
+   * style map file can be found.
+   */
+  public static final String PARAM_DESCRIPTOR_PATHS = RutaEngine.PARAM_DESCRIPTOR_PATHS;
+
+  @ConfigurationParameter(name = PARAM_DESCRIPTOR_PATHS, mandatory = false)
+  private String[] descriptorPaths;
+
+  private StyleMapFactory styleMapFactory;
 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
-    styleMapLocation = (String) aContext.getConfigParameterValue(StyleMapCreator.STYLE_MAP);
-    descriptorPaths = (String[]) aContext.getConfigParameterValue(RutaEngine.PARAM_DESCRIPTOR_PATHS);
-    outputLocation = (String) aContext.getConfigParameterValue(RutaModifier.OUTPUT_LOCATION);
-    styleMapFactory = new StyleMapFactory();
-    modifiedViewName = (String) aContext.getConfigParameterValue(RutaModifier.OUTPUT_VIEW);
+    styleMapLocation = (String) aContext.getConfigParameterValue(PARAM_STYLE_MAP);
+    descriptorPaths = (String[]) aContext
+            .getConfigParameterValue(RutaEngine.PARAM_DESCRIPTOR_PATHS);
+    outputLocation = (String) aContext.getConfigParameterValue(RutaModifier.PARAM_OUTPUT_LOCATION);
+    modifiedViewName = (String) aContext.getConfigParameterValue(RutaModifier.PARAM_OUTPUT_VIEW);
     modifiedViewName = StringUtils.isBlank(modifiedViewName) ? DEFAULT_MODIFIED_VIEW
             : modifiedViewName;
+    styleMapFactory = new StyleMapFactory();
   }
 
   @Override

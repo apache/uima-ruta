@@ -22,22 +22,42 @@ package org.apache.uima.ruta.engine;
 import java.io.IOException;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 
+/**
+ * This Analysis Engine can be utilized to create style map information, which is needed by the
+ * Modifier Analysis Engine in order to create highlightings for some annotations. Style map
+ * information can be created using the COLOR action. A descriptor file for this Analysis Engine is
+ * located in the folder <code>descriptor/utils</code> of a UIMA Ruta project.
+ * 
+ */
 public class StyleMapCreator extends JCasAnnotator_ImplBase {
+
+  /**
+   * This parameter can contain multiple string values and specifies the absolute paths where the
+   * style map file can be found.
+   */
+  public static final String PARAM_DESCRIPTOR_PATHS = RutaEngine.PARAM_DESCRIPTOR_PATHS;
+
+  @ConfigurationParameter(name = PARAM_DESCRIPTOR_PATHS, mandatory = false)
+  private String[] descriptorPaths;
+
+  /**
+   * This string parameter specifies the name of the style map file created by the Style Map Creator
+   * Analysis Engine, which stores the colors for additional highlightings in the modified view.
+   */
+  public static final String PARAM_STYLE_MAP = "styleMap";
+
+  @ConfigurationParameter(name = PARAM_STYLE_MAP, mandatory = false)
+  private String styleMapLocation;
 
   private UimaContext context;
 
   private StyleMapFactory styleMapFactory;
-
-  public static final String STYLE_MAP = "styleMap";
-
-  private String styleMapLocation;
-
-  private String[] descriptorPaths;
 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
@@ -46,7 +66,7 @@ public class StyleMapCreator extends JCasAnnotator_ImplBase {
       aContext = context;
     }
     if (aContext != null) {
-      styleMapLocation = (String) aContext.getConfigParameterValue(STYLE_MAP);
+      styleMapLocation = (String) aContext.getConfigParameterValue(PARAM_STYLE_MAP);
       descriptorPaths = (String[]) aContext
               .getConfigParameterValue(RutaEngine.PARAM_DESCRIPTOR_PATHS);
       styleMapFactory = new StyleMapFactory();
