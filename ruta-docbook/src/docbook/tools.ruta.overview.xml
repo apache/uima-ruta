@@ -678,7 +678,7 @@ ae.process(cas);]]></programlisting>
         </para>
         <para>
           To change the value of any configuration parameter within a UIMA Ruta script, the CONFIGURE action (see <xref linkend='ugr.tools.ruta.language.actions.configure' />)
-          can be used. For changing behaviour of <link linkend='ugr.tools.ruta.ae.basic.parameter.dynamicAnchoring'>dynamicAnchoring</link> the DYNAMICANCHORING action 
+          can be used. For changing behavior of <link linkend='ugr.tools.ruta.ae.basic.parameter.dynamicAnchoring'>dynamicAnchoring</link> the DYNAMICANCHORING action 
           (see <xref linkend='ugr.tools.ruta.language.actions.dynamicanchoring' />) is recommended.
         </para>
         <para>
@@ -1291,14 +1291,14 @@ ae.process(cas);]]></programlisting>
           <title>replaceLinebreaks</title>
           <para>
             This boolean parameter determines if linebreaks inside the text nodes are kept or removed.
-            The default behaviour is <quote>true</quote>.
+            The default behavior is <quote>true</quote>.
           </para>
         </section>
         <section id="ugr.tools.ruta.ae.htmlconverter.parameter.linebreakReplacement">
           <title>replaceLinebreaks</title>
           <para>
             This string parameter determines the character sequence that replaces a linebreak.
-            The default behaviour is the empty string.
+            The default behavior is the empty string.
           </para>
         </section>
         <section id="ugr.tools.ruta.ae.htmlconverter.parameter.conversionPolicy">
@@ -1307,7 +1307,7 @@ ae.process(cas);]]></programlisting>
             This string parameter determines the conversion policy used, either "heuristic", "explicit", or "none". 
             When the value is "explicit", the parameters <quote>conversionPatterns</quote> and optionally <quote>conversionReplacements</quote> are considered.
             The "heuristic" conversion policy uses simple regular expressions to decode html4 entities such as "<![CDATA[&nbsp;]]>".
-            The default behaviour is "heuristic".
+            The default behavior is "heuristic".
           </para>
         </section>
         <section id="ugr.tools.ruta.ae.htmlconverter.parameter.conversionPatterns">
