@@ -32,6 +32,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
@@ -43,11 +44,11 @@ public class GatherTest {
   public void test() {
     String name = this.getClass().getSimpleName();
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
-    
+
     Map<String, String> complexTypes = new TreeMap<String, String>();
     String typeName = "org.apache.uima.C";
     complexTypes.put(typeName, "uima.tcas.Annotation");
-    
+
     Map<String, List<TestFeature>> features = new TreeMap<String, List<TestFeature>>();
     List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
     features.put(typeName, list);
@@ -55,11 +56,12 @@ public class GatherTest {
     list.add(new TestFeature(fn1, "", "uima.tcas.Annotation"));
     String fn2 = "b";
     list.add(new TestFeature(fn2, "", "uima.tcas.Annotation"));
-    
+
     CAS cas = null;
     try {
-      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
-              + ".txt", 50, false, false, complexTypes, features, namespace + "/");
+      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION,
+              namespace + "/" + name + ".txt", 50, false, false, complexTypes, features, namespace
+                      + "/");
     } catch (Exception e) {
       e.printStackTrace();
       assert (false);
@@ -81,7 +83,57 @@ public class GatherTest {
     v2 = (AnnotationFS) next.getFeatureValue(f2);
     assertEquals("A", v1.getCoveredText());
     assertEquals("B", v2.getCoveredText());
-   
+
     cas.release();
+  }
+
+  @Test
+  public void testOptionalMatch() {
+    String document = "A X C";
+    String script = "";
+    script += "W{REGEXP(\"A\")->MARK(T1)};";
+    script += "W{REGEXP(\"B\")->MARK(T2)};";
+    script += "T1 T2?{-> GATHER(C, 1, 2, \"a\" = 1, \"b\" = 2)};";
+    Map<String, String> complexTypes = new TreeMap<String, String>();
+    String typeName = "org.apache.uima.C";
+    complexTypes.put(typeName, "uima.tcas.Annotation");
+
+    Map<String, List<TestFeature>> features = new TreeMap<String, List<TestFeature>>();
+    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    features.put(typeName, list);
+    String fn1 = "a";
+    list.add(new TestFeature(fn1, "", "uima.tcas.Annotation"));
+    String fn2 = "b";
+    list.add(new TestFeature(fn2, "", "uima.tcas.Annotation"));
+    CAS cas = null;
+    try {
+      cas = RutaTestUtils.getCAS(document, complexTypes, features);
+      Ruta.apply(cas, script);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    Type t = null;
+    AnnotationIndex<AnnotationFS> ai = null;
+    FSIterator<AnnotationFS> iterator = null;
+    AnnotationFS next = null;
+    AnnotationFS v1 = null;
+    AnnotationFS v2 = null;
+    t = cas.getTypeSystem().getType(typeName);
+    Feature f1 = t.getFeatureByBaseName(fn1);
+    Feature f2 = t.getFeatureByBaseName(fn2);
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    next = iterator.next();
+    v1 = (AnnotationFS) next.getFeatureValue(f1);
+    v2 = (AnnotationFS) next.getFeatureValue(f2);
+    assertEquals("A", v1.getCoveredText());
+    assertEquals(null, v2);
+
+    if (cas != null) {
+      cas.release();
+    }
+
   }
 }

@@ -59,8 +59,8 @@ public class GatherAction extends AbstractStructureAction {
 
   private List<INumberExpression> indexes;
 
-  public GatherAction(TypeExpression structureType, Map<IStringExpression, IRutaExpression> features,
-          List<INumberExpression> indexes) {
+  public GatherAction(TypeExpression structureType,
+          Map<IStringExpression, IRutaExpression> features, List<INumberExpression> indexes) {
     super();
     this.structureType = structureType;
     this.features = features == null ? new HashMap<IStringExpression, IRutaExpression>() : features;
@@ -141,7 +141,8 @@ public class GatherAction extends AbstractStructureAction {
               // search for
               Collection<AnnotationFS> beginAnchors = stream.getBeginAnchor(fs.getBegin())
                       .getBeginAnchors(range);
-              Collection<AnnotationFS> endAnchors = stream.getEndAnchor(fs.getEnd()).getEndAnchors(range);
+              Collection<AnnotationFS> endAnchors = stream.getEndAnchor(fs.getEnd()).getEndAnchors(
+                      range);
               @SuppressWarnings("unchecked")
               Collection<AnnotationFS> intersection = CollectionUtils.intersection(beginAnchors,
                       endAnchors);
@@ -197,7 +198,9 @@ public class GatherAction extends AbstractStructureAction {
       RuleElement ruleElement = elements.get(eachInt - 1);
       List<List<RuleElementMatch>> matchInfo = match.getMatchInfo(ruleElement);
       for (List<RuleElementMatch> list : matchInfo) {
-        result.addAll(list);
+        if (list != null) {
+          result.addAll(list);
+        }
       }
     }
     return result;

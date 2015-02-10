@@ -68,10 +68,11 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
     return getMatchedAnnotations(element.getSelfIndexList(), element.getContainer());
   }
 
-  public AnnotationFS getLastMatchedAnnotation(RuleElement element, boolean direction, AnnotationFS annotation, RutaBlock parent, RutaStream stream) {
+  public AnnotationFS getLastMatchedAnnotation(RuleElement element, boolean direction,
+          AnnotationFS annotation, RutaBlock parent, RutaStream stream) {
     List<AnnotationFS> matchedAnnotations = getMatchedAnnotationsOf(element);
     if (matchedAnnotations.isEmpty()) {
-      if(element.getQuantifier().isOptional(parent, stream)) {
+      if (element.getQuantifier().isOptional(parent, stream)) {
         return annotation;
       } else {
         return null;
@@ -179,16 +180,16 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
     // hotfix for invisible dummy matches
     int pointer = 0;
     AnnotationFS annotationFS = null;
-    
-    if(textsMatched.size() == 0) {
+
+    if (textsMatched.size() == 0) {
       return null;
-    } else if(textsMatched.size() ==1) {
+    } else if (textsMatched.size() == 1) {
       AnnotationFS fs = textsMatched.get(0);
-      if(fs.getType().getName().equals(RutaEngine.OPTIONAL_TYPE)) {
+      if (fs.getType().getName().equals(RutaEngine.OPTIONAL_TYPE)) {
         return null;
       }
     }
-    
+
     while (pointer < textsMatched.size() && (annotationFS = textsMatched.get(pointer)) != null
             && annotationFS.getType().getName().equals(RutaEngine.OPTIONAL_TYPE)) {
       pointer++;
