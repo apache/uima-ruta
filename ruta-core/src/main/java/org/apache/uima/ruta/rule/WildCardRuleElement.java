@@ -239,7 +239,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
         result = iterator.get();
         if (annotation != null && (after && result.getEnd() == annotation.getEnd())
                 || (!after && result.getBegin() == annotation.getBegin())) {
-          moveOn(after, iterator);
+          moveOn(after, iterator, stream);
           if (iterator.isValid()) {
             result = iterator.get();
           } else {
@@ -302,6 +302,9 @@ public class WildCardRuleElement extends AbstractRuleElement {
       result.add(ruleMatch);
       return result;
     }
+    if(iterator.isValid() && !stream.isVisible(iterator.get())) {
+      moveOn(after, iterator, stream);
+    }
     boolean doneHere = false;
     while (!doneHere && iterator.isValid() && stream.isVisible(iterator.get())) {
       AnnotationFS nextOne = iterator.get();
@@ -327,14 +330,14 @@ public class WildCardRuleElement extends AbstractRuleElement {
         }
         List<RuleElementMatch> nextList = nextContainerMatch.getInnerMatches().get(nextElement);
         if (nextList == null || nextList.isEmpty() || !nextList.get(nextList.size() - 1).matched()) {
-          moveOn(after, iterator);
+          moveOn(after, iterator, stream);
         } else {
           doneHere = true;
         }
       } else {
         // conditions of wildcard element did not match, try the next possible anchor for the
         // next rule element
-        moveOn(after, iterator);
+        moveOn(after, iterator, stream);
       }
     }
     return result;
@@ -367,7 +370,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
       iterator = getIteratorOfType(after, defaultType, annotation, stream);
     }
     if (iterator != null && iterator.isValid() && iterator.get().equals(annotation)) {
-      moveOn(after, iterator);
+      moveOn(after, iterator, stream);
     }
     return iterator;
   }
@@ -492,11 +495,18 @@ public class WildCardRuleElement extends AbstractRuleElement {
     }
   }
 
-  private void moveOn(boolean after, FSIterator<AnnotationFS> iterator) {
+  private void moveOn(boolean after, FSIterator<AnnotationFS> iterator, RutaStream stream) {
     if (after) {
       iterator.moveToNext();
     } else {
       iterator.moveToPrevious();
+    }
+    while(iterator.isValid() && !stream.isVisible(iterator.get())) {
+      if (after) {
+        iterator.moveToNext();
+      } else {
+        iterator.moveToPrevious();
+      }
     }
   }
 
