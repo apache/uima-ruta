@@ -33,6 +33,7 @@ import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
+import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.expression.list.ReferenceBooleanListExpression;
 import org.apache.uima.ruta.expression.list.ReferenceNumberListExpression;
@@ -247,6 +248,9 @@ public class ExpressionVerbalizer {
   }
 
   public String verbalize(TypeExpression expression) {
+    if (expression == null) {
+      return null;
+    }
     if (expression instanceof SimpleTypeExpression) {
       SimpleTypeExpression e = (SimpleTypeExpression) expression;
       String type = e.getTypeString();
@@ -279,11 +283,18 @@ public class ExpressionVerbalizer {
 
   public String verbalize(FeatureExpression expression) {
     StringBuilder sb = new StringBuilder();
-    sb.append(verbalize(expression.getTypeExpr(null)));
-    List<String> list = expression.getFeatureStringList(null);
-    for (String string : list) {
-      sb.append(".");
-      sb.append(string);
+    if (expression instanceof SimpleFeatureExpression) {
+      SimpleFeatureExpression sfe = (SimpleFeatureExpression) expression;
+      sb.append(sfe.getMatchReference().getMatch());
+    } else {
+      sb.append(verbalize(expression.getTypeExpr(null)));
+      List<String> list = expression.getFeatureStringList(null);
+      if (list != null) {
+        for (String string : list) {
+          sb.append(".");
+          sb.append(string);
+        }
+      }
     }
     return sb.toString();
   }
