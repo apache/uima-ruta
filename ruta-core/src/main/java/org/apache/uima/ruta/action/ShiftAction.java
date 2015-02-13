@@ -33,6 +33,7 @@ import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.AnnotationComparator;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class ShiftAction extends MarkAction {
@@ -51,6 +52,11 @@ public class ShiftAction extends MarkAction {
             .getMatchedAnnotationsOf(element);
     int size = Math.min(annotationsMatchedByRuleElementofAction.size(),
             destinationAnnotationSpans.size());
+
+    RutaBasic firstBasicOfAll = stream.getFirstBasicOfAll();
+    RutaBasic lastBasicOfAll = stream.getLastBasicOfAll();
+    int windowBegin = firstBasicOfAll == null ? 0 : firstBasicOfAll.getBegin();
+    int windowEnd = lastBasicOfAll == null ? 0 : lastBasicOfAll.getEnd();
     for (int i = 0; i < size; i++) {
       AnnotationFS eachMatched = annotationsMatchedByRuleElementofAction.get(i);
       AnnotationFS eachDestination = destinationAnnotationSpans.get(i);
@@ -58,16 +64,19 @@ public class ShiftAction extends MarkAction {
               new AnnotationComparator());
       Collection<AnnotationFS> beginAnchors = stream.getBeginAnchor(eachMatched.getBegin())
               .getBeginAnchors(targetType);
-      Collection<AnnotationFS> endAnchors = stream.getEndAnchor(eachMatched.getEnd()).getEndAnchors(
-              targetType);
+      Collection<AnnotationFS> endAnchors = stream.getEndAnchor(eachMatched.getEnd())
+              .getEndAnchors(targetType);
       allAnchoredAnnotations.addAll(beginAnchors);
       allAnchoredAnnotations.addAll(endAnchors);
+
       for (AnnotationFS eachAnchored : allAnchoredAnnotations) {
-        Annotation a = (Annotation) eachAnchored;
-        stream.removeAnnotation(a);
-        a.setBegin(eachDestination.getBegin());
-        a.setEnd(eachDestination.getEnd());
-        stream.addAnnotation(a, true, match);
+        if (eachAnchored.getBegin() >= windowBegin && eachAnchored.getEnd() <= windowEnd) {
+          Annotation a = (Annotation) eachAnchored;
+          stream.removeAnnotation(a);
+          a.setBegin(eachDestination.getBegin());
+          a.setEnd(eachDestination.getEnd());
+          stream.addAnnotation(a, true, match);
+        }
       }
     }
   }
