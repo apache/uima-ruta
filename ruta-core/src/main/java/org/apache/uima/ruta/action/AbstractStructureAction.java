@@ -77,7 +77,7 @@ public abstract class AbstractStructureAction extends AbstractRutaAction {
             AnnotationFS annotation = annotationsInWindow.get(0);
             structure.setStringValue(targetFeature, annotation.getCoveredText());
           }
-        } else if(valueObject instanceof GenericFeatureExpression &&  range instanceof Type) {
+        } else if (valueObject instanceof GenericFeatureExpression && !range.isPrimitive()) {
           GenericFeatureExpression gfe = (GenericFeatureExpression) valueObject;
           TypeExpression type = gfe.getFeatureExpression().getTypeExpr(parent);
           List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(matchedAnnotation,
