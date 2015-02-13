@@ -60,10 +60,12 @@ public class RutaTypeMatcher implements RutaMatcher {
       if (type == null) {
         continue;
       }
+      Type currentDAType = stream.getCas().getDocumentAnnotation().getType();
       String name = type.getName();
       RutaBasic firstBasicOfAll = stream.getFirstBasicOfAll();
       if ("uima.tcas.DocumentAnnotation".equals(name)
               || "org.apache.uima.ruta.type.Document".equals(name)
+              || currentDAType.equals(type)
               || (stream.getDocumentAnnotationType().getName().equals(name) && (firstBasicOfAll != null && firstBasicOfAll
                       .beginsWith(type)))) {
         // TODO what about dynamic windowing?
@@ -147,6 +149,7 @@ public class RutaTypeMatcher implements RutaMatcher {
     if (stream.isVisible(firstBasic)) {
       stream.moveToPrevious();
     }
+
     if (stream.isValid()) {
       RutaBasic nextBasic = (RutaBasic) stream.get();
       // TODO HOTFIX for annotation of length 0
