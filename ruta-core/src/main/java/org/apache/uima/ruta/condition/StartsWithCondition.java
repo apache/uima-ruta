@@ -69,7 +69,11 @@ public class StartsWithCondition extends TypeSentiveCondition {
       return false;
     }
     RutaBasic beginAnchor = stream.getBeginAnchor(annotation.getBegin());
-    return beginAnchor.beginsWith(t);
+    if(beginAnchor != null) {
+      return beginAnchor.beginsWith(t);
+    } else {
+      return false;
+    }
   }
 
 }
