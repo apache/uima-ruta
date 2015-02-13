@@ -34,7 +34,6 @@ import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
-import org.apache.uima.ruta.expression.string.AbstractStringExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 
 public class FeatureMatchExpression extends SimpleFeatureExpression {
@@ -59,8 +58,8 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
   }
 
   public IRutaExpression getArg() {
-    if (mr != null && arg == null) {
-      arg = mr.getArg();
+    if (getMatchReference() != null && arg == null) {
+      arg = getMatchReference().getArg();
     }
     return arg;
   }
@@ -70,8 +69,8 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
   }
 
   public String getOp() {
-    if (mr != null && op == null) {
-      op = mr.getOp();
+    if (getMatchReference() != null && op == null) {
+      op = getMatchReference().getOp();
     }
     return op;
   }
@@ -141,10 +140,18 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
 
   private boolean compare(Object v1, Object v2) {
     if (v1 == null || v2 == null) {
-      if(v1 == null && v2 == null && getOp().equals("==")) {
-        return true;
-      } else if (getOp().equals("!=")) {
-        return true;
+      if(v1 == null && v2 == null) {
+        if(getOp().equals("==")) {
+          return true;
+        } else if (getOp().equals("!=")){
+          return false;
+        }
+      } else {
+        if(getOp().equals("==")) {
+          return false;
+        } else if (getOp().equals("!=")){
+          return true;
+        }
       }
     } else if (v1 instanceof Number && v2 instanceof Number) {
       Number n1 = (Number) v1;

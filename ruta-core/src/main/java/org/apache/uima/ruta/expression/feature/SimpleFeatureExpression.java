@@ -20,7 +20,6 @@
 package org.apache.uima.ruta.expression.feature;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.TreeSet;
@@ -37,12 +36,11 @@ import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.NullExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
-import org.apache.uima.ruta.extensions.RutaParseException;
 import org.apache.uima.ruta.rule.AnnotationComparator;
 
 public class SimpleFeatureExpression extends FeatureExpression {
 
-  protected MatchReference mr;
+  private MatchReference mr;
   
   private TypeExpression typeExpr;
 
@@ -163,5 +161,11 @@ public class SimpleFeatureExpression extends FeatureExpression {
     }
     return result;
   }
+  public MatchReference getMatchReference() {
+    return mr;
+  }
+
+
+
 
 }
