@@ -129,13 +129,16 @@ public class RerunActionHandler implements IHandler {
 
     private List<String> includedTypes;
 
+    private boolean debug;
+
     RerunHandlerJob(ExecutionEvent event, String scriptName, String viewCasName,
-            List<String> excludedTypes, List<String> includedTypes) {
+            List<String> excludedTypes, List<String> includedTypes, boolean debug) {
       super("Testing " + scriptName + "...");
       this.event = event;
       this.viewCasName = viewCasName;
       this.excludedTypes = excludedTypes;
       this.includedTypes = includedTypes;
+      this.debug = debug;
       setUser(true);
     }
 
@@ -291,6 +294,9 @@ public class RerunActionHandler implements IHandler {
         ILaunchConfiguration lc = copy.doSave();
 
         String mode = ILaunchManager.RUN_MODE;
+        if (debug) {
+          mode = ILaunchManager.DEBUG_MODE;
+        }
         ILaunch launch = new Launch(lc, mode, null);
 
         ILaunchConfiguration launchConfiguration = launch.getLaunchConfiguration();
@@ -402,6 +408,16 @@ public class RerunActionHandler implements IHandler {
         XMLInputSource in = new XMLInputSource(engineDescriptorPath.toPortableString());
         ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
         AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
+
+        if (debug) {
+          ae.setConfigParameterValue(RutaEngine.PARAM_DEBUG, true);
+          ae.setConfigParameterValue(RutaEngine.PARAM_DEBUG_WITH_MATCHES, true);
+          ae.setConfigParameterValue(RutaEngine.PARAM_PROFILE, true);
+          ae.setConfigParameterValue(RutaEngine.PARAM_STATISTICS, true);
+          ae.setConfigParameterValue(RutaEngine.PARAM_CREATED_BY, true);
+        }
+        ae.reconfigure();
+
         // create (empty) CAS objects:
         String desc = null;
         desc = engineDescriptorPath.toPortableString();
@@ -494,7 +510,6 @@ public class RerunActionHandler implements IHandler {
             toRemove.add(annotationFS);
           }
         }
-        System.out.println();
         for (AnnotationFS each : toRemove) {
           if (!cas.getDocumentAnnotation().equals(each)) {
             cas.removeFsFromIndexes(each);
@@ -587,15 +602,16 @@ public class RerunActionHandler implements IHandler {
 
   public Object execute(ExecutionEvent event) throws ExecutionException {
     TestPageBookView debugView = (TestPageBookView) HandlerUtil.getActivePart(event);
-    if(!(debugView.getCurrentPage() instanceof TestViewPage)) {
+    if (!(debugView.getCurrentPage() instanceof TestViewPage)) {
       return Status.CANCEL_STATUS;
     }
     TestViewPage debugPage = (TestViewPage) debugView.getCurrentPage();
-
+    // set debug by preference
+    boolean debug = true;
     String viewCasName = debugPage.getSelectedViewCasName();
     String scriptName = debugPage.getResource().getLocation().lastSegment();
     RerunHandlerJob job = new RerunHandlerJob(event, scriptName, viewCasName,
-            debugPage.getExcludedTypes(), debugPage.getIncludedTypes());
+            debugPage.getExcludedTypes(), debugPage.getIncludedTypes(), debug);
 
     job.addJobChangeListener(new DebugJobChangeAdapter(debugPage) {
     });

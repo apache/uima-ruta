@@ -190,8 +190,6 @@ public class DocumentSelectComposite extends Composite {
           documentList = new ArrayList<DocumentData>();
           File directory = new File(dir);
 
-          System.out.println("dir :" + dir);
-
           String[] files = directory.list();
 
           for (String filePath : files) {
