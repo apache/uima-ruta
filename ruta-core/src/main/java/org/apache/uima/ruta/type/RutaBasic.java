@@ -42,7 +42,7 @@ public class RutaBasic extends Annotation {
           .getLargestTypeCode()];
 
   private boolean empty = true;
-  
+
   public boolean isEmpty() {
     return empty;
   }
@@ -284,6 +284,33 @@ public class RutaBasic extends Annotation {
     return endMap;
   }
 
+  public void setBeginMap(Collection<?>[] beginMap) {
+    this.beginMap = beginMap;
+    for (Collection<?> each : beginMap) {
+      if (each != null && !each.isEmpty()) {
+        this.empty = false;
+      }
+    }
+  }
+
+  public void setEndMap(Collection<?>[] endMap) {
+    this.endMap = endMap;
+    for (Collection<?> each : endMap) {
+      if (each != null && !each.isEmpty()) {
+        this.empty = false;
+      }
+    }
+  }
+
+  public void clearBeginMap() {
+    this.beginMap = new ArrayList<?>[((TypeSystemImpl) getCAS().getTypeSystem())
+            .getLargestTypeCode()];
+  }
+
+  public void clearEndMap() {
+    this.endMap = new ArrayList<?>[((TypeSystemImpl) getCAS().getTypeSystem()).getLargestTypeCode()];
+  }
+
   /**
    * @generated
    * @ordered
@@ -367,8 +394,5 @@ public class RutaBasic extends Annotation {
       jcasType.jcas.throwFeatMissing("replacement", "org.apache.uima.ruta.type.RutaBasic");
     jcasType.ll_cas.ll_setStringValue(addr, ((RutaBasic_Type) jcasType).casFeatCode_replacement, v);
   }
-
-
-
 
 }

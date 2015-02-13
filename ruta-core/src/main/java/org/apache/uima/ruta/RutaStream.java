@@ -154,7 +154,9 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     AnnotationIndex<AnnotationFS> annotationIndex = cas.getAnnotationIndex();
     final List<AnnotationFS> allAnnotations = new LinkedList<AnnotationFS>();
     for (AnnotationFS a : annotationIndex) {
-      allAnnotations.add(a);
+      if(a.getBegin() != a.getEnd()) {
+        allAnnotations.add(a);
+      }
     }
     if (basicIndex.size() == 0) {
       TreeSet<Integer> anchors = new TreeSet<Integer>();
@@ -298,15 +300,17 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       int newEnd = toSplit.getEnd();
       cas.removeFsFromIndexes(toSplit);
       toSplit.setEnd(anchor);
-      RutaBasic newTMB = new RutaBasic(getJCas(), anchor, newEnd);
-      newTMB.setLowMemoryProfile(lowMemoryProfile);
+      RutaBasic newRB = new RutaBasic(getJCas(), anchor, newEnd);
+      newRB.setLowMemoryProfile(lowMemoryProfile);
+      newRB.setEndMap(toSplit.getEndMap());
+      toSplit.clearEndMap();
       cas.addFsToIndexes(toSplit);
-      cas.addFsToIndexes(newTMB);
+      cas.addFsToIndexes(newRB);
       beginAnchors.put(floor.getBegin(), floor);
-      beginAnchors.put(newTMB.getBegin(), newTMB);
+      beginAnchors.put(newRB.getBegin(), newRB);
       beginAnchors.put(ceiling.getBegin(), ceiling);
       endAnchors.put(floor.getEnd(), floor);
-      endAnchors.put(newTMB.getEnd(), newTMB);
+      endAnchors.put(newRB.getEnd(), newRB);
       endAnchors.put(ceiling.getEnd(), ceiling);
       return true;
     } else {
@@ -683,6 +687,13 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       return null;
     }
     return beginAnchors.firstEntry().getValue();
+  }
+
+  public RutaBasic getLastBasicOfAll() {
+    if (endAnchors.isEmpty()) {
+      return null;
+    }
+    return endAnchors.lastEntry().getValue();
   }
 
   public Type getDocumentAnnotationType() {
