@@ -66,8 +66,9 @@ public class RutaTypeMatcher implements RutaMatcher {
       if ("uima.tcas.DocumentAnnotation".equals(name)
               || "org.apache.uima.ruta.type.Document".equals(name)
               || currentDAType.equals(type)
-              || (stream.getDocumentAnnotationType().getName().equals(name) && (firstBasicOfAll != null && firstBasicOfAll
-                      .beginsWith(type)))) {
+//              || (stream.getDocumentAnnotationType().getName().equals(name) && (firstBasicOfAll != null && firstBasicOfAll
+//                      .beginsWith(type)))
+                      ) {
         // TODO what about dynamic windowing?
         annotations.add(stream.getDocumentAnnotation());
       } else {
