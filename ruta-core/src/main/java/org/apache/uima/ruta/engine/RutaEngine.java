@@ -35,6 +35,7 @@ import java.util.Set;
 
 import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.ANTLRInputStream;
+import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
@@ -89,6 +90,16 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   public static final String FRAME_TYPE = "org.apache.uima.ruta.type.RutaFrame";
 
+  
+  /**
+   * A String parameter representing the rule that should be applied by the analysis engine.
+   * If set, it replaces the content of file specified by the {@code mainScript} parameter.
+   */
+  public static final String PARAM_RULES = "rules";
+
+  @ConfigurationParameter(name = PARAM_RULES, mandatory = false)
+  private String rules;
+  
   /**
    * Load script in Java notation, with "{@code .}" as package separator and no extension. File
    * needs to be located in the path specified below with ending {@code .ruta}.
@@ -424,6 +435,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       removeBasics = (Boolean) aContext.getConfigParameterValue(PARAM_REMOVE_BASICS);
       scriptPaths = (String[]) aContext.getConfigParameterValue(PARAM_SCRIPT_PATHS);
       descriptorPaths = (String[]) aContext.getConfigParameterValue(PARAM_DESCRIPTOR_PATHS);
+      rules = (String) aContext.getConfigParameterValue(PARAM_RULES);
       mainScript = (String) aContext.getConfigParameterValue(PARAM_MAIN_SCRIPT);
       additionalScripts = (String[]) aContext.getConfigParameterValue(PARAM_ADDITIONAL_SCRIPTS);
       additionalEngines = (String[]) aContext.getConfigParameterValue(PARAM_ADDITIONAL_ENGINES);
@@ -703,6 +715,13 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   private void initializeScript(String viewName) throws AnalysisEngineProcessException {
     if (mainScript == null) {
+      if(rules != null) {
+        try {
+          script = loadScriptByString(rules);
+        } catch (RecognitionException e) {
+          throw new AnalysisEngineProcessException(e);
+        }
+      }
       return;
     }
     String scriptLocation = locate(mainScript, scriptPaths, SCRIPT_FILE_EXTENSION);
@@ -1008,6 +1027,19 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     }
   }
 
+  private RutaModule loadScriptByString(String rules) throws RecognitionException {
+    CharStream st = new ANTLRStringStream(rules);
+    RutaLexer lexer = new RutaLexer(st);
+    CommonTokenStream tokens = new CommonTokenStream(lexer);
+    RutaParser parser = new RutaParser(tokens);
+    parser.setContext(context);
+    parser.setExternalFactory(factory);
+    parser.setResourcePaths(resourcePaths);
+    parser.setResourceManager(resourceManager);
+    RutaModule script = parser.file_input("Anonymous");
+    return script;
+  }
+  
   private RutaModule loadScript(String scriptLocation) throws IOException, RecognitionException {
     File scriptFile = new File(scriptLocation);
     CharStream st = new ANTLRFileStream(scriptLocation, scriptEncoding);
