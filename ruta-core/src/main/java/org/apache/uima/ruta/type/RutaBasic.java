@@ -78,11 +78,11 @@ public class RutaBasic extends Annotation {
   private void removePartOf(int code) {
     if (partOf[code] != 0) {
       partOf[code] = partOf[code] - 1;
-    }
-    if (!lowMemoryProfile) {
-      int parentCode = getCAS().getTypeSystem().getLowLevelTypeSystem().ll_getParentType(code);
-      if (parentCode > 0) {
-        removePartOf(parentCode);
+      if (!lowMemoryProfile) {
+        int parentCode = getCAS().getTypeSystem().getLowLevelTypeSystem().ll_getParentType(code);
+        if (parentCode > 0) {
+          removePartOf(parentCode);
+        }
       }
     }
   }

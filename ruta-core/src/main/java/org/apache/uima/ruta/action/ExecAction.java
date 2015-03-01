@@ -20,12 +20,8 @@
 package org.apache.uima.ruta.action;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -39,14 +35,12 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.RutaBlock;
-import org.apache.uima.ruta.RutaModule;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
-import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 import org.apache.uima.util.XMLInputSource;
 
@@ -85,10 +79,10 @@ public class ExecAction extends CallAction {
         AnalysisEngineMetaData metaData = targetEngine.getAnalysisEngineMetaData();
         try {
           String sourceUrlString = metaData.getSourceUrlString();
-          if(sourceUrlString != null) {
-            AnalysisEngineDescription aed = (AnalysisEngineDescription) UIMAFramework.getXMLParser().parseResourceSpecifier(new XMLInputSource(sourceUrlString));
-            AnalysisEngine createEngine = AnalysisEngineFactory.createEngine(
-                    aed, viewName);
+          if (sourceUrlString != null) {
+            AnalysisEngineDescription aed = (AnalysisEngineDescription) UIMAFramework
+                    .getXMLParser().parseResourceSpecifier(new XMLInputSource(sourceUrlString));
+            AnalysisEngine createEngine = AnalysisEngineFactory.createEngine(aed, viewName);
             targetEngine = createEngine;
           }
         } catch (Exception e) {
@@ -101,28 +95,21 @@ public class ExecAction extends CallAction {
     if (typeList != null && view == null) {
       List<Type> list = typeList.getList(element.getParent(), stream);
       for (Type type : list) {
-        Map<RutaBasic, Collection<AnnotationFS>> map = new HashMap<RutaBasic, Collection<AnnotationFS>>();
         AnnotationIndex<AnnotationFS> ai = cas.getAnnotationIndex(type);
-        for (AnnotationFS fs : ai) {
-          RutaBasic basic = stream.getFirstBasicInWindow(fs);
-          if (basic != null) {
-            Collection<AnnotationFS> collection = map.get(basic);
-            if (collection == null) {
-              collection = new HashSet<AnnotationFS>();
-              map.put(basic, collection);
-            }
-            collection.add(fs);
-          }
+        Collection<AnnotationFS> toUpdate = new LinkedList<AnnotationFS>();
+        for (AnnotationFS annotationFS : ai) {
+          toUpdate.add(annotationFS);
         }
-        Set<Entry<RutaBasic, Collection<AnnotationFS>>> entrySet = map.entrySet();
-        for (Entry<RutaBasic, Collection<AnnotationFS>> entry : entrySet) {
-          for (AnnotationFS each : entry.getValue()) {
-            stream.removeAnnotation(each);
-            stream.addAnnotation(each, true, match);
-          }
+        for (AnnotationFS each : toUpdate) {
+          stream.removeAnnotation(each);
+        }
+        for (AnnotationFS each : toUpdate) {
+          stream.addAnnotation(each, true, match);
         }
       }
     }
+    
+    
   }
 
   public TypeListExpression getTypeList() {
