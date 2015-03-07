@@ -521,14 +521,14 @@ Martin
         listed
         names, could be annotated
         by using
-        <literal>Document{->MARKFAST(FistName, "FirstNames.txt")};</literal>, assuming
+        <literal>Document{->MARKFAST(FirstName, "FirstNames.txt")};</literal>, assuming
         an already declared type FirstName. To make this rule
         recognizing more first names, add
         them to the external list.
         You could also use a WORLIST variable to do the same thing as follows:
-        <programlisting><![CDATA[WORDLIST FirstNameList = "FirstNames.txt";
+        <programlisting><![CDATA[WORDLIST FirstNameList = 'FirstNames.txt';
 DECLARE FirstName;
-Document{->MARKFAST(FistName, FirstNameList)};
+Document{->MARKFAST(FirstName, FirstNameList)};
 ]]></programlisting>
       </para>
       <para>
@@ -544,7 +544,7 @@ Document{->MARKFAST(FistName, FirstNameList)};
         n is the amount of entries in the dictionary. To generate a tree word
         list, see <xref linkend='section.ugr.tools.ruta.workbench.create_dictionaries' />.
         A tree word list is used in the same way as simple word lists,
-        for example <literal>Document{->MARKFAST(FistName, "FirstNames.twl")};</literal>.
+        for example <literal>Document{->MARKFAST(FirstName, "FirstNames.twl")};</literal>.
       </para>
       <para>
         A third kind of usable WORDLISTs are <quote>multi tree word list</quote>s.
@@ -568,7 +568,7 @@ Document{->MARKFAST(FistName, FirstNameList)};
         first names and last names in the whole document:
         <programlisting><![CDATA[WORDLIST Names = 'Names.mtwl';
 Declare FirstName, LastName;
-Document{->TRIE("FirstNames.txt" = FistName, "LastNames.txt" = LastName, 
+Document{->TRIE("FirstNames.txt" = FirstName, "LastNames.txt" = LastName,
                                           Names, false, 0, false, 0, "")};]]></programlisting>
       </para>
     </section>
@@ -596,7 +596,7 @@ Barack Obama; democrats; 2009
 ]]></programlisting>
         To annotate our documents we could use the following set of
         rules:
-        <programlisting><![CDATA[WORDTABLE presidentsOfUSA = "presidentsOfUSA.csv";
+        <programlisting><![CDATA[WORDTABLE presidentsOfUSA = 'presidentsOfUSA.csv';
 DECLARE Annotation PresidentOfUSA(STRING party, INT yearOfInauguration);
 Document{->MARKTABLE(PresidentOfUSA, 1, "party" = 2, 
 											 "yearOfInauguration" = 3)};]]></programlisting>
