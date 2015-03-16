@@ -27,9 +27,13 @@ import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.dltk.compiler.util.Util;
+import org.eclipse.dltk.core.DLTKLanguageManager;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.ui.wizards.NewSourceModulePage;
 
 public class RutaFileCreationPage extends NewSourceModulePage {
@@ -38,7 +42,21 @@ public class RutaFileCreationPage extends NewSourceModulePage {
   protected String getPageDescription() {
     return "This wizard creates a new Ruta script file.";
   }
+  
+  @Override
+  protected String[] getFileExtensions() {
+    String requiredNature = RutaNature.NATURE_ID;
 
+    IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+        .getLanguageToolkit(requiredNature);
+    String[] extensions = ScriptModelUtil.getFileExtensions(toolkit);
+    if (extensions != null) {
+      return extensions;
+    }
+
+    return new String[] { Util.EMPTY_STRING };
+  }
+  
   @Override
   protected String getFileContent() {
     StringBuilder sb = new StringBuilder();
@@ -91,7 +109,7 @@ public class RutaFileCreationPage extends NewSourceModulePage {
 
   @Override
   protected String getRequiredNature() {
-    return RutaNature.NATURE_ID;
+    return null;
   }
 
   @Override

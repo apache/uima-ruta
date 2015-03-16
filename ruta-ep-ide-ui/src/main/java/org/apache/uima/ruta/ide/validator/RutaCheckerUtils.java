@@ -100,6 +100,9 @@ public class RutaCheckerUtils {
     }
     IModelElement elements[] = null;
     namespaceStack.push(fileNameWithoutExtension);
+    if(sourceModule == null) {
+      return imports;
+    }
     try {
       elements = sourceModule.getChildren();
       for (int i = 0; i < elements.length; i++) {

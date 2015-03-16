@@ -103,6 +103,8 @@ import org.eclipse.dltk.compiler.problem.ProblemSeverity;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.builder.ISourceLineTracker;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 public class LanguageCheckerVisitor extends ASTVisitor {
 
@@ -538,7 +540,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       return true;
     }
     if (s instanceof RutaVariableReference) {
-      if(s instanceof NullExpression) {
+      if (s instanceof NullExpression) {
         return false;
       }
       RutaVariableReference ref = (RutaVariableReference) s;
@@ -655,17 +657,17 @@ public class LanguageCheckerVisitor extends ASTVisitor {
                 pr.reportProblem(problem);
               }
               Object arg1 = childs.get(0);
-              if(arg1 instanceof RutaExpression) {
+              if (arg1 instanceof RutaExpression) {
                 RutaExpression e1 = (RutaExpression) arg1;
-                if(e1.getKind() != RutaTypeConstants.RUTA_TYPE_AT) {
+                if (e1.getKind() != RutaTypeConstants.RUTA_TYPE_AT) {
                   IProblem problem = problemFactory.createWrongArgumentTypeProblem(e1, "Type");
                   pr.reportProblem(problem);
                 }
               }
               Object arg2 = childs.get(1);
-              if(arg2 instanceof RutaExpression) {
+              if (arg2 instanceof RutaExpression) {
                 RutaExpression e2 = (RutaExpression) arg2;
-                if(e2.getKind() != RutaTypeConstants.RUTA_TYPE_S) {
+                if (e2.getKind() != RutaTypeConstants.RUTA_TYPE_S) {
                   IProblem problem = problemFactory.createWrongArgumentTypeProblem(e2, "String");
                   pr.reportProblem(problem);
                 }
@@ -983,7 +985,15 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       IPath descriptorRootPath = RutaProjectUtils.getDescriptorRootPath(sourceModule
               .getScriptProject().getProject());
       IPath basicTSD = descriptorRootPath.append("BasicTypeSystem.xml");
-      importCompleteTypeSystem(basicTSD, null);
+      boolean exists = basicTSD.toFile().exists();
+      if (exists) {
+        importCompleteTypeSystem(basicTSD, null);
+      } else {
+        // not in a common ruta project
+        // try to find the file in the classpath
+        URL resource = classLoader.getResource("org/apache/uima/ruta/engine/BasicTypeSystem.xml");
+        importCompleteTypeSystem(null, resource);
+      }
     } catch (Exception e) {
       RutaIdeUIPlugin.error(e);
     }
@@ -1257,6 +1267,20 @@ public class LanguageCheckerVisitor extends ASTVisitor {
               new XMLInputSource(descriptorPath.toPortableString()));
       ResourceManager resMgr = getResourceManager(classLoader);
       typeSysDescr.resolveImports(resMgr);
+    } else {
+      // backup: just search for the file named correctly
+      String lastSegment = descriptorPath.lastSegment();
+      PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(
+              classLoader);
+      String prefix = "classpath*:**/";
+      String pattern = prefix + lastSegment;
+      Resource[] resources = resolver.getResources(pattern);
+      if(resources != null && resources.length != 0) {
+        typeSysDescr = UIMAFramework.getXMLParser().parseTypeSystemDescription(
+                new XMLInputSource(resources[0].getURL()));
+        ResourceManager resMgr = getResourceManager(classLoader);
+        typeSysDescr.resolveImports(resMgr);
+      }
     }
     return typeSysDescr;
   }
