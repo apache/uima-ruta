@@ -42,13 +42,12 @@ public class RutaFileCreationPage extends NewSourceModulePage {
   protected String getPageDescription() {
     return "This wizard creates a new Ruta script file.";
   }
-  
+
   @Override
   protected String[] getFileExtensions() {
     String requiredNature = RutaNature.NATURE_ID;
 
-    IDLTKLanguageToolkit toolkit = DLTKLanguageManager
-        .getLanguageToolkit(requiredNature);
+    IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(requiredNature);
     String[] extensions = ScriptModelUtil.getFileExtensions(toolkit);
     if (extensions != null) {
       return extensions;
@@ -56,7 +55,7 @@ public class RutaFileCreationPage extends NewSourceModulePage {
 
     return new String[] { Util.EMPTY_STRING };
   }
-  
+
   @Override
   protected String getFileContent() {
     StringBuilder sb = new StringBuilder();
@@ -70,37 +69,38 @@ public class RutaFileCreationPage extends NewSourceModulePage {
     } catch (ModelException e) {
       RutaIdeUIPlugin.error(e);
     }
-    if(folder == null)  {
+    if (folder == null) {
       return "";
     }
-    
+
     IPath path = scriptFolder.getPath();
     IPath fullPath = folder.getFullPath();
     IPath relativeTo = path.makeRelativeTo(fullPath);
-    if(!relativeTo.isEmpty()) {
-    sb.append("PACKAGE ");
-    String pathString = "";
-    for (int i = 0; i < relativeTo.segments().length; i++) {
-      pathString += relativeTo.segments()[i];
-      if (i < relativeTo.segments().length - 1) {
-        pathString += ".";
+    if (!relativeTo.isEmpty()) {
+      sb.append("PACKAGE ");
+      String pathString = "";
+      for (int i = 0; i < relativeTo.segments().length; i++) {
+        pathString += relativeTo.segments()[i];
+        if (i < relativeTo.segments().length - 1) {
+          pathString += ".";
+        }
       }
-    }
-    sb.append(pathString);
-    sb.append(";\n");
+      sb.append(pathString);
+      sb.append(";\n");
     }
     return sb.toString();
   }
 
-  private IFolder getScriptFolderOf(IScriptFolder scriptFolder, IScriptProject scriptProject) throws ModelException {
+  private IFolder getScriptFolderOf(IScriptFolder scriptFolder, IScriptProject scriptProject)
+          throws ModelException {
     List<IFolder> scriptFolders = RutaProjectUtils.getScriptFolders(scriptProject);
     for (IFolder each : scriptFolders) {
-      if(each.equals(scriptFolder.getResource())) {
+      if (each.equals(scriptFolder.getResource())) {
         return each;
       }
       IPath path = scriptFolder.getPath().makeRelativeTo(each.getFullPath());
       IResource findMember = each.findMember(path);
-      if(findMember != null && findMember instanceof IFolder) {
+      if (findMember != null && findMember instanceof IFolder) {
         return each;
       }
     }
@@ -109,7 +109,7 @@ public class RutaFileCreationPage extends NewSourceModulePage {
 
   @Override
   protected String getRequiredNature() {
-    return null;
+    return RutaNature.NATURE_ID;
   }
 
   @Override
