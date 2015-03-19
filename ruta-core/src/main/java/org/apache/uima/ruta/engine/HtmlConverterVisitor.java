@@ -45,15 +45,18 @@ public class HtmlConverterVisitor extends TextExtractingVisitor {
 
   private Collection<String> newlineInducingTags;
 
-  public HtmlConverterVisitor(String[] newlineInducingTags, boolean skipWhitespace) {
+  private boolean processAll = true;
+
+  public HtmlConverterVisitor(String[] newlineInducingTags, boolean skipWhitespace, boolean processAll) {
     this.newlineInducingTags = Arrays.asList(newlineInducingTags);
     this.skipWhitespace = skipWhitespace;
+    this.processAll = processAll;
   }
 
   @Override
   public void visitStringNode(Text node) {
     super.visitStringNode(node);
-    if (this.inBody && !this.inScript && (!skipWhitespace || !StringUtils.isBlank(node.getText()))) {
+    if ((processAll || this.inBody) && !this.inScript && (!skipWhitespace || !StringUtils.isBlank(node.getText()))) {
       int from = node.getStartPosition();
       int to = node.getEndPosition();
       textSpans.add(new HtmlConverterPSpan(from, to, node.getText()));

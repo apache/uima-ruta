@@ -114,6 +114,15 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
   private Boolean skipWhitespaces;
 
   /**
+   * TODO
+   */
+  public static final String PARAM_PROCESS_ALL = "processAll";
+
+  @ConfigurationParameter(name = PARAM_PROCESS_ALL, mandatory = false, defaultValue = "false")
+  private Boolean processAll;
+
+  
+  /**
    * This string parameter determines the character sequence that replaces a linebreak. The default
    * behavior is the empty string.
    */
@@ -186,6 +195,8 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
     replaceLinebreaks = replaceLinebreaks == null ? true : replaceLinebreaks;
     skipWhitespaces = (Boolean) aContext.getConfigParameterValue(PARAM_SKIP_WHITESPACES);
     skipWhitespaces = skipWhitespaces == null ? true : skipWhitespaces;
+    processAll = (Boolean) aContext.getConfigParameterValue(PARAM_PROCESS_ALL);
+    processAll = processAll == null ? true : processAll;
     linebreakReplacement = (String) aContext.getConfigParameterValue(PARAM_LINEBREAK_REPLACEMENT);
     linebreakReplacement = linebreakReplacement == null ? "" : linebreakReplacement;
     String conversionPolicy = (String) aContext.getConfigParameterValue(PARAM_CONVERSION_POLICY);
@@ -267,7 +278,7 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
     try {
       Parser parser = new Parser(documentText);
       NodeList list = parser.parse(null);
-      HtmlConverterVisitor visitor = new HtmlConverterVisitor(newlineInducingTags, skipWhitespaces);
+      HtmlConverterVisitor visitor = new HtmlConverterVisitor(newlineInducingTags, skipWhitespaces, processAll);
       list.visitAllNodesWith(visitor);
       visibleSpansSoFar = visitor.getTextSpans();
       linebreaksFromHtmlTags = visitor.getLinebreaksFromHtmlTags();
