@@ -33,6 +33,8 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
+import org.apache.uima.cas.FSIterator;
+import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationIndex;
@@ -71,10 +73,10 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
 
   public static final String NAMESPACE = "org.apache.uima.ruta.type.html.";
 
-  private static final String DEFAULT_MODIFIED_VIEW = "plaintext";
+  public static final String DEFAULT_MODIFIED_VIEW = "plaintext";
 
   public static final String LINEBREAK = "\n";
-  
+
   /**
    * This string parameter specifies the name of the new view. The default value is
    * <code>plaintext</code>.
@@ -114,14 +116,23 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
   private Boolean skipWhitespaces;
 
   /**
-   * TODO
+   * If this boolean parameter is set to true, then the tags of the complete document is processed
+   * and not only thos within the body tag.
    */
   public static final String PARAM_PROCESS_ALL = "processAll";
 
   @ConfigurationParameter(name = PARAM_PROCESS_ALL, mandatory = false, defaultValue = "false")
   private Boolean processAll;
 
-  
+  /**
+   * If this boolean parameter is set to true, then the tags of the complete document is processed
+   * and not only those tags within the body tag.
+   */
+  public static final String PARAM_EXPAND_OFFSETS = "expandOffsets";
+
+  @ConfigurationParameter(name = PARAM_EXPAND_OFFSETS, mandatory = false, defaultValue = "false")
+  private Boolean expandOffsets;
+
   /**
    * This string parameter determines the character sequence that replaces a linebreak. The default
    * behavior is the empty string.
@@ -140,6 +151,24 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
   @ConfigurationParameter(name = PARAM_NEWLINE_INDUCING_TAGS, mandatory = false, defaultValue = {
       "br", "p", "div", "ul", "ol", "dl", "li", "h1", "h2", "h3", "h4", "h5", "h6", "blockquote" })
   private String[] newlineInducingTags;
+
+  /**
+   * This string array parameter sets the names of the html tags that create additional text in the
+   * output view. The acutal string of the gap is defined by the parameter <code>gapText</code>.
+   */
+  public static final String PARAM_GAP_INDUCING_TAGS = "gapInducingTags";
+
+  @ConfigurationParameter(name = PARAM_GAP_INDUCING_TAGS, mandatory = false)
+  private String[] gapInducingTags;
+
+  /**
+   * This string parameter determines the character sequence that is introduced by the html tags
+   * specified in the <code>gapInducingTags</code>.
+   */
+  public static final String PARAM_GAP_TEXT = "apText";
+
+  @ConfigurationParameter(name = PARAM_GAP_TEXT, mandatory = false, defaultValue = "")
+  private String gapText;
 
   /**
    * This string array parameter can be used to apply custom conversions. It defaults to a list of
@@ -169,17 +198,15 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
 
   /**
    * This string array parameter corresponds to <code>conversionPatterns</code> such that
-   * <code>conversionPatterns[i]</code> will be replaced by
-   * <code>conversionReplacements[i]</code>; replacements should be shorter than the source
-   * pattern. Per default, the replacement strings are computed using Html4 decoding. Remember to
-   * enable explicit conversion via <code>conversionPolicy</code> first.
+   * <code>conversionPatterns[i]</code> will be replaced by <code>conversionReplacements[i]</code>;
+   * replacements should be shorter than the source pattern. Per default, the replacement strings
+   * are computed using Html4 decoding. Remember to enable explicit conversion via
+   * <code>conversionPolicy</code> first.
    */
   public static final String PARAM_CONVERSION_REPLACEMENTS = "conversionReplacements";
 
   @ConfigurationParameter(name = PARAM_CONVERSION_REPLACEMENTS, mandatory = false)
   private String[] conversionReplacements;
-
-
 
   private int[] map;
 
@@ -225,7 +252,8 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
           "&lt;", "&gt;", "&apos;", "&sect;", "&uml;", "&copy;", "&trade;", "&reg;", "&ouml;",
           "&auml;", "&uuml;", "&#160;" };
     }
-    conversionReplacements = (String[]) aContext.getConfigParameterValue(PARAM_CONVERSION_REPLACEMENTS);
+    conversionReplacements = (String[]) aContext
+            .getConfigParameterValue(PARAM_CONVERSION_REPLACEMENTS);
     if (conversionReplacements == null) {
       conversionReplacements = new String[conversionPatterns.length];
       for (int i = 0; i < conversionPatterns.length; i++) {
@@ -273,15 +301,18 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
     }
     SortedSet<HtmlConverterPSpan> visibleSpansSoFar = new TreeSet<HtmlConverterPSpan>();
     SortedSet<HtmlConverterPSpan> linebreaksFromHtmlTags = new TreeSet<HtmlConverterPSpan>();
+    SortedSet<HtmlConverterPSpan> gapsFromHtmlTags = new TreeSet<HtmlConverterPSpan>();
 
     // process
     try {
       Parser parser = new Parser(documentText);
       NodeList list = parser.parse(null);
-      HtmlConverterVisitor visitor = new HtmlConverterVisitor(newlineInducingTags, skipWhitespaces, processAll);
+      HtmlConverterVisitor visitor = new HtmlConverterVisitor(newlineInducingTags, gapInducingTags,
+              gapText, skipWhitespaces, processAll);
       list.visitAllNodesWith(visitor);
       visibleSpansSoFar = visitor.getTextSpans();
       linebreaksFromHtmlTags = visitor.getLinebreaksFromHtmlTags();
+      gapsFromHtmlTags = visitor.getGapsFromHtmlTags();
     } catch (ParserException e) {
       throw new AnalysisEngineProcessException(e);
     }
@@ -298,6 +329,7 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
       }
     }
     visibleSpansSoFar.addAll(linebreaksFromHtmlTags);
+    visibleSpansSoFar.addAll(gapsFromHtmlTags);
 
     // create new doc-text and the map from deletions and visible-text-spans:
     StringBuffer sbu = new StringBuffer(documentText.length());
@@ -352,6 +384,7 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
     JCas modview = fromJcas.getView(toView);
 
     Set<Annotation> indexedFs = new HashSet<Annotation>();
+    Set<Annotation> toExpand = new HashSet<Annotation>();
     AnnotationIndex<Annotation> annotationIndex = fromJcas.getAnnotationIndex();
     TypeSystem typeSystem = fromJcas.getTypeSystem();
     Type docType = typeSystem.getType(UIMAConstants.TYPE_DOCUMENT);
@@ -383,8 +416,56 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
             getContext().getLogger().log(Level.WARNING, "illegal annotation offset mapping");
           }
         }
+      } else if (expandOffsets) {
+        clone.setBegin(mappedBegin);
+        clone.setEnd(mappedEnd);
+        toExpand.add(clone);
       }
     }
+
+    for (Annotation each : toExpand) {
+      Annotation nextBestAnnotation = getNextBestAnnotation(each, modview);
+      if (nextBestAnnotation != null) {
+        each.setBegin(nextBestAnnotation.getBegin());
+        each.setEnd(nextBestAnnotation.getEnd());
+        Feature expandedOffsetsFeature = each.getType().getFeatureByBaseName("expandedOffsets");
+        if (expandedOffsetsFeature != null) {
+          each.setBooleanValue(expandedOffsetsFeature, true);
+        }
+        modview.addFsToIndexes(each);
+      }
+    }
+  }
+
+  private Annotation getNextBestAnnotation(Annotation source, JCas jcas) {
+
+    FSIterator<Annotation> iterator = jcas.getAnnotationIndex().iterator(source);
+    Annotation best = null;
+    if (iterator.isValid()) {
+      Annotation annotation = iterator.get();
+      best = annotation;
+    } else {
+      Annotation dummy = new Annotation(jcas, source.getBegin(), source.getBegin() +1);
+      iterator = jcas.getAnnotationIndex().iterator(dummy);
+      if(!iterator.isValid()) {
+        if((jcas.getDocumentText().length()/ 2) > source.getBegin()) {
+          iterator.moveToFirst();
+          if (iterator.isValid()) {
+            Annotation annotation = iterator.get();
+            best = annotation;
+          }
+        } else {
+          iterator.moveToLast();
+          if (iterator.isValid()) {
+            Annotation annotation = iterator.get();
+            best = annotation;
+          }
+        }
+      }
+    }
+    
+    
+    return best;
   }
 
   private SortedSet<HtmlConverterPSpan> handleLinebreaksInDocumentText(

@@ -21,6 +21,7 @@ package org.apache.uima.ruta.engine;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -43,12 +44,25 @@ public class HtmlConverterVisitor extends TextExtractingVisitor {
 
   private SortedSet<HtmlConverterPSpan> linebreaksFromHtmlTags = new TreeSet<HtmlConverterPSpan>();
 
+  private SortedSet<HtmlConverterPSpan> gapsFromHtmlTags = new TreeSet<HtmlConverterPSpan>();
+
   private Collection<String> newlineInducingTags;
 
   private boolean processAll = true;
 
-  public HtmlConverterVisitor(String[] newlineInducingTags, boolean skipWhitespace, boolean processAll) {
-    this.newlineInducingTags = Arrays.asList(newlineInducingTags);
+  private List<String> gapInducingTags;
+
+  private String gapText;
+
+
+  public HtmlConverterVisitor(String[] newlineInducingTags,String[] gapInducingTags, String gapText, boolean skipWhitespace, boolean processAll) {
+    if(newlineInducingTags != null) {
+      this.newlineInducingTags = Arrays.asList(newlineInducingTags);
+    }
+    if(gapInducingTags != null) {
+      this.gapInducingTags = Arrays.asList(gapInducingTags);
+    }
+    this.gapText = gapText;
     this.skipWhitespace = skipWhitespace;
     this.processAll = processAll;
   }
@@ -68,14 +82,19 @@ public class HtmlConverterVisitor extends TextExtractingVisitor {
     super.visitTag(tag);
     String trimmedTagnameLowercase = tag.getTagName().toLowerCase().trim();
     if (trimmedTagnameLowercase.equals("body")) {
-      this.inBody = true;
+      inBody = true;
     } else if (trimmedTagnameLowercase.equals("script")) {
-      this.inScript = true;
+      inScript = true;
     }
-    if (this.newlineInducingTags.contains(trimmedTagnameLowercase)) {
+    if (newlineInducingTags != null && newlineInducingTags.contains(trimmedTagnameLowercase)) {
       int begin = tag.getStartPosition();
-      this.linebreaksFromHtmlTags.add(new HtmlConverterPSpanReplacement(begin, begin + 1,
+      linebreaksFromHtmlTags.add(new HtmlConverterPSpanReplacement(begin, begin + 1,
               HtmlConverter.LINEBREAK));
+    }
+    if (gapInducingTags != null && gapInducingTags.contains(trimmedTagnameLowercase)) {
+      int begin = tag.getStartPosition();
+      gapsFromHtmlTags.add(new HtmlConverterPSpanReplacement(begin, begin+gapText.length(),
+              gapText));
     }
   }
 
@@ -95,5 +114,9 @@ public class HtmlConverterVisitor extends TextExtractingVisitor {
 
   public SortedSet<HtmlConverterPSpan> getLinebreaksFromHtmlTags() {
     return linebreaksFromHtmlTags;
+  }
+  
+  public SortedSet<HtmlConverterPSpan> getGapsFromHtmlTags() {
+    return gapsFromHtmlTags;
   }
 }
