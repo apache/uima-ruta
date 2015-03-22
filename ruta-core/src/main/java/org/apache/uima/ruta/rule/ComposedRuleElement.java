@@ -429,7 +429,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
         containerMatch.enforceUpdate();
       }
       ruleMatch.setMatched((ruleMatch.matched() || removedFailedMatches)
-              && (evaluateMatches != null || continueMatch));
+              && (evaluateMatches != null || continueMatch || sideStepOrigin != null));
       if (failed) {
         // TODO failed was caused by a child: should here failed = false?
         if (!removedFailedMatches && evaluateMatches != null && continueMatch) {
