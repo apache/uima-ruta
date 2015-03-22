@@ -49,6 +49,7 @@ import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.RecognizerSharedState;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.TokenStream;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
@@ -210,6 +211,7 @@ public void setExternalFactory(RutaExternalFactory factory) {
 		return parent.getEnvironment().isVariableOfType(name,type);
 	}
 	
+	/*
 	public void addType(RutaBlock parent, String type) {
 	    assert !moduleName.contains(".");
 	    assert !type.contains(".");
@@ -220,7 +222,53 @@ public void setExternalFactory(RutaExternalFactory factory) {
 	    }
             parent.getEnvironment().declareType(resolvedType);
             
+            if(descInfo!= null) {
+	            String descriptionString = null;
+		    if(StringUtils.isBlank(namespace)) {
+		       descriptionString = "Type defined in " + moduleName;
+		    } else {
+		       descriptionString = "Type defined in " + parent.getNamespace() + "." + moduleName;
+		    }
+		    String parentType = "uima.tcas.Annotation";
+		    
+		    descInfo.addType(parent.getNamespace()+"."+type.trim(), descriptionString, parentType);
+		}
 	}
+	*/
+	public void addType(RutaBlock parent, Token nameToken, Token parentTypeToken, List featureTypes,
+          List<Token> featureNames) {
+          String name = nameToken.getText();
+          String parentType = "uima.tcas.Annotation";
+          if(parentTypeToken != null) {
+          	parentType = parentTypeToken.getText();
+	  }
+	  String resolvedType = name;
+	  if (!name.contains(".")) {
+	    resolvedType = namespace + "." + moduleName + "." + name;
+	  }
+          parent.getEnvironment().declareType(resolvedType);
+	  if(descInfo != null) {
+		  name = parent.getNamespace() + "." + name.trim();
+		  String descriptionString = null;
+		  if(StringUtils.isBlank(namespace)) {
+			  descriptionString = "Type defined in " + moduleName;
+			  } else {
+			  descriptionString = "Type defined in " + parent.getNamespace() + "." + moduleName;
+		  }
+		  descInfo.addType(name, descriptionString, parentType);
+		  if(featureTypes != null && featureNames != null) {
+			  for (int i = 0; i < featureTypes.size(); i++) {
+				  Object object = featureTypes.get(i);
+				  String ftype = "";
+				  if (object instanceof Token) {
+				  	ftype = ((Token) object).getText();
+				  }
+				  String fname = featureNames.get(i).getText();
+				  descInfo.addFeature(name, fname, fname, ftype);
+			  }
+		  }
+	  }
+ 	 }
 	
 	public boolean isType(RutaBlock parent, String type) {
 		return parent.getEnvironment().getType(type) != null || type.equals("Document");
@@ -234,15 +282,27 @@ public void setExternalFactory(RutaExternalFactory factory) {
 	
 	public void addImportTypeSystem(RutaBlock parent, String descriptor) {
 		parent.getEnvironment().addTypeSystem(descriptor);
+		if(descInfo != null) {
+		  descInfo.addTypeSystem(descriptor);
+		}
 	}
 	public void addImportScript(RutaBlock parent, String namespace) {
 		parent.getScript().addScript(namespace, null);
+		if(descInfo != null) {
+		  descInfo.addScript(namespace);
+		}
 	}
 	public void addImportEngine(RutaBlock parent, String namespace) {
 		parent.getScript().addEngine(namespace, null);
+		if(descInfo != null) {
+		  descInfo.addEngine(namespace);
+		}
 	}
 	public void addImportUimafitEngine(RutaBlock parent, String namespace) {
 		parent.getScript().addUimafitEngine(namespace, null);
+		if(descInfo != null) {
+		  descInfo.addUimafitEngine(namespace);
+		}
 	}
 
 	/**
@@ -257,6 +317,9 @@ public void setExternalFactory(RutaExternalFactory factory) {
             parent.getEnvironment().importTypeFromTypeSystem(typesystem, qualifiedType);
         } else {
             parent.getEnvironment().importTypeFromTypeSystem(typesystem, qualifiedType, alias.getText());
+        }
+        if(descInfo != null) {
+          descInfo.addTypeSystem(typesystem);
         }
     }
 
@@ -276,6 +339,9 @@ public void setExternalFactory(RutaExternalFactory factory) {
         } else {
             env.importPackage(qualifiedPackage, aliasText);
         }
+        if(descInfo != null) {
+          descInfo.addTypeSystem(typesystem);
+        }
     }
 
     /**
@@ -290,6 +356,9 @@ public void setExternalFactory(RutaExternalFactory factory) {
         String aliasText = alias != null? alias.getText() : null;
 
         env.importAllPackagesFromTypeSystem(typesystem, aliasText);
+        if(descInfo != null) {
+          descInfo.addTypeSystem(typesystem);
+        }
     }
 
 	protected static final int[] getBounds(Token t) {
@@ -515,10 +584,10 @@ List featureNames = new ArrayList();
 	DECLARE 
 	//{!isType($blockDeclaration::env, input.LT(1).getText())}? 
 	lazyParent = annotationType?
-	id = Identifier {addType($blockDeclaration::env, id.getText());}
+	id = Identifier {addType($blockDeclaration::env, id, lazyParent, null, null);}
 			(COMMA 
 			//{!isType($blockDeclaration::env, input.LT(1).getText())}? 
-			id = Identifier {addType($blockDeclaration::env, id.getText());}
+			id = Identifier {addType($blockDeclaration::env, id, lazyParent, null, null);}
 		 )* SEMI
 	| 
 	DECLARE type = annotationType newName = Identifier 
@@ -544,7 +613,9 @@ List featureNames = new ArrayList();
 			) 
 			fname = Identifier{featureNames.add(fname.getText());})* 
 		RPAREN) SEMI 
-		{addType($blockDeclaration::env, newName.getText());}
+		{
+		addType($blockDeclaration::env, id, type, featureTypes, featureNames);
+		}
 	)
 	;
 	
