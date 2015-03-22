@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.ruta.ide.core.builder;
+package org.apache.uima.ruta.descriptor;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,7 +25,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -59,14 +63,12 @@ import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
 import org.apache.uima.util.XMLSerializer;
 import org.apache.uima.util.XMLizable;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
-public class RutaSimpleBuilder {
+public class RutaDescriptorBuilder {
 
   private static ResourceSpecifierFactory uimaFactory = UIMAFramework.getResourceSpecifierFactory();
 
@@ -78,7 +80,7 @@ public class RutaSimpleBuilder {
 
   private ResourceManager rm;
 
-  public RutaSimpleBuilder(String defaultTypeSystem, String defaultEngine)
+  public RutaDescriptorBuilder(String defaultTypeSystem, String defaultEngine)
           throws InvalidXMLException, IOException {
     super();
     this.defaultTypeSystem = defaultTypeSystem;
@@ -92,10 +94,10 @@ public class RutaSimpleBuilder {
 
   }
 
-  public void build(DescriptorManager desc, String typeSystemOutput, String engineOutput,
+  public void build(RutaDescriptorInformation desc, String typeSystemOutput, String engineOutput,
           RutaBuildOptions option, String mainScript, String[] scriptPaths, String[] enginePaths,
-          ClassLoader classloader) throws SAXException, RutaBuildException, InvalidXMLException,
-          IOException, ResourceInitializationException {
+          ClassLoader classloader) throws SAXException, InvalidXMLException,
+          IOException, ResourceInitializationException, URISyntaxException {
 
     rm = new ResourceManager_impl(classloader);
     String dataPath = "";
@@ -126,7 +128,7 @@ public class RutaSimpleBuilder {
       String absoluteLocation = initialTypeSystem.getSourceUrlString();
       import_impl.setLocation(absoluteLocation);
     } else {
-      String relativeLocation = getRelativeLocation(defaultTypeSystemFile.getAbsolutePath(),
+      String relativeLocation = getRelativeLocation(defaultTypeSystemFile.toURI(),
               typeSystemOutput);
       import_impl.setLocation(relativeLocation);
     }
@@ -162,8 +164,7 @@ public class RutaSimpleBuilder {
             String absoluteLocation = each.getSourceUrlString();
             import_impl.setLocation(absoluteLocation);
           } else {
-            String path = url.getPath();
-            String relativeLocation = getRelativeLocation(path, typeSystemOutput);
+            String relativeLocation = getRelativeLocation(url.toURI(), typeSystemOutput);
             File parentFile = new File(typeSystemOutput).getParentFile();
             File targetFile = new File(parentFile, relativeLocation);
             boolean ableToFindFile = targetFile.exists();
@@ -196,7 +197,7 @@ public class RutaSimpleBuilder {
           String absoluteLocation = each.getSourceUrlString();
           import_impl.setLocation(absoluteLocation);
         } else {
-          String relativeLocation = getRelativeLocation(file.getAbsolutePath(), typeSystemOutput);
+          String relativeLocation = getRelativeLocation(file.toURI(), typeSystemOutput);
           import_impl.setLocation(relativeLocation);
         }
         importList.add(import_impl);
@@ -209,11 +210,7 @@ public class RutaSimpleBuilder {
     Import[] newImports = importList.toArray(new Import[0]);
     typeSystemDescription.setImports(newImports);
     if (option.isResolveImports()) {
-      try {
         typeSystemDescription.resolveImports(rm);
-      } catch (InvalidXMLException e) {
-        throw new RutaBuildException("Failed to resolve imported Type Systems", e);
-      }
     }
 
     // TODO hotfixes: where do I get the final types??
@@ -272,7 +269,7 @@ public class RutaSimpleBuilder {
     if (option.isImportByName()) {
       import_impl.setName(typeSystemDescription.getName());
     } else {
-      String relativeLocation = getRelativeLocation(engineOutput, typeSystemOutput);
+      String relativeLocation = getRelativeLocation(new File(engineOutput).toURI(), typeSystemOutput);
       import_impl.setLocation(relativeLocation);
     }
 
@@ -361,7 +358,7 @@ public class RutaSimpleBuilder {
     return name;
   }
 
-  private File configureEngine(DescriptorManager desc, String engineOutput,
+  private File configureEngine(RutaDescriptorInformation desc, String engineOutput,
           RutaBuildOptions option, String mainScript, String[] scriptPaths,
           String[] descriptorPaths, Capability capability, Import_impl import_impl,
           TypeSystemDescription aets) throws MalformedURLException {
@@ -395,7 +392,7 @@ public class RutaSimpleBuilder {
     for (String string : descriptorPaths) {
       File descDir = new File(string);
       File defaultResourceDir = new File(descDir.getParent(),
-              RutaProjectUtils.getDefaultResourcesLocation());
+              "resources");
       resourceLocations.add(defaultResourceDir.getAbsolutePath());
     }
     analysisEngineDescription
@@ -426,13 +423,15 @@ public class RutaSimpleBuilder {
     return file;
   }
 
-  private String getRelativeLocation(String target, String base) {
-    IPath targetPath = Path.fromOSString(target);
-    IPath basePath = Path.fromPortableString(base);
-    IPath result = targetPath.makeRelativeTo(basePath);
-    // TODO remove the first part! Should be correct in first place!
-    result = result.removeFirstSegments(1);
-    return result.toPortableString();
+  private String getRelativeLocation(URI target, String base) {
+    Path basePath = Paths.get(base);
+    if( !basePath.toFile().isDirectory()) {
+      basePath = basePath.getParent();
+    }
+    Path targetPath;
+      targetPath = Paths.get(target);
+    Path relativePath = basePath.relativize(targetPath);
+    return relativePath.toString();
   }
 
   private void configureExtensions(RutaBuildOptions options) {
@@ -503,5 +502,4 @@ public class RutaSimpleBuilder {
       return url;
     }
   }
-
 }

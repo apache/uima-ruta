@@ -54,6 +54,7 @@ import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.UimaContext;
 
+import org.apache.uima.ruta.descriptor.*;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.action.ActionFactory;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
@@ -102,6 +103,18 @@ private String namespace;
 private String moduleName;
 private ResourceManager resourceManager;
 private UimaContext context;
+
+private RutaDescriptorInformation descInfo;
+
+
+public void setDescriptorInformation(RutaDescriptorInformation descInfo) {
+  this.descInfo = descInfo;  
+}
+
+public RutaDescriptorInformation getDescriptorInformation() {
+  return descInfo;
+}
+
 public void setResourceManager(ResourceManager resourceManager) {
   this.resourceManager = resourceManager;  
 }
@@ -205,7 +218,8 @@ public void setExternalFactory(RutaExternalFactory factory) {
 	    if (!type.contains(".")) {
 	        resolvedType = namespace + "." + moduleName + "." + type;
 	    }
-        parent.getEnvironment().declareType(resolvedType);
+            parent.getEnvironment().declareType(resolvedType);
+            
 	}
 	
 	public boolean isType(RutaBlock parent, String type) {

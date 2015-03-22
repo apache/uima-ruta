@@ -214,6 +214,7 @@ licensed under the Common Public License.
                   org.apache.uima.ruta.action,
                   org.apache.uima.ruta.condition,
                   org.apache.uima.ruta.constraint,
+                  org.apache.uima.ruta.descriptor,
                   org.apache.uima.ruta.engine,
                   org.apache.uima.ruta.expression,
                   org.apache.uima.ruta.expression.bool,

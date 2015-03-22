@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.ruta.ide.core.builder;
+package org.apache.uima.ruta.descriptor;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,7 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-public class DescriptorManager {
+public class RutaDescriptorInformation {
 
   private static final boolean CONVERT = false;
 
@@ -44,7 +44,7 @@ public class DescriptorManager {
 
   private Collection<String> importedUimafitEngines;
 
-  public DescriptorManager() {
+  public RutaDescriptorInformation() {
     super();
     typeShortNames = new ArrayList<String>();
     typeTriples = new ArrayList<StringTriple>();
@@ -136,5 +136,5 @@ public class DescriptorManager {
   public Collection<String> getImportedUimafitEngines() {
     return importedUimafitEngines;
   }
-
+  
 }

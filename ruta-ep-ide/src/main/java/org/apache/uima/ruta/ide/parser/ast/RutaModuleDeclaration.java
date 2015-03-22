@@ -19,12 +19,12 @@
 
 package org.apache.uima.ruta.ide.parser.ast;
 
-import org.apache.uima.ruta.ide.core.builder.DescriptorManager;
+import org.apache.uima.ruta.descriptor.RutaDescriptorInformation;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 
 public class RutaModuleDeclaration extends ModuleDeclaration {
 
-  public DescriptorManager descriptorInfo;
+  public RutaDescriptorInformation descriptorInfo;
 
   public RutaModuleDeclaration(int sourceLength) {
     super(sourceLength);

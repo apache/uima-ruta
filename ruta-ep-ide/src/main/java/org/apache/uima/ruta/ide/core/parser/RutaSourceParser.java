@@ -30,13 +30,13 @@ import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.Token;
+import org.apache.uima.ruta.descriptor.RutaDescriptorInformation;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.extensions.IRutaBlockExtension;
 import org.apache.uima.ruta.ide.core.IRutaKeywords;
 import org.apache.uima.ruta.ide.core.RutaExtensionManager;
 import org.apache.uima.ruta.ide.core.RutaKeywords;
 import org.apache.uima.ruta.ide.core.RutaKeywordsManager;
-import org.apache.uima.ruta.ide.core.builder.DescriptorManager;
 import org.apache.uima.ruta.ide.parser.ast.RutaModuleDeclaration;
 import org.apache.uima.ruta.parser.RutaLexer;
 import org.eclipse.dltk.ast.parser.AbstractSourceParser;
@@ -130,7 +130,7 @@ public class RutaSourceParser extends AbstractSourceParser {
     parser.converter = new DLTKTokenConverter(content.toCharArray());
     parser.reporter = new DLTKRutaErrorReporter(parser.converter, problemReporter, parser);
 
-    parser.descriptor = new DescriptorManager();
+    parser.descriptor = new RutaDescriptorInformation();
 
     moduleDeclaration.descriptorInfo = parser.descriptor;
 

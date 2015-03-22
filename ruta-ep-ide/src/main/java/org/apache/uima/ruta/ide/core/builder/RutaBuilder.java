@@ -27,6 +27,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.uima.ruta.descriptor.RutaBuildOptions;
+import org.apache.uima.ruta.descriptor.RutaDescriptorBuilder;
+import org.apache.uima.ruta.descriptor.RutaDescriptorInformation;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.extensions.IEngineLoader;
 import org.apache.uima.ruta.extensions.IRutaActionExtension;
@@ -130,7 +133,7 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
     List<IPath> result = new ArrayList<IPath>();
     if (moduleDeclaration instanceof RutaModuleDeclaration) {
       RutaModuleDeclaration tmmd = (RutaModuleDeclaration) moduleDeclaration;
-      DescriptorManager sm = tmmd.descriptorInfo;
+      RutaDescriptorInformation sm = tmmd.descriptorInfo;
       IPath pathToModule = sourceModule.getResource().getLocation();
       String elementName = RutaProjectUtils.getModuleName(pathToModule);
 
@@ -199,11 +202,11 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
   }
 
   private void build(String basicTypesystem, String basicEngine, String typeSystemDest,
-          String engineDest, DescriptorManager sm, String mainScript, String[] scriptPaths,
+          String engineDest, RutaDescriptorInformation sm, String mainScript, String[] scriptPaths,
           String[] enginePaths, ClassLoader classloader) {
-    RutaSimpleBuilder builder = null;
+    RutaDescriptorBuilder builder = null;
     try {
-      builder = new RutaSimpleBuilder(basicTypesystem, basicEngine);
+      builder = new RutaDescriptorBuilder(basicTypesystem, basicEngine);
     } catch (Exception e) {
       DLTKCore.error(e.getMessage(), e);
       if (DLTKCore.DEBUG_PARSER) {

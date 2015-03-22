@@ -57,8 +57,9 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Statement;
 
+import org.apache.uima.ruta.descriptor.RutaDescriptorInformation;
+
 import org.apache.uima.ruta.ide.core.extensions.RutaExternalFactory;
-import org.apache.uima.ruta.ide.core.builder.DescriptorManager;
 import org.apache.uima.ruta.ide.parser.ast.ActionFactory;
 import org.apache.uima.ruta.ide.parser.ast.ComponentDeclaration;
 import org.apache.uima.ruta.ide.parser.ast.ComponentReference;
@@ -89,7 +90,7 @@ import org.apache.uima.ruta.ide.parser.ast.RutaPackageDeclaration;
 	private Collection<String> knownExternalBlocks = new ArrayList();
 	public int length;
 	public DLTKTokenConverter converter;
-	public DescriptorManager descriptor;
+	public RutaDescriptorInformation descriptor;
 	private int level = 0;
 	private RutaExternalFactory external = new RutaExternalFactory();
 	
