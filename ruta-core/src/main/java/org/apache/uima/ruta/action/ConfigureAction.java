@@ -80,7 +80,7 @@ public class ConfigureAction extends AbstractRutaAction {
             if (value instanceof StringListExpression) {
               StringListExpression sle = (StringListExpression) value;
               List<String> list = sle.getList(parent, stream);
-              targetEngine.setConfigParameterValue(stringValue, list.toArray());
+              targetEngine.setConfigParameterValue(stringValue, list.toArray(new String[0]));
             } else if (value instanceof TypeListExpression) {
               TypeListExpression tle = (TypeListExpression) value;
               List<Type> list = tle.getList(parent, stream);
@@ -88,7 +88,7 @@ public class ConfigureAction extends AbstractRutaAction {
               for (Type each : list) {
                 stringList.add(each.getName());
               }
-              targetEngine.setConfigParameterValue(stringValue, stringList.toArray());
+              targetEngine.setConfigParameterValue(stringValue, stringList.toArray(new String[0]));
             }
           } else {
             if (value instanceof IStringExpression) {
