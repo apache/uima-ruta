@@ -19,6 +19,7 @@
 
 package org.apache.uima.ruta.resource;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -31,6 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -361,7 +364,13 @@ public class TreeWordList implements RutaWordList {
 
   public void readXML(InputStream stream, String encoding) throws IOException {
     try {
-      InputStreamReader streamReader = new InputStreamReader(stream, encoding);
+      InputStream is = new BufferedInputStream(stream); // adds mark/reset support
+      boolean isXml = MultiTreeWordListPersistence.isSniffedXmlContentType(is);
+      if (!isXml){ // MTWL is encoded
+        is = new ZipInputStream(is);
+        ((ZipInputStream)is).getNextEntry(); // zip must contain a single entry
+      }
+      InputStreamReader streamReader = new InputStreamReader(is, encoding);
       this.root = new TextNode();
       XMLEventHandler handler = new XMLEventHandler(root);
       SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -389,7 +398,8 @@ public class TreeWordList implements RutaWordList {
   public void createXMLFile(String path, String encoding) {
     try {
       FileOutputStream output = new FileOutputStream(path);
-      OutputStreamWriter writer = new OutputStreamWriter(output, encoding);
+      ZipOutputStream zoutput = new ZipOutputStream(output);
+      OutputStreamWriter writer = new OutputStreamWriter(zoutput, encoding);
       writer.write("<?xml version=\"1.0\" ?>");
       writer.write("<root>");
       for (TextNode child : root.getChildren().values()) {

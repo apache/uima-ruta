@@ -45,54 +45,58 @@ public class TrieTest {
     String name = this.getClass().getSimpleName();
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
 
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
-              + ".txt", 50, false, false, null, namespace + "/");
-    } catch (Exception e) {
-      e.printStackTrace();
-      assert (false);
+    for (String scriptname : new String[] { name, name + "_compressed" }) {
+
+      CAS cas = null;
+      try {
+        cas = RutaTestUtils.process(
+                namespace + "/" + scriptname + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/"
+                        + name + ".txt", 50, false, false, null, namespace + "/");
+      } catch (Exception e) {
+        e.printStackTrace();
+        assert (false);
+      }
+      Type t = null;
+      AnnotationIndex<AnnotationFS> ai = null;
+      FSIterator<AnnotationFS> iterator = null;
+
+      t = RutaTestUtils.getTestType(cas, 1);
+      ai = cas.getAnnotationIndex(t);
+      assertEquals(3, ai.size());
+      iterator = ai.iterator();
+      assertEquals("Peter", iterator.next().getCoveredText());
+      assertEquals("Marshall", iterator.next().getCoveredText());
+      assertEquals("Joern", iterator.next().getCoveredText());
+
+      t = RutaTestUtils.getTestType(cas, 2);
+      ai = cas.getAnnotationIndex(t);
+      assertEquals(3, ai.size());
+      iterator = ai.iterator();
+      assertEquals("Kluegl", iterator.next().getCoveredText());
+      assertEquals("Schor", iterator.next().getCoveredText());
+      assertEquals("Kottmann", iterator.next().getCoveredText());
+
+      t = RutaTestUtils.getTestType(cas, 3);
+      ai = cas.getAnnotationIndex(t);
+      assertEquals(3, ai.size());
+      iterator = ai.iterator();
+      assertEquals("Peter Kluegl", iterator.next().getCoveredText());
+      assertEquals("Marshall Schor", iterator.next().getCoveredText());
+      assertEquals("Joern Kottmann", iterator.next().getCoveredText());
+
+      t = RutaTestUtils.getTestType(cas, 4);
+      ai = cas.getAnnotationIndex(t);
+      assertEquals(3, ai.size());
+      iterator = ai.iterator();
+      assertEquals("Peter Kluegl: Ruta", iterator.next().getCoveredText());
+      assertEquals("Marshall Schor: UIMA", iterator.next().getCoveredText());
+      assertEquals("Joern Kottmann: CAS Editor", iterator.next().getCoveredText());
+
+      cas.release();
+
     }
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
-
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Peter", iterator.next().getCoveredText());
-    assertEquals("Marshall", iterator.next().getCoveredText());
-    assertEquals("Joern", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Kluegl", iterator.next().getCoveredText());
-    assertEquals("Schor", iterator.next().getCoveredText());
-    assertEquals("Kottmann", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 3);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Peter Kluegl", iterator.next().getCoveredText());
-    assertEquals("Marshall Schor", iterator.next().getCoveredText());
-    assertEquals("Joern Kottmann", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 4);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Peter Kluegl: Ruta", iterator.next().getCoveredText());
-    assertEquals("Marshall Schor: UIMA", iterator.next().getCoveredText());
-    assertEquals("Joern Kottmann: CAS Editor", iterator.next().getCoveredText());
-    
-    cas.release();
-    
   }
-  
+
   @Test
   public void testWithFeature() {
     String name = this.getClass().getSimpleName() + "WithFeature";
@@ -118,11 +122,11 @@ public class TrieTest {
     features.put(typeNameC, listC);
     String fnci = "c";
     listC.add(new TestFeature(fnci, "", "uima.cas.Integer"));
-   
 
     try {
       cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION,
-              namespace + "/" + this.getClass().getSimpleName() + ".txt", 50, false, false, complexTypes, features, namespace + "/");
+              namespace + "/" + this.getClass().getSimpleName() + ".txt", 50, false, false,
+              complexTypes, features, namespace + "/");
     } catch (Exception e) {
       e.printStackTrace();
       assert (false);
@@ -132,7 +136,7 @@ public class TrieTest {
     FSIterator<AnnotationFS> iterator = null;
     AnnotationFS next = null;
     Feature feature = null;
-    
+
     t = cas.getTypeSystem().getType(typeNameA);
     feature = t.getFeatureByBaseName("a");
     ai = cas.getAnnotationIndex(t);
@@ -147,7 +151,7 @@ public class TrieTest {
     next = iterator.next();
     assertEquals("Joern", next.getCoveredText());
     assertEquals("first", next.getStringValue(feature));
-    
+
     t = cas.getTypeSystem().getType(typeNameB);
     feature = t.getFeatureByBaseName("b");
     ai = cas.getAnnotationIndex(t);
@@ -162,7 +166,7 @@ public class TrieTest {
     next = iterator.next();
     assertEquals("Kottmann", next.getCoveredText());
     assertEquals(true, next.getBooleanValue(feature));
-    
+
     t = cas.getTypeSystem().getType(typeNameC);
     feature = t.getFeatureByBaseName("c");
     ai = cas.getAnnotationIndex(t);

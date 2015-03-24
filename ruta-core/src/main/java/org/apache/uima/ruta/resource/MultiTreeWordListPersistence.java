@@ -19,6 +19,7 @@
 
 package org.apache.uima.ruta.resource;
 
+import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,6 +27,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -49,9 +52,40 @@ public class MultiTreeWordListPersistence {
     readMTWL(root, new FileInputStream(path), "UTF-8");
   }
 
+  /**
+   * Sniffs the content type for xml type.
+   * 
+   * @param is
+   *            the inputStream to sniff. Must support {@link InputStream#markSupported()}
+   * @return true if this stream starts with '<?xml'
+   */
+  public static boolean isSniffedXmlContentType(InputStream is)
+          throws IOException {
+      if (is == null)
+          throw new IOException("Stream is null");
+      if (!is.markSupported()){
+          throw new IOException("Cannot mark stream. just wrap it in a BufferedInputStream");
+      }
+      byte[] bytes = new byte[5]; // peek first five letters
+      is.mark(5);
+      is.read(bytes);
+      String prefix = new String(bytes);
+      is.reset();
+      if ("<?xml".equals(prefix)){
+          return true;
+      }
+      return false;
+  }
+
   public void readMTWL(MultiTextNode root, InputStream stream, String encoding) throws IOException {
     try {
-      InputStreamReader streamReader = new InputStreamReader(stream, encoding);
+      InputStream is = new BufferedInputStream(stream); // adds mark/reset support
+      boolean isXml = isSniffedXmlContentType(is);
+      if (!isXml){ // MTWL is encoded
+          is = new ZipInputStream(is);
+          ((ZipInputStream)is).getNextEntry(); // zip must contain a single entry
+      }
+      InputStreamReader streamReader = new InputStreamReader(is, encoding);
       TrieXMLEventHandler handler = new TrieXMLEventHandler(root);
       SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
       SAXParser saxParser = saxParserFactory.newSAXParser();
@@ -75,7 +109,8 @@ public class MultiTreeWordListPersistence {
   public void createMTWLFile(MultiTextNode root, String path, String encoding) {
     try {
       FileOutputStream output = new FileOutputStream(path);
-      OutputStreamWriter writer = new OutputStreamWriter(output, encoding);
+      ZipOutputStream zoutput = new ZipOutputStream(output);
+      OutputStreamWriter writer = new OutputStreamWriter(zoutput, encoding);
       writer.write("<?xml version=\"1.0\" ?><root>");
       for (MultiTextNode node : root.getChildren().values()) {
         writeTextNode(writer, node);
