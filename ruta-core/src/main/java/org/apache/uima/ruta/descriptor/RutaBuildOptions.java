@@ -19,13 +19,14 @@
 
 package org.apache.uima.ruta.descriptor;
 
+import java.util.Collections;
 import java.util.List;
 
 public class RutaBuildOptions {
 
-  private final List<String> language;
+  private List<String> language = Collections.emptyList();
 
-  private final List<String> engines;
+  private List<String> engines = Collections.emptyList();
 
   private boolean importByName = false;
 
@@ -33,11 +34,18 @@ public class RutaBuildOptions {
 
   private boolean errorOnDuplicateShortNames;
 
+  private String encoding;
+
   public RutaBuildOptions(List<String> language, List<String> engines) {
     super();
     this.language = language;
     this.engines = engines;
   }
+  
+  public RutaBuildOptions() {
+    super();
+  }
+  
 
   public List<String> getLanguage() {
     return language;
@@ -69,6 +77,14 @@ public class RutaBuildOptions {
 
   public boolean isErrorOnDuplicateShortNames() {
     return errorOnDuplicateShortNames;
+  }
+
+  public String getEncoding() {
+    return encoding;
+  }
+
+  public void setEncoding(String encoding) {
+    this.encoding = encoding;
   }
 
 }

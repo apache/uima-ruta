@@ -44,6 +44,8 @@ public class RutaDescriptorInformation {
 
   private Collection<String> importedUimafitEngines;
 
+  private String scriptName;
+
   public RutaDescriptorInformation() {
     super();
     typeShortNames = new ArrayList<String>();
@@ -135,6 +137,14 @@ public class RutaDescriptorInformation {
 
   public Collection<String> getImportedUimafitEngines() {
     return importedUimafitEngines;
+  }
+
+  public void setScriptName(String scriptName) {
+    this.scriptName = scriptName;    
+  }
+  
+  public String getScriptName() {
+  return scriptName;
   }
   
 }

@@ -24,7 +24,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -72,42 +71,42 @@ public class RutaDescriptorBuilder {
 
   private static ResourceSpecifierFactory uimaFactory = UIMAFramework.getResourceSpecifierFactory();
 
-  private TypeSystemDescription typeSystemDescription;
+  // private TypeSystemDescription typeSystemDescription;
 
-  private AnalysisEngineDescription analysisEngineDescription;
+  // private AnalysisEngineDescription analysisEngineDescription;
 
   private final String defaultTypeSystem;
 
+  private final String defaultAnalysisEngine;
+
   private ResourceManager rm;
 
-  public RutaDescriptorBuilder(String defaultTypeSystem, String defaultEngine)
+  public RutaDescriptorBuilder(String defaultTypeSystem, String defaultAnalysisEngine)
           throws InvalidXMLException, IOException {
     super();
     this.defaultTypeSystem = defaultTypeSystem;
-    initialize(defaultEngine);
+    this.defaultAnalysisEngine = defaultAnalysisEngine;
   }
 
-  private void initialize(String defaultEngine) throws InvalidXMLException, IOException {
-    typeSystemDescription = uimaFactory.createTypeSystemDescription();
-    analysisEngineDescription = UIMAFramework.getXMLParser().parseAnalysisEngineDescription(
-            new XMLInputSource(new File(defaultEngine)));
+  public TypeSystemDescription createTypeSystemDescription(RutaDescriptorInformation desc,
+          String typeSystemOutput, RutaBuildOptions option, String[] enginePaths,
+          ClassLoader classloader) throws InvalidXMLException, ResourceInitializationException,
+          IOException, URISyntaxException {
 
-  }
+    TypeSystemDescription typeSystemDescription = uimaFactory.createTypeSystemDescription();
 
-  public void build(RutaDescriptorInformation desc, String typeSystemOutput, String engineOutput,
-          RutaBuildOptions option, String mainScript, String[] scriptPaths, String[] enginePaths,
-          ClassLoader classloader) throws SAXException, InvalidXMLException,
-          IOException, ResourceInitializationException, URISyntaxException {
-
-    rm = new ResourceManager_impl(classloader);
-    String dataPath = "";
-    for (String string : enginePaths) {
-      dataPath += string + File.pathSeparator;
+    ResourceManager rm = UIMAFramework.newDefaultResourceManager();
+    if (classloader != null) {
+      new ResourceManager_impl(classloader);
     }
-    rm.setDataPath(dataPath);
-
+    if (enginePaths != null) {
+      String dataPath = "";
+      for (String string : enginePaths) {
+        dataPath += string + File.pathSeparator;
+      }
+      rm.setDataPath(dataPath);
+    }
     Map<String, String> typeNameMap = new HashMap<String, String>();
-    Capability capability = uimaFactory.createCapability();
     // String defaultTypeSystem2 = defaultTypeSystem.replaceAll("/", "\\\\");
     File defaultTypeSystemFile = new File(defaultTypeSystem);
     if (!defaultTypeSystemFile.exists()) {
@@ -128,8 +127,7 @@ public class RutaDescriptorBuilder {
       String absoluteLocation = initialTypeSystem.getSourceUrlString();
       import_impl.setLocation(absoluteLocation);
     } else {
-      String relativeLocation = getRelativeLocation(defaultTypeSystemFile.toURI(),
-              typeSystemOutput);
+      String relativeLocation = getRelativeLocation(defaultTypeSystemFile.toURI(), typeSystemOutput);
       import_impl.setLocation(relativeLocation);
     }
     importList.add(import_impl);
@@ -146,7 +144,7 @@ public class RutaDescriptorBuilder {
         include = true;
         if (url == null) {
           throw new FileNotFoundException("Build process can't find " + eachName + " in "
-                  + mainScript);
+                  + desc.getScriptName());
         }
       }
       TypeSystemDescription each = getTypeSystemDescriptor(url, option);
@@ -179,14 +177,23 @@ public class RutaDescriptorBuilder {
         }
       } else {
         throw new FileNotFoundException("Build process can't find " + eachName + " in "
-                + mainScript);
+                + desc.getScriptName());
       }
     }
     for (String eachName : desc.getImportedScripts()) {
-      // TODO
       String locate = RutaEngine.locate(eachName, enginePaths, "TypeSystem.xml");
-      File file = new File(locate);
-      URL url = file.toURI().toURL();
+      URL url = null;
+      if (locate != null) {
+        File file = new File(locate);
+        url = file.toURI().toURL();
+      }
+      if (url == null) {
+        url = checkImportExistence(eachName, "xml", classloader);
+        if (url == null) {
+          throw new FileNotFoundException("Build process can't find " + eachName + " in "
+                  + desc.getScriptName());
+        }
+      }
       TypeSystemDescription each = getTypeSystemDescriptor(url, option);
       if (each != null) {
         fillTypeNameMap(typeNameMap, each);
@@ -197,20 +204,20 @@ public class RutaDescriptorBuilder {
           String absoluteLocation = each.getSourceUrlString();
           import_impl.setLocation(absoluteLocation);
         } else {
-          String relativeLocation = getRelativeLocation(file.toURI(), typeSystemOutput);
+          String relativeLocation = getRelativeLocation(url.toURI(), typeSystemOutput);
           import_impl.setLocation(relativeLocation);
         }
         importList.add(import_impl);
       } else {
         throw new FileNotFoundException("Build process can't find " + eachName + " in "
-                + mainScript);
+                + desc.getScriptName());
       }
     }
     typeSystemDescription = CasCreationUtils.mergeTypeSystems(toInclude, rm);
     Import[] newImports = importList.toArray(new Import[0]);
     typeSystemDescription.setImports(newImports);
     if (option.isResolveImports()) {
-        typeSystemDescription.resolveImports(rm);
+      typeSystemDescription.resolveImports(rm);
     }
 
     // TODO hotfixes: where do I get the final types??
@@ -224,15 +231,14 @@ public class RutaDescriptorBuilder {
     int typeIndex = 0;
     for (String eachType : desc.getTypeShortNames()) {
       StringTriple typeTriple = desc.getTypeTriples().get(typeIndex);
-      typeTriple = resolveType(typeTriple, typeNameMap, mainScript);
+      typeTriple = resolveType(typeTriple, typeNameMap, desc.getScriptName());
       if (typeSystemDescription.getType(typeTriple.getName()) != null) {
         continue;
       }
       if (!finalTypes.contains(typeTriple.getParent())) {
         TypeDescription newType = typeSystemDescription.addType(typeTriple.getName(),
                 typeTriple.getDescription(), typeTriple.getParent());
-        capability.addInputType(typeTriple.getName(), false);
-        capability.addOutputType(typeTriple.getName(), false);
+
         Collection<StringTriple> collection = desc.getFeatures().get(eachType);
         if (collection != null) {
           for (StringTriple eachFeature : collection) {
@@ -262,22 +268,49 @@ public class RutaDescriptorBuilder {
 
     types.addAll(Arrays.asList(presentTypes));
     typeSystemDescription.setTypes(types.toArray(new TypeDescription[0]));
-    typeSystemDescription.setName(mainScript + "TypeSystem");
+    typeSystemDescription.setName(desc.getScriptName() + "TypeSystem");
     typeSystemDescription.setSourceUrl(typeSystemFile.toURI().toURL());
+
+    return typeSystemDescription;
+  }
+
+  public AnalysisEngineDescription createAnalysisEngineDescription(RutaDescriptorInformation desc,
+          TypeSystemDescription typeSystemDescription, String typeSystemOutput,
+          String engineOutput, RutaBuildOptions option, String[] scriptPaths, String[] enginePaths, String[] resourcePaths,
+          ClassLoader classloader) throws InvalidXMLException, IOException {
     TypeSystemDescription aets = uimaFactory.createTypeSystemDescription();
-    import_impl = new Import_impl();
+    Import_impl import_impl = new Import_impl();
     if (option.isImportByName()) {
-      import_impl.setName(typeSystemDescription.getName());
+      if (typeSystemDescription != null) {
+        import_impl.setName(typeSystemDescription.getName());
+      }
     } else {
-      String relativeLocation = getRelativeLocation(new File(engineOutput).toURI(), typeSystemOutput);
-      import_impl.setLocation(relativeLocation);
+      if (typeSystemOutput != null) {
+        String relativeLocation = getRelativeLocation(new File(engineOutput).toURI(),
+                typeSystemOutput);
+        import_impl.setLocation(relativeLocation);
+      }
     }
 
-    File engineFile = configureEngine(desc, engineOutput, option, mainScript, scriptPaths,
-            enginePaths, capability, import_impl, aets);
+    return configureEngine(desc, engineOutput, option, scriptPaths, enginePaths, resourcePaths, import_impl, aets);
+  }
 
+  public void build(RutaDescriptorInformation desc, String typeSystemOutput, String engineOutput,
+          RutaBuildOptions option, String mainScript, String[] scriptPaths, String[] enginePaths,
+          ClassLoader classloader) throws SAXException, InvalidXMLException, IOException,
+          ResourceInitializationException, URISyntaxException {
+
+    TypeSystemDescription typeSystemDescription = createTypeSystemDescription(desc,
+            typeSystemOutput, option, enginePaths, classloader);
+
+    AnalysisEngineDescription analysisEngineDescription = createAnalysisEngineDescription(desc,
+            typeSystemDescription, typeSystemOutput, engineOutput, option, scriptPaths,
+            enginePaths, null, classloader);
+
+    File analysisEngineFile = getFile(engineOutput);
+    File typeSystemFile = getFile(typeSystemOutput);
     toFile(typeSystemDescription, typeSystemFile);
-    toFile(analysisEngineDescription, engineFile);
+    toFile(analysisEngineDescription, analysisEngineFile);
   }
 
   private void fillTypeNameMap(Map<String, String> typeNameMap, TypeSystem typeSystem) {
@@ -358,16 +391,25 @@ public class RutaDescriptorBuilder {
     return name;
   }
 
-  private File configureEngine(RutaDescriptorInformation desc, String engineOutput,
-          RutaBuildOptions option, String mainScript, String[] scriptPaths,
-          String[] descriptorPaths, Capability capability, Import_impl import_impl,
-          TypeSystemDescription aets) throws MalformedURLException {
+  private AnalysisEngineDescription configureEngine(RutaDescriptorInformation desc,
+          String engineOutput, RutaBuildOptions option, String[] scriptPaths,
+          String[] descriptorPaths, String[] resourcePaths,Import_impl import_impl, TypeSystemDescription aets)
+          throws InvalidXMLException, IOException {
+
+    AnalysisEngineDescription analysisEngineDescription = UIMAFramework.getXMLParser()
+            .parseAnalysisEngineDescription(new XMLInputSource(new File(defaultAnalysisEngine)));
     aets.setImports(new Import[] { import_impl });
     analysisEngineDescription.getAnalysisEngineMetaData().setTypeSystem(aets);
+
     File file = getFile(engineOutput);
     analysisEngineDescription.setSourceUrl(file.toURI().toURL());
 
     if (!desc.getTypeShortNames().isEmpty()) {
+      Capability capability = uimaFactory.createCapability();
+      for (StringTriple typeTriple : desc.getTypeTriples()) {
+        capability.addInputType(typeTriple.getName(), false);
+        capability.addOutputType(typeTriple.getName(), false);
+      }
       Capability[] capabilities = analysisEngineDescription.getAnalysisEngineMetaData()
               .getCapabilities();
       Capability[] newArray = new Capability[capabilities.length + 1];
@@ -377,11 +419,15 @@ public class RutaDescriptorBuilder {
     }
 
     analysisEngineDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
-            .setParameterValue(RutaEngine.PARAM_MAIN_SCRIPT, mainScript);
-    analysisEngineDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
-            .setParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, scriptPaths);
-    analysisEngineDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
-            .setParameterValue(RutaEngine.PARAM_DESCRIPTOR_PATHS, descriptorPaths);
+            .setParameterValue(RutaEngine.PARAM_MAIN_SCRIPT, desc.getScriptName());
+    if (scriptPaths != null) {
+      analysisEngineDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
+              .setParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, scriptPaths);
+    }
+    if (descriptorPaths != null) {
+      analysisEngineDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
+              .setParameterValue(RutaEngine.PARAM_DESCRIPTOR_PATHS, descriptorPaths);
+    }
     String[] parameterValue = (String[]) analysisEngineDescription.getAnalysisEngineMetaData()
             .getConfigurationParameterSettings().getParameterValue(RutaEngine.PARAM_RESOURCE_PATHS);
     Set<String> resourceLocations = new HashSet<String>();
@@ -389,11 +435,15 @@ public class RutaDescriptorBuilder {
     if (parameterValue != null && parameterValue.length != 0) {
       resourceLocations.addAll(Arrays.asList(parameterValue));
     }
-    for (String string : descriptorPaths) {
-      File descDir = new File(string);
-      File defaultResourceDir = new File(descDir.getParent(),
-              "resources");
-      resourceLocations.add(defaultResourceDir.getAbsolutePath());
+    if(resourcePaths != null) {
+      resourceLocations.addAll(Arrays.asList(resourcePaths));
+    }
+    if (descriptorPaths != null) {
+      for (String string : descriptorPaths) {
+        File descDir = new File(string);
+        File defaultResourceDir = new File(descDir.getParent(), "resources");
+        resourceLocations.add(defaultResourceDir.getAbsolutePath());
+      }
     }
     analysisEngineDescription
             .getAnalysisEngineMetaData()
@@ -417,24 +467,25 @@ public class RutaDescriptorBuilder {
             .setParameterValue(RutaEngine.PARAM_ADDITIONAL_UIMAFIT_ENGINES,
                     additionalUimafitEnginesArray);
 
-    analysisEngineDescription.getAnalysisEngineMetaData().setTypeSystem(typeSystemDescription);
+    analysisEngineDescription.getAnalysisEngineMetaData().setTypeSystem(aets);
 
-    configureExtensions(option);
-    return file;
+    configureExtensions(analysisEngineDescription, option);
+    return analysisEngineDescription;
   }
 
   private String getRelativeLocation(URI target, String base) {
     Path basePath = Paths.get(base);
-    if( !basePath.toFile().isDirectory()) {
+    if (!basePath.toFile().isDirectory()) {
       basePath = basePath.getParent();
     }
     Path targetPath;
-      targetPath = Paths.get(target);
+    targetPath = Paths.get(target);
     Path relativePath = basePath.relativize(targetPath);
     return relativePath.toString();
   }
 
-  private void configureExtensions(RutaBuildOptions options) {
+  private void configureExtensions(AnalysisEngineDescription analysisEngineDescription,
+          RutaBuildOptions options) {
     ConfigurationParameterSettings configurationParameterSettings = analysisEngineDescription
             .getAnalysisEngineMetaData().getConfigurationParameterSettings();
 
@@ -447,18 +498,19 @@ public class RutaDescriptorBuilder {
 
     List<String> es = new ArrayList<String>();
     List<String> ls = new ArrayList<String>();
-    if(extensions != null) {
+    if (extensions != null) {
       es.addAll(Arrays.asList(extensions));
     }
     es.addAll(languageExtensions);
-    if(loaders != null) {
+    if (loaders != null) {
       ls.addAll(Arrays.asList(loaders));
     }
     ls.addAll(options.getEngines());
 
-    configurationParameterSettings.setParameterValue(RutaEngine.PARAM_ADDITIONAL_EXTENSIONS, es.toArray(new String[0]));
-    configurationParameterSettings
-            .setParameterValue(RutaEngine.PARAM_ADDITIONAL_ENGINE_LOADERS, ls.toArray(new String[0]));
+    configurationParameterSettings.setParameterValue(RutaEngine.PARAM_ADDITIONAL_EXTENSIONS,
+            es.toArray(new String[0]));
+    configurationParameterSettings.setParameterValue(RutaEngine.PARAM_ADDITIONAL_ENGINE_LOADERS,
+            ls.toArray(new String[0]));
   }
 
   private TypeSystemDescription getTypeSystemDescriptor(URL url, RutaBuildOptions option)
