@@ -236,7 +236,7 @@ public void setExternalFactory(RutaExternalFactory factory) {
 	}
 	*/
 	public void addType(RutaBlock parent, Token nameToken, Token parentTypeToken, List featureTypes,
-          List<Token> featureNames) {
+          List featureNames) {
           String name = nameToken.getText();
           String parentType = "uima.tcas.Annotation";
           if(parentTypeToken != null) {
@@ -253,17 +253,14 @@ public void setExternalFactory(RutaExternalFactory factory) {
 		  if(StringUtils.isBlank(namespace)) {
 			  descriptionString = "Type defined in " + moduleName;
 			  } else {
-			  descriptionString = "Type defined in " + parent.getNamespace() + "." + moduleName;
+			  descriptionString = "Type defined in " + parent.getNamespace();
 		  }
 		  descInfo.addType(name, descriptionString, parentType);
 		  if(featureTypes != null && featureNames != null) {
 			  for (int i = 0; i < featureTypes.size(); i++) {
 				  Object object = featureTypes.get(i);
-				  String ftype = "";
-				  if (object instanceof Token) {
-				  	ftype = ((Token) object).getText();
-				  }
-				  String fname = featureNames.get(i).getText();
+				  String ftype = (String) featureTypes.get(i);
+				  String fname = (String) featureNames.get(i);
 				  descInfo.addFeature(name, fname, fname, ftype);
 			  }
 		  }
@@ -590,7 +587,7 @@ List featureNames = new ArrayList();
 			id = Identifier {addType($blockDeclaration::env, id, lazyParent, null, null);}
 		 )* SEMI
 	| 
-	DECLARE type = annotationType newName = Identifier 
+	DECLARE parentType = annotationType id = Identifier 
 		(LPAREN 
 			(
 			obj1 = annotationType{featureTypes.add(obj1.getText());} 
@@ -614,7 +611,7 @@ List featureNames = new ArrayList();
 			fname = Identifier{featureNames.add(fname.getText());})* 
 		RPAREN) SEMI 
 		{
-		addType($blockDeclaration::env, id, type, featureTypes, featureNames);
+		addType($blockDeclaration::env, id, parentType, featureTypes, featureNames);
 		}
 	)
 	;
