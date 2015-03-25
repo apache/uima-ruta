@@ -125,8 +125,9 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
   private Boolean processAll;
 
   /**
-   * If this boolean parameter is set to true, then the tags of the complete document is processed
-   * and not only those tags within the body tag.
+   * If this boolean parameter is set to true, then zero-length annotation will not be dropped, but
+   * they will be assigned to the offset of the "nearest" annotation. In that case, a boolean
+   * feature names offsetsExpanded will be set to true if available.
    */
   public static final String PARAM_EXPAND_OFFSETS = "expandOffsets";
 
@@ -445,10 +446,10 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
       Annotation annotation = iterator.get();
       best = annotation;
     } else {
-      Annotation dummy = new Annotation(jcas, source.getBegin(), source.getBegin() +1);
+      Annotation dummy = new Annotation(jcas, source.getBegin(), source.getBegin() + 1);
       iterator = jcas.getAnnotationIndex().iterator(dummy);
-      if(!iterator.isValid()) {
-        if((jcas.getDocumentText().length()/ 2) > source.getBegin()) {
+      if (!iterator.isValid()) {
+        if ((jcas.getDocumentText().length() / 2) > source.getBegin()) {
           iterator.moveToFirst();
           if (iterator.isValid()) {
             Annotation annotation = iterator.get();
@@ -463,8 +464,7 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
         }
       }
     }
-    
-    
+
     return best;
   }
 
