@@ -143,6 +143,7 @@ public class RutaSourceParser extends AbstractSourceParser {
         name = name.substring(0, lastIndexOf);
       }
     }
+    parser.descriptor.setScriptName(name);
     try {
       parser.file_input(name);
     } catch (Throwable e) {
