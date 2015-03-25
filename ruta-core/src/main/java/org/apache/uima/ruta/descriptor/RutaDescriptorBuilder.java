@@ -75,8 +75,6 @@ public class RutaDescriptorBuilder {
 
   private final String defaultAnalysisEngine;
 
-  private ResourceManager rm;
-
   public RutaDescriptorBuilder(String defaultTypeSystem, String defaultAnalysisEngine)
           throws InvalidXMLException, IOException {
     super();
@@ -143,7 +141,7 @@ public class RutaDescriptorBuilder {
                   + desc.getScriptName());
         }
       }
-      TypeSystemDescription each = getTypeSystemDescriptor(url, option);
+      TypeSystemDescription each = getTypeSystemDescriptor(url, option, rm);
       if (each != null) {
         fillTypeNameMap(typeNameMap, each);
         if (include) {
@@ -190,7 +188,7 @@ public class RutaDescriptorBuilder {
                   + desc.getScriptName());
         }
       }
-      TypeSystemDescription each = getTypeSystemDescriptor(url, option);
+      TypeSystemDescription each = getTypeSystemDescriptor(url, option, rm);
       if (each != null) {
         fillTypeNameMap(typeNameMap, each);
         import_impl = new Import_impl();
@@ -509,7 +507,7 @@ public class RutaDescriptorBuilder {
             ls.toArray(new String[0]));
   }
 
-  private TypeSystemDescription getTypeSystemDescriptor(URL url, RutaBuildOptions option)
+  private TypeSystemDescription getTypeSystemDescriptor(URL url, RutaBuildOptions option, ResourceManager rm)
           throws InvalidXMLException, IOException {
     TypeSystemDescription tsdesc = UIMAFramework.getXMLParser().parseTypeSystemDescription(
             new XMLInputSource(url));
