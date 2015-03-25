@@ -88,6 +88,11 @@
       <artifactId>ruta-ep-core-ext</artifactId>
       <version>${project.version}</version>
     </dependency>
+	<dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>ruta-maven-plugin</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
   
   <modules>
@@ -103,6 +108,8 @@
     <module>ruta-ep-textruler</module>
     <module>ruta-ep-core-ext</module>
 
+	<module>ruta-maven-plugin</module>
+	
     <module>ruta-docbook</module>
     <module>ruta-eclipse-feature</module>
     
