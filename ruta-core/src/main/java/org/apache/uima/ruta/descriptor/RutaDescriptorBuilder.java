@@ -280,8 +280,8 @@ public class RutaDescriptorBuilder {
       }
     } else {
       if (typeSystemOutput != null) {
-        String relativeLocation = getRelativeLocation(new File(engineOutput).toURI(),
-                typeSystemOutput);
+        String relativeLocation = getRelativeLocation(new File(typeSystemOutput).toURI(),
+                engineOutput);
         import_impl.setLocation(relativeLocation);
       }
     }
