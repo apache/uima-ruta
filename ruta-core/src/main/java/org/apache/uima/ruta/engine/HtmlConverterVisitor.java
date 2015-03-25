@@ -24,13 +24,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.htmlparser.Tag;
 import org.htmlparser.Text;
 import org.htmlparser.tags.ScriptTag;
 import org.htmlparser.visitors.TextExtractingVisitor;
-
 
 public class HtmlConverterVisitor extends TextExtractingVisitor {
 
@@ -54,23 +55,29 @@ public class HtmlConverterVisitor extends TextExtractingVisitor {
 
   private String gapText;
 
+  private Pattern newlineInducingTagPattern;
 
-  public HtmlConverterVisitor(String[] newlineInducingTags,String[] gapInducingTags, String gapText, boolean skipWhitespace, boolean processAll) {
-    if(newlineInducingTags != null) {
+  public HtmlConverterVisitor(String[] newlineInducingTags, String newlineInducingTagRegExp,
+          String[] gapInducingTags, String gapText, boolean skipWhitespace, boolean processAll) {
+    if (newlineInducingTags != null) {
       this.newlineInducingTags = Arrays.asList(newlineInducingTags);
     }
-    if(gapInducingTags != null) {
+    if (gapInducingTags != null) {
       this.gapInducingTags = Arrays.asList(gapInducingTags);
     }
     this.gapText = gapText;
     this.skipWhitespace = skipWhitespace;
     this.processAll = processAll;
+    if (newlineInducingTagRegExp != null) {
+      newlineInducingTagPattern = Pattern.compile(newlineInducingTagRegExp);
+    }
   }
 
   @Override
   public void visitStringNode(Text node) {
     super.visitStringNode(node);
-    if ((processAll || this.inBody) && !this.inScript && (!skipWhitespace || !StringUtils.isBlank(node.getText()))) {
+    if ((processAll || this.inBody) && !this.inScript
+            && (!skipWhitespace || !StringUtils.isBlank(node.getText()))) {
       int from = node.getStartPosition();
       int to = node.getEndPosition();
       textSpans.add(new HtmlConverterPSpan(from, to, node.getText()));
@@ -86,14 +93,23 @@ public class HtmlConverterVisitor extends TextExtractingVisitor {
     } else if (trimmedTagnameLowercase.equals("script")) {
       inScript = true;
     }
-    if (newlineInducingTags != null && newlineInducingTags.contains(trimmedTagnameLowercase)) {
+    boolean matchedByPattern = false;
+    if (newlineInducingTagPattern != null) {
+      Matcher matcher = newlineInducingTagPattern.matcher(trimmedTagnameLowercase);
+      if (matcher.matches()) {
+        matchedByPattern = true;
+      }
+    }
+    if (matchedByPattern
+            || (newlineInducingTags != null && newlineInducingTags
+                    .contains(trimmedTagnameLowercase))) {
       int begin = tag.getStartPosition();
       linebreaksFromHtmlTags.add(new HtmlConverterPSpanReplacement(begin, begin + 1,
               HtmlConverter.LINEBREAK));
     }
     if (gapInducingTags != null && gapInducingTags.contains(trimmedTagnameLowercase)) {
       int begin = tag.getStartPosition();
-      gapsFromHtmlTags.add(new HtmlConverterPSpanReplacement(begin, begin+gapText.length(),
+      gapsFromHtmlTags.add(new HtmlConverterPSpanReplacement(begin, begin + gapText.length(),
               gapText));
     }
   }
@@ -115,7 +131,7 @@ public class HtmlConverterVisitor extends TextExtractingVisitor {
   public SortedSet<HtmlConverterPSpan> getLinebreaksFromHtmlTags() {
     return linebreaksFromHtmlTags;
   }
-  
+
   public SortedSet<HtmlConverterPSpan> getGapsFromHtmlTags() {
     return gapsFromHtmlTags;
   }

@@ -40,6 +40,12 @@
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
+        <name>newlineInducingTagRegExp</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
         <name>replaceLinebreaks</name>
         <type>Boolean</type>
         <multiValued>false</multiValued>

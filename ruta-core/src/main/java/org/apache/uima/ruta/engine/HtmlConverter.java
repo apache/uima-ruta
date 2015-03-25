@@ -154,6 +154,16 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
   private String[] newlineInducingTags;
 
   /**
+   * This string parameter contains a regular expression for HTML/XML elements. If the pattern
+   * matches, then the element will introduce a new line break similar to the element of the
+   * parameter <code>newlineInducingTags</code>.
+   */
+  public static final String PARAM_NEWLINE_INDUCING_TAG_REGEXP = "newlineInducingTagRegExp";
+
+  @ConfigurationParameter(name = PARAM_NEWLINE_INDUCING_TAG_REGEXP, mandatory = false)
+  private String newlineInducingTagRegExp;
+
+  /**
    * This string array parameter sets the names of the html tags that create additional text in the
    * output view. The acutal string of the gap is defined by the parameter <code>gapText</code>.
    */
@@ -308,7 +318,7 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
     try {
       Parser parser = new Parser(documentText);
       NodeList list = parser.parse(null);
-      HtmlConverterVisitor visitor = new HtmlConverterVisitor(newlineInducingTags, gapInducingTags,
+      HtmlConverterVisitor visitor = new HtmlConverterVisitor(newlineInducingTags, newlineInducingTagRegExp, gapInducingTags,
               gapText, skipWhitespaces, processAll);
       list.visitAllNodesWith(visitor);
       visibleSpansSoFar = visitor.getTextSpans();
