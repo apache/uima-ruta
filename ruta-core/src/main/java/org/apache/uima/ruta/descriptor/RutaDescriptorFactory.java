@@ -35,6 +35,7 @@ import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.apache.uima.ruta.engine.HtmlAnnotator;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.extensions.RutaExternalFactory;
 import org.apache.uima.ruta.parser.RutaLexer;
@@ -47,12 +48,23 @@ public class RutaDescriptorFactory {
 
   private String defaultEngine;
 
+  public RutaDescriptorFactory() throws URISyntaxException {
+    super();
+    URL basicAEUrl = HtmlAnnotator.class.getClassLoader().getResource(
+            "org/apache/uima/ruta/engine/BasicEngine.xml");
+
+    URL basicTSUrl = HtmlAnnotator.class.getClassLoader().getResource(
+            "org/apache/uima/ruta/engine/BasicTypeSystem.xml");
+    this.defaultTypeSystem = new File(basicAEUrl.toURI()).getAbsolutePath();
+    this.defaultEngine = new File(basicTSUrl.toURI()).getAbsolutePath();
+  }
+
   public RutaDescriptorFactory(String defaultTypeSystem, String defaultEngine) {
     super();
     this.defaultTypeSystem = defaultTypeSystem;
     this.defaultEngine = defaultEngine;
   }
-  
+
   public RutaDescriptorFactory(URL defaultTypeSystem, URL defaultEngine) throws URISyntaxException {
     super();
     this.defaultTypeSystem = new File(defaultTypeSystem.toURI()).getAbsolutePath();
@@ -132,8 +144,8 @@ public class RutaDescriptorFactory {
     return descInfo;
   }
 
-  public RutaDescriptorInformation parseDescriptorInformation(String script)
-          throws IOException, RecognitionException {
+  public RutaDescriptorInformation parseDescriptorInformation(String script) throws IOException,
+          RecognitionException {
     CharStream st = new ANTLRStringStream(script);
     RutaLexer lexer = new RutaLexer(st);
     CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -153,5 +165,5 @@ public class RutaDescriptorFactory {
     parser.file_input(name);
     return descInfo;
   }
-  
+
 }
