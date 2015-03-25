@@ -71,10 +71,6 @@ public class RutaDescriptorBuilder {
 
   private static ResourceSpecifierFactory uimaFactory = UIMAFramework.getResourceSpecifierFactory();
 
-  // private TypeSystemDescription typeSystemDescription;
-
-  // private AnalysisEngineDescription analysisEngineDescription;
-
   private final String defaultTypeSystem;
 
   private final String defaultAnalysisEngine;
