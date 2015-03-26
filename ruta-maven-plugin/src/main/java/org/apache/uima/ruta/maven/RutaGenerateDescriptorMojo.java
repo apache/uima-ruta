@@ -56,7 +56,14 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
   @Parameter(defaultValue = "${project.build.directory}/generated-sources/ruta/descriptor", required = true)
   private File analysisEngineOutputDirectory;
 
+  
+  /**
+   * Source file encoding.
+   */
+  @Parameter(defaultValue = "${project.build.sourceEncoding}", required = true)
+  private String encoding;
 
+  
   public void execute() throws MojoExecutionException, MojoFailureException {
     
   }
