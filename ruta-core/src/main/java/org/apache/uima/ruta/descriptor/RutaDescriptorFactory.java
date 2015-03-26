@@ -52,17 +52,17 @@ public class RutaDescriptorFactory {
     super();
     URL basicAEUrl = HtmlAnnotator.class.getClassLoader().getResource(
             "org/apache/uima/ruta/engine/BasicEngine.xml");
-
     URL basicTSUrl = HtmlAnnotator.class.getClassLoader().getResource(
             "org/apache/uima/ruta/engine/BasicTypeSystem.xml");
-    this.defaultTypeSystem = new File(basicAEUrl.toURI()).getAbsolutePath();
-    this.defaultEngine = new File(basicTSUrl.toURI()).getAbsolutePath();
+    this.defaultEngine = new File(basicAEUrl.toURI()).getAbsolutePath();
+    this.defaultTypeSystem = new File(basicTSUrl.toURI()).getAbsolutePath();
   }
 
-  public RutaDescriptorFactory(String defaultTypeSystem, String defaultEngine) {
+  public RutaDescriptorFactory(String defaultTypeSystem, String defaultEngine)
+          throws URISyntaxException {
     super();
-    this.defaultTypeSystem = defaultTypeSystem;
-    this.defaultEngine = defaultEngine;
+      this.defaultTypeSystem = defaultTypeSystem;
+      this.defaultEngine = defaultEngine;
   }
 
   public RutaDescriptorFactory(URL defaultTypeSystem, URL defaultEngine) throws URISyntaxException {
@@ -164,6 +164,22 @@ public class RutaDescriptorFactory {
     descInfo.setScriptName(name);
     parser.file_input(name);
     return descInfo;
+  }
+
+  public String getDefaultTypeSystem() {
+    return defaultTypeSystem;
+  }
+
+  public void setDefaultTypeSystem(String defaultTypeSystem) {
+    this.defaultTypeSystem = defaultTypeSystem;
+  }
+
+  public String getDefaultEngine() {
+    return defaultEngine;
+  }
+
+  public void setDefaultEngine(String defaultEngine) {
+    this.defaultEngine = defaultEngine;
   }
 
 }
