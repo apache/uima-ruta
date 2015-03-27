@@ -21,6 +21,7 @@ package org.apache.uima.ruta.descriptor;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
@@ -44,31 +45,29 @@ import org.apache.uima.util.InvalidXMLException;
 
 public class RutaDescriptorFactory {
 
-  private String defaultTypeSystem;
+  private URL defaultTypeSystem;
 
-  private String defaultEngine;
+  private URL defaultEngine;
 
-  public RutaDescriptorFactory() throws URISyntaxException {
+  public RutaDescriptorFactory() {
     super();
-    URL basicAEUrl = HtmlAnnotator.class.getClassLoader().getResource(
+    this.defaultEngine = HtmlAnnotator.class.getClassLoader().getResource(
             "org/apache/uima/ruta/engine/BasicEngine.xml");
-    URL basicTSUrl = HtmlAnnotator.class.getClassLoader().getResource(
+    this.defaultTypeSystem = HtmlAnnotator.class.getClassLoader().getResource(
             "org/apache/uima/ruta/engine/BasicTypeSystem.xml");
-    this.defaultEngine = new File(basicAEUrl.toURI()).getAbsolutePath();
-    this.defaultTypeSystem = new File(basicTSUrl.toURI()).getAbsolutePath();
   }
 
   public RutaDescriptorFactory(String defaultTypeSystem, String defaultEngine)
-          throws URISyntaxException {
+          throws MalformedURLException {
     super();
-      this.defaultTypeSystem = defaultTypeSystem;
-      this.defaultEngine = defaultEngine;
+      this.defaultTypeSystem = new File(defaultTypeSystem).toURI().toURL();
+      this.defaultEngine = new File(defaultEngine).toURI().toURL();
   }
 
-  public RutaDescriptorFactory(URL defaultTypeSystem, URL defaultEngine) throws URISyntaxException {
+  public RutaDescriptorFactory(URL defaultTypeSystem, URL defaultEngine)  {
     super();
-    this.defaultTypeSystem = new File(defaultTypeSystem.toURI()).getAbsolutePath();
-    this.defaultEngine = new File(defaultEngine.toURI()).getAbsolutePath();
+    this.defaultTypeSystem = defaultTypeSystem;
+    this.defaultEngine = defaultEngine;
   }
 
   public TypeSystemDescription createTypeSystemDescription(String typeSystemOutput,
@@ -166,19 +165,19 @@ public class RutaDescriptorFactory {
     return descInfo;
   }
 
-  public String getDefaultTypeSystem() {
+  public URL getDefaultTypeSystem() {
     return defaultTypeSystem;
   }
 
-  public void setDefaultTypeSystem(String defaultTypeSystem) {
+  public void setDefaultTypeSystem(URL defaultTypeSystem) {
     this.defaultTypeSystem = defaultTypeSystem;
   }
 
-  public String getDefaultEngine() {
+  public URL getDefaultEngine() {
     return defaultEngine;
   }
 
-  public void setDefaultEngine(String defaultEngine) {
+  public void setDefaultEngine(URL defaultEngine) {
     this.defaultEngine = defaultEngine;
   }
 

@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -141,17 +142,20 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
       buildContext.refresh(analysisEngineOutputDirectory);
     }
 
-    RutaDescriptorFactory factory = null;
-    try {
-      factory = new RutaDescriptorFactory();
-    } catch (URISyntaxException e) {
-      getLog().warn("Failed to load default descriptors");
-    }
+    RutaDescriptorFactory factory = new RutaDescriptorFactory();
     if (typeSystemTemplate != null) {
-      factory.setDefaultTypeSystem(typeSystemTemplate.getAbsolutePath());
+      try {
+        factory.setDefaultTypeSystem(typeSystemTemplate.toURI().toURL());
+      } catch (MalformedURLException e) {
+        getLog().warn("Failed to get URL of " + typeSystemTemplate, e);
+      }
     }
     if (analysisEngineTemplate != null) {
-      factory.setDefaultEngine(analysisEngineTemplate.getAbsolutePath());
+      try {
+        factory.setDefaultEngine(analysisEngineTemplate.toURI().toURL());
+      } catch (MalformedURLException e) {
+        getLog().warn("Failed to get URL of " + analysisEngineTemplate, e);
+      }
     }
 
     URLClassLoader classloader = getClassloader(project, getLog());
@@ -177,17 +181,17 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
         write(descriptions.getKey(), engineOutput);
         write(descriptions.getValue(), typeSystemOutput);
       } catch (RecognitionException re) {
-        getLog().warn("Failed to parse UIMA Ruta script file: " + file.getAbsolutePath());
-      } catch(IOException ioe) {
-        getLog().warn("Failed to load UIMA Ruta script file: " + file.getAbsolutePath());
-      } catch(SAXException ioe) {
-        getLog().warn("Failed to write descriptor: " + file.getAbsolutePath());
-      } catch(URISyntaxException urise) {
-        getLog().warn("Failed to get uri: " + file.getAbsolutePath());
-      } catch(ResourceInitializationException rie) {
-        getLog().warn("Failed initialize resource: " + file.getAbsolutePath());
-      } catch(InvalidXMLException ixmle) {
-        getLog().warn("Invalid XML while building descriptor: " + file.getAbsolutePath());
+        getLog().warn("Failed to parse UIMA Ruta script file: " + file.getAbsolutePath(), re);
+      } catch (IOException ioe) {
+        getLog().warn("Failed to load UIMA Ruta script file: " + file.getAbsolutePath(), ioe);
+      } catch (SAXException saxe) {
+        getLog().warn("Failed to write descriptor: " + file.getAbsolutePath(), saxe);
+      } catch (URISyntaxException urise) {
+        getLog().warn("Failed to get uri: " + file.getAbsolutePath(), urise);
+      } catch (ResourceInitializationException rie) {
+        getLog().warn("Failed initialize resource: " + file.getAbsolutePath(), rie);
+      } catch (InvalidXMLException ixmle) {
+        getLog().warn("Invalid XML while building descriptor: " + file.getAbsolutePath(), ixmle);
       }
     }
 

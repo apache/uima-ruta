@@ -206,7 +206,9 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
           String[] enginePaths, ClassLoader classloader) {
     RutaDescriptorBuilder builder = null;
     try {
-      builder = new RutaDescriptorBuilder(basicTypesystem, basicEngine);
+      URL tsUrl = new File(basicTypesystem).toURI().toURL();
+      URL aeUrl= new File(basicEngine).toURI().toURL();
+      builder = new RutaDescriptorBuilder(tsUrl, aeUrl);
     } catch (Exception e) {
       DLTKCore.error(e.getMessage(), e);
       if (DLTKCore.DEBUG_PARSER) {
