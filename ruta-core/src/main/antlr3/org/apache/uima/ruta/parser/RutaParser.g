@@ -824,7 +824,14 @@ List<RutaStatement> innerRules = new ArrayList<RutaStatement>();
 	| (ruleElementWildCard[null])=> re5 = ruleElementWildCard[container] {re = re5;}
 	)
 	{re.setStartAnchor(start != null);}
-	(t = (THEN | THEN2) 
+	(t = (THEN2) 
+	LCURLY 
+	(rule = simpleStatement {innerRules.add(rule);})+ 
+	RCURLY 
+	{re.setInlinedRules(innerRules);
+	boolean block = t != null && t.getText().equals("->"); 
+	re.setInlineMode(block);})?
+	(t = (THEN) 
 	LCURLY 
 	(rule = simpleStatement {innerRules.add(rule);})+ 
 	RCURLY 
