@@ -41,7 +41,7 @@ import org.apache.uima.ruta.rule.AnnotationComparator;
 public class SimpleFeatureExpression extends FeatureExpression {
 
   private MatchReference mr;
-  
+
   private TypeExpression typeExpr;
 
   private List<String> features;
@@ -71,9 +71,12 @@ public class SimpleFeatureExpression extends FeatureExpression {
 
   @Override
   public List<Feature> getFeatures(RutaBlock parent) {
-    if(mr != null) {
+    if (mr != null) {
       typeExpr = mr.getTypeExpression(parent);
       FeatureExpression featureExpression = mr.getFeatureExpression(parent);
+      if (featureExpression == null) {
+        return null;
+      }
       features = featureExpression.getFeatureStringList(parent);
     }
     List<Feature> result = new ArrayList<Feature>();
@@ -86,13 +89,13 @@ public class SimpleFeatureExpression extends FeatureExpression {
       } else {
         feature = type.getFeatureByBaseName(each);
         if (feature == null) {
-          if(!StringUtils.equals(each, UIMAConstants.FEATURE_COVERED_TEXT_SHORT))
-          throw new IllegalArgumentException("Not able to access feature " + each + " of type "
-                  + type.getName());
+          if (!StringUtils.equals(each, UIMAConstants.FEATURE_COVERED_TEXT_SHORT))
+            throw new IllegalArgumentException("Not able to access feature " + each + " of type "
+                    + type.getName());
         }
       }
       result.add(feature);
-      if(feature != null) {
+      if (feature != null) {
         type = feature.getRange();
       }
     }
@@ -100,7 +103,7 @@ public class SimpleFeatureExpression extends FeatureExpression {
   }
 
   public TypeExpression getTypeExpr(RutaBlock parent) {
-    if(mr != null) {
+    if (mr != null) {
       return mr.getTypeExpression(parent);
     }
     return typeExpr;
@@ -111,7 +114,7 @@ public class SimpleFeatureExpression extends FeatureExpression {
   }
 
   public List<String> getFeatureStringList(RutaBlock parent) {
-    if(mr != null) {
+    if (mr != null) {
       features = mr.getFeatureExpression(parent).getFeatureStringList(parent);
     }
     return features;
@@ -128,7 +131,7 @@ public class SimpleFeatureExpression extends FeatureExpression {
     for (AnnotationFS eachBase : annotations) {
       AnnotationFS afs = eachBase;
       for (Feature feature : features) {
-        if(feature == null || feature.getRange().isPrimitive()) {
+        if (feature == null || feature.getRange().isPrimitive()) {
           // feature == null -> this is the coveredText "feature"
           if (this instanceof FeatureMatchExpression) {
             FeatureMatchExpression fme = (FeatureMatchExpression) this;
@@ -154,19 +157,17 @@ public class SimpleFeatureExpression extends FeatureExpression {
         }
       } else {
         // exploit expression for null assignments
-        IRutaExpression arg = ((FeatureMatchExpression)this).getArg();
-        if(arg instanceof NullExpression) {
+        IRutaExpression arg = ((FeatureMatchExpression) this).getArg();
+        if (arg instanceof NullExpression) {
           result.addAll(annotations);
         }
       }
     }
     return result;
   }
+
   public MatchReference getMatchReference() {
     return mr;
   }
-
-
-
 
 }

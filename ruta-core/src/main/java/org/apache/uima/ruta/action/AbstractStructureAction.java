@@ -85,10 +85,13 @@ public abstract class AbstractStructureAction extends AbstractRutaAction {
           TypeExpression type = fe.getTypeExpr(parent);
           List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(matchedAnnotation,
                   type.getType(parent));
-          List<AnnotationFS> featureAnnotations = new ArrayList<AnnotationFS>(fe.getFeatureAnnotations(annotationsInWindow, stream, parent, false));
+          List<AnnotationFS> featureAnnotations = annotationsInWindow;
+          if (fe.getFeatures(parent) != null) {
+            featureAnnotations = new ArrayList<AnnotationFS>(fe.getFeatureAnnotations(
+                    annotationsInWindow, stream, parent, false));
+          }
           if (typeSystem.subsumes(jcas.getCasType(FSArray.type), range)) {
-            structure
-                    .setFeatureValue(targetFeature, UIMAUtils.toFSArray(jcas, featureAnnotations));
+            structure.setFeatureValue(targetFeature, UIMAUtils.toFSArray(jcas, featureAnnotations));
           } else if (typeSystem.subsumes(range, type.getType(parent))
                   && !featureAnnotations.isEmpty()) {
             AnnotationFS annotation = featureAnnotations.get(0);
