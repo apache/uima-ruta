@@ -117,7 +117,7 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
 
   /**
    * If this boolean parameter is set to true, then the tags of the complete document is processed
-   * and not only thos within the body tag.
+   * and not only those within the body tag.
    */
   public static final String PARAM_PROCESS_ALL = "processAll";
 
