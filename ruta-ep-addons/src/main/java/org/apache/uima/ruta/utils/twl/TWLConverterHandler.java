@@ -82,7 +82,11 @@ public class TWLConverterHandler implements IHandler {
           return Status.CANCEL_STATUS;
         }
         String exportPath = path.substring(0, path.length() - 3) + "twl";
-        list.createXMLFile(exportPath, "UTF-8");
+        try {
+          list.createXMLFile(exportPath, "UTF-8");
+        } catch (IOException e) {
+          RutaAddonsPlugin.error(e);
+        }
         IWorkspaceRoot myWorkspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
         IContainer container = myWorkspaceRoot.getContainerForLocation(file.getLocation());
         if (container != null) {

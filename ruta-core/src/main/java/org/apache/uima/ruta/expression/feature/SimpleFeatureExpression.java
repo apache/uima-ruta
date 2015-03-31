@@ -73,7 +73,8 @@ public class SimpleFeatureExpression extends FeatureExpression {
   public List<Feature> getFeatures(RutaBlock parent) {
     if(mr != null) {
       typeExpr = mr.getTypeExpression(parent);
-      features = mr.getFeatureExpression(parent).getFeatureStringList(parent);
+      FeatureExpression featureExpression = mr.getFeatureExpression(parent);
+      features = featureExpression.getFeatureStringList(parent);
     }
     List<Feature> result = new ArrayList<Feature>();
     Type type = typeExpr.getType(parent);

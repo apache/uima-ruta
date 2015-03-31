@@ -1314,7 +1314,7 @@ public class MultiTreeWordList implements RutaWordList {
     return true;
   }
 
-  public void createMTWLFile(String path) {
+  public void createMTWLFile(String path) throws IOException {
     persistence.createMTWLFile(root, path);
   }
 

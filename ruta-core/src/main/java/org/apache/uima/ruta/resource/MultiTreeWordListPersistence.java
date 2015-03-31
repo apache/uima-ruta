@@ -21,11 +21,13 @@ package org.apache.uima.ruta.resource;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -40,12 +42,13 @@ import org.xml.sax.XMLReader;
 
 public class MultiTreeWordListPersistence {
 
- 
   /**
    * Reads the XML-File with the specified path and creates a TreeWordList.
    * 
-   * @param root - the root node of the tree
-   * @param path - path of the word list
+   * @param root
+   *          - the root node of the tree
+   * @param path
+   *          - path of the word list
    * @throws IOException
    */
   public void readMTWL(MultiTextNode root, String path) throws IOException {
@@ -56,34 +59,33 @@ public class MultiTreeWordListPersistence {
    * Sniffs the content type for xml type.
    * 
    * @param is
-   *            the inputStream to sniff. Must support {@link InputStream#markSupported()}
+   *          the inputStream to sniff. Must support {@link InputStream#markSupported()}
    * @return true if this stream starts with '<?xml'
    */
-  public static boolean isSniffedXmlContentType(InputStream is)
-          throws IOException {
-      if (is == null)
-          throw new IOException("Stream is null");
-      if (!is.markSupported()){
-          throw new IOException("Cannot mark stream. just wrap it in a BufferedInputStream");
-      }
-      byte[] bytes = new byte[5]; // peek first five letters
-      is.mark(5);
-      is.read(bytes);
-      String prefix = new String(bytes);
-      is.reset();
-      if ("<?xml".equals(prefix)){
-          return true;
-      }
-      return false;
+  public static boolean isSniffedXmlContentType(InputStream is) throws IOException {
+    if (is == null)
+      throw new IOException("Stream is null");
+    if (!is.markSupported()) {
+      throw new IOException("Cannot mark stream. just wrap it in a BufferedInputStream");
+    }
+    byte[] bytes = new byte[5]; // peek first five letters
+    is.mark(5);
+    is.read(bytes);
+    String prefix = new String(bytes);
+    is.reset();
+    if ("<?xml".equals(prefix)) {
+      return true;
+    }
+    return false;
   }
 
   public void readMTWL(MultiTextNode root, InputStream stream, String encoding) throws IOException {
     try {
       InputStream is = new BufferedInputStream(stream); // adds mark/reset support
       boolean isXml = isSniffedXmlContentType(is);
-      if (!isXml){ // MTWL is encoded
-          is = new ZipInputStream(is);
-          ((ZipInputStream)is).getNextEntry(); // zip must contain a single entry
+      if (!isXml) { // MTWL is encoded
+        is = new ZipInputStream(is);
+        ((ZipInputStream) is).getNextEntry(); // zip must contain a single entry
       }
       InputStreamReader streamReader = new InputStreamReader(is, encoding);
       TrieXMLEventHandler handler = new TrieXMLEventHandler(root);
@@ -102,25 +104,47 @@ public class MultiTreeWordListPersistence {
     }
   }
 
-  public void createMTWLFile(MultiTextNode root, String path) {
-    createMTWLFile(root, path, "UTF-8");
+  public void createMTWLFile(MultiTextNode root, String path) throws IOException {
+    createMTWLFile(root, path, true, "UTF-8");
   }
 
-  public void createMTWLFile(MultiTextNode root, String path, String encoding) {
-    try {
-      FileOutputStream output = new FileOutputStream(path);
-      ZipOutputStream zoutput = new ZipOutputStream(output);
-      OutputStreamWriter writer = new OutputStreamWriter(zoutput, encoding);
-      writer.write("<?xml version=\"1.0\" ?><root>");
-      for (MultiTextNode node : root.getChildren().values()) {
-        writeTextNode(writer, node);
-      }
-      writer.write("</root>");
-      writer.close();
+  public void createMTWLFile(MultiTextNode root, boolean compressed, String path)
+          throws IOException {
+    createMTWLFile(root, path, compressed, "UTF-8");
+  }
 
-    } catch (IOException e) {
-      e.printStackTrace();
+  public void createMTWLFile(MultiTextNode root, String path, boolean compressed, String encoding)
+          throws IOException {
+    if (compressed) {
+      writeCompressedMTWLFile(root, path, encoding);
+    } else {
+      writeUncompressedMTWLFile(root, path, encoding);
     }
+  }
+
+  private void writeCompressedMTWLFile(MultiTextNode root, String path, String encoding)
+          throws IOException {
+    // TODO
+    FileOutputStream output = new FileOutputStream(path);
+    ZipOutputStream zoutput = new ZipOutputStream(output);
+    OutputStreamWriter writer = new OutputStreamWriter(zoutput, encoding);
+    writeMTWLFile(root, writer);
+  }
+
+  private void writeUncompressedMTWLFile(MultiTextNode root, String path, String encoding)
+          throws IOException {
+    FileOutputStream output = new FileOutputStream(path);
+    OutputStreamWriter writer = new OutputStreamWriter(output, encoding);
+    writeMTWLFile(root, writer);
+  }
+
+  private void writeMTWLFile(MultiTextNode root, OutputStreamWriter writer) throws IOException {
+    writer.write("<?xml version=\"1.0\" ?><root>");
+    for (MultiTextNode node : root.getChildren().values()) {
+      writeTextNode(writer, node);
+    }
+    writer.write("</root>");
+    writer.close();
   }
 
   private void writeTextNode(Writer writer, MultiTextNode node) {

@@ -179,7 +179,7 @@ public class TreeWordList implements RutaWordList {
     // Create Nodes from all chars of the strings besides the last one
     TextNode pointer = root;
     for (Character each : s.toCharArray()) {
-      if(dictRemoveWS && Character.isWhitespace(each)) {
+      if (dictRemoveWS && Character.isWhitespace(each)) {
         continue;
       }
       TextNode childNode = pointer.getChildNode(each);
@@ -238,17 +238,17 @@ public class TreeWordList implements RutaWordList {
     int next = ++index;
 
     boolean result = false;
-    
+
     if (ignoreCase) {
       TextNode childNodeL = pointer.getChildNode(Character.toLowerCase(charAt));
       TextNode childNodeU = pointer.getChildNode(Character.toUpperCase(charAt));
-      
+
       TextNode wsNode = pointer.getChildNode(' ');
-      if(ignoreWS && wsNode != null) {
-          result |= recursiveContains(wsNode, text, --next, ignoreCase, fragment, ignoreChars,
-                  maxIgnoreChars, ignoreWS);
+      if (ignoreWS && wsNode != null) {
+        result |= recursiveContains(wsNode, text, --next, ignoreCase, fragment, ignoreChars,
+                maxIgnoreChars, ignoreWS);
       }
-      
+
       if (childNodeL == null && ignoreWS) {
         childNodeL = skipWS(pointer, charAt);
       }
@@ -266,11 +266,11 @@ public class TreeWordList implements RutaWordList {
       }
     } else {
       TextNode wsNode = pointer.getChildNode(' ');
-      if(ignoreWS && wsNode != null) {
-          result |= recursiveContains(wsNode, text, --next, ignoreCase, fragment, ignoreChars,
-                  maxIgnoreChars, ignoreWS);
+      if (ignoreWS && wsNode != null) {
+        result |= recursiveContains(wsNode, text, --next, ignoreCase, fragment, ignoreChars,
+                maxIgnoreChars, ignoreWS);
       }
-      
+
       TextNode childNode = pointer.getChildNode(charAt);
       if (childNode == null && ignoreWS) {
         childNode = skipWS(pointer, charAt);
@@ -366,9 +366,9 @@ public class TreeWordList implements RutaWordList {
     try {
       InputStream is = new BufferedInputStream(stream); // adds mark/reset support
       boolean isXml = MultiTreeWordListPersistence.isSniffedXmlContentType(is);
-      if (!isXml){ // MTWL is encoded
+      if (!isXml) { // MTWL is encoded
         is = new ZipInputStream(is);
-        ((ZipInputStream)is).getNextEntry(); // zip must contain a single entry
+        ((ZipInputStream) is).getNextEntry(); // zip must contain a single entry
       }
       InputStreamReader streamReader = new InputStreamReader(is, encoding);
       this.root = new TextNode();
@@ -395,23 +395,22 @@ public class TreeWordList implements RutaWordList {
     }
   }
 
-  public void createXMLFile(String path, String encoding) {
-    try {
-      FileOutputStream output = new FileOutputStream(path);
-      ZipOutputStream zoutput = new ZipOutputStream(output);
-      OutputStreamWriter writer = new OutputStreamWriter(zoutput, encoding);
-      writer.write("<?xml version=\"1.0\" ?>");
-      writer.write("<root>");
-      for (TextNode child : root.getChildren().values()) {
-        writeNode(writer, child);
-      }
-      writer.write("</root>");
-      writer.close();
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
+  public void createXMLFile(String path, String encoding, boolean compressed) throws IOException {
+    // TODO
+    FileOutputStream output = new FileOutputStream(path);
+    ZipOutputStream zoutput = new ZipOutputStream(output);
+    OutputStreamWriter writer = new OutputStreamWriter(zoutput, encoding);
+    writer.write("<?xml version=\"1.0\" ?>");
+    writer.write("<root>");
+    for (TextNode child : root.getChildren().values()) {
+      writeNode(writer, child);
     }
+    writer.write("</root>");
+    writer.close();
+  }
+
+  public void createXMLFile(String path, String encoding) throws IOException {
+    createXMLFile(encoding, encoding, true);
   }
 
   public void writeNode(Writer writer, TextNode node) {

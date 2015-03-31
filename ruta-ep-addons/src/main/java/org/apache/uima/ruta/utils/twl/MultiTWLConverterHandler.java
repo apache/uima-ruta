@@ -95,7 +95,11 @@ public class MultiTWLConverterHandler implements IHandler {
           File file = newPath.toFile();
           final String absolutePath = file.getAbsolutePath();
 
-          trie.createMTWLFile(absolutePath);
+          try {
+            trie.createMTWLFile(absolutePath);
+          } catch (IOException e) {
+            RutaAddonsPlugin.error(e);
+          }
 
           IWorkspaceRoot myWorkspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
           IContainer container = myWorkspaceRoot.getContainerForLocation(parent);
