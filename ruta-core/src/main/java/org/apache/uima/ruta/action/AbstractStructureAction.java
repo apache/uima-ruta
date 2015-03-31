@@ -19,6 +19,7 @@
 
 package org.apache.uima.ruta.action;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,7 @@ import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
@@ -79,15 +81,17 @@ public abstract class AbstractStructureAction extends AbstractRutaAction {
           }
         } else if (valueObject instanceof GenericFeatureExpression && !range.isPrimitive()) {
           GenericFeatureExpression gfe = (GenericFeatureExpression) valueObject;
-          TypeExpression type = gfe.getFeatureExpression().getTypeExpr(parent);
+          FeatureExpression fe = gfe.getFeatureExpression();
+          TypeExpression type = fe.getTypeExpr(parent);
           List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(matchedAnnotation,
                   type.getType(parent));
+          List<AnnotationFS> featureAnnotations = new ArrayList<AnnotationFS>(fe.getFeatureAnnotations(annotationsInWindow, stream, parent, false));
           if (typeSystem.subsumes(jcas.getCasType(FSArray.type), range)) {
             structure
-                    .setFeatureValue(targetFeature, UIMAUtils.toFSArray(jcas, annotationsInWindow));
+                    .setFeatureValue(targetFeature, UIMAUtils.toFSArray(jcas, featureAnnotations));
           } else if (typeSystem.subsumes(range, type.getType(parent))
-                  && !annotationsInWindow.isEmpty()) {
-            AnnotationFS annotation = annotationsInWindow.get(0);
+                  && !featureAnnotations.isEmpty()) {
+            AnnotationFS annotation = featureAnnotations.get(0);
             structure.setFeatureValue(targetFeature, annotation);
           }
         } else if (valueObject instanceof IStringExpression
