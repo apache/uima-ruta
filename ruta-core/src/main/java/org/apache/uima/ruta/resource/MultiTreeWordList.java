@@ -143,6 +143,14 @@ public class MultiTreeWordList implements RutaWordList {
     }
   }
 
+  public MultiTreeWordList(List<File> files) throws IOException {
+    this.root = new MultiTextNode();
+    this.costMap = new EditDistanceCostMap();
+    for (File file : files) {
+      load(new FileSystemResource(file));
+    }
+  }
+
   /**
    * Load a resource in this word list.
    * 
