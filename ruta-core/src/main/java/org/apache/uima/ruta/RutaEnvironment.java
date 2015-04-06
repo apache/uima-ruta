@@ -568,7 +568,7 @@ public class RutaEnvironment {
       dictRemoveWS = false;
     }
     if (result == null) {
-      if (list.endsWith("txt") || list.endsWith("mtwl")) {
+      if (list.endsWith("txt") || list.endsWith("twl") || list.endsWith("mtwl")) {
         ResourceLoader resourceLoader = new RutaResourceLoader(getResourcePaths());
         Resource resource = resourceLoader.getResource(list);
         if (resource.exists()) {

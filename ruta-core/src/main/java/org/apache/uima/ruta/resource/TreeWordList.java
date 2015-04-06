@@ -20,8 +20,8 @@
 package org.apache.uima.ruta.resource;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
@@ -395,37 +396,62 @@ public class TreeWordList implements RutaWordList {
     }
   }
 
-  public void createXMLFile(String path, String encoding, boolean compressed) throws IOException {
-    // TODO
+  public void createTWLFile(String path, String encoding) throws IOException {
+    createTWLFile(root, path, true, encoding);
+  }
+
+  public void createTWLFile(String path, boolean compressed, String encoding) throws IOException {
+    createTWLFile(root, path, compressed, encoding);
+  }
+
+  public void createTWLFile(TextNode root, String path, boolean compressed, String encoding)
+          throws IOException {
+    if (compressed) {
+      writeCompressedTWLFile(root, path, encoding);
+    } else {
+      writeUncompressedMTWLFile(root, path, encoding);
+    }
+  }
+
+  private void writeCompressedTWLFile(TextNode root, String path, String encoding)
+          throws IOException {
+    FileOutputStream fos = new FileOutputStream(path);
+    BufferedOutputStream bos = new BufferedOutputStream(fos);
+    ZipOutputStream zos = new ZipOutputStream(bos);
+    OutputStreamWriter writer = new OutputStreamWriter(zos, encoding);
+    zos.putNextEntry(new ZipEntry(path));
+    writeTWLFile(root, writer);
+    writer.flush();
+    zos.closeEntry();
+    writer.close();
+  }
+
+  private void writeUncompressedMTWLFile(TextNode root, String path, String encoding)
+          throws IOException {
     FileOutputStream output = new FileOutputStream(path);
-    ZipOutputStream zoutput = new ZipOutputStream(output);
-    OutputStreamWriter writer = new OutputStreamWriter(zoutput, encoding);
+    OutputStreamWriter writer = new OutputStreamWriter(output, encoding);
+    writeTWLFile(root, writer);
+    writer.close();
+  }
+
+  private void writeTWLFile(TextNode root, Writer writer) throws IOException {
     writer.write("<?xml version=\"1.0\" ?>");
     writer.write("<root>");
     for (TextNode child : root.getChildren().values()) {
       writeNode(writer, child);
     }
     writer.write("</root>");
-    writer.close();
   }
 
-  public void createXMLFile(String path, String encoding) throws IOException {
-    createXMLFile(encoding, encoding, true);
-  }
+  public void writeNode(Writer writer, TextNode node) throws IOException {
+    String output = "<node char=\"" + node.getValue() + "\" isWordEnd=\""
+            + Boolean.toString(node.isWordEnd()) + "\">";
+    writer.write(output);
+    for (TextNode child : node.getChildren().values()) {
+      writeNode(writer, child);
 
-  public void writeNode(Writer writer, TextNode node) {
-    try {
-      String output = "<node char=\"" + node.getValue() + "\" isWordEnd=\""
-              + Boolean.toString(node.isWordEnd()) + "\">";
-      writer.write(output);
-      for (TextNode child : node.getChildren().values()) {
-        writeNode(writer, child);
-
-      }
-      writer.write("</node>");
-    } catch (IOException e) {
-      e.printStackTrace();
     }
+    writer.write("</node>");
   }
 
   @Override

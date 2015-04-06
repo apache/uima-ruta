@@ -31,4 +31,6 @@ public class RutaCorePreferences {
   public static final String NO_VM_IN_DEV_MODE = "NoVMInDevMode";
 
   public static final String ADD_SDI = "AddSDI";
+
+  public static final String COMPRESS_WORDLISTS = "CompressWordLists";
 }

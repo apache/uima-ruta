@@ -20,15 +20,15 @@
 package org.apache.uima.ruta.resource;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
@@ -124,11 +124,15 @@ public class MultiTreeWordListPersistence {
 
   private void writeCompressedMTWLFile(MultiTextNode root, String path, String encoding)
           throws IOException {
-    // TODO
-    FileOutputStream output = new FileOutputStream(path);
-    ZipOutputStream zoutput = new ZipOutputStream(output);
-    OutputStreamWriter writer = new OutputStreamWriter(zoutput, encoding);
+    FileOutputStream fos = new FileOutputStream(path);
+    BufferedOutputStream bos = new BufferedOutputStream(fos);
+    ZipOutputStream zos = new ZipOutputStream(bos);
+    OutputStreamWriter writer = new OutputStreamWriter(zos, encoding);
+    zos.putNextEntry(new ZipEntry(path));
     writeMTWLFile(root, writer);
+    writer.flush();
+    zos.closeEntry();
+    writer.close();
   }
 
   private void writeUncompressedMTWLFile(MultiTextNode root, String path, String encoding)
@@ -136,6 +140,7 @@ public class MultiTreeWordListPersistence {
     FileOutputStream output = new FileOutputStream(path);
     OutputStreamWriter writer = new OutputStreamWriter(output, encoding);
     writeMTWLFile(root, writer);
+    writer.close();
   }
 
   private void writeMTWLFile(MultiTextNode root, OutputStreamWriter writer) throws IOException {
@@ -144,7 +149,6 @@ public class MultiTreeWordListPersistence {
       writeTextNode(writer, node);
     }
     writer.write("</root>");
-    writer.close();
   }
 
   private void writeTextNode(Writer writer, MultiTextNode node) {

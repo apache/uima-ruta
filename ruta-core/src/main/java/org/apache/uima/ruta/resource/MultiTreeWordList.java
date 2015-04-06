@@ -41,12 +41,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
-import org.apache.uima.ruta.expression.bool.IBooleanExpression;
-import org.apache.uima.ruta.expression.number.INumberExpression;
-import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.type.RutaBasic;
-import org.apache.uima.ruta.utils.UIMAUtils;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 
@@ -1314,8 +1309,8 @@ public class MultiTreeWordList implements RutaWordList {
     return true;
   }
 
-  public void createMTWLFile(String path) throws IOException {
-    persistence.createMTWLFile(root, path);
+  public void createMTWLFile(String path, boolean compress, String encoding) throws IOException {
+    persistence.createMTWLFile(root, path, compress, encoding);
   }
 
 }

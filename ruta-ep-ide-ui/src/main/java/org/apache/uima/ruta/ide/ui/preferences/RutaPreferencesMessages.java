@@ -81,4 +81,6 @@ public class RutaPreferencesMessages extends NLS {
   public static String NoVMInDevMode;
   
   public static String AddSDI;
+  
+  public static String CompressWordLists;
 }

@@ -26,6 +26,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
+import org.apache.uima.ruta.ide.RutaIdeUIPlugin;
+import org.apache.uima.ruta.ide.core.RutaCorePreferences;
 import org.apache.uima.ruta.resource.MultiTreeWordList;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -44,6 +46,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -51,10 +54,12 @@ import org.eclipse.ui.handlers.HandlerUtil;
 public class MultiTWLConverterHandler implements IHandler {
   private class ConverterHandlerJob extends Job {
     ExecutionEvent event;
+    private boolean compress;
 
-    ConverterHandlerJob(ExecutionEvent event) {
+    ConverterHandlerJob(ExecutionEvent event, boolean compress) {
       super("Converting...");
       this.event = event;
+      this.compress = compress;
       setUser(true);
     }
 
@@ -96,7 +101,7 @@ public class MultiTWLConverterHandler implements IHandler {
           final String absolutePath = file.getAbsolutePath();
 
           try {
-            trie.createMTWLFile(absolutePath);
+            trie.createMTWLFile(absolutePath, compress, "UTF-8");
           } catch (IOException e) {
             RutaAddonsPlugin.error(e);
           }
@@ -128,7 +133,9 @@ public class MultiTWLConverterHandler implements IHandler {
   }
 
   public Object execute(ExecutionEvent event) throws ExecutionException {
-    new ConverterHandlerJob(event).schedule();
+    IPreferenceStore preferenceStore = RutaIdeUIPlugin.getDefault().getPreferenceStore();
+    boolean compress = preferenceStore.getBoolean(RutaCorePreferences.COMPRESS_WORDLISTS);
+    new ConverterHandlerJob(event, compress).schedule();
     return null;
   }
 

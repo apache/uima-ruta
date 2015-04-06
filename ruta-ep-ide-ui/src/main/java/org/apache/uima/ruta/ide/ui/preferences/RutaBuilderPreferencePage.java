@@ -39,6 +39,8 @@ public class RutaBuilderPreferencePage extends FieldEditorPreferencePage impleme
 
   private BooleanFieldEditor builderShortNames;
 
+  private BooleanFieldEditor compressWordLists;
+
   public RutaBuilderPreferencePage() {
     setPreferenceStore(RutaIdeUIPlugin.getDefault().getPreferenceStore());
     setDescription("Builder");
@@ -58,6 +60,11 @@ public class RutaBuilderPreferencePage extends FieldEditorPreferencePage impleme
             RutaCorePreferences.BUILDER_IGNORE_DUPLICATE_SHORTNAMES,
             RutaPreferencesMessages.BuilderIgnoreDuplicateShortnames, getFieldEditorParent());
     addField(builderShortNames);
+    
+    compressWordLists = new BooleanFieldEditor(
+            RutaCorePreferences.COMPRESS_WORDLISTS,
+            RutaPreferencesMessages.CompressWordLists, getFieldEditorParent());
+    addField(compressWordLists);
   }
 
   public void init(IWorkbench workbench) {
