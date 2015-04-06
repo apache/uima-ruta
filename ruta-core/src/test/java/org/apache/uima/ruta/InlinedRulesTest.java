@@ -38,16 +38,21 @@ public class InlinedRulesTest {
     String script = "";
     script += "PERIOD #{-> T1} @PERIOD;\n";
     script += "#{-> T1} PERIOD;\n";
-    // inlined as block
-    script += "T1{STARTSWITH(Document)}->{CW{->T2};};\n";
-    script += "(T1 PERIOD T1){CONTAINS(COLON)}->{COMMA #{->T3} COMMA; COLON ANY{-> T4};};\n";
-    script += "(COLON # COMMA)->{ANY{REGEXP(\"a.*\", true)-> T5};};";
-    // inlined as condition
-    script += "T1{->T6}<-{ANY COLON ANY{->T6};};\n";
-    script += "T1{->T7}<-{CW COLON CW{->T7};};\n";
-    script += "(T1 PERIOD{ -> T8} T1){CONTAINS(COLON)}<-{CW COLON CW{->T9}; COLON ANY{-> T10};};\n";
-    script += "(T1 PERIOD{ -> T11} T1){CONTAINS(COLON)}<-{CW COLON CW{->T11};};\n";
-    script += "(T1 PERIOD T1{-> T12}){CONTAINS(COLON)}<-{W COLON (W W)<-{ANY{REGEXP(\"match.*\")};};};\n";
+     // inlined as block
+     script += "T1{STARTSWITH(Document)}->{CW{->T2};};\n";
+     script += "(T1 PERIOD T1){CONTAINS(COLON)}->{COMMA #{->T3} COMMA; COLON ANY{-> T4};};\n";
+     script += "(COLON # COMMA)->{ANY{REGEXP(\"a.*\", true)-> T5};};";
+     // inlined as condition
+     script += "T1{->T6}<-{ANY COLON ANY{->T6};};\n";
+     script += "T1{->T7}<-{CW COLON CW{->T7};};\n";
+     script +=
+     "(T1 PERIOD{ -> T8} T1){CONTAINS(COLON)}<-{CW COLON CW{->T9}; COLON ANY{-> T10};};\n";
+     script += "(T1 PERIOD{ -> T11} T1){CONTAINS(COLON)}<-{CW COLON CW{->T11};};\n";
+     script +=
+     "(T1 PERIOD T1{-> T12}){CONTAINS(COLON)}<-{W COLON (W W)<-{ANY{REGEXP(\"match.*\")};};};\n";
+    // both types
+    script += "(T1 PERIOD T1){CONTAINS(COLON)}<-{W COLON W W;}->{COLON{->T13};};\n";
+    script += "(T1 PERIOD T1){CONTAINS(COLON)}<-{W COLON (W W)<-{ANY{REGEXP(\"match.*\")};}->{W{->T14};};};\n";
     CAS cas = null;
     try {
       cas = RutaTestUtils.getCAS(document);
@@ -65,22 +70,24 @@ public class InlinedRulesTest {
     assertEquals(2, ai.size());
     assertEquals("The", iterator.next().getCoveredText());
     assertEquals("Ruta", iterator.next().getCoveredText());
-    
+
     t = RutaTestUtils.getTestType(cas, 3);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(3, ai.size());
-    assertEquals("then the actions of the rule are performed  on the matched annotations. A rule is composed of a sequence of rule elements and a rule element essentially consists of four parts: A matching condition", iterator.next().getCoveredText());
+    assertEquals(
+            "then the actions of the rule are performed  on the matched annotations. A rule is composed of a sequence of rule elements and a rule element essentially consists of four parts: A matching condition",
+            iterator.next().getCoveredText());
     assertEquals("an optional quantifier", iterator.next().getCoveredText());
     assertEquals("an optional quantifier", iterator.next().getCoveredText());
-    
+
     t = RutaTestUtils.getTestType(cas, 4);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(2, ai.size());
     assertEquals("A", iterator.next().getCoveredText());
     assertEquals("A", iterator.next().getCoveredText());
-    
+
     t = RutaTestUtils.getTestType(cas, 5);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
@@ -91,45 +98,66 @@ public class InlinedRulesTest {
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(2, ai.size());
-    assertEquals("A rule is composed of a sequence of rule elements and a rule element essentially consists of four parts: A matching condition, an optional quantifier, a list of conditions and a list of actions", iterator.next().getCoveredText());
+    assertEquals(
+            "A rule is composed of a sequence of rule elements and a rule element essentially consists of four parts: A matching condition, an optional quantifier, a list of conditions and a list of actions",
+            iterator.next().getCoveredText());
     assertEquals("A", iterator.next().getCoveredText());
-    
+
     t = RutaTestUtils.getTestType(cas, 7);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(0, ai.size());
-    
+
     t = RutaTestUtils.getTestType(cas, 8);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(2, ai.size());
     assertEquals(".", iterator.next().getCoveredText());
     assertEquals(".", iterator.next().getCoveredText());
-    
+
     t = RutaTestUtils.getTestType(cas, 9);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(0, ai.size());
-    
+
     t = RutaTestUtils.getTestType(cas, 10);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(2, ai.size());
     assertEquals("A", iterator.next().getCoveredText());
     assertEquals("A", iterator.next().getCoveredText());
-    
+
     t = RutaTestUtils.getTestType(cas, 11);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(0, ai.size());
-    
+
     t = RutaTestUtils.getTestType(cas, 12);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
     assertEquals(2, ai.size());
-    assertEquals("A rule is composed of a sequence of rule elements and a rule element essentially consists of four parts: A matching condition, an optional quantifier, a list of conditions and a list of actions", iterator.next().getCoveredText());
-    assertEquals("The matching condition is typically a type of an annotation by which the rule element matches on the covered text of one of those annotations", iterator.next().getCoveredText());
-    
+    assertEquals(
+            "A rule is composed of a sequence of rule elements and a rule element essentially consists of four parts: A matching condition, an optional quantifier, a list of conditions and a list of actions",
+            iterator.next().getCoveredText());
+    assertEquals(
+            "The matching condition is typically a type of an annotation by which the rule element matches on the covered text of one of those annotations",
+            iterator.next().getCoveredText());
+
+    t = RutaTestUtils.getTestType(cas, 13);
+    ai = cas.getAnnotationIndex(t);
+    iterator = ai.iterator();
+    assertEquals(2, ai.size());
+    assertEquals(":", iterator.next().getCoveredText());
+    assertEquals(":", iterator.next().getCoveredText());
+
+    t = RutaTestUtils.getTestType(cas, 14);
+    ai = cas.getAnnotationIndex(t);
+    iterator = ai.iterator();
+    assertEquals(4, ai.size());
+    assertEquals("A", iterator.next().getCoveredText());
+    assertEquals("A", iterator.next().getCoveredText());
+    assertEquals("matching", iterator.next().getCoveredText());
+    assertEquals("matching", iterator.next().getCoveredText());
     
     if (cas != null) {
       cas.release();
