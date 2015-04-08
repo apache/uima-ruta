@@ -46,6 +46,8 @@ public class RutaDescriptorInformation {
 
   private String scriptName;
 
+  private String packageString;
+
   public RutaDescriptorInformation() {
     super();
     typeShortNames = new ArrayList<String>();
@@ -145,6 +147,14 @@ public class RutaDescriptorInformation {
   
   public String getScriptName() {
   return scriptName;
+  }
+
+  public String getPackageString() {
+    return packageString;
+  }
+
+  public void setPackageString(String packageString) {
+    this.packageString = packageString;
   }
   
 }

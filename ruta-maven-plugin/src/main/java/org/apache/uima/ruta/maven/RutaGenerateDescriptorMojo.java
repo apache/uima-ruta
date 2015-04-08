@@ -21,7 +21,6 @@ package org.apache.uima.ruta.maven;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
@@ -30,7 +29,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 
 import org.antlr.runtime.RecognitionException;
@@ -72,6 +73,8 @@ import org.xml.sax.SAXException;
  */
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.PROCESS_RESOURCES, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class RutaGenerateDescriptorMojo extends AbstractMojo {
+  private static final String DEFAULT_TARGET_DIR = "${project.build.directory}/generated-sources/ruta/descriptor";
+
   private static final String RUTA_NATURE = "org.apache.uima.ruta.ide.nature";
 
   @Component
@@ -83,13 +86,13 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
   /**
    * The directory where the generated type system descriptors will be written.
    */
-  @Parameter(defaultValue = "${project.build.directory}/generated-sources/ruta/descriptor", required = true)
+  @Parameter(defaultValue = DEFAULT_TARGET_DIR, required = true)
   private File typeSystemOutputDirectory;
 
   /**
    * The directory where the generated analysis engine descriptors will be written.
    */
-  @Parameter(defaultValue = "${project.build.directory}/generated-sources/ruta/descriptor", required = true)
+  @Parameter(defaultValue = DEFAULT_TARGET_DIR, required = true)
   private File analysisEngineOutputDirectory;
 
   /**
@@ -113,13 +116,13 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
   /**
    * Descriptor paths of the generated analysis engine descriptor.
    */
-  @Parameter(required = false)
+  @Parameter(defaultValue = DEFAULT_TARGET_DIR, required = false)
   private String[] descriptorPaths;
 
   /**
    * Resource paths of the generated analysis engine descriptor.
    */
-  @Parameter(required = false)
+  @Parameter(defaultValue = DEFAULT_TARGET_DIR, required = false)
   private String[] resourcePaths;
 
   /**
@@ -140,20 +143,24 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
   @Parameter(defaultValue = "${project.build.sourceEncoding}", required = true)
   private String encoding;
 
-  
   /**
    * Type of type system imports. default false = import by location
    */
   @Parameter(defaultValue = "false", required = false)
   private boolean importByName;
-  
-  
+
   /**
    * Option to resolve imports while building
    */
   @Parameter(defaultValue = "false", required = false)
   private boolean resolveImports;
-  
+
+  /**
+   * Amount of retries for building dependent descriptors
+   */
+  @Parameter(defaultValue = "-1", required = false)
+  private int maxBuildRetries;
+
   /**
    * Add UIMA Ruta nature to .project
    */
@@ -196,39 +203,54 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     options.setEncoding(encoding);
     options.setResolveImports(resolveImports);
     options.setImportByName(importByName);
-    
+
     String[] files = FileUtils.getFilesFromExtension(project.getBuild().getOutputDirectory(),
             new String[] { "ruta" });
+
+    if (maxBuildRetries == -1) {
+      maxBuildRetries = files.length * 3;
+    }
+
+    Queue<RutaDescriptorInformation> toBuild = new LinkedList<RutaDescriptorInformation>();
 
     for (String fileString : files) {
       File file = new File(fileString);
       try {
         RutaDescriptorInformation descriptorInformation = factory.parseDescriptorInformation(file,
                 encoding);
-        String engineOutput = new File(analysisEngineOutputDirectory,
-                descriptorInformation.getScriptName() + analysisEngineSuffix + ".xml")
-                .getAbsolutePath();
-        String typeSystemOutput = new File(typeSystemOutputDirectory,
-                descriptorInformation.getScriptName() + typeSystemSuffix + ".xml")
-                .getAbsolutePath();
-        Pair<AnalysisEngineDescription, TypeSystemDescription> descriptions = factory
-                .createDescriptions(engineOutput, typeSystemOutput, descriptorInformation, options,
-                        scriptPaths, descriptorPaths, resourcePaths, classloader);
-        write(descriptions.getKey(), engineOutput);
-        write(descriptions.getValue(), typeSystemOutput);
+        toBuild.add(descriptorInformation);
       } catch (RecognitionException re) {
         getLog().warn("Failed to parse UIMA Ruta script file: " + file.getAbsolutePath(), re);
       } catch (IOException ioe) {
         getLog().warn("Failed to load UIMA Ruta script file: " + file.getAbsolutePath(), ioe);
-      } catch (SAXException saxe) {
-        getLog().warn("Failed to write descriptor: " + file.getAbsolutePath(), saxe);
-      } catch (URISyntaxException urise) {
-        getLog().warn("Failed to get uri: " + file.getAbsolutePath(), urise);
-      } catch (ResourceInitializationException rie) {
-        getLog().warn("Failed initialize resource: " + file.getAbsolutePath(), rie);
-      } catch (InvalidXMLException ixmle) {
-        getLog().warn("Invalid XML while building descriptor: " + file.getAbsolutePath(), ixmle);
       }
+    }
+
+    int count = 0;
+    while (!toBuild.isEmpty() && count <= maxBuildRetries) {
+      RutaDescriptorInformation descriptorInformation = toBuild.poll();
+      String scriptName = descriptorInformation.getScriptName();
+      try {
+        createDescriptors(factory, classloader, options, descriptorInformation);
+      } catch (RecognitionException re) {
+        getLog().warn("Failed to parse UIMA Ruta script: " + scriptName, re);
+      } catch (IOException ioe) {
+        toBuild.add(descriptorInformation);
+        count++;
+      } catch (SAXException saxe) {
+        getLog().warn("Failed to write descriptor: " + scriptName, saxe);
+      } catch (URISyntaxException urise) {
+        getLog().warn("Failed to get uri: " + scriptName, urise);
+      } catch (ResourceInitializationException rie) {
+        getLog().warn("Failed initialize resource: " + scriptName, rie);
+      } catch (InvalidXMLException ixmle) {
+        getLog().warn("Invalid XML while building descriptor: " + scriptName, ixmle);
+      }
+    }
+
+    for (RutaDescriptorInformation eachFailed : toBuild) {
+      String scriptName = eachFailed.getScriptName();
+      getLog().warn("Failed to build UIMA Ruta script: " + scriptName);
     }
 
     if (addRutaNature) {
@@ -237,10 +259,30 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
 
   }
 
+  private void createDescriptors(RutaDescriptorFactory factory, URLClassLoader classloader,
+          RutaBuildOptions options, RutaDescriptorInformation descriptorInformation)
+          throws IOException, RecognitionException, InvalidXMLException,
+          ResourceInitializationException, URISyntaxException, SAXException {
+    String packageString = descriptorInformation.getPackageString().replaceAll("[.]", "/");
+    String engineOutput = new File(analysisEngineOutputDirectory, packageString + "/"
+            + descriptorInformation.getScriptName() + analysisEngineSuffix + ".xml")
+            .getAbsolutePath();
+    String typeSystemOutput = new File(typeSystemOutputDirectory, packageString + "/"
+            + descriptorInformation.getScriptName() + typeSystemSuffix + ".xml").getAbsolutePath();
+    Pair<AnalysisEngineDescription, TypeSystemDescription> descriptions = factory
+            .createDescriptions(engineOutput, typeSystemOutput, descriptorInformation, options,
+                    scriptPaths, descriptorPaths, resourcePaths, classloader);
+    write(descriptions.getKey(), engineOutput);
+    write(descriptions.getValue(), typeSystemOutput);
+    buildContext.refresh(analysisEngineOutputDirectory);
+    buildContext.refresh(typeSystemOutputDirectory);
+  }
+
   private void write(XMLizable desc, String aFilename) throws SAXException, IOException {
     OutputStream os = null;
     try {
       File out = new File(aFilename);
+      out.getParentFile().mkdirs();
       getLog().debug("Writing descriptor to: " + out);
       os = new FileOutputStream(out);
       desc.toXML(os);

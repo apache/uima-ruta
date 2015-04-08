@@ -420,6 +420,9 @@ List<RutaStatement> stmts = new ArrayList<RutaStatement>();
 	p = packageDeclaration?
 	{
 	namespace = p;
+	if(descInfo != null) {
+		descInfo.setPackageString(p);
+	}
 	this.moduleName = moduleName;
 	rootBlock = factory.createRootScriptBlock(moduleName, p);
         rootBlock.getEnvironment().setResourcePaths(resourcePaths);
