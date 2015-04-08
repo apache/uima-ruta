@@ -20,8 +20,11 @@ package org.apache.uima.ruta.maven;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -33,6 +36,7 @@ import java.util.Set;
 import org.antlr.runtime.RecognitionException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
@@ -55,6 +59,10 @@ import org.apache.uima.ruta.descriptor.RutaDescriptorInformation;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLizable;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
+import org.codehaus.plexus.util.xml.Xpp3DomWriter;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.sonatype.plexus.build.incremental.BuildContext;
 import org.xml.sax.SAXException;
 
@@ -64,6 +72,8 @@ import org.xml.sax.SAXException;
  */
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.PROCESS_RESOURCES, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class RutaGenerateDescriptorMojo extends AbstractMojo {
+  private static final String RUTA_NATURE = "org.apache.uima.ruta.ide.nature";
+
   @Component
   private MavenProject project;
 
@@ -130,6 +140,12 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
   @Parameter(defaultValue = "${project.build.sourceEncoding}", required = true)
   private String encoding;
 
+  /**
+   * Add UIMA Ruta nature to .project
+   */
+  @Parameter(defaultValue = "true", required = false)
+  private boolean addRutaNature;
+
   public void execute() throws MojoExecutionException, MojoFailureException {
 
     if (!typeSystemOutputDirectory.exists()) {
@@ -195,6 +211,10 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
       }
     }
 
+    if (addRutaNature) {
+      addRutaNature();
+    }
+
   }
 
   private void write(XMLizable desc, String aFilename) throws SAXException, IOException {
@@ -247,5 +267,48 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     }
     return new URLClassLoader(urls.toArray(new URL[] {}),
             RutaGenerateDescriptorMojo.class.getClassLoader());
+  }
+
+  private void addRutaNature() {
+
+    File projectDir = project.getFile().getParentFile();
+    File projectFile = new File(projectDir, ".project");
+    if (projectFile.exists()) {
+      Xpp3Dom project = null;
+      try {
+        project = Xpp3DomBuilder.build(new FileReader(projectFile));
+      } catch (XmlPullParserException | IOException e) {
+        getLog().warn("Failed to access .project file", e);
+      }
+      if (project == null) {
+        return;
+      }
+
+      Xpp3Dom naturesNode = project.getChild("natures");
+      if (naturesNode != null) {
+        for (int i = 0; i < naturesNode.getChildCount(); ++i) {
+          Xpp3Dom natureEntry = naturesNode.getChild(i);
+          if (natureEntry != null && StringUtils.equals(natureEntry.getValue(), RUTA_NATURE)) {
+            return;
+          }
+        }
+      }
+      Xpp3Dom rutaNatureNode = new Xpp3Dom("nature");
+      rutaNatureNode.setValue(RUTA_NATURE);
+      naturesNode.addChild(rutaNatureNode);
+
+      StringWriter sw = new StringWriter();
+      Xpp3DomWriter.write(sw, project);
+      String string = sw.toString();
+      // Xpp3DomWriter creates empty string with file writer, check before writing to file
+      if (!StringUtils.isBlank(string)) {
+        try {
+          FileUtils.fileWrite(projectFile, encoding, string);
+        } catch (IOException e) {
+          getLog().warn("Failed to write .project file", e);
+        }
+      }
+      buildContext.refresh(projectDir);
+    }
   }
 }
