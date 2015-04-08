@@ -502,7 +502,7 @@ public class RutaDescriptorBuilder {
     ConfigurationParameterSettings configurationParameterSettings = analysisEngineDescription
             .getAnalysisEngineMetaData().getConfigurationParameterSettings();
 
-    List<String> languageExtensions = options.getLanguage();
+    List<String> languageExtensions = options.getLanguageExtensions();
 
     String[] extensions = (String[]) configurationParameterSettings
             .getParameterValue(RutaEngine.PARAM_ADDITIONAL_EXTENSIONS);
@@ -518,7 +518,7 @@ public class RutaDescriptorBuilder {
     if (loaders != null) {
       ls.addAll(Arrays.asList(loaders));
     }
-    ls.addAll(options.getEngines());
+    ls.addAll(options.getEngineLoaders());
 
     configurationParameterSettings.setParameterValue(RutaEngine.PARAM_ADDITIONAL_EXTENSIONS,
             es.toArray(new String[0]));

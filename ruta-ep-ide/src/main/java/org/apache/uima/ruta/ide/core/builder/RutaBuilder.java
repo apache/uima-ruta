@@ -261,7 +261,9 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
     }
 
     try {
-      RutaBuildOptions option = new RutaBuildOptions(language, engines);
+      RutaBuildOptions option = new RutaBuildOptions();
+      option.setLanguageExtensions(language);
+      option.setEngineLoaders(engines);
       IPreferenceStore store = RutaIdeCorePlugin.getDefault().getPreferenceStore();
       option.setImportByName(store.getBoolean(RutaCorePreferences.BUILDER_IMPORT_BY_NAME));
       option.setResolveImports(store.getBoolean(RutaCorePreferences.BUILDER_RESOLVE_IMPORTS));

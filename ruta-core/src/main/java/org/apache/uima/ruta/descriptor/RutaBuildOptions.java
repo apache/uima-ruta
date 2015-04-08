@@ -24,9 +24,9 @@ import java.util.List;
 
 public class RutaBuildOptions {
 
-  private List<String> language = Collections.emptyList();
+  private List<String> languageExtensions = Collections.emptyList();
 
-  private List<String> engines = Collections.emptyList();
+  private List<String> engineLoaders = Collections.emptyList();
 
   private boolean importByName = false;
 
@@ -40,22 +40,9 @@ public class RutaBuildOptions {
   
   private String analysisEngineSuffix = "Engine";
   
-  public RutaBuildOptions(List<String> language, List<String> engines) {
-    super();
-    this.language = language;
-    this.engines = engines;
-  }
   
   public RutaBuildOptions() {
     super();
-  }
-
-  public List<String> getLanguage() {
-    return language;
-  }
-
-  public List<String> getEngines() {
-    return engines;
   }
 
   public void setImportByName(boolean importByName) {
@@ -104,6 +91,22 @@ public class RutaBuildOptions {
 
   public void setAnalysisEngineSuffix(String analysisEngineSuffix) {
     this.analysisEngineSuffix = analysisEngineSuffix;
+  }
+
+  public List<String> getLanguageExtensions() {
+    return languageExtensions;
+  }
+
+  public void setLanguageExtensions(List<String> languageExtensions) {
+    this.languageExtensions = languageExtensions;
+  }
+
+  public List<String> getEngineLoaders() {
+    return engineLoaders;
+  }
+
+  public void setEngineLoaders(List<String> engineLoaders) {
+    this.engineLoaders = engineLoaders;
   }
 
 }

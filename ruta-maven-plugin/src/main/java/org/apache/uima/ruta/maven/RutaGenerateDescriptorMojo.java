@@ -57,6 +57,7 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.descriptor.RutaBuildOptions;
 import org.apache.uima.ruta.descriptor.RutaDescriptorFactory;
 import org.apache.uima.ruta.descriptor.RutaDescriptorInformation;
+import org.apache.uima.ruta.extensions.IRutaExtension;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLizable;
 import org.codehaus.plexus.util.FileUtils;
@@ -65,6 +66,11 @@ import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.codehaus.plexus.util.xml.Xpp3DomWriter;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.sonatype.plexus.build.incremental.BuildContext;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.type.filter.AssignableTypeFilter;
 import org.xml.sax.SAXException;
 
 /**
@@ -162,6 +168,12 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
   private int maxBuildRetries;
 
   /**
+   * List of packages with language extensions
+   */
+  @Parameter(defaultValue = "org.apache.uima.ruta", required = false)
+  private String[] extensionPackages;
+
+  /**
    * Add UIMA Ruta nature to .project
    */
   @Parameter(defaultValue = "true", required = false)
@@ -203,6 +215,9 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     options.setEncoding(encoding);
     options.setResolveImports(resolveImports);
     options.setImportByName(importByName);
+
+    List<String> extensions = getExtensionsFromClasspath(classloader);
+    options.setLanguageExtensions(extensions);
 
     String[] files = FileUtils.getFilesFromExtension(project.getBuild().getOutputDirectory(),
             new String[] { "ruta" });
@@ -256,6 +271,25 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     if (addRutaNature) {
       addRutaNature();
     }
+
+  }
+
+  private List<String> getExtensionsFromClasspath(ClassLoader classloader) {
+    List<String> result = new ArrayList<String>();
+    ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(
+            true);
+    ResourceLoader resourceLoader = new DefaultResourceLoader(classloader);
+    provider.setResourceLoader(resourceLoader);
+    provider.addIncludeFilter(new AssignableTypeFilter(IRutaExtension.class));
+
+    for (String basePackage : extensionPackages) {
+      Set<BeanDefinition> components = provider.findCandidateComponents(basePackage);
+      for (BeanDefinition component : components) {
+        String beanClassName = component.getBeanClassName();
+        result.add(beanClassName);
+      }
+    }
+    return result;
 
   }
 
