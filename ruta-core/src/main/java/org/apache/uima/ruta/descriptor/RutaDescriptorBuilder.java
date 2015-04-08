@@ -145,7 +145,7 @@ public class RutaDescriptorBuilder {
         url = file.toURI().toURL();
       }
       if (url == null) {
-        url = checkImportExistence(eachName, "xml", classloader);
+        url = checkImportExistence(eachName, ".xml", classloader);
         include = true;
         if (url == null) {
           throw new FileNotFoundException("Build process can't find " + eachName + " in "
@@ -193,7 +193,7 @@ public class RutaDescriptorBuilder {
         url = file.toURI().toURL();
       }
       if (url == null) {
-        url = checkImportExistence(eachName, "xml", classloader);
+        url = checkImportExistence(eachName, "TypeSystem.xml", classloader);
         if (url == null) {
           throw new FileNotFoundException("Build process can't find " + eachName + " in "
                   + desc.getScriptName());
@@ -552,7 +552,7 @@ public class RutaDescriptorBuilder {
   public static URL checkImportExistence(String candidate, String extension, ClassLoader classloader)
           throws IOException {
     String p = candidate.replaceAll("[.]", "/");
-    p += "." + extension;
+    p += extension;
     PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(
             classloader);
     String prefix = "classpath*:";

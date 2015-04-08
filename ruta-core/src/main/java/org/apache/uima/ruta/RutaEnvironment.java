@@ -36,6 +36,7 @@ import java.util.logging.Logger;
 
 import org.antlr.runtime.CommonToken;
 import org.apache.uima.UIMAFramework;
+import org.apache.uima.UimaContext;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.Type;
@@ -57,6 +58,8 @@ import org.apache.uima.ruta.expression.list.SimpleTypeListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.resource.LiteralWordListExpression;
 import org.apache.uima.ruta.expression.resource.LiteralWordTableExpression;
+import org.apache.uima.ruta.expression.resource.WordListExpression;
+import org.apache.uima.ruta.expression.resource.WordTableExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
 import org.apache.uima.ruta.resource.CSVTable;
@@ -147,7 +150,7 @@ public class RutaEnvironment {
   private Map<String, Object> initializedVariables;
 
   private ResourceManager resourceManager;
-  
+
   public RutaEnvironment(RutaBlock owner) {
     super();
     this.owner = owner;
@@ -563,9 +566,14 @@ public class RutaEnvironment {
 
   public RutaWordList getWordList(String list) {
     RutaWordList result = wordLists.get(list);
-    Boolean dictRemoveWS = (Boolean) owner.getContext().getConfigParameterValue(RutaEngine.PARAM_DICT_REMOVE_WS);
-    if(dictRemoveWS == null) {
-      dictRemoveWS = false;
+    UimaContext context = owner.getContext();
+    Boolean dictRemoveWS = false;
+    if (context != null) {
+      dictRemoveWS = (Boolean) context
+              .getConfigParameterValue(RutaEngine.PARAM_DICT_REMOVE_WS);
+      if (dictRemoveWS == null) {
+        dictRemoveWS = false;
+      }
     }
     if (result == null) {
       if (list.endsWith("txt") || list.endsWith("twl") || list.endsWith("mtwl")) {
@@ -587,7 +595,7 @@ public class RutaEnvironment {
         }
       } else {
         try {
-          RutaWordList rutaTable = (RutaWordList) owner.getContext().getResourceObject(list);
+          RutaWordList rutaTable = (RutaWordList) context.getResourceObject(list);
           wordLists.put(list, rutaTable);
         } catch (ResourceAccessException e) {
           Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
@@ -740,7 +748,17 @@ public class RutaEnvironment {
       return type.cast(cas.getAnnotationType());
     }
     if (result != null) {
-      return type.cast(result);
+      if(RutaWordList.class.isAssignableFrom(type) && result instanceof WordListExpression) {
+        WordListExpression wle = (WordListExpression) result;
+        RutaWordList list = wle.getList(owner);
+        return type.cast(list);
+      } else if(RutaTable.class.isAssignableFrom(type) && result instanceof WordTableExpression) {
+        WordTableExpression wte = (WordTableExpression) result;
+        RutaTable table = wte.getTable(owner);
+        return type.cast(table);
+      } else {
+        return type.cast(result);
+      }
     } else if (owner.getParent() != null) {
       return owner.getParent().getEnvironment().getVariableValue(name, type);
     }
@@ -774,23 +792,13 @@ public class RutaEnvironment {
         return be.getBooleanValue(owner, null, null);
       }
       if (clazz.equals(RutaWordList.class) && value instanceof LiteralWordListExpression) {
-        LiteralWordListExpression lle = (LiteralWordListExpression) value;
-        String path = lle.getText();
-        RutaWordList wordList = getWordList(path);
-        return wordList;
+        return value;
       } else if (clazz.equals(RutaWordList.class) && value instanceof String) {
-     // TODO: ExtenralWordListExpression will be ignored
-        RutaWordList list = getWordList((String) value);
-        return list;
+        return value;
       } else if (clazz.equals(RutaTable.class) && value instanceof LiteralWordTableExpression) {
-        LiteralWordTableExpression lte = (LiteralWordTableExpression) value;
-        String path = lte.getText();
-        RutaTable table = getWordTable(path);
-        return table;
-      } else if (clazz.equals(RutaTable.class)  && value instanceof String) {
-        // TODO: ExtenralWordTableExpression will be ignored, and add a method like for word lists
-        RutaTable table = getWordTable((String) value);
-        return table;
+        return value;
+      } else if (clazz.equals(RutaTable.class) && value instanceof String) {
+        return value;
       } else if (clazz.equals(List.class) && value instanceof ListExpression) {
         List list = getList((ListExpression) value);
         return list;
