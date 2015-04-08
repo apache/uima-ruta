@@ -36,6 +36,10 @@ public class RutaBuildOptions {
 
   private String encoding;
 
+  private String typeSystemSuffix = "TypeSystem";
+  
+  private String analysisEngineSuffix = "Engine";
+  
   public RutaBuildOptions(List<String> language, List<String> engines) {
     super();
     this.language = language;
@@ -45,7 +49,6 @@ public class RutaBuildOptions {
   public RutaBuildOptions() {
     super();
   }
-  
 
   public List<String> getLanguage() {
     return language;
@@ -85,6 +88,22 @@ public class RutaBuildOptions {
 
   public void setEncoding(String encoding) {
     this.encoding = encoding;
+  }
+
+  public String getTypeSystemSuffix() {
+    return typeSystemSuffix;
+  }
+
+  public void setTypeSystemSuffix(String typeSystemSuffix) {
+    this.typeSystemSuffix = typeSystemSuffix;
+  }
+
+  public String getAnalysisEngineSuffix() {
+    return analysisEngineSuffix;
+  }
+
+  public void setAnalysisEngineSuffix(String analysisEngineSuffix) {
+    this.analysisEngineSuffix = analysisEngineSuffix;
   }
 
 }

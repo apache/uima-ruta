@@ -140,6 +140,20 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
   @Parameter(defaultValue = "${project.build.sourceEncoding}", required = true)
   private String encoding;
 
+  
+  /**
+   * Type of type system imports. default false = import by location
+   */
+  @Parameter(defaultValue = "false", required = false)
+  private boolean importByName;
+  
+  
+  /**
+   * Option to resolve imports while building
+   */
+  @Parameter(defaultValue = "false", required = false)
+  private boolean resolveImports;
+  
   /**
    * Add UIMA Ruta nature to .project
    */
@@ -177,6 +191,12 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     URLClassLoader classloader = getClassloader(project, getLog());
 
     RutaBuildOptions options = new RutaBuildOptions();
+    options.setTypeSystemSuffix(typeSystemSuffix);
+    options.setAnalysisEngineSuffix(analysisEngineSuffix);
+    options.setEncoding(encoding);
+    options.setResolveImports(resolveImports);
+    options.setImportByName(importByName);
+    
     String[] files = FileUtils.getFilesFromExtension(project.getBuild().getOutputDirectory(),
             new String[] { "ruta" });
 

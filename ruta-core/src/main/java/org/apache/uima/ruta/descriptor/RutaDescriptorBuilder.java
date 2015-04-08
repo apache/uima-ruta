@@ -133,7 +133,7 @@ public class RutaDescriptorBuilder {
         toInclude.add(initialTypeSystem);
       }
     }
-    if(import_impl.getLocation() != null || import_impl.getName() != null) {
+    if (import_impl.getLocation() != null || import_impl.getName() != null) {
       importList.add(import_impl);
     }
     for (String eachName : desc.getImportedTypeSystems()) {
@@ -186,14 +186,15 @@ public class RutaDescriptorBuilder {
       }
     }
     for (String eachName : desc.getImportedScripts()) {
-      String locate = RutaEngine.locate(eachName, enginePaths, "TypeSystem.xml");
+      String locate = RutaEngine.locate(eachName, enginePaths, option.getTypeSystemSuffix()
+              + ".xml");
       URL url = null;
       if (locate != null) {
         File file = new File(locate);
         url = file.toURI().toURL();
       }
       if (url == null) {
-        url = checkImportExistence(eachName, "TypeSystem.xml", classloader);
+        url = checkImportExistence(eachName, option.getTypeSystemSuffix() + ".xml", classloader);
         if (url == null) {
           throw new FileNotFoundException("Build process can't find " + eachName + " in "
                   + desc.getScriptName());
@@ -204,7 +205,7 @@ public class RutaDescriptorBuilder {
         fillTypeNameMap(typeNameMap, each);
         import_impl = new Import_impl();
         if (option.isImportByName()) {
-          import_impl.setName(eachName + "TypeSystem");
+          import_impl.setName(eachName + option.getTypeSystemSuffix());
         } else if (option.isResolveImports()) {
           String absoluteLocation = each.getSourceUrlString();
           import_impl.setLocation(absoluteLocation);
@@ -275,7 +276,7 @@ public class RutaDescriptorBuilder {
 
     types.addAll(Arrays.asList(presentTypes));
     typeSystemDescription.setTypes(types.toArray(new TypeDescription[0]));
-    typeSystemDescription.setName(desc.getScriptName() + "TypeSystem");
+    typeSystemDescription.setName(desc.getScriptName() + option.getTypeSystemSuffix());
     typeSystemDescription.setSourceUrl(typeSystemFile.toURI().toURL());
 
     return typeSystemDescription;
