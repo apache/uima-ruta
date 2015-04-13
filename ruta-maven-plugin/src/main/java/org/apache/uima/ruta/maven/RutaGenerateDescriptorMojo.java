@@ -132,13 +132,13 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
   private String[] resourcePaths;
 
   /**
-   * Suffix used for the generate type system descriptors
+   * Suffix used for the generated type system descriptors.
    */
   @Parameter(defaultValue = "TypeSystem", required = true)
   private String typeSystemSuffix;
 
   /**
-   * Suffix used for the generate analysis engine descriptors
+   * Suffix used for the generated analysis engine descriptors.
    */
   @Parameter(defaultValue = "Engine", required = true)
   private String analysisEngineSuffix;
@@ -150,19 +150,19 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
   private String encoding;
 
   /**
-   * Type of type system imports. default false = import by location
+   * Type of type system imports. default false = import by location.
    */
   @Parameter(defaultValue = "false", required = false)
   private boolean importByName;
 
   /**
-   * Option to resolve imports while building
+   * Option to resolve imports while building.
    */
   @Parameter(defaultValue = "false", required = false)
   private boolean resolveImports;
 
   /**
-   * Amount of retries for building dependent descriptors
+   * Amount of retries for building dependent descriptors.
    */
   @Parameter(defaultValue = "-1", required = false)
   private int maxBuildRetries;

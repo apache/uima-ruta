@@ -34,8 +34,60 @@
 				<artifactId>ruta-maven-plugin</artifactId>
 				<version>${project.version}</version>
 				<configuration>
-					<addRutaNature>true</addRutaNature>
+
+					<!-- This is a exemplary configuration, which explicitly specifies the 
+						default configuration values if not mentioned otherwise. -->
+
+					<!-- The directory where the generated type system descriptors will 
+						be written stored. -->
+					<typeSystemOutputDirectory>${project.build.directory}/generated-sources/ruta/descriptor</typeSystemOutputDirectory>
+
+					<!-- The directory where the generated analysis engine descriptors will 
+						be stored. -->
+					<analysisEngineOutputDirectory>${project.build.directory}/generated-sources/ruta/descriptor</analysisEngineOutputDirectory>
+
+					<!-- The template descriptor for the generated type system. -->
+					<!-- not used in this example <typeSystemTemplate>...</typeSystemTemplate> -->
+
+					<!-- The template descriptor for the generated analysis engine. -->
+					<!-- not used in this example <analysisEngineTemplate>...</analysisEngineTemplate> -->
+
+					<!-- Script paths of the generated analysis engine descriptor. No default values given.-->
+					<scriptPaths></scriptPaths>
+
+					<!-- Descriptor paths of the generated analysis engine descriptor. No default values given. -->
+					<descriptorPaths></descriptorPaths>
+
+					<!-- Resource paths of the generated analysis engine descriptor. No default values given. -->
+					<resourcePaths></resourcePaths>
+
+					<!-- Suffix used for the generated type system descriptors. -->
+					<typeSystemSuffix>TypeSystem</typeSystemSuffix>
+
+					<!-- Suffix used for the generated analysis engine descriptors. -->
+					<typeSystemSuffix>Engine</typeSystemSuffix>
+
+					<!-- Source file encoding. Default value: ${project.build.sourceEncoding} -->
 					<encoding>UTF-8</encoding>
+
+					<!-- Type of type system imports. default false = import by location. -->
+					<importByName>false</importByName>
+
+					<!-- Option to resolve imports while building. -->
+					<resolveImports>false</resolveImports>
+
+					<!-- Amount of retries for building dependent descriptors. Default value 
+						-1: three retires for each script. -->
+					<maxBuildRetries>-1</maxBuildRetries>
+
+					<!-- List of packages with language extensions -->
+					<extensionPackages>
+						<extensionPackage>org.apache.uima.ruta</extensionPackage>
+					</extensionPackages>
+
+					<!-- Add UIMA Ruta nature to .project -->
+					<addRutaNature>false</addRutaNature>
+
 				</configuration>
 				<executions>
 					<execution>
