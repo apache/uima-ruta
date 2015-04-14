@@ -62,7 +62,7 @@ public class HtmlConverterXmlTest {
     AnalysisEngine aeA = UIMAFramework.produceAnalysisEngine(specifierA);
     aeA.setConfigParameterValue(HtmlAnnotator.PARAM_ONLY_CONTENT, false);
     aeA.reconfigure();
-    
+
     XMLInputSource inC = new XMLInputSource(urlC);
     ResourceSpecifier specifierC = UIMAFramework.getXMLParser().parseResourceSpecifier(inC);
     AnalysisEngine aeC = UIMAFramework.produceAnalysisEngine(specifierC);
@@ -93,10 +93,10 @@ public class HtmlConverterXmlTest {
     assertEquals("$Some content", iterator.next().getCoveredText());
     assertEquals("$", iterator.next().getCoveredText());
     assertEquals("$More content.", iterator.next().getCoveredText());
-    
+
     cas.release();
   }
-  
+
   @Test
   public void testExpandOffsets() throws Exception {
     String html = "<Parent>\n";
@@ -122,7 +122,7 @@ public class HtmlConverterXmlTest {
     AnalysisEngine aeA = UIMAFramework.produceAnalysisEngine(specifierA);
     aeA.setConfigParameterValue(HtmlAnnotator.PARAM_ONLY_CONTENT, false);
     aeA.reconfigure();
-    
+
     XMLInputSource inC = new XMLInputSource(urlC);
     ResourceSpecifier specifierC = UIMAFramework.getXMLParser().parseResourceSpecifier(inC);
     AnalysisEngine aeC = UIMAFramework.produceAnalysisEngine(specifierC);
@@ -148,7 +148,7 @@ public class HtmlConverterXmlTest {
     ai = plainTextCas.getAnnotationIndex(tagType);
     iterator = ai.iterator();
     assertEquals(4, ai.size());
-    AnnotationFS next = null ;
+    AnnotationFS next = null;
     next = iterator.next();
     assertEquals(false, next.getBooleanValue(expandedFeature));
     assertEquals("Some contentMore content.", next.getCoveredText());
@@ -156,12 +156,14 @@ public class HtmlConverterXmlTest {
     assertEquals(false, next.getBooleanValue(expandedFeature));
     assertEquals("Some content", next.getCoveredText());
     next = iterator.next();
-    assertEquals(false, next.getBooleanValue(expandedFeature));
+    boolean b1 = next.getBooleanValue(expandedFeature);
     assertEquals("More content.", next.getCoveredText());
     next = iterator.next();
-    assertEquals(true, next.getBooleanValue(expandedFeature));
+    boolean b2 = next.getBooleanValue(expandedFeature);
     assertEquals("More content.", next.getCoveredText());
-    
+    // for one of these two annotation (with same offsets) the feature must be set to true 
+    assertEquals(true, b1 || b2);
+
     cas.release();
   }
 }
