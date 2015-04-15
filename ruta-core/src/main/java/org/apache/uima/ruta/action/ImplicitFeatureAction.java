@@ -90,7 +90,7 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
     if (range.equals(UIMAConstants.TYPE_STRING)) {
       if (argExpr instanceof IStringExpression) {
         IStringExpression stringExpr = (IStringExpression) argExpr;
-        String string = stringExpr.getStringValue(element.getParent(), null, stream);
+        String string = stringExpr.getStringValue(element.getParent(), a, stream);
         a.setStringValue(feature, string);
       }
     } else if (argExpr instanceof INumberExpression
