@@ -1,141 +1,238 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.apache.uima</groupId>
-	<artifactId>ruta-maven-example</artifactId>
-	<version>2.3.0-SNAPSHOT</version>
+ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+ <modelVersion>4.0.0</modelVersion>
+ <groupId>org.apache.uima</groupId>
+ <artifactId>ruta-maven-example</artifactId>
+ <version>2.3.0-SNAPSHOT</version>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.apache.uima</groupId>
-			<artifactId>ruta-core-ext</artifactId>
-			<version>${project.version}</version>
-			<scope>compile</scope>
-		</dependency>
-	</dependencies>
+ <dependencies>
+ <dependency>
+   <groupId>org.apache.uima</groupId>
+   <artifactId>ruta-core</artifactId>
+   <version>${project.version}</version>
+   <scope>compile</scope>
+  </dependency>
+  <dependency>
+   <groupId>org.apache.uima</groupId>
+   <artifactId>ruta-core-ext</artifactId>
+   <version>${project.version}</version>
+   <scope>compile</scope>
+  </dependency>
+  <dependency>
+   <groupId>junit</groupId>
+   <artifactId>junit</artifactId>
+   <version>4.5</version>
+   <scope>test</scope>
+  </dependency>
+ </dependencies>
 
 
-	<build>
-		<resources>
-			<resource>
-				<directory>src/main/ruta</directory>
-			</resource>
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-			<resource>
-				<directory>${project.build.directory}/generated-sources/ruta/descriptor</directory>
-			</resource>
-		</resources>
+ <build>
+  <resources>
+   <resource>
+    <directory>src/main/ruta</directory>
+   </resource>
+   <resource>
+    <directory>src/main/resources</directory>
+   </resource>
+   <resource>
+    <directory>${project.build.directory}/generated-sources/ruta/descriptor</directory>
+   </resource>
+   <resource>
+    <directory>${project.build.directory}/generated-sources/ruta/resources</directory>
+   </resource>
+  </resources>
 
-		<plugins>
-			<plugin>
-				<groupId>org.apache.uima</groupId>
-				<artifactId>ruta-maven-plugin</artifactId>
-				<version>${project.version}</version>
-				<configuration>
+  <plugins>
+   <plugin>
+    <groupId>org.apache.uima</groupId>
+    <artifactId>ruta-maven-plugin</artifactId>
+    <version>${project.version}</version>
+    <configuration>
 
-					<!-- This is a exemplary configuration, which explicitly specifies the 
-						default configuration values if not mentioned otherwise. -->
+     <!-- This is a exemplary configuration, which explicitly specifies the 
+      default configuration values if not mentioned otherwise. -->
 
-					<!-- The directory where the generated type system descriptors will 
-						be written stored. -->
-					<typeSystemOutputDirectory>${project.build.directory}/generated-sources/ruta/descriptor</typeSystemOutputDirectory>
+     <!-- The directory where the generated type system descriptors will 
+      be written stored. -->
+     <typeSystemOutputDirectory>${project.build.directory}/generated-sources/ruta/descriptor</typeSystemOutputDirectory>
 
-					<!-- The directory where the generated analysis engine descriptors will 
-						be stored. -->
-					<analysisEngineOutputDirectory>${project.build.directory}/generated-sources/ruta/descriptor</analysisEngineOutputDirectory>
+     <!-- The directory where the generated analysis engine descriptors will 
+      be stored. -->
+     <analysisEngineOutputDirectory>${project.build.directory}/generated-sources/ruta/descriptor</analysisEngineOutputDirectory>
 
-					<!-- The template descriptor for the generated type system. -->
-					<!-- not used in this example <typeSystemTemplate>...</typeSystemTemplate> -->
+     <!-- The template descriptor for the generated type system. -->
+     <!-- not used in this example <typeSystemTemplate>...</typeSystemTemplate> -->
 
-					<!-- The template descriptor for the generated analysis engine. -->
-					<!-- not used in this example <analysisEngineTemplate>...</analysisEngineTemplate> -->
+     <!-- The template descriptor for the generated analysis engine. -->
+     <!-- not used in this example <analysisEngineTemplate>...</analysisEngineTemplate> -->
 
-					<!-- Script paths of the generated analysis engine descriptor. No default values given.-->
-					<scriptPaths></scriptPaths>
+     <!-- Script paths of the generated analysis engine descriptor. No default 
+      values given. -->
+     <scriptPaths></scriptPaths>
 
-					<!-- Descriptor paths of the generated analysis engine descriptor. No default values given. -->
-					<descriptorPaths></descriptorPaths>
+     <!-- Descriptor paths of the generated analysis engine descriptor. No 
+      default values given. -->
+     <descriptorPaths></descriptorPaths>
 
-					<!-- Resource paths of the generated analysis engine descriptor. No default values given. -->
-					<resourcePaths></resourcePaths>
+     <!-- Resource paths of the generated analysis engine descriptor. No 
+      default values given. -->
+     <resourcePaths></resourcePaths>
 
-					<!-- Suffix used for the generated type system descriptors. -->
-					<typeSystemSuffix>TypeSystem</typeSystemSuffix>
+     <!-- Suffix used for the generated type system descriptors. -->
+     <typeSystemSuffix>Engine</typeSystemSuffix>
 
-					<!-- Suffix used for the generated analysis engine descriptors. -->
-					<typeSystemSuffix>Engine</typeSystemSuffix>
+     <!-- Suffix used for the generated analysis engine descriptors. -->
+     <typeSystemSuffix>TypeSystem</typeSystemSuffix>
 
-					<!-- Source file encoding. Default value: ${project.build.sourceEncoding} -->
-					<encoding>UTF-8</encoding>
+     <!-- Source file encoding. Default value: ${project.build.sourceEncoding} -->
+     <encoding>UTF-8</encoding>
 
-					<!-- Type of type system imports. default false = import by location. -->
-					<importByName>false</importByName>
+     <!-- Type of type system imports. default false = import by location. -->
+     <importByName>false</importByName>
 
-					<!-- Option to resolve imports while building. -->
-					<resolveImports>false</resolveImports>
+     <!-- Option to resolve imports while building. -->
+     <resolveImports>false</resolveImports>
 
-					<!-- Amount of retries for building dependent descriptors. Default value 
-						-1: three retires for each script. -->
-					<maxBuildRetries>-1</maxBuildRetries>
+     <!-- Amount of retries for building dependent descriptors. Default value 
+      -1: three retires for each script. -->
+     <maxBuildRetries>-1</maxBuildRetries>
 
-					<!-- List of packages with language extensions -->
-					<extensionPackages>
-						<extensionPackage>org.apache.uima.ruta</extensionPackage>
-					</extensionPackages>
+     <!-- List of packages with language extensions -->
+     <extensionPackages>
+      <extensionPackage>org.apache.uima.ruta</extensionPackage>
+     </extensionPackages>
 
-					<!-- Add UIMA Ruta nature to .project -->
-					<addRutaNature>false</addRutaNature>
+     <!-- Add UIMA Ruta nature to .project -->
+     <addRutaNature>false</addRutaNature>
 
-				</configuration>
-				<executions>
-					<execution>
-						<id>default</id>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
-					only. It has no influence on the Maven build itself. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.apache.uima
-										</groupId>
-										<artifactId>
-											ruta-maven-plugin
-										</artifactId>
-										<versionRange>
-											[2.1.0,)
-										</versionRange>
-										<goals>
-											<goal>generate</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
+    </configuration>
+    <executions>
+     <execution>
+      <id>default</id>
+      <phase>process-classes</phase>
+      <goals>
+       <goal>generate</goal>
+      </goals>
+     </execution>
+    </executions>
+   </plugin>
+
+   <plugin>
+    <groupId>org.apache.uima</groupId>
+    <artifactId>ruta-maven-plugin</artifactId>
+    <version>2.3.0-SNAPSHOT</version>
+    <configuration></configuration>
+    <executions>
+     <execution>
+      <id>default</id>
+      <phase>process-classes</phase>
+      <goals>
+       <goal>twl</goal>
+      </goals>
+      <configuration>
+       <!-- This is a exemplary configuration, which explicitly specifies 
+        the default configuration values if not mentioned otherwise. -->
+
+       <!-- Compress resulting tree word list. -->
+       <compress>true</compress>
+
+       <!-- The source files for the tree word list. -->
+       <inputFiles>
+        <directory>${basedir}/src/main/resources</directory>
+        <includes>
+         <include>*.txt</include>
+        </includes>
+       </inputFiles>
+
+       <!-- The directory where the generated tree word lists will be written 
+        to. -->
+       <outputDirectory>${project.build.directory}/generated-sources/ruta/resources/</outputDirectory>
+
+       <!-- Source file encoding. Default value: ${project.build.sourceEncoding} -->
+       <encoding>UTF-8</encoding>
+
+      </configuration>
+     </execution>
+    </executions>
+   </plugin>
+
+   <plugin>
+    <groupId>org.apache.uima</groupId>
+    <artifactId>ruta-maven-plugin</artifactId>
+    <version>2.3.0-SNAPSHOT</version>
+    <configuration></configuration>
+    <executions>
+     <execution>
+      <id>default</id>
+      <phase>process-classes</phase>
+      <goals>
+       <goal>mtwl</goal>
+      </goals>
+      <configuration>
+       <!-- This is a exemplary configuration, which explicitly specifies 
+        the default configuration values if not mentioned otherwise. -->
+
+       <!-- Compress resulting tree word list. -->
+       <compress>true</compress>
+
+       <!-- The source files for the multi tree word list. -->
+       <inputFiles>
+        <directory>${basedir}/src/main/resources</directory>
+        <includes>
+         <include>*.txt</include>
+        </includes>
+       </inputFiles>
+
+       <!-- The directory where the generated tree word lists will be written 
+        to. -->
+       <outputFile>${project.build.directory}/generated-sources/ruta/resources/generated.mtwl</outputFile>
+
+       <!-- Source file encoding. Default value: ${project.build.sourceEncoding} -->
+       <encoding>UTF-8</encoding>
+      </configuration>
+     </execution>
+    </executions>
+   </plugin>
+  </plugins>
+  <pluginManagement>
+   <plugins>
+    <!--This plugin's configuration is used to store Eclipse m2e settings 
+     only. It has no influence on the Maven build itself. -->
+    <plugin>
+     <groupId>org.eclipse.m2e</groupId>
+     <artifactId>lifecycle-mapping</artifactId>
+     <version>1.0.0</version>
+     <configuration>
+      <lifecycleMappingMetadata>
+       <pluginExecutions>
+        <pluginExecution>
+         <pluginExecutionFilter>
+          <groupId>
+           org.apache.uima
+          </groupId>
+          <artifactId>
+           ruta-maven-plugin
+          </artifactId>
+          <versionRange>
+           [2.1.0,)
+          </versionRange>
+          <goals>
+           <goal>generate</goal>
+           <goal>twl</goal>
+           <goal>mtwl</goal>
+          </goals>
+         </pluginExecutionFilter>
+         <action>
+          <ignore></ignore>
+         </action>
+        </pluginExecution>
+       </pluginExecutions>
+      </lifecycleMappingMetadata>
+     </configuration>
+    </plugin>
+   </plugins>
+  </pluginManagement>
+ </build>
 
 </project>

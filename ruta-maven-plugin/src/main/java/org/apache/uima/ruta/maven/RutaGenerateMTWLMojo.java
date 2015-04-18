@@ -48,7 +48,7 @@ public class RutaGenerateMTWLMojo extends AbstractMojo {
   private BuildContext buildContext;
 
   /**
-   * The file where the generated multi tree word list will be written.
+   * The file where the generated multi tree word list will be written to.
    */
   @Parameter(defaultValue = "${project.build.directory}/generated-sources/ruta/resources/generated.mtwl", required = true)
   private File outputFile;

@@ -48,7 +48,7 @@ public class RutaGenerateTWLMojo extends AbstractMojo {
   private BuildContext buildContext;
 
   /**
-   * The directory where the generated tree word lists will be written.
+   * The directory where the generated tree word lists will be written to.
    */
   @Parameter(defaultValue = "${project.build.directory}/generated-sources/ruta/resources/", required = true)
   private File outputDirectory;
