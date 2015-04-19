@@ -22,6 +22,8 @@
       <pluginExecutionFilter>
         <goals>
           <goal>generate</goal>
+          <goal>twl</goal>
+          <goal>mtwl</goal>
         </goals>
       </pluginExecutionFilter>
       <action>
