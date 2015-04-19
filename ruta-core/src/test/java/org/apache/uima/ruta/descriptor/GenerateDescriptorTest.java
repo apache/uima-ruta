@@ -86,7 +86,7 @@ public class GenerateDescriptorTest {
             .getConfigurationParameterSettings();
 
     String mainScript = (String) cps.getParameterValue(RutaEngine.PARAM_MAIN_SCRIPT);
-    assertEquals("Anonymous", mainScript);
+    assertEquals("test.package.Anonymous", mainScript);
     
     String[] additionalEngines = (String[]) cps.getParameterValue(RutaEngine.PARAM_ADDITIONAL_ENGINES);
     assertNotNull(additionalEngines);

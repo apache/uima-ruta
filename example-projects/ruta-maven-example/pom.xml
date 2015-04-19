@@ -6,7 +6,7 @@
  <version>2.3.0-SNAPSHOT</version>
 
  <dependencies>
- <dependency>
+  <dependency>
    <groupId>org.apache.uima</groupId>
    <artifactId>ruta-core</artifactId>
    <version>${project.version}</version>
@@ -69,15 +69,22 @@
 
      <!-- Script paths of the generated analysis engine descriptor. No default 
       values given. -->
-     <scriptPaths></scriptPaths>
+     <scriptPaths>
+      <scriptPath>${basedir}/src/main/ruta/</scriptPath>
+     </scriptPaths>
 
      <!-- Descriptor paths of the generated analysis engine descriptor. No 
       default values given. -->
-     <descriptorPaths></descriptorPaths>
+     <descriptorPaths>
+      <descriptorPath>${project.build.directory}/generated-sources/ruta/descriptor</descriptorPath>
+     </descriptorPaths>
 
      <!-- Resource paths of the generated analysis engine descriptor. No 
       default values given. -->
-     <resourcePaths></resourcePaths>
+     <resourcePaths>
+      <resourcePath>${basedir}/src/main/resources/</resourcePath>
+      <resourcePath>${project.build.directory}/generated-sources/ruta/resources/</resourcePath>
+     </resourcePaths>
 
      <!-- Suffix used for the generated type system descriptors. -->
      <typeSystemSuffix>Engine</typeSystemSuffix>
@@ -190,6 +197,29 @@
 
        <!-- Source file encoding. Default value: ${project.build.sourceEncoding} -->
        <encoding>UTF-8</encoding>
+      </configuration>
+     </execution>
+    </executions>
+   </plugin>
+
+   <plugin>
+    <groupId>org.apache.uima</groupId>
+    <artifactId>jcasgen-maven-plugin</artifactId>
+    <version>2.7.0</version>
+    <executions>
+     <execution>
+      <goals>
+       <goal>generate</goal>
+      </goals> 
+      <!-- runs in phase process-resources by default -->
+      <configuration>
+
+        <!-- one or more ant-like file patterns identifying top level descriptors -->
+       <typeSystemIncludes>
+        <typeSystemInclude>src/main/resources/types/BibtexTypeSystem.xml</typeSystemInclude>
+       </typeSystemIncludes>
+
+       <limitToProject>true</limitToProject>
       </configuration>
      </execution>
     </executions>

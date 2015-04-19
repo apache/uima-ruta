@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.ResourceSpecifierFactory;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
@@ -427,8 +428,12 @@ public class RutaDescriptorBuilder {
       analysisEngineDescription.getAnalysisEngineMetaData().setCapabilities(newArray);
     }
 
+    String mainScript = desc.getScriptName();
+    if(!StringUtils.isBlank(desc.getPackageString())) {
+      mainScript = desc.getPackageString().concat(".").concat(mainScript);
+    }
     analysisEngineDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
-            .setParameterValue(RutaEngine.PARAM_MAIN_SCRIPT, desc.getScriptName());
+            .setParameterValue(RutaEngine.PARAM_MAIN_SCRIPT, mainScript);
     if (scriptPaths != null) {
       analysisEngineDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
               .setParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, scriptPaths);
