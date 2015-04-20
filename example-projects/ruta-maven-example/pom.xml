@@ -87,7 +87,7 @@
      </resourcePaths>
 
      <!-- Suffix used for the generated type system descriptors. -->
-     <typeSystemSuffix>Engine</typeSystemSuffix>
+     <analysisEngineSuffix>Engine</analysisEngineSuffix>
 
      <!-- Suffix used for the generated analysis engine descriptors. -->
      <typeSystemSuffix>TypeSystem</typeSystemSuffix>
