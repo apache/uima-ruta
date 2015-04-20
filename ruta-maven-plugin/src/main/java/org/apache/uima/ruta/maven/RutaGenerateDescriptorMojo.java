@@ -122,13 +122,13 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
   /**
    * Descriptor paths of the generated analysis engine descriptor.
    */
-  @Parameter(defaultValue = DEFAULT_TARGET_DIR, required = false)
+  @Parameter(required = false)
   private String[] descriptorPaths;
 
   /**
    * Resource paths of the generated analysis engine descriptor.
    */
-  @Parameter(defaultValue = DEFAULT_TARGET_DIR, required = false)
+  @Parameter(required = false)
   private String[] resourcePaths;
 
   /**
@@ -252,6 +252,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
         getLog().warn("Failed to parse UIMA Ruta script: " + scriptName, re);
       } catch (IOException ioe) {
         toBuild.add(descriptorInformation);
+        getLog().warn("Trying to build " + scriptName + ": " + ioe.toString());
         count++;
       } catch (SAXException saxe) {
         getLog().warn("Failed to write descriptor: " + scriptName, saxe);
