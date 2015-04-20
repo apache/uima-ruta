@@ -267,7 +267,8 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
       IPreferenceStore store = RutaIdeCorePlugin.getDefault().getPreferenceStore();
       option.setImportByName(store.getBoolean(RutaCorePreferences.BUILDER_IMPORT_BY_NAME));
       option.setResolveImports(store.getBoolean(RutaCorePreferences.BUILDER_RESOLVE_IMPORTS));
-      builder.build(sm, typeSystemDest, engineDest, option, mainScript, scriptPaths, enginePaths, classloader);
+      option.setClassLoader(classloader);
+      builder.build(sm, typeSystemDest, engineDest, option, mainScript, scriptPaths, enginePaths);
     } catch (Exception e) {
       DLTKCore.error(e.getMessage(), e);
       if (DLTKCore.DEBUG_PARSER) {
