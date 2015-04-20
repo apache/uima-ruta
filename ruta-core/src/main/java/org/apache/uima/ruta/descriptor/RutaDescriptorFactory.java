@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.List;
 
 import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.ANTLRStringStream;
@@ -38,6 +39,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.engine.HtmlAnnotator;
 import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.ruta.extensions.IRutaExtension;
 import org.apache.uima.ruta.extensions.RutaExternalFactory;
 import org.apache.uima.ruta.parser.RutaLexer;
 import org.apache.uima.ruta.parser.RutaParser;
@@ -117,9 +119,9 @@ public class RutaDescriptorFactory {
             analysisEngineDescription, typeSystemDescription);
   }
 
-  public RutaDescriptorInformation parseDescriptorInformation(File scriptFile, String encoding)
+  public RutaDescriptorInformation parseDescriptorInformation(File scriptFile, RutaBuildOptions options)
           throws IOException, RecognitionException {
-    CharStream st = new ANTLRFileStream(scriptFile.getAbsolutePath(), encoding);
+    CharStream st = new ANTLRFileStream(scriptFile.getAbsolutePath(), options.getEncoding());
     RutaLexer lexer = new RutaLexer(st);
     CommonTokenStream tokens = new CommonTokenStream(lexer);
     RutaParser parser = new RutaParser(tokens);
@@ -127,8 +129,7 @@ public class RutaDescriptorFactory {
     parser.setDescriptorInformation(descInfo);
     // TODO no context?
     parser.setContext(null);
-    // TODO initialize extension?
-    parser.setExternalFactory(new RutaExternalFactory());
+    parser.setExternalFactory(initializeExternalFactory(options));
     // TODO no resource, avoid fail on missing resources while parsing
     parser.setResourcePaths(new String[0]);
     // TODO what about the loading from classpath?
@@ -143,7 +144,12 @@ public class RutaDescriptorFactory {
     return descInfo;
   }
 
-  public RutaDescriptorInformation parseDescriptorInformation(String script) throws IOException,
+	public RutaDescriptorInformation parseDescriptorInformation(String script)
+			throws IOException, RecognitionException {
+	 return parseDescriptorInformation(script, new RutaBuildOptions());
+  }
+  
+  public RutaDescriptorInformation parseDescriptorInformation(String script, RutaBuildOptions options) throws IOException,
           RecognitionException {
     CharStream st = new ANTLRStringStream(script);
     RutaLexer lexer = new RutaLexer(st);
@@ -153,8 +159,7 @@ public class RutaDescriptorFactory {
     parser.setDescriptorInformation(descInfo);
     // TODO no context?
     parser.setContext(null);
-    // TODO initialize extension?
-    parser.setExternalFactory(new RutaExternalFactory());
+    parser.setExternalFactory(initializeExternalFactory(options));
     // TODO no resource, avoid fail on missing resources while parsing
     parser.setResourcePaths(new String[0]);
     // TODO what about the loading from classpath?
@@ -165,6 +170,26 @@ public class RutaDescriptorFactory {
     return descInfo;
   }
 
+  
+  private RutaExternalFactory  initializeExternalFactory(RutaBuildOptions options) {
+	  RutaExternalFactory factory = new RutaExternalFactory();
+	  List<String> languageExtensions = options.getLanguageExtensions();
+	  for (String each : languageExtensions) {
+	      try {
+	        Class<?> forName = Class.forName(each);
+	        if (IRutaExtension.class.isAssignableFrom(forName)) {
+	          IRutaExtension extension = (IRutaExtension) forName.newInstance();
+	          for (String name : extension.getKnownExtensions()) {
+	            factory.addExtension(name, extension);
+	          }
+	        }
+	      } catch (Exception e) {
+	        // System.out.println("EXTENSION ERROR: " + each);
+	      }
+	    }
+	  return factory;
+  }
+  
   public URL getDefaultTypeSystem() {
     return defaultTypeSystem;
   }

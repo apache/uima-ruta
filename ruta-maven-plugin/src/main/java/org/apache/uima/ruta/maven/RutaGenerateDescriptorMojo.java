@@ -231,8 +231,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     for (String fileString : files) {
       File file = new File(fileString);
       try {
-        RutaDescriptorInformation descriptorInformation = factory.parseDescriptorInformation(file,
-                encoding);
+        RutaDescriptorInformation descriptorInformation = factory.parseDescriptorInformation(file, options);
         toBuild.add(descriptorInformation);
       } catch (RecognitionException re) {
         getLog().warn("Failed to parse UIMA Ruta script file: " + file.getAbsolutePath(), re);
