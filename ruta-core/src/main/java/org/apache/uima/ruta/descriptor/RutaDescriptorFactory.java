@@ -189,7 +189,7 @@ public class RutaDescriptorFactory {
       try {
         Class<?> forName = null;
         if (options.getClassLoader() != null) {
-          options.getClassLoader().loadClass(each);
+        	forName = options.getClassLoader().loadClass(each);
         } else {
           forName = Class.forName(each);
         }
