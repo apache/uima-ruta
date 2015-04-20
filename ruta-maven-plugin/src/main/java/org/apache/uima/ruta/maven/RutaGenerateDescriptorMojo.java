@@ -29,6 +29,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -178,6 +180,13 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
    */
   @Parameter(defaultValue = "true", required = false)
   private boolean addRutaNature;
+  
+  
+  /**
+   * Script source paths for the UIMA Ruta build path.
+   */
+  @Parameter(required = false)
+  private String[] buildPaths;
 
   public void execute() throws MojoExecutionException, MojoFailureException {
 
@@ -272,6 +281,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
 
     if (addRutaNature) {
       addRutaNature();
+      addRutaBuildPath();
     }
 
   }
@@ -411,5 +421,94 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
       }
       buildContext.refresh(projectDir);
     }
+  }
+
+  private void addRutaBuildPath() {
+    File projectDir = project.getFile().getParentFile();
+
+    if (buildPaths == null || buildPaths.length == 0) {
+      return;
+    }
+
+    File buildpathFile = new File(projectDir, ".buildpath");
+    if (buildpathFile.exists()) {
+      Xpp3Dom buildpathNode = null;
+      try {
+        buildpathNode = Xpp3DomBuilder.build(new FileReader(buildpathFile));
+      } catch (XmlPullParserException | IOException e) {
+        getLog().warn("Failed to access .buildpath file", e);
+      }
+
+      if (buildpathNode == null) {
+        return;
+      }
+
+      Collection<String> existingEntries = new HashSet<String>();
+      boolean foundInterpreter = false;
+      for (int i = 0; i < buildpathNode.getChildCount(); ++i) {
+        Xpp3Dom buildpathentry = buildpathNode.getChild(i);
+        if (buildpathentry != null
+                && StringUtils.equals(buildpathentry.getAttribute("kind"), "src")) {
+          existingEntries.add(buildpathentry.getAttribute("path"));
+        }
+        if (StringUtils.equals(buildpathentry.getAttribute("kind"), "con")
+                && StringUtils.equals(buildpathentry.getAttribute("path"),
+                        "org.eclipse.dltk.launching.INTERPRETER_CONTAINER")) {
+          foundInterpreter = true;
+        }
+      }
+      for (String scriptPath : buildPaths) {
+        if (!existingEntries.contains(scriptPath)) {
+          Xpp3Dom buildpathentry = new Xpp3Dom("buildpathentry");
+          buildpathentry.setAttribute("kind", "src");
+          buildpathentry.setAttribute("path", scriptPath);
+          buildpathNode.addChild(buildpathentry);
+        }
+      }
+      if (!foundInterpreter) {
+        Xpp3Dom buildpathentry = new Xpp3Dom("buildpathentry");
+        buildpathentry.setAttribute("kind", "con");
+        buildpathentry.setAttribute("path", "org.eclipse.dltk.launching.INTERPRETER_CONTAINER");
+        buildpathNode.addChild(buildpathentry);
+      }
+
+      StringWriter sw = new StringWriter();
+      Xpp3DomWriter.write(sw, buildpathNode);
+      String string = sw.toString();
+      // Xpp3DomWriter creates empty string with file writer, check before writing to file
+      if (!StringUtils.isBlank(string)) {
+        try {
+          FileUtils.fileWrite(buildpathFile, encoding, string);
+        } catch (IOException e) {
+          getLog().warn("Failed to write .buildpath file", e);
+        }
+      }
+
+    } else {
+      Xpp3Dom buildpathNode = new Xpp3Dom("buildpath");
+      for (String scriptPath : buildPaths) {
+        Xpp3Dom buildpathentry = new Xpp3Dom("buildpathentry");
+        buildpathentry.setAttribute("kind", "src");
+        buildpathentry.setAttribute("path", scriptPath);
+        buildpathNode.addChild(buildpathentry);
+      }
+      Xpp3Dom buildpathentry = new Xpp3Dom("buildpathentry");
+      buildpathentry.setAttribute("kind", "con");
+      buildpathentry.setAttribute("path", "org.eclipse.dltk.launching.INTERPRETER_CONTAINER");
+      buildpathNode.addChild(buildpathentry);
+
+      StringWriter sw = new StringWriter();
+      Xpp3DomWriter.write(sw, buildpathNode);
+      String string = sw.toString();
+      // Xpp3DomWriter creates empty string with file writer, check before writing to file
+      if (!StringUtils.isBlank(string)) {
+        try {
+          FileUtils.fileWrite(buildpathFile, encoding, string);
+        } catch (IOException e) {
+          getLog().warn("Failed to write .buildpath file", e);
+        }
+      }
+    }
+    buildContext.refresh(projectDir);
   }
 }
