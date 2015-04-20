@@ -142,20 +142,20 @@ public void setExternalFactory(RutaExternalFactory factory) {
 	
    	    if (e instanceof NoViableAltException) {
 	      NoViableAltException nvae = (NoViableAltException) e;
-	      String msg = "Error in line " + nvae.line + ", \"" + text + "\": found no viable alternative";
+	      String msg = "Error in "+moduleName+",  line " + nvae.line + ", \"" + text + "\": found no viable alternative";
 	      emitErrorMessage(msg);
 	    } else if (e instanceof MismatchedTokenException) {
 	      MismatchedTokenException mte = (MismatchedTokenException) e;
 	      int expectedInt = mte.expecting;
 	      String stringExpected = getTokenNames()[expectedInt];
-	      String msg = "Error in line " + line + ", \"" + text + "\": expected " + stringExpected
+	      String msg = "Error in "+moduleName+", line " + line + ", \"" + text + "\": expected " + stringExpected
 	              + ", but found " + stringFound;
 	      emitErrorMessage(msg);
 	    } else if (e instanceof MissingTokenException) {
 	      MissingTokenException mte = (MissingTokenException) e;
     	      int missingType = mte.getMissingType();
     	      String stringMissing = getTokenNames()[missingType];
-    	      String msg = "Error in line " + line + ", \"" + text + "\": missing " + stringMissing
+    	      String msg = "Error in "+moduleName+",  line " + line + ", \"" + text + "\": missing " + stringMissing
                     + ", but found " + stringFound;
     	      emitErrorMessage(msg);
 	    } else {

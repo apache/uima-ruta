@@ -297,11 +297,14 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
           RutaBuildOptions options, RutaDescriptorInformation descriptorInformation)
           throws IOException, RecognitionException, InvalidXMLException,
           ResourceInitializationException, URISyntaxException, SAXException {
-    String packageString = descriptorInformation.getPackageString().replaceAll("[.]", "/");
-    String engineOutput = new File(analysisEngineOutputDirectory, packageString + "/"
+    String packageString = "";
+    if(!StringUtils.isBlank(descriptorInformation.getPackageString())) {
+    	packageString = descriptorInformation.getPackageString().replaceAll("[.]", "/").concat("/");
+    }
+    String engineOutput = new File(analysisEngineOutputDirectory, packageString
             + descriptorInformation.getScriptName() + analysisEngineSuffix + ".xml")
             .getAbsolutePath();
-    String typeSystemOutput = new File(typeSystemOutputDirectory, packageString + "/"
+    String typeSystemOutput = new File(typeSystemOutputDirectory, packageString
             + descriptorInformation.getScriptName() + typeSystemSuffix + ".xml").getAbsolutePath();
     Pair<AnalysisEngineDescription, TypeSystemDescription> descriptions = factory
             .createDescriptions(engineOutput, typeSystemOutput, descriptorInformation, options,
