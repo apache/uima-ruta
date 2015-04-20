@@ -142,11 +142,11 @@ public class RutaDescriptorInformation {
   }
 
   public void setScriptName(String scriptName) {
-    this.scriptName = scriptName;    
+    this.scriptName = scriptName;
   }
-  
+
   public String getScriptName() {
-  return scriptName;
+    return scriptName;
   }
 
   public String getPackageString() {
@@ -156,5 +156,5 @@ public class RutaDescriptorInformation {
   public void setPackageString(String packageString) {
     this.packageString = packageString;
   }
-  
+
 }

@@ -36,6 +36,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.resource.ResourceManager;
+import org.apache.uima.resource.impl.ResourceManager_impl;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.engine.HtmlAnnotator;
 import org.apache.uima.ruta.engine.RutaEngine;
@@ -62,11 +64,11 @@ public class RutaDescriptorFactory {
   public RutaDescriptorFactory(String defaultTypeSystem, String defaultEngine)
           throws MalformedURLException {
     super();
-      this.defaultTypeSystem = new File(defaultTypeSystem).toURI().toURL();
-      this.defaultEngine = new File(defaultEngine).toURI().toURL();
+    this.defaultTypeSystem = new File(defaultTypeSystem).toURI().toURL();
+    this.defaultEngine = new File(defaultEngine).toURI().toURL();
   }
 
-  public RutaDescriptorFactory(URL defaultTypeSystem, URL defaultEngine)  {
+  public RutaDescriptorFactory(URL defaultTypeSystem, URL defaultEngine) {
     super();
     this.defaultTypeSystem = defaultTypeSystem;
     this.defaultEngine = defaultEngine;
@@ -80,7 +82,7 @@ public class RutaDescriptorFactory {
     RutaDescriptorBuilder builder = new RutaDescriptorBuilder(defaultTypeSystem, defaultEngine);
 
     TypeSystemDescription typeSystemDescription = builder.createTypeSystemDescription(
-            descriptorInformation, typeSystemOutput, options, null, classloader);
+            descriptorInformation, typeSystemOutput, options, null);
 
     return typeSystemDescription;
   }
@@ -94,7 +96,7 @@ public class RutaDescriptorFactory {
 
     AnalysisEngineDescription analysisEngineDescription = builder.createAnalysisEngineDescription(
             descriptorInformation, null, null, engineOutput, options, scriptPaths, descriptorPaths,
-            resourcePaths, classloader);
+            resourcePaths);
 
     return analysisEngineDescription;
   }
@@ -102,25 +104,25 @@ public class RutaDescriptorFactory {
   public Pair<AnalysisEngineDescription, TypeSystemDescription> createDescriptions(
           String engineOutput, String typeSystemOutput,
           RutaDescriptorInformation descriptorInformation, RutaBuildOptions options,
-          String[] scriptPaths, String[] descriptorPaths, String[] resourcePaths,
-          ClassLoader classloader) throws IOException, RecognitionException, InvalidXMLException,
+          String[] scriptPaths, String[] descriptorPaths, String[] resourcePaths)
+          throws IOException, RecognitionException, InvalidXMLException,
           ResourceInitializationException, URISyntaxException {
 
     RutaDescriptorBuilder builder = new RutaDescriptorBuilder(defaultTypeSystem, defaultEngine);
 
     TypeSystemDescription typeSystemDescription = builder.createTypeSystemDescription(
-            descriptorInformation, typeSystemOutput, options, descriptorPaths, classloader);
+            descriptorInformation, typeSystemOutput, options, descriptorPaths);
 
     AnalysisEngineDescription analysisEngineDescription = builder.createAnalysisEngineDescription(
             descriptorInformation, typeSystemDescription, typeSystemOutput, engineOutput, options,
-            scriptPaths, descriptorPaths, resourcePaths, classloader);
+            scriptPaths, descriptorPaths, resourcePaths);
 
     return new ImmutablePair<AnalysisEngineDescription, TypeSystemDescription>(
             analysisEngineDescription, typeSystemDescription);
   }
 
-  public RutaDescriptorInformation parseDescriptorInformation(File scriptFile, RutaBuildOptions options)
-          throws IOException, RecognitionException {
+  public RutaDescriptorInformation parseDescriptorInformation(File scriptFile,
+          RutaBuildOptions options) throws IOException, RecognitionException {
     CharStream st = new ANTLRFileStream(scriptFile.getAbsolutePath(), options.getEncoding());
     RutaLexer lexer = new RutaLexer(st);
     CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -132,8 +134,8 @@ public class RutaDescriptorFactory {
     parser.setExternalFactory(initializeExternalFactory(options));
     // TODO no resource, avoid fail on missing resources while parsing
     parser.setResourcePaths(new String[0]);
-    // TODO what about the loading from classpath?
-    parser.setResourceManager(UIMAFramework.newDefaultResourceManager());
+    ResourceManager rm = getResourceManager(options);
+    parser.setResourceManager(rm);
     String name = scriptFile.getName();
     int lastIndexOf = name.lastIndexOf(RutaEngine.SCRIPT_FILE_EXTENSION);
     if (lastIndexOf != -1) {
@@ -144,13 +146,13 @@ public class RutaDescriptorFactory {
     return descInfo;
   }
 
-	public RutaDescriptorInformation parseDescriptorInformation(String script)
-			throws IOException, RecognitionException {
-	 return parseDescriptorInformation(script, new RutaBuildOptions());
-  }
-  
-  public RutaDescriptorInformation parseDescriptorInformation(String script, RutaBuildOptions options) throws IOException,
+  public RutaDescriptorInformation parseDescriptorInformation(String script) throws IOException,
           RecognitionException {
+    return parseDescriptorInformation(script, new RutaBuildOptions());
+  }
+
+  public RutaDescriptorInformation parseDescriptorInformation(String script,
+          RutaBuildOptions options) throws IOException, RecognitionException {
     CharStream st = new ANTLRStringStream(script);
     RutaLexer lexer = new RutaLexer(st);
     CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -162,34 +164,48 @@ public class RutaDescriptorFactory {
     parser.setExternalFactory(initializeExternalFactory(options));
     // TODO no resource, avoid fail on missing resources while parsing
     parser.setResourcePaths(new String[0]);
-    // TODO what about the loading from classpath?
-    parser.setResourceManager(UIMAFramework.newDefaultResourceManager());
+    ResourceManager rm = getResourceManager(options);
+    parser.setResourceManager(rm);
     String name = "Anonymous";
     descInfo.setScriptName(name);
     parser.file_input(name);
     return descInfo;
   }
 
-  
-  private RutaExternalFactory  initializeExternalFactory(RutaBuildOptions options) {
-	  RutaExternalFactory factory = new RutaExternalFactory();
-	  List<String> languageExtensions = options.getLanguageExtensions();
-	  for (String each : languageExtensions) {
-	      try {
-	        Class<?> forName = Class.forName(each);
-	        if (IRutaExtension.class.isAssignableFrom(forName)) {
-	          IRutaExtension extension = (IRutaExtension) forName.newInstance();
-	          for (String name : extension.getKnownExtensions()) {
-	            factory.addExtension(name, extension);
-	          }
-	        }
-	      } catch (Exception e) {
-	        // System.out.println("EXTENSION ERROR: " + each);
-	      }
-	    }
-	  return factory;
+  private ResourceManager getResourceManager(RutaBuildOptions options) {
+    ResourceManager rm = null;
+    if(options.getClassLoader() != null) {
+      rm = new ResourceManager_impl(options.getClassLoader());
+    } else {
+      rm = UIMAFramework.newDefaultResourceManager();
+    }
+    return rm;
   }
-  
+
+  private RutaExternalFactory initializeExternalFactory(RutaBuildOptions options) {
+    RutaExternalFactory factory = new RutaExternalFactory();
+    List<String> languageExtensions = options.getLanguageExtensions();
+    for (String each : languageExtensions) {
+      try {
+        Class<?> forName = null;
+        if (options.getClassLoader() != null) {
+          options.getClassLoader().loadClass(each);
+        } else {
+          forName = Class.forName(each);
+        }
+        if (forName != null && IRutaExtension.class.isAssignableFrom(forName)) {
+          IRutaExtension extension = (IRutaExtension) forName.newInstance();
+          for (String name : extension.getKnownExtensions()) {
+            factory.addExtension(name, extension);
+          }
+        }
+      } catch (Exception e) {
+        // System.out.println("EXTENSION ERROR: " + each);
+      }
+    }
+    return factory;
+  }
+
   public URL getDefaultTypeSystem() {
     return defaultTypeSystem;
   }

@@ -215,6 +215,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     options.setEncoding(encoding);
     options.setResolveImports(resolveImports);
     options.setImportByName(importByName);
+    options.setClassLoader(classloader);
 
     List<String> extensions = getExtensionsFromClasspath(classloader);
     options.setLanguageExtensions(extensions);
@@ -231,7 +232,8 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     for (String fileString : files) {
       File file = new File(fileString);
       try {
-        RutaDescriptorInformation descriptorInformation = factory.parseDescriptorInformation(file, options);
+        RutaDescriptorInformation descriptorInformation = factory.parseDescriptorInformation(file,
+                options);
         toBuild.add(descriptorInformation);
       } catch (RecognitionException re) {
         getLog().warn("Failed to parse UIMA Ruta script file: " + file.getAbsolutePath(), re);
@@ -245,7 +247,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
       RutaDescriptorInformation descriptorInformation = toBuild.poll();
       String scriptName = descriptorInformation.getScriptName();
       try {
-        createDescriptors(factory, classloader, options, descriptorInformation);
+        createDescriptors(factory, options, descriptorInformation);
       } catch (RecognitionException re) {
         getLog().warn("Failed to parse UIMA Ruta script: " + scriptName, re);
       } catch (IOException ioe) {
@@ -292,13 +294,13 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
 
   }
 
-  private void createDescriptors(RutaDescriptorFactory factory, URLClassLoader classloader,
-          RutaBuildOptions options, RutaDescriptorInformation descriptorInformation)
-          throws IOException, RecognitionException, InvalidXMLException,
-          ResourceInitializationException, URISyntaxException, SAXException {
+  private void createDescriptors(RutaDescriptorFactory factory, RutaBuildOptions options,
+          RutaDescriptorInformation descriptorInformation) throws IOException,
+          RecognitionException, InvalidXMLException, ResourceInitializationException,
+          URISyntaxException, SAXException {
     String packageString = "";
-    if(!StringUtils.isBlank(descriptorInformation.getPackageString())) {
-    	packageString = descriptorInformation.getPackageString().replaceAll("[.]", "/").concat("/");
+    if (!StringUtils.isBlank(descriptorInformation.getPackageString())) {
+      packageString = descriptorInformation.getPackageString().replaceAll("[.]", "/").concat("/");
     }
     String engineOutput = new File(analysisEngineOutputDirectory, packageString
             + descriptorInformation.getScriptName() + analysisEngineSuffix + ".xml")
@@ -307,7 +309,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
             + descriptorInformation.getScriptName() + typeSystemSuffix + ".xml").getAbsolutePath();
     Pair<AnalysisEngineDescription, TypeSystemDescription> descriptions = factory
             .createDescriptions(engineOutput, typeSystemOutput, descriptorInformation, options,
-                    scriptPaths, descriptorPaths, resourcePaths, classloader);
+                    scriptPaths, descriptorPaths, resourcePaths);
     write(descriptions.getKey(), engineOutput);
     write(descriptions.getValue(), typeSystemOutput);
     buildContext.refresh(analysisEngineOutputDirectory);

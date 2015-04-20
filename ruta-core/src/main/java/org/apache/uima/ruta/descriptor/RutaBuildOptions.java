@@ -37,10 +37,11 @@ public class RutaBuildOptions {
   private String encoding;
 
   private String typeSystemSuffix = "TypeSystem";
-  
+
   private String analysisEngineSuffix = "Engine";
-  
-  
+
+  private ClassLoader classLoader;
+
   public RutaBuildOptions() {
     super();
   }
@@ -107,6 +108,16 @@ public class RutaBuildOptions {
 
   public void setEngineLoaders(List<String> engineLoaders) {
     this.engineLoaders = engineLoaders;
+  }
+
+  public void setClassLoader(ClassLoader classLoader) {
+    this.classLoader = classLoader;
+
+  }
+
+  public ClassLoader getClassLoader() {
+    return classLoader;
+
   }
 
 }
