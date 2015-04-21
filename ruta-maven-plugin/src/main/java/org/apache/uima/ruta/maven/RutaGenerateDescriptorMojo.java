@@ -81,6 +81,8 @@ import org.xml.sax.SAXException;
  */
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.PROCESS_RESOURCES, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class RutaGenerateDescriptorMojo extends AbstractMojo {
+  private static final String RUTA_BUILD_VARS = "RUTA_BUILD_VARS";
+
   private static final String DEFAULT_TARGET_DIR = "${project.build.directory}/generated-sources/ruta/descriptor";
 
   private static final String RUTA_NATURE = "org.apache.uima.ruta.ide.nature";
@@ -180,8 +182,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
    */
   @Parameter(defaultValue = "true", required = false)
   private boolean addRutaNature;
-  
-  
+
   /**
    * Script source paths for the UIMA Ruta build path.
    */
@@ -419,7 +420,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
           getLog().warn("Failed to write .project file", e);
         }
       }
-      buildContext.refresh(projectDir);
+      buildContext.refresh(projectFile);
     }
   }
 
@@ -456,21 +457,32 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
                         "org.eclipse.dltk.launching.INTERPRETER_CONTAINER")) {
           foundInterpreter = true;
         }
-      }
-      for (String scriptPath : buildPaths) {
-        if (!existingEntries.contains(scriptPath)) {
-          Xpp3Dom buildpathentry = new Xpp3Dom("buildpathentry");
-          buildpathentry.setAttribute("kind", "src");
-          buildpathentry.setAttribute("path", scriptPath);
-          buildpathNode.addChild(buildpathentry);
+        if(StringUtils.equals(buildpathentry.getAttribute("kind"), "var")&& StringUtils.equals(buildpathentry.getAttribute("path"),
+                RUTA_BUILD_VARS)) {
+          buildpathNode.removeChild(i);
         }
       }
-      if (!foundInterpreter) {
-        Xpp3Dom buildpathentry = new Xpp3Dom("buildpathentry");
-        buildpathentry.setAttribute("kind", "con");
-        buildpathentry.setAttribute("path", "org.eclipse.dltk.launching.INTERPRETER_CONTAINER");
-        buildpathNode.addChild(buildpathentry);
+      for (String eachBP : buildPaths) {
+        String[] split = eachBP.split(":");
+        String type = "script";
+        String path = eachBP;
+        if (split.length == 2) {
+          type = split[0];
+          path = split[1];
+        }
+        if (!existingEntries.contains(path)) {
+          addBuildPathEntry(buildpathNode, type, path);
+        }
       }
+      
+      addRutabuildVars(buildpathNode);
+      
+      // if (!foundInterpreter) {
+      // Xpp3Dom buildpathentry = new Xpp3Dom("buildpathentry");
+      // buildpathentry.setAttribute("kind", "con");
+      // buildpathentry.setAttribute("path", "org.eclipse.dltk.launching.INTERPRETER_CONTAINER");
+      // buildpathNode.addChild(buildpathentry);
+      // }
 
       StringWriter sw = new StringWriter();
       Xpp3DomWriter.write(sw, buildpathNode);
@@ -486,17 +498,24 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
 
     } else {
       Xpp3Dom buildpathNode = new Xpp3Dom("buildpath");
-      for (String scriptPath : buildPaths) {
-        Xpp3Dom buildpathentry = new Xpp3Dom("buildpathentry");
-        buildpathentry.setAttribute("kind", "src");
-        buildpathentry.setAttribute("path", scriptPath);
-        buildpathNode.addChild(buildpathentry);
+      for (String eachBP : buildPaths) {
+        String[] split = eachBP.split(":");
+        String type = "script";
+        String path = eachBP;
+        if (split.length == 2) {
+          type = split[0];
+          path = split[1];
+        }
+        addBuildPathEntry(buildpathNode, type, path);
       }
       Xpp3Dom buildpathentry = new Xpp3Dom("buildpathentry");
       buildpathentry.setAttribute("kind", "con");
       buildpathentry.setAttribute("path", "org.eclipse.dltk.launching.INTERPRETER_CONTAINER");
       buildpathNode.addChild(buildpathentry);
 
+      addRutabuildVars(buildpathNode);
+      
+      
       StringWriter sw = new StringWriter();
       Xpp3DomWriter.write(sw, buildpathNode);
       String string = sw.toString();
@@ -509,6 +528,38 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
         }
       }
     }
-    buildContext.refresh(projectDir);
+    buildContext.refresh(buildpathFile);
+  }
+
+  private void addRutabuildVars(Xpp3Dom buildpathNode) {
+    Xpp3Dom varEntry = new Xpp3Dom("buildpathentry");
+    varEntry.setAttribute("kind", "var");
+    varEntry.setAttribute("path", RUTA_BUILD_VARS);
+    Xpp3Dom attributes = new Xpp3Dom("attributes");
+    varEntry.addChild(attributes);
+    Xpp3Dom tsAttribute = new Xpp3Dom("attribute");
+    tsAttribute.setAttribute("name", "typeSystemSuffix");
+    tsAttribute.setAttribute("value", typeSystemSuffix);
+    attributes.addChild(tsAttribute);
+    Xpp3Dom aeAttribute = new Xpp3Dom("attribute");
+    aeAttribute.setAttribute("name", "analysisEngineSuffix");
+    aeAttribute.setAttribute("value", analysisEngineSuffix);
+    attributes.addChild(aeAttribute);
+    buildpathNode.addChild(varEntry);
+    
+    
+  }
+
+  private void addBuildPathEntry(Xpp3Dom buildpathNode, String type, String path) {
+    Xpp3Dom buildpathentry = new Xpp3Dom("buildpathentry");
+    buildpathentry.setAttribute("kind", "src");
+    buildpathentry.setAttribute("path", path);
+    Xpp3Dom attributes = new Xpp3Dom("attributes");
+    buildpathentry.addChild(attributes);
+    Xpp3Dom attribute = new Xpp3Dom("attribute");
+    attribute.setAttribute("name", "ruta");
+    attribute.setAttribute("value", type);
+    attributes.addChild(attribute);
+    buildpathNode.addChild(buildpathentry);
   }
 }

@@ -21,6 +21,7 @@ package org.apache.uima.ruta.searchStrategy;
 
 import org.apache.uima.caseditor.ide.TypeSystemLocationPropertyPage;
 import org.apache.uima.caseditor.ide.searchstrategy.ITypeSystemSearchStrategy;
+import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.apache.uima.ruta.ide.core.RutaNature;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.eclipse.core.resources.IFile;
@@ -39,7 +40,7 @@ public class LastLaunchSearchStrategy implements ITypeSystemSearchStrategy {
   public IFile findTypeSystem(IFile casFile) {
     IProject project = casFile.getProject();
     IFile typeSystemLocation = TypeSystemLocationPropertyPage.getTypeSystemLocation(project);
-    if(typeSystemLocation != null && !typeSystemLocation.getName().equals("TypeSystem.xml")) {
+    if (typeSystemLocation != null && !typeSystemLocation.getName().equals("TypeSystem.xml")) {
       // do not override the properties!
       return null;
     }
@@ -59,11 +60,18 @@ public class LastLaunchSearchStrategy implements ITypeSystemSearchStrategy {
             && Path.ROOT.isValidPath(scriptName)) {
       final IFile scriptFile = project.getFile(scriptName);
       if (scriptFile.exists()) {
-        IPath path = RutaProjectUtils.getTypeSystemDescriptorPath(
-                scriptFile.getProjectRelativePath(), project);
-        IFile ts = project.getFile(path.makeRelativeTo(project.getLocation()));
-        if (ts.exists()) {
-          return ts;
+        IPath path = null;
+        try {
+          path = RutaProjectUtils.getTypeSystemDescriptorPath(scriptFile.getProjectRelativePath(),
+                  project);
+        } catch (CoreException e) {
+          RutaAddonsPlugin.error(e);
+        }
+        if (path != null) {
+          IFile ts = project.getFile(path.makeRelativeTo(project.getLocation()));
+          if (ts.exists()) {
+            return ts;
+          }
         }
       }
     }

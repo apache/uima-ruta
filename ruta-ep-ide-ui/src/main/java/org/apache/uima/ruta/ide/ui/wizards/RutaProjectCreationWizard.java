@@ -40,8 +40,10 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.IBuildpathAttribute;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IScriptProject;
+import org.eclipse.dltk.internal.core.BuildpathEntry;
 import org.eclipse.dltk.internal.ui.util.CoreUtility;
 import org.eclipse.dltk.internal.ui.wizards.buildpath.BPListElement;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
@@ -133,8 +135,23 @@ public class RutaProjectCreationWizard extends ProjectWizard {
         }
       }
     }
-    IBuildpathEntry newSourceEntry = DLTKCore.newSourceEntry(srcFolder.getFullPath());
+    IBuildpathAttribute[] extraAttributes = new IBuildpathAttribute[1];
+    extraAttributes[0] = DLTKCore.newBuildpathAttribute(RutaProjectUtils.BUILDPATH_ATTRIBUTE_RUTA, RutaProjectUtils.BUILDPATH_ATTRIBUTE_SCRIPT);
+    IBuildpathEntry newSourceEntry = DLTKCore.newSourceEntry(srcFolder.getFullPath(),BuildpathEntry.INCLUDE_ALL,
+            BuildpathEntry.EXCLUDE_NONE, extraAttributes);
     buildpathEntries.add(BPListElement.createFromExisting(newSourceEntry, scriptProject));
+    
+    extraAttributes = new IBuildpathAttribute[1];
+    extraAttributes[0] = DLTKCore.newBuildpathAttribute(RutaProjectUtils.BUILDPATH_ATTRIBUTE_RUTA, RutaProjectUtils.BUILDPATH_ATTRIBUTE_DESCRIPTOR);
+    IBuildpathEntry newDescriptorEntry = DLTKCore.newSourceEntry(descFolder.getFullPath(),BuildpathEntry.INCLUDE_ALL,
+            BuildpathEntry.EXCLUDE_NONE, extraAttributes);
+    buildpathEntries.add(BPListElement.createFromExisting(newDescriptorEntry, scriptProject));
+    
+    extraAttributes = new IBuildpathAttribute[1];
+    extraAttributes[0] = DLTKCore.newBuildpathAttribute(RutaProjectUtils.BUILDPATH_ATTRIBUTE_RUTA, RutaProjectUtils.BUILDPATH_ATTRIBUTE_RESOURCES);
+    IBuildpathEntry newResourcesEntry = DLTKCore.newSourceEntry(rsrcFolder.getFullPath(),BuildpathEntry.INCLUDE_ALL,
+            BuildpathEntry.EXCLUDE_NONE, extraAttributes);
+    buildpathEntries.add(BPListElement.createFromExisting(newResourcesEntry, scriptProject));
 
     BuildpathsBlock.flush(buildpathEntries, scriptProject, monitor);
     copyDescriptors(descFolder);

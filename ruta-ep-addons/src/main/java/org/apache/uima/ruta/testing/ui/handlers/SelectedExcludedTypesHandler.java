@@ -43,6 +43,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -95,6 +96,8 @@ public class SelectedExcludedTypesHandler implements IHandler {
     } catch (InvalidXMLException e) {
       RutaAddonsPlugin.error(e);
     } catch (IOException e) {
+      RutaAddonsPlugin.error(e);
+    } catch (CoreException e) {
       RutaAddonsPlugin.error(e);
     }
 

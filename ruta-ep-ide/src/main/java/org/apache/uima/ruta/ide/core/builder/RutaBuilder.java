@@ -141,9 +141,9 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
       // TODO: dont use desc path!
       IPath descPath = RutaProjectUtils.getDescriptorRootPath(proj.getProject());
       IPath scriptPath = RutaProjectUtils.getScriptRootPath(proj.getProject());
-      IPath descPackagePath = RutaProjectUtils.getDescriptorPackagePath(sourceModule.getResource()
+      IPath relativePackagePath = RutaProjectUtils.getPackagePath(sourceModule.getResource()
               .getLocation(), proj.getProject());
-
+      IPath descPackagePath = descPath.append(relativePackagePath);
       String typeSystem = descPackagePath.append(elementName + "TypeSystem.xml").toPortableString();
       String engine = descPackagePath.append(elementName + "Engine.xml").toPortableString();
       String basicTS = descPath.append("BasicTypeSystem.xml").toPortableString();

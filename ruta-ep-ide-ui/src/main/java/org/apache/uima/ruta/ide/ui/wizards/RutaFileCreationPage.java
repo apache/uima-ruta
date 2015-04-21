@@ -26,13 +26,13 @@ import org.apache.uima.ruta.ide.core.RutaNature;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.compiler.util.Util;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.IScriptProject;
-import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.ui.wizards.NewSourceModulePage;
 
@@ -66,7 +66,7 @@ public class RutaFileCreationPage extends NewSourceModulePage {
     IFolder folder = null;
     try {
       folder = getScriptFolderOf(scriptFolder, scriptProject);
-    } catch (ModelException e) {
+    } catch (CoreException e) {
       RutaIdeUIPlugin.error(e);
     }
     if (folder == null) {
@@ -92,7 +92,7 @@ public class RutaFileCreationPage extends NewSourceModulePage {
   }
 
   private IFolder getScriptFolderOf(IScriptFolder scriptFolder, IScriptProject scriptProject)
-          throws ModelException {
+          throws CoreException {
     List<IFolder> scriptFolders = RutaProjectUtils.getScriptFolders(scriptProject);
     for (IFolder each : scriptFolders) {
       if (each.equals(scriptFolder.getResource())) {

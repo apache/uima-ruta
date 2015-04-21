@@ -154,11 +154,15 @@ public class RerunActionHandler implements IHandler {
       IResource r = debugPage.getResource();
       final IFile fScript = (IFile) r;
       final IProject project = r.getProject();
-      final IPath engineDescriptorPath = RutaProjectUtils.getEngineDescriptorPath(r.getLocation(),
-              project);
-      IPath typeSystemDescriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(
-              fScript.getLocation(), project);
-
+      IPath engineDescriptorPath = null;
+      IPath typeSystemDescriptorPath = null;
+      try {
+        engineDescriptorPath = RutaProjectUtils.getEngineDescriptorPath(r.getLocation(), project);
+        typeSystemDescriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(
+                fScript.getLocation(), project);
+      } catch (CoreException e) {
+        RutaAddonsPlugin.error(e);
+      }
       // show message
       @SuppressWarnings({ "unchecked", "rawtypes" })
       ArrayList<TestCasData> testCasData = (ArrayList) debugPage.getViewer().getInput();
@@ -274,11 +278,11 @@ public class RerunActionHandler implements IHandler {
         // TODO throw exception
         return;
       }
-      IPath descriptorPath = RutaProjectUtils.getEngineDescriptorPath(scriptFile.getLocation(),
-              project);
-      String descriptorAbsolutePath = descriptorPath.toFile().getAbsolutePath();
 
       try {
+        IPath descriptorPath = RutaProjectUtils.getEngineDescriptorPath(scriptFile.getLocation(),
+                project);
+        String descriptorAbsolutePath = descriptorPath.toFile().getAbsolutePath();
         ILaunchManager mgr = DebugPlugin.getDefault().getLaunchManager();
         ILaunchConfigurationType type = mgr
                 .getLaunchConfigurationType(RutaLaunchConfigurationConstants.ID_RUTA_SCRIPT);

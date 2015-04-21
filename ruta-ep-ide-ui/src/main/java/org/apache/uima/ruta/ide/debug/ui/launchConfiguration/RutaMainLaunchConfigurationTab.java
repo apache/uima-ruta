@@ -57,7 +57,7 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 public class RutaMainLaunchConfigurationTab extends MainLaunchConfigurationTab {
 
-  private Text inputText;
+  private Text inputFolderText;
 
   private Button recursivelyButton;
 
@@ -108,10 +108,10 @@ public class RutaMainLaunchConfigurationTab extends MainLaunchConfigurationTab {
     GridLayout inputResourceGroupLayout = new GridLayout(4, false);
     inputResourceGroup.setLayout(inputResourceGroupLayout);
 
-    inputText = new Text(inputResourceGroup, SWT.BORDER);
+    inputFolderText = new Text(inputResourceGroup, SWT.BORDER);
     GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false).span(3, 1)
-            .applyTo(inputText);
-    inputText.addModifyListener(new ModifyListener() {
+            .applyTo(inputFolderText);
+    inputFolderText.addModifyListener(new ModifyListener() {
 
       public void modifyText(ModifyEvent event) {
         updateLaunchConfigurationDialog();
@@ -127,12 +127,12 @@ public class RutaMainLaunchConfigurationTab extends MainLaunchConfigurationTab {
         dialog.setMessage("Select input folder");
 
         dialog.setInput(getProject().getProject());
-        dialog.setInitialSelection(getWorkspaceRoot().findMember(inputText.getText()));
+        dialog.setInitialSelection(getWorkspaceRoot().findMember(inputFolderText.getText()));
         if (dialog.open() == IDialogConstants.OK_ID) {
           IResource resource = (IResource) dialog.getFirstResult();
           if (resource != null) {
             String fileLoc = resource.getFullPath().toString();
-            inputText.setText(fileLoc);
+            inputFolderText.setText(fileLoc);
           }
         }
       }
@@ -221,8 +221,8 @@ public class RutaMainLaunchConfigurationTab extends MainLaunchConfigurationTab {
     }
     String defaultInputLocation = RutaProjectUtils.getDefaultInputLocation();
     String defaultOutputLocation = RutaProjectUtils.getDefaultOutputLocation();
-    IResource inputFolder = proj.getProject().findMember(defaultInputLocation);
-    IResource outputFolder = proj.getProject().findMember(defaultOutputLocation);
+    IResource defaultInputFolder = proj.getProject().findMember(defaultInputLocation);
+    IResource defaultOutputFolder = proj.getProject().findMember(defaultOutputLocation);
 
     try {
       recursivelyButton.setSelection(config.getAttribute(RutaLaunchConstants.RECURSIVE, false));
@@ -237,19 +237,24 @@ public class RutaMainLaunchConfigurationTab extends MainLaunchConfigurationTab {
     }
 
     try {
-      inputText.setText(config.getAttribute(RutaLaunchConstants.INPUT_FOLDER, inputFolder
-              .getFullPath().toPortableString()));
-    } catch (CoreException e) {
-      inputText.setText(inputFolder.getFullPath().toPortableString());
+      if (defaultInputFolder != null) {
+        inputFolderText.setText(config.getAttribute(RutaLaunchConstants.INPUT_FOLDER,
+                defaultInputFolder.getFullPath().toPortableString()));
+      } else {
+        inputFolderText.setText(config.getAttribute(RutaLaunchConstants.INPUT_FOLDER, ""));
+      }
+    } catch (Exception e) {
     }
 
     try {
-      outputFolderText.setText(config.getAttribute(RutaLaunchConstants.OUTPUT_FOLDER, outputFolder
-              .getFullPath().toPortableString()));
-    } catch (CoreException e) {
-      outputFolderText.setText(outputFolder.getFullPath().toPortableString());
+      if (defaultOutputFolder != null) {
+        outputFolderText.setText(config.getAttribute(RutaLaunchConstants.OUTPUT_FOLDER,
+                defaultOutputFolder.getFullPath().toPortableString()));
+      } else {
+        outputFolderText.setText(config.getAttribute(RutaLaunchConstants.OUTPUT_FOLDER, ""));
+      }
+    } catch (Exception e) {
     }
-
   }
 
   @Override
@@ -258,7 +263,7 @@ public class RutaMainLaunchConfigurationTab extends MainLaunchConfigurationTab {
 
     config.setAttribute(RutaLaunchConstants.RECURSIVE, recursivelyButton.getSelection());
     config.setAttribute(RutaLaunchConstants.VIEW, viewText.getText());
-    config.setAttribute(RutaLaunchConstants.INPUT_FOLDER, inputText.getText());
+    config.setAttribute(RutaLaunchConstants.INPUT_FOLDER, inputFolderText.getText());
     config.setAttribute(RutaLaunchConstants.OUTPUT_FOLDER, outputFolderText.getText());
 
   }
