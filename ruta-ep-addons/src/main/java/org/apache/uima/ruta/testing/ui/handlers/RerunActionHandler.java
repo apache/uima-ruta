@@ -157,7 +157,7 @@ public class RerunActionHandler implements IHandler {
       IPath engineDescriptorPath = null;
       IPath typeSystemDescriptorPath = null;
       try {
-        engineDescriptorPath = RutaProjectUtils.getEngineDescriptorPath(r.getLocation(), project);
+        engineDescriptorPath = RutaProjectUtils.getAnalysisEngineDescriptorPath(r.getLocation(), project);
         typeSystemDescriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(
                 fScript.getLocation(), project);
       } catch (CoreException e) {
@@ -280,7 +280,7 @@ public class RerunActionHandler implements IHandler {
       }
 
       try {
-        IPath descriptorPath = RutaProjectUtils.getEngineDescriptorPath(scriptFile.getLocation(),
+        IPath descriptorPath = RutaProjectUtils.getAnalysisEngineDescriptorPath(scriptFile.getLocation(),
                 project);
         String descriptorAbsolutePath = descriptorPath.toFile().getAbsolutePath();
         ILaunchManager mgr = DebugPlugin.getDefault().getLaunchManager();

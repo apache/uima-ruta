@@ -223,56 +223,7 @@ public class RutaCheckerUtils {
     return null;
   }
 
-  /**
-   * @param resourceFilePath
-   *          absolute full path. i.e.: "org.apache.uima.TestList.txt"
-   * @return file.exists
-   */
-  public static boolean checkRessourceExistence(String resourceFilePath, IScriptProject project) {
-    IFolder ddlFolder = project.getProject().getFolder(
-            RutaProjectUtils.getDefaultDescriptorLocation());
-    final String basicXML = "BasicEngine.xml";
-    IFile file = getFile(ddlFolder, basicXML);
-    AnalysisEngineDescription aed;
-    try {
-      URL url = file.getLocationURI().toURL();
-      aed = UIMAFramework.getXMLParser().parseAnalysisEngineDescription(new XMLInputSource(url));
-    } catch (Exception e) {
-      e.printStackTrace();
-      return false;
-    }
-    ConfigurationParameterSettings configurationParameterSettings = aed.getAnalysisEngineMetaData()
-            .getConfigurationParameterSettings();
-    String[] paths = (String[]) configurationParameterSettings
-            .getParameterValue(RutaEngine.PARAM_RESOURCE_PATHS);
-    if (paths == null) {
-      IFolder folder = project.getProject().getFolder(
-              RutaProjectUtils.getDefaultResourcesLocation());
-      String defaultPath = folder.getLocation().toPortableString();
-      paths = new String[] { defaultPath };
-    }
-    for (String string : paths) {
-      File iFile = new File(string, resourceFilePath);
-      // IFile iFile = getFile(folder, ressourceFilePath);
-      if (iFile.exists()) {
-        return true;
-      }
 
-    }
-    return false;
-  }
-
-  /**
-   * @param xmlFilePath
-   *          absolute full path. i.e.: "org.apache.uima.myengine" ".xml" will be added.
-   * @return file.exists
-   */
-  public static IFile getEngine(String xmlFilePath, IScriptProject project) {
-    IFolder folder = project.getProject()
-            .getFolder(RutaProjectUtils.getDefaultDescriptorLocation());
-    String fileExtended = xmlFilePath + ".xml";
-    return getFile(folder, fileExtended);
-  }
 
   public static IFile checkTypeSystemImport(String localPath, IScriptProject project) {
     List<IFolder> allDescriptorFolders;

@@ -228,13 +228,12 @@ public class TextRulerToolkit {
     while (it.isValid()) {
       AnnotationFS fs = it.get();
 
-      // quick hack for quantifier bug in TM:
       AnnotationFS previous = result.size() > 0 ? result.get(result.size() - 1) : null;
       if (previous == null || previous.getBegin() != fs.getBegin()
               || previous.getEnd() != fs.getEnd())
         result.add(fs);
       else {
-        logIfDebug("******** TM QUANTIFIER BUG ?? Multiple annotation: " + fs.getType().getName());
+        logIfDebug("******** QUANTIFIER BUG ?? Multiple annotation: " + fs.getType().getName());
       }
       it.moveToNext();
     }
@@ -248,12 +247,8 @@ public class TextRulerToolkit {
     TypeSystem ts = aCas.getTypeSystem();
     try {
 
-      // TODO wie in TMs AnnotationRetrieval evtl nicht den subiterator
-      // nehmen, da der auf
-      // type comparisons basiert, die wir evtl nicht gegeben haben!?
       AnnotationFS boundaryAnnotation = aCas.createAnnotation(ts.getType("uima.tcas.Annotation"),
               posStart > 0 ? posStart - 1 : 0, posEnd); // TODO ist das
-      // richtig so??!!
       FSIterator<AnnotationFS> it = aCas.getAnnotationIndex().subiterator(boundaryAnnotation, true,
               true);
       while (it.isValid()) {
@@ -309,15 +304,15 @@ public class TextRulerToolkit {
   }
 
   public static List<AnnotationFS> getOtherAnnotationsOverToken(CAS aCas,
-          AnnotationFS tmTokenAnnotation, Set<String> filterSet) {
+          AnnotationFS tokenAnnotation, Set<String> filterSet) {
     List<AnnotationFS> result = new ArrayList<AnnotationFS>();
     // filter out document annotation!!
     FSIterator<AnnotationFS> it = aCas.getAnnotationIndex().iterator();
-    Type tokenType = tmTokenAnnotation.getType();
+    Type tokenType = tokenAnnotation.getType();
     FSIterator<AnnotationFS> leftIt = null;
     FSIterator<AnnotationFS> rightIt = null;
     TypeSystem ts = aCas.getTypeSystem();
-    Type tmRootType = ts.getType(RUTA_ALL_TYPE_NAME);
+    Type rootType = ts.getType(RUTA_ALL_TYPE_NAME);
     Set<String> allFilters = new HashSet<String>();
     allFilters.add("uima.tcas.DocumentAnnotation");
     allFilters.add(RutaEngine.BASIC_TYPE);
@@ -325,8 +320,8 @@ public class TextRulerToolkit {
       allFilters.addAll(filterSet);
     for (; it.isValid(); it.moveToNext()) {
       AnnotationFS fs = (AnnotationFS) it.get();
-      if (fs.getBegin() == tmTokenAnnotation.getBegin()
-              && fs.getEnd() == tmTokenAnnotation.getEnd() && fs.getType().equals(tokenType)) {
+      if (fs.getBegin() == tokenAnnotation.getBegin()
+              && fs.getEnd() == tokenAnnotation.getEnd() && fs.getType().equals(tokenType)) {
         leftIt = it;
 
         rightIt = it.copy();
@@ -340,12 +335,12 @@ public class TextRulerToolkit {
     // search from the token annotation to the left
     for (; leftIt.isValid(); leftIt.moveToPrevious()) {
       AnnotationFS fs = (AnnotationFS) leftIt.get();
-      if (fs.getEnd() <= tmTokenAnnotation.getBegin())
+      if (fs.getEnd() <= tokenAnnotation.getBegin())
         break; // if that happens we are out of reach and can stop
-      if (fs.getBegin() <= tmTokenAnnotation.getBegin()
-              && fs.getEnd() >= tmTokenAnnotation.getEnd()
+      if (fs.getBegin() <= tokenAnnotation.getBegin()
+              && fs.getEnd() >= tokenAnnotation.getEnd()
               && !allFilters.contains(fs.getType().getName())
-              && !ts.subsumes(tmRootType, fs.getType()))
+              && !ts.subsumes(rootType, fs.getType()))
         result.add(fs);
     }
 
@@ -354,12 +349,12 @@ public class TextRulerToolkit {
       rightIt.moveToNext(); // leave our token annotation behind us...
     for (; rightIt.isValid(); rightIt.moveToNext()) {
       AnnotationFS fs = (AnnotationFS) rightIt.get();
-      if (fs.getBegin() >= tmTokenAnnotation.getEnd())
+      if (fs.getBegin() >= tokenAnnotation.getEnd())
         break; // if that happens we are out of reach and can stop
-      if (fs.getBegin() <= tmTokenAnnotation.getBegin()
-              && fs.getEnd() >= tmTokenAnnotation.getEnd()
+      if (fs.getBegin() <= tokenAnnotation.getBegin()
+              && fs.getEnd() >= tokenAnnotation.getEnd()
               && !allFilters.contains(fs.getType().getName())
-              && !ts.subsumes(tmRootType, fs.getType()))
+              && !ts.subsumes(rootType, fs.getType()))
         result.add(fs);
     }
     return result;
@@ -467,41 +462,6 @@ public class TextRulerToolkit {
       return typeName;
   }
 
-  public static synchronized String getEngineDescriptorFromTMSourceFile(IPath scriptFilePath) {
-    IPath folder = scriptFilePath;
-
-    while (!folder.lastSegment().equals(RutaProjectUtils.getDefaultScriptLocation())) {
-      folder = folder.removeLastSegments(1);
-    }
-    IPath relativeTo = scriptFilePath.makeRelativeTo(folder);
-    IPath projectPath = folder.removeLastSegments(1);
-    String elementName = scriptFilePath.lastSegment();
-    int lastIndexOf = elementName.lastIndexOf(RutaEngine.SCRIPT_FILE_EXTENSION);
-    if (lastIndexOf != -1) {
-      elementName = elementName.substring(0, lastIndexOf);
-    }
-    IPath descPath = projectPath.append(RutaProjectUtils.getDefaultDescriptorLocation());
-    IPath descPackagePath = descPath.append(relativeTo.removeLastSegments(1));
-    return descPackagePath.append(elementName + "Engine.xml").toString();
-  }
-
-  public static synchronized String getTypeSystemDescriptorFromTMSourceFile(IPath scriptFilePath) {
-    IPath folder = scriptFilePath;
-
-    while (!folder.lastSegment().equals(RutaProjectUtils.getDefaultScriptLocation())) {
-      folder = folder.removeLastSegments(1);
-    }
-    IPath relativeTo = scriptFilePath.makeRelativeTo(folder);
-    IPath projectPath = folder.removeLastSegments(1);
-    String elementName = scriptFilePath.lastSegment();
-    int lastIndexOf = elementName.lastIndexOf(RutaEngine.SCRIPT_FILE_EXTENSION);
-    if (lastIndexOf != -1) {
-      elementName = elementName.substring(0, lastIndexOf);
-    }
-    IPath descPath = projectPath.append(RutaProjectUtils.getDefaultDescriptorLocation());
-    IPath descPackagePath = descPath.append(relativeTo.removeLastSegments(1));
-    return descPackagePath.append(elementName + "TypeSystem.xml").toString();
-  }
 
   public static synchronized String escapeForRegExp(String aRegexFragment) {
     final StringBuilder result = new StringBuilder();
@@ -552,10 +512,10 @@ public class TextRulerToolkit {
     return result.toString();
   }
 
-  public static synchronized String escapeForTMStringParameter(String aTMStringFragment) {
+  public static synchronized String escapeForStringParameter(String stringFragment) {
     final StringBuilder result = new StringBuilder();
 
-    final StringCharacterIterator iterator = new StringCharacterIterator(aTMStringFragment);
+    final StringCharacterIterator iterator = new StringCharacterIterator(stringFragment);
     char character = iterator.current();
     while (character != CharacterIterator.DONE) {
       if (character == '"') {

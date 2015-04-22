@@ -49,7 +49,7 @@ public class CASLoader {
     }
 
     try {
-      IPath engineDescriptorPath = RutaProjectUtils.getEngineDescriptorPath(r.getLocation(),
+      IPath engineDescriptorPath = RutaProjectUtils.getAnalysisEngineDescriptorPath(r.getLocation(),
               r.getProject());
       XMLInputSource in = new XMLInputSource(engineDescriptorPath.toPortableString());
       ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);

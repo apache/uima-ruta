@@ -179,7 +179,7 @@ public class RutaInterpreterRunner extends AbstractInterpreterRunner implements 
     IPath projectPath = proj.getResource().getLocation();
     IPath inputDirPath = projectPath.append(RutaProjectUtils.getDefaultInputLocation());
     IPath outputDirPath = projectPath.append(RutaProjectUtils.getDefaultOutputLocation());
-    String engine = RutaProjectUtils.getEngineDescriptorPath(config.getScriptFilePath(),
+    String engine = RutaProjectUtils.getAnalysisEngineDescriptorPath(config.getScriptFilePath(),
             proj.getProject()).toPortableString();
     IPath rootPath = RutaProjectUtils.getDescriptorRootPath(proj.getProject());
 

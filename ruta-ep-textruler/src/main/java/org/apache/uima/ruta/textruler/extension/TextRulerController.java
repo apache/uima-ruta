@@ -25,11 +25,13 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.ruta.textruler.TextRulerPlugin;
 import org.apache.uima.ruta.textruler.core.TextRulerToolkit;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 
@@ -131,7 +133,7 @@ public class TextRulerController {
   }
 
   public static boolean start(final String inFolder, final String additionalFolder,
-          final String preprocessorTMFile, final String[] slotNames, Set<String> filters,
+          final String preprocessorFile, final String[] slotNames, Set<String> filters,
           final TextRulerControllerDelegate delegate, Map<String, Map<String, Object>> algParams,
           boolean skipPreprocessing) {
     if (isRunning() || enabledAlgorithmsCount() == 0)
@@ -150,10 +152,18 @@ public class TextRulerController {
       return false;
     }
 
-    if (TextRulerToolkit.getEngineDescriptorFromTMSourceFile(new Path(preprocessorTMFile)).length() == 0)
+    IPath analysisEngineDescriptorPath = null;
+    try {
+      analysisEngineDescriptorPath = RutaProjectUtils.getAnalysisEngineDescriptorPath(preprocessorFile);
+    } catch (CoreException e) {
+      TextRulerPlugin.error(e);
+    }
+    
+    if (analysisEngineDescriptorPath == null) {
       return false;
+    }
 
-    currentPreprocessorTMFile = preprocessorTMFile;
+    currentPreprocessorTMFile = preprocessorFile;
     currentSlotNames = slotNames;
     currentFilters = filters;
     currentDelegate = delegate;

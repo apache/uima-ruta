@@ -33,10 +33,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.ide.core.RutaNature;
 import org.eclipse.core.filesystem.URIUtil;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -107,7 +110,7 @@ public class RutaProjectUtils {
     return DEFAULT_TYPESYSTEM_SUFFX;
   }
 
-  public static IPath getEngineDescriptorPath(IPath scriptPath, IProject project)
+  public static IPath getAnalysisEngineDescriptorPath(IPath scriptPath, IProject project)
           throws CoreException {
     String analysisEngineSuffix = getAnalysisEngineSuffix(project);
     String name = getScriptWithPackage(scriptPath, project);
@@ -118,6 +121,17 @@ public class RutaProjectUtils {
     } else {
       return null;
     }
+  }
+  
+  public static IPath getAnalysisEngineDescriptorPath(String scriptLocation) throws CoreException {
+    IPath analysisEngineDescriptorPath;
+    IPath scriptPath = new org.eclipse.core.runtime.Path(scriptLocation);
+    IWorkspace workspace = ResourcesPlugin.getWorkspace();
+    IWorkspaceRoot workspaceRoot = workspace.getRoot();
+    IFile fileForLocation = workspaceRoot.getFileForLocation(scriptPath);
+    analysisEngineDescriptorPath = RutaProjectUtils.getAnalysisEngineDescriptorPath(scriptPath,
+            fileForLocation.getProject());
+    return analysisEngineDescriptorPath;
   }
 
   public static IPath getTypeSystemDescriptorPath(IPath scriptPath, IProject project)
@@ -133,7 +147,18 @@ public class RutaProjectUtils {
     }
   }
 
-  private static String getScriptWithPackage(IPath scriptPath, IProject project)
+  public static IPath getTypeSystemDescriptorPath(String scriptLocation) throws CoreException {
+    IPath analysisEngineDescriptorPath;
+    IPath scriptPath = new org.eclipse.core.runtime.Path(scriptLocation);
+    IWorkspace workspace = ResourcesPlugin.getWorkspace();
+    IWorkspaceRoot workspaceRoot = workspace.getRoot();
+    IFile fileForLocation = workspaceRoot.getFileForLocation(scriptPath);
+    analysisEngineDescriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(scriptPath,
+            fileForLocation.getProject());
+    return analysisEngineDescriptorPath;
+  }
+  
+  public static String getScriptWithPackage(IPath scriptPath, IProject project)
           throws CoreException {
     String name = getModuleName(scriptPath);
     IPath packagePath = getPackagePath(scriptPath, project);
@@ -271,30 +296,30 @@ public class RutaProjectUtils {
     return result;
   }
 
-  public static List<IFolder> getDescriptorFolders(IProject proj) throws CoreException {
+  public static List<IFolder> getDescriptorFolders(IProject project) throws CoreException {
     List<IFolder> result = new ArrayList<IFolder>();
-    if (!proj.isOpen()) {
+    if (!project.isOpen()) {
       return result;
     }
-    IProjectNature javaNature = proj.getNature(JAVANATURE);
+    IProjectNature javaNature = project.getNature(JAVANATURE);
     if (javaNature != null) {
-      IJavaProject javaProject = JavaCore.create(proj);
+      IJavaProject javaProject = JavaCore.create(project);
       IPath readOutputLocation = javaProject.readOutputLocation();
       IFolder folder = ResourcesPlugin.getWorkspace().getRoot().getFolder(readOutputLocation);
       result.add(folder);
     }
-    IProjectNature pearNature = proj.getNature("org.apache.uima.pear.UimaNature");
+    IProjectNature pearNature = project.getNature("org.apache.uima.pear.UimaNature");
     if (pearNature != null) {
-      IFolder findElement = proj.getFolder("desc");
+      IFolder findElement = project.getFolder("desc");
       if (findElement != null) {
         result.add((IFolder) findElement);
       }
     }
-    IProjectNature rutaNature = proj.getNature(RutaNature.NATURE_ID);
+    IProjectNature rutaNature = project.getNature(RutaNature.NATURE_ID);
     if (rutaNature != null) {
 
       // try to access script project
-      IScriptProject sp = DLTKCore.create(proj);
+      IScriptProject sp = DLTKCore.create(project);
       if (sp != null) {
         IBuildpathEntry[] rawBuildpath = sp.getRawBuildpath();
         for (IBuildpathEntry each : rawBuildpath) {
@@ -313,7 +338,50 @@ public class RutaProjectUtils {
       }
     }
     if (result.isEmpty()) {
-      IFolder findElement = proj.getFolder(getDefaultDescriptorLocation());
+      IFolder findElement = project.getFolder(getDefaultDescriptorLocation());
+      if (findElement != null) {
+        result.add((IFolder) findElement);
+      }
+    }
+    return result;
+  }
+  
+  public static List<IFolder> getResourceFolders(IProject project) throws CoreException {
+    List<IFolder> result = new ArrayList<IFolder>();
+    if (!project.isOpen()) {
+      return result;
+    }
+    IProjectNature javaNature = project.getNature(JAVANATURE);
+    if (javaNature != null) {
+      IJavaProject javaProject = JavaCore.create(project);
+      IPath readOutputLocation = javaProject.readOutputLocation();
+      IFolder folder = ResourcesPlugin.getWorkspace().getRoot().getFolder(readOutputLocation);
+      result.add(folder);
+    }
+    IProjectNature rutaNature = project.getNature(RutaNature.NATURE_ID);
+    if (rutaNature != null) {
+
+      // try to access script project
+      IScriptProject sp = DLTKCore.create(project);
+      if (sp != null) {
+        IBuildpathEntry[] rawBuildpath = sp.getRawBuildpath();
+        for (IBuildpathEntry each : rawBuildpath) {
+          IPath path = each.getPath();
+          int entryKind = each.getEntryKind();
+          if (entryKind == IBuildpathEntry.BPE_SOURCE) {
+            IBuildpathAttribute[] extraAttributes = each.getExtraAttributes();
+            for (IBuildpathAttribute eachAttr : extraAttributes) {
+              if (eachAttr.getName().equals(BUILDPATH_ATTRIBUTE_RUTA)
+                      && eachAttr.getValue().equals(BUILDPATH_ATTRIBUTE_RESOURCES)) {
+                result.add(ResourcesPlugin.getWorkspace().getRoot().getFolder(path));
+              }
+            }
+          }
+        }
+      }
+    }
+    if (result.isEmpty()) {
+      IFolder findElement = project.getFolder(getDefaultResourcesLocation());
       if (findElement != null) {
         result.add((IFolder) findElement);
       }
@@ -332,12 +400,18 @@ public class RutaProjectUtils {
     return result;
   }
 
-  public static IPath getScriptRootPath(IProject project) {
-    IPath projectPath = project.getLocation();
-    IPath descPath = projectPath.append(getDefaultScriptLocation());
-    return descPath;
-  }
 
+  public static IPath getScriptRootPath(IProject project) throws CoreException {
+    List<IFolder> scriptFolders = getScriptFolders(project);
+    if (scriptFolders != null && !scriptFolders.isEmpty()) {
+      return scriptFolders.get(0).getLocation();
+    } else {
+      IPath projectPath = project.getLocation();
+      IPath descPath = projectPath.append(getDefaultScriptLocation());
+      return descPath;
+    }
+  }
+  
   public static IPath getPackagePath(IPath scriptIPath, IProject project) throws CoreException {
     List<IFolder> scriptFolders = getScriptFolders(project);
     URI scriptURI = URIUtil.toURI(scriptIPath);
@@ -441,9 +515,9 @@ public class RutaProjectUtils {
       for (IFolder each : descriptorFolders) {
         result.add(each.getLocation().toPortableString());
       }
-      IFolder resourceFolder = project.getFolder(RutaProjectUtils.getDefaultResourcesLocation());
-      if (resourceFolder != null && resourceFolder.exists()) {
-        result.add(resourceFolder.getLocation().toPortableString());
+      List<IFolder> resourceFolders = RutaProjectUtils.getResourceFolders(project);
+      for (IFolder each : resourceFolders) {
+        result.add(each.getLocation().toPortableString());
       }
     }
     IProjectNature javaNature = project.getNature(RutaProjectUtils.JAVANATURE);
@@ -504,17 +578,14 @@ public class RutaProjectUtils {
   }
 
   public static String getDefaultScriptLocation() {
-    // TODO restrict usage of this getter and delegate to buildpath
     return BUILDPATH_ATTRIBUTE_SCRIPT;
   }
 
   public static String getDefaultResourcesLocation() {
- // TODO restrict usage of this getter and delegate to buildpath
     return BUILDPATH_ATTRIBUTE_RESOURCES;
   }
 
   public static String getDefaultDescriptorLocation() {
- // TODO restrict usage of this getter and delegate to buildpath
     return BUILDPATH_ATTRIBUTE_DESCRIPTOR;
   }
 

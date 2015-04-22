@@ -22,6 +22,8 @@ package org.apache.uima.ruta.searchStrategy;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.uima.caseditor.ide.TypeSystemLocationPropertyPage;
 import org.apache.uima.caseditor.ide.searchstrategy.ITypeSystemSearchStrategy;
@@ -58,11 +60,11 @@ public class DescriptorFolderSearchStrategy implements ITypeSystemSearchStrategy
     IProject project = casFile.getProject();
 
     IFile typeSystemLocation = TypeSystemLocationPropertyPage.getTypeSystemLocation(project);
-    if(typeSystemLocation != null && !typeSystemLocation.getName().equals("TypeSystem.xml")) {
+    if (typeSystemLocation != null && !typeSystemLocation.getName().equals("TypeSystem.xml")) {
       // do not override the properties!
       return null;
     }
-    
+
     try {
       IProjectNature nature = project.getNature(RutaNature.NATURE_ID);
       if (!(nature instanceof RutaNature)) {
@@ -72,9 +74,14 @@ public class DescriptorFolderSearchStrategy implements ITypeSystemSearchStrategy
       return null;
     }
 
-    IFolder folder = project.getFolder(RutaProjectUtils.getDefaultDescriptorLocation());
     try {
-      List<IFile> list = collectTypeSystems(folder);
+      Set<IFile> set = new TreeSet<>();
+      List<IFolder> descriptorFolders = RutaProjectUtils.getDescriptorFolders(project);
+      for (IFolder folder : descriptorFolders) {
+        set.addAll(collectTypeSystems(folder));
+
+      }
+
       ListDialog ld = new ListDialog(Display.getCurrent().getActiveShell());
       ld.setContentProvider(new IStructuredContentProvider() {
 
@@ -97,12 +104,12 @@ public class DescriptorFolderSearchStrategy implements ITypeSystemSearchStrategy
           return ((IFile) element).getName();
         }
       });
-      if (list == null || list.isEmpty()) {
+      if (set == null || set.isEmpty()) {
         return null;
       }
 
       ld.setTitle("Select Type System Descriptor");
-      ld.setInput(list);
+      ld.setInput(set);
       ld.open();
 
       if (ld.getResult() != null) {

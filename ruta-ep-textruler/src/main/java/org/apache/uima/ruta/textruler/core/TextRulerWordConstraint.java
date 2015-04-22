@@ -97,7 +97,7 @@ public class TextRulerWordConstraint {
   @Override
   public String toString() {
     if (isRegExpConstraint())
-      return TextRulerToolkit.escapeForTMStringParameter(TextRulerToolkit
+      return TextRulerToolkit.escapeForStringParameter(TextRulerToolkit
               .escapeForRegExp(tokenAnnotation.getCoveredText()));
     else
       return tokenAnnotation.getType().getShortName();

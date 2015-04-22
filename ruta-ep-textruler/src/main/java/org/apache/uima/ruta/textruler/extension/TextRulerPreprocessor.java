@@ -26,9 +26,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.ruta.textruler.TextRulerPlugin;
 import org.apache.uima.ruta.textruler.core.GlobalCASSource;
 import org.apache.uima.ruta.textruler.core.TextRulerToolkit;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 
 /**
@@ -39,20 +41,25 @@ import org.eclipse.core.runtime.Path;
  */
 public class TextRulerPreprocessor {
 
-  public String run(String inFolder, String tmFile, String tmpDir, String[] currentSlotNames,
+  public String run(String inFolder, String rutaFile, String tmpDir, String[] currentSlotNames,
           TextRulerPreprocessorDelegate delegate) {
-    return run(inFolder, "input", tmFile, tmpDir, currentSlotNames, delegate);
+    return run(inFolder, "input", rutaFile, tmpDir, currentSlotNames, delegate);
   }
 
-  public String run(String inFolder, String docType, String tmFile, String tmpDir,
+  public String run(String inFolder, String docType, String rutaFile, String tmpDir,
           String[] currentSlotNames, TextRulerPreprocessorDelegate delegate) {
     if(StringUtils.isBlank(inFolder)) {
       return inFolder;
     }
     
-    AnalysisEngineDescription analysisEngineDescription = TextRulerToolkit
-            .getAnalysisEngineDescription(TextRulerToolkit
-                    .getEngineDescriptorFromTMSourceFile(new Path(tmFile)));
+    AnalysisEngineDescription analysisEngineDescription = null;
+    try {
+      analysisEngineDescription = TextRulerToolkit
+              .getAnalysisEngineDescription(RutaProjectUtils
+                      .getAnalysisEngineDescriptorPath(rutaFile).toPortableString());
+    } catch (CoreException e) {
+      TextRulerPlugin.error(e);
+    }
     if(analysisEngineDescription == null) {
       delegate.preprocessorStatusUpdate(this, "Descriptor is missing. Please rebuild the project.");
       return null;

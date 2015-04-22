@@ -206,27 +206,6 @@ public class RutaSelectionEngine extends ScriptSelectionEngine {
       }
     }
 
-    private void referenceEngineCall(String name) {
-      // name = "";
-      IScriptProject scriptProject = sourceModule.getScriptProject();
-      IFile engine = getEngine(name, scriptProject);
-      if (engine == null) {
-        return;
-      }
-      results.add(engine);
-      // IScriptProject scriptProject = sourceModule.getScriptProject();
-      // IPath path = scriptProject.g;
-      // path = path.append(name);
-      // IModelElement element;
-      // try {
-      // element = scriptProject.findElement(path);
-      // System.out.println(element.exists() + "bla");
-      // } catch (ModelException e) {
-      // e.printStackTrace();
-      // }
-      // sourceModule.
-      // scriptProject.findType(packageName, name);
-    }
 
     public IFile getFile(IFolder folder, String filePath) {
       int lastDot = filePath.lastIndexOf('.');
@@ -240,25 +219,6 @@ public class RutaSelectionEngine extends ScriptSelectionEngine {
       return folder.getFile(fName);
     }
 
-    /**
-     * @param xmlFilePath
-     *          absolute full path. i.e.: "org.apache.uima.myengine" ".xml" will be added.
-     * @return file.exists
-     */
-    public IFile getEngine(String xmlFilePath, IScriptProject project) {
-      IFolder folder = project.getProject().getFolder(
-              RutaProjectUtils.getDefaultDescriptorLocation());
-      IFolder f = folder.getFolder("de.martin");
-      boolean b = f.exists();
-      // xmlFilePath = xmlFilePath.replace('.', '/');
-      String fileExtended = xmlFilePath + ".xml";
-      IFile file = getFile(folder, fileExtended);
-      if (file.exists()) {
-        IOpenable opena = (IOpenable) file.getAdapter(IOpenable.class);
-        return file;
-      }
-      return null;
-    }
 
     /**
      * @param s
@@ -278,36 +238,6 @@ public class RutaSelectionEngine extends ScriptSelectionEngine {
 
     }
 
-    private void importTypesystem(String sRefName) {
-      typesystems.add(sRefName);
-      IFolder folder = sourceModule.getScriptProject().getProject()
-              .getFolder(RutaProjectUtils.getDefaultDescriptorLocation());
-      if (folder != null) {
-        int lastDot = sRefName.lastIndexOf('.');
-        String fileNameShort = sRefName.substring(lastDot + 1);
-        String folderName = sRefName.substring(0, lastDot);
-        String fileName = fileNameShort + ".xml";
-        IFolder tsFolder = folder.getFolder(folderName);
-        if (tsFolder != null) {
-          IFile file = tsFolder.getFile(fileName);
-          if (file != null) {
-            File tsFile = file.getLocation().toFile();
-            try {
-              TypeSystemDescription typeSystemDescription = UIMAFramework.getXMLParser()
-                      .parseTypeSystemDescription(new XMLInputSource(tsFile));
-              TypeDescription[] types = typeSystemDescription.getTypes();
-              for (TypeDescription each : types) {
-                impFields.put(each.getName(), null);
-              }
-            } catch (InvalidXMLException e) {
-              e.printStackTrace();
-            } catch (IOException e) {
-              e.printStackTrace();
-            }
-          }
-        }
-      }
-    }
 
     /**
      * @param sRefName

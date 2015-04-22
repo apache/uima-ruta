@@ -38,6 +38,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_component.AnalysisComponent;
 import org.apache.uima.resource.ResourceManager;
+import org.apache.uima.resource.impl.ResourceManager_impl;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.ide.RutaIdeCorePlugin;
@@ -57,6 +58,7 @@ import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaVariableReference;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
+import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -475,24 +477,13 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
     }
   }
 
-  private Set<String> importTypeSystem(String xmlFilePath, IProject project)
-          throws InvalidXMLException, IOException {
-//    TODO
-    IFolder folder = project.getProject()
-            .getFolder(RutaProjectUtils.getDefaultDescriptorLocation());
-    xmlFilePath = xmlFilePath.substring(0, xmlFilePath.length() - 5) + "TypeSystem.xml";
-    return getTypes(folder, xmlFilePath);
-  }
 
-  private Set<String> getTypes(IFolder folder, String filePath) throws InvalidXMLException,
+  private Set<String> getTypes(IPath typeSystemDescriptorPath) throws InvalidXMLException,
           IOException {
     Set<String> types = new HashSet<String>();
-    IFile iFile = getFile(folder, filePath);
-    URL url;
+    URL url = URIUtil.toURI(typeSystemDescriptorPath).toURL();
     try {
-      url = iFile.getLocationURI().toURL();
-      ResourceManager resMgr = UIMAFramework.newDefaultResourceManager();
-      resMgr.setDataPath(folder.getLocation().toPortableString());
+      ResourceManager resMgr = new ResourceManager_impl(classloader);
       types = getTypes(url, resMgr);
     } catch (MalformedURLException e) {
       e.printStackTrace();
@@ -556,12 +547,9 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
     Collection<String> types = new HashSet<String>();
     if (type == RutaTypeConstants.RUTA_TYPE_AT) {
       try {
-        // TODO
-        
         IPath path = sourceModule.getModelElement().getPath();
-        path = path.removeFirstSegments(2);
-        types = importTypeSystem(path.toPortableString(), sourceModule.getModelElement()
-                .getScriptProject().getProject());
+        IPath typeSystemDescriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(path, sourceModule.getModelElement().getScriptProject().getProject());
+        types = getTypes(typeSystemDescriptorPath);
       } catch (Exception e) {
       }
       for (String string : types) {

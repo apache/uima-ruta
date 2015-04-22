@@ -34,6 +34,7 @@ import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -516,8 +517,14 @@ public class DocumentSelectComposite extends Composite {
           File file = new File(string);
           if (file.isFile()) {
             if (file.getName().endsWith(RutaEngine.SCRIPT_FILE_EXTENSION)) {
-              IPath path = Path.fromOSString(string);
-              tsLocationText.setText(getTypeSystemDescriptorFromScriptFile(path));
+              String typeSystemDescriptorLocation = "";
+              try {
+                typeSystemDescriptorLocation = RutaProjectUtils.getTypeSystemDescriptorPath(string)
+                        .toPortableString();
+              } catch (CoreException e) {
+                RutaAddonsPlugin.error(e);
+              }
+              tsLocationText.setText(typeSystemDescriptorLocation);
             } else if (file.getName().endsWith(".xml")) {
               tsLocationText.setText(string);
             }
@@ -532,24 +539,6 @@ public class DocumentSelectComposite extends Composite {
     tableViewer.refresh();
     this.layout();
 
-  }
-
-  private String getTypeSystemDescriptorFromScriptFile(IPath scriptFilePath) {
-    IPath folder = scriptFilePath;
-
-    while (!folder.lastSegment().equals(RutaProjectUtils.getDefaultScriptLocation())) {
-      folder = folder.removeLastSegments(1);
-    }
-    IPath relativeTo = scriptFilePath.makeRelativeTo(folder);
-    IPath projectPath = folder.removeLastSegments(1);
-    String elementName = scriptFilePath.lastSegment();
-    int lastIndexOf = elementName.lastIndexOf(RutaEngine.SCRIPT_FILE_EXTENSION);
-    if (lastIndexOf != -1) {
-      elementName = elementName.substring(0, lastIndexOf);
-    }
-    IPath descPath = projectPath.append(RutaProjectUtils.getDefaultDescriptorLocation());
-    IPath descPackagePath = descPath.append(relativeTo.removeLastSegments(1));
-    return descPackagePath.append(elementName + "TypeSystem.xml").toString();
   }
 
   private void initImages() {

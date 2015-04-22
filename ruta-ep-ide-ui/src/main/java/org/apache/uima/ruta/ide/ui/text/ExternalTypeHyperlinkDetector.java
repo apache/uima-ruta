@@ -27,6 +27,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.resource.ResourceManager;
@@ -100,17 +101,19 @@ public class ExternalTypeHyperlinkDetector implements IHyperlinkDetector {
             Collection<String> importedTypeSystems = parsed.descriptorInfo.getImportedTypeSystems();
             List<IHyperlink> result = new ArrayList<IHyperlink>();
             for (String tsString : importedTypeSystems) {
-              IFolder folder = modelElement.getScriptProject().getProject()
-                      .getFolder(RutaProjectUtils.getDefaultDescriptorLocation());
               String xmlFilePath = tsString.replaceAll("\\.", "/");
               xmlFilePath = xmlFilePath.substring(0, xmlFilePath.length()) + ".xml";
-              Set<String> types = getTypes(folder, xmlFilePath);
-              if (types.contains(nodeText)) {
-                IFile iFile = getFile(folder, xmlFilePath);
-                IHyperlink link = new ExternalTypeHyperlink(nodeText, wordRegion, iFile, tsString,
-                        fTextEditor);
-                result.add(link);
-              }
+              Set<String> types = new TreeSet<String>();
+              List<IFolder> descriptorFolders = RutaProjectUtils.getDescriptorFolders(modelElement.getScriptProject().getProject());
+              for (IFolder eachFolder : descriptorFolders) {
+                types.addAll(getTypes(eachFolder, xmlFilePath));
+                if (types.contains(nodeText)) {
+                  IFile iFile = getFile(eachFolder, xmlFilePath);
+                  IHyperlink link = new ExternalTypeHyperlink(nodeText, wordRegion, iFile, tsString,
+                          fTextEditor);
+                  result.add(link);
+                }
+              }  
             }
             if (!result.isEmpty()) {
               return result.toArray(new IHyperlink[] {});

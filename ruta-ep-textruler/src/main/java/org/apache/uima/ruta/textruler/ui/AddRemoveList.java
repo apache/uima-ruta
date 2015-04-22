@@ -31,11 +31,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.ruta.textruler.TextRulerPlugin;
 import org.apache.uima.ruta.textruler.core.TextRulerToolkit;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
 import org.apache.uima.util.XMLizable;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
@@ -107,8 +109,13 @@ public class AddRemoveList extends Composite {
       return;
     }
     Path scriptPath = new Path(preFilePath);
-    String defaultTypeSystemDescriptorLocation = TextRulerToolkit
-            .getTypeSystemDescriptorFromTMSourceFile(scriptPath);
+    
+    String defaultTypeSystemDescriptorLocation = null;
+    try {
+      defaultTypeSystemDescriptorLocation = RutaProjectUtils.getTypeSystemDescriptorPath(scriptPath.toPortableString()).toPortableString();
+    } catch (CoreException e) {
+      TextRulerPlugin.error(e);
+    }
     TypeSystemDescription defaultTypeSystemDescription = null;
     try {
       defaultTypeSystemDescription = UIMAFramework.getXMLParser().parseTypeSystemDescription(

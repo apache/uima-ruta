@@ -46,8 +46,12 @@ import org.apache.uima.ruta.textruler.preferences.TextRulerPreferences;
 import org.apache.uima.ruta.textruler.tools.MemoryWatch;
 import org.apache.uima.util.FileUtils;
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -70,7 +74,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
 
   protected String tempDirectory;
 
-  protected String preprocessorTMFile;
+  protected String preprocessorFile;
 
   protected Set<String> filterSet;
 
@@ -97,7 +101,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
   public TextRulerBasicLearner(String inputDir, String prePropTMFile, String tmpDir,
           String[] slotNames, Set<String> filterSet, boolean skip, TextRulerLearnerDelegate delegate) {
     super();
-    this.preprocessorTMFile = prePropTMFile;
+    this.preprocessorFile = prePropTMFile;
     this.tempDirectory = tmpDir;
     this.slotNames = slotNames;
     this.inputDirectory = inputDir;
@@ -146,8 +150,15 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
   }
 
   private void updateAE() {
-    String descriptorFile = TextRulerToolkit.getEngineDescriptorFromTMSourceFile(new Path(
-            preprocessorTMFile));
+    IPath analysisEngineDescriptorPath = null;
+    try {
+      analysisEngineDescriptorPath = RutaProjectUtils
+              .getAnalysisEngineDescriptorPath(preprocessorFile);
+    } catch (CoreException e1) {
+      sendStatusUpdateToDelegate("Failed to locate descriptor.",
+              TextRulerLearnerState.ML_INITIALIZING, false);
+    }
+    String descriptorFile = analysisEngineDescriptorPath.toPortableString();
     sendStatusUpdateToDelegate("loading AE...", TextRulerLearnerState.ML_INITIALIZING, false);
 
     AnalysisEngineDescription description = TextRulerToolkit
@@ -481,7 +492,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
   }
 
   public String getFileHeaderString(boolean complete) {
-    return getPackageString() + getTypeSystemImport(complete) + getFilterCommandString()
+    return getPackageString() + getScriptImport(complete) + getFilterCommandString()
             + getUseDynamicAnchoring(complete) + getBoundaryDeclarations(complete);
   }
 
@@ -517,28 +528,32 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     }
   }
 
-  private String getTypeSystemImport(boolean complete) {
+  private String getScriptImport(boolean complete) {
     if (complete) {
-      IPath path = Path.fromOSString(preprocessorTMFile);
+      IPath path = Path.fromOSString(preprocessorFile);
       IPath removeLastSegments = path.removeLastSegments(1);
       IContainer containerForLocation = ResourcesPlugin.getWorkspace().getRoot()
               .getContainerForLocation(removeLastSegments);
       IProject project = containerForLocation.getProject();
-      IPath scriptRootPath = RutaProjectUtils.getScriptRootPath(project);
-      String moduleName = RutaProjectUtils.getModuleName(path);
-      IPath makeRelativeTo = path.makeRelativeTo(scriptRootPath);
-      String m = makeRelativeTo.removeFileExtension().toPortableString().replaceAll("/", ".");
-      String importString = "SCRIPT " + m + ";\n";
-      if (!skip) {
-        importString += "Document{-> CALL(" + moduleName + ")};\n";
+      String scriptWithPackage = null;
+      try {
+        scriptWithPackage = RutaProjectUtils.getScriptWithPackage(path, project);
+      } catch (CoreException e) {
       }
-      return importString;
+      String moduleName = RutaProjectUtils.getModuleName(path);
+      if (scriptWithPackage != null) {
+        String importString = "SCRIPT " + scriptWithPackage + ";\n";
+        if (!skip) {
+          importString += "Document{-> CALL(" + moduleName + ")};\n";
+        }
+        return importString;
+      }
     }
     return "";
   }
 
   public String getPackageString() {
-    IPath path = Path.fromOSString(preprocessorTMFile);
+    IPath path = Path.fromOSString(preprocessorFile);
     IPath removeLastSegments = path.removeLastSegments(1);
     IContainer containerForLocation = ResourcesPlugin.getWorkspace().getRoot()
             .getContainerForLocation(removeLastSegments);
@@ -595,7 +610,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
 
       str += "inputDir: " + inputDirectory;
       str += "\ntempDir: " + tempDirectory;
-      str += "\npreprocessTMFile: " + preprocessorTMFile;
+      str += "\npreprocessTMFile: " + preprocessorFile;
       str += "\n";
 
       for (Entry<String, Object> e : params.entrySet()) {

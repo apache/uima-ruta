@@ -19,7 +19,10 @@
 
 package org.apache.uima.ruta.testing.searchStrategy;
 
+import java.util.List;
+
 import org.apache.uima.caseditor.ide.searchstrategy.ITypeSystemSearchStrategy;
+import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.apache.uima.ruta.ide.core.RutaNature;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.eclipse.core.resources.IFile;
@@ -45,29 +48,37 @@ public class TestingSearchStrategy implements ITypeSystemSearchStrategy {
     }
 
     IFolder testFolder = project.getFolder(RutaProjectUtils.getDefaultTestLocation());
-    IFolder descFolder = project.getFolder(RutaProjectUtils.getDefaultDescriptorLocation());
     IPath relativeTo = location.makeRelativeTo(testFolder.getLocation());
     IPath segments = relativeTo.removeLastSegments(2);
     String scriptName = segments.lastSegment();
     if(scriptName == null) {
       return null;
     }
-    scriptName += "TypeSystem.xml";
     segments = segments.removeLastSegments(1);
-    IFolder descPackageFolder = null;
+    String tsName = "";
     try {
-      descPackageFolder = descFolder.getFolder(segments);
+      tsName = scriptName + RutaProjectUtils.getTypeSystemSuffix(project) + ".xml";
     } catch (Exception e) {
       return null;
     }
-    if (descPackageFolder == null || !descPackageFolder.exists()) {
+    List<IFolder> descriptorFolders = null;
+    try {
+      descriptorFolders = RutaProjectUtils.getDescriptorFolders(project);
+    } catch (CoreException e) {
+      RutaAddonsPlugin.error(e);
+    }
+    if(descriptorFolders == null) {
       return null;
     }
-    IFile result = descPackageFolder.getFile(scriptName);
-    if (result == null || !result.exists()) {
-      return null;
+    
+    for (IFolder iFolder : descriptorFolders) {
+      IFile result = iFolder.getFile(tsName);
+      if (result == null || !result.exists()) {
+        return null;
+      }
     }
-    return result;
+    
+    return null;
   }
 
 }
