@@ -477,6 +477,7 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
 
   private Set<String> importTypeSystem(String xmlFilePath, IProject project)
           throws InvalidXMLException, IOException {
+//    TODO
     IFolder folder = project.getProject()
             .getFolder(RutaProjectUtils.getDefaultDescriptorLocation());
     xmlFilePath = xmlFilePath.substring(0, xmlFilePath.length() - 5) + "TypeSystem.xml";
@@ -555,6 +556,8 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
     Collection<String> types = new HashSet<String>();
     if (type == RutaTypeConstants.RUTA_TYPE_AT) {
       try {
+        // TODO
+        
         IPath path = sourceModule.getModelElement().getPath();
         path = path.removeFirstSegments(2);
         types = importTypeSystem(path.toPortableString(), sourceModule.getModelElement()

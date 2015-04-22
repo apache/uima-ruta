@@ -504,14 +504,17 @@ public class RutaProjectUtils {
   }
 
   public static String getDefaultScriptLocation() {
+    // TODO restrict usage of this getter and delegate to buildpath
     return BUILDPATH_ATTRIBUTE_SCRIPT;
   }
 
   public static String getDefaultResourcesLocation() {
+ // TODO restrict usage of this getter and delegate to buildpath
     return BUILDPATH_ATTRIBUTE_RESOURCES;
   }
 
   public static String getDefaultDescriptorLocation() {
+ // TODO restrict usage of this getter and delegate to buildpath
     return BUILDPATH_ATTRIBUTE_DESCRIPTOR;
   }
 
