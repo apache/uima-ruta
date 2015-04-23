@@ -24,9 +24,13 @@ import org.apache.uima.caseditor.ide.searchstrategy.ITypeSystemSearchStrategy;
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.apache.uima.ruta.ide.core.RutaNature;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
+import org.eclipse.core.filesystem.URIUtil;
+import org.eclipse.core.internal.resources.Workspace;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectNature;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -34,6 +38,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.dltk.internal.launching.LaunchConfigurationUtils;
 import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
+import org.eclipse.ui.internal.Workbench;
 
 public class LastLaunchSearchStrategy implements ITypeSystemSearchStrategy {
 
@@ -62,14 +67,17 @@ public class LastLaunchSearchStrategy implements ITypeSystemSearchStrategy {
       if (scriptFile.exists()) {
         IPath path = null;
         try {
-          path = RutaProjectUtils.getTypeSystemDescriptorPath(scriptFile.getProjectRelativePath(),
+          path = RutaProjectUtils.getTypeSystemDescriptorPath(scriptFile.getLocation(),
                   project);
         } catch (CoreException e) {
           RutaAddonsPlugin.error(e);
         }
         if (path != null) {
-          IFile ts = project.getFile(path.makeRelativeTo(project.getLocation()));
-          if (ts.exists()) {
+          
+          IWorkspace workspace= ResourcesPlugin.getWorkspace();    
+          IPath location= Path.fromOSString(path.toFile().getAbsolutePath()); 
+          IFile ts= workspace.getRoot().getFileForLocation(location);
+          if (ts != null && ts.exists()) {
             return ts;
           }
         }
