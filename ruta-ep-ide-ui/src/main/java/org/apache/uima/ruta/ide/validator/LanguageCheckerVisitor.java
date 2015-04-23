@@ -253,7 +253,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
           IFile file = RutaCheckerUtils.checkScriptImport(localPath,
                   sourceModule.getScriptProject());
           if (file == null) {
-            url = RutaCheckerUtils.checkImportExistence(localPath + "TypeSystem", "xml",
+            String typesystemSuffix = RutaProjectUtils.getTypeSystemSuffix(sourceModule.getScriptProject().getProject());
+            url = RutaCheckerUtils.checkImportExistence(localPath + typesystemSuffix, "xml",
                     classLoader);
           }
           if (file == null && url == null) {
