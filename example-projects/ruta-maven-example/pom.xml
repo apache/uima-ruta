@@ -111,7 +111,17 @@
      </extensionPackages>
 
      <!-- Add UIMA Ruta nature to .project -->
-     <addRutaNature>false</addRutaNature>
+     <!-- default value: false -->
+     <addRutaNature>true</addRutaNature>
+
+
+     <!-- Buildpath of the UIMA Ruta Workbench (IDE) for this project -->
+     <!-- default value: empty -->
+     <buildPaths>
+      <buildPath>script:src/main/ruta/</buildPath>
+      <buildPath>descriptor:target/generated-sources/ruta/descriptor/</buildPath>
+      <buildPath>resources:src/main/resources/</buildPath>
+     </buildPaths>
 
     </configuration>
     <executions>
@@ -210,11 +220,11 @@
      <execution>
       <goals>
        <goal>generate</goal>
-      </goals> 
+      </goals>
       <!-- runs in phase process-resources by default -->
       <configuration>
 
-        <!-- one or more ant-like file patterns identifying top level descriptors -->
+       <!-- one or more ant-like file patterns identifying top level descriptors -->
        <typeSystemIncludes>
         <typeSystemInclude>src/main/resources/types/BibtexTypeSystem.xml</typeSystemInclude>
        </typeSystemIncludes>
