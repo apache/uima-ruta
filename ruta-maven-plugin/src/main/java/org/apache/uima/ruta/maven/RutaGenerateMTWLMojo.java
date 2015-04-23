@@ -79,7 +79,7 @@ public class RutaGenerateMTWLMojo extends AbstractMojo {
     }
     List<File> files = null;
     try {
-      files = Utils.getFiles(inputFiles);
+      files = Utils.getFilesIfModified(inputFiles, buildContext);
     } catch (IOException e) {
       getLog().warn("Error accessing input files.", e);
     }
@@ -94,6 +94,7 @@ public class RutaGenerateMTWLMojo extends AbstractMojo {
     if (trie != null) {
       try {
         trie.createMTWLFile(outputFile.getAbsolutePath(), compress, encoding);
+        buildContext.refresh(outputFile);
       } catch (IOException e) {
         getLog().warn("Error writing MTWL file.", e);
       }

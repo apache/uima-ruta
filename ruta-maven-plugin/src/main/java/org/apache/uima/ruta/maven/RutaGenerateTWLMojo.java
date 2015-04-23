@@ -79,7 +79,7 @@ public class RutaGenerateTWLMojo extends AbstractMojo {
 
     List<File> files = null;
     try {
-      files = Utils.getFiles(inputFiles);
+      files = Utils.getModifiedFiles(inputFiles, buildContext);
     } catch (IOException e) {
       getLog().warn("Error accessing input files.", e);
     }
@@ -96,6 +96,7 @@ public class RutaGenerateTWLMojo extends AbstractMojo {
         File outputFile = new File(outputDirectory, outputName);
         try {
           list.createTWLFile(outputFile.getAbsolutePath(), compress, "UTF-8");
+          buildContext.refresh(outputFile);
         } catch (IOException e) {
           getLog().warn("Error writing twl file.", e);
         }

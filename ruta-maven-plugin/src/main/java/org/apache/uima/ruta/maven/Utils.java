@@ -21,19 +21,56 @@ package org.apache.uima.ruta.maven;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.maven.model.FileSet;
 import org.codehaus.plexus.util.FileUtils;
+import org.sonatype.plexus.build.incremental.BuildContext;
 
 public class Utils {
 
-  @SuppressWarnings("unchecked")
-  public static List<File> getFiles(FileSet fileSet) throws IOException {
+  public static List<File> getModifiedFiles(FileSet fileSet, BuildContext buildContext) throws IOException {
+    List<File> result = new ArrayList<File>();
+
     File directory = new File(fileSet.getDirectory());
     String includes = toString(fileSet.getIncludes());
     String excludes = toString(fileSet.getExcludes());
-    return (List<File>) FileUtils.getFiles(directory, includes, excludes);
+
+    for (Object each : FileUtils.getFiles(directory, includes, excludes)) {
+      if (each instanceof File) {
+        File file = (File) each;
+        if (buildContext.hasDelta(file)) {
+          result.add(file);
+        }
+      }
+    }
+    return result;
+  }
+  
+  public static List<File> getFilesIfModified(FileSet fileSet, BuildContext buildContext) throws IOException {
+    List<File> result = new ArrayList<File>();
+
+    File directory = new File(fileSet.getDirectory());
+    String includes = toString(fileSet.getIncludes());
+    String excludes = toString(fileSet.getExcludes());
+
+    boolean modified = false;
+    for (Object each : FileUtils.getFiles(directory, includes, excludes)) {
+      if (each instanceof File) {
+        File file = (File) each;
+        result.add(file);
+        if (buildContext.hasDelta(file)) {
+          modified = true;
+        }
+      }
+    }
+    if(modified) {
+      return result;
+    } else {
+      return Collections.emptyList();
+    }
   }
 
   private static String toString(List<String> strings) {

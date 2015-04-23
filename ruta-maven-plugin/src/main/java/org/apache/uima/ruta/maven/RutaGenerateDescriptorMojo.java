@@ -63,6 +63,7 @@ import org.apache.uima.ruta.extensions.IRutaExtension;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLizable;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.Scanner;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.codehaus.plexus.util.xml.Xpp3DomWriter;
@@ -230,17 +231,29 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     List<String> extensions = getExtensionsFromClasspath(classloader);
     options.setLanguageExtensions(extensions);
 
-    String[] files = FileUtils.getFilesFromExtension(project.getBuild().getOutputDirectory(),
+    String[] files = FileUtils.getFilesFromExtension(project.getBasedir().getAbsolutePath(),
             new String[] { "ruta" });
+    
+    List<File> filesToBuild = new ArrayList<File>();
+    for (String each : files) {
+      File file = new File(each);
+      if(buildContext.hasDelta(file)) {
+        filesToBuild.add(file);
+      }
+    }
+
+    if (filesToBuild.isEmpty()) {
+      getLog().debug("UIMA Ruta Building: Skipped, since no changes were detected.");
+      return;
+    }
 
     if (maxBuildRetries == -1) {
-      maxBuildRetries = files.length * 3;
+      maxBuildRetries = filesToBuild.size() * 3;
     }
 
     Queue<RutaDescriptorInformation> toBuild = new LinkedList<RutaDescriptorInformation>();
 
-    for (String fileString : files) {
-      File file = new File(fileString);
+    for (File file : filesToBuild) {
       try {
         RutaDescriptorInformation descriptorInformation = factory.parseDescriptorInformation(file,
                 options);
@@ -332,10 +345,11 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     OutputStream os = null;
     try {
       File out = new File(aFilename);
+      os = buildContext.newFileOutputStream(out);
       out.getParentFile().mkdirs();
       getLog().debug("Writing descriptor to: " + out);
-      os = new FileOutputStream(out);
       desc.toXML(os);
+      buildContext.refresh(out);
     } finally {
       IOUtils.closeQuietly(os);
     }
@@ -457,8 +471,8 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
                         "org.eclipse.dltk.launching.INTERPRETER_CONTAINER")) {
           foundInterpreter = true;
         }
-        if(StringUtils.equals(buildpathentry.getAttribute("kind"), "var")&& StringUtils.equals(buildpathentry.getAttribute("path"),
-                RUTA_BUILD_VARS)) {
+        if (StringUtils.equals(buildpathentry.getAttribute("kind"), "var")
+                && StringUtils.equals(buildpathentry.getAttribute("path"), RUTA_BUILD_VARS)) {
           buildpathNode.removeChild(i);
         }
       }
@@ -474,9 +488,9 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
           addBuildPathEntry(buildpathNode, type, path);
         }
       }
-      
+
       addRutabuildVars(buildpathNode);
-      
+
       // if (!foundInterpreter) {
       // Xpp3Dom buildpathentry = new Xpp3Dom("buildpathentry");
       // buildpathentry.setAttribute("kind", "con");
@@ -514,8 +528,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
       buildpathNode.addChild(buildpathentry);
 
       addRutabuildVars(buildpathNode);
-      
-      
+
       StringWriter sw = new StringWriter();
       Xpp3DomWriter.write(sw, buildpathNode);
       String string = sw.toString();
@@ -546,8 +559,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     aeAttribute.setAttribute("value", analysisEngineSuffix);
     attributes.addChild(aeAttribute);
     buildpathNode.addChild(varEntry);
-    
-    
+
   }
 
   private void addBuildPathEntry(Xpp3Dom buildpathNode, String type, String path) {
