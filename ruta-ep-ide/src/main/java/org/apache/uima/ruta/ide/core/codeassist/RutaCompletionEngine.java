@@ -481,7 +481,7 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
   private Set<String> getTypes(IPath typeSystemDescriptorPath) throws InvalidXMLException,
           IOException {
     Set<String> types = new HashSet<String>();
-    URL url = URIUtil.toURI(typeSystemDescriptorPath).toURL();
+    URL url = URIUtil.toURI(typeSystemDescriptorPath.toPortableString()).toURL();
     try {
       ResourceManager resMgr = new ResourceManager_impl(classloader);
       types = getTypes(url, resMgr);
@@ -547,7 +547,7 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
     Collection<String> types = new HashSet<String>();
     if (type == RutaTypeConstants.RUTA_TYPE_AT) {
       try {
-        IPath path = sourceModule.getModelElement().getPath();
+        IPath path = sourceModule.getModelElement().getResource().getLocation();
         IPath typeSystemDescriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(path, sourceModule.getModelElement().getScriptProject().getProject());
         types = getTypes(typeSystemDescriptorPath);
       } catch (Exception e) {

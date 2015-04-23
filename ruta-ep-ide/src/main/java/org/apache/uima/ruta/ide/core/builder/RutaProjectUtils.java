@@ -31,6 +31,7 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.ruta.ide.RutaIdeCorePlugin;
 import org.apache.uima.ruta.ide.core.RutaNature;
 import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IFile;
@@ -122,7 +123,7 @@ public class RutaProjectUtils {
       return null;
     }
   }
-  
+
   public static IPath getAnalysisEngineDescriptorPath(String scriptLocation) throws CoreException {
     IPath analysisEngineDescriptorPath;
     IPath scriptPath = new org.eclipse.core.runtime.Path(scriptLocation);
@@ -157,7 +158,7 @@ public class RutaProjectUtils {
             fileForLocation.getProject());
     return analysisEngineDescriptorPath;
   }
-  
+
   public static String getScriptWithPackage(IPath scriptPath, IProject project)
           throws CoreException {
     String name = getModuleName(scriptPath);
@@ -209,7 +210,7 @@ public class RutaProjectUtils {
     List<IFolder> result = new ArrayList<IFolder>();
     IProject[] referencedProjects = proj.getProject().getReferencedProjects();
     for (IProject eachProject : referencedProjects) {
-      if (!visited.contains(eachProject)) {
+      if (!visited.contains(eachProject) && eachProject.exists()) {
         IScriptProject scriptProject = DLTKCore.create(eachProject);
         result.addAll(getScriptFolders(scriptProject));
         visited.add(eachProject);
@@ -226,23 +227,35 @@ public class RutaProjectUtils {
 
   public static List<IFolder> getScriptFolders(IScriptProject sp) throws CoreException {
     List<IFolder> result = new ArrayList<IFolder>();
-    IBuildpathEntry[] rawBuildpath = sp.getRawBuildpath();
-    for (IBuildpathEntry each : rawBuildpath) {
-      IPath path = each.getPath();
-      int entryKind = each.getEntryKind();
-      if (entryKind == IBuildpathEntry.BPE_SOURCE) {
-        IBuildpathAttribute[] extraAttributes = each.getExtraAttributes();
-        for (IBuildpathAttribute eachAttr : extraAttributes) {
-          if (eachAttr.getName().equals(BUILDPATH_ATTRIBUTE_RUTA)
-                  && eachAttr.getValue().equals(BUILDPATH_ATTRIBUTE_SCRIPT)) {
-            result.add(ResourcesPlugin.getWorkspace().getRoot().getFolder(path));
+
+    if (!sp.isOpen()) {
+      return result;
+    }
+
+    IBuildpathEntry[] rawBuildpath = null;
+    try {
+      rawBuildpath = sp.getRawBuildpath();
+    } catch (ModelException e) {
+      // do not spam error log
+    }
+    if (rawBuildpath != null) {
+      for (IBuildpathEntry each : rawBuildpath) {
+        IPath path = each.getPath();
+        int entryKind = each.getEntryKind();
+        if (entryKind == IBuildpathEntry.BPE_SOURCE) {
+          IBuildpathAttribute[] extraAttributes = each.getExtraAttributes();
+          for (IBuildpathAttribute eachAttr : extraAttributes) {
+            if (eachAttr.getName().equals(BUILDPATH_ATTRIBUTE_RUTA)
+                    && eachAttr.getValue().equals(BUILDPATH_ATTRIBUTE_SCRIPT)) {
+              result.add(ResourcesPlugin.getWorkspace().getRoot().getFolder(path));
+            }
           }
         }
       }
     }
     if (result.isEmpty()) {
       IFolder findElement = sp.getProject().getFolder(getDefaultScriptLocation());
-      if (findElement != null) {
+      if (findElement != null && findElement.exists()) {
         result.add((IFolder) findElement);
       }
     }
@@ -321,16 +334,23 @@ public class RutaProjectUtils {
       // try to access script project
       IScriptProject sp = DLTKCore.create(project);
       if (sp != null) {
-        IBuildpathEntry[] rawBuildpath = sp.getRawBuildpath();
-        for (IBuildpathEntry each : rawBuildpath) {
-          IPath path = each.getPath();
-          int entryKind = each.getEntryKind();
-          if (entryKind == IBuildpathEntry.BPE_SOURCE) {
-            IBuildpathAttribute[] extraAttributes = each.getExtraAttributes();
-            for (IBuildpathAttribute eachAttr : extraAttributes) {
-              if (eachAttr.getName().equals(BUILDPATH_ATTRIBUTE_RUTA)
-                      && eachAttr.getValue().equals(BUILDPATH_ATTRIBUTE_DESCRIPTOR)) {
-                result.add(ResourcesPlugin.getWorkspace().getRoot().getFolder(path));
+        IBuildpathEntry[] rawBuildpath = null;
+        try {
+          rawBuildpath = sp.getRawBuildpath();
+        } catch (ModelException e) {
+          // do not spam error log
+        }
+        if (rawBuildpath != null) {
+          for (IBuildpathEntry each : rawBuildpath) {
+            IPath path = each.getPath();
+            int entryKind = each.getEntryKind();
+            if (entryKind == IBuildpathEntry.BPE_SOURCE) {
+              IBuildpathAttribute[] extraAttributes = each.getExtraAttributes();
+              for (IBuildpathAttribute eachAttr : extraAttributes) {
+                if (eachAttr.getName().equals(BUILDPATH_ATTRIBUTE_RUTA)
+                        && eachAttr.getValue().equals(BUILDPATH_ATTRIBUTE_DESCRIPTOR)) {
+                  result.add(ResourcesPlugin.getWorkspace().getRoot().getFolder(path));
+                }
               }
             }
           }
@@ -339,13 +359,13 @@ public class RutaProjectUtils {
     }
     if (result.isEmpty()) {
       IFolder findElement = project.getFolder(getDefaultDescriptorLocation());
-      if (findElement != null) {
+      if (findElement != null && findElement.exists()) {
         result.add((IFolder) findElement);
       }
     }
     return result;
   }
-  
+
   public static List<IFolder> getResourceFolders(IProject project) throws CoreException {
     List<IFolder> result = new ArrayList<IFolder>();
     if (!project.isOpen()) {
@@ -364,16 +384,23 @@ public class RutaProjectUtils {
       // try to access script project
       IScriptProject sp = DLTKCore.create(project);
       if (sp != null) {
-        IBuildpathEntry[] rawBuildpath = sp.getRawBuildpath();
-        for (IBuildpathEntry each : rawBuildpath) {
-          IPath path = each.getPath();
-          int entryKind = each.getEntryKind();
-          if (entryKind == IBuildpathEntry.BPE_SOURCE) {
-            IBuildpathAttribute[] extraAttributes = each.getExtraAttributes();
-            for (IBuildpathAttribute eachAttr : extraAttributes) {
-              if (eachAttr.getName().equals(BUILDPATH_ATTRIBUTE_RUTA)
-                      && eachAttr.getValue().equals(BUILDPATH_ATTRIBUTE_RESOURCES)) {
-                result.add(ResourcesPlugin.getWorkspace().getRoot().getFolder(path));
+        IBuildpathEntry[] rawBuildpath = null;
+        try {
+          rawBuildpath = sp.getRawBuildpath();
+        } catch (ModelException e) {
+          // do not spam error log
+        }
+        if (rawBuildpath != null) {
+          for (IBuildpathEntry each : rawBuildpath) {
+            IPath path = each.getPath();
+            int entryKind = each.getEntryKind();
+            if (entryKind == IBuildpathEntry.BPE_SOURCE) {
+              IBuildpathAttribute[] extraAttributes = each.getExtraAttributes();
+              for (IBuildpathAttribute eachAttr : extraAttributes) {
+                if (eachAttr.getName().equals(BUILDPATH_ATTRIBUTE_RUTA)
+                        && eachAttr.getValue().equals(BUILDPATH_ATTRIBUTE_RESOURCES)) {
+                  result.add(ResourcesPlugin.getWorkspace().getRoot().getFolder(path));
+                }
               }
             }
           }
@@ -400,7 +427,6 @@ public class RutaProjectUtils {
     return result;
   }
 
-
   public static IPath getScriptRootPath(IProject project) throws CoreException {
     List<IFolder> scriptFolders = getScriptFolders(project);
     if (scriptFolders != null && !scriptFolders.isEmpty()) {
@@ -411,7 +437,7 @@ public class RutaProjectUtils {
       return descPath;
     }
   }
-  
+
   public static IPath getPackagePath(IPath scriptIPath, IProject project) throws CoreException {
     List<IFolder> scriptFolders = getScriptFolders(project);
     URI scriptURI = URIUtil.toURI(scriptIPath);
@@ -423,12 +449,16 @@ public class RutaProjectUtils {
       Path eachPath = Paths.get(eachURI);
       if (scriptPath.startsWith(eachPath)) {
         descIPath = eachLocation;
+        break;
       }
     }
-    IPath makeRelativeTo = scriptIPath.makeRelativeTo(descIPath);
-    // remove script
-    IPath relativePackagePath = makeRelativeTo.removeLastSegments(1);
-    return relativePackagePath;
+    if (descIPath != null) {
+      IPath makeRelativeTo = scriptIPath.makeRelativeTo(descIPath);
+      // remove script
+      IPath relativePackagePath = makeRelativeTo.removeLastSegments(1);
+      return relativePackagePath;
+    }
+    return null;
   }
 
   public static String getModuleName(IPath path) {
