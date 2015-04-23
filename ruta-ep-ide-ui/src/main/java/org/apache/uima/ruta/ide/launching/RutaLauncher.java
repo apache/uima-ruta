@@ -46,7 +46,7 @@ import org.xml.sax.SAXException;
 public class RutaLauncher {
 
   public static final String URL_ENCODING = "UTF-8";
-  
+
   private static File descriptor;
 
   private static File inputFolder;
@@ -120,7 +120,8 @@ public class RutaLauncher {
       throw new IllegalArgumentException("Passed arguments are invalid!");
     }
 
-    AnalysisEngine ae = Ruta.wrapAnalysisEngine(descriptor.toURI().toURL(), view, true, inputEncoding);
+    AnalysisEngine ae = Ruta.wrapAnalysisEngine(descriptor.toURI().toURL(), view, true,
+            inputEncoding);
     configure(ae);
     CAS cas = ae.newCAS();
 
@@ -187,15 +188,18 @@ public class RutaLauncher {
 
   private static List<File> getFiles(File dir, boolean recusive) {
     List<File> result = new ArrayList<File>();
-    for (File each : dir.listFiles()) {
-      // TODO: find a solution for this hotfix
-      if (each.isHidden()) {
-        continue;
-      }
-      if (each.isFile()) {
-        result.add(each);
-      } else if (each.isDirectory() && recusive) {
-        result.addAll(getFiles(each, recusive));
+    File[] listFiles = dir.listFiles();
+    if (listFiles != null) {
+      for (File each : listFiles) {
+        // TODO: find a solution for this hotfix
+        if (each.isHidden()) {
+          continue;
+        }
+        if (each.isFile()) {
+          result.add(each);
+        } else if (each.isDirectory() && recusive) {
+          result.addAll(getFiles(each, recusive));
+        }
       }
     }
     return result;
