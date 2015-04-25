@@ -234,14 +234,14 @@
             <nameValuePair>
                 <name>mainScript</name>
                 <value>
-                    <string>ExampleStringFunction</string>
+                    <string>Features</string>
                 </value>
             </nameValuePair>
             <nameValuePair>
                 <name>scriptPaths</name>
                 <value>
                     <array>
-                        <string>D:/work/ws-tutorial/ExtensionsExample/script</string>
+                        <string>D:/work/ws-tutorial/TextRulerExample/script</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -249,7 +249,7 @@
                 <name>descriptorPaths</name>
                 <value>
                     <array>
-                        <string>D:/work/ws-tutorial/ExtensionsExample/descriptor</string>
+                        <string>D:/work/ws-tutorial/TextRulerExample/descriptor</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -257,20 +257,24 @@
                 <name>resourcePaths</name>
                 <value>
                     <array>
-                        <string>D:\work\ws-tutorial\ExtensionsExample\resources</string>
+                        <string>D:\work\ws-tutorial\TextRulerExample\resources</string>
                     </array>
                 </value>
             </nameValuePair>
             <nameValuePair>
                 <name>additionalScripts</name>
                 <value>
-                    <array/>
+                    <array>
+                        <string>uima.ruta.example.Base</string>
+                    </array>
                 </value>
             </nameValuePair>
             <nameValuePair>
                 <name>additionalEngines</name>
                 <value>
-                    <array/>
+                    <array>
+                        <string>utils.PlainTextAnnotator</string>
+                    </array>
                 </value>
             </nameValuePair>
             <nameValuePair>
@@ -307,7 +311,7 @@
         </configurationParameterSettings>
         <typeSystemDescription>
             <imports>
-                <import location="ExampleStringFunctionTypeSystem.xml"/>
+                <import location="FeaturesTypeSystem.xml"/>
             </imports>
         </typeSystemDescription>
         <typePriorities>
@@ -326,14 +330,60 @@
             </capability>
             <capability>
                 <inputs>
-                    <type>uima.ruta.example.ExampleStringFunction.T1</type>
-                    <type>uima.ruta.example.ExampleStringFunction.T2</type>
-                    <type>uima.ruta.example.ExampleStringFunction.T3</type>
+                    <type>uima.ruta.example.Features.EditorMarker</type>
+                    <type>uima.ruta.example.Features.EnglishStopWord</type>
+                    <type>uima.ruta.example.Features.FirstName</type>
+                    <type>uima.ruta.example.Features.JournalVolumeMarker</type>
+                    <type>uima.ruta.example.Features.Month</type>
+                    <type>uima.ruta.example.Features.PagesMarker</type>
+                    <type>uima.ruta.example.Features.PublisherInd</type>
+                    <type>uima.ruta.example.Features.Reference</type>
+                    <type>uima.ruta.example.Features.LParen</type>
+                    <type>uima.ruta.example.Features.RParen</type>
+                    <type>uima.ruta.example.Features.YearInd</type>
+                    <type>uima.ruta.example.Features.NameLinker</type>
+                    <type>uima.ruta.example.Features.FirstNameInd</type>
+                    <type>uima.ruta.example.Features.FirstNameInitial</type>
+                    <type>uima.ruta.example.Features.SingleChar</type>
+                    <type>uima.ruta.example.Features.Quote</type>
+                    <type>uima.ruta.example.Features.QuotedStuff</type>
+                    <type>uima.ruta.example.Features.InInd</type>
+                    <type>uima.ruta.example.Features.FirstToken</type>
+                    <type>uima.ruta.example.Features.LastToken</type>
+                    <type>uima.ruta.example.Features.NumPeriod</type>
+                    <type>uima.ruta.example.Features.NumComma</type>
+                    <type>uima.ruta.example.Features.NumColon</type>
+                    <type>uima.ruta.example.Features.PeriodSep</type>
+                    <type>uima.ruta.example.Features.CommaSep</type>
+                    <type>uima.ruta.example.Features.ColonSep</type>
                 </inputs>
                 <outputs>
-                    <type>uima.ruta.example.ExampleStringFunction.T1</type>
-                    <type>uima.ruta.example.ExampleStringFunction.T2</type>
-                    <type>uima.ruta.example.ExampleStringFunction.T3</type>
+                    <type>uima.ruta.example.Features.EditorMarker</type>
+                    <type>uima.ruta.example.Features.EnglishStopWord</type>
+                    <type>uima.ruta.example.Features.FirstName</type>
+                    <type>uima.ruta.example.Features.JournalVolumeMarker</type>
+                    <type>uima.ruta.example.Features.Month</type>
+                    <type>uima.ruta.example.Features.PagesMarker</type>
+                    <type>uima.ruta.example.Features.PublisherInd</type>
+                    <type>uima.ruta.example.Features.Reference</type>
+                    <type>uima.ruta.example.Features.LParen</type>
+                    <type>uima.ruta.example.Features.RParen</type>
+                    <type>uima.ruta.example.Features.YearInd</type>
+                    <type>uima.ruta.example.Features.NameLinker</type>
+                    <type>uima.ruta.example.Features.FirstNameInd</type>
+                    <type>uima.ruta.example.Features.FirstNameInitial</type>
+                    <type>uima.ruta.example.Features.SingleChar</type>
+                    <type>uima.ruta.example.Features.Quote</type>
+                    <type>uima.ruta.example.Features.QuotedStuff</type>
+                    <type>uima.ruta.example.Features.InInd</type>
+                    <type>uima.ruta.example.Features.FirstToken</type>
+                    <type>uima.ruta.example.Features.LastToken</type>
+                    <type>uima.ruta.example.Features.NumPeriod</type>
+                    <type>uima.ruta.example.Features.NumComma</type>
+                    <type>uima.ruta.example.Features.NumColon</type>
+                    <type>uima.ruta.example.Features.PeriodSep</type>
+                    <type>uima.ruta.example.Features.CommaSep</type>
+                    <type>uima.ruta.example.Features.ColonSep</type>
                 </outputs>
                 <languagesSupported/>
             </capability>

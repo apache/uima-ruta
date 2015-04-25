@@ -17,7 +17,6 @@
   specific language governing permissions and limitations
   under the License.
 -->
-
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
@@ -132,7 +131,21 @@
       </configurationParameter>
       <configurationParameter>
         <name>dynamicAnchoring</name>
-        <description>Activates dynamic achoring (possible speed up).</description>
+        <description>Activates dynamic anchoring (possible speed up).</description>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>greedyRuleElement</name>
+        <description>Activates greedy anchoring for rule elements.</description>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>greedyRule</name>
+        <description>Activates greedy anchoring for complete rules.</description>
         <type>Boolean</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
@@ -161,6 +174,30 @@
         <multiValued>true</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
+      <configurationParameter>
+        <name>strictImports</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>varNames</name>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>varValues</name>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>rules</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -186,7 +223,6 @@
         <value>
           <array>
             <string>org.apache.uima.ruta.type.SPACE</string>
-            <string>org.apache.uima.ruta.type.NBSP</string>
             <string>org.apache.uima.ruta.type.BREAK</string>
             <string>org.apache.uima.ruta.type.MARKUP</string>
           </array>

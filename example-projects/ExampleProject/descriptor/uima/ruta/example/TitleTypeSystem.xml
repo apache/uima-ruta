@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
-    <name>uima.ruta.example.TitleTypeSystem</name>
+    <name>TitleTypeSystem</name>
     <imports>
-        <import location="../../../BasicTypeSystem.xml"/>
-        <import location="../../../types/BibtexTypeSystem.xml"/>
+        <import location="..\..\..\BasicTypeSystem.xml"/>
+        <import location="..\..\..\types\BibtexTypeSystem.xml"/>
     </imports>
     <types>
         <typeDescription>

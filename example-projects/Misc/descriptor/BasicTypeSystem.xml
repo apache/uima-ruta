@@ -120,7 +120,7 @@
     <typeDescription>
       <name>org.apache.uima.ruta.type.NBSP</name>
       <description/>
-      <supertypeName>org.apache.uima.ruta.type.ANY</supertypeName>
+      <supertypeName>org.apache.uima.ruta.type.SPACE</supertypeName>
     </typeDescription>
     <typeDescription>
       <name>org.apache.uima.ruta.type.AMP</name>

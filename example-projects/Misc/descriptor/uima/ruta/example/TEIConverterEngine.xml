@@ -163,6 +163,24 @@
                 <multiValued>false</multiValued>
                 <mandatory>false</mandatory>
             </configurationParameter>
+            <configurationParameter>
+                <name>varNames</name>
+                <type>String</type>
+                <multiValued>true</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>varValues</name>
+                <type>String</type>
+                <multiValued>true</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>rules</name>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
         </configurationParameters>
         <configurationParameterSettings>
             <nameValuePair>
@@ -188,7 +206,6 @@
                 <value>
                     <array>
                         <string>org.apache.uima.ruta.type.SPACE</string>
-                        <string>org.apache.uima.ruta.type.NBSP</string>
                         <string>org.apache.uima.ruta.type.BREAK</string>
                         <string>org.apache.uima.ruta.type.MARKUP</string>
                     </array>
@@ -217,14 +234,14 @@
             <nameValuePair>
                 <name>mainScript</name>
                 <value>
-                    <string>uima.ruta.example.TEIConverter</string>
+                    <string>TEIConverter</string>
                 </value>
             </nameValuePair>
             <nameValuePair>
                 <name>scriptPaths</name>
                 <value>
                     <array>
-                        <string>C:/Users/pkluegl/Dropbox/ws-coling/Misc/script</string>
+                        <string>D:/work/ws-tutorial/Misc/script</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -232,7 +249,7 @@
                 <name>descriptorPaths</name>
                 <value>
                     <array>
-                        <string>C:/Users/pkluegl/Dropbox/ws-coling/Misc/descriptor</string>
+                        <string>D:/work/ws-tutorial/Misc/descriptor</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -240,7 +257,7 @@
                 <name>resourcePaths</name>
                 <value>
                     <array>
-                        <string>C:\Users\pkluegl\Dropbox\ws-coling\Misc\resources</string>
+                        <string>D:\work\ws-tutorial\Misc\resources</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -293,54 +310,9 @@
             </nameValuePair>
         </configurationParameterSettings>
         <typeSystemDescription>
-            <name>uima.ruta.example.TEIConverterTypeSystem</name>
             <imports>
-                <import location="../../../BasicTypeSystem.xml"/>
-                <import location="../../../utils/HtmlTypeSystem.xml"/>
-                <import location="../../../utils/SourceDocumentInformation.xml"/>
+                <import location="TEIConverterTypeSystem.xml"/>
             </imports>
-            <types>
-                <typeDescription>
-                    <name>TEIConverter.PersName</name>
-                    <description>Type defined in null.TEIConverter</description>
-                    <supertypeName>uima.tcas.Annotation</supertypeName>
-                </typeDescription>
-                <typeDescription>
-                    <name>TEIConverter.LastName</name>
-                    <description>Type defined in null.TEIConverter</description>
-                    <supertypeName>uima.tcas.Annotation</supertypeName>
-                </typeDescription>
-                <typeDescription>
-                    <name>TEIConverter.FirstName</name>
-                    <description>Type defined in null.TEIConverter</description>
-                    <supertypeName>uima.tcas.Annotation</supertypeName>
-                </typeDescription>
-                <typeDescription>
-                    <name>TEIConverter.AddName</name>
-                    <description>Type defined in null.TEIConverter</description>
-                    <supertypeName>uima.tcas.Annotation</supertypeName>
-                </typeDescription>
-                <typeDescription>
-                    <name>TEIConverter.PersName</name>
-                    <description>Type defined in null.TEIConverter</description>
-                    <supertypeName>uima.tcas.Annotation</supertypeName>
-                </typeDescription>
-                <typeDescription>
-                    <name>TEIConverter.LastName</name>
-                    <description>Type defined in null.TEIConverter</description>
-                    <supertypeName>uima.tcas.Annotation</supertypeName>
-                </typeDescription>
-                <typeDescription>
-                    <name>TEIConverter.FirstName</name>
-                    <description>Type defined in null.TEIConverter</description>
-                    <supertypeName>uima.tcas.Annotation</supertypeName>
-                </typeDescription>
-                <typeDescription>
-                    <name>TEIConverter.AddName</name>
-                    <description>Type defined in null.TEIConverter</description>
-                    <supertypeName>uima.tcas.Annotation</supertypeName>
-                </typeDescription>
-            </types>
         </typeSystemDescription>
         <typePriorities>
             <priorityList>

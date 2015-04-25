@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
-    <name>uima.ruta.example.AuthorTypeSystem</name>
+    <name>AuthorTypeSystem</name>
     <imports>
-        <import location="../../../BasicTypeSystem.xml"/>
-        <import location="../../../types/BibtexTypeSystem.xml"/>
+        <import location="..\..\..\BasicTypeSystem.xml"/>
+        <import location="..\..\..\types\BibtexTypeSystem.xml"/>
     </imports>
     <types>
         <typeDescription>
@@ -18,12 +18,12 @@
             <supertypeName>uima.tcas.Annotation</supertypeName>
         </typeDescription>
         <typeDescription>
-            <name>uima.ruta.example.Author.Name</name>
+            <name>uima.ruta.example.Author.NameListPart</name>
             <description>Type defined in uima.ruta.example.Author</description>
             <supertypeName>uima.tcas.Annotation</supertypeName>
         </typeDescription>
         <typeDescription>
-            <name>uima.ruta.example.Author.NameListPart</name>
+            <name>uima.ruta.example.Author.Name</name>
             <description>Type defined in uima.ruta.example.Author</description>
             <supertypeName>uima.tcas.Annotation</supertypeName>
         </typeDescription>

@@ -40,6 +40,12 @@
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
+        <name>newlineInducingTagRegExp</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
         <name>replaceLinebreaks</name>
         <type>Boolean</type>
         <multiValued>false</multiValued>
@@ -77,8 +83,27 @@ Defaults to heuristic.</description>
         <multiValued>true</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
+    <configurationParameter>
+        <name>skipWhitespaces</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+    <configurationParameter>
+        <name>processAll</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
     </configurationParameters>
-    <configurationParameterSettings/>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>skipWhitespaces</name>
+        <value>
+          <boolean>true</boolean>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
     <typeSystemDescription/>
     <typePriorities/>
     <fsIndexCollection/>

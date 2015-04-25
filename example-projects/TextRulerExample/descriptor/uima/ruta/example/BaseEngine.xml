@@ -234,14 +234,14 @@
             <nameValuePair>
                 <name>mainScript</name>
                 <value>
-                    <string>ExampleStringFunction</string>
+                    <string>Base</string>
                 </value>
             </nameValuePair>
             <nameValuePair>
                 <name>scriptPaths</name>
                 <value>
                     <array>
-                        <string>D:/work/ws-tutorial/ExtensionsExample/script</string>
+                        <string>D:/work/ws-tutorial/TextRulerExample/script</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -249,7 +249,7 @@
                 <name>descriptorPaths</name>
                 <value>
                     <array>
-                        <string>D:/work/ws-tutorial/ExtensionsExample/descriptor</string>
+                        <string>D:/work/ws-tutorial/TextRulerExample/descriptor</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -257,7 +257,7 @@
                 <name>resourcePaths</name>
                 <value>
                     <array>
-                        <string>D:\work\ws-tutorial\ExtensionsExample\resources</string>
+                        <string>D:\work\ws-tutorial\TextRulerExample\resources</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -307,7 +307,7 @@
         </configurationParameterSettings>
         <typeSystemDescription>
             <imports>
-                <import location="ExampleStringFunctionTypeSystem.xml"/>
+                <import location="BaseTypeSystem.xml"/>
             </imports>
         </typeSystemDescription>
         <typePriorities>
@@ -322,19 +322,6 @@
             <capability>
                 <inputs/>
                 <outputs/>
-                <languagesSupported/>
-            </capability>
-            <capability>
-                <inputs>
-                    <type>uima.ruta.example.ExampleStringFunction.T1</type>
-                    <type>uima.ruta.example.ExampleStringFunction.T2</type>
-                    <type>uima.ruta.example.ExampleStringFunction.T3</type>
-                </inputs>
-                <outputs>
-                    <type>uima.ruta.example.ExampleStringFunction.T1</type>
-                    <type>uima.ruta.example.ExampleStringFunction.T2</type>
-                    <type>uima.ruta.example.ExampleStringFunction.T3</type>
-                </outputs>
                 <languagesSupported/>
             </capability>
         </capabilities>

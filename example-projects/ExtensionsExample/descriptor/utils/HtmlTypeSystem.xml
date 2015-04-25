@@ -35,6 +35,11 @@
           <rangeTypeName>uima.cas.String</rangeTypeName>
         </featureDescription>
         <featureDescription>
+          <name>expandedOffsets</name>
+          <description></description>
+          <rangeTypeName>uima.cas.Boolean</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
           <name>attributeName</name>
           <description></description>
           <rangeTypeName>uima.cas.StringArray</rangeTypeName>

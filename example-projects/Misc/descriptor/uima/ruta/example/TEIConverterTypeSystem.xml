@@ -1,51 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
-    <name>uima.ruta.example.TEIConverterTypeSystem</name>
+    <name>TEIConverterTypeSystem</name>
     <imports>
-        <import location="../../../BasicTypeSystem.xml"/>
-        <import location="../../../utils/HtmlTypeSystem.xml"/>
-        <import location="../../../utils/SourceDocumentInformation.xml"/>
+        <import location="..\..\..\BasicTypeSystem.xml"/>
+        <import location="..\..\..\utils\HtmlTypeSystem.xml"/>
+        <import location="..\..\..\utils\SourceDocumentInformation.xml"/>
     </imports>
     <types>
         <typeDescription>
             <name>TEIConverter.PersName</name>
-            <description>Type defined in null.TEIConverter</description>
-            <supertypeName>uima.tcas.Annotation</supertypeName>
-        </typeDescription>
-        <typeDescription>
-            <name>TEIConverter.LastName</name>
-            <description>Type defined in null.TEIConverter</description>
-            <supertypeName>uima.tcas.Annotation</supertypeName>
-        </typeDescription>
-        <typeDescription>
-            <name>TEIConverter.FirstName</name>
-            <description>Type defined in null.TEIConverter</description>
+            <description>Type defined in TEIConverter</description>
             <supertypeName>uima.tcas.Annotation</supertypeName>
         </typeDescription>
         <typeDescription>
             <name>TEIConverter.AddName</name>
-            <description>Type defined in null.TEIConverter</description>
-            <supertypeName>uima.tcas.Annotation</supertypeName>
-        </typeDescription>
-        <typeDescription>
-            <name>TEIConverter.PersName</name>
-            <description>Type defined in null.TEIConverter</description>
+            <description>Type defined in TEIConverter</description>
             <supertypeName>uima.tcas.Annotation</supertypeName>
         </typeDescription>
         <typeDescription>
             <name>TEIConverter.LastName</name>
-            <description>Type defined in null.TEIConverter</description>
+            <description>Type defined in TEIConverter</description>
             <supertypeName>uima.tcas.Annotation</supertypeName>
         </typeDescription>
         <typeDescription>
             <name>TEIConverter.FirstName</name>
-            <description>Type defined in null.TEIConverter</description>
-            <supertypeName>uima.tcas.Annotation</supertypeName>
-        </typeDescription>
-        <typeDescription>
-            <name>TEIConverter.AddName</name>
-            <description>Type defined in null.TEIConverter</description>
+            <description>Type defined in TEIConverter</description>
             <supertypeName>uima.tcas.Annotation</supertypeName>
         </typeDescription>
     </types>
