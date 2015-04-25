@@ -163,6 +163,24 @@
                 <multiValued>false</multiValued>
                 <mandatory>false</mandatory>
             </configurationParameter>
+            <configurationParameter>
+                <name>varNames</name>
+                <type>String</type>
+                <multiValued>true</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>varValues</name>
+                <type>String</type>
+                <multiValued>true</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>rules</name>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
         </configurationParameters>
         <configurationParameterSettings>
             <nameValuePair>
@@ -188,7 +206,6 @@
                 <value>
                     <array>
                         <string>org.apache.uima.ruta.type.SPACE</string>
-                        <string>org.apache.uima.ruta.type.NBSP</string>
                         <string>org.apache.uima.ruta.type.BREAK</string>
                         <string>org.apache.uima.ruta.type.MARKUP</string>
                     </array>
@@ -217,14 +234,14 @@
             <nameValuePair>
                 <name>mainScript</name>
                 <value>
-                    <string>uima.ruta.example.Main</string>
+                    <string>Main</string>
                 </value>
             </nameValuePair>
             <nameValuePair>
                 <name>scriptPaths</name>
                 <value>
                     <array>
-                        <string>D:/work/workspace-ruta/GermanNovels/script</string>
+                        <string>D:/work/ws-tutorial/GermanNovels/script</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -232,8 +249,8 @@
                 <name>descriptorPaths</name>
                 <value>
                     <array>
-                        <string>D:/work/workspace-ruta/GermanNovels/target/classes</string>
-                        <string>D:/work/workspace-ruta/GermanNovels/descriptor</string>
+                        <string>D:/work/ws-tutorial/GermanNovels/target/classes</string>
+                        <string>D:/work/ws-tutorial/GermanNovels/descriptor</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -241,8 +258,8 @@
                 <name>resourcePaths</name>
                 <value>
                     <array>
-                        <string>D:\work\workspace-ruta\GermanNovels\resources</string>
-                        <string>D:\work\workspace-ruta\GermanNovels\target\resources</string>
+                        <string>D:\work\ws-tutorial\GermanNovels\resources</string>
+                        <string>D:\work\ws-tutorial\GermanNovels\target\resources</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -283,6 +300,7 @@
                         <string>org.apache.uima.ruta.example.extensions.ExampleTypeFunctionExtension</string>
                         <string>org.apache.uima.ruta.block.OnlyFirstBlockExtension</string>
                         <string>org.apache.uima.ruta.block.OnlyOnceBlockExtension</string>
+                        <string>org.apache.uima.ruta.block.fst.FSTBlockExtension</string>
                         <string>org.apache.uima.ruta.example.extensions.ExampleBlockExtension</string>
                     </array>
                 </value>
@@ -295,11 +313,8 @@
             </nameValuePair>
         </configurationParameterSettings>
         <typeSystemDescription>
-            <name>uima.ruta.example.MainTypeSystem</name>
             <imports>
-                <import location="../../../BasicTypeSystem.xml"/>
-                <import location="../../../GeneratedDKProCoreTypes.xml"/>
-                <import location="NameTypeSystem.xml"/>
+                <import location="MainTypeSystem.xml"/>
             </imports>
         </typeSystemDescription>
         <typePriorities>
