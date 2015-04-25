@@ -137,48 +137,61 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
       IPath pathToModule = sourceModule.getResource().getLocation();
       String elementName = RutaProjectUtils.getModuleName(pathToModule);
 
-      IScriptProject proj = sourceModule.getScriptProject();
-      // TODO: dont use desc path!
-      IPath descPath = RutaProjectUtils.getDescriptorRootPath(proj.getProject());
-      IPath scriptPath = RutaProjectUtils.getScriptRootPath(proj.getProject());
-      IPath relativePackagePath = RutaProjectUtils.getPackagePath(sourceModule.getResource()
-              .getLocation(), proj.getProject());
-      IPath descPackagePath = descPath.append(relativePackagePath);
-      String typeSystem = descPackagePath.append(elementName + "TypeSystem.xml").toPortableString();
-      String engine = descPackagePath.append(elementName + "Engine.xml").toPortableString();
+      IScriptProject scriptProject = sourceModule.getScriptProject();
+      
+      IProject project = scriptProject.getProject();
+      
+      IPath descPath = RutaProjectUtils.getDescriptorRootPath(project);
       String basicTS = descPath.append("BasicTypeSystem.xml").toPortableString();
       String basicE = descPath.append("BasicEngine.xml").toPortableString();
+      
+      List<IFolder> descriptorFolders = RutaProjectUtils.getDescriptorFolders(project);
+      for (IFolder iFolder : descriptorFolders) {
+        File btsd = iFolder.getLocation().append("BasicTypeSystem.xml").toFile();
+        File baed = iFolder.getLocation().append("BasicEngine.xml").toFile();
+        if(btsd.exists() && baed.exists()) {
+          basicTS = btsd.getAbsolutePath();
+          basicE = baed.getAbsolutePath();
+          descPath = iFolder.getLocation();
+          break;
+        }
+      }
+      
+      IPath scriptPath = RutaProjectUtils.getScriptRootPath(project);
+      IPath relativePackagePath = RutaProjectUtils.getPackagePath(sourceModule.getResource()
+              .getLocation(), project);
+      IPath descPackagePath = descPath.append(relativePackagePath);
+      String typeSystem = descPackagePath.append(elementName + RutaProjectUtils.getTypeSystemSuffix(project) + ".xml").toPortableString();
+      String engine = descPackagePath.append(elementName + RutaProjectUtils.getAnalysisEngineSuffix(project) + ".xml").toPortableString();
 
-      // TODO: may not work with other script folders
-      IPath relativeTo = pathToModule.makeAbsolute().makeRelativeTo(scriptPath);
+      
+      String scriptWithPackagePath = RutaProjectUtils.getScriptWithPackage(pathToModule, project);
       List<String> scriptPathList = new ArrayList<String>();
       List<String> descriptorPathList = new ArrayList<String>();
 
       // add all folders
       try {
-        List<IFolder> scriptFolders = RutaProjectUtils.getAllScriptFolders(proj);
+        List<IFolder> scriptFolders = RutaProjectUtils.getAllScriptFolders(scriptProject);
         scriptPathList.addAll(RutaProjectUtils.getFolderLocations(scriptFolders));
       } catch (CoreException e) {
         RutaIdeCorePlugin.error(e);
       }
 
       try {
-        List<IFolder> descriptorFolders = RutaProjectUtils.getAllDescriptorFolders(proj
-                .getProject());
-        descriptorPathList.addAll(RutaProjectUtils.getFolderLocations(descriptorFolders));
+        List<IFolder> allDescriptorFolders = RutaProjectUtils.getAllDescriptorFolders(project);
+        descriptorPathList.addAll(RutaProjectUtils.getFolderLocations(allDescriptorFolders));
       } catch (Exception e) {
         RutaIdeCorePlugin.error(e);
       }
 
       String[] descriptorPaths = descriptorPathList.toArray(new String[0]);
       String[] scriptPaths = scriptPathList.toArray(new String[0]);
-      String mainScript = relativeTo.toPortableString();
+      String mainScript = scriptWithPackagePath;
       mainScript = mainScript.replaceAll("/", ".");
       if (mainScript.endsWith(RutaEngine.SCRIPT_FILE_EXTENSION)) {
         mainScript = mainScript.substring(0, mainScript.length() - 5);
       }
-      Collection<String> dependencies = RutaProjectUtils.getClassPath(proj
-              .getProject());
+      Collection<String> dependencies = RutaProjectUtils.getClassPath(project);
       URL[] urls = new URL[dependencies.size()];
       int counter = 0;
       for (String dep : dependencies) {

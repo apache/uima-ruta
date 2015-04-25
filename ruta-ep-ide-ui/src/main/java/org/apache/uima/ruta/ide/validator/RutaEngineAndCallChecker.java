@@ -93,9 +93,9 @@ public class RutaEngineAndCallChecker implements IBuildParticipant, IBuildPartic
         } catch (CoreException e) {
         }
       }
-      IPreferenceStore preferenceStore = RutaIdeUIPlugin.getDefault().getPreferenceStore();
-      boolean noVM = preferenceStore.getBoolean(RutaCorePreferences.NO_VM_IN_DEV_MODE);
-      if (!(noVM && Platform.inDevelopmentMode())) {
+      // IPreferenceStore preferenceStore = RutaIdeUIPlugin.getDefault().getPreferenceStore();
+      // boolean noVM = preferenceStore.getBoolean(RutaCorePreferences.NO_VM_IN_DEV_MODE);
+      // if (!(noVM && Platform.inDevelopmentMode())) {
         try {
           Collection<String> dependencies = RutaLaunchConfigurationDelegate.getClassPath(project);
           URL[] urls = new URL[dependencies.size()];
@@ -110,7 +110,7 @@ public class RutaEngineAndCallChecker implements IBuildParticipant, IBuildPartic
         } catch (MalformedURLException e) {
           RutaIdeUIPlugin.error(e);
         }
-      }
+//      }
 
     }
 

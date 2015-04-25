@@ -983,13 +983,19 @@ public class LanguageCheckerVisitor extends ASTVisitor {
 
     try {
       typeSystemDescription = getTypeSystemOfScript();
-      IPath descriptorRootPath = RutaProjectUtils.getDescriptorRootPath(sourceModule
-              .getScriptProject().getProject());
-      IPath basicTSD = descriptorRootPath.append("BasicTypeSystem.xml");
-      boolean exists = basicTSD.toFile().exists();
-      if (exists) {
-        importCompleteTypeSystem(basicTSD, null);
-      } else {
+      IProject project = sourceModule
+              .getScriptProject().getProject();
+      List<IFolder> descriptorFolders = RutaProjectUtils.getDescriptorFolders(project);
+      boolean exists = false;
+      for (IFolder iFolder : descriptorFolders) {
+        IPath basicTSD = iFolder.getLocation().append("BasicTypeSystem.xml");
+        exists = basicTSD.toFile().exists();
+        if (exists) {
+          importCompleteTypeSystem(basicTSD, null);
+          break;
+        }
+      }
+      if(!exists) {
         // not in a common ruta project
         // try to find the file in the classpath
         URL resource = classLoader.getResource("org/apache/uima/ruta/engine/BasicTypeSystem.xml");
