@@ -157,7 +157,6 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
         }
       }
       
-      IPath scriptPath = RutaProjectUtils.getScriptRootPath(project);
       IPath relativePackagePath = RutaProjectUtils.getPackagePath(sourceModule.getResource()
               .getLocation(), project);
       IPath descPackagePath = descPath.append(relativePackagePath);
@@ -204,7 +203,7 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
         counter++;
       }
       ClassLoader classloader = new URLClassLoader(urls);
-      build(basicTS, basicE, typeSystem, engine, sm, mainScript, scriptPaths, descriptorPaths, classloader);
+      build(basicTS, basicE, typeSystem, engine, sm, scriptPaths, descriptorPaths, classloader);
 
       IPath tsPath = Path.fromPortableString(typeSystem);
       IPath ePath = Path.fromPortableString(engine);
@@ -215,7 +214,7 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
   }
 
   private void build(String basicTypesystem, String basicEngine, String typeSystemDest,
-          String engineDest, RutaDescriptorInformation sm, String mainScript, String[] scriptPaths,
+          String engineDest, RutaDescriptorInformation sm, String[] scriptPaths,
           String[] enginePaths, ClassLoader classloader) {
     RutaDescriptorBuilder builder = null;
     try {
@@ -281,7 +280,7 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
       option.setImportByName(store.getBoolean(RutaCorePreferences.BUILDER_IMPORT_BY_NAME));
       option.setResolveImports(store.getBoolean(RutaCorePreferences.BUILDER_RESOLVE_IMPORTS));
       option.setClassLoader(classloader);
-      builder.build(sm, typeSystemDest, engineDest, option, mainScript, scriptPaths, enginePaths);
+      builder.build(sm, typeSystemDest, engineDest, option, scriptPaths, enginePaths);
     } catch (Exception e) {
       DLTKCore.error(e.getMessage(), e);
       if (DLTKCore.DEBUG_PARSER) {

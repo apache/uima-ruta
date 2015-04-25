@@ -307,7 +307,7 @@ public class RutaDescriptorBuilder {
   }
 
   public void build(RutaDescriptorInformation desc, String typeSystemOutput, String engineOutput,
-          RutaBuildOptions options, String mainScript, String[] scriptPaths, String[] enginePaths)
+          RutaBuildOptions options, String[] scriptPaths, String[] enginePaths)
           throws SAXException, InvalidXMLException, IOException, ResourceInitializationException,
           URISyntaxException {
 

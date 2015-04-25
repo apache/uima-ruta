@@ -265,6 +265,9 @@ List<Statement> stmts = new ArrayList<Statement>();
 	{
 	String packageName = "";
 	if(p != null) {packageName = p.getName();}
+	if(descriptor != null) {
+    descriptor.setPackageString(packageName);
+  }
 	rootBlock = scriptFactory.createScriptBlock(0,0,0,0,module, null, null, packageName);
 	stmts.add(p);
 	this.module = module;
