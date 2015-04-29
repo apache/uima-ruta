@@ -51,7 +51,7 @@ public class RutaRule extends AbstractRule {
 
   @Override
   public String toString() {
-    return root.toString();
+    return root == null ? "<empty>": root.toString();
   }
 
   public final List<RuleElement> getRuleElements() {

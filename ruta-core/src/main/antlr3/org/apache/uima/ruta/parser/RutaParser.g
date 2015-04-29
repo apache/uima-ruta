@@ -697,8 +697,9 @@ level--;
 	
 	LCURLY body = statements RCURLY
 	{block.setElements(body);
-	// really needs to know of the block?
-	//$blockDeclaration::env.getScript().addBlock(type,block);
+	
+	{$blockDeclaration::env = block.getParent();}
+	
 	}	
 	;
 

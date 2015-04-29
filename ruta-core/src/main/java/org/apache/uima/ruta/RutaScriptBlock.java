@@ -73,7 +73,8 @@ public class RutaScriptBlock extends RutaBlock {
   @Override
   public String toString() {
     String ruleString = rule == null ? "Document" : rule.toString();
-    return "BLOCK(" + name + ") " + ruleString + " containing " + elements.size() + " Elements";
+    int elementSize = elements == null ? 0 : elements.size();
+    return "BLOCK(" + name + ") " + ruleString + " containing " + elementSize + " Elements";
   }
 
 }
