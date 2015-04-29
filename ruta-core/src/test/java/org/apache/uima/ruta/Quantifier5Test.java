@@ -19,55 +19,20 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
-
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
 
 public class Quantifier5Test {
   @Test
   public void test() {
-    String name = this.getClass().getSimpleName();
-    String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
-              + ".txt", 50);
-    } catch (Exception e) {
-      e.printStackTrace();
-      assert (false);
-    }
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
 
-    t = RutaTestUtils.getTestType(cas, 5);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Peter geht zur Arbeit", iterator.next().getCoveredText());
-    assertEquals("Peter zur Arbeit", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 6);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Peter geht zur Arbeit", iterator.next().getCoveredText());
-    assertEquals("Peter zur Arbeit", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 7);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Peter geht zur Arbeit", iterator.next().getCoveredText());
-    assertEquals("zur Arbeit", iterator.next().getCoveredText());
-    
+    CAS cas = RutaTestUtils.processTestScript(this.getClass());
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 5, 2, "Peter geht zur Arbeit", "Peter zur Arbeit");
+    RutaTestUtils.assertAnnotationsEquals(cas, 6, 2, "Peter geht zur Arbeit", "Peter zur Arbeit");
+    RutaTestUtils.assertAnnotationsEquals(cas, 7, 2, "Peter geht zur Arbeit", "zur Arbeit");
+
     cas.release();
   }
 }

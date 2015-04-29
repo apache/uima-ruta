@@ -19,14 +19,7 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
-
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
 
@@ -34,115 +27,22 @@ public class LiteralStringMatchTest {
 
   @Test
   public void test() {
-    String name = this.getClass().getSimpleName();
-    String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
-              + ".txt", 50);
-    } catch (Exception e) {
-      e.printStackTrace();
-      assert (false);
-    }
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
 
- 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(4, ai.size());
-    iterator = ai.iterator();
-    assertEquals("CW", iterator.next().getCoveredText());
-    assertEquals("CW", iterator.next().getCoveredText());
-    assertEquals("CW", iterator.next().getCoveredText());
-    assertEquals("CW", iterator.next().getCoveredText());
+    CAS cas = RutaTestUtils.processTestScript(this.getClass());
 
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("SW", iterator.next().getCoveredText());
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 4, "CW", "CW", "CW", "CW");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "SW");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 6, 2, "CW COMMA CW COMMA", "CW COMMA");
+    RutaTestUtils.assertAnnotationsEquals(cas, 7, 5, "CW", "CW", "CW", "SW", "CW");
+    RutaTestUtils.assertAnnotationsEquals(cas, 8, 5, "CW", "CW", "CW SW CW", "SW CW", "CW");
+    RutaTestUtils.assertAnnotationsEquals(cas, 9, 2, "CW COMMA CW COMMA CW", "CW COMMA CW");
+    RutaTestUtils.assertAnnotationsEquals(cas, 10, 3, "CW COMMA CW COMMA CW SW", "CW COMMA CW SW", "CW SW");
+    RutaTestUtils.assertAnnotationsEquals(cas, 11, 3, "CW COMMA CW COMMA CW SW CW PERIOD", "CW COMMA CW SW CW PERIOD",
+            "CW SW CW PERIOD");
+    RutaTestUtils.assertAnnotationsEquals(cas, 13, 6, "CW COMMA", "CW COMMA", "CW COMMA", "CW SW", "CW SW", "CW SW");
+    RutaTestUtils.assertAnnotationsEquals(cas, 14, 3, "CW COMMA CW COMMA CW SW", "CW COMMA CW SW", "CW SW");
 
-    t = RutaTestUtils.getTestType(cas, 3);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(0, ai.size());
-
-   
-    t = RutaTestUtils.getTestType(cas, 6);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(2, ai.size());
-    assertEquals("CW COMMA CW COMMA", iterator.next().getCoveredText());
-    assertEquals("CW COMMA", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 7);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(5, ai.size());
-    assertEquals("CW", iterator.next().getCoveredText());
-    assertEquals("CW", iterator.next().getCoveredText());
-    assertEquals("CW", iterator.next().getCoveredText());
-    assertEquals("SW", iterator.next().getCoveredText());
-    assertEquals("CW", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 8);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(5, ai.size());
-    assertEquals("CW", iterator.next().getCoveredText());
-    assertEquals("CW", iterator.next().getCoveredText());
-    assertEquals("CW SW CW", iterator.next().getCoveredText());
-    assertEquals("SW CW", iterator.next().getCoveredText());
-    assertEquals("CW", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 9);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(2, ai.size());
-    assertEquals("CW COMMA CW COMMA CW", iterator.next().getCoveredText());
-    assertEquals("CW COMMA CW", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 10);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(3, ai.size());
-    assertEquals("CW COMMA CW COMMA CW SW", iterator.next().getCoveredText());
-    assertEquals("CW COMMA CW SW", iterator.next().getCoveredText());
-    assertEquals("CW SW", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 11);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(3, ai.size());
-    assertEquals("CW COMMA CW COMMA CW SW CW PERIOD", iterator.next().getCoveredText());
-    assertEquals("CW COMMA CW SW CW PERIOD", iterator.next().getCoveredText());
-    assertEquals("CW SW CW PERIOD", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 13);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(6, ai.size());
-    assertEquals("CW COMMA", iterator.next().getCoveredText());
-    assertEquals("CW COMMA", iterator.next().getCoveredText());
-    assertEquals("CW COMMA", iterator.next().getCoveredText());
-    assertEquals("CW SW", iterator.next().getCoveredText());
-    assertEquals("CW SW", iterator.next().getCoveredText());
-    assertEquals("CW SW", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 14);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(3, ai.size());
-    assertEquals("CW COMMA CW COMMA CW SW", iterator.next().getCoveredText());
-    assertEquals("CW COMMA CW SW", iterator.next().getCoveredText());
-    assertEquals("CW SW", iterator.next().getCoveredText());
-
-
-    if (cas != null) {
-      cas.release();
-    }
-
+    cas.release();
   }
 }

@@ -36,7 +36,10 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
@@ -189,6 +192,13 @@ public class RutaTestUtils {
     return cas;
   }
 
+  /**
+   * Helper to get the test type, e.g. org.apache.uima.T1, org.apache.uima.T2, ...
+   * 
+   * @param cas
+   * @param i
+   *          typeId, converted to {@link #TYPE} + i
+   */
   public static Type getTestType(CAS cas, int i) {
     if (cas == null)
       return null;
@@ -242,4 +252,50 @@ public class RutaTestUtils {
     return cas;
   }
 
+   
+  /**
+   * Helper for common assertion in JUnit tests
+   * 
+   * @param cas
+   * @param typeId
+   * @param expectedCnt
+   * @param expecteds
+   */
+  public static void assertAnnotationsEquals(CAS cas, int typeId, int expectedCnt, String... expecteds) {
+    Type t = getTestType(cas, typeId);
+    AnnotationIndex<AnnotationFS> ai = cas.getAnnotationIndex(t);
+    if (ai.size() != expectedCnt) {
+      throw new AssertionError("size of expected annotations ("+expectedCnt+") does not match with actual size ("+ai.size()+").");
+    }
+    if (expecteds.length > 0) {
+      FSIterator<AnnotationFS> iterator = ai.iterator();
+      for (String expected : expecteds) {
+        String actual =iterator.next().getCoveredText(); 
+        if (!actual.equals(expected)) {
+          throw new AssertionError("expected text ("+expected+") does not match with actual ("+actual+").");
+        }
+      }
+    }
+  }
+
+  /**
+   * Helper to run Ruta on a tests script
+   * 
+   * @param testClass
+   * @return the annotated {@link CAS}
+   */
+  public static CAS processTestScript(Class<?> testClass) {
+    String name = testClass.getSimpleName();
+    String namespace = testClass.getPackage().getName().replaceAll("\\.", "/");
+
+    CAS cas = null;
+    try {
+      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
+              + ".txt", 50);
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new RuntimeException(e);
+    }
+    return cas;
+  }
 }

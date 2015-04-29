@@ -19,13 +19,7 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
-
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
@@ -47,46 +41,13 @@ public class ConjunctRulesTest {
       e.printStackTrace();
     }
 
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Kluegl");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, ",");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 2, ", Joern Kottmann,", ", Marshall Schor.");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 5, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 6, 0);
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Kluegl", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals(",", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 3);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
-    iterator = ai.iterator();
-    assertEquals(", Joern Kottmann,", iterator.next().getCoveredText());
-    assertEquals(", Marshall Schor.", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 4);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(0, ai.size());
-    
-    t = RutaTestUtils.getTestType(cas, 5);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(0, ai.size());
-    
-    t = RutaTestUtils.getTestType(cas, 6);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(0, ai.size());
-    
-    
-    
-    if (cas != null) {
-      cas.release();
-    }
-
+    cas.release();
   }
 }

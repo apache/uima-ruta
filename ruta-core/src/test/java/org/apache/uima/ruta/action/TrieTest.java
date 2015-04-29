@@ -56,44 +56,14 @@ public class TrieTest {
         e.printStackTrace();
         assert (false);
       }
-      Type t = null;
-      AnnotationIndex<AnnotationFS> ai = null;
-      FSIterator<AnnotationFS> iterator = null;
-
-      t = RutaTestUtils.getTestType(cas, 1);
-      ai = cas.getAnnotationIndex(t);
-      assertEquals(3, ai.size());
-      iterator = ai.iterator();
-      assertEquals("Peter", iterator.next().getCoveredText());
-      assertEquals("Marshall", iterator.next().getCoveredText());
-      assertEquals("Joern", iterator.next().getCoveredText());
-
-      t = RutaTestUtils.getTestType(cas, 2);
-      ai = cas.getAnnotationIndex(t);
-      assertEquals(3, ai.size());
-      iterator = ai.iterator();
-      assertEquals("Kluegl", iterator.next().getCoveredText());
-      assertEquals("Schor", iterator.next().getCoveredText());
-      assertEquals("Kottmann", iterator.next().getCoveredText());
-
-      t = RutaTestUtils.getTestType(cas, 3);
-      ai = cas.getAnnotationIndex(t);
-      assertEquals(3, ai.size());
-      iterator = ai.iterator();
-      assertEquals("Peter Kluegl", iterator.next().getCoveredText());
-      assertEquals("Marshall Schor", iterator.next().getCoveredText());
-      assertEquals("Joern Kottmann", iterator.next().getCoveredText());
-
-      t = RutaTestUtils.getTestType(cas, 4);
-      ai = cas.getAnnotationIndex(t);
-      assertEquals(3, ai.size());
-      iterator = ai.iterator();
-      assertEquals("Peter Kluegl: Ruta", iterator.next().getCoveredText());
-      assertEquals("Marshall Schor: UIMA", iterator.next().getCoveredText());
-      assertEquals("Joern Kottmann: CAS Editor", iterator.next().getCoveredText());
+      
+      RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "Peter", "Marshall", "Joern");
+      RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "Kluegl", "Schor", "Kottmann");
+      RutaTestUtils.assertAnnotationsEquals(cas, 3, 3, "Peter Kluegl", "Marshall Schor", "Joern Kottmann");
+      RutaTestUtils.assertAnnotationsEquals(cas, 4, 3, "Peter Kluegl: Ruta", "Marshall Schor: UIMA",
+              "Joern Kottmann: CAS Editor");
 
       cas.release();
-
     }
   }
 
@@ -182,8 +152,6 @@ public class TrieTest {
     assertEquals("Joern Kottmann", next.getCoveredText());
     assertEquals(6, next.getIntValue(feature));
 
-    if (cas != null) {
-      cas.release();
-    }
+    cas.release();
   }
 }

@@ -68,12 +68,7 @@ public class PartOfNEQ2Test {
     assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals("> 51%", iterator.next().getCoveredText());
-  
-    
-    if (cas != null) {
-      cas.release();
-    }
 
+    cas.release();
   }
-
 }

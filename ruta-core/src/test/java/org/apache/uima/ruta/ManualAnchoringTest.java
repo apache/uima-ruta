@@ -19,13 +19,7 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
-
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
@@ -47,19 +41,8 @@ public class ManualAnchoringTest {
       e.printStackTrace();
     }
 
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "A, B and C");
 
-    t = RutaTestUtils.getTestType(cas, 3);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("A, B and C", iterator.next().getCoveredText());
-    
-    if (cas != null) {
-      cas.release();
-    }
-
+    cas.release();
   }
 }

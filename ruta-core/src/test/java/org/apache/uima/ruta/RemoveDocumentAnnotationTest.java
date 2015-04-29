@@ -19,21 +19,13 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
-
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
 
 public class RemoveDocumentAnnotationTest {
 
-  
-  
   @Test
   public void testWildCardFollowedByComposedReversed() {
     String document = "some text";
@@ -52,46 +44,11 @@ public class RemoveDocumentAnnotationTest {
       e.printStackTrace();
     }
 
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
-
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("some", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("text", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 3);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("some text", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 4);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("some text", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 5);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("some text", iterator.next().getCoveredText());
-    
-    if (cas != null) {
-      cas.release();
-    }
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "some");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "text");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "some text");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 1, "some text");
+    RutaTestUtils.assertAnnotationsEquals(cas, 5, 1, "some text");
+    cas.release();
   }
-  
- 
-  
-  
 }

@@ -19,21 +19,13 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
-
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
 
 public class MarkInGreedyComposedTest {
 
-  
-  
   @Test
   public void testWildCardFollowedByComposedReversed() {
     String document = "1 x f B e d B x c A b a A 1";
@@ -47,22 +39,11 @@ public class MarkInGreedyComposedTest {
       e.printStackTrace();
     }
 
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "x f B e d B", "x c A b a A");
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(2, ai.size());
-    assertEquals("x f B e d B", iterator.next().getCoveredText());
-    assertEquals("x c A b a A", iterator.next().getCoveredText());
-    
-    if (cas != null) {
-      cas.release();
-    }
+    cas.release();
   }
-  
+
   @Test
   public void testSimpleFollowedByComposedReversed() {
     String document = "1 x f B x c A 1";
@@ -76,23 +57,11 @@ public class MarkInGreedyComposedTest {
       e.printStackTrace();
     }
 
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "x f B", "x c A");
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(2, ai.size());
-    assertEquals("x f B", iterator.next().getCoveredText());
-    assertEquals("x c A", iterator.next().getCoveredText());
-    
-    if (cas != null) {
-      cas.release();
-    }
+    cas.release();
   }
-  
-  
+
   @Test
   public void testWildCardFollowedByComposed() {
     String document = "A c b A c x A c b A c x";
@@ -106,26 +75,11 @@ public class MarkInGreedyComposedTest {
       e.printStackTrace();
     }
 
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "A c b A c x", "A c b A c x");
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(2, ai.size());
-    assertEquals("A c b A c x", iterator.next().getCoveredText());
-    assertEquals("A c b A c x", iterator.next().getCoveredText());
-    
-    if (cas != null) {
-      cas.release();
-    }
+    cas.release();
   }
-  
-  
-  
-  
-  
+
   @Test
   public void testWildCardFollowedByCondition() {
     String document = "A A b A c X X b X c";
@@ -140,30 +94,12 @@ public class MarkInGreedyComposedTest {
       e.printStackTrace();
     }
 
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "A A b A c", "X X b X c");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "A A b A c", "X X b X c");
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(2, ai.size());
-    assertEquals("A A b A c", iterator.next().getCoveredText());
-    assertEquals("X X b X c", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(2, ai.size());
-    assertEquals("A A b A c", iterator.next().getCoveredText());
-    assertEquals("X X b X c", iterator.next().getCoveredText());
-    
-    if (cas != null) {
-      cas.release();
-    }
-
+    cas.release();
   }
-  
+
   @Test
   public void testWithWildCard() {
     String document = "1 . 2 .";
@@ -177,23 +113,11 @@ public class MarkInGreedyComposedTest {
       e.printStackTrace();
     }
 
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "1 .", "2 .");
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(2, ai.size());
-    assertEquals("1 .", iterator.next().getCoveredText());
-    assertEquals("2 .", iterator.next().getCoveredText());
-
-    if (cas != null) {
-      cas.release();
-    }
-
+    cas.release();
   }
-  
+
   @Test
   public void test() {
     String document = "1 . 2 .";
@@ -207,23 +131,8 @@ public class MarkInGreedyComposedTest {
       e.printStackTrace();
     }
 
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "1 .", "2 .");
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(2, ai.size());
-    assertEquals("1 .", iterator.next().getCoveredText());
-    assertEquals("2 .", iterator.next().getCoveredText());
-
-    if (cas != null) {
-      cas.release();
-    }
-
+    cas.release();
   }
-  
-  
-  
 }

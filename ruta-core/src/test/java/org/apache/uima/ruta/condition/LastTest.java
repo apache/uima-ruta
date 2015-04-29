@@ -19,14 +19,7 @@
 
 package org.apache.uima.ruta.condition;
 
-import static org.junit.Assert.assertEquals;
-
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
 
@@ -34,35 +27,13 @@ public class LastTest {
 
   @Test
   public void test() {
-    String name = this.getClass().getSimpleName();
-    String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
-    
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
-              + ".txt", 50);
-    } catch (Exception e) {
-      e.printStackTrace();
-      assert (false);
-    }
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Some different sentences.", iterator.next().getCoveredText());
-    assertEquals("But which of them end with an exclamation mark?", iterator.next().getCoveredText());
-    assertEquals("This we can test with the LAST condition!", iterator.next().getCoveredText());
+    CAS cas = RutaTestUtils.processTestScript(this.getClass());
     
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("This we can test with the LAST condition!", iterator.next().getCoveredText());
-  
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "Some different sentences.",
+            "But which of them end with an exclamation mark?", "This we can test with the LAST condition!");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "This we can test with the LAST condition!");
+      
     cas.release();
   }
 }

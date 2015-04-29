@@ -19,14 +19,7 @@
 
 package org.apache.uima.ruta.condition;
 
-import static org.junit.Assert.assertEquals;
-
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
 
@@ -34,59 +27,16 @@ public class AndTest {
 
   @Test
   public void test() {
-    String name = this.getClass().getSimpleName();
-    String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
     
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
-              + ".txt", 50);
-    } catch (Exception e) {
-      e.printStackTrace();
-      assert (false);
-    }
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
+    CAS cas = RutaTestUtils.processTestScript(this.getClass());
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("This is a malformed text", iterator.next().getCoveredText());
-    assertEquals("But others have many of them", iterator.next().getCoveredText());
-    assertEquals("Like this one that is written to test the AND Condition of Ruta",
-            iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("some sentences do not start with a capital word", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 3);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(4, ai.size());
-    iterator = ai.iterator();
-    assertEquals("This", iterator.next().getCoveredText());
-    assertEquals("some", iterator.next().getCoveredText());
-    assertEquals("But", iterator.next().getCoveredText());
-    assertEquals("Like", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 4);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("This", iterator.next().getCoveredText());
-    assertEquals("But", iterator.next().getCoveredText());
-    assertEquals("Like", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 5);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("some", iterator.next().getCoveredText());
-    
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "This is a malformed text", "But others have many of them",
+            "Like this one that is written to test the AND Condition of Ruta");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "some sentences do not start with a capital word");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 4, "This", "some", "But", "Like");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 3, "This", "But", "Like");
+    RutaTestUtils.assertAnnotationsEquals(cas, 5, 1, "some");
+
     cas.release();
   }
 }

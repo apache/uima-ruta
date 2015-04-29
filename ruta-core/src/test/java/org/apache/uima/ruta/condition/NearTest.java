@@ -19,14 +19,7 @@
 
 package org.apache.uima.ruta.condition;
 
-import static org.junit.Assert.assertEquals;
-
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
 
@@ -34,51 +27,14 @@ public class NearTest {
 
   @Test
   public void test() {
-    String name = this.getClass().getSimpleName();
-    String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
-    
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
-              + ".txt", 50);
-    } catch (Exception e) {
-      e.printStackTrace();
-      assert (false);
-    }
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
-    
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("test", iterator.next().getCoveredText());
 
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("The", iterator.next().getCoveredText());
-    assertEquals("NEAR", iterator.next().getCoveredText());
-    assertEquals("test", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 3);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("the", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 4);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(5, ai.size());
-    iterator = ai.iterator();
-    assertEquals("the", iterator.next().getCoveredText());
-    assertEquals("NEAR", iterator.next().getCoveredText());
-    assertEquals("condition", iterator.next().getCoveredText());
-    assertEquals("evaluates", iterator.next().getCoveredText());
-    assertEquals("true", iterator.next().getCoveredText());
-    
+    CAS cas = RutaTestUtils.processTestScript(this.getClass());
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "test");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "The", "NEAR", "test");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "the");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 5, "the", "NEAR", "condition", "evaluates", "true");
+
     cas.release();
   }
 }

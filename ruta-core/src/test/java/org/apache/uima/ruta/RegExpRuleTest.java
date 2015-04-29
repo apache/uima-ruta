@@ -80,42 +80,11 @@ public class RegExpRuleTest {
     assertEquals(1, ai.size());
     assertEquals(26, iterator.next().getCoveredText().length());
 
-    t = RutaTestUtils.getTestType(cas, 3);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(2, ai.size());
-    assertEquals("y", iterator.next().getCoveredText());
-    assertEquals("z", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 4);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(2, ai.size());
-    assertEquals("y", iterator.next().getCoveredText());
-    assertEquals("z", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 5);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(3, ai.size());
-    assertEquals("B", iterator.next().getCoveredText());
-    assertEquals("B", iterator.next().getCoveredText());
-    assertEquals("B", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 6);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(2, ai.size());
-    assertEquals("y", iterator.next().getCoveredText());
-    assertEquals("z", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 7);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(3, ai.size());
-    assertEquals("ByB", iterator.next().getCoveredText());
-    assertEquals("BzB", iterator.next().getCoveredText());
-    assertEquals("BB", iterator.next().getCoveredText());
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 2, "y", "z");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 2, "y", "z");
+    RutaTestUtils.assertAnnotationsEquals(cas, 5, 3, "B", "B", "B");
+    RutaTestUtils.assertAnnotationsEquals(cas, 6, 2, "y", "z");
+    RutaTestUtils.assertAnnotationsEquals(cas, 7, 3, "ByB", "BzB", "BB");
 
     t = cas.getTypeSystem().getType(typeName);
     ai = cas.getAnnotationIndex(t);
@@ -169,10 +138,6 @@ public class RegExpRuleTest {
     booleanValue = next.getBooleanValue(t.getFeatureByBaseName(fn2));
     assertEquals(false, booleanValue);
 
-    
-    if (cas != null) {
-      cas.release();
-    }
-
+    cas.release();
   }
 }

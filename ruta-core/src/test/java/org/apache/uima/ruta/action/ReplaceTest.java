@@ -35,17 +35,9 @@ public class ReplaceTest {
 
   @Test
   public void test() {
-    String name = this.getClass().getSimpleName();
-    String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
+
+    CAS cas = RutaTestUtils.processTestScript(this.getClass());
     
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
-              + ".txt", 50);
-    } catch (Exception e) {
-      e.printStackTrace();
-      assert (false);
-    }
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
@@ -59,7 +51,6 @@ public class ReplaceTest {
     String stringValue = afs.getStringValue(feature);
     assertEquals("MARKUP", stringValue);
     
-    cas.release();
-    
+    cas.release();    
   }
 }

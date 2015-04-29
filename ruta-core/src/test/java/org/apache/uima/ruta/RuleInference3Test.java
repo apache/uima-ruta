@@ -19,14 +19,7 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
-
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
 
@@ -34,35 +27,11 @@ public class RuleInference3Test {
 
   @Test
   public void test() {
-    String name = this.getClass().getSimpleName();
-    String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
-              + ".txt", 50);
-    } catch (Exception e) {
-      e.printStackTrace();
-      assert (false);
-    }
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
 
-    t = RutaTestUtils.getTestType(cas, 4);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(4, ai.size());
-       
-    iterator = ai.iterator();
-    assertEquals("[1]", iterator.next().getCoveredText());
-    assertEquals("[2]", iterator.next().getCoveredText());
-    assertEquals("[3]", iterator.next().getCoveredText());
-    assertEquals("[4]", iterator.next().getCoveredText());
+    CAS cas = RutaTestUtils.processTestScript(this.getClass());
 
-   
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 4, "[1]", "[2]", "[3]", "[4]");
 
-    if (cas != null) {
-      cas.release();
-    }
-
+    cas.release();
   }
 }

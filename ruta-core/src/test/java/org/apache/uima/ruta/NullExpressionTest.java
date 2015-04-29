@@ -19,18 +19,12 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
@@ -77,50 +71,13 @@ public class NullExpressionTest {
       e.printStackTrace();
     }
 
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
-    
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Some text.", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Some text.", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 3);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Some text.", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 4);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Some text.", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 5);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Some text.", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 6);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Some text.", iterator.next().getCoveredText());
-    
-    
-    if (cas != null) {
-      cas.release();
-    }
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some text.");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "Some text.");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "Some text.");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 1, "Some text.");
+    RutaTestUtils.assertAnnotationsEquals(cas, 5, 1, "Some text.");
+    RutaTestUtils.assertAnnotationsEquals(cas, 6, 1, "Some text.");
 
+    cas.release();
   }
 }

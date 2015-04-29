@@ -19,13 +19,7 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
-
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
@@ -55,38 +49,14 @@ public class WildCard2Test {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Ogren, P.V., Wetzler, P.G., Bethard, S.:", iterator.next().getCoveredText());
-    assertEquals("Stephen Soderland, Claire Cardie, and Raymond Mooney.", iterator.next()
-            .getCoveredText());
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "Ogren, P.V., Wetzler, P.G., Bethard, S.:",
+            "Stephen Soderland, Claire Cardie, and Raymond Mooney.");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 2,
+            "ClearTK: A UIMA Toolkit for Statistical Natural Language Processing.",
+            "Learning Information Extraction Rules for Semi-Structured and Free Text.");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 2, "2008", "1999");
 
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
-    iterator = ai.iterator();
-    assertEquals("ClearTK: A UIMA Toolkit for Statistical Natural Language Processing.", iterator
-            .next().getCoveredText());
-    assertEquals("Learning Information Extraction Rules for Semi-Structured and Free Text.",
-            iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 3);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
-    iterator = ai.iterator();
-    assertEquals("2008", iterator.next().getCoveredText());
-    assertEquals("1999", iterator.next().getCoveredText());
-
-    if (cas != null) {
-      cas.release();
-    }
-
+    cas.release();
   }
 }

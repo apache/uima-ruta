@@ -19,8 +19,6 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -31,10 +29,7 @@ import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.engine.RutaEngine;
@@ -101,21 +96,8 @@ public class IncompletePartitioningTest {
     
     ae.process(cas);
 
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
-    
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Peter, Jochen", iterator.next().getCoveredText());
-    assertEquals("Flo and", iterator.next().getCoveredText());
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "Peter, Jochen", "Flo and");
 
-    
-    if (cas != null) {
-      cas.release();
-    }
-
+    cas.release();
   }
 }

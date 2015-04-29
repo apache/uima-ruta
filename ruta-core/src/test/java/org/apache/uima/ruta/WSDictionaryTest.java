@@ -55,28 +55,11 @@ public class WSDictionaryTest {
     } catch (Exception e) {
       e.printStackTrace();
     }
+    
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 9, "Peter Kluegl", "Marshall Schor", "Joern Kottmann", "PeterKluegl",
+            "MarshallSchor", "JoernKottmann", "Peter<x>Kluegl", "Marshall<x>Schor", "Joern<x>Kottmann");
 
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
-
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(9, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Peter Kluegl", iterator.next().getCoveredText());
-    assertEquals("Marshall Schor", iterator.next().getCoveredText());
-    assertEquals("Joern Kottmann", iterator.next().getCoveredText());
-    assertEquals("PeterKluegl", iterator.next().getCoveredText());
-    assertEquals("MarshallSchor", iterator.next().getCoveredText());
-    assertEquals("JoernKottmann", iterator.next().getCoveredText());
-    assertEquals("Peter<x>Kluegl", iterator.next().getCoveredText());
-    assertEquals("Marshall<x>Schor", iterator.next().getCoveredText());
-    assertEquals("Joern<x>Kottmann", iterator.next().getCoveredText());
-    if (cas != null) {
-      cas.release();
-    }
-
+    cas.release();
   }
   
   @Test
@@ -96,27 +79,10 @@ public class WSDictionaryTest {
       e.printStackTrace();
     }
 
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 9, "Peter Kluegl", "Marshall Schor", "Joern Kottmann", "PeterKluegl",
+            "MarshallSchor", "JoernKottmann", "Peter<x>Kluegl", "Marshall<x>Schor", "Joern<x>Kottmann");
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(9, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Peter Kluegl", iterator.next().getCoveredText());
-    assertEquals("Marshall Schor", iterator.next().getCoveredText());
-    assertEquals("Joern Kottmann", iterator.next().getCoveredText());
-    assertEquals("PeterKluegl", iterator.next().getCoveredText());
-    assertEquals("MarshallSchor", iterator.next().getCoveredText());
-    assertEquals("JoernKottmann", iterator.next().getCoveredText());
-    assertEquals("Peter<x>Kluegl", iterator.next().getCoveredText());
-    assertEquals("Marshall<x>Schor", iterator.next().getCoveredText());
-    assertEquals("Joern<x>Kottmann", iterator.next().getCoveredText());
-    if (cas != null) {
-      cas.release();
-    }
-
+    cas.release();
   }
   
   @Test
@@ -213,11 +179,7 @@ public class WSDictionaryTest {
     v2 = next.getStringValue(f2);
     assertEquals("Joern Kottmann", v1);
     assertEquals("CAS Editor", v2);
-    
-    if (cas != null) {
-      cas.release();
-    }
 
+    cas.release();
   }
-  
 }

@@ -19,14 +19,7 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
-
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
 
@@ -34,74 +27,18 @@ public class FilteringTest {
 
   @Test
   public void test() {
-    String name = this.getClass().getSimpleName();
-    String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
-              + ".txt", 50);
-    } catch (Exception e) {
-      e.printStackTrace();
-      assert (false);
-    }
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(0, ai.size());
-    
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(2, ai.size());
-    assertEquals("Peter, Jochen", iterator.next().getCoveredText());
-    assertEquals("Jochen, Flo", iterator.next().getCoveredText());
+    CAS cas = RutaTestUtils.processTestScript(this.getClass());
 
-    t = RutaTestUtils.getTestType(cas, 3);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(0, ai.size());
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "Peter, Jochen", "Jochen, Flo");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 2, ", Jochen, ", ", ");
+    RutaTestUtils.assertAnnotationsEquals(cas, 5, 4, "Peter, Jochen, Flo", "Flo und", "und Georg", "Georg.");
+    RutaTestUtils.assertAnnotationsEquals(cas, 15, 1, "Peter, Jochen");
+    RutaTestUtils.assertAnnotationsEquals(cas, 16, 1, "Georg.");
+    RutaTestUtils.assertAnnotationsEquals(cas, 17, 1, "Flo und Georg.");
 
-    t = RutaTestUtils.getTestType(cas, 4);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(2, ai.size());
-    assertEquals(", Jochen, ", iterator.next().getCoveredText());
-    assertEquals(", ", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 5);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(4, ai.size());
-    assertEquals("Peter, Jochen, Flo", iterator.next().getCoveredText());
-    assertEquals("Flo und", iterator.next().getCoveredText());
-    assertEquals("und Georg", iterator.next().getCoveredText());
-    assertEquals("Georg.", iterator.next().getCoveredText());
-
-  
-    t = RutaTestUtils.getTestType(cas, 15);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("Peter, Jochen", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 16);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("Georg.", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 17);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("Flo und Georg.", iterator.next().getCoveredText());
-
-    if (cas != null) {
-      cas.release();
-    }
-
+    cas.release();
   }
 }

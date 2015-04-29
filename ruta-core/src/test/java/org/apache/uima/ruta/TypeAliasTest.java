@@ -73,9 +73,6 @@ public class TypeAliasTest {
     assertEquals("Peter", iterator.next().getCoveredText());
     assertEquals("Peter", iterator.next().getCoveredText());
     
-    if (cas != null) {
-      cas.release();
-    }
-
+    cas.release();
   }
 }

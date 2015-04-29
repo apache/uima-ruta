@@ -19,18 +19,10 @@
 
 package org.apache.uima.ruta.engine;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.ruta.engine.Ruta;
-import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
 
 public class ParamVarTest {
@@ -64,44 +56,13 @@ public class ParamVarTest {
     } catch (Exception e) {
       e.printStackTrace();
     }
+    
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "text");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "Some");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 1, "Some");
+    RutaTestUtils.assertAnnotationsEquals(cas, 5, 1, "Some text.");
 
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
-
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("Some", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("text", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 3);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("Some", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 4);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("Some", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 5);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("Some text.", iterator.next().getCoveredText());
-    
-    if (cas != null) {
-      cas.release();
-    }
-
+    cas.release();
   }
 }

@@ -19,18 +19,12 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
@@ -55,42 +49,13 @@ public class ConjunctiveRuleElementTest {
       e.printStackTrace();
     }
 
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "Peter Kluegl");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "Schor");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 1, "Schor.");
+    RutaTestUtils.assertAnnotationsEquals(cas, 5, 1, "Marshall Schor");
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(0, ai.size());
-
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("Peter Kluegl", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 3);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("Schor", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 4);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("Schor.", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 5);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("Marshall Schor", iterator.next().getCoveredText());
-
-    if (cas != null) {
-      cas.release();
-    }
-
+    cas.release();
   }
 
   @Test
@@ -125,26 +90,10 @@ public class ConjunctiveRuleElementTest {
       e.printStackTrace();
     }
 
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "did");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "Peter did");
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("did", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 3);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Peter did", iterator.next().getCoveredText());
-
-    if (cas != null) {
-      cas.release();
-    }
-
+    cas.release();
   }
 
   @Test
@@ -179,32 +128,10 @@ public class ConjunctiveRuleElementTest {
       e.printStackTrace();
     }
 
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Peter did");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "Peter did");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "did something");
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Peter did", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Peter did", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 3);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("did something", iterator.next().getCoveredText());
-
-    if (cas != null) {
-      cas.release();
-    }
-
+    cas.release();
   }
-
 }

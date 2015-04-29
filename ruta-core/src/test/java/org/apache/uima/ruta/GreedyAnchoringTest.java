@@ -19,16 +19,10 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
@@ -44,7 +38,6 @@ public class GreedyAnchoringTest {
     script += "ANY*{->T2};";
     script += "((SW | CW) (W & CW) PM)+{->T3};";
     
-    
     CAS cas = null;
     Map<String, Object> params = new HashMap<String, Object>();
     params.put(RutaEngine.PARAM_GREEDY_RULE_ELEMENT, true);
@@ -55,33 +48,11 @@ public class GreedyAnchoringTest {
       e.printStackTrace();
     }
 
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, document);
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, document);
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, document);
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals(document, iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals(document, iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 3);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals(document, iterator.next().getCoveredText());
-    
-    
-    if (cas != null) {
-      cas.release();
-    }
-
+    cas.release();
   }
   
   @Test
@@ -101,30 +72,9 @@ public class GreedyAnchoringTest {
       e.printStackTrace();
     }
 
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "Peter Kluegl", "Joern Kottmann", "Marshall Schor");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "Peter Kluegl", "Joern Kottmann", "Marshall Schor");
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Peter Kluegl", iterator.next().getCoveredText());
-    assertEquals("Joern Kottmann", iterator.next().getCoveredText());
-    assertEquals("Marshall Schor", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Peter Kluegl", iterator.next().getCoveredText());
-    assertEquals("Joern Kottmann", iterator.next().getCoveredText());
-    assertEquals("Marshall Schor", iterator.next().getCoveredText());
-    
-    if (cas != null) {
-      cas.release();
-    }
-
+    cas.release();
   }
-  
 }

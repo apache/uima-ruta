@@ -19,158 +19,33 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
-
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
 
 public class Quantifier1Test {
   @Test
   public void test() {
-    String name = this.getClass().getSimpleName();
-    String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
-              + ".txt", 50);
-    } catch (Exception e) {
-      e.printStackTrace();
-      assert (false);
-    }
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
+    
+    CAS cas = RutaTestUtils.processTestScript(this.getClass());
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("A B", iterator.next().getCoveredText());
-    assertEquals("A B", iterator.next().getCoveredText());
-    assertEquals("A", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("A", iterator.next().getCoveredText());
-    assertEquals("A", iterator.next().getCoveredText());
-    assertEquals("A", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 3);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("A B", iterator.next().getCoveredText());
-    assertEquals("A B B", iterator.next().getCoveredText());
-    assertEquals("A", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 4);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("A", iterator.next().getCoveredText());
-    assertEquals("A", iterator.next().getCoveredText());
-    assertEquals("A", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 5);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
-    iterator = ai.iterator();
-    assertEquals("A B", iterator.next().getCoveredText());
-    assertEquals("A B B", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 6);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
-    iterator = ai.iterator();
-    assertEquals("A B", iterator.next().getCoveredText());
-    assertEquals("A B", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 7);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("A B B", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 8);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("A B B", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 9);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
-    iterator = ai.iterator();
-    assertEquals("A B", iterator.next().getCoveredText());
-    assertEquals("A B B", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 10);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("A B", iterator.next().getCoveredText());
-    assertEquals("A B", iterator.next().getCoveredText());
-    assertEquals("A", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 11);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("A B", iterator.next().getCoveredText());
-    assertEquals("A B B", iterator.next().getCoveredText());
-    assertEquals("A", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 12);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
-    iterator = ai.iterator();
-    assertEquals("A B C", iterator.next().getCoveredText());
-    assertEquals("A C", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 13);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
-    iterator = ai.iterator();
-    assertEquals("A B C", iterator.next().getCoveredText());
-    assertEquals("A C", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 14);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("A B C", iterator.next().getCoveredText());
-    assertEquals("A B B C", iterator.next().getCoveredText());
-    assertEquals("A C", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 15);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("A B C", iterator.next().getCoveredText());
-    assertEquals("A B B C", iterator.next().getCoveredText());
-    assertEquals("A C", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 16);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
-    iterator = ai.iterator();
-    assertEquals("A B C", iterator.next().getCoveredText());
-    assertEquals("A B B C", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 17);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
-    iterator = ai.iterator();
-    assertEquals("A B C", iterator.next().getCoveredText());
-    assertEquals("A B B C", iterator.next().getCoveredText());
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "A B", "A B", "A");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "A", "A", "A");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 3, "A B", "A B B", "A");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 3, "A", "A", "A");
+    RutaTestUtils.assertAnnotationsEquals(cas, 5, 2, "A B", "A B B");
+    RutaTestUtils.assertAnnotationsEquals(cas, 6, 2, "A B", "A B");
+    RutaTestUtils.assertAnnotationsEquals(cas, 7, 1, "A B B");
+    RutaTestUtils.assertAnnotationsEquals(cas, 8, 1, "A B B");
+    RutaTestUtils.assertAnnotationsEquals(cas, 9, 2, "A B", "A B B");
+    RutaTestUtils.assertAnnotationsEquals(cas, 10, 3, "A B", "A B", "A");
+    RutaTestUtils.assertAnnotationsEquals(cas, 11, 3, "A B", "A B B", "A");
+    RutaTestUtils.assertAnnotationsEquals(cas, 12, 2, "A B C", "A C");
+    RutaTestUtils.assertAnnotationsEquals(cas, 13, 2, "A B C", "A C");
+    RutaTestUtils.assertAnnotationsEquals(cas, 14, 3, "A B C", "A B B C", "A C");
+    RutaTestUtils.assertAnnotationsEquals(cas, 15, 3, "A B C", "A B B C", "A C");
+    RutaTestUtils.assertAnnotationsEquals(cas, 16, 2, "A B C", "A B B C");
+    RutaTestUtils.assertAnnotationsEquals(cas, 17, 2, "A B C", "A B B C");
 
     cas.release();
   }

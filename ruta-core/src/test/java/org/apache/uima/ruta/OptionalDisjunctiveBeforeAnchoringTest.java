@@ -19,13 +19,7 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
-
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
@@ -46,33 +40,10 @@ public class OptionalDisjunctiveBeforeAnchoringTest {
       e.printStackTrace();
     }
 
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "0.3", "0.7");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "0.3-0.7", "0.3");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "0.3-0.7");
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(2, ai.size());
-    assertEquals("0.3", iterator.next().getCoveredText());
-    assertEquals("0.7", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(2, ai.size());
-    assertEquals("0.3-0.7", iterator.next().getCoveredText());
-    assertEquals("0.3", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 3);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("0.3-0.7", iterator.next().getCoveredText());
-    
-    if (cas != null) {
-      cas.release();
-    }
-
+    cas.release();
   }
 }

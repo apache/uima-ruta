@@ -19,13 +19,7 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
-
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
@@ -46,34 +40,11 @@ public class Quantifier8Test {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
-    iterator = ai.iterator();
-    assertEquals("A B C D", iterator.next().getCoveredText());
-    assertEquals("A B D", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
-    iterator = ai.iterator();
-    assertEquals("A B C D", iterator.next().getCoveredText());
-    assertEquals("A B D", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 3);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
-    iterator = ai.iterator();
-    assertEquals("A B C D", iterator.next().getCoveredText());
-    assertEquals("A B D", iterator.next().getCoveredText());
-    
-    if(cas != null) {
-      cas.release();
-    }
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "A B C D", "A B D");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "A B C D", "A B D");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 2, "A B C D", "A B D");
+
+    cas.release();
   }
 }

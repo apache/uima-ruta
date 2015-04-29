@@ -19,13 +19,7 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
-
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
@@ -45,32 +39,10 @@ public class ReverseQuantifierTest {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(4, ai.size());
-    iterator = ai.iterator();
-    assertEquals("A B C", iterator.next().getCoveredText());
-    assertEquals("A C", iterator.next().getCoveredText());
-    assertEquals("B C", iterator.next().getCoveredText());
-    assertEquals("C", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(4, ai.size());
-    iterator = ai.iterator();
-    // TODO: is this really correct? the rule elements should not match at all!
-    assertEquals("B C", iterator.next().getCoveredText());
-    assertEquals("C", iterator.next().getCoveredText());
-    assertEquals("B C", iterator.next().getCoveredText());
-    assertEquals("C", iterator.next().getCoveredText());
-    
-    if(cas != null) {
-      cas.release();
-    }
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 4, "A B C", "A C", "B C", "C");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 4, "B C", "C", "B C", "C");
+
+    cas.release();
   }
 }

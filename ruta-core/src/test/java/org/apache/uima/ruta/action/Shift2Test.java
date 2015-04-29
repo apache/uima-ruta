@@ -80,6 +80,7 @@ public class Shift2Test {
     assertEquals("only some text<br/>", v1.getCoveredText());
     assertEquals("unknown", v2);
     assertEquals("only some text", next.getCoveredText());
+    
     cas.release();
   }
 }

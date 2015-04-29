@@ -131,9 +131,6 @@ public class GatherTest {
     assertEquals("A", v1.getCoveredText());
     assertEquals(null, v2);
 
-    if (cas != null) {
-      cas.release();
-    }
-
+    cas.release();
   }
 }

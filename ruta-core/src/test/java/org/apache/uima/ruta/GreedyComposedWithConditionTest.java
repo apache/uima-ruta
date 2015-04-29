@@ -19,21 +19,13 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
-
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
 
 public class GreedyComposedWithConditionTest {
 
-  
-  
   @Test
   public void test() {
     String document = "Cw 1: sw 2 Cw, sw 3 sw, sw 4 Cw, sw 5 sw, Cw 6 sw, Cw 7 sw, 8 sw.";
@@ -49,34 +41,10 @@ public class GreedyComposedWithConditionTest {
       e.printStackTrace();
     }
 
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 7, "Cw 1: sw 2 Cw", "sw 3 sw", "sw 4 Cw", "sw 5 sw", "Cw 6 sw",
+            "Cw 7 sw", "8 sw");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "Cw 1: sw 2 Cw, sw 3 sw", "sw 4 Cw, sw 5 sw", "Cw 7 sw, 8 sw");
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(7, ai.size());
-    assertEquals("Cw 1: sw 2 Cw", iterator.next().getCoveredText());
-    assertEquals("sw 3 sw", iterator.next().getCoveredText());
-    assertEquals("sw 4 Cw", iterator.next().getCoveredText());
-    assertEquals("sw 5 sw", iterator.next().getCoveredText());
-    assertEquals("Cw 6 sw", iterator.next().getCoveredText());
-    assertEquals("Cw 7 sw", iterator.next().getCoveredText());
-    assertEquals("8 sw", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(3, ai.size());
-    assertEquals("Cw 1: sw 2 Cw, sw 3 sw", iterator.next().getCoveredText());
-    assertEquals("sw 4 Cw, sw 5 sw", iterator.next().getCoveredText());
-    assertEquals("Cw 7 sw, 8 sw", iterator.next().getCoveredText());
-
-    
-    if (cas != null) {
-      cas.release();
-    }
+    cas.release();
   }
-  
 }

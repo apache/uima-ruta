@@ -151,10 +151,6 @@ public class CreateTest {
 
     assertEquals("Test", ((AnnotationFS) fv1).getCoveredText());
 
-    if (cas != null) {
-      cas.release();
-    }
-
+    cas.release();
   }
-
 }

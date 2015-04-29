@@ -112,10 +112,8 @@ public class MarkTableTest {
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
     assertEquals("Joern", v1);
-    assertEquals("CAS Editor", v2);
+    assertEquals("CAS Editor", v2);    
     
-    
-    cas.release();
-    
+    cas.release();    
   }
 }

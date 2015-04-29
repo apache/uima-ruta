@@ -66,11 +66,8 @@ public class AdditionalScriptUimaFitTest {
     iterator = ai.iterator();
     assertEquals(1, ai.size());
     assertEquals("Some", iterator.next().getCoveredText());
-    
-    if (cas != null) {
-      cas.release();
-    }
 
+    cas.release();
   }
   
   @Test
@@ -104,11 +101,7 @@ public class AdditionalScriptUimaFitTest {
     iterator = ai.iterator();
     assertEquals(1, ai.size());
     assertEquals("Some", iterator.next().getCoveredText());
-    
-    if (cas != null) {
-      cas.release();
-    }
 
+    cas.release();
   }
-  
 }

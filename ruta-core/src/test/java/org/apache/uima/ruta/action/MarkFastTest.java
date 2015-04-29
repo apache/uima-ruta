@@ -19,13 +19,7 @@
 
 package org.apache.uima.ruta.action;
 
-import static org.junit.Assert.assertEquals;
-
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
@@ -45,34 +39,11 @@ public class MarkFastTest {
       e.printStackTrace();
       assert (false);
     }
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("1 0 0", iterator.next().getCoveredText());
-    assertEquals("100", iterator.next().getCoveredText());
-    assertEquals("2 0 0", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(0, ai.size());
-
-    t = RutaTestUtils.getTestType(cas, 3);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("100", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 4);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
-    iterator = ai.iterator();
-    assertEquals("1 0 0", iterator.next().getCoveredText());
-    assertEquals("2 0 0", iterator.next().getCoveredText());
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "1 0 0", "100", "2 0 0");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "100");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 2, "1 0 0", "2 0 0");
 
     cas.release();
   }

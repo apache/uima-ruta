@@ -26,7 +26,6 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
 
@@ -34,47 +33,21 @@ public class ContextCountTest {
 
   @Test
   public void test() {
-    String name = this.getClass().getSimpleName();
-    String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
-    
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
-              + ".txt", 50);
-    } catch (Exception e) {
-      e.printStackTrace();
-      assert (false);
-    }
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("A single sentence", iterator.next().getCoveredText());
-    assertEquals("And here is another one", iterator.next().getCoveredText());
-    assertEquals("Testing the CONTEXTCOUNT condition of Ruta System", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(4, ai.size());
-    iterator = ai.iterator();
-    assertEquals("A", iterator.next().getCoveredText());
-    assertEquals("And", iterator.next().getCoveredText());
-    assertEquals("Testing", iterator.next().getCoveredText());
-    assertEquals("Ruta", iterator.next().getCoveredText());
-    
-    t = RutaTestUtils.getTestType(cas, 3);
-    ai = cas.getAnnotationIndex(t);
+    CAS cas = RutaTestUtils.processTestScript(this.getClass());
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "A single sentence", "And here is another one",
+            "Testing the CONTEXTCOUNT condition of Ruta System");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 4, "A", "And", "Testing", "Ruta");
+
+    Type t = RutaTestUtils.getTestType(cas, 3);
+    AnnotationIndex<AnnotationFS> ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("A single sentence." +
-            "And here is another one." +
-            "Testing the CONTEXTCOUNT condition of Ruta System.",
+    FSIterator<AnnotationFS> iterator = ai.iterator();
+    assertEquals("A single sentence." + "And here is another one."
+            + "Testing the CONTEXTCOUNT condition of Ruta System.",
             iterator.next().getCoveredText().replaceAll("[\n\r]", ""));
-    
+
     cas.release();
   }
 }

@@ -19,62 +19,23 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
-
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
-import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
 
 public class OptionalComposedEndTest {
   @Test
   public void test() {
-    String name = this.getClass().getSimpleName();
-    String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
-              + ".txt", 50);
-    } catch (Exception e) {
-      e.printStackTrace();
-      assert (false);
-    }
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
-
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("20,20", iterator.next().getCoveredText());
-    assertEquals("20", iterator.next().getCoveredText());
-    assertEquals("20,20", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("20,20", iterator.next().getCoveredText());
-    assertEquals("20", iterator.next().getCoveredText());
-    assertEquals("20,20", iterator.next().getCoveredText());
     
-    t = RutaTestUtils.getTestType(cas, 3);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("20,20", iterator.next().getCoveredText());
-    assertEquals("20", iterator.next().getCoveredText());
-    assertEquals("20,20", iterator.next().getCoveredText());
-    
+    CAS cas = RutaTestUtils.processTestScript(this.getClass());
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "20,20", "20", "20,20");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "20,20", "20", "20,20");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 3, "20,20", "20", "20,20");
+
     cas.release();
-  }
-  
+  }  
   
   @Test
   public void testDisjunctive() {
@@ -89,21 +50,8 @@ public class OptionalComposedEndTest {
       e.printStackTrace();
     }
 
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "0.0", "0");
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
-    iterator = ai.iterator();
-    assertEquals("0.0", iterator.next().getCoveredText());
-    assertEquals("0", iterator.next().getCoveredText());
-    
-
-    if (cas != null) {
-      cas.release();
-    }
+    cas.release();
   }
-  
 }

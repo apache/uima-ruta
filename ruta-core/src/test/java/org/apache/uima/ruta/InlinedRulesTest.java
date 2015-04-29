@@ -19,13 +19,7 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
-
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
@@ -60,108 +54,38 @@ public class InlinedRulesTest {
     } catch (Exception e) {
     }
 
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "The", "Ruta");
+    RutaTestUtils
+            .assertAnnotationsEquals(
+                    cas,
+                    3,
+                    3,//
+                    "then the actions of the rule are performed  on the matched annotations. A rule is composed of a sequence of rule elements and a rule element essentially consists of four parts: A matching condition",
+                    "an optional quantifier", "an optional quantifier");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 2, "A", "A");
+    RutaTestUtils.assertAnnotationsEquals(cas, 5, 1, "A");
+    RutaTestUtils
+            .assertAnnotationsEquals(
+                    cas,
+                    6,
+                    2, //
+                    "A rule is composed of a sequence of rule elements and a rule element essentially consists of four parts: A matching condition, an optional quantifier, a list of conditions and a list of actions",
+                    "A");
+    RutaTestUtils.assertAnnotationsEquals(cas, 7, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 8, 2, ".", ".");
+    RutaTestUtils.assertAnnotationsEquals(cas, 9, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 10, 2, "A", "A");
+    RutaTestUtils.assertAnnotationsEquals(cas, 11, 0);
+    RutaTestUtils
+            .assertAnnotationsEquals(
+                    cas,
+                    12,
+                    2, //
+                    "A rule is composed of a sequence of rule elements and a rule element essentially consists of four parts: A matching condition, an optional quantifier, a list of conditions and a list of actions",
+                    "The matching condition is typically a type of an annotation by which the rule element matches on the covered text of one of those annotations");
+    RutaTestUtils.assertAnnotationsEquals(cas, 13, 2, ":", ":");
+    RutaTestUtils.assertAnnotationsEquals(cas, 14, 4, "A", "A", "matching", "matching");
 
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(2, ai.size());
-    assertEquals("The", iterator.next().getCoveredText());
-    assertEquals("Ruta", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 3);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(3, ai.size());
-    assertEquals(
-            "then the actions of the rule are performed  on the matched annotations. A rule is composed of a sequence of rule elements and a rule element essentially consists of four parts: A matching condition",
-            iterator.next().getCoveredText());
-    assertEquals("an optional quantifier", iterator.next().getCoveredText());
-    assertEquals("an optional quantifier", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 4);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(2, ai.size());
-    assertEquals("A", iterator.next().getCoveredText());
-    assertEquals("A", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 5);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("A", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 6);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(2, ai.size());
-    assertEquals(
-            "A rule is composed of a sequence of rule elements and a rule element essentially consists of four parts: A matching condition, an optional quantifier, a list of conditions and a list of actions",
-            iterator.next().getCoveredText());
-    assertEquals("A", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 7);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(0, ai.size());
-
-    t = RutaTestUtils.getTestType(cas, 8);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(2, ai.size());
-    assertEquals(".", iterator.next().getCoveredText());
-    assertEquals(".", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 9);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(0, ai.size());
-
-    t = RutaTestUtils.getTestType(cas, 10);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(2, ai.size());
-    assertEquals("A", iterator.next().getCoveredText());
-    assertEquals("A", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 11);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(0, ai.size());
-
-    t = RutaTestUtils.getTestType(cas, 12);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(2, ai.size());
-    assertEquals(
-            "A rule is composed of a sequence of rule elements and a rule element essentially consists of four parts: A matching condition, an optional quantifier, a list of conditions and a list of actions",
-            iterator.next().getCoveredText());
-    assertEquals(
-            "The matching condition is typically a type of an annotation by which the rule element matches on the covered text of one of those annotations",
-            iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 13);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(2, ai.size());
-    assertEquals(":", iterator.next().getCoveredText());
-    assertEquals(":", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 14);
-    ai = cas.getAnnotationIndex(t);
-    iterator = ai.iterator();
-    assertEquals(4, ai.size());
-    assertEquals("A", iterator.next().getCoveredText());
-    assertEquals("A", iterator.next().getCoveredText());
-    assertEquals("matching", iterator.next().getCoveredText());
-    assertEquals("matching", iterator.next().getCoveredText());
-    
-    if (cas != null) {
-      cas.release();
-    }
-
+    cas.release();
   }
 }

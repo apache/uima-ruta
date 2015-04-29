@@ -19,13 +19,7 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
-
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
@@ -47,20 +41,9 @@ public class Quantifier7Test {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
-    
-    t = RutaTestUtils.getTestType(cas, 4);
-    ai = cas.getAnnotationIndex(t);
 
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("H 1 2 3, i 1 2 3, i 1 2 3, i 1 2 3,", iterator.next().getCoveredText());
-    
-    if(cas != null) {
-      cas.release();
-    }
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 1, "H 1 2 3, i 1 2 3, i 1 2 3, i 1 2 3,");
+
+    cas.release();
   }
 }

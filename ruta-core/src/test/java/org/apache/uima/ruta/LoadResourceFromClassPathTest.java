@@ -68,27 +68,14 @@ public class LoadResourceFromClassPathTest {
     } catch (Exception e) {
       e.printStackTrace();
     }
+    
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "Peter", "Marshall", "Joern");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "Kluegl", "Schor", "Kottmann");
 
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
 
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Peter", iterator.next().getCoveredText());
-    assertEquals("Marshall", iterator.next().getCoveredText());
-    assertEquals("Joern", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Kluegl", iterator.next().getCoveredText());
-    assertEquals("Schor", iterator.next().getCoveredText());
-    assertEquals("Kottmann", iterator.next().getCoveredText());
-    
     AnnotationFS next = null;
     String v1 = null;
     String v2 = null;
@@ -116,19 +103,9 @@ public class LoadResourceFromClassPathTest {
     assertEquals("Joern", v1);
     assertEquals("CAS Editor", v2);
     
-    t = RutaTestUtils.getTestType(cas, 3);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Peter", iterator.next().getCoveredText());
-    assertEquals("Marshall", iterator.next().getCoveredText());
-    assertEquals("Joern", iterator.next().getCoveredText());
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 3, "Peter", "Marshall", "Joern");
 
-    
-    if (cas != null) {
-      cas.release();
-    }
-
+    cas.release();
   }
 
   @Test
@@ -161,25 +138,12 @@ public class LoadResourceFromClassPathTest {
       e.printStackTrace();
     }
 
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "Peter", "Marshall", "Joern");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "Kluegl", "Schor", "Kottmann");
+
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
-
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Peter", iterator.next().getCoveredText());
-    assertEquals("Marshall", iterator.next().getCoveredText());
-    assertEquals("Joern", iterator.next().getCoveredText());
-
-    t = RutaTestUtils.getTestType(cas, 2);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Kluegl", iterator.next().getCoveredText());
-    assertEquals("Schor", iterator.next().getCoveredText());
-    assertEquals("Kottmann", iterator.next().getCoveredText());
 
     AnnotationFS next = null;
     String v1 = null;
@@ -208,18 +172,8 @@ public class LoadResourceFromClassPathTest {
     assertEquals("Joern", v1);
     assertEquals("CAS Editor", v2);
 
-    t = RutaTestUtils.getTestType(cas, 3);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    assertEquals("Peter", iterator.next().getCoveredText());
-    assertEquals("Marshall", iterator.next().getCoveredText());
-    assertEquals("Joern", iterator.next().getCoveredText());
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 3, "Peter", "Marshall", "Joern");
 
-
-    if (cas != null) {
-      cas.release();
-    }
-
+    cas.release();
   }
 }
