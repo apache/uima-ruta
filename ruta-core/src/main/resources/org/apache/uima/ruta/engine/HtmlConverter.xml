@@ -95,6 +95,18 @@ Defaults to heuristic.</description>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
+    <configurationParameter>
+        <name>gapText</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>gapInducingTags</name>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>

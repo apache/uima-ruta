@@ -1279,8 +1279,35 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
             The default value is true.
           </para>
         </section>
-        
-        
+        <section id="ugr.tools.ruta.ae.htmlconverter.parameter.processAll">
+          <title>processAll</title>
+          <para>
+            If this boolean parameter is set to true, then the tags of the complete document is processed
+            and not only those within the body tag.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.htmlconverter.parameter.newlineInducingTagRegExp">
+          <title>newlineInducingTagRegExp</title>
+          <para>
+            This string parameter contains a regular expression for HTML/XML elements. If the pattern
+    matches, then the element will introduce a new line break similar to the element of the
+    parameter <quote>newlineInducingTags</quote>.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.htmlconverter.parameter.gapInducingTags">
+          <title>gapInducingTags</title>
+          <para>
+            This string array parameter sets the names of the html tags that create additional text in the
+   output view. The acutal string of the gap is defined by the parameter <quote>gapText</quote>.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.htmlconverter.parameter.gapText">
+          <title>gapText</title>
+          <para>
+           This string parameter determines the character sequence that is introduced by the html tags
+    specified in the <quote>gapInducingTags</quote>.
+          </para>
+        </section>
       </section>
     </section><section id="ugr.tools.ruta.ae.stylemap">
       <title>Style Map Creator</title>

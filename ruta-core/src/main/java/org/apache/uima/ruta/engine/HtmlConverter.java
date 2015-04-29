@@ -176,7 +176,7 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
    * This string parameter determines the character sequence that is introduced by the html tags
    * specified in the <code>gapInducingTags</code>.
    */
-  public static final String PARAM_GAP_TEXT = "apText";
+  public static final String PARAM_GAP_TEXT = "gapText";
 
   @ConfigurationParameter(name = PARAM_GAP_TEXT, mandatory = false, defaultValue = "")
   private String gapText;
