@@ -500,12 +500,15 @@ declaration returns [List<Statement> stmts = new ArrayList<Statement>()]
 	List<Declaration> declarations = new ArrayList<Declaration>();
 }
 	:
-	//TODO added lazy parent
-	(declareToken=DECLARE lazyParent = annotationType?
+	declareToken=DECLARE lazyParent = annotationType?
 		 id = Identifier {addVariable(id.getText(), declareToken.getText());}
-			{addType($blockDeclaration::env, id.getText(), lazyParent == null ? null : lazyParent.toString());
+			
+	(
+	{addType($blockDeclaration::env, id.getText(), lazyParent == null ? null : lazyParent.toString());
 			declarations.add(StatementFactory.createAnnotationType(id,declareToken));}
-		(COMMA 
+		(
+		
+		COMMA 
 		 id = Identifier {addVariable(id.getText(), declareToken.getText());}
 			{addType($blockDeclaration::env, id.getText(),  lazyParent == null ? null : lazyParent.toString()); 
 			declarations.add(StatementFactory.createAnnotationType(id,declareToken));}
@@ -549,9 +552,9 @@ declaration returns [List<Statement> stmts = new ArrayList<Statement>()]
 		   features.add(StatementFactory.createFeatureDeclaration(eachTO, eachName));  
 		   i++;
 		}
-		addType($blockDeclaration::env, id.getText(), type.toString(), featureTypes, featureNames);
-		declarations.add( StatementFactory.createAnnotationType(id,declareToken, type, features));
-		stmt = StatementFactory.createDeclareDeclarationsStatement(declareToken, declarations, type, features);
+		addType($blockDeclaration::env, id.getText(), lazyParent == null? "": lazyParent.toString(), featureTypes, featureNames);
+		declarations.add( StatementFactory.createAnnotationType(id,declareToken, lazyParent, features));
+		stmt = StatementFactory.createDeclareDeclarationsStatement(declareToken, declarations, lazyParent, features);
 		stmts.add(stmt);
 		}
 	)
@@ -637,6 +640,9 @@ ruleElementWithoutCA returns [RutaRuleElement re = null]
     ;
 		
 simpleStatement returns [RutaRule stmt = null]
+options {
+	backtrack = true;
+}
 	: 
 	(regexpRule)=> rer = regexpRule {stmt = rer;}
 	|
@@ -644,8 +650,10 @@ simpleStatement returns [RutaRule stmt = null]
 	{stmt = scriptFactory.createRule(elements, null, false);}
 		s = SEMI 
 	{stmt = scriptFactory.createRule(elements, s);}
-		
-		
+	|
+	as = actions s = SEMI 
+	{stmt = scriptFactory.createImplicitRule(as, s);}
+	
 	;
 
 regexpRule returns [RutaRule stmt = null]

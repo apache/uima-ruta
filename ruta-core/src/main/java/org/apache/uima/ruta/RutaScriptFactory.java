@@ -32,6 +32,7 @@ import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
+import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.AbstractRuleElement;
 import org.apache.uima.ruta.rule.ComposedRuleElement;
@@ -117,6 +118,16 @@ public class RutaScriptFactory {
     return createRule(elements, parent);
   }
 
+  public RutaStatement createImplicitRule(List<AbstractRutaAction> actions, RutaBlock parent) {
+    List<RuleElement> elements = new ArrayList<RuleElement>();
+    IRutaExpression documentExpression = new SimpleTypeExpression("Document");
+    RutaRuleElement element = createRuleElement(documentExpression, null, null, actions, null, parent);
+    elements.add(element);
+    RutaRule rule = createRule(elements, parent);
+    element.setContainer(rule.getRoot());
+    return rule;
+  }
+  
   public RutaRule createRule(List<RuleElement> elements, RutaBlock parent) {
     return new RutaRule(elements, parent, idCounter++);
   }
@@ -251,5 +262,6 @@ public class RutaScriptFactory {
   public void setContext(UimaContext context) {
     this.context = context;
   }
+
 
 }

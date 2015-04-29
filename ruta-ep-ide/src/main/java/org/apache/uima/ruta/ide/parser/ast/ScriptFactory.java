@@ -46,6 +46,17 @@ public class ScriptFactory extends AbstractFactory {
     return createRule(elements, null);
   }
 
+  public RutaRule createImplicitRule(List<RutaAction> actions, Token end) {
+    List<Expression> elements = new ArrayList<Expression>();
+    RutaRuleElement element = createRuleElement(null, null, null, actions, end);
+    if(actions != null && !actions.isEmpty()) {
+      element.setStart(actions.get(0).sourceStart());
+    }
+    elements.add(element);
+    return createRule(elements, null);
+  }
+
+  
   public RutaRule createRule(List<Expression> elements, Token s, boolean updateCounter) {
     RutaRule rule = new RutaRule(elements, idCounter);
     if (updateCounter) {

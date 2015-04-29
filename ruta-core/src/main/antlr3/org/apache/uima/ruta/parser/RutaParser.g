@@ -580,17 +580,20 @@ List featureTypes = new ArrayList();
 List featureNames = new ArrayList();
 }
 	:
-	(
 	DECLARE 
 	//{!isType($blockDeclaration::env, input.LT(1).getText())}? 
 	lazyParent = annotationType?
-	id = Identifier {addType($blockDeclaration::env, id, lazyParent, null, null);}
-			(COMMA 
+	id = Identifier 
+	
+	(
+	{addType($blockDeclaration::env, id, lazyParent, null, null);}
+			(
+			
+			COMMA 
 			//{!isType($blockDeclaration::env, input.LT(1).getText())}? 
 			id = Identifier {addType($blockDeclaration::env, id, lazyParent, null, null);}
 		 )* SEMI
 	| 
-	DECLARE parentType = annotationType id = Identifier 
 		(LPAREN 
 			(
 			obj1 = annotationType{featureTypes.add(obj1.getText());} 
@@ -614,7 +617,7 @@ List featureNames = new ArrayList();
 			fname = Identifier{featureNames.add(fname.getText());})* 
 		RPAREN) SEMI 
 		{
-		addType($blockDeclaration::env, id, parentType, featureTypes, featureNames);
+		addType($blockDeclaration::env, id, lazyParent, featureTypes, featureNames);
 		}
 	)
 	;
@@ -737,10 +740,15 @@ options {
 	{stmt = rer;}
 	
 	|
-	
+	as = actions 
+	{stmt = factory.createImplicitRule(as, $blockDeclaration::env);} 
+	SEMI
+	|
 	{stmt = factory.createRule(elements, $blockDeclaration::env);}
 	elements = ruleElementsRoot[((RutaRule)stmt).getRoot()] SEMI 
 	{if(elements != null){((RutaRule)stmt).setRuleElements(elements);} else {}}
+	
+	
 	;
 
 

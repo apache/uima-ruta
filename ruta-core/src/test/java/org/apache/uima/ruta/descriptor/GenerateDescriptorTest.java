@@ -110,6 +110,7 @@ public class GenerateDescriptorTest {
     script += "TYPESYSTEM org.apache.uima.ruta.engine.HtmlTypeSystem;\n";
     script += "DECLARE SimpleType;\n";
     script += "DECLARE SimpleType ComplexType (SimpleType fs, STRING s, BOOLEAN b, INT i);\n";
+    script += "DECLARE ComplexType2 (SimpleType fs, STRING s, BOOLEAN b, INT i);\n";
     script += "BLOCK(sub) Document{}{\n";
     script += "DECLARE InnerType;\n";
     script += "}\n";
@@ -144,6 +145,22 @@ public class GenerateDescriptorTest {
     assertEquals(4, features.length);
     for (FeatureDescription each : features) {
       String f = featureMap.get(each.getName());
+      assertNotNull(f);
+    }
+    
+    TypeDescription complexType2 = tsd.getType("test.package.Anonymous.ComplexType2");
+    assertNotNull(complexType2);
+    assertEquals("Type defined in test.package.Anonymous", complexType2.getDescription());
+    assertEquals("uima.tcas.Annotation", complexType2.getSupertypeName());
+    FeatureDescription[] features2 = complexType2.getFeatures();
+    Map<String, String> featureMap2 = new HashMap<>();
+    featureMap2.put("fs", "test.package.Anonymous.SimpleType");
+    featureMap2.put("s", "uima.cas.String");
+    featureMap2.put("b", "uima.cas.Boolean");
+    featureMap2.put("i", "uima.cas.Integer");
+    assertEquals(4, features2.length);
+    for (FeatureDescription each : features2) {
+      String f = featureMap2.get(each.getName());
       assertNotNull(f);
     }
 
