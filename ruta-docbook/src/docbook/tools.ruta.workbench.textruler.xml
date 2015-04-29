@@ -251,40 +251,4 @@ under the License.
       </mediaobject>
     </figure>
    </section>
-   
-   <section id="section.tools.ruta.workbench.textruler.example">
-   <title>Example</title>
-      <para> 
-      This section gives a short example how the TextRuler framework is applied in order to induce annotation rules. We refer to the screenshot in <xref linkend="figure.tools.ruta.workbench.textruler.main"/>
-      for the configuration and are using the exemplary UIMA Ruta project <quote>TextRulerExample</quote>, which is part of the source release of UIMA Ruta.
-      After importing the project into your workspace, please rebuild all UIMA Ruta scripts in order to create the descriptors, e.g., by cleaning the project.
-      </para>
-      <para> 
-        In this example, we are using the <quote>KEP</quote> algorithm for learning annotation rules for identifying Bibtex entries in the reference section of scientific publications:
-        <orderedlist>
-        <listitem>
-          <para>Select the folder <quote>single</quote> and drag and drop it to the <quote>Training Data</quote> text field. This folder contains one file with 
-          correct annotations and serves as gold standard data in our example.</para>
-        </listitem>
-        <listitem>
-          <para>Select the file <quote>Feature.ruta</quote> and drag and drop it to the <quote>Preprocess Script</quote> text field. This UIMA Ruta script knows all necessary types, especially the types
-          of the annotations we try the learn rules for, and additionally it contains rules that create useful annotations, which can be used by the algorithm in order to learn better rules.</para>
-        </listitem>
-        <listitem>
-          <para>Select the file <quote>InfoTypes.txt</quote> and drag and drop it to the <quote>Information Types</quote> list. This specifies the goal of the learning process, 
-          which types of annotations should be annotated by the induced rules, respectively.</para>
-        </listitem>
-        <listitem>
-          <para>Check the checkbox of the <quote>KEP</quote> algorithm and press the start button in the toolbar fo the view.</para>
-        </listitem>
-        <listitem>
-          <para>The algorithm now tries to induce rules for the targeted types. The current result is displayed in the view <quote>KEP Results</quote> in the right part of the perspective.</para>
-        </listitem>
-        <listitem>
-          <para>After the algorithms finished the learning process, create a new UIMA Ruta file in the <quote>uima.ruta.example</quote> package and copy the content of the result view
-          to the new file. Now, the induced rules can be applied as a normal UIMA Ruta script file.</para>
-        </listitem>
-      </orderedlist>
-      </para>
-    </section>
 </section>

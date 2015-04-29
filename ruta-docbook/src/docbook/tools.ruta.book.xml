@@ -31,4 +31,6 @@ under the License.
   
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.workbench.xml"/>
   
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.howtos.xml"/>
+  
 </book>
