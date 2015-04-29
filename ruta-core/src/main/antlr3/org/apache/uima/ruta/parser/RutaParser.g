@@ -745,7 +745,7 @@ options {
 	SEMI
 	|
 	{stmt = factory.createRule(elements, $blockDeclaration::env);}
-	elements = ruleElementsRoot[((RutaRule)stmt).getRoot()] SEMI 
+	elements = ruleElementsRoot[stmt == null? null:((RutaRule)stmt).getRoot()] SEMI 
 	{if(elements != null){((RutaRule)stmt).setRuleElements(elements);} else {}}
 	
 	
