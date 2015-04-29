@@ -252,7 +252,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
           IFile file = RutaCheckerUtils.checkScriptImport(localPath,
                   sourceModule.getScriptProject());
           if (file == null) {
-            String typesystemSuffix = RutaProjectUtils.getTypeSystemSuffix(sourceModule.getScriptProject().getProject());
+            String typesystemSuffix = RutaProjectUtils.getTypeSystemSuffix(sourceModule
+                    .getScriptProject().getProject());
             url = RutaCheckerUtils.checkImportExistence(localPath + typesystemSuffix, "xml",
                     classLoader);
           }
@@ -561,9 +562,17 @@ public class LanguageCheckerVisitor extends ASTVisitor {
                 || getVariableType(name) == RutaTypeConstants.RUTA_TYPE_AT) {
           return false;
         }
-        if (isFeatureMatch(ref.getName()) != null) {
+        if (isFeatureMatch(name) != null) {
           return false;
         }
+        if (name.indexOf(".") != -1) {
+          String[] split = name.split("[.]");
+          if (StringUtils.equals(split[split.length - 1], "ct")
+                  || StringUtils.equals(split[split.length - 1], "coveredText")) {
+            return false;
+          }
+        }
+
         pr.reportProblem(problemFactory.createTypeProblem(ref, sourceModule));
         return false;
       }
@@ -962,8 +971,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
 
     try {
       typeSystemDescription = getTypeSystemOfScript();
-      IProject project = sourceModule
-              .getScriptProject().getProject();
+      IProject project = sourceModule.getScriptProject().getProject();
       List<IFolder> descriptorFolders = RutaProjectUtils.getDescriptorFolders(project);
       boolean exists = false;
       for (IFolder iFolder : descriptorFolders) {
@@ -974,7 +982,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
           break;
         }
       }
-      if(!exists) {
+      if (!exists) {
         // not in a common ruta project
         // try to find the file in the classpath
         URL resource = classLoader.getResource("org/apache/uima/ruta/engine/BasicTypeSystem.xml");
@@ -1261,7 +1269,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       String prefix = "classpath*:**/";
       String pattern = prefix + lastSegment;
       Resource[] resources = resolver.getResources(pattern);
-      if(resources != null && resources.length != 0) {
+      if (resources != null && resources.length != 0) {
         typeSysDescr = UIMAFramework.getXMLParser().parseTypeSystemDescription(
                 new XMLInputSource(resources[0].getURL()));
         ResourceManager resMgr = getResourceManager(classLoader);
