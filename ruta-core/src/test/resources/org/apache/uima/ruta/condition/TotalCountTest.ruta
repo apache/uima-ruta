@@ -4,7 +4,7 @@ INT int1 = 0;
 
 DECLARE T1, T2, T3, T4;
 
-Document{-> RETAINTYPE(SPACE)};
+RETAINTYPE(SPACE);
 
 Document{TOTALCOUNT(CW) -> MARK(T1)};
 Document{TOTALCOUNT(SPACE,1,5) -> MARK(T2)};

@@ -42,7 +42,7 @@ public class NullExpressionTest {
   public void test() {
     String document = "Some text.";
     String script = "";
-    script += "Document{-> CREATE(A, \"a\" = \"test\", \"b\" = SW), CREATE(B, \"a\" = \"test\", \"b\" = SW)};\n";
+    script += "CREATE(A, \"a\" = \"test\", \"b\" = SW), CREATE(B, \"a\" = \"test\", \"b\" = SW);\n";
     script += "A.a != null{-> T5};";
     script += "A.b != null{-> T6};";
     script += "A{-> A.a = null, A.b = null};";

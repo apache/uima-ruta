@@ -35,7 +35,7 @@ public class MarkFirstActionTest {
   @Test
   public void test() {
     String document = "Peter Kluegl, Joern Kottmann, Marshall Schor.";
-    String script = "Document{-> MARKFIRST(T1)};\n";
+    String script = "MARKFIRST(T1);\n";
     CAS cas = null;
     try {
       cas = RutaTestUtils.getCAS(document);

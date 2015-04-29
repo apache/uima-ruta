@@ -40,7 +40,7 @@ public class LoadScriptFromClassPathTest {
   public void test() {
     String document = "Peter, Jochen, Flo und Georg.";
     String script = "SCRIPT org.apache.uima.ruta.RuleInference1Test;\n";
-    script += "Document{-> CALL(RuleInference1Test)};\n";
+    script += "CALL(RuleInference1Test);\n";
 
     Map<String, Object> parameters = new HashMap<String, Object>();
     parameters.put(RutaEngine.PARAM_ADDITIONAL_SCRIPTS,

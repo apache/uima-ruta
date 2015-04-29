@@ -12,7 +12,7 @@ W {REGEXP("C") -> MARK(T22)};
 
 T20+?{->MARK(T1, 1, 2)} T20;
 
-Document{-> FILTERTYPE(T21)};
+FILTERTYPE(T21);
 T20+?{-PARTOF(T1) -> MARK(T2, 1, 2)} T20;
 T20+{-PARTOF(T1) -> MARK(T3, 1, 2)} T20;
 

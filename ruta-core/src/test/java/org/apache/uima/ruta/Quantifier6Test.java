@@ -34,9 +34,9 @@ public class Quantifier6Test {
   @Test
   public void test() {
     String document = "A1B-2C3-D4E";
-    String script = "Document{->RETAINTYPE(WS)};\n";
+    String script = "RETAINTYPE(WS);\n";
     script += "(CW | NUM)+{-PARTOF(T1)-> MARK(T1, 1, 2)} (SPECIAL{REGEXP(\"-\")} (CW | NUM)+)+;\n";
-    script += "Document{->RETAINTYPE};\n";
+    script += "RETAINTYPE;\n";
     
     CAS cas = null;
     try {

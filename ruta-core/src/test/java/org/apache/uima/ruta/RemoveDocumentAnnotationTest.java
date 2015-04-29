@@ -43,7 +43,7 @@ public class RemoveDocumentAnnotationTest {
     script += "\"text\" -> T2;";
     script += "(T1 T2){-> T3};";
     script += "DocumentAnnotation{-> T4};";
-    script += "Document{-> T5};";
+    script += "T5;";
     CAS cas = null;
     try {
       cas = RutaTestUtils.getCAS(document);

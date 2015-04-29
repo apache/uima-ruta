@@ -35,7 +35,7 @@ public class NBSPWSTest {
   public void test() {
     String document = ((char) 160) + "-" + ((char) 8239) + "-" + ((char) 65279) + "-" + ((char) 8199)
             + "-" + ((char) 6158);
-    String script = "Document{-> RETAINTYPE(SPACE)};";
+    String script = "RETAINTYPE(SPACE);";
     script += "WS{-> T1};";
     CAS cas = null;
     try {

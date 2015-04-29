@@ -9,9 +9,9 @@ TYPELIST list3 = {ANY, NUM};
 TYPELIST intersection;
 TYPELIST union;
 
-Document{ -> MERGE(true, union, list1, list2, list3)};
+MERGE(true, union, list1, list2, list3);
 Document{SIZE(union,8,8) -> MARK(T1)};
 
-Document{ -> MERGE(false, intersection, list1, list2, list3)};
+MERGE(false, intersection, list1, list2, list3);
 Document{SIZE(intersection,1,1) -> MARK(T2)};
 

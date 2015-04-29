@@ -6,11 +6,11 @@ TYPELIST list1;
 TYPELIST list2;
 TYPELIST list3;
 
-Document{ -> GETLIST(list1, "Types")};
+GETLIST(list1, "Types");
 Document{SIZE(list1,1,1) -> MARK(T1)};
 
-Document{ -> GETLIST(list1, "Types:Begin")};
+GETLIST(list1, "Types:Begin");
 Document{SIZE(list1,3,3) -> MARK(T2)};
 
-Document{ -> GETLIST(list1, "Types:End")};
+GETLIST(list1, "Types:End");
 Document{SIZE(list1,4,4) -> MARK(T3)};

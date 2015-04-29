@@ -47,7 +47,7 @@ public class WSDictionaryTest {
     document += "PeterKluegl, MarshallSchor, JoernKottmann\n";
     document += "Peter<x>Kluegl, Marshall<x>Schor, Joern<x>Kottmann\n";
     String script = "WORDLIST list = 'org/apache/uima/ruta/WSDictionaryTestList.txt';";
-    script += "Document{-> MARKFAST(T1,list)};";
+    script += "MARKFAST(T1, list);";
     CAS cas = null;
     try {
       cas = RutaTestUtils.getCAS(document);
@@ -85,7 +85,7 @@ public class WSDictionaryTest {
     document += "PeterKluegl, MarshallSchor, JoernKottmann\n";
     document += "Peter<x>Kluegl, Marshall<x>Schor, Joern<x>Kottmann\n";
     String script = "WORDLIST list = 'org/apache/uima/ruta/WSDictionaryTestList.txt';";
-    script += "Document{-> MARKFAST(T1,list, true, 0, false)};";
+    script += "MARKFAST(T1, list, true, 0, false);";
     CAS cas = null;
     Map<String,Object> map = new HashMap<String, Object>();
     map.put(RutaEngine.PARAM_DICT_REMOVE_WS, true);
@@ -125,7 +125,7 @@ public class WSDictionaryTest {
     document += "PeterKluegl, MarshallSchor, JoernKottmann\n";
     document += "Peter<x>Kluegl, Marshall<x>Schor, Joern<x>Kottmann\n";
     String script = "WORDTABLE table = 'org/apache/uima/ruta/table2.csv';";
-    script += "Document{-> MARKTABLE(Struct, 1, table, true, 0, \"-.,\", 10, \"name\" = 1, \"system\" = 2)};";
+    script += "MARKTABLE(Struct, 1, table, true, 0, \"-.,\", 10, \"name\" = 1, \"system\" = 2);";
     
     Map<String, String> complexTypes = new TreeMap<String, String>();
     String typeName = "org.apache.uima.Struct";

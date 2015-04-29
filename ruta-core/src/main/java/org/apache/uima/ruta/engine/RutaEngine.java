@@ -159,7 +159,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
    * refered to by language elements, e.g., by executing the containing rules. An exemplary value of
    * this parameter is "org.apache.uima.SecondaryScript". In this example, the main script could
    * import this script file by the declaration "SCRIPT org.apache.uima.SecondaryScript;" and then
-   * could execute it with the rule "Document{-> CALL(SecondaryScript)};".
+   * could execute it with the rule "CALL(SecondaryScript);".
    */
   public static final String PARAM_ADDITIONAL_SCRIPTS = "additionalScripts";
 

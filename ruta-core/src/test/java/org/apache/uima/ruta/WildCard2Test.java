@@ -38,11 +38,11 @@ public class WildCard2Test {
     document +="\n";
     document += "Stephen Soderland, Claire Cardie, and Raymond Mooney. Learning Information Extraction Rules for Semi-Structured and Free Text. In Machine Learning, volume 34, pages 233–272, 1999.";
     String script = "";
-    script += "Document{-> RETAINTYPE(BREAK, SPACE)};\n";
+    script += "RETAINTYPE(BREAK, SPACE);\n";
     script += "#{-> T6} BREAK #{-> T6};\n";
     script += "T6{-> TRIM(BREAK, SPACE)};\n";
     script += "CW{REGEXP(\".\")} PERIOD{->T7};\n";
-    script += "Document{-> RETAINTYPE};\n";
+    script += "RETAINTYPE;\n";
     script += "BLOCK(forEach) T6 {}{\n";
     script += "(# COLON){-> T1} (# PERIOD){-> T2} # \"(\" NUM{REGEXP(\"....\")-> T3} \")\";\n";
     script += "(#{-CONTAINS(COLON)} PERIOD{-PARTOF(T7)}){-> T1} (# PERIOD){-> T2} # NUM{REGEXP(\"....\")-> T3};\n";

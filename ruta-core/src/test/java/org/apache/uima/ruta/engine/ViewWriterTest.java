@@ -112,9 +112,9 @@ public class ViewWriterTest {
     StringBuilder scriptSB = new StringBuilder();
     scriptSB.append("ENGINE ViewWriter;\n");
     String absolutePath = xmiOutputFile.getAbsolutePath().replaceAll("\\\\", "/");
-    scriptSB.append("Document{ -> CONFIGURE(ViewWriter, \"inputView\" = \"" + NEW_VIEW
+    scriptSB.append("CONFIGURE(ViewWriter, \"inputView\" = \"" + NEW_VIEW
             + "\", \"outputView\" = \"_InitialView\", \"output\" = \"" + absolutePath
-            + "\"), EXEC(ViewWriter)};\n");
+            + "\"), EXEC(ViewWriter);\n");
 
     FileUtils.saveString2File(scriptSB.toString(), scriptFile, "UTF-8");
     URL url = RutaEngine.class.getClassLoader().getResource("BasicEngine.xml");

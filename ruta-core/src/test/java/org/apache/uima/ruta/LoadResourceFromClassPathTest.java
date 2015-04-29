@@ -45,9 +45,9 @@ public class LoadResourceFromClassPathTest {
     String script = "WORDTABLE table = '/org/apache/uima/ruta/action/table.csv';\n";
     script += "WORDLIST list = '/org/apache/uima/ruta/action/trie.mtwl';\n";
     script += "WORDLIST list2 = '/org/apache/uima/ruta/action/firstnames.txt';\n";
-    script += "Document{->TRIE(\"FirstNames.txt\" = T1, \"LastNames.txt\" = T2, list, true, 4, false, 0, \".,-/\")};\n";
-    script += "Document{-> MARKTABLE(Person, 1, table, true, 0, \"\", 0, \"firstname\" = 2, \"system\" = 3)};\n";
-    script += "Document{-> MARKFAST(T3, list2)};\n";
+    script += "TRIE(\"FirstNames.txt\" = T1, \"LastNames.txt\" = T2, list, true, 4, false, 0, \".,-/\");\n";
+    script += "MARKTABLE(Person, 1, table, true, 0, \"\", 0, \"firstname\" = 2, \"system\" = 3);\n";
+    script += "MARKFAST(T3, list2);\n";
     
     Map<String, String> complexTypes = new TreeMap<String, String>();
     String typeName = "org.apache.uima.Person";
@@ -137,9 +137,9 @@ public class LoadResourceFromClassPathTest {
     String script = "WORDTABLE table = 'classpath:/org/apache/uima/ruta/action/table.csv';\n";
     script += "WORDLIST list = 'classpath:/org/apache/uima/ruta/action/trie.mtwl';\n";
     script += "WORDLIST list2 = 'classpath:/org/apache/uima/ruta/action/firstnames.txt';\n";
-    script += "Document{->TRIE(\"FirstNames.txt\" = T1, \"LastNames.txt\" = T2, list, true, 4, false, 0, \".,-/\")};\n";
-    script += "Document{-> MARKTABLE(Person, 1, table, true, 0, \"\", 0, \"firstname\" = 2, \"system\" = 3)};\n";
-    script += "Document{-> MARKFAST(T3, list2)};\n";
+    script += "TRIE(\"FirstNames.txt\" = T1, \"LastNames.txt\" = T2, list, true, 4, false, 0, \".,-/\");\n";
+    script += "MARKTABLE(Person, 1, table, true, 0, \"\", 0, \"firstname\" = 2, \"system\" = 3);\n";
+    script += "MARKFAST(T3, list2);\n";
 
     Map<String, String> complexTypes = new TreeMap<String, String>();
     String typeName = "org.apache.uima.Person";
