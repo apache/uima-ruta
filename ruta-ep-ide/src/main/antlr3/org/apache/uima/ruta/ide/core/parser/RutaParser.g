@@ -646,13 +646,14 @@ options {
 	: 
 	(regexpRule)=> rer = regexpRule {stmt = rer;}
 	|
+	as = rawActions s = SEMI 
+	{stmt = scriptFactory.createImplicitRule(as, s);}
+	|
 	elements=ruleElementsRoot
 	{stmt = scriptFactory.createRule(elements, null, false);}
 		s = SEMI 
 	{stmt = scriptFactory.createRule(elements, s);}
-	|
-	as = actions s = SEMI 
-	{stmt = scriptFactory.createImplicitRule(as, s);}
+	
 	
 	;
 
@@ -825,7 +826,10 @@ actions returns [List<RutaAction> actions = new ArrayList<RutaAction>()]
     :
     a = action {actions.add(a);} (COMMA a = action {actions.add(a);} )*
     ; 	
-	
+rawActions returns [List<RutaAction> actions = new ArrayList<RutaAction>()]
+    :
+    a = rawAction {actions.add(a);} (COMMA a = rawAction {actions.add(a);} )*
+    ; 	
 	
 listExpression returns [Expression expr = null]
 	:
@@ -1366,6 +1370,59 @@ conditionSize returns [RutaCondition cond = null]
     RPAREN
     ;
 
+rawAction returns [RutaAction result = null]
+@init {
+result = ActionFactory.createEmptyAction(input.LT(1));
+}
+	:
+	(
+	a = actionColor
+	| a = actionDel
+	| a = actionLog
+	| a = actionMark
+	| a = actionMarkScore
+	| a = actionMarkFast
+	| a = actionMarkLast
+	| a = actionMarkFirst
+	| a = actionReplace
+	| a = actionRetainType
+	| a = actionFilterType
+	| a = actionCreate
+	| a = actionFill
+	| a = actionCall
+	| a = actionAssign
+	| a = actionSetFeature
+	| a = actionGetFeature
+	| a = actionUnmark
+	| a = actionUnmarkAll
+	| a = actionTransfer
+	| a = actionMarkOnce
+	| a = actionTrie
+	| a = actionGather	
+	| a = actionExec
+	| a = actionMarkTable
+	| a = actionAdd
+	| a = actionRemove
+	| a = actionRemoveDuplicate
+	| a = actionMerge
+	| a = actionGet	
+	| a = actionGetList
+	| a = actionMatchedText
+	| a = actionClear
+	| a = actionShift
+	| a = actionConfigure
+	| a = actionDynamicAnchoring
+	| a = actionGreedyAnchoring
+	| a = actionTrim
+	| a = actionAddFilterType
+	| a = actionAddRetainType
+	| a = actionRemoveFilterType
+	| a = actionRemoveRetainType
+	| (externalAction)=> a = externalAction
+	
+	// | a = variableAction
+	) {result = a;}
+	;
 	
 action returns [RutaAction result = null]
 @init {

@@ -741,7 +741,7 @@ options {
 	{stmt = rer;}
 	
 	|
-	as = actions 
+	as = rawActions 
 	{stmt = factory.createImplicitRule(as, $blockDeclaration::env);} 
 	SEMI
 	|
@@ -958,7 +958,10 @@ actions returns [List<AbstractRutaAction> actions = new ArrayList<AbstractRutaAc
     :
     a = action {actions.add(a);} (COMMA a = action {actions.add(a);} )*
     ; 	
-
+rawActions returns [List<AbstractRutaAction> actions = new ArrayList<AbstractRutaAction>()]
+    :
+    a = rawAction {actions.add(a);} (COMMA a = rawAction {actions.add(a);} )*
+    ; 	
 
 listExpression returns [ListExpression expr = null]
 	:
@@ -1522,6 +1525,56 @@ action  returns [AbstractRutaAction result = null]
 //	| a = variableAction
 	) {result = a;}
 	;
+rawAction  returns [AbstractRutaAction result = null]
+	:
+	(
+	a = actionColor
+	| a = actionDel
+	| a = actionLog
+	| a = actionMark
+	| a = actionMarkScore
+	| a = actionMarkFast
+	| a = actionMarkLast
+	| a = actionMarkFirst
+	| a = actionReplace
+	| a = actionFilterType
+	| a = actionRetainType
+	| a = actionCreate
+	| a = actionFill
+	| a = actionCall
+	| a = actionAssign
+	| a = actionSetFeature
+	| a = actionGetFeature
+	| a = actionUnmark
+	| a = actionUnmarkAll
+	| a = actionTransfer
+	| a = actionMarkOnce
+	| a = actionTrie
+	| a = actionGather
+	| a = actionExec
+	| a = actionMarkTable
+	| a = actionAdd
+	| a = actionRemove
+	| a = actionRemoveDuplicate
+	| a = actionMerge
+	| a = actionGet
+	| a = actionGetList
+	| a = actionMatchedText
+	| a = actionClear
+	| a = actionShift
+	| a = actionConfigure
+	| a = actionDynamicAnchoring
+	| a = actionGreedyAnchoring
+	| a = actionTrim 
+	| a = actionAddRetainType
+	| a = actionRemoveRetainType
+	| a = actionAddFilterType
+	| a = actionRemoveFilterType
+	| (externalAction)=> a = externalAction
+	
+//	| a = variableAction
+	) {result = a;}
+	;	
 
 //variableAction returns [AbstractRutaAction action = null]
 //	:		
