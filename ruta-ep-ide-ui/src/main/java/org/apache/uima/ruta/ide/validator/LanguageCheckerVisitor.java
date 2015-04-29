@@ -61,7 +61,6 @@ import org.apache.uima.ruta.ide.core.extensions.IRutaExtension;
 import org.apache.uima.ruta.ide.parser.ast.FeatureMatchExpression;
 import org.apache.uima.ruta.ide.parser.ast.NullExpression;
 import org.apache.uima.ruta.ide.parser.ast.RutaAction;
-import org.apache.uima.ruta.ide.parser.ast.RutaActionConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaBlock;
 import org.apache.uima.ruta.ide.parser.ast.RutaCondition;
 import org.apache.uima.ruta.ide.parser.ast.RutaDeclareDeclarationsStatement;
@@ -601,26 +600,6 @@ public class LanguageCheckerVisitor extends ASTVisitor {
         if (!featureFound) {
           IProblem problem = problemFactory.createUnknownFeatureProblem(stringExpr, matchedType);
           pr.reportProblem(problem);
-        }
-      }
-
-      if (tma.getKind() == RutaActionConstants.A_ASSIGN) {
-        List<?> childs = tma.getChilds();
-        try {
-          RutaVariableReference ref = (RutaVariableReference) childs.get(0);
-          RutaExpression expr = (RutaExpression) childs.get(1);
-          int type = expr.getKind();
-          if (ref.getType() == RutaTypeConstants.RUTA_TYPE_G) {
-            ref.setType(type);
-          }
-        } catch (IndexOutOfBoundsException e) {
-          // exception should have been recognized and reported in
-          // parser
-          return false;
-        } catch (ClassCastException e) {
-          // exception should have been recognized and reported in
-          // parser
-          return false;
         }
       }
 
