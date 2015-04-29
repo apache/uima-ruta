@@ -483,7 +483,7 @@ The|DT rabbit|NN made|VBD up|RP this|DT story|NN .|.</programlisting>
 		
 	</section>
 
-<section id="section.tools.ruta.workbench.textruler.example">
+  <section id="section.tools.ruta.workbench.textruler.example">
    <title>Induce rules with the TextRuler framework</title>
       <para> 
       This section gives a short example how the TextRuler framework is applied in order to induce annotation rules. We refer to the screenshot in <xref linkend="figure.tools.ruta.workbench.textruler.main"/>
@@ -517,5 +517,85 @@ The|DT rabbit|NN made|VBD up|RP this|DT story|NN .|.</programlisting>
         </listitem>
       </orderedlist>
       </para>
+    </section>
+    <section id="section.tools.ruta.howto.html">
+     <title>HTML annotations in plain text</title>
+      <para> 
+       The following script provides an example how to process HTML files with UIMA Ruta in order to get plain text documents 
+       that still contain information about the HTML tags in form of annotations. The analysis engine descriptor HtmlViewWriter is identical to the common ViewWriter, 
+       but additionally specifies a type system. More information about different options to configure the
+       conversion can be found in <link linkend='ugr.tools.ruta.ae.htmlconverter'>here</link>.
+      </para>
+          <programlisting><![CDATA[PACKAGE uima.ruta.example;
+
+ENGINE utils.HtmlAnnotator;
+ENGINE utils.HtmlConverter;
+ENGINE HtmlViewWriter;
+TYPESYSTEM utils.HtmlTypeSystem;
+TYPESYSTEM utils.SourceDocumentInformation;
+
+Document{-> RETAINTYPE(SPACE,BREAK)};
+Document{-> EXEC(HtmlAnnotator)};
+
+Document { -> CONFIGURE(HtmlConverter, "inputView" = "_InitialView", 
+    "outputView" = "plain"), 
+      EXEC(HtmlConverter)};
+
+Document{ -> CONFIGURE(ViewWriter, "inputView" = "plain", 
+    "outputView" = "_InitialView", "output" = "/../converted/"), 
+    EXEC(HtmlViewWriter)};
+    ]]>   </programlisting>
+    </section>
+    
+    <section id="section.tools.ruta.howto.sorter">
+     <title>Sorting files with UIMA Ruta</title>
+      <para> 
+       The following script provides an example how to utilize UIMA Ruta for sorting files.
+      </para>
+          <programlisting><![CDATA[ENGINE utils.XMIWriter;
+TYPESYSTEM utils.SourceDocumentInformation;
+
+DECLARE Pattern;
+
+// some rule-based pattern
+(NUM SPECIAL NUM SPECIAL NUM){-> Pattern};
+
+Document{CONTAINS(Pattern)->CONFIGURE(XMIWriter, 
+  "Output" = "../with/"), EXEC(XMIWriter)};
+Document{-CONTAINS(Pattern)->CONFIGURE(XMIWriter, 
+  "Output" = "../without/"), EXEC(XMIWriter)};
+    ]]>   </programlisting>
+    </section>
+    <section id="section.tools.ruta.howto.xml">
+     <title>Converting XML documents with UIMA Ruta</title>
+      <para> 
+       The following script provides an example how to process XML files in order to retain only the text content. the removed XML elements should, howver, be available as annotations. 
+       This script can therefore be applied to create xmiCAS files from text document annotated with XML tags. The analysis engine descriptor TEIViewWriter is identical to the common ViewWriter, 
+       but additionally specifies a type system.
+      </para>
+          <programlisting><![CDATA[ENGINE utils.HtmlAnnotator;
+TYPESYSTEM utils.HtmlTypeSystem;
+ENGINE utils.HtmlConverter;
+ENGINE TEIViewWriter;
+TYPESYSTEM utils.SourceDocumentInformation;
+
+DECLARE PersName, LastName, FirstName, AddName;
+
+Document{->EXEC(HtmlAnnotator, {TAG})};
+Document{-> RETAINTYPE(MARKUP,SPACE)};
+TAG.name=="PERSNAME"{-> PersName};
+TAG.name=="SURNAME"{-> LastName};
+TAG.name=="FORENAME"{-> FirstName};
+TAG.name=="ADDNAME"{-> AddName};
+Document{-> RETAINTYPE};
+
+Document { -> CONFIGURE(HtmlConverter, "inputView" = "_InitialView", 
+    "outputView" = "plain", "skipWhitespaces" = false), 
+      EXEC(HtmlConverter)};
+
+Document{ -> CONFIGURE(ViewWriter, "inputView" = "plain", "outputView" = 
+    "_InitialView", "output" = "/../converted/"), 
+    EXEC(TEIViewWriter)};
+    ]]>   </programlisting>
     </section>
 </chapter>
