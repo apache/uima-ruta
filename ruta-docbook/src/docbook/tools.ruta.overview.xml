@@ -645,6 +645,14 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
                 </row>
                 <row>
                   <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.rules'>rules</link>
+                  </entry>
+                  <entry>Script (list of rules) to be applied.
+                  </entry>
+                  <entry>Single String</entry>
+                </row>
+                <row>
+                  <entry>
                     <link linkend='ugr.tools.ruta.ae.basic.parameter.scriptEncoding'>scriptEncoding</link>
                   </entry>
                   <entry>Encoding of all UIMA Ruta script files.</entry>
@@ -860,6 +868,13 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
             whereas "Main" specifies the file containing the rules and "org.apache.uima" its package.
             In this case, the analysis engine loads the script file "Main.ruta", which is located in the folder structure "org/apache/uima/".
             This parameter has no default value and has to be provided, although it is not specified as mandatory.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.rules">
+          <title>rules</title>
+          <para>
+          A String parameter representing the rule that should be applied by the analysis engine.
+          If set, it replaces the content of file specified by the <link linkend='ugr.tools.ruta.ae.basic.parameter.mainScript'>mainScript</link> parameter.
           </para>
         </section>
         <section id="ugr.tools.ruta.ae.basic.parameter.scriptEncoding">
