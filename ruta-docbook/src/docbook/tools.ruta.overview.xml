@@ -367,11 +367,18 @@ Sentence{CONTAINS(EmploymentIndicator) -> CREATE(EmplRelation,
     "employeeRef" = Employee, "employerRef" = Employer)};]]></programlisting>
 
     <para>
+      UIMA Ruta rules can not only be used to create or modify annotations, but also to create features for annotations. The next example defines 
+      and assigns a relation of employment, by storing the given annotations as feature values.
+    </para>
+
+    <para>
       The first statement of this example is a declaration that defines a new type of annotation named <quote>EmplRelation</quote>. 
       This annotation has two features: 
       One feature with the name <quote>employeeRef</quote> of the type <quote>Employee</quote> and 
       one feature with the name <quote>employerRef</quote> of the type <quote>Employer</quote>.
-      The second statement of this example, which is a simple rule, creates one annotation of the type <quote>EmplRelation</quote> for
+      If the parent type is Annotation, then it can be omitted resulting in the following declaration:
+      <programlisting><![CDATA[DECLARE EmplRelation (Employee employeeRef, Employer employerRef);]]></programlisting>
+      The second statement of the example, which is a simple rule, creates one annotation of the type <quote>EmplRelation</quote> for
       each Sentence annotation that contains at least one annotation of the type <quote>EmploymentIndicator</quote>. Additionally to creating an annotation,
       the CREATE action also assigns an annotation of the <quote>Employee</quote>, which needs to be located within the span of the matched sentence, 
       to the feature <quote>employeeRef</quote> and an Employer annotation to the feature <quote>employerRef</quote>. The annotations mentioned in this 
@@ -422,10 +429,17 @@ Document{-> CALL(SecondaryScript)};]]></programlisting>
     <para>
       The script file with the name <quote>SecondaryScript.ruta</quote>, which is located in the package <quote>uima/ruta/example</quote>, is imported and executed
       by the CALL action on the complete document. The script needs to be located in the folder specified by the parameter 
-      <link linkend="ugr.tools.ruta.ae.basic.parameter.scriptPaths">scriptPaths</link>. It is also possible to import script files of other UIMA Ruta projects, e.g.,
+      <link linkend="ugr.tools.ruta.ae.basic.parameter.scriptPaths">scriptPaths</link>, or in a coresponding packgae in the classpath. It is also possible to import script files of other UIMA Ruta projects, e.g.,
       by adapting the configuration parameters of the UIMA Ruta Analysis Engine or 
       by setting a project reference in the project properties of a UIMA Ruta project.
     </para>
+
+    <para>
+      For simple rules that match on the complete document and only specify actions, a simplified syntax exists that omits the matching parts:
+    </para>
+    
+    <programlisting><![CDATA[SCRIPT uima.ruta.example.SecondaryScript;
+CALL(SecondaryScript);]]></programlisting>
 
     <para>
       The types of important annotations of the application are often defined in a separate type system. The next example shows how to import those types.

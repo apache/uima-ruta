@@ -68,7 +68,7 @@ SCRIPT uima.ruta.example.Year;
 
     Syntax of declarations:
     <programlisting><![CDATA[Declaration -> "DECLARE" (AnnotationType)? Identifier ("," Identifier )*
-               | "DECLARE" AnnotationType Identifier ( "("
+               | "DECLARE" AnnotationType? Identifier ( "("
                FeatureDeclaration ")" )?
 FeatureDeclaration  -> ( (AnnotationType | "STRING" | "INT" | "FLOAT"
                        "DOUBLE" | "BOOLEAN") Identifier) )+
@@ -99,11 +99,13 @@ BlockDeclaration    -> "BLOCK" "(" Identifier ")" RuleElementWithCA
                                                        "{" Statements "}"]]></programlisting>
 
     Syntax of statements and rule elements:
-    <programlisting><![CDATA[SimpleStatement        -> SimpleRule | RegExpRule | ConjunctRules
+    <programlisting><![CDATA[SimpleStatement        -> SimpleRule | RegExpRule | ConjunctRules 
+                          | DocumentActionRule
 SimpleRule             -> RuleElements ";"
 RegExpRule             -> StringExpression "->" GroupAssignment 
                           ("," GroupAssignment)* ";"
 ConjunctRules          -> RuleElements ("%" RuleElements)+ ";"
+DocumentActionRule     -> Actions ";"
 GroupAssignment        -> TypeExpression 
                         | NumberEpxression "=" TypeExpression
 RuleElements           -> RuleElement+
