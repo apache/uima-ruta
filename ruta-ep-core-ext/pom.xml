@@ -33,6 +33,11 @@
     <postNoticeText />
   </properties>
   <url>${uimaWebsiteUrl}</url>
+  <scm>
+    <url>http://svn.apache.org/viewvc/uima/ruta/trunk/ruta-ep-core-ext</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-ep-core-ext</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-ep-core-ext</developerConnection>
+  </scm>
   <dependencies>
     <dependency>
       <groupId>org.apache.uima</groupId>

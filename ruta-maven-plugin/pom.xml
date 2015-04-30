@@ -33,6 +33,15 @@
 		<version>2.3.0-SNAPSHOT</version>
 		<relativePath>../ruta-parent/pom.xml</relativePath>
 	</parent>
+	<properties>
+    <postNoticeText />
+  </properties>
+  <url>${uimaWebsiteUrl}</url>
+  <scm>
+    <url>http://svn.apache.org/viewvc/uima/ruta/trunk/ruta-maven-plugin</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-maven-plugin</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-maven-plugin</developerConnection>
+  </scm>
 	<dependencies>
 		<!-- Dependencies on the Maven Plugin API and friends -->
 		<dependency>
