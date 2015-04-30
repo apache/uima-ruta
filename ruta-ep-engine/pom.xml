@@ -13,11 +13,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>ruta-ep-engine</artifactId>
-  <version>2.3.0</version>
+  <version>2.3.1-SNAPSHOT</version>
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>ruta-parent</artifactId>
-    <version>2.3.0</version>
+    <version>2.3.1-SNAPSHOT</version>
     <relativePath>../ruta-parent/pom.xml</relativePath>
   </parent>
   <properties>
@@ -167,9 +167,9 @@ licensed under the Common Public License.
     </dependency>
   </dependencies>
   <scm>
-    <url>http://svn.apache.org/viewvc/uima/ruta/tags/ruta-2.3.0/ruta-ep-engine</url>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/ruta/tags/ruta-2.3.0/ruta-ep-engine</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/ruta/tags/ruta-2.3.0/ruta-ep-engine</developerConnection>
+    <url>http://svn.apache.org/viewvc/uima/ruta/trunk/ruta-ep-engine</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-ep-engine</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-ep-engine</developerConnection>
   </scm>
   <build>
     <!-- don't use artifactId as first part of finalName, follow instead 
