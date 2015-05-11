@@ -1330,8 +1330,8 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
         <emphasis role="bold">Definition:</emphasis>
       </title>
       <para>
-        <programlisting><![CDATA[TRIE((String = (TypeExpression|{TypeExpression,StringExpression,Expression}))+,
-          ListExpression,BooleanExpression,NumberExpression,
+        <programlisting><![CDATA[TRIE((String = (TypeExpression|{TypeExpression,StringExpression,
+          Expression}))+,ListExpression,BooleanExpression,NumberExpression,
           BooleanExpression,NumberExpression,StringExpression)]]></programlisting>
       </para>
     </section>
@@ -1355,8 +1355,8 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
         several chars that will be ignored.
       </para>
       <para>
-        <programlisting><![CDATA[Document{->TRIE("FirstNames.txt" = {A, "a", "first"}, "LastNames.txt" = {B, "b", true}, 
-          "CompleteNames.txt" = {C, "c", 6},
+        <programlisting><![CDATA[Document{->TRIE("FirstNames.txt" = {A, "a", "first"}, "LastNames.txt" = 
+          {B, "b", true}, "CompleteNames.txt" = {C, "c", 6},
           list1, true, 4, false, 0, ":")};]]></programlisting>
       </para>
       <para>
