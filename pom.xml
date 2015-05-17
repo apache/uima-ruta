@@ -106,12 +106,13 @@
     <module>ruta-ep-textruler</module>
     <module>ruta-ep-core-ext</module>
 
-	<module>ruta-maven-plugin</module>
+	  <module>ruta-maven-plugin</module>
 	
     <module>ruta-docbook</module>
     <module>ruta-eclipse-feature</module>
     
     <module>example-projects/ruta-ep-example-extensions</module>
+    <module>example-projects/ruta-maven-example</module>
   </modules>
   <build>
     <pluginManagement>
