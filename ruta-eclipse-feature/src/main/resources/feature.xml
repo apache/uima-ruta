@@ -86,5 +86,12 @@ and NOTICE files
          install-size="0"
          version="${parsedVersion.osgiVersion}"
          unpack="false"/>
+         
+   <plugin
+         id="org.apache.uima.ruta.core.ext"
+         download-size="0"
+         install-size="0"
+         version="${parsedVersion.osgiVersion}"
+         unpack="false"/>
 
 </feature>
