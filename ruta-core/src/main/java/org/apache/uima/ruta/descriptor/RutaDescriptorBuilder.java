@@ -198,8 +198,8 @@ public class RutaDescriptorBuilder {
         url = checkImportExistence(eachName, options.getTypeSystemSuffix() + ".xml",
                 options.getClassLoader());
         if (url == null) {
-          throw new FileNotFoundException("Build process can't find " + eachName + " in "
-                  + desc.getScriptName());
+          throw new FileNotFoundException("Build process can't find " + eachName
+                  + options.getTypeSystemSuffix() + ".xml" + " in " + desc.getScriptName());
         }
       }
       TypeSystemDescription each = getTypeSystemDescriptor(url, options, rm);
