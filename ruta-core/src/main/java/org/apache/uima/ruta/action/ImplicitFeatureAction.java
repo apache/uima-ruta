@@ -71,6 +71,10 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
     }
     Collection<AnnotationFS> featureAnnotations = expr.getFeatureAnnotations(annotations, stream,
             element.getParent(), false);
+    if(featureAnnotations.isEmpty()) {
+      // null value in feature, but we require the host
+      featureAnnotations = annotations;
+    }
     Feature feature = expr.getFeature(element.getParent());
     IRutaExpression arg = expr.getArg();
     for (AnnotationFS each : featureAnnotations) {
