@@ -273,6 +273,17 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
         conversionReplacements[i] = rep;
       }
     }
+    
+    gapText = (String) aContext.getConfigParameterValue(PARAM_GAP_TEXT);
+    gapText = gapText == null ? "" : gapText;
+    
+    gapInducingTags = (String[]) aContext.getConfigParameterValue(PARAM_GAP_INDUCING_TAGS);
+    gapInducingTags = gapInducingTags == null ? new String[0] : gapInducingTags;
+    
+    expandOffsets = (Boolean) aContext.getConfigParameterValue(PARAM_EXPAND_OFFSETS);
+    expandOffsets = expandOffsets == null ? false : expandOffsets;
+    
+    newlineInducingTagRegExp = (String) aContext.getConfigParameterValue(PARAM_NEWLINE_INDUCING_TAG_REGEXP);
   }
 
   @Override
