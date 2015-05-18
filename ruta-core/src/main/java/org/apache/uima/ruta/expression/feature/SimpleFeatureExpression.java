@@ -152,7 +152,7 @@ public class SimpleFeatureExpression extends FeatureExpression {
         }
       }
       if (!(this instanceof FeatureMatchExpression)) {
-        if (stream.isVisible(afs)) {
+        if (stream.isVisible(afs, true)) {
           result.add(afs);
         }
       } else {

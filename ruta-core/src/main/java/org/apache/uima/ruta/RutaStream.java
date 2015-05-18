@@ -785,11 +785,15 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   
   
   public boolean isVisible(AnnotationFS annotationFS) {
+    return isVisible(annotationFS, false);
+  }
+  
+  public boolean isVisible(AnnotationFS annotationFS, boolean ignoreWindow) {
     if (annotationFS == null) {
       return false;
     }
     AnnotationFS windowAnnotation = filter.getWindowAnnotation();
-    if (windowAnnotation != null
+    if (!ignoreWindow && windowAnnotation != null
             && (annotationFS.getBegin() < windowAnnotation.getBegin() || annotationFS.getEnd() > windowAnnotation
                     .getEnd())) {
       return false;

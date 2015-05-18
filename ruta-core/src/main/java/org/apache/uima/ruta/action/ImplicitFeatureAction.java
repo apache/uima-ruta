@@ -34,8 +34,10 @@ import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
+import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
@@ -71,7 +73,7 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
     }
     Collection<AnnotationFS> featureAnnotations = expr.getFeatureAnnotations(annotations, stream,
             element.getParent(), false);
-    if(featureAnnotations.isEmpty()) {
+    if (featureAnnotations.isEmpty()) {
       // null value in feature, but we require the host
       featureAnnotations = annotations;
     }
@@ -135,15 +137,27 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
         }
       }
     } else if (argExpr instanceof GenericFeatureExpression && !feature.getRange().isPrimitive()) {
-      TypeExpression typeExpr = ((GenericFeatureExpression) argExpr).getFeatureExpression()
-              .getTypeExpr(element.getParent());
+      FeatureExpression fe = ((GenericFeatureExpression) argExpr).getFeatureExpression();
+      TypeExpression typeExpr = fe.getTypeExpr(element.getParent());
       Type t = typeExpr.getType(element.getParent());
       List<AnnotationFS> inWindow = stream.getAnnotationsInWindow(a, t);
-      if (feature.getRange().isArray()) {
-        a.setFeatureValue(feature, UIMAUtils.toFSArray(stream.getJCas(), inWindow));
+      if (fe instanceof SimpleFeatureExpression) {
+        SimpleFeatureExpression sfe = (SimpleFeatureExpression) fe;
+        List<AnnotationFS> featureAnnotations = new ArrayList<>(sfe.getFeatureAnnotations(inWindow,
+                stream, element.getParent(), false));
+        if (feature.getRange().isArray()) {
+          a.setFeatureValue(feature, UIMAUtils.toFSArray(stream.getJCas(), featureAnnotations));
+        } else if (!featureAnnotations.isEmpty()) {
+          AnnotationFS annotation = featureAnnotations.get(0);
+          a.setFeatureValue(feature, annotation);
+        }
       } else {
-        AnnotationFS annotation = inWindow.get(0);
-        a.setFeatureValue(feature, annotation);
+        if (feature.getRange().isArray()) {
+          a.setFeatureValue(feature, UIMAUtils.toFSArray(stream.getJCas(), inWindow));
+        } else {
+          AnnotationFS annotation = inWindow.get(0);
+          a.setFeatureValue(feature, annotation);
+        }
       }
     }
   }
