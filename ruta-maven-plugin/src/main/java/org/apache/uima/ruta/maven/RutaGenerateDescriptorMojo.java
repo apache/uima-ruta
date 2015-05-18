@@ -241,6 +241,11 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
       }
     }
 
+    if (addRutaNature) {
+      addRutaNature();
+      addRutaBuildPath();
+    }
+    
     if (filesToBuild.isEmpty()) {
       getLog().debug("UIMA Ruta Building: Skipped, since no changes were detected.");
       return;
@@ -290,11 +295,6 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     for (RutaDescriptorInformation eachFailed : toBuild) {
       String scriptName = eachFailed.getScriptName();
       getLog().warn("Failed to build UIMA Ruta script: " + scriptName);
-    }
-
-    if (addRutaNature) {
-      addRutaNature();
-      addRutaBuildPath();
     }
 
   }
