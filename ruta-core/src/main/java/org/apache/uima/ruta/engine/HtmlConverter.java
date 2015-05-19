@@ -180,6 +180,14 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
 
   @ConfigurationParameter(name = PARAM_GAP_TEXT, mandatory = false, defaultValue = "")
   private String gapText;
+  
+  /**
+   * This boolean parameter sets the value of the parameter <code>gapText</code> to a single space.
+   */
+  public static final String PARAM_USE_SPACE_GAP = "useSpaceGap";
+
+  @ConfigurationParameter(name = PARAM_USE_SPACE_GAP, mandatory = false, defaultValue = "")
+  private Boolean useSpaceGap;
 
   /**
    * This string array parameter can be used to apply custom conversions. It defaults to a list of
@@ -276,6 +284,13 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
     
     gapText = (String) aContext.getConfigParameterValue(PARAM_GAP_TEXT);
     gapText = gapText == null ? "" : gapText;
+    
+    useSpaceGap = (Boolean) aContext.getConfigParameterValue(PARAM_USE_SPACE_GAP);
+    useSpaceGap = useSpaceGap == null ? false : useSpaceGap;
+    
+    if(useSpaceGap) {
+      gapText = " ";
+    }
     
     gapInducingTags = (String[]) aContext.getConfigParameterValue(PARAM_GAP_INDUCING_TAGS);
     gapInducingTags = gapInducingTags == null ? new String[0] : gapInducingTags;
