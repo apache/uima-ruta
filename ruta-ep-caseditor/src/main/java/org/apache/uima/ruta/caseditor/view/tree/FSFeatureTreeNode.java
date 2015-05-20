@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.caseditor.view.tree;
 
-import java.util.List;
+import java.util.Stack;
 
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
@@ -37,7 +37,7 @@ public class FSFeatureTreeNode extends FSTreeNode implements IAnnotationNode, IA
   }
 
   public FSFeatureTreeNode(ITreeNode parent,Feature feature, FeatureStructure fs,
-          List<Type> parentTypes) {
+          Stack<Type> parentTypes) {
     super(parent, fs, parentTypes);
     this.feature = feature;
   }
@@ -51,7 +51,7 @@ public class FSFeatureTreeNode extends FSTreeNode implements IAnnotationNode, IA
     return feature.getShortName() + ": " + getAnnotation().getCoveredText();
   }
 
-  public Object getAdapter(Class adapter) {
+  public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
     if (FSTreeNode.class.equals(adapter)) {
       return this;
     } else if (AnnotationFS.class.equals(adapter) || FeatureStructure.class.equals(adapter)) {

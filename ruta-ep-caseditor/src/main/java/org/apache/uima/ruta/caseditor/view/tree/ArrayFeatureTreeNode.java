@@ -93,7 +93,7 @@ public class ArrayFeatureTreeNode implements ITreeNode {
     // nothing to do
   }
 
-  public Object getAdapter(Class adapter) {
+  public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
 
     if (ArrayFeatureTreeNode.class.equals(adapter)) {
       return this;

@@ -19,11 +19,11 @@
 
 package org.apache.uima.ruta.caseditor.view.tree;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Stack;
 
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
@@ -90,7 +90,7 @@ public class TypeOrderedRootTreeNode extends AbstractTreeNode implements IRootTr
 
   private FSTreeNode createFSNode(ITreeNode parent, FeatureStructure fs) {
     if (fs instanceof AnnotationFS) {
-      return new AnnotationTreeNode(parent, (AnnotationFS) fs, new ArrayList<Type>());
+      return new AnnotationTreeNode(parent, (AnnotationFS) fs, new Stack<Type>());
     }
     return new FSTreeNode(parent, fs);
   }
@@ -151,7 +151,7 @@ public class TypeOrderedRootTreeNode extends AbstractTreeNode implements IRootTr
     sort(new TreeComparator());
   }
 
-  public Object getAdapter(Class adapter) {
+  public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
 
     if (TypeTreeNode.class.equals(adapter)) {
       return this;

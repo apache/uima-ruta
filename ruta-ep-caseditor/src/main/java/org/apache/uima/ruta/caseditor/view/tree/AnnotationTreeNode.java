@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.caseditor.view.tree;
 
-import java.util.List;
+import java.util.Stack;
 
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
@@ -33,7 +33,7 @@ public class AnnotationTreeNode extends FSTreeNode implements IAnnotationNode, I
     super(parent, annotation);
   }
   
-  public AnnotationTreeNode(ITreeNode parent, AnnotationFS annotation, List<Type> parentTypes) {
+  public AnnotationTreeNode(ITreeNode parent, AnnotationFS annotation, Stack<Type> parentTypes) {
     super(parent, annotation, parentTypes);
   }
 
@@ -46,7 +46,7 @@ public class AnnotationTreeNode extends FSTreeNode implements IAnnotationNode, I
     return getAnnotation().getCoveredText();
   }
 
-  public Object getAdapter(Class adapter) {
+  public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
 
     if (FSTreeNode.class.equals(adapter)) {
       return this;

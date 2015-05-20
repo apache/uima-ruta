@@ -19,9 +19,9 @@
 
 package org.apache.uima.ruta.caseditor.view.tree;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.ArrayFS;
@@ -37,16 +37,17 @@ public class FSTreeNode extends AbstractTreeNode implements IAdaptable {
   protected FeatureStructure fs;
 
   public FSTreeNode(ITreeNode parent, FeatureStructure annotation) {
-    this(parent, annotation, new ArrayList<Type>());
+    this(parent, annotation, new Stack<Type>());
   }
 
-  public FSTreeNode(ITreeNode parent, FeatureStructure annotation, List<Type> parentTypes) {
+  public FSTreeNode(ITreeNode parent, FeatureStructure annotation, Stack<Type> parentTypes) {
     super(parent);
     this.fs = annotation;
-    parentTypes.add(fs.getType());
+    parentTypes.push(fs.getType());
     for (Feature f : annotation.getType().getFeatures()) {
       addFeatures(this, f, annotation, parentTypes);
     }
+    parentTypes.pop();
   }
 
   public String getName() {
@@ -58,7 +59,7 @@ public class FSTreeNode extends AbstractTreeNode implements IAdaptable {
   }
 
   public void addFeatures(ITreeNode parent, Feature f, FeatureStructure featureStructure,
-          List<Type> parentTypes) {
+          Stack<Type> parentTypes) {
     if (f.getRange().isArray()) {
       // handle all kinds of arrays
       FeatureStructure featureValue = featureStructure.getFeatureValue(f);
@@ -109,10 +110,10 @@ public class FSTreeNode extends AbstractTreeNode implements IAdaptable {
 
   private boolean expandable(Type type, List<Type> parentTypes) {
     int frequency = Collections.frequency(parentTypes, type);
-    return frequency < 5;
+    return frequency < 2;
   }
 
-  public Object getAdapter(Class adapter) {
+  public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
     if (FSTreeNode.class.equals(adapter)) {
       return this;
     } else if (FeatureStructure.class.equals(adapter)) {
