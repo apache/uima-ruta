@@ -197,6 +197,16 @@
           <argLine>-Xmx650M</argLine>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <!-- Exclude generated jcas classes -->
+          <sourceFileExcludes>
+            <sourceFileExclude>**/org/apache/uima/ruta/type/*.java</sourceFileExclude>
+          </sourceFileExcludes>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>
