@@ -1,0 +1,3 @@
+Peter Kluegl: Ruta
+Marshall Schor: UIMA
+Joern Kottmann: CAS Editor

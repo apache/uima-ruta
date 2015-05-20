@@ -1,0 +1,9 @@
+PACKAGE org.apache.uima;
+
+WORDLIST list1 = 'trie_compressed.mtwl';
+
+DECLARE T1, T2, T3, T4, T5;
+
+TRIE("FirstNames.txt" = T1, "LastNames.txt" = T2,
+    "CompleteNames.txt" = T3, "NamesWithSystems.txt" = T4,
+	list1, true, 4, false, 0, ":");

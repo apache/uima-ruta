@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+    <name>ExampleBooleanFunctionTypeSystem</name>
+    <imports>
+        <import location="..\..\..\BasicTypeSystem.xml"/>
+    </imports>
+    <types>
+        <typeDescription>
+            <name>uima.ruta.example.ExampleBooleanFunction.T3</name>
+            <description>Type defined in uima.ruta.example.ExampleBooleanFunction</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.ExampleBooleanFunction.T2</name>
+            <description>Type defined in uima.ruta.example.ExampleBooleanFunction</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.ExampleBooleanFunction.T1</name>
+            <description>Type defined in uima.ruta.example.ExampleBooleanFunction</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+    </types>
+</typeSystemDescription>

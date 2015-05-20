@@ -1,0 +1,4 @@
+MOFN Condition
+
+The MOFN condition evaluates true, if the number of given conditions evaluating true
+do not exceed the given interval.

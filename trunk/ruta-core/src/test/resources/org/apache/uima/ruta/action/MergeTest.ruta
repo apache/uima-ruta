@@ -1,0 +1,17 @@
+PACKAGE org.apache.uima;
+
+DECLARE T1, T2, T3, T4, T5, T6, T7, T8;
+
+TYPELIST list1 = {ANY, W, CW};
+TYPELIST list2 = {ANY, PM, PERIOD};
+TYPELIST list3 = {ANY, NUM};
+
+TYPELIST intersection;
+TYPELIST union;
+
+MERGE(true, union, list1, list2, list3);
+Document{SIZE(union,8,8) -> MARK(T1)};
+
+MERGE(false, intersection, list1, list2, list3);
+Document{SIZE(intersection,1,1) -> MARK(T2)};
+

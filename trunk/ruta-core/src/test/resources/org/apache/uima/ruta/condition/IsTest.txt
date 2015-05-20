@@ -1,0 +1,4 @@
+1: In this text,
+2: every colon is marked.
+3: The same is done
+4: with all commas and periods.

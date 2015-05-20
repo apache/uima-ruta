@@ -1,0 +1,7 @@
+PACKAGE org.apache.uima;
+
+DECLARE T1, T2, T3, T4, T5, T6, T7, T8;
+
+ANY{-> MARKONCE(T1), MARKONCE(T1)};
+ANY+{-PARTOF(T2) -> MARKONCE(T2), MARKONCE(T2)};
+

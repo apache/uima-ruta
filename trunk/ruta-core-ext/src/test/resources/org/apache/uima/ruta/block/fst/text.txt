@@ -1,0 +1,126 @@
+Constraint-driven Evaluation in UIMA Ruta 
+Andreas Wittek1, Martin Toepfer1, Georg Fette12 , 
+Peter Kluegl12, and Frank Puppe1 
+
+1 Department of Computer Science VI, University of Wuerzburg, 
+Am Hubland, Wuerzburg, Germany 
+2 Comprehensive Heart Failure Center, University of Wuerzburg, 
+Straubmuehlweg 2a, Wuerzburg, Germany 
+
+{a.wittek,toepfer,fette,pkluegl,puppe}@informatik.uni-wuerzburg.de 
+Abstract. This paper presents an extension of the UIMA Ruta Work­bench for estimating the quality of arbitrary information extraction mod­els on unseen documents. The user can specify expectations on the do­main in the form of constraints, which are applied in order to predict the F1 score or the ranking. The applicability of the tool is illustrated in a case study for the segmentation of references, which also examines the robustness for di.erent models and documents. 
+1 Introduction 
+Apache UIMA [5] and the surrounding ecosystem provide a powerful framework for engineering state-of-the-art Information Extraction (IE) systems, e.g., in the medical domain [13]. Two main approaches for building IE models can be dis­tinguished. One approach is based on manually de.ning a set of rules, e.g., with UIMA Ruta3 (Rule-based Text Annotation) [7]4 , that is able to identify the interesting information or annotations of speci.c types. A knowledge engineer writes, extends, re.nes and tests the rules on a set of representative documents. The other approach relies on machine learning algorithms, such as probabilis­tic graphical models like Conditional Random Fields (CRF) [10]. Here, a set of annotated gold documents is used as a training set in order to estimate the parameters of the model. The resulting IE system of both approaches, the sta­tistical model and the set of rules, is evaluated on an additional set of annotated documents in order to estimate its accuracy or F1 score, which is then assumed to hold for the application in general. However, while the system performed well in the evaluation setting, its accuracy decreases when applied on unseen docu­ments, maybe because the set of documents applied for developing the IE system was not large or not representative enough. In order to estimate the actual per­formance, either more data is labeled or the results are manually checked by a human, who is able to validate the correctness of the annotations. 
+Annotated documents are essential for developing IE systems, but there is a natural lack of labeled data in most application domains and its creation is 
+3 http://uima.apache.org/ruta.html 
+4 previously published as TextMarker 
+
+Andreas Wittek et al. 
+error-prone, cumbersome and time-consuming as is the manual validation. An automatic estimation of the IE system’s quality on unseen documents would therefore provide many advantages. A human is able to validate the created annotations using background knowledge and expectations on the domain. This kind of knowledge is already used by current research in order to improve the IE models (c.f. [1, 6, 11]), but barely to estimate IE system’s quality. 
+This paper introduces an extension of the UIMA Ruta Workbench for exactly this use case: Estimating the quality and performance of arbitrary IE models on unseen documents. The user can specify expectations on the domain in the form of constraints thus the name Constraint-driven Evaluation (CDE). The constraints rate speci.c aspects of the labeled documents and are aggregated to a single cde score, which provides a simple approximation of the evalua­tion measure, e.g., the token-based F1 score. The framework currently supports two di.erent kinds of constraints: Simple UIMA Ruta rules, which express spe­ci.c expectations concerning the relationship of annotations, and annotation-distribution constraints, which rate the coverage of features. We distinguish two tasks: predicting the actual F1 score of a document and estimating the ranking of the documents speci.ed by the actual F1 score. The former task can give answers on how good the model performs. The latter task points to documents where the IE model can be improved. We evaluate the proposed tool in a case study for the segmentation of scienti.c references, which tries to estimate the F1 score of a rule-based system. The expectations are additionally applied on documents of a di.erent distribution and on documents labeled by a di.erent IE model. The results emphasize the advantages and usability of the approach, which works already with minimal e.orts due to a simple fact: It is much easier to estimate how good a document is annotated than to actually identify the positions of defective or missing annotations. 
+The rest of the paper is structured as follows. In the upcoming section, we describe how our work relates to other .elds of Information Extraction research. We explain the proposed CDE approach in Section 3. Section 4 covers the case study and the corresponding results. We conclude with pointers to future work in Section 5. 
+2 Related Work 
+Besides standard classi.cation methods, which .t all model parameters against the labeled data of the supervised setting, there have been several e.orts to incorporate background knowledge from either user expectations or external data analysis. Bellare et al. [1], Gra¸ca et al. [6] and Mann and McCallum [11], for example, showed how moments of auxiliary expectation functions on unlabeled data can be used for such a purpose with special objective functions and an alternating optimization procedure. Our work on constraint-driven evaluation is partly inspired by this idea, however, we address a di.erent problem. We suggest to use auxiliary expectations to estimate the quality of classi.ers on unseen data. 
+Constraint-driven Evaluation in UIMA Ruta 
+A classi.er’s con.dence describes the degree to which it believes that its own decisions are correct. Several classi.ers provide intrinsic measures of con­.dence, for example, naive Bayes classi.ers. Culotta and McCallum [4], for in­stance, studied con.dence estimation for information extraction. They focus on predictions about .eld and record correctness of single instances. Their main motivation is to .lter high precision results for database population. Similar to CDE, they use background knowledge features like record length, single .eld la­bel assignments and .eld con.dence values to estimate record con.dence. CDE generalizes common con.dence estimation because the goal of CDE is the esti­mation of the quality of arbitrary models. 
+Active learning algorithms are able to choose the order in which training examples are presented in order to improve learning, typically by selective sam­pling [2]. While the general CDE setting does not necessarily contain aspects of selective sampling, consider for example the batch F1 score prediction task, the ranking task can be used as a selective sampling strategy in applications to .nd instances that support system refactoring. The focus of the F1 ranking task, however, still di.ers from active learning goals which is essential for the design of such systems. Both approaches are supposed to favor di.erent tech­niques to .t their di.erent objectives. Popular active learning approaches such as density-weighting (e.g., [12]) focus on dense regions of the input distribution. CDE, however, tries to estimate the quality of the model on the whole data set and hence demands for di.erently designed methods. Despite their di.erences, the combination of active learning and CDE would be an interesting subject for future work. CDE may be used to .nd weak learners of ensembles and informa­tive instances for these learners. 
+3 Constraint-driven Evaluation 
+The Constraint-driven Evaluation (CDE) framework presented in this work al­lows the user to specify expectations about the domain in form of constraints. These constraints are applied on documents with annotations, which have been created by an information extraction model. The results of the constraints are aggregated to a single cde score, which re.ects how well the annotations ful.ll the user’s expectations and thus provide a predicted measurement of the model’s quality for these documents. The framework is implemented as an extension of the UIMA Ruta Workbench. Figure 1 provides a screenshot of the CDE per­spective, which includes di.erent views to formalize the set of constraints and to present the predicted quality of the model for the speci.ed documents. 
+We de.ne a constraint in this work as a function C : CAS . [0, 1], which returns a con.dence value for an annotated document (CAS) where high values indicates that the expectations are ful.lled. Two di.erent types of constraints are currently supported: Rule constraints are simple UIMA Ruta rules without actions and allow to specify sequential patterns or other relationships between annotations that need to be ful.lled. The result is basically the ratio of how often the rule has tried to match compared to how often the rule has actually 
+Andreas Wittek et al. 
+
+Fig. 1. CDE perspective in the UIMA Ruta Workbench. Bottom left: Expectations on the domain formalized as constraints. Top right: Set of documents and their cde scores. Bottom right: Results of the constraints for the selected document. 
+matched. An example for such a constraint is Document{CONTAINS(Author)};, which speci.es that each document must contain an annotation of the type Author. The second type of supported constraints are Annotation Distribution (AD) constraints (c.f. Generalized Expectations [11]). Here, the expected distri­bution of an annotation or word is given for the evaluated types. The result of the constraint is the cosine similarity of the expected and the observed presence of the annotation or word within annotations of the given types. A constraint like "Peter": Author 0.9, Title 0.1, for example, indicates that the word “Peter” should rather be covered by an Author annotation than by a Title an­notation. The set of constraints and their weights can be de.ned using the CDE Constraint view (c.f. Figure 1, bottom left). 
+For a given set of constraints C = {C1,C2...Cn} and corresponding weights w = {w1,w2, ..., wn}, the cde score for each document is de.ned by the weighted average: 
+n
+n
+1 
+cde = wi · Ci (1) 
+n 
+i 
+The cde scores for a set of documents may already be very useful as a report how well the annotations comply with the expectations on the domain. However, one can further distinguish two tasks for CDE: the prediction of the actual evaluation score of the model, e.g., the token-based F1 score, and the 
+Constraint-driven Evaluation in UIMA Ruta 
+prediction of the quality ranking of the documents. While the former task can give answers how good the model performs or whether the model is already good enough for the application, the latter task provides a useful tool for introspection: Which documents are poorly labeled by the model? Where should the model be improved? Are the expectations on the domain realistic? Due to the limited expressiveness of the aggregation function, we concentrate on the latter task. The cde scores for the annotated documents are depicted in the CDE Documents view (c.f. Figure 1, top right). The result of each constraint for the currently selected document is given in the CDE Results view (c.f. Figure 1, bottom right). 
+The development of the constraints needs to be supported by tooling in order to achieve an improved prediction in the intended task. If the user extends or re.nes the expectations on the domain, then a feedback whether the prediction has improved or deteriorated is very valuable. For this purpose, the framework provides functionality to evaluate the prediction quality of the constraints itself. Given a set of documents with gold annotations, the cde score of each document can be compared to the actual F1 score. Four measures are applied to evaluate the prediction quality of the constraints: the mean squared error, the Spearman’s rank correlation coe.cient, the Pearson correlation coe.cient and the cosine similarity. For optimizing the constraints to approximate the actual F1 score, the Pearson’s r is maximized, and for improving the predicted ranking, the Spearman’s . is maximized. If documents with gold annotations are available, then the F1 scores and the values of the four evaluation measures are given in the CDE Documents view (c.f. Figure 1, top right). 
+4 Case Study 
+The usability and advantages of the presented work are illustrated with a simple case study concerning the segmentation of scienti.c references, a popular domain for evaluating novel information extraction models. In this task, the information extraction model normally identi.es about 12 di.erent entities of the reference string, but in this case study we limited the relevant entities to Author, Title and Date, which are commonly applied in order to identify the cited publication. 
+In the main scenario of the case study, we try to estimate the extraction quality of a set of UIMA Ruta rules that shall identify the Author, Title and Date of a reference string. For this purpose, we de.ne constraints representing the background knowledge about the domain for this speci.c set of rules. Addi­tionally to this main setting of the case study, we also measure the prediction of the constraints in two di.erent scenarios: In the .rst one, the documents have been labeled not by UIMA Ruta rules, but by a CRF model [10]. The CRF model was trained with a limited amount of iterations in a 5-fold manner. In a second scenario, we apply the UIMA Ruta rules on a set of documents of a di.erent distribution including unknown style guides. 
+Table 1 provides an overview of the applied datasets. We make use of the references dataset of [9]. This data set is homogeneously divided in three sub-datasets with respect to their style guides and amount of references, which are 
+Andreas Wittek et al. Table 1. Overview of utilized datasets. Druta 219 references in 8 documents used to develop the set of UIMA Ruta rules. 
+Ddev 192 references in 8 documents labeled by the UIMA Ruta rules and applied for developing the constraints. 
+Dtest 155 references in 7 documents labeled by the UIMA Ruta rules and applied to evaluate the constraints. 
+Dcrf Druta, Ddev and Dtest (566 references in 23 documents) labeled by a (5-fold) CRF model. 
+Dgen  452 references in 28 documents from a di.erent source with unknown style guides labeled by the UIMA Ruta rules. 
+applied to develop the UIMA Ruta rules, de.ne the set of constraints, and to eval­uate the prediction of the constraints compared to the actual F1 score. The CRF model is trained on the partitions given in [9]. The last dataset Dgen consists of a mixture of the datasets Cora, CiteSeerX and FLUX-CiM described in [3] generated by the rearrangement of [8]. 
+Table 2. Overview of evaluated sets of constraints. 
+Cruta   15 Rule constraints describing general expectations for the entities 
+Author, Title and Date. The weight of each constraint is set to 1. 
+
+Cruta+bib   Cruta extended with one additional AD constraint covering the entity-distribution of words extracted from Bibsonomy. The weight of each constraint is set to 1. 
+Cruta+5xbib   Same set of constraints as in Cruta+bib, but the weight of the additional 
+AD constraint is set to 5. 
+
+Table 2 provides an overview of the di.erent sets of constraints, whose pre­dictions are compared to the actual F1 score. First, we extended and re.ned a set of UIMA Ruta rules until they achieved an F1 score of 1.0 on the dataset Druta. Then, 15 Rule constraints Cruta 5 have been speci.ed using the dataset Ddev. The de.nition of the UIMA Ruta rules took about two hours and the def­inition of the constraints about one hour. Additionally to the Rule constraints, we created an AD constraint, which consists of the entity distribution of words that occurred at least 1000 times in the latest Bibtex database dump of Bibson­
+6
+omy. The set of constraints Cruta+bib and Cruta+5xbib combine both types of constraints with di.erent weighting. 
+Table 3 contains the evaluation, which compares the predicted cde score to the actual token-based F1 score for each document. We apply two di.erent 
+5   The actual implementation of the constraints as UIMA Ruta rules is depicted in Figure 1 (lower left part). 
+6 http://www.kde.cs.uni-kassel.de/bibsonomy/dumps 
+Constraint-driven Evaluation in UIMA Ruta 
+Table 3. Spearman’s . and Pearson’s r given for the predicted cde score (for each document) compared to the actual F1 score. 
+Cruta  Cruta+bib  Cruta+5xbib  
+Dataset  .  r  .  r  .  r  
+Ddev  0.8708  0.9306  0.9271  0.9405  0.8051  0.6646  
+Dtest  0.9615  0.9478  0.9266  0.8754  0.8154  0.6758  
+Dcrf  0.6793  0.7881  0.7429  0.8011  0.7117  0.7617  
+Dgen  0.7089  0.8002  0.7724  0.8811  0.8150  0.9504  
+
+correlation coe.cients for measuring the quality of the prediction: Spearman’s . gives an indication about the ranking of the documents and Pearson’s r provides a general measure of linear dependency. 
+Although the expectations de.ned by the sets of constraints are limited and quite minimalistic covering mostly only common expectations, the results indi­cate that they can be useful in any scenario. The results for dataset Ddev are only given for completeness since this dataset was applied to de.ne the set of constraints. The results for the dataset Dtest, however, re.ect the prediction on unseen documents of the same distribution. The ranking of the documents was almost perfectly estimated with a Spearman’s . of 0.96157. The coe.cients for the other scenarios Dcrf and Dgen are considerably decreased, but the cde scores are nevertheless very useful for an assessment of the extraction model’s quality. The .ve worst documents in Dgen (including new style guides), for ex­ample, have been reliably detected. The results show that the AD constraints can improve the prediction, but do not exploit their full potential in the current implementation. The impact measured for the dataset Dcrf is not as distinctive since the CRF model already includes such features and thus is able to avoid errors that are detected by these constraints. However, the prediction in the dataset Dgen is considerably improved. The UIMA Ruta rules produce severe errors in documents with new style guides, which are easily detected by the word distribution. 
+5 Conclusions 
+This paper presented a tool for the UIMA community implemented in UIMA Ruta, which enables to estimate the extraction quality of arbitrary models on unseen documents. Its introspective report is able to improve the development of information extraction models already with minimal e.orts. This is achieved by formalizing the background knowledge about the domain with di.erent types of constraints. We have shown the usability and advantages of the approach in a case study about segmentation of references. Concerning future work, many prospects for improvements remain, for example a logistic regression model for 
+7 The actual cde and F1 scores of Dtest are depicted in Figure 1 (right part) Andreas Wittek et al. 
+approximating the scores of arbitrary evaluation measures, new types of con­straints, or approaches to automatically acquire the expectations on a domain. 
+Acknowledgments This work was supported by the Competence Network Heart Failure, funded by the German Federal Ministry of Education and Re­search (BMBF01 EO1004). 
+References 
+1.  
+Bellare, K., Druck, G., McCallum, A.: Alternating Projections for Learning with Expectation Constraints. In: Proceedings of the Twenty-Fifth Conference on Un­certainty in AI. pp. 43–50. AUAI Press (2009) 
+
+2.  
+Cohn, D., Atlas, L., Ladner, R.: Improving generalization with active learning. Machine Learning 15, 201–221 (1994) 
+
+3.  
+Councill, I., Giles, C.L., Kan, M.Y.: ParsCit: an Open-source CRF Reference String Parsing Package. In: Proceedings of the Sixth International Language Resources and Evaluation (LREC’08). ELRA, Marrakech, Morocco (2008) 
+
+4.  
+Culotta, A., McCallum, A.: Con.dence Estimation for Information Extraction. In: Proceedings of HLT-NAACL 2004: Short Papers. pp. 109–112. HLT-NAACL-Short ’04, Association for Computational Linguistics, Stroudsburg, PA, USA (2004) 
+
+5.  
+Ferrucci, D., Lally, A.: UIMA: An Architectural Approach to Unstructured In­formation Processing in the Corporate Research Environment. Natural Language Engineering 10(3/4), 327–348 (2004) 
+
+6.  
+Graca, J., Ganchev, K., Taskar, B.: Expectation Maximization and Posterior Con­straints. In: Platt, J., Koller, D., Singer, Y., Roweis, S. (eds.) NIPS 20, pp. 569–576. MIT Press, Cambridge, MA (2008) 
+
+7.  
+Kluegl, P., Atzmueller, M., Puppe, F.: TextMarker: A Tool for Rule-Based Informa­tion Extraction. In: Chiarcos, C., de Castilho, R.E., Stede, M. (eds.) Proceedings of the 2nd UIMA@GSCL Workshop. pp. 233–240. Gunter Narr Verlag (2009) 
+
+8.  
+Kluegl, P., Hotho, A., Puppe, F.: Local Adaptive Extraction of References. In: 33rd Annual German Conference on Arti.cial Intelligence (KI 2010). Springer (2010) 
+
+9.  
+Kluegl, P., Toepfer, M., Lemmerich, F., Hotho, A., Puppe, F.: Collective Infor­mation Extraction with Context-Speci.c Consistencies. In: Flach, P.A., Bie, T.D., Cristianini, N. (eds.) ECML/PKDD (1). Lecture Notes in Computer Science, vol. 7523, pp. 728–743. Springer (2012) 
+
+10.   
+La.erty, J., McCallum, A., Pereira, F.: Conditional Random Fields: Probabilistic Models for Segmenting and Labeling Sequence Data. Proc. 18th International Conf. on Machine Learning pp. 282–289 (2001) 
+
+11.   
+Mann, G.S., McCallum, A.: Generalized Expectation Criteria for Semi-Supervised Learning with Weakly Labeled Data. J. Mach. Learn. Res. 11, 955–984 (2010) 
+
+12.   
+McCallum, A., Nigam, K.: Employing EM and Pool-Based Active Learning for Text Classi.cation. In: Shavlik, J.W. (ed.) ICML. pp. 350–358. Morgan Kaufmann (1998) 
+
+13.   
+Savova, G.K., Masanz, J.J., Ogren, P.V., Zheng, J., Sohn, S., Kipper-Schuler, K.C., Chute, C.G.: Mayo clinical Text Analysis and Knowledge Extraction System (cTAKES): architecture, component evaluation and applications. Journal of the American Medical Informatics Association : JAMIA 17(5), 507–513 (Sep 2010) 
+
+
+

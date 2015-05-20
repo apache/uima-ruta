@@ -1,0 +1,8 @@
+PACKAGE org.apache.uima.ruta;
+
+TYPESYSTEM org.apache.uima.ruta.StrictImportTestTypeSystem;
+
+DECLARE T1;
+
+W{-> MARK(MyType)};
+W{-> MARK(T1)};

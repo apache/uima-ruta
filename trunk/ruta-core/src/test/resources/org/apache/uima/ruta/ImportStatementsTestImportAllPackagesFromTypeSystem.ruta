@@ -1,0 +1,6 @@
+PACKAGE org.apache.uima.ruta;
+
+IMPORT PACKAGE * FROM org.apache.uima.ruta.ImportStatementsTestTypeSystemWithManyPackages;
+
+W{REGEXP("First") -> MARK(Type1)};
+W{REGEXP("Second") -> MARK(Type2)};

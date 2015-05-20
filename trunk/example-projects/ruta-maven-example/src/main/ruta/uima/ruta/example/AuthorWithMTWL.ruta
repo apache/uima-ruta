@@ -1,0 +1,52 @@
+// Licensed to the Apache Software Foundation (ASF) under one
+// or more contributor license agreements.  See the NOTICE file
+// distributed with this work for additional information
+// regarding copyright ownership.  The ASF licenses this file
+// to you under the Apache License, Version 2.0 (the
+// "License"); you may not use this file except in compliance
+// with the License.  You may obtain a copy of the License at
+// 
+//   http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+
+PACKAGE uima.ruta.example;
+
+// import the types of this type system:
+TYPESYSTEM types.BibtexTypeSystem;
+
+// define and import an external dictionary containing first names
+WORDLIST dict = 'generated.mtwl';
+
+// define some useful annotations
+DECLARE FirstName, FirstNameInitial, Name, NameListPart;
+
+//find the first names
+Document{-> TRIE("FirstNames.txt"=FirstName, dict, true, 4, false, 0, ".,-/")};
+
+// something that may links names
+DECLARE NameLinker;
+W{REGEXP("and", false) -> MARK(NameLinker)};
+COMMA{ -> MARK(NameLinker)};
+SPECIAL{REGEXP("&") -> MARK(NameLinker)};
+
+// first name initials
+CW{REGEXP(".") -> MARK(FirstNameInitial,1,2)} PERIOD;
+
+// maybe a name
+FirstName+ FirstNameInitial* CW{-> MARK(Name, 1, 2, 3)};
+FirstNameInitial+{-PARTOF(Name)} CW{-> MARK(Name, 1, 2, 3)};
+CW{-PARTOF(Name), -REGEXP(".")} COMMA? FirstNameInitial+{-> MARK(Name, 1, 2, 3)};
+
+// list of names
+Name{-PARTOF(NameListPart)} NameLinker[1,2]{-> MARK(NameListPart,1,2)};
+NameListPart+ Name{-PARTOF(Author),-PARTOF(NameListPart) -> MARK(Author,1,2,3)} ;
+NameListPart+{-PARTOF(Author) -> MARK(Author)};
+
+// expand the author to the following punctation mark
+Author{-> SHIFT(Author,1,2)} PM;

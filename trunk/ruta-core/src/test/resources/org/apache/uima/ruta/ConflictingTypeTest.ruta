@@ -1,0 +1,6 @@
+PACKAGE org.apache.uima;
+
+DECLARE T1;
+
+// there is no way to know if this matches org.apache.uima.ruta.ConflictingTypeSystem.W or org.apache.uima.ruta.W
+W{->T1};

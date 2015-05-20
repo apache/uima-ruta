@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
+<!ENTITY imgroot "images/tools/ruta/language/" >
+<!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
+%uimaents;
+]>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
+  license agreements. See the NOTICE file distributed with this work for additional 
+  information regarding copyright ownership. The ASF licenses this file to 
+  you under the Apache License, Version 2.0 (the "License"); you may not use 
+  this file except in compliance with the License. You may obtain a copy of 
+  the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+  by applicable law or agreed to in writing, software distributed under the 
+  License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+  OF ANY KIND, either express or implied. See the License for the specific 
+  language governing permissions and limitations under the License. -->
+
+<section id="ugr.tools.ruta.language.anchoring">
+  <title>Rule elements and their matching order</title>
+  <para>
+    If not specified otherwise, then the UIMA Ruta rules normally start the matching 
+    process with their first rule element. The first rule element searches for possible positions for its matching
+    condition and then will advise the next rule element to continue the matching process.
+    For that reason, writing rules that contain a first rule element with an optional quantifier is discouraged 
+    and will result in ignoring the optional attribute of the quantifier.
+  </para>
+  <para>
+    The starting rule element can also be manually specified by adding <quote>@</quote> directly in front of the matching condition.
+    In the following example, the rule first searches for capitalized words (CW) and then checks whether 
+    there is a period in front of the matched word.
+    <programlisting><![CDATA[PERIOD @CW;]]></programlisting>
+    This functionality can also be used for rules that start with an optional rule element by manually specifying a later
+    rule element to start the matching process.
+  </para>
+  <para>
+    The choice of the starting rule element can greatly influence the performance speed of the rule execution. 
+    This circumstance is illustrated with the following example that contains two rules, whereas already an annotation 
+    of the type <quote>LastToken</quote> was added to the last token of the document:
+    <programlisting><![CDATA[ANY LastToken;
+ANY @LastToken;]]></programlisting>
+    The first rule matches on each token of the document and checks whether the next annotation is the last token of the document.
+    This will result in many index operations because all tokens of the document are considered. 
+    The second rule, however, matches on the last token and then checks if there is any token in front of it. This
+    rule, therefore, considers only one token. 
+  </para>
+  <para>
+    The UIMA Ruta language provides also a concept for automatically selecting the starting rule element called dynamic anchoring.
+    Here, a simple heuristic concerning the position of the rule element and the involved types is applied in order to identify
+    the favorable rule element. This functionality can be activated in the <link linkend="ugr.tools.ruta.ae.basic.parameter">configuration parameters</link> of the analysis engine or 
+    directly in the script file with the <link linkend="ugr.tools.ruta.language.actions.dynamicanchoring">DYNAMICANCHORING</link> action. 
+  </para>
+  
+  <para>
+    A list of rule elements normally specifies a sequential pattern. The rule is able to match if the first rule element successfully matches 
+    and then the following rule element at the position after the match of the first rule element, and so on. There are three language constructs that break up that
+    sequential matching: <quote><![CDATA[&]]></quote>, <quote>|</quote> and <quote>%</quote>. A composed rule element where all inner rule elements are linked by the symbol <quote><![CDATA[&]]></quote>
+    matches only if all inner rule elements successfully match at the given position. A composed rule element with inner rule elements linked by the 
+    symbol <quote>|</quote> matches if one of the inner rule element successfully matches. These composed rule elements therefore specify a conjunction (<quote>and</quote>) 
+    and a disjunction (<quote>or</quote>) of its rule element at the given position. The symbol <quote>%</quote> specifies a different use case.
+    Here, rules themselves are linked and they are only able to fire if each one of the linked rules successfully matched. In contrast to <quote><![CDATA[&]]></quote>, 
+    this linkage of rule elements does not introduce constraints for the matched positions. In the following, a few examples of these three language constructs are given.
+  </para>
+  <programlisting><![CDATA[(Token.posTag=="DET" & Lemma.value=="the");]]></programlisting>
+  <para>
+    This rule is fulfilled, if there is a token whose feature <quote>posTag</quote> has the value <quote>DET</quote> and an annotation of the type <quote>Lemma</quote> whose feature <quote>value</quote> 
+    has the value <quote>the</quote>. Both rule elements need to be fulfilled at the same position.
+  </para>
+  <programlisting><![CDATA[NUM (W{REGEXP("Peter") -> Name} & (ANY CW{PARTOF(Name)}));]]></programlisting>
+  <para>
+    This rule matches on a number and then validates if the next word is <quote>Peter</quote> and if next but one token is capitalized and part of an annotation of the type <quote>Name</quote>.
+    If all rule elements successfully matched, then a new annotation of the type <quote>Name</quote> will be created covering the largest match of the linked rule elements. In this example,
+    the new annotation covers also the token after the word <quote>Peter</quote> even if the actions was specified at the rule element with the smaller match.
+  </para>
+  <programlisting><![CDATA[((W{REGEXP("Peter")} CW) | ("Mr" PERIOD CW)){-> Name};]]></programlisting>
+  <para>
+    In this example, an annotation of the type <quote>Name</quote> will be created for the token <quote>Peter</quote> followed by a 
+    capitalized word or the word <quote>Mr</quote> followed by a period and a capitalized word.   
+  </para>
+  <programlisting><![CDATA[(Animal ((COMMA | "and") Animal)+){-> AnimalEnum};]]></programlisting>
+  <para>
+    This rule annotates enumerations of animal annotations whereas each animal annotation is separated by either a comma or the word <quote>and</quote>.
+  </para>
+  <programlisting><![CDATA[BLOCK(forEach) Sentence{}{
+  CW NUM % SW NUM{-> MARK(Found, 1, 2)};
+}]]></programlisting>
+  <para>
+    Here, annotations of the type <quote>Found</quote> are created if a sentence contains a capitalized word followed by a number and a small written word followed by a number 
+    regardless of where these annotations occur in the sentence.
+  </para>
+  
+  
+</section>

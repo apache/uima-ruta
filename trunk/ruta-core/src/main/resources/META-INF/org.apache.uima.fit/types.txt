@@ -1,0 +1,4 @@
+classpath*:org/apache/uima/ruta/engine/BasicTypeSystem.xml
+classpath*:org/apache/uima/ruta/engine/InternalTypeSystem.xml
+classpath*:org/apache/uima/ruta/engine/HtmlTypeSystem.xml
+classpath*:org/apache/uima/ruta/engine/PlainTextTypeSystem.xml
