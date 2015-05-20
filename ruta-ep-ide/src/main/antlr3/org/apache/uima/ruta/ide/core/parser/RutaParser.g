@@ -127,7 +127,12 @@ import org.apache.uima.ruta.ide.parser.ast.RutaPackageDeclaration;
 		}
 	}
 	
-	public void addType(RutaBlock parent, String type, String parentType) {
+	public void addType(RutaBlock parent, String type, VariableReference parentTypeExpr) {
+	
+	String parentType = "uima.tcas.Annotation";
+          if(parentTypeExpr != null) {
+          	parentType = parentTypeExpr.getName();
+	  }
 		vars.add(type);
 		String descriptionString = null;
        if(packageString == null) {
@@ -144,8 +149,12 @@ import org.apache.uima.ruta.ide.parser.ast.RutaPackageDeclaration;
 		
 	}
 	
-	public void addType(RutaBlock parent, String name, String parentType, List featuresTypes,
+	public void addType(RutaBlock parent, String name, VariableReference parentTypeExpr, List featuresTypes,
           List<Token> featuresNames) {
+          String parentType = "uima.tcas.Annotation";
+          if(parentTypeExpr != null) {
+          	parentType = parentTypeExpr.getName();
+	  }
 	   	 name = parent.getNamespace() + "." + name.trim();
 	   	 String descriptionString = null;
 	   	 if(packageString == null) {
@@ -504,13 +513,13 @@ declaration returns [List<Statement> stmts = new ArrayList<Statement>()]
 		 id = Identifier {addVariable(id.getText(), declareToken.getText());}
 			
 	(
-	{addType($blockDeclaration::env, id.getText(), lazyParent == null ? null : lazyParent.toString());
+	{addType($blockDeclaration::env, id.getText(), lazyParent);
 			declarations.add(StatementFactory.createAnnotationType(id,declareToken));}
 		(
 		
 		COMMA 
 		 id = Identifier {addVariable(id.getText(), declareToken.getText());}
-			{addType($blockDeclaration::env, id.getText(),  lazyParent == null ? null : lazyParent.toString()); 
+			{addType($blockDeclaration::env, id.getText(),  lazyParent); 
 			declarations.add(StatementFactory.createAnnotationType(id,declareToken));}
 		 )* end = SEMI
 		 {
@@ -518,8 +527,6 @@ declaration returns [List<Statement> stmts = new ArrayList<Statement>()]
 		 stmts.add(stmt);
 		 }
 	|
-	declareToken=DECLARE type=annotationType
-	id = Identifier {addVariable(id.getText(), declareToken.getText());}
 		(LPAREN 
 			(
 			obj1 = annotationType{featureTypes.add(obj1);} 
@@ -552,7 +559,7 @@ declaration returns [List<Statement> stmts = new ArrayList<Statement>()]
 		   features.add(StatementFactory.createFeatureDeclaration(eachTO, eachName));  
 		   i++;
 		}
-		addType($blockDeclaration::env, id.getText(), lazyParent == null? "": lazyParent.toString(), featureTypes, featureNames);
+		addType($blockDeclaration::env, id.getText(), lazyParent, featureTypes, featureNames);
 		declarations.add( StatementFactory.createAnnotationType(id,declareToken, lazyParent, features));
 		stmt = StatementFactory.createDeclareDeclarationsStatement(declareToken, declarations, lazyParent, features);
 		stmts.add(stmt);
@@ -2255,14 +2262,14 @@ dottedComponentDeclaration returns [ComponentDeclaration ref = null ]
 	;
 
 //seems OK
-annotationType returns [Expression at = null]
+annotationType returns [VariableReference at = null]
 	: 
 	(
 	atRef = annotationTypeVariableReference {at = atRef;}
 	)
 	;
 		
-annotationTypeVariableReference returns [Expression typeVar = null]
+annotationTypeVariableReference returns [VariableReference typeVar = null]
   :
   atRef = dottedId 
   {typeVar = ExpressionFactory.createAnnotationTypeVariableReference(atRef);}

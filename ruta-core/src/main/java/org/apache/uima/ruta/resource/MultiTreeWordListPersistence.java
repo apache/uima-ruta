@@ -60,7 +60,7 @@ public class MultiTreeWordListPersistence {
    * 
    * @param is
    *          the inputStream to sniff. Must support {@link InputStream#markSupported()}
-   * @return true if this stream starts with '<?xml'
+   * @return true if this stream starts with '{@literal <?xml}'
    */
   public static boolean isSniffedXmlContentType(InputStream is) throws IOException {
     if (is == null)

@@ -865,6 +865,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
             || t.equals(UIMAConstants.TYPE_LONG) || t.equals(UIMAConstants.TYPE_SHORT))
             && RutaTypeConstants.RUTA_TYPE_N == kind) {
       return true;
+    } else if ( RutaTypeConstants.RUTA_TYPE_AT == kind) {
+      return true;
     }
     return false;
   }

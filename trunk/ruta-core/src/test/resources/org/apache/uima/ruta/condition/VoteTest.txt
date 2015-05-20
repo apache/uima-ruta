@@ -1,1 +1,0 @@
-Use the VOTE Condition, to compare the number of occurrences of two different annotations.

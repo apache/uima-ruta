@@ -90,7 +90,7 @@ public class PrimitiveFeatureTreeNode implements ITreeNode {
     // nothing to do
   }
 
-  public Object getAdapter(Class adapter) {
+  public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
 
     if (PrimitiveFeatureTreeNode.class.equals(adapter)) {
       return this;

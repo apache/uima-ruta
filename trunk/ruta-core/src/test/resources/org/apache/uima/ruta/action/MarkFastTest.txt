@@ -1,6 +1,0 @@
-1 0 0
-aaaaa
-100 
-bbbbb
-2 0 0
-ccccc

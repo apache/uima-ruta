@@ -195,9 +195,11 @@ public class RutaTestUtils {
   /**
    * Helper to get the test type, e.g. org.apache.uima.T1, org.apache.uima.T2, ...
    * 
-   * @param cas
+   * @param cas 
+   *          The CAS object containing the type system
    * @param i
    *          typeId, converted to {@link #TYPE} + i
+   * @return the test type object with the given counter
    */
   public static Type getTestType(CAS cas, int i) {
     if (cas == null)

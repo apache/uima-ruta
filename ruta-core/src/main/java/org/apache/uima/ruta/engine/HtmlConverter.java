@@ -59,7 +59,7 @@ import org.htmlparser.util.ParserException;
  * it would be mapped to an annotation of length 0, it is not moved to the new view.
  * 
  * The HTML Converter also supports heuristic and explicit conversion patterns which default to
- * html4 decoding, e.g., "<![CDATA[&nbsp;]]>", "<![CDATA[&lt;]]>", etc. Concepts like tables or
+ * html4 decoding, e.g., "{@literal&nbsp;}", "{@literal &lt;}", etc. Concepts like tables or
  * lists are not supported.
  * 
  * Note that in general it is suggested to run an html cleaner before any further processing to
@@ -180,10 +180,18 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
 
   @ConfigurationParameter(name = PARAM_GAP_TEXT, mandatory = false, defaultValue = "")
   private String gapText;
+  
+  /**
+   * This boolean parameter sets the value of the parameter <code>gapText</code> to a single space.
+   */
+  public static final String PARAM_USE_SPACE_GAP = "useSpaceGap";
+
+  @ConfigurationParameter(name = PARAM_USE_SPACE_GAP, mandatory = false, defaultValue = "")
+  private Boolean useSpaceGap;
 
   /**
    * This string array parameter can be used to apply custom conversions. It defaults to a list of
-   * commonly used codes, e.g., <![CDATA[&nbsp;]]>, which are converted using html 4 entity
+   * commonly used codes, e.g., {@literal&nbsp;}, which are converted using html 4 entity
    * unescaping. However, explicit conversion strings can also be passed via the parameter
    * <code>conversionReplacements</code>. Remember to enable explicit conversion via
    * <code>conversionPolicy</code> first.
@@ -199,7 +207,7 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
    * This string parameter determines the conversion policy used, either "heuristic", "explicit", or
    * "none". When the value is "explicit", the parameters <code>conversionPatterns</code> and
    * optionally <code>conversionReplacements</code> are considered. The "heuristic" conversion
-   * policy uses simple regular expressions to decode html4 entities such as "<![CDATA[&nbsp;]]>".
+   * policy uses simple regular expressions to decode html4 entities such as "{@literal&nbsp;}".
    * The default behavior is "heuristic".
    */
   public static final String PARAM_CONVERSION_POLICY = "conversionPolicy";
@@ -273,6 +281,24 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
         conversionReplacements[i] = rep;
       }
     }
+    
+    gapText = (String) aContext.getConfigParameterValue(PARAM_GAP_TEXT);
+    gapText = gapText == null ? "" : gapText;
+    
+    useSpaceGap = (Boolean) aContext.getConfigParameterValue(PARAM_USE_SPACE_GAP);
+    useSpaceGap = useSpaceGap == null ? false : useSpaceGap;
+    
+    if(useSpaceGap) {
+      gapText = " ";
+    }
+    
+    gapInducingTags = (String[]) aContext.getConfigParameterValue(PARAM_GAP_INDUCING_TAGS);
+    gapInducingTags = gapInducingTags == null ? new String[0] : gapInducingTags;
+    
+    expandOffsets = (Boolean) aContext.getConfigParameterValue(PARAM_EXPAND_OFFSETS);
+    expandOffsets = expandOffsets == null ? false : expandOffsets;
+    
+    newlineInducingTagRegExp = (String) aContext.getConfigParameterValue(PARAM_NEWLINE_INDUCING_TAG_REGEXP);
   }
 
   @Override

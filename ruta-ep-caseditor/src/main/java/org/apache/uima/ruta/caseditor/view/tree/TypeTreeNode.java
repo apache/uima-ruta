@@ -57,7 +57,7 @@ public class TypeTreeNode extends AbstractTreeNode {
     return type.hashCode();
   }
 
-  public Object getAdapter(Class adapter) {
+  public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
 
     if (TypeTreeNode.class.equals(adapter)) {
       return this;

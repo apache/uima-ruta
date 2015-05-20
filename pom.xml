@@ -16,10 +16,8 @@
     <relativePath>ruta-parent/pom.xml</relativePath>
   </parent>
 
-  <groupId>org.apache.uima</groupId>
   <artifactId>ruta</artifactId>
   <packaging>pom</packaging>
-  <version>2.3.0</version>
   <name>Apache UIMA Ruta: ${project.artifactId}</name>
   <description>The top project for Apache UIMA Ruta</description>
   <url>${uimaWebsiteUrl}</url>
@@ -108,12 +106,13 @@
     <module>ruta-ep-textruler</module>
     <module>ruta-ep-core-ext</module>
 
-	<module>ruta-maven-plugin</module>
+	  <module>ruta-maven-plugin</module>
 	
     <module>ruta-docbook</module>
     <module>ruta-eclipse-feature</module>
     
     <module>example-projects/ruta-ep-example-extensions</module>
+    <module>example-projects/ruta-maven-example</module>
   </modules>
   <build>
     <pluginManagement>

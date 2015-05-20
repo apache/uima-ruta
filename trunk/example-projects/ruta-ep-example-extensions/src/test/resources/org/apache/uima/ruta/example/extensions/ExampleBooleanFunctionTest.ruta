@@ -1,8 +1,0 @@
-PACKAGE uima.ruta.example;
-
-DECLARE T1, T2, T3;
-
-Document{-IF(ExampleBooleanFunction(Document)) -> MARK(T1)};
-
-
-

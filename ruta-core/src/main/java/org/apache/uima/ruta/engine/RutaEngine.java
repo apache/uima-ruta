@@ -268,7 +268,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   /**
    * This parameter specifies whether the memory consumption should be reduced. This parameter
-   * should be set to true for very large CAS documents (e.g., > 500k tokens), but it also reduces
+   * should be set to true for very large CAS documents (e.g., &gt; 500k tokens), but it also reduces
    * the performance. The default value is set to false.
    */
   public static final String PARAM_LOW_MEMORY_PROFILE = "lowMemoryProfile";

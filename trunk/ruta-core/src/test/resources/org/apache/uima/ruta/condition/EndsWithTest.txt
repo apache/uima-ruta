@@ -1,3 +1,0 @@
-A single sentence!
-And here is another one?
-Testing the ENDSWITH condition of Ruta.

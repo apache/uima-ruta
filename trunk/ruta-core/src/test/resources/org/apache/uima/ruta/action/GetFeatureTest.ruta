@@ -1,7 +1,0 @@
-PACKAGE org.apache.uima;
-
-DECLARE T1;
-
-STRING language;
-GETFEATURE("language", language);
-Document{REGEXP(language, "x-unspecified") -> MARK(T1)};

@@ -509,6 +509,8 @@ public class RutaEnvironment {
    *          Type system describing the package to load.
    * @param packageName
    *          Package to load or null to load all packages.
+   * @param alias
+   *          Alias of the package. Null or empty string to use no alias.
    */
   public void importPackageFromTypeSystem(String typesystem, String packageName, String alias) {
     TypeSystemDescription tsd = TypeSystemDescriptionFactory

@@ -41,15 +41,15 @@ import org.apache.uima.util.XMLSerializer;
 /**
  * This Analysis Engine is able to serialize the processed CAS to an XMI file whereas the the source
  * and destination view can be specified A descriptor file for this Analysis Engine is located in
- * the folder <quote>descriptor/utils</quote> of a UIMA Ruta project.
+ * the folder <code>descriptor/utils</code> of a UIMA Ruta project.
  * 
  */
 public class ViewWriter extends JCasMultiplier_ImplBase {
 
   /**
    * This string parameter specifies the absolute path of the resulting file named
-   * <quote>output.xmi</quote>. However, if an annotation of the type
-   * <quote>org.apache.uima.examples.SourceDocumentInformation</quote> is given, then the value of
+   * <code>output.xmi</code>. However, if an annotation of the type
+   * <code>org.apache.uima.examples.SourceDocumentInformation</code> is given, then the value of
    * this parameter is interpreted to be relative to the URI stored in the annotation and the name
    * of the file will be adapted to the name of the source file. If this functionality is activated
    * in the preferences, then the UIMA Ruta Workbench adds the SourceDocumentInformation annotation

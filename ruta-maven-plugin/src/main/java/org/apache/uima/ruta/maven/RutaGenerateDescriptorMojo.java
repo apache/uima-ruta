@@ -19,7 +19,6 @@
 package org.apache.uima.ruta.maven;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -63,7 +62,6 @@ import org.apache.uima.ruta.extensions.IRutaExtension;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLizable;
 import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.Scanner;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.codehaus.plexus.util.xml.Xpp3DomWriter;
@@ -233,15 +231,21 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
 
     String[] files = FileUtils.getFilesFromExtension(project.getBasedir().getAbsolutePath(),
             new String[] { "ruta" });
-    
+
     List<File> filesToBuild = new ArrayList<File>();
     for (String each : files) {
       File file = new File(each);
-      if(buildContext.hasDelta(file)) {
+      boolean descriptorMissing = isDescriptorMissing(file);
+      if (descriptorMissing || buildContext.hasDelta(file)) {
         filesToBuild.add(file);
       }
     }
 
+    if (addRutaNature) {
+      addRutaNature();
+      addRutaBuildPath();
+    }
+    
     if (filesToBuild.isEmpty()) {
       getLog().debug("UIMA Ruta Building: Skipped, since no changes were detected.");
       return;
@@ -293,11 +297,26 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
       getLog().warn("Failed to build UIMA Ruta script: " + scriptName);
     }
 
-    if (addRutaNature) {
-      addRutaNature();
-      addRutaBuildPath();
+  }
+
+  private boolean isDescriptorMissing(File file) {
+    String scriptName = file.getName().substring(0, file.getName().length() - 5);
+
+    String aeName = scriptName + analysisEngineSuffix + ".xml";
+    String[] aeFiles = FileUtils.getFilesFromExtension(
+            analysisEngineOutputDirectory.getAbsolutePath(), new String[] { aeName });
+    if (aeFiles == null || aeFiles.length == 0) {
+      return true;
     }
 
+    String tsName = scriptName + typeSystemOutputDirectory + ".xml";
+    String[] tsFiles = FileUtils.getFilesFromExtension(typeSystemOutputDirectory.getAbsolutePath(),
+            new String[] { tsName });
+    if (tsFiles == null || tsFiles.length == 0) {
+      return true;
+    }
+
+    return false;
   }
 
   private List<String> getExtensionsFromClasspath(ClassLoader classloader) {
@@ -345,6 +364,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     OutputStream os = null;
     try {
       File out = new File(aFilename);
+      out.getParentFile().mkdirs();
       os = buildContext.newFileOutputStream(out);
       out.getParentFile().mkdirs();
       getLog().debug("Writing descriptor to: " + out);
