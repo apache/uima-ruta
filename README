@@ -42,6 +42,20 @@ If a CAS is created using the CASCreationUtils, please provide the type prioriti
 
 -------------------------------------
 
+Using the jcasgen-maven-plugin may cause problems if it creates duplicate classes for the 
+internal UIMA Ruta types (overwriting the implementation of RutaBasic). Depending on the location 
+of the type system descriptors, the plugin should be configured to be limited on the project, 
+or the UIMA Ruta type system descriptors should explicitly be excluded:
+
+    <configuration>
+      <typeSystemExcludes>
+        <typeSystemExclude>/**/BasicTypeSystem.xml</typeSystemExclude>
+        <typeSystemExclude>/**/InternalTypeSystem.xml</typeSystemExclude>
+      </typeSystemExcludes>
+    </configuration>
+
+-------------------------------------
+
 If you use the uimaFIT JCasGenPomFriendly in Maven and want to use UIMA Ruta 
 as a standalone annotator you have to exclude the generated UIMA Ruta basic 
 type files from the build, e.g., by adding:
