@@ -1337,6 +1337,12 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
     specified in the <quote>gapInducingTags</quote>.
           </para>
         </section>
+        <section id="ugr.tools.ruta.ae.htmlconverter.parameter.useSpaceGap">
+          <title>useSpaceGap</title>
+          <para>
+          This boolean parameter sets the value of the parameter <quote>gapText</quote> to a single space..
+          </para>
+        </section>
       </section>
     </section><section id="ugr.tools.ruta.ae.stylemap">
       <title>Style Map Creator</title>
