@@ -24,15 +24,15 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>ruta-parent</artifactId>
-    <version>2.3.0</version>
+    <version>2.3.1-SNAPSHOT</version>
     <relativePath>../ruta-parent/pom.xml</relativePath>
   </parent>
   <name>Apache UIMA Ruta Documentation</name>
   <url>${uimaWebsiteUrl}</url>
   <scm>
-  	<url>http://svn.apache.org/viewvc/uima/ruta/tags/ruta-2.3.0/ruta-docbook</url>
-  	<connection>scm:svn:http://svn.apache.org/repos/asf/uima/ruta/tags/ruta-2.3.0/ruta-docbook</connection>
-  	<developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/ruta/tags/ruta-2.3.0/ruta-docbook</developerConnection>
+  	<url>http://svn.apache.org/viewvc/uima/ruta/trunk/ruta-docbook</url>
+  	<connection>scm:svn:http://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-docbook</connection>
+  	<developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-docbook</developerConnection>
   </scm>
   <properties>
   	<uimaScmProject>${project.artifactId}</uimaScmProject>
