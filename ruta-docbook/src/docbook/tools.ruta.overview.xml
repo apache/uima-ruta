@@ -31,8 +31,8 @@ under the License.
   <section id="ugr.tools.ruta.overview.intro">
     <title>What is Apache UIMA Ruta?</title>
     <para>
-      Apache UIMA&#8482; Ruta is a rule-based script language supported by Eclipse-based tooling.
-      The language is designed to enable rapid development of text processing applications within UIMA. 
+      Apache UIMA Ruta&#8482; is a rule-based script language supported by Eclipse-based tooling.
+      The language is designed to enable rapid development of text processing applications within Apache UIMA&#8482;. 
       A special focus lies on the intuitive and flexible domain specific language for defining 
       patterns of annotations. Writing rules for information extraction or other text processing 
       applications is a tedious process. The Eclipse-based tooling for UIMA Ruta, called the Apache UIMA Ruta Workbench,
