@@ -184,6 +184,7 @@
                   !org.eclipse.ui,
                   !org.eclipse.ui.part,
                   !org.eclipse.core.runtime,
+                  !org.osgi.framework,
                   *
                 </Import-Package>
               </instructions>
