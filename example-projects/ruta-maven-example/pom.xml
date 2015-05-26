@@ -19,6 +19,11 @@
 		<relativePath>../../ruta-parent/pom.xml</relativePath>
 	</parent>
 	<url>${uimaWebsiteUrl}</url>
+	<name>Apache UIMA Ruta: ${project.artifactId}</name>
+	<properties>
+    <postNoticeText />
+    <uimaScmProject>${project.artifactId}</uimaScmProject>
+  </properties>
 	<scm>
 		<url>http://svn.apache.org/viewvc/uima/ruta/tags/ruta-2.3.0/example-projects/ruta-maven-example</url>
 		<connection>scm:svn:http://svn.apache.org/repos/asf/uima/ruta/tags/ruta-2.3.0/example-projects/ruta-maven-example</connection>
