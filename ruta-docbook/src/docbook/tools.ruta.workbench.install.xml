@@ -31,8 +31,10 @@ under the License.
     <orderedlist numeration="arabic">
       <listitem>
         <para>
-          Download, install and start Eclipse 3.7., 3.8 or 4.2. Eclipse 3.7 can, for example, can be obtained
-          from the <ulink url="http://www.eclipse.org/downloads/packages/release/indigo/sr2">eclipse.org</ulink> download site.
+          Download, install and start Eclipse. The Eclipse version currently supported by UIMA Ruta is given 
+          on the webpage of the <ulink url="https://uima.apache.org/ruta.html">project</ulink>. 
+          This is normally the latest version of Eclipse, which can be obtained
+          from the <ulink url="https://eclipse.org/">eclipse.org</ulink> download site.
         </para>
       </listitem>
       <listitem>
