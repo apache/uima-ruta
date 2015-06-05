@@ -92,7 +92,7 @@ public class RutaDescriptorBuilder {
 
     ResourceManager rm = UIMAFramework.newDefaultResourceManager();
     if (options.getClassLoader() != null) {
-      new ResourceManager_impl(options.getClassLoader());
+      rm = new ResourceManager_impl(options.getClassLoader());
     }
     if (enginePaths != null) {
       String dataPath = "";
