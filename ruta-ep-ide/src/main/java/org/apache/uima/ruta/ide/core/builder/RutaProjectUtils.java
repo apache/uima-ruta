@@ -534,6 +534,9 @@ public class RutaProjectUtils {
 
   private static void extendClasspathWithProject(Collection<String> result, IProject project,
           Collection<IProject> visited) throws CoreException, JavaModelException {
+    if(project == null) {
+      return;
+    }
     IProjectNature rutaNature = project.getNature(RutaNature.NATURE_ID);
     if (rutaNature != null) {
       IScriptProject sp = DLTKCore.create(project);
