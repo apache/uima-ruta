@@ -621,7 +621,8 @@ Document{->MARKTABLE(PresidentOfUSA, 1, "party" = 2,
 RegExpRule        -> StringExpression "->" GroupAssignment 
                      ("," GroupAssignment)* ";"
 GroupAssignment   -> TypeExpression FeatureAssignment?
-                     | NumberEpxression "=" TypeExpression FeatureAssignment?
+                     | NumberEpxression "=" TypeExpression 
+                       FeatureAssignment?
 FeatureAssignment -> "(" StringExpression "=" Expression 
                       ("," StringExpression "=" Expression)* ")"
 ]]></programlisting>
