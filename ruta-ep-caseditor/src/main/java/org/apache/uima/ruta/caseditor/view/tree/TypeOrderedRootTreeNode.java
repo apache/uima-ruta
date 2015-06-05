@@ -64,7 +64,7 @@ public class TypeOrderedRootTreeNode extends AbstractTreeNode implements IRootTr
   public void insertFS(FeatureStructure fs, boolean withParents) {
     // TODO hotfix for explanation types...
     Type type = fs.getType();
-    if (type.getShortName().equals("DebugBlockApply")
+    if (type.getShortName().equals("RutaBasic") || type.getShortName().equals("DebugBlockApply")
             || type.getShortName().equals("DebugMatchedRuleMatch")
             || type.getShortName().equals("DebugFailedRuleMatch")
             || type.getShortName().equals("DebugScriptApply")
