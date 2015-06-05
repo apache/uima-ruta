@@ -107,7 +107,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   public static final String PARAM_MAIN_SCRIPT = "mainScript";
 
   @ConfigurationParameter(name = PARAM_MAIN_SCRIPT, mandatory = false)
-  private String mainScipt;
+  private String mainScript;
 
   /**
    * This parameter specifies the encoding of the rule files. Its default value is "UTF-8".
@@ -411,8 +411,6 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private RutaExternalFactory factory;
 
   private RutaEngineLoader engineLoader;
-
-  private String mainScript;
 
   private RutaVerbalizer verbalizer;
 
