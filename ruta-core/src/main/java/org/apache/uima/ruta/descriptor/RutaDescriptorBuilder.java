@@ -500,7 +500,9 @@ public class RutaDescriptorBuilder {
       return null;
     }
     Path relativePath = basePath.relativize(targetPath);
-    return relativePath.toString();
+    // HOTFIX: avoid windows paths. No generic solution to access a portable string found yet for Path
+    String result = relativePath.toString().replaceAll("\\\\", "/");
+    return result;
   }
 
   private void configureExtensions(AnalysisEngineDescription analysisEngineDescription,

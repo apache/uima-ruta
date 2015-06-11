@@ -938,8 +938,9 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     name = name.replaceAll("[.]", "/");
     for (String each : paths) {
       File file = new File(each, name + suffix);
+      String absolutePath = file.getAbsolutePath();
       if (!mustExist || file.exists()) {
-        return file.getAbsolutePath();
+        return absolutePath;
       }
     }
     return null;
