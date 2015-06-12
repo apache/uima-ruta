@@ -483,7 +483,9 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
       varNames = (String[]) aContext.getConfigParameterValue(PARAM_VAR_NAMES);
       varValues = (String[]) aContext.getConfigParameterValue(PARAM_VAR_VALUES);
-
+      dictRemoveWS = (Boolean) aContext.getConfigParameterValue(PARAM_DICT_REMOVE_WS);
+      dictRemoveWS = dictRemoveWS == null ? false : dictRemoveWS;
+      
       this.context = aContext;
 
       factory = new RutaExternalFactory();
