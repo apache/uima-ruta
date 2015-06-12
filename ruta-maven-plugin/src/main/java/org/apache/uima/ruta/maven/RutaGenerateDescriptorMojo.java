@@ -277,7 +277,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
         getLog().warn("Failed to parse UIMA Ruta script: " + scriptName, re);
       } catch (IOException ioe) {
         toBuild.add(descriptorInformation);
-        getLog().warn("Trying to build " + scriptName + ": " + ioe.toString());
+        getLog().warn("Tried to build " + scriptName + ", but failed (dependency probably not yet build): " + ioe.getMessage());
         count++;
       } catch (SAXException saxe) {
         getLog().warn("Failed to write descriptor: " + scriptName, saxe);
@@ -301,16 +301,25 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     String scriptName = file.getName().substring(0, file.getName().length() - 5);
 
     String aeName = scriptName + analysisEngineSuffix + ".xml";
-    String[] aeFiles = FileUtils.getFilesFromExtension(
-            analysisEngineOutputDirectory.getAbsolutePath(), new String[] { aeName });
-    if (aeFiles == null || aeFiles.length == 0) {
+    List<?> aeFiles = null;
+    try {
+      aeFiles = FileUtils.getFiles(analysisEngineOutputDirectory, aeName, null);
+    } catch (IOException e) {
+     return true;
+    }
+    if (aeFiles == null || aeFiles.size() == 0) {
       return true;
     }
 
-    String tsName = scriptName + typeSystemOutputDirectory + ".xml";
-    String[] tsFiles = FileUtils.getFilesFromExtension(typeSystemOutputDirectory.getAbsolutePath(),
-            new String[] { tsName });
-    if (tsFiles == null || tsFiles.length == 0) {
+    String tsName = scriptName + typeSystemSuffix + ".xml";
+    List<?> tsFiles;
+    try {
+      tsFiles = FileUtils.getFiles(typeSystemOutputDirectory, tsName, null);
+    } catch (IOException e) {
+      return true;
+    }
+    
+    if (tsFiles == null || tsFiles.size() == 0) {
       return true;
     }
 
