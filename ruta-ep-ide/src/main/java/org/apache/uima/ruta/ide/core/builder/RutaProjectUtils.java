@@ -31,7 +31,6 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.ruta.engine.RutaEngine;
-import org.apache.uima.ruta.ide.RutaIdeCorePlugin;
 import org.apache.uima.ruta.ide.core.RutaNature;
 import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IFile;
@@ -48,11 +47,8 @@ import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathAttribute;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IModelElement;
-import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -81,7 +77,7 @@ public class RutaProjectUtils {
     IScriptProject scriptProject = DLTKCore.create(project);
     IBuildpathEntry[] buildpathEntries = scriptProject.getRawBuildpath();
     for (IBuildpathEntry each : buildpathEntries) {
-      if (each.getEntryKind() == IBuildpathEntry.BPE_VARIABLE
+      if (each.getEntryKind() == IBuildpathEntry.BPE_CONTAINER
               && StringUtils.equals(each.getPath().toPortableString(), "RUTA_BUILD_VARS")) {
         IBuildpathAttribute[] attributes = each.getExtraAttributes();
         for (IBuildpathAttribute eachAttr : attributes) {
@@ -98,7 +94,7 @@ public class RutaProjectUtils {
     IScriptProject scriptProject = DLTKCore.create(project);
     IBuildpathEntry[] buildpathEntries = scriptProject.getRawBuildpath();
     for (IBuildpathEntry each : buildpathEntries) {
-      if (each.getEntryKind() == IBuildpathEntry.BPE_VARIABLE
+      if (each.getEntryKind() == IBuildpathEntry.BPE_CONTAINER
               && StringUtils.equals(each.getPath().toPortableString(), "RUTA_BUILD_VARS")) {
         IBuildpathAttribute[] attributes = each.getExtraAttributes();
         for (IBuildpathAttribute eachAttr : attributes) {
