@@ -178,11 +178,13 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
             break;
           }
           Integer second = anchors.first();
+          if(first < second) {
           RutaBasic newTMB = new RutaBasic(getJCas(), first, second);
           newTMB.setLowMemoryProfile(lowMemoryProfile);
           beginAnchors.put(first, newTMB);
           endAnchors.put(second, newTMB);
           cas.addFsToIndexes(newTMB);
+          }
         }
       }
       for (AnnotationFS a : allAnnotations) {
@@ -298,6 +300,9 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
         toSplit = ceiling;
       }
       int newEnd = toSplit.getEnd();
+      if(newEnd == anchor) {
+        return false;
+      }
       cas.removeFsFromIndexes(toSplit);
       toSplit.setEnd(anchor);
       RutaBasic newRB = new RutaBasic(getJCas(), anchor, newEnd);
@@ -792,6 +797,10 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     if (annotationFS == null) {
       return false;
     }
+    if(annotationFS.getBegin() >= annotationFS.getEnd()) {
+      return false;
+    }
+    
     AnnotationFS windowAnnotation = filter.getWindowAnnotation();
     if (!ignoreWindow && windowAnnotation != null
             && (annotationFS.getBegin() < windowAnnotation.getBegin() || annotationFS.getEnd() > windowAnnotation
