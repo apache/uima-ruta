@@ -93,189 +93,172 @@
 				<groupId>org.apache.uima</groupId>
 				<artifactId>ruta-maven-plugin</artifactId>
 				<version>${project.version}</version>
-				<configuration>
 
-					<!-- This is a exemplary configuration, which explicitly specifies the 
-						default configuration values if not mentioned otherwise. -->
-
-					<!-- The directory where the generated type system descriptors will 
-						be written stored. -->
-					<!-- default value: ${project.build.directory}/generated-sources/ruta/descriptor -->
-					<typeSystemOutputDirectory>${project.build.directory}/generated-sources/ruta/descriptor</typeSystemOutputDirectory>
-
-					<!-- The directory where the generated analysis engine descriptors will 
-						be stored. -->
-					<!-- default value: ${project.build.directory}/generated-sources/ruta/descriptor -->
-					<analysisEngineOutputDirectory>${project.build.directory}/generated-sources/ruta/descriptor</analysisEngineOutputDirectory>
-
-					<!-- The template descriptor for the generated type system. By default 
-						the descriptor of the maven dependency is loaded. -->
-					<!-- default value: none -->
-					<!-- not used in this example <typeSystemTemplate>...</typeSystemTemplate> -->
-
-					<!-- The template descriptor for the generated analysis engine. By default 
-						the descriptor of the maven dependency is loaded. -->
-					<!-- default value: none -->
-					<!-- not used in this example <analysisEngineTemplate>...</analysisEngineTemplate> -->
-
-					<!-- Script paths of the generated analysis engine descriptor. -->
-					<!-- default value: none -->
-					<scriptPaths>
-						<scriptPath>${basedir}/src/main/ruta/</scriptPath>
-					</scriptPaths>
-
-					<!-- Descriptor paths of the generated analysis engine descriptor. -->
-					<!-- default value: none -->
-					<descriptorPaths>
-						<descriptorPath>${project.build.directory}/generated-sources/ruta/descriptor</descriptorPath>
-					</descriptorPaths>
-
-					<!-- Resource paths of the generated analysis engine descriptor. -->
-					<!-- default value: none -->
-					<resourcePaths>
-						<resourcePath>${basedir}/src/main/resources/</resourcePath>
-						<resourcePath>${project.build.directory}/generated-sources/ruta/resources/</resourcePath>
-					</resourcePaths>
-
-					<!-- Suffix used for the generated type system descriptors. -->
-					<!-- default value: Engine -->
-					<analysisEngineSuffix>Engine</analysisEngineSuffix>
-
-					<!-- Suffix used for the generated analysis engine descriptors. -->
-					<!-- default value: TypeSystem -->
-					<typeSystemSuffix>TypeSystem</typeSystemSuffix>
-
-					<!-- Source file encoding. -->
-					<!-- default value: ${project.build.sourceEncoding} -->
-					<encoding>UTF-8</encoding>
-
-					<!-- Type of type system imports. false = import by location. -->
-					<!-- default value: false -->
-					<importByName>false</importByName>
-
-					<!-- Option to resolve imports while building. -->
-					<!-- default value: false -->
-					<resolveImports>false</resolveImports>
-
-					<!-- Amount of retries for building dependent descriptors. Default value 
-						-1 leads to three retires for each script. -->
-					<!-- default value: -1 -->
-					<maxBuildRetries>-1</maxBuildRetries>
-
-					<!-- List of packages with language extensions -->
-					<!-- default value: none -->
-					<extensionPackages>
-						<extensionPackage>org.apache.uima.ruta</extensionPackage>
-					</extensionPackages>
-
-					<!-- Add UIMA Ruta nature to .project -->
-					<!-- default value: false -->
-					<addRutaNature>true</addRutaNature>
-
-
-					<!-- Buildpath of the UIMA Ruta Workbench (IDE) for this project -->
-					<!-- default value: none -->
-					<buildPaths>
-						<buildPath>script:src/main/ruta/</buildPath>
-						<buildPath>descriptor:target/generated-sources/ruta/descriptor/</buildPath>
-						<buildPath>resources:src/main/resources/</buildPath>
-					</buildPaths>
-
-				</configuration>
 				<executions>
 					<execution>
-						<id>default</id>
+						<id>descriptors</id>
 						<phase>process-classes</phase>
 						<goals>
 							<goal>generate</goal>
 						</goals>
+						  <configuration>
+
+		          <!-- This is a exemplary configuration, which explicitly specifies the 
+		            default configuration values if not mentioned otherwise. -->
+		
+		          <!-- The directory where the generated type system descriptors will 
+		            be written stored. -->
+		          <!-- default value: ${project.build.directory}/generated-sources/ruta/descriptor -->
+		          <typeSystemOutputDirectory>${project.build.directory}/generated-sources/ruta/descriptor</typeSystemOutputDirectory>
+		
+		          <!-- The directory where the generated analysis engine descriptors will 
+		            be stored. -->
+		          <!-- default value: ${project.build.directory}/generated-sources/ruta/descriptor -->
+		          <analysisEngineOutputDirectory>${project.build.directory}/generated-sources/ruta/descriptor</analysisEngineOutputDirectory>
+		
+		          <!-- The template descriptor for the generated type system. By default 
+		            the descriptor of the maven dependency is loaded. -->
+		          <!-- default value: none -->
+		          <!-- not used in this example <typeSystemTemplate>...</typeSystemTemplate> -->
+		
+		          <!-- The template descriptor for the generated analysis engine. By default 
+		            the descriptor of the maven dependency is loaded. -->
+		          <!-- default value: none -->
+		          <!-- not used in this example <analysisEngineTemplate>...</analysisEngineTemplate> -->
+		
+		          <!-- Script paths of the generated analysis engine descriptor. -->
+		          <!-- default value: none -->
+		          <scriptPaths>
+		            <scriptPath>${basedir}/src/main/ruta/</scriptPath>
+		          </scriptPaths>
+		
+		          <!-- Descriptor paths of the generated analysis engine descriptor. -->
+		          <!-- default value: none -->
+		          <descriptorPaths>
+		            <descriptorPath>${project.build.directory}/generated-sources/ruta/descriptor</descriptorPath>
+		          </descriptorPaths>
+		
+		          <!-- Resource paths of the generated analysis engine descriptor. -->
+		          <!-- default value: none -->
+		          <resourcePaths>
+		            <resourcePath>${basedir}/src/main/resources/</resourcePath>
+		            <resourcePath>${project.build.directory}/generated-sources/ruta/resources/</resourcePath>
+		          </resourcePaths>
+		
+		          <!-- Suffix used for the generated type system descriptors. -->
+		          <!-- default value: Engine -->
+		          <analysisEngineSuffix>Engine</analysisEngineSuffix>
+		
+		          <!-- Suffix used for the generated analysis engine descriptors. -->
+		          <!-- default value: TypeSystem -->
+		          <typeSystemSuffix>TypeSystem</typeSystemSuffix>
+		
+		          <!-- Source file encoding. -->
+		          <!-- default value: ${project.build.sourceEncoding} -->
+		          <encoding>UTF-8</encoding>
+		
+		          <!-- Type of type system imports. false = import by location. -->
+		          <!-- default value: false -->
+		          <importByName>false</importByName>
+		
+		          <!-- Option to resolve imports while building. -->
+		          <!-- default value: false -->
+		          <resolveImports>false</resolveImports>
+		
+		          <!-- Amount of retries for building dependent descriptors. Default value 
+		            -1 leads to three retires for each script. -->
+		          <!-- default value: -1 -->
+		          <maxBuildRetries>-1</maxBuildRetries>
+		
+		          <!-- List of packages with language extensions -->
+		          <!-- default value: none -->
+		          <extensionPackages>
+		            <extensionPackage>org.apache.uima.ruta</extensionPackage>
+		          </extensionPackages>
+		
+		          <!-- Add UIMA Ruta nature to .project -->
+		          <!-- default value: false -->
+		          <addRutaNature>true</addRutaNature>
+		
+		
+		          <!-- Buildpath of the UIMA Ruta Workbench (IDE) for this project -->
+		          <!-- default value: none -->
+		          <buildPaths>
+		            <buildPath>script:src/main/ruta/</buildPath>
+		            <buildPath>descriptor:target/generated-sources/ruta/descriptor/</buildPath>
+		            <buildPath>resources:src/main/resources/</buildPath>
+		          </buildPaths>
+		
+		        </configuration>
 					</execution>
-				</executions>
-			</plugin>
+					 <execution>
+            <id>twl</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>twl</goal>
+            </goals>
+            <configuration>
+              <!-- This is a exemplary configuration, which explicitly specifies 
+                the default configuration values if not mentioned otherwise. -->
 
-			<plugin>
-				<groupId>org.apache.uima</groupId>
-				<artifactId>ruta-maven-plugin</artifactId>
-				<version>2.3.1-SNAPSHOT</version>
-				<configuration />
-				<executions>
-					<execution>
-						<id>default</id>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>twl</goal>
-						</goals>
-						<configuration>
-							<!-- This is a exemplary configuration, which explicitly specifies 
-								the default configuration values if not mentioned otherwise. -->
+              <!-- Compress resulting tree word list. -->
+              <!-- default value: true -->
+              <compress>true</compress>
 
-							<!-- Compress resulting tree word list. -->
-							<!-- default value: true -->
-							<compress>true</compress>
+              <!-- The source files for the tree word list. -->
+              <!-- default value: none -->
+              <inputFiles>
+                <directory>${basedir}/src/main/resources</directory>
+                <includes>
+                  <include>*.txt</include>
+                </includes>
+              </inputFiles>
 
-							<!-- The source files for the tree word list. -->
-							<!-- default value: none -->
-							<inputFiles>
-								<directory>${basedir}/src/main/resources</directory>
-								<includes>
-									<include>*.txt</include>
-								</includes>
-							</inputFiles>
+              <!-- The directory where the generated tree word lists will be written 
+                to. -->
+              <!-- default value: ${project.build.directory}/generated-sources/ruta/resources/ -->
+              <outputDirectory>${project.build.directory}/generated-sources/ruta/resources/</outputDirectory>
 
-							<!-- The directory where the generated tree word lists will be written 
-								to. -->
-							<!-- default value: ${project.build.directory}/generated-sources/ruta/resources/ -->
-							<outputDirectory>${project.build.directory}/generated-sources/ruta/resources/</outputDirectory>
+              <!-- Source file encoding. -->
+              <!-- default value: ${project.build.sourceEncoding} -->
+              <encoding>UTF-8</encoding>
 
-							<!-- Source file encoding. -->
-							<!-- default value: ${project.build.sourceEncoding} -->
-							<encoding>UTF-8</encoding>
+            </configuration>
+          </execution>
+          <execution>
+            <id>mtwl</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>mtwl</goal>
+            </goals>
+            <configuration>
+              <!-- This is a exemplary configuration, which explicitly specifies 
+                the default configuration values if not mentioned otherwise. -->
 
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+              <!-- Compress resulting tree word list. -->
+              <!-- default value: true -->
+              <compress>true</compress>
 
-			<plugin>
-				<groupId>org.apache.uima</groupId>
-				<artifactId>ruta-maven-plugin</artifactId>
-				<version>2.3.1-SNAPSHOT</version>
-				<configuration />
-				<executions>
-					<execution>
-						<id>default</id>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>mtwl</goal>
-						</goals>
-						<configuration>
-							<!-- This is a exemplary configuration, which explicitly specifies 
-								the default configuration values if not mentioned otherwise. -->
+              <!-- The source files for the multi tree word list. -->
+              <!-- default value: none -->
+              <inputFiles>
+                <directory>${basedir}/src/main/resources</directory>
+                <includes>
+                  <include>*.txt</include>
+                </includes>
+              </inputFiles>
 
-							<!-- Compress resulting tree word list. -->
-							<!-- default value: true -->
-							<compress>true</compress>
+              <!-- The directory where the generated tree word list will be written 
+                to. -->
+              <!-- default value: ${project.build.directory}/generated-sources/ruta/resources/generated.mtwl -->
+              <outputFile>${project.build.directory}/generated-sources/ruta/resources/generated.mtwl</outputFile>
 
-							<!-- The source files for the multi tree word list. -->
-							<!-- default value: none -->
-							<inputFiles>
-								<directory>${basedir}/src/main/resources</directory>
-								<includes>
-									<include>*.txt</include>
-								</includes>
-							</inputFiles>
+              <!-- Source file encoding. -->
+              <!-- default value: ${project.build.sourceEncoding} -->
+              <encoding>UTF-8</encoding>
 
-							<!-- The directory where the generated tree word list will be written 
-								to. -->
-							<!-- default value: ${project.build.directory}/generated-sources/ruta/resources/generated.mtwl -->
-							<outputFile>${project.build.directory}/generated-sources/ruta/resources/generated.mtwl</outputFile>
-
-							<!-- Source file encoding. -->
-							<!-- default value: ${project.build.sourceEncoding} -->
-							<encoding>UTF-8</encoding>
-
-						</configuration>
-					</execution>
+            </configuration>
+          </execution>
 				</executions>
 			</plugin>
 
