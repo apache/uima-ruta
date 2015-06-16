@@ -372,7 +372,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private Boolean strictImports = false;
 
   /**
-   * If this parameter is set to true, then whitespaces are removed when dictionaries are loaded
+   * If this parameter is set to true, then whitespaces are removed when dictionaries are loaded.
    */
   public static final String PARAM_DICT_REMOVE_WS = "dictRemoveWS";
 

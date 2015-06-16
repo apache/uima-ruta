@@ -868,6 +868,14 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
                   </entry>
                   <entry>Multi String</entry>
                 </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.dictRemoveWS'>dictRemoveWS</link>
+                  </entry>
+                  <entry>Remove whitespaces when loading dictionaries.
+                  </entry>
+                  <entry>Single Boolean</entry>
+                </row>
               </tbody>
             </tgroup>
           </table>
@@ -1095,6 +1103,12 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
 				    variables. The n-th entry of this string array specifies the value of the n-th entry of the
 				    string array of the parameter varNames. Only value of the kinds string, boolean, int, double
 				    and float are allowed.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.dictRemoveWS">
+          <title>dictRemoveWS</title>
+          <para>
+            If this parameter is set to true, then whitespaces are removed when dictionaries are loaded.
           </para>
         </section>
       </section>
