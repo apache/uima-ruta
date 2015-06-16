@@ -126,9 +126,9 @@ public class TreeWordList implements RutaWordList {
   }
 
   public TreeWordList(List<String> data, boolean dictRemoveWS) {
-    buildNewTree(data);
     name = "local";
     this.dictRemoveWS = dictRemoveWS;
+    buildNewTree(data);
   }
 
   public void buildNewTree(List<String> data) {
