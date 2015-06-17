@@ -49,6 +49,32 @@ public class Utils {
     return result;
   }
   
+  public static String[] getFilePathArray(FileSet fileSet, BuildContext buildContext) throws IOException {
+    List<File> files = new ArrayList<File>();
+
+    File directory = new File(fileSet.getDirectory());
+    if(!directory.exists()) {
+      return new String[0];
+    }
+    String includes = toString(fileSet.getIncludes());
+    String excludes = toString(fileSet.getExcludes());
+
+    for (Object each : FileUtils.getFiles(directory, includes, excludes)) {
+      if (each instanceof File) {
+        File file = (File) each;
+          files.add(file);
+      }
+    }
+    String[] result = new String[files.size()];
+    for (int i = 0; i < files.size(); i++) {
+      File each = files.get(i);
+      result[i] = each.getAbsolutePath();
+      
+    }
+    
+    return result;
+  }
+  
   public static List<File> getFilesIfModified(FileSet fileSet, BuildContext buildContext) throws IOException {
     List<File> result = new ArrayList<File>();
 

@@ -40,6 +40,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
+import org.apache.maven.model.FileSet;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -89,6 +90,12 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
 
   @Component
   private BuildContext buildContext;
+
+  /**
+   * The source files for the multi tree word list.
+   */
+  @Parameter(required = false)
+  private FileSet scriptFiles;
 
   /**
    * The directory where the generated type system descriptors will be written.
@@ -227,22 +234,39 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     List<String> extensions = getExtensionsFromClasspath(classloader);
     options.setLanguageExtensions(extensions);
 
-    String[] files = FileUtils.getFilesFromExtension(project.getBasedir().getAbsolutePath(),
-            new String[] { "ruta" });
-
-    List<File> filesToBuild = new ArrayList<File>();
-    for (String each : files) {
-      File file = new File(each);
-      boolean descriptorMissing = isDescriptorMissing(file);
-      if (descriptorMissing || buildContext.hasDelta(file)) {
-        filesToBuild.add(file);
+    String[] files = null;
+    if (scriptFiles != null) {
+      try {
+        files = Utils.getFilePathArray(scriptFiles, buildContext);
+      } catch (Exception e) {
+        getLog().warn("Error accessing script files.", e);
       }
+    } else {
+      files = FileUtils.getFilesFromExtension(project.getBuild().getOutputDirectory(),
+              new String[] { "ruta" });
     }
-
+    
     if (addRutaNature) {
       addRutaNature();
       addRutaBuildPath();
     }
+    
+    if (files == null) {
+      getLog().debug("UIMA Ruta Building: Skipped, since no script files were selected.");
+      return;
+    }
+    
+    List<File> filesToBuild = new ArrayList<File>();
+    for (String each : files) {
+      File file = new File(each);
+      boolean descriptorMissing = isDescriptorMissing(file);
+      boolean hasDelta = buildContext.hasDelta(file);
+      if (descriptorMissing || hasDelta) {
+        filesToBuild.add(file);
+      }
+    }
+
+    
 
     if (filesToBuild.isEmpty()) {
       getLog().debug("UIMA Ruta Building: Skipped, since no changes were detected.");
@@ -277,7 +301,9 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
         getLog().warn("Failed to parse UIMA Ruta script: " + scriptName, re);
       } catch (IOException ioe) {
         toBuild.add(descriptorInformation);
-        getLog().warn("Tried to build " + scriptName + ", but failed (dependency probably not yet build): " + ioe.getMessage());
+        getLog().warn(
+                "Tried to build " + scriptName
+                        + ", but failed (dependency probably not yet build): " + ioe.getMessage());
         count++;
       } catch (SAXException saxe) {
         getLog().warn("Failed to write descriptor: " + scriptName, saxe);
@@ -305,7 +331,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     try {
       aeFiles = FileUtils.getFiles(analysisEngineOutputDirectory, aeName, null);
     } catch (IOException e) {
-     return true;
+      return true;
     }
     if (aeFiles == null || aeFiles.size() == 0) {
       return true;
@@ -318,7 +344,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     } catch (IOException e) {
       return true;
     }
-    
+
     if (tsFiles == null || tsFiles.size() == 0) {
       return true;
     }

@@ -256,6 +256,24 @@ The|DT rabbit|NN made|VBD up|RP this|DT story|NN .|.</programlisting>
  <!-- This is a exemplary configuration, which explicitly specifies the 
   default configuration values if not mentioned otherwise. -->
 
+ <!--
+ The following parameter is optional and should only be specified
+ if the structure (e.g., classpath/resources) of the project requires it.
+ 
+ A FileSet specifying the UIMA Ruta script files that should be built. 
+ 
+ If this parameter is not specified, then all UIMA Ruta script files 
+ in the output directory (e.g., target/classes) of the project will be built. 
+ 
+ default value: none
+ <scriptFiles>
+   <directory>${basedir}/some/folder</directory>
+   <includes>
+     <include>*.ruta</include>
+   </includes>
+ </scriptFiles>
+ -->
+
  <!-- The directory where the generated type system descriptors will 
   be written stored. -->
  <!-- default value: ${project.build.directory}/generated-sources/
