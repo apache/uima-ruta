@@ -49,11 +49,11 @@ public class AssignAction extends AbstractRutaAction {
     RutaBlock parent = element.getParent();
     RutaEnvironment environment = parent.getEnvironment();
     Class<?> clazz = environment.getVariableType(var);
-    if (clazz.equals(Integer.class) && expression instanceof INumberExpression) {
-      int v = ((INumberExpression) expression).getIntegerValue(parent, match, element, stream);
-      environment.setVariableValue(var, v);
-    } else if (clazz.equals(Double.class) && expression instanceof INumberExpression) {
+    if (clazz.equals(Double.class) && expression instanceof INumberExpression) {
       double v = ((INumberExpression) expression).getDoubleValue(parent, match, element, stream);
+      environment.setVariableValue(var, v);
+    } else if (clazz.equals(Integer.class) && expression instanceof INumberExpression) {
+      int v = ((INumberExpression) expression).getIntegerValue(parent, match, element, stream);
       environment.setVariableValue(var, v);
     } else if (clazz.equals(Type.class) && expression instanceof TypeExpression) {
       Type v = ((TypeExpression) expression).getType(parent);

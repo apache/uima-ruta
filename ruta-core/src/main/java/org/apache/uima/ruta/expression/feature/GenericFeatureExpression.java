@@ -111,14 +111,14 @@ public class GenericFeatureExpression extends RutaExpression implements INumberE
     if(numberExpression == null) {
       numberExpression = ExpressionFactory.createNumberFeatureExpression(featureExpression);
     }
-    return numberExpression.getIntegerValue(parent, annotation, stream);
+    return numberExpression.getDoubleValue(parent, annotation, stream);
   }
 
   public float getFloatValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     if(numberExpression == null) {
       numberExpression = ExpressionFactory.createNumberFeatureExpression(featureExpression);
     }
-    return numberExpression.getIntegerValue(parent, annotation, stream);
+    return numberExpression.getFloatValue(parent, annotation, stream);
   }
 
 
