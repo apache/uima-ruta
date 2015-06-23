@@ -42,11 +42,11 @@ public class ComposedNumberExpression extends AbstractNumberExpression {
     if (numberExpression == null) {
       return 0;
     }
-    double result = numberExpression.getDoubleValue(parent, null, stream);
+    double result = numberExpression.getDoubleValue(parent, annotation, stream);
     for (int i = 0; i < getOperators().size(); i++) {
       double second = 0;
       if (getExpressions().size() > i + 1) {
-        second = getExpressions().get(i + 1).getDoubleValue(parent, null, stream);
+        second = getExpressions().get(i + 1).getDoubleValue(parent, annotation, stream);
       }
       result = calculate(result, second, getOperators().get(i));
     }
@@ -58,11 +58,11 @@ public class ComposedNumberExpression extends AbstractNumberExpression {
     if (numberExpression == null) {
       return 0;
     }
-    float result = numberExpression.getFloatValue(parent, null, stream);
+    float result = numberExpression.getFloatValue(parent, annotation, stream);
     for (int i = 0; i < getOperators().size(); i++) {
       float second = 0;
       if (getExpressions().size() > i + 1) {
-        second = getExpressions().get(i + 1).getFloatValue(parent, null, stream);
+        second = getExpressions().get(i + 1).getFloatValue(parent, annotation, stream);
       }
       result = calculate(result, second, getOperators().get(i));
     }
