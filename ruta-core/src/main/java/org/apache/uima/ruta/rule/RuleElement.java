@@ -78,8 +78,8 @@ public interface RuleElement {
 
   boolean isStartAnchor();
 
-  void setInlinedRules(List<RutaStatement> innerRules);
-
-  void setInlineMode(boolean block);
+  void setInlinedActionRules(List<RutaStatement> innerRules);
+  
+  void setInlinedConditionRules(List<RutaStatement> innerRules);
 
 }

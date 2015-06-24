@@ -826,7 +826,8 @@ ruleElements[RuleElementContainer container] returns [List<RuleElement> elements
 
 ruleElement[RuleElementContainer container] returns [RuleElement re = null]
 @init{
-List<RutaStatement> innerRules = new ArrayList<RutaStatement>();
+List<RutaStatement> innerConditionRules = new ArrayList<RutaStatement>();
+List<RutaStatement> innerActionRules = new ArrayList<RutaStatement>();
 }
 	:
 	start = STARTANCHOR? (
@@ -838,18 +839,17 @@ List<RutaStatement> innerRules = new ArrayList<RutaStatement>();
 	{re.setStartAnchor(start != null);}
 	(t = (THEN2) 
 	LCURLY 
-	(rule = simpleStatement {innerRules.add(rule);})+ 
+	(rule = simpleStatement {innerConditionRules.add(rule);})+ 
 	RCURLY 
-	{re.setInlinedRules(innerRules);
-	boolean block = t != null && t.getText().equals("->"); 
-	re.setInlineMode(block);})?
+	{re.setInlinedConditionRules(innerConditionRules);}
+
+	)?
 	(t = (THEN) 
 	LCURLY 
-	(rule = simpleStatement {innerRules.add(rule);})+ 
+	(rule = simpleStatement {innerActionRules.add(rule);})+ 
 	RCURLY 
-	{re.setInlinedRules(innerRules);
-	boolean block = t != null && t.getText().equals("->"); 
-	re.setInlineMode(block);})?
+	{re.setInlinedActionRules(innerActionRules);}
+	)?
 	;	
 
 ruleElementWildCard [RuleElementContainer container] returns [AbstractRuleElement re = null]

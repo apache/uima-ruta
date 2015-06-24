@@ -156,21 +156,23 @@ public class ScriptVerbalizer {
     }
     if(re instanceof AbstractRuleElement) {
       AbstractRuleElement are = (AbstractRuleElement) re;
-      boolean blockMode = are.getInlineMode();
-      List<RutaStatement> inlinedRules = are.getInlinedRules();
-      if(inlinedRules != null && !inlinedRules.isEmpty()) {
-        if(blockMode) {
-          result.append(THEN);
-        } else {
-          result.append(THEN2);
-        }
+      List<RutaStatement> inlinedConditionRules = are.getInlinedConditionRules();
+      if(inlinedConditionRules != null && !inlinedConditionRules.isEmpty()) {
+        result.append(THEN2);
         result.append(CBOPEN);
-        for (RutaStatement rutaStatement : inlinedRules) {
+        for (RutaStatement rutaStatement : inlinedConditionRules) {
           result.append(verbalize(rutaStatement));
           result.append(";");
-//          result.append("\n");
         }
-        result.append(CBCLOSE);
+      }
+      List<RutaStatement> inlinedActionRules = are.getInlinedActionRules();
+      if(inlinedConditionRules != null && !inlinedActionRules.isEmpty()) {
+        result.append(THEN);
+        result.append(CBOPEN);
+        for (RutaStatement rutaStatement : inlinedActionRules) {
+          result.append(verbalize(rutaStatement));
+          result.append(";");
+        }
       }
     }
     return result.toString();
