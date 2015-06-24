@@ -74,7 +74,9 @@ public class ExpressionVerbalizer {
   }
 
   public String verbalize(IRutaExpression expression) {
-    if (expression instanceof TypeExpression) {
+    if (expression instanceof GenericFeatureExpression) {
+      return verbalize(((GenericFeatureExpression) expression).getFeatureExpression());
+    } else if (expression instanceof TypeExpression) {
       return verbalize((TypeExpression) expression);
     } else if (expression instanceof IBooleanExpression) {
       return verbalize((IBooleanExpression) expression);
@@ -94,8 +96,6 @@ public class ExpressionVerbalizer {
       return verbalize((IStringExpression) expression);
     } else if (expression instanceof MatchReference) {
       return verbalize((MatchReference) expression);
-    } else if (expression instanceof GenericFeatureExpression) {
-      return verbalize(((GenericFeatureExpression) expression).getFeatureExpression());
     }
     return expression.getClass().getSimpleName();
   }
