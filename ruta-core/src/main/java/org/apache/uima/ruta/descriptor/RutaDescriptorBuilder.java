@@ -453,13 +453,7 @@ public class RutaDescriptorBuilder {
     if (resourcePaths != null) {
       resourceLocations.addAll(Arrays.asList(resourcePaths));
     }
-    if (descriptorPaths != null) {
-      for (String string : descriptorPaths) {
-        File descDir = new File(string);
-        File defaultResourceDir = new File(descDir.getParent(), "resources");
-        resourceLocations.add(defaultResourceDir.getAbsolutePath());
-      }
-    }
+    
     analysisEngineDescription
             .getAnalysisEngineMetaData()
             .getConfigurationParameterSettings()
