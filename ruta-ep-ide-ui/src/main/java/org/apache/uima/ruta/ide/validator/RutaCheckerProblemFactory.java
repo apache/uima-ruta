@@ -99,6 +99,16 @@ public class RutaCheckerProblemFactory implements IRutaCheckerProblemFactory {
             getLine(node));
   }
 
+  public IProblem createWrongPackageProblem(ASTNode node) {
+    String message = "The package declaration does not match the project structure.";
+    if(node != null) {
+      return new RutaCheckerDefaultProblem(this.fileName, message,node,  getLine(node));
+    } else {
+      return new RutaCheckerDefaultProblem(this.fileName, message);
+    }
+  }
+
+  
   public IProblem createTypeProblem(RutaVariableReference ref, ISourceModule currentFile) {
 
     String errMsgHead = "Type \"";

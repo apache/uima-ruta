@@ -189,6 +189,10 @@ public class LanguageCheckerVisitor extends ASTVisitor {
 
   private ClassLoader classLoader;
 
+  private String packagePathString;
+
+  private boolean packageChecked = false;
+  
   public LanguageCheckerVisitor(IProblemReporter problemReporter, ISourceLineTracker linetracker,
           ISourceModule sourceModule, ClassLoader classLoader) {
     super();
@@ -204,9 +208,19 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     knownLocalVariables = new Stack<Map<String, Integer>>();
     knownLocalVariables.push(new HashMap<String, Integer>());
     blocks = new Stack<String>();
+    packagePathString = "";
 
     initializePredefinedInformation();
     initializeExtensionInformation();
+
+    IProject project = sourceModule.getScriptProject().getProject();
+    IPath location = sourceModule.getResource().getLocation();
+    try {
+      IPath packagePath = RutaProjectUtils.getPackagePath(location, project);
+      packagePathString = packagePath.toPortableString().replaceAll("/", ".");
+    } catch (CoreException e) {
+      RutaIdeUIPlugin.error(e);
+    }
 
     IPreferenceStore store = RutaIdeUIPlugin.getDefault().getPreferenceStore();
     reportWarningOnShortNames = !store
@@ -218,6 +232,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
   public boolean visit(Statement s) throws Exception {
     if (s instanceof RutaPackageDeclaration) {
       this.packageName = ((RutaPackageDeclaration) s).getName();
+      checkPackage(s);
       return false;
     }
     if (s instanceof RutaImportTypesStatement) {
@@ -394,6 +409,13 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       }
     }
     return true;
+  }
+
+  private void checkPackage(ASTNode node) {
+    if(!StringUtils.equals(packageName, packagePathString) && !packageChecked) {
+      pr.reportProblem(problemFactory.createWrongPackageProblem(node));
+    }
+    packageChecked = true;
   }
 
   private void processCompleteTypeSystemImport(SimpleReference sRef, String localPath)
@@ -795,6 +817,9 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     if (s instanceof RutaDeclareDeclarationsStatement) {
       parentTypeInDeclaration = null;
     }
+    if(!packageChecked) {
+      checkPackage(null);
+    }
     return super.endvisit(s);
   }
 
@@ -865,7 +890,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
             || t.equals(UIMAConstants.TYPE_LONG) || t.equals(UIMAConstants.TYPE_SHORT))
             && RutaTypeConstants.RUTA_TYPE_N == kind) {
       return true;
-    } else if ( RutaTypeConstants.RUTA_TYPE_AT == kind) {
+    } else if (RutaTypeConstants.RUTA_TYPE_AT == kind) {
       return true;
     }
     return false;
