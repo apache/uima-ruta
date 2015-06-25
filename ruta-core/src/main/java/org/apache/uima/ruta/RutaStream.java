@@ -364,16 +364,15 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
             filter.getCurrentFilterTypes(), filter.getCurrentRetainTypes(), windowAnnotation,
             windowType, cas);
 
-    NavigableMap<Integer, RutaBasic> newBeginAnchors = beginAnchors.subMap(
-            windowAnnotation.getBegin(), true, windowAnnotation.getEnd(), false);
-    NavigableMap<Integer, RutaBasic> newEndAnchors = endAnchors.subMap(windowAnnotation.getBegin(),
-            false, windowAnnotation.getEnd(), true);
+//    NavigableMap<Integer, RutaBasic> newBeginAnchors = beginAnchors.subMap(
+//            windowAnnotation.getBegin(), true, windowAnnotation.getEnd(), false);
+//    NavigableMap<Integer, RutaBasic> newEndAnchors = endAnchors.subMap(windowAnnotation.getBegin(),
+//            false, windowAnnotation.getEnd(), true);
 
-    RutaStream stream = new RutaStream(cas, basicType, newBeginAnchors, newEndAnchors,
+    RutaStream stream = new RutaStream(cas, basicType, beginAnchors, endAnchors,
             filterManager, lowMemoryProfile, simpleGreedyForComposed, crowd);
     stream.setDynamicAnchoring(dynamicAnchoring);
     stream.setGreedyRuleElement(greedyRuleElement);
-    stream.setGreedyRule(greedyRule);
     stream.setGreedyRule(greedyRule);
     return stream;
   }
