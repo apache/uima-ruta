@@ -41,8 +41,8 @@ public class BooleanNumberExpression extends AbstractBooleanExpression {
 
   @Override
   public boolean getBooleanValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    double doubleValue1 = getFristExpression().getDoubleValue(parent, null, stream);
-    double doubleValue2 = getSecondExpression().getDoubleValue(parent, null, stream);
+    double doubleValue1 = getFristExpression().getDoubleValue(parent, annotation, stream);
+    double doubleValue2 = getSecondExpression().getDoubleValue(parent, annotation, stream);
     return eval(doubleValue1, getOperator(), doubleValue2);
   }
 
