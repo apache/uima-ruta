@@ -556,6 +556,9 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       if (isVisible(pointer) || !isValid()) {
         moveToPrevious();
       }
+      if(!isValid()) {
+        moveToLast();
+      }
       if (isValid()) {
         RutaBasic nextBasic = (RutaBasic) get();
         // TODO HOTFIX for annotation of length 0

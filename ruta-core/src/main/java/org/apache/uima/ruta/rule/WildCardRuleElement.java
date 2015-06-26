@@ -302,7 +302,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
       result.add(ruleMatch);
       return result;
     }
-    if(iterator.isValid() && !stream.isVisible(iterator.get())) {
+    if (iterator.isValid() && !stream.isVisible(iterator.get())) {
       moveOn(after, iterator, stream);
     }
     boolean doneHere = false;
@@ -386,8 +386,16 @@ public class WildCardRuleElement extends AbstractRuleElement {
       } else {
         AnnotationFS pointer = stream.getAnchor(after, annotation);
         result = cas.getAnnotationIndex(type).iterator(pointer);
-        if (!after) {
-          result.moveToPrevious();
+        if (!result.isValid()) {
+          if (after) {
+            result.moveToFirst();
+          } else {
+            result.moveToLast();
+          }
+        } else {
+          if (!after) {
+            result.moveToPrevious();
+          }
         }
         if (annotation != null && result.isValid()) {
           // hotfix for index overflow...
@@ -420,8 +428,16 @@ public class WildCardRuleElement extends AbstractRuleElement {
         result = cas.getAnnotationIndex(type).subiterator(window);
         AnnotationFS pointer = stream.getAnchor(after, annotation);
         result.moveTo(pointer);
-        if (!after) {
-          result.moveToPrevious();
+        if (!result.isValid()) {
+          if (after) {
+            result.moveToFirst();
+          } else {
+            result.moveToLast();
+          }
+        } else {
+          if (!after) {
+            result.moveToPrevious();
+          }
         }
       }
     }
@@ -501,7 +517,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
     } else {
       iterator.moveToPrevious();
     }
-    while(iterator.isValid() && !stream.isVisible(iterator.get())) {
+    while (iterator.isValid() && !stream.isVisible(iterator.get())) {
       if (after) {
         iterator.moveToNext();
       } else {
