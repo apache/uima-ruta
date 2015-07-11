@@ -39,7 +39,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.impl.ResourceManager_impl;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.apache.uima.ruta.engine.HtmlAnnotator;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.extensions.IRutaExtension;
 import org.apache.uima.ruta.extensions.RutaExternalFactory;
@@ -49,15 +48,17 @@ import org.apache.uima.util.InvalidXMLException;
 
 public class RutaDescriptorFactory {
 
+//  public static final String ANONYMOUS = "Anonymous";
+
   private URL defaultTypeSystem;
 
   private URL defaultEngine;
 
   public RutaDescriptorFactory() {
     super();
-    this.defaultEngine = HtmlAnnotator.class.getClassLoader().getResource(
+    this.defaultEngine = RutaDescriptorFactory.class.getClassLoader().getResource(
             "org/apache/uima/ruta/engine/BasicEngine.xml");
-    this.defaultTypeSystem = HtmlAnnotator.class.getClassLoader().getResource(
+    this.defaultTypeSystem = RutaDescriptorFactory.class.getClassLoader().getResource(
             "org/apache/uima/ruta/engine/BasicTypeSystem.xml");
   }
 
@@ -166,6 +167,7 @@ public class RutaDescriptorFactory {
     parser.setResourcePaths(new String[0]);
     ResourceManager rm = getResourceManager(options);
     parser.setResourceManager(rm);
+    // TODO use constant
     String name = "Anonymous";
     descInfo.setScriptName(name);
     parser.file_input(name);

@@ -273,14 +273,15 @@ public class RutaDescriptorBuilder {
       }
     }
 
-    File typeSystemFile = getFile(typeSystemOutput);
     TypeDescription[] presentTypes = typeSystemDescription.getTypes();
 
     types.addAll(Arrays.asList(presentTypes));
     typeSystemDescription.setTypes(types.toArray(new TypeDescription[0]));
     typeSystemDescription.setName(desc.getScriptName() + options.getTypeSystemSuffix());
-    typeSystemDescription.setSourceUrl(typeSystemFile.toURI().toURL());
-
+    if (typeSystemOutput != null) {
+      File typeSystemFile = getFile(typeSystemOutput);
+      typeSystemDescription.setSourceUrl(typeSystemFile.toURI().toURL());
+    }
     return typeSystemDescription;
   }
 
@@ -453,7 +454,7 @@ public class RutaDescriptorBuilder {
     if (resourcePaths != null) {
       resourceLocations.addAll(Arrays.asList(resourcePaths));
     }
-    
+
     analysisEngineDescription
             .getAnalysisEngineMetaData()
             .getConfigurationParameterSettings()
@@ -483,6 +484,9 @@ public class RutaDescriptorBuilder {
   }
 
   private String getRelativeLocation(URI target, String base) {
+    if (base == null) {
+      return null;
+    }
     Path basePath = Paths.get(base);
     if (!basePath.toFile().isDirectory()) {
       basePath = basePath.getParent();
@@ -493,8 +497,14 @@ public class RutaDescriptorBuilder {
     } catch (Exception e) {
       return null;
     }
-    Path relativePath = basePath.relativize(targetPath);
-    // HOTFIX: avoid windows paths. No generic solution to access a portable string found yet for Path
+    Path relativePath = null;
+    try {
+      relativePath = basePath.relativize(targetPath);
+    } catch (Exception e) {
+      return null;
+    }
+    // HOTFIX: avoid windows paths. No generic solution to access a portable string found yet for
+    // Path
     String result = relativePath.toString().replaceAll("\\\\", "/");
     return result;
   }

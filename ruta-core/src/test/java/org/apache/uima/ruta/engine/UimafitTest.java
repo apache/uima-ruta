@@ -20,18 +20,43 @@ package org.apache.uima.ruta.engine;
 
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngine;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.antlr.runtime.RecognitionException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
+import org.apache.uima.cas.Type;
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.fit.factory.FsIndexFactory;
 import org.apache.uima.fit.factory.JCasBuilder;
+import org.apache.uima.fit.factory.TypePrioritiesFactory;
+import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.apache.uima.resource.ResourceConfigurationException;
+import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.resource.metadata.FsIndexCollection;
+import org.apache.uima.resource.metadata.TypePriorities;
+import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.apache.uima.ruta.descriptor.RutaBuildOptions;
+import org.apache.uima.ruta.descriptor.RutaDescriptorFactory;
+import org.apache.uima.ruta.descriptor.RutaDescriptorInformation;
 import org.apache.uima.ruta.type.FalsePositive;
 import org.apache.uima.ruta.type.TruePositive;
+import org.apache.uima.util.CasCreationUtils;
+import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
 
 public class UimafitTest {
+
   @Test
   public void test() throws Exception {
     AnalysisEngine ae = createEngine(RutaEngine.class,
@@ -64,6 +89,40 @@ public class UimafitTest {
     FSIterator<Annotation> iterator = ai.iterator();
     assertEquals(1, ai.size());
     assertEquals("This is a test.", iterator.next().getCoveredText());
-    
+
   }
+
+  @Test
+  public void testUimafitWithoutXmlTypeSystem() throws ResourceInitializationException,
+          AnalysisEngineProcessException, InvalidXMLException, ResourceConfigurationException,
+          IOException, URISyntaxException, RecognitionException {
+    String script = "DECLARE MyType;\n W{-> MyType};";
+
+    RutaDescriptorFactory factory = new RutaDescriptorFactory();
+    RutaDescriptorInformation descInfo = factory.parseDescriptorInformation(script);
+    RutaBuildOptions options = new RutaBuildOptions();
+    TypeSystemDescription rutaTSD = factory.createTypeSystemDescription(null, descInfo, options,
+            getClass().getClassLoader());
+    Collection<TypeSystemDescription> tsds = new ArrayList<>();
+    TypeSystemDescription classpathTSD = TypeSystemDescriptionFactory.createTypeSystemDescription();
+    tsds.add(classpathTSD);
+    tsds.add(rutaTSD);
+    TypeSystemDescription tsd = CasCreationUtils.mergeTypeSystems(tsds);
+
+    TypePriorities tp = TypePrioritiesFactory.createTypePriorities();
+    FsIndexCollection indexes = FsIndexFactory.createFsIndexCollection();
+    CAS cas = CasCreationUtils.createCas(tsd, tp, indexes.getFsIndexes());
+    cas.setDocumentText("This is a test.");
+
+    Ruta.apply(cas, script);
+    // TODO use constant
+    // Type type = cas.getTypeSystem().getType(RutaDescriptorFactory.ANONYMOUS + ".MyType");
+    Type type = cas.getTypeSystem().getType("Anonymous" + ".MyType");
+
+    assertNotNull(type);
+    AnnotationIndex<AnnotationFS> annotationIndex = cas.getAnnotationIndex(type);
+    assertEquals(4, annotationIndex.size());
+
+  }
+
 }
