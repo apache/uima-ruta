@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.ruta.action;
+package org.apache.uima.ruta;
 
 import java.util.ArrayList;
 import java.util.List;
