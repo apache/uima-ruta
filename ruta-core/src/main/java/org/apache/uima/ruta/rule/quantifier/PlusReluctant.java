@@ -30,8 +30,9 @@ import org.apache.uima.ruta.rule.RuleElementMatch;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class PlusReluctant implements RuleElementQuantifier {
+public class PlusReluctant extends AbstractRuleElementQuantifier {
 
+  @Override
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
           RutaBlock parent, RutaStream stream, InferenceCrowd crowd) {
     boolean result = true;
@@ -55,6 +56,7 @@ public class PlusReluctant implements RuleElementQuantifier {
     }
   }
 
+  @Override
   public boolean continueMatch(boolean after, AnnotationFS annotation, RuleElement ruleElement,
           RuleMatch ruleMatch, ComposedRuleElementMatch containerMatch, RutaStream stream,
           InferenceCrowd crowd) {
@@ -73,12 +75,13 @@ public class PlusReluctant implements RuleElementQuantifier {
     }
     ComposedRuleElementMatch extendedContainerMatch = containerMatch.copy();
     RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch, after);
-    nextElement.continueMatch(after, annotation, extendedMatch, null, extendedContainerMatch, null,
-            nextElement, stream, crowd);
-    List<RuleElementMatch> nextList = extendedContainerMatch.getInnerMatches().get(nextElement);
-    return nextList == null || nextList.isEmpty() || !nextList.get(nextList.size() - 1).matched();
+    List<RuleMatch> continueMatch = nextElement.continueMatch(after, annotation, extendedMatch,
+            null, extendedContainerMatch, null, nextElement, stream, crowd);
+    boolean result = !nextElementMatched(nextElement, continueMatch);
+    return result;
   }
 
+  @Override
   public boolean isOptional(RutaBlock parent, RutaStream stream) {
     return false;
   }

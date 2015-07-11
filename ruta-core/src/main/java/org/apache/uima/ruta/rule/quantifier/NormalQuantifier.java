@@ -30,8 +30,9 @@ import org.apache.uima.ruta.rule.RuleElementMatch;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class NormalQuantifier implements RuleElementQuantifier {
+public class NormalQuantifier extends AbstractRuleElementQuantifier {
 
+  @Override
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
           RutaBlock parent, RutaStream stream, InferenceCrowd crowd) {
     if (matches == null) {
@@ -52,6 +53,7 @@ public class NormalQuantifier implements RuleElementQuantifier {
     }
   }
 
+  @Override
   public boolean continueMatch(boolean after, AnnotationFS annotation, RuleElement ruleElement,
           RuleMatch extendedMatch, ComposedRuleElementMatch containerMatch, RutaStream stream,
           InferenceCrowd crowd) {
@@ -63,6 +65,7 @@ public class NormalQuantifier implements RuleElementQuantifier {
     return list == null || list.isEmpty();
   }
 
+  @Override
   public boolean isOptional(RutaBlock parent, RutaStream stream) {
     return false;
   }

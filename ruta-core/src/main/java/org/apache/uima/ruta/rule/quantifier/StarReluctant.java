@@ -30,17 +30,19 @@ import org.apache.uima.ruta.rule.RuleElementMatch;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class StarReluctant implements RuleElementQuantifier {
+public class StarReluctant extends AbstractRuleElementQuantifier {
 
-  public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
-          RutaBlock parent, RutaStream stream, InferenceCrowd crowd) {
+  @Override
+  public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches, RutaBlock parent,
+          RutaStream stream, InferenceCrowd crowd) {
     return matches;
   }
 
+  @Override
   public boolean continueMatch(boolean after, AnnotationFS annotation, RuleElement ruleElement,
           RuleMatch ruleMatch, ComposedRuleElementMatch containerMatch, RutaStream stream,
           InferenceCrowd crowd) {
-    if(annotation == null) {
+    if (annotation == null) {
       // do not try to continue a match that totally failed
       return false;
     }
@@ -50,12 +52,13 @@ public class StarReluctant implements RuleElementQuantifier {
     }
     ComposedRuleElementMatch extendedContainerMatch = containerMatch.copy();
     RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch, after);
-    nextElement.continueMatch(after, annotation, extendedMatch, null, extendedContainerMatch, null,
-            nextElement, stream, crowd);
-    List<RuleElementMatch> nextList = extendedContainerMatch.getInnerMatches().get(nextElement);
-    return nextList == null || nextList.isEmpty() || !nextList.get(nextList.size() - 1).matched();
+    List<RuleMatch> continueMatch = nextElement.continueMatch(after, annotation, extendedMatch,
+            null, extendedContainerMatch, null, nextElement, stream, crowd);
+    boolean result = !nextElementMatched(nextElement, continueMatch);
+    return result;
   }
 
+  @Override
   public boolean isOptional(RutaBlock parent, RutaStream stream) {
     return true;
   }

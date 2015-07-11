@@ -32,7 +32,7 @@ import org.apache.uima.ruta.rule.RuleElementMatch;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class MinMaxReluctant implements RuleElementQuantifier {
+public class MinMaxReluctant extends AbstractRuleElementQuantifier {
 
   private INumberExpression min;
 
@@ -60,6 +60,7 @@ public class MinMaxReluctant implements RuleElementQuantifier {
     return max;
   }
 
+  @Override
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
           RutaBlock parent, RutaStream stream, InferenceCrowd crowd) {
     int minValue = min.getIntegerValue(parent, null, stream);
@@ -79,6 +80,7 @@ public class MinMaxReluctant implements RuleElementQuantifier {
     }
   }
 
+  @Override
   public boolean continueMatch(boolean after, AnnotationFS annotation, RuleElement ruleElement,
           RuleMatch ruleMatch, ComposedRuleElementMatch containerMatch, RutaStream stream,
           InferenceCrowd crowd) {
@@ -114,15 +116,16 @@ public class MinMaxReluctant implements RuleElementQuantifier {
     }
     ComposedRuleElementMatch extendedContainerMatch = containerMatch.copy();
     RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch, after);
-    nextElement.continueMatch(after, annotation, extendedMatch, null, extendedContainerMatch, null,
-            nextElement, stream, crowd);
-    List<RuleElementMatch> nextList = extendedContainerMatch.getInnerMatches().get(nextElement);
-    boolean nextMatched = (nextList != null && !nextList.isEmpty());
+    
+    List<RuleMatch> continueMatch = nextElement.continueMatch(after, annotation, extendedMatch,
+            null, extendedContainerMatch, null, nextElement, stream, crowd);
+    boolean nextMatched = nextElementMatched(nextElement, continueMatch);
 
     return (matchedSize < maxValue && matchedSize >= minValue && !nextMatched)
             || (!lastMatch.matched() && matchedSize >= minValue && matchedSize <= maxValue && !nextMatched);
   }
 
+  @Override
   public boolean isOptional(RutaBlock parent, RutaStream stream) {
     int minValue = min.getIntegerValue(parent, null, stream);
     return minValue == 0;

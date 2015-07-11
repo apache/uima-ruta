@@ -30,12 +30,13 @@ import org.apache.uima.ruta.rule.RuleElementMatch;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class PlusGreedy implements RuleElementQuantifier {
+public class PlusGreedy extends AbstractRuleElementQuantifier {
 
   public PlusGreedy() {
     super();
   }
 
+  @Override
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
           RutaBlock parent, RutaStream stream, InferenceCrowd crowd) {
     boolean result = true;
@@ -61,6 +62,7 @@ public class PlusGreedy implements RuleElementQuantifier {
     }
   }
 
+  @Override
   public boolean continueMatch(boolean after, AnnotationFS annotation, RuleElement ruleElement,
           RuleMatch extendedMatch, ComposedRuleElementMatch containerMatch, RutaStream stream,
           InferenceCrowd crowd) {
@@ -96,6 +98,7 @@ public class PlusGreedy implements RuleElementQuantifier {
 
   }
 
+  @Override
   public boolean isOptional(RutaBlock parent, RutaStream stream) {
     return false;
   }

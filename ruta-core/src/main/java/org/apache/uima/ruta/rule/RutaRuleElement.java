@@ -242,8 +242,8 @@ public class RutaRuleElement extends AbstractRuleElement {
             // hotfix for UIMA-3820
             result.add(extendedMatch);
           } else {
-            List<RuleMatch> stepbackMatch = stepbackMatch(after, annotation, ruleMatch, ruleApply,
-                    containerMatch, sideStepOrigin, stream, crowd, entryPoint);
+            List<RuleMatch> stepbackMatch = stepbackMatch(after, annotation, extendedMatch, ruleApply,
+                    extendedContainerMatch, sideStepOrigin, stream, crowd, entryPoint);
             result.addAll(stepbackMatch);
           }
         }

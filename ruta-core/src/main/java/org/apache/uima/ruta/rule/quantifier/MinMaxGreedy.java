@@ -32,7 +32,7 @@ import org.apache.uima.ruta.rule.RuleElementMatch;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class MinMaxGreedy implements RuleElementQuantifier {
+public class MinMaxGreedy extends AbstractRuleElementQuantifier {
 
   private INumberExpression min;
 
@@ -52,6 +52,7 @@ public class MinMaxGreedy implements RuleElementQuantifier {
     }
   }
 
+  @Override
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches, RutaBlock parent,
           RutaStream stream, InferenceCrowd crowd) {
     int minValue = min.getIntegerValue(parent, null, stream);
@@ -82,6 +83,7 @@ public class MinMaxGreedy implements RuleElementQuantifier {
     return max;
   }
 
+  @Override
   public boolean continueMatch(boolean after, AnnotationFS annotation, RuleElement ruleElement,
           RuleMatch extendedMatch, ComposedRuleElementMatch containerMatch, RutaStream stream,
           InferenceCrowd crowd) {
@@ -113,6 +115,7 @@ public class MinMaxGreedy implements RuleElementQuantifier {
             || (!lastMatch.matched() && matchedSize >= minValue && matchedSize <= maxValue);
   }
 
+  @Override
   public boolean isOptional(RutaBlock parent, RutaStream stream) {
     int minValue = min.getIntegerValue(parent, null, stream);
     return minValue == 0;
