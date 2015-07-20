@@ -66,6 +66,7 @@ import org.apache.uima.ruta.extensions.IEngineLoader;
 import org.apache.uima.ruta.extensions.IRutaExtension;
 import org.apache.uima.ruta.extensions.RutaEngineLoader;
 import org.apache.uima.ruta.extensions.RutaExternalFactory;
+import org.apache.uima.ruta.extensions.RutaParseRuntimeException;
 import org.apache.uima.ruta.parser.RutaLexer;
 import org.apache.uima.ruta.parser.RutaParser;
 import org.apache.uima.ruta.seed.RutaAnnotationSeeder;
@@ -741,6 +742,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     } else {
       try {
         script = loadScript(scriptLocation);
+      } catch (RutaParseRuntimeException re) {
+        throw re;
       } catch (Exception e) {
         throw new AnalysisEngineProcessException(e);
       }

@@ -84,6 +84,7 @@ import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.string.StringFunctionFactory;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.extensions.RutaExternalFactory;
+import org.apache.uima.ruta.extensions.RutaParseRuntimeException;
 import org.apache.uima.ruta.rule.AbstractRuleElement;
 import org.apache.uima.ruta.rule.ComposedRuleElement;
 import org.apache.uima.ruta.rule.RegExpRule;
@@ -129,7 +130,7 @@ public void setExternalFactory(RutaExternalFactory factory) {
 	}
 
 	public void emitErrorMessage(String msg) {
-		System.out.println(msg);
+		throw new RutaParseRuntimeException(msg);
 	}
 	 public void emitErrorMessage(RecognitionException e) {
 	    int foundInt = e.c;
@@ -147,7 +148,7 @@ public void setExternalFactory(RutaExternalFactory factory) {
 	    } else if (e instanceof MismatchedTokenException) {
 	      MismatchedTokenException mte = (MismatchedTokenException) e;
 	      int expectedInt = mte.expecting;
-	      String stringExpected = getTokenNames()[expectedInt];
+	      String stringExpected = expectedInt < 0 ? "'none'" : getTokenNames()[expectedInt];
 	      String msg = "Error in "+moduleName+", line " + line + ", \"" + text + "\": expected " + stringExpected
 	              + ", but found " + stringFound;
 	      emitErrorMessage(msg);
@@ -164,7 +165,7 @@ public void setExternalFactory(RutaExternalFactory factory) {
 	  }
 	    
 	public void emitErrorMessage(Throwable e) {
-	      e.printStackTrace();
+	    throw new RutaParseRuntimeException(e);
 	    }
 	
 	public void reportError(RecognitionException e) {
