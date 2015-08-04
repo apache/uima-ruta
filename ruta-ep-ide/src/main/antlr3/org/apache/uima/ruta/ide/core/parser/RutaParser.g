@@ -2331,7 +2331,7 @@ numberExpressionInPar returns [RutaExpression expr = null]
 //seems OK
 simpleNumberExpression returns [Expression expr = null]
 	:
-	(featureExpression)=> fe = featureExpression {ExpressionFactory.createNumberExpression(fe);}
+	(featureExpression)=> fe = featureExpression {expr = ExpressionFactory.createNumberExpression(fe);}
 	|
 	 m = MINUS? numVarRef = numberVariable
 	  {if(m == null) {expr = numVarRef;} else {expr = ExpressionFactory.createNegatedNumberExpression(m, numVarRef);}}
