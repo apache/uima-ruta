@@ -124,6 +124,16 @@ public class ExpressionFactory {
     exprList.add(expression);
     return new ComposedNumberExpression(exprList, ops);
   }
+  
+  public static INumberExpression createComposedNumberExpression(INumberExpression expression1,
+          Token opToken, INumberExpression expression2) {
+    List<String> ops = new ArrayList<String>();
+    List<INumberExpression> exprList = new ArrayList<INumberExpression>();
+    ops.add(opToken.getText());
+    exprList.add(expression1);
+    exprList.add(expression2);
+    return new ComposedNumberExpression(exprList, ops);
+  }
 
   public static AbstractStringExpression createSimpleStringExpression(Token token) {
     String text = token.getText();

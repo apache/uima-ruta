@@ -245,6 +245,9 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
       case RutaLexer.MINUS:
         operatorID = ExpressionConstants.E_MINUS;
         break;
+      case RutaLexer.POW:
+        operatorID = ExpressionConstants.E_POWER;
+        break;
       default:
         break;
     }

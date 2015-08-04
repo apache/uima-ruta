@@ -1329,8 +1329,8 @@ conditionFeature returns [RutaCondition cond = null]
 conditionParse returns [RutaCondition cond = null]
     :
     name = PARSE LPAREN
-     var=genericVariableReference 
-    {cond = ConditionFactory.createCondition(name, var);}
+     var=genericVariableReference (COMMA locale = stringExpression)?
+    {cond = ConditionFactory.createCondition(name, var, locale);}
     RPAREN
     ;
 
@@ -2349,6 +2349,8 @@ numberFunction returns [Expression expr = null]
 	:
 	(op=(EXP | LOGN | SIN | COS | TAN) numExprP=numberExpressionInPar)
 	{expr = ExpressionFactory.createUnaryArithmeticExpr(numExprP,op);}
+	| op = POW LPAREN n1 = numberExpression COMMA n2 = numberExpression RPAREN
+	{expr = ExpressionFactory.createBinaryArithmeticExpr(n1, n2, op);}
 	//| {root = ExpressionFactory.createNumberFunction(numExprP,op)}
 	| (e = externalNumberFunction)=> e = externalNumberFunction {expr = e;}
 	;

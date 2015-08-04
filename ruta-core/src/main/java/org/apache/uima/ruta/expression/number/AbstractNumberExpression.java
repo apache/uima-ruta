@@ -76,7 +76,7 @@ public abstract class AbstractNumberExpression extends AbstractStringExpression 
       return t1 % t2;
     } else if ("EXP".equals(op)) {
       return Math.exp(t1);
-    } else if ("LOG".equals(op)) {
+    } else if ("LOGN".equals(op)) {
       return Math.log(t1);
     } else if ("SIN".equals(op)) {
       return Math.sin(t1);
@@ -84,6 +84,8 @@ public abstract class AbstractNumberExpression extends AbstractStringExpression 
       return Math.cos(t1);
     } else if ("TAN".equals(op)) {
       return Math.tan(t1);
+    } else if ("POW".equals(op)) {
+      return Math.pow(t1, t2);
     }
     return 0;
   }
@@ -109,6 +111,8 @@ public abstract class AbstractNumberExpression extends AbstractStringExpression 
       return (float) Math.cos(t1);
     } else if ("TAN".equals(op)) {
       return (float) Math.tan(t1);
+    } else if ("POW".equals(op)) {
+      return (float) Math.pow(t1, t2);
     }
     return 0;
   }
@@ -134,6 +138,8 @@ public abstract class AbstractNumberExpression extends AbstractStringExpression 
       return (int) Math.cos(t1);
     } else if ("TAN".equals(op)) {
       return (int) Math.tan(t1);
+    } else if ("POW".equals(op)) {
+      return (int) Math.pow(t1, t2);
     }
     return 0;
   }

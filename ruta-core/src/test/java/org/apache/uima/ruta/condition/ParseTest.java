@@ -31,7 +31,7 @@ public class ParseTest {
     CAS cas = RutaTestUtils.processTestScript(this.getClass());
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 5, "42", "2", "1", "2", "3");
-    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "2,1");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "2,1", "2.3");
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "true");
     RutaTestUtils.assertAnnotationsEquals(cas, 4, 5, "A Boolean b that is true", "b = false", "The Number 42",
             "The Double d = 2,1", "Another Double that is 2.3");

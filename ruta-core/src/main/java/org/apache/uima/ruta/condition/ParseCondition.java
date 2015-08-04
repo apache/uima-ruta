@@ -19,10 +19,14 @@
 
 package org.apache.uima.ruta.condition;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
@@ -31,9 +35,17 @@ public class ParseCondition extends AbstractRutaCondition {
 
   private final String var;
 
+  private IStringExpression localeExpr;
+  
   public ParseCondition(String var) {
     super();
     this.var = var;
+  }
+  
+  public ParseCondition(String var, IStringExpression localeExpr) {
+    super();
+    this.var = var;
+    this.localeExpr = localeExpr;
   }
 
   @Override
@@ -42,16 +54,27 @@ public class ParseCondition extends AbstractRutaCondition {
     String text = annotation.getCoveredText();
     RutaEnvironment env = element.getParent().getEnvironment();
     Class<?> type = env.getVariableType(var);
+    NumberFormat nf = null;
+    String locale = annotation.getCAS().getDocumentLanguage();
+    if(localeExpr != null) {
+      locale = localeExpr.getStringValue(element.getParent(), annotation, stream);
+    }
+    if(locale == null) {
+      locale = "x-unspecified";
+    }
+    nf = NumberFormat.getInstance(Locale.forLanguageTag(locale));     
     try {
       if (Integer.class.equals(type)) {
-        text = normalizeNumber(text);
-        int value = Integer.valueOf(text);
-        env.setVariableValue(var, value);
+        Number parse = nf.parse(text);
+        env.setVariableValue(var, parse.intValue());
         return new EvaluatedCondition(this, true);
       } else if (Double.class.equals(type)) {
-        text = normalizeNumber(text);
-        double value = Double.valueOf(text);
-        env.setVariableValue(var, value);
+        Number parse = nf.parse(text);
+        env.setVariableValue(var, parse.doubleValue());
+        return new EvaluatedCondition(this, true);
+      } else if (Float.class.equals(type)) {
+        Number parse = nf.parse(text);
+        env.setVariableValue(var, parse.floatValue());
         return new EvaluatedCondition(this, true);
       } else if (String.class.equals(type)) {
         env.setVariableValue(var, text);
@@ -71,16 +94,16 @@ public class ParseCondition extends AbstractRutaCondition {
     }
   }
 
-  private String normalizeNumber(String text) {
-    String[] split = text.split("[,]");
-    if (split.length == 2) {
-      return text.replaceAll(",", ".");
-    }
-    return text;
-  }
-
   public String getVar() {
     return var;
+  }
+
+  public IStringExpression getLocaleExpr() {
+    return localeExpr;
+  }
+
+  public void setLocaleExpr(IStringExpression localeExpr) {
+    this.localeExpr = localeExpr;
   }
 
 }

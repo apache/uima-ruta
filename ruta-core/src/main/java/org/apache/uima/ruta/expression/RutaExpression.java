@@ -37,6 +37,23 @@ public class RutaExpression extends RutaElement implements IRutaExpression {
     if (annotation == null) {
       return Collections.emptyList();
     }
+    
+    // "autocast" to document annotation when mentioning document.
+    // This is either the actual document annotation or the current one in a block or inlined rule
+    AnnotationFS documentAnnotation = stream.getCas().getDocumentAnnotation();
+    Type docType = documentAnnotation.getType();
+    if(docType.equals(type)) {
+        List<AnnotationFS> result = new ArrayList<AnnotationFS>(1);
+        AnnotationFS windowAnnotation = stream.getFilter().getWindowAnnotation();
+        if(windowAnnotation == null) {
+          result.add(documentAnnotation);
+          return result;
+        } else {
+          result.add(windowAnnotation);
+          return result;
+        }
+    }
+    
     if (annotation.getType().equals(type)
             || stream.getCas().getTypeSystem().subsumes(type, annotation.getType())) {
       List<AnnotationFS> result = new ArrayList<AnnotationFS>(1);

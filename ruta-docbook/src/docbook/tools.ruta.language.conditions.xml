@@ -615,7 +615,7 @@
         <emphasis role="bold">Definition:</emphasis>
       </title>
       <para>
-        <programlisting><![CDATA[PARSE(variable)]]></programlisting>
+        <programlisting><![CDATA[PARSE(variable(, stringExpression)?)]]></programlisting>
       </para>
     </section>
     <section>
@@ -623,10 +623,10 @@
         <emphasis role="bold">Example:</emphasis>
       </title>
       <para>
-        <programlisting><![CDATA[NUM{PARSE(var)};]]></programlisting>
+        <programlisting><![CDATA[NUM{PARSE(var,"de")};]]></programlisting>
       </para>
       <para>
-        If the variable 'var' is of an appropriate numeric type, the
+        If the variable 'var' is of an appropriate numeric type for the locale "de", the
         value of NUM is parsed and subsequently stored in 'var'.
       </para>
     </section>

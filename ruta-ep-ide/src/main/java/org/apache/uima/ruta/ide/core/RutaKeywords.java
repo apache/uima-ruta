@@ -44,7 +44,7 @@ public class RutaKeywords implements IRutaKeywords {
 
   private static String[] booleanFunction = { "true", "false" };
 
-  private static String[] numberFunction = { "EXP", "SIN", "COS", "TAN", "LOGN" };
+  private static String[] numberFunction = { "EXP", "SIN", "COS", "TAN", "LOGN" , "POW" };
 
   private static String[] stringFunction = { "REMOVESTRING" };
 

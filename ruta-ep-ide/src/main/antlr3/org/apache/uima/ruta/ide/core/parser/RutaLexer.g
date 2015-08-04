@@ -366,6 +366,7 @@ LOGN  : 'LOGN';
 SIN : 'SIN';
 COS : 'COS';
 TAN : 'TAN';
+POW : 'POW';
 XOR :   'XOR';
 TRUE  : 'true';
 FALSE   : 'false';

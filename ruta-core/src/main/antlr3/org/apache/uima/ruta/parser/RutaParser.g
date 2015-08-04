@@ -1434,8 +1434,10 @@ conditionFeature returns [AbstractRutaCondition cond = null]
 
 conditionParse returns [AbstractRutaCondition cond = null]
     :
-    PARSE LPAREN {isVariable($blockDeclaration::env,input.LT(1).getText())}? id = Identifier RPAREN
-    {cond = ConditionFactory.createConditionParse(id, $blockDeclaration::env);}
+    PARSE LPAREN {isVariable($blockDeclaration::env,input.LT(1).getText())}? id = Identifier 
+    (COMMA locale = stringExpression)?
+    RPAREN
+    {cond = ConditionFactory.createConditionParse(id, locale, $blockDeclaration::env);}
     ;
 
 conditionIs returns [AbstractRutaCondition cond = null]
@@ -2215,8 +2217,10 @@ List<IStringExpression> args = new ArrayList<IStringExpression>();
 // not checked
 numberFunction returns [INumberExpression expr = null]
 	:
-	(op=(EXP | LOGN | SIN | COS | TAN) numExprP=numberExpressionInPar)
+	(op=(EXP | LOGN | SIN | COS | TAN ) numExprP=numberExpressionInPar)
 	{expr = ExpressionFactory.createComposedNumberExpression(numExprP,op);}
+	| op = POW LPAREN n1 = numberExpression COMMA n2 = numberExpression RPAREN
+	{expr = ExpressionFactory.createComposedNumberExpression(n1,op, n2);}
 	//| {root = ExpressionFactory.createNumberFunction(numExprP,op)}
 	| (e = externalNumberFunction)=> e = externalNumberFunction {expr = e;}
 	;

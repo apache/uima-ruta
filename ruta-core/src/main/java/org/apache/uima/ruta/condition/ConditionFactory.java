@@ -168,9 +168,9 @@ public class ConditionFactory {
     return null;
   }
 
-  public static AbstractRutaCondition createConditionParse(Token id, RutaBlock env) {
+  public static AbstractRutaCondition createConditionParse(Token id, IStringExpression localeExpr, RutaBlock env) {
     String var = id == null ? "" : id.getText();
-    return new ParseCondition(var);
+    return new ParseCondition(var, localeExpr);
   }
 
   public static AbstractRutaCondition createConditionVariable(Token id) {
