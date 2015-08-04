@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
@@ -104,8 +105,10 @@ public class MarkTableAction extends AbstractRutaAction {
     for (AnnotationFS annotationFS : found) {
       // HOTFIX: for feature assignment
       String candidate = stream.getVisibleCoveredText(annotationFS);
-      for (int i = 0; i < maxIgnoreCharValue; i++) {
-        candidate = candidate.replaceFirst("[" + ignoreCharValue + "]", "");
+      if(!StringUtils.isBlank(ignoreCharValue)) {
+        for (int i = 0; i < maxIgnoreCharValue; i++) {
+          candidate = candidate.replaceFirst("[" + ignoreCharValue + "]", "");
+        }
       }
       List<String> rowWhere = table.getRowWhere(index - 1, candidate);
       if (rowWhere.isEmpty() && ignoreCaseValue && candidate.length() > ignoreLengthValue) {
