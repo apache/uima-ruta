@@ -340,8 +340,12 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     Type parent = type;
     RutaBasic beginAnchor = getBeginAnchor(annotation.getBegin());
     RutaBasic endAnchor = getEndAnchor(annotation.getEnd());
-    beginAnchor.removeBegin(annotation, parent);
-    endAnchor.removeEnd(annotation, parent);
+    if(beginAnchor != null) {
+    	beginAnchor.removeBegin(annotation, parent);
+    }
+    if(endAnchor != null) {
+    	endAnchor.removeEnd(annotation, parent);
+    }
     if (!(annotation instanceof RutaBasic)) {
       cas.removeFsFromIndexes(annotation);
     }
@@ -530,7 +534,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       return Collections.emptySet();
     }
     RutaBasic beginAnchor = getBeginAnchor(windowAnnotation.getBegin());
-    if (beginAnchor.getEnd() == windowAnnotation.getEnd()) {
+    if (beginAnchor != null && beginAnchor.getEnd() == windowAnnotation.getEnd()) {
       Collection<RutaBasic> result = new ArrayList<RutaBasic>(1);
       result.add(beginAnchor);
       return result;
