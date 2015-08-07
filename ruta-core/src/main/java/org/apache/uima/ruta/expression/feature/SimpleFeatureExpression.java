@@ -62,7 +62,7 @@ public class SimpleFeatureExpression extends FeatureExpression {
   @Override
   public Feature getFeature(RutaBlock parent) {
     List<Feature> features = getFeatures(parent);
-    if (!features.isEmpty()) {
+    if (features != null && !features.isEmpty()) {
       return features.get(features.size() - 1);
     } else {
       return null;
@@ -131,6 +131,9 @@ public class SimpleFeatureExpression extends FeatureExpression {
     for (AnnotationFS eachBase : annotations) {
       AnnotationFS afs = eachBase;
       for (Feature feature : features) {
+        if (afs == null) {
+          break;
+        }
         if (feature == null || feature.getRange().isPrimitive()) {
           // feature == null -> this is the coveredText "feature"
           if (this instanceof FeatureMatchExpression) {

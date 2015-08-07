@@ -128,11 +128,12 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
         String v2 = expr.getStringValue(parent, afs, stream);
         return compare(v1, v2);
       }
-    } else if(!feature.getRange().isPrimitive() && getArg() instanceof FeatureExpression) {
+    } else if (!feature.getRange().isPrimitive() && getArg() instanceof FeatureExpression) {
       FeatureExpression fe = (FeatureExpression) getArg();
       List<AnnotationFS> list = new ArrayList<AnnotationFS>(1);
       list.add(afs);
-      Collection<AnnotationFS> featureAnnotations = fe.getFeatureAnnotations(list, stream, parent, false);
+      Collection<AnnotationFS> featureAnnotations = fe.getFeatureAnnotations(list, stream, parent,
+              false);
       return compare(afs.getFeatureValue(feature), featureAnnotations);
     }
     return false;
@@ -140,23 +141,30 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
 
   private boolean compare(Object v1, Object v2) {
     if (v1 == null || v2 == null) {
-      if(v1 == null && v2 == null) {
-        if(getOp().equals("==")) {
+      if (v1 == null && v2 == null) {
+        if (getOp().equals("==")) {
           return true;
-        } else if (getOp().equals("!=")){
+        } else if (getOp().equals("!=")) {
           return false;
         }
       } else {
-        if(getOp().equals("==")) {
+        if (getOp().equals("==")) {
           return false;
-        } else if (getOp().equals("!=")){
+        } else if (getOp().equals("!=")) {
           return true;
         }
       }
     } else if (v1 instanceof Number && v2 instanceof Number) {
       Number n1 = (Number) v1;
       Number n2 = (Number) v2;
-      int compareTo = new BigDecimal(n1.toString()).compareTo(new BigDecimal(n2.toString()));
+      int compareTo = 0;
+      try {
+        // TODO can throw exception in rule inference!!
+        // TODO replace by something stable and correct
+        compareTo = new BigDecimal(n1.toString()).compareTo(new BigDecimal(n2.toString()));
+      } catch (Exception e) {
+        // TODO: handle exception
+      }
       if (getOp().equals("==")) {
         return compareTo == 0;
       } else if (getOp().equals("!=")) {
