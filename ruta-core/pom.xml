@@ -142,6 +142,7 @@
                   <exclude>src/test/resources/META-INF/org.apache.uima.fit/types.txt</exclude> <!-- test data -->
                   <exclude>src/main/resources/META-INF/org.apache.uima.fit/*.txt</exclude>
                   <exclude>issuesFixed/**</exclude> <!-- generated -->
+                  <exclude>marker-file-identifying-*</exclude>
                 </excludes>
               </configuration>
             </execution>

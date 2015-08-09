@@ -231,7 +231,7 @@ Creative Commons Attribution 3.0 License.
       <id>enforce-compatibility</id>
       <activation>
         <file>
-          <exists>.activate-enforce-compatibility</exists>
+          <exists>marker-file-identifying-api-compatibility-check</exists>
         </file>
       </activation>
       <build>
