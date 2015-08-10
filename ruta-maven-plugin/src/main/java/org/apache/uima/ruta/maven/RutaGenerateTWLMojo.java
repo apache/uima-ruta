@@ -83,9 +83,10 @@ public class RutaGenerateTWLMojo extends AbstractMojo {
     } catch (IOException e) {
       getLog().warn("Error accessing input files.", e);
     }
+    if (!files.isEmpty()) {
+      getLog().debug("Processing following files: " + files.toString());
+    }
 
-    getLog().debug("Processing following files: " + files.toString());
-    
     for (File file : files) {
       TreeWordList list = null;
       try {
