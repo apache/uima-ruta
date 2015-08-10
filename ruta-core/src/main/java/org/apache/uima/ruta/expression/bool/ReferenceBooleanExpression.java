@@ -47,7 +47,7 @@ public class ReferenceBooleanExpression extends AbstractBooleanExpression {
 
   @Override
   public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return getBooleanValue(parent, null, stream) ? "true" : "false";
+    return getBooleanValue(parent, annotation, stream) ? "true" : "false";
   }
 
 }

@@ -91,13 +91,13 @@ public class MarkTableAction extends AbstractRutaAction {
     }
 
     boolean ignoreCaseValue = ignoreCase != null ? ignoreCase.getBooleanValue(element.getParent(),
-            null, stream) : false;
+            match, element, stream) : false;
     int ignoreLengthValue = ignoreLength != null ? ignoreLength.getIntegerValue(
-            element.getParent(), null, stream) : 0;
+            element.getParent(), match, element, stream) : 0;
     String ignoreCharValue = ignoreChar != null ? ignoreChar.getStringValue(element.getParent(),
-            null, stream) : "";
+            match, element, stream) : "";
     int maxIgnoreCharValue = maxIgnoreChar != null ? maxIgnoreChar.getIntegerValue(
-            element.getParent(), null, stream) : 0;
+            element.getParent(), match, element, stream) : 0;
 
     RutaWordList wordList = table.getWordList(index, element.getParent());
     Collection<AnnotationFS> found = wordList.find(stream, ignoreCaseValue, ignoreLengthValue,

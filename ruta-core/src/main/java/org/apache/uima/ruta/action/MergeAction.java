@@ -50,7 +50,7 @@ public class MergeAction extends AbstractRutaAction {
   @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
-    boolean union = unionExpr.getBooleanValue(element.getParent(), null, stream);
+    boolean union = unionExpr.getBooleanValue(element.getParent(), match, element, stream);
     List<Object> list = new ArrayList<Object>();
     if (union) {
       for (ListExpression<Object> each : lists) {

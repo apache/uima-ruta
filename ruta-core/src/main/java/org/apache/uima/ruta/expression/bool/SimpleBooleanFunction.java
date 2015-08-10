@@ -40,8 +40,8 @@ public class SimpleBooleanFunction extends AbstractBooleanExpression {
 
   @Override
   public boolean getBooleanValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    boolean b1 = e1.getBooleanValue(parent, null, stream);
-    boolean b2 = e2.getBooleanValue(parent, null, stream);
+    boolean b1 = e1.getBooleanValue(parent, annotation, stream);
+    boolean b2 = e2.getBooleanValue(parent, annotation, stream);
     if ("XOR".equals(op)) {
       return (b1 || b2) && !(b1 && b2);
     } else if ("==".equals(op)) {

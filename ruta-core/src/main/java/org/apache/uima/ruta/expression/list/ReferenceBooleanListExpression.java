@@ -42,6 +42,7 @@ public class ReferenceBooleanListExpression extends BooleanListExpression {
     List<Boolean> result = new ArrayList<Boolean>();
     for (Object each : list) {
       if (each instanceof IBooleanExpression) {
+        // TODO support arrays
         result.add(((IBooleanExpression) each).getBooleanValue(parent, null, stream));
       } else if (each instanceof Boolean) {
         result.add((Boolean) each);

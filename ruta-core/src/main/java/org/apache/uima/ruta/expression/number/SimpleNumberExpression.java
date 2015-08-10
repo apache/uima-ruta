@@ -51,9 +51,9 @@ public class SimpleNumberExpression extends AbstractNumberExpression {
   public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     boolean floating = number.intValue() != number.doubleValue();
     if (floating) {
-      return "" + getDoubleValue(parent, null, stream);
+      return "" + getDoubleValue(parent, annotation, stream);
     } else {
-      return "" + getIntegerValue(parent, null, stream);
+      return "" + getIntegerValue(parent, annotation, stream);
     }
   }
 

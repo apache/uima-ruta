@@ -39,6 +39,7 @@ public class SimpleBooleanListExpression extends BooleanListExpression {
   public List<Boolean> getList(RutaBlock parent, RutaStream stream) {
     List<Boolean> result = new ArrayList<Boolean>();
     for (IBooleanExpression each : list) {
+   // TODO support arrays
       result.add(each.getBooleanValue(parent, null, stream));
     }
     return result;

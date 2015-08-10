@@ -39,6 +39,7 @@ public class SimpleNumberListExpression extends NumberListExpression {
   public List<Number> getList(RutaBlock parent, RutaStream stream) {
     List<Number> result = new ArrayList<Number>();
     for (INumberExpression each : list) {
+   // TODO support arrays
       result.add(each.getDoubleValue(parent, null, stream));
     }
     return result;

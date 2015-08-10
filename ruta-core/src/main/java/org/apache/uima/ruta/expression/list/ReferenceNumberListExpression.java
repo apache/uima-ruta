@@ -42,6 +42,7 @@ public class ReferenceNumberListExpression extends NumberListExpression {
     List<Number> result = new ArrayList<Number>();
     for (Object each : list) {
       if (each instanceof INumberExpression) {
+     // TODO support arrays
         result.add(((INumberExpression) each).getDoubleValue(parent, null, stream));
       } else if (each instanceof Number) {
         result.add((Number) each);

@@ -69,6 +69,7 @@ public class MatchedTextAction extends AbstractRutaAction {
     }
     int last = Integer.MAX_VALUE - 1;
     for (INumberExpression each : list) {
+      // not allowed for feature matches
       int value = each.getIntegerValue(element.getParent(), null, stream);
       for (int i = Math.min(value, last + 1); i < value; i++) {
         indexList.add(i);

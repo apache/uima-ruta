@@ -54,7 +54,7 @@ public class RemoveDuplicateAction extends AbstractRutaAction {
     Collection<Object> values = new HashSet<Object>();
     List<Object> result = new ArrayList<Object>();
     for (Object each : list) {
-      Object obj = getValue(each, element.getParent(), stream);
+      Object obj = getValue(each, element.getParent(), stream, match, element);
       if (!values.contains(obj)) {
         result.add(each);
         values.add(obj);
@@ -65,15 +65,15 @@ public class RemoveDuplicateAction extends AbstractRutaAction {
 
   }
 
-  private Object getValue(Object obj, RutaBlock parent, RutaStream stream) {
+  private Object getValue(Object obj, RutaBlock parent, RutaStream stream, RuleMatch match, RuleElement element) {
     if (obj instanceof INumberExpression) {
-      return ((INumberExpression) obj).getDoubleValue(parent, null, stream);
+      return ((INumberExpression) obj).getDoubleValue(parent, match, element, stream);
     } else if (obj instanceof IBooleanExpression) {
-      return ((IBooleanExpression) obj).getBooleanValue(parent, null, stream);
+      return ((IBooleanExpression) obj).getBooleanValue(parent, match, element, stream);
     } else if (obj instanceof TypeExpression) {
       return ((TypeExpression) obj).getType(parent);
     } else if (obj instanceof IStringExpression) {
-      return ((IStringExpression) obj).getStringValue(parent, null, stream);
+      return ((IStringExpression) obj).getStringValue(parent, match, element, stream);
     }
     return null;
   }

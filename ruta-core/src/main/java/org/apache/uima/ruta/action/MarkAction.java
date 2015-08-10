@@ -56,7 +56,7 @@ public class MarkAction extends AbstractMarkAction {
       if (score == null) {
         createAnnotation(matchedAnnotation, element, stream, match);
       } else {
-        double deltaScore = score.getDoubleValue(element.getParent(), null, stream);
+        double deltaScore = score.getDoubleValue(element.getParent(), match, element, stream);
         updateHeuristicAnnotation(match, element, stream, matchedAnnotation, deltaScore);
       }
     }

@@ -62,9 +62,9 @@ public class ReferenceNumberExpression extends AbstractNumberExpression {
   public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
     Class<?> variableType = parent.getEnvironment().getVariableType(getVar());
     if (variableType.equals(Integer.class)) {
-      return "" + getIntegerValue(parent, null, stream);
+      return "" + getIntegerValue(parent, annotation, stream);
     } else {
-      return "" + getDoubleValue(parent, null, stream);
+      return "" + getDoubleValue(parent, annotation, stream);
     }
   }
 

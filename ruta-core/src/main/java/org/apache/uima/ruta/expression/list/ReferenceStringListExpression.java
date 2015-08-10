@@ -42,6 +42,7 @@ public class ReferenceStringListExpression extends StringListExpression {
     List<String> result = new ArrayList<String>();
     for (Object each : list) {
       if (each instanceof AbstractStringExpression) {
+     // TODO support arrays
         result.add(((AbstractStringExpression) each).getStringValue(parent, null, stream));
       } else if (each instanceof String) {
         result.add((String) each);

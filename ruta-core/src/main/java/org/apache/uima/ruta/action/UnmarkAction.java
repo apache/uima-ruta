@@ -51,7 +51,7 @@ public class UnmarkAction extends TypeSensitiveAction {
     Type t = type.getType(element.getParent());
     boolean allAtAnchor = false;
     if (allAnchor != null) {
-      allAtAnchor = allAnchor.getBooleanValue(element.getParent(), null, stream);
+      allAtAnchor = allAnchor.getBooleanValue(element.getParent(), match, element, stream);
     }
     List<Integer> indexList = getIndexList(element, list, stream);
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(indexList,
@@ -95,6 +95,7 @@ public class UnmarkAction extends TypeSensitiveAction {
     }
     int last = Integer.MAX_VALUE - 1;
     for (INumberExpression each : list) {
+      // not allowed for feature matches
       int value = each.getIntegerValue(element.getParent(), null, stream);
       for (int i = Math.min(value, last + 1); i < value; i++) {
         indexList.add(i);

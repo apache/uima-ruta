@@ -83,7 +83,7 @@ public class ComposedNumberExpression extends AbstractNumberExpression {
 
   @Override
   public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return "" + getDoubleValue(parent, null, stream);
+    return "" + getDoubleValue(parent, annotation, stream);
   }
 
   public List<INumberExpression> getExpressions() {

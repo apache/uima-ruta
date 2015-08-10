@@ -130,7 +130,7 @@ public class ContainsCondition extends TypeSentiveCondition {
       }
       anchorCount = basicCount;
     }
-    if (percent.getBooleanValue(element.getParent(), null, stream)) {
+    if (percent.getBooleanValue(element.getParent(), annotation, stream)) {
       double percentValue = 0;
       if (totalCount != 0) {
         percentValue = (((double) basicCount) / ((double) totalCount)) * 100;

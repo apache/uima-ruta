@@ -68,6 +68,7 @@ public abstract class AbstractMarkAction extends TypeSensitiveAction {
     }
     int last = Integer.MAX_VALUE - 1;
     for (INumberExpression each : list) {
+      // no feature matches allowed
       int value = each.getIntegerValue(element.getParent(), null, stream);
       for (int i = Math.min(value, last + 1); i < value; i++) {
         indexList.add(i);

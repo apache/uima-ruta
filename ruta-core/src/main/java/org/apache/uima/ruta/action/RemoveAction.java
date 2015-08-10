@@ -61,19 +61,19 @@ public class RemoveAction extends AbstractRutaAction {
     List list = parent.getEnvironment().getVariableValue(var, List.class);
     List<Object> toRemove = new ArrayList<Object>();
     for (Object entry : list) {
-      Object value1 = getValue(entry, parent, stream);
+      Object value1 = getValue(entry, parent, stream, match, element);
       for (IRutaExpression arg : elements) {
         if (arg instanceof ListExpression) {
           ListExpression l = (ListExpression) arg;
           List list2 = l.getList(parent, stream);
           for (Object object : list2) {
-            Object value2 = getValue(object, parent, stream);
+            Object value2 = getValue(object, parent, stream, match, element);
             if (value1.equals(value2)) {
               toRemove.add(entry);
             }
           }
         } else {
-          Object value2 = getValue(arg, parent, stream);
+          Object value2 = getValue(arg, parent, stream, match, element);
           if (value1.equals(value2)) {
             toRemove.add(entry);
           }
@@ -86,15 +86,15 @@ public class RemoveAction extends AbstractRutaAction {
     parent.getEnvironment().setVariableValue(var, list);
   }
 
-  private Object getValue(Object obj, RutaBlock parent, RutaStream stream) {
+  private Object getValue(Object obj, RutaBlock parent, RutaStream stream, RuleMatch match, RuleElement element) {
     if (obj instanceof INumberExpression) {
-      return ((INumberExpression) obj).getDoubleValue(parent, null, stream);
+      return ((INumberExpression) obj).getDoubleValue(parent, match, element, stream);
     } else if (obj instanceof IBooleanExpression) {
-      return ((IBooleanExpression) obj).getBooleanValue(parent, null, stream);
+      return ((IBooleanExpression) obj).getBooleanValue(parent, match, element, stream);
     } else if (obj instanceof TypeExpression) {
       return ((TypeExpression) obj).getType(parent);
     } else if (obj instanceof IStringExpression) {
-      return ((IStringExpression) obj).getStringValue(parent, null, stream);
+      return ((IStringExpression) obj).getStringValue(parent, match, element, stream);
     }
     return null;
   }
