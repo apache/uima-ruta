@@ -84,6 +84,8 @@ public class RutaGenerateMTWLMojo extends AbstractMojo {
       getLog().warn("Error accessing input files.", e);
     }
 
+    getLog().debug("Processing following files: " + files.toString());
+    
     MultiTreeWordList trie = null;
     try {
       trie = new MultiTreeWordList(files);
