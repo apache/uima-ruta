@@ -31,6 +31,10 @@ import org.apache.maven.project.ProjectBuildingRequest;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.Type;
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.util.XMLInputSource;
 import org.codehaus.plexus.util.FileUtils;
 
@@ -38,18 +42,28 @@ public class RutaGenerateDescriptorMojoTest extends AbstractMojoTestCase {
 
   public void testSimple() throws Exception {
     MavenProject project = build("simple");
- // check that the Java files have been generated
-    File descDirectory = new File(project.getBasedir(), "target/generated-sources/ruta/descriptor");
     
+    File descDirectory = new File(project.getBasedir(), "target/generated-sources/ruta/descriptor");
     File aeFile = new File(descDirectory, "SimpleEngine.xml");
     Assert.assertTrue(aeFile.exists());
     File tsFile = new File(descDirectory, "SimpleTypeSystem.xml");
     Assert.assertTrue(tsFile.exists());
+    project.getCompileSourceRoots().contains(descDirectory.getAbsolutePath());
     
     AnalysisEngineDescription aed = UIMAFramework.getXMLParser().parseAnalysisEngineDescription(new XMLInputSource(aeFile));
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed);
     
-    project.getCompileSourceRoots().contains(descDirectory.getAbsolutePath());
+    CAS cas = ae.newCAS();
+    cas.setDocumentText("This is a test.");
+    ae.process(cas);
+    
+    Type type = cas.getTypeSystem().getType("Simple.MyType");
+    AnnotationIndex<AnnotationFS> ai = cas.getAnnotationIndex(type);
+    assertEquals(1, ai.size());
+    assertEquals("is", ai.iterator().next().getCoveredText());
+    
+    cas.release();
+    
   }
 
 

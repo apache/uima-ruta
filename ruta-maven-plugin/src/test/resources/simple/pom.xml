@@ -27,8 +27,23 @@
       <plugin>
         <groupId>org.apache.uima</groupId>
         <artifactId>ruta-maven-plugin</artifactId>
-        <version>${project.version}</version>
-
+        <configuration>
+          <typeSystemOutputDirectory>${project.build.directory}/generated-sources/ruta/descriptor</typeSystemOutputDirectory>
+          <analysisEngineOutputDirectory>${project.build.directory}/generated-sources/ruta/descriptor</analysisEngineOutputDirectory>
+          <scriptPaths>
+            <scriptPath>${project.build.directory}/classes</scriptPath>
+          </scriptPaths>
+          <descriptorPaths>
+            <descriptorPath>${project.build.directory}/generated-sources/ruta/descriptor</descriptorPath>
+          </descriptorPaths>
+          <analysisEngineSuffix>Engine</analysisEngineSuffix>
+          <typeSystemSuffix>TypeSystem</typeSystemSuffix>
+          <encoding>UTF-8</encoding>
+          <importByName>false</importByName>
+          <resolveImports>false</resolveImports>
+          <maxBuildRetries>-1</maxBuildRetries>
+          <addRutaNature>false</addRutaNature>
+        </configuration>
         <executions>
           <execution>
             <id>descriptors</id>
@@ -36,26 +51,6 @@
             <goals>
               <goal>generate</goal>
             </goals>
-              <configuration>
-              <typeSystemOutputDirectory>${project.build.directory}/generated-sources/ruta/descriptor</typeSystemOutputDirectory>
-              <analysisEngineOutputDirectory>${project.build.directory}/generated-sources/ruta/descriptor</analysisEngineOutputDirectory>
-              <scriptPaths>
-                <scriptPath>${basedir}/src/main/ruta/</scriptPath>
-              </scriptPaths>
-              <descriptorPaths>
-                <descriptorPath>${project.build.directory}/generated-sources/ruta/descriptor</descriptorPath>
-              </descriptorPaths>
-              <resourcePaths>
-                <resourcePath>${basedir}/src/main/resources/</resourcePath>
-                <resourcePath>${project.build.directory}/generated-sources/ruta/resources/</resourcePath>
-              </resourcePaths>
-              <analysisEngineSuffix>Engine</analysisEngineSuffix>
-              <typeSystemSuffix>TypeSystem</typeSystemSuffix>
-              <encoding>UTF-8</encoding>
-              <importByName>false</importByName>
-              <resolveImports>false</resolveImports>
-              <maxBuildRetries>-1</maxBuildRetries>
-            </configuration>
           </execution>
         </executions>
       </plugin>

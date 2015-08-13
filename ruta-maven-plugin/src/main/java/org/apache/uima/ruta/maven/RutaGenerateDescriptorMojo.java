@@ -245,17 +245,17 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
       files = FileUtils.getFilesFromExtension(project.getBuild().getOutputDirectory(),
               new String[] { "ruta" });
     }
-    
+
     if (addRutaNature) {
       addRutaNature();
       addRutaBuildPath();
     }
-    
+
     if (files == null) {
       getLog().debug("UIMA Ruta Building: Skipped, since no script files were selected.");
       return;
     }
-    
+
     List<File> filesToBuild = new ArrayList<File>();
     for (String each : files) {
       File file = new File(each);
@@ -265,8 +265,6 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
         filesToBuild.add(file);
       }
     }
-
-    
 
     if (filesToBuild.isEmpty()) {
       getLog().debug("UIMA Ruta Building: Skipped, since no changes were detected.");
@@ -428,20 +426,22 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
       throw new MojoExecutionException("Unable to resolve dependencies: "
               + ExceptionUtils.getRootCauseMessage(e), e);
     }
-
-    for (Artifact dep : (Set<Artifact>) aProject.getDependencyArtifacts()) {
-      try {
-        if (dep.getFile() == null) {
-          // Unresolved file because it is in the wrong scope (e.g. test?)
-          continue;
+    Set<Artifact> artifacts = (Set<Artifact>) aProject.getDependencyArtifacts();
+    if (artifacts != null) {
+      for (Artifact dep : artifacts) {
+        try {
+          if (dep.getFile() == null) {
+            // Unresolved file because it is in the wrong scope (e.g. test?)
+            continue;
+          }
+          aLog.debug("Classpath entry: " + dep.getGroupId() + ":" + dep.getArtifactId() + ":"
+                  + dep.getVersion() + " -> " + dep.getFile());
+          urls.add(dep.getFile().toURI().toURL());
+        } catch (Exception e) {
+          throw new MojoExecutionException("Unable get dependency artifact location for "
+                  + dep.getGroupId() + ":" + dep.getArtifactId() + ":" + dep.getVersion()
+                  + ExceptionUtils.getRootCauseMessage(e), e);
         }
-        aLog.debug("Classpath entry: " + dep.getGroupId() + ":" + dep.getArtifactId() + ":"
-                + dep.getVersion() + " -> " + dep.getFile());
-        urls.add(dep.getFile().toURI().toURL());
-      } catch (Exception e) {
-        throw new MojoExecutionException("Unable get dependency artifact location for "
-                + dep.getGroupId() + ":" + dep.getArtifactId() + ":" + dep.getVersion()
-                + ExceptionUtils.getRootCauseMessage(e), e);
       }
     }
     return new URLClassLoader(urls.toArray(new URL[] {}),

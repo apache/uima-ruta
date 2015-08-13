@@ -1,2 +1,2 @@
 DECLARE MyType;
-CW SW{-> MYType};
+CW SW{-> MyType};
