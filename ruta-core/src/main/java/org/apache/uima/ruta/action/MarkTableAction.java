@@ -35,6 +35,7 @@ import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.resource.WordTableExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
@@ -62,6 +63,8 @@ public class MarkTableAction extends AbstractRutaAction {
   private final IStringExpression ignoreChar;
 
   private final INumberExpression maxIgnoreChar;
+  
+  private IBooleanExpression ignoreWS = new SimpleBooleanExpression(true);
 
   public MarkTableAction(TypeExpression typeExpr, INumberExpression indexExpr,
           WordTableExpression tableExpr, Map<IStringExpression, INumberExpression> featureMap,
@@ -76,6 +79,10 @@ public class MarkTableAction extends AbstractRutaAction {
     this.ignoreLength = ignoreLength;
     this.ignoreChar = ignoreChar;
     this.maxIgnoreChar = maxIgnoreChar;
+  }
+  
+  public void setIgnoreWS(IBooleanExpression ignoreWS) {
+    this.ignoreWS = ignoreWS;
   }
 
   @Override
@@ -98,10 +105,12 @@ public class MarkTableAction extends AbstractRutaAction {
             match, element, stream) : "";
     int maxIgnoreCharValue = maxIgnoreChar != null ? maxIgnoreChar.getIntegerValue(
             element.getParent(), match, element, stream) : 0;
+    boolean ignoreWSValue = ignoreWS != null ? ignoreWS.getBooleanValue(element.getParent(),
+            null, stream) : false;
 
     RutaWordList wordList = table.getWordList(index, element.getParent());
     Collection<AnnotationFS> found = wordList.find(stream, ignoreCaseValue, ignoreLengthValue,
-            ignoreCharValue.toCharArray(), maxIgnoreCharValue, true);
+            ignoreCharValue.toCharArray(), maxIgnoreCharValue, ignoreWSValue);
     for (AnnotationFS annotationFS : found) {
       // HOTFIX: for feature assignment
       String candidate = stream.getVisibleCoveredText(annotationFS);
