@@ -96,8 +96,6 @@
         </plugin>
       </plugins>
     </pluginManagement>
-        <!-- <version>1.7</version> 1.8 from superpom -->
-	<!-- 
 	<plugins>
       <plugin>
         <artifactId>maven-invoker-plugin</artifactId>
@@ -128,6 +126,5 @@
         </executions>
       </plugin>
     </plugins>
-	 -->
 	</build>
 </project>

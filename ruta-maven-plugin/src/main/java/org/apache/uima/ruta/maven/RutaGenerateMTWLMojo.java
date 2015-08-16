@@ -39,7 +39,7 @@ import org.sonatype.plexus.build.incremental.BuildContext;
  * Generate descriptors from UIMA Ruta script files.
  * 
  */
-@Mojo(name = "mtwl", defaultPhase = LifecyclePhase.PROCESS_RESOURCES, requiresDependencyResolution = ResolutionScope.COMPILE)
+@Mojo(name = "mtwl", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class RutaGenerateMTWLMojo extends AbstractMojo {
   @Component
   private MavenProject project;
@@ -77,6 +77,9 @@ public class RutaGenerateMTWLMojo extends AbstractMojo {
       parentFile.mkdirs();
       buildContext.refresh(parentFile);
     }
+    
+    this.project.addCompileSourceRoot(parentFile.getPath());
+    
     List<File> files = null;
     try {
       files = Utils.getFilesIfModified(inputFiles, buildContext);

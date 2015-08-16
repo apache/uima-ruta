@@ -78,7 +78,7 @@ import org.xml.sax.SAXException;
  * Generate descriptors from UIMA Ruta script files.
  * 
  */
-@Mojo(name = "generate", defaultPhase = LifecyclePhase.PROCESS_RESOURCES, requiresDependencyResolution = ResolutionScope.COMPILE)
+@Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class RutaGenerateDescriptorMojo extends AbstractMojo {
   private static final String RUTA_BUILD_VARS = "RUTA_BUILD_VARS";
 
@@ -256,7 +256,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     }
 
     if (files == null) {
-      getLog().debug("UIMA Ruta Building: Skipped, since no script files were selected.");
+      getLog().info("UIMA Ruta Building: Skipped, since no script files were selected.");
       return;
     }
 
@@ -271,7 +271,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     }
 
     if (filesToBuild.isEmpty()) {
-      getLog().debug("UIMA Ruta Building: Skipped, since no changes were detected.");
+      getLog().info("UIMA Ruta Building: Skipped, since no changes were detected.");
       return;
     }
 

@@ -97,6 +97,8 @@
 				<executions>
 					<execution>
 						<id>descriptors</id>
+            <!-- use this phase so that the ruta script files are already copied to target/classes -->
+            <!-- no need to specify the included script directories with <scriptFiles> -->
 						<phase>process-classes</phase>
 						<goals>
 							<goal>generate</goal>
