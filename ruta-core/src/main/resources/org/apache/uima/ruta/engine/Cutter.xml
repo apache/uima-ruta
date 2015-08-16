@@ -23,7 +23,7 @@
   <primitive>true</primitive>
   <annotatorImplementationName>org.apache.uima.ruta.engine.RutaCutter</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>XMLConverter</name>
+    <name>org.apache.uima.ruta.engine.Cutter</name>
     <description/>
     <version>1.0</version>
     <vendor/>

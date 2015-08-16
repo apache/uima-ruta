@@ -22,7 +22,7 @@
   <primitive>true</primitive>
   <annotatorImplementationName>org.apache.uima.ruta.engine.RutaEngine</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>BasicEngine</name>
+    <name>org.apache.uima.ruta.engine.BasicEngine</name>
     <description/>
     <version>1.0</version>
     <vendor/>

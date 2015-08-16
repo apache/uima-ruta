@@ -38,6 +38,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.util.XMLInputSource;
 import org.codehaus.plexus.util.FileUtils;
 
+
 public class RutaGenerateDescriptorMojoTest extends AbstractMojoTestCase {
 
   public void testSimple() throws Exception {
@@ -48,7 +49,6 @@ public class RutaGenerateDescriptorMojoTest extends AbstractMojoTestCase {
     Assert.assertTrue(aeFile.exists());
     File tsFile = new File(descDirectory, "SimpleTypeSystem.xml");
     Assert.assertTrue(tsFile.exists());
-    project.getCompileSourceRoots().contains(descDirectory.getAbsolutePath());
     
     AnalysisEngineDescription aed = UIMAFramework.getXMLParser().parseAnalysisEngineDescription(new XMLInputSource(aeFile));
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed);
@@ -66,7 +66,8 @@ public class RutaGenerateDescriptorMojoTest extends AbstractMojoTestCase {
     
   }
 
-
+  
+  
   public MavenProject build(String projectName) throws Exception {
 
     File projectSourceDirectory = getTestFile("src/test/resources/" + projectName);

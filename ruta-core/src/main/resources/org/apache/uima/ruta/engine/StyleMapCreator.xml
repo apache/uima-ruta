@@ -23,7 +23,7 @@
   <primitive>true</primitive>
   <annotatorImplementationName>org.apache.uima.ruta.engine.StyleMapCreator</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>ReferenceSectionWriterDescriptor</name>
+    <name>org.apache.uima.ruta.engine.StyleMapCreator</name>
     <description/>
     <version>1.0</version>
     <vendor/>

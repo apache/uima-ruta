@@ -19,7 +19,7 @@
 -->
 
 <typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
-  <name>InternalTypeSystem</name>
+  <name>org.apache.uima.ruta.engine.InternalTypeSystem</name>
   <description/>
   <version>1.0</version>
   <vendor/>

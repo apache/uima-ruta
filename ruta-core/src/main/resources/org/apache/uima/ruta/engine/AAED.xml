@@ -27,7 +27,7 @@
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
-    <name>AAED</name>
+    <name>org.apache.uima.ruta.engine.AAED</name>
     <description/>
     <version>1.0</version>
     <vendor/>

@@ -19,7 +19,7 @@
 -->
 
 <typePriorities xmlns="http://uima.apache.org/resourceSpecifier">
-<name>TypePrioritites</name>
+<name>org.apache.uima.ruta.engine.TypePrioritites</name>
 <description></description>
 <version>1.0</version>
 <vendor></vendor>

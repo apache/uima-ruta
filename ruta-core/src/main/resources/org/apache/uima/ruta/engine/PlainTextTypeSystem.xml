@@ -19,7 +19,7 @@
   under the License.
 -->
 <typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
-  <name>PlainTextTypeSystem</name>
+  <name>org.apache.uima.ruta.engine.PlainTextTypeSystem</name>
   <description/>
   <version>1.0</version>
   <vendor/>

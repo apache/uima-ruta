@@ -19,7 +19,7 @@
 -->
 
 <typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
-  <name>typeSystemDescriptor</name>
+  <name>org.apache.uima.ruta.engine.HtmlTypeSystem</name>
   <description/>
   <version>1.0</version>
   <vendor/>

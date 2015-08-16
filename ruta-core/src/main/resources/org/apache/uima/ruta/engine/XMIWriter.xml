@@ -23,7 +23,7 @@
   <primitive>true</primitive>
   <annotatorImplementationName>org.apache.uima.ruta.engine.XMIWriter</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>ReferenceSectionWriterDescriptor</name>
+    <name>org.apache.uima.ruta.engine.XMIWriter</name>
     <description/>
     <version>1.0</version>
     <vendor/>

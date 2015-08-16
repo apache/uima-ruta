@@ -96,6 +96,38 @@
         </plugin>
       </plugins>
     </pluginManagement>
-	
+        <!-- <version>1.7</version> 1.8 from superpom -->
+	<!-- 
+	<plugins>
+      <plugin>
+        <artifactId>maven-invoker-plugin</artifactId>
+        <configuration>
+          <projectsDirectory>src/it</projectsDirectory>
+          <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+          <pomIncludes>
+            <pomInclude>*/pom.xml</pomInclude>
+          </pomIncludes>
+          <settingsFile>src/it/settings.xml</settingsFile>
+          <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+          <postBuildHookScript>verify.bsh</postBuildHookScript>
+          <goals>
+            <goal>clean</goal>
+            <goal>package</goal>
+            <goal>integration-test</goal>
+          </goals>
+          <invokerTest>importByName</invokerTest>
+        </configuration>
+        <executions>
+          <execution>
+            <id>integration-test</id>
+            <goals>
+              <goal>install</goal>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+	 -->
 	</build>
 </project>

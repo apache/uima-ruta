@@ -41,6 +41,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.model.FileSet;
+import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -205,6 +206,9 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
       buildContext.refresh(analysisEngineOutputDirectory);
     }
 
+    this.project.addCompileSourceRoot(this.typeSystemOutputDirectory.getPath());
+    this.project.addCompileSourceRoot(this.analysisEngineOutputDirectory.getPath());
+    
     RutaDescriptorFactory factory = new RutaDescriptorFactory();
     if (typeSystemTemplate != null) {
       try {
@@ -410,13 +414,42 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
    * Create a class loader which covers the classes compiled in the current project and all
    * dependencies.
    */
-  public static URLClassLoader getClassloader(MavenProject aProject, Log aLog)
+  public static URLClassLoader getClassloader(MavenProject project, Log aLog)
           throws MojoExecutionException {
+
     List<URL> urls = new ArrayList<URL>();
+
+    for (String element : project.getCompileSourceRoots()) {
+      try {
+        urls.add(new File(element).toURI().toURL());
+        if(aLog != null) {
+          aLog.debug("Classpath entry: " + element);
+        }
+      } catch (MalformedURLException e) {
+        throw new MojoExecutionException("Unable to assemble classpath: "
+                + ExceptionUtils.getRootCauseMessage(e), e);
+      }
+    }
+
+    for (Resource element : project.getResources()) {
+      try {
+        String directory = element.getDirectory();
+        urls.add(new File(directory).toURI().toURL());
+        if(aLog != null) {
+          aLog.debug("Classpath entry: " + directory);
+        }
+      } catch (MalformedURLException e) {
+        throw new MojoExecutionException("Unable to assemble classpath: "
+                + ExceptionUtils.getRootCauseMessage(e), e);
+      }
+    }
+
     try {
-      for (Object object : aProject.getCompileClasspathElements()) {
+      for (Object object : project.getCompileClasspathElements()) {
         String path = (String) object;
-        aLog.debug("Classpath entry: " + object);
+        if(aLog != null) {
+          aLog.debug("Classpath entry: " + object);
+        }
         urls.add(new File(path).toURI().toURL());
       }
     } catch (IOException e) {
@@ -426,7 +459,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
       throw new MojoExecutionException("Unable to resolve dependencies: "
               + ExceptionUtils.getRootCauseMessage(e), e);
     }
-    Set<Artifact> artifacts = (Set<Artifact>) aProject.getDependencyArtifacts();
+    Set<Artifact> artifacts = (Set<Artifact>) project.getDependencyArtifacts();
     if (artifacts != null) {
       for (Artifact dep : artifacts) {
         try {
@@ -434,8 +467,10 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
             // Unresolved file because it is in the wrong scope (e.g. test?)
             continue;
           }
+          if(aLog != null) {
           aLog.debug("Classpath entry: " + dep.getGroupId() + ":" + dep.getArtifactId() + ":"
                   + dep.getVersion() + " -> " + dep.getFile());
+          }
           urls.add(dep.getFile().toURI().toURL());
         } catch (Exception e) {
           throw new MojoExecutionException("Unable get dependency artifact location for "

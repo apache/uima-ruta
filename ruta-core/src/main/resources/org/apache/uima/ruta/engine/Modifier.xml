@@ -23,7 +23,7 @@
   <primitive>true</primitive>
   <annotatorImplementationName>org.apache.uima.ruta.engine.RutaModifier</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>Modifier</name>
+    <name>org.apache.uima.ruta.engine.Modifier</name>
     <description/>
     <version>1.0</version>
     <vendor/>
