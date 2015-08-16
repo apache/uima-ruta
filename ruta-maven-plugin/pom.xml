@@ -113,7 +113,7 @@
             <goal>package</goal>
             <goal>integration-test</goal>
           </goals>
-          <invokerTest>importByName</invokerTest>
+          <invokerTest>importByName,multimodule</invokerTest>
         </configuration>
         <executions>
           <execution>
