@@ -106,7 +106,7 @@ public class MarkTableAction extends AbstractRutaAction {
     int maxIgnoreCharValue = maxIgnoreChar != null ? maxIgnoreChar.getIntegerValue(
             element.getParent(), match, element, stream) : 0;
     boolean ignoreWSValue = ignoreWS != null ? ignoreWS.getBooleanValue(element.getParent(),
-            null, stream) : false;
+            match, element, stream) : false;
 
     RutaWordList wordList = table.getWordList(index, element.getParent());
     Collection<AnnotationFS> found = wordList.find(stream, ignoreCaseValue, ignoreLengthValue,
