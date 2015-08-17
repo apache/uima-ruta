@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>ruta-parent</artifactId>
-    <version>2.3.1</version>
+    <version>2.3.2-SNAPSHOT</version>
     <relativePath>../ruta-parent/pom.xml</relativePath>
   </parent>
   <properties>
@@ -110,9 +110,9 @@
 
   </dependencies>
   <scm>
-    <url>http://svn.apache.org/viewvc/uima/ruta/tags/ruta-2.3.1/ruta-core</url>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/ruta/tags/ruta-2.3.1/ruta-core</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/ruta/tags/ruta-2.3.1/ruta-core</developerConnection>
+    <url>http://svn.apache.org/viewvc/uima/ruta/trunk/ruta-core</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-core</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-core</developerConnection>
   </scm>
   <build>
     <pluginManagement>
