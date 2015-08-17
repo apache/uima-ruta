@@ -278,12 +278,6 @@ public class RutaCheckBuilder implements IBuildParticipant, IBuildParticipantExt
             && packageName.indexOf('[') == -1 && packageName.indexOf(']') == -1;
   }
 
-  /**
-   * returns <code>true</code> on error
-   * 
-   * @param packageName
-   * @return
-   */
   private boolean checkPackage(String packageName) {
     if (packageCollector.getPackagesProvided().contains(packageName)) {
       return false;

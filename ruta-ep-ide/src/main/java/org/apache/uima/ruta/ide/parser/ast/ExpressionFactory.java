@@ -39,7 +39,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
    * @param ref
    * @param kind
    *          see {@link RutaExpressionConstants}
-   * @return
+   * @return instance of VariableReference
    */
   private static VariableReference newVariableReference(Token ref, int kind) {
     int bounds[] = getBounds(ref);

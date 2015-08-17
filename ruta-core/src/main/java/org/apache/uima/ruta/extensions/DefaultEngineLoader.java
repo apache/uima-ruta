@@ -44,7 +44,7 @@ public abstract class DefaultEngineLoader implements IEngineLoader {
   protected AnalysisEngine loadEngineMyself(String location, String viewName) throws IOException,
           InvalidXMLException, ResourceInitializationException, ResourceConfigurationException,
           URISyntaxException {
-    URL url = new File(location).toURL();
+    URL url = new File(location).toURI().toURL();
     AnalysisEngine ae = Ruta.wrapAnalysisEngine(url, viewName);
     return ae;
   }
