@@ -310,20 +310,7 @@ public class RutaProjectUtils {
     if (!project.isOpen()) {
       return result;
     }
-    IProjectNature javaNature = project.getNature(JAVANATURE);
-    if (javaNature != null) {
-      IJavaProject javaProject = JavaCore.create(project);
-      IPath readOutputLocation = javaProject.readOutputLocation();
-      IFolder folder = ResourcesPlugin.getWorkspace().getRoot().getFolder(readOutputLocation);
-      result.add(folder);
-    }
-    IProjectNature pearNature = project.getNature("org.apache.uima.pear.UimaNature");
-    if (pearNature != null) {
-      IFolder findElement = project.getFolder("desc");
-      if (findElement != null) {
-        result.add((IFolder) findElement);
-      }
-    }
+    
     IProjectNature rutaNature = project.getNature(RutaNature.NATURE_ID);
     if (rutaNature != null) {
 
@@ -353,6 +340,21 @@ public class RutaProjectUtils {
         }
       }
     }
+    IProjectNature pearNature = project.getNature("org.apache.uima.pear.UimaNature");
+    if (pearNature != null) {
+      IFolder findElement = project.getFolder("desc");
+      if (findElement != null) {
+        result.add((IFolder) findElement);
+      }
+    }
+    IProjectNature javaNature = project.getNature(JAVANATURE);
+    if (javaNature != null) {
+      IJavaProject javaProject = JavaCore.create(project);
+      IPath readOutputLocation = javaProject.readOutputLocation();
+      IFolder folder = ResourcesPlugin.getWorkspace().getRoot().getFolder(readOutputLocation);
+      result.add(folder);
+    }
+    
     if (result.isEmpty()) {
       IFolder findElement = project.getFolder(getDefaultDescriptorLocation());
       if (findElement != null && findElement.exists()) {
@@ -366,13 +368,6 @@ public class RutaProjectUtils {
     List<IFolder> result = new ArrayList<IFolder>();
     if (!project.isOpen()) {
       return result;
-    }
-    IProjectNature javaNature = project.getNature(JAVANATURE);
-    if (javaNature != null) {
-      IJavaProject javaProject = JavaCore.create(project);
-      IPath readOutputLocation = javaProject.readOutputLocation();
-      IFolder folder = ResourcesPlugin.getWorkspace().getRoot().getFolder(readOutputLocation);
-      result.add(folder);
     }
     IProjectNature rutaNature = project.getNature(RutaNature.NATURE_ID);
     if (rutaNature != null) {
@@ -402,6 +397,13 @@ public class RutaProjectUtils {
           }
         }
       }
+    }
+    IProjectNature javaNature = project.getNature(JAVANATURE);
+    if (javaNature != null) {
+      IJavaProject javaProject = JavaCore.create(project);
+      IPath readOutputLocation = javaProject.readOutputLocation();
+      IFolder folder = ResourcesPlugin.getWorkspace().getRoot().getFolder(readOutputLocation);
+      result.add(folder);
     }
     if (result.isEmpty()) {
       IFolder findElement = project.getFolder(getDefaultResourcesLocation());
