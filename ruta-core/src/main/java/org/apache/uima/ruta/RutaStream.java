@@ -402,7 +402,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     try {
       currentIt.moveTo(fs);
     } catch (Exception e) {
-      e.printStackTrace();
+//      e.printStackTrace();
     }
   }
 
@@ -467,7 +467,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     try {
       return cas.getJCas();
     } catch (CASException e) {
-      e.printStackTrace();
+//      e.printStackTrace();
     }
     return null;
   }

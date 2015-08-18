@@ -90,7 +90,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
       AnnotationFS afs = getCoveredByWildCard(after, annotation, null, stream);
       doMatch(afs, ruleMatch, containerMatch, annotation == null, stream, crowd);
       ComposedRuleElement composed = (ComposedRuleElement) getContainer();
-      result = composed.fallbackContinue(after, ruleMatch.matched(), afs, ruleMatch, ruleApply,
+      // [Peter] was ruleMatch.matched(), but it did not fail when matches?!
+      result = composed.fallbackContinue(after, !ruleMatch.matched(), afs, ruleMatch, ruleApply,
               containerMatch, sideStepOrigin, entryPoint, stream, crowd);
     } else if (nextElement instanceof RutaRuleElement) {
       RutaRuleElement re = (RutaRuleElement) nextElement;

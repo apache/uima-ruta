@@ -271,17 +271,21 @@ public class RutaRuleElement extends AbstractRuleElement {
                 containerMatch, sideStepOrigin, entryPoint, stream, crowd);
       } else if (getContainer() instanceof ComposedRuleElement) {
         ComposedRuleElement cre = (ComposedRuleElement) getContainer();
-        if (cre.getQuantifier().isOptional(parent, stream)) {
-          result = continueMatchSomewhereElse(after, true, annotation, ruleMatch, ruleApply,
-                  containerMatch, sideStepOrigin, entryPoint, stream, crowd);
-        } else {
-          RuleElementMatch failedMatch = new RuleElementMatch(this, containerMatch);
-          failedMatch.setBaseConditionMatched(false);
-          containerMatch.addInnerMatch(this, failedMatch, stream);
-          ComposedRuleElement composed = (ComposedRuleElement) getContainer();
-          result = composed.fallbackContinue(after, true, annotation, ruleMatch, ruleApply,
-                  containerMatch, sideStepOrigin, entryPoint, stream, crowd);
-        }
+        result = cre.fallbackContinue(after, true, annotation, ruleMatch, ruleApply, containerMatch, sideStepOrigin, entryPoint, stream, crowd);
+        // was:
+        // [Peter] why only check the parent? the grandparent could be optional!
+        // should we add the second part again for the explanation component?
+        // if (cre.getQuantifier().isOptional(parent, stream)) {
+        // result = continueMatchSomewhereElse(after, true, annotation, ruleMatch, ruleApply,
+        // containerMatch, sideStepOrigin, entryPoint, stream, crowd);
+        // } else {
+        // RuleElementMatch failedMatch = new RuleElementMatch(this, containerMatch);
+        // failedMatch.setBaseConditionMatched(false);
+        // containerMatch.addInnerMatch(this, failedMatch, stream);
+        // ComposedRuleElement composed = (ComposedRuleElement) getContainer();
+        // result = composed.fallbackContinue(after, true, annotation, ruleMatch, ruleApply,
+        // containerMatch, sideStepOrigin, entryPoint, stream, crowd);
+        // }
       }
     } else {
       List<RuleElementMatch> evaluateMatches = quantifier.evaluateMatches(matchInfo, parent,

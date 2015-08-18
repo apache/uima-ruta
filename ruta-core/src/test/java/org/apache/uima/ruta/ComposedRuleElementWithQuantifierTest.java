@@ -44,4 +44,34 @@ public class ComposedRuleElementWithQuantifierTest {
 
     cas.release();
   }
+  
+  @Test
+  public void testStackedWithWildCard() {
+    String document = "some text\n 1 HEADLINE\n some text";
+    String script = "";
+    
+    script +="\"1 HEADLINE\"-> T1;\n";
+    script +="DOUBLE n;\n";
+    script +="BLOCK(eachTag) T1{} {\n";
+    script +="((NUM{STARTSWITH(T1)} (PERIOD NUM)?){PARSE(n)} (W #){-> T2})\n";
+    script +=" {-> T3};\n";
+    script +="}\n";
+    
+    CAS cas = null;
+    try {
+      cas = RutaTestUtils.getCAS(document);
+      Ruta.apply(cas, script);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "HEADLINE");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "1 HEADLINE");
+
+    cas.release();
+    
+  }
+  
+  
+  
 }

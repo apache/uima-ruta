@@ -450,8 +450,13 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
             // hotfix for UIMA-3820
             result.add(ruleMatch);
           } else {
-            result = fallback(after, failed, annotation, ruleMatch, ruleApply,
+            // TODO: do we need to backtrack the annotation?
+            result = fallback(after, !removedFailedMatches, annotation, ruleMatch, ruleApply,
                     parentContainerMatch, sideStepOrigin, entryPoint, stream, crowd);
+            // was:
+            // [Peter]: really failed, even if the failed match was removed?
+            // result = fallback(after, failed, annotation, ruleMatch, ruleApply,
+            // parentContainerMatch, sideStepOrigin, entryPoint, stream, crowd);
           }
         }
       } else {
