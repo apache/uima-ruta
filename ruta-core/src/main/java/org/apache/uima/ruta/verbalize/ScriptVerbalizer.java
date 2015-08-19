@@ -188,7 +188,7 @@ public class ScriptVerbalizer {
         }
       }
       List<RutaStatement> inlinedActionRules = are.getInlinedActionRules();
-      if (inlinedConditionRules != null && !inlinedActionRules.isEmpty()) {
+      if (inlinedActionRules != null && !inlinedActionRules.isEmpty()) {
         result.append(THEN);
         result.append(CBOPEN);
         for (RutaStatement rutaStatement : inlinedActionRules) {
