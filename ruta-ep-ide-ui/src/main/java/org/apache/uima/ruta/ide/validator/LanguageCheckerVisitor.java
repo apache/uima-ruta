@@ -1282,6 +1282,10 @@ public class LanguageCheckerVisitor extends ASTVisitor {
           CoreException {
     IPath descriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(sourceModule.getResource()
             .getLocation(), sourceModule.getScriptProject().getProject());
+    if(descriptorPath == null) {
+      return null;
+    }
+    
     TypeSystemDescription typeSysDescr = null;
     if (descriptorPath.toFile().exists()) {
       typeSysDescr = UIMAFramework.getXMLParser().parseTypeSystemDescription(
