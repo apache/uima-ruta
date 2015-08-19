@@ -700,10 +700,10 @@
     <title>POSITION</title>
     <para>
       The POSITION condition is fulfilled, if the matched type is the
-      k-th occurence of this type within the window of an annotation of the
+      k-th occurrence of this type within the window of an annotation of the
       passed type, whereby k is defined by the value of the passed
       NumberExpression. If the additional boolean paramter is set to false,
-      then k counts the occurences of of the minimal annotations.
+      then k counts the occurrences of of the minimal annotations.
     </para>
     <section>
       <title>

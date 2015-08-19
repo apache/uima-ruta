@@ -760,7 +760,7 @@ A B{-> GATHER(C, 1, 2, "a" = 1, "b" = 2)};]]></programlisting>
       parameter), if an element of the passed list (second parameter) occurs
       within the window of the matched annotation. Thereby, the created
       annotation does not cover the whole matched annotation. Instead, it
-      only covers the text of the found occurence. The third parameter is
+      only covers the text of the found occurrence. The third parameter is
       optional. It defines, whether the MARKFAST action should ignore the case,
       whereby its default value is false. The optional fourth parameter
       specifies a character threshold for the ignorence of the case. It is
@@ -938,7 +938,7 @@ Document{-> MARKFAST(FirstName, FirstNameList, true, 2)};]]></programlisting>
       passed table (third parameter) occures within the window of the
       matched annotation. Thereby, the created annotation does not cover the
       whole matched annotation. Instead, it only covers the text of the
-      found occurence. Optionally the MARKTABLE action is able to assign
+      found occurrence. Optionally the MARKTABLE action is able to assign
       entries of the given table to features of the created annotation.
       For
       more information on tables see
@@ -967,8 +967,8 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
       </para>
       <para>
         In this example, the whole document is searched for all
-        occurences of the entries of the first column of the given table
-        'TestTable'. For each occurence, an annotation of the type Struct is
+        occurrences of the entries of the first column of the given table
+        'TestTable'. For each occurrence, an annotation of the type Struct is
         created and its feature 'first' is filled with the entry of the
         second column. Moreover, the case of the word is ignored if the
         length of the word exceeds 4. Additionally, the chars '.', ',' and
