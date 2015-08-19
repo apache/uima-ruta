@@ -62,7 +62,7 @@ public class UnmarkAllAction extends TypeSensitiveAction {
         RutaBasic beginAnchor = stream.getBeginAnchor(each.getBegin());
         Collection<AnnotationFS> beginAnchors = beginAnchor.getBeginAnchors(t);
         for (AnnotationFS annotationFS : beginAnchors) {
-          if (annotationFS.getEnd() == each.getEnd()
+          if ((annotationFS.getEnd() == each.getEnd() || annotationFS.getBegin() == each.getBegin())
                   && !retainType(annotationFS.getType(), retainList, typeSystem)) {
             toRemove.add(annotationFS);
           }
