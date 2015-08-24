@@ -31,6 +31,9 @@ import org.junit.Test;
 
 public class StackedScriptsTest {
 
+  private static final String DOC_TEXT = "This is a simple test.";
+  private static final int LINES = 1;
+
   @Test
   public void test() throws ResourceInitializationException, InvalidXMLException, IOException, AnalysisEngineProcessException {
     String rules1 = "CW{->T1};";
@@ -41,7 +44,12 @@ public class StackedScriptsTest {
     AnalysisEngine rutaAE2 = createEngine(RutaEngine.class, RutaEngine.PARAM_RULES, rules2);
     AnalysisEngine rutaAE3 = createEngine(RutaEngine.class, RutaEngine.PARAM_RULES, rules3);
 
-    CAS cas = RutaTestUtils.getCAS("This is a simple test.");
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < LINES; i++) {
+      sb.append(DOC_TEXT);
+      sb.append("\n");
+    }
+    CAS cas = RutaTestUtils.getCAS(sb.toString());
 
     rutaAE1.process(cas);
     rutaAE2.process(cas);
@@ -52,7 +60,7 @@ public class StackedScriptsTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "a");
     RutaTestUtils.assertAnnotationsEquals(cas, 4, 3, "This", "is", "a");
     
-    
   }
+  
 
 }

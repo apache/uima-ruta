@@ -70,6 +70,7 @@ import org.apache.uima.ruta.extensions.RutaParseRuntimeException;
 import org.apache.uima.ruta.parser.RutaLexer;
 import org.apache.uima.ruta.parser.RutaParser;
 import org.apache.uima.ruta.seed.RutaAnnotationSeeder;
+import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.ruta.verbalize.RutaVerbalizer;
 import org.apache.uima.ruta.visitor.CreatedByVisitor;
 import org.apache.uima.ruta.visitor.DebugInfoCollectorVisitor;
@@ -91,16 +92,15 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   public static final String FRAME_TYPE = "org.apache.uima.ruta.type.RutaFrame";
 
-  
   /**
-   * A String parameter representing the rule that should be applied by the analysis engine.
-   * If set, it replaces the content of file specified by the {@code mainScript} parameter.
+   * A String parameter representing the rule that should be applied by the analysis engine. If set,
+   * it replaces the content of file specified by the {@code mainScript} parameter.
    */
   public static final String PARAM_RULES = "rules";
 
   @ConfigurationParameter(name = PARAM_RULES, mandatory = false)
   private String rules;
-  
+
   /**
    * Load script in Java notation, with "{@code .}" as package separator and no extension. File
    * needs to be located in the path specified below with ending {@code .ruta}.
@@ -253,7 +253,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
    */
   public static final String PARAM_REMOVE_BASICS = "removeBasics";
 
-  @ConfigurationParameter(name = PARAM_REMOVE_BASICS, mandatory = false, defaultValue = "true")
+  @ConfigurationParameter(name = PARAM_REMOVE_BASICS, mandatory = false, defaultValue = "false")
   private Boolean removeBasics;
 
   /**
@@ -269,8 +269,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   /**
    * This parameter specifies whether the memory consumption should be reduced. This parameter
-   * should be set to true for very large CAS documents (e.g., &gt; 500k tokens), but it also reduces
-   * the performance. The default value is set to false.
+   * should be set to true for very large CAS documents (e.g., &gt; 500k tokens), but it also
+   * reduces the performance. The default value is set to false.
    */
   public static final String PARAM_LOW_MEMORY_PROFILE = "lowMemoryProfile";
 
@@ -386,7 +386,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
    * string array specifies the variable of the n-th entry of the string array of the parameter
    * varValues. If the variables is defined in the root of a script, then the name of the variable
    * suffices. If the variable is defined in a BLOCK or imported script, then the the name must
-   * contain the namespaces of the blocks as a prefix, e.g., InnerBlock.varName or OtherScript.SomeBlock.varName
+   * contain the namespaces of the blocks as a prefix, e.g., InnerBlock.varName or
+   * OtherScript.SomeBlock.varName
    */
   public static final String PARAM_VAR_NAMES = "varNames";
 
@@ -486,7 +487,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       varValues = (String[]) aContext.getConfigParameterValue(PARAM_VAR_VALUES);
       dictRemoveWS = (Boolean) aContext.getConfigParameterValue(PARAM_DICT_REMOVE_WS);
       dictRemoveWS = dictRemoveWS == null ? false : dictRemoveWS;
-      
+
       this.context = aContext;
 
       factory = new RutaExternalFactory();
@@ -524,7 +525,12 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   @Override
   public void process(JCas jcas) throws AnalysisEngineProcessException {
+    
     CAS cas = jcas.getCas();
+    
+    // TODO: added logging method calls temporarily for UIMA-4568
+    logInfoForFirstBasic("begin of process", cas);
+    
     if (reloadScript || (!initialized && !cas.getViewName().equals(CAS.NAME_DEFAULT_SOFA))) {
       initializeScript(cas.getViewName());
     } else {
@@ -684,7 +690,36 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
             simpleGreedyForComposed, crowd);
 
     stream.initalizeBasics();
+    // TODO: added logging method calls temporarily for UIMA-4568
+    logInfoForFirstBasic("after initBasics", cas);
     return stream;
+  }
+
+  private void logInfoForFirstBasic(String context, CAS cas) {
+    AnnotationIndex<AnnotationFS> index = cas.getAnnotationIndex(cas.getTypeSystem().getType(
+            BASIC_TYPE));
+    if (index.size() == 0) {
+      getLogger().info(context + " : "+ rules + " - no RutaBasic yet");
+    } else {
+      AnnotationFS next = index.iterator().next();
+      if (next instanceof RutaBasic) {
+        RutaBasic basic = (RutaBasic) next;
+        getLogger().info(context + " - first RutaBasic: "+ basic.getBegin()+"|"+basic.getEnd() + " addr:" + basic.getAddress());
+        Collection<?>[] beginMap = basic.getBeginMap();
+        int counter = 0;
+        for (Collection<?> collection : beginMap) {
+          if (collection != null) {
+            for (Object object : collection) {
+              if (object != null) {
+                counter++;
+              }
+            }
+          }
+        }
+
+        getLogger().info(context + " : "+ rules + " - size of beginMap: " + counter);
+      }
+    }
   }
 
   private List<Type> seedAnnotations(CAS cas) throws AnalysisEngineProcessException {
@@ -716,7 +751,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   private void initializeScript(String viewName) throws AnalysisEngineProcessException {
     if (mainScript == null) {
-      if(rules != null) {
+      if (rules != null) {
         try {
           script = loadScriptByString(rules);
         } catch (RecognitionException e) {
@@ -849,7 +884,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   }
 
   private void initializeVariableValues() {
-    if(varNames == null || varValues == null) {
+    if (varNames == null || varValues == null) {
       return;
     }
     if (varNames.length != varValues.length) {
@@ -860,7 +895,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     for (int i = 0; i < varNames.length; i++) {
       String longName = varNames[i];
       String value = varValues[i];
-      
+
       int lastIndexOf = longName.lastIndexOf('.');
       String shortName = longName;
       String blockName = null;
@@ -869,10 +904,10 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
         shortName = longName.substring(lastIndexOf + 1, longName.length());
       }
       RutaBlock block = script.getBlock(blockName);
-      if(block == null) {
+      if (block == null) {
         return;
       }
-      
+
       RutaEnvironment environment = block.getEnvironment();
       if (!environment.ownsVariable(shortName)) {
         return;
@@ -1043,7 +1078,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     RutaModule script = parser.file_input("Anonymous");
     return script;
   }
-  
+
   private RutaModule loadScript(String scriptLocation) throws IOException, RecognitionException {
     File scriptFile = new File(scriptLocation);
     CharStream st = new ANTLRFileStream(scriptLocation, scriptEncoding);
