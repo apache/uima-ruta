@@ -19,6 +19,7 @@
 package org.apache.uima.ruta.engine;
 
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngine;
+import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
 
 import java.io.IOException;
 import java.net.URL;
@@ -46,10 +47,11 @@ public class StackedScriptsTest {
   private static final int LINES = 1;
 
   String rules1 = "CW{->T1};";
+
   String rules2 = "T1 W{->T2} W{->T3};";
+
   String rules3 = "W{PARTOF({T1,T2,T3})->T4};";
-  
-  
+
   @Test
   public void testWithUimaFit() throws ResourceInitializationException, InvalidXMLException,
           IOException, AnalysisEngineProcessException, ResourceConfigurationException {
@@ -63,9 +65,25 @@ public class StackedScriptsTest {
   }
 
   @Test
+  public void testWithUimaFitAggregated() throws ResourceInitializationException,
+          InvalidXMLException, IOException, AnalysisEngineProcessException,
+          ResourceConfigurationException {
+
+    AnalysisEngine aae = createEngine(createEngineDescription(
+            createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules1),
+            createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules2),
+            createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules3)));
+
+    CAS cas = getCAS();
+
+    aae.process(cas);
+    checkResult(cas);
+  }
+
+  @Test
   public void testWithoutUimaFit() throws ResourceInitializationException, InvalidXMLException,
           IOException, AnalysisEngineProcessException, ResourceConfigurationException {
-    
+
     AnalysisEngine rutaAE1 = createAnalysisEngine(rules1);
     AnalysisEngine rutaAE2 = createAnalysisEngine(rules2);
     AnalysisEngine rutaAE3 = createAnalysisEngine(rules3);
@@ -77,21 +95,30 @@ public class StackedScriptsTest {
   private void processAndTest(AnalysisEngine rutaAE1, AnalysisEngine rutaAE2, AnalysisEngine rutaAE3)
           throws ResourceInitializationException, IOException, InvalidXMLException,
           AnalysisEngineProcessException {
+    CAS cas = getCAS();
+
+    rutaAE1.process(cas);
+    rutaAE2.process(cas);
+    rutaAE3.process(cas);
+
+    checkResult(cas);
+  }
+
+  private void checkResult(CAS cas) {
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "This");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "is");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "a");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 3, "This", "is", "a");
+  }
+
+  private CAS getCAS() throws ResourceInitializationException, IOException, InvalidXMLException {
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < LINES; i++) {
       sb.append(DOC_TEXT);
       sb.append("\n");
     }
     CAS cas = RutaTestUtils.getCAS(sb.toString());
-
-    rutaAE1.process(cas);
-    rutaAE2.process(cas);
-    rutaAE3.process(cas);
-
-    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "This");
-    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "is");
-    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "a");
-    RutaTestUtils.assertAnnotationsEquals(cas, 4, 3, "This", "is", "a");
+    return cas;
   }
 
   private AnalysisEngine createAnalysisEngine(String rules) throws IOException,
