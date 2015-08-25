@@ -52,17 +52,6 @@ public class StackedScriptsTest {
 
   String rules3 = "W{PARTOF({T1,T2,T3})->T4};";
 
-  @Test
-  public void testWithUimaFit() throws ResourceInitializationException, InvalidXMLException,
-          IOException, AnalysisEngineProcessException, ResourceConfigurationException {
-
-    AnalysisEngine rutaAE1 = createEngine(RutaEngine.class, RutaEngine.PARAM_RULES, rules1);
-    AnalysisEngine rutaAE2 = createEngine(RutaEngine.class, RutaEngine.PARAM_RULES, rules2);
-    AnalysisEngine rutaAE3 = createEngine(RutaEngine.class, RutaEngine.PARAM_RULES, rules3);
-
-    processAndTest(rutaAE1, rutaAE2, rutaAE3);
-
-  }
 
   @Test
   public void testWithUimaFitAggregated() throws ResourceInitializationException,
@@ -77,6 +66,7 @@ public class StackedScriptsTest {
     CAS cas = getCAS();
 
     aae.process(cas);
+    
     checkResult(cas);
   }
 

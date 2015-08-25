@@ -528,9 +528,6 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     
     CAS cas = jcas.getCas();
     
-    // TODO: added logging method calls temporarily for UIMA-4568
-    logInfoForFirstBasic("begin of process", cas);
-    
     if (reloadScript || (!initialized && !cas.getViewName().equals(CAS.NAME_DEFAULT_SOFA))) {
       initializeScript(cas.getViewName());
     } else {
@@ -690,36 +687,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
             simpleGreedyForComposed, crowd);
 
     stream.initalizeBasics();
-    // TODO: added logging method calls temporarily for UIMA-4568
-    logInfoForFirstBasic("after initBasics", cas);
     return stream;
-  }
-
-  private void logInfoForFirstBasic(String context, CAS cas) {
-    AnnotationIndex<AnnotationFS> index = cas.getAnnotationIndex(cas.getTypeSystem().getType(
-            BASIC_TYPE));
-    if (index.size() == 0) {
-      getLogger().info(context + " : "+ rules + " - no RutaBasic yet");
-    } else {
-      AnnotationFS next = index.iterator().next();
-      if (next instanceof RutaBasic) {
-        RutaBasic basic = (RutaBasic) next;
-        getLogger().info(context + " - first RutaBasic: "+ basic.getBegin()+"|"+basic.getEnd() + " addr:" + basic.getAddress());
-        Collection<?>[] beginMap = basic.getBeginMap();
-        int counter = 0;
-        for (Collection<?> collection : beginMap) {
-          if (collection != null) {
-            for (Object object : collection) {
-              if (object != null) {
-                counter++;
-              }
-            }
-          }
-        }
-
-        getLogger().info(context + " : "+ rules + " - size of beginMap: " + counter);
-      }
-    }
   }
 
   private List<Type> seedAnnotations(CAS cas) throws AnalysisEngineProcessException {
