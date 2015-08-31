@@ -70,6 +70,7 @@ public class RutaCheckerUtils {
   public static Set<String> importScript(String path, int type, IScriptProject project,
           boolean appendPath) throws InvalidXMLException, IOException, ModelException,
           CoreException {
+    // TODO rewrite method!
     Stack<String> namespaceStack = new Stack<String>();
 
     final Set<String> imports = new HashSet<String>();
@@ -84,7 +85,9 @@ public class RutaCheckerUtils {
     ISourceModule sourceModule = null;
     boolean found = false;
     for (IFolder eachFolder : scriptFolders) {
-
+      if(found ) {
+        break;
+      }
       IScriptProject sp = DLTKCore.create(eachFolder.getProject());
       IScriptFolder[] scriptFolders2 = sp.getScriptFolders();
       for (IScriptFolder iScriptFolder : scriptFolders2) {
@@ -126,7 +129,8 @@ public class RutaCheckerUtils {
         }
       }
     } catch (ModelException e) {
-      throw new FileNotFoundException();
+      // ignore
+//      throw new FileNotFoundException();
     }
     return imports;
   }
