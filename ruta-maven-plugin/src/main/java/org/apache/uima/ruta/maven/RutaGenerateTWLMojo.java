@@ -81,13 +81,17 @@ public class RutaGenerateTWLMojo extends AbstractMojo {
     
     List<File> files = null;
     try {
+      // TODO: also files that are not modified, but the output file was deleted
       files = Utils.getModifiedFiles(inputFiles, buildContext);
     } catch (IOException e) {
       getLog().warn("Error accessing input files.", e);
     }
-    if (!files.isEmpty()) {
-      getLog().debug("Processing following files: " + files.toString());
+    
+    if (files == null || files.isEmpty()) {
+      getLog().debug("No modified files to process... skipping.");
+      return;
     }
+    getLog().debug("Processing following files: " + files.toString());
 
     for (File file : files) {
       TreeWordList list = null;
@@ -97,8 +101,7 @@ public class RutaGenerateTWLMojo extends AbstractMojo {
         getLog().warn("Error generating twl.", e);
       }
       if (list != null) {
-        String outputName = file.getName().substring(0, file.getName().length() - 3) + "twl";
-        File outputFile = new File(outputDirectory, outputName);
+        File outputFile = getOutputFile(file);
         try {
           list.createTWLFile(outputFile.getAbsolutePath(), compress, "UTF-8");
           buildContext.refresh(outputFile);
@@ -108,5 +111,11 @@ public class RutaGenerateTWLMojo extends AbstractMojo {
       }
     }
 
+  }
+
+  private File getOutputFile(File file) {
+    String outputName = file.getName().substring(0, file.getName().length() - 3) + "twl";
+    File outputFile = new File(outputDirectory, outputName);
+    return outputFile;
   }
 }
