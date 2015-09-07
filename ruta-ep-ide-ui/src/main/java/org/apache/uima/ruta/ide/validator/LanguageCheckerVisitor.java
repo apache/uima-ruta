@@ -217,7 +217,9 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     IPath location = sourceModule.getResource().getLocation();
     try {
       IPath packagePath = RutaProjectUtils.getPackagePath(location, project);
-      packagePathString = packagePath.toPortableString().replaceAll("/", ".");
+      if(packagePath != null) {
+        packagePathString = packagePath.toPortableString().replaceAll("/", ".");
+      }
     } catch (CoreException e) {
       RutaIdeUIPlugin.error(e);
     }
