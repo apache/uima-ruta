@@ -28,9 +28,9 @@ public class IncrementalPartitioningTest {
 
   @Test
   public void test() {
-    String document = "fünfundzwanzig";
+    String document = "fuenfundzwanzig";
     String script = "";
-    script += "\"fünf\"->T1;";
+    script += "\"fuenf\"->T1;";
     script += "\"und\"->T2;";
     script += "\"zwanzig\"->T1;";
     script += "T1{PARTOF(W)-> T4};";
@@ -43,7 +43,7 @@ public class IncrementalPartitioningTest {
       e.printStackTrace();
     }
 
-    RutaTestUtils.assertAnnotationsEquals(cas, 4, 2, "fünf", "zwanzig");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 2, "fuenf", "zwanzig");
     
     if (cas != null) {
       cas.release();
