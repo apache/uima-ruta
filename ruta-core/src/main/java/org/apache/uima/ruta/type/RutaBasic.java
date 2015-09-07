@@ -108,6 +108,14 @@ public class RutaBasic extends Annotation {
 
   }
 
+  public void setPartOf(int[] partOf) {
+    this.partOf = partOf;
+  }
+  
+  public int[] getPartOf() {
+    return partOf;
+  }
+  
   @SuppressWarnings("unchecked")
   public Collection<AnnotationFS> getBeginAnchors(Type type) {
     int code = ((TypeImpl) type).getCode();

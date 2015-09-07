@@ -64,8 +64,23 @@ public class PartOfCondition extends TypeSentiveCondition {
 
   private boolean check(Type t, AnnotationFS annotation, RuleElement element, RutaStream stream) {
     RutaBasic beginAnchor = stream.getBeginAnchor(annotation.getBegin());
+    if(beginAnchor!= null && beginAnchor.isPartOf(t)) {
+      return true;
+    }
+    RutaBasic endAnchor = stream.getEndAnchor(annotation.getEnd());
+    if(endAnchor!= null && endAnchor.isPartOf(t)) {
+      return true;
+    }
+    // TODO: do we really need to check again on the anchors?
     Collection<AnnotationFS> beginAnchors = beginAnchor.getBeginAnchors(t);
-    return beginAnchor.isPartOf(t) || (beginAnchors != null && !beginAnchors.isEmpty());
+    if(beginAnchors != null && !beginAnchors.isEmpty()) {
+      return true;
+    }
+    Collection<AnnotationFS> endAnchors = beginAnchor.getEndAnchors(t);
+    if(endAnchors != null && !endAnchors.isEmpty()) {
+      return true;
+    }
+    return false;
   }
 
 }

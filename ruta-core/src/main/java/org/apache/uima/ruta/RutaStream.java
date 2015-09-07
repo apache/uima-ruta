@@ -308,6 +308,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       RutaBasic newRB = new RutaBasic(getJCas(), anchor, newEnd);
       newRB.setLowMemoryProfile(lowMemoryProfile);
       newRB.setEndMap(toSplit.getEndMap());
+      newRB.setPartOf(toSplit.getPartOf());
       toSplit.clearEndMap();
       cas.addFsToIndexes(toSplit);
       cas.addFsToIndexes(newRB);
