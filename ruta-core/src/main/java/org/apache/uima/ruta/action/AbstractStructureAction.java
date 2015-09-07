@@ -92,10 +92,11 @@ public abstract class AbstractStructureAction extends AbstractRutaAction {
           }
           if (typeSystem.subsumes(jcas.getCasType(FSArray.type), range)) {
             structure.setFeatureValue(targetFeature, UIMAUtils.toFSArray(jcas, featureAnnotations));
-          } else if (typeSystem.subsumes(range, type.getType(parent))
-                  && !featureAnnotations.isEmpty()) {
+          } else if (!featureAnnotations.isEmpty()) {
             AnnotationFS annotation = featureAnnotations.get(0);
-            structure.setFeatureValue(targetFeature, annotation);
+            if (typeSystem.subsumes(range, annotation.getType())) {
+              structure.setFeatureValue(targetFeature, annotation);
+            }
           }
         } else if (valueObject instanceof IStringExpression
                 && range.getName().equals(UIMAConstants.TYPE_STRING)) {
@@ -103,10 +104,10 @@ public abstract class AbstractStructureAction extends AbstractRutaAction {
                   parent, matchedAnnotation, stream));
 
         } else if (valueObject instanceof INumberExpression) {
-         if (range.getName().equals(UIMAConstants.TYPE_DOUBLE)) {
-          structure.setDoubleValue(targetFeature, ((INumberExpression) valueObject)
-                  .getDoubleValue(parent, matchedAnnotation, stream));
-         } else if (range.getName().equals(UIMAConstants.TYPE_INTEGER)) {
+          if (range.getName().equals(UIMAConstants.TYPE_DOUBLE)) {
+            structure.setDoubleValue(targetFeature, ((INumberExpression) valueObject)
+                    .getDoubleValue(parent, matchedAnnotation, stream));
+          } else if (range.getName().equals(UIMAConstants.TYPE_INTEGER)) {
             structure.setIntValue(targetFeature, ((INumberExpression) valueObject).getIntegerValue(
                     parent, matchedAnnotation, stream));
           } else if (range.getName().equals(UIMAConstants.TYPE_FLOAT)) {
