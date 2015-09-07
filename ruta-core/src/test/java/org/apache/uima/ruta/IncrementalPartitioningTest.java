@@ -34,6 +34,8 @@ public class IncrementalPartitioningTest {
     script += "\"und\"->T2;";
     script += "\"zwanzig\"->T1;";
     script += "T1{PARTOF(W)-> T4};";
+    script += "T1{STARTSWITH(W)-> T5};";
+    script += "T1{ENDSWITH(W)-> T6};";
     
     CAS cas = null;
     try {
@@ -44,6 +46,8 @@ public class IncrementalPartitioningTest {
     }
 
     RutaTestUtils.assertAnnotationsEquals(cas, 4, 2, "fuenf", "zwanzig");
+    RutaTestUtils.assertAnnotationsEquals(cas, 5, 1, "fuenf");
+    RutaTestUtils.assertAnnotationsEquals(cas, 6, 1, "zwanzig");
     
     if (cas != null) {
       cas.release();
