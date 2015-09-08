@@ -55,6 +55,8 @@ public class CDEComparatorFactory {
 
       if (augment1 <= augment2) {
         return 1 * updown;
+      } else if (augment1 == augment2) {
+        return 0;
       } else {
         return -1 * updown;
       }
@@ -71,6 +73,8 @@ public class CDEComparatorFactory {
 
       if (augment1 <= augment2) {
         return 1 * updown;
+      } else if (augment1 == augment2) {
+        return 0;
       } else {
         return -1 * updown;
       }
@@ -95,7 +99,6 @@ public class CDEComparatorFactory {
   private Comparator<ConstraintData> intConstraintComparator = new Comparator<ConstraintData>() {
 
     public int compare(ConstraintData object1, ConstraintData object2) {
-      ;
 
       int weight1 = object1.getWeight();
       int weight2 = object2.getWeight();
@@ -118,9 +121,11 @@ public class CDEComparatorFactory {
     public int compare(String[] object1, String[] object2) {
       double result1 = Double.valueOf(object1[1]);
       double result2 = Double.valueOf(object2[1]);
-      if (result1 >= result2)
+      if (result1 >= result2) {
         return 1 * updown;
-      else {
+      } else if (result1 == result2) {
+        return 0;
+      } else {
         return -1 * updown;
       }
     }
