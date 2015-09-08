@@ -53,12 +53,12 @@ public class CDEComparatorFactory {
       double augment1 = object1.getAugmentedResult();
       double augment2 = object2.getAugmentedResult();
 
-      if (augment1 <= augment2) {
+      if (augment1 < augment2) {
         return 1 * updown;
-      } else if (augment1 == augment2) {
-        return 0;
-      } else {
+      } else if (augment1 > augment2) {
         return -1 * updown;
+      } else {
+        return 0;
       }
 
     }
@@ -71,12 +71,12 @@ public class CDEComparatorFactory {
       double augment1 = object1.getFMeasure();
       double augment2 = object2.getFMeasure();
 
-      if (augment1 <= augment2) {
+      if (augment1 < augment2) {
         return 1 * updown;
-      } else if (augment1 == augment2) {
-        return 0;
-      } else {
+      } else if (augment1 > augment2) {
         return -1 * updown;
+      } else {
+        return 0;
       }
 
     }
@@ -121,12 +121,12 @@ public class CDEComparatorFactory {
     public int compare(String[] object1, String[] object2) {
       double result1 = Double.valueOf(object1[1]);
       double result2 = Double.valueOf(object2[1]);
-      if (result1 >= result2) {
+      if (result1 > result2) {
         return 1 * updown;
-      } else if (result1 == result2) {
-        return 0;
-      } else {
+      } else if (result1 > result2) {
         return -1 * updown;
+      } else {
+        return 0;
       }
     }
   };
