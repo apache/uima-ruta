@@ -33,9 +33,13 @@ import org.apache.uima.ruta.cde.utils.DocumentData;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -358,16 +362,38 @@ public class DocumentSelectComposite extends Composite {
             DocumentData data = (DocumentData) object;
             Path path = new Path(data.getDocument().getAbsolutePath());
 
-            IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(path);
-            // IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
+            IWorkspace workspace = ResourcesPlugin.getWorkspace();
+            IFile file = workspace.getRoot().getFileForLocation(path);
 
-            IWorkbenchPage page = Workbench.getInstance().getActiveWorkbenchWindow()
-                    .getActivePage();
-            try {
-              page.openEditor(new FileEditorInput(file), "org.apache.uima.caseditor.editor");
-            } catch (PartInitException e) {
-              // TODO Auto-generated catch block
-              e.printStackTrace();
+            if (file == null) {
+              // no located in the workspace?
+              try {
+                IProject project = workspace.getRoot().getProject("External Files");
+                if (!project.exists()) {
+                  project.create(null);
+                }
+                if (!project.isOpen()) {
+                  project.open(null);
+                }
+                IFile extFile = project.getFile(path.lastSegment());
+                if(extFile.exists()) {
+                  extFile.delete(true, false, new NullProgressMonitor());
+                }
+                extFile.createLink(path, IResource.NONE, null);
+                file = extFile;
+              } catch (Exception e) {
+                RutaAddonsPlugin.error(e);
+              }
+            }
+
+            if (file != null) {
+              IWorkbenchPage page = Workbench.getInstance().getActiveWorkbenchWindow()
+                      .getActivePage();
+              try {
+                page.openEditor(new FileEditorInput(file), "org.apache.uima.caseditor.editor");
+              } catch (PartInitException e) {
+                RutaAddonsPlugin.error(e);
+              }
             }
           }
         }
