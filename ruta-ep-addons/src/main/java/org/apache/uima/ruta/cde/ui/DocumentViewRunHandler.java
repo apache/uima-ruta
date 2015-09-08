@@ -196,13 +196,15 @@ public class DocumentViewRunHandler implements IHandler {
                 XmiCasDeserializer.deserialize(new FileInputStream(testFile), testCas, true);
                 IPreferenceStore store = RutaAddonsPlugin.getDefault().getPreferenceStore();
                 String factoryName = store.getString(TestingPreferenceConstants.EVALUATOR_FACTORY);
-                boolean includeSubtypes = store.getBoolean(TestingPreferenceConstants.INCLUDE_SUBTYPES);
+                boolean includeSubtypes = store
+                        .getBoolean(TestingPreferenceConstants.INCLUDE_SUBTYPES);
                 boolean useAllTypes = store.getBoolean(TestingPreferenceConstants.ALL_TYPES);
-                
+
                 ICasEvaluator evaluator = RutaAddonsPlugin.getCasEvaluatorFactoryById(factoryName)
                         .createEvaluator();
                 ArrayList<String> excludedTypes = new ArrayList<String>();
-                CAS resultCas = evaluator.evaluate(testCas, inputCAS, excludedTypes, includeSubtypes, useAllTypes);
+                CAS resultCas = evaluator.evaluate(testCas, inputCAS, excludedTypes,
+                        includeSubtypes, useAllTypes);
                 document.setFMeasure(calculateF1(resultCas));
               }
             }
@@ -321,18 +323,12 @@ public class DocumentViewRunHandler implements IHandler {
     // and
     // if it is a file
     if (f.exists() && f.isFile()) {
-      // get the filename between the last separator and the file
-      // extension
-      if (path.contains(".")) {
-        int beginOfFileName = path.lastIndexOf(System.getProperty("file.separator")) + 1;
-        int endOfFileName = path.indexOf(".");
-
-        fileNameNoExtension = path.substring(beginOfFileName, endOfFileName);
-      }
-      // if there is no file extension
-      else {
-        int beginOfFileName = path.lastIndexOf(System.getProperty("file.separator"));
-        fileNameNoExtension = path.substring(beginOfFileName);
+      String name = f.getName();
+      int lastIndexOf = name.lastIndexOf(".");
+      if (lastIndexOf != -1) {
+        fileNameNoExtension = name.substring(0, lastIndexOf);
+      } else {
+        fileNameNoExtension = name;
       }
     }
     return fileNameNoExtension;
