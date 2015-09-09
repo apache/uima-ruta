@@ -1011,6 +1011,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
             AnalysisEngine eachEngine = engineLoader.loadEngineIS(engineLocationIS, viewName);
             additionalEngines.put(eachEngineLocation, eachEngine);
           } catch (Exception e) {
+//        	  TODO avoid exception and solve it with return null or something!
+        	  
             // uimaFit engine?
             try {
               @SuppressWarnings("unchecked")

@@ -151,7 +151,12 @@ public class SimpleFeatureExpression extends FeatureExpression {
           }
         } else {
           FeatureStructure value = afs.getFeatureValue(feature);
-          afs = (AnnotationFS) value;
+          if (value instanceof AnnotationFS) {
+            afs = (AnnotationFS) value;
+          } else if (value != null) {
+            throw new IllegalArgumentException(value.getType()
+                    + " is not supported in a feature match expression (" + mr.getMatch() + ").");
+          }
         }
       }
       if (!(this instanceof FeatureMatchExpression)) {
