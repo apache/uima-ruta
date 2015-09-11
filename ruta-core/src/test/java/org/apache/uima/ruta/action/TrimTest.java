@@ -20,6 +20,7 @@
 package org.apache.uima.ruta.action;
 
 import org.apache.uima.cas.CAS;
+import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
 
@@ -36,4 +37,26 @@ public class TrimTest {
 
     cas.release();
   }
+
+  @Test
+  public void testOverlappingBoundary() {
+
+    String document = "text (in paren) text.";
+    String script = "";
+    script += "(SPECIAL # SPECIAL){-> T1};";
+    script += "(SPECIAL.ct==\"(\" SW){->T2};";
+    script += "(SW SPECIAL.ct==\")\"){->T2};";
+    script += "T2{->TRIM(T1)};";
+    CAS cas = null;
+    try {
+      cas = RutaTestUtils.getCAS(document);
+      Ruta.apply(cas, script);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
+    
+  }
+
 }
