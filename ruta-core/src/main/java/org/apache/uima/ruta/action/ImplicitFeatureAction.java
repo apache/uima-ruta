@@ -129,7 +129,7 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
       if (feature.getRange().isArray()) {
         a.setFeatureValue(feature, UIMAUtils.toFSArray(stream.getJCas(), inWindow));
       } else {
-        if (inWindow != null) {
+        if (inWindow != null && !inWindow.isEmpty()) {
           AnnotationFS annotation = inWindow.get(0);
           a.setFeatureValue(feature, annotation);
         } else {
