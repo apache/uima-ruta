@@ -33,7 +33,6 @@ import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
-import org.junit.Ignore;
 
 public class TrimAction extends AbstractRutaAction {
 
@@ -48,7 +47,6 @@ public class TrimAction extends AbstractRutaAction {
   }
 
   @Override
-  @Ignore
   public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
     List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element);
     List<Type> typesToTrim = getTypes(element.getParent(), stream);
