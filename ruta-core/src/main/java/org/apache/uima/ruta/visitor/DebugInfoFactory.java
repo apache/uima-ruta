@@ -29,7 +29,6 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.ruta.BlockApply;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.RutaStream;
@@ -159,7 +158,7 @@ public class DebugInfoFactory {
       dba.setEnd(ruleApply.getEnd());
       if (timeInfo != null) {
         Long time = timeInfo.get(element);
-        if(time != null) {
+        if (time != null) {
           dba.setTime(time);
         }
       }
@@ -191,10 +190,10 @@ public class DebugInfoFactory {
     dra.setRules(UIMAUtils.toFSArray(cas, ruleMatches));
     RutaElement element = ruleApply.getElement();
     String namespace = "";
-    if(element instanceof RutaStatement) {
+    if (element instanceof RutaStatement) {
       RutaStatement rs = (RutaStatement) element;
       namespace = rs.getParent().getScript().getRootBlock().getNamespace();
-    } else if(element instanceof AbstractRuleElement) {
+    } else if (element instanceof AbstractRuleElement) {
       AbstractRuleElement are = (AbstractRuleElement) element;
       are.getRule().getParent().getScript().getRootBlock().getNamespace();
     }
@@ -207,7 +206,7 @@ public class DebugInfoFactory {
     dra.setEnd(end);
     if (timeInfo != null) {
       Long time = timeInfo.get(element);
-      if(time != null) {
+      if (time != null) {
         dra.setTime(time);
       }
     }
@@ -230,13 +229,13 @@ public class DebugInfoFactory {
     if (match instanceof RuleMatch) {
       ComposedRuleElementMatch rootMatch = ((RuleMatch) match).getRootMatch();
       setInnerMatches(stream, addToIndex, cas, drm, rootMatch);
-//      if (match.matched()) {
-        List<DebugScriptApply> delegates = new ArrayList<DebugScriptApply>();
-        for (ScriptApply rem : ((RuleMatch) match).getDelegateApply().values()) {
-          delegates.add(createDebugScriptApply(rem, stream, addToIndex, withMatches, timeInfo));
-        }
-        drm.setDelegates(UIMAUtils.toFSArray(cas, delegates));
-//      }
+      // if (match.matched()) {
+      List<DebugScriptApply> delegates = new ArrayList<DebugScriptApply>();
+      for (ScriptApply rem : ((RuleMatch) match).getDelegateApply().values()) {
+        delegates.add(createDebugScriptApply(rem, stream, addToIndex, withMatches, timeInfo));
+      }
+      drm.setDelegates(UIMAUtils.toFSArray(cas, delegates));
+      // }
     } else if (match instanceof RegExpRuleMatch) {
       RegExpRuleMatch rerm = (RegExpRuleMatch) match;
       Map<Integer, List<AnnotationFS>> map = rerm.getMap();
@@ -258,9 +257,10 @@ public class DebugInfoFactory {
             String baseString = "Group " + key;
             base.setElement(baseString);
             drem.setBaseCondition(base);
-
-            drem.setBegin(each.getBegin());
-            drem.setEnd(each.getEnd());
+            if (each.getBegin() <= each.getEnd()) {
+              drem.setBegin(each.getBegin());
+              drem.setEnd(each.getEnd());
+            }
             if (addToIndex) {
               drem.addToIndexes();
             }
@@ -361,8 +361,12 @@ public class DebugInfoFactory {
     drem.setConditions(createEvaluatedConditions(rem, stream, addToIndex));
     List<AnnotationFS> annotations = rem.getTextsMatched();
     if (!annotations.isEmpty()) {
-      drem.setBegin(annotations.get(0).getBegin());
-      drem.setEnd(annotations.get(annotations.size() - 1).getEnd());
+      int begin = annotations.get(0).getBegin();
+      int end = annotations.get(annotations.size() - 1).getEnd();
+      if (begin <= end) {
+        drem.setBegin(begin);
+        drem.setEnd(end);
+      }
     }
     if (addToIndex)
       drem.addToIndexes();
@@ -389,8 +393,12 @@ public class DebugInfoFactory {
     drem.setConditions(createEvaluatedConditions(rem, stream, addToIndex));
     List<AnnotationFS> annotations = rem.getTextsMatched();
     if (!annotations.isEmpty()) {
-      drem.setBegin(annotations.get(0).getBegin());
-      drem.setEnd(annotations.get(annotations.size() - 1).getEnd());
+      int begin = annotations.get(0).getBegin();
+      int end = annotations.get(annotations.size() - 1).getEnd();
+      if (begin <= end) {
+        drem.setBegin(begin);
+        drem.setEnd(end);
+      }
     }
     if (addToIndex)
       drem.addToIndexes();
