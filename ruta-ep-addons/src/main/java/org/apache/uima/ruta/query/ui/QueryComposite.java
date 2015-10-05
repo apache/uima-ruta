@@ -29,9 +29,12 @@ import org.apache.uima.caseditor.editor.AnnotationEditor;
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.apache.uima.ruta.ide.core.RutaLanguageToolkit;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.internal.ui.editor.ScriptSourceViewer;
 import org.eclipse.dltk.ui.DLTKUILanguageManager;
@@ -521,10 +524,32 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
   }
 
   public static IFile getIFile(String location) {
-    IPath s = Path.fromOSString(location);
+    IPath path = Path.fromOSString(location);
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
-    IFile ifile = workspace.getRoot().getFileForLocation(s);
-    return ifile;
+    IFile file = workspace.getRoot().getFileForLocation(path);
+
+    if (file == null) {
+      // no located in the workspace?
+      try {
+        IProject project = workspace.getRoot().getProject("External Files");
+        if (!project.exists()) {
+          project.create(null);
+        }
+        if (!project.isOpen()) {
+          project.open(null);
+        }
+        IFile extFile = project.getFile(path.lastSegment());
+        if(extFile.exists()) {
+          extFile.delete(true, false, new NullProgressMonitor());
+        }
+        extFile.createLink(path, IResource.NONE, null);
+        file = extFile;
+      } catch (Exception e) {
+        RutaAddonsPlugin.error(e);
+      }
+    }
+    
+    return file;
   }
 
   public void setInformation(String content) {
