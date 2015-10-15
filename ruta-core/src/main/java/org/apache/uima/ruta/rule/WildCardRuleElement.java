@@ -379,6 +379,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
   private FSIterator<AnnotationFS> getIteratorOfType(boolean after, Type type,
           AnnotationFS annotation, RutaStream stream) {
     CAS cas = stream.getCas();
+    // TODO adapt logic to changes in UIMA iterator behavior!
     FSIterator<AnnotationFS> result = null;
     if (stream.getDocumentAnnotation().equals(cas.getDocumentAnnotation())) {
       // no windowing needed
@@ -389,8 +390,9 @@ public class WildCardRuleElement extends AbstractRuleElement {
         result = cas.getAnnotationIndex(type).iterator(pointer);
         if (!result.isValid()) {
           if (after) {
-            result.moveToFirst();
+            //result.moveToFirst();
           } else {
+            // HOTFIX caused by type priorities
             result.moveToLast();
           }
         } else {
@@ -431,8 +433,9 @@ public class WildCardRuleElement extends AbstractRuleElement {
         result.moveTo(pointer);
         if (!result.isValid()) {
           if (after) {
-            result.moveToFirst();
+//            result.moveToFirst();
           } else {
+            // TODO due to type priorities: RutaBasic is last -> moveTo will not work
             result.moveToLast();
           }
         } else {
