@@ -43,6 +43,7 @@ public class RutaStructureAction extends RutaAction {
   @Override
   public void traverse(ASTVisitor visitor) throws Exception {
     if (visitor.visit(this)) {
+      structure.traverse(visitor);
       for (Expression e : super.exprs) {
         e.traverse(visitor);
       }
@@ -61,9 +62,10 @@ public class RutaStructureAction extends RutaAction {
   @Override
   public List<Expression> getChilds() {
     List<Expression> l = new ArrayList<Expression>();
-    l.addAll(super.getChilds());
+    l.add(structure);
     l.addAll(assignments.keySet());
     l.addAll(assignments.values());
+    l.addAll(super.getChilds());
     return l;
   }
 
