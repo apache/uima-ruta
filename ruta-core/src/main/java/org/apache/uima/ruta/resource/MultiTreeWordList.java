@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -66,7 +67,7 @@ public class MultiTreeWordList implements RutaWordList {
    * Default constructor.
    */
   public MultiTreeWordList() throws IOException {
-    this(new String[] {});
+    this(new String[] {}, null);
   }
 
   /**
@@ -75,7 +76,7 @@ public class MultiTreeWordList implements RutaWordList {
    * @param pathname
    *          the pathname of the used file.
    */
-  public MultiTreeWordList(String pathname) throws IOException {
+  public MultiTreeWordList(String pathname, File base) throws IOException {
     this(new FileSystemResource(pathname));
   }
 
@@ -135,20 +136,32 @@ public class MultiTreeWordList implements RutaWordList {
    * @param pathnames
    *          path of the file to create a TextWordList from
    */
-  public MultiTreeWordList(String[] pathnames) throws IOException {
+  public MultiTreeWordList(String[] pathnames, File base) throws IOException {
     this.root = new MultiTextNode();
     this.costMap = new EditDistanceCostMap();
     for (String pathname : pathnames) {
-      load(new FileSystemResource(pathname));
+      String name = getRelativePath(new File(pathname), base);
+      load(new FileSystemResource(pathname), name);
     }
   }
 
-  public MultiTreeWordList(List<File> files) throws IOException {
+ 
+
+  public MultiTreeWordList(List<File> files, File base) throws IOException {
     this.root = new MultiTextNode();
     this.costMap = new EditDistanceCostMap();
     for (File file : files) {
-      load(new FileSystemResource(file));
+      String name = getRelativePath(file, base);
+      load(new FileSystemResource(file), name);
     }
+  }
+
+  private String getRelativePath(File file, File base) {
+    Path filePath = file.toPath();
+    Path basePath = base.toPath();
+    Path relativize = basePath.relativize(filePath);
+    String result = relativize.toString().replaceAll("\\\\", "/");
+    return result;
   }
 
   /**
@@ -159,8 +172,21 @@ public class MultiTreeWordList implements RutaWordList {
    * @throws IOException
    *           When there is a problem reading the resource.
    */
+  
   private void load(Resource resource) throws IOException {
-    final String name = resource.getFilename();
+    load(resource, resource.getFilename());
+  }
+  
+  /**
+   * Load a resource in this word list.
+   * 
+   * @param resource
+   *          Resource to load. 
+   * @param name - The resource's name must end with .txt or .mtwl.
+   * @throws IOException
+   *           When there is a problem reading the resource.
+   */
+  private void load(Resource resource, String name) throws IOException {
     InputStream stream = null;
     try {
       stream = resource.getInputStream();
