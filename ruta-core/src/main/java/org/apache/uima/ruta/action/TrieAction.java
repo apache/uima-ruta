@@ -92,16 +92,17 @@ public class TrieAction extends AbstractRutaAction {
     String ignoreCharValue = ignoreChar.getStringValue(parent, match, element, stream);
 
     RutaWordList wl = list.getList(parent);
-    Collection<AnnotationFS> found = wl.find(stream, typeMap, ignoreCaseValue, ignoreLengthValue,
-            editValue, distanceValue, ignoreCharValue);
+    if (wl != null) {
+      Collection<AnnotationFS> found = wl.find(stream, typeMap, ignoreCaseValue, ignoreLengthValue,
+              editValue, distanceValue, ignoreCharValue);
 
-    if (found != null) {
-      for (AnnotationFS annotation : found) {
-        stream.addAnnotation(annotation, match);
-        stream.getCas().addFsToIndexes(annotation);
+      if (found != null) {
+        for (AnnotationFS annotation : found) {
+          stream.addAnnotation(annotation, match);
+          stream.getCas().addFsToIndexes(annotation);
+        }
       }
     }
-
   }
 
   public WordListExpression getList() {
