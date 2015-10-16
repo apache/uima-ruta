@@ -157,6 +157,9 @@ public class MultiTreeWordList implements RutaWordList {
   }
 
   private String getRelativePath(File file, File base) {
+    if(base == null) {
+      return file.getName();
+    }
     Path filePath = file.toPath();
     Path basePath = base.toPath();
     Path relativize = basePath.relativize(filePath);
