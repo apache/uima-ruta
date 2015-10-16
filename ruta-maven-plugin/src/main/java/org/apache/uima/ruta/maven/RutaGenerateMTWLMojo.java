@@ -20,6 +20,8 @@ package org.apache.uima.ruta.maven;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.maven.model.FileSet;
@@ -33,6 +35,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 import org.apache.uima.ruta.resource.MultiTreeWordList;
+import org.codehaus.plexus.util.FileUtils;
 import org.sonatype.plexus.build.incremental.BuildContext;
 
 /**
@@ -79,23 +82,24 @@ public class RutaGenerateMTWLMojo extends AbstractMojo {
     }
     
     this.project.addCompileSourceRoot(parentFile.getPath());
-    
+
     List<File> files = null;
     try {
-      files = Utils.getFilesIfModified(inputFiles, buildContext);
+      files = getFilesIfModifiedOrNotExists(inputFiles, outputFile, buildContext);
     } catch (IOException e) {
       getLog().warn("Error accessing input files.", e);
     }
-    
-    if ((outputFile != null && outputFile.exists()) && (files == null || files.isEmpty())) {
-      getLog().debug("No modified files to process... skipping.");
+
+    if(files == null || files.isEmpty()) {
+      getLog().info("No modified files to process... skipping.");
       return;
     }
-    getLog().debug("Processing following files: " + files.toString());
+    
+    getLog().info("Processing following files: " + files.toString());
     
     MultiTreeWordList trie = null;
     try {
-      trie = new MultiTreeWordList(files);
+      trie = new MultiTreeWordList(files, new File(inputFiles.getDirectory()));
     } catch (IOException e) {
       getLog().warn("Error creating MTWL file.", e);
     }
@@ -109,5 +113,31 @@ public class RutaGenerateMTWLMojo extends AbstractMojo {
       }
     }
 
+  }
+  
+  public static List<File> getFilesIfModifiedOrNotExists(FileSet fileSet, File outputFile, BuildContext buildContext) throws IOException {
+    List<File> result = new ArrayList<File>();
+
+    boolean exists = outputFile.exists();
+    
+    File directory = new File(fileSet.getDirectory());
+    String includes = Utils.toString(fileSet.getIncludes());
+    String excludes = Utils.toString(fileSet.getExcludes());
+
+    boolean modified = false;
+    for (Object each : FileUtils.getFiles(directory, includes, excludes)) {
+      if (each instanceof File) {
+        File file = (File) each;
+        result.add(file);
+        if (buildContext.hasDelta(file)) {
+          modified = true;
+        }
+      }
+    }
+    if(!exists || modified) {
+      return result;
+    } else {
+      return Collections.emptyList();
+    }
   }
 }

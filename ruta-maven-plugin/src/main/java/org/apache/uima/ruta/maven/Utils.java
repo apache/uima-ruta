@@ -75,7 +75,7 @@ public class Utils {
     return result;
   }
   
-  public static List<File> getFilesIfModified(FileSet fileSet, BuildContext buildContext) throws IOException {
+  public static List<File> getFilesIfModifiedAndExists(FileSet fileSet, BuildContext buildContext) throws IOException {
     List<File> result = new ArrayList<File>();
 
     File directory = new File(fileSet.getDirectory());
@@ -99,7 +99,7 @@ public class Utils {
     }
   }
 
-  private static String toString(List<String> strings) {
+  public static String toString(List<String> strings) {
     StringBuilder sb = new StringBuilder();
     for (String string : strings) {
       if (sb.length() > 0) {

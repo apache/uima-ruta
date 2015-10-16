@@ -20,7 +20,11 @@ package org.apache.uima.ruta.maven;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.nio.file.Path;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.maven.model.FileSet;
 import org.apache.maven.plugin.AbstractMojo;
@@ -33,6 +37,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 import org.apache.uima.ruta.resource.TreeWordList;
+import org.codehaus.plexus.util.FileUtils;
 import org.sonatype.plexus.build.incremental.BuildContext;
 
 /**
@@ -79,31 +84,33 @@ public class RutaGenerateTWLMojo extends AbstractMojo {
 
     this.project.addCompileSourceRoot(outputDirectory.getPath());
     
-    List<File> files = null;
+    Map<File, File> inputOutputMap = null;
     try {
-      // TODO: also files that are not modified, but the output file was deleted
-      files = Utils.getModifiedFiles(inputFiles, buildContext);
+      inputOutputMap =  getModifiedFilesMap(inputFiles, outputDirectory, buildContext);
     } catch (IOException e) {
       getLog().warn("Error accessing input files.", e);
     }
     
-    if (files == null || files.isEmpty()) {
+    if (inputOutputMap == null || inputOutputMap.isEmpty()) {
       getLog().debug("No modified files to process... skipping.");
       return;
     }
-    getLog().debug("Processing following files: " + files.toString());
+    getLog().debug("Processing following files: " + inputOutputMap.keySet().toString());
 
-    for (File file : files) {
+    Set<Entry<File, File>> entrySet = inputOutputMap.entrySet();
+    for (Entry<File, File> each : entrySet) {
+      File inputFile = each.getKey();
+      File outputFile = each.getValue();
       TreeWordList list = null;
       try {
-        list = new TreeWordList(file.getAbsolutePath(), false);
+        list = new TreeWordList(inputFile.getAbsolutePath(), false);
       } catch (IOException e) {
         getLog().warn("Error generating twl.", e);
       }
       if (list != null) {
-        File outputFile = getOutputFile(file);
         try {
-          list.createTWLFile(outputFile.getAbsolutePath(), compress, "UTF-8");
+          outputFile.getParentFile().mkdirs();
+          list.createTWLFile(outputFile.getAbsolutePath(), compress, encoding);
           buildContext.refresh(outputFile);
         } catch (IOException e) {
           getLog().warn("Error writing twl file.", e);
@@ -113,9 +120,39 @@ public class RutaGenerateTWLMojo extends AbstractMojo {
 
   }
 
-  private File getOutputFile(File file) {
-    String outputName = file.getName().substring(0, file.getName().length() - 3) + "twl";
-    File outputFile = new File(outputDirectory, outputName);
-    return outputFile;
+  private Map<File, File> getModifiedFilesMap(FileSet fileSet, File outputDirectory, BuildContext buildContext) throws IOException {
+    Map<File, File> result = new LinkedHashMap<>();
+
+    File directory = new File(fileSet.getDirectory());
+    
+    String includes = Utils.toString(fileSet.getIncludes());
+    String excludes = Utils.toString(fileSet.getExcludes());
+
+    for (Object each : FileUtils.getFiles(directory, includes, excludes)) {
+      if (each instanceof File) {
+        File inputFile = (File) each;
+        File outputfile = getOutputFile(inputFile, directory, outputDirectory);
+        if (outputfile == null || !outputfile.exists() || buildContext.hasDelta(inputFile)) {
+          result.put(inputFile, outputfile);
+        }
+      }
+    }
+    return result;
   }
+
+  private File getOutputFile(File inputFile, File inputDirectory, File outputDirectory) {
+    String inputName = inputFile.getName();
+    String outputName = inputName.substring(0, inputName.length() - 3) + "twl";
+    
+    Path inputFilePath = inputFile.toPath();
+    Path inputDirectoryPath = inputDirectory.toPath();
+    Path outputDirectoryPath = outputDirectory.toPath();
+    
+    Path relativize = inputDirectoryPath.relativize(inputFilePath);
+    Path resolve = outputDirectoryPath.resolve(relativize);
+    Path parent = resolve.getParent();
+    Path result = parent.resolve(outputName);
+    return result.toFile();
+  }
+
 }
