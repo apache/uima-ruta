@@ -65,7 +65,9 @@ public class RutaProjectUtils {
 
   public static final String BUILDPATH_ATTRIBUTE_RESOURCES = "resources";
 
-  public static final String JAVANATURE = "org.eclipse.jdt.core.javanature";
+  public static final String JAVA_NATURE = "org.eclipse.jdt.core.javanature";
+
+  public static final String M2E_NATURE = "org.eclipse.m2e.core.maven2Nature";
 
   public static final String CDE_DATA_PATH = "CDEdataPath";
 
@@ -291,7 +293,7 @@ public class RutaProjectUtils {
     }
     IProject[] referencedProjects = proj.getReferencedProjects();
     result.addAll(Arrays.asList(referencedProjects));
-    IProjectNature nature = proj.getNature(JAVANATURE);
+    IProjectNature nature = proj.getNature(JAVA_NATURE);
     if (nature != null) {
       JavaProject javaProject = (JavaProject) JavaCore.create(proj);
       IClasspathEntry[] resolvedClasspath = javaProject.getResolvedClasspath();
@@ -310,7 +312,7 @@ public class RutaProjectUtils {
     if (!project.isOpen()) {
       return result;
     }
-    
+
     IProjectNature rutaNature = project.getNature(RutaNature.NATURE_ID);
     if (rutaNature != null) {
 
@@ -347,14 +349,14 @@ public class RutaProjectUtils {
         result.add((IFolder) findElement);
       }
     }
-    IProjectNature javaNature = project.getNature(JAVANATURE);
+    IProjectNature javaNature = project.getNature(JAVA_NATURE);
     if (javaNature != null) {
       IJavaProject javaProject = JavaCore.create(project);
       IPath readOutputLocation = javaProject.readOutputLocation();
       IFolder folder = ResourcesPlugin.getWorkspace().getRoot().getFolder(readOutputLocation);
       result.add(folder);
     }
-    
+
     if (result.isEmpty()) {
       IFolder findElement = project.getFolder(getDefaultDescriptorLocation());
       if (findElement != null && findElement.exists()) {
@@ -398,7 +400,7 @@ public class RutaProjectUtils {
         }
       }
     }
-    IProjectNature javaNature = project.getNature(JAVANATURE);
+    IProjectNature javaNature = project.getNature(JAVA_NATURE);
     if (javaNature != null) {
       IJavaProject javaProject = JavaCore.create(project);
       IPath readOutputLocation = javaProject.readOutputLocation();
@@ -511,10 +513,57 @@ public class RutaProjectUtils {
 
   public static Collection<String> getClassPath(IProject project) throws CoreException {
     Collection<String> result = new TreeSet<String>();
-    extendClasspathWithProject(result, project.getProject(), new HashSet<IProject>());
-    Collection<String> dependencies = getDependencies(project.getProject());
-    result.addAll(dependencies);
+
+    IProjectNature m2eNature = project.getNature(M2E_NATURE);
+    IProjectNature javaNature = project.getNature(JAVA_NATURE);
+    if (m2eNature != null && javaNature != null) {
+      // use maven dependencies of java project alone
+      JavaProject javaProject = (JavaProject) JavaCore.create(project);
+      IClasspathEntry[] resolvedClasspath = javaProject.getResolvedClasspath();
+      IWorkspace workspace = ResourcesPlugin.getWorkspace();
+      IWorkspaceRoot root = workspace.getRoot();
+      
+      // TODO: skip jre libs?
+      for (IClasspathEntry each : resolvedClasspath) {
+        int entryKind = each.getEntryKind();
+        IPath path = each.getPath();
+
+        switch (entryKind) {
+          case IClasspathEntry.CPE_LIBRARY:
+            result.add(path.toPortableString());
+            break;
+          case IClasspathEntry.CPE_SOURCE:
+            IPath outputLocation = each.getOutputLocation();
+            addAbsoluteLocation(result, root, outputLocation);
+            break;
+          case IClasspathEntry.CPE_PROJECT:
+            IProject refProject = root.getProject(path.lastSegment());
+            JavaProject refJavaProject = (JavaProject) JavaCore.create(refProject);
+            IPath refOutputLocation = refJavaProject.getOutputLocation();
+            addAbsoluteLocation(result, root, refOutputLocation);
+            break;
+          default:
+            // should have been resolved?
+            break;
+        }
+      }
+    } else {
+      // collect all dependencies
+      extendClasspathWithProject(result, project.getProject(), new HashSet<IProject>());
+      Collection<String> dependencies = getDependencies(project.getProject());
+      result.addAll(dependencies);
+    }
     return result;
+  }
+
+  private static void addAbsoluteLocation(Collection<String> result, IWorkspaceRoot root, IPath outputLocation) {
+    if (outputLocation != null) {
+      IFolder folder = root.getFolder(outputLocation);
+      if (folder != null && folder.exists()) {
+        String absoluteLocation = folder.getLocation().makeAbsolute().toPortableString();
+        result.add(absoluteLocation);
+      }
+    }
   }
 
   private static Collection<String> getDependencies(IProject project) throws CoreException {
@@ -532,7 +581,7 @@ public class RutaProjectUtils {
 
   private static void extendClasspathWithProject(Collection<String> result, IProject project,
           Collection<IProject> visited) throws CoreException, JavaModelException {
-    if(project == null) {
+    if (project == null) {
       return;
     }
     IProjectNature rutaNature = project.getNature(RutaNature.NATURE_ID);
@@ -551,7 +600,7 @@ public class RutaProjectUtils {
         result.add(each.getLocation().toPortableString());
       }
     }
-    IProjectNature javaNature = project.getNature(RutaProjectUtils.JAVANATURE);
+    IProjectNature javaNature = project.getNature(RutaProjectUtils.JAVA_NATURE);
     if (javaNature != null) {
       JavaProject javaProject = (JavaProject) JavaCore.create(project);
 

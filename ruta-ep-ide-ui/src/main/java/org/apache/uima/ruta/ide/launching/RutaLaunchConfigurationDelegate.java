@@ -38,6 +38,7 @@ import org.apache.uima.ruta.ide.RutaIdeUIPlugin;
 import org.apache.uima.ruta.ide.core.RutaCorePreferences;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.eclipse.core.internal.resources.Folder;
+import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -59,7 +60,6 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.osgi.framework.Bundle;
 
 public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
-
 
   private String mode;
 
@@ -84,10 +84,10 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     IPath projectPath = proj.getResource().getLocation();
     IPath inputDirPath = projectPath.append(RutaProjectUtils.getDefaultInputLocation());
     IPath outputDirPath = projectPath.append(RutaProjectUtils.getDefaultOutputLocation());
-    IPath analysisEngineDescriptorPath = RutaProjectUtils.getAnalysisEngineDescriptorPath(member.getLocation(),
-            proj.getProject());
+    IPath analysisEngineDescriptorPath = RutaProjectUtils.getAnalysisEngineDescriptorPath(
+            member.getLocation(), proj.getProject());
     String engineDefaultMethod = "";
-    if(analysisEngineDescriptorPath != null) {
+    if (analysisEngineDescriptorPath != null) {
       engineDefaultMethod = analysisEngineDescriptorPath.toPortableString();
     }
     String input = configuration.getAttribute(RutaLaunchConstants.INPUT_FOLDER,
@@ -111,10 +111,12 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
       cmdline.append(URLEncoder.encode(engine, RutaLauncher.URL_ENCODING) + " ");
 
       cmdline.append(RutaLaunchConstants.ARG_INPUT_FOLDER + " ");
-      cmdline.append(URLEncoder.encode(makeAbsolute(input, configuration), RutaLauncher.URL_ENCODING) + " ");
+      cmdline.append(URLEncoder.encode(makeAbsolute(input, configuration),
+              RutaLauncher.URL_ENCODING) + " ");
 
       cmdline.append(RutaLaunchConstants.ARG_OUTPUT_FOLDER + " ");
-      cmdline.append(URLEncoder.encode(makeAbsolute(output, configuration), RutaLauncher.URL_ENCODING) + " ");
+      cmdline.append(URLEncoder.encode(makeAbsolute(output, configuration),
+              RutaLauncher.URL_ENCODING) + " ");
 
     } catch (UnsupportedEncodingException e) {
       throw new CoreException(new Status(IStatus.ERROR, RutaIdeUIPlugin.PLUGIN_ID,
@@ -168,48 +170,62 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     RutaIdeUIPlugin d = RutaIdeUIPlugin.getDefault();
     List<String> extendedClasspath = new ArrayList<String>();
 
-    // Normal mode, add the launcher plugin and uima runtime jar to the classpath
-    try {
-      if (!Platform.inDevelopmentMode()) {
-        // Add this plugin jar to the classpath
-        extendedClasspath.add(d.pluginIdToJarPath(RutaIdeUIPlugin.PLUGIN_ID));
-      } else {
-        extendedClasspath.add(d.pluginIdToJarPath(RutaIdeUIPlugin.PLUGIN_ID) + "target/classes");
+    IProjectNature m2eNature = project.getProject().getNature(RutaProjectUtils.M2E_NATURE);
+    IProjectNature javaNature = project.getProject().getNature(RutaProjectUtils.JAVA_NATURE);
+    
+    // deactivated until launcher issue is solved
+    if (false && m2eNature != null && javaNature != null) {
+      // maven dependencies only
+      
+      // TODO what about the launcher!!??
+      Collection<String> classPath = RutaProjectUtils.getClassPath(project.getProject());
+      extendedClasspath.addAll(classPath);
+    } else {
+      // old fashioned mode: use the bundles and check development mode
+      try {
+        // Normal mode, add the launcher plugin and uima runtime jar to the classpath
+        if (!Platform.inDevelopmentMode()) {
+          // Add this plugin jar to the classpath
+          extendedClasspath.add(d.pluginIdToJarPath(RutaIdeUIPlugin.PLUGIN_ID));
+        } else {
+          extendedClasspath.add(d.pluginIdToJarPath(RutaIdeUIPlugin.PLUGIN_ID) + "target/classes");
+        }
+
+        // uima
+        Bundle bundle = RutaIdeUIPlugin.getDefault().getBundle("org.apache.uima.runtime");
+        if (bundle != null) {
+          Enumeration<?> jarEnum = bundle.findEntries("/", "uimaj-core*.jar",
+                  Platform.inDevelopmentMode());
+          while (jarEnum != null && jarEnum.hasMoreElements()) {
+            URL element = (URL) jarEnum.nextElement();
+            extendedClasspath.add(FileLocator.toFileURL(element).getFile());
+          }
+        }
+        extendedClasspath.add(d.pluginIdToJarPath("org.apache.uima.runtime"));
+
+        // ruta
+        bundle = RutaIdeUIPlugin.getDefault().getBundle("org.apache.uima.ruta.engine");
+        if (bundle != null) {
+          Enumeration<?> jarEnum = bundle.findEntries("/", "*.jar", Platform.inDevelopmentMode());
+          while (jarEnum != null && jarEnum.hasMoreElements()) {
+            URL element = (URL) jarEnum.nextElement();
+            extendedClasspath.add(FileLocator.toFileURL(element).getFile());
+          }
+        }
+        extendedClasspath.add(d.pluginIdToJarPath("org.apache.uima.ruta.engine"));
+      } catch (IOException e) {
+        throw new CoreException(new Status(IStatus.ERROR, RutaIdeUIPlugin.PLUGIN_ID, IStatus.OK,
+                "Failed to compose classpath!", e));
       }
 
-      // uima
-      Bundle bundle = RutaIdeUIPlugin.getDefault().getBundle("org.apache.uima.runtime");
-      if (bundle != null) {
-        Enumeration<?> jarEnum = bundle.findEntries("/", "uimaj-core*.jar",
-                Platform.inDevelopmentMode());
-        while (jarEnum != null && jarEnum.hasMoreElements()) {
-          URL element = (URL) jarEnum.nextElement();
-          extendedClasspath.add(FileLocator.toFileURL(element).getFile());
-        }
-      }
-      extendedClasspath.add(d.pluginIdToJarPath("org.apache.uima.runtime"));
+      Collection<String> classPath = RutaProjectUtils.getClassPath(project.getProject());
+      extendedClasspath.addAll(classPath);
 
-      // ruta
-      bundle = RutaIdeUIPlugin.getDefault().getBundle("org.apache.uima.ruta.engine");
-      if (bundle != null) {
-        Enumeration<?> jarEnum = bundle.findEntries("/", "*.jar", Platform.inDevelopmentMode());
-        while (jarEnum != null && jarEnum.hasMoreElements()) {
-          URL element = (URL) jarEnum.nextElement();
-          extendedClasspath.add(FileLocator.toFileURL(element).getFile());
-        }
-      }
-      extendedClasspath.add(d.pluginIdToJarPath("org.apache.uima.ruta.engine"));
-    } catch (IOException e) {
-      throw new CoreException(new Status(IStatus.ERROR, RutaIdeUIPlugin.PLUGIN_ID, IStatus.OK,
-              "Failed to compose classpath!", e));
+      Collection<String> extensions = getExtensions();
+      extendedClasspath.addAll(extensions);
+
     }
-    
-    
-    Collection<String> classPath = RutaProjectUtils.getClassPath(project.getProject());
-    extendedClasspath.addAll(classPath);
 
-    Collection<String> extensions = getExtensions();
-    extendedClasspath.addAll(extensions);
     return extendedClasspath;
   }
 
@@ -259,7 +275,6 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
       }
     }
   }
-
 
   @Override
   public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch,
