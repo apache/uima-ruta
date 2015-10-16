@@ -281,15 +281,15 @@ public class LanguageCheckerVisitor extends ASTVisitor {
             if (file != null) {
               // script in other project? use that if the file was found in the workspace
               referredProject = file.getProject();
-            }
-            IPath typeSystemDescriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(
-                    file.getLocation(), referredProject);
-            TypeSystemDescription tsDesc = importCompleteTypeSystem(typeSystemDescriptorPath, url);
-
-            List<String> checkDuplicateShortNames = checkOnAmbiguousShortNames(tsDesc);
-            if (!checkDuplicateShortNames.isEmpty()) {
-              pr.reportProblem(problemFactory.createDuplicateShortNameInImported(sRef, localPath,
-                      checkDuplicateShortNames, ProblemSeverity.WARNING));
+              IPath typeSystemDescriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(
+                      file.getLocation(), referredProject);
+              TypeSystemDescription tsDesc = importCompleteTypeSystem(typeSystemDescriptorPath, url);
+              
+              List<String> checkDuplicateShortNames = checkOnAmbiguousShortNames(tsDesc);
+              if (!checkDuplicateShortNames.isEmpty()) {
+                pr.reportProblem(problemFactory.createDuplicateShortNameInImported(sRef, localPath,
+                        checkDuplicateShortNames, ProblemSeverity.WARNING));
+              }
             }
           }
         } catch (IOException e) {
