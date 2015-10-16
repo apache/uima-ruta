@@ -277,7 +277,11 @@ public class RutaDescriptorBuilder {
 
     types.addAll(Arrays.asList(presentTypes));
     typeSystemDescription.setTypes(types.toArray(new TypeDescription[0]));
-    typeSystemDescription.setName(desc.getPackageString() + "." + desc.getScriptName() + options.getTypeSystemSuffix());
+    String descName = desc.getScriptName() + options.getTypeSystemSuffix();
+    if(!StringUtils.isBlank(desc.getPackageString())) {
+      descName = desc.getPackageString() + "." + descName;
+    }
+    typeSystemDescription.setName(descName);
     if (typeSystemOutput != null) {
       File typeSystemFile = getFile(typeSystemOutput);
       typeSystemDescription.setSourceUrl(typeSystemFile.toURI().toURL());
