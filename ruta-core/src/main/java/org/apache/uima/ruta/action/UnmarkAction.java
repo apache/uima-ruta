@@ -60,7 +60,7 @@ public class UnmarkAction extends TypeSensitiveAction {
       Type matchedType = annotationFS.getType();
       boolean subsumes = stream.getCas().getTypeSystem().subsumes(t, matchedType);
       if(subsumes && !allAtAnchor) {
-        stream.removeAnnotation(annotationFS, t);
+        stream.removeAnnotation(annotationFS, matchedType);
       } else {
         RutaBasic beginAnchor = stream.getBeginAnchor(annotationFS.getBegin());
         Collection<AnnotationFS> beginAnchors = beginAnchor.getBeginAnchors(t);
