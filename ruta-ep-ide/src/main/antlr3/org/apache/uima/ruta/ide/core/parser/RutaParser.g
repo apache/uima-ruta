@@ -363,6 +363,7 @@ importStatement returns [Statement stmt = null]
 	 | im = UimafitString 
 	{stmt = StatementFactory.createImportEngine(StatementFactory.createEmptyComponentDeclaration(im),im);} 
 	name = dottedComponentDeclaration 
+	(LPAREN dottedIdentifier2 (COMMA dottedIdentifier2)+ RPAREN)? 
 	{if(name != null) {stmt = StatementFactory.createImportEngine(name,im);addImportUimafitEngine(name);}}
 	 SEMI 
 	| im = ImportString type = dottedId (FromString ts = dottedComponentDeclaration)? (AsString alias = Identifier)? SEMI

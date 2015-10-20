@@ -278,7 +278,7 @@ public class RutaDescriptorBuilder {
     types.addAll(Arrays.asList(presentTypes));
     typeSystemDescription.setTypes(types.toArray(new TypeDescription[0]));
     String descName = desc.getScriptName() + options.getTypeSystemSuffix();
-    if(!StringUtils.isBlank(desc.getPackageString())) {
+    if (!StringUtils.isBlank(desc.getPackageString())) {
       descName = desc.getPackageString() + "." + descName;
     }
     typeSystemDescription.setName(descName);
@@ -294,15 +294,17 @@ public class RutaDescriptorBuilder {
           String engineOutput, RutaBuildOptions options, String[] scriptPaths,
           String[] enginePaths, String[] resourcePaths) throws InvalidXMLException, IOException {
     TypeSystemDescription aets = uimaFactory.createTypeSystemDescription();
-    Import_impl import_impl = new Import_impl();
+    Import_impl import_impl = null;
     if (options.isImportByName()) {
       if (typeSystemDescription != null) {
+        import_impl = new Import_impl();
         import_impl.setName(typeSystemDescription.getName());
       }
     } else {
       if (typeSystemOutput != null) {
         String relativeLocation = getRelativeLocation(new File(typeSystemOutput).toURI(),
                 engineOutput);
+        import_impl = new Import_impl();
         import_impl.setLocation(relativeLocation);
       }
     }
@@ -414,11 +416,15 @@ public class RutaDescriptorBuilder {
 
     AnalysisEngineDescription analysisEngineDescription = UIMAFramework.getXMLParser()
             .parseAnalysisEngineDescription(new XMLInputSource(defaultAnalysisEngine));
-    aets.setImports(new Import[] { import_impl });
+    if(import_impl != null) {
+      aets.setImports(new Import[] { import_impl });
+    }
     analysisEngineDescription.getAnalysisEngineMetaData().setTypeSystem(aets);
 
-    File file = getFile(engineOutput);
-    analysisEngineDescription.setSourceUrl(file.toURI().toURL());
+    if (engineOutput != null) {
+      File file = getFile(engineOutput);
+      analysisEngineDescription.setSourceUrl(file.toURI().toURL());
+    }
 
     if (!desc.getTypeShortNames().isEmpty()) {
       Capability capability = uimaFactory.createCapability();

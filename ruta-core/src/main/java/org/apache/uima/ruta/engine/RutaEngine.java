@@ -39,6 +39,7 @@ import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
+import org.apache.commons.lang.StringUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.AnalysisComponent;
@@ -525,9 +526,9 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   @Override
   public void process(JCas jcas) throws AnalysisEngineProcessException {
-    
+
     CAS cas = jcas.getCas();
-    
+
     if (reloadScript || (!initialized && !cas.getViewName().equals(CAS.NAME_DEFAULT_SOFA))) {
       initializeScript(cas.getViewName());
     } else {
@@ -718,60 +719,68 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   }
 
   private void initializeScript(String viewName) throws AnalysisEngineProcessException {
-    if (mainScript == null) {
-      if (rules != null) {
+    if (rules != null) {
+      try {
+        script = loadScriptByString(rules);
+      } catch (RecognitionException e) {
+        throw new AnalysisEngineProcessException(e);
+      }
+    } else if(mainScript != null) {
+      String scriptLocation = locate(mainScript, scriptPaths, SCRIPT_FILE_EXTENSION);
+      if (scriptLocation == null) {
         try {
-          script = loadScriptByString(rules);
+          String mainScriptPath = mainScript.replaceAll("\\.", "/") + SCRIPT_FILE_EXTENSION;
+          script = loadScriptIS(mainScriptPath);
+        } catch (IOException e) {
+          throw new AnalysisEngineProcessException(new FileNotFoundException("Script ["
+                  + mainScript + "] cannot be found at [" + collectionToString(scriptPaths)
+                  + "] or classpath with extension .ruta"));
         } catch (RecognitionException e) {
+          throw new AnalysisEngineProcessException(new FileNotFoundException("Script ["
+                  + mainScript + "] cannot be found at [" + collectionToString(scriptPaths)
+                  + "] or classpath  with extension .ruta"));
+        }
+      } else {
+        try {
+          script = loadScript(scriptLocation);
+        } catch (RutaParseRuntimeException re) {
+          throw re;
+        } catch (Exception e) {
           throw new AnalysisEngineProcessException(e);
         }
       }
+    }
+    if(script == null) {
       return;
     }
-    String scriptLocation = locate(mainScript, scriptPaths, SCRIPT_FILE_EXTENSION);
-    if (scriptLocation == null) {
-      try {
-        String mainScriptPath = mainScript.replaceAll("\\.", "/") + SCRIPT_FILE_EXTENSION;
-        script = loadScriptIS(mainScriptPath);
-      } catch (IOException e) {
-        throw new AnalysisEngineProcessException(new FileNotFoundException("Script [" + mainScript
-                + "] cannot be found at [" + collectionToString(scriptPaths)
-                + "] or classpath with extension .ruta"));
-      } catch (RecognitionException e) {
-        throw new AnalysisEngineProcessException(new FileNotFoundException("Script [" + mainScript
-                + "] cannot be found at [" + collectionToString(scriptPaths)
-                + "] or classpath  with extension .ruta"));
-      }
-    } else {
-      try {
-        script = loadScript(scriptLocation);
-      } catch (RutaParseRuntimeException re) {
-        throw re;
-      } catch (Exception e) {
-        throw new AnalysisEngineProcessException(e);
-      }
-    }
-
+    
     Map<String, RutaModule> additionalScriptsMap = new HashMap<String, RutaModule>();
     Map<String, AnalysisEngine> additionalEnginesMap = new HashMap<String, AnalysisEngine>();
 
     if (additionalUimafitEngines != null) {
       for (String eachUimafitEngine : additionalUimafitEngines) {
         AnalysisEngine eachEngine = null;
+        String classString = eachUimafitEngine;
+        Object[] configurationData = new String[0];
+        String[] split = eachUimafitEngine.split("[\\[\\]]");
+        if (split.length == 2) {
+          classString = split[0];
+          configurationData = StringUtils.split(split[1], ",");
+        }
         try {
           @SuppressWarnings("unchecked")
           // Class clazz = this.getClass().getClassLoader().loadClass(eachUimafitEngine) ;
           Class<? extends AnalysisComponent> uimafitClass = (Class<? extends AnalysisComponent>) Class
-                  .forName(eachUimafitEngine);
-          eachEngine = AnalysisEngineFactory.createEngine(uimafitClass);
+                  .forName(classString);
+          eachEngine = AnalysisEngineFactory.createEngine(uimafitClass, configurationData);
         } catch (ClassNotFoundException e) {
           throw new AnalysisEngineProcessException(e);
         } catch (ResourceInitializationException e) {
           throw new AnalysisEngineProcessException(e);
         }
         try {
-          additionalEnginesMap.put(eachUimafitEngine, eachEngine);
-          String[] eachEngineLocationPartArray = eachUimafitEngine.split("\\.");
+          additionalEnginesMap.put(classString, eachEngine);
+          String[] eachEngineLocationPartArray = classString.split("\\.");
           if (eachEngineLocationPartArray.length > 1) {
             String shortEachEngineLocation = eachEngineLocationPartArray[eachEngineLocationPartArray.length - 1];
             additionalEnginesMap.put(shortEachEngineLocation, eachEngine);
@@ -1011,8 +1020,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
             AnalysisEngine eachEngine = engineLoader.loadEngineIS(engineLocationIS, viewName);
             additionalEngines.put(eachEngineLocation, eachEngine);
           } catch (Exception e) {
-//        	  TODO avoid exception and solve it with return null or something!
-        	  
+            // TODO avoid exception and solve it with return null or something!
+
             // uimaFit engine?
             try {
               @SuppressWarnings("unchecked")

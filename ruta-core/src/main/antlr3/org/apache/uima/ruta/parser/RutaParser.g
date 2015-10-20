@@ -296,12 +296,17 @@ public void setExternalFactory(RutaExternalFactory factory) {
 		  descInfo.addEngine(namespace);
 		}
 	}
-	public void addImportUimafitEngine(RutaBlock parent, String namespace) {
-		parent.getScript().addUimafitEngine(namespace, null);
-		if(descInfo != null) {
-		  descInfo.addUimafitEngine(namespace);
-		}
-	}
+	public void addImportUimafitEngine(RutaBlock parent, String namespace,
+          List<String> configurationData) {
+	    parent.getScript().addUimafitEngine(namespace, null);
+	    if (descInfo != null) {
+	      String namespaceWithConfig = namespace;
+	      if (configurationData != null && !configurationData.isEmpty()) {
+	        namespaceWithConfig = namespace + "[" + StringUtils.join(configurationData, ",") + "]";
+	      }
+	      descInfo.addUimafitEngine(namespaceWithConfig);
+	    }
+	  }
 
 	/**
 	 * Import a type from a type system.
@@ -564,11 +569,19 @@ List<String> vars = new ArrayList<String>();
 //    ;
 
 importStatement returns [RutaStatement stmt = null]
+@init {
+List<String> configurationData = new ArrayList<String>();
+}	
 	:
 	TypeSystemString ts = dottedIdentifier2{addImportTypeSystem($blockDeclaration::env, ts);} SEMI
 	| ScriptString ns = dottedIdentifier2{addImportScript($blockDeclaration::env, ns);} SEMI
 	| EngineString ns = dottedIdentifier2{addImportEngine($blockDeclaration::env, ns);} SEMI
-	| UimafitString ns = dottedIdentifier2{addImportUimafitEngine($blockDeclaration::env, ns);} SEMI
+	| UimafitString ns = dottedIdentifier2
+		(LPAREN p = dottedIdentifier2 {configurationData.add(p);}
+		(COMMA p = dottedIdentifier2 {configurationData.add(p);})+
+		 RPAREN)? 
+		{addImportUimafitEngine($blockDeclaration::env, ns, configurationData);} 
+		SEMI
 	| ImportString type = dottedIdentifier (FromString ts = dottedIdentifier2)? (AsString alias = Identifier)? SEMI{importTypeFromTypeSystem($blockDeclaration::env, ts, type, alias);}
 	| ImportString STAR FromString ts = dottedIdentifier2 SEMI{addImportTypeSystem($blockDeclaration::env, ts);}
 	| ImportString PackageString pkg = dottedIdentifier (FromString ts = dottedIdentifier2)? (AsString alias = Identifier)? SEMI{importPackage($blockDeclaration::env, ts, pkg, alias);}
