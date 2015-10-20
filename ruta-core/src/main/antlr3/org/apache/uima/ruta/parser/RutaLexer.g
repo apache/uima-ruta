@@ -252,6 +252,10 @@ SHIFT
 	:	'SHIFT'	 
 	;
 
+SPLIT   
+  : 'SPLIT'  
+  ;
+
 DYNAMICANCHORING 	
 	:	'DYNAMICANCHORING'	 
 	;

@@ -229,7 +229,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
 
   public void addAnnotation(AnnotationFS annotation, boolean addToIndex,
           AbstractRuleMatch<? extends AbstractRule> creator) {
-    addAnnotation(annotation, true, true, creator);
+    addAnnotation(annotation, addToIndex, true, creator);
   }
 
   public void addAnnotation(AnnotationFS annotation,

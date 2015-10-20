@@ -274,4 +274,10 @@ public class ActionFactory {
     return new GreedyAnchoringAction(active, active2);
   }
 
+  public static AbstractRutaAction createSplitAction(TypeExpression type,
+          IBooleanExpression complete, IBooleanExpression appendToBegin,
+          IBooleanExpression appendToEnd, RutaBlock env) {
+    return new SplitAction(type, complete, appendToBegin, appendToEnd);
+  }
+
 }

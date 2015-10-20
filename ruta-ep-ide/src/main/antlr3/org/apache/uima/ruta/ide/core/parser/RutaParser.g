@@ -1418,6 +1418,7 @@ result = ActionFactory.createEmptyAction(input.LT(1));
 	| a = actionMatchedText
 	| a = actionClear
 	| a = actionShift
+	| a = actionSplit
 	| a = actionConfigure
 	| a = actionDynamicAnchoring
 	| a = actionGreedyAnchoring
@@ -1472,6 +1473,7 @@ result = ActionFactory.createEmptyAction(input.LT(1));
 	| a = actionMatchedText
 	| a = actionClear
 	| a = actionShift
+	| a = actionSplit
 	| a = actionConfigure
 	| a = actionDynamicAnchoring
 	| a = actionGreedyAnchoring
@@ -1660,6 +1662,32 @@ List<Expression> list = new ArrayList<Expression>();
     {action = ActionFactory.createAction(name, list);}
      RPAREN
     ;
+
+actionSplit returns [RutaAction action = null]
+@init {
+	List<Expression> list = new ArrayList<Expression>();
+}
+	:
+	name = SPLIT 
+	LPAREN
+	type = typeExpression
+	{list.add(type);}
+	(
+	COMMA
+	complete = booleanExpression
+	{list.add(complete);}
+	(
+	COMMA
+	appendToBegin = booleanExpression
+	{list.add(appendToBegin);}
+	COMMA
+	appendToEnd = booleanExpression
+	{list.add(appendToEnd);}
+	)?
+	)? 
+	RPAREN
+	{action = ActionFactory.createAction(name, list);}
+	;
 
 actionMarkScore returns [RutaAction action = null]
 @init {

@@ -1526,6 +1526,7 @@ action  returns [AbstractRutaAction result = null]
 	| a = actionMatchedText
 	| a = actionClear
 	| a = actionShift
+	| a = actionSplit
 	| a = actionConfigure
 	| a = actionDynamicAnchoring
 	| a = actionGreedyAnchoring
@@ -1724,6 +1725,25 @@ List<INumberExpression> list = new ArrayList<INumberExpression>();
     {action = ActionFactory.createMarkAction(null, type, list, $blockDeclaration::env);}
     ;
 
+actionSplit returns [AbstractRutaAction action = null]
+	:
+	SPLIT 
+	LPAREN
+	type = typeExpression
+	(
+	COMMA
+	complete = booleanExpression
+	(
+	COMMA
+	appendToBegin = booleanExpression
+	COMMA
+	appendToEnd = booleanExpression
+	)?
+	)? 
+	RPAREN
+	{action = ActionFactory.createSplitAction(type, complete, appendToBegin, appendToEnd, $blockDeclaration::env);}
+	;
+	
 actionShift returns [AbstractRutaAction action = null]
 @init {
 List<INumberExpression> list = new ArrayList<INumberExpression>();
