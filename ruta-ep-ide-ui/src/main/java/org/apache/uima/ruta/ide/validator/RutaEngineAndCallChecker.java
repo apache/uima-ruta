@@ -29,8 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.uima.ruta.ide.RutaIdeUIPlugin;
-import org.apache.uima.ruta.ide.core.RutaCorePreferences;
-import org.apache.uima.ruta.ide.launching.RutaLaunchConfigurationDelegate;
+import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.ruta.ide.parser.ast.RutaAction;
 import org.apache.uima.ruta.ide.parser.ast.RutaActionConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaImportStatement;
@@ -38,7 +37,6 @@ import org.apache.uima.ruta.ide.parser.ast.RutaStatementConstants;
 import org.apache.uima.util.InvalidXMLException;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
@@ -56,7 +54,6 @@ import org.eclipse.dltk.core.builder.IBuildContext;
 import org.eclipse.dltk.core.builder.IBuildParticipant;
 import org.eclipse.dltk.core.builder.IBuildParticipantExtension;
 import org.eclipse.dltk.core.builder.ISourceLineTracker;
-import org.eclipse.jface.preference.IPreferenceStore;
 
 public class RutaEngineAndCallChecker implements IBuildParticipant, IBuildParticipantExtension {
 
@@ -97,7 +94,7 @@ public class RutaEngineAndCallChecker implements IBuildParticipant, IBuildPartic
       // boolean noVM = preferenceStore.getBoolean(RutaCorePreferences.NO_VM_IN_DEV_MODE);
       // if (!(noVM && Platform.inDevelopmentMode())) {
         try {
-          Collection<String> dependencies = RutaLaunchConfigurationDelegate.getClassPath(project);
+          Collection<String> dependencies = RutaProjectUtils.getClassPath(project.getProject());
           URL[] urls = new URL[dependencies.size()];
           int counter = 0;
           for (String dep : dependencies) {

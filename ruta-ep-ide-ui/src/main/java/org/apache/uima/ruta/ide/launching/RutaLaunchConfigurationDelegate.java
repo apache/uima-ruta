@@ -172,14 +172,24 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
 
     IProjectNature m2eNature = project.getProject().getNature(RutaProjectUtils.M2E_NATURE);
     IProjectNature javaNature = project.getProject().getNature(RutaProjectUtils.JAVA_NATURE);
-    
+
     // deactivated until launcher issue is solved
-    if (false && m2eNature != null && javaNature != null) {
+    if (m2eNature != null && javaNature != null) {
       // maven dependencies only
-      
-      // TODO what about the launcher!!??
       Collection<String> classPath = RutaProjectUtils.getClassPath(project.getProject());
       extendedClasspath.addAll(classPath);
+      // IDE UI for launching
+      try {
+        if (!Platform.inDevelopmentMode()) {
+          // Add this plugin jar to the classpath
+          extendedClasspath.add(d.pluginIdToJarPath(RutaIdeUIPlugin.PLUGIN_ID));
+        } else {
+          extendedClasspath.add(d.pluginIdToJarPath(RutaIdeUIPlugin.PLUGIN_ID) + "target/classes");
+        }
+      } catch (IOException e) {
+        throw new CoreException(new Status(IStatus.ERROR, RutaIdeUIPlugin.PLUGIN_ID, IStatus.OK,
+                "Failed to compose classpath!", e));
+      }
     } else {
       // old fashioned mode: use the bundles and check development mode
       try {
