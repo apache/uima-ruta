@@ -141,8 +141,8 @@ Creative Commons Attribution 3.0 License.
      BACKWARD_COMPATIBLE_USER        - minor version (=.+.0)
      NON_BACKWARD_COMPATIBLE         - major version (+.0.0)
      -->
-    <compat.level>BACKWARD_COMPATIBLE_IMPLEMENTER</compat.level>
-    <compat.previous.version>2.3.0</compat.previous.version>
+    <compat.level>BACKWARD_COMPATIBLE_USER</compat.level>
+    <compat.previous.version>2.3.1</compat.previous.version>
  
   </properties>
   
