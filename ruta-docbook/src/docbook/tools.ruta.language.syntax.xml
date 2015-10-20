@@ -29,9 +29,12 @@
     <programlisting><![CDATA[Script              -> PackageDeclaration? GlobalStatements Statements
 PackageDeclaration  -> "PACKAGE" DottedIdentifier ";"
 GlobalStatments     -> GlobalStatement*   
-GlobalStatment      -> ("SCRIPT" | "ENGINE" | "UIMAFIT") 
+GlobalStatment      -> ("SCRIPT" | "ENGINE") 
                        DottedIdentifier2 ";"
-                       | ImportStatement
+                       | UimafitImport | ImportStatement
+UimafitImport       -> "UIMAFIT" DottedIdentifier2 
+                      ("(" DottedIdentifier2 
+                      (COMMA DottedIdentifier2)+ ")")?;    
 Statements          -> Statement*
 Statement           -> Declaration | VariableDeclaration 
                         | BlockDeclaration | SimpleStatement ";"]]></programlisting>
