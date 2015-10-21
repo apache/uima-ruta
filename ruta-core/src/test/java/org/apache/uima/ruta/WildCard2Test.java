@@ -59,4 +59,24 @@ public class WildCard2Test {
 
     cas.release();
   }
+  
+  
+  @Test
+  public void testOptional() {
+    String document = "Cw 1 2 3";
+    String script = "(CW #){-> T1} SW?;";
+
+    CAS cas = null;
+    try {
+      cas = RutaTestUtils.getCAS(document);
+      Ruta.apply(cas, script);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Cw 1 2 3");
+
+    cas.release();
+  }
+  
 }

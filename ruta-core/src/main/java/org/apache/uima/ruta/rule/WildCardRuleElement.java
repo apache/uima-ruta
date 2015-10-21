@@ -297,10 +297,34 @@ public class WildCardRuleElement extends AbstractRuleElement {
       RuleElementContainer c = getContainer();
       if (c instanceof ComposedRuleElement) {
         ComposedRuleElement cre = (ComposedRuleElement) c;
-        cre.fallbackContinue(after, true, annotation, ruleMatch, ruleApply, containerMatch,
-                sideStepOrigin, entryPoint, stream, crowd);
+
+        if (nextElement.getQuantifier().isOptional(parent, stream)) {
+          // optional did not match -> match complete window/document
+          // TODO refactor
+
+          AnnotationFS coveredByWildCard = getCoveredByWildCard(after, annotation, null, stream);
+          doMatch(coveredByWildCard, ruleMatch, containerMatch, annotation == null, stream, crowd);
+          if (ruleMatch.matched()) {
+            ComposedRuleElementMatch nextContainerMatch = getContainerMatchOfNextElement(
+                    containerMatch, nextDepth);
+            if (coveredByWildCard == null) {
+              result = nextElement.startMatch(ruleMatch, ruleApply, nextContainerMatch,
+                      nextElement, stream, crowd);
+            } else {
+              // TODO match and containermatch should be on the correct level!
+              result = nextElement.continueMatch(after, coveredByWildCard, ruleMatch, ruleApply,
+                      nextContainerMatch, sideStepOrigin, nextElement, stream, crowd);
+            }
+          } else {
+            result = cre.fallbackContinue(after, true, annotation, ruleMatch, ruleApply,
+                    containerMatch, sideStepOrigin, entryPoint, stream, crowd);
+          }
+        } else {
+
+          result = cre.fallbackContinue(after, true, annotation, ruleMatch, ruleApply,
+                  containerMatch, sideStepOrigin, entryPoint, stream, crowd);
+        }
       }
-      result.add(ruleMatch);
       return result;
     }
     if (iterator.isValid() && !stream.isVisible(iterator.get())) {
@@ -390,7 +414,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
         result = cas.getAnnotationIndex(type).iterator(pointer);
         if (!result.isValid()) {
           if (after) {
-            //result.moveToFirst();
+            // result.moveToFirst();
           } else {
             // HOTFIX caused by type priorities
             result.moveToLast();
@@ -433,7 +457,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
         result.moveTo(pointer);
         if (!result.isValid()) {
           if (after) {
-//            result.moveToFirst();
+            // result.moveToFirst();
           } else {
             // TODO due to type priorities: RutaBasic is last -> moveTo will not work
             result.moveToLast();
