@@ -40,7 +40,7 @@ public class DefaultSeeder implements RutaAnnotationSeeder {
   public static final String seedType = "org.apache.uima.ruta.type.TokenSeed";
 
   private final Pattern markupPattern = Pattern
-          .compile("</?\\w+((\\s+\\w+(\\s*=\\s*(?:\".*?\"|'.*?'|[^'\">\\s]+))?)+\\s*|\\s*)/?>");
+          .compile("</?\\w+((\\s+[\\w-]+(\\s*=\\s*(?:\".*?\"|'.*?'|[^'\">\\s]+))?)+\\s*|\\s*)/?>");
 
   public Type seed(String text, CAS cas) {
     Type result = null;
@@ -73,8 +73,8 @@ public class DefaultSeeder implements RutaAnnotationSeeder {
       }
     }
 
-    // FIXME: lexer rules for html markup won't work. Therrfore, those rules where removed in the
-    // grammar and the functionality is included directly with regexp
+    // FIXME: lexer rules for html markup won't work. Therefore, those rules where removed in the
+    // grammar and the functionality is included directly with regex
     Matcher matcher = markupPattern.matcher(text);
     Collection<AnnotationFS> toRemove = new LinkedList<AnnotationFS>();
     while (matcher.find()) {

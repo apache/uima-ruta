@@ -31,6 +31,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.resource.ResourceSpecifier;
+import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.util.XMLInputSource;
@@ -41,8 +42,7 @@ public class DefaultSeederTest {
   public void test() throws Exception {
     URL url = RutaEngine.class.getClassLoader().getResource("BasicEngine.xml");
     if (url == null) {
-      url = RutaTestUtils.class.getClassLoader().getResource(
-              "org/apache/uima/ruta/TestEngine.xml");
+      url = RutaTestUtils.class.getClassLoader().getResource("org/apache/uima/ruta/TestEngine.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
@@ -101,9 +101,31 @@ public class DefaultSeederTest {
     assertEquals("MARKUP", iterator.next().getType().getShortName());
     assertEquals("MARKUP", iterator.next().getType().getShortName());
     assertEquals("BREAK", iterator.next().getType().getShortName());
-    
+
     cas.release();
   }
-  
-  
+
+  @Test
+  public void testMarkup() throws Exception {
+    String document = "<xref ref-type=\"bibr\" rid=\"b35-ehp0113-000220\">"
+            + "<sec sec-type=\"methods\">" + "<sec sectype=\"methods\">"
+            + "<sec sec-type=\"methods\">" + "<sec sectype=\"methods\">"
+            + "<sec sectype='methods'>";
+    String script = "RETAINTYPE(MARKUP);MARKUP{-> T1};";
+    CAS cas = null;
+    try {
+      cas = RutaTestUtils.getCAS(document);
+      Ruta.apply(cas, script);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 6,
+            "<xref ref-type=\"bibr\" rid=\"b35-ehp0113-000220\">", "<sec sec-type=\"methods\">",
+            "<sec sectype=\"methods\">", "<sec sec-type=\"methods\">", "<sec sectype=\"methods\">",
+            "<sec sectype='methods'>");
+
+    cas.release();
+  }
+
 }
