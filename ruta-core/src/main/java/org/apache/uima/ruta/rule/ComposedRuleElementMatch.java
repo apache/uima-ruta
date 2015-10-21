@@ -198,7 +198,10 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
         if (value != null) {
           List<RuleElementMatch> newValue = new ArrayList<RuleElementMatch>();
           newValue.addAll(value);
-          newValue.set(newValue.size() - 1, extendedContainerMatch);
+          if(!newValue.isEmpty()) {
+            // there was no match
+            newValue.set(newValue.size() - 1, extendedContainerMatch);
+          }
           newMap.put(extendedContainerMatch.getRuleElement(), newValue);
         }
       } else {
