@@ -165,8 +165,13 @@ public class SplitAction extends AbstractRutaAction {
 
   private boolean trimInvisible(Annotation annotation, RutaStream stream) {
     List<RutaBasic> basics = new ArrayList<>(stream.getAllBasicsInWindow(annotation));
+    
     int min = annotation.getEnd();
     int max = annotation.getBegin();
+
+    if(min <= max) {
+      return false;
+    }
 
     for (RutaBasic each : basics) {
       if (stream.isVisible(each)) {
