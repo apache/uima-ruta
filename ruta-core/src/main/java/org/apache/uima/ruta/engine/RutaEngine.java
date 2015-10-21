@@ -71,7 +71,6 @@ import org.apache.uima.ruta.extensions.RutaParseRuntimeException;
 import org.apache.uima.ruta.parser.RutaLexer;
 import org.apache.uima.ruta.parser.RutaParser;
 import org.apache.uima.ruta.seed.RutaAnnotationSeeder;
-import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.ruta.verbalize.RutaVerbalizer;
 import org.apache.uima.ruta.visitor.CreatedByVisitor;
 import org.apache.uima.ruta.visitor.DebugInfoCollectorVisitor;
@@ -725,7 +724,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       } catch (RecognitionException e) {
         throw new AnalysisEngineProcessException(e);
       }
-    } else if(mainScript != null) {
+    } else if (mainScript != null) {
       String scriptLocation = locate(mainScript, scriptPaths, SCRIPT_FILE_EXTENSION);
       if (scriptLocation == null) {
         try {
@@ -750,10 +749,10 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
         }
       }
     }
-    if(script == null) {
+    if (script == null) {
       return;
     }
-    
+
     Map<String, RutaModule> additionalScriptsMap = new HashMap<String, RutaModule>();
     Map<String, AnalysisEngine> additionalEnginesMap = new HashMap<String, AnalysisEngine>();
 
@@ -1131,18 +1130,22 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   @Override
   public void batchProcessComplete() throws AnalysisEngineProcessException {
     super.batchProcessComplete();
-    Collection<AnalysisEngine> values = script.getEngines().values();
-    for (AnalysisEngine each : values) {
-      each.batchProcessComplete();
+    if (script != null) {
+      Collection<AnalysisEngine> values = script.getEngines().values();
+      for (AnalysisEngine each : values) {
+        each.batchProcessComplete();
+      }
     }
   }
 
   @Override
   public void collectionProcessComplete() throws AnalysisEngineProcessException {
     super.collectionProcessComplete();
-    Collection<AnalysisEngine> values = script.getEngines().values();
-    for (AnalysisEngine each : values) {
-      each.collectionProcessComplete();
+    if (script != null) {
+      Collection<AnalysisEngine> values = script.getEngines().values();
+      for (AnalysisEngine each : values) {
+        each.collectionProcessComplete();
+      }
     }
   }
 
