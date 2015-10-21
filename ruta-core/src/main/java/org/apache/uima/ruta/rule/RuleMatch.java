@@ -20,7 +20,6 @@
 package org.apache.uima.ruta.rule;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,21 +36,9 @@ import org.apache.uima.ruta.engine.RutaEngine;
 
 public class RuleMatch extends AbstractRuleMatch<RutaRule> {
 
-  private static class RuleMatchComparator implements Comparator<RuleElementMatch> {
-
-    public int compare(RuleElementMatch rem1, RuleElementMatch rem2) {
-      AnnotationFS fs1 = rem1.getTextsMatched().get(0);
-      AnnotationFS fs2 = rem2.getTextsMatched().get(0);
-
-      return fs1.getBegin() < fs2.getBegin() ? -1 : 1;
-    }
-  }
-
   private boolean applied = false;
 
   private Map<RutaElement, ScriptApply> delegateApply;
-
-  // private Map<RuleElement, List<RuleElementMatch>> map;
 
   private ComposedRuleElementMatch rootMatch;
 
@@ -79,9 +66,21 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
       }
     }
     if (direction) {
-      return matchedAnnotations.get(matchedAnnotations.size() - 1);
+      AnnotationFS matched = matchedAnnotations.get(matchedAnnotations.size() - 1);
+      if(annotation != null && matched.getEnd() < annotation.getEnd()) {
+        // multiple matches, but none last time
+        return annotation;
+      } else {
+        return matched;
+      }
     } else {
-      return matchedAnnotations.get(0);
+      AnnotationFS matched = matchedAnnotations.get(0);
+      if(annotation != null && matched.getBegin() > annotation.getBegin()) {
+        // multiple matches, but none last time
+        return annotation;
+      } else {
+        return matched;
+      }
     }
   }
 
