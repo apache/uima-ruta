@@ -20,6 +20,7 @@
 package org.apache.uima.ruta.action;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -125,14 +126,48 @@ public class SplitAction extends AbstractRutaAction {
 
   private void splitAnnotationOnBoundary(Annotation annotation, Type typeToSplit,
           boolean addToBegin, boolean addToEnd, RuleMatch match, RutaStream stream) {
-    // TODO implement it
+    Collection<RutaBasic> basics = stream.getAllBasicsInWindow(annotation);
+
+    CAS cas = annotation.getCAS();
+    CasCopier cc = new CasCopier(cas, cas);
+
+    cas.removeFsFromIndexes(annotation);
+
+    int overallEnd = annotation.getEnd();
+    Annotation first = annotation;
+
+    for (RutaBasic eachBasic : basics) {
+      if (stream.isVisible(eachBasic)) {
+        boolean beginsWith = eachBasic.beginsWith(typeToSplit);
+        boolean endsWith = eachBasic.endsWith(typeToSplit);
+        if (beginsWith || endsWith) {
+          int firstEnd = beginsWith ? eachBasic.getBegin() : eachBasic.getEnd();
+          first.setEnd(firstEnd);
+          boolean valid = trimInvisible(first, stream);
+          if (valid) {
+            stream.addAnnotation(first, true, true, match);
+          }
+
+          Annotation second = (Annotation) cc.copyFs(first);
+          int secondBegin = endsWith ? eachBasic.getEnd() : eachBasic.getBegin();
+          second.setBegin(secondBegin);
+          second.setEnd(overallEnd);
+          valid = trimInvisible(second, stream);
+          if (valid) {
+            stream.addAnnotation(second, true, true, match);
+          }
+          first = second;
+        }
+      }
+    }
+
   }
 
   private boolean trimInvisible(Annotation annotation, RutaStream stream) {
     List<RutaBasic> basics = new ArrayList<>(stream.getAllBasicsInWindow(annotation));
     int min = annotation.getEnd();
     int max = annotation.getBegin();
-    
+
     for (RutaBasic each : basics) {
       if (stream.isVisible(each)) {
         min = Math.min(min, each.getBegin());

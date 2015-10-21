@@ -41,13 +41,255 @@ import org.junit.Test;
 
 public class SplitTest {
 
+//  @Test
+//  public void testDefault() {
+//    String document = "Some text. More text , with 1 , and more. even more text.";
+//    String script = "PERIOD #{-> T1} PERIOD;";
+//    script += " #{-> T1} PERIOD;";
+//    script += "T1{CONTAINS(NUM)-> CREATE(Complex, \"number\"= NUM)};";
+//    script += "Complex{-> SPLIT(COMMA)};";
+//
+//    Map<String, String> typeMap = new TreeMap<String, String>();
+//    String typeName = "Complex";
+//    typeMap.put(typeName, "uima.tcas.Annotation");
+//
+//    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
+//    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+//    featureMap.put(typeName, list);
+//    String fn = "number";
+//    list.add(new TestFeature(fn, "", "uima.tcas.Annotation"));
+//
+//    CAS cas = null;
+//    try {
+//      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+//      Ruta.apply(cas, script);
+//    } catch (Exception e) {
+//      e.printStackTrace();
+//    }
+//
+//    Type t = null;
+//    AnnotationIndex<AnnotationFS> ai = null;
+//    FSIterator<AnnotationFS> iterator = null;
+//
+//    t = cas.getTypeSystem().getType(typeName);
+//    Feature f1 = t.getFeatureByBaseName(fn);
+//    ai = cas.getAnnotationIndex(t);
+//       
+//    assertEquals(3, ai.size());
+//    iterator = ai.iterator();
+//    AnnotationFS next = iterator.next();
+//    assertEquals("More text", next.getCoveredText());
+//    FeatureStructure featureValue = next.getFeatureValue(f1);
+//    assertNotNull(featureValue);
+//    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
+//
+//    next = iterator.next();
+//    assertEquals("with 1", next.getCoveredText());
+//    featureValue = next.getFeatureValue(f1);
+//    assertNotNull(featureValue);
+//    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
+//
+//    next = iterator.next();
+//    assertEquals("and more", next.getCoveredText());
+//    featureValue = next.getFeatureValue(f1);
+//    assertNotNull(featureValue);
+//    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
+//
+//    if (cas != null) {
+//      cas.release();
+//    }
+//
+//  }
+//  
+//  @Test
+//  public void testAddBegin() {
+//    String document = "Some text. More text , with 1 , and more. even more text.";
+//    String script = "PERIOD #{-> T1} PERIOD;";
+//    script += " #{-> T1} PERIOD;";
+//    script += "T1{CONTAINS(NUM)-> CREATE(Complex, \"number\"= NUM)};";
+//    script += "Complex{-> SPLIT(COMMA, true, true, false)};";
+//
+//    Map<String, String> typeMap = new TreeMap<String, String>();
+//    String typeName = "Complex";
+//    typeMap.put(typeName, "uima.tcas.Annotation");
+//
+//    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
+//    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+//    featureMap.put(typeName, list);
+//    String fn = "number";
+//    list.add(new TestFeature(fn, "", "uima.tcas.Annotation"));
+//
+//    CAS cas = null;
+//    try {
+//      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+//      Ruta.apply(cas, script);
+//    } catch (Exception e) {
+//      e.printStackTrace();
+//    }
+//
+//    Type t = null;
+//    AnnotationIndex<AnnotationFS> ai = null;
+//    FSIterator<AnnotationFS> iterator = null;
+//
+//    t = cas.getTypeSystem().getType(typeName);
+//    Feature f1 = t.getFeatureByBaseName(fn);
+//    ai = cas.getAnnotationIndex(t);
+//       
+//    assertEquals(3, ai.size());
+//    iterator = ai.iterator();
+//    AnnotationFS next = iterator.next();
+//    assertEquals("More text", next.getCoveredText());
+//    FeatureStructure featureValue = next.getFeatureValue(f1);
+//    assertNotNull(featureValue);
+//    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
+//
+//    next = iterator.next();
+//    assertEquals(", with 1", next.getCoveredText());
+//    featureValue = next.getFeatureValue(f1);
+//    assertNotNull(featureValue);
+//    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
+//
+//    next = iterator.next();
+//    assertEquals(", and more", next.getCoveredText());
+//    featureValue = next.getFeatureValue(f1);
+//    assertNotNull(featureValue);
+//    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
+//
+//    if (cas != null) {
+//      cas.release();
+//    }
+//
+//  }
+//  
+//  @Test
+//  public void testAddEnd() {
+//    String document = "Some text. More text , with 1 , and more. even more text.";
+//    String script = "PERIOD #{-> T1} PERIOD;";
+//    script += " #{-> T1} PERIOD;";
+//    script += "T1{CONTAINS(NUM)-> CREATE(Complex, \"number\"= NUM)};";
+//    script += "Complex{-> SPLIT(COMMA, true, false, true)};";
+//
+//    Map<String, String> typeMap = new TreeMap<String, String>();
+//    String typeName = "Complex";
+//    typeMap.put(typeName, "uima.tcas.Annotation");
+//
+//    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
+//    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+//    featureMap.put(typeName, list);
+//    String fn = "number";
+//    list.add(new TestFeature(fn, "", "uima.tcas.Annotation"));
+//
+//    CAS cas = null;
+//    try {
+//      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+//      Ruta.apply(cas, script);
+//    } catch (Exception e) {
+//      e.printStackTrace();
+//    }
+//
+//    Type t = null;
+//    AnnotationIndex<AnnotationFS> ai = null;
+//    FSIterator<AnnotationFS> iterator = null;
+//
+//    t = cas.getTypeSystem().getType(typeName);
+//    Feature f1 = t.getFeatureByBaseName(fn);
+//    ai = cas.getAnnotationIndex(t);
+//       
+//    assertEquals(3, ai.size());
+//    iterator = ai.iterator();
+//    AnnotationFS next = iterator.next();
+//    assertEquals("More text ,", next.getCoveredText());
+//    FeatureStructure featureValue = next.getFeatureValue(f1);
+//    assertNotNull(featureValue);
+//    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
+//
+//    next = iterator.next();
+//    assertEquals("with 1 ,", next.getCoveredText());
+//    featureValue = next.getFeatureValue(f1);
+//    assertNotNull(featureValue);
+//    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
+//
+//    next = iterator.next();
+//    assertEquals("and more", next.getCoveredText());
+//    featureValue = next.getFeatureValue(f1);
+//    assertNotNull(featureValue);
+//    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
+//
+//    if (cas != null) {
+//      cas.release();
+//    }
+//
+//  }
+//  
+//  @Test
+//  public void testAddBoth() {
+//    String document = "Some text. More text , with 1 , and more. even more text.";
+//    String script = "PERIOD #{-> T1} PERIOD;";
+//    script += " #{-> T1} PERIOD;";
+//    script += "T1{CONTAINS(NUM)-> CREATE(Complex, \"number\"= NUM)};";
+//    script += "Complex{-> SPLIT(COMMA, true, true, true)};";
+//
+//    Map<String, String> typeMap = new TreeMap<String, String>();
+//    String typeName = "Complex";
+//    typeMap.put(typeName, "uima.tcas.Annotation");
+//
+//    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
+//    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+//    featureMap.put(typeName, list);
+//    String fn = "number";
+//    list.add(new TestFeature(fn, "", "uima.tcas.Annotation"));
+//
+//    CAS cas = null;
+//    try {
+//      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+//      Ruta.apply(cas, script);
+//    } catch (Exception e) {
+//      e.printStackTrace();
+//    }
+//
+//    Type t = null;
+//    AnnotationIndex<AnnotationFS> ai = null;
+//    FSIterator<AnnotationFS> iterator = null;
+//
+//    t = cas.getTypeSystem().getType(typeName);
+//    Feature f1 = t.getFeatureByBaseName(fn);
+//    ai = cas.getAnnotationIndex(t);
+//       
+//    assertEquals(3, ai.size());
+//    iterator = ai.iterator();
+//    AnnotationFS next = iterator.next();
+//    assertEquals("More text ,", next.getCoveredText());
+//    FeatureStructure featureValue = next.getFeatureValue(f1);
+//    assertNotNull(featureValue);
+//    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
+//
+//    next = iterator.next();
+//    assertEquals(", with 1 ,", next.getCoveredText());
+//    featureValue = next.getFeatureValue(f1);
+//    assertNotNull(featureValue);
+//    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
+//
+//    next = iterator.next();
+//    assertEquals(", and more", next.getCoveredText());
+//    featureValue = next.getFeatureValue(f1);
+//    assertNotNull(featureValue);
+//    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
+//
+//    if (cas != null) {
+//      cas.release();
+//    }
+//
+//  }
+  
   @Test
-  public void testDefault() {
+  public void testBoundary() {
     String document = "Some text. More text , with 1 , and more. even more text.";
     String script = "PERIOD #{-> T1} PERIOD;";
-    script += " #{-> T1} PERIOD;";
+    script += "#{-> T1} PERIOD;";
+    script += "(# COMMA){-> T2};";
+    script += "NUM (COMMA #){-> T2};";
     script += "T1{CONTAINS(NUM)-> CREATE(Complex, \"number\"= NUM)};";
-    script += "Complex{-> SPLIT(COMMA)};";
+    script += "Complex{-> SPLIT(T2, false)};";
 
     Map<String, String> typeMap = new TreeMap<String, String>();
     String typeName = "Complex";
@@ -78,193 +320,13 @@ public class SplitTest {
     assertEquals(3, ai.size());
     iterator = ai.iterator();
     AnnotationFS next = iterator.next();
-    assertEquals("More text", next.getCoveredText());
+    assertEquals("More text ,", next.getCoveredText());
     FeatureStructure featureValue = next.getFeatureValue(f1);
     assertNotNull(featureValue);
     assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
 
     next = iterator.next();
     assertEquals("with 1", next.getCoveredText());
-    featureValue = next.getFeatureValue(f1);
-    assertNotNull(featureValue);
-    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
-
-    next = iterator.next();
-    assertEquals("and more", next.getCoveredText());
-    featureValue = next.getFeatureValue(f1);
-    assertNotNull(featureValue);
-    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
-
-    if (cas != null) {
-      cas.release();
-    }
-
-  }
-  
-  @Test
-  public void testAddBegin() {
-    String document = "Some text. More text , with 1 , and more. even more text.";
-    String script = "PERIOD #{-> T1} PERIOD;";
-    script += " #{-> T1} PERIOD;";
-    script += "T1{CONTAINS(NUM)-> CREATE(Complex, \"number\"= NUM)};";
-    script += "Complex{-> SPLIT(COMMA, true, true, false)};";
-
-    Map<String, String> typeMap = new TreeMap<String, String>();
-    String typeName = "Complex";
-    typeMap.put(typeName, "uima.tcas.Annotation");
-
-    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
-    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
-    featureMap.put(typeName, list);
-    String fn = "number";
-    list.add(new TestFeature(fn, "", "uima.tcas.Annotation"));
-
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
-
-    t = cas.getTypeSystem().getType(typeName);
-    Feature f1 = t.getFeatureByBaseName(fn);
-    ai = cas.getAnnotationIndex(t);
-       
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    AnnotationFS next = iterator.next();
-    assertEquals("More text", next.getCoveredText());
-    FeatureStructure featureValue = next.getFeatureValue(f1);
-    assertNotNull(featureValue);
-    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
-
-    next = iterator.next();
-    assertEquals(", with 1", next.getCoveredText());
-    featureValue = next.getFeatureValue(f1);
-    assertNotNull(featureValue);
-    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
-
-    next = iterator.next();
-    assertEquals(", and more", next.getCoveredText());
-    featureValue = next.getFeatureValue(f1);
-    assertNotNull(featureValue);
-    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
-
-    if (cas != null) {
-      cas.release();
-    }
-
-  }
-  
-  @Test
-  public void testAddEnd() {
-    String document = "Some text. More text , with 1 , and more. even more text.";
-    String script = "PERIOD #{-> T1} PERIOD;";
-    script += " #{-> T1} PERIOD;";
-    script += "T1{CONTAINS(NUM)-> CREATE(Complex, \"number\"= NUM)};";
-    script += "Complex{-> SPLIT(COMMA, true, false, true)};";
-
-    Map<String, String> typeMap = new TreeMap<String, String>();
-    String typeName = "Complex";
-    typeMap.put(typeName, "uima.tcas.Annotation");
-
-    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
-    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
-    featureMap.put(typeName, list);
-    String fn = "number";
-    list.add(new TestFeature(fn, "", "uima.tcas.Annotation"));
-
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
-
-    t = cas.getTypeSystem().getType(typeName);
-    Feature f1 = t.getFeatureByBaseName(fn);
-    ai = cas.getAnnotationIndex(t);
-       
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    AnnotationFS next = iterator.next();
-    assertEquals("More text ,", next.getCoveredText());
-    FeatureStructure featureValue = next.getFeatureValue(f1);
-    assertNotNull(featureValue);
-    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
-
-    next = iterator.next();
-    assertEquals("with 1 ,", next.getCoveredText());
-    featureValue = next.getFeatureValue(f1);
-    assertNotNull(featureValue);
-    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
-
-    next = iterator.next();
-    assertEquals("and more", next.getCoveredText());
-    featureValue = next.getFeatureValue(f1);
-    assertNotNull(featureValue);
-    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
-
-    if (cas != null) {
-      cas.release();
-    }
-
-  }
-  
-  @Test
-  public void testAddBoth() {
-    String document = "Some text. More text , with 1 , and more. even more text.";
-    String script = "PERIOD #{-> T1} PERIOD;";
-    script += " #{-> T1} PERIOD;";
-    script += "T1{CONTAINS(NUM)-> CREATE(Complex, \"number\"= NUM)};";
-    script += "Complex{-> SPLIT(COMMA, true, true, true)};";
-
-    Map<String, String> typeMap = new TreeMap<String, String>();
-    String typeName = "Complex";
-    typeMap.put(typeName, "uima.tcas.Annotation");
-
-    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
-    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
-    featureMap.put(typeName, list);
-    String fn = "number";
-    list.add(new TestFeature(fn, "", "uima.tcas.Annotation"));
-
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
-
-    t = cas.getTypeSystem().getType(typeName);
-    Feature f1 = t.getFeatureByBaseName(fn);
-    ai = cas.getAnnotationIndex(t);
-       
-    assertEquals(3, ai.size());
-    iterator = ai.iterator();
-    AnnotationFS next = iterator.next();
-    assertEquals("More text ,", next.getCoveredText());
-    FeatureStructure featureValue = next.getFeatureValue(f1);
-    assertNotNull(featureValue);
-    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
-
-    next = iterator.next();
-    assertEquals(", with 1 ,", next.getCoveredText());
     featureValue = next.getFeatureValue(f1);
     assertNotNull(featureValue);
     assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
