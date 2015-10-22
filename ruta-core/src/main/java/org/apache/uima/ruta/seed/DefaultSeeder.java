@@ -40,7 +40,7 @@ public class DefaultSeeder implements RutaAnnotationSeeder {
   public static final String seedType = "org.apache.uima.ruta.type.TokenSeed";
 
   private final Pattern markupPattern = Pattern
-          .compile("</?\\w+((\\s+[\\w-]+(\\s*=\\s*(?:\".*?\"|'.*?'|[^'\">\\s]+))?)+\\s*|\\s*)/?>");
+          .compile("</?\\w[\\w-]*((\\s+[\\w-]+(\\s*=\\s*(?:\".*?\"|'.*?'|[^'\">\\s]+))?)+\\s*|\\s*)/?>");
 
   public Type seed(String text, CAS cas) {
     Type result = null;

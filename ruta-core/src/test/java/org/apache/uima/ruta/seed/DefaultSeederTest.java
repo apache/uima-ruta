@@ -110,7 +110,8 @@ public class DefaultSeederTest {
     String document = "<xref ref-type=\"bibr\" rid=\"b35-ehp0113-000220\">"
             + "<sec sec-type=\"methods\">" + "<sec sectype=\"methods\">"
             + "<sec sec-type=\"methods\">" + "<sec sectype=\"methods\">"
-            + "<sec sectype='methods'>";
+            + "<sec sectype='methods'>" + "<tag-with-dash value=\"1\">"
+						+ "<-not-a-real-tag value=\"1\">" + "<a_real_tag value=\"1\">";
     String script = "RETAINTYPE(MARKUP);MARKUP{-> T1};";
     CAS cas = null;
     try {
@@ -120,10 +121,10 @@ public class DefaultSeederTest {
       e.printStackTrace();
     }
 
-    RutaTestUtils.assertAnnotationsEquals(cas, 1, 6,
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 8,
             "<xref ref-type=\"bibr\" rid=\"b35-ehp0113-000220\">", "<sec sec-type=\"methods\">",
             "<sec sectype=\"methods\">", "<sec sec-type=\"methods\">", "<sec sectype=\"methods\">",
-            "<sec sectype='methods'>");
+            "<sec sectype='methods'>", "<tag-with-dash value=\"1\">", "<a_real_tag value=\"1\">");
 
     cas.release();
   }
