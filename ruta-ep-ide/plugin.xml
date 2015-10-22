@@ -167,6 +167,21 @@ under the License.
           nature="org.apache.uima.ruta.ide.nature">
     </buildParticipant>
   </extension>
+   <extension
+         point="org.eclipse.dltk.core.buildpathVariableInitializer">
+      <buildpathVariableInitializer
+            class="org.apache.uima.ruta.ide.core.RutaBuildpathVariableInitializer"
+            readOnly="false"
+            variable="RUTA_BUILD_VARS">
+      </buildpathVariableInitializer>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.buildpathContainerInitializer">
+      <buildpathContainerInitializer
+            class="org.apache.uima.ruta.ide.core.RutaBuildpathContainerInitializer"
+            id="RUTA_BUILD_VARS">
+      </buildpathContainerInitializer>
+   </extension>
   
   
 
