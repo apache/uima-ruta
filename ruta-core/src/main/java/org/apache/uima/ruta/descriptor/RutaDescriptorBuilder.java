@@ -425,6 +425,11 @@ public class RutaDescriptorBuilder {
       File file = getFile(engineOutput);
       analysisEngineDescription.setSourceUrl(file.toURI().toURL());
     }
+    String descName = desc.getScriptName() + option.getAnalysisEngineSuffix();
+    if (!StringUtils.isBlank(desc.getPackageString())) {
+      descName = desc.getPackageString() + "." + descName;
+      analysisEngineDescription.getAnalysisEngineMetaData().setName(descName);
+    }
 
     if (!desc.getTypeShortNames().isEmpty()) {
       Capability capability = uimaFactory.createCapability();
@@ -488,7 +493,6 @@ public class RutaDescriptorBuilder {
                     additionalUimafitEnginesArray);
 
     analysisEngineDescription.getAnalysisEngineMetaData().setTypeSystem(aets);
-
     configureExtensions(analysisEngineDescription, option);
     return analysisEngineDescription;
   }
