@@ -32,7 +32,7 @@ public abstract class AbstractNumberExpression extends AbstractStringExpression 
 
   public int getIntegerValue(RutaBlock parent, RuleMatch match, RuleElement element,
           RutaStream stream) {
-    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element);
+    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
     // TODO: do we need to select the correct annotation?
     AnnotationFS annotation = null;
     if (!matchedAnnotationsOf.isEmpty()) {
@@ -43,7 +43,7 @@ public abstract class AbstractNumberExpression extends AbstractStringExpression 
 
   public double getDoubleValue(RutaBlock parent, RuleMatch match, RuleElement element,
           RutaStream stream) {
-    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element);
+    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
     // TODO: do we need to select the correct annotation?
     AnnotationFS annotation = null;
     if (!matchedAnnotationsOf.isEmpty()) {
@@ -54,7 +54,7 @@ public abstract class AbstractNumberExpression extends AbstractStringExpression 
 
   public float getFloatValue(RutaBlock parent, RuleMatch match, RuleElement element,
           RutaStream stream) {
-    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element);
+    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
     // TODO: do we need to select the correct annotation?
     AnnotationFS annotation = null;
     if (!matchedAnnotationsOf.isEmpty()) {

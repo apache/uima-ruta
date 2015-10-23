@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.RutaStatement;
@@ -57,6 +58,8 @@ import org.apache.uima.ruta.rule.quantifier.StarGreedy;
 import org.apache.uima.ruta.rule.quantifier.StarReluctant;
 
 public class ScriptVerbalizer {
+
+  private static final String COLON = ":";
 
   private static final String CBCLOSE = "}";
 
@@ -119,6 +122,10 @@ public class ScriptVerbalizer {
     List<AbstractRutaAction> actions = re.getActions();
     RuleElementQuantifier quantifier = re.getQuantifier();
     StringBuilder result = new StringBuilder();
+    if (!StringUtils.isBlank(re.getLabel())) {
+      result.append(re.getLabel());
+      result.append(COLON);
+    }
     if (re.isStartAnchor()) {
       result.append("@");
     }

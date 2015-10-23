@@ -72,7 +72,7 @@ public class DebugInfoFactory {
           boolean addToIndex, boolean withMatches, Map<RutaElement, Long> timeInfo) {
     JCas cas = stream.getJCas();
     DebugBlockApply dba = new DebugBlockApply(cas);
-    AnnotationFS matchedAnnotation = ruleMatch.getMatchedAnnotationsOf(
+    AnnotationFS matchedAnnotation = ruleMatch.getMatchedAnnotationsOfElement(
             ((RutaRule) ruleMatch.getRule()).getRoot()).get(0);
     dba.setElement(matchedAnnotation.getCoveredText());
     dba.setBegin(matchedAnnotation.getBegin());

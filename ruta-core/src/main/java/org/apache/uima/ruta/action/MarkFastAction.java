@@ -72,7 +72,7 @@ public class MarkFastAction extends AbstractMarkAction {
 
   @Override
   public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
-    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element);
+    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
     for (AnnotationFS annotationFS : matchedAnnotationsOf) {
       RutaStream windowStream = stream.getWindowStream(annotationFS, annotationFS.getType());
       RutaWordList wl = null;

@@ -49,7 +49,7 @@ public class ShiftAction extends MarkAction {
     List<AnnotationFS> destinationAnnotationSpans = match.getMatchedAnnotations(indexList,
             element.getContainer());
     List<AnnotationFS> annotationsMatchedByRuleElementofAction = match
-            .getMatchedAnnotationsOf(element);
+            .getMatchedAnnotationsOfElement(element);
     int size = Math.min(annotationsMatchedByRuleElementofAction.size(),
             destinationAnnotationSpans.size());
 

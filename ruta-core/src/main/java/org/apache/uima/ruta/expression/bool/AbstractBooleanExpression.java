@@ -32,7 +32,7 @@ public abstract class AbstractBooleanExpression extends AbstractStringExpression
 
   public boolean getBooleanValue(RutaBlock parent, RuleMatch match, RuleElement element,
           RutaStream stream) {
-    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element);
+    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
     // TODO: do we need to select the correct annotation?
     AnnotationFS annotation = null;
     if (!matchedAnnotationsOf.isEmpty()) {

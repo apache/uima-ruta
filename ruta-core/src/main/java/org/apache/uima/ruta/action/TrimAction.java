@@ -48,7 +48,7 @@ public class TrimAction extends AbstractRutaAction {
 
   @Override
   public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
-    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element);
+    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
     List<Type> typesToTrim = getTypes(element.getParent(), stream);
     for (AnnotationFS annotationFS : matchedAnnotationsOf) {
       trimAnnotation(annotationFS, typesToTrim, match, stream);

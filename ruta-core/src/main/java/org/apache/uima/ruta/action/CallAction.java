@@ -78,7 +78,7 @@ public class CallAction extends AbstractRutaAction {
 
   protected void callScript(RutaBlock block, RuleMatch match, RuleElement element,
           RutaStream stream, InferenceCrowd crowd) {
-    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element);
+    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
     for (AnnotationFS annotationFS : matchedAnnotationsOf) {
       RutaStream windowStream = stream.getWindowStream(annotationFS,
               stream.getDocumentAnnotationType());

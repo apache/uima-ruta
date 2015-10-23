@@ -51,13 +51,24 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
     return matched && rootMatch.matched();
   }
 
-  public List<AnnotationFS> getMatchedAnnotationsOf(RuleElement element) {
+  public List<AnnotationFS> getMatchedAnnotationsOfElement(RuleElement element) {
     return getMatchedAnnotations(element.getSelfIndexList(), element.getContainer());
+  }
+  
+  public List<AnnotationFS> getMatchedAnnotationsOfLabel(String label) {
+    RuleElement element = getRuleElementWithLabel(label);
+    return getMatchedAnnotationsOfElement(element);
+  }
+
+  private RuleElement getRuleElementWithLabel(String label) {
+    RutaRule rule = getRule();
+    RuleElement element = rule.getRuleElementWithLabel(label);
+    return element;
   }
 
   public AnnotationFS getLastMatchedAnnotation(RuleElement element, boolean direction,
           AnnotationFS annotation, RutaBlock parent, RutaStream stream) {
-    List<AnnotationFS> matchedAnnotations = getMatchedAnnotationsOf(element);
+    List<AnnotationFS> matchedAnnotations = getMatchedAnnotationsOfElement(element);
     if (matchedAnnotations.isEmpty()) {
       if (element.getQuantifier().isOptional(parent, stream)) {
         return annotation;
@@ -86,7 +97,7 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
 
   @Override
   public List<AnnotationFS> getMatchedAnnotationsOfRoot() {
-    return getMatchedAnnotationsOf(((RutaRule) getRule()).getRoot());
+    return getMatchedAnnotationsOfElement(((RutaRule) getRule()).getRoot());
   }
 
   public List<AnnotationFS> getMatchedAnnotations(List<Integer> indexes,

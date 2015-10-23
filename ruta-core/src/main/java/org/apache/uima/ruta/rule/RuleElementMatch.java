@@ -50,6 +50,10 @@ public class RuleElementMatch {
     textsMatched = new ArrayList<AnnotationFS>();
   }
 
+  public String getLabel() {
+    return ruleElement.getLabel();
+  }
+  
   public void setMatchInfo(boolean baseCondition, List<AnnotationFS> texts,
           List<EvaluatedCondition> conditionList, RutaStream stream) {
     baseConditionMatched = baseCondition;

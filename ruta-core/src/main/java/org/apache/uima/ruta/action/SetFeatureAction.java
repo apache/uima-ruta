@@ -59,7 +59,7 @@ public class SetFeatureAction extends AbstractRutaAction {
   public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
     RutaBlock parent = element.getParent();
     String featureString = featureStringExpression.getStringValue(parent, match, element, stream);
-    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOf(element);
+    List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOfElement(element);
     for (AnnotationFS annotationFS : matchedAnnotations) {
       Feature feature = annotationFS.getType().getFeatureByBaseName(featureString);
 

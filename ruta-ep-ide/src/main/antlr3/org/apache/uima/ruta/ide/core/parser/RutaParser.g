@@ -724,8 +724,10 @@ blockRuleElement returns [RutaRuleElement rElement = null] //[List<RutaRuleEleme
 ruleElement returns [RutaRuleElement re = null]
 @init{
 List<RutaRule> innerRules = new ArrayList<RutaRule>();
+String label = null;
 }
 	:
+	(l = Identifier {label = l.getText();} COLON)?
 	STARTANCHOR?
 	(
 	re1 = ruleElementType {re = re1;}
@@ -733,6 +735,7 @@ List<RutaRule> innerRules = new ArrayList<RutaRule>();
 	| re3 = ruleElementComposed {re = re3;}
 	| re4 = ruleElementWildCard {re = re4;}
 	)
+	{re.setLabel(label);}
 	(t = THEN2 LCURLY (rule = simpleStatement {innerRules.add(rule);})+ 
 	RCURLY {re.setInlinedRules(innerRules);re.setInlineMode(t == null ? null : t.getText());})?
 	(t = THEN LCURLY (rule = simpleStatement {innerRules.add(rule);})+ 

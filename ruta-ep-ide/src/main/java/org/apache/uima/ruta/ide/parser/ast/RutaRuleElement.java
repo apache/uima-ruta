@@ -44,6 +44,8 @@ public class RutaRuleElement extends Expression {
 
   private boolean wildcard;
 
+  private String label;
+  
   // TODO to be removed
   public RutaRuleElement(int start, int end) {
     super(start, end);
@@ -166,6 +168,14 @@ public class RutaRuleElement extends Expression {
 
   public void setWildcard(boolean wildcard) {
     this.wildcard = wildcard;
+  }
+
+  public void setLabel(String label) {
+        this.label = label;
+  }
+  
+  public String getLabel() {
+    return this.label;
   }
   
 }

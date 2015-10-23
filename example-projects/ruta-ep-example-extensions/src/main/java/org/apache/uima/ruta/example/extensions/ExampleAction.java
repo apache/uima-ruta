@@ -56,7 +56,7 @@ public class ExampleAction extends AbstractRutaAction {
       if (each > 0 && each <= ruleElements.size()) {
         Type type = getRandomType(stream);
         RuleElement ruleElement = ruleElements.get(each - 1);
-        List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(ruleElement);
+        List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(ruleElement);
         for (AnnotationFS eachMatched : matchedAnnotationsOf) {
           AnnotationFS newAFS = stream.getCas().createAnnotation(type, eachMatched.getBegin(),
                   eachMatched.getEnd());

@@ -61,7 +61,7 @@ public class GetFeatureAction extends AbstractRutaAction {
       String stringValue = featureStringExpression.getStringValue(parent, match, element, stream);
       Feature featureByBaseName = type.getFeatureByBaseName(stringValue);
       RutaEnvironment environment = parent.getEnvironment();
-      List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOf(element);
+      List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOfElement(element);
       for (AnnotationFS annotationFS : matchedAnnotations) {
         if (annotationFS.getType().getFeatureByBaseName(stringValue) == null) {
           System.out.println("Can't access feature " + stringValue

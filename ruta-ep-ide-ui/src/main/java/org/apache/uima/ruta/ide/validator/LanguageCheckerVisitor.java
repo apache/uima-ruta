@@ -24,6 +24,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -72,6 +73,7 @@ import org.apache.uima.ruta.ide.parser.ast.RutaImportTypesStatement;
 import org.apache.uima.ruta.ide.parser.ast.RutaListExpression;
 import org.apache.uima.ruta.ide.parser.ast.RutaPackageDeclaration;
 import org.apache.uima.ruta.ide.parser.ast.RutaRegExpRule;
+import org.apache.uima.ruta.ide.parser.ast.RutaRule;
 import org.apache.uima.ruta.ide.parser.ast.RutaRuleElement;
 import org.apache.uima.ruta.ide.parser.ast.RutaStatementConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaStringExpression;
@@ -87,6 +89,7 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
@@ -192,6 +195,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
   private String packagePathString;
 
   private boolean packageChecked = false;
+
+  private Collection<String> currentLabels = new HashSet<>();
   
   public LanguageCheckerVisitor(IProblemReporter problemReporter, ISourceLineTracker linetracker,
           ISourceModule sourceModule, ClassLoader classLoader) {
@@ -410,7 +415,20 @@ public class LanguageCheckerVisitor extends ASTVisitor {
         }
       }
     }
+    if(s instanceof RutaRule) {
+      collectAllLabels((RutaRule)s);
+    }
     return true;
+  }
+
+  private void collectAllLabels(RutaRule rule) {
+    try {
+      RuleElementLabelVisitor visitor = new RuleElementLabelVisitor();
+      rule.traverse(visitor);
+      currentLabels = visitor.getLabels();
+    } catch (Exception e) {
+      RutaIdeUIPlugin.error(e);
+    }
   }
 
   private void checkPackage(ASTNode node) {
@@ -589,6 +607,9 @@ public class LanguageCheckerVisitor extends ASTVisitor {
         if (isFeatureMatch(name) != null) {
           return false;
         }
+        if(isLabel(name)) {
+          return false;
+        }
         if (name.indexOf(".") != -1) {
           String[] split = name.split("[.]");
           if (StringUtils.equals(split[split.length - 1], "ct")
@@ -596,7 +617,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
             return false;
           }
         }
-
+        
+        
         pr.reportProblem(problemFactory.createTypeProblem(ref, sourceModule));
         return false;
       }
@@ -756,6 +778,10 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     return true;
   }
 
+  private boolean isLabel(String name) {
+    return  currentLabels.contains(name);
+  }
+
   private String expand(String shortName) {
     if (shortName == null) {
       return null;
@@ -822,6 +848,10 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     if(!packageChecked) {
       checkPackage(null);
     }
+    if(s instanceof RutaRule) {
+      currentLabels.clear();
+    }
+    
     return super.endvisit(s);
   }
 

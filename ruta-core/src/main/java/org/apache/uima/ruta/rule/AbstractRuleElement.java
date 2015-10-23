@@ -45,6 +45,8 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
 
   private boolean startAnchor;
 
+  private String label;
+  
   private RuleElementContainer container;
 
   protected RutaBlock parent;
@@ -106,7 +108,7 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
   protected List<ScriptApply> processInlinedRules(List<RutaStatement> inlinedRules, RuleMatch ruleMatch, RutaStream stream,
           InferenceCrowd crowd) {
     List<ScriptApply> result = new ArrayList<ScriptApply>();
-    List<AnnotationFS> matchedAnnotationsOf = ruleMatch.getMatchedAnnotationsOf(this);
+    List<AnnotationFS> matchedAnnotationsOf = ruleMatch.getMatchedAnnotationsOfElement(this);
     // TODO where to implement the explanation of inlined rules?
     // BlockApply blockApply = new BlockApply(this);
     // RuleApply dummyRuleApply = getDummyRuleApply(ruleMatch);
@@ -216,7 +218,7 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
         if (stream.isGreedyRule()) {
           matchedAnnotationsOf = rm.getMatchedAnnotationsOfRoot();
         } else if (stream.isGreedyRuleElement()) {
-          matchedAnnotationsOf = rm.getMatchedAnnotationsOf(this);
+          matchedAnnotationsOf = rm.getMatchedAnnotationsOfElement(this);
         }
         for (AnnotationFS annotationFS : matchedAnnotationsOf) {
           if (eachAnchor.getBegin() >= annotationFS.getBegin()
@@ -280,6 +282,14 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
     return startAnchor;
   }
 
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
+  }
+  
   public void setInlinedConditionRules(List<RutaStatement> innerRules) {
     this.inlinedConditionRules = innerRules;
   }

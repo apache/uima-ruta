@@ -32,7 +32,7 @@ public abstract class AbstractStringExpression extends RutaExpression implements
 
   public String getStringValue(RutaBlock parent, RuleMatch match, RuleElement element,
           RutaStream stream) {
-    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOf(element);
+    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
     // TODO: do we need to select the correct annotation?
     AnnotationFS annotation = null;
     if (!matchedAnnotationsOf.isEmpty()) {

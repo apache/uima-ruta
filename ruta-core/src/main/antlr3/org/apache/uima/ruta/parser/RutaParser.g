@@ -842,15 +842,20 @@ ruleElement[RuleElementContainer container] returns [RuleElement re = null]
 @init{
 List<RutaStatement> innerConditionRules = new ArrayList<RutaStatement>();
 List<RutaStatement> innerActionRules = new ArrayList<RutaStatement>();
+String label = null;
 }
 	:
+	(l = Identifier {label = l.getText();} COLON)?
 	start = STARTANCHOR? (
 	re1 = ruleElementType[container] {re = re1;}
 	| re2 = ruleElementLiteral[container] {re = re2;}
 	| (ruleElementComposed[null])=>re3 = ruleElementComposed[container] {re = re3;}
 	| (ruleElementWildCard[null])=> re5 = ruleElementWildCard[container] {re = re5;}
 	)
-	{re.setStartAnchor(start != null);}
+	{
+	re.setLabel(label);
+	re.setStartAnchor(start != null);
+	}
 	(t = (THEN2) 
 	LCURLY 
 	(rule = simpleStatement {innerConditionRules.add(rule);})+ 
@@ -2129,6 +2134,7 @@ options {
 	| a4 = stringExpression {expr = a4;}
 	| (listExpression)=> l = listExpression {expr = l;}
 	| a5 = nullExpression {expr = a5;}
+	//| a6 = annotationExpression {expr = a6;}
 	| a1 = typeExpression {expr = a1;}
 	
 	//(a2 = booleanExpression)=> a2 = booleanExpression {expr = a2;}
@@ -2136,6 +2142,17 @@ options {
 	//| (a4 = stringExpression)=> a4 = stringExpression {expr = a4;}
 	//| (a1 = typeExpression)=> a1 = typeExpression {expr = a1;}
 	;
+
+
+//annotationExpression returns [IRutaExpression expr = null]
+	//:
+	//ale = annotationLabelExpression {expr = ale}
+	//;
+	
+//annotationLabelExpression returns [IRutaExpression expr = null]
+	//:
+	//label = Identifier {expr = ExpressionFactory.createRuleElementLabelExpression();}
+	//;
 
 nullExpression returns [IRutaExpression expr = null]
 	:

@@ -315,7 +315,7 @@ public class RutaRuleElement extends AbstractRuleElement {
           InferenceCrowd crowd) {
     List<RuleMatch> result = new ArrayList<RuleMatch>();
     boolean newDirection = !after;
-    List<AnnotationFS> matchedAnnotationsOf = ruleMatch.getMatchedAnnotationsOf(this);
+    List<AnnotationFS> matchedAnnotationsOf = ruleMatch.getMatchedAnnotationsOfElement(this);
     AnnotationFS annotation = null;
     if (!matchedAnnotationsOf.isEmpty()) {
       if (newDirection) {
