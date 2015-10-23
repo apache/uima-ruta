@@ -89,6 +89,9 @@
 		switched-off light bulb at the top of the view. 
 		The light bulb that is turned on sets all types visible in the tree view of the page highlighted in the CAS editor.   
 	</para>
+	<para>
+      The offsets of selected annotations can be modified with ctrl + u (reduce begin), ctrl + i (increase begin), ctrl + o (reduce end), and ctrl + p (increase end).
+    </para>
     <para>
       The user can choose whether parent types are displayed using the preference page <quote>UIMA Cas Editor -> Cas Editor Views</quote>.
     </para>
@@ -129,7 +132,7 @@
       </figure>
     </para>
     <para>
-      The Selection view has the same filtering possibilities as
+      The Selection view has the same filtering and modification options as
       described in Annotation Browser view.
     </para>
   </section>
