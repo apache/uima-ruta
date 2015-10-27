@@ -313,6 +313,14 @@ public class RutaDescriptorBuilder {
             import_impl, aets);
   }
 
+  @Deprecated
+  public void build(RutaDescriptorInformation desc, String typeSystemOutput, String engineOutput,
+          RutaBuildOptions options, String[] scriptPaths, String[] enginePaths)
+          throws SAXException, InvalidXMLException, IOException, ResourceInitializationException,
+          URISyntaxException {
+    build(desc, typeSystemOutput, engineOutput, options, scriptPaths, enginePaths, null);
+  }
+  
   public void build(RutaDescriptorInformation desc, String typeSystemOutput, String engineOutput,
           RutaBuildOptions options, String[] scriptPaths, String[] enginePaths, String[] resourcePaths)
           throws SAXException, InvalidXMLException, IOException, ResourceInitializationException,
