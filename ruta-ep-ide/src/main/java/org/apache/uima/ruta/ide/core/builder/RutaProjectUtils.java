@@ -266,6 +266,13 @@ public class RutaProjectUtils {
     result.addAll(getReferencedDescriptorFolders(proj));
     return result;
   }
+  
+  public static List<IFolder> getAllResourceFolders(IProject proj) throws CoreException {
+    List<IFolder> result = new ArrayList<IFolder>();
+    result.addAll(getResourceFolders(proj));
+    result.addAll(getReferencedResourceFolders(proj));
+    return result;
+  }
 
   public static List<IFolder> getReferencedDescriptorFolders(IProject proj) throws CoreException {
     return getReferencedDescriptorFolders(proj, new HashSet<IProject>());
@@ -280,6 +287,24 @@ public class RutaProjectUtils {
         result.addAll(RutaProjectUtils.getDescriptorFolders(eachProject));
         visited.add(eachProject);
         result.addAll(getReferencedDescriptorFolders(eachProject, visited));
+      }
+    }
+    return result;
+  }
+  
+  public static List<IFolder> getReferencedResourceFolders(IProject proj) throws CoreException {
+    return getReferencedDescriptorFolders(proj, new HashSet<IProject>());
+  }
+
+  public static List<IFolder> getReferencedResourceFolders(IProject proj,
+          Collection<IProject> visited) throws CoreException {
+    List<IFolder> result = new ArrayList<IFolder>();
+    Collection<IProject> referencedProjects = getReferencedProjects(proj, new HashSet<IProject>());
+    for (IProject eachProject : referencedProjects) {
+      if (!visited.contains(eachProject)) {
+        result.addAll(RutaProjectUtils.getResourceFolders(eachProject));
+        visited.add(eachProject);
+        result.addAll(getReferencedResourceFolders(eachProject, visited));
       }
     }
     return result;

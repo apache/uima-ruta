@@ -167,6 +167,7 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
       String scriptWithPackagePath = RutaProjectUtils.getScriptWithPackage(pathToModule, project);
       List<String> scriptPathList = new ArrayList<String>();
       List<String> descriptorPathList = new ArrayList<String>();
+      List<String> resourcePathList = new ArrayList<String>();
 
       // add all folders
       try {
@@ -182,9 +183,18 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
       } catch (Exception e) {
         RutaIdeCorePlugin.error(e);
       }
+      
+      try {
+        List<IFolder> allResourceFolders = RutaProjectUtils.getAllResourceFolders(project);
+        resourcePathList.addAll(RutaProjectUtils.getFolderLocations(allResourceFolders));
+      } catch (Exception e) {
+        RutaIdeCorePlugin.error(e);
+      }
 
       String[] descriptorPaths = descriptorPathList.toArray(new String[0]);
       String[] scriptPaths = scriptPathList.toArray(new String[0]);
+      String[] resourcePaths =  resourcePathList.toArray(new String[0]);
+              
       String mainScript = scriptWithPackagePath;
       mainScript = mainScript.replaceAll("/", ".");
       if (mainScript.endsWith(RutaEngine.SCRIPT_FILE_EXTENSION)) {
@@ -203,7 +213,7 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
         counter++;
       }
       ClassLoader classloader = new URLClassLoader(urls);
-      build(basicTS, basicE, typeSystem, engine, sm, scriptPaths, descriptorPaths, classloader);
+      build(basicTS, basicE, typeSystem, engine, sm, scriptPaths, descriptorPaths, resourcePaths, classloader);
 
       IPath tsPath = Path.fromPortableString(typeSystem);
       IPath ePath = Path.fromPortableString(engine);
@@ -215,7 +225,7 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
 
   private void build(String basicTypesystem, String basicEngine, String typeSystemDest,
           String engineDest, RutaDescriptorInformation sm, String[] scriptPaths,
-          String[] enginePaths, ClassLoader classloader) {
+          String[] enginePaths, String[] resourcePaths, ClassLoader classloader) {
     RutaDescriptorBuilder builder = null;
     try {
       URL tsUrl = new File(basicTypesystem).toURI().toURL();
@@ -280,7 +290,7 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
       option.setImportByName(store.getBoolean(RutaCorePreferences.BUILDER_IMPORT_BY_NAME));
       option.setResolveImports(store.getBoolean(RutaCorePreferences.BUILDER_RESOLVE_IMPORTS));
       option.setClassLoader(classloader);
-      builder.build(sm, typeSystemDest, engineDest, option, scriptPaths, enginePaths);
+      builder.build(sm, typeSystemDest, engineDest, option, scriptPaths, enginePaths, resourcePaths);
     } catch (Exception e) {
       DLTKCore.error(e.getMessage(), e);
       if (DLTKCore.DEBUG_PARSER) {

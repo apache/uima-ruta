@@ -314,7 +314,7 @@ public class RutaDescriptorBuilder {
   }
 
   public void build(RutaDescriptorInformation desc, String typeSystemOutput, String engineOutput,
-          RutaBuildOptions options, String[] scriptPaths, String[] enginePaths)
+          RutaBuildOptions options, String[] scriptPaths, String[] enginePaths, String[] resourcePaths)
           throws SAXException, InvalidXMLException, IOException, ResourceInitializationException,
           URISyntaxException {
 
@@ -323,7 +323,7 @@ public class RutaDescriptorBuilder {
 
     AnalysisEngineDescription analysisEngineDescription = createAnalysisEngineDescription(desc,
             typeSystemDescription, typeSystemOutput, engineOutput, options, scriptPaths,
-            enginePaths, null);
+            enginePaths, resourcePaths);
 
     File analysisEngineFile = getFile(engineOutput);
     File typeSystemFile = getFile(typeSystemOutput);
