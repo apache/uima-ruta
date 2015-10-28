@@ -418,6 +418,13 @@ public class WildCardRuleElement extends AbstractRuleElement {
           } else {
             // HOTFIX caused by type priorities
             result.moveToLast();
+            if(result.isValid()) {
+              // HOTFIX avoid pointer to current annotation
+              AnnotationFS current = result.get();
+              if(current.getEnd() >= annotation.getBegin()) {
+                result.moveToPrevious();
+              }
+            }
           }
         } else {
           if (!after) {
@@ -461,6 +468,13 @@ public class WildCardRuleElement extends AbstractRuleElement {
           } else {
             // TODO due to type priorities: RutaBasic is last -> moveTo will not work
             result.moveToLast();
+            if(result.isValid()) {
+              // HOTFIX avoid pointer to current annotation
+              AnnotationFS current = result.get();
+              if(current.getEnd() >= annotation.getBegin()) {
+                result.moveToPrevious();
+              }
+            }
           }
         } else {
           if (!after) {

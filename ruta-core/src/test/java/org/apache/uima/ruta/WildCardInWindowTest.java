@@ -94,5 +94,49 @@ public class WildCardInWindowTest {
 
     cas.release();
   }
+  
+  @Test
+  public void testSameRightToLeftInWindow() {
+    String document = ". a 1 b . c 1 D . e 1 1 1 f . g 1 1 1 H .";
+    String script = "";
+    script += "PERIOD #{-> T1} PERIOD;";
+    script += "T1 ->{W{->T3} #{->T2} @W;};";
+    script += "T1 ->{W #{-PARTOF(NUM)->T4} @W;};";
+    
+    CAS cas = null;
+    try {
+      cas = RutaTestUtils.getCAS(document);
+      Ruta.apply(cas, script);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 4, "1", "1", "1 1 1", "1 1 1");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 4, "a", "c", "e", "g");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 0);
+
+    cas.release();
+  }
+  
+  @Test
+  public void testCoveredRightToLeftNoWindow() {
+    String document = "CAP1 some text CAP2 more text";
+    String script = "";
+    script += "(CAP NUM){-> T1};";
+    script += "SW (T1 W+){-> T2};";
+    script += " T1 #{->T3} @T2;";
+    
+    CAS cas = null;
+    try {
+      cas = RutaTestUtils.getCAS(document);
+      Ruta.apply(cas, script);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "some text");
+
+    cas.release();
+  }
 
 }
