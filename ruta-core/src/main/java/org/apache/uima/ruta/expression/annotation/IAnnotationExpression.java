@@ -38,8 +38,7 @@ public interface IAnnotationExpression {
 
   List<AnnotationFS> getAnnotations(RutaBlock parent, AnnotationFS annotation, RutaStream stream);
 
-  AnnotationFS getAnnotation(RutaBlock parent, RuleMatch match, RuleElement element,
-          RutaStream stream);
+  AnnotationFS getAnnotation(RutaBlock parent, RuleMatch match, RuleElement element, RutaStream stream);
 
   List<AnnotationFS> getAnnotations(RutaBlock parent, RuleMatch match, RuleElement element,
           RutaStream stream);

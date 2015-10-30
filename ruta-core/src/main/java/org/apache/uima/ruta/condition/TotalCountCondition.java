@@ -19,9 +19,10 @@
 
 package org.apache.uima.ruta.condition;
 
-import java.util.Iterator;
-
+import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
@@ -49,12 +50,9 @@ public class TotalCountCondition extends TypeSentiveCondition {
   public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
           InferenceCrowd crowd) {
     int count = 0;
-    Iterator<?> it = stream.getJCas().getAnnotationIndex(type.getType(element.getParent()))
-            .iterator();
-    while (it.hasNext()) {
-      it.next();
-      count++;
-    }
+    Type t = type.getType(element.getParent());
+	AnnotationIndex<Annotation> annotationIndex = stream.getJCas().getAnnotationIndex(t);
+    count= annotationIndex.size();
     if (var != null) {
       element.getParent().getEnvironment().setVariableValue(var, count);
     }

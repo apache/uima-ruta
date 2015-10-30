@@ -29,6 +29,7 @@ public class LabelAnnotationExpression extends AbstractAnnotationExpression {
 
   @Override
   public AnnotationFS getAnnotation(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+	  // TODO
     return getAnnotations(parent, annotation, stream).get(0);
   }
 

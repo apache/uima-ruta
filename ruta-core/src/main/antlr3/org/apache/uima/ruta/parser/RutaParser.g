@@ -71,6 +71,7 @@ import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
+import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.list.BooleanListExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
@@ -544,6 +545,18 @@ List<String> vars = new ArrayList<String>();
 	type = TYPELIST 
 	{!isVariableOfType($blockDeclaration::env, input.LT(1).getText(), type.getText())}? 
 	name = Identifier (ASSIGN_EQUAL tl = typeListExpression)? SEMI {addVariable($blockDeclaration::env, name.getText(), type.getText());if(tl != null){setValue($blockDeclaration::env, name.getText(), tl);}} 
+	
+	|
+	type = ANNOTATION 
+	{!isVariableOfType($blockDeclaration::env, input.LT(1).getText(), type.getText())}? 
+	name = Identifier (ASSIGN_EQUAL a = annotationExpression)? SEMI {addVariable($blockDeclaration::env, name.getText(), type.getText());if(a != null){setValue($blockDeclaration::env, name.getText(), a);}} 
+	|
+	type = ANNOTATIONLIST
+	{!isVariableOfType($blockDeclaration::env, input.LT(1).getText(), type.getText())}? 
+	name = Identifier (ASSIGN_EQUAL al = annotationExpression)? SEMI {addVariable($blockDeclaration::env, name.getText(), type.getText());if(al != null){setValue($blockDeclaration::env, name.getText(), al);}} 
+	
+	
+	
 	//|
 	//stmt1 = conditionDeclaration {stmt = stmt1;}
 	//|
@@ -2134,8 +2147,8 @@ options {
 	| a4 = stringExpression {expr = a4;}
 	| (listExpression)=> l = listExpression {expr = l;}
 	| a5 = nullExpression {expr = a5;}
-	//| a6 = annotationExpression {expr = a6;}
-	| a1 = typeExpression {expr = a1;}
+	| a6 = annotationOrTypeExpression {expr = a6;}
+	//| a1 = typeExpression {expr = a1;}
 	
 	//(a2 = booleanExpression)=> a2 = booleanExpression {expr = a2;}
 	//| (a3 = numberExpression)=> a3 = numberExpression {expr = a3;}
@@ -2143,16 +2156,34 @@ options {
 	//| (a1 = typeExpression)=> a1 = typeExpression {expr = a1;}
 	;
 
+annotationOrTypeExpression returns [IRutaExpression expr = null]
+	:
+	a1 = typeExpression {expr = a1;}
+	;
 
-//annotationExpression returns [IRutaExpression expr = null]
-	//:
-	//ale = annotationLabelExpression {expr = ale}
-	//;
+annotationExpression returns [IRutaExpression expr = null]
+	:
+	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "ANNOTATION")	}? 
+	id = Identifier {expr = ExpressionFactory.createAnnotationVariableExpression(id);} 
+	|
+	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "ANNOTATIONLIST")	}? 
+	id = Identifier {expr = ExpressionFactory.createAnnotationListVariableExpression(id);} 
+	|
+	aae = annotationAddressExpression {expr = aae;}
+	|
+	ale = annotationLabelExpression {expr = ale;}
 	
-//annotationLabelExpression returns [IRutaExpression expr = null]
-	//:
-	//label = Identifier {expr = ExpressionFactory.createRuleElementLabelExpression();}
-	//;
+	;
+
+annotationAddressExpression returns [IRutaExpression expr = null]
+	:
+	ADDRESS_PREFIX address = DecimalLiteral {expr = ExpressionFactory.createAnnotationAddressExpression(address);}
+	;
+	
+annotationLabelExpression returns [IRutaExpression expr = null]
+	:
+	label = Identifier {expr = ExpressionFactory.createAnnotationLabelExpression(label);}
+	;
 
 nullExpression returns [IRutaExpression expr = null]
 	:
@@ -2232,6 +2263,7 @@ annotationType returns [Token ref = null]
 	did = dottedId {ref = did;}
 	)
 	;
+	
 
 wordListExpression returns [WordListExpression expr = null]
 @init  {
