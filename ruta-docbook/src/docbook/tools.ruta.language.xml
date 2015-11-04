@@ -569,7 +569,7 @@ Document{->MARKFAST(FirstName, FirstNameList)};
         <programlisting><![CDATA[WORDLIST Names = 'Names.mtwl';
 Declare FirstName, LastName;
 Document{->TRIE("FirstNames.txt" = FirstName, "LastNames.txt" = LastName,
-                                          Names, false, 0, false, 0, "")};]]></programlisting>
+    Names, false, 0, false, 0, "")};]]></programlisting>
       </para>
     </section>
     <section>
@@ -590,16 +590,16 @@ Document{->TRIE("FirstNames.txt" = FirstName, "LastNames.txt" = LastName,
         For our example, such a file named
         <quote>presidentsOfUSA.csv</quote>
         could look like this:
-        <programlisting><![CDATA[Bill Clinton; democrats; 1993
-George W. Bush; republicans; 2001
-Barack Obama; democrats; 2009
+        <programlisting><![CDATA[Bill Clinton;democrats;1993
+George W. Bush;republicans;2001
+Barack Obama;democrats;2009
 ]]></programlisting>
         To annotate our documents we could use the following set of
         rules:
         <programlisting><![CDATA[WORDTABLE presidentsOfUSA = 'presidentsOfUSA.csv';
 DECLARE Annotation PresidentOfUSA(STRING party, INT yearOfInauguration);
-Document{->MARKTABLE(PresidentOfUSA, 1, "party" = 2, 
-											 "yearOfInauguration" = 3)};]]></programlisting>
+Document{->MARKTABLE(PresidentOfUSA, 1, presidentsOfUSA, "party" = 2, 
+		"yearOfInauguration" = 3)};]]></programlisting>
       </para>
     </section>
   </section>
