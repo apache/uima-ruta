@@ -41,6 +41,7 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
 import org.apache.uima.resource.ResourceAccessException;
 import org.apache.uima.resource.ResourceManager;
@@ -169,6 +170,7 @@ public class RutaEnvironment {
     variableTypes = new HashMap<String, Class<?>>();
     variableGenericTypes = new HashMap<String, Class<?>>();
     availableTypes = new HashMap<String, Class<?>>();
+    availableTypes.put("ANNOTATION", AnnotationFS.class);
     availableTypes.put("INT", Integer.class);
     availableTypes.put("STRING", String.class);
     availableTypes.put("DOUBLE", Double.class);
@@ -179,6 +181,7 @@ public class RutaEnvironment {
     availableTypes.put("ACTION", AbstractRutaAction.class);
     availableTypes.put("WORDLIST", RutaWordList.class);
     availableTypes.put("WORDTABLE", RutaTable.class);
+    availableTypes.put("ANNOTATIONLIST", List.class);
     availableTypes.put("BOOLEANLIST", List.class);
     availableTypes.put("INTLIST", List.class);
     availableTypes.put("DOUBLELIST", List.class);
@@ -186,6 +189,7 @@ public class RutaEnvironment {
     availableTypes.put("STRINGLIST", List.class);
     availableTypes.put("TYPELIST", List.class);
     availableListTypes = new HashMap<String, Class<?>>();
+    availableListTypes.put("ANNOTATIONLIST", AnnotationFS.class);
     availableListTypes.put("BOOLEANLIST", Boolean.class);
     availableListTypes.put("INTLIST", Integer.class);
     availableListTypes.put("DOUBLELIST", Double.class);
