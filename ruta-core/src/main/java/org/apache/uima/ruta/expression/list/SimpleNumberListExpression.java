@@ -39,7 +39,7 @@ public class SimpleNumberListExpression extends NumberListExpression {
   public List<Number> getList(MatchContext context, RutaStream stream) {
     List<Number> result = new ArrayList<Number>();
     for (INumberExpression each : list) {
-   // TODO support arrays
+      // TODO support arrays
       result.add(each.getDoubleValue(context, stream));
     }
     return result;

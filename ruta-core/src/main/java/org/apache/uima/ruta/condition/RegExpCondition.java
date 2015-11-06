@@ -29,7 +29,6 @@ import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.MatchContext;
-import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class RegExpCondition extends TerminalRutaCondition {
@@ -45,36 +44,37 @@ public class RegExpCondition extends TerminalRutaCondition {
     this.ignoreCase = ignoreCase == null ? new SimpleBooleanExpression(false) : ignoreCase;
   }
 
-  public RegExpCondition(IStringExpression v, IStringExpression pattern, IBooleanExpression ignoreCase) {
+  public RegExpCondition(IStringExpression v, IStringExpression pattern,
+          IBooleanExpression ignoreCase) {
     this(pattern, ignoreCase);
     this.variable = v;
   }
 
   @Override
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		AnnotationFS annotation = context.getAnnotation();
-		RuleElement element = context.getElement();
+    AnnotationFS annotation = context.getAnnotation();
     Matcher matcher = null;
-    boolean ignore = ignoreCase == null ? false : ignoreCase.getBooleanValue(context,
-            stream);
+    boolean ignore = ignoreCase == null ? false : ignoreCase.getBooleanValue(context, stream);
     String stringValue = pattern.getStringValue(context, stream);
     if (variable == null) {
       String coveredText = annotation.getCoveredText();
       Pattern regularExpPattern = null;
       if (ignore) {
-        regularExpPattern = Pattern.compile(stringValue, Pattern.MULTILINE + Pattern.DOTALL + Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
+        regularExpPattern = Pattern.compile(stringValue, Pattern.MULTILINE + Pattern.DOTALL
+                + Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
       } else {
         regularExpPattern = Pattern.compile(stringValue, Pattern.MULTILINE + Pattern.DOTALL);
       }
       matcher = regularExpPattern.matcher(coveredText);
     } else {
       String variableValue = variable.getStringValue(context, stream);
-      if(variableValue == null) {
+      if (variableValue == null) {
         return new EvaluatedCondition(this, false);
       }
       Pattern regularExpPattern = null;
       if (ignore) {
-        regularExpPattern = Pattern.compile(stringValue, Pattern.MULTILINE + Pattern.DOTALL + Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
+        regularExpPattern = Pattern.compile(stringValue, Pattern.MULTILINE + Pattern.DOTALL
+                + Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
       } else {
         regularExpPattern = Pattern.compile(stringValue, Pattern.MULTILINE + Pattern.DOTALL);
       }

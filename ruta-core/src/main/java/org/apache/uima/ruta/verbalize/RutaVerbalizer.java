@@ -74,15 +74,15 @@ public class RutaVerbalizer {
       return conditionVerbalizer.verbalize((AbstractRutaCondition) element);
     } else if (element instanceof IRutaExpression) {
       return expressionVerbalizer.verbalize((RutaExpression) element);
-    } else if(element instanceof RutaElement){
+    } else if (element instanceof RutaElement) {
       return scriptVerbalizer.verbalize((RutaElement) element);
-    } else if(element instanceof RutaBlock){
+    } else if (element instanceof RutaBlock) {
       return verbalize((RutaBlock) element, false);
     } else {
       return element.getClass().getSimpleName();
     }
   }
-  
+
   public String verbalizeName(RutaElement element) {
     if (externalVerbalizers.keySet().contains(element.getClass())) {
       return externalVerbalizers.get(element.getClass()).verbalizeName(element);
@@ -129,6 +129,5 @@ public class RutaVerbalizer {
   public String verbalizeComposed(ComposedRuleElement cre) {
     return scriptVerbalizer.verbalizeComposed(cre);
   }
-
 
 }

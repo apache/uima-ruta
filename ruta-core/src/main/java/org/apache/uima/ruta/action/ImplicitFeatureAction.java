@@ -62,8 +62,8 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
 
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		RuleMatch match = context.getRuleMatch();
-		RuleElement element = context.getElement();
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
     TypeExpression typeExpr = expr.getTypeExpr(context, stream);
     Type type = typeExpr.getType(context, stream);
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOfElement(element);
@@ -75,7 +75,7 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
       stream.getCas().removeFsFromIndexes(each);
     }
     Collection<AnnotationFS> featureAnnotations = expr.getFeatureAnnotations(annotations, stream,
-           context, false);
+            context, false);
     if (featureAnnotations.isEmpty()) {
       // null value in feature, but we require the host
       featureAnnotations = annotations;

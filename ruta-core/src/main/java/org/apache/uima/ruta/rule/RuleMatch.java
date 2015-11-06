@@ -28,7 +28,6 @@ import java.util.Set;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.ScriptApply;
@@ -54,7 +53,7 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
   public List<AnnotationFS> getMatchedAnnotationsOfElement(RuleElement element) {
     return getMatchedAnnotations(element.getSelfIndexList(), element.getContainer());
   }
-  
+
   public List<AnnotationFS> getMatchedAnnotationsOfLabel(String label) {
     RuleElement element = getRuleElementWithLabel(label);
     return getMatchedAnnotationsOfElement(element);
@@ -80,7 +79,7 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
     }
     if (direction) {
       AnnotationFS matched = matchedAnnotations.get(matchedAnnotations.size() - 1);
-      if(annotation != null && matched.getEnd() < annotation.getEnd()) {
+      if (annotation != null && matched.getEnd() < annotation.getEnd()) {
         // multiple matches, but none last time
         return annotation;
       } else {
@@ -88,7 +87,7 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
       }
     } else {
       AnnotationFS matched = matchedAnnotations.get(0);
-      if(annotation != null && matched.getBegin() > annotation.getBegin()) {
+      if (annotation != null && matched.getBegin() > annotation.getBegin()) {
         // multiple matches, but none last time
         return annotation;
       } else {

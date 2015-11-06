@@ -39,7 +39,7 @@ public class SimpleBooleanListExpression extends BooleanListExpression {
   public List<Boolean> getList(MatchContext context, RutaStream stream) {
     List<Boolean> result = new ArrayList<Boolean>();
     for (IBooleanExpression each : list) {
-   // TODO support arrays
+      // TODO support arrays
       result.add(each.getBooleanValue(context, stream));
     }
     return result;

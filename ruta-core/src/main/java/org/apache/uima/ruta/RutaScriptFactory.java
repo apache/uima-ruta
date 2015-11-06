@@ -121,13 +121,14 @@ public class RutaScriptFactory {
   public RutaStatement createImplicitRule(List<AbstractRutaAction> actions, RutaBlock parent) {
     List<RuleElement> elements = new ArrayList<RuleElement>();
     IRutaExpression documentExpression = new SimpleTypeExpression("Document");
-    RutaRuleElement element = createRuleElement(documentExpression, null, null, actions, null, parent);
+    RutaRuleElement element = createRuleElement(documentExpression, null, null, actions, null,
+            parent);
     elements.add(element);
     RutaRule rule = createRule(elements, parent);
     element.setContainer(rule.getRoot());
     return rule;
   }
-  
+
   public RutaRule createRule(List<RuleElement> elements, RutaBlock parent) {
     return new RutaRule(elements, parent, idCounter++);
   }
@@ -262,6 +263,5 @@ public class RutaScriptFactory {
   public void setContext(UimaContext context) {
     this.context = context;
   }
-
 
 }

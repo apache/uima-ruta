@@ -44,7 +44,7 @@ public class ExternalWordTableExpression extends WordTableExpression {
     for (IStringExpression each : args) {
       argList.add(each.getStringValue(context, null));
     }
-    
+
     return null;
   }
 
@@ -56,5 +56,4 @@ public class ExternalWordTableExpression extends WordTableExpression {
     return className;
   }
 
-  
 }

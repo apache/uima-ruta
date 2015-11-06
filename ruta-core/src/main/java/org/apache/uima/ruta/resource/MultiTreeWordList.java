@@ -145,8 +145,6 @@ public class MultiTreeWordList implements RutaWordList {
     }
   }
 
- 
-
   public MultiTreeWordList(List<File> files, File base) throws IOException {
     this.root = new MultiTextNode();
     this.costMap = new EditDistanceCostMap();
@@ -157,7 +155,7 @@ public class MultiTreeWordList implements RutaWordList {
   }
 
   private String getRelativePath(File file, File base) {
-    if(base == null) {
+    if (base == null) {
       return file.getName();
     }
     Path filePath = file.toPath();
@@ -175,17 +173,18 @@ public class MultiTreeWordList implements RutaWordList {
    * @throws IOException
    *           When there is a problem reading the resource.
    */
-  
+
   private void load(Resource resource) throws IOException {
     load(resource, resource.getFilename());
   }
-  
+
   /**
    * Load a resource in this word list.
    * 
    * @param resource
-   *          Resource to load. 
-   * @param name - The resource's name must end with .txt or .mtwl.
+   *          Resource to load.
+   * @param name
+   *          - The resource's name must end with .txt or .mtwl.
    * @throws IOException
    *           When there is a problem reading the resource.
    */
@@ -874,7 +873,7 @@ public class MultiTreeWordList implements RutaWordList {
           Type type = null;
           String featureString = null;
           Object value = each;
-          if (list.size() == 2 ||list.size() == 3) {
+          if (list.size() == 2 || list.size() == 3) {
             if (list.get(0) instanceof Type) {
               type = (Type) list.get(0);
             }
@@ -882,9 +881,9 @@ public class MultiTreeWordList implements RutaWordList {
               featureString = (String) list.get(1);
             }
             if (list.size() == 3) {
-              value =  list.get(2);
+              value = list.get(2);
             }
-            
+
             if (type != null && featureString != null) {
               int begin = basicsToAdd.get(0).getBegin();
               int end = basicsToAdd.get(basicsToAdd.size() - 1).getEnd();

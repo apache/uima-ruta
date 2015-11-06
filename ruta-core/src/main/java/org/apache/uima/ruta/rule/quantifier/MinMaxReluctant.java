@@ -83,7 +83,7 @@ public class MinMaxReluctant extends AbstractRuleElementQuantifier {
   @Override
   public boolean continueMatch(boolean after, MatchContext context, AnnotationFS annotation,
           ComposedRuleElementMatch containerMatch, RutaStream stream, InferenceCrowd crowd) {
-    if(annotation == null) {
+    if (annotation == null) {
       // do not try to continue a match that totally failed
       return false;
     }
@@ -116,7 +116,7 @@ public class MinMaxReluctant extends AbstractRuleElementQuantifier {
     }
     ComposedRuleElementMatch extendedContainerMatch = containerMatch.copy();
     RuleMatch extendedMatch = context.getRuleMatch().copy(extendedContainerMatch, after);
-    
+
     List<RuleMatch> continueMatch = nextElement.continueMatch(after, annotation, extendedMatch,
             null, extendedContainerMatch, null, nextElement, stream, crowd);
     boolean nextMatched = nextElementMatched(nextElement, continueMatch);

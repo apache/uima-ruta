@@ -22,7 +22,6 @@ package org.apache.uima.ruta.action;
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.MatchContext;
@@ -46,17 +45,16 @@ public class ReplaceAction extends AbstractRutaAction {
 
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		RuleMatch match = context.getRuleMatch();
-		RuleElement element = context.getElement();
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(null,
             element.getContainer());
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
       List<RutaBasic> annotationsInWindow = stream.getBasicsInWindow(matchedAnnotation);
       boolean replaced = false;
       for (RutaBasic basic : annotationsInWindow) {
-        RutaBlock parent = element.getParent();
-        basic.setReplacement(replaced ? "" : replacement.getStringValue(context,
-                stream));
+        element.getParent();
+        basic.setReplacement(replaced ? "" : replacement.getStringValue(context, stream));
         replaced = true;
       }
     }

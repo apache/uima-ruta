@@ -48,8 +48,8 @@ public class UnmarkAllAction extends TypeSensitiveAction {
 
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		RuleMatch match = context.getRuleMatch();
-		RuleElement element = context.getElement();
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
     List<Type> retainList = new ArrayList<Type>();
     if (list != null) {
       retainList = list.getList(context, stream);

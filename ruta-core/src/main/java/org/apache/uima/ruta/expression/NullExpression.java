@@ -25,24 +25,20 @@ import java.util.List;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
-import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
 
-public class NullExpression extends FeatureExpression implements IStringExpression, ITypeExpression{
+public class NullExpression extends FeatureExpression implements IStringExpression, ITypeExpression {
 
   @Override
   public String getStringValue(MatchContext context, RutaStream stream) {
     return null;
   }
 
-  
   @Override
   public Collection<AnnotationFS> getFeatureAnnotations(Collection<AnnotationFS> annotations,
           RutaStream stream, MatchContext context, boolean checkOnFeatureValue) {
@@ -54,24 +50,20 @@ public class NullExpression extends FeatureExpression implements IStringExpressi
     return null;
   }
 
-
   @Override
   public Feature getFeature(MatchContext context, RutaStream stream) {
     return null;
   }
-
 
   @Override
   public List<Feature> getFeatures(MatchContext context, RutaStream stream) {
     return null;
   }
 
-
   @Override
   public List<String> getFeatureStringList(MatchContext context, RutaStream stream) {
     return null;
   }
-
 
   @Override
   public TypeExpression getTypeExpr(MatchContext context, RutaStream stream) {

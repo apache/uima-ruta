@@ -20,7 +20,6 @@
 package org.apache.uima.ruta.condition;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.MatchReference;
@@ -29,7 +28,6 @@ import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.MatchContext;
-import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class FeatureCondition extends AbstractRutaCondition {
@@ -44,17 +42,15 @@ public class FeatureCondition extends AbstractRutaCondition {
     this.argExpr = argExpr;
   }
 
-
   @Override
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		AnnotationFS annotation = context.getAnnotation();
-		RuleElement element = context.getElement();
-	  
-    RutaBlock parent = element.getParent();
-    String typeWithFeature = annotation.getType().getName()+"."+featureStringExpression.getStringValue(context, stream);
+    AnnotationFS annotation = context.getAnnotation();
+
+    String typeWithFeature = annotation.getType().getName() + "."
+            + featureStringExpression.getStringValue(context, stream);
     MatchReference mf = new MatchReference(typeWithFeature, "==", argExpr);
     FeatureExpression featureExpression = mf.getFeatureExpression(context, stream);
-    if(featureExpression instanceof FeatureMatchExpression) {
+    if (featureExpression instanceof FeatureMatchExpression) {
       FeatureMatchExpression fme = (FeatureMatchExpression) featureExpression;
       boolean checkFeatureValue = fme.checkFeatureValue(annotation, context, stream);
       return new EvaluatedCondition(this, checkFeatureValue);
@@ -69,6 +65,5 @@ public class FeatureCondition extends AbstractRutaCondition {
   public IRutaExpression getArgExpr() {
     return argExpr;
   }
-
 
 }

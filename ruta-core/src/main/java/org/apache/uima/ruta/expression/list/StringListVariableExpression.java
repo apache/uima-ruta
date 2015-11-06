@@ -22,7 +22,6 @@ package org.apache.uima.ruta.expression.list;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.string.AbstractStringExpression;
@@ -45,7 +44,7 @@ public class StringListVariableExpression extends StringListExpression {
     List<String> result = new ArrayList<String>();
     for (Object each : list) {
       if (each instanceof AbstractStringExpression) {
-     // TODO support arrays
+        // TODO support arrays
         result.add(((AbstractStringExpression) each).getStringValue(context, stream));
       } else if (each instanceof String) {
         result.add((String) each);

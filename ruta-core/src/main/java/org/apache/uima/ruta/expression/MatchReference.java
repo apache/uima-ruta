@@ -91,8 +91,8 @@ public class MatchReference extends RutaExpression {
         }
       }
     }
-    if(typeExpression == null || typeExpression.getType(context, stream) == null) {
-      throw new IllegalArgumentException("Not able to resolve type of expression: "+ match);
+    if (typeExpression == null || typeExpression.getType(context, stream) == null) {
+      throw new IllegalArgumentException("Not able to resolve type of expression: " + match);
     }
   }
 

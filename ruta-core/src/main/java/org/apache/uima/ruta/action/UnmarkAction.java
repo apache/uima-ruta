@@ -49,8 +49,8 @@ public class UnmarkAction extends TypeSensitiveAction {
 
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		RuleMatch match = context.getRuleMatch();
-		RuleElement element = context.getElement();
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
     Type t = type.getType(context, stream);
     boolean allAtAnchor = false;
     if (allAnchor != null) {
@@ -62,7 +62,7 @@ public class UnmarkAction extends TypeSensitiveAction {
     for (AnnotationFS annotationFS : matchedAnnotations) {
       Type matchedType = annotationFS.getType();
       boolean subsumes = stream.getCas().getTypeSystem().subsumes(t, matchedType);
-      if(subsumes && !allAtAnchor) {
+      if (subsumes && !allAtAnchor) {
         stream.removeAnnotation(annotationFS, matchedType);
       } else {
         RutaBasic beginAnchor = stream.getBeginAnchor(annotationFS.getBegin());
@@ -75,7 +75,7 @@ public class UnmarkAction extends TypeSensitiveAction {
           }
         }
       }
-      
+
     }
 
   }

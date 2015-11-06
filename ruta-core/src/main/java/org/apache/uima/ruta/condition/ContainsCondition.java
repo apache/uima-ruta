@@ -39,7 +39,6 @@ import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.MatchContext;
-import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
@@ -53,6 +52,7 @@ public class ContainsCondition extends TypeSentiveCondition {
 
   private IRutaExpression arg;
 
+  @SuppressWarnings("rawtypes")
   private ListExpression argList;
 
   public ContainsCondition(TypeExpression type, INumberExpression min, INumberExpression max,
@@ -63,6 +63,7 @@ public class ContainsCondition extends TypeSentiveCondition {
     this.percent = percent == null ? new SimpleBooleanExpression(false) : percent;
   }
 
+  @SuppressWarnings("rawtypes")
   public ContainsCondition(ListExpression list, IRutaExpression a, INumberExpression min,
           INumberExpression max, IBooleanExpression percent) {
     super((TypeExpression) null);
@@ -75,9 +76,8 @@ public class ContainsCondition extends TypeSentiveCondition {
 
   @Override
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		AnnotationFS annotation = context.getAnnotation();
-		RuleElement element = context.getElement();
-	  
+    AnnotationFS annotation = context.getAnnotation();
+
     int basicCount = 0;
     int anchorCount = 0;
     int totalCount = 0;
@@ -164,6 +164,7 @@ public class ContainsCondition extends TypeSentiveCondition {
     return arg;
   }
 
+  @SuppressWarnings("rawtypes")
   public ListExpression getArgList() {
     return argList;
   }

@@ -420,10 +420,10 @@ public class WildCardRuleElement extends AbstractRuleElement {
           } else {
             // HOTFIX caused by type priorities
             result.moveToLast();
-            if(result.isValid()) {
+            if (result.isValid()) {
               // HOTFIX avoid pointer to current annotation
               AnnotationFS current = result.get();
-              if(current.getEnd() >= annotation.getBegin()) {
+              if (current.getEnd() >= annotation.getBegin()) {
                 result.moveToPrevious();
               }
             }
@@ -470,10 +470,10 @@ public class WildCardRuleElement extends AbstractRuleElement {
           } else {
             // TODO due to type priorities: RutaBasic is last -> moveTo will not work
             result.moveToLast();
-            if(result.isValid()) {
+            if (result.isValid()) {
               // HOTFIX avoid pointer to current annotation
               AnnotationFS current = result.get();
-              if(current.getEnd() >= annotation.getBegin()) {
+              if (current.getEnd() >= annotation.getBegin()) {
                 result.moveToPrevious();
               }
             }
@@ -632,7 +632,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
     List<EvaluatedCondition> evaluatedConditions = new ArrayList<EvaluatedCondition>(
             conditions.size());
     boolean base = true;
-    
+
     MatchContext context = new MatchContext(annotation, this, ruleMatch, true);
 
     List<AnnotationFS> textsMatched = new ArrayList<AnnotationFS>(1);

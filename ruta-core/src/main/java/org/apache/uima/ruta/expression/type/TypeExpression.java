@@ -23,5 +23,4 @@ import org.apache.uima.ruta.expression.string.AbstractStringExpression;
 
 public abstract class TypeExpression extends AbstractStringExpression implements ITypeExpression {
 
-
 }

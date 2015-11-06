@@ -44,8 +44,7 @@ public class ExternalWordListExpression extends WordListExpression {
     for (IStringExpression each : args) {
       argList.add(each.getStringValue(context, null));
     }
-    
-    
+
     return null;
   }
 

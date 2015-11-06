@@ -31,7 +31,6 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
@@ -64,7 +63,7 @@ public class MarkTableAction extends AbstractRutaAction {
   private final IStringExpression ignoreChar;
 
   private final INumberExpression maxIgnoreChar;
-  
+
   private IBooleanExpression ignoreWS = new SimpleBooleanExpression(true);
 
   public MarkTableAction(TypeExpression typeExpr, INumberExpression indexExpr,
@@ -81,31 +80,32 @@ public class MarkTableAction extends AbstractRutaAction {
     this.ignoreChar = ignoreChar;
     this.maxIgnoreChar = maxIgnoreChar;
   }
-  
+
   public void setIgnoreWS(IBooleanExpression ignoreWS) {
     this.ignoreWS = ignoreWS;
   }
 
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		RuleMatch match = context.getRuleMatch();
-		RuleElement element = context.getElement();
-    RutaBlock block = element.getParent();
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
+    element.getParent();
     RutaTable table = tableExpr.getTable(context);
     int index = indexExpr.getIntegerValue(context, stream);
     Type type = typeExpr.getType(context, stream);
     Map<String, Integer> map = new HashMap<String, Integer>();
     for (IStringExpression each : featureMap.keySet()) {
-      map.put(each.getStringValue(context, stream), featureMap.get(each)
-              .getIntegerValue(context, stream));
+      map.put(each.getStringValue(context, stream),
+              featureMap.get(each).getIntegerValue(context, stream));
     }
 
-    boolean ignoreCaseValue = ignoreCase != null ? ignoreCase.getBooleanValue(context, stream) : false;
-    int ignoreLengthValue = ignoreLength != null ? ignoreLength.getIntegerValue(
-            context, stream) : 0;
+    boolean ignoreCaseValue = ignoreCase != null ? ignoreCase.getBooleanValue(context, stream)
+            : false;
+    int ignoreLengthValue = ignoreLength != null ? ignoreLength.getIntegerValue(context, stream)
+            : 0;
     String ignoreCharValue = ignoreChar != null ? ignoreChar.getStringValue(context, stream) : "";
-    int maxIgnoreCharValue = maxIgnoreChar != null ? maxIgnoreChar.getIntegerValue(
-            context, stream) : 0;
+    int maxIgnoreCharValue = maxIgnoreChar != null ? maxIgnoreChar.getIntegerValue(context, stream)
+            : 0;
     boolean ignoreWSValue = ignoreWS != null ? ignoreWS.getBooleanValue(context, stream) : false;
 
     RutaWordList wordList = table.getWordList(index, element.getParent());
@@ -114,7 +114,7 @@ public class MarkTableAction extends AbstractRutaAction {
     for (AnnotationFS annotationFS : found) {
       // HOTFIX: for feature assignment
       String candidate = stream.getVisibleCoveredText(annotationFS);
-      if(!StringUtils.isBlank(ignoreCharValue)) {
+      if (!StringUtils.isBlank(ignoreCharValue)) {
         for (int i = 0; i < maxIgnoreCharValue; i++) {
           candidate = candidate.replaceFirst("[" + ignoreCharValue + "]", "");
         }

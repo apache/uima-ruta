@@ -39,7 +39,7 @@ public class SimpleStringListExpression extends StringListExpression {
   public List<String> getList(MatchContext context, RutaStream stream) {
     List<String> result = new ArrayList<String>();
     for (IStringExpression each : list) {
-   // TODO support arrays
+      // TODO support arrays
       result.add(each.getStringValue(context, stream));
     }
     return result;

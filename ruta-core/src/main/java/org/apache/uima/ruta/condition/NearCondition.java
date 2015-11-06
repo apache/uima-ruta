@@ -30,7 +30,6 @@ import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.MatchContext;
-import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
@@ -55,14 +54,13 @@ public class NearCondition extends TypeSentiveCondition {
 
   @Override
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		AnnotationFS annotation = context.getAnnotation();
-		RuleElement element = context.getElement();
+    AnnotationFS annotation = context.getAnnotation();
     int maxValue = max.getIntegerValue(context, stream);
     int minValue = min.getIntegerValue(context, stream);
     boolean forwardValue = forward.getBooleanValue(context, stream);
 
-    FSIterator<AnnotationFS> it = filtered.getBooleanValue(context, stream) ? stream
-            : stream.getUnfilteredBasicIterator();
+    FSIterator<AnnotationFS> it = filtered.getBooleanValue(context, stream) ? stream : stream
+            .getUnfilteredBasicIterator();
     AnnotationFS pointer = null;
     if (forwardValue) {
       pointer = stream.getEndAnchor(annotation.getEnd());

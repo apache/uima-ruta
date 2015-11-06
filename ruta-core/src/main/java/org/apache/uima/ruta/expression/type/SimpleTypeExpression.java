@@ -20,7 +20,6 @@
 package org.apache.uima.ruta.expression.type;
 
 import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.rule.MatchContext;
@@ -38,13 +37,14 @@ public class SimpleTypeExpression extends TypeExpression {
    * Returns the actual type of the TypeExpression
    * 
    * @return annotation type
-   * @throws IllegalArgumentException if the type cannot be resolved.
+   * @throws IllegalArgumentException
+   *           if the type cannot be resolved.
    */
   @Override
   public Type getType(MatchContext context, RutaStream stream) {
     RutaBlock parent = context.getParent();
     Type type = parent.getEnvironment().getType(typeString);
-    if(type == null) {
+    if (type == null) {
       throw new IllegalArgumentException("Not able to resolve type: " + typeString);
     }
     return type;

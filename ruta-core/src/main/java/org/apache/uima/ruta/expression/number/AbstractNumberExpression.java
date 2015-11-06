@@ -19,16 +19,10 @@
 
 package org.apache.uima.ruta.expression.number;
 
-import java.util.List;
-
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
-import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.string.AbstractStringExpression;
-import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
 
-public abstract class AbstractNumberExpression extends AbstractStringExpression implements INumberExpression {
+public abstract class AbstractNumberExpression extends AbstractStringExpression implements
+        INumberExpression {
 
   protected double calculate(double t1, double t2, String op) {
     if ("+".equals(op)) {

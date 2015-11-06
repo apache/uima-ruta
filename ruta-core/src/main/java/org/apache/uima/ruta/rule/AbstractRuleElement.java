@@ -46,7 +46,7 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
   private boolean startAnchor;
 
   private String label;
-  
+
   private RuleElementContainer container;
 
   protected RutaBlock parent;
@@ -57,7 +57,7 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
   protected List<RutaStatement> inlinedConditionRules;
 
   protected List<RutaStatement> inlinedActionRules;
-  
+
   public AbstractRuleElement(RuleElementQuantifier quantifier,
           List<AbstractRutaCondition> conditions, List<AbstractRutaAction> actions,
           RuleElementContainer container, RutaBlock parent) {
@@ -104,9 +104,9 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
     }
     return null;
   }
-  
-  protected List<ScriptApply> processInlinedRules(List<RutaStatement> inlinedRules, RuleMatch ruleMatch, RutaStream stream,
-          InferenceCrowd crowd) {
+
+  protected List<ScriptApply> processInlinedRules(List<RutaStatement> inlinedRules,
+          RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd) {
     List<ScriptApply> result = new ArrayList<ScriptApply>();
     List<AnnotationFS> matchedAnnotationsOf = ruleMatch.getMatchedAnnotationsOfElement(this);
     // TODO where to implement the explanation of inlined rules?
@@ -125,8 +125,6 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
     }
     return result;
   }
-
-  
 
   public void apply(RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd) {
     for (AbstractRutaAction action : actions) {
@@ -165,8 +163,8 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
     return matchInfo;
   }
 
-  public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches, MatchContext context,
-          RutaStream stream) {
+  public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
+          MatchContext context, RutaStream stream) {
     return quantifier.evaluateMatches(matches, context, stream, emptyCrowd);
   }
 
@@ -289,19 +287,19 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
   public void setLabel(String label) {
     this.label = label;
   }
-  
+
   public void setInlinedConditionRules(List<RutaStatement> innerRules) {
     this.inlinedConditionRules = innerRules;
   }
-  
+
   public List<RutaStatement> getInlinedConditionRules() {
     return inlinedConditionRules;
   }
-  
+
   public void setInlinedActionRules(List<RutaStatement> innerRules) {
     this.inlinedActionRules = innerRules;
   }
-  
+
   public List<RutaStatement> getInlinedActionRules() {
     return inlinedActionRules;
   }

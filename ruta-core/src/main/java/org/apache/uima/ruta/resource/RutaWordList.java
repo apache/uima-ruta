@@ -22,7 +22,6 @@ package org.apache.uima.ruta.resource;
 import java.util.Collection;
 import java.util.Map;
 
-import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 

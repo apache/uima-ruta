@@ -33,8 +33,7 @@ public class OrCondition extends ComposedRutaCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(MatchContext context, RutaStream symbolStream,
-          InferenceCrowd crowd) {
+  public EvaluatedCondition eval(MatchContext context, RutaStream symbolStream, InferenceCrowd crowd) {
     boolean result = false;
     List<EvaluatedCondition> evals = new ArrayList<EvaluatedCondition>();
     for (AbstractRutaCondition each : conditions) {

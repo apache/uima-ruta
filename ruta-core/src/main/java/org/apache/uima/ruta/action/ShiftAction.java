@@ -45,8 +45,8 @@ public class ShiftAction extends MarkAction {
 
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		RuleMatch match = context.getRuleMatch();
-		RuleElement element = context.getElement();
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
     Type targetType = type.getType(context, stream);
     List<Integer> indexList = getIndexList(context, list, stream);
     List<AnnotationFS> destinationAnnotationSpans = match.getMatchedAnnotations(indexList,

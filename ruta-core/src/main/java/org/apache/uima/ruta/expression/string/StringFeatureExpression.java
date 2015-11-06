@@ -25,7 +25,6 @@ import java.util.List;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.rule.MatchContext;
@@ -42,7 +41,6 @@ public class StringFeatureExpression extends AbstractStringExpression {
   @Override
   public String getStringValue(MatchContext context, RutaStream stream) {
     AnnotationFS annotation = context.getAnnotation();
-    RutaBlock parent = context.getParent();
     Type type = fe.getTypeExpr(context, stream).getType(context, stream);
     Feature feature = fe.getFeature(context, stream);
     List<AnnotationFS> list = getTargetAnnotation(annotation, type, stream);
@@ -50,7 +48,7 @@ public class StringFeatureExpression extends AbstractStringExpression {
             false);
     if (!featureAnnotations.isEmpty()) {
       AnnotationFS next = featureAnnotations.iterator().next();
-      if(feature == null) {
+      if (feature == null) {
         // feature == coveredText
         return next.getCoveredText();
       } else {

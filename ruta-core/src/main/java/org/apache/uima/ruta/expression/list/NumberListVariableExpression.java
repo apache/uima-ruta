@@ -22,7 +22,6 @@ package org.apache.uima.ruta.expression.list;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.INumberExpression;
@@ -45,7 +44,7 @@ public class NumberListVariableExpression extends NumberListExpression {
     List<Number> result = new ArrayList<Number>();
     for (Object each : list) {
       if (each instanceof INumberExpression) {
-     // TODO support arrays
+        // TODO support arrays
         result.add(((INumberExpression) each).getDoubleValue(context, stream));
       } else if (each instanceof Number) {
         result.add((Number) each);

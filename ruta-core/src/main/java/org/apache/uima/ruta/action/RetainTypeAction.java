@@ -26,8 +26,6 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
-import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class RetainTypeAction extends AbstractRutaAction {
@@ -45,7 +43,7 @@ public class RetainTypeAction extends AbstractRutaAction {
 
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		RuleElement element = context.getElement();
+    context.getElement();
     List<Type> types = new ArrayList<Type>();
     for (TypeExpression each : list) {
       types.add(each.getType(context, stream));

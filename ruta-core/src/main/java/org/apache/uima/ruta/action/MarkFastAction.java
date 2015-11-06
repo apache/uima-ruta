@@ -23,7 +23,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
@@ -73,13 +72,13 @@ public class MarkFastAction extends AbstractMarkAction {
 
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		RuleMatch match = context.getRuleMatch();
-		RuleElement element = context.getElement();
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
     List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
     for (AnnotationFS annotationFS : matchedAnnotationsOf) {
       RutaStream windowStream = stream.getWindowStream(annotationFS, annotationFS.getType());
       RutaWordList wl = null;
-      RutaBlock parent = element.getParent();
+      element.getParent();
       if (list != null) {
         wl = list.getList(context);
       } else if (stringList != null) {

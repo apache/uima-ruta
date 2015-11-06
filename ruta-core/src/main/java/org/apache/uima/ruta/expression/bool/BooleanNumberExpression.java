@@ -19,8 +19,6 @@
 
 package org.apache.uima.ruta.expression.bool;
 
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.rule.MatchContext;
@@ -42,8 +40,6 @@ public class BooleanNumberExpression extends AbstractBooleanExpression {
 
   @Override
   public boolean getBooleanValue(MatchContext context, RutaStream stream) {
-    AnnotationFS annotation = context.getAnnotation();
-    RutaBlock parent = context.getParent();
     double doubleValue1 = getFristExpression().getDoubleValue(context, stream);
     double doubleValue2 = getSecondExpression().getDoubleValue(context, stream);
     return eval(doubleValue1, getOperator(), doubleValue2);
@@ -80,8 +76,7 @@ public class BooleanNumberExpression extends AbstractBooleanExpression {
 
   @Override
   public String getStringValue(MatchContext context, RutaStream stream) {
-    return e1.getStringValue(context, stream) + " " + op + " "
-            + e2.getStringValue(context, stream);
+    return e1.getStringValue(context, stream) + " " + op + " " + e2.getStringValue(context, stream);
   }
 
 }

@@ -27,17 +27,21 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 /**
  * Resource loader for ruta.
  *
- * This resource loader first looks in the resource paths and fallback in the classpath if it is not found.
+ * This resource loader first looks in the resource paths and fallback in the classpath if it is not
+ * found.
  */
 public class RutaResourceLoader implements ResourceLoader {
   private final ResourceLoader wrapped;
+
   private final ResourceLoader fallback;
 
   /**
-   * @param resourcePaths Resource paths to search in priority.
+   * @param resourcePaths
+   *          Resource paths to search in priority.
    */
   public RutaResourceLoader(String[] resourcePaths) {
-    this.wrapped = new PathMatchingResourcePatternResolver(new ResourcePathResourceLoader(resourcePaths));
+    this.wrapped = new PathMatchingResourcePatternResolver(new ResourcePathResourceLoader(
+            resourcePaths));
     this.fallback = new DefaultResourceLoader();
   }
 
@@ -50,6 +54,6 @@ public class RutaResourceLoader implements ResourceLoader {
   }
 
   public ClassLoader getClassLoader() {
-     return getClass().getClassLoader();
+    return getClass().getClassLoader();
   }
 }

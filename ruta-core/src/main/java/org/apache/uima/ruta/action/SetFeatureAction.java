@@ -24,7 +24,6 @@ import java.util.List;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.IRutaExpression;
@@ -58,9 +57,9 @@ public class SetFeatureAction extends AbstractRutaAction {
 
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		RuleMatch match = context.getRuleMatch();
-		RuleElement element = context.getElement();
-    RutaBlock parent = element.getParent();
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
+    element.getParent();
     String featureString = featureStringExpression.getStringValue(context, stream);
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOfElement(element);
     for (AnnotationFS annotationFS : matchedAnnotations) {
@@ -85,7 +84,7 @@ public class SetFeatureAction extends AbstractRutaAction {
           annotationFS.setDoubleValue(feature, v);
         } else if (rangeName.equals(UIMAConstants.TYPE_FLOAT) && expr instanceof INumberExpression) {
           INumberExpression numberExpr = (INumberExpression) expr;
-          float v = (float) numberExpr.getFloatValue(context, stream);
+          float v = numberExpr.getFloatValue(context, stream);
           annotationFS.setFloatValue(feature, v);
         } else if (rangeName.equals(UIMAConstants.TYPE_BYTE) && expr instanceof INumberExpression) {
           INumberExpression numberExpr = (INumberExpression) expr;
@@ -118,7 +117,7 @@ public class SetFeatureAction extends AbstractRutaAction {
               annotationFS.setFeatureValue(feature, null);
             }
           }
-        } else if(expr instanceof GenericFeatureExpression) {
+        } else if (expr instanceof GenericFeatureExpression) {
           TypeExpression typeExpr = ((GenericFeatureExpression) expr).getFeatureExpression()
                   .getTypeExpr(context, stream);
           Type t = typeExpr.getType(context, stream);

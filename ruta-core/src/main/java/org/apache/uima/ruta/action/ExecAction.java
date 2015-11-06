@@ -40,8 +40,6 @@ import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.MatchContext;
-import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 import org.apache.uima.util.XMLInputSource;
 
@@ -62,15 +60,15 @@ public class ExecAction extends CallAction {
   }
 
   @Override
-  protected void callScript(RutaBlock block, MatchContext context,
-          RutaStream stream, InferenceCrowd crowd) {
+  protected void callScript(RutaBlock block, MatchContext context, RutaStream stream,
+          InferenceCrowd crowd) {
     ScriptApply apply = block.apply(stream, crowd);
     context.getRuleMatch().addDelegateApply(this, apply);
   }
 
   @Override
-  protected void callEngine(MatchContext context, InferenceCrowd crowd, AnalysisEngine targetEngine,
-           RutaStream stream) throws ResourceInitializationException,
+  protected void callEngine(MatchContext context, InferenceCrowd crowd,
+          AnalysisEngine targetEngine, RutaStream stream) throws ResourceInitializationException,
           AnalysisEngineProcessException {
     CAS cas = stream.getCas();
     if (view != null) {
@@ -109,8 +107,7 @@ public class ExecAction extends CallAction {
         }
       }
     }
-    
-    
+
   }
 
   public TypeListExpression getTypeList() {

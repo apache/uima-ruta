@@ -19,13 +19,11 @@
 
 package org.apache.uima.ruta.action;
 
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class GreedyAnchoringAction extends AbstractRutaAction {
@@ -33,7 +31,7 @@ public class GreedyAnchoringAction extends AbstractRutaAction {
   private final IBooleanExpression greedyRuleElement;
 
   private final IBooleanExpression greedyRule;
-  
+
   public GreedyAnchoringAction(IBooleanExpression active, IBooleanExpression active2) {
     super();
     this.greedyRuleElement = active;
@@ -42,9 +40,9 @@ public class GreedyAnchoringAction extends AbstractRutaAction {
 
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		RuleMatch match = context.getRuleMatch();
-		RuleElement element = context.getElement();
-    RutaBlock parent = element.getParent();
+    context.getRuleMatch();
+    RuleElement element = context.getElement();
+    element.getParent();
     boolean greedy1 = greedyRuleElement.getBooleanValue(context, stream);
     boolean greedy2 = greedyRule.getBooleanValue(context, stream);
     stream.setGreedyRuleElement(greedy1);
@@ -58,7 +56,5 @@ public class GreedyAnchoringAction extends AbstractRutaAction {
   public IBooleanExpression getGreedyRule() {
     return greedyRule;
   }
-
-  
 
 }

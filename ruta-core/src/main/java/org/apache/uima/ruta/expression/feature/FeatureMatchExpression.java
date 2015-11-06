@@ -50,7 +50,8 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
   public FeatureMatchExpression(FeatureExpression f, String op, IRutaExpression arg,
           RutaBlock parent) {
     // FIXME
-    super(f.getTypeExpr(new MatchContext(parent), null), f.getFeatureStringList(new MatchContext(parent), null));
+    super(f.getTypeExpr(new MatchContext(parent), null), f.getFeatureStringList(new MatchContext(
+            parent), null));
     this.op = op;
     this.arg = arg;
   }
@@ -81,12 +82,13 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
     this.op = op;
   }
 
-  public boolean checkFeatureValue( AnnotationFS afs, MatchContext context, RutaStream stream) {
+  public boolean checkFeatureValue(AnnotationFS afs, MatchContext context, RutaStream stream) {
     Feature feature = getFeature(context, stream);
     return checkFeatureValue(afs, context, feature, stream);
   }
 
-  public boolean checkFeatureValue(AnnotationFS afs, MatchContext context, Feature feature, RutaStream stream) {
+  public boolean checkFeatureValue(AnnotationFS afs, MatchContext context, Feature feature,
+          RutaStream stream) {
     // null is possibly coveredText
     String rn = feature == null ? UIMAConstants.TYPE_STRING : feature.getRange().getName();
     if (rn.equals(UIMAConstants.TYPE_BOOLEAN)) {
@@ -188,6 +190,5 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
     }
     return false;
   }
-
 
 }

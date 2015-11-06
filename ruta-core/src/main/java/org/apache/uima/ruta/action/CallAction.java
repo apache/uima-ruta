@@ -56,8 +56,7 @@ public class CallAction extends AbstractRutaAction {
 
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		RuleMatch match = context.getRuleMatch();
-		RuleElement element = context.getElement();
+    RuleElement element = context.getElement();
     RutaModule thisScript = element.getParent().getScript();
     AnalysisEngine targetEngine = thisScript.getEngine(namespace);
     if (targetEngine != null) {
@@ -79,7 +78,8 @@ public class CallAction extends AbstractRutaAction {
 
   }
 
-  protected void callScript(RutaBlock block, MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+  protected void callScript(RutaBlock block, MatchContext context, RutaStream stream,
+          InferenceCrowd crowd) {
     RuleElement element = context.getElement();
     RuleMatch match = context.getRuleMatch();
     List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
@@ -92,13 +92,13 @@ public class CallAction extends AbstractRutaAction {
 
   }
 
-  protected void callEngine(MatchContext context, InferenceCrowd crowd, AnalysisEngine targetEngine,
-          RutaStream stream) throws ResourceInitializationException,
+  protected void callEngine(MatchContext context, InferenceCrowd crowd,
+          AnalysisEngine targetEngine, RutaStream stream) throws ResourceInitializationException,
           AnalysisEngineProcessException {
 
     RuleElement element = context.getElement();
     RuleMatch match = context.getRuleMatch();
-    
+
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(null,
             element.getContainer());
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {

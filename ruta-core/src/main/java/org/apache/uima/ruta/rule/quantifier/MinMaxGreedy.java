@@ -51,8 +51,8 @@ public class MinMaxGreedy extends AbstractRuleElementQuantifier {
   }
 
   @Override
-  public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches, MatchContext context,
-          RutaStream stream, InferenceCrowd crowd) {
+  public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
+          MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     int minValue = min.getIntegerValue(context, stream);
     int maxValue = max.getIntegerValue(context, stream);
 

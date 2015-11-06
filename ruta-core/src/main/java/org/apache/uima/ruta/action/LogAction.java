@@ -22,17 +22,14 @@ package org.apache.uima.ruta.action;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.MatchContext;
-import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class LogAction extends AbstractRutaAction {
 
-  public static final String LOGGER_NAME = Logger.global.getName();
+  public static final String LOGGER_NAME = Logger.getGlobal().getName();
 
   private final IStringExpression text;
 

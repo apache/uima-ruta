@@ -32,7 +32,6 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.cas.TOP;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.IRutaExpression;
@@ -43,7 +42,6 @@ import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
-import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.utils.UIMAUtils;
 
 public abstract class AbstractStructureAction extends AbstractRutaAction {
@@ -55,7 +53,6 @@ public abstract class AbstractStructureAction extends AbstractRutaAction {
   protected void fillFeatures(TOP structure, Map<IStringExpression, IRutaExpression> features,
           AnnotationFS matchedAnnotation, MatchContext context, RutaStream stream) {
     Map<String, IRutaExpression> map = new HashMap<String, IRutaExpression>();
-    RutaBlock parent = context.getParent();
     for (Entry<IStringExpression, IRutaExpression> each : features.entrySet()) {
       String value = each.getKey().getStringValue(context, stream);
       map.put(value, each.getValue());
@@ -101,33 +98,33 @@ public abstract class AbstractStructureAction extends AbstractRutaAction {
           }
         } else if (valueObject instanceof IStringExpression
                 && range.getName().equals(UIMAConstants.TYPE_STRING)) {
-          structure.setStringValue(targetFeature, ((IStringExpression) valueObject).getStringValue(
-                  context, stream));
+          structure.setStringValue(targetFeature,
+                  ((IStringExpression) valueObject).getStringValue(context, stream));
 
         } else if (valueObject instanceof INumberExpression) {
           if (range.getName().equals(UIMAConstants.TYPE_DOUBLE)) {
-            structure.setDoubleValue(targetFeature, ((INumberExpression) valueObject)
-                    .getDoubleValue(context, stream));
+            structure.setDoubleValue(targetFeature,
+                    ((INumberExpression) valueObject).getDoubleValue(context, stream));
           } else if (range.getName().equals(UIMAConstants.TYPE_INTEGER)) {
-            structure.setIntValue(targetFeature, ((INumberExpression) valueObject).getIntegerValue(
-                    context, stream));
+            structure.setIntValue(targetFeature,
+                    ((INumberExpression) valueObject).getIntegerValue(context, stream));
           } else if (range.getName().equals(UIMAConstants.TYPE_FLOAT)) {
-            structure.setFloatValue(targetFeature, ((INumberExpression) valueObject).getFloatValue(
-                    context, stream));
+            structure.setFloatValue(targetFeature,
+                    ((INumberExpression) valueObject).getFloatValue(context, stream));
           } else if (range.getName().equals(UIMAConstants.TYPE_BYTE)) {
-            structure.setByteValue(targetFeature, (byte) ((INumberExpression) valueObject)
-                    .getIntegerValue(context, stream));
+            structure.setByteValue(targetFeature,
+                    (byte) ((INumberExpression) valueObject).getIntegerValue(context, stream));
           } else if (range.getName().equals(UIMAConstants.TYPE_SHORT)) {
-            structure.setShortValue(targetFeature, (short) ((INumberExpression) valueObject)
-                    .getIntegerValue(context, stream));
+            structure.setShortValue(targetFeature,
+                    (short) ((INumberExpression) valueObject).getIntegerValue(context, stream));
           } else if (range.getName().equals(UIMAConstants.TYPE_LONG)) {
-            structure.setLongValue(targetFeature, (long) ((INumberExpression) valueObject)
-                    .getIntegerValue(context, stream));
+            structure.setLongValue(targetFeature,
+                    ((INumberExpression) valueObject).getIntegerValue(context, stream));
           }
         } else if (valueObject instanceof IBooleanExpression
                 && range.getName().equals(UIMAConstants.TYPE_BOOLEAN)) {
-          structure.setBooleanValue(targetFeature, ((IBooleanExpression) valueObject)
-                  .getBooleanValue(context, stream));
+          structure.setBooleanValue(targetFeature,
+                  ((IBooleanExpression) valueObject).getBooleanValue(context, stream));
         } else if (valueObject instanceof TypeExpression) {
           TypeExpression type = (TypeExpression) valueObject;
           List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(matchedAnnotation,

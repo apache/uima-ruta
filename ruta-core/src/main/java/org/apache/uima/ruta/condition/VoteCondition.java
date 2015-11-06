@@ -27,7 +27,6 @@ import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.MatchContext;
-import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
@@ -45,8 +44,7 @@ public class VoteCondition extends TerminalRutaCondition {
 
   @Override
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		AnnotationFS annotation = context.getAnnotation();
-		RuleElement element = context.getElement();
+    AnnotationFS annotation = context.getAnnotation();
     int count1 = 0;
     int count2 = 0;
     if (annotation != null) {

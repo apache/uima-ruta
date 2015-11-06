@@ -25,7 +25,6 @@ import java.util.List;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
@@ -49,8 +48,8 @@ public class TrimAction extends AbstractRutaAction {
 
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		RuleMatch match = context.getRuleMatch();
-		RuleElement element = context.getElement();
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
     List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
     List<Type> typesToTrim = getTypes(context, stream);
     for (AnnotationFS annotationFS : matchedAnnotationsOf) {

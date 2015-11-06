@@ -37,10 +37,11 @@ public abstract class AbstractMarkAction extends TypeSensitiveAction {
     super(type);
   }
 
-  protected Annotation createAnnotation(AnnotationFS annotation, MatchContext context, RutaStream stream) {
+  protected Annotation createAnnotation(AnnotationFS annotation, MatchContext context,
+          RutaStream stream) {
     Type t = type.getType(context, stream);
-    AnnotationFS newAnnotationFS = stream.getCas().createAnnotation(t,
-            annotation.getBegin(), annotation.getEnd());
+    AnnotationFS newAnnotationFS = stream.getCas().createAnnotation(t, annotation.getBegin(),
+            annotation.getEnd());
     Annotation newAnnotation = null;
     if (newAnnotationFS instanceof Annotation) {
       newAnnotation = (Annotation) newAnnotationFS;

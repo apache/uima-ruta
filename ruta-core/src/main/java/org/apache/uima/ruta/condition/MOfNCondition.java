@@ -22,12 +22,10 @@ package org.apache.uima.ruta.condition;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.MatchContext;
-import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class MOfNCondition extends ComposedRutaCondition {
@@ -45,8 +43,6 @@ public class MOfNCondition extends ComposedRutaCondition {
 
   @Override
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		AnnotationFS annotation = context.getAnnotation();
-		RuleElement element = context.getElement();
     int result = 0;
     List<EvaluatedCondition> evals = new ArrayList<EvaluatedCondition>();
     for (AbstractRutaCondition each : conditions) {

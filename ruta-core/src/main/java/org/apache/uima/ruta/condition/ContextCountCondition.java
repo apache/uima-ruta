@@ -53,9 +53,9 @@ public class ContextCountCondition extends TypeSentiveCondition {
 
   @Override
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		AnnotationFS annotation = context.getAnnotation();
-		RuleElement element = context.getElement();
-	  
+    AnnotationFS annotation = context.getAnnotation();
+    RuleElement element = context.getElement();
+
     Type contextType = type.getType(context, stream);
     stream.moveToFirst();
     List<AnnotationFS> visibleContexts = new ArrayList<AnnotationFS>();

@@ -33,8 +33,8 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 public class StarReluctant extends AbstractRuleElementQuantifier {
 
   @Override
-  public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches, MatchContext context,
-          RutaStream stream, InferenceCrowd crowd) {
+  public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
+          MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     return matches;
   }
 

@@ -43,7 +43,7 @@ public class UntypedListExpression extends ListExpression<Object> {
   public List<Object> getList(MatchContext context, RutaStream stream) {
     List<Object> result = new ArrayList<Object>();
     for (IRutaExpression each : list) {
-   // TODO support arrays
+      // TODO support arrays
       if (each instanceof AbstractBooleanExpression) {
         result.add(((AbstractBooleanExpression) each).getBooleanValue(context, stream));
       } else if (each instanceof AbstractNumberExpression) {

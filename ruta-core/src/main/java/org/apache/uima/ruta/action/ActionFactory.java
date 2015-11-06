@@ -199,7 +199,7 @@ public class ActionFactory {
   }
 
   @SuppressWarnings("rawtypes")
-public static AbstractRutaAction createMergeAction(IBooleanExpression union, Token target,
+  public static AbstractRutaAction createMergeAction(IBooleanExpression union, Token target,
           List<ListExpression> list, RutaBlock env) {
     return new MergeAction(union, target == null ? null : target.getText(), list);
   }

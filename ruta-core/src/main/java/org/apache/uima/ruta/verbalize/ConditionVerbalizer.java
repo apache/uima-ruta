@@ -231,7 +231,7 @@ public class ConditionVerbalizer {
       if (a != null) {
         arg = ", " + verbalizer.verbalize(a);
       }
-      return name + list +arg + ")";
+      return name + list + arg + ")";
     } else if (condition instanceof LastCondition) {
       LastCondition c = (LastCondition) condition;
       return name + verbalizer.verbalize(c.getType()) + ")";
@@ -336,7 +336,8 @@ public class ConditionVerbalizer {
       if (variable == null) {
         return name + verbalizer.verbalize(c.getPattern()) + ", " + ic + ")";
       } else {
-        return name + verbalizer.verbalize(variable) + ", " + verbalizer.verbalize(c.getPattern()) + ", " + ic + ")";
+        return name + verbalizer.verbalize(variable) + ", " + verbalizer.verbalize(c.getPattern())
+                + ", " + ic + ")";
       }
     } else if (condition instanceof ScoreCondition) {
       ScoreCondition c = (ScoreCondition) condition;

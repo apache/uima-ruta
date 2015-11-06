@@ -28,7 +28,6 @@ import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class MergeAction extends AbstractRutaAction {
@@ -51,8 +50,8 @@ public class MergeAction extends AbstractRutaAction {
   @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		RuleMatch match = context.getRuleMatch();
-		RuleElement element = context.getElement();
+    context.getRuleMatch();
+    RuleElement element = context.getElement();
     boolean union = unionExpr.getBooleanValue(context, stream);
     List<Object> list = new ArrayList<Object>();
     if (union) {

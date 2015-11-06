@@ -55,20 +55,20 @@ public class RutaModule extends RutaElement {
       return rootBlock;
     }
     RutaBlock ownBlock = blocks.get(id);
-    if(ownBlock != null) {
+    if (ownBlock != null) {
       return ownBlock;
     }
     int indexOf = id.indexOf('.');
-    if(indexOf != -1) {
+    if (indexOf != -1) {
       String otherScriptName = id.substring(0, indexOf);
       String tail = id.substring(indexOf + 1, id.length());
       RutaModule otherScript = getScript(otherScriptName);
-      if(otherScript != null) {
+      if (otherScript != null) {
         return otherScript.getBlock(tail);
       }
     } else {
       RutaModule otherScript = getScript(id);
-      if(otherScript != null) {
+      if (otherScript != null) {
         return otherScript.getBlock(null);
       }
     }

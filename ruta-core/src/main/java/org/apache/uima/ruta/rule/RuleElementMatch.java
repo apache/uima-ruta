@@ -36,7 +36,7 @@ public class RuleElementMatch {
   protected boolean baseConditionMatched = true;
 
   private boolean inlinedRulesMatched = true;
-  
+
   protected List<EvaluatedCondition> conditions;
 
   protected ComposedRuleElementMatch containerMatch;
@@ -53,7 +53,7 @@ public class RuleElementMatch {
   public String getLabel() {
     return ruleElement.getLabel();
   }
-  
+
   public void setMatchInfo(boolean baseCondition, List<AnnotationFS> texts,
           List<EvaluatedCondition> conditionList, RutaStream stream) {
     baseConditionMatched = baseCondition;

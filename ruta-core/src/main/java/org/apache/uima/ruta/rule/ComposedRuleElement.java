@@ -142,7 +142,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       for (Entry<RuleMatch, ComposedRuleElementMatch> entry : entrySet) {
         RuleMatch eachRuleMatch = entry.getKey();
         ComposedRuleElementMatch eachComposedMatch = entry.getValue();
-MatchContext context = new MatchContext(this, eachRuleMatch);
+        MatchContext context = new MatchContext(this, eachRuleMatch);
         AnnotationFS lastAnnotation = eachRuleMatch.getLastMatchedAnnotation(context, stream);
         boolean failed = !eachComposedMatch.matched();
         List<AnnotationFS> textsMatched = eachComposedMatch.getTextsMatched();
@@ -421,13 +421,13 @@ MatchContext context = new MatchContext(this, eachRuleMatch);
       List<RuleElementMatch> match = getMatch(ruleMatch, parentContainerMatch);
       int sizeBefore = match.size();
       MatchContext context = new MatchContext(annotation, this, ruleMatch, after);
-      boolean continueMatch = quantifier.continueMatch(after, context, annotation, parentContainerMatch,
-              stream, crowd);
+      boolean continueMatch = quantifier.continueMatch(after, context, annotation,
+              parentContainerMatch, stream, crowd);
       List<RuleElementMatch> evaluateMatches = quantifier.evaluateMatches(match, context, stream,
               crowd);
       int sizeAfter = evaluateMatches != null ? evaluateMatches.size() : sizeBefore;
       boolean removedFailedMatches = sizeAfter < sizeBefore;
-      if(removedFailedMatches) {
+      if (removedFailedMatches) {
         containerMatch.enforceUpdate();
       }
       ruleMatch.setMatched((ruleMatch.matched() || removedFailedMatches)
@@ -532,8 +532,8 @@ MatchContext context = new MatchContext(this, eachRuleMatch);
     }
   }
 
-  private void doMatch(boolean after, ComposedRuleElementMatch match, RuleMatch ruleMatch, RutaStream stream,
-          InferenceCrowd crowd) {
+  private void doMatch(boolean after, ComposedRuleElementMatch match, RuleMatch ruleMatch,
+          RutaStream stream, InferenceCrowd crowd) {
     List<AnnotationFS> textsMatched = match.getTextsMatched();
     if (textsMatched == null || textsMatched.isEmpty()) {
       match.evaluateInnerMatches(true, stream);
@@ -545,7 +545,7 @@ MatchContext context = new MatchContext(this, eachRuleMatch);
             begin, end);
 
     MatchContext context = new MatchContext(annotation, this, ruleMatch, after);
-    
+
     List<EvaluatedCondition> evaluatedConditions = new ArrayList<EvaluatedCondition>(
             conditions.size());
     for (AbstractRutaCondition condition : conditions) {

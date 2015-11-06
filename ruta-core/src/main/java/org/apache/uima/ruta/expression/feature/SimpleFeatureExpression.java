@@ -29,7 +29,6 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.IRutaExpression;
@@ -178,7 +177,5 @@ public class SimpleFeatureExpression extends FeatureExpression {
   public MatchReference getMatchReference() {
     return mr;
   }
-
-
 
 }

@@ -22,8 +22,6 @@ package org.apache.uima.ruta.expression.number;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.MatchContext;
-import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
 
 public interface INumberExpression extends IStringExpression {
 

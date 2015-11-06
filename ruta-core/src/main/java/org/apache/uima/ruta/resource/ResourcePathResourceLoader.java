@@ -33,7 +33,8 @@ public class ResourcePathResourceLoader implements ResourceLoader {
   private final String[] resourcePaths;
 
   /**
-   * @param resourcePaths Resource paths to search in.
+   * @param resourcePaths
+   *          Resource paths to search in.
    */
   public ResourcePathResourceLoader(String[] resourcePaths) {
     this.resourcePaths = resourcePaths;

@@ -28,5 +28,5 @@ public interface IRutaBlockExtension extends IRutaExtension {
 
   RutaBlock createBlock(String name, List<RutaExpression> args, RutaBlock env)
           throws RutaParseException;
-  
+
 }

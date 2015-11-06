@@ -29,7 +29,6 @@ import org.apache.uima.ruta.expression.list.TypeListExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.MatchContext;
-import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class AfterCondition extends TypeSentiveCondition {
@@ -44,8 +43,7 @@ public class AfterCondition extends TypeSentiveCondition {
 
   @Override
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		AnnotationFS annotation = context.getAnnotation();
-		RuleElement element = context.getElement();
+    AnnotationFS annotation = context.getAnnotation();
     if (!isWorkingOnList()) {
       Type t = type.getType(context, stream);
       boolean result = check(annotation, stream, t);
@@ -70,7 +68,7 @@ public class AfterCondition extends TypeSentiveCondition {
       it.moveToLast();
     }
     while (it.isValid()) {
-      AnnotationFS a = (AnnotationFS) it.get();
+      AnnotationFS a = it.get();
       if (a.getBegin() <= annotation.getBegin()) {
         result = true;
         break;

@@ -47,8 +47,8 @@ public class CreateAction extends AbstractStructureAction {
 
   private List<INumberExpression> indexes;
 
-  public CreateAction(TypeExpression structureType, Map<IStringExpression, IRutaExpression> features,
-          List<INumberExpression> indexes) {
+  public CreateAction(TypeExpression structureType,
+          Map<IStringExpression, IRutaExpression> features, List<INumberExpression> indexes) {
     super();
     this.structureType = structureType;
     this.features = features == null ? new HashMap<IStringExpression, IRutaExpression>() : features;
@@ -57,8 +57,8 @@ public class CreateAction extends AbstractStructureAction {
 
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		RuleMatch match = context.getRuleMatch();
-		RuleElement element = context.getElement();
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
     List<Integer> indexList = getIndexList(context, stream);
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(indexList,
             element.getContainer());

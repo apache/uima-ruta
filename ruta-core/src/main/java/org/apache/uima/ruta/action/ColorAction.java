@@ -21,7 +21,6 @@ package org.apache.uima.ruta.action;
 
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
@@ -30,7 +29,6 @@ import org.apache.uima.ruta.expression.string.SimpleStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.type.RutaColoring;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
@@ -55,14 +53,13 @@ public class ColorAction extends AbstractRutaAction {
 
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		RuleMatch match = context.getRuleMatch();
-		RuleElement element = context.getElement();
+    RuleElement element = context.getElement();
     Type casType = stream.getJCas().getCasType(RutaColoring.type);
     FeatureStructure newAnnotationFS = stream.getCas().createFS(casType);
     RutaColoring coloring = null;
     if (newAnnotationFS instanceof RutaColoring) {
       coloring = (RutaColoring) newAnnotationFS;
-      RutaBlock parent = element.getParent();
+      element.getParent();
       coloring.setBgColor(bgcolor.getStringValue(context, stream));
       coloring.setFgColor(fgcolor.getStringValue(context, stream));
       coloring.setSelected(selected.getBooleanValue(context, stream));

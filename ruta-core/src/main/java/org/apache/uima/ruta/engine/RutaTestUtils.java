@@ -76,9 +76,9 @@ public class RutaTestUtils {
     return process(ruleFileName, textFileName, amount, false, false, null, null, null, null);
   }
 
-  public static CAS process(String ruleFileName, String textFileName, Map<String, Object> parameters, int amount)
-          throws URISyntaxException, IOException, InvalidXMLException,
-          ResourceInitializationException, AnalysisEngineProcessException,
+  public static CAS process(String ruleFileName, String textFileName,
+          Map<String, Object> parameters, int amount) throws URISyntaxException, IOException,
+          InvalidXMLException, ResourceInitializationException, AnalysisEngineProcessException,
           ResourceConfigurationException {
     return process(ruleFileName, textFileName, parameters, amount, null, null, null, null);
   }
@@ -112,14 +112,15 @@ public class RutaTestUtils {
     parameters.put(RutaEngine.PARAM_DYNAMIC_ANCHORING, dynamicAnchoring);
     parameters.put(RutaEngine.PARAM_SIMPLE_GREEDY_FOR_COMPOSED, simpleGreedyForComposed);
 
-    return process(ruleFileName, textFileName, parameters, amount, complexTypes, features, resourceDirName, cas);
+    return process(ruleFileName, textFileName, parameters, amount, complexTypes, features,
+            resourceDirName, cas);
   }
 
-  public static CAS process(String ruleFileName, String textFileName, Map<String, Object> parameters,
-                            int amount,
-                            Map<String, String> complexTypes, Map<String, List<TestFeature>> features,
-                            String resourceDirName, CAS cas) throws URISyntaxException, IOException,
-          InvalidXMLException, ResourceInitializationException, AnalysisEngineProcessException,
+  public static CAS process(String ruleFileName, String textFileName,
+          Map<String, Object> parameters, int amount, Map<String, String> complexTypes,
+          Map<String, List<TestFeature>> features, String resourceDirName, CAS cas)
+          throws URISyntaxException, IOException, InvalidXMLException,
+          ResourceInitializationException, AnalysisEngineProcessException,
           ResourceConfigurationException {
     URL ruleURL = RutaTestUtils.class.getClassLoader().getResource(ruleFileName);
     File ruleFile = new File(ruleURL.toURI());
@@ -164,8 +165,8 @@ public class RutaTestUtils {
     aed.getAnalysisEngineMetaData().setTypeSystem(mergeTypeSystems);
 
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
-    ae.setConfigParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, new String[]{ruleFile.getParentFile()
-            .getPath()});
+    ae.setConfigParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, new String[] { ruleFile
+            .getParentFile().getPath() });
     String name = ruleFile.getName();
     if (name.endsWith(RutaEngine.SCRIPT_FILE_EXTENSION)) {
       name = name.substring(0, name.length() - 5);
@@ -178,7 +179,8 @@ public class RutaTestUtils {
     ae.setConfigParameterValue(RutaEngine.PARAM_MAIN_SCRIPT, name);
 
     if (resourceFile != null) {
-      ae.setConfigParameterValue(RutaEngine.PARAM_RESOURCE_PATHS, new String[]{resourceFile.getPath()});
+      ae.setConfigParameterValue(RutaEngine.PARAM_RESOURCE_PATHS,
+              new String[] { resourceFile.getPath() });
     }
 
     ae.reconfigure();
@@ -195,7 +197,7 @@ public class RutaTestUtils {
   /**
    * Helper to get the test type, e.g. org.apache.uima.T1, org.apache.uima.T2, ...
    * 
-   * @param cas 
+   * @param cas
    *          The CAS object containing the type system
    * @param i
    *          typeId, converted to {@link #TYPE} + i
@@ -217,7 +219,8 @@ public class RutaTestUtils {
           IOException, InvalidXMLException {
     URL url = RutaEngine.class.getClassLoader().getResource("BasicEngine.xml");
     if (url == null) {
-      url = RutaTestUtils.class.getClassLoader().getResource("org/apache/uima/ruta/BasicEngine.xml");
+      url = RutaTestUtils.class.getClassLoader()
+              .getResource("org/apache/uima/ruta/BasicEngine.xml");
     }
     if (url == null) {
       url = RutaTestUtils.class.getResource("BasicEngine.xml");
@@ -254,7 +257,6 @@ public class RutaTestUtils {
     return cas;
   }
 
-   
   /**
    * Helper for common assertion in JUnit tests
    * 
@@ -263,18 +265,21 @@ public class RutaTestUtils {
    * @param expectedCnt
    * @param expecteds
    */
-  public static void assertAnnotationsEquals(CAS cas, int typeId, int expectedCnt, String... expecteds) {
+  public static void assertAnnotationsEquals(CAS cas, int typeId, int expectedCnt,
+          String... expecteds) {
     Type t = getTestType(cas, typeId);
     AnnotationIndex<AnnotationFS> ai = cas.getAnnotationIndex(t);
     if (ai.size() != expectedCnt) {
-      throw new AssertionError("size of expected annotations ("+expectedCnt+") does not match with actual size ("+ai.size()+").");
+      throw new AssertionError("size of expected annotations (" + expectedCnt
+              + ") does not match with actual size (" + ai.size() + ").");
     }
     if (expecteds.length > 0) {
       FSIterator<AnnotationFS> iterator = ai.iterator();
       for (String expected : expecteds) {
-        String actual =iterator.next().getCoveredText(); 
+        String actual = iterator.next().getCoveredText();
         if (!actual.equals(expected)) {
-          throw new AssertionError("expected text ("+expected+") does not match with actual ("+actual+").");
+          throw new AssertionError("expected text (" + expected + ") does not match with actual ("
+                  + actual + ").");
         }
       }
     }
@@ -292,8 +297,8 @@ public class RutaTestUtils {
 
     CAS cas = null;
     try {
-      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
-              + ".txt", 50);
+      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION,
+              namespace + "/" + name + ".txt", 50);
     } catch (Exception e) {
       e.printStackTrace();
       throw new RuntimeException(e);

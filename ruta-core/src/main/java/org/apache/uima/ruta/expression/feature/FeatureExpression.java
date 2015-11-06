@@ -24,7 +24,6 @@ import java.util.List;
 
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;

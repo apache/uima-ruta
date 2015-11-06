@@ -79,9 +79,9 @@ import org.apache.uima.ruta.expression.resource.WordTableExpression;
 import org.apache.uima.ruta.expression.string.AbstractStringExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.string.SimpleStringExpression;
-import org.apache.uima.ruta.expression.type.TypeVariableExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.TypeVariableExpression;
 import org.apache.uima.ruta.verbalize.RutaVerbalizer;
 import org.junit.Test;
 

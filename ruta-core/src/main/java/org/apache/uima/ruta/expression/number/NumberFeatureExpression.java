@@ -25,7 +25,6 @@ import java.util.List;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
@@ -57,7 +56,6 @@ public class NumberFeatureExpression extends AbstractNumberExpression {
 
   private Number getNumberValue(MatchContext context, RutaStream stream) {
     AnnotationFS annotation = context.getAnnotation();
-    RutaBlock parent = context.getParent();
     Number result = null;
     Type type = fe.getTypeExpr(context, stream).getType(context, stream);
     Feature feature = fe.getFeature(context, stream);

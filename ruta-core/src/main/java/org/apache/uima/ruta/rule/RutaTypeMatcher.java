@@ -62,13 +62,12 @@ public class RutaTypeMatcher implements RutaMatcher {
       }
       Type currentDAType = stream.getCas().getDocumentAnnotation().getType();
       String name = type.getName();
-      RutaBasic firstBasicOfAll = stream.getFirstBasicOfAll();
       if ("uima.tcas.DocumentAnnotation".equals(name)
-              || "org.apache.uima.ruta.type.Document".equals(name)
-              || currentDAType.equals(type)
-//              || (stream.getDocumentAnnotationType().getName().equals(name) && (firstBasicOfAll != null && firstBasicOfAll
-//                      .beginsWith(type)))
-                      ) {
+              || "org.apache.uima.ruta.type.Document".equals(name) || currentDAType.equals(type)
+      // || (stream.getDocumentAnnotationType().getName().equals(name) && (firstBasicOfAll != null
+      // && firstBasicOfAll
+      // .beginsWith(type)))
+      ) {
         // TODO what about dynamic windowing?
         annotations.add(stream.getDocumentAnnotation());
       } else {
@@ -79,7 +78,8 @@ public class RutaTypeMatcher implements RutaMatcher {
     context.setParent(parent);
     FeatureExpression featureExpression = mr.getFeatureExpression(context, stream);
     if (featureExpression != null) {
-      return featureExpression.getFeatureAnnotations(annotations, stream, context, CHECK_ON_FEATURE);
+      return featureExpression
+              .getFeatureAnnotations(annotations, stream, context, CHECK_ON_FEATURE);
     } else {
       return annotations;
     }
@@ -87,7 +87,7 @@ public class RutaTypeMatcher implements RutaMatcher {
 
   public Collection<AnnotationFS> getAnnotationsAfter(RutaRuleElement ruleElement,
           AnnotationFS annotation, RutaStream stream, RutaBlock parent) {
-    if(annotation.getEnd() == stream.getDocumentAnnotation().getEnd()) {
+    if (annotation.getEnd() == stream.getDocumentAnnotation().getEnd()) {
       return Collections.emptyList();
     }
     RutaBasic lastBasic = stream.getEndAnchor(annotation.getEnd());
@@ -101,7 +101,8 @@ public class RutaTypeMatcher implements RutaMatcher {
     }
     if (annotation.getEnd() > 0) {
       stream.moveTo(lastBasic);
-      if (stream.isVisible(lastBasic) && stream.isValid() && stream.get().getEnd() == lastBasic.getEnd()) {
+      if (stream.isVisible(lastBasic) && stream.isValid()
+              && stream.get().getEnd() == lastBasic.getEnd()) {
         stream.moveToNext();
       }
     } else {
@@ -123,7 +124,8 @@ public class RutaTypeMatcher implements RutaMatcher {
         Collection<AnnotationFS> beginAnchors = nextBasic.getBeginAnchors(eachMatchType);
         if (beginAnchors != null) {
           for (AnnotationFS afs : beginAnchors) {
-            if (afs.getBegin() >= stream.getDocumentAnnotation().getBegin() && afs.getEnd() <= stream.getDocumentAnnotation().getEnd()) {
+            if (afs.getBegin() >= stream.getDocumentAnnotation().getBegin()
+                    && afs.getEnd() <= stream.getDocumentAnnotation().getEnd()) {
               anchors.add(afs);
             }
           }
@@ -143,7 +145,7 @@ public class RutaTypeMatcher implements RutaMatcher {
 
   public Collection<AnnotationFS> getAnnotationsBefore(RutaRuleElement ruleElement,
           AnnotationFS annotation, RutaStream stream, RutaBlock parent) {
-    if(annotation.getBegin() == stream.getDocumentAnnotation().getBegin()) {
+    if (annotation.getBegin() == stream.getDocumentAnnotation().getBegin()) {
       return Collections.emptyList();
     }
     RutaBasic firstBasic = stream.getBeginAnchor(annotation.getBegin());

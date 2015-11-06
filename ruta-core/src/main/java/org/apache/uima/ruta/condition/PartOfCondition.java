@@ -45,8 +45,8 @@ public class PartOfCondition extends TypeSentiveCondition {
 
   @Override
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		AnnotationFS annotation = context.getAnnotation();
-		RuleElement element = context.getElement();
+    AnnotationFS annotation = context.getAnnotation();
+    RuleElement element = context.getElement();
     if (!isWorkingOnList()) {
       Type t = type.getType(context, stream);
       boolean result = check(t, annotation, element, stream);
@@ -66,20 +66,20 @@ public class PartOfCondition extends TypeSentiveCondition {
 
   private boolean check(Type t, AnnotationFS annotation, RuleElement element, RutaStream stream) {
     RutaBasic beginAnchor = stream.getBeginAnchor(annotation.getBegin());
-    if(beginAnchor!= null && beginAnchor.isPartOf(t)) {
+    if (beginAnchor != null && beginAnchor.isPartOf(t)) {
       return true;
     }
     RutaBasic endAnchor = stream.getEndAnchor(annotation.getEnd());
-    if(endAnchor!= null && endAnchor.isPartOf(t)) {
+    if (endAnchor != null && endAnchor.isPartOf(t)) {
       return true;
     }
     // TODO: do we really need to check again on the anchors?
     Collection<AnnotationFS> beginAnchors = beginAnchor.getBeginAnchors(t);
-    if(beginAnchors != null && !beginAnchors.isEmpty()) {
+    if (beginAnchors != null && !beginAnchors.isEmpty()) {
       return true;
     }
     Collection<AnnotationFS> endAnchors = beginAnchor.getEndAnchors(t);
-    if(endAnchors != null && !endAnchors.isEmpty()) {
+    if (endAnchors != null && !endAnchors.isEmpty()) {
       return true;
     }
     return false;

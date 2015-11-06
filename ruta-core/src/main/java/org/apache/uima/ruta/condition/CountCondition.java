@@ -49,18 +49,20 @@ public class CountCondition extends TypeSentiveCondition {
 
   private final String var;
 
+  @SuppressWarnings("rawtypes")
   private ListExpression list;
 
   private IRutaExpression arg;
 
-  public CountCondition(TypeExpression type, INumberExpression min, INumberExpression max, String var) {
+  public CountCondition(TypeExpression type, INumberExpression min, INumberExpression max,
+          String var) {
     super(type);
     this.min = min == null ? new SimpleNumberExpression(Integer.MIN_VALUE) : min;
     this.max = max == null ? new SimpleNumberExpression(Integer.MAX_VALUE) : max;
     this.var = var;
   }
 
-  public CountCondition(ListExpression list, IRutaExpression a, INumberExpression min,
+  public CountCondition(@SuppressWarnings("rawtypes") ListExpression list, IRutaExpression a, INumberExpression min,
           INumberExpression max, String var) {
     super((TypeExpression) null);
     this.list = list;
@@ -72,9 +74,9 @@ public class CountCondition extends TypeSentiveCondition {
 
   @Override
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		AnnotationFS annotation = context.getAnnotation();
-		RuleElement element = context.getElement();
-	  
+    AnnotationFS annotation = context.getAnnotation();
+    RuleElement element = context.getElement();
+
     if (arg == null) {
       List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(annotation,
               type.getType(context, stream));
@@ -141,6 +143,7 @@ public class CountCondition extends TypeSentiveCondition {
     return var;
   }
 
+  @SuppressWarnings("rawtypes")
   public ListExpression getArgList() {
     return list;
   }

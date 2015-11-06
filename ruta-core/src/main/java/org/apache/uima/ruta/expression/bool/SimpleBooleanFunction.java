@@ -53,8 +53,7 @@ public class SimpleBooleanFunction extends AbstractBooleanExpression {
 
   @Override
   public String getStringValue(MatchContext context, RutaStream stream) {
-    return e1.getStringValue(context, stream) + " " + op + " "
-            + e2.getStringValue(context, stream);
+    return e1.getStringValue(context, stream) + " " + op + " " + e2.getStringValue(context, stream);
   }
 
 }

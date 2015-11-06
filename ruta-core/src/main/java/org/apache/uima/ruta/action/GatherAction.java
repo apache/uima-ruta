@@ -37,7 +37,6 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.list.NumberListExpression;
@@ -70,8 +69,8 @@ public class GatherAction extends AbstractStructureAction {
 
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		RuleMatch match = context.getRuleMatch();
-		RuleElement element = context.getElement();
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
     List<Integer> indexList = getIndexList(context, stream);
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(indexList,
             element.getContainer());
@@ -101,7 +100,7 @@ public class GatherAction extends AbstractStructureAction {
           AnnotationFS matchedAnnotation, MatchContext context, RutaStream stream) {
     Map<String, List<Number>> map = new HashMap<String, List<Number>>();
     for (Entry<IStringExpression, IRutaExpression> each : features.entrySet()) {
-      RutaBlock parent = context.getParent();
+      context.getParent();
       String value = each.getKey().getStringValue(context, stream);
       IRutaExpression expr = each.getValue();
       List<Number> ints = new ArrayList<Number>();
@@ -126,7 +125,8 @@ public class GatherAction extends AbstractStructureAction {
       if (reIndexes != null && !reIndexes.isEmpty()) {
         Type range = targetFeature.getRange();
 
-        List<RuleElementMatch> tms = getMatchInfo(context.getRuleMatch(), context.getElement(), reIndexes);
+        List<RuleElementMatch> tms = getMatchInfo(context.getRuleMatch(), context.getElement(),
+                reIndexes);
         if (tms.size() == 0) {// do nothing
 
         } else if (tms.size() == 1) {

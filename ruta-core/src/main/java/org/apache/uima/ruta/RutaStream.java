@@ -154,7 +154,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     AnnotationIndex<AnnotationFS> annotationIndex = cas.getAnnotationIndex();
     final List<AnnotationFS> allAnnotations = new LinkedList<AnnotationFS>();
     for (AnnotationFS a : annotationIndex) {
-      if(a.getBegin() != a.getEnd()) {
+      if (a.getBegin() != a.getEnd()) {
         allAnnotations.add(a);
       }
     }
@@ -178,12 +178,12 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
             break;
           }
           Integer second = anchors.first();
-          if(first < second) {
-          RutaBasic newTMB = new RutaBasic(getJCas(), first, second);
-          newTMB.setLowMemoryProfile(lowMemoryProfile);
-          beginAnchors.put(first, newTMB);
-          endAnchors.put(second, newTMB);
-          cas.addFsToIndexes(newTMB);
+          if (first < second) {
+            RutaBasic newTMB = new RutaBasic(getJCas(), first, second);
+            newTMB.setLowMemoryProfile(lowMemoryProfile);
+            beginAnchors.put(first, newTMB);
+            endAnchors.put(second, newTMB);
+            cas.addFsToIndexes(newTMB);
           }
         }
       }
@@ -300,7 +300,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
         toSplit = ceiling;
       }
       int newEnd = toSplit.getEnd();
-      if(newEnd == anchor) {
+      if (newEnd == anchor) {
         return false;
       }
       cas.removeFsFromIndexes(toSplit);
@@ -330,7 +330,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public void removeAnnotation(AnnotationFS annotation, Type type) {
-    if(type.getName().equals(UIMAConstants.TYPE_DOCUMENT)) {
+    if (type.getName().equals(UIMAConstants.TYPE_DOCUMENT)) {
       // do not remove DocumentAnnotation
       return;
     }
@@ -341,11 +341,11 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     Type parent = type;
     RutaBasic beginAnchor = getBeginAnchor(annotation.getBegin());
     RutaBasic endAnchor = getEndAnchor(annotation.getEnd());
-    if(beginAnchor != null) {
-    	beginAnchor.removeBegin(annotation, parent);
+    if (beginAnchor != null) {
+      beginAnchor.removeBegin(annotation, parent);
     }
-    if(endAnchor != null) {
-    	endAnchor.removeEnd(annotation, parent);
+    if (endAnchor != null) {
+      endAnchor.removeEnd(annotation, parent);
     }
     if (!(annotation instanceof RutaBasic)) {
       cas.removeFsFromIndexes(annotation);
@@ -369,13 +369,14 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
             filter.getCurrentFilterTypes(), filter.getCurrentRetainTypes(), windowAnnotation,
             windowType, cas);
 
-//    NavigableMap<Integer, RutaBasic> newBeginAnchors = beginAnchors.subMap(
-//            windowAnnotation.getBegin(), true, windowAnnotation.getEnd(), false);
-//    NavigableMap<Integer, RutaBasic> newEndAnchors = endAnchors.subMap(windowAnnotation.getBegin(),
-//            false, windowAnnotation.getEnd(), true);
+    // NavigableMap<Integer, RutaBasic> newBeginAnchors = beginAnchors.subMap(
+    // windowAnnotation.getBegin(), true, windowAnnotation.getEnd(), false);
+    // NavigableMap<Integer, RutaBasic> newEndAnchors =
+    // endAnchors.subMap(windowAnnotation.getBegin(),
+    // false, windowAnnotation.getEnd(), true);
 
-    RutaStream stream = new RutaStream(cas, basicType, beginAnchors, endAnchors,
-            filterManager, lowMemoryProfile, simpleGreedyForComposed, crowd);
+    RutaStream stream = new RutaStream(cas, basicType, beginAnchors, endAnchors, filterManager,
+            lowMemoryProfile, simpleGreedyForComposed, crowd);
     stream.setDynamicAnchoring(dynamicAnchoring);
     stream.setGreedyRuleElement(greedyRuleElement);
     stream.setGreedyRule(greedyRule);
@@ -403,7 +404,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     try {
       currentIt.moveTo(fs);
     } catch (Exception e) {
-//      e.printStackTrace();
+      // e.printStackTrace();
     }
   }
 
@@ -468,7 +469,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     try {
       return cas.getJCas();
     } catch (CASException e) {
-//      e.printStackTrace();
+      // e.printStackTrace();
     }
     return null;
   }
@@ -523,7 +524,8 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public List<AnnotationFS> getAnnotationsInWindow(AnnotationFS windowAnnotation, Type type) {
-    if(type == null) return null;
+    if (type == null)
+      return null;
     List<AnnotationFS> result = new ArrayList<AnnotationFS>();
     List<AnnotationFS> inWindow = getAnnotationsInWindow2(windowAnnotation, type);
     result = inWindow;
@@ -561,7 +563,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       if (isVisible(pointer) || !isValid()) {
         moveToPrevious();
       }
-      if(!isValid()) {
+      if (!isValid()) {
         moveToLast();
       }
       if (isValid()) {
@@ -790,26 +792,26 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   public boolean isOnlyOnce() {
     return onlyOnce;
   }
-  
+
   public void setOnlyOnce(Boolean onlyOnce) {
     this.onlyOnce = onlyOnce;
   }
-  
-  
+
   public boolean isVisible(AnnotationFS annotationFS) {
     return isVisible(annotationFS, false);
   }
-  
+
   public boolean isVisible(AnnotationFS annotationFS, boolean ignoreWindow) {
     if (annotationFS == null) {
       return false;
     }
-    if(annotationFS.getBegin() >= annotationFS.getEnd()) {
+    if (annotationFS.getBegin() >= annotationFS.getEnd()) {
       return false;
     }
-    
+
     AnnotationFS windowAnnotation = filter.getWindowAnnotation();
-    if (!ignoreWindow && windowAnnotation != null
+    if (!ignoreWindow
+            && windowAnnotation != null
             && (annotationFS.getBegin() < windowAnnotation.getBegin() || annotationFS.getEnd() > windowAnnotation
                     .getEnd())) {
       return false;
@@ -884,13 +886,11 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     StringBuilder result = new StringBuilder();
     List<RutaBasic> basicsInWindow = getBasicsInWindow(annotationFS);
     for (RutaBasic each : basicsInWindow) {
-      if(isVisible(each)) {
+      if (isVisible(each)) {
         result.append(each.getCoveredText());
       }
     }
     return result.toString();
   }
-
-
 
 }

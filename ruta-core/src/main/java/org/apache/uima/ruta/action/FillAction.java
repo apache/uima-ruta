@@ -48,8 +48,8 @@ public class FillAction extends AbstractStructureAction {
 
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		RuleMatch match = context.getRuleMatch();
-		RuleElement element = context.getElement();
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOfElement(element);
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
       if (matchedAnnotation == null) {

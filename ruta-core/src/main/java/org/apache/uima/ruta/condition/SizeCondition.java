@@ -19,7 +19,6 @@
 
 package org.apache.uima.ruta.condition;
 
-import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
@@ -50,8 +49,7 @@ public class SizeCondition extends AbstractRutaCondition {
 
   @Override
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		AnnotationFS annotation = context.getAnnotation();
-		RuleElement element = context.getElement();
+    RuleElement element = context.getElement();
     int count = listExpr.getList(context, stream).size();
     boolean value = count >= minExpr.getIntegerValue(context, stream)
             && count <= maxExpr.getIntegerValue(context, stream);

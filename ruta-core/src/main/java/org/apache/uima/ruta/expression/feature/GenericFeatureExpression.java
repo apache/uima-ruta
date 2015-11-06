@@ -19,7 +19,6 @@
 
 package org.apache.uima.ruta.expression.feature;
 
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.ExpressionFactory;
 import org.apache.uima.ruta.expression.RutaExpression;
@@ -27,8 +26,6 @@ import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.MatchContext;
-import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
 
 public class GenericFeatureExpression extends RutaExpression implements INumberExpression,
         IBooleanExpression, IStringExpression {

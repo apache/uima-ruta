@@ -28,7 +28,6 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
@@ -61,10 +60,10 @@ public class SplitAction extends AbstractRutaAction {
 
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		RuleMatch match = context.getRuleMatch();
-		RuleElement element = context.getElement();
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
     List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
-    RutaBlock parent = element.getParent();
+    element.getParent();
     Type typeToSplit = splitOnType.getType(context, stream);
     boolean splitOnCompleteAnnotation = complete.getBooleanValue(context, stream);
     boolean addToBegin = appendToBegin.getBooleanValue(context, stream);
@@ -168,11 +167,11 @@ public class SplitAction extends AbstractRutaAction {
 
   private boolean trimInvisible(Annotation annotation, RutaStream stream) {
     List<RutaBasic> basics = new ArrayList<>(stream.getAllBasicsInWindow(annotation));
-    
+
     int min = annotation.getEnd();
     int max = annotation.getBegin();
 
-    if(min <= max) {
+    if (min <= max) {
       return false;
     }
 

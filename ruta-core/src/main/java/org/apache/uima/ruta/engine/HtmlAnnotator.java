@@ -37,8 +37,8 @@ import org.htmlparser.util.ParserException;
  * This Analysis Engine provides support for HTML files by adding annotations for the HTML elements.
  * Using the default values, the HTML Annotator creates annotations for each HTML element spanning
  * the content of the element, whereas the most common elements are represented by own types. The
- * document <code>This text is <b>bold</b>.</code>, for example, would be annotated
- * with an annotation of the type <code>org.apache.uima.ruta.type.html.B</code> for the word
+ * document <code>This text is <b>bold</b>.</code>, for example, would be annotated with an
+ * annotation of the type <code>org.apache.uima.ruta.type.html.B</code> for the word
  * <code>bold</code>. The HTML annotator can be configured in order to include the start and end
  * elements in the created annotations. A descriptor file for this Analysis Engine is located in the
  * folder <code>descriptor/utils</code> of a UIMA Ruta project.

@@ -34,7 +34,6 @@ import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.MatchContext;
-import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class ImplicitCondition extends AbstractRutaCondition {
@@ -48,7 +47,7 @@ public class ImplicitCondition extends AbstractRutaCondition {
 
   @Override
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		AnnotationFS annotation = context.getAnnotation();
+    AnnotationFS annotation = context.getAnnotation();
     if (expr instanceof IBooleanExpression) {
       IBooleanExpression be = (IBooleanExpression) expr;
       return new EvaluatedCondition(this, be.getBooleanValue(context, stream));
@@ -57,7 +56,8 @@ public class ImplicitCondition extends AbstractRutaCondition {
       TypeExpression typeExpr = fme.getTypeExpr(context, stream);
       Type type = typeExpr.getType(context, stream);
       List<AnnotationFS> annotations = getAnnotationsToCheck(annotation, type, fme, stream);
-      Collection<AnnotationFS> featureAnnotations = fme.getFeatureAnnotations(annotations, stream,context, true);
+      Collection<AnnotationFS> featureAnnotations = fme.getFeatureAnnotations(annotations, stream,
+              context, true);
       return new EvaluatedCondition(this, !featureAnnotations.isEmpty());
     }
     return new EvaluatedCondition(this, false);
@@ -72,7 +72,8 @@ public class ImplicitCondition extends AbstractRutaCondition {
     } else {
       Collection<AnnotationFS> beginAnchors = stream.getBeginAnchor(annotation.getBegin())
               .getBeginAnchors(type);
-      Collection<AnnotationFS> endAnchors = stream.getEndAnchor(annotation.getEnd()).getEndAnchors(type);
+      Collection<AnnotationFS> endAnchors = stream.getEndAnchor(annotation.getEnd()).getEndAnchors(
+              type);
       @SuppressWarnings("unchecked")
       Collection<AnnotationFS> intersection = CollectionUtils
               .intersection(beginAnchors, endAnchors);

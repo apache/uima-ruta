@@ -572,8 +572,7 @@ public class RutaEnvironment {
     UimaContext context = owner.getContext();
     Boolean dictRemoveWS = false;
     if (context != null) {
-      dictRemoveWS = (Boolean) context
-              .getConfigParameterValue(RutaEngine.PARAM_DICT_REMOVE_WS);
+      dictRemoveWS = (Boolean) context.getConfigParameterValue(RutaEngine.PARAM_DICT_REMOVE_WS);
       if (dictRemoveWS == null) {
         dictRemoveWS = false;
       }
@@ -752,11 +751,11 @@ public class RutaEnvironment {
     }
     if (result != null) {
       MatchContext context = new MatchContext(owner);
-      if(RutaWordList.class.isAssignableFrom(type) && result instanceof WordListExpression) {
+      if (RutaWordList.class.isAssignableFrom(type) && result instanceof WordListExpression) {
         WordListExpression wle = (WordListExpression) result;
         RutaWordList list = wle.getList(context);
         return type.cast(list);
-      } else if(RutaTable.class.isAssignableFrom(type) && result instanceof WordTableExpression) {
+      } else if (RutaTable.class.isAssignableFrom(type) && result instanceof WordTableExpression) {
         WordTableExpression wte = (WordTableExpression) result;
         RutaTable table = wte.getTable(context);
         return type.cast(table);

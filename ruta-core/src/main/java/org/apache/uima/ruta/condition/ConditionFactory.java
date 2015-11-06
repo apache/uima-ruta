@@ -168,7 +168,8 @@ public class ConditionFactory {
     return null;
   }
 
-  public static AbstractRutaCondition createConditionParse(Token id, IStringExpression localeExpr, RutaBlock env) {
+  public static AbstractRutaCondition createConditionParse(Token id, IStringExpression localeExpr,
+          RutaBlock env) {
     String var = id == null ? "" : id.getText();
     return new ParseCondition(var, localeExpr);
   }
@@ -248,8 +249,8 @@ public class ConditionFactory {
 
   @SuppressWarnings("rawtypes")
   public static AbstractRutaCondition createConditionContains(ListExpression list,
-          IRutaExpression a, INumberExpression min, INumberExpression max, IBooleanExpression percent,
-          RutaBlock env) {
+          IRutaExpression a, INumberExpression min, INumberExpression max,
+          IBooleanExpression percent, RutaBlock env) {
     return new ContainsCondition(list, a, min, max, percent);
   }
 

@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaEnvironment;
@@ -34,8 +33,8 @@ public class RutaRule extends AbstractRule {
 
   private ComposedRuleElement root;
 
-  private Map<String,RuleElement> label2Element;
-  
+  private Map<String, RuleElement> label2Element;
+
   public RutaRule(List<RuleElement> elements, RutaBlock parent, int id) {
     super(parent, id);
     this.root = new ComposedRuleElement(elements, null, null, null, null, parent);
@@ -58,7 +57,7 @@ public class RutaRule extends AbstractRule {
 
   @Override
   public String toString() {
-    return root == null ? "<empty>": root.toString();
+    return root == null ? "<empty>" : root.toString();
   }
 
   public final List<RuleElement> getRuleElements() {
@@ -68,7 +67,7 @@ public class RutaRule extends AbstractRule {
   public RuleElement getRuleElementWithLabel(String label) {
     return label2Element.get(label);
   }
-  
+
   @Override
   public RutaEnvironment getEnvironment() {
     return getParent().getEnvironment();
@@ -81,20 +80,20 @@ public class RutaRule extends AbstractRule {
     } else {
       root.setRuleElements(elements);
     }
-    if(elements != null) {
+    if (elements != null) {
       // update label map
       for (RuleElement ruleElement : elements) {
         fillLabelMap(ruleElement);
       }
     }
-    
+
   }
 
   private void fillLabelMap(RuleElement ruleElement) {
-    if(!StringUtils.isBlank(ruleElement.getLabel())) {
+    if (!StringUtils.isBlank(ruleElement.getLabel())) {
       label2Element.put(ruleElement.getLabel(), ruleElement);
     }
-    if(ruleElement instanceof ComposedRuleElement) {
+    if (ruleElement instanceof ComposedRuleElement) {
       ComposedRuleElement cre = (ComposedRuleElement) ruleElement;
       List<RuleElement> ruleElements = cre.getRuleElements();
       for (RuleElement each : ruleElements) {
@@ -106,7 +105,5 @@ public class RutaRule extends AbstractRule {
   public ComposedRuleElement getRoot() {
     return root;
   }
-
-  
 
 }

@@ -31,7 +31,6 @@ import org.apache.uima.ruta.type.RutaBasic;
 public class BasicTypeConstraint implements FSTypeConstraint {
   private static final long serialVersionUID = 1115953538613617791L;
 
-
   private final Collection<Type> types;
 
   public BasicTypeConstraint(Collection<Type> types) {
@@ -56,13 +55,12 @@ public class BasicTypeConstraint implements FSTypeConstraint {
   public void add(String typeString) {
     throw new NotImplementedException();
   }
-  
 
   public boolean match(FeatureStructure fs) {
     boolean result = false;
     if (fs instanceof RutaBasic) {
       RutaBasic tmb = (RutaBasic) fs;
-      if(tmb.isEmpty()) {
+      if (tmb.isEmpty()) {
         return true;
       }
       if (types != null) {
@@ -73,15 +71,13 @@ public class BasicTypeConstraint implements FSTypeConstraint {
           }
         }
       }
-    } 
+    }
     return result;
   }
 
   @Override
   public String toString() {
-    return "(BASIC " +  " with " + types + ")";
+    return "(BASIC " + " with " + types + ")";
   }
-
-
 
 }

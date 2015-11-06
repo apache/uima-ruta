@@ -27,22 +27,22 @@ import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.bool.BooleanFeatureExpression;
 import org.apache.uima.ruta.expression.bool.BooleanNumberExpression;
 import org.apache.uima.ruta.expression.bool.BooleanTypeExpression;
-import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.BooleanVariableExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
 import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
-import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.expression.list.BooleanListVariableExpression;
+import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.expression.list.NumberListVariableExpression;
-import org.apache.uima.ruta.expression.list.StringListVariableExpression;
-import org.apache.uima.ruta.expression.list.TypeListVariableExpression;
 import org.apache.uima.ruta.expression.list.SimpleBooleanListExpression;
 import org.apache.uima.ruta.expression.list.SimpleNumberListExpression;
 import org.apache.uima.ruta.expression.list.SimpleStringListExpression;
 import org.apache.uima.ruta.expression.list.SimpleTypeListExpression;
+import org.apache.uima.ruta.expression.list.StringListVariableExpression;
+import org.apache.uima.ruta.expression.list.TypeListVariableExpression;
 import org.apache.uima.ruta.expression.list.UntypedListExpression;
 import org.apache.uima.ruta.expression.number.ComposedNumberExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
@@ -57,12 +57,12 @@ import org.apache.uima.ruta.expression.resource.WordTableExpression;
 import org.apache.uima.ruta.expression.string.ComposedStringExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.string.LiteralStringExpression;
-import org.apache.uima.ruta.expression.string.StringVariableExpression;
 import org.apache.uima.ruta.expression.string.SimpleStringExpression;
 import org.apache.uima.ruta.expression.string.StringFeatureExpression;
-import org.apache.uima.ruta.expression.type.TypeVariableExpression;
+import org.apache.uima.ruta.expression.string.StringVariableExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.TypeVariableExpression;
 
 public class ExpressionVerbalizer {
 
@@ -203,6 +203,7 @@ public class ExpressionVerbalizer {
     return expression.getClass().getSimpleName();
   }
 
+  @SuppressWarnings("rawtypes")
   public String verbalize(IStringExpression expression) {
     if (expression == null) {
       return "";

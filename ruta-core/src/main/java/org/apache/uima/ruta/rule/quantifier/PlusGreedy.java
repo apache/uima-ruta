@@ -64,7 +64,7 @@ public class PlusGreedy extends AbstractRuleElementQuantifier {
   @Override
   public boolean continueMatch(boolean after, MatchContext context, AnnotationFS annotation,
           ComposedRuleElementMatch containerMatch, RutaStream stream, InferenceCrowd crowd) {
-    if(annotation == null) {
+    if (annotation == null) {
       // do not try to continue a match that totally failed
       return false;
     }

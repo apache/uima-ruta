@@ -35,7 +35,7 @@ public class ClearAction extends AbstractRutaAction {
 
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		RuleElement element = context.getElement();
+    RuleElement element = context.getElement();
     element.getParent().getEnvironment().setVariableValue(list, null);
   }
 

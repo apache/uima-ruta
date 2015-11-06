@@ -36,7 +36,7 @@ public class PlainTextAnnotator extends JCasAnnotator_ImplBase {
   public static final String TYPE_LINE = "org.apache.uima.ruta.type.Line";
 
   public static final String TYPE_WSLINE = "org.apache.uima.ruta.type.WSLine";
-  
+
   public static final String TYPE_EMPTYLINE = "org.apache.uima.ruta.type.EmptyLine";
 
   public static final String TYPE_PARAGRAPH = "org.apache.uima.ruta.type.Paragraph";
@@ -60,7 +60,9 @@ public class PlainTextAnnotator extends JCasAnnotator_ImplBase {
     try {
       while ((eachLine = br.readLine()) != null) {
         boolean wsLine = StringUtils.isBlank(eachLine);
-        if(!wsLine && StringUtils.isBlank(eachLine.trim().replaceAll("\u00A0|\u202F|\uFEFF|\u2007|\u180E", ""))) {
+        if (!wsLine
+                && StringUtils.isBlank(eachLine.trim().replaceAll(
+                        "\u00A0|\u202F|\uFEFF|\u2007|\u180E", ""))) {
           // HOTFIX for NBSPs
           wsLine = true;
         }
@@ -80,8 +82,8 @@ public class PlainTextAnnotator extends JCasAnnotator_ImplBase {
         if (wsLine && emptyLine) {
           // do not create annotation with length 0
           // instead append the line break to the annotation
-          AnnotationFS newEmptyLineFS = cas.createAnnotation(emptyLineType, offsetTillNow, offsetTillNow
-                  + nlLength);
+          AnnotationFS newEmptyLineFS = cas.createAnnotation(emptyLineType, offsetTillNow,
+                  offsetTillNow + nlLength);
           cas.addFsToIndexes(newEmptyLineFS);
         } else if (wsLine && !emptyLine) {
           AnnotationFS newWSLineFS = cas.createAnnotation(wsLineType, offsetTillNow, offsetTillNow

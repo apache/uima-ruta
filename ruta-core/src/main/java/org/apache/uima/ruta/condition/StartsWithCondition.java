@@ -28,7 +28,6 @@ import org.apache.uima.ruta.expression.list.TypeListExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.MatchContext;
-import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
@@ -44,8 +43,7 @@ public class StartsWithCondition extends TypeSentiveCondition {
 
   @Override
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		AnnotationFS annotation = context.getAnnotation();
-		RuleElement element = context.getElement();
+    AnnotationFS annotation = context.getAnnotation();
 
     // TODO rewrite
     if (!isWorkingOnList()) {
@@ -71,7 +69,7 @@ public class StartsWithCondition extends TypeSentiveCondition {
       return false;
     }
     RutaBasic beginAnchor = stream.getBeginAnchor(annotation.getBegin());
-    if(beginAnchor != null) {
+    if (beginAnchor != null) {
       return beginAnchor.beginsWith(t);
     } else {
       return false;

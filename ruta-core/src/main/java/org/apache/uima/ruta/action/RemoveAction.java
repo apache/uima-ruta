@@ -32,7 +32,6 @@ import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class RemoveAction extends AbstractRutaAction {
@@ -58,7 +57,7 @@ public class RemoveAction extends AbstractRutaAction {
   @SuppressWarnings({ "rawtypes" })
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		RuleElement element = context.getElement();
+    RuleElement element = context.getElement();
     RutaBlock parent = element.getParent();
     List list = parent.getEnvironment().getVariableValue(var, List.class);
     List<Object> toRemove = new ArrayList<Object>();

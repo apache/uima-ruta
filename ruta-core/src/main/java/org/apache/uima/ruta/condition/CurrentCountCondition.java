@@ -48,12 +48,12 @@ public class CurrentCountCondition extends TypeSentiveCondition {
 
   @Override
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		AnnotationFS annotation = context.getAnnotation();
-		RuleElement element = context.getElement();
-	  
+    AnnotationFS annotation = context.getAnnotation();
+    RuleElement element = context.getElement();
+
     int count = 0;
-    Iterator<AnnotationFS> it = stream.getCas()
-            .getAnnotationIndex(type.getType(context, stream)).iterator();
+    Iterator<AnnotationFS> it = stream.getCas().getAnnotationIndex(type.getType(context, stream))
+            .iterator();
     while (it.hasNext()) {
       AnnotationFS next = it.next();
       if (next.getBegin() < annotation.getBegin()) {

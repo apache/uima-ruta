@@ -19,15 +19,12 @@
 
 package org.apache.uima.ruta.expression.bool;
 
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.MatchContext;
-import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
 
 public interface IBooleanExpression extends IStringExpression {
-  
+
   boolean getBooleanValue(MatchContext context, RutaStream stream);
 
 }

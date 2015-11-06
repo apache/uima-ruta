@@ -60,8 +60,8 @@ public class RegExpRule extends AbstractRule {
 
   private Map<TypeExpression, Map<IStringExpression, IRutaExpression>> featureAssignments;
 
-  public RegExpRule(AbstractStringExpression regexp, Map<TypeExpression, INumberExpression> typeMap, int id,
-          RutaBlock parent) {
+  public RegExpRule(AbstractStringExpression regexp,
+          Map<TypeExpression, INumberExpression> typeMap, int id, RutaBlock parent) {
     super(parent, id);
     this.regexpExpr = regexp;
     this.typeMap = typeMap;

@@ -44,7 +44,6 @@ import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class ConfigureAction extends AbstractRutaAction {
@@ -61,8 +60,7 @@ public class ConfigureAction extends AbstractRutaAction {
 
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		RuleMatch match = context.getRuleMatch();
-		RuleElement element = context.getElement();
+    RuleElement element = context.getElement();
     RutaBlock parent = element.getParent();
     RutaModule thisScript = parent.getScript();
     AnalysisEngine targetEngine = thisScript.getEngine(namespace);
