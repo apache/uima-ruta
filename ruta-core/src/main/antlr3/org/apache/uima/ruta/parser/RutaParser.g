@@ -860,7 +860,8 @@ String label = null;
 	:
 	(l = Identifier {label = l.getText();} COLON)?
 	start = STARTANCHOR? (
-	re1 = ruleElementType[container] {re = re1;}
+	rea = ruleElementAnnotation[container]{re = rea;}
+	|re1 = ruleElementType[container] {re = re1;}
 	| re2 = ruleElementLiteral[container] {re = re2;}
 	| (ruleElementComposed[null])=>re3 = ruleElementComposed[container] {re = re3;}
 	| (ruleElementWildCard[null])=> re5 = ruleElementWildCard[container] {re = re5;}
@@ -945,6 +946,26 @@ ruleElementType [RuleElementContainer container] returns [RutaRuleElement re = n
     
     (typeMatchExpression)=>typeExpr = typeMatchExpression 
      {re = factory.createRuleElement(typeExpr, null, null, null, container, $blockDeclaration::env);} 
+    q = quantifierPart? 
+        (LCURLY c = conditions? (THEN a = actions)? RCURLY)?
+   {
+	if(q != null) {
+		re.setQuantifier(q);
+	}
+	if(c!= null) {
+		re.setConditions(c);
+	}
+	if(a != null) {
+		re.setActions(a);
+	}
+	}
+    ;
+
+ruleElementAnnotation [RuleElementContainer container] returns [RutaRuleElement re = null]
+    :
+    
+    (annotationAddressExpression)=>aExpr = annotationAddressExpression 
+     {re = factory.createRuleElement(aExpr, null, null, null, container, $blockDeclaration::env);} 
     q = quantifierPart? 
         (LCURLY c = conditions? (THEN a = actions)? RCURLY)?
    {
@@ -2175,7 +2196,7 @@ annotationExpression returns [IRutaExpression expr = null]
 	
 	;
 
-annotationAddressExpression returns [IRutaExpression expr = null]
+annotationAddressExpression returns [IAnnotationExpression expr = null]
 	:
 	ADDRESS_PREFIX address = DecimalLiteral {expr = ExpressionFactory.createAnnotationAddressExpression(address);}
 	;

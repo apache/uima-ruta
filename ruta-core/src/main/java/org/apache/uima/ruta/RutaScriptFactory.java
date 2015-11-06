@@ -30,8 +30,10 @@ import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.MatchReference;
+import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.AbstractRuleElement;
@@ -41,6 +43,7 @@ import org.apache.uima.ruta.rule.RegExpRule;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleElementContainer;
 import org.apache.uima.ruta.rule.RuleElementIsolator;
+import org.apache.uima.ruta.rule.RutaAnnotationMatcher;
 import org.apache.uima.ruta.rule.RutaLiteralMatcher;
 import org.apache.uima.ruta.rule.RutaMatcher;
 import org.apache.uima.ruta.rule.RutaRule;
@@ -139,10 +142,12 @@ public class RutaScriptFactory {
     RutaMatcher matcher = null;
     if (expression instanceof MatchReference) {
       matcher = new RutaTypeMatcher((MatchReference) expression);
-    } else if (expression instanceof TypeExpression) {
+    } else if (expression instanceof ITypeExpression) {
       // e.g., for functions
       MatchReference matchReference = new MatchReference((TypeExpression) expression);
       matcher = new RutaTypeMatcher(matchReference);
+    } else if (expression instanceof IAnnotationExpression) {
+      matcher = new RutaAnnotationMatcher((IAnnotationExpression)expression);
     } else if (expression instanceof IStringExpression) {
       matcher = new RutaLiteralMatcher((IStringExpression) expression);
     }

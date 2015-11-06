@@ -24,6 +24,10 @@ import java.util.List;
 
 import org.antlr.runtime.Token;
 import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.expression.annotation.AnnotationAddressExpression;
+import org.apache.uima.ruta.expression.annotation.AnnotationLabelExpression;
+import org.apache.uima.ruta.expression.annotation.AnnotationVariableExpression;
+import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.bool.BooleanFeatureExpression;
 import org.apache.uima.ruta.expression.bool.BooleanNumberExpression;
 import org.apache.uima.ruta.expression.bool.BooleanTypeExpression;
@@ -294,16 +298,16 @@ public class ExpressionFactory {
     return new NullExpression();
   }
 
-  public static IRutaExpression createAnnotationAddressExpression(Token address) {
-    return null;
+  public static IAnnotationExpression createAnnotationAddressExpression(Token address) {
+    return new AnnotationAddressExpression(address.getText());
   }
 
   public static IRutaExpression createAnnotationLabelExpression(Token label) {
-    return null;
+    return new AnnotationLabelExpression(label.getText());
   }
 
   public static IRutaExpression createAnnotationVariableExpression(Token var) {
-    return null;
+    return new AnnotationVariableExpression(var.getText());
   }
 
   public static IRutaExpression createAnnotationListVariableExpression(Token var) {
