@@ -32,6 +32,7 @@ import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RutaMatcher;
 import org.apache.uima.ruta.rule.RutaRule;
@@ -243,11 +244,13 @@ public class Automaton {
         base = matcher.match(annotation, stream, element.getParent());
       }
     }
+    MatchContext context = new MatchContext(annotation, element, ruleMatch, true);
+    
     List<AnnotationFS> textsMatched = new ArrayList<AnnotationFS>(1);
     if (base) {
       for (AbstractRutaCondition condition : element.getConditions()) {
         crowd.beginVisit(condition, null);
-        EvaluatedCondition eval = condition.eval(annotation, element, stream, crowd);
+        EvaluatedCondition eval = condition.eval(context, stream, crowd);
         crowd.endVisit(condition, null);
         evaluatedConditions.add(eval);
       }
