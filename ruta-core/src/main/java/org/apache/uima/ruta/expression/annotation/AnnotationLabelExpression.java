@@ -19,16 +19,47 @@
 
 package org.apache.uima.ruta.expression.annotation;
 
+import java.util.List;
+
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.rule.MatchContext;
+import org.apache.uima.ruta.rule.RuleMatch;
 
-public class LabelAnnotationExpression extends AbstractAnnotationExpression {
+/**
+ * An expression referring to an annotation matched by a rule element identified by a label.
+ *
+ */
+public class AnnotationLabelExpression extends AbstractAnnotationExpression {
 
+private String label;
+  
+  public AnnotationLabelExpression(String label) {
+    super();
+    this.label = label;
+  }
+  
+  
   @Override
   public AnnotationFS getAnnotation(MatchContext context, RutaStream stream) {
-    // TODO Auto-generated method stub
-    return null;
+    RuleMatch ruleMatch = context.getRuleMatch();
+    List<AnnotationFS> annotations = ruleMatch.getMatchedAnnotationsOfLabel(label);
+    AnnotationFS annotation = null;
+    // TODO which one to return?
+    if(annotations != null && !annotations.isEmpty()) {
+      if(context.getDirection()) {
+        annotation = annotations.get(annotations.size()-1);
+      } else {
+        annotation = annotations.get(0);
+      }
+      
+    }
+    return annotation;
+  }
+
+
+  public String getLabel() {
+    return label;
   }
 
 }
