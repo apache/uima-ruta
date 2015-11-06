@@ -26,7 +26,6 @@ import java.util.logging.Level;
 import org.antlr.runtime.Token;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.expression.IRutaExpression;
-import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
@@ -199,7 +198,8 @@ public class ActionFactory {
             maxIgnoreChar);
   }
 
-  public static AbstractRutaAction createMergeAction(IBooleanExpression union, Token target,
+  @SuppressWarnings("rawtypes")
+public static AbstractRutaAction createMergeAction(IBooleanExpression union, Token target,
           List<ListExpression> list, RutaBlock env) {
     return new MergeAction(union, target == null ? null : target.getText(), list);
   }

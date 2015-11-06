@@ -25,6 +25,7 @@ import java.util.List;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.INumberExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
@@ -42,7 +43,9 @@ public class MatchedTextAction extends AbstractRutaAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+		RuleMatch match = context.getRuleMatch();
+		RuleElement element = context.getElement();
     List<Integer> indexList = getIndexList(match, element, stream);
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(indexList,
             element.getContainer());

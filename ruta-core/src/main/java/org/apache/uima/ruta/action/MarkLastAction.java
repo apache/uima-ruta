@@ -24,6 +24,7 @@ import java.util.List;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.type.RutaBasic;
@@ -36,7 +37,9 @@ public class MarkLastAction extends AbstractMarkAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+		RuleMatch match = context.getRuleMatch();
+		RuleElement element = context.getElement();
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(null,
             element.getContainer());
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {

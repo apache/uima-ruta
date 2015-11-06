@@ -28,6 +28,7 @@ import org.apache.uima.ruta.expression.resource.WordListExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.resource.RutaWordList;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
@@ -52,8 +53,9 @@ public class InListCondition extends TerminalRutaCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+		AnnotationFS annotation = context.getAnnotation();
+		RuleElement element = context.getElement();
     String text = annotation.getCoveredText();
     if(arg != null) {
       text = arg.getStringValue(element.getParent(), annotation, stream);

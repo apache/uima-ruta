@@ -30,6 +30,7 @@ import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RutaRuleElement;
 import org.apache.uima.ruta.type.RutaBasic;
@@ -49,8 +50,9 @@ public class PositionCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+		AnnotationFS annotation = context.getAnnotation();
+		RuleElement element = context.getElement();
     Type t = type.getType(element.getParent());
 
     RutaBasic beginAnchor = stream.getBeginAnchor(annotation.getBegin());

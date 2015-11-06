@@ -21,8 +21,7 @@ package org.apache.uima.ruta.action;
 
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public abstract class AbstractRutaAction extends RutaElement {
@@ -31,8 +30,7 @@ public abstract class AbstractRutaAction extends RutaElement {
     super();
   }
 
-  public abstract void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd);
+  public abstract void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd);
 
   @Override
   public String toString() {

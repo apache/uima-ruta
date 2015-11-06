@@ -34,6 +34,7 @@ import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.utils.UIMAUtils;
@@ -56,7 +57,9 @@ public class SetFeatureAction extends AbstractRutaAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+		RuleMatch match = context.getRuleMatch();
+		RuleElement element = context.getElement();
     RutaBlock parent = element.getParent();
     String featureString = featureStringExpression.getStringValue(parent, match, element, stream);
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOfElement(element);

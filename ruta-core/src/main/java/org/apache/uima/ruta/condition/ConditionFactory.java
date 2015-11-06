@@ -246,6 +246,7 @@ public class ConditionFactory {
     return new CountCondition(type, a, min, max, var == null ? null : var.getText());
   }
 
+  @SuppressWarnings("rawtypes")
   public static AbstractRutaCondition createConditionContains(ListExpression list,
           IRutaExpression a, INumberExpression min, INumberExpression max, IBooleanExpression percent,
           RutaBlock env) {

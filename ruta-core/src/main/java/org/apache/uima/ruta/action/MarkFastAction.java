@@ -34,6 +34,7 @@ import org.apache.uima.ruta.expression.resource.WordListExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.resource.RutaWordList;
 import org.apache.uima.ruta.resource.TreeWordList;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
@@ -71,7 +72,9 @@ public class MarkFastAction extends AbstractMarkAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+		RuleMatch match = context.getRuleMatch();
+		RuleElement element = context.getElement();
     List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
     for (AnnotationFS annotationFS : matchedAnnotationsOf) {
       RutaStream windowStream = stream.getWindowStream(annotationFS, annotationFS.getType());

@@ -26,6 +26,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.type.RutaBasic;
@@ -39,7 +40,9 @@ public class MarkOnceAction extends MarkAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+		RuleMatch match = context.getRuleMatch();
+		RuleElement element = context.getElement();
     List<Integer> indexList = getIndexList(element, list, stream);
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(indexList,
             element.getContainer());

@@ -42,6 +42,7 @@ import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.resource.RutaTable;
 import org.apache.uima.ruta.resource.RutaWordList;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
@@ -86,7 +87,9 @@ public class MarkTableAction extends AbstractRutaAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+		RuleMatch match = context.getRuleMatch();
+		RuleElement element = context.getElement();
     RutaBlock block = element.getParent();
     RutaTable table = tableExpr.getTable(block);
     int index = indexExpr.getIntegerValue(block, match, element, stream);

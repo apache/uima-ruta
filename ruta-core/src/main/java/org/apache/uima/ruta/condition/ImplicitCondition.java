@@ -33,6 +33,7 @@ import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
@@ -46,8 +47,9 @@ public class ImplicitCondition extends AbstractRutaCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+		AnnotationFS annotation = context.getAnnotation();
+		RuleElement element = context.getElement();
     if (expr instanceof IBooleanExpression) {
       IBooleanExpression be = (IBooleanExpression) expr;
       return new EvaluatedCondition(this, be.getBooleanValue(element.getParent(), annotation, stream));

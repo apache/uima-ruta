@@ -19,10 +19,9 @@
 
 package org.apache.uima.ruta.condition;
 
-import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
-import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class NotCondition extends ComposedRutaCondition {
@@ -32,11 +31,10 @@ public class NotCondition extends ComposedRutaCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     AbstractRutaCondition cond = conditions.get(0);
     crowd.beginVisit(cond, null);
-    EvaluatedCondition eval = cond.eval(annotation, element, stream, crowd);
+    EvaluatedCondition eval = cond.eval(context, stream, crowd);
     crowd.endVisit(cond, null);
     return new EvaluatedCondition(this, !eval.isValue(), eval);
   }

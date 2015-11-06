@@ -629,11 +629,14 @@ public class WildCardRuleElement extends AbstractRuleElement {
     List<EvaluatedCondition> evaluatedConditions = new ArrayList<EvaluatedCondition>(
             conditions.size());
     boolean base = true;
+    
+    MatchContext context = new MatchContext(annotation, this, ruleMatch, true);
+
     List<AnnotationFS> textsMatched = new ArrayList<AnnotationFS>(1);
     if (base) {
       for (AbstractRutaCondition condition : conditions) {
         crowd.beginVisit(condition, null);
-        EvaluatedCondition eval = condition.eval(annotation, this, stream, crowd);
+        EvaluatedCondition eval = condition.eval(context, stream, crowd);
         crowd.endVisit(condition, null);
         evaluatedConditions.add(eval);
       }

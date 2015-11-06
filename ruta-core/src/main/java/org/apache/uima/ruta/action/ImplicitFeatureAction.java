@@ -43,6 +43,7 @@ import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.AnnotationComparator;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.utils.UIMAUtils;
@@ -60,7 +61,9 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+		RuleMatch match = context.getRuleMatch();
+		RuleElement element = context.getElement();
     TypeExpression typeExpr = expr.getTypeExpr(element.getParent());
     Type type = typeExpr.getType(element.getParent());
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOfElement(element);

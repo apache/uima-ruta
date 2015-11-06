@@ -38,6 +38,7 @@ import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
@@ -73,8 +74,10 @@ public class ContainsCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+		AnnotationFS annotation = context.getAnnotation();
+		RuleElement element = context.getElement();
+	  
     int basicCount = 0;
     int anchorCount = 0;
     int totalCount = 0;

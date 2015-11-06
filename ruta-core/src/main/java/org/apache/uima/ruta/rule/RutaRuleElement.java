@@ -70,7 +70,7 @@ public class RutaRuleElement extends AbstractRuleElement {
         extendedContainerMatch = containerMatch.copy();
         extendedMatch = ruleMatch.copy(extendedContainerMatch, true);
       }
-      doMatch(eachAnchor, extendedMatch, extendedContainerMatch, true, stream, crowd);
+      doMatch(true, eachAnchor, extendedMatch, extendedContainerMatch, true, stream, crowd);
       if (this.equals(entryPoint) && ruleApply == null) {
         result.add(extendedMatch);
       } else if (extendedMatch.matched()) {
@@ -149,7 +149,7 @@ public class RutaRuleElement extends AbstractRuleElement {
         } else if (nextAnnotations.size() == 1) {
           lastAnchor = eachAnchor;
           eachAnchor = nextAnnotations.iterator().next();
-          doMatch(eachAnchor, extendedMatch, extendedContainerMatch, false, stream, crowd);
+          doMatch(after, eachAnchor, extendedMatch, extendedContainerMatch, false, stream, crowd);
           if (this.equals(entryPoint)) {
             result.add(extendedMatch);
           } else if (extendedMatch.matched()) {
@@ -221,7 +221,7 @@ public class RutaRuleElement extends AbstractRuleElement {
           extendedContainerMatch = containerMatch.copy();
           extendedMatch = ruleMatch.copy(extendedContainerMatch, after);
         }
-        doMatch(eachAnchor, extendedMatch, extendedContainerMatch, false, stream, crowd);
+        doMatch(after, eachAnchor, extendedMatch, extendedContainerMatch, false, stream, crowd);
 
         if (this.equals(entryPoint) && ruleApply == null) {
           result.add(extendedMatch);
@@ -355,7 +355,7 @@ public class RutaRuleElement extends AbstractRuleElement {
     return result;
   }
 
-  private void doMatch(AnnotationFS annotation, RuleMatch ruleMatch,
+  private void doMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
           ComposedRuleElementMatch containerMatch, boolean ruleAnchor, RutaStream stream,
           InferenceCrowd crowd) {
     RuleElementMatch result = new RuleElementMatch(this, containerMatch);
@@ -372,11 +372,13 @@ public class RutaRuleElement extends AbstractRuleElement {
         base = matcher.match(annotation, stream, getParent());
       }
     }
+    MatchContext context = new MatchContext(annotation, this, ruleMatch, after);
+    
     List<AnnotationFS> textsMatched = new ArrayList<AnnotationFS>(1);
     if (base) {
       for (AbstractRutaCondition condition : conditions) {
         crowd.beginVisit(condition, null);
-        EvaluatedCondition eval = condition.eval(annotation, this, stream, crowd);
+        EvaluatedCondition eval = condition.eval(context, stream, crowd);
         crowd.endVisit(condition, null);
         evaluatedConditions.add(eval);
       }

@@ -408,7 +408,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
           InferenceCrowd crowd) {
     List<RuleMatch> result = new ArrayList<RuleMatch>();
     RuleElementContainer container = getContainer();
-    doMatch(containerMatch, ruleMatch, stream, crowd);
+    doMatch(after, containerMatch, ruleMatch, stream, crowd);
     if (this.equals(entryPoint) && ruleApply == null) {
       result.add(ruleMatch);
     } else if (container == null) {
@@ -530,7 +530,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     }
   }
 
-  private void doMatch(ComposedRuleElementMatch match, RuleMatch ruleMatch, RutaStream stream,
+  private void doMatch(boolean after, ComposedRuleElementMatch match, RuleMatch ruleMatch, RutaStream stream,
           InferenceCrowd crowd) {
     List<AnnotationFS> textsMatched = match.getTextsMatched();
     if (textsMatched == null || textsMatched.isEmpty()) {
@@ -542,11 +542,13 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     AnnotationFS annotation = stream.getCas().createAnnotation(stream.getCas().getAnnotationType(),
             begin, end);
 
+    MatchContext context = new MatchContext(annotation, this, ruleMatch, after);
+    
     List<EvaluatedCondition> evaluatedConditions = new ArrayList<EvaluatedCondition>(
             conditions.size());
     for (AbstractRutaCondition condition : conditions) {
       crowd.beginVisit(condition, null);
-      EvaluatedCondition eval = condition.eval(annotation, this, stream, crowd);
+      EvaluatedCondition eval = condition.eval(context, stream, crowd);
       crowd.endVisit(condition, null);
       evaluatedConditions.add(eval);
     }

@@ -131,7 +131,7 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
   public void apply(RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd) {
     for (AbstractRutaAction action : actions) {
       crowd.beginVisit(action, null);
-      action.execute(ruleMatch, this, stream, crowd);
+      action.execute(new MatchContext(this, ruleMatch), stream, crowd);
       crowd.endVisit(action, null);
     }
     processInlinedActionRules(ruleMatch, stream, crowd);
