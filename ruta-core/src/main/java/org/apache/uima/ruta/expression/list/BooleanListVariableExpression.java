@@ -22,9 +22,11 @@ package org.apache.uima.ruta.expression.list;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class BooleanListVariableExpression extends BooleanListExpression {
 
@@ -37,13 +39,14 @@ public class BooleanListVariableExpression extends BooleanListExpression {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Boolean> getList(RutaBlock parent, RutaStream stream) {
+  public List<Boolean> getList(MatchContext context, RutaStream stream) {
+    RutaBlock parent = context.getParent();
     List<Object> list = parent.getEnvironment().getVariableValue(var, List.class);
     List<Boolean> result = new ArrayList<Boolean>();
     for (Object each : list) {
       if (each instanceof IBooleanExpression) {
         // TODO support arrays
-        result.add(((IBooleanExpression) each).getBooleanValue(parent, null, stream));
+        result.add(((IBooleanExpression) each).getBooleanValue(context, stream));
       } else if (each instanceof Boolean) {
         result.add((Boolean) each);
       }

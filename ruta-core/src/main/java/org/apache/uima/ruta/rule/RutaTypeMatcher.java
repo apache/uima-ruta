@@ -75,9 +75,11 @@ public class RutaTypeMatcher implements RutaMatcher {
         annotations.addAll(stream.getAnnotations(type));
       }
     }
-    FeatureExpression featureExpression = mr.getFeatureExpression(parent);
+    MatchContext context = new MatchContext(null, null, true);
+    context.setParent(parent);
+    FeatureExpression featureExpression = mr.getFeatureExpression(context, stream);
     if (featureExpression != null) {
-      return featureExpression.getFeatureAnnotations(annotations, stream, parent, CHECK_ON_FEATURE);
+      return featureExpression.getFeatureAnnotations(annotations, stream, context, CHECK_ON_FEATURE);
     } else {
       return annotations;
     }
@@ -127,9 +129,11 @@ public class RutaTypeMatcher implements RutaMatcher {
           }
         }
       }
-      FeatureExpression fm = mr.getFeatureExpression(parent);
+      MatchContext context = new MatchContext(null, null, true);
+      context.setParent(parent);
+      FeatureExpression fm = mr.getFeatureExpression(context, stream);
       if (fm != null) {
-        return fm.getFeatureAnnotations(anchors, stream, parent, CHECK_ON_FEATURE);
+        return fm.getFeatureAnnotations(anchors, stream, context, CHECK_ON_FEATURE);
       } else {
         return anchors;
       }
@@ -172,9 +176,11 @@ public class RutaTypeMatcher implements RutaMatcher {
           }
         }
       }
-      FeatureExpression fm = mr.getFeatureExpression(parent);
+      MatchContext context = new MatchContext(null, null, true);
+      context.setParent(parent);
+      FeatureExpression fm = mr.getFeatureExpression(context, stream);
       if (fm != null) {
-        return fm.getFeatureAnnotations(anchors, stream, parent, CHECK_ON_FEATURE);
+        return fm.getFeatureAnnotations(anchors, stream, context, CHECK_ON_FEATURE);
       } else {
         return anchors;
       }
@@ -186,7 +192,9 @@ public class RutaTypeMatcher implements RutaMatcher {
     if (annotation == null) {
       return false;
     }
-    FeatureExpression featureExpression = mr.getFeatureExpression(parent);
+    MatchContext context = new MatchContext(null, null, true);
+    context.setParent(parent);
+    FeatureExpression featureExpression = mr.getFeatureExpression(context, stream);
     if (featureExpression == null) {
       boolean b = checkType(annotation, stream, parent);
       if (b) {
@@ -220,11 +228,13 @@ public class RutaTypeMatcher implements RutaMatcher {
   }
 
   private boolean checkFeature(AnnotationFS annotation, RutaStream stream, RutaBlock parent) {
-    FeatureExpression fe = mr.getFeatureExpression(parent);
-    Feature feature = fe.getFeature(parent);
+    MatchContext context = new MatchContext(annotation, null, null, true);
+    context.setParent(parent);
+    FeatureExpression fe = mr.getFeatureExpression(context, stream);
+    Feature feature = fe.getFeature(context, stream);
     if (fe instanceof FeatureMatchExpression) {
       FeatureMatchExpression fme = (FeatureMatchExpression) fe;
-      boolean checkFeatureValue = fme.checkFeatureValue(annotation, stream, parent);
+      boolean checkFeatureValue = fme.checkFeatureValue(annotation, context, stream);
       if (checkFeatureValue) {
         return true;
       }
@@ -248,7 +258,9 @@ public class RutaTypeMatcher implements RutaMatcher {
   }
 
   protected Type getType(TypeExpression expression, RutaBlock parent, RutaStream stream) {
-    Type type = expression.getType(parent);
+    MatchContext context = new MatchContext(null, null, true);
+    context.setParent(parent);
+    Type type = expression.getType(context, stream);
     if (type != null && "uima.tcas.DocumentAnnotation".equals(type.getName())) {
       return stream.getDocumentAnnotationType();
     }
@@ -256,13 +268,17 @@ public class RutaTypeMatcher implements RutaMatcher {
   }
 
   public long estimateAnchors(RutaBlock parent, RutaStream stream) {
-    TypeExpression typeExpression = mr.getTypeExpression(parent);
+    MatchContext context = new MatchContext(null, null, true);
+    context.setParent(parent);
+    TypeExpression typeExpression = mr.getTypeExpression(context, stream);
     return stream.getHistogram(getType(typeExpression, parent, stream));
   }
 
   public List<Type> getTypes(RutaBlock parent, RutaStream stream) {
     List<Type> result = new ArrayList<Type>(1);
-    TypeExpression typeExpression = mr.getTypeExpression(parent);
+    MatchContext context = new MatchContext(null, null, true);
+    context.setParent(parent);
+    TypeExpression typeExpression = mr.getTypeExpression(context, stream);
     Type type = getType(typeExpression, parent, stream);
     result.add(type);
     return result;

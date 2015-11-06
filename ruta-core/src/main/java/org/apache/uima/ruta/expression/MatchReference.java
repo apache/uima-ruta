@@ -24,12 +24,14 @@ import java.util.List;
 
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaEnvironment;
+import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.expression.type.TypeVariableExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class MatchReference extends RutaExpression {
 
@@ -55,10 +57,11 @@ public class MatchReference extends RutaExpression {
     this.typeExpression = expression;
   }
 
-  private void resolve(RutaBlock parent) {
+  private void resolve(MatchContext context, RutaStream stream) {
     if (typeExpression != null) {
       return;
     }
+    RutaBlock parent = context.getParent();
     RutaEnvironment e = parent.getEnvironment();
     typeExpression = buildTypeExpression(match, e);
     if (typeExpression == null) {
@@ -88,7 +91,7 @@ public class MatchReference extends RutaExpression {
         }
       }
     }
-    if(typeExpression == null || typeExpression.getType(parent) == null) {
+    if(typeExpression == null || typeExpression.getType(context, stream) == null) {
       throw new IllegalArgumentException("Not able to resolve type of expression: "+ match);
     }
   }
@@ -102,13 +105,13 @@ public class MatchReference extends RutaExpression {
     return null;
   }
 
-  public TypeExpression getTypeExpression(RutaBlock parent) {
-    resolve(parent);
+  public TypeExpression getTypeExpression(MatchContext context, RutaStream stream) {
+    resolve(context, stream);
     return typeExpression;
   }
 
-  public FeatureExpression getFeatureExpression(RutaBlock parent) {
-    resolve(parent);
+  public FeatureExpression getFeatureExpression(MatchContext context, RutaStream stream) {
+    resolve(context, stream);
     return featureExpression;
   }
 

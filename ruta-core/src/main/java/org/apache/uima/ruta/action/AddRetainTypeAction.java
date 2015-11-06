@@ -47,7 +47,7 @@ public class AddRetainTypeAction extends AbstractRutaAction {
 		RuleElement element = context.getElement();
     List<Type> types = new ArrayList<Type>();
     for (TypeExpression each : list) {
-      types.add(each.getType(element.getParent()));
+      types.add(each.getType(context, stream));
     }
     stream.addRetainTypes(types);
   }

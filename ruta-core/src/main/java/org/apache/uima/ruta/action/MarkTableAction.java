@@ -91,25 +91,22 @@ public class MarkTableAction extends AbstractRutaAction {
 		RuleMatch match = context.getRuleMatch();
 		RuleElement element = context.getElement();
     RutaBlock block = element.getParent();
-    RutaTable table = tableExpr.getTable(block);
-    int index = indexExpr.getIntegerValue(block, match, element, stream);
-    Type type = typeExpr.getType(block);
+    RutaTable table = tableExpr.getTable(context);
+    int index = indexExpr.getIntegerValue(context, stream);
+    Type type = typeExpr.getType(context, stream);
     Map<String, Integer> map = new HashMap<String, Integer>();
     for (IStringExpression each : featureMap.keySet()) {
-      map.put(each.getStringValue(block, match, element, stream), featureMap.get(each)
-              .getIntegerValue(block, match, element, stream));
+      map.put(each.getStringValue(context, stream), featureMap.get(each)
+              .getIntegerValue(context, stream));
     }
 
-    boolean ignoreCaseValue = ignoreCase != null ? ignoreCase.getBooleanValue(element.getParent(),
-            match, element, stream) : false;
+    boolean ignoreCaseValue = ignoreCase != null ? ignoreCase.getBooleanValue(context, stream) : false;
     int ignoreLengthValue = ignoreLength != null ? ignoreLength.getIntegerValue(
-            element.getParent(), match, element, stream) : 0;
-    String ignoreCharValue = ignoreChar != null ? ignoreChar.getStringValue(element.getParent(),
-            match, element, stream) : "";
+            context, stream) : 0;
+    String ignoreCharValue = ignoreChar != null ? ignoreChar.getStringValue(context, stream) : "";
     int maxIgnoreCharValue = maxIgnoreChar != null ? maxIgnoreChar.getIntegerValue(
-            element.getParent(), match, element, stream) : 0;
-    boolean ignoreWSValue = ignoreWS != null ? ignoreWS.getBooleanValue(element.getParent(),
-            match, element, stream) : false;
+            context, stream) : 0;
+    boolean ignoreWSValue = ignoreWS != null ? ignoreWS.getBooleanValue(context, stream) : false;
 
     RutaWordList wordList = table.getWordList(index, element.getParent());
     Collection<AnnotationFS> found = wordList.find(stream, ignoreCaseValue, ignoreLengthValue,

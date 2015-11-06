@@ -42,6 +42,7 @@ import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.utils.UIMAUtils;
 
@@ -52,11 +53,11 @@ public abstract class AbstractStructureAction extends AbstractRutaAction {
   }
 
   protected void fillFeatures(TOP structure, Map<IStringExpression, IRutaExpression> features,
-          AnnotationFS matchedAnnotation, RuleElement element, RutaStream stream) {
+          AnnotationFS matchedAnnotation, MatchContext context, RutaStream stream) {
     Map<String, IRutaExpression> map = new HashMap<String, IRutaExpression>();
-    RutaBlock parent = element.getParent();
+    RutaBlock parent = context.getParent();
     for (Entry<IStringExpression, IRutaExpression> each : features.entrySet()) {
-      String value = each.getKey().getStringValue(parent, matchedAnnotation, stream);
+      String value = each.getKey().getStringValue(context, stream);
       map.put(value, each.getValue());
     }
 
@@ -74,7 +75,7 @@ public abstract class AbstractStructureAction extends AbstractRutaAction {
                 && range.getName().equals(UIMAConstants.TYPE_STRING)) {
           TypeExpression type = (TypeExpression) valueObject;
           List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(matchedAnnotation,
-                  type.getType(parent));
+                  type.getType(context, stream));
           if (annotationsInWindow != null && !annotationsInWindow.isEmpty()) {
             AnnotationFS annotation = annotationsInWindow.get(0);
             structure.setStringValue(targetFeature, annotation.getCoveredText());
@@ -82,13 +83,13 @@ public abstract class AbstractStructureAction extends AbstractRutaAction {
         } else if (valueObject instanceof GenericFeatureExpression && !range.isPrimitive()) {
           GenericFeatureExpression gfe = (GenericFeatureExpression) valueObject;
           FeatureExpression fe = gfe.getFeatureExpression();
-          TypeExpression type = fe.getTypeExpr(parent);
+          TypeExpression type = fe.getTypeExpr(context, stream);
           List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(matchedAnnotation,
-                  type.getType(parent));
+                  type.getType(context, stream));
           List<AnnotationFS> featureAnnotations = annotationsInWindow;
-          if (fe.getFeatures(parent) != null) {
+          if (fe.getFeatures(context, stream) != null) {
             featureAnnotations = new ArrayList<AnnotationFS>(fe.getFeatureAnnotations(
-                    annotationsInWindow, stream, parent, false));
+                    annotationsInWindow, stream, context, false));
           }
           if (typeSystem.subsumes(jcas.getCasType(FSArray.type), range)) {
             structure.setFeatureValue(targetFeature, UIMAUtils.toFSArray(jcas, featureAnnotations));
@@ -101,40 +102,40 @@ public abstract class AbstractStructureAction extends AbstractRutaAction {
         } else if (valueObject instanceof IStringExpression
                 && range.getName().equals(UIMAConstants.TYPE_STRING)) {
           structure.setStringValue(targetFeature, ((IStringExpression) valueObject).getStringValue(
-                  parent, matchedAnnotation, stream));
+                  context, stream));
 
         } else if (valueObject instanceof INumberExpression) {
           if (range.getName().equals(UIMAConstants.TYPE_DOUBLE)) {
             structure.setDoubleValue(targetFeature, ((INumberExpression) valueObject)
-                    .getDoubleValue(parent, matchedAnnotation, stream));
+                    .getDoubleValue(context, stream));
           } else if (range.getName().equals(UIMAConstants.TYPE_INTEGER)) {
             structure.setIntValue(targetFeature, ((INumberExpression) valueObject).getIntegerValue(
-                    parent, matchedAnnotation, stream));
+                    context, stream));
           } else if (range.getName().equals(UIMAConstants.TYPE_FLOAT)) {
             structure.setFloatValue(targetFeature, ((INumberExpression) valueObject).getFloatValue(
-                    parent, matchedAnnotation, stream));
+                    context, stream));
           } else if (range.getName().equals(UIMAConstants.TYPE_BYTE)) {
             structure.setByteValue(targetFeature, (byte) ((INumberExpression) valueObject)
-                    .getIntegerValue(parent, matchedAnnotation, stream));
+                    .getIntegerValue(context, stream));
           } else if (range.getName().equals(UIMAConstants.TYPE_SHORT)) {
             structure.setShortValue(targetFeature, (short) ((INumberExpression) valueObject)
-                    .getIntegerValue(parent, matchedAnnotation, stream));
+                    .getIntegerValue(context, stream));
           } else if (range.getName().equals(UIMAConstants.TYPE_LONG)) {
             structure.setLongValue(targetFeature, (long) ((INumberExpression) valueObject)
-                    .getIntegerValue(parent, matchedAnnotation, stream));
+                    .getIntegerValue(context, stream));
           }
         } else if (valueObject instanceof IBooleanExpression
                 && range.getName().equals(UIMAConstants.TYPE_BOOLEAN)) {
           structure.setBooleanValue(targetFeature, ((IBooleanExpression) valueObject)
-                  .getBooleanValue(parent, matchedAnnotation, stream));
+                  .getBooleanValue(context, stream));
         } else if (valueObject instanceof TypeExpression) {
           TypeExpression type = (TypeExpression) valueObject;
           List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(matchedAnnotation,
-                  type.getType(parent));
+                  type.getType(context, stream));
           if (typeSystem.subsumes(jcas.getCasType(FSArray.type), range)) {
             structure
                     .setFeatureValue(targetFeature, UIMAUtils.toFSArray(jcas, annotationsInWindow));
-          } else if (typeSystem.subsumes(range, type.getType(parent))
+          } else if (typeSystem.subsumes(range, type.getType(context, stream))
                   && !annotationsInWindow.isEmpty()) {
             AnnotationFS annotation = annotationsInWindow.get(0);
             structure.setFeatureValue(targetFeature, annotation);

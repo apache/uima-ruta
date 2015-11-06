@@ -50,7 +50,7 @@ public class IsCondition extends TypeSentiveCondition {
     RutaBasic beginAnchor = stream.getBeginAnchor(annotation.getBegin());
     if (!isWorkingOnList()) {
       Collection<AnnotationFS> beginAnchors = beginAnchor
-              .getBeginAnchors(type.getType(element.getParent()));
+              .getBeginAnchors(type.getType(context, stream));
       boolean result = false;
       if (beginAnchors != null) {
         for (AnnotationFS annotationFS : beginAnchors) {
@@ -63,7 +63,7 @@ public class IsCondition extends TypeSentiveCondition {
       return new EvaluatedCondition(this, result);
     } else {
       boolean result = false;
-      List<Type> types = getList().getList(element.getParent(), stream);
+      List<Type> types = getList().getList(context, stream);
       for (Type type : types) {
         Collection<AnnotationFS> beginAnchors = beginAnchor.getBeginAnchors(type);
         if (beginAnchors != null) {

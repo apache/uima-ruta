@@ -77,23 +77,23 @@ public class TrieAction extends AbstractRutaAction {
     Map<String, Object> typeMap = new HashMap<String, Object>();
     RutaBlock parent = element.getParent();
     for (IStringExpression eachKey : map.keySet()) {
-      String stringValue = eachKey.getStringValue(parent, match, element, stream);
+      String stringValue = eachKey.getStringValue(context, stream);
       IRutaExpression expression = map.get(eachKey);
       if (expression instanceof TypeExpression) {
-        Type typeValue = ((TypeExpression) expression).getType(parent);
+        Type typeValue = ((TypeExpression) expression).getType(context, stream);
         typeMap.put(stringValue, typeValue);
       } else if (expression instanceof UntypedListExpression) {
-        List<Object> innerList = ((UntypedListExpression) expression).getList(parent, stream);
+        List<Object> innerList = ((UntypedListExpression) expression).getList(context, stream);
         typeMap.put(stringValue, innerList);
       }
     }
-    boolean ignoreCaseValue = ignoreCase.getBooleanValue(parent, match, element, stream);
-    int ignoreLengthValue = ignoreLength.getIntegerValue(parent, match, element, stream);
-    boolean editValue = edit.getBooleanValue(parent, match, element, stream);
-    double distanceValue = distance.getDoubleValue(parent, match, element, stream);
-    String ignoreCharValue = ignoreChar.getStringValue(parent, match, element, stream);
+    boolean ignoreCaseValue = ignoreCase.getBooleanValue(context, stream);
+    int ignoreLengthValue = ignoreLength.getIntegerValue(context, stream);
+    boolean editValue = edit.getBooleanValue(context, stream);
+    double distanceValue = distance.getDoubleValue(context, stream);
+    String ignoreCharValue = ignoreChar.getStringValue(context, stream);
 
-    RutaWordList wl = list.getList(parent);
+    RutaWordList wl = list.getList(context);
     if (wl != null) {
       Collection<AnnotationFS> found = wl.find(stream, typeMap, ignoreCaseValue, ignoreLengthValue,
               editValue, distanceValue, ignoreCharValue);

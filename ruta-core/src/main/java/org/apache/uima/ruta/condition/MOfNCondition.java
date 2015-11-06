@@ -58,8 +58,8 @@ public class MOfNCondition extends ComposedRutaCondition {
         result++;
       }
     }
-    boolean value = result >= min.getIntegerValue(element.getParent(), annotation, stream)
-            && result <= max.getIntegerValue(element.getParent(), annotation, stream);
+    boolean value = result >= min.getIntegerValue(context, stream)
+            && result <= max.getIntegerValue(context, stream);
     return new EvaluatedCondition(this, value, evals);
   }
 

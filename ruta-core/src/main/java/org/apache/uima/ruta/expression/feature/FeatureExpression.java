@@ -28,19 +28,20 @@ import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public abstract class FeatureExpression extends RutaExpression {
 
-  public abstract Feature getFeature(RutaBlock parent);
+  public abstract Feature getFeature(MatchContext context, RutaStream stream);
 
-  public abstract List<Feature> getFeatures(RutaBlock parent);
+  public abstract List<Feature> getFeatures(MatchContext context, RutaStream stream);
 
-  public abstract List<String> getFeatureStringList(RutaBlock parent);
+  public abstract List<String> getFeatureStringList(MatchContext context, RutaStream stream);
 
-  public abstract TypeExpression getTypeExpr(RutaBlock parent);
+  public abstract TypeExpression getTypeExpr(MatchContext context, RutaStream stream);
 
   public abstract Collection<AnnotationFS> getFeatureAnnotations(
-          Collection<AnnotationFS> annotations, RutaStream stream, RutaBlock parent,
+          Collection<AnnotationFS> annotations, RutaStream stream, MatchContext context,
           boolean checkOnFeatureValue);
 
 }

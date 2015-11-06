@@ -55,7 +55,7 @@ public class FillAction extends AbstractStructureAction {
       if (matchedAnnotation == null) {
         return;
       }
-      Type type = getStructureType().getType(element.getParent());
+      Type type = getStructureType().getType(context, stream);
       List<AnnotationFS> list = stream.getAnnotationsInWindow(matchedAnnotation, type);
       if (list.isEmpty()) {
         list = stream.getOverappingAnnotations(matchedAnnotation, type);
@@ -75,7 +75,7 @@ public class FillAction extends AbstractStructureAction {
       if (!list.isEmpty()) {
         AnnotationFS annotationFS = list.get(0);
         stream.getCas().removeFsFromIndexes(annotationFS);
-        fillFeatures((Annotation) annotationFS, features, matchedAnnotation, element, stream);
+        fillFeatures((Annotation) annotationFS, features, matchedAnnotation, context, stream);
         stream.getCas().addFsToIndexes(annotationFS);
       }
     }

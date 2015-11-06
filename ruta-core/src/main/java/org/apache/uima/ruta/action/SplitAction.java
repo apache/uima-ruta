@@ -65,10 +65,10 @@ public class SplitAction extends AbstractRutaAction {
 		RuleElement element = context.getElement();
     List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
     RutaBlock parent = element.getParent();
-    Type typeToSplit = splitOnType.getType(parent);
-    boolean splitOnCompleteAnnotation = complete.getBooleanValue(parent, match, element, stream);
-    boolean addToBegin = appendToBegin.getBooleanValue(parent, match, element, stream);
-    boolean addToEnd = appendToEnd.getBooleanValue(parent, match, element, stream);
+    Type typeToSplit = splitOnType.getType(context, stream);
+    boolean splitOnCompleteAnnotation = complete.getBooleanValue(context, stream);
+    boolean addToBegin = appendToBegin.getBooleanValue(context, stream);
+    boolean addToEnd = appendToEnd.getBooleanValue(context, stream);
     for (AnnotationFS annotation : matchedAnnotationsOf) {
       splitAnnotation(annotation, typeToSplit, splitOnCompleteAnnotation, addToBegin, addToEnd,
               match, stream);

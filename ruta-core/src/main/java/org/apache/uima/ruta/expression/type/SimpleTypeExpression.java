@@ -23,6 +23,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class SimpleTypeExpression extends TypeExpression {
 
@@ -36,12 +37,12 @@ public class SimpleTypeExpression extends TypeExpression {
   /**
    * Returns the actual type of the TypeExpression
    * 
-   * @param parent - the block of the element 
    * @return annotation type
    * @throws IllegalArgumentException if the type cannot be resolved.
    */
   @Override
-  public Type getType(RutaBlock parent) {
+  public Type getType(MatchContext context, RutaStream stream) {
+    RutaBlock parent = context.getParent();
     Type type = parent.getEnvironment().getType(typeString);
     if(type == null) {
       throw new IllegalArgumentException("Not able to resolve type: " + typeString);
@@ -55,7 +56,7 @@ public class SimpleTypeExpression extends TypeExpression {
   }
 
   @Override
-  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+  public String getStringValue(MatchContext context, RutaStream stream) {
     return typeString;
   }
 

@@ -51,12 +51,12 @@ public class FeatureCondition extends AbstractRutaCondition {
 		RuleElement element = context.getElement();
 	  
     RutaBlock parent = element.getParent();
-    String typeWithFeature = annotation.getType().getName()+"."+featureStringExpression.getStringValue(parent, annotation, stream);
+    String typeWithFeature = annotation.getType().getName()+"."+featureStringExpression.getStringValue(context, stream);
     MatchReference mf = new MatchReference(typeWithFeature, "==", argExpr);
-    FeatureExpression featureExpression = mf.getFeatureExpression(parent);
+    FeatureExpression featureExpression = mf.getFeatureExpression(context, stream);
     if(featureExpression instanceof FeatureMatchExpression) {
       FeatureMatchExpression fme = (FeatureMatchExpression) featureExpression;
-      boolean checkFeatureValue = fme.checkFeatureValue(annotation, stream, parent);
+      boolean checkFeatureValue = fme.checkFeatureValue(annotation, context, stream);
       return new EvaluatedCondition(this, checkFeatureValue);
     }
     return new EvaluatedCondition(this, false);

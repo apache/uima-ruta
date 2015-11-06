@@ -19,12 +19,12 @@
 
 package org.apache.uima.ruta.expression.resource;
 
-import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.resource.RutaTable;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public abstract class WordTableExpression extends RutaExpression {
 
-  public abstract RutaTable getTable(RutaStatement element);
+  public abstract RutaTable getTable(MatchContext context);
 
 }

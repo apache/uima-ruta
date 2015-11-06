@@ -72,7 +72,7 @@ public class ConfigureAction extends AbstractRutaAction {
     Set<Entry<IStringExpression, IRutaExpression>> entrySet = parameterMap.entrySet();
     for (Entry<IStringExpression, IRutaExpression> entry : entrySet) {
       IStringExpression key = entry.getKey();
-      String stringValue = key.getStringValue(parent, match, element, stream);
+      String stringValue = key.getStringValue(context, stream);
       ConfigurationParameter configurationParameter = configurationParameterDeclarations
               .getConfigurationParameter(null, stringValue);
       if (configurationParameter != null) {
@@ -82,11 +82,11 @@ public class ConfigureAction extends AbstractRutaAction {
           if (configurationParameter.isMultiValued()) {
             if (value instanceof StringListExpression) {
               StringListExpression sle = (StringListExpression) value;
-              List<String> list = sle.getList(parent, stream);
+              List<String> list = sle.getList(context, stream);
               targetEngine.setConfigParameterValue(stringValue, list.toArray(new String[0]));
             } else if (value instanceof TypeListExpression) {
               TypeListExpression tle = (TypeListExpression) value;
-              List<Type> list = tle.getList(parent, stream);
+              List<Type> list = tle.getList(context, stream);
               List<String> stringList = new ArrayList<String>();
               for (Type each : list) {
                 stringList.add(each.getName());
@@ -96,18 +96,18 @@ public class ConfigureAction extends AbstractRutaAction {
           } else {
             if (value instanceof IStringExpression) {
               IStringExpression se = (IStringExpression) value;
-              String string = se.getStringValue(parent, match, element, stream);
+              String string = se.getStringValue(context, stream);
               targetEngine.setConfigParameterValue(stringValue, string);
             } else if (value instanceof TypeExpression) {
               TypeExpression te = (TypeExpression) value;
-              Type t = te.getType(parent);
+              Type t = te.getType(context, stream);
               targetEngine.setConfigParameterValue(stringValue, t.getName());
             }
           }
         } else if (type.equals("Float")) {
           if (value instanceof NumberListExpression) {
             NumberListExpression nle = (NumberListExpression) value;
-            List<Number> list = nle.getList(parent, stream);
+            List<Number> list = nle.getList(context, stream);
             List<Float> numbers = new ArrayList<Float>();
             for (Number number : list) {
               numbers.add(number.floatValue());
@@ -116,14 +116,14 @@ public class ConfigureAction extends AbstractRutaAction {
           } else {
             if (value instanceof INumberExpression) {
               INumberExpression ne = (INumberExpression) value;
-              Double d = ne.getDoubleValue(parent, match, element, stream);
+              Double d = ne.getDoubleValue(context, stream);
               targetEngine.setConfigParameterValue(stringValue, d.floatValue());
             }
           }
         } else if (type.equals("Integer")) {
           if (value instanceof NumberListExpression) {
             NumberListExpression nle = (NumberListExpression) value;
-            List<Number> list = nle.getList(parent, stream);
+            List<Number> list = nle.getList(context, stream);
             List<Integer> numbers = new ArrayList<Integer>();
             for (Number number : list) {
               numbers.add(number.intValue());
@@ -132,19 +132,19 @@ public class ConfigureAction extends AbstractRutaAction {
           } else {
             if (value instanceof INumberExpression) {
               INumberExpression ne = (INumberExpression) value;
-              Integer i = ne.getIntegerValue(parent, match, element, stream);
+              Integer i = ne.getIntegerValue(context, stream);
               targetEngine.setConfigParameterValue(stringValue, i);
             }
           }
         } else if (type.equals("Boolean")) {
           if (value instanceof BooleanListExpression) {
             BooleanListExpression ble = (BooleanListExpression) value;
-            List<Boolean> list = ble.getList(parent, stream);
+            List<Boolean> list = ble.getList(context, stream);
             targetEngine.setConfigParameterValue(stringValue, list.toArray());
           } else {
             if (value instanceof IBooleanExpression) {
               IBooleanExpression be = (IBooleanExpression) value;
-              Boolean b = be.getBooleanValue(parent, match, element, stream);
+              Boolean b = be.getBooleanValue(context, stream);
               targetEngine.setConfigParameterValue(stringValue, b);
             }
           }

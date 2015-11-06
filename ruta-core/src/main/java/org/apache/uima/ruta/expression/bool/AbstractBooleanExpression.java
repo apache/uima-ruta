@@ -25,23 +25,10 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.string.AbstractStringExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 
 public abstract class AbstractBooleanExpression extends AbstractStringExpression implements IBooleanExpression {
-
-  public boolean getBooleanValue(RutaBlock parent, RuleMatch match, RuleElement element,
-          RutaStream stream) {
-    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
-    // TODO: do we need to select the correct annotation?
-    AnnotationFS annotation = null;
-    if (!matchedAnnotationsOf.isEmpty()) {
-      annotation = matchedAnnotationsOf.get(0);
-    }
-    return getBooleanValue(parent, annotation, stream);
-  }
-
-  public abstract boolean getBooleanValue(RutaBlock parent, AnnotationFS annotation,
-          RutaStream stream);
 
 }

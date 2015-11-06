@@ -56,7 +56,7 @@ public class ContextCountCondition extends TypeSentiveCondition {
 		AnnotationFS annotation = context.getAnnotation();
 		RuleElement element = context.getElement();
 	  
-    Type contextType = type.getType(element.getParent());
+    Type contextType = type.getType(context, stream);
     stream.moveToFirst();
     List<AnnotationFS> visibleContexts = new ArrayList<AnnotationFS>();
     while (stream.isValid()) {
@@ -97,8 +97,8 @@ public class ContextCountCondition extends TypeSentiveCondition {
       if (var != null) {
         element.getParent().getEnvironment().setVariableValue(var, index);
       }
-      boolean value = index >= min.getIntegerValue(element.getParent(), annotation, stream)
-              && index <= max.getIntegerValue(element.getParent(), annotation, stream);
+      boolean value = index >= min.getIntegerValue(context, stream)
+              && index <= max.getIntegerValue(context, stream);
       result |= value;
       if (result) {
         break;

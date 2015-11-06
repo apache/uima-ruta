@@ -51,8 +51,8 @@ public class VoteCondition extends TerminalRutaCondition {
     int count2 = 0;
     if (annotation != null) {
       List<RutaBasic> annotations = stream.getBasicsInWindow(annotation);
-      Type t1 = type1.getType(element.getParent());
-      Type t2 = type2.getType(element.getParent());
+      Type t1 = type1.getType(context, stream);
+      Type t2 = type2.getType(context, stream);
       for (RutaBasic each : annotations) {
         if (each.beginsWith(t1)) {
           count1++;

@@ -19,11 +19,10 @@
 
 package org.apache.uima.ruta.example.extensions;
 
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.string.StringFunctionExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class ExampleStringFunction extends StringFunctionExpression {
 
@@ -38,8 +37,8 @@ public class ExampleStringFunction extends StringFunctionExpression {
     return expr;
   }
 
-  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return expr.getType(parent).getShortName();
+  public String getStringValue(MatchContext context, RutaStream stream) {
+    return expr.getType(context, stream).getShortName();
   }
 
 }

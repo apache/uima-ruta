@@ -52,7 +52,7 @@ public class TrimAction extends AbstractRutaAction {
 		RuleMatch match = context.getRuleMatch();
 		RuleElement element = context.getElement();
     List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
-    List<Type> typesToTrim = getTypes(element.getParent(), stream);
+    List<Type> typesToTrim = getTypes(context, stream);
     for (AnnotationFS annotationFS : matchedAnnotationsOf) {
       trimAnnotation(annotationFS, typesToTrim, match, stream);
     }
@@ -111,14 +111,14 @@ public class TrimAction extends AbstractRutaAction {
     return false;
   }
 
-  private List<Type> getTypes(RutaBlock parent, RutaStream stream) {
+  private List<Type> getTypes(MatchContext context, RutaStream stream) {
     List<Type> result = new ArrayList<Type>();
     if (types != null) {
       for (TypeExpression each : types) {
-        result.add(each.getType(parent));
+        result.add(each.getType(context, stream));
       }
     } else if (typeList != null) {
-      result = typeList.getList(parent, stream);
+      result = typeList.getList(context, stream);
     }
     return result;
   }

@@ -65,8 +65,8 @@ public class ScoreCondition extends TerminalRutaCondition {
     if (var != null) {
       element.getParent().getEnvironment().setVariableValue(var, score);
     }
-    boolean value = score >= min.getDoubleValue(element.getParent(), annotation, stream)
-            && score <= max.getDoubleValue(element.getParent(), annotation, stream);
+    boolean value = score >= min.getDoubleValue(context, stream)
+            && score <= max.getDoubleValue(context, stream);
     return new EvaluatedCondition(this, value);
   }
 

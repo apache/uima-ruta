@@ -24,19 +24,16 @@ import java.util.List;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class LabelAnnotationExpression extends AbstractAnnotationExpression {
 
-  @Override
-  public AnnotationFS getAnnotation(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-	  // TODO
-    return getAnnotations(parent, annotation, stream).get(0);
-  }
 
   @Override
-  public List<AnnotationFS> getAnnotations(RutaBlock parent, AnnotationFS annotation,
-          RutaStream stream) {
+  public AnnotationFS getAnnotation(MatchContext context, RutaStream stream) {
+    // TODO Auto-generated method stub
     return null;
   }
+
 
 }

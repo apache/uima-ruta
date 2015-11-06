@@ -22,6 +22,7 @@ package org.apache.uima.ruta.expression.bool;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class BooleanVariableExpression extends AbstractBooleanExpression {
 
@@ -33,7 +34,9 @@ public class BooleanVariableExpression extends AbstractBooleanExpression {
   }
 
   @Override
-  public boolean getBooleanValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+  public boolean getBooleanValue(MatchContext context, RutaStream stream) {
+    AnnotationFS annotation = context.getAnnotation();
+    RutaBlock parent = context.getParent();
     Boolean variableValue = parent.getEnvironment().getVariableValue(var, Boolean.class);
     if (variableValue == null) {
       return false;
@@ -46,8 +49,8 @@ public class BooleanVariableExpression extends AbstractBooleanExpression {
   }
 
   @Override
-  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return getBooleanValue(parent, annotation, stream) ? "true" : "false";
+  public String getStringValue(MatchContext context, RutaStream stream) {
+    return getBooleanValue(context, stream) ? "true" : "false";
   }
 
 }

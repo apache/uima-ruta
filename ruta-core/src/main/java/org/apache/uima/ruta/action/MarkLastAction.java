@@ -46,7 +46,7 @@ public class MarkLastAction extends AbstractMarkAction {
       List<RutaBasic> list = stream.getBasicsInWindow(matchedAnnotation);
       if (!list.isEmpty()) {
         RutaBasic last = list.get(list.size() - 1);
-        createAnnotation(last, element, stream, match);
+        createAnnotation(last, context, stream);
       }
 
     }

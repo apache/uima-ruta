@@ -24,6 +24,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class BooleanTypeExpression extends AbstractBooleanExpression {
 
@@ -41,10 +42,12 @@ public class BooleanTypeExpression extends AbstractBooleanExpression {
   }
 
   @Override
-  public boolean getBooleanValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    Type type1 = getFristExpression().getType(parent);
+  public boolean getBooleanValue(MatchContext context, RutaStream stream) {
+    AnnotationFS annotation = context.getAnnotation();
+    RutaBlock parent = context.getParent();
+    Type type1 = getFristExpression().getType(context, stream);
     String first = type1.getName();
-    Type type2 = getSecondExpression().getType(parent);
+    Type type2 = getSecondExpression().getType(context, stream);
     String second = type2.getName();
     return eval(first, getOperator(), second);
   }
@@ -71,9 +74,9 @@ public class BooleanTypeExpression extends AbstractBooleanExpression {
   }
 
   @Override
-  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return e1.getStringValue(parent, annotation, stream) + " " + op + " "
-            + e2.getStringValue(parent, annotation, stream);
+  public String getStringValue(MatchContext context, RutaStream stream) {
+    return e1.getStringValue(context, stream) + " " + op + " "
+            + e2.getStringValue(context, stream);
   }
 
 }

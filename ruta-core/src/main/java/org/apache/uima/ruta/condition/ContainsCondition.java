@@ -87,7 +87,7 @@ public class ContainsCondition extends TypeSentiveCondition {
         List<RutaBasic> annotations = stream.getBasicsInWindow(annotation);
         for (RutaBasic each : annotations) {
           totalCount++;
-          Type t = type.getType(element.getParent());
+          Type t = type.getType(context, stream);
           if (each.beginsWith(t) || stream.getCas().getTypeSystem().subsumes(t, each.getType())) {
             anchorCount += each.getBeginAnchors(t).size();
             basicCount++;
@@ -97,53 +97,53 @@ public class ContainsCondition extends TypeSentiveCondition {
         }
       }
     } else {
-      totalCount = argList.getList(element.getParent(), stream).size();
+      totalCount = argList.getList(context, stream).size();
       if (arg instanceof IBooleanExpression && argList instanceof BooleanListExpression) {
         IBooleanExpression e = (IBooleanExpression) arg;
         BooleanListExpression le = (BooleanListExpression) argList;
-        boolean v = e.getBooleanValue(element.getParent(), annotation, stream);
-        List<Boolean> l = new ArrayList<Boolean>(le.getList(element.getParent(), stream));
+        boolean v = e.getBooleanValue(context, stream);
+        List<Boolean> l = new ArrayList<Boolean>(le.getList(context, stream));
         while (l.remove(v)) {
           basicCount++;
         }
       } else if (arg instanceof INumberExpression && argList instanceof NumberListExpression) {
         INumberExpression e = (INumberExpression) arg;
         NumberListExpression le = (NumberListExpression) argList;
-        Number v = e.getDoubleValue(element.getParent(), annotation, stream);
-        List<Number> l = new ArrayList<Number>(le.getList(element.getParent(), stream));
+        Number v = e.getDoubleValue(context, stream);
+        List<Number> l = new ArrayList<Number>(le.getList(context, stream));
         while (l.remove(v)) {
           basicCount++;
         }
       } else if (arg instanceof IStringExpression && argList instanceof StringListExpression) {
         IStringExpression e = (IStringExpression) arg;
         StringListExpression le = (StringListExpression) argList;
-        String v = e.getStringValue(element.getParent(), annotation, stream);
-        List<String> l = new ArrayList<String>(le.getList(element.getParent(), stream));
+        String v = e.getStringValue(context, stream);
+        List<String> l = new ArrayList<String>(le.getList(context, stream));
         while (l.remove(v)) {
           basicCount++;
         }
       } else if (arg instanceof TypeExpression && argList instanceof TypeListExpression) {
         TypeExpression e = (TypeExpression) arg;
         TypeListExpression le = (TypeListExpression) argList;
-        Type v = e.getType(element.getParent());
-        List<Type> l = new ArrayList<Type>(le.getList(element.getParent(), stream));
+        Type v = e.getType(context, stream);
+        List<Type> l = new ArrayList<Type>(le.getList(context, stream));
         while (l.remove(v)) {
           basicCount++;
         }
       }
       anchorCount = basicCount;
     }
-    if (percent.getBooleanValue(element.getParent(), annotation, stream)) {
+    if (percent.getBooleanValue(context, stream)) {
       double percentValue = 0;
       if (totalCount != 0) {
         percentValue = (((double) basicCount) / ((double) totalCount)) * 100;
       }
-      boolean value = percentValue >= min.getDoubleValue(element.getParent(), annotation, stream)
-              && percentValue <= max.getDoubleValue(element.getParent(), annotation, stream);
+      boolean value = percentValue >= min.getDoubleValue(context, stream)
+              && percentValue <= max.getDoubleValue(context, stream);
       return new EvaluatedCondition(this, value);
     } else {
-      boolean value = anchorCount >= min.getIntegerValue(element.getParent(), annotation, stream)
-              && anchorCount <= max.getIntegerValue(element.getParent(), annotation, stream);
+      boolean value = anchorCount >= min.getIntegerValue(context, stream)
+              && anchorCount <= max.getIntegerValue(context, stream);
       return new EvaluatedCondition(this, value);
     }
   }

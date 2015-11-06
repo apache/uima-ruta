@@ -21,9 +21,8 @@ package org.apache.uima.ruta.expression.string;
 
 import java.util.List;
 
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class ComposedStringExpression extends LiteralStringExpression {
 
@@ -35,10 +34,10 @@ public class ComposedStringExpression extends LiteralStringExpression {
   }
 
   @Override
-  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+  public String getStringValue(MatchContext context, RutaStream stream) {
     StringBuilder result = new StringBuilder();
     for (IStringExpression each : getExpressions()) {
-      result.append(each.getStringValue(parent, annotation, stream));
+      result.append(each.getStringValue(context, stream));
     }
     return result.toString();
   }

@@ -71,13 +71,13 @@ public class RegExpRule extends AbstractRule {
   public ScriptApply apply(RutaStream stream, InferenceCrowd crowd) {
     RuleApply ruleApply = new RuleApply(this, false);
     crowd.beginVisit(this, ruleApply);
-
-    String regexpString = regexpExpr.getStringValue(getParent(), null, stream);
+    MatchContext context = new MatchContext(getParent());
+    String regexpString = regexpExpr.getStringValue(context, stream);
     AnnotationFS documentAnnotation = stream.getDocumentAnnotation();
     String document = documentAnnotation.getCoveredText();
     int delta = documentAnnotation.getBegin();
 
-    Map<Integer, List<Type>> groupTypes = getGroup2Types(stream);
+    Map<Integer, List<Type>> groupTypes = getGroup2Types(context, stream);
     Map<Integer, Map<Type, Map<String, Object>>> fa = getFeatureAssignmentMap(stream);
 
     Pattern pattern = Pattern.compile(regexpString, Pattern.MULTILINE | Pattern.DOTALL);
@@ -113,12 +113,13 @@ public class RegExpRule extends AbstractRule {
     Map<Integer, Map<Type, Map<String, Object>>> result = new HashMap<Integer, Map<Type, Map<String, Object>>>();
     Set<Entry<TypeExpression, Map<IStringExpression, IRutaExpression>>> entrySet = featureAssignments
             .entrySet();
+    MatchContext context = new MatchContext(getParent());
     for (Entry<TypeExpression, Map<IStringExpression, IRutaExpression>> entry : entrySet) {
       TypeExpression key = entry.getKey();
-      Type type = key.getType(getParent());
+      Type type = key.getType(context, stream);
       Map<IStringExpression, IRutaExpression> value = entry.getValue();
       INumberExpression cgExpr = typeMap.get(key);
-      int cg = cgExpr == null ? 0 : cgExpr.getIntegerValue(getParent(), null, stream);
+      int cg = cgExpr == null ? 0 : cgExpr.getIntegerValue(context, stream);
       Map<Type, Map<String, Object>> map = result.get(cg);
       if (map == null) {
         map = new HashMap<Type, Map<String, Object>>();
@@ -133,20 +134,20 @@ public class RegExpRule extends AbstractRule {
       for (Entry<IStringExpression, IRutaExpression> entry2 : entrySet2) {
         IStringExpression key2 = entry2.getKey();
         IRutaExpression value2 = entry2.getValue();
-        String stringValue = key2.getStringValue(getParent(), null, stream);
+        String stringValue = key2.getStringValue(context, stream);
         typeMap.put(stringValue, value2);
       }
     }
     return result;
   }
 
-  private Map<Integer, List<Type>> getGroup2Types(RutaStream stream) {
+  private Map<Integer, List<Type>> getGroup2Types(MatchContext context, RutaStream stream) {
     Map<Integer, List<Type>> groupTypes = new TreeMap<Integer, List<Type>>();
     Set<Entry<TypeExpression, INumberExpression>> entrySet = typeMap.entrySet();
     for (Entry<TypeExpression, INumberExpression> entry : entrySet) {
-      Type type = entry.getKey().getType(getParent());
+      Type type = entry.getKey().getType(context, stream);
       INumberExpression value = entry.getValue();
-      int group = value == null ? 0 : value.getIntegerValue(getParent(), null, stream);
+      int group = value == null ? 0 : value.getIntegerValue(context, stream);
       List<Type> list = groupTypes.get(group);
       if (list == null) {
         list = new ArrayList<Type>();
@@ -181,6 +182,7 @@ public class RegExpRule extends AbstractRule {
       jcas = cas.getJCas();
     } catch (CASException e) {
     }
+    MatchContext context = new MatchContext(null, null, null, true);
     TypeSystem typeSystem = cas.getTypeSystem();
     Map<Type, Map<String, Object>> typeMap = fa.get(group);
     if (typeMap != null) {
@@ -194,7 +196,7 @@ public class RegExpRule extends AbstractRule {
             Type range = feature.getRange();
             if (argExpr instanceof INumberExpression) {
               INumberExpression ne = (INumberExpression) argExpr;
-              int cg = ne.getIntegerValue(getParent(), afs, stream);
+              int cg = ne.getIntegerValue(context, stream);
               if (range.getName().equals(UIMAConstants.TYPE_STRING)) {
                 String s = matchResult.group(cg);
                 afs.setStringValue(feature, s);
@@ -226,7 +228,7 @@ public class RegExpRule extends AbstractRule {
                       && range.getName().equals(UIMAConstants.TYPE_STRING)) {
                 TypeExpression typeExpr = (TypeExpression) argExpr;
                 List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(afs,
-                        typeExpr.getType(getParent()));
+                        typeExpr.getType(context, stream));
                 if (annotationsInWindow != null && !annotationsInWindow.isEmpty()) {
                   AnnotationFS annotation = annotationsInWindow.get(0);
                   afs.setStringValue(feature, annotation.getCoveredText());
@@ -234,7 +236,7 @@ public class RegExpRule extends AbstractRule {
               } else if (argExpr instanceof AbstractStringExpression
                       && range.getName().equals(UIMAConstants.TYPE_STRING)) {
                 afs.setStringValue(feature,
-                        ((AbstractStringExpression) argExpr).getStringValue(getParent(), afs, stream));
+                        ((AbstractStringExpression) argExpr).getStringValue(context, stream));
                 // numbers are reserved for capturing groups
                 //
                 // } else if (argExpr instanceof NumberExpression) {
@@ -260,14 +262,14 @@ public class RegExpRule extends AbstractRule {
               } else if (argExpr instanceof IBooleanExpression
                       && range.getName().equals(UIMAConstants.TYPE_BOOLEAN)) {
                 afs.setBooleanValue(feature,
-                        ((IBooleanExpression) argExpr).getBooleanValue(getParent(), null, stream));
+                        ((IBooleanExpression) argExpr).getBooleanValue(context, stream));
               } else if (argExpr instanceof TypeExpression) {
                 TypeExpression typeExpr = (TypeExpression) argExpr;
                 List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(afs,
-                        typeExpr.getType(getParent()));
+                        typeExpr.getType(context, stream));
                 if (typeSystem.subsumes(jcas.getCasType(FSArray.type), range)) {
                   afs.setFeatureValue(feature, UIMAUtils.toFSArray(jcas, annotationsInWindow));
-                } else if (typeSystem.subsumes(range, typeExpr.getType(getParent()))
+                } else if (typeSystem.subsumes(range, typeExpr.getType(context, stream))
                         && !annotationsInWindow.isEmpty()) {
                   AnnotationFS annotation = annotationsInWindow.get(0);
                   afs.setFeatureValue(feature, annotation);

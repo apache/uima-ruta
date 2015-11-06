@@ -49,12 +49,12 @@ public class StartsWithCondition extends TypeSentiveCondition {
 
     // TODO rewrite
     if (!isWorkingOnList()) {
-      Type t = type.getType(element.getParent());
+      Type t = type.getType(context, stream);
       boolean result = check(annotation, t, stream);
       return new EvaluatedCondition(this, result);
     } else {
       boolean result = false;
-      List<Type> types = getList().getList(element.getParent(), stream);
+      List<Type> types = getList().getList(context, stream);
       for (Type t : types) {
         result |= check(annotation, t, stream);
         if (result == true) {

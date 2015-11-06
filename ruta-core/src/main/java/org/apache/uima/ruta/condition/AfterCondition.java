@@ -47,12 +47,12 @@ public class AfterCondition extends TypeSentiveCondition {
 		AnnotationFS annotation = context.getAnnotation();
 		RuleElement element = context.getElement();
     if (!isWorkingOnList()) {
-      Type t = type.getType(element.getParent());
+      Type t = type.getType(context, stream);
       boolean result = check(annotation, stream, t);
       return new EvaluatedCondition(this, result);
     } else {
       boolean result = false;
-      List<Type> types = getList().getList(element.getParent(), stream);
+      List<Type> types = getList().getList(context, stream);
       for (Type t : types) {
         result |= check(annotation, stream, t);
         if (result == true) {

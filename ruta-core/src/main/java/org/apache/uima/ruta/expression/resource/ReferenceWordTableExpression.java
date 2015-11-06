@@ -19,8 +19,9 @@
 
 package org.apache.uima.ruta.expression.resource;
 
-import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.resource.RutaTable;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class ReferenceWordTableExpression extends WordTableExpression {
 
@@ -32,8 +33,9 @@ public class ReferenceWordTableExpression extends WordTableExpression {
   }
 
   @Override
-  public RutaTable getTable(RutaStatement element) {
-    return element.getEnvironment().getVariableValue(ref, RutaTable.class);
+  public RutaTable getTable(MatchContext context) {
+    RutaBlock parent = context.getParent();
+    return parent.getEnvironment().getVariableValue(ref, RutaTable.class);
   }
 
   public String getRef() {

@@ -29,29 +29,4 @@ import org.apache.uima.ruta.rule.RuleMatch;
 
 public abstract class AbstractAnnotationExpression implements IAnnotationExpression {
   
-  public AnnotationFS getAnnotation(RutaBlock parent, RuleMatch match, RuleElement element,
-          RutaStream stream) {
-    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
-    // TODO: do we need to select the correct annotation?
-    AnnotationFS annotation = null;
-    if (!matchedAnnotationsOf.isEmpty()) {
-      annotation = matchedAnnotationsOf.get(0);
-    }
-    return getAnnotation(parent, annotation, stream);
-  }
-
-  public abstract AnnotationFS getAnnotation(RutaBlock parent, AnnotationFS annotation, RutaStream stream);
-  
-  public List<AnnotationFS> getAnnotations(RutaBlock parent, RuleMatch match, RuleElement element,
-          RutaStream stream) {
-    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
-    // TODO: do we need to select the correct annotation?
-    AnnotationFS annotation = null;
-    if (!matchedAnnotationsOf.isEmpty()) {
-      annotation = matchedAnnotationsOf.get(0);
-    }
-    return getAnnotations(parent, annotation, stream);
-  }
-
-  public abstract List<AnnotationFS> getAnnotations(RutaBlock parent, AnnotationFS annotation, RutaStream stream);
 }

@@ -52,8 +52,8 @@ public class GetAction extends AbstractRutaAction {
 		RuleMatch match = context.getRuleMatch();
 		RuleElement element = context.getElement();
     RutaBlock parent = element.getParent();
-    String op = opExpr.getStringValue(parent, match, element, stream);
-    List<?> list = listExpr.getList(parent, stream);
+    String op = opExpr.getStringValue(context, stream);
+    List<?> list = listExpr.getList(context, stream);
     if ("dominant".equals(op)) {
       parent.getEnvironment().setVariableValue(var, getDominant(list, parent));
     }

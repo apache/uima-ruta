@@ -19,11 +19,10 @@
 
 package org.apache.uima.ruta.string;
 
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.string.StringFunctionExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class ToLowerCaseStringFunction extends StringFunctionExpression {
 
@@ -38,8 +37,8 @@ public class ToLowerCaseStringFunction extends StringFunctionExpression {
     return expr;
   }
 
-  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return expr.getStringValue(parent, annotation, stream).toLowerCase();
+  public String getStringValue(MatchContext context, RutaStream stream) {
+    return expr.getStringValue(context, stream).toLowerCase();
   }
 
 }

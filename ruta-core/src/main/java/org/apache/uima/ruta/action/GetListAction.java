@@ -60,7 +60,7 @@ public class GetListAction extends AbstractRutaAction {
 		RuleMatch match = context.getRuleMatch();
 		RuleElement element = context.getElement();
     RutaBlock parent = element.getParent();
-    String op = opExpr.getStringValue(parent, match, element, stream);
+    String op = opExpr.getStringValue(context, stream);
     List<Type> list = new ArrayList<Type>();
 
     int indexOf = element.getContainer().getRuleElements().indexOf(element);

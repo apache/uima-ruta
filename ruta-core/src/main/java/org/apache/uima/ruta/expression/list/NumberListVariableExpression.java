@@ -22,9 +22,11 @@ package org.apache.uima.ruta.expression.list;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.INumberExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class NumberListVariableExpression extends NumberListExpression {
 
@@ -37,13 +39,14 @@ public class NumberListVariableExpression extends NumberListExpression {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Number> getList(RutaBlock parent, RutaStream stream) {
+  public List<Number> getList(MatchContext context, RutaStream stream) {
+    RutaBlock parent = context.getParent();
     List<Object> list = parent.getEnvironment().getVariableValue(var, List.class);
     List<Number> result = new ArrayList<Number>();
     for (Object each : list) {
       if (each instanceof INumberExpression) {
      // TODO support arrays
-        result.add(((INumberExpression) each).getDoubleValue(parent, null, stream));
+        result.add(((INumberExpression) each).getDoubleValue(context, stream));
       } else if (each instanceof Number) {
         result.add((Number) each);
       }

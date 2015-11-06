@@ -58,16 +58,16 @@ public class InListCondition extends TerminalRutaCondition {
 		RuleElement element = context.getElement();
     String text = annotation.getCoveredText();
     if(arg != null) {
-      text = arg.getStringValue(element.getParent(), annotation, stream);
+      text = arg.getStringValue(context, stream);
     }
     if(text == null) {
       return new EvaluatedCondition(this, false);
     }
     if (stringList == null) {
-      RutaWordList wordList = listExpr.getList(element.getParent());
+      RutaWordList wordList = listExpr.getList(context);
       return new EvaluatedCondition(this, wordList.contains(text, false, 0, null, 0, true));
     }
-    List<String> sList = stringList.getList(element.getParent(), stream);
+    List<String> sList = stringList.getList(context, stream);
     boolean contains = sList.contains(text);
     return new EvaluatedCondition(this, contains);
   }

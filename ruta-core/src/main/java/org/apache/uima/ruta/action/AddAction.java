@@ -69,17 +69,17 @@ public class AddAction extends AbstractRutaAction {
     for (IRutaExpression each : elements) {
       if (each instanceof ListExpression) {
         ListExpression l = (ListExpression) each;
-        list.addAll(l.getList(parent, stream));
+        list.addAll(l.getList(context, stream));
       } else if (vgtype.equals(Boolean.class) && each instanceof IBooleanExpression) {
-        list.add(((IBooleanExpression) each).getBooleanValue(parent, match, element, stream));
+        list.add(((IBooleanExpression) each).getBooleanValue(context, stream));
       } else if (vgtype.equals(Integer.class) && each instanceof INumberExpression) {
-        list.add(((INumberExpression) each).getIntegerValue(parent, match, element, stream));
+        list.add(((INumberExpression) each).getIntegerValue(context, stream));
       } else if (vgtype.equals(Double.class) && each instanceof INumberExpression) {
-        list.add(((INumberExpression) each).getDoubleValue(parent, match, element, stream));
+        list.add(((INumberExpression) each).getDoubleValue(context, stream));
       } else if (vgtype.equals(Type.class) && each instanceof TypeExpression) {
-        list.add(((TypeExpression) each).getType(parent));
+        list.add(((TypeExpression) each).getType(context, stream));
       } else if (vgtype.equals(String.class) && each instanceof IStringExpression) {
-        list.add(((IStringExpression) each).getStringValue(parent, match, element, stream));
+        list.add(((IStringExpression) each).getStringValue(context, stream));
       }
     }
   }

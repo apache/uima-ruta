@@ -53,7 +53,7 @@ public class CurrentCountCondition extends TypeSentiveCondition {
 	  
     int count = 0;
     Iterator<AnnotationFS> it = stream.getCas()
-            .getAnnotationIndex(type.getType(element.getParent())).iterator();
+            .getAnnotationIndex(type.getType(context, stream)).iterator();
     while (it.hasNext()) {
       AnnotationFS next = it.next();
       if (next.getBegin() < annotation.getBegin()) {
@@ -65,8 +65,8 @@ public class CurrentCountCondition extends TypeSentiveCondition {
     if (var != null) {
       element.getParent().getEnvironment().setVariableValue(var, count);
     }
-    boolean value = count >= min.getIntegerValue(element.getParent(), annotation, stream)
-            && count <= max.getIntegerValue(element.getParent(), annotation, stream);
+    boolean value = count >= min.getIntegerValue(context, stream)
+            && count <= max.getIntegerValue(context, stream);
     return new EvaluatedCondition(this, value);
   }
 

@@ -66,11 +66,13 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
     return element;
   }
 
-  public AnnotationFS getLastMatchedAnnotation(RuleElement element, boolean direction,
-          AnnotationFS annotation, RutaBlock parent, RutaStream stream) {
+  public AnnotationFS getLastMatchedAnnotation(MatchContext context, RutaStream stream) {
+    RuleElement element = context.getElement();
+    AnnotationFS annotation = context.getAnnotation();
+    boolean direction = context.getDirection();
     List<AnnotationFS> matchedAnnotations = getMatchedAnnotationsOfElement(element);
     if (matchedAnnotations.isEmpty()) {
-      if (element.getQuantifier().isOptional(parent, stream)) {
+      if (element.getQuantifier().isOptional(context, stream)) {
         return annotation;
       } else {
         return null;

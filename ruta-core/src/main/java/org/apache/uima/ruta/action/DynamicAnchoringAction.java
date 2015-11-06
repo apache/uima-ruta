@@ -49,14 +49,14 @@ public class DynamicAnchoringAction extends AbstractRutaAction {
 		RuleMatch match = context.getRuleMatch();
 		RuleElement element = context.getElement();
     RutaBlock parent = element.getParent();
-    boolean activated = active.getBooleanValue(parent, match, element, stream);
+    boolean activated = active.getBooleanValue(context, stream);
     stream.setDynamicAnchoring(activated);
     if (panelty != null) {
-      double p = panelty.getDoubleValue(parent, match, element, stream);
+      double p = panelty.getDoubleValue(context, stream);
       stream.setIndexPenalty(p);
     }
     if (factor != null) {
-      double f = factor.getDoubleValue(parent, match, element, stream);
+      double f = factor.getDoubleValue(context, stream);
       stream.setAnchoringFactor(f);
     }
   }

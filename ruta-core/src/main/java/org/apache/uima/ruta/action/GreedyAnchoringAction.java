@@ -45,8 +45,8 @@ public class GreedyAnchoringAction extends AbstractRutaAction {
 		RuleMatch match = context.getRuleMatch();
 		RuleElement element = context.getElement();
     RutaBlock parent = element.getParent();
-    boolean greedy1 = greedyRuleElement.getBooleanValue(parent, match, element, stream);
-    boolean greedy2 = greedyRule.getBooleanValue(parent, match, element, stream);
+    boolean greedy1 = greedyRuleElement.getBooleanValue(context, stream);
+    boolean greedy2 = greedyRule.getBooleanValue(context, stream);
     stream.setGreedyRuleElement(greedy1);
     stream.setGreedyRule(greedy2);
   }

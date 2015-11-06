@@ -55,9 +55,9 @@ public class RegExpCondition extends TerminalRutaCondition {
 		AnnotationFS annotation = context.getAnnotation();
 		RuleElement element = context.getElement();
     Matcher matcher = null;
-    boolean ignore = ignoreCase == null ? false : ignoreCase.getBooleanValue(element.getParent(),
-            annotation, stream);
-    String stringValue = pattern.getStringValue(element.getParent(), annotation, stream);
+    boolean ignore = ignoreCase == null ? false : ignoreCase.getBooleanValue(context,
+            stream);
+    String stringValue = pattern.getStringValue(context, stream);
     if (variable == null) {
       String coveredText = annotation.getCoveredText();
       Pattern regularExpPattern = null;
@@ -68,7 +68,7 @@ public class RegExpCondition extends TerminalRutaCondition {
       }
       matcher = regularExpPattern.matcher(coveredText);
     } else {
-      String variableValue = variable.getStringValue(element.getParent(), annotation, stream);
+      String variableValue = variable.getStringValue(context, stream);
       if(variableValue == null) {
         return new EvaluatedCondition(this, false);
       }

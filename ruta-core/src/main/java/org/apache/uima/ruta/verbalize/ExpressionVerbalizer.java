@@ -287,8 +287,8 @@ public class ExpressionVerbalizer {
       SimpleFeatureExpression sfe = (SimpleFeatureExpression) expression;
       sb.append(sfe.getMatchReference().getMatch());
     } else {
-      sb.append(verbalize(expression.getTypeExpr(null)));
-      List<String> list = expression.getFeatureStringList(null);
+      sb.append(verbalize(expression.getTypeExpr(null, null)));
+      List<String> list = expression.getFeatureStringList(null, null);
       if (list != null) {
         for (String string : list) {
           sb.append(".");

@@ -22,9 +22,9 @@ package org.apache.uima.ruta.expression.list;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class SimpleBooleanListExpression extends BooleanListExpression {
 
@@ -36,11 +36,11 @@ public class SimpleBooleanListExpression extends BooleanListExpression {
   }
 
   @Override
-  public List<Boolean> getList(RutaBlock parent, RutaStream stream) {
+  public List<Boolean> getList(MatchContext context, RutaStream stream) {
     List<Boolean> result = new ArrayList<Boolean>();
     for (IBooleanExpression each : list) {
    // TODO support arrays
-      result.add(each.getBooleanValue(parent, null, stream));
+      result.add(each.getBooleanValue(context, stream));
     }
     return result;
   }

@@ -23,9 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.cas.Type;
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class TypeListVariableExpression extends TypeListExpression {
 
@@ -38,12 +40,13 @@ public class TypeListVariableExpression extends TypeListExpression {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Type> getList(RutaBlock parent, RutaStream stream) {
+  public List<Type> getList(MatchContext context, RutaStream stream) {
+    RutaBlock parent = context.getParent();
     List<Object> list = parent.getEnvironment().getVariableValue(var, List.class);
     List<Type> result = new ArrayList<Type>();
     for (Object each : list) {
       if (each instanceof TypeExpression) {
-        result.add(((TypeExpression) each).getType(parent));
+        result.add(((TypeExpression) each).getType(context, stream));
       } else if (each instanceof Type) {
         result.add((Type) each);
       }

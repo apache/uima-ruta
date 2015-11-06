@@ -40,8 +40,7 @@ public class IfCondition extends AbstractRutaCondition {
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
 		AnnotationFS annotation = context.getAnnotation();
 		RuleElement element = context.getElement();
-    return new EvaluatedCondition(this, expression.getBooleanValue(element.getParent(), annotation,
-            stream));
+    return new EvaluatedCondition(this, expression.getBooleanValue(context, stream));
   }
 
   public IBooleanExpression getExpression() {

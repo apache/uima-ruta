@@ -58,25 +58,24 @@ public class RemoveAction extends AbstractRutaAction {
   @SuppressWarnings({ "rawtypes" })
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		RuleMatch match = context.getRuleMatch();
 		RuleElement element = context.getElement();
     RutaBlock parent = element.getParent();
     List list = parent.getEnvironment().getVariableValue(var, List.class);
     List<Object> toRemove = new ArrayList<Object>();
     for (Object entry : list) {
-      Object value1 = getValue(entry, parent, stream, match, element);
+      Object value1 = getValue(entry, context, stream);
       for (IRutaExpression arg : elements) {
         if (arg instanceof ListExpression) {
           ListExpression l = (ListExpression) arg;
-          List list2 = l.getList(parent, stream);
+          List list2 = l.getList(context, stream);
           for (Object object : list2) {
-            Object value2 = getValue(object, parent, stream, match, element);
+            Object value2 = getValue(object, context, stream);
             if (value1.equals(value2)) {
               toRemove.add(entry);
             }
           }
         } else {
-          Object value2 = getValue(arg, parent, stream, match, element);
+          Object value2 = getValue(arg, context, stream);
           if (value1.equals(value2)) {
             toRemove.add(entry);
           }
@@ -89,15 +88,15 @@ public class RemoveAction extends AbstractRutaAction {
     parent.getEnvironment().setVariableValue(var, list);
   }
 
-  private Object getValue(Object obj, RutaBlock parent, RutaStream stream, RuleMatch match, RuleElement element) {
+  private Object getValue(Object obj, MatchContext context, RutaStream stream) {
     if (obj instanceof INumberExpression) {
-      return ((INumberExpression) obj).getDoubleValue(parent, match, element, stream);
+      return ((INumberExpression) obj).getDoubleValue(context, stream);
     } else if (obj instanceof IBooleanExpression) {
-      return ((IBooleanExpression) obj).getBooleanValue(parent, match, element, stream);
+      return ((IBooleanExpression) obj).getBooleanValue(context, stream);
     } else if (obj instanceof TypeExpression) {
-      return ((TypeExpression) obj).getType(parent);
+      return ((TypeExpression) obj).getType(context, stream);
     } else if (obj instanceof IStringExpression) {
-      return ((IStringExpression) obj).getStringValue(parent, match, element, stream);
+      return ((IStringExpression) obj).getStringValue(context, stream);
     }
     return null;
   }

@@ -61,7 +61,7 @@ public class GetFeatureAction extends AbstractRutaAction {
       return;
 
     for (Type type : types) {
-      String stringValue = featureStringExpression.getStringValue(parent, match, element, stream);
+      String stringValue = featureStringExpression.getStringValue(context, stream);
       Feature featureByBaseName = type.getFeatureByBaseName(stringValue);
       RutaEnvironment environment = parent.getEnvironment();
       List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOfElement(element);

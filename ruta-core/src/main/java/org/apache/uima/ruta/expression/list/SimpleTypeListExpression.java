@@ -23,9 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.cas.Type;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class SimpleTypeListExpression extends TypeListExpression {
 
@@ -37,10 +37,10 @@ public class SimpleTypeListExpression extends TypeListExpression {
   }
 
   @Override
-  public List<Type> getList(RutaBlock parent, RutaStream stream) {
+  public List<Type> getList(MatchContext context, RutaStream stream) {
     List<Type> result = new ArrayList<Type>();
     for (TypeExpression each : list) {
-      result.add(each.getType(parent));
+      result.add(each.getType(context, stream));
     }
     return result;
   }

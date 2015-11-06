@@ -61,7 +61,7 @@ public class SetFeatureAction extends AbstractRutaAction {
 		RuleMatch match = context.getRuleMatch();
 		RuleElement element = context.getElement();
     RutaBlock parent = element.getParent();
-    String featureString = featureStringExpression.getStringValue(parent, match, element, stream);
+    String featureString = featureStringExpression.getStringValue(context, stream);
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOfElement(element);
     for (AnnotationFS annotationFS : matchedAnnotations) {
       Feature feature = annotationFS.getType().getFeatureByBaseName(featureString);
@@ -72,41 +72,41 @@ public class SetFeatureAction extends AbstractRutaAction {
         stream.getCas().removeFsFromIndexes(annotationFS);
         if (rangeName.equals(UIMAConstants.TYPE_STRING) && expr instanceof IStringExpression) {
           IStringExpression stringExpr = (IStringExpression) expr;
-          String string = stringExpr.getStringValue(parent, match, element, stream);
+          String string = stringExpr.getStringValue(context, stream);
           annotationFS.setStringValue(feature, string);
         } else if (rangeName.equals(UIMAConstants.TYPE_INTEGER)
                 && expr instanceof INumberExpression) {
           INumberExpression numberExpr = (INumberExpression) expr;
-          int v = numberExpr.getIntegerValue(parent, match, element, stream);
+          int v = numberExpr.getIntegerValue(context, stream);
           annotationFS.setIntValue(feature, v);
         } else if (rangeName.equals(UIMAConstants.TYPE_DOUBLE) && expr instanceof INumberExpression) {
           INumberExpression numberExpr = (INumberExpression) expr;
-          double v = numberExpr.getDoubleValue(parent, match, element, stream);
+          double v = numberExpr.getDoubleValue(context, stream);
           annotationFS.setDoubleValue(feature, v);
         } else if (rangeName.equals(UIMAConstants.TYPE_FLOAT) && expr instanceof INumberExpression) {
           INumberExpression numberExpr = (INumberExpression) expr;
-          float v = (float) numberExpr.getFloatValue(parent, match, element, stream);
+          float v = (float) numberExpr.getFloatValue(context, stream);
           annotationFS.setFloatValue(feature, v);
         } else if (rangeName.equals(UIMAConstants.TYPE_BYTE) && expr instanceof INumberExpression) {
           INumberExpression numberExpr = (INumberExpression) expr;
-          byte v = (byte) numberExpr.getIntegerValue(parent, match, element, stream);
+          byte v = (byte) numberExpr.getIntegerValue(context, stream);
           annotationFS.setByteValue(feature, v);
         } else if (rangeName.equals(UIMAConstants.TYPE_SHORT) && expr instanceof INumberExpression) {
           INumberExpression numberExpr = (INumberExpression) expr;
-          short v = (short) numberExpr.getIntegerValue(parent, match, element, stream);
+          short v = (short) numberExpr.getIntegerValue(context, stream);
           annotationFS.setShortValue(feature, v);
         } else if (rangeName.equals(UIMAConstants.TYPE_LONG) && expr instanceof INumberExpression) {
           INumberExpression numberExpr = (INumberExpression) expr;
-          long v = numberExpr.getIntegerValue(parent, match, element, stream);
+          long v = numberExpr.getIntegerValue(context, stream);
           annotationFS.setLongValue(feature, v);
         } else if (rangeName.equals(UIMAConstants.TYPE_BOOLEAN)
                 && expr instanceof IBooleanExpression) {
           IBooleanExpression booleanExpr = (IBooleanExpression) expr;
-          boolean v = booleanExpr.getBooleanValue(parent, match, element, stream);
+          boolean v = booleanExpr.getBooleanValue(context, stream);
           annotationFS.setBooleanValue(feature, v);
         } else if (expr instanceof ITypeExpression) {
           ITypeExpression typeExpr = (ITypeExpression) expr;
-          Type t = typeExpr.getType(parent);
+          Type t = typeExpr.getType(context, stream);
           List<AnnotationFS> inWindow = stream.getAnnotationsInWindow(annotationFS, t);
           if (feature.getRange().isArray()) {
             annotationFS.setFeatureValue(feature, UIMAUtils.toFSArray(stream.getJCas(), inWindow));
@@ -120,8 +120,8 @@ public class SetFeatureAction extends AbstractRutaAction {
           }
         } else if(expr instanceof GenericFeatureExpression) {
           TypeExpression typeExpr = ((GenericFeatureExpression) expr).getFeatureExpression()
-                  .getTypeExpr(parent);
-          Type t = typeExpr.getType(parent);
+                  .getTypeExpr(context, stream);
+          Type t = typeExpr.getType(context, stream);
           List<AnnotationFS> inWindow = stream.getAnnotationsInWindow(annotationFS, t);
           if (feature.getRange().isArray()) {
             annotationFS.setFeatureValue(feature, UIMAUtils.toFSArray(stream.getJCas(), inWindow));

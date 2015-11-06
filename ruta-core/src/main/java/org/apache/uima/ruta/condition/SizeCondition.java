@@ -52,9 +52,9 @@ public class SizeCondition extends AbstractRutaCondition {
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
 		AnnotationFS annotation = context.getAnnotation();
 		RuleElement element = context.getElement();
-    int count = listExpr.getList(element.getParent(), stream).size();
-    boolean value = count >= minExpr.getIntegerValue(element.getParent(), annotation, stream)
-            && count <= maxExpr.getIntegerValue(element.getParent(), annotation, stream);
+    int count = listExpr.getList(context, stream).size();
+    boolean value = count >= minExpr.getIntegerValue(context, stream)
+            && count <= maxExpr.getIntegerValue(context, stream);
     if (varExpr != null) {
       element.getParent().getEnvironment().setVariableValue(varExpr, count);
     }

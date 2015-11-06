@@ -81,17 +81,17 @@ public class MarkFastAction extends AbstractMarkAction {
       RutaWordList wl = null;
       RutaBlock parent = element.getParent();
       if (list != null) {
-        wl = list.getList(parent);
+        wl = list.getList(context);
       } else if (stringList != null) {
-        wl = new TreeWordList(stringList.getList(parent, stream), false);
+        wl = new TreeWordList(stringList.getList(context, stream), false);
       }
       if (wl instanceof TreeWordList) {
         Collection<AnnotationFS> found = wl.find(windowStream,
-                ignore.getBooleanValue(parent, match, element, stream),
-                ignoreLength.getIntegerValue(parent, match, element, stream), null, 0,
-                ignoreWS.getBooleanValue(parent, match, element, stream));
+                ignore.getBooleanValue(context, stream),
+                ignoreLength.getIntegerValue(context, stream), null, 0,
+                ignoreWS.getBooleanValue(context, stream));
         for (AnnotationFS annotation : found) {
-          createAnnotation(annotation, element, windowStream, match);
+          createAnnotation(annotation, context, windowStream);
         }
       }
     }

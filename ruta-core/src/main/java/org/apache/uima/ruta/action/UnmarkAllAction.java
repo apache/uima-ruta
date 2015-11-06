@@ -52,9 +52,9 @@ public class UnmarkAllAction extends TypeSensitiveAction {
 		RuleElement element = context.getElement();
     List<Type> retainList = new ArrayList<Type>();
     if (list != null) {
-      retainList = list.getList(element.getParent(), stream);
+      retainList = list.getList(context, stream);
     }
-    Type t = type.getType(element.getParent());
+    Type t = type.getType(context, stream);
     TypeSystem typeSystem = stream.getCas().getTypeSystem();
     List<AnnotationFS> toRemove = new LinkedList<AnnotationFS>();
     List<List<RuleElementMatch>> matchInfo = match.getMatchInfo(element);

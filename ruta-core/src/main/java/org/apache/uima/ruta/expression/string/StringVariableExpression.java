@@ -22,6 +22,7 @@ package org.apache.uima.ruta.expression.string;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class StringVariableExpression extends LiteralStringExpression {
 
@@ -33,7 +34,9 @@ public class StringVariableExpression extends LiteralStringExpression {
   }
 
   @Override
-  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+  public String getStringValue(MatchContext context, RutaStream stream) {
+    AnnotationFS annotation = context.getAnnotation();
+    RutaBlock parent = context.getParent();
     String variableValue = parent.getEnvironment().getVariableValue(getVar(), String.class);
     return variableValue;
   }

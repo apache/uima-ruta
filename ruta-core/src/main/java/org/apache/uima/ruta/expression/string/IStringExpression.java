@@ -19,17 +19,15 @@
 
 package org.apache.uima.ruta.expression.string;
 
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 
 public interface IStringExpression extends IRutaExpression {
 
-  String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream);
+  String getStringValue(MatchContext context, RutaStream stream);
 
-  String getStringValue(RutaBlock parent, RuleMatch match, RuleElement element, RutaStream stream);
 
 }

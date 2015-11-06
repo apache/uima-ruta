@@ -62,7 +62,7 @@ public class CallAction extends AbstractRutaAction {
     AnalysisEngine targetEngine = thisScript.getEngine(namespace);
     if (targetEngine != null) {
       try {
-        callEngine(match, crowd, targetEngine, element, stream);
+        callEngine(context, crowd, targetEngine, stream);
       } catch (AnalysisEngineProcessException e) {
         e.printStackTrace();
       } catch (ResourceInitializationException e) {
@@ -71,7 +71,7 @@ public class CallAction extends AbstractRutaAction {
     } else {
       RutaBlock block = thisScript.getBlock(namespace);
       if (block != null) {
-        callScript(block, match, element, stream, crowd);
+        callScript(block, context, stream, crowd);
       } else {
         System.out.println("Found no script/block: " + namespace);
       }
@@ -79,8 +79,9 @@ public class CallAction extends AbstractRutaAction {
 
   }
 
-  protected void callScript(RutaBlock block, RuleMatch match, RuleElement element,
-          RutaStream stream, InferenceCrowd crowd) {
+  protected void callScript(RutaBlock block, MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    RuleElement element = context.getElement();
+    RuleMatch match = context.getRuleMatch();
     List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
     for (AnnotationFS annotationFS : matchedAnnotationsOf) {
       RutaStream windowStream = stream.getWindowStream(annotationFS,
@@ -91,10 +92,13 @@ public class CallAction extends AbstractRutaAction {
 
   }
 
-  protected void callEngine(RuleMatch match, InferenceCrowd crowd, AnalysisEngine targetEngine,
-          RuleElement element, RutaStream stream) throws ResourceInitializationException,
+  protected void callEngine(MatchContext context, InferenceCrowd crowd, AnalysisEngine targetEngine,
+          RutaStream stream) throws ResourceInitializationException,
           AnalysisEngineProcessException {
 
+    RuleElement element = context.getElement();
+    RuleMatch match = context.getRuleMatch();
+    
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(null,
             element.getContainer());
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {

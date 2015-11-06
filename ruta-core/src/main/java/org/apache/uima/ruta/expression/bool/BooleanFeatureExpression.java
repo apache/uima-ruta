@@ -28,6 +28,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class BooleanFeatureExpression extends AbstractBooleanExpression {
 
@@ -39,11 +40,13 @@ public class BooleanFeatureExpression extends AbstractBooleanExpression {
   }
 
   @Override
-  public boolean getBooleanValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    Type type = fe.getTypeExpr(parent).getType(parent);
-    Feature feature = fe.getFeature(parent);
+  public boolean getBooleanValue(MatchContext context, RutaStream stream) {
+    AnnotationFS annotation = context.getAnnotation();
+    RutaBlock parent = context.getParent();
+    Type type = fe.getTypeExpr(context, stream).getType(context, stream);
+    Feature feature = fe.getFeature(context, stream);
     List<AnnotationFS> list = getTargetAnnotation(annotation, type, stream);
-    Collection<AnnotationFS> featureAnnotations = fe.getFeatureAnnotations(list, stream, parent,
+    Collection<AnnotationFS> featureAnnotations = fe.getFeatureAnnotations(list, stream, context,
             false);
     if (!featureAnnotations.isEmpty()) {
       AnnotationFS next = featureAnnotations.iterator().next();
@@ -53,8 +56,8 @@ public class BooleanFeatureExpression extends AbstractBooleanExpression {
   }
 
   @Override
-  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return String.valueOf(getBooleanValue(parent, annotation, stream));
+  public String getStringValue(MatchContext context, RutaStream stream) {
+    return String.valueOf(getBooleanValue(context, stream));
   }
 
   public FeatureExpression getFe() {

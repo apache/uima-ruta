@@ -52,14 +52,14 @@ public class TotalCountCondition extends TypeSentiveCondition {
 		AnnotationFS annotation = context.getAnnotation();
 		RuleElement element = context.getElement();
     int count = 0;
-    Type t = type.getType(element.getParent());
+    Type t = type.getType(context, stream);
 	AnnotationIndex<Annotation> annotationIndex = stream.getJCas().getAnnotationIndex(t);
     count= annotationIndex.size();
     if (var != null) {
       element.getParent().getEnvironment().setVariableValue(var, count);
     }
-    boolean value = count >= min.getIntegerValue(element.getParent(), annotation, stream)
-            && count <= max.getIntegerValue(element.getParent(), annotation, stream);
+    boolean value = count >= min.getIntegerValue(context, stream)
+            && count <= max.getIntegerValue(context, stream);
     return new EvaluatedCondition(this, value);
   }
 

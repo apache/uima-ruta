@@ -72,14 +72,14 @@ public class GatherAction extends AbstractStructureAction {
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
 		RuleMatch match = context.getRuleMatch();
 		RuleElement element = context.getElement();
-    List<Integer> indexList = getIndexList(match, element, stream);
+    List<Integer> indexList = getIndexList(context, stream);
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(indexList,
             element.getContainer());
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
       if (matchedAnnotation == null) {
         return;
       }
-      Type type = structureType.getType(element.getParent());
+      Type type = structureType.getType(context, stream);
       FeatureStructure newFS = stream.getCas().createFS(type);
       if (newFS instanceof Annotation) {
         Annotation a = (Annotation) newFS;
@@ -90,7 +90,7 @@ public class GatherAction extends AbstractStructureAction {
       TOP newStructure = null;
       if (newFS instanceof TOP) {
         newStructure = (TOP) newFS;
-        gatherFeatures(newStructure, features, matchedAnnotation, element, match, stream);
+        gatherFeatures(newStructure, features, matchedAnnotation, context, stream);
         newStructure.addToIndexes();
       }
     }
@@ -98,20 +98,20 @@ public class GatherAction extends AbstractStructureAction {
   }
 
   private void gatherFeatures(TOP structure, Map<IStringExpression, IRutaExpression> features,
-          AnnotationFS matchedAnnotation, RuleElement element, RuleMatch match, RutaStream stream) {
+          AnnotationFS matchedAnnotation, MatchContext context, RutaStream stream) {
     Map<String, List<Number>> map = new HashMap<String, List<Number>>();
     for (Entry<IStringExpression, IRutaExpression> each : features.entrySet()) {
-      RutaBlock parent = element.getParent();
-      String value = each.getKey().getStringValue(parent, match, element, stream);
+      RutaBlock parent = context.getParent();
+      String value = each.getKey().getStringValue(context, stream);
       IRutaExpression expr = each.getValue();
       List<Number> ints = new ArrayList<Number>();
       if (expr instanceof INumberExpression) {
         INumberExpression ne = (INumberExpression) expr;
-        ints.add(ne.getIntegerValue(parent, match, element, stream));
+        ints.add(ne.getIntegerValue(context, stream));
         map.put(value, ints);
       } else if (expr instanceof NumberListExpression) {
         NumberListExpression ne = (NumberListExpression) expr;
-        map.put(value, ne.getList(parent, stream));
+        map.put(value, ne.getList(context, stream));
       }
     }
 
@@ -126,7 +126,7 @@ public class GatherAction extends AbstractStructureAction {
       if (reIndexes != null && !reIndexes.isEmpty()) {
         Type range = targetFeature.getRange();
 
-        List<RuleElementMatch> tms = getMatchInfo(match, element, reIndexes);
+        List<RuleElementMatch> tms = getMatchInfo(context.getRuleMatch(), context.getElement(), reIndexes);
         if (tms.size() == 0) {// do nothing
 
         } else if (tms.size() == 1) {
@@ -210,7 +210,8 @@ public class GatherAction extends AbstractStructureAction {
   }
 
   // TODO refactor duplicate methods -> MarkAction
-  protected List<Integer> getIndexList(RuleMatch match, RuleElement element, RutaStream stream) {
+  protected List<Integer> getIndexList(MatchContext context, RutaStream stream) {
+    RuleElement element = context.getElement();
     List<Integer> indexList = new ArrayList<Integer>();
     if (indexes == null || indexes.isEmpty()) {
       int self = element.getContainer().getRuleElements().indexOf(element) + 1;
@@ -220,7 +221,7 @@ public class GatherAction extends AbstractStructureAction {
     int last = Integer.MAX_VALUE - 1;
     for (INumberExpression each : indexes) {
       // no feature matches allowed
-      int value = each.getIntegerValue(element.getParent(), null, stream);
+      int value = each.getIntegerValue(context, stream);
       for (int i = Math.min(value, last + 1); i < value; i++) {
         indexList.add(i);
       }

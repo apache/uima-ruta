@@ -44,7 +44,7 @@ public class MarkFirstAction extends AbstractMarkAction {
             element.getContainer());
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
       RutaBasic beginAnchor = stream.getBeginAnchor(matchedAnnotation.getBegin());
-      createAnnotation(beginAnchor, element, stream, match);
+      createAnnotation(beginAnchor, context, stream);
     }
   }
 

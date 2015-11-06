@@ -22,12 +22,11 @@ package org.apache.uima.ruta.rule.quantifier;
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.rule.ComposedRuleElementMatch;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleElementMatch;
-import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class PlusGreedy extends AbstractRuleElementQuantifier {
@@ -38,7 +37,7 @@ public class PlusGreedy extends AbstractRuleElementQuantifier {
 
   @Override
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
-          RutaBlock parent, RutaStream stream, InferenceCrowd crowd) {
+          MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     boolean result = true;
     boolean allEmpty = true;
     if (matches == null) {
@@ -63,14 +62,14 @@ public class PlusGreedy extends AbstractRuleElementQuantifier {
   }
 
   @Override
-  public boolean continueMatch(boolean after, AnnotationFS annotation, RuleElement ruleElement,
-          RuleMatch extendedMatch, ComposedRuleElementMatch containerMatch, RutaStream stream,
-          InferenceCrowd crowd) {
+  public boolean continueMatch(boolean after, MatchContext context, AnnotationFS annotation,
+          ComposedRuleElementMatch containerMatch, RutaStream stream, InferenceCrowd crowd) {
     if(annotation == null) {
       // do not try to continue a match that totally failed
       return false;
     }
-    List<List<RuleElementMatch>> matchInfo = extendedMatch.getMatchInfo(ruleElement);
+    RuleElement ruleElement = context.getElement();
+    List<List<RuleElementMatch>> matchInfo = context.getRuleMatch().getMatchInfo(ruleElement);
     List<RuleElementMatch> matches;
     if (after) {
       matches = matchInfo.get(matchInfo.size() - 1);
@@ -99,7 +98,7 @@ public class PlusGreedy extends AbstractRuleElementQuantifier {
   }
 
   @Override
-  public boolean isOptional(RutaBlock parent, RutaStream stream) {
+  public boolean isOptional(MatchContext context, RutaStream stream) {
     return false;
   }
 }

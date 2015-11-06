@@ -43,8 +43,11 @@ public class RutaLiteralMatcher implements RutaMatcher {
     List<AnnotationFS> result = new ArrayList<AnnotationFS>();
     AnnotationFS windowAnnotation = stream.getDocumentAnnotation();
     List<RutaBasic> list = stream.getBasicsInWindow(windowAnnotation);
+    // TODO improve matching on literal strings
     for (RutaBasic each : list) {
-      if (each.getCoveredText().equals(expression.getStringValue(parent, null, stream))) {
+      MatchContext context = new MatchContext(each, null, null, true);
+      context.setParent(parent);
+      if (each.getCoveredText().equals(expression.getStringValue(context, stream))) {
         result.add(each);
       }
     }
@@ -55,7 +58,9 @@ public class RutaLiteralMatcher implements RutaMatcher {
     if (annotation == null) {
       return false;
     }
-    return annotation.getCoveredText().equals(expression.getStringValue(parent, null, stream));
+    MatchContext context = new MatchContext(annotation, null, null, true);
+    context.setParent(parent);
+    return annotation.getCoveredText().equals(expression.getStringValue(context, stream));
   }
 
   @Override
@@ -88,7 +93,9 @@ public class RutaLiteralMatcher implements RutaMatcher {
     if (basicNextTo == null) {
       return result;
     }
-    String stringValue = expression.getStringValue(parent, annotation, stream);
+    MatchContext context = new MatchContext(annotation, null, null, !before);
+    context.setParent(parent);
+    String stringValue = expression.getStringValue(context, stream);
     if (stringValue.equals(basicNextTo.getCoveredText())) {
       result.add(basicNextTo);
     }

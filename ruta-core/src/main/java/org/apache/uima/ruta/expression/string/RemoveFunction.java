@@ -21,9 +21,9 @@ package org.apache.uima.ruta.expression.string;
 
 import java.util.List;
 
-import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class RemoveFunction extends StringFunctionExpression {
 
@@ -38,11 +38,12 @@ public class RemoveFunction extends StringFunctionExpression {
   }
 
   @Override
-  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+  public String getStringValue(MatchContext context, RutaStream stream) {
+    RutaBlock parent = context.getParent();
     StringBuilder result = new StringBuilder();
     String value = parent.getEnvironment().getVariableValue(var, String.class);
     for (IStringExpression each : list) {
-      String string = each.getStringValue(parent, annotation, stream);
+      String string = each.getStringValue(context, stream);
       String[] split = value.split(string);
       for (String r : split) {
         result.append(r);

@@ -49,8 +49,8 @@ public class ExampleCondition extends AbstractRutaCondition {
     AnnotationFS annotation = context.getAnnotation();
     RuleElement element = context.getElement();
     String coveredText = annotation.getCoveredText();
-    String dateValue = dateExpr.getStringValue(element.getParent(), annotation, stream);
-    String formatValue = formatExpr.getStringValue(element.getParent(), annotation, stream);
+    String dateValue = dateExpr.getStringValue(context, stream);
+    String formatValue = formatExpr.getStringValue(context, stream);
     SimpleDateFormat dateFormat = new SimpleDateFormat(formatValue);
     boolean result = false;
     try {

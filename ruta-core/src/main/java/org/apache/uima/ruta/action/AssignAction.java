@@ -53,19 +53,19 @@ public class AssignAction extends AbstractRutaAction {
     RutaEnvironment environment = parent.getEnvironment();
     Class<?> clazz = environment.getVariableType(var);
     if (clazz.equals(Double.class) && expression instanceof INumberExpression) {
-      double v = ((INumberExpression) expression).getDoubleValue(parent, match, element, stream);
+      double v = ((INumberExpression) expression).getDoubleValue(context, stream);
       environment.setVariableValue(var, v);
     } else if (clazz.equals(Integer.class) && expression instanceof INumberExpression) {
-      int v = ((INumberExpression) expression).getIntegerValue(parent, match, element, stream);
+      int v = ((INumberExpression) expression).getIntegerValue(context, stream);
       environment.setVariableValue(var, v);
     } else if (clazz.equals(Type.class) && expression instanceof TypeExpression) {
-      Type v = ((TypeExpression) expression).getType(parent);
+      Type v = ((TypeExpression) expression).getType(context, stream);
       environment.setVariableValue(var, v);
     } else if (clazz.equals(Boolean.class) && expression instanceof IBooleanExpression) {
-      boolean v = ((IBooleanExpression) expression).getBooleanValue(parent, match, element, stream);
+      boolean v = ((IBooleanExpression) expression).getBooleanValue(context, stream);
       environment.setVariableValue(var, v);
     } else if (clazz.equals(String.class) && expression instanceof IStringExpression) {
-      String v = ((IStringExpression) expression).getStringValue(parent, match, element, stream);
+      String v = ((IStringExpression) expression).getStringValue(context, stream);
       environment.setVariableValue(var, v);
     }
   }

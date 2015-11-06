@@ -19,6 +19,7 @@
 package org.apache.uima.ruta.rule;
 
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
 
 /**
  * This is a generic container class for contextual information during rule matching
@@ -26,83 +27,116 @@ import org.apache.uima.cas.text.AnnotationFS;
  */
 public class MatchContext {
 
-	private AnnotationFS annotation;
-	private RuleElement element;
-	private RuleMatch ruleMatch;
-	private boolean direction;
+  private AnnotationFS annotation;
 
-	/**
-	 * Container object of the current context during matching
-	 * 
-	 * @param annotation
-	 * @param element
-	 * @param ruleMatch
-	 * @param direction, true: left to right, false, right to left
-	 */
-	public MatchContext(AnnotationFS annotation, RuleElement element, RuleMatch ruleMatch, boolean direction) {
-		super();
-		this.annotation = annotation;
-		this.element = element;
-		this.ruleMatch = ruleMatch;
-		this.direction = direction;
-	}
-	
-	/**
-	 * Container object of the current context during matching
-	 * 
-	 * @param element
-	 * @param ruleMatch
-	 * @param direction, true: left to right, false, right to left
-	 */
-	public MatchContext(RuleElement element, RuleMatch ruleMatch, boolean direction) {
-		this(null, element, ruleMatch, direction);
-	}
-	
-	/**
-	* Container object of the current context during matching
-	* 
-	 * @param element
-	 * @param ruleMatch
-	 */
-	public MatchContext(AbstractRuleElement element,
-			RuleMatch ruleMatch) {
-		this(element, ruleMatch, true);
-	}
+  private RuleElement element;
 
-	public AnnotationFS getAnnotation() {
-		if(annotation!= null) {
-			return annotation;
-		} else {
-			return null;
-		}
-	}
+  private RutaBlock parent;
 
-	public void setAnnotation(AnnotationFS annotation) {
-		this.annotation = annotation;
-	}
+  private RuleMatch ruleMatch;
 
-	public RuleElement getElement() {
-		return element;
-	}
+  private boolean direction = true;
 
-	public void setElement(RuleElement element) {
-		this.element = element;
-	}
+  /**
+   * Container object of the current context during matching
+   * 
+   * @param annotation
+   * @param element
+   * @param ruleMatch
+   * @param direction
+   *          , true: left to right, false, right to left
+   */
+  public MatchContext(AnnotationFS annotation, RuleElement element, RuleMatch ruleMatch,
+          boolean direction) {
+    super();
+    this.annotation = annotation;
+    this.element = element;
+    if (element != null) {
+      this.parent = element.getParent();
+    }
+    this.ruleMatch = ruleMatch;
+    this.direction = direction;
+  }
 
-	public RuleMatch getRuleMatch() {
-		return ruleMatch;
-	}
+  /**
+   * Container object of the current context during matching
+   * 
+   * @param element
+   * @param ruleMatch
+   * @param direction
+   *          , true: left to right, false, right to left
+   */
+  public MatchContext(RuleElement element, RuleMatch ruleMatch, boolean direction) {
+    this(null, element, ruleMatch, direction);
+  }
 
-	public void setRuleMatch(RuleMatch ruleMatch) {
-		this.ruleMatch = ruleMatch;
-	}
+  /**
+   * Container object of the current context during matching
+   * 
+   * @param element
+   * @param ruleMatch
+   */
+  public MatchContext(AbstractRuleElement element, RuleMatch ruleMatch) {
+    this(element, ruleMatch, true);
+  }
 
-	public boolean isDirection() {
-		return direction;
-	}
+  
+  /**
+   * Container object of the current context during matching
+   * 
+   * @param annotation
+   * @param element
+   * @param ruleMatch
+   * @param direction
+   *          , true: left to right, false, right to left
+   */
+  public MatchContext(RutaBlock parent) {
+    super();
+    this.parent = parent;
+  }
+  
+  public AnnotationFS getAnnotation() {
+    if (annotation != null) {
+      return annotation;
+    } else {
+      return null;
+    }
+  }
 
-	public void setDirection(boolean direction) {
-		this.direction = direction;
-	}
-	
+  public void setAnnotation(AnnotationFS annotation) {
+    this.annotation = annotation;
+  }
+
+  public RuleElement getElement() {
+    return element;
+  }
+
+  public void setElement(RuleElement element) {
+    this.element = element;
+  }
+
+  public RuleMatch getRuleMatch() {
+    return ruleMatch;
+  }
+
+  public void setRuleMatch(RuleMatch ruleMatch) {
+    this.ruleMatch = ruleMatch;
+  }
+
+  public boolean getDirection() {
+    return direction;
+  }
+
+  public void setDirection(boolean direction) {
+    this.direction = direction;
+  }
+
+  public RutaBlock getParent() {
+    return parent;
+  }
+
+  public void setParent(RutaBlock parent) {
+    this.parent = parent;
+  }
+
 }

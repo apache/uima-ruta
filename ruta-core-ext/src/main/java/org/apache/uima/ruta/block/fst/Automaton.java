@@ -235,16 +235,16 @@ public class Automaton {
             .getConditions().size());
     // boolean base = matcher.match(annotation, stream, getParent());
     boolean base = true;
+    MatchContext context = new MatchContext(annotation, element, ruleMatch, true);
     RutaMatcher matcher = ((RutaRuleElement) element).getMatcher();
     if (matcher instanceof RutaTypeMatcher) {
       RutaTypeMatcher rtm = (RutaTypeMatcher) matcher;
       MatchReference mr = (MatchReference) rtm.getExpression();
-      FeatureExpression featureExpression = mr.getFeatureExpression(element.getParent());
+      FeatureExpression featureExpression = mr.getFeatureExpression(context, stream);
       if (featureExpression != null) {
         base = matcher.match(annotation, stream, element.getParent());
       }
     }
-    MatchContext context = new MatchContext(annotation, element, ruleMatch, true);
     
     List<AnnotationFS> textsMatched = new ArrayList<AnnotationFS>(1);
     if (base) {

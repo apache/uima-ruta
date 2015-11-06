@@ -40,7 +40,7 @@ public class LastCondition extends TypeSentiveCondition {
 		AnnotationFS annotation = context.getAnnotation();
 		RuleElement element = context.getElement();
     RutaBasic endAnchor = stream.getEndAnchor(annotation.getEnd());
-    Type t = type.getType(element.getParent());
+    Type t = type.getType(context, stream);
     boolean result = endAnchor.beginsWith(t) && endAnchor.endsWith(t);
     return new EvaluatedCondition(this, result);
   }

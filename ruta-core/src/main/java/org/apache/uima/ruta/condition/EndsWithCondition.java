@@ -48,12 +48,12 @@ public class EndsWithCondition extends TypeSentiveCondition {
 		RuleElement element = context.getElement();
 	  
     if (!isWorkingOnList()) {
-      Type givenType = type.getType(element.getParent());
+      Type givenType = type.getType(context, stream);
       boolean result = check(stream, annotation, givenType);
       return new EvaluatedCondition(this, result);
     } else {
       boolean result = false;
-      List<Type> types = getList().getList(element.getParent(), stream);
+      List<Type> types = getList().getList(context, stream);
       for (Type t : types) {
         result |= check(stream, annotation, t);
         if (result) {

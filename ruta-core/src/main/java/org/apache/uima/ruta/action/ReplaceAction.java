@@ -55,7 +55,7 @@ public class ReplaceAction extends AbstractRutaAction {
       boolean replaced = false;
       for (RutaBasic basic : annotationsInWindow) {
         RutaBlock parent = element.getParent();
-        basic.setReplacement(replaced ? "" : replacement.getStringValue(parent, match, element,
+        basic.setReplacement(replaced ? "" : replacement.getStringValue(context,
                 stream));
         replaced = true;
       }

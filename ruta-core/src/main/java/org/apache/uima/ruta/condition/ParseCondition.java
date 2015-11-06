@@ -59,7 +59,7 @@ public class ParseCondition extends AbstractRutaCondition {
     NumberFormat nf = null;
     String locale = annotation.getCAS().getDocumentLanguage();
     if(localeExpr != null) {
-      locale = localeExpr.getStringValue(element.getParent(), annotation, stream);
+      locale = localeExpr.getStringValue(context, stream);
     }
     if(locale == null) {
       locale = "x-unspecified";

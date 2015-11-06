@@ -59,7 +59,7 @@ public class CreateAction extends AbstractStructureAction {
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
 		RuleMatch match = context.getRuleMatch();
 		RuleElement element = context.getElement();
-    List<Integer> indexList = getIndexList(match, element, stream);
+    List<Integer> indexList = getIndexList(context, stream);
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(indexList,
             element.getContainer());
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
@@ -67,7 +67,7 @@ public class CreateAction extends AbstractStructureAction {
       if (matchedAnnotation == null) {
         return;
       }
-      Type type = structureType.getType(element.getParent());
+      Type type = structureType.getType(context, stream);
       FeatureStructure newFS = stream.getCas().createFS(type);
       if (newFS instanceof Annotation) {
         Annotation a = (Annotation) newFS;
@@ -78,14 +78,15 @@ public class CreateAction extends AbstractStructureAction {
       TOP newStructure = null;
       if (newFS instanceof TOP) {
         newStructure = (TOP) newFS;
-        fillFeatures(newStructure, features, matchedAnnotation, element, stream);
+        fillFeatures(newStructure, features, matchedAnnotation, context, stream);
         newStructure.addToIndexes();
       }
     }
   }
 
   // TODO refactor duplicate methods -> MarkAction
-  protected List<Integer> getIndexList(RuleMatch match, RuleElement element, RutaStream stream) {
+  protected List<Integer> getIndexList(MatchContext context, RutaStream stream) {
+    RuleElement element = context.getElement();
     List<Integer> indexList = new ArrayList<Integer>();
     if (indexes == null || indexes.isEmpty()) {
       int self = element.getContainer().getRuleElements().indexOf(element) + 1;
@@ -95,7 +96,7 @@ public class CreateAction extends AbstractStructureAction {
     int last = Integer.MAX_VALUE - 1;
     for (INumberExpression each : indexes) {
       // no feature matches allowed
-      int value = each.getIntegerValue(element.getParent(), null, stream);
+      int value = each.getIntegerValue(context, stream);
       for (int i = Math.min(value, last + 1); i < value; i++) {
         indexList.add(i);
       }

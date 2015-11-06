@@ -46,7 +46,7 @@ public class MatchedTextAction extends AbstractRutaAction {
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
 		RuleMatch match = context.getRuleMatch();
 		RuleElement element = context.getElement();
-    List<Integer> indexList = getIndexList(match, element, stream);
+    List<Integer> indexList = getIndexList(context, stream);
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(indexList,
             element.getContainer());
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
@@ -63,7 +63,8 @@ public class MatchedTextAction extends AbstractRutaAction {
     return list;
   }
 
-  protected List<Integer> getIndexList(RuleMatch match, RuleElement element, RutaStream stream) {
+  protected List<Integer> getIndexList(MatchContext context, RutaStream stream) {
+    RuleElement element = context.getElement();
     List<Integer> indexList = new ArrayList<Integer>();
     if (list == null || list.isEmpty()) {
       int self = element.getContainer().getRuleElements().indexOf(element) + 1;
@@ -73,7 +74,7 @@ public class MatchedTextAction extends AbstractRutaAction {
     int last = Integer.MAX_VALUE - 1;
     for (INumberExpression each : list) {
       // not allowed for feature matches
-      int value = each.getIntegerValue(element.getParent(), null, stream);
+      int value = each.getIntegerValue(context, stream);
       for (int i = Math.min(value, last + 1); i < value; i++) {
         indexList.add(i);
       }

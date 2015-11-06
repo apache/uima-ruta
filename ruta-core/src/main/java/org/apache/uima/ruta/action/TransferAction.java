@@ -46,7 +46,7 @@ public class TransferAction extends TypeSensitiveAction {
 		RuleElement element = context.getElement();
     List<List<RuleElementMatch>> list = match.getMatchInfo(element);
     CAS cas = stream.getCas();
-    Type t = type.getType(element.getParent());
+    Type t = type.getType(context, stream);
     for (List<RuleElementMatch> eachList : list) {
       for (RuleElementMatch each : eachList) {
         List<AnnotationFS> matched = each.getTextsMatched();

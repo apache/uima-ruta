@@ -31,50 +31,50 @@ import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 
 public class NullExpression extends FeatureExpression implements IStringExpression, ITypeExpression{
 
   @Override
-  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+  public String getStringValue(MatchContext context, RutaStream stream) {
     return null;
   }
 
-  @Override
-  public String getStringValue(RutaBlock parent, RuleMatch match, RuleElement element,
-          RutaStream stream) {
-    return null;
-  }
-
-  @Override
-  public Feature getFeature(RutaBlock parent) {
-    return null;
-  }
-
-  @Override
-  public List<Feature> getFeatures(RutaBlock parent) {
-    return null;
-  }
-
-  @Override
-  public List<String> getFeatureStringList(RutaBlock parent) {
-    return null;
-  }
-
-  @Override
-  public TypeExpression getTypeExpr(RutaBlock parent) {
-    return null;
-  }
-
+  
   @Override
   public Collection<AnnotationFS> getFeatureAnnotations(Collection<AnnotationFS> annotations,
-          RutaStream stream, RutaBlock parent, boolean checkOnFeatureValue) {
+          RutaStream stream, MatchContext context, boolean checkOnFeatureValue) {
     return null;
   }
 
   @Override
-  public Type getType(RutaBlock parent) {
+  public Type getType(MatchContext context, RutaStream stream) {
+    return null;
+  }
+
+
+  @Override
+  public Feature getFeature(MatchContext context, RutaStream stream) {
+    return null;
+  }
+
+
+  @Override
+  public List<Feature> getFeatures(MatchContext context, RutaStream stream) {
+    return null;
+  }
+
+
+  @Override
+  public List<String> getFeatureStringList(MatchContext context, RutaStream stream) {
+    return null;
+  }
+
+
+  @Override
+  public TypeExpression getTypeExpr(MatchContext context, RutaStream stream) {
     return null;
   }
 

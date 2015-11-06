@@ -44,7 +44,7 @@ public class ImplicitMarkAction extends AbstractMarkAction {
       if (matchedAnnotation == null) {
         return;
       }
-      createAnnotation(matchedAnnotation, element, stream, match);
+      createAnnotation(matchedAnnotation, context, stream);
     }
 
   }

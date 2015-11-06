@@ -64,8 +64,8 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
 		RuleMatch match = context.getRuleMatch();
 		RuleElement element = context.getElement();
-    TypeExpression typeExpr = expr.getTypeExpr(element.getParent());
-    Type type = typeExpr.getType(element.getParent());
+    TypeExpression typeExpr = expr.getTypeExpr(context, stream);
+    Type type = typeExpr.getType(context, stream);
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOfElement(element);
     Collection<AnnotationFS> annotations = new TreeSet<AnnotationFS>(comp);
     for (AnnotationFS annotation : matchedAnnotations) {
@@ -75,15 +75,15 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
       stream.getCas().removeFsFromIndexes(each);
     }
     Collection<AnnotationFS> featureAnnotations = expr.getFeatureAnnotations(annotations, stream,
-            element.getParent(), false);
+           context, false);
     if (featureAnnotations.isEmpty()) {
       // null value in feature, but we require the host
       featureAnnotations = annotations;
     }
-    Feature feature = expr.getFeature(element.getParent());
+    Feature feature = expr.getFeature(context, stream);
     IRutaExpression arg = expr.getArg();
     for (AnnotationFS each : featureAnnotations) {
-      setFeatureValue(each, feature, arg, element, stream);
+      setFeatureValue(each, feature, arg, context, stream);
     }
     for (AnnotationFS each : annotations) {
       stream.getCas().addFsToIndexes(each);
@@ -91,7 +91,7 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
   }
 
   private void setFeatureValue(AnnotationFS a, Feature feature, IRutaExpression argExpr,
-          RuleElement element, RutaStream stream) {
+          MatchContext context, RutaStream stream) {
     if (feature == null) {
       throw new IllegalArgumentException("Not able to assign feature value (e.g., coveredText).");
     }
@@ -99,7 +99,7 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
     if (range.equals(UIMAConstants.TYPE_STRING)) {
       if (argExpr instanceof IStringExpression) {
         IStringExpression stringExpr = (IStringExpression) argExpr;
-        String string = stringExpr.getStringValue(element.getParent(), a, stream);
+        String string = stringExpr.getStringValue(context, stream);
         a.setStringValue(feature, string);
       }
     } else if (argExpr instanceof INumberExpression
@@ -107,27 +107,27 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
                     || range.equals(UIMAConstants.TYPE_SHORT) || range
                       .equals(UIMAConstants.TYPE_BYTE))) {
       INumberExpression numberExpr = (INumberExpression) argExpr;
-      int v = numberExpr.getIntegerValue(element.getParent(), a, stream);
+      int v = numberExpr.getIntegerValue(context, stream);
       a.setIntValue(feature, v);
     } else if (argExpr instanceof INumberExpression && (range.equals(UIMAConstants.TYPE_DOUBLE))) {
       INumberExpression numberExpr = (INumberExpression) argExpr;
-      double v = numberExpr.getDoubleValue(element.getParent(), a, stream);
+      double v = numberExpr.getDoubleValue(context, stream);
       a.setDoubleValue(feature, v);
     } else if (argExpr instanceof INumberExpression && (range.equals(UIMAConstants.TYPE_FLOAT))) {
       INumberExpression numberExpr = (INumberExpression) argExpr;
-      float v = numberExpr.getFloatValue(element.getParent(), a, stream);
+      float v = numberExpr.getFloatValue(context, stream);
       a.setFloatValue(feature, v);
     } else if (argExpr instanceof IBooleanExpression && (range.equals(UIMAConstants.TYPE_BOOLEAN))) {
       IBooleanExpression booleanExpr = (IBooleanExpression) argExpr;
-      boolean v = booleanExpr.getBooleanValue(element.getParent(), a, stream);
+      boolean v = booleanExpr.getBooleanValue(context, stream);
       a.setBooleanValue(feature, v);
     } else if (argExpr instanceof IBooleanExpression && (range.equals(UIMAConstants.TYPE_BOOLEAN))) {
       IBooleanExpression booleanExpr = (IBooleanExpression) argExpr;
-      boolean v = booleanExpr.getBooleanValue(element.getParent(), a, stream);
+      boolean v = booleanExpr.getBooleanValue(context, stream);
       a.setBooleanValue(feature, v);
     } else if (argExpr instanceof ITypeExpression && !feature.getRange().isPrimitive()) {
       ITypeExpression typeExpr = (ITypeExpression) argExpr;
-      Type t = typeExpr.getType(element.getParent());
+      Type t = typeExpr.getType(context, stream);
       List<AnnotationFS> inWindow = stream.getAnnotationsInWindow(a, t);
       if (feature.getRange().isArray()) {
         a.setFeatureValue(feature, UIMAUtils.toFSArray(stream.getJCas(), inWindow));
@@ -141,13 +141,13 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
       }
     } else if (argExpr instanceof GenericFeatureExpression && !feature.getRange().isPrimitive()) {
       FeatureExpression fe = ((GenericFeatureExpression) argExpr).getFeatureExpression();
-      TypeExpression typeExpr = fe.getTypeExpr(element.getParent());
-      Type t = typeExpr.getType(element.getParent());
+      TypeExpression typeExpr = fe.getTypeExpr(context, stream);
+      Type t = typeExpr.getType(context, stream);
       List<AnnotationFS> inWindow = stream.getAnnotationsInWindow(a, t);
       if (fe instanceof SimpleFeatureExpression) {
         SimpleFeatureExpression sfe = (SimpleFeatureExpression) fe;
         List<AnnotationFS> featureAnnotations = new ArrayList<>(sfe.getFeatureAnnotations(inWindow,
-                stream, element.getParent(), false));
+                stream, context, false));
         if (feature.getRange().isArray()) {
           a.setFeatureValue(feature, UIMAUtils.toFSArray(stream.getJCas(), featureAnnotations));
         } else if (!featureAnnotations.isEmpty()) {

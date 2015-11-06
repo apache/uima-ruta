@@ -19,9 +19,9 @@
 
 package org.apache.uima.ruta.expression.number;
 
-import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class NumberVariableExpression extends AbstractNumberExpression {
 
@@ -32,7 +32,8 @@ public class NumberVariableExpression extends AbstractNumberExpression {
     this.var = var;
   }
 
-  public double getDoubleValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+  public double getDoubleValue(MatchContext context, RutaStream stream) {
+    RutaBlock parent = context.getParent();
     Object value = parent.getEnvironment().getVariableValue(getVar());
     double variableValue = 0;
     if (value instanceof Number) {
@@ -41,7 +42,8 @@ public class NumberVariableExpression extends AbstractNumberExpression {
     return variableValue;
   }
 
-  public float getFloatValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+  public float getFloatValue(MatchContext context, RutaStream stream) {
+    RutaBlock parent = context.getParent();
     Object value = parent.getEnvironment().getVariableValue(getVar());
     float variableValue = 0;
     if (value instanceof Number) {
@@ -50,7 +52,8 @@ public class NumberVariableExpression extends AbstractNumberExpression {
     return variableValue;
   }
 
-  public int getIntegerValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+  public int getIntegerValue(MatchContext context, RutaStream stream) {
+    RutaBlock parent = context.getParent();
     Object value = parent.getEnvironment().getVariableValue(getVar());
     int variableValue = 0;
     if (value instanceof Number) {
@@ -59,12 +62,13 @@ public class NumberVariableExpression extends AbstractNumberExpression {
     return variableValue;
   }
 
-  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+  public String getStringValue(MatchContext context, RutaStream stream) {
+    RutaBlock parent = context.getParent();
     Class<?> variableType = parent.getEnvironment().getVariableType(getVar());
     if (variableType.equals(Integer.class)) {
-      return "" + getIntegerValue(parent, annotation, stream);
+      return "" + getIntegerValue(context, stream);
     } else {
-      return "" + getDoubleValue(parent, annotation, stream);
+      return "" + getDoubleValue(context, stream);
     }
   }
 

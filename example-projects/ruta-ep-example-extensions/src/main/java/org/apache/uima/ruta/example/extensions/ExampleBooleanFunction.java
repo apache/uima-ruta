@@ -20,11 +20,10 @@
 package org.apache.uima.ruta.example.extensions;
 
 import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.BooleanFunctionExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class ExampleBooleanFunction extends BooleanFunctionExpression {
 
@@ -39,13 +38,13 @@ public class ExampleBooleanFunction extends BooleanFunctionExpression {
     return expr;
   }
 
-  public boolean getBooleanValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    Type type = expr.getType(parent);
+  public boolean getBooleanValue(MatchContext context, RutaStream stream) {
+    Type type = expr.getType(context, stream);
     return type.isFeatureFinal();
   }
 
-  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return expr.getStringValue(parent, annotation, stream);
+  public String getStringValue(MatchContext context, RutaStream stream) {
+    return expr.getStringValue(context, stream);
   }
 
 }

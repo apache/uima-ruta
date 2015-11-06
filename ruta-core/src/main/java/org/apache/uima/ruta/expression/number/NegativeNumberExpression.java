@@ -19,9 +19,8 @@
 
 package org.apache.uima.ruta.expression.number;
 
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class NegativeNumberExpression extends AbstractNumberExpression {
 
@@ -32,20 +31,20 @@ public class NegativeNumberExpression extends AbstractNumberExpression {
     this.ne = simpleNumberExpression;
   }
 
-  public double getDoubleValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return -ne.getDoubleValue(parent, annotation, stream);
+  public double getDoubleValue(MatchContext context, RutaStream stream) {
+    return -ne.getDoubleValue(context, stream);
   }
 
-  public float getFloatValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return -ne.getFloatValue(parent, annotation, stream);
+  public float getFloatValue(MatchContext context, RutaStream stream) {
+    return -ne.getFloatValue(context, stream);
   }
 
-  public int getIntegerValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return -ne.getIntegerValue(parent, annotation, stream);
+  public int getIntegerValue(MatchContext context, RutaStream stream) {
+    return -ne.getIntegerValue(context, stream);
   }
 
-  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return "-" + ne.getStringValue(parent, annotation, stream);
+  public String getStringValue(MatchContext context, RutaStream stream) {
+    return "-" + ne.getStringValue(context, stream);
   }
 
   public INumberExpression getExpression() {

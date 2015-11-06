@@ -51,7 +51,7 @@ public class ExampleAction extends AbstractRutaAction {
     List<Integer> indexes = new ArrayList<Integer>();
     for (INumberExpression each : indexExprList) {
       RutaBlock parent = element.getParent();
-      int integerValue = each.getIntegerValue(parent, match, element, stream);
+      int integerValue = each.getIntegerValue(context, stream);
       indexes.add(integerValue);
     }
     List<RuleElement> ruleElements = element.getContainer().getRuleElements();

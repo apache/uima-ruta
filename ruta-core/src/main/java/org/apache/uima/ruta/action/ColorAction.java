@@ -63,10 +63,10 @@ public class ColorAction extends AbstractRutaAction {
     if (newAnnotationFS instanceof RutaColoring) {
       coloring = (RutaColoring) newAnnotationFS;
       RutaBlock parent = element.getParent();
-      coloring.setBgColor(bgcolor.getStringValue(parent, match, element, stream));
-      coloring.setFgColor(fgcolor.getStringValue(parent, match, element, stream));
-      coloring.setSelected(selected.getBooleanValue(parent, match, element, stream));
-      coloring.setTargetType(type.getType(parent).getName());
+      coloring.setBgColor(bgcolor.getStringValue(context, stream));
+      coloring.setFgColor(fgcolor.getStringValue(context, stream));
+      coloring.setSelected(selected.getBooleanValue(context, stream));
+      coloring.setTargetType(type.getType(context, stream).getName());
       coloring.addToIndexes();
     }
   }

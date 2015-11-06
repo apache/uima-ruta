@@ -22,9 +22,9 @@ package org.apache.uima.ruta.rule.quantifier;
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.rule.ComposedRuleElementMatch;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleElementMatch;
 import org.apache.uima.ruta.rule.RuleMatch;
@@ -34,7 +34,7 @@ public class QuestionReluctant extends AbstractRuleElementQuantifier {
 
   @Override
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
-          RutaBlock parent, RutaStream stream, InferenceCrowd crowd) {
+          MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     boolean result = true;
     for (RuleElementMatch match : matches) {
       result &= match.matched() || match.getTextsMatched().isEmpty();
@@ -51,9 +51,9 @@ public class QuestionReluctant extends AbstractRuleElementQuantifier {
   }
 
   @Override
-  public boolean continueMatch(boolean after, AnnotationFS annotation, RuleElement ruleElement,
-          RuleMatch ruleMatch, ComposedRuleElementMatch containerMatch, RutaStream stream,
-          InferenceCrowd crowd) {
+  public boolean continueMatch(boolean after, MatchContext context, AnnotationFS annotation,
+          ComposedRuleElementMatch containerMatch, RutaStream stream, InferenceCrowd crowd) {
+    RuleElement ruleElement = context.getElement();
     if(annotation == null) {
       // do not try to continue a match that totally failed
       return false;
@@ -68,7 +68,7 @@ public class QuestionReluctant extends AbstractRuleElementQuantifier {
       return false;
     }
     ComposedRuleElementMatch extendedContainerMatch = containerMatch.copy();
-    RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch, after);
+    RuleMatch extendedMatch = context.getRuleMatch().copy(extendedContainerMatch, after);
     
     List<RuleMatch> continueMatch = nextElement.continueMatch(after, annotation, extendedMatch,
             null, extendedContainerMatch, null, nextElement, stream, crowd);
@@ -77,7 +77,7 @@ public class QuestionReluctant extends AbstractRuleElementQuantifier {
   }
 
   @Override
-  public boolean isOptional(RutaBlock parent, RutaStream stream) {
+  public boolean isOptional(MatchContext context, RutaStream stream) {
     return true;
   }
 }

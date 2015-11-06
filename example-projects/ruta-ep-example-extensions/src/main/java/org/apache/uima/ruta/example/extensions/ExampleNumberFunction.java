@@ -19,11 +19,11 @@
 
 package org.apache.uima.ruta.example.extensions;
 
-import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.NumberFunctionExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class ExampleNumberFunction extends NumberFunctionExpression {
 
@@ -38,24 +38,24 @@ public class ExampleNumberFunction extends NumberFunctionExpression {
     return expr;
   }
 
-  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return expr.getType(parent).getShortName();
+  public String getStringValue(MatchContext context, RutaStream stream) {
+    return expr.getType(context, stream).getShortName();
   }
 
-  public int getIntegerValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return getFeatureAmount(parent);
+  public int getIntegerValue(MatchContext context, RutaStream stream) {
+    return getFeatureAmount(context, stream);
   }
 
-  public double getDoubleValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return getFeatureAmount(parent);
+  public double getDoubleValue(MatchContext context, RutaStream stream) {
+    return getFeatureAmount(context, stream);
   }
 
-  public float getFloatValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return getFeatureAmount(parent);
+  public float getFloatValue(MatchContext context, RutaStream stream) {
+    return getFeatureAmount(context, stream);
   }
 
-  private int getFeatureAmount(RutaBlock parent) {
-    return expr.getType(parent).getFeatures().size();
+  private int getFeatureAmount(MatchContext context, RutaStream stream) {
+    return expr.getType(context, stream).getFeatures().size();
   }
 
 }

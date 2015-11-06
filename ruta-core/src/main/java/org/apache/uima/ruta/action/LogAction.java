@@ -46,10 +46,7 @@ public class LogAction extends AbstractRutaAction {
 
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-		RuleMatch match = context.getRuleMatch();
-		RuleElement element = context.getElement();
-    RutaBlock parent = element.getParent();
-    String msg = text.getStringValue(parent, match, element, stream);
+    String msg = text.getStringValue(context, stream);
     Logger.getLogger(LOGGER_NAME).log(level, msg);
   }
 
