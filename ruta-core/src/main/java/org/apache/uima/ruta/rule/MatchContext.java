@@ -18,6 +18,8 @@
  */
 package org.apache.uima.ruta.rule;
 
+import java.util.List;
+
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 
@@ -80,7 +82,6 @@ public class MatchContext {
     this(element, ruleMatch, true);
   }
 
-  
   /**
    * Container object of the current context during matching
    * 
@@ -94,13 +95,22 @@ public class MatchContext {
     super();
     this.parent = parent;
   }
-  
+
   public AnnotationFS getAnnotation() {
     if (annotation != null) {
       return annotation;
-    } else {
-      return null;
+    } else if (element != null && ruleMatch != null) {
+      List<AnnotationFS> matchedAnnotationsOfElement = ruleMatch
+              .getMatchedAnnotationsOfElement(element);
+      if (matchedAnnotationsOfElement != null && !matchedAnnotationsOfElement.isEmpty()) {
+        if (direction) {
+          return matchedAnnotationsOfElement.get(matchedAnnotationsOfElement.size() - 1);
+        } else {
+          return matchedAnnotationsOfElement.get(0);
+        }
+      }
     }
+    return null;
   }
 
   public void setAnnotation(AnnotationFS annotation) {
