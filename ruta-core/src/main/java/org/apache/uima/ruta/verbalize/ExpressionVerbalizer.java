@@ -28,7 +28,7 @@ import org.apache.uima.ruta.expression.bool.BooleanFeatureExpression;
 import org.apache.uima.ruta.expression.bool.BooleanNumberExpression;
 import org.apache.uima.ruta.expression.bool.BooleanTypeExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
-import org.apache.uima.ruta.expression.bool.ReferenceBooleanExpression;
+import org.apache.uima.ruta.expression.bool.BooleanVariableExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
@@ -191,8 +191,8 @@ public class ExpressionVerbalizer {
       BooleanTypeExpression e = (BooleanTypeExpression) expression;
       return verbalize(e.getFristExpression()) + " " + e.getOperator() + " "
               + verbalize(e.getSecondExpression());
-    } else if (expression instanceof ReferenceBooleanExpression) {
-      ReferenceBooleanExpression e = (ReferenceBooleanExpression) expression;
+    } else if (expression instanceof BooleanVariableExpression) {
+      BooleanVariableExpression e = (BooleanVariableExpression) expression;
       return e.getVar();
     } else if (expression instanceof SimpleBooleanExpression) {
       SimpleBooleanExpression e = (SimpleBooleanExpression) expression;

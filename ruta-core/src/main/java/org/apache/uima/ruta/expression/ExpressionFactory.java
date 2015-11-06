@@ -28,7 +28,7 @@ import org.apache.uima.ruta.expression.bool.BooleanFeatureExpression;
 import org.apache.uima.ruta.expression.bool.BooleanNumberExpression;
 import org.apache.uima.ruta.expression.bool.BooleanTypeExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
-import org.apache.uima.ruta.expression.bool.ReferenceBooleanExpression;
+import org.apache.uima.ruta.expression.bool.BooleanVariableExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanFunction;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
@@ -169,7 +169,7 @@ public class ExpressionFactory {
 	}
 
 	public static IBooleanExpression createReferenceBooleanExpression(Token id) {
-		return new ReferenceBooleanExpression(id.getText());
+		return new BooleanVariableExpression(id.getText());
 	}
 
 	public static TypeExpression createSimpleTypeExpression(Token typeToken,

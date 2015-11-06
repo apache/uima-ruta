@@ -27,7 +27,7 @@ import java.util.List;
 import org.apache.uima.ruta.expression.bool.BooleanNumberExpression;
 import org.apache.uima.ruta.expression.bool.BooleanTypeExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
-import org.apache.uima.ruta.expression.bool.ReferenceBooleanExpression;
+import org.apache.uima.ruta.expression.bool.BooleanVariableExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.ruta.expression.list.BooleanListExpression;
 import org.apache.uima.ruta.expression.list.NumberListExpression;
@@ -132,7 +132,7 @@ public class ExpressionVerbalizerTest {
     
     IBooleanExpression boolExpr1 = new SimpleBooleanExpression(true);
     IBooleanExpression boolExpr2 = new SimpleBooleanExpression(false);
-    IBooleanExpression boolExpr3 = new ReferenceBooleanExpression(var);
+    IBooleanExpression boolExpr3 = new BooleanVariableExpression(var);
     IBooleanExpression boolExpr4 = new BooleanNumberExpression(numExpr1, "==", numExpr2);
     IBooleanExpression boolExpr5 = new BooleanNumberExpression(numExpr1, "!=", numExpr2);
     IBooleanExpression boolExpr6 = new BooleanNumberExpression(numExpr1, "<=", numExpr2);

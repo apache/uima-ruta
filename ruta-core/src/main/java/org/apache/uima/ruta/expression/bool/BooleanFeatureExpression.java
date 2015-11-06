@@ -54,7 +54,7 @@ public class BooleanFeatureExpression extends AbstractBooleanExpression {
 
   @Override
   public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return "" + getBooleanValue(parent, annotation, stream);
+    return String.valueOf(getBooleanValue(parent, annotation, stream));
   }
 
   public FeatureExpression getFe() {
