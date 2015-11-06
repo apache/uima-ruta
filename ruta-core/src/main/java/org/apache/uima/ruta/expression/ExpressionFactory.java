@@ -38,10 +38,10 @@ import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
 import org.apache.uima.ruta.expression.list.BooleanListExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.expression.list.NumberListExpression;
-import org.apache.uima.ruta.expression.list.ReferenceBooleanListExpression;
-import org.apache.uima.ruta.expression.list.ReferenceNumberListExpression;
-import org.apache.uima.ruta.expression.list.ReferenceStringListExpression;
-import org.apache.uima.ruta.expression.list.ReferenceTypeListExpression;
+import org.apache.uima.ruta.expression.list.BooleanListVariableExpression;
+import org.apache.uima.ruta.expression.list.NumberListVariableExpression;
+import org.apache.uima.ruta.expression.list.StringListVariableExpression;
+import org.apache.uima.ruta.expression.list.TypeListVariableExpression;
 import org.apache.uima.ruta.expression.list.SimpleBooleanListExpression;
 import org.apache.uima.ruta.expression.list.SimpleNumberListExpression;
 import org.apache.uima.ruta.expression.list.SimpleStringListExpression;
@@ -53,7 +53,7 @@ import org.apache.uima.ruta.expression.number.ComposedNumberExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.NegativeNumberExpression;
 import org.apache.uima.ruta.expression.number.NumberFeatureExpression;
-import org.apache.uima.ruta.expression.number.ReferenceNumberExpression;
+import org.apache.uima.ruta.expression.number.NumberVariableExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
 import org.apache.uima.ruta.expression.resource.ExternalWordListExpression;
 import org.apache.uima.ruta.expression.resource.ExternalWordTableExpression;
@@ -66,10 +66,10 @@ import org.apache.uima.ruta.expression.resource.WordTableExpression;
 import org.apache.uima.ruta.expression.string.AbstractStringExpression;
 import org.apache.uima.ruta.expression.string.ComposedStringExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.expression.string.ReferenceStringExpression;
+import org.apache.uima.ruta.expression.string.StringVariableExpression;
 import org.apache.uima.ruta.expression.string.SimpleStringExpression;
 import org.apache.uima.ruta.expression.string.StringFeatureExpression;
-import org.apache.uima.ruta.expression.type.ReferenceTypeExpression;
+import org.apache.uima.ruta.expression.type.TypeVariableExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 
@@ -104,7 +104,7 @@ public class ExpressionFactory {
 
 	public static INumberExpression createReferenceNumberExpression(Token var,
 			Token minus) {
-		ReferenceNumberExpression simpleNumberExpression = new ReferenceNumberExpression(
+		NumberVariableExpression simpleNumberExpression = new NumberVariableExpression(
 				var.getText());
 		if (minus != null) {
 			return new NegativeNumberExpression(simpleNumberExpression);
@@ -156,7 +156,7 @@ public class ExpressionFactory {
 
 	public static AbstractStringExpression createReferenceStringExpression(
 			Token var) {
-		return new ReferenceStringExpression(var.getText());
+		return new StringVariableExpression(var.getText());
 	}
 
 	public static IBooleanExpression createBooleanNumberExpression(
@@ -181,7 +181,7 @@ public class ExpressionFactory {
 
 	public static TypeExpression createReferenceTypeExpression(Token varToken) {
 		String varString = varToken == null ? "" : varToken.getText();
-		return new ReferenceTypeExpression(varString);
+		return new TypeVariableExpression(varString);
 	}
 
 	public static TypeExpression createSimpleTypeExpression(String typeString,
@@ -219,31 +219,31 @@ public class ExpressionFactory {
 
 	public static BooleanListExpression createReferenceBooleanListExpression(
 			Token var) {
-		return new ReferenceBooleanListExpression(var.getText());
+		return new BooleanListVariableExpression(var.getText());
 	}
 
 	public static StringListExpression createReferenceStringListExpression(
 			Token var) {
-		return new ReferenceStringListExpression(var.getText());
+		return new StringListVariableExpression(var.getText());
 	}
 
 	public static TypeListExpression createReferenceTypeListExpression(Token var) {
-		return new ReferenceTypeListExpression(var.getText());
+		return new TypeListVariableExpression(var.getText());
 	}
 
 	public static NumberListExpression createReferenceDoubleListExpression(
 			Token var) {
-		return new ReferenceNumberListExpression(var.getText());
+		return new NumberListVariableExpression(var.getText());
 	}
 
 	public static NumberListExpression createReferenceIntListExpression(
 			Token var) {
-		return new ReferenceNumberListExpression(var.getText());
+		return new NumberListVariableExpression(var.getText());
 	}
 
 	public static NumberListExpression createReferenceFloatListExpression(
 			Token var) {
-		return new ReferenceNumberListExpression(var.getText());
+		return new NumberListVariableExpression(var.getText());
 	}
 
 	public static BooleanListExpression createBooleanListExpression(

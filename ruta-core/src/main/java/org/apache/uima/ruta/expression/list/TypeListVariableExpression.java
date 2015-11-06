@@ -22,30 +22,30 @@ package org.apache.uima.ruta.expression.list;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.uima.cas.Type;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.string.AbstractStringExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
 
-public class ReferenceStringListExpression extends StringListExpression {
+public class TypeListVariableExpression extends TypeListExpression {
 
   private String var;
 
-  public ReferenceStringListExpression(String var) {
+  public TypeListVariableExpression(String var) {
     super();
     this.var = var;
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<String> getList(RutaBlock parent, RutaStream stream) {
+  public List<Type> getList(RutaBlock parent, RutaStream stream) {
     List<Object> list = parent.getEnvironment().getVariableValue(var, List.class);
-    List<String> result = new ArrayList<String>();
+    List<Type> result = new ArrayList<Type>();
     for (Object each : list) {
-      if (each instanceof AbstractStringExpression) {
-     // TODO support arrays
-        result.add(((AbstractStringExpression) each).getStringValue(parent, null, stream));
-      } else if (each instanceof String) {
-        result.add((String) each);
+      if (each instanceof TypeExpression) {
+        result.add(((TypeExpression) each).getType(parent));
+      } else if (each instanceof Type) {
+        result.add((Type) each);
       }
     }
     return result;

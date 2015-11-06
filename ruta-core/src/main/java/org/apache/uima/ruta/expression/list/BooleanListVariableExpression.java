@@ -22,30 +22,30 @@ package org.apache.uima.ruta.expression.list;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.cas.Type;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 
-public class ReferenceTypeListExpression extends TypeListExpression {
+public class BooleanListVariableExpression extends BooleanListExpression {
 
   private String var;
 
-  public ReferenceTypeListExpression(String var) {
+  public BooleanListVariableExpression(String var) {
     super();
     this.var = var;
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Type> getList(RutaBlock parent, RutaStream stream) {
+  public List<Boolean> getList(RutaBlock parent, RutaStream stream) {
     List<Object> list = parent.getEnvironment().getVariableValue(var, List.class);
-    List<Type> result = new ArrayList<Type>();
+    List<Boolean> result = new ArrayList<Boolean>();
     for (Object each : list) {
-      if (each instanceof TypeExpression) {
-        result.add(((TypeExpression) each).getType(parent));
-      } else if (each instanceof Type) {
-        result.add((Type) each);
+      if (each instanceof IBooleanExpression) {
+        // TODO support arrays
+        result.add(((IBooleanExpression) each).getBooleanValue(parent, null, stream));
+      } else if (each instanceof Boolean) {
+        result.add((Boolean) each);
       }
     }
     return result;
@@ -54,4 +54,5 @@ public class ReferenceTypeListExpression extends TypeListExpression {
   public String getVar() {
     return var;
   }
+
 }

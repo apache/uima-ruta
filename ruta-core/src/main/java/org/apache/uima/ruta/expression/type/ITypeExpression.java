@@ -21,8 +21,9 @@ package org.apache.uima.ruta.expression.type;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 
-public interface ITypeExpression {
+public interface ITypeExpression extends IStringExpression {
 
   /**
    * Returns the actual type of the TypeExpression

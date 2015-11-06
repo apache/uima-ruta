@@ -24,28 +24,28 @@ import java.util.List;
 
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.number.INumberExpression;
+import org.apache.uima.ruta.expression.string.AbstractStringExpression;
 
-public class ReferenceNumberListExpression extends NumberListExpression {
+public class StringListVariableExpression extends StringListExpression {
 
   private String var;
 
-  public ReferenceNumberListExpression(String var) {
+  public StringListVariableExpression(String var) {
     super();
     this.var = var;
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Number> getList(RutaBlock parent, RutaStream stream) {
+  public List<String> getList(RutaBlock parent, RutaStream stream) {
     List<Object> list = parent.getEnvironment().getVariableValue(var, List.class);
-    List<Number> result = new ArrayList<Number>();
+    List<String> result = new ArrayList<String>();
     for (Object each : list) {
-      if (each instanceof INumberExpression) {
+      if (each instanceof AbstractStringExpression) {
      // TODO support arrays
-        result.add(((INumberExpression) each).getDoubleValue(parent, null, stream));
-      } else if (each instanceof Number) {
-        result.add((Number) each);
+        result.add(((AbstractStringExpression) each).getStringValue(parent, null, stream));
+      } else if (each instanceof String) {
+        result.add((String) each);
       }
     }
     return result;

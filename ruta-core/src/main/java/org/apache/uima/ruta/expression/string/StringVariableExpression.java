@@ -23,11 +23,11 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 
-public class ReferenceStringExpression extends LiteralStringExpression {
+public class StringVariableExpression extends LiteralStringExpression {
 
   private final String var;
 
-  public ReferenceStringExpression(String var) {
+  public StringVariableExpression(String var) {
     super();
     this.var = var;
   }

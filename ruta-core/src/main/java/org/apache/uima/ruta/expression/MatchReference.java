@@ -24,14 +24,12 @@ import java.util.List;
 
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaEnvironment;
-import org.apache.uima.ruta.RutaStatement;
-import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
-import org.apache.uima.ruta.expression.type.ReferenceTypeExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.TypeVariableExpression;
 
 public class MatchReference extends RutaExpression {
 
@@ -97,7 +95,7 @@ public class MatchReference extends RutaExpression {
 
   private TypeExpression buildTypeExpression(String candidate, RutaEnvironment e) {
     if (e.isVariableOfType(candidate, "TYPE")) {
-      return new ReferenceTypeExpression(candidate);
+      return new TypeVariableExpression(candidate);
     } else if (e.getType(candidate) != null) {
       return new SimpleTypeExpression(candidate);
     }

@@ -31,10 +31,10 @@ import org.apache.uima.ruta.expression.bool.ReferenceBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.ruta.expression.list.BooleanListExpression;
 import org.apache.uima.ruta.expression.list.NumberListExpression;
-import org.apache.uima.ruta.expression.list.ReferenceBooleanListExpression;
-import org.apache.uima.ruta.expression.list.ReferenceNumberListExpression;
-import org.apache.uima.ruta.expression.list.ReferenceStringListExpression;
-import org.apache.uima.ruta.expression.list.ReferenceTypeListExpression;
+import org.apache.uima.ruta.expression.list.BooleanListVariableExpression;
+import org.apache.uima.ruta.expression.list.NumberListVariableExpression;
+import org.apache.uima.ruta.expression.list.StringListVariableExpression;
+import org.apache.uima.ruta.expression.list.TypeListVariableExpression;
 import org.apache.uima.ruta.expression.list.SimpleBooleanListExpression;
 import org.apache.uima.ruta.expression.list.SimpleNumberListExpression;
 import org.apache.uima.ruta.expression.list.SimpleStringListExpression;
@@ -43,14 +43,14 @@ import org.apache.uima.ruta.expression.list.StringListExpression;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
 import org.apache.uima.ruta.expression.number.ComposedNumberExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
-import org.apache.uima.ruta.expression.number.ReferenceNumberExpression;
+import org.apache.uima.ruta.expression.number.NumberVariableExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
 import org.apache.uima.ruta.expression.string.AbstractStringExpression;
 import org.apache.uima.ruta.expression.string.ComposedStringExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.expression.string.ReferenceStringExpression;
+import org.apache.uima.ruta.expression.string.StringVariableExpression;
 import org.apache.uima.ruta.expression.string.SimpleStringExpression;
-import org.apache.uima.ruta.expression.type.ReferenceTypeExpression;
+import org.apache.uima.ruta.expression.type.TypeVariableExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.verbalize.RutaVerbalizer;
@@ -96,16 +96,16 @@ public class ExpressionVerbalizerTest {
     String s = null;
   String var = "anyVar";
     TypeExpression typeExpr1 = new SimpleTypeExpression("Type1");
-    TypeExpression typeExpr2 = new ReferenceTypeExpression("typeVar");
+    TypeExpression typeExpr2 = new TypeVariableExpression("typeVar");
     
     List<INumberExpression> numExprList1 = new ArrayList<INumberExpression>();
     List<INumberExpression> numExprList2 = new ArrayList<INumberExpression>();
     List<String> opList1 = new ArrayList<String>();
     List<String> opList2 = new ArrayList<String>();
     INumberExpression numExpr1 = new SimpleNumberExpression(4);
-    INumberExpression numExpr2 = new ReferenceNumberExpression("numVar");
-    INumberExpression numExpr3 = new ReferenceNumberExpression("4.9");
-    INumberExpression numExpr4 = new ReferenceNumberExpression("-4");
+    INumberExpression numExpr2 = new NumberVariableExpression("numVar");
+    INumberExpression numExpr3 = new NumberVariableExpression("4.9");
+    INumberExpression numExpr4 = new NumberVariableExpression("-4");
     numExprList1.add(numExpr1);
     numExprList1.add(numExpr2);
     opList1.add("+");
@@ -167,7 +167,7 @@ public class ExpressionVerbalizerTest {
 
     List<IStringExpression> stringExprList = new ArrayList<IStringExpression>();
     AbstractStringExpression stringExpr1 = new SimpleStringExpression("string");
-    AbstractStringExpression stringExpr2 = new ReferenceStringExpression(var);
+    AbstractStringExpression stringExpr2 = new StringVariableExpression(var);
     stringExprList.add(stringExpr1);
     stringExprList.add(stringExpr2);
     AbstractStringExpression stringExpr3 = new ComposedStringExpression(stringExprList);
@@ -181,7 +181,7 @@ public class ExpressionVerbalizerTest {
     
     
     StringListExpression sle1 = new SimpleStringListExpression(stringExprList);
-    StringListExpression sle2 = new ReferenceStringListExpression(var);
+    StringListExpression sle2 = new StringListVariableExpression(var);
     s = v.verbalize(sle1);
     assertEquals("{\"string\", anyVar}", s);
     s = v.verbalize(sle2);
@@ -191,7 +191,7 @@ public class ExpressionVerbalizerTest {
     boolExprList.add(boolExpr1);
     boolExprList.add(boolExpr3);
     BooleanListExpression ble1 = new SimpleBooleanListExpression(boolExprList);
-    BooleanListExpression ble2 = new ReferenceBooleanListExpression(var);
+    BooleanListExpression ble2 = new BooleanListVariableExpression(var);
     s = v.verbalize(ble1);
     assertEquals("{true, anyVar}", s);
     s = v.verbalize(ble2);
@@ -201,7 +201,7 @@ public class ExpressionVerbalizerTest {
     numExprList.add(numExpr1);
     numExprList.add(numExpr3);
     NumberListExpression nle1 = new SimpleNumberListExpression(numExprList);
-    NumberListExpression nle2 = new ReferenceNumberListExpression(var);
+    NumberListExpression nle2 = new NumberListVariableExpression(var);
     s = v.verbalize(nle1);
     assertEquals("{4, 4.9}", s);
     s = v.verbalize(nle2);
@@ -211,7 +211,7 @@ public class ExpressionVerbalizerTest {
     typeExprList.add(typeExpr1);
     typeExprList.add(typeExpr2);
     TypeListExpression tle1 = new SimpleTypeListExpression(typeExprList);
-    TypeListExpression tle2 = new ReferenceTypeListExpression(var);
+    TypeListExpression tle2 = new TypeListVariableExpression(var);
     s = v.verbalize(tle1);
     assertEquals("{Type1, typeVar}", s);
     s = v.verbalize(tle2);

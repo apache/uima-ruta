@@ -35,10 +35,10 @@ import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
 import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
-import org.apache.uima.ruta.expression.list.ReferenceBooleanListExpression;
-import org.apache.uima.ruta.expression.list.ReferenceNumberListExpression;
-import org.apache.uima.ruta.expression.list.ReferenceStringListExpression;
-import org.apache.uima.ruta.expression.list.ReferenceTypeListExpression;
+import org.apache.uima.ruta.expression.list.BooleanListVariableExpression;
+import org.apache.uima.ruta.expression.list.NumberListVariableExpression;
+import org.apache.uima.ruta.expression.list.StringListVariableExpression;
+import org.apache.uima.ruta.expression.list.TypeListVariableExpression;
 import org.apache.uima.ruta.expression.list.SimpleBooleanListExpression;
 import org.apache.uima.ruta.expression.list.SimpleNumberListExpression;
 import org.apache.uima.ruta.expression.list.SimpleStringListExpression;
@@ -48,7 +48,7 @@ import org.apache.uima.ruta.expression.number.ComposedNumberExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.NegativeNumberExpression;
 import org.apache.uima.ruta.expression.number.NumberFeatureExpression;
-import org.apache.uima.ruta.expression.number.ReferenceNumberExpression;
+import org.apache.uima.ruta.expression.number.NumberVariableExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
 import org.apache.uima.ruta.expression.resource.ReferenceWordListExpression;
 import org.apache.uima.ruta.expression.resource.ReferenceWordTableExpression;
@@ -57,10 +57,10 @@ import org.apache.uima.ruta.expression.resource.WordTableExpression;
 import org.apache.uima.ruta.expression.string.ComposedStringExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.string.LiteralStringExpression;
-import org.apache.uima.ruta.expression.string.ReferenceStringExpression;
+import org.apache.uima.ruta.expression.string.StringVariableExpression;
 import org.apache.uima.ruta.expression.string.SimpleStringExpression;
 import org.apache.uima.ruta.expression.string.StringFeatureExpression;
-import org.apache.uima.ruta.expression.type.ReferenceTypeExpression;
+import org.apache.uima.ruta.expression.type.TypeVariableExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 
@@ -120,26 +120,26 @@ public class ExpressionVerbalizer {
     if (expression instanceof SimpleBooleanListExpression) {
       SimpleBooleanListExpression e = (SimpleBooleanListExpression) expression;
       return "{" + verbalizer.verbalizeExpressionList(e.getList()) + "}";
-    } else if (expression instanceof ReferenceBooleanListExpression) {
-      ReferenceBooleanListExpression e = (ReferenceBooleanListExpression) expression;
+    } else if (expression instanceof BooleanListVariableExpression) {
+      BooleanListVariableExpression e = (BooleanListVariableExpression) expression;
       return e.getVar();
     } else if (expression instanceof SimpleNumberListExpression) {
       SimpleNumberListExpression e = (SimpleNumberListExpression) expression;
       return "{" + verbalizer.verbalizeExpressionList(e.getList()) + "}";
-    } else if (expression instanceof ReferenceNumberListExpression) {
-      ReferenceNumberListExpression e = (ReferenceNumberListExpression) expression;
+    } else if (expression instanceof NumberListVariableExpression) {
+      NumberListVariableExpression e = (NumberListVariableExpression) expression;
       return e.getVar();
     } else if (expression instanceof SimpleStringListExpression) {
       SimpleStringListExpression e = (SimpleStringListExpression) expression;
       return "{" + verbalizer.verbalizeExpressionList(e.getList()) + "}";
-    } else if (expression instanceof ReferenceStringListExpression) {
-      ReferenceStringListExpression e = (ReferenceStringListExpression) expression;
+    } else if (expression instanceof StringListVariableExpression) {
+      StringListVariableExpression e = (StringListVariableExpression) expression;
       return e.getVar();
     } else if (expression instanceof SimpleTypeListExpression) {
       SimpleTypeListExpression e = (SimpleTypeListExpression) expression;
       return "{" + verbalizer.verbalizeExpressionList(e.getList()) + "}";
-    } else if (expression instanceof ReferenceTypeListExpression) {
-      ReferenceTypeListExpression e = (ReferenceTypeListExpression) expression;
+    } else if (expression instanceof TypeListVariableExpression) {
+      TypeListVariableExpression e = (TypeListVariableExpression) expression;
       return e.getVar();
     } else if (expression instanceof UntypedListExpression) {
       UntypedListExpression e = (UntypedListExpression) expression;
@@ -154,8 +154,8 @@ public class ExpressionVerbalizer {
     } else if (expression instanceof NegativeNumberExpression) {
       NegativeNumberExpression e = (NegativeNumberExpression) expression;
       return "-(" + e.getExpression() + ")";
-    } else if (expression instanceof ReferenceNumberExpression) {
-      ReferenceNumberExpression e = (ReferenceNumberExpression) expression;
+    } else if (expression instanceof NumberVariableExpression) {
+      NumberVariableExpression e = (NumberVariableExpression) expression;
       return e.getVar();
     } else if (expression instanceof SimpleNumberExpression) {
       SimpleNumberExpression e = (SimpleNumberExpression) expression;
@@ -237,8 +237,8 @@ public class ExpressionVerbalizer {
         }
       }
       return sb.toString();
-    } else if (expression instanceof ReferenceStringExpression) {
-      ReferenceStringExpression e = (ReferenceStringExpression) expression;
+    } else if (expression instanceof StringVariableExpression) {
+      StringVariableExpression e = (StringVariableExpression) expression;
       return e.getVar();
     } else if (expression instanceof SimpleStringExpression) {
       SimpleStringExpression e = (SimpleStringExpression) expression;
@@ -262,8 +262,8 @@ public class ExpressionVerbalizer {
         type = "Document";
       }
       return type;
-    } else if (expression instanceof ReferenceTypeExpression) {
-      ReferenceTypeExpression e = (ReferenceTypeExpression) expression;
+    } else if (expression instanceof TypeVariableExpression) {
+      TypeVariableExpression e = (TypeVariableExpression) expression;
       return e.getVar();
     }
     return expression.getClass().getSimpleName();

@@ -24,11 +24,11 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 
-public class ReferenceTypeExpression extends TypeExpression {
+public class TypeVariableExpression extends TypeExpression {
 
   private final String var;
 
-  public ReferenceTypeExpression(String varString) {
+  public TypeVariableExpression(String varString) {
     super();
     this.var = varString;
   }

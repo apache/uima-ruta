@@ -24,28 +24,28 @@ import java.util.List;
 
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
 
-public class ReferenceBooleanListExpression extends BooleanListExpression {
+public class NumberListVariableExpression extends NumberListExpression {
 
   private String var;
 
-  public ReferenceBooleanListExpression(String var) {
+  public NumberListVariableExpression(String var) {
     super();
     this.var = var;
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Boolean> getList(RutaBlock parent, RutaStream stream) {
+  public List<Number> getList(RutaBlock parent, RutaStream stream) {
     List<Object> list = parent.getEnvironment().getVariableValue(var, List.class);
-    List<Boolean> result = new ArrayList<Boolean>();
+    List<Number> result = new ArrayList<Number>();
     for (Object each : list) {
-      if (each instanceof IBooleanExpression) {
-        // TODO support arrays
-        result.add(((IBooleanExpression) each).getBooleanValue(parent, null, stream));
-      } else if (each instanceof Boolean) {
-        result.add((Boolean) each);
+      if (each instanceof INumberExpression) {
+     // TODO support arrays
+        result.add(((INumberExpression) each).getDoubleValue(parent, null, stream));
+      } else if (each instanceof Number) {
+        result.add((Number) each);
       }
     }
     return result;
@@ -54,5 +54,4 @@ public class ReferenceBooleanListExpression extends BooleanListExpression {
   public String getVar() {
     return var;
   }
-
 }
