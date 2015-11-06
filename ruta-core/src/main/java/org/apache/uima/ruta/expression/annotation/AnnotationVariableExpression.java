@@ -20,15 +20,34 @@
 package org.apache.uima.ruta.expression.annotation;
 
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.rule.MatchContext;
 
-public abstract class AbstractAnnotationExpression implements IAnnotationExpression {
+/**
+ * An expression referring to an annotation stored in a variable.
+ *
+ */
+public class AnnotationVariableExpression extends AbstractAnnotationExpression {
 
-  @Override
-  public String getStringValue(MatchContext context, RutaStream stream) {
-    AnnotationFS annotation = getAnnotation(context, stream);
-    return annotation.getCoveredText();
+private String var;
+  
+  public AnnotationVariableExpression(String var) {
+    super();
+    this.var = var;
   }
   
+  
+  @Override
+  public AnnotationFS getAnnotation(MatchContext context, RutaStream stream) {
+    RutaBlock parent = context.getParent();
+    AnnotationFS variableValue = parent.getEnvironment().getVariableValue(var, AnnotationFS.class);
+    return variableValue;
+  }
+
+
+  public String getVar() {
+    return var;
+  }
+
 }
