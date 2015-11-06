@@ -363,6 +363,10 @@ STRINGLIST
   : 'STRINGLIST'; 
 TYPELIST: 'TYPELIST';
 
+ANNOTATION 
+	:	 'ANNOTATION';
+ANNOTATIONLIST
+	:	'ANNOTATIONLIST';
 
 
 EXP   : 'EXP';
@@ -375,6 +379,10 @@ XOR :   'XOR';
 TRUE  : 'true';
 FALSE   : 'false';
 NULL : 'null';
+
+
+ADDRESS_PREFIX 
+	:	 '$';
 
 STARTANCHOR 
   :  '@';
