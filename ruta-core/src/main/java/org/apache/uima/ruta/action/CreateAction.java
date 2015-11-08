@@ -19,15 +19,12 @@
 
 package org.apache.uima.ruta.action;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.IRutaExpression;
@@ -59,7 +56,7 @@ public class CreateAction extends AbstractStructureAction {
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     RuleMatch match = context.getRuleMatch();
     RuleElement element = context.getElement();
-    List<Integer> indexList = getIndexList(context, stream);
+    List<Integer> indexList = getIndexList(indexes, context, stream);
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(indexList,
             element.getContainer());
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
@@ -68,41 +65,16 @@ public class CreateAction extends AbstractStructureAction {
         return;
       }
       Type type = structureType.getType(context, stream);
-      FeatureStructure newFS = stream.getCas().createFS(type);
-      if (newFS instanceof Annotation) {
-        Annotation a = (Annotation) newFS;
+      AnnotationFS annotation = stream.getCas().createAnnotation(type, 0, 0);
+      if (annotation instanceof Annotation) {
+        Annotation a = (Annotation) annotation;
         a.setBegin(matchedAnnotation.getBegin());
         a.setEnd(matchedAnnotation.getEnd());
-        stream.addAnnotation(a, match);
-      }
-      TOP newStructure = null;
-      if (newFS instanceof TOP) {
-        newStructure = (TOP) newFS;
-        fillFeatures(newStructure, features, matchedAnnotation, context, stream);
-        newStructure.addToIndexes();
+        context.setAnnotation(matchedAnnotation);
+        stream.assignFeatureValues(annotation, features, context);
+        stream.addAnnotation(a, true, match);
       }
     }
-  }
-
-  // TODO refactor duplicate methods -> MarkAction
-  protected List<Integer> getIndexList(MatchContext context, RutaStream stream) {
-    RuleElement element = context.getElement();
-    List<Integer> indexList = new ArrayList<Integer>();
-    if (indexes == null || indexes.isEmpty()) {
-      int self = element.getContainer().getRuleElements().indexOf(element) + 1;
-      indexList.add(self);
-      return indexList;
-    }
-    int last = Integer.MAX_VALUE - 1;
-    for (INumberExpression each : indexes) {
-      // no feature matches allowed
-      int value = each.getIntegerValue(context, stream);
-      for (int i = Math.min(value, last + 1); i < value; i++) {
-        indexList.add(i);
-      }
-      indexList.add(value);
-    }
-    return indexList;
   }
 
   public TypeExpression getStructureType() {

@@ -71,7 +71,7 @@ public class GatherAction extends AbstractStructureAction {
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     RuleMatch match = context.getRuleMatch();
     RuleElement element = context.getElement();
-    List<Integer> indexList = getIndexList(context, stream);
+    List<Integer> indexList = getIndexList(indexes, context, stream);
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(indexList,
             element.getContainer());
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
@@ -209,26 +209,6 @@ public class GatherAction extends AbstractStructureAction {
     return result;
   }
 
-  // TODO refactor duplicate methods -> MarkAction
-  protected List<Integer> getIndexList(MatchContext context, RutaStream stream) {
-    RuleElement element = context.getElement();
-    List<Integer> indexList = new ArrayList<Integer>();
-    if (indexes == null || indexes.isEmpty()) {
-      int self = element.getContainer().getRuleElements().indexOf(element) + 1;
-      indexList.add(self);
-      return indexList;
-    }
-    int last = Integer.MAX_VALUE - 1;
-    for (INumberExpression each : indexes) {
-      // no feature matches allowed
-      int value = each.getIntegerValue(context, stream);
-      for (int i = Math.min(value, last + 1); i < value; i++) {
-        indexList.add(i);
-      }
-      indexList.add(value);
-    }
-    return indexList;
-  }
 
   public TypeExpression getStructureType() {
     return structureType;

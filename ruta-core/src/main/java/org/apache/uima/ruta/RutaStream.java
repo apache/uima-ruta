@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.NoSuchElementException;
@@ -36,6 +37,7 @@ import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.ConstraintFactory;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.FSMatchConstraint;
+import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.impl.FSIteratorImplBase;
@@ -44,10 +46,21 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.expression.feature.FeatureExpression;
+import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
+import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
+import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.AbstractRule;
 import org.apache.uima.ruta.rule.AbstractRuleMatch;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.type.RutaAnnotation;
 import org.apache.uima.ruta.type.RutaBasic;
+import org.apache.uima.ruta.utils.UIMAUtils;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
@@ -893,4 +906,95 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     return result.toString();
   }
 
+  public void assignFeatureValues(AnnotationFS annotation,
+          Map<IStringExpression, IRutaExpression> map, MatchContext context) {
+    Type type = annotation.getType();
+    Set<Entry<IStringExpression, IRutaExpression>> entrySet = map.entrySet();
+    for (Entry<IStringExpression, IRutaExpression> entry : entrySet) {
+      IStringExpression key = entry.getKey();
+      IRutaExpression value = entry.getValue();
+      String featureName = key.getStringValue(context, this);
+      Feature feature = type.getFeatureByBaseName(featureName);
+      assignFeatureValue(annotation, feature, value, context);
+    }
+  }
+
+  public void assignFeatureValue(AnnotationFS annotation, Feature feature, IRutaExpression value,
+          MatchContext context) {
+    if (feature == null) {
+      throw new IllegalArgumentException("Not able to assign feature value (e.g., coveredText).");
+    }
+    String range = feature.getRange().getName();
+    if (range.equals(UIMAConstants.TYPE_STRING)) {
+      if (value instanceof IStringExpression) {
+        IStringExpression stringExpr = (IStringExpression) value;
+        String string = stringExpr.getStringValue(context, this);
+        annotation.setStringValue(feature, string);
+      }
+    } else if (value instanceof INumberExpression
+            && (range.equals(UIMAConstants.TYPE_INTEGER) || range.equals(UIMAConstants.TYPE_LONG)
+                    || range.equals(UIMAConstants.TYPE_SHORT) || range
+                      .equals(UIMAConstants.TYPE_BYTE))) {
+      INumberExpression numberExpr = (INumberExpression) value;
+      int v = numberExpr.getIntegerValue(context, this);
+      annotation.setIntValue(feature, v);
+    } else if (value instanceof INumberExpression && (range.equals(UIMAConstants.TYPE_DOUBLE))) {
+      INumberExpression numberExpr = (INumberExpression) value;
+      double v = numberExpr.getDoubleValue(context, this);
+      annotation.setDoubleValue(feature, v);
+    } else if (value instanceof INumberExpression && (range.equals(UIMAConstants.TYPE_FLOAT))) {
+      INumberExpression numberExpr = (INumberExpression) value;
+      float v = numberExpr.getFloatValue(context, this);
+      annotation.setFloatValue(feature, v);
+    } else if (value instanceof IBooleanExpression && (range.equals(UIMAConstants.TYPE_BOOLEAN))) {
+      IBooleanExpression booleanExpr = (IBooleanExpression) value;
+      boolean v = booleanExpr.getBooleanValue(context, this);
+      annotation.setBooleanValue(feature, v);
+    } else if (value instanceof IBooleanExpression && (range.equals(UIMAConstants.TYPE_BOOLEAN))) {
+      IBooleanExpression booleanExpr = (IBooleanExpression) value;
+      boolean v = booleanExpr.getBooleanValue(context, this);
+      annotation.setBooleanValue(feature, v);
+    } else if (value instanceof ITypeExpression && !feature.getRange().isPrimitive()) {
+      ITypeExpression typeExpr = (ITypeExpression) value;
+      Type t = typeExpr.getType(context, this);
+      List<AnnotationFS> inWindow = this.getAnnotationsInWindow(context.getAnnotation(), t);
+      if (feature.getRange().isArray()) {
+        annotation.setFeatureValue(feature, UIMAUtils.toFSArray(this.getJCas(), inWindow));
+      } else {
+        if (inWindow != null && !inWindow.isEmpty()) {
+          AnnotationFS a = inWindow.get(0);
+          annotation.setFeatureValue(feature, a);
+        } else {
+          annotation.setFeatureValue(feature, null);
+        }
+      }
+    } else if (value instanceof GenericFeatureExpression && !feature.getRange().isPrimitive()) {
+      FeatureExpression fe = ((GenericFeatureExpression) value).getFeatureExpression();
+      TypeExpression typeExpr = fe.getTypeExpr(context, this);
+      Type t = typeExpr.getType(context, this);
+      List<AnnotationFS> inWindow = this.getAnnotationsInWindow(context.getAnnotation(), t);
+      if (fe instanceof SimpleFeatureExpression) {
+        SimpleFeatureExpression sfe = (SimpleFeatureExpression) fe;
+        List<AnnotationFS> featureAnnotations = inWindow;
+        if (fe.getFeatures(context, this) != null) {
+          featureAnnotations = new ArrayList<AnnotationFS>(sfe.getFeatureAnnotations(inWindow,
+                  this, context, false));
+        }
+        if (feature.getRange().isArray()) {
+          annotation.setFeatureValue(feature,
+                  UIMAUtils.toFSArray(this.getJCas(), featureAnnotations));
+        } else if (!featureAnnotations.isEmpty()) {
+          AnnotationFS a = featureAnnotations.get(0);
+          annotation.setFeatureValue(feature, a);
+        }
+      } else {
+        if (feature.getRange().isArray()) {
+          annotation.setFeatureValue(feature, UIMAUtils.toFSArray(this.getJCas(), inWindow));
+        } else {
+          AnnotationFS a = inWindow.get(0);
+          annotation.setFeatureValue(feature, a);
+        }
+      }
+    }
+  }
 }

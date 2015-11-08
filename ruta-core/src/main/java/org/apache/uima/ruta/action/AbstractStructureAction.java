@@ -50,7 +50,7 @@ public abstract class AbstractStructureAction extends AbstractRutaAction {
     super();
   }
 
-  protected void fillFeatures(TOP structure, Map<IStringExpression, IRutaExpression> features,
+  protected void fillFeatures2(TOP structure, Map<IStringExpression, IRutaExpression> features,
           AnnotationFS matchedAnnotation, MatchContext context, RutaStream stream) {
     Map<String, IRutaExpression> map = new HashMap<String, IRutaExpression>();
     for (Entry<IStringExpression, IRutaExpression> each : features.entrySet()) {

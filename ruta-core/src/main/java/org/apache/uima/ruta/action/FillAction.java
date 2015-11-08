@@ -24,7 +24,6 @@ import java.util.Map;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
@@ -75,7 +74,8 @@ public class FillAction extends AbstractStructureAction {
       if (!list.isEmpty()) {
         AnnotationFS annotationFS = list.get(0);
         stream.getCas().removeFsFromIndexes(annotationFS);
-        fillFeatures((Annotation) annotationFS, features, matchedAnnotation, context, stream);
+        context.setAnnotation(matchedAnnotation);
+        stream.assignFeatureValues(annotationFS, features, context);
         stream.getCas().addFsToIndexes(annotationFS);
       }
     }
