@@ -33,7 +33,6 @@ public class AnnotationAddressExpressionTest {
   public void test() {
     String document = "Some text.";
 
-
     CAS cas = null;
     try {
       cas = RutaTestUtils.getCAS(document);
@@ -44,12 +43,14 @@ public class AnnotationAddressExpressionTest {
     AnnotationFS a1 = cas.createAnnotation(t1, 5, 9);
     cas.addFsToIndexes(a1);
     int ref = 0;
-    if(a1 instanceof AnnotationImpl) {
+    if (a1 instanceof AnnotationImpl) {
       AnnotationImpl aImpl = (AnnotationImpl) a1;
       ref = aImpl.getAddress();
     }
-    
-    String script = "$" +ref+"{REGEXP(\".*ex.*\")-> T2};" ;
+
+    String script = "";
+    script += "$" + ref + "{REGEXP(\".*ex.*\")-> T2};";
+    script += "W $" + ref + "{REGEXP(\".*ex.*\")-> T3};";
     try {
       Ruta.apply(cas, script);
     } catch (Exception e) {
@@ -57,6 +58,7 @@ public class AnnotationAddressExpressionTest {
     }
 
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "text");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "text");
 
     if (cas != null) {
       cas.release();
