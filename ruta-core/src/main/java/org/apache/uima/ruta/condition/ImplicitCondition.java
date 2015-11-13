@@ -31,7 +31,7 @@ import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
@@ -53,7 +53,7 @@ public class ImplicitCondition extends AbstractRutaCondition {
       return new EvaluatedCondition(this, be.getBooleanValue(context, stream));
     } else if (expr instanceof FeatureMatchExpression) {
       FeatureMatchExpression fme = (FeatureMatchExpression) expr;
-      TypeExpression typeExpr = fme.getTypeExpr(context, stream);
+      ITypeExpression typeExpr = fme.getTypeExpr(context, stream);
       Type type = typeExpr.getType(context, stream);
       List<AnnotationFS> annotations = getAnnotationsToCheck(annotation, type, fme, stream);
       Collection<AnnotationFS> featureAnnotations = fme.getFeatureAnnotations(annotations, stream,

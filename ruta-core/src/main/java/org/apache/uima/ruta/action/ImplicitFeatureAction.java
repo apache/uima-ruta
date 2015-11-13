@@ -33,7 +33,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.AnnotationComparator;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
@@ -55,7 +55,7 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     RuleMatch match = context.getRuleMatch();
     RuleElement element = context.getElement();
-    TypeExpression typeExpr = expr.getTypeExpr(context, stream);
+    ITypeExpression typeExpr = expr.getTypeExpr(context, stream);
     Type type = typeExpr.getType(context, stream);
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOfElement(element);
     Collection<AnnotationFS> annotations = new TreeSet<AnnotationFS>(comp);

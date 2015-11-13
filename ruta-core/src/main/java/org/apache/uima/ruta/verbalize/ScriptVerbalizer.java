@@ -31,8 +31,6 @@ import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.expression.IRutaExpression;
-import org.apache.uima.ruta.expression.MatchReference;
-import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
@@ -138,19 +136,17 @@ public class ScriptVerbalizer {
       RutaMatcher matcher = tmre.getMatcher();
       // action-only rule
       if (matcher instanceof RutaTypeMatcher) {
-        RutaExpression expression = ((RutaTypeMatcher) matcher).getExpression();
-        if (expression instanceof MatchReference) {
-          MatchReference mr = (MatchReference) expression;
-          if (mr.getMatch() == null) {
-            Iterator<AbstractRutaAction> ait = actions.iterator();
-            while (ait.hasNext()) {
-              AbstractRutaAction each = ait.next();
-              result.append(verbalizer.verbalize(each));
-              if (ait.hasNext()) {
-                result.append(",");
-              }
+        IRutaExpression expression = ((RutaTypeMatcher) matcher).getExpression();
+        if(expression != null) {
+          result.append(verbalizer.verbalize(expression));
+        } else {
+          Iterator<AbstractRutaAction> ait = actions.iterator();
+          while (ait.hasNext()) {
+            AbstractRutaAction each = ait.next();
+            result.append(verbalizer.verbalize(each));
+            if (ait.hasNext()) {
+              result.append(",");
             }
-            return result.toString();
           }
         }
       }

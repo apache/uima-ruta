@@ -32,7 +32,6 @@ import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
@@ -118,7 +117,7 @@ public class SetFeatureAction extends AbstractRutaAction {
             }
           }
         } else if (expr instanceof GenericFeatureExpression) {
-          TypeExpression typeExpr = ((GenericFeatureExpression) expr).getFeatureExpression()
+          ITypeExpression typeExpr = ((GenericFeatureExpression) expr).getFeatureExpression()
                   .getTypeExpr(context, stream);
           Type t = typeExpr.getType(context, stream);
           List<AnnotationFS> inWindow = stream.getAnnotationsInWindow(annotationFS, t);

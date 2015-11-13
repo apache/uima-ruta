@@ -54,7 +54,6 @@ import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.AbstractRule;
 import org.apache.uima.ruta.rule.AbstractRuleMatch;
 import org.apache.uima.ruta.rule.MatchContext;
@@ -970,7 +969,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       }
     } else if (value instanceof GenericFeatureExpression && !feature.getRange().isPrimitive()) {
       FeatureExpression fe = ((GenericFeatureExpression) value).getFeatureExpression();
-      TypeExpression typeExpr = fe.getTypeExpr(context, this);
+      ITypeExpression typeExpr = fe.getTypeExpr(context, this);
       Type t = typeExpr.getType(context, this);
       List<AnnotationFS> inWindow = this.getAnnotationsInWindow(context.getAnnotation(), t);
       if (fe instanceof SimpleFeatureExpression) {

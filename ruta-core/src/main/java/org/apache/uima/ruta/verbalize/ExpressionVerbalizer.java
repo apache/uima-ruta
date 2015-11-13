@@ -271,15 +271,7 @@ public class ExpressionVerbalizer {
   }
 
   public String verbalize(MatchReference expression) {
-    String tail = "";
-    String head = expression.getMatch();
-    if (expression.getOp() != null) {
-      tail += expression.getOp();
-      if (expression.getArg() != null) {
-        tail += verbalize(expression.getArg());
-      }
-    }
-    return head + tail;
+    return expression.getMatch();
   }
 
   public String verbalize(FeatureExpression expression) {

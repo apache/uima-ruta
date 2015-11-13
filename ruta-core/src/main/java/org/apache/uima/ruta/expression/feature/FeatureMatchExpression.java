@@ -47,23 +47,13 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
 
   private String op;
 
-  public FeatureMatchExpression(FeatureExpression f, String op, IRutaExpression arg,
-          RutaBlock parent) {
-    // FIXME
-    super(f.getTypeExpr(new MatchContext(parent), null), f.getFeatureStringList(new MatchContext(
-            parent), null));
+  public FeatureMatchExpression(MatchReference mr, String op, IRutaExpression arg, RutaBlock env) {
+    super(mr);
     this.op = op;
     this.arg = arg;
   }
 
-  public FeatureMatchExpression(MatchReference mr, RutaBlock env) {
-    super(mr);
-  }
-
   public IRutaExpression getArg() {
-    if (getMatchReference() != null && arg == null) {
-      arg = getMatchReference().getArg();
-    }
     return arg;
   }
 
@@ -72,9 +62,6 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
   }
 
   public String getOp() {
-    if (getMatchReference() != null && op == null) {
-      op = getMatchReference().getOp();
-    }
     return op;
   }
 
@@ -191,4 +178,15 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
     return false;
   }
 
+  public String toString() {
+    String result = super.toString();
+    if(op != null) {
+      result += op;
+    }
+    if(arg != null) {
+      result += arg.toString();
+    }
+    return result;
+  }
+  
 }

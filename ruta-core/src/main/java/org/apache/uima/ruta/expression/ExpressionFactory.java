@@ -25,6 +25,7 @@ import java.util.List;
 import org.antlr.runtime.Token;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.expression.annotation.AnnotationAddressExpression;
+import org.apache.uima.ruta.expression.annotation.AnnotationFeatureExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationLabelExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationVariableExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
@@ -250,18 +251,18 @@ public class ExpressionFactory {
     return new SimpleFeatureExpression(mr);
   }
 
-  public static FeatureMatchExpression createFeatureMatchExpression(MatchReference mr, RutaBlock env) {
-    return new FeatureMatchExpression(mr, env);
-  }
-
-  public static MatchReference createMatchReference(Token refToken, Token opToken,
-          IRutaExpression arg) {
-    String match = refToken.getText();
-    String op = null;
-    if (opToken != null) {
+  public static FeatureMatchExpression createFeatureMatchExpression(MatchReference mr, Token opToken,
+          IRutaExpression arg, RutaBlock env) {
+    String op = "";
+    if(opToken != null) {
       op = opToken.getText();
     }
-    return new MatchReference(match, op, arg);
+    return new FeatureMatchExpression(mr, op, arg, env);
+  }
+
+  public static MatchReference createMatchReference(Token refToken) {
+    String match = refToken.getText();
+    return new MatchReference(match);
   }
 
   public static INumberExpression createNumberFeatureExpression(FeatureExpression fe) {
@@ -312,6 +313,16 @@ public class ExpressionFactory {
 
   public static IRutaExpression createAnnotationListVariableExpression(Token var) {
     return null;
+  }
+
+  public static IAnnotationExpression createAnnotationFeatureExpression(
+          FeatureExpression featureExpression) {
+    return new AnnotationFeatureExpression(featureExpression);
+  }
+
+  public static IRutaExpression createGenericExpression(Token ref) {
+    MatchReference match = new MatchReference(ref.getText());
+    return new AnnotationTypeExpression(match);
   }
 
 }

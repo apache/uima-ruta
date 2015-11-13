@@ -399,6 +399,9 @@ public void setExternalFactory(RutaExternalFactory factory) {
       	private boolean isTypeFunctionExtension(String name) {
       	  return external.getTypeFunctionExtensions().keySet().contains(name);
       	}
+      	private boolean isAnnotationFunctionExtension(String name) {
+      	  return external.getAnnotationFunctionExtensions().keySet().contains(name);
+      	}
       	private boolean isBlockExtension(String name) {
       	  return external.getBlockExtensions().keySet().contains(name);
       	}
@@ -1148,16 +1151,16 @@ typeMatchExpression returns [IRutaExpression expr = null]
 options {
 	backtrack = true;
 }
-	:
-	(typeFunction)=> tf = typeFunction {expr = tf;}
+	:	
+	(featureMatchExpression)=> fme = featureMatchExpression {expr = fme;}
 	|
-	(matchReference)=> mr = matchReference {expr = mr;}
+	(typeExpression)=> te = typeExpression {expr = te;}
 	;
 
 matchReference returns [MatchReference mr = null]
 	:
-	ref = dottedId ((comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument)?
-	{mr = ExpressionFactory.createMatchReference(ref, comp, arg);}
+	ref = dottedId 
+	{mr = ExpressionFactory.createMatchReference(ref);}
 	;
 
 typeExpression returns [TypeExpression type = null]
@@ -1196,6 +1199,13 @@ simpleTypeExpression returns [TypeExpression type = null]
 	{type = ExpressionFactory.createSimpleTypeExpression(at, $blockDeclaration::env);}
 	;
 
+
+matchExpression returns [FeatureExpression feat = null]
+	:
+	match = dottedId
+	{MatchReference mr = ExpressionFactory.createMatchReference(match);}
+	;
+
 featureExpression returns [FeatureExpression feat = null]
 @init{
 List<Token> fs = new ArrayList<Token>();
@@ -1204,25 +1214,30 @@ TypeExpression te = null;
 	:
 	match = dottedId2 
 	{
-	MatchReference mr = ExpressionFactory.createMatchReference(match, null, null);
+	MatchReference mr = ExpressionFactory.createMatchReference(match);
 	feat = ExpressionFactory.createFeatureExpression(mr, $blockDeclaration::env);
 	}
 	;
 
-featureMatchExpression returns [FeatureMatchExpression fme = null]
+featureMatchExpression returns [FeatureExpression fme = null]
 	:
 	match = dottedId2 ((comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument)?
 	{
-	MatchReference mr = ExpressionFactory.createMatchReference(match, comp, arg);
-	fme = ExpressionFactory.createFeatureMatchExpression(mr, $blockDeclaration::env);}
+	MatchReference mr = ExpressionFactory.createMatchReference(match);
+	if(comp != null) {
+	fme = ExpressionFactory.createFeatureMatchExpression(mr, comp, arg, $blockDeclaration::env);
+	} else {
+	fme = ExpressionFactory.createFeatureExpression(mr, $blockDeclaration::env);
+	}
+	}
 	;
 
 featureMatchExpression2 returns [FeatureMatchExpression fme = null]
 	:
 	match = dottedId2 (comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument
 	{
-	MatchReference mr = ExpressionFactory.createMatchReference(match, comp, arg);
-	fme = ExpressionFactory.createFeatureMatchExpression(mr, $blockDeclaration::env);}
+	MatchReference mr = ExpressionFactory.createMatchReference(match);
+	fme = ExpressionFactory.createFeatureMatchExpression(mr, comp, arg, $blockDeclaration::env);}
 	;
 
 
@@ -1230,8 +1245,8 @@ featureAssignmentExpression returns [FeatureMatchExpression fme = null]
 	:
 	match = dottedId2 op = ASSIGN_EQUAL arg = argument
 	{
-	MatchReference mr = ExpressionFactory.createMatchReference(match, op, arg);
-	fme = ExpressionFactory.createFeatureMatchExpression(mr, $blockDeclaration::env);
+	MatchReference mr = ExpressionFactory.createMatchReference(match);
+	fme = ExpressionFactory.createFeatureMatchExpression(mr, op, arg, $blockDeclaration::env);
 	}
 	;
 	
@@ -2179,7 +2194,14 @@ options {
 
 annotationOrTypeExpression returns [IRutaExpression expr = null]
 	:
-	a1 = typeExpression {expr = a1;}
+	aae = annotationAddressExpression {expr = aae;}
+	|
+	tf = typeFunction {expr = tf;}
+	|
+	af = annotationFunction {expr = af;}	
+	|
+	ref = dottedId
+	{expr = ExpressionFactory.createGenericExpression(ref);}
 	;
 
 annotationExpression returns [IRutaExpression expr = null]
@@ -2204,6 +2226,21 @@ annotationAddressExpression returns [IAnnotationExpression expr = null]
 annotationLabelExpression returns [IRutaExpression expr = null]
 	:
 	label = Identifier {expr = ExpressionFactory.createAnnotationLabelExpression(label);}
+	;
+
+annotationFunction returns [IAnnotationExpression expr = null]
+	:
+	(e = externalAnnotationFunction)=> e = externalAnnotationFunction {expr = e;}
+	;
+
+externalAnnotationFunction returns [IAnnotationExpression expr = null]
+	:
+	{isAnnotationFunctionExtension(input.LT(1).getText())}? 
+	id = Identifier LPAREN
+	args = varArgumentList?	RPAREN
+	{
+		expr = external.createExternalAnnotationFunction(id, args);
+	}
 	;
 
 nullExpression returns [IRutaExpression expr = null]

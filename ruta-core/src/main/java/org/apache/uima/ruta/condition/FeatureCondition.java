@@ -23,7 +23,6 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.MatchReference;
-import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
@@ -48,14 +47,10 @@ public class FeatureCondition extends AbstractRutaCondition {
 
     String typeWithFeature = annotation.getType().getName() + "."
             + featureStringExpression.getStringValue(context, stream);
-    MatchReference mf = new MatchReference(typeWithFeature, "==", argExpr);
-    FeatureExpression featureExpression = mf.getFeatureExpression(context, stream);
-    if (featureExpression instanceof FeatureMatchExpression) {
-      FeatureMatchExpression fme = (FeatureMatchExpression) featureExpression;
-      boolean checkFeatureValue = fme.checkFeatureValue(annotation, context, stream);
-      return new EvaluatedCondition(this, checkFeatureValue);
-    }
-    return new EvaluatedCondition(this, false);
+    MatchReference mf = new MatchReference(typeWithFeature);
+    FeatureMatchExpression fme = new FeatureMatchExpression(mf, "==", argExpr, context.getParent());
+    boolean checkFeatureValue = fme.checkFeatureValue(annotation, context, stream);
+    return new EvaluatedCondition(this, checkFeatureValue);
   }
 
   public IStringExpression getFeatureStringExpression() {

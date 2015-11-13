@@ -34,6 +34,7 @@ import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.NullExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.AnnotationComparator;
 import org.apache.uima.ruta.rule.MatchContext;
@@ -42,13 +43,13 @@ public class SimpleFeatureExpression extends FeatureExpression {
 
   private MatchReference mr;
 
-  private TypeExpression typeExpr;
+  private ITypeExpression typeExpr;
 
   private List<String> features;
 
   protected AnnotationComparator comparator = new AnnotationComparator();
 
-  public SimpleFeatureExpression(TypeExpression te, List<String> featureReferences) {
+  public SimpleFeatureExpression(ITypeExpression te, List<String> featureReferences) {
     super();
     this.typeExpr = te;
     this.features = featureReferences;
@@ -102,7 +103,7 @@ public class SimpleFeatureExpression extends FeatureExpression {
     return result;
   }
 
-  public TypeExpression getTypeExpr(MatchContext context, RutaStream stream) {
+  public ITypeExpression getTypeExpr(MatchContext context, RutaStream stream) {
     if (mr != null) {
       return mr.getTypeExpression(context, stream);
     }
@@ -128,34 +129,37 @@ public class SimpleFeatureExpression extends FeatureExpression {
           RutaStream stream, MatchContext context, boolean checkOnFeatureValue) {
     Collection<AnnotationFS> result = new TreeSet<AnnotationFS>(comparator);
     List<Feature> features = getFeatures(context, stream);
+
     for (AnnotationFS eachBase : annotations) {
       AnnotationFS afs = eachBase;
-      for (Feature feature : features) {
-        if (afs == null) {
-          break;
-        }
-        if (feature == null || feature.getRange().isPrimitive()) {
-          // feature == null -> this is the coveredText "feature"
-          if (this instanceof FeatureMatchExpression) {
-            FeatureMatchExpression fme = (FeatureMatchExpression) this;
-            if (checkOnFeatureValue) {
-              if (fme.checkFeatureValue(afs, context, feature, stream)) {
+      if (features != null) {
+        for (Feature feature : features) {
+          if (afs == null) {
+            break;
+          }
+          if (feature == null || feature.getRange().isPrimitive()) {
+            // feature == null -> this is the coveredText "feature"
+            if (this instanceof FeatureMatchExpression) {
+              FeatureMatchExpression fme = (FeatureMatchExpression) this;
+              if (checkOnFeatureValue) {
+                if (fme.checkFeatureValue(afs, context, feature, stream)) {
+                  result.add(afs);
+                }
+              } else {
                 result.add(afs);
               }
+              break;
             } else {
               result.add(afs);
             }
-            break;
           } else {
-            result.add(afs);
-          }
-        } else {
-          FeatureStructure value = afs.getFeatureValue(feature);
-          if (value instanceof AnnotationFS) {
-            afs = (AnnotationFS) value;
-          } else if (value != null) {
-            throw new IllegalArgumentException(value.getType()
-                    + " is not supported in a feature match expression (" + mr.getMatch() + ").");
+            FeatureStructure value = afs.getFeatureValue(feature);
+            if (value instanceof AnnotationFS) {
+              afs = (AnnotationFS) value;
+            } else if (value != null) {
+              throw new IllegalArgumentException(value.getType()
+                      + " is not supported in a feature match expression (" + mr.getMatch() + ").");
+            }
           }
         }
       }
@@ -176,6 +180,10 @@ public class SimpleFeatureExpression extends FeatureExpression {
 
   public MatchReference getMatchReference() {
     return mr;
+  }
+
+  public String toString() {
+    return mr.getMatch();
   }
 
 }

@@ -19,16 +19,18 @@
 
 package org.apache.uima.ruta.expression.feature;
 
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.ExpressionFactory;
 import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
 public class GenericFeatureExpression extends RutaExpression implements INumberExpression,
-        IBooleanExpression, IStringExpression {
+        IBooleanExpression, IStringExpression, IAnnotationExpression {
 
   private FeatureExpression featureExpression;
 
@@ -37,6 +39,8 @@ public class GenericFeatureExpression extends RutaExpression implements INumberE
   private IStringExpression stringExpression;
 
   private IBooleanExpression booleanExpression;
+  
+  private IAnnotationExpression annotationExpression;
 
   public GenericFeatureExpression(FeatureExpression fe) {
     super();
@@ -83,6 +87,14 @@ public class GenericFeatureExpression extends RutaExpression implements INumberE
     return numberExpression.getFloatValue(context, stream);
   }
 
+  @Override
+  public AnnotationFS getAnnotation(MatchContext context, RutaStream stream) {
+    if (annotationExpression == null) {
+      annotationExpression = ExpressionFactory.createAnnotationFeatureExpression(featureExpression);
+    }
+    return annotationExpression.getAnnotation(context, stream);
+  }
+
   public FeatureExpression getFeatureExpression() {
     return featureExpression;
   }
@@ -90,5 +102,6 @@ public class GenericFeatureExpression extends RutaExpression implements INumberE
   public void setFeatureExpression(FeatureExpression featureExpression) {
     this.featureExpression = featureExpression;
   }
+
 
 }

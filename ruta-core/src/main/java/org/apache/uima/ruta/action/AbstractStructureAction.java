@@ -40,6 +40,7 @@ import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.utils.UIMAUtils;
@@ -80,7 +81,7 @@ public abstract class AbstractStructureAction extends AbstractRutaAction {
         } else if (valueObject instanceof GenericFeatureExpression && !range.isPrimitive()) {
           GenericFeatureExpression gfe = (GenericFeatureExpression) valueObject;
           FeatureExpression fe = gfe.getFeatureExpression();
-          TypeExpression type = fe.getTypeExpr(context, stream);
+          ITypeExpression type = fe.getTypeExpr(context, stream);
           List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(matchedAnnotation,
                   type.getType(context, stream));
           List<AnnotationFS> featureAnnotations = annotationsInWindow;

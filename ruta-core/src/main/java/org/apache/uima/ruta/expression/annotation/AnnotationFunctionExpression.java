@@ -19,21 +19,6 @@
 
 package org.apache.uima.ruta.expression.annotation;
 
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.RutaExpression;
-import org.apache.uima.ruta.rule.MatchContext;
+public abstract class AnnotationFunctionExpression extends AbstractAnnotationExpression {
 
-public abstract class AbstractAnnotationExpression extends RutaExpression implements IAnnotationExpression {
-
-  @Override
-  public String getStringValue(MatchContext context, RutaStream stream) {
-    AnnotationFS annotation = getAnnotation(context, stream);
-    if(annotation != null) {
-      return annotation.getCoveredText();
-    } else {
-      return "null";
-    }
-  }
-  
 }
