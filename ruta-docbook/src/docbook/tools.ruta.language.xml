@@ -761,7 +761,7 @@ CW{INLIST(sl) -> Test};]]></programlisting>
         </title>
         <programlisting><![CDATA[STRING s;
 STRINGLIST sl;
-CW{-> MATCHEDTEXT(s), ADD(sl, substring(s,0,8))};
+CW{-> MATCHEDTEXT(s), ADD(sl, substring(s,0,9))};
 SW{INLIST(sl) -> Test};]]></programlisting>
         <para>
           This example declares a STRING and a STRINGLIST. Imagine you found the
