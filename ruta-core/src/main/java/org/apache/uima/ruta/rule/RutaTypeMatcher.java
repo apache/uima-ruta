@@ -60,15 +60,12 @@ public class RutaTypeMatcher implements RutaMatcher {
       if (type == null) {
         continue;
       }
-      Type currentDAType = stream.getCas().getDocumentAnnotation().getType();
+      Type overallDAType = stream.getCas().getDocumentAnnotation().getType();
       String name = type.getName();
-      RutaBasic firstBasicOfAll = stream.getFirstBasicOfAll();
       if ("uima.tcas.DocumentAnnotation".equals(name)
               || "org.apache.uima.ruta.type.Document".equals(name)
-              || currentDAType.equals(type)
-//              || (stream.getDocumentAnnotationType().getName().equals(name) && (firstBasicOfAll != null && firstBasicOfAll
-//                      .beginsWith(type)))
-                      ) {
+              || overallDAType.equals(type)
+              ) {
         // TODO what about dynamic windowing?
         annotations.add(stream.getDocumentAnnotation());
       } else {
@@ -247,9 +244,9 @@ public class RutaTypeMatcher implements RutaMatcher {
     return mr;
   }
 
-  protected Type getType(TypeExpression expression, RutaBlock parent, RutaStream stream) {
+  protected Type getType(TypeExpression expression, RutaBlock parent, RutaStream stream, boolean resolveDocumentAnnotation) {
     Type type = expression.getType(parent);
-    if (type != null && "uima.tcas.DocumentAnnotation".equals(type.getName())) {
+    if (resolveDocumentAnnotation && type != null && "uima.tcas.DocumentAnnotation".equals(type.getName())) {
       return stream.getDocumentAnnotationType();
     }
     return type;
@@ -257,13 +254,13 @@ public class RutaTypeMatcher implements RutaMatcher {
 
   public long estimateAnchors(RutaBlock parent, RutaStream stream) {
     TypeExpression typeExpression = mr.getTypeExpression(parent);
-    return stream.getHistogram(getType(typeExpression, parent, stream));
+    return stream.getHistogram(getType(typeExpression, parent, stream, true));
   }
 
   public List<Type> getTypes(RutaBlock parent, RutaStream stream) {
     List<Type> result = new ArrayList<Type>(1);
     TypeExpression typeExpression = mr.getTypeExpression(parent);
-    Type type = getType(typeExpression, parent, stream);
+    Type type = getType(typeExpression, parent, stream, false);
     result.add(type);
     return result;
   }
