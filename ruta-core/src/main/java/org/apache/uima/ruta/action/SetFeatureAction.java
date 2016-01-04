@@ -22,20 +22,13 @@ package org.apache.uima.ruta.action;
 import java.util.List;
 
 import org.apache.uima.cas.Feature;
-import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.IRutaExpression;
-import org.apache.uima.ruta.expression.bool.IBooleanExpression;
-import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
-import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
-import org.apache.uima.ruta.utils.UIMAUtils;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class SetFeatureAction extends AbstractRutaAction {
@@ -63,71 +56,9 @@ public class SetFeatureAction extends AbstractRutaAction {
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOfElement(element);
     for (AnnotationFS annotationFS : matchedAnnotations) {
       Feature feature = annotationFS.getType().getFeatureByBaseName(featureString);
-
       if (feature != null) {
-        Type range = feature.getRange();
-        String rangeName = range.getName();
         stream.getCas().removeFsFromIndexes(annotationFS);
-        if (rangeName.equals(UIMAConstants.TYPE_STRING) && expr instanceof IStringExpression) {
-          IStringExpression stringExpr = (IStringExpression) expr;
-          String string = stringExpr.getStringValue(context, stream);
-          annotationFS.setStringValue(feature, string);
-        } else if (rangeName.equals(UIMAConstants.TYPE_INTEGER)
-                && expr instanceof INumberExpression) {
-          INumberExpression numberExpr = (INumberExpression) expr;
-          int v = numberExpr.getIntegerValue(context, stream);
-          annotationFS.setIntValue(feature, v);
-        } else if (rangeName.equals(UIMAConstants.TYPE_DOUBLE) && expr instanceof INumberExpression) {
-          INumberExpression numberExpr = (INumberExpression) expr;
-          double v = numberExpr.getDoubleValue(context, stream);
-          annotationFS.setDoubleValue(feature, v);
-        } else if (rangeName.equals(UIMAConstants.TYPE_FLOAT) && expr instanceof INumberExpression) {
-          INumberExpression numberExpr = (INumberExpression) expr;
-          float v = numberExpr.getFloatValue(context, stream);
-          annotationFS.setFloatValue(feature, v);
-        } else if (rangeName.equals(UIMAConstants.TYPE_BYTE) && expr instanceof INumberExpression) {
-          INumberExpression numberExpr = (INumberExpression) expr;
-          byte v = (byte) numberExpr.getIntegerValue(context, stream);
-          annotationFS.setByteValue(feature, v);
-        } else if (rangeName.equals(UIMAConstants.TYPE_SHORT) && expr instanceof INumberExpression) {
-          INumberExpression numberExpr = (INumberExpression) expr;
-          short v = (short) numberExpr.getIntegerValue(context, stream);
-          annotationFS.setShortValue(feature, v);
-        } else if (rangeName.equals(UIMAConstants.TYPE_LONG) && expr instanceof INumberExpression) {
-          INumberExpression numberExpr = (INumberExpression) expr;
-          long v = numberExpr.getIntegerValue(context, stream);
-          annotationFS.setLongValue(feature, v);
-        } else if (rangeName.equals(UIMAConstants.TYPE_BOOLEAN)
-                && expr instanceof IBooleanExpression) {
-          IBooleanExpression booleanExpr = (IBooleanExpression) expr;
-          boolean v = booleanExpr.getBooleanValue(context, stream);
-          annotationFS.setBooleanValue(feature, v);
-        } else if (expr instanceof ITypeExpression) {
-          ITypeExpression typeExpr = (ITypeExpression) expr;
-          Type t = typeExpr.getType(context, stream);
-          List<AnnotationFS> inWindow = stream.getAnnotationsInWindow(annotationFS, t);
-          if (feature.getRange().isArray()) {
-            annotationFS.setFeatureValue(feature, UIMAUtils.toFSArray(stream.getJCas(), inWindow));
-          } else {
-            if (inWindow != null) {
-              AnnotationFS annotation = inWindow.get(0);
-              annotationFS.setFeatureValue(feature, annotation);
-            } else {
-              annotationFS.setFeatureValue(feature, null);
-            }
-          }
-        } else if (expr instanceof GenericFeatureExpression) {
-          ITypeExpression typeExpr = ((GenericFeatureExpression) expr).getFeatureExpression()
-                  .getTypeExpr(context, stream);
-          Type t = typeExpr.getType(context, stream);
-          List<AnnotationFS> inWindow = stream.getAnnotationsInWindow(annotationFS, t);
-          if (feature.getRange().isArray()) {
-            annotationFS.setFeatureValue(feature, UIMAUtils.toFSArray(stream.getJCas(), inWindow));
-          } else {
-            AnnotationFS annotation = inWindow.get(0);
-            annotationFS.setFeatureValue(feature, annotation);
-          }
-        }
+        stream.assignFeatureValue(annotationFS, feature, expr, context);
         stream.getCas().addFsToIndexes(annotationFS);
       } else {
         throw new IllegalArgumentException("Not able to assign feature value (e.g., coveredText).");
