@@ -172,6 +172,28 @@
         </executions>
       </plugin>
       <plugin>
+        <groupId>org.apache.uima</groupId>
+        <artifactId>jcasgen-maven-plugin</artifactId>
+        <version>${uimaVersion}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <!-- runs in phase process-resources by default -->
+            <configuration>
+              <!-- one or more ant-like file patterns identifying top level descriptors -->
+              <typeSystemIncludes>
+<!--                 <typeSystemInclude>src/main/resources/org/apache/uima/ruta/engine/BasicTypeSystem.xml</typeSystemInclude> -->
+                <typeSystemInclude>src/main/resources/org/apache/uima/ruta/engine/HtmlTypeSystem.xml</typeSystemInclude>
+                <typeSystemInclude>src/main/resources/org/apache/uima/ruta/engine/PlainTextTypeSystem.xml</typeSystemInclude>
+              </typeSystemIncludes>
+              <limitToProject>true</limitToProject>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
         <executions>
