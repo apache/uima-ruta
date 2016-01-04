@@ -23,6 +23,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.net.URL;
 
+import junit.framework.Assert;
+
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.cas.CAS;
@@ -38,6 +40,9 @@ import org.apache.uima.util.XMLInputSource;
 import org.junit.Test;
 
 public class DefaultSeederTest {
+
+  
+
   @Test
   public void test() throws Exception {
     URL url = RutaEngine.class.getClassLoader().getResource("BasicEngine.xml");
@@ -111,7 +116,7 @@ public class DefaultSeederTest {
             + "<sec sec-type=\"methods\">" + "<sec sectype=\"methods\">"
             + "<sec sec-type=\"methods\">" + "<sec sectype=\"methods\">"
             + "<sec sectype='methods'>" + "<tag-with-dash value=\"1\">"
-						+ "<-not-a-real-tag value=\"1\">" + "<a_real_tag value=\"1\">";
+            + "<-not-a-real-tag value=\"1\">" + "<a_real_tag value=\"1\">";
     String script = "RETAINTYPE(MARKUP);MARKUP{-> T1};";
     CAS cas = null;
     try {
@@ -127,6 +132,39 @@ public class DefaultSeederTest {
             "<sec sectype='methods'>", "<tag-with-dash value=\"1\">", "<a_real_tag value=\"1\">");
 
     cas.release();
+  }
+  
+  @Test
+  public void testStackedMarkup() throws Exception {
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < 1000; i++) {
+      sb.append("<b>");
+    }
+    sb.append("content");
+    for (int i = 0; i < 1000; i++) {
+      sb.append("</b>");
+    }
+
+    // long start = System.currentTimeMillis();
+
+    String document = sb.toString();
+    String script = "RETAINTYPE(MARKUP);MARKUP{-> T1};";
+    CAS cas = null;
+    try {
+      cas = RutaTestUtils.getCAS(document);
+      Ruta.apply(cas, script);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    // long end = System.currentTimeMillis();
+
+    // System.out.println("took: " + (end-start)/1000 + "s");
+    Type t1 = RutaTestUtils.getTestType(cas, 1);
+    AnnotationIndex<AnnotationFS> ai = cas.getAnnotationIndex(t1);
+    Assert.assertEquals(2000, ai.size());
+
+    cas.release();
+
   }
 
 }

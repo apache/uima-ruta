@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.StringReader;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,6 +32,7 @@ import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.fit.util.CasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.ruta.type.MARKUP;
 import org.apache.uima.ruta.type.TokenSeed;
@@ -82,12 +84,8 @@ public class DefaultSeeder implements RutaAnnotationSeeder {
       int end = matcher.end();
       MARKUP markup = new MARKUP(jCas, begin, end);
       markup.addToIndexes();
-      FSIterator<AnnotationFS> subiterator = cas.getAnnotationIndex(result).subiterator(markup);
-      while (subiterator.isValid()) {
-        AnnotationFS fs = subiterator.get();
-        toRemove.add(fs);
-        subiterator.moveToNext();
-      }
+      List<AnnotationFS> selectCovered = CasUtil.selectCovered(result, markup);
+      toRemove.addAll(selectCovered);
     }
     for (AnnotationFS each : toRemove) {
       cas.removeFsFromIndexes(each);
