@@ -63,8 +63,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
     RuleElement current = this;
     int nextDepth = -1;
     while (nextElement == null && current != null && current.getContainer() != null) {
-      nextElement = current.getContainer().getNextElement(after, current);
       RuleElementContainer container = current.getContainer();
+      nextElement = container.getNextElement(after, current);
       if (container instanceof RuleElement) {
         current = (RuleElement) container;
         nextDepth++;

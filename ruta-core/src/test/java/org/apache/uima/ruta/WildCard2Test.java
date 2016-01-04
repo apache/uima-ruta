@@ -26,22 +26,66 @@ import org.junit.Test;
 
 public class WildCard2Test {
 
-  @Test
-  public void test() {
-    String document = "Ogren, P.V., Wetzler, P.G., Bethard, S.: ClearTK: A UIMA Toolkit for Statistical Natural Language Processing. In: UIMA for NLP workshop at LREC 08. (2008)";
-    document +="\n";
-    document += "Stephen Soderland, Claire Cardie, and Raymond Mooney. Learning Information Extraction Rules for Semi-Structured and Free Text. In Machine Learning, volume 34, pages 233–272, 1999.";
-    String script = "";
-    script += "RETAINTYPE(BREAK, SPACE);\n";
-    script += "#{-> T6} BREAK #{-> T6};\n";
-    script += "T6{-> TRIM(BREAK, SPACE)};\n";
-    script += "CW{REGEXP(\".\")} PERIOD{->T7};\n";
-    script += "RETAINTYPE;\n";
-    script += "BLOCK(forEach) T6 {}{\n";
-    script += "(# COLON){-> T1} (# PERIOD){-> T2} # \"(\" NUM{REGEXP(\"....\")-> T3} \")\";\n";
-    script += "(#{-CONTAINS(COLON)} PERIOD{-PARTOF(T7)}){-> T1} (# PERIOD){-> T2} # NUM{REGEXP(\"....\")-> T3};\n";
-    script += "}\n";
+   @Test
+   public void test() {
+   String document =
+   "Ogren, P.V., Wetzler, P.G., Bethard, S.: ClearTK: A UIMA Toolkit for Statistical Natural Language Processing. In: UIMA for NLP workshop at LREC 08. (2008)";
+   document += "\n";
+   document +=
+   "Stephen Soderland, Claire Cardie, and Raymond Mooney. Learning Information Extraction Rules for Semi-Structured and Free Text. In Machine Learning, volume 34, pages 233–272, 1999.";
+   String script = "";
+   script += "RETAINTYPE(BREAK, SPACE);\n";
+   script += "#{-> T6} BREAK #{-> T6};\n";
+   script += "T6{-> TRIM(BREAK, SPACE)};\n";
+   script += "CW{REGEXP(\".\")} PERIOD{->T7};\n";
+   script += "RETAINTYPE;\n";
+   script += "BLOCK(forEach) T6 {}{\n";
+   script += "(# COLON){-> T1} (# PERIOD){-> T2} # \"(\" NUM{REGEXP(\"....\")-> T3} \")\";\n";
+   script +=
+   "(#{-CONTAINS(COLON)} PERIOD{-PARTOF(T7)}){-> T1} (# PERIOD){-> T2} # NUM{REGEXP(\"....\")-> T3};\n";
+   script += "}\n";
+  
+   CAS cas = null;
+   try {
+   cas = RutaTestUtils.getCAS(document);
+   Ruta.apply(cas, script);
+   } catch (Exception e) {
+   e.printStackTrace();
+   }
+  
+   RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "Ogren, P.V., Wetzler, P.G., Bethard, S.:",
+   "Stephen Soderland, Claire Cardie, and Raymond Mooney.");
+   RutaTestUtils.assertAnnotationsEquals(cas, 2, 2,
+   "ClearTK: A UIMA Toolkit for Statistical Natural Language Processing.",
+   "Learning Information Extraction Rules for Semi-Structured and Free Text.");
+   RutaTestUtils.assertAnnotationsEquals(cas, 3, 2, "2008", "1999");
+  
+   cas.release();
+   }
+  
+   @Test
+   public void testOptional() {
+   String document = "Cw 1 2 3";
+   String script = "(CW #){-> T1} SW?;";
+  
+   CAS cas = null;
+   try {
+   cas = RutaTestUtils.getCAS(document);
+   Ruta.apply(cas, script);
+   } catch (Exception e) {
+   e.printStackTrace();
+   }
+  
+   RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Cw 1 2 3");
+  
+   cas.release();
+   }
 
+  @Test
+  public void testLookaheadInGreedy() {
+    String document = "Some test. Some test. Some test.";
+    String script = "((CW #){-> T1})+;";
+    script += "((# PERIOD){-> T2})+;";
     CAS cas = null;
     try {
       cas = RutaTestUtils.getCAS(document);
@@ -50,33 +94,13 @@ public class WildCard2Test {
       e.printStackTrace();
     }
 
-    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "Ogren, P.V., Wetzler, P.G., Bethard, S.:",
-            "Stephen Soderland, Claire Cardie, and Raymond Mooney.");
-    RutaTestUtils.assertAnnotationsEquals(cas, 2, 2,
-            "ClearTK: A UIMA Toolkit for Statistical Natural Language Processing.",
-            "Learning Information Extraction Rules for Semi-Structured and Free Text.");
-    RutaTestUtils.assertAnnotationsEquals(cas, 3, 2, "2008", "1999");
+    // UIMA-4715: should be
+    // RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "Some test.", "Some test.", "Some test.");
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "Some test. Some test. Some test.",
+            "Some test. Some test.", "Some test.");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "Some test.", "Some test.", "Some test.");
 
     cas.release();
   }
-  
-  
-  @Test
-  public void testOptional() {
-    String document = "Cw 1 2 3";
-    String script = "(CW #){-> T1} SW?;";
 
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Cw 1 2 3");
-
-    cas.release();
-  }
-  
 }
