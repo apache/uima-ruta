@@ -26,8 +26,10 @@ import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.annotation.AnnotationLabelExpression;
+import org.apache.uima.ruta.expression.annotation.AnnotationListVariableExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationVariableExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
+import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
@@ -44,6 +46,8 @@ public class MatchReference extends RutaExpression {
   private ITypeExpression typeExpression;
   
   private IAnnotationExpression annotationExpression;
+  
+  private IAnnotationListExpression annotationListExpression;
 
   private FeatureExpression featureExpression;
 
@@ -85,7 +89,7 @@ public class MatchReference extends RutaExpression {
       }
     }
     initialized = true;
-    if (typeExpression == null && annotationExpression == null) {
+    if (typeExpression == null && annotationExpression == null && annotationListExpression == null) {
       throw new IllegalArgumentException("Not able to resolve annotation/type expression: " + reference);
     }
   }
@@ -96,6 +100,9 @@ public class MatchReference extends RutaExpression {
       return true;
     } else if (e.isVariableOfType(candidate, "ANNOTATION")) {
       annotationExpression = new AnnotationVariableExpression(candidate);
+      return true;
+    } else if (e.isVariableOfType(candidate, "ANNOTATIONLIST")) {
+      annotationListExpression = new AnnotationListVariableExpression(candidate);
       return true;
     } else if (e.getType(candidate) != null) {
       typeExpression = new SimpleTypeExpression(candidate);
@@ -119,6 +126,11 @@ public class MatchReference extends RutaExpression {
   public IAnnotationExpression getAnnotationExpression(MatchContext context, RutaStream stream) {
     resolve(context, stream);
     return annotationExpression;
+  }
+  
+  public IAnnotationListExpression getAnnotationListExpression(MatchContext context, RutaStream stream) {
+    resolve(context, stream);
+    return annotationListExpression;
   }
 
   public FeatureExpression getFeatureExpression(MatchContext context, RutaStream stream) {

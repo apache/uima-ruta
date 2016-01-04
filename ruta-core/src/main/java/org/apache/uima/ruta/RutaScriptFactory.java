@@ -30,6 +30,7 @@ import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
+import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
@@ -145,6 +146,8 @@ public class RutaScriptFactory {
       matcher = new RutaTypeMatcher((FeatureExpression) expression);
     } else if (expression instanceof IAnnotationExpression) {
       matcher = new RutaAnnotationMatcher((IAnnotationExpression) expression);
+    } else if (expression instanceof IAnnotationListExpression) {
+      matcher = new RutaAnnotationMatcher((IAnnotationListExpression) expression);
     } else if (expression instanceof IStringExpression) {
       matcher = new RutaLiteralMatcher((IStringExpression) expression);
     } else {

@@ -31,6 +31,7 @@ import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
+import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
 import org.apache.uima.ruta.type.RutaBasic;
 
 public class RutaAnnotationMatcher implements RutaMatcher {
@@ -39,20 +40,34 @@ public class RutaAnnotationMatcher implements RutaMatcher {
 
   private IAnnotationExpression annotationExpression;
 
-  public RutaAnnotationMatcher(IAnnotationExpression annotationExpression) {
+  private IAnnotationListExpression annotationListExpression;
+
+  public RutaAnnotationMatcher(IAnnotationExpression expression) {
     super();
-    this.annotationExpression = annotationExpression;
+    this.annotationExpression = expression;
     this.comparator = new AnnotationComparator();
   }
+
+  public RutaAnnotationMatcher(IAnnotationListExpression expression) {
+    super();
+    this.annotationListExpression = expression;
+    this.comparator = new AnnotationComparator();
+  }
+
   public Collection<AnnotationFS> getMatchingAnnotations(RutaStream stream, RutaBlock parent) {
     // TODO what about the matching direction?
-    Collection<AnnotationFS> annotations = new TreeSet<AnnotationFS>(comparator);
     MatchContext context = new MatchContext(parent);
-    AnnotationFS annotation = annotationExpression.getAnnotation(context, stream);
-    if(annotation != null) {
-      annotations.add(annotation);
+    if (annotationExpression != null) {
+      Collection<AnnotationFS> annotations = new TreeSet<AnnotationFS>(comparator);
+      AnnotationFS annotation = annotationExpression.getAnnotation(context, stream);
+      if (annotation != null) {
+        annotations.add(annotation);
+      }
+      return annotations;
+    } else if (annotationListExpression != null) {
+      return annotationListExpression.getAnnotations(context, stream);
     }
-    return annotations;
+    return Collections.emptyList();
   }
 
   public Collection<AnnotationFS> getAnnotationsAfter(RutaRuleElement ruleElement,
@@ -90,14 +105,27 @@ public class RutaAnnotationMatcher implements RutaMatcher {
         }
       }
       MatchContext context = new MatchContext(parent);
-      AnnotationFS ref = annotationExpression.getAnnotation(context, stream);
-      boolean beginsWith = nextBasic.beginsWith(ref.getType());
-      if(beginsWith) {
-        Collection<AnnotationFS> result = new ArrayList<>(1);
-        result.add(ref);
+      if (annotationExpression != null) {
+
+        AnnotationFS ref = annotationExpression.getAnnotation(context, stream);
+        boolean beginsWith = nextBasic.beginsWith(ref.getType());
+        if (beginsWith) {
+          Collection<AnnotationFS> result = new ArrayList<>(1);
+          result.add(ref);
+          return result;
+        }
+      } else if (annotationListExpression != null) {
+        List<AnnotationFS> annotations = annotationListExpression.getAnnotations(context, stream);
+        Collection<AnnotationFS> result = new ArrayList<>();
+        for (AnnotationFS each : annotations) {
+          boolean beginsWith = nextBasic.beginsWith(each.getType());
+          if (beginsWith) {
+            result.add(each);
+          }
+        }
         return result;
       }
-      
+
     }
     return Collections.emptyList();
   }
@@ -126,12 +154,24 @@ public class RutaAnnotationMatcher implements RutaMatcher {
         }
       }
       MatchContext context = new MatchContext(parent);
-      AnnotationFS ref = annotationExpression.getAnnotation(context, stream);
-      boolean endsWith = nextBasic.beginsWith(ref.getType());
-      if(endsWith) {
-        Collection<AnnotationFS> result = new ArrayList<>(1);
-        result.add(ref);
-        return result;
+      if (annotationExpression != null) {
+        AnnotationFS ref = annotationExpression.getAnnotation(context, stream);
+        boolean endsWith = nextBasic.beginsWith(ref.getType());
+        if (endsWith) {
+          Collection<AnnotationFS> result = new ArrayList<>(1);
+          result.add(ref);
+          return result;
+        }
+      } else if (annotationListExpression != null) {
+        List<AnnotationFS> annotations = annotationListExpression.getAnnotations(context, stream);
+        for (AnnotationFS each : annotations) {
+          boolean endsWith = nextBasic.beginsWith(each.getType());
+          if (endsWith) {
+            Collection<AnnotationFS> result = new ArrayList<>();
+            result.add(each);
+            return result;
+          }
+        }
       }
     }
     return Collections.emptyList();
@@ -142,26 +182,54 @@ public class RutaAnnotationMatcher implements RutaMatcher {
       return false;
     }
     MatchContext context = new MatchContext(parent);
-    AnnotationFS ref = annotationExpression.getAnnotation(context, stream);
+    if (annotationExpression != null) {
+      AnnotationFS ref = annotationExpression.getAnnotation(context, stream);
 
-    return annotation.equals(ref);
-
+      return annotation.equals(ref);
+    } else if (annotationListExpression != null) {
+      List<AnnotationFS> annotations = annotationListExpression.getAnnotations(context, stream);
+      for (AnnotationFS each : annotations) {
+        if (each.equals(annotation)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
+
   @Override
   public List<Type> getTypes(RutaBlock parent, RutaStream stream) {
     MatchContext context = new MatchContext(parent);
+    if(annotationExpression != null) {
+      
     AnnotationFS ref = annotationExpression.getAnnotation(context, stream);
-    if(ref == null) {
+    if (ref == null) {
       return Collections.emptyList();
     }
     List<Type> result = new ArrayList<Type>(1);
     result.add(ref.getType());
     return result;
+    } else if(annotationListExpression != null) {
+      List<AnnotationFS> annotations = annotationListExpression.getAnnotations(context, stream);
+      List<Type> result = new ArrayList<Type>();
+      for (AnnotationFS each : annotations) {
+        result.add(each.getType());
+      }
+      return result;
+    }
+    return Collections.emptyList();
   }
+
   @Override
   public IRutaExpression getExpression() {
-    return annotationExpression;
+    if (annotationExpression != null) {
+      return annotationExpression;
+    } else if (annotationListExpression != null) {
+      return annotationListExpression;
+    }
+    return null;
   }
+
   @Override
   public long estimateAnchors(RutaBlock parent, RutaStream stream) {
     return 1;

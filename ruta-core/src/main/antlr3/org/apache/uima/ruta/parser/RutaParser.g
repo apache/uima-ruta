@@ -1930,7 +1930,9 @@ actionAssign returns [AbstractRutaAction action = null]
     :
     name = ASSIGN LPAREN
     (
-    {isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "ANNOTATION")||isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "TYPE")}? 
+    {isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "ANNOTATION")||
+    isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "ANNOTATIONLIST")||
+    isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "TYPE")}? 
         nv = Identifier COMMA ea = annotationOrTypeExpression 
         {action = ActionFactory.createAssignAction(nv, ea,$blockDeclaration::env);}
     |
@@ -2219,10 +2221,10 @@ annotationExpression returns [IRutaExpression expr = null]
 
 annotationExpression2 returns [IRutaExpression expr = null]
 	:
-	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "ANNOTATION")	}? 
+	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "ANNOTATION")}? 
 	id = Identifier {expr = ExpressionFactory.createAnnotationVariableExpression(id);} 
 	|
-	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "ANNOTATIONLIST")	}? 
+	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "ANNOTATIONLIST")}? 
 	id = Identifier {expr = ExpressionFactory.createAnnotationListVariableExpression(id);} 
 	|
 	aae = annotationAddressExpression {expr = aae;}

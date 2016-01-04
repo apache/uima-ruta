@@ -19,24 +19,30 @@
 
 package org.apache.uima.ruta.expression;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
+import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
-public class AnnotationTypeExpression extends RutaExpression implements ITypeExpression, IAnnotationExpression {
- 
-  
+public class AnnotationTypeExpression extends RutaExpression implements ITypeExpression,
+        IAnnotationExpression, IAnnotationListExpression {
+
   private MatchReference reference;
-  
+
   private ITypeExpression typeExpression;
-  
+
   private IAnnotationExpression annotationExpression;
 
+  private IAnnotationListExpression annotationListExpression;
+
   private boolean initialized = false;
-  
+
   public AnnotationTypeExpression(MatchReference reference) {
     super();
     this.reference = reference;
@@ -44,21 +50,25 @@ public class AnnotationTypeExpression extends RutaExpression implements ITypeExp
 
   private void initialize(MatchContext context, RutaStream stream) {
     annotationExpression = reference.getAnnotationExpression(context, stream);
+    annotationListExpression = reference.getAnnotationListExpression(context, stream);
     typeExpression = reference.getTypeExpression(context, stream);
     initialized = true;
   }
-  
-  
+
   @Override
   public AnnotationFS getAnnotation(MatchContext context, RutaStream stream) {
     if (!initialized) {
       initialize(context, stream);
     }
-    if(annotationExpression != null) {
+    if (annotationExpression != null) {
       return annotationExpression.getAnnotation(context, stream);
+    } else if (annotationListExpression != null) {
+      List<AnnotationFS> annotations = annotationListExpression.getAnnotations(context, stream);
+      if (annotations != null && !annotations.isEmpty())
+        return annotations.get(0);
     } else {
       Type type = getType(context, stream);
-      if(type != null) {
+      if (type != null) {
         return stream.getSingleAnnotationByTypeInContext(type, context);
       }
     }
@@ -70,11 +80,11 @@ public class AnnotationTypeExpression extends RutaExpression implements ITypeExp
     if (!initialized) {
       initialize(context, stream);
     }
-    if(typeExpression != null) {
+    if (typeExpression != null) {
       return typeExpression.getType(context, stream);
     } else {
       AnnotationFS annotation = getAnnotation(context, stream);
-      if(annotation!= null) {
+      if (annotation != null) {
         return annotation.getType();
       }
     }
@@ -86,14 +96,31 @@ public class AnnotationTypeExpression extends RutaExpression implements ITypeExp
     if (!initialized) {
       initialize(context, stream);
     }
-    if(annotationExpression != null) {
+    if (annotationExpression != null) {
       return annotationExpression.getStringValue(context, stream);
     } else {
       return typeExpression.getStringValue(context, stream);
     }
   }
 
-  
-  
-  
+  @Override
+  public List<AnnotationFS> getAnnotations(MatchContext context, RutaStream stream) {
+    if (!initialized) {
+      initialize(context, stream);
+    }
+    if (annotationListExpression != null) {
+      return annotationListExpression.getAnnotations(context, stream);
+    } else if (annotationExpression != null) {
+      List<AnnotationFS> result = new ArrayList<AnnotationFS>(1);
+      result.add(annotationExpression.getAnnotation(context, stream));
+      return result;
+    } else {
+      Type type = getType(context, stream);
+      if (type != null) {
+        return stream.getAnnotationsByTypeInContext(type, context);
+      }
+    }
+    return null;
+  }
+
 }
