@@ -22,19 +22,19 @@ package org.apache.uima.ruta.example.extensions;
 import org.apache.uima.cas.Type;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.BooleanFunctionExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
 public class ExampleBooleanFunction extends BooleanFunctionExpression {
 
-  private final TypeExpression expr;
+  private final ITypeExpression expr;
 
-  public ExampleBooleanFunction(TypeExpression expr) {
+  public ExampleBooleanFunction(ITypeExpression expr) {
     super();
     this.expr = expr;
   }
 
-  public TypeExpression getExpr() {
+  public ITypeExpression getExpr() {
     return expr;
   }
 

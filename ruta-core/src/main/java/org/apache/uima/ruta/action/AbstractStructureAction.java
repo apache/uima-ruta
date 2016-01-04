@@ -41,7 +41,6 @@ import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.utils.UIMAUtils;
 
@@ -58,7 +57,7 @@ public abstract class AbstractStructureAction extends AbstractRutaAction {
       String value = each.getKey().getStringValue(context, stream);
       map.put(value, each.getValue());
     }
-
+    // TODO use method in RutaStream?
     TypeSystem typeSystem = stream.getCas().getTypeSystem();
     JCas jcas = stream.getJCas();
     List<?> featuresList = structure.getType().getFeatures();
@@ -69,9 +68,9 @@ public abstract class AbstractStructureAction extends AbstractRutaAction {
       Object valueObject = map.get(shortFName);
       Type range = targetFeature.getRange();
       if (valueObject != null) {
-        if (valueObject instanceof TypeExpression
+        if (valueObject instanceof ITypeExpression
                 && range.getName().equals(UIMAConstants.TYPE_STRING)) {
-          TypeExpression type = (TypeExpression) valueObject;
+          ITypeExpression type = (ITypeExpression) valueObject;
           List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(matchedAnnotation,
                   type.getType(context, stream));
           if (annotationsInWindow != null && !annotationsInWindow.isEmpty()) {
@@ -126,8 +125,8 @@ public abstract class AbstractStructureAction extends AbstractRutaAction {
                 && range.getName().equals(UIMAConstants.TYPE_BOOLEAN)) {
           structure.setBooleanValue(targetFeature,
                   ((IBooleanExpression) valueObject).getBooleanValue(context, stream));
-        } else if (valueObject instanceof TypeExpression) {
-          TypeExpression type = (TypeExpression) valueObject;
+        } else if (valueObject instanceof ITypeExpression) {
+          ITypeExpression type = (ITypeExpression) valueObject;
           List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(matchedAnnotation,
                   type.getType(context, stream));
           if (typeSystem.subsumes(jcas.getCasType(FSArray.type), range)) {

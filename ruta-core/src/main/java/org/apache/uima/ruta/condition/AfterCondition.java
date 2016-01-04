@@ -26,14 +26,14 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class AfterCondition extends TypeSentiveCondition {
 
-  public AfterCondition(TypeExpression type) {
+  public AfterCondition(ITypeExpression type) {
     super(type);
   }
 

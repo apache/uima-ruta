@@ -60,8 +60,8 @@ import org.apache.uima.ruta.expression.string.LiteralStringExpression;
 import org.apache.uima.ruta.expression.string.SimpleStringExpression;
 import org.apache.uima.ruta.expression.string.StringFeatureExpression;
 import org.apache.uima.ruta.expression.string.StringVariableExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.expression.type.TypeVariableExpression;
 
 public class ExpressionVerbalizer {
@@ -76,8 +76,8 @@ public class ExpressionVerbalizer {
   public String verbalize(IRutaExpression expression) {
     if (expression instanceof GenericFeatureExpression) {
       return verbalize(((GenericFeatureExpression) expression).getFeatureExpression());
-    } else if (expression instanceof TypeExpression) {
-      return verbalize((TypeExpression) expression);
+    } else if (expression instanceof ITypeExpression) {
+      return verbalize((ITypeExpression) expression);
     } else if (expression instanceof IBooleanExpression) {
       return verbalize((IBooleanExpression) expression);
     } else if (expression instanceof INumberExpression) {
@@ -209,8 +209,8 @@ public class ExpressionVerbalizer {
       return "";
     } else if (expression instanceof INumberExpression) {
       return verbalize((INumberExpression) expression);
-    } else if (expression instanceof TypeExpression) {
-      return verbalize((TypeExpression) expression);
+    } else if (expression instanceof ITypeExpression) {
+      return verbalize((ITypeExpression) expression);
     } else if (expression instanceof IBooleanExpression) {
       return verbalize((IBooleanExpression) expression);
     } else if (expression instanceof ListExpression) {
@@ -248,7 +248,7 @@ public class ExpressionVerbalizer {
     return expression.getClass().getSimpleName();
   }
 
-  public String verbalize(TypeExpression expression) {
+  public String verbalize(ITypeExpression expression) {
     if (expression == null) {
       return null;
     }

@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
@@ -31,7 +31,7 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class ImplicitMarkAction extends AbstractMarkAction {
 
-  public ImplicitMarkAction(TypeExpression te) {
+  public ImplicitMarkAction(ITypeExpression te) {
     super(te);
   }
 

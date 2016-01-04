@@ -27,13 +27,13 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.INumberExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 
 public abstract class AbstractMarkAction extends TypeSensitiveAction {
 
-  public AbstractMarkAction(TypeExpression type) {
+  public AbstractMarkAction(ITypeExpression type) {
     super(type);
   }
 

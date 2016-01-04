@@ -33,7 +33,7 @@ import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.AbstractStringExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 
 public class RutaExternalFactory {
 
@@ -89,7 +89,7 @@ public class RutaExternalFactory {
     return null;
   }
 
-  public TypeExpression createExternalTypeFunction(Token id, List<RutaExpression> args)
+  public ITypeExpression createExternalTypeFunction(Token id, List<RutaExpression> args)
           throws RutaParseException {
     String name = id.getText();
     IRutaTypeFunctionExtension extension = typeFunctionExtensions.get(name);

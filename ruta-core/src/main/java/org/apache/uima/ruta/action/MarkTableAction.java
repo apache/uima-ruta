@@ -38,7 +38,7 @@ import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.resource.WordTableExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.resource.RutaTable;
 import org.apache.uima.ruta.resource.RutaWordList;
 import org.apache.uima.ruta.rule.MatchContext;
@@ -48,7 +48,7 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class MarkTableAction extends AbstractRutaAction {
 
-  private final TypeExpression typeExpr;
+  private final ITypeExpression typeExpr;
 
   private final WordTableExpression tableExpr;
 
@@ -66,7 +66,7 @@ public class MarkTableAction extends AbstractRutaAction {
 
   private IBooleanExpression ignoreWS = new SimpleBooleanExpression(true);
 
-  public MarkTableAction(TypeExpression typeExpr, INumberExpression indexExpr,
+  public MarkTableAction(ITypeExpression typeExpr, INumberExpression indexExpr,
           WordTableExpression tableExpr, Map<IStringExpression, INumberExpression> featureMap,
           IBooleanExpression ignoreCase, INumberExpression ignoreLength,
           IStringExpression ignoreChar, INumberExpression maxIgnoreChar) {
@@ -181,7 +181,7 @@ public class MarkTableAction extends AbstractRutaAction {
     }
   }
 
-  public TypeExpression getTypeExpr() {
+  public ITypeExpression getTypeExpr() {
     return typeExpr;
   }
 

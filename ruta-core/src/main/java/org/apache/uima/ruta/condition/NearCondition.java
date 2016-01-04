@@ -27,7 +27,7 @@ import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.type.RutaBasic;
@@ -43,7 +43,7 @@ public class NearCondition extends TypeSentiveCondition {
 
   private final IBooleanExpression filtered;
 
-  public NearCondition(TypeExpression type, INumberExpression min, INumberExpression max,
+  public NearCondition(ITypeExpression type, INumberExpression min, INumberExpression max,
           IBooleanExpression forward, IBooleanExpression filtered) {
     super(type);
     this.min = min == null ? new SimpleNumberExpression(1) : min;

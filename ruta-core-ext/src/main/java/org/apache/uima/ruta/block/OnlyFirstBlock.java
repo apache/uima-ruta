@@ -21,7 +21,6 @@ package org.apache.uima.ruta.block;
 
 import java.util.List;
 
-import org.apache.uima.UimaContext;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.BlockApply;

@@ -46,6 +46,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.ruta.expression.AnnotationTypeExpression;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
@@ -953,20 +954,26 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       IBooleanExpression booleanExpr = (IBooleanExpression) value;
       boolean v = booleanExpr.getBooleanValue(context, this);
       annotation.setBooleanValue(feature, v);
+    } else if (value instanceof AnnotationTypeExpression && !feature.getRange().isPrimitive()) {
+      AnnotationTypeExpression ate = (AnnotationTypeExpression) value;
+      AnnotationFS a = ate.getAnnotation(context, this);
+      if (a != null) {
+        // TODO support annotation list expressions
+        if (feature.getRange().isArray()) {
+          List<AnnotationFS> c = new ArrayList<AnnotationFS>();
+          c.add(a);
+          annotation.setFeatureValue(feature, UIMAUtils.toFSArray(this.getJCas(), c));
+        } else {
+          annotation.setFeatureValue(feature, a);
+        }
+      } else {
+        Type t = ate.getType(context, this);
+        assignAnnotationByTypeInWindow(annotation, feature, context, t);
+      }
     } else if (value instanceof ITypeExpression && !feature.getRange().isPrimitive()) {
       ITypeExpression typeExpr = (ITypeExpression) value;
       Type t = typeExpr.getType(context, this);
-      List<AnnotationFS> inWindow = this.getAnnotationsInWindow(context.getAnnotation(), t);
-      if (feature.getRange().isArray()) {
-        annotation.setFeatureValue(feature, UIMAUtils.toFSArray(this.getJCas(), inWindow));
-      } else {
-        if (inWindow != null && !inWindow.isEmpty()) {
-          AnnotationFS a = inWindow.get(0);
-          annotation.setFeatureValue(feature, a);
-        } else {
-          annotation.setFeatureValue(feature, null);
-        }
-      }
+      assignAnnotationByTypeInWindow(annotation, feature, context, t);
     } else if (value instanceof GenericFeatureExpression && !feature.getRange().isPrimitive()) {
       FeatureExpression fe = ((GenericFeatureExpression) value).getFeatureExpression();
       ITypeExpression typeExpr = fe.getTypeExpr(context, this);
@@ -993,6 +1000,22 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
           AnnotationFS a = inWindow.get(0);
           annotation.setFeatureValue(feature, a);
         }
+      }
+    }
+  }
+
+  private void assignAnnotationByTypeInWindow(AnnotationFS annotation, Feature feature,
+          MatchContext context, Type type) {
+
+    List<AnnotationFS> inWindow = this.getAnnotationsInWindow(context.getAnnotation(), type);
+    if (feature.getRange().isArray()) {
+      annotation.setFeatureValue(feature, UIMAUtils.toFSArray(this.getJCas(), inWindow));
+    } else {
+      if (inWindow != null && !inWindow.isEmpty()) {
+        AnnotationFS a = inWindow.get(0);
+        annotation.setFeatureValue(feature, a);
+      } else {
+        annotation.setFeatureValue(feature, null);
       }
     }
   }

@@ -41,7 +41,7 @@ import org.apache.uima.ruta.expression.list.StringListExpression;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
@@ -96,8 +96,8 @@ public class ConfigureAction extends AbstractRutaAction {
               IStringExpression se = (IStringExpression) value;
               String string = se.getStringValue(context, stream);
               targetEngine.setConfigParameterValue(stringValue, string);
-            } else if (value instanceof TypeExpression) {
-              TypeExpression te = (TypeExpression) value;
+            } else if (value instanceof ITypeExpression) {
+              ITypeExpression te = (ITypeExpression) value;
               Type t = te.getType(context, stream);
               targetEngine.setConfigParameterValue(stringValue, t.getName());
             }

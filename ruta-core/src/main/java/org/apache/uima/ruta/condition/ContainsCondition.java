@@ -36,7 +36,7 @@ import org.apache.uima.ruta.expression.list.TypeListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.type.RutaBasic;
@@ -55,7 +55,7 @@ public class ContainsCondition extends TypeSentiveCondition {
   @SuppressWarnings("rawtypes")
   private ListExpression argList;
 
-  public ContainsCondition(TypeExpression type, INumberExpression min, INumberExpression max,
+  public ContainsCondition(ITypeExpression type, INumberExpression min, INumberExpression max,
           IBooleanExpression percent) {
     super(type);
     this.min = min == null ? new SimpleNumberExpression(Integer.valueOf(1)) : min;
@@ -66,7 +66,7 @@ public class ContainsCondition extends TypeSentiveCondition {
   @SuppressWarnings("rawtypes")
   public ContainsCondition(ListExpression list, IRutaExpression a, INumberExpression min,
           INumberExpression max, IBooleanExpression percent) {
-    super((TypeExpression) null);
+    super((ITypeExpression) null);
     this.min = min == null ? new SimpleNumberExpression(Integer.valueOf(1)) : min;
     this.max = max == null ? new SimpleNumberExpression(Integer.MAX_VALUE) : max;
     this.percent = percent == null ? new SimpleBooleanExpression(false) : percent;
@@ -122,8 +122,8 @@ public class ContainsCondition extends TypeSentiveCondition {
         while (l.remove(v)) {
           basicCount++;
         }
-      } else if (arg instanceof TypeExpression && argList instanceof TypeListExpression) {
-        TypeExpression e = (TypeExpression) arg;
+      } else if (arg instanceof ITypeExpression && argList instanceof TypeListExpression) {
+        ITypeExpression e = (ITypeExpression) arg;
         TypeListExpression le = (TypeListExpression) argList;
         Type v = e.getType(context, stream);
         List<Type> l = new ArrayList<Type>(le.getList(context, stream));

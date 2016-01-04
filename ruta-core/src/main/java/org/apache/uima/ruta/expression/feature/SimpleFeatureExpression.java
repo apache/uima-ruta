@@ -35,7 +35,6 @@ import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.NullExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.AnnotationComparator;
 import org.apache.uima.ruta.rule.MatchContext;
 
@@ -110,7 +109,7 @@ public class SimpleFeatureExpression extends FeatureExpression {
     return typeExpr;
   }
 
-  public void setTypeExpr(TypeExpression typeExpr) {
+  public void setTypeExpr(ITypeExpression typeExpr) {
     this.typeExpr = typeExpr;
   }
 

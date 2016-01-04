@@ -27,7 +27,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
@@ -38,9 +38,9 @@ public class TrimAction extends AbstractRutaAction {
 
   private TypeListExpression typeList;
 
-  private List<TypeExpression> types;
+  private List<ITypeExpression> types;
 
-  public TrimAction(List<TypeExpression> types, TypeListExpression typeList) {
+  public TrimAction(List<ITypeExpression> types, TypeListExpression typeList) {
     super();
     this.types = types;
     this.typeList = typeList;
@@ -113,7 +113,7 @@ public class TrimAction extends AbstractRutaAction {
   private List<Type> getTypes(MatchContext context, RutaStream stream) {
     List<Type> result = new ArrayList<Type>();
     if (types != null) {
-      for (TypeExpression each : types) {
+      for (ITypeExpression each : types) {
         result.add(each.getType(context, stream));
       }
     } else if (typeList != null) {
@@ -126,7 +126,7 @@ public class TrimAction extends AbstractRutaAction {
     return typeList;
   }
 
-  public List<TypeExpression> getTypes() {
+  public List<ITypeExpression> getTypes() {
     return types;
   }
 

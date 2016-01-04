@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.expression.RutaExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.extensions.IRutaStringFunctionExtension;
 import org.apache.uima.ruta.extensions.RutaParseException;
 import org.apache.uima.ruta.verbalize.RutaVerbalizer;
@@ -45,10 +45,10 @@ public class ExampleStringFunctionExtension implements IRutaStringFunctionExtens
 
   public ExampleStringFunction createStringFunction(String name, List<RutaExpression> args)
           throws RutaParseException {
-    if (args == null || args.size() != 1 || !(args.get(0) instanceof TypeExpression)) {
+    if (args == null || args.size() != 1 || !(args.get(0) instanceof ITypeExpression)) {
       throw new RutaParseException("ExampleStringFunction accepts only one TypeExpression as argument!");
     }
-    return new ExampleStringFunction((TypeExpression) args.get(0));
+    return new ExampleStringFunction((ITypeExpression) args.get(0));
   }
 
   public String verbalizeName(RutaElement element) {

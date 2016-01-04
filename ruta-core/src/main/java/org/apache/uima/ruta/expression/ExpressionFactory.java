@@ -74,8 +74,8 @@ import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.string.SimpleStringExpression;
 import org.apache.uima.ruta.expression.string.StringFeatureExpression;
 import org.apache.uima.ruta.expression.string.StringVariableExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.expression.type.TypeVariableExpression;
 
 public class ExpressionFactory {
@@ -167,17 +167,17 @@ public class ExpressionFactory {
     return new BooleanVariableExpression(id.getText());
   }
 
-  public static TypeExpression createSimpleTypeExpression(Token typeToken, RutaBlock parent) {
+  public static ITypeExpression createSimpleTypeExpression(Token typeToken, RutaBlock parent) {
     String typeString = typeToken == null ? "uima.tcas.DocumentAnnotation" : typeToken.getText();
     return new SimpleTypeExpression(typeString);
   }
 
-  public static TypeExpression createReferenceTypeExpression(Token varToken) {
+  public static ITypeExpression createReferenceTypeExpression(Token varToken) {
     String varString = varToken == null ? "" : varToken.getText();
     return new TypeVariableExpression(varString);
   }
 
-  public static TypeExpression createSimpleTypeExpression(String typeString, RutaBlock parent) {
+  public static ITypeExpression createSimpleTypeExpression(String typeString, RutaBlock parent) {
     return new SimpleTypeExpression(typeString);
   }
 
@@ -202,8 +202,8 @@ public class ExpressionFactory {
     return new LiteralWordTableExpression(path.getText());
   }
 
-  public static IBooleanExpression createBooleanTypeExpression(TypeExpression e1, Token op,
-          TypeExpression e2) {
+  public static IBooleanExpression createBooleanTypeExpression(ITypeExpression e1, Token op,
+          ITypeExpression e2) {
     return new BooleanTypeExpression(e1, op.getText(), e2);
   }
 
@@ -239,7 +239,7 @@ public class ExpressionFactory {
     return new SimpleNumberListExpression(list);
   }
 
-  public static TypeListExpression createTypeListExpression(List<TypeExpression> list) {
+  public static TypeListExpression createTypeListExpression(List<ITypeExpression> list) {
     return new SimpleTypeListExpression(list);
   }
 

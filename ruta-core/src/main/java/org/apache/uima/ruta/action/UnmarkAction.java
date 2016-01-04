@@ -28,7 +28,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
@@ -41,7 +41,7 @@ public class UnmarkAction extends TypeSensitiveAction {
 
   private IBooleanExpression allAnchor;
 
-  public UnmarkAction(TypeExpression type, List<INumberExpression> list, IBooleanExpression b) {
+  public UnmarkAction(ITypeExpression type, List<INumberExpression> list, IBooleanExpression b) {
     super(type);
     this.list = list;
     this.allAnchor = b;

@@ -20,6 +20,7 @@
 package org.apache.uima.ruta.expression.annotation;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +76,7 @@ public class AnnotationLabelExpressionTest {
     AnnotationFS next = iterator.next();
     assertEquals("text", next.getCoveredText());
     AnnotationFS a = (AnnotationFS) next.getFeatureValue(f1);
+    assertNotNull("Feature value is null!", a);
     assertEquals("Some", a.getCoveredText());
 
   }

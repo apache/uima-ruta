@@ -29,7 +29,7 @@ import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleElementMatch;
@@ -41,7 +41,7 @@ public class UnmarkAllAction extends TypeSensitiveAction {
 
   private final TypeListExpression list;
 
-  public UnmarkAllAction(TypeExpression type, TypeListExpression list) {
+  public UnmarkAllAction(ITypeExpression type, TypeListExpression list) {
     super(type);
     this.list = list;
   }

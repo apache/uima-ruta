@@ -29,7 +29,6 @@ import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
 public class NullExpression extends FeatureExpression implements IStringExpression, ITypeExpression {
@@ -66,7 +65,7 @@ public class NullExpression extends FeatureExpression implements IStringExpressi
   }
 
   @Override
-  public TypeExpression getTypeExpr(MatchContext context, RutaStream stream) {
+  public ITypeExpression getTypeExpr(MatchContext context, RutaStream stream) {
     return null;
   }
 

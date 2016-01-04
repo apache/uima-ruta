@@ -30,7 +30,7 @@ import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
@@ -74,8 +74,8 @@ public class AddAction extends AbstractRutaAction {
         list.add(((INumberExpression) each).getIntegerValue(context, stream));
       } else if (vgtype.equals(Double.class) && each instanceof INumberExpression) {
         list.add(((INumberExpression) each).getDoubleValue(context, stream));
-      } else if (vgtype.equals(Type.class) && each instanceof TypeExpression) {
-        list.add(((TypeExpression) each).getType(context, stream));
+      } else if (vgtype.equals(Type.class) && each instanceof ITypeExpression) {
+        list.add(((ITypeExpression) each).getType(context, stream));
       } else if (vgtype.equals(String.class) && each instanceof IStringExpression) {
         list.add(((IStringExpression) each).getStringValue(context, stream));
       }

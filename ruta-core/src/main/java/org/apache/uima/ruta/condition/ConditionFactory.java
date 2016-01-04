@@ -31,7 +31,7 @@ import org.apache.uima.ruta.expression.list.TypeListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.resource.WordListExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 
 public class ConditionFactory {
 
@@ -53,12 +53,12 @@ public class ConditionFactory {
     return new NotCondition(cond);
   }
 
-  public static AbstractRutaCondition createConditionContains(TypeExpression typeExpr,
+  public static AbstractRutaCondition createConditionContains(ITypeExpression typeExpr,
           INumberExpression min, INumberExpression max, IBooleanExpression percent, RutaBlock parent) {
     return new ContainsCondition(typeExpr, min, max, percent);
   }
 
-  public static AbstractRutaCondition createConditionContextCount(TypeExpression typeExpr,
+  public static AbstractRutaCondition createConditionContextCount(ITypeExpression typeExpr,
           INumberExpression min, INumberExpression max, Token var, RutaBlock parent) {
     String varString = null;
     if (var != null) {
@@ -67,7 +67,7 @@ public class ConditionFactory {
     return new ContextCountCondition(typeExpr, min, max, varString);
   }
 
-  public static AbstractRutaCondition createConditionCurrentCount(TypeExpression typeExpr,
+  public static AbstractRutaCondition createConditionCurrentCount(ITypeExpression typeExpr,
           INumberExpression min, INumberExpression max, Token var, RutaBlock parent) {
     String varString = null;
     if (var != null) {
@@ -76,7 +76,7 @@ public class ConditionFactory {
     return new CurrentCountCondition(typeExpr, min, max, varString);
   }
 
-  public static AbstractRutaCondition createConditionCount(TypeExpression typeExpr,
+  public static AbstractRutaCondition createConditionCount(ITypeExpression typeExpr,
           INumberExpression min, INumberExpression max, Token var, RutaBlock parent) {
     String varString = null;
     if (var != null) {
@@ -85,7 +85,7 @@ public class ConditionFactory {
     return new CountCondition(typeExpr, min, max, varString);
   }
 
-  public static AbstractRutaCondition createConditionTotalCount(TypeExpression typeExpr,
+  public static AbstractRutaCondition createConditionTotalCount(ITypeExpression typeExpr,
           INumberExpression min, INumberExpression max, Token var, RutaBlock parent) {
     String varString = null;
     if (var != null) {
@@ -104,13 +104,13 @@ public class ConditionFactory {
     return new MOfNCondition(conds, min, max);
   }
 
-  public static AbstractRutaCondition createConditionNear(TypeExpression typeExpr,
+  public static AbstractRutaCondition createConditionNear(ITypeExpression typeExpr,
           INumberExpression min, INumberExpression max, IBooleanExpression direction,
           IBooleanExpression filtered, RutaBlock parent) {
     return new NearCondition(typeExpr, min, max, direction, filtered);
   }
 
-  public static AbstractRutaCondition createConditionPartOf(TypeExpression type,
+  public static AbstractRutaCondition createConditionPartOf(ITypeExpression type,
           TypeListExpression list, RutaBlock parent) {
     if (type != null) {
       return new PartOfCondition(type);
@@ -119,7 +119,7 @@ public class ConditionFactory {
     }
   }
 
-  public static AbstractRutaCondition createConditionPosition(TypeExpression typeExpr,
+  public static AbstractRutaCondition createConditionPosition(ITypeExpression typeExpr,
           INumberExpression pos, IBooleanExpression rel, RutaBlock parent) {
     return new PositionCondition(typeExpr, pos, rel);
   }
@@ -143,12 +143,12 @@ public class ConditionFactory {
     return new ScoreCondition(min, max, varString);
   }
 
-  public static AbstractRutaCondition createConditionVote(TypeExpression type1Expr,
-          TypeExpression type2Expr, RutaBlock parent) {
+  public static AbstractRutaCondition createConditionVote(ITypeExpression type1Expr,
+          ITypeExpression type2Expr, RutaBlock parent) {
     return new VoteCondition(type1Expr, type2Expr);
   }
 
-  public static AbstractRutaCondition createConditionLast(TypeExpression typeExpr, RutaBlock parent) {
+  public static AbstractRutaCondition createConditionLast(ITypeExpression typeExpr, RutaBlock parent) {
     return new LastCondition(typeExpr);
   }
 
@@ -178,7 +178,7 @@ public class ConditionFactory {
     return new VariableCondition(id.getText());
   }
 
-  public static AbstractRutaCondition createConditionIs(TypeExpression type,
+  public static AbstractRutaCondition createConditionIs(ITypeExpression type,
           TypeListExpression list, RutaBlock env) {
     if (type != null) {
       return new IsCondition(type);
@@ -187,7 +187,7 @@ public class ConditionFactory {
     }
   }
 
-  public static AbstractRutaCondition createConditionAfter(TypeExpression type,
+  public static AbstractRutaCondition createConditionAfter(ITypeExpression type,
           TypeListExpression list, RutaBlock env) {
     if (type != null) {
       return new AfterCondition(type);
@@ -196,7 +196,7 @@ public class ConditionFactory {
     }
   }
 
-  public static AbstractRutaCondition createConditionBefore(TypeExpression type,
+  public static AbstractRutaCondition createConditionBefore(ITypeExpression type,
           TypeListExpression list, RutaBlock env) {
     if (type != null) {
       return new BeforeCondition(type);
@@ -205,7 +205,7 @@ public class ConditionFactory {
     }
   }
 
-  public static AbstractRutaCondition createConditionEndsWith(TypeExpression type,
+  public static AbstractRutaCondition createConditionEndsWith(ITypeExpression type,
           TypeListExpression list, RutaBlock env) {
     if (type != null) {
       return new EndsWithCondition(type);
@@ -214,7 +214,7 @@ public class ConditionFactory {
     }
   }
 
-  public static AbstractRutaCondition createConditionStartsWith(TypeExpression type,
+  public static AbstractRutaCondition createConditionStartsWith(ITypeExpression type,
           TypeListExpression list, RutaBlock env) {
     if (type != null) {
       return new StartsWithCondition(type);
@@ -223,7 +223,7 @@ public class ConditionFactory {
     }
   }
 
-  public static AbstractRutaCondition createConditionPartOfNeq(TypeExpression type,
+  public static AbstractRutaCondition createConditionPartOfNeq(ITypeExpression type,
           TypeListExpression list, RutaBlock env) {
     if (type != null) {
       return new PartOfNeqCondition(type);

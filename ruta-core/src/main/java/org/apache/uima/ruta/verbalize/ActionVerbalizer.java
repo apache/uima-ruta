@@ -69,7 +69,7 @@ import org.apache.uima.ruta.expression.list.TypeListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.resource.WordTableExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 
 public class ActionVerbalizer {
 
@@ -433,7 +433,7 @@ public class ActionVerbalizer {
       return name + var + ", " + op + ")";
     } else if (action instanceof MarkTableAction) {
       MarkTableAction a = (MarkTableAction) action;
-      TypeExpression typeExpr = a.getTypeExpr();
+      ITypeExpression typeExpr = a.getTypeExpr();
       INumberExpression indexExpr = a.getIndexExpr();
       WordTableExpression tableExpr = a.getTableExpr();
       Map<IStringExpression, INumberExpression> featureMap = a.getFeatureMap();

@@ -30,7 +30,7 @@ import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
@@ -38,13 +38,13 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class CreateAction extends AbstractStructureAction {
 
-  private TypeExpression structureType;
+  private ITypeExpression structureType;
 
   private Map<IStringExpression, IRutaExpression> features;
 
   private List<INumberExpression> indexes;
 
-  public CreateAction(TypeExpression structureType,
+  public CreateAction(ITypeExpression structureType,
           Map<IStringExpression, IRutaExpression> features, List<INumberExpression> indexes) {
     super();
     this.structureType = structureType;
@@ -77,7 +77,7 @@ public class CreateAction extends AbstractStructureAction {
     }
   }
 
-  public TypeExpression getStructureType() {
+  public ITypeExpression getStructureType() {
     return structureType;
   }
 

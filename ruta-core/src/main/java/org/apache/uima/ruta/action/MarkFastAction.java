@@ -30,7 +30,7 @@ import org.apache.uima.ruta.expression.list.StringListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
 import org.apache.uima.ruta.expression.resource.WordListExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.resource.RutaWordList;
 import org.apache.uima.ruta.resource.TreeWordList;
 import org.apache.uima.ruta.rule.MatchContext;
@@ -50,7 +50,7 @@ public class MarkFastAction extends AbstractMarkAction {
 
   private IBooleanExpression ignoreWS;
 
-  public MarkFastAction(TypeExpression type, WordListExpression list, IBooleanExpression ignore,
+  public MarkFastAction(ITypeExpression type, WordListExpression list, IBooleanExpression ignore,
           INumberExpression ignoreLength, IBooleanExpression ignoreWS) {
     super(type);
     this.list = list;
@@ -60,7 +60,7 @@ public class MarkFastAction extends AbstractMarkAction {
     this.ignoreWS = ignoreWS == null ? new SimpleBooleanExpression(true) : ignoreWS;
   }
 
-  public MarkFastAction(TypeExpression type, StringListExpression list, IBooleanExpression ignore,
+  public MarkFastAction(ITypeExpression type, StringListExpression list, IBooleanExpression ignore,
           INumberExpression ignoreLength, IBooleanExpression ignoreWS) {
     super(type);
     this.stringList = list;

@@ -31,7 +31,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
@@ -41,7 +41,7 @@ import org.apache.uima.util.CasCopier;
 
 public class SplitAction extends AbstractRutaAction {
 
-  private TypeExpression splitOnType;
+  private ITypeExpression splitOnType;
 
   private IBooleanExpression complete;
 
@@ -49,7 +49,7 @@ public class SplitAction extends AbstractRutaAction {
 
   private IBooleanExpression appendToEnd;
 
-  public SplitAction(TypeExpression splitOnType, IBooleanExpression complete,
+  public SplitAction(ITypeExpression splitOnType, IBooleanExpression complete,
           IBooleanExpression appendToBegin, IBooleanExpression appendToEnd) {
     super();
     this.splitOnType = splitOnType;

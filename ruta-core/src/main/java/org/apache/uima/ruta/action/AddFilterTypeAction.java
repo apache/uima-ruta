@@ -24,19 +24,13 @@ import java.util.List;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class AddFilterTypeAction extends AbstractRutaAction {
 
-  public List<TypeExpression> getList() {
-    return list;
-  }
-
-  private List<TypeExpression> list;
-
-  public AddFilterTypeAction(List<TypeExpression> list) {
+  public AddFilterTypeAction(List<ITypeExpression> list) {
     super();
     this.list = list;
   }
@@ -44,10 +38,17 @@ public class AddFilterTypeAction extends AbstractRutaAction {
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     List<Type> types = new ArrayList<Type>();
-    for (TypeExpression each : list) {
+    for (ITypeExpression each : list) {
       types.add(each.getType(context, stream));
     }
     stream.addFilterTypes(types);
   }
 
+  public List<ITypeExpression> getList() {
+    return list;
+  }
+
+  private List<ITypeExpression> list;
+
+  
 }

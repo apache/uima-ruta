@@ -28,7 +28,7 @@ import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
@@ -70,8 +70,8 @@ public class RemoveDuplicateAction extends AbstractRutaAction {
       return ((INumberExpression) obj).getDoubleValue(context, stream);
     } else if (obj instanceof IBooleanExpression) {
       return ((IBooleanExpression) obj).getBooleanValue(context, stream);
-    } else if (obj instanceof TypeExpression) {
-      return ((TypeExpression) obj).getType(context, stream);
+    } else if (obj instanceof ITypeExpression) {
+      return ((ITypeExpression) obj).getType(context, stream);
     } else if (obj instanceof IStringExpression) {
       return ((IStringExpression) obj).getStringValue(context, stream);
     }

@@ -27,7 +27,7 @@ import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleElementMatch;
@@ -36,7 +36,7 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class TransferAction extends TypeSensitiveAction {
 
-  public TransferAction(TypeExpression type) {
+  public TransferAction(ITypeExpression type) {
     super(type);
   }
 

@@ -28,7 +28,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
@@ -42,7 +42,7 @@ public class PositionCondition extends TypeSentiveCondition {
 
   private final IBooleanExpression relative;
 
-  public PositionCondition(TypeExpression type, INumberExpression position,
+  public PositionCondition(ITypeExpression type, INumberExpression position,
           IBooleanExpression relative) {
     super(type);
     this.position = position;

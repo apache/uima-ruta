@@ -19,22 +19,21 @@
 
 package org.apache.uima.ruta.example.extensions;
 
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.NumberFunctionExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
 public class ExampleNumberFunction extends NumberFunctionExpression {
 
-  private final TypeExpression expr;
+  private final ITypeExpression expr;
 
-  public ExampleNumberFunction(TypeExpression expr) {
+  public ExampleNumberFunction(ITypeExpression expr) {
     super();
     this.expr = expr;
   }
 
-  public TypeExpression getExpr() {
+  public ITypeExpression getExpr() {
     return expr;
   }
 

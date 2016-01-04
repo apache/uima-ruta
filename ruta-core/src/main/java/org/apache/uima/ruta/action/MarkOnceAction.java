@@ -25,7 +25,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.INumberExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
@@ -34,7 +34,7 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class MarkOnceAction extends MarkAction {
 
-  public MarkOnceAction(TypeExpression type, INumberExpression scoreValue,
+  public MarkOnceAction(ITypeExpression type, INumberExpression scoreValue,
           List<INumberExpression> list) {
     super(type, scoreValue, list);
   }

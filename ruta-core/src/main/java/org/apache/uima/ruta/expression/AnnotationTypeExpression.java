@@ -54,6 +54,9 @@ public class AnnotationTypeExpression extends RutaExpression implements ITypeExp
     if (!initialized) {
       initialize(context, stream);
     }
+    if(annotationExpression == null) {
+      return null;
+    }
     return annotationExpression.getAnnotation(context, stream);
   }
 

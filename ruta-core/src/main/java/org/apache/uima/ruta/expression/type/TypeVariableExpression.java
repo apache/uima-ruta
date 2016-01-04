@@ -24,7 +24,7 @@ import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.rule.MatchContext;
 
-public class TypeVariableExpression extends TypeExpression {
+public class TypeVariableExpression extends AbstractTypeExpression {
 
   private final String var;
 

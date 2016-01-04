@@ -29,7 +29,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.INumberExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.AnnotationComparator;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
@@ -39,7 +39,7 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class ShiftAction extends MarkAction {
 
-  public ShiftAction(TypeExpression type, List<INumberExpression> list) {
+  public ShiftAction(ITypeExpression type, List<INumberExpression> list) {
     super(type, null, list);
   }
 

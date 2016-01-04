@@ -50,8 +50,8 @@ import org.apache.uima.ruta.expression.string.ComposedStringExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.string.SimpleStringExpression;
 import org.apache.uima.ruta.expression.string.StringVariableExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.expression.type.TypeVariableExpression;
 import org.apache.uima.ruta.verbalize.RutaVerbalizer;
 import org.junit.Test;
@@ -97,8 +97,8 @@ public class ExpressionVerbalizerTest {
 
     String s = null;
     String var = "anyVar";
-    TypeExpression typeExpr1 = new SimpleTypeExpression("Type1");
-    TypeExpression typeExpr2 = new TypeVariableExpression("typeVar");
+    ITypeExpression typeExpr1 = new SimpleTypeExpression("Type1");
+    ITypeExpression typeExpr2 = new TypeVariableExpression("typeVar");
 
     List<INumberExpression> numExprList1 = new ArrayList<INumberExpression>();
     List<INumberExpression> numExprList2 = new ArrayList<INumberExpression>();
@@ -206,7 +206,7 @@ public class ExpressionVerbalizerTest {
     s = v.verbalize(nle2);
     assertEquals("anyVar", s);
 
-    List<TypeExpression> typeExprList = new ArrayList<TypeExpression>();
+    List<ITypeExpression> typeExprList = new ArrayList<ITypeExpression>();
     typeExprList.add(typeExpr1);
     typeExprList.add(typeExpr2);
     TypeListExpression tle1 = new SimpleTypeListExpression(typeExprList);

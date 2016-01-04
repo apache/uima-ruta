@@ -35,14 +35,14 @@ import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.resource.WordListExpression;
 import org.apache.uima.ruta.expression.resource.WordTableExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 
 public class ActionFactory {
 
   private ActionFactory() {
   }
 
-  public static AbstractRutaAction createColorAction(TypeExpression typeExpr,
+  public static AbstractRutaAction createColorAction(ITypeExpression typeExpr,
           IStringExpression bgcolor, IStringExpression fgcolor, IBooleanExpression selected,
           RutaBlock parent) {
     return new ColorAction(typeExpr, bgcolor, fgcolor, selected);
@@ -52,23 +52,23 @@ public class ActionFactory {
     return new DelAction();
   }
 
-  public static AbstractRutaAction createMarkFastAction(TypeExpression type,
+  public static AbstractRutaAction createMarkFastAction(ITypeExpression type,
           WordListExpression list, IBooleanExpression ignore, INumberExpression ignoreLength,
           IBooleanExpression ignoreWS, RutaBlock parent) {
     return new MarkFastAction(type, list, ignore, ignoreLength, ignoreWS);
   }
 
-  public static AbstractRutaAction createMarkFastAction(TypeExpression type,
+  public static AbstractRutaAction createMarkFastAction(ITypeExpression type,
           StringListExpression list, IBooleanExpression ignore, INumberExpression ignoreLength,
           IBooleanExpression ignoreWS, RutaBlock env) {
     return new MarkFastAction(type, list, ignore, ignoreLength, ignoreWS);
   }
 
-  public static AbstractRutaAction createMarkLastAction(TypeExpression type, RutaBlock parent) {
+  public static AbstractRutaAction createMarkLastAction(ITypeExpression type, RutaBlock parent) {
     return new MarkLastAction(type);
   }
 
-  public static AbstractRutaAction createRetainTypeAction(List<TypeExpression> types,
+  public static AbstractRutaAction createRetainTypeAction(List<ITypeExpression> types,
           RutaBlock parent) {
     return new RetainTypeAction(types);
   }
@@ -80,13 +80,13 @@ public class ActionFactory {
     return new LogAction(expr, level);
   }
 
-  public static AbstractRutaAction createMarkAction(INumberExpression score, TypeExpression type,
+  public static AbstractRutaAction createMarkAction(INumberExpression score, ITypeExpression type,
           List<INumberExpression> list, RutaBlock parent) {
     return new MarkAction(type, score, list);
   }
 
   public static AbstractRutaAction createMarkOnceAction(INumberExpression score,
-          TypeExpression type, List<INumberExpression> list, RutaBlock env) {
+          ITypeExpression type, List<INumberExpression> list, RutaBlock env) {
     return new MarkOnceAction(type, score, list);
   }
 
@@ -94,19 +94,19 @@ public class ActionFactory {
     return new ReplaceAction(lit);
   }
 
-  public static AbstractRutaAction createCreateAction(TypeExpression typeExpr,
+  public static AbstractRutaAction createCreateAction(ITypeExpression typeExpr,
           Map<IStringExpression, IRutaExpression> map, List<INumberExpression> indexes,
           RutaBlock parent) {
     return new CreateAction(typeExpr, map, indexes);
   }
 
-  public static AbstractRutaAction createGatherAction(TypeExpression typeExpr,
+  public static AbstractRutaAction createGatherAction(ITypeExpression typeExpr,
           Map<IStringExpression, IRutaExpression> map, List<INumberExpression> indexes,
           RutaBlock parent) {
     return new GatherAction(typeExpr, map, indexes);
   }
 
-  public static AbstractRutaAction createFillAction(TypeExpression type,
+  public static AbstractRutaAction createFillAction(ITypeExpression type,
           Map<IStringExpression, IRutaExpression> map, RutaBlock parent) {
     return new FillAction(type, map);
   }
@@ -124,27 +124,27 @@ public class ActionFactory {
     return new AssignAction(nv.getText(), e);
   }
 
-  public static AbstractRutaAction createFilterTypeAction(List<TypeExpression> types,
+  public static AbstractRutaAction createFilterTypeAction(List<ITypeExpression> types,
           RutaBlock parent) {
     return new FilterTypeAction(types);
   }
 
-  public static AbstractRutaAction createAddRetainTypeAction(List<TypeExpression> types,
+  public static AbstractRutaAction createAddRetainTypeAction(List<ITypeExpression> types,
           RutaBlock env) {
     return new AddRetainTypeAction(types);
   }
 
-  public static AbstractRutaAction createRemoveRetainTypeAction(List<TypeExpression> types,
+  public static AbstractRutaAction createRemoveRetainTypeAction(List<ITypeExpression> types,
           RutaBlock env) {
     return new RemoveRetainTypeAction(types);
   }
 
-  public static AbstractRutaAction createAddFilterTypeAction(List<TypeExpression> types,
+  public static AbstractRutaAction createAddFilterTypeAction(List<ITypeExpression> types,
           RutaBlock env) {
     return new AddFilterTypeAction(types);
   }
 
-  public static AbstractRutaAction createRemoveFilterTypeAction(List<TypeExpression> types,
+  public static AbstractRutaAction createRemoveFilterTypeAction(List<ITypeExpression> types,
           RutaBlock env) {
     return new RemoveFilterTypeAction(types);
   }
@@ -154,12 +154,12 @@ public class ActionFactory {
     return new SetFeatureAction(f, v);
   }
 
-  public static AbstractRutaAction createUnmarkAction(TypeExpression f,
+  public static AbstractRutaAction createUnmarkAction(ITypeExpression f,
           List<INumberExpression> list, IBooleanExpression b, RutaBlock env) {
     return new UnmarkAction(f, list, b);
   }
 
-  public static AbstractRutaAction createUnmarkAllAction(TypeExpression f, TypeListExpression list,
+  public static AbstractRutaAction createUnmarkAllAction(ITypeExpression f, TypeListExpression list,
           RutaBlock env) {
     return new UnmarkAllAction(f, list);
   }
@@ -173,7 +173,7 @@ public class ActionFactory {
     return new VariableAction(id.getText());
   }
 
-  public static AbstractRutaAction createTransferAction(TypeExpression f, RutaBlock env) {
+  public static AbstractRutaAction createTransferAction(ITypeExpression f, RutaBlock env) {
     return new TransferAction(f);
   }
 
@@ -189,7 +189,7 @@ public class ActionFactory {
     return new ExecAction(ns, tl, view);
   }
 
-  public static AbstractRutaAction createMarkTableAction(TypeExpression structure,
+  public static AbstractRutaAction createMarkTableAction(ITypeExpression structure,
           INumberExpression index, WordTableExpression table,
           Map<IStringExpression, INumberExpression> map, IBooleanExpression ignoreCase,
           INumberExpression ignoreLength, IStringExpression ignoreChar,
@@ -242,7 +242,7 @@ public class ActionFactory {
     return new ClearAction(var == null ? null : var.getText());
   }
 
-  public static AbstractRutaAction createShiftAction(TypeExpression type,
+  public static AbstractRutaAction createShiftAction(ITypeExpression type,
           List<INumberExpression> list, RutaBlock env) {
     return new ShiftAction(type, list);
   }
@@ -252,7 +252,7 @@ public class ActionFactory {
     return new DynamicAnchoringAction(active, penalty, factor);
   }
 
-  public static AbstractRutaAction createTrimAction(List<TypeExpression> types,
+  public static AbstractRutaAction createTrimAction(List<ITypeExpression> types,
           TypeListExpression typeList, RutaBlock env) {
     return new TrimAction(types, typeList);
   }
@@ -261,11 +261,11 @@ public class ActionFactory {
     return new ImplicitFeatureAction(fae);
   }
 
-  public static AbstractRutaAction createAction(TypeExpression te) {
+  public static AbstractRutaAction createAction(ITypeExpression te) {
     return new ImplicitMarkAction(te);
   }
 
-  public static AbstractRutaAction createMarkFirstAction(TypeExpression type, RutaBlock env) {
+  public static AbstractRutaAction createMarkFirstAction(ITypeExpression type, RutaBlock env) {
     return new MarkFirstAction(type);
   }
 
@@ -274,7 +274,7 @@ public class ActionFactory {
     return new GreedyAnchoringAction(active, active2);
   }
 
-  public static AbstractRutaAction createSplitAction(TypeExpression type,
+  public static AbstractRutaAction createSplitAction(ITypeExpression type,
           IBooleanExpression complete, IBooleanExpression appendToBegin,
           IBooleanExpression appendToEnd, RutaBlock env) {
     return new SplitAction(type, complete, appendToBegin, appendToEnd);

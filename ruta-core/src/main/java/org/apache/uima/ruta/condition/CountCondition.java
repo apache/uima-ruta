@@ -35,7 +35,7 @@ import org.apache.uima.ruta.expression.list.TypeListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
@@ -54,7 +54,7 @@ public class CountCondition extends TypeSentiveCondition {
 
   private IRutaExpression arg;
 
-  public CountCondition(TypeExpression type, INumberExpression min, INumberExpression max,
+  public CountCondition(ITypeExpression type, INumberExpression min, INumberExpression max,
           String var) {
     super(type);
     this.min = min == null ? new SimpleNumberExpression(Integer.MIN_VALUE) : min;
@@ -64,7 +64,7 @@ public class CountCondition extends TypeSentiveCondition {
 
   public CountCondition(@SuppressWarnings("rawtypes") ListExpression list, IRutaExpression a, INumberExpression min,
           INumberExpression max, String var) {
-    super((TypeExpression) null);
+    super((ITypeExpression) null);
     this.list = list;
     this.arg = a;
     this.min = min == null ? new SimpleNumberExpression(Integer.MIN_VALUE) : min;
@@ -113,8 +113,8 @@ public class CountCondition extends TypeSentiveCondition {
         while (l.remove(v)) {
           count++;
         }
-      } else if (arg instanceof TypeExpression && list instanceof TypeListExpression) {
-        TypeExpression e = (TypeExpression) arg;
+      } else if (arg instanceof ITypeExpression && list instanceof TypeListExpression) {
+        ITypeExpression e = (ITypeExpression) arg;
         TypeListExpression le = (TypeListExpression) list;
         Type v = e.getType(context, stream);
         List<Type> l = new ArrayList<Type>(le.getList(context, stream));

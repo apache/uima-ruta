@@ -83,7 +83,7 @@ import org.apache.uima.ruta.expression.resource.WordListExpression;
 import org.apache.uima.ruta.expression.resource.WordTableExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.string.StringFunctionFactory;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.extensions.RutaExternalFactory;
 import org.apache.uima.ruta.extensions.RutaParseRuntimeException;
 import org.apache.uima.ruta.rule.AbstractRuleElement;
@@ -763,7 +763,7 @@ options {
 }
 @init{
 	//RegExpRule rer = null;
-	Map<TypeExpression, IRutaExpression> map = new HashMap<TypeExpression, IRutaExpression>();
+	Map<ITypeExpression, IRutaExpression> map = new HashMap<ITypeExpression, IRutaExpression>();
 }
 	: 
 
@@ -787,8 +787,8 @@ options {
 
 regexpRule returns [RegExpRule stmt = null]
 @init{
-	Map<TypeExpression, INumberExpression> map = new HashMap<TypeExpression, INumberExpression>();
-	Map<TypeExpression, Map<IStringExpression, IRutaExpression>> fa = new HashMap<TypeExpression, Map<IStringExpression, IRutaExpression>>();
+	Map<ITypeExpression, INumberExpression> map = new HashMap<ITypeExpression, INumberExpression>();
+	Map<ITypeExpression, Map<IStringExpression, IRutaExpression>> fa = new HashMap<ITypeExpression, Map<IStringExpression, IRutaExpression>>();
 	Map<IStringExpression, IRutaExpression> fmap = null;
 }
 	:
@@ -1138,7 +1138,7 @@ typeListExpression returns [TypeListExpression expr = null]
 
 simpleTypeListExpression returns [TypeListExpression expr = null]
 @init{
-	List<TypeExpression> list = new ArrayList<TypeExpression>();
+	List<ITypeExpression> list = new ArrayList<ITypeExpression>();
 }	:
 	LCURLY (e = simpleTypeExpression {list.add(e);} (COMMA e = simpleTypeExpression {list.add(e);})*)?  RCURLY
 	{expr = ExpressionFactory.createTypeListExpression(list);}
@@ -1163,7 +1163,7 @@ matchReference returns [MatchReference mr = null]
 	{mr = ExpressionFactory.createMatchReference(ref);}
 	;
 
-typeExpression returns [TypeExpression type = null]
+typeExpression returns [ITypeExpression type = null]
 options {
 	backtrack = true;
 }
@@ -1174,13 +1174,13 @@ options {
 	
 
 // not checked
-typeFunction returns [TypeExpression expr = null]
+typeFunction returns [ITypeExpression expr = null]
 	:
 	(e = externalTypeFunction)=> e = externalTypeFunction {expr = e;}
 	;
 
 // not checked
-externalTypeFunction returns [TypeExpression expr = null]
+externalTypeFunction returns [ITypeExpression expr = null]
 	:
 	{isTypeFunctionExtension(input.LT(1).getText())}? 
 	id = Identifier LPAREN
@@ -1190,7 +1190,7 @@ externalTypeFunction returns [TypeExpression expr = null]
 	}
 	;
 
-simpleTypeExpression returns [TypeExpression type = null]
+simpleTypeExpression returns [ITypeExpression type = null]
 	:
 	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "TYPE")}? var = Identifier 
 	{type = ExpressionFactory.createReferenceTypeExpression(var);}
@@ -1209,7 +1209,7 @@ matchExpression returns [FeatureExpression feat = null]
 featureExpression returns [FeatureExpression feat = null]
 @init{
 List<Token> fs = new ArrayList<Token>();
-TypeExpression te = null;
+ITypeExpression te = null;
 }
 	:
 	match = dottedId2 
@@ -1268,15 +1268,15 @@ listVariable returns [Token var = null]
 	;
 
 
-//typeExpressionOr returns [TypeExpression type = null]
-//@init {List<TypeExpression> exprs = new ArrayList<TypeExpression>();}
+//typeExpressionOr returns [ITypeExpression type = null]
+//@init {List<ITypeExpression> exprs = new ArrayList<ITypeExpression>();}
 //	:
 //	LBRACK e = typeExpressionAnd{exprs.add(e);} ( COMMA e = typeExpressionAnd{exprs.add(e);} )* RBRACK
 //	{type = ExpressionFactory.createOrTypeExpression(exprs);}
 //	;
 
-//typeExpressionAnd returns [TypeExpression type = null]
-//@init {List<TypeExpression> exprs = new ArrayList<TypeExpression>();}
+//typeExpressionAnd returns [ITypeExpression type = null]
+//@init {List<ITypeExpression> exprs = new ArrayList<ITypeExpression>();}
 //	:
 //	LBRACK e = simpleTypeExpression{exprs.add(e);} ( SEMI e = simpleTypeExpression{exprs.add(e);} )* RBRACK
 //	{type = ExpressionFactory.createAndTypeExpression(exprs);}
@@ -1880,7 +1880,7 @@ actionReplace returns [AbstractRutaAction action = null]
 
 actionRetainType returns [AbstractRutaAction action = null]
 @init {
-List<TypeExpression> list = new ArrayList<TypeExpression>();
+List<ITypeExpression> list = new ArrayList<ITypeExpression>();
 }
     :   
     RETAINTYPE (LPAREN id = typeExpression {list.add(id);} (COMMA id = typeExpression {list.add(id);})* RPAREN)?
@@ -1891,7 +1891,7 @@ List<TypeExpression> list = new ArrayList<TypeExpression>();
 
 actionFilterType returns [AbstractRutaAction action = null]
 @init {
-List<TypeExpression> list = new ArrayList<TypeExpression>();
+List<ITypeExpression> list = new ArrayList<ITypeExpression>();
 }
     :   
     FILTERTYPE (LPAREN id = typeExpression {list.add(id);} (COMMA id = typeExpression {list.add(id);})* RPAREN)?
@@ -1988,7 +1988,7 @@ actionGreedyAnchoring returns [AbstractRutaAction action = null]
 
 actionTrim returns [AbstractRutaAction action = null]
 @init {
-  List<TypeExpression> types = new ArrayList<TypeExpression>();
+  List<ITypeExpression> types = new ArrayList<ITypeExpression>();
 }
     :
     name = TRIM LPAREN 
@@ -2133,7 +2133,7 @@ actionClear returns [AbstractRutaAction action = null]
 
 actionAddRetainType returns [AbstractRutaAction action = null]
 @init {
-List<TypeExpression> list = new ArrayList<TypeExpression>();
+List<ITypeExpression> list = new ArrayList<ITypeExpression>();
 }
     :
     ADDRETAINTYPE (LPAREN id = typeExpression {list.add(id);} (COMMA id = typeExpression {list.add(id);})* RPAREN)
@@ -2142,7 +2142,7 @@ List<TypeExpression> list = new ArrayList<TypeExpression>();
 
 actionRemoveRetainType returns [AbstractRutaAction action = null]
 @init {
-List<TypeExpression> list = new ArrayList<TypeExpression>();
+List<ITypeExpression> list = new ArrayList<ITypeExpression>();
 }
     :
     REMOVERETAINTYPE (LPAREN id = typeExpression {list.add(id);} (COMMA id = typeExpression {list.add(id);})* RPAREN)
@@ -2151,7 +2151,7 @@ List<TypeExpression> list = new ArrayList<TypeExpression>();
 
 actionAddFilterType returns [AbstractRutaAction action = null]
 @init {
-List<TypeExpression> list = new ArrayList<TypeExpression>();
+List<ITypeExpression> list = new ArrayList<ITypeExpression>();
 }
     :
     ADDFILTERTYPE (LPAREN id = typeExpression {list.add(id);} (COMMA id = typeExpression {list.add(id);})* RPAREN)
@@ -2160,7 +2160,7 @@ List<TypeExpression> list = new ArrayList<TypeExpression>();
 
 actionRemoveFilterType returns [AbstractRutaAction action = null]
 @init {
-List<TypeExpression> list = new ArrayList<TypeExpression>();
+List<ITypeExpression> list = new ArrayList<ITypeExpression>();
 }
     :
     REMOVEFILTERTYPE (LPAREN id = typeExpression {list.add(id);} (COMMA id = typeExpression {list.add(id);})* RPAREN)

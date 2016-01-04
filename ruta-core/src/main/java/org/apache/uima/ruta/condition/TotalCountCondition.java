@@ -25,7 +25,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
@@ -38,7 +38,7 @@ public class TotalCountCondition extends TypeSentiveCondition {
 
   private final String var;
 
-  public TotalCountCondition(TypeExpression type, INumberExpression min, INumberExpression max,
+  public TotalCountCondition(ITypeExpression type, INumberExpression min, INumberExpression max,
           String var) {
     super(type);
     this.min = min == null ? new SimpleNumberExpression(Integer.MIN_VALUE) : min;

@@ -33,7 +33,7 @@ import org.apache.uima.ruta.expression.list.UntypedListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.resource.WordListExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.resource.RutaWordList;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
@@ -78,8 +78,8 @@ public class TrieAction extends AbstractRutaAction {
     for (IStringExpression eachKey : map.keySet()) {
       String stringValue = eachKey.getStringValue(context, stream);
       IRutaExpression expression = map.get(eachKey);
-      if (expression instanceof TypeExpression) {
-        Type typeValue = ((TypeExpression) expression).getType(context, stream);
+      if (expression instanceof ITypeExpression) {
+        Type typeValue = ((ITypeExpression) expression).getType(context, stream);
         typeMap.put(stringValue, typeValue);
       } else if (expression instanceof UntypedListExpression) {
         List<Object> innerList = ((UntypedListExpression) expression).getList(context, stream);

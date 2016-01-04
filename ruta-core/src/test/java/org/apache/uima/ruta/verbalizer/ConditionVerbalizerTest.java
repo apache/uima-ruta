@@ -63,8 +63,8 @@ import org.apache.uima.ruta.expression.number.NumberVariableExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.string.SimpleStringExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.expression.type.TypeVariableExpression;
 import org.apache.uima.ruta.verbalize.RutaVerbalizer;
 import org.junit.Test;
@@ -74,12 +74,12 @@ public class ConditionVerbalizerTest {
   @Test
   public void test() {
     RutaVerbalizer v = new RutaVerbalizer();
-    List<TypeExpression> typeExprList = new ArrayList<TypeExpression>();
+    List<ITypeExpression> typeExprList = new ArrayList<ITypeExpression>();
     List<IStringExpression> stringExprList = new ArrayList<IStringExpression>();
     String var = "anyVar";
     IStringExpression varExpr = new NumberVariableExpression(var);
-    TypeExpression typeExpr1 = new SimpleTypeExpression("Type1");
-    TypeExpression typeExpr2 = new TypeVariableExpression("typeVar");
+    ITypeExpression typeExpr1 = new SimpleTypeExpression("Type1");
+    ITypeExpression typeExpr2 = new TypeVariableExpression("typeVar");
     typeExprList.add(typeExpr1);
     typeExprList.add(typeExpr2);
     INumberExpression numExpr1 = new SimpleNumberExpression(4);

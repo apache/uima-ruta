@@ -26,7 +26,7 @@ import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.string.SimpleStringExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.type.RutaColoring;
@@ -40,9 +40,9 @@ public class ColorAction extends AbstractRutaAction {
 
   private IBooleanExpression selected;
 
-  private TypeExpression type;
+  private ITypeExpression type;
 
-  public ColorAction(TypeExpression type, IStringExpression bgcolor, IStringExpression fgcolor,
+  public ColorAction(ITypeExpression type, IStringExpression bgcolor, IStringExpression fgcolor,
           IBooleanExpression selected) {
     super();
     this.type = type;
@@ -80,7 +80,7 @@ public class ColorAction extends AbstractRutaAction {
     return selected;
   }
 
-  public TypeExpression getType() {
+  public ITypeExpression getType() {
     return type;
   }
 

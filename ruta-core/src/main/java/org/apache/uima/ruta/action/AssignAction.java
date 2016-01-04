@@ -27,7 +27,7 @@ import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
@@ -56,8 +56,8 @@ public class AssignAction extends AbstractRutaAction {
     } else if (clazz.equals(Integer.class) && expression instanceof INumberExpression) {
       int v = ((INumberExpression) expression).getIntegerValue(context, stream);
       environment.setVariableValue(var, v);
-    } else if (clazz.equals(Type.class) && expression instanceof TypeExpression) {
-      Type v = ((TypeExpression) expression).getType(context, stream);
+    } else if (clazz.equals(Type.class) && expression instanceof ITypeExpression) {
+      Type v = ((ITypeExpression) expression).getType(context, stream);
       environment.setVariableValue(var, v);
     } else if (clazz.equals(Boolean.class) && expression instanceof IBooleanExpression) {
       boolean v = ((IBooleanExpression) expression).getBooleanValue(context, stream);
